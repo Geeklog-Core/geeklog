@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | upload.class.php                                                          |
-// | Geeklog file upload class library.                                        |
 // |                                                                           |
+// | Geeklog file upload class library.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2002-2004 by the following authors:                         |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.32 2004/07/10 17:32:02 dhaun Exp $
+// $Id: upload.class.php,v 1.33 2004/08/13 08:52:06 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -547,7 +547,7 @@ class upload
                     $cmd .= 'pngtopnm ' . $cmd_end . 'pnmtopng > ' . $tmpfile;
                 } else if (eregi ('\.(jpg|jpeg)', $filename)) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.jpg';
-                    $cmd .= 'jpegtopnm ' . $cmd_end . 'ppmtojpeg > ' . $tmpfile;
+                    $cmd .= 'jpegtopnm ' . $cmd_end . 'pnmtojpeg > ' . $tmpfile;
                 }  else if (eregi ('\.gif', $filename)) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
                     $cmd .= 'giftopnm ' . $cmd_end . 'ppmquant 256 | '
