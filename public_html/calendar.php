@@ -4,15 +4,15 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-common.php                                                            |
-// | Geeklog common library.                                                   |
+// | calendar.php                                                              |
 // |                                                                           |
+// | Geeklog calendar.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.27 2003/01/06 18:20:24 dhaun Exp $
+// $Id: calendar.php,v 1.28 2003/03/29 19:12:28 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -160,8 +160,8 @@ function getSmallCalendar($m, $y, $mode='')
         $mode = '&amp;mode=' . $mode;
     }
 
-    $retval .= '<font size=-2>' . LB . '<table>' . LB 
-        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&amp;year=' . $y . $mode . '">' 
+    $retval .= '<font size="-2">' . LB . '<table>' . LB 
+        . '<tr><td align="center" colspan="7"><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&amp;year=' . $y . $mode . '">' 
         . $mycal->getMonthName($m) . '</a></td></tr>'
         . makeDaysHeadline() . LB;
 
@@ -687,9 +687,10 @@ for ($i = 1; $i <= 6; $i++) {
             $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&amp;mode=' . $mode . '&amp;day=' . $curday->daynumber. '&amp;month=' . $month
                 . '&amp;year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
 
-            // NEED TO CHANGE TO GET ENTRIES
             if ($mode == 'personal') {
-                //$calsql = "SELECT {$_TABLES["events"]}.* FROM {$_TABLES["events"]}, {$_TABLES["userevent"]} WHERE ({$_TABLES["events"]}.eid = {$_TABLES["userevent"]}.eid) AND ({$_TABLES["userevent"]}.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
+                if (strlen($month) == 1) {
+                    $month = '0' . $month;
+                }
                 $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
             } else {
                 if (strlen($month) == 1) {
