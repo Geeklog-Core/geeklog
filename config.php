@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.27 2002/04/16 20:40:35 tony_bibbs Exp $
+// $Id: config.php,v 1.28 2002/04/17 16:27:54 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -187,7 +187,7 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['commentspeedlimit']     = 45;
 $_CONF['commentsloginrequired'] = 0;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
-$_CONF['comment_mode']          = threaded; // Default Comment Mode; from 'threaded','nestde','nocomments',and 'flat'
+$_CONF['comment_mode']          = threaded; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
 
 // Poll Settings                                            
 $_CONF['maxanswers']        = 10;
