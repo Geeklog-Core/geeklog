@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | users.php                                                                 |
-// | User authentication module.                                               |
 // |                                                                           |
+// | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.63 2003/05/14 10:48:52 dhaun Exp $
+// $Id: users.php,v 1.64 2003/05/20 08:55:13 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -632,15 +632,14 @@ function getpasswordform()
 /**
 * Shows user their account info form
 *
-* @param    int     $msg        Id of message to display if one is needed
-* @param    string  $referrer   
+* @param    string  $msg        message to display if one is needed
 * @return   string  HTML for form
 *
 */
-function defaultform($msg, $referrer='') 
+function defaultform ($msg)
 {
-    global $LANG04, $_CONF;
-	
+    global $LANG04;
+
     $retval = '';
 
     if (!empty ($msg)) {
@@ -652,20 +651,10 @@ function defaultform($msg, $referrer='')
     $retval .= newuserform ();
 
     $retval .= getpasswordform ();
-/*
-	$retval .= COM_startBlock($LANG04[25])
-		. '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
-		. '<table border="0" cellspacing="0" cellpadding="3">' . LB
-		. '<tr><td colspan="2">' . $LANG04[26] . '</td></tr>' . LB
-		. '<tr><td align="right"><b>' . $LANG04[2] 
-        . ':</b></td><td><input type="text" size="16" maxlength="16" name="username"></td></tr>' . LB
-		. '<tr><td align="center" colspan="2"><input type="hidden" name="mode" value="emailpasswd">'
-        . '<input type="submit" value="' . $LANG04[28] . '"></td></tr>' . LB
-		. '</table></form>'
-		. COM_endBlock();
-*/
-	return $retval;
+
+    return $retval;
 }
+
 
 // MAIN
 if (isset ($HTTP_POST_VARS['mode'])) {
