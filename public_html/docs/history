@@ -3,9 +3,17 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- When deleting a topic, keep the blocks assigned to that topic (bug #247).
+  They're assigned to 'all topics' and disabled, but kept around now. The same
+  applies for topic feeds, which weren't handled at all before [Dirk]
+- Make sure upload errors for user photos and story images are displayed in a
+  Geeklog block, not on a blank screen [Dirk]
+- Fixed description of DB_insertId() in lib-database.php and dbInsertId() in
+  mysql.class.php: The functions take a resource, describing the opened link to
+  the database, not a record set (pointed out by lgonze on IRC). [Dirk]
 - Plugins are now getting the key type passed to their search function, so that
   they can perform a search for the "exact phrase", "all of these words", or
-  "any of these words" as selected from the search form.
+  "any of these words" as selected from the search form. [Dirk]
 - Use URL rewriting for the link to a story's printer-friendly version, when
   activated (bug #201) [Dirk]
 - Resizing an image didn't work when the image height exceeded the max. height
