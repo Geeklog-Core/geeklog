@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.269 2003/12/28 18:51:45 dhaun Exp $
+// $Id: lib-common.php,v 1.270 2004/01/02 02:51:18 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2613,7 +2613,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
             $template->set_var( 'author_photo', '' );
         }
         $template->set_var( 'start_author_anchortag', '<a href="'
-                . $_CONF['site_url'] . '/users.php?mode?profile&amp;uid='
+                . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
                 . $A['uid'] . '">' );
         $template->set_var( 'end_author_anchortag', '</a>' );
     }
