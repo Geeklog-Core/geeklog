@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.75 2004/06/07 01:24:24 blaine Exp $
+// $Id: user.php,v 1.76 2004/06/19 17:09:34 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -622,7 +622,7 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
-        $tmp .= COM_siteFooter('menu');
+        $tmp .= COM_siteFooter();
         $display = $tmp;
     }
 } else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
