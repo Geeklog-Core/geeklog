@@ -1,4 +1,5 @@
 <?php
+
 /**
 * File: config.php
 * This is the config file for the Geeklog SpamX Plug-in!
@@ -11,7 +12,7 @@
 *
 */
 
-$_SPX_CONF['version'] = '1.01';
+$_SPX_CONF['version'] = '1.0.1';
 
 // URL blacklist changes RSS feed (currently only RSS v1.0 is supported)
 $_SPX_CONF['rss_url'] = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
