@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.41 2002/10/28 15:22:09 dhaun Exp $
+// $Id: submit.php,v 1.42 2002/10/28 17:32:29 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -375,7 +375,7 @@ function submitstory()
     $storyform->set_var('story_sid', $A['sid']);
     $storyform->set_var('story_date', $A['unixdate']);
 
-    if ($A['mode'] == $LANG12[32]) {
+    if (($_CONF['skip_preview'] == 1) || ($A['mode'] == $LANG12[32])) {
         $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
     }
 

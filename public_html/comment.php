@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.32 2002/09/10 14:50:56 dhaun Exp $
+// $Id: comment.php,v 1.33 2002/10/28 17:32:28 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -183,7 +183,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $comment_template->set_var('lang_instr_line5', $LANG03[23]);	
             $comment_template->set_var('lang_preview', $LANG03[14]);
             
-            if ($mode == $LANG03[14]) {
+            if ((($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
 
