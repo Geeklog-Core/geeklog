@@ -67,10 +67,10 @@ dt {
 .codeheader		{  font-family: Courier, "Courier New", monospace; }
 
 
-a:link    { color: #FF2222; background: transparent; }
-a:visited { color: #FF2222; background: transparent; }
+a:link    { color: #2222FF; background: transparent; }
+a:visited { color: #2222FF; background: transparent; }
 a:hover   { color: #333366; background: #AAAADD; }
-a:active  { color: #FF2222; background: transparent; }
+a:active  { color: #2222FF; background: transparent; }
 
 /* this is to prevent Mozilla from applying :hover on <a name="..."> */
 a[name]   { color: black; background: transparent; }
