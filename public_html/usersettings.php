@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.107 2004/10/09 20:44:41 dhaun Exp $
+// $Id: usersettings.php,v 1.108 2004/11/14 20:55:14 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -797,6 +797,24 @@ function saveuser($A)
                 ($A['new_username'] != $_USER['username'])) {
             $A['new_username'] = addslashes ($A['new_username']);
             if (DB_count ($_TABLES['users'], 'username', $A['new_username']) == 0) {
+                if ($_CONF['allow_user_photo'] == 1) {
+                    $photo = DB_getItem ($_TABLES['users'], 'photo',
+                                         "uid = {$_USER['uid']}");
+                    $newphoto = preg_replace ('/' . $_USER['username'] . '/',
+                                    $A['new_username'], $photo, 1);
+                    $imgpath = $_CONF['path_images'] . 'userphotos/';
+                    if (rename ($imgpath . $photo,
+                                $imgpath . $newphoto) === false) {
+                        $display = COM_siteHeader ('menu');
+                        $display .= COM_errorLog ('Could not rename userphoto "'
+                                        . $photo . '" to "' . $newphoto . '".');
+                        $display .= COM_siteFooter ();
+                        return $display;
+                    }
+                    DB_change ($_TABLES['users'], 'photo',
+                               addslashes ($newphoto), "uid", $_USER['uid']);
+                }
+
                 DB_change ($_TABLES['users'], 'username', $A['new_username'],
                            "uid", $_USER['uid']);
             } else {

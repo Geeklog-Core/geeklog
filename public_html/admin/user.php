@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.86 2004/10/07 21:10:23 dhaun Exp $
+// $Id: user.php,v 1.87 2004/11/14 20:55:14 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -330,6 +330,28 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
                 }
                 $curphoto = '';
             }
+
+            if (($_CONF['allow_user_photo'] == 1) && !empty ($curphoto)) {
+                $curusername = DB_getItem ($_TABLES['users'], 'username',
+                                           "uid = $uid");
+                if ($curusername != $username) {
+                    // user has been renamed - rename the photo, too
+                    $newphoto = preg_replace ('/' . $curusername . '/',
+                                              $username, $curphoto, 1);
+                    $imgpath = $_CONF['path_images'] . 'userphotos/';
+                    if (rename ($imgpath . $curphoto,
+                                $imgpath . $newphoto) === false) {
+                        $display = COM_siteHeader ('menu');
+                        $display .= COM_errorLog ('Could not rename userphoto "'
+                                        . $photo . '" to "' . $newphoto . '".');
+                        $display .= COM_siteFooter ();
+                        return $display;
+                    }
+                    $curphoto = $newphoto;
+                }
+            }
+
+            $curphoto = addslashes ($curphoto);
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto' WHERE uid = $uid");
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
