@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.188 2002/11/29 16:04:41 dhaun Exp $
+// $Id: lib-common.php,v 1.189 2002/11/30 14:15:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2757,7 +2757,8 @@ function COM_makesid()
 /**
 * checks to see if email address is valid
 *
-* This function COM_checks to see if an email address is in the correct from
+* This function COM_checks to see if an email address is in the correct from.
+* Actually, RFC2822 allows for much more obscure addresses ...
 *
 * @param        string      $email      Email address to verify
 * @return   boolean True if valid otherwise false
@@ -2766,7 +2767,7 @@ function COM_makesid()
 
 function COM_isemail( $email )
 {
-    if( eregi( "^[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*.[a-z]{2,3}$", $email, $check ))
+    if( eregi( "^([-_0-9a-z])+([-._0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*.[a-z]{2,3}$", $email, $check ))
     {
         return TRUE;
     }
