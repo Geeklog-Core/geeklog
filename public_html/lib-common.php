@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.115 2002/06/30 10:27:04 dhaun Exp $
+// $Id: lib-common.php,v 1.116 2002/06/30 19:26:02 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1211,7 +1211,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 */
 function COM_showTopics($topic='') 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG01, $PHP_SELF, $page;
+    global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page;
 	
     if ($_CONF['sortmethod'] == 'alpha') {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC");
@@ -1221,9 +1221,10 @@ function COM_showTopics($topic='')
 
     $nrows = DB_numRows($result);
 
-    // Give a link to the hompage here since a lot of people use this for navigating the site
-
-    if (($PHP_SELF <> "/index.php") OR !empty($topic) OR ($page > 1)) {
+    // Give a link to the homepage here since a lot of people use this for
+    // navigating the site
+    // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
+    if (($HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php") OR !empty($topic) OR ($page > 1)) {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
     } else {
         $retval .= $LANG01[90] . '<br>';
