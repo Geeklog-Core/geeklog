@@ -16,7 +16,7 @@ $LANG_SX00 = array (
    	'inst1'				=> '<p>If you do this, then others ',
 	'inst2'				=> 'will be able to view and import your personal blacklist and we can create a more effective ',
 	'inst3'				=> 'distributed database.</p><p>If you have submitted your website and decide you do not wish your website to remain on the list ',
-	'inst4'				=> 'send an email to <a href="mailto::spamx@pigstye.net">spamx@pigstye.net</a> telling me. ',
+	'inst4'				=> 'send an email to <a href="mailto:spamx@pigstye.net">spamx@pigstye.net</a> telling me. ',
 	'inst5'				=> 'All requests will be honored.',
    	'submit'			=> 'Submit',
 	'subthis'			=> 'this info to SpamX Central Database',
@@ -46,7 +46,7 @@ $LANG_SX00 = array (
 	'addcen'			=> 'Add Censor List',
 	'addentry'			=> 'Add Entry',
 	'e1'				=> 'To Delete an entry click it.',
-	'e2'				=> 'To Add an entry, enter it in the box and click Add.  Entries can use full Perl Regular Expressions.',
+	'e2'				=> 'To Add an entry, enter in in the box and click Add.  Entries can use full Perl Regular Expressions.',
 	'pblack'			=> 'SpamX Personal Blacklist',
 	'conmod'			=> 'Configure SpamX Module Usage',
 	'acmod'				=> 'SpamX Action Modules',
@@ -85,7 +85,12 @@ $LANG_SX00 = array (
     'spamdeleted'		=> 'Deleted Spam Comment',
     'foundspam'			=> 'Found Spam Comment matching ',
     'foundspam2'        => ' posted by user ',
-    'foundspam3'  		=> ' from IP '
+    'foundspam3'  		=> ' from IP ',
+
+    'initial_import'    => 'Initial MT-Blacklist Import',
+    'import_success'    => '<p>Successfully imported %d blacklist entries.',
+    'import_failure'    => '<p><strong>Error:</strong> No entries found.',
+    'allow_url_fopen'   => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:'
 );
 
 ?>
