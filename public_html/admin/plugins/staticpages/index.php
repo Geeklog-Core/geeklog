@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2004/03/23 19:56:07 dhaun Exp $
+// $Id: index.php,v 1.34 2004/07/11 19:07:29 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -558,14 +558,16 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
 
 // MAIN
 
-if (empty($mode) OR empty($sp_id)) {
-    COM_setArgNames(array('mode','sp_id'));    
-    $mode = COM_getArgument('mode');
-    $sp_id = COM_getArgument('sp_id');
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
+} else {
+    COM_setArgNames (array ('mode', 'sp_id'));    
+    $mode = COM_applyFilter (COM_getArgument ('mode'));
+    $sp_id = COM_applyFilter (COM_getArgument ('sp_id'));
 }
 
 if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
-    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
         COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
     } else {
@@ -573,12 +575,10 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
                 $_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     }
 } else if ($mode == 'edit') {
-    $sp_id = COM_applyFilter ($sp_id);
     $display .= COM_siteHeader ('menu');
     $display .= staticpageeditor ($sp_id, $mode);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
-    $sp_id = COM_applyFilter ($sp_id);
     if (!empty ($sp_id)) {
         $display .= COM_siteHeader('menu');
         $display .= staticpageeditor($sp_id,$mode);
@@ -587,7 +587,6 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
-    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
     if (!empty ($sp_id)) {
         submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
             $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,
