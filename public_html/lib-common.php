@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.80 2002/04/27 21:41:20 dhaun Exp $
+// $Id: lib-common.php,v 1.81 2002/04/29 19:29:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -741,10 +741,10 @@ function COM_exportRDF()
                 fputs ( $file, "</item>\n\n" );
             }
             DB_query("UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'");
+            fputs ( $file, "</channel>\n");
+            fputs ( $file, "</rss>\n");
+            fclose( $file );
         }
-        fputs ( $file, "</channel>\n");
-        fputs ( $file, "</rss>\n");
-        fclose( $file );
     }
 }
 
