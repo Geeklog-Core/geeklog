@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.139 2004/10/16 17:59:59 dhaun Exp $
+// $Id: config.php,v 1.140 2004/10/16 18:22:39 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -230,6 +230,16 @@ $_CONF['hide_author_exclusion'] = 0;
 // | Function hooks are in users.php, usersettings.php and admin/user.php      |
 // +---------------------------------------------------------------------------+
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
+
+// +---------------------------------------------------------------------------+
+// | Define action to be taken by SPAMX module if spam detected                |
+// | Current SPAMX module supports two actions which can be combined           |
+// | Additional classes can be added as well as other plugin extensions        |
+// | Actions: 128 = ignore comment and redirect to homepage                    |
+// |          8 = mail admin message                                           |
+// |          136 (SUM) ignore and email adming                                |
+// +---------------------------------------------------------------------------+
+$_CONF['spamx'] = 128;  // Default to ignore comment.
 
 // +---------------------------------------------------------------------------+
 // | Support for custom templaes to support advanced Rich Text Editor          |
