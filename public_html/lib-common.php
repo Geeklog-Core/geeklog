@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.377 2004/09/24 10:25:32 dhaun Exp $
+// $Id: lib-common.php,v 1.378 2004/09/25 11:42:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3667,7 +3667,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
         if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
         {
-            $retval .= COM_formatBlock($A,$U['noboxes']);
+            $retval .= COM_formatBlock( $A, $U['noboxes'] );
         }
     }
 
@@ -4079,7 +4079,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
         $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
     }
 
-    $retval = COM_startBlock( $title, '',
+    $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'events_block', 'header' ));
 
     $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
@@ -5856,6 +5856,25 @@ function COM_isFrontpage()
     }
 
     return $isFrontpage;
+}
+
+/**
+* Ensure an ID contains only alphanumeric characters (or '-')
+*
+* @param    string  $id     the ID to sanitize
+* @param    boolean $new_id true = create a new ID in case we end up with an empty string
+* @return   string          the sanitized ID
+*/
+function COM_sanitizeID ($id, $new_id = true)
+{
+    $id = str_replace (' ', '', $id);
+    $id = str_replace (array ('_', '/', '\\', ':', '+'), '-', $id);
+    $id = preg_replace('/[^a-zA-Z0-9\-]/', '', $id);
+    if (empty ($id) && $new_id) {
+        $id = COM_makesid ();
+    }
+
+    return $id;
 }
 
 // Now include all plugin functions
