@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2002/02/26 17:58:07 tony_bibbs Exp $
+// $Id: index.php,v 1.16 2002/03/07 17:14:57 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -79,7 +79,7 @@ $display .= COM_showMessage($msg);
 COM_rdfUpToDateCheck();
 
 for ($i = 0; $i <= 1; $i++) {
-    if ($page>1) $i = 1;
+    if ($page > 1) $i = 1;
     $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
 
     // if a topic was provided only select those stories.
@@ -91,15 +91,15 @@ for ($i = 0; $i <= 1; $i++) {
 
     if (!empty($U['aids'])) {
         $AIDS = explode(' ',$U['aids']);
-        for ($i = 0; $i < sizeof($AIDS); $i++) {
-            $sql .= " uid != '$AIDS[$i]' AND ";
+        for ($z = 0; $z < sizeof($AIDS); $z++) {
+            $sql .= " uid != '$AIDS[$z]' AND ";
         }
     }
 
     if (!empty($U['tids'])) {
         $TIDS = explode(' ',$U['tids']);
-        for ($i = 0; $i < sizeof($TIDS); $i++) {
-            $sql .= " tid != '$TIDS[$i]' AND ";
+        for ($z = 0; $z < sizeof($TIDS); $z++) {
+            $sql .= " tid != '$TIDS[$z]' AND ";
         }
     }
 
