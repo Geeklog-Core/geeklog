@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.55 2004/09/25 18:50:07 dhaun Exp $
+// $Id: article.php,v 1.56 2004/10/02 13:28:31 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -60,12 +60,14 @@ if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
     $order = COM_applyFilter ($HTTP_POST_VARS['order']);
     $query = COM_applyFilter ($HTTP_POST_VARS['query']);
+    $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
 } else {
     COM_setArgNames (array ('story', 'mode'));
     $story = COM_applyFilter (COM_getArgument ('story'));
     $mode = COM_applyFilter (COM_getArgument ('mode'));
     $order = COM_applyFilter ($HTTP_GET_VARS['order']);
     $query = COM_applyFilter ($HTTP_GET_VARS['query']);
+    $reply = COM_applyFilter ($HTTP_GET_VARS['reply']);
 }
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
