@@ -4,7 +4,7 @@
                                         <td>
                                             <img src="{site_url}/staticpages/images/staticpages.gif">
                                         </td>
-                                        <td>[ <a href="{site_admin_url}/plugins/staticpages/index.php?mode=edit">{lang_newpage}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
+                                        <td>[ <a href="{new_page_url}">{lang_newpage}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                                     </tr>
                                 </table>
                                 <table cellpadding="0" cellspacing="3" border="0" width="100%">
