@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.43 2002/10/26 17:55:22 dhaun Exp $
+// $Id: user.php,v 1.44 2002/12/02 12:17:36 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -105,7 +105,7 @@ function edituser($uid = '', $msg = '')
 	if ($A['uid'] > 1) { 
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
     }
-	if (!empty($uid) && SEC_hasRights('user.delete')) {
+	if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG28[19] . '" name="mode">');
 	}
     $user_templates->set_var('lang_cancel', $LANG28[18]);
