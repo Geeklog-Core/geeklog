@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.330 2004/05/31 08:45:08 dhaun Exp $
+// $Id: lib-common.php,v 1.331 2004/05/31 18:22:50 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2889,7 +2889,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     do
     {
         // determines indentation for current comment
-        if ( $mode == 'threaded' || $mode = 'nested' )
+        if ( $mode == 'threaded' || $mode == 'nested' )
         {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
@@ -3122,7 +3122,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         switch( $mode )
         {
             case 'flat':
-                if ( cid ) {
+                if ( $cid ) {
                     $count = 1;
 
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
