@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.326 2004/05/29 11:48:07 dhaun Exp $
+// $Id: lib-common.php,v 1.327 2004/05/29 15:46:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -716,6 +716,226 @@ function COM_getThemes($all = false)
 }
 
 /**
+* Create the menu, i.e. replace {menu_elements} in the site header with the
+* actual menu entries.
+*
+* @param    Template    $header     reference to the header template
+* @param    array       $plugin_menu    array of plugin menu entries, if any
+*
+*/
+function COM_renderMenu( &$header, $plugin_menu )
+{
+    global $_CONF, $_USER, $LANG01, $topic;
+
+    if( empty( $_CONF['menu_elements'] ))
+    {
+        $_CONF['menu_elements'] = array( // default set of links
+                'contribute', 'links', 'polls', 'calendar', 'search', 'stats' );
+    }
+
+    $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;
+    $allowedCounter = 0;
+    $counter = 0;
+
+    $num_plugins = sizeof( $plugin_menu );
+    if( ( $num_plugins == 0 ) && in_array( 'plugins', $_CONF['menu_elements'] ))
+    {
+        $key = array_search( 'plugins', $_CONF['menu_elements'] );
+        unset( $_CONF['menu_elements'][$key] );
+    }
+
+    if( in_array( 'custom', $_CONF['menu_elements'] ))
+    {
+        $custom_entries = array();
+        if( function_exists( 'CUSTOM_menuEntries' ))
+        {
+            $custom_entries = CUSTOM_menuEntries ();
+        }
+        if( sizeof( $custom_entries ) == 0 )
+        {
+            $key = array_search( 'custom', $_CONF['menu_elements'] );
+            unset( $_CONF['menu_elements'][$key] );
+        }
+    }
+
+    $num_elements = sizeof( $_CONF['menu_elements'] );
+
+    foreach( $_CONF['menu_elements'] as $item )
+    {
+        $counter++;
+        $allowed = true;
+        $last_entry = ( $counter == $num_elements ) ? true : false;
+
+        switch( $item )
+        {
+            case 'calendar':
+                $url = $_CONF['site_url'] . '/calendar.php';
+                $label = $LANG01[74];
+                if( $anon && ( $_CONF['loginrequired'] ||
+                        $_CONF['calendarloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+
+            case 'contribute':
+                if( empty( $topic ))
+                {
+                    $url = $_CONF['site_url'] . '/submit.php?type=story';
+                    $header->set_var( 'current_topic', '' );
+                }
+                else
+                {
+                    $url = $_CONF['site_url']
+                         . '/submit.php?type=story&amp;topic=' . $topic;
+                    $header->set_var( 'current_topic', '&amp;topic=' . $topic );
+                }
+                $label = $LANG01[71];
+                if( $anon && ( $_CONF['loginrequired'] ||
+                        $_CONF['submitloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+
+            case 'custom':
+                $custom_count = 0;
+                $custom_size = sizeof( $custom_entries );
+                foreach( $custom_entries as $entry )
+                {
+                    $custom_count++;
+
+                    if( empty( $entry['url'] ) || empty( $entry['label'] ))
+                    {
+                        continue;
+                    }
+
+                    $header->set_var( 'menuitem_url',  $entry['url'] );
+                    $header->set_var( 'menuitem_text', $entry['label'] );
+
+                    if( $last_entry && ( $custom_count == $custom_size ))
+                    {
+                        $header->parse( 'menu_elements', 'menuitem_last',
+                                        true );
+                    }
+                    else
+                    {
+                        $header->parse( 'menu_elements', 'menuitem', true );
+                    }
+                }
+                $url = '';
+                $label = '';
+                break;
+
+            case 'home':
+                $url = $_CONF['site_url'] . '/';
+                $label = $LANG01[90];
+                break;
+
+            case 'links':
+                $url = $_CONF['site_url'] . '/links.php';
+                $label = $LANG01[72];
+                if( $anon &&
+                    ( $_CONF['loginrequired'] || $_CONF['linksloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+
+            case 'plugins':
+                for( $i = 1; $i <= $num_plugins; $i++ )
+                {
+                    $header->set_var( 'menuitem_url', current( $plugin_menu ));
+                    $header->set_var( 'menuitem_text', key( $plugin_menu ));
+
+                    if( $last_entry && ( $i == $num_plugins ))
+                    {
+                        $header->parse( 'menu_elements', 'menuitem_last',
+                                        true );
+                    }
+                    else
+                    {
+                        $header->parse( 'menu_elements', 'menuitem', true );
+                    }
+
+                    next( $plugin_menu );
+                }
+                $url = '';
+                $label = '';
+                break;
+
+            case 'polls':
+                $url = $_CONF['site_url'] . '/pollbooth.php';
+                $label = $LANG01[73];
+                if( $anon &&
+                    ( $_CONF['loginrequired'] || $_CONF['pollsloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+
+            case 'prefs':
+                $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
+                $label = $LANG01[48];
+                break;
+
+            case 'search':
+                $url = $_CONF['site_url'] . '/search.php';
+                $label = $LANG01[75];
+                if( $anon && ( $_CONF['loginrequired'] ||
+                        $_CONF['searchloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+
+            case 'stats':
+                $url = $_CONF['site_url'] . '/stats.php';
+                $label = $LANG01[76];
+                if( $anon &&
+                    ( $_CONF['loginrequired'] || $_CONF['statsloginrequired'] ))
+                {
+                    $allowed = false;
+                }
+                break;
+        }
+
+        if( !empty( $url ) && !empty( $label ))
+        {
+            $header->set_var( 'menuitem_url',  $url );
+            $header->set_var( 'menuitem_text', $label );
+            if( $last_entry )
+            {
+                $header->parse( 'menu_elements', 'menuitem_last', true );
+            }
+            else
+            {
+                $header->parse( 'menu_elements', 'menuitem', true );
+            }
+
+            if( $allowed )
+            {
+                if( $last_entry )
+                {
+                    $header->parse( 'allowed_menu_elements', 'menuitem_last',
+                                    true );
+                }
+                else
+                {
+                    $header->parse( 'allowed_menu_elements', 'menuitem', true );
+                }
+                $allowedCounter++;
+            }
+        }
+    }
+
+    if( $allowedCounter == 0 )
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem_none', true );
+    }
+}
+
+/**
 * Returns the site header
 *
 * This loads the proper templates, does variable substitution and returns the
@@ -854,65 +1074,6 @@ function COM_siteHeader( $what = 'menu' )
     $header->set_var( 'button_search', $LANG_BUTTONS[9] );
     $header->set_var( 'button_advsearch', $LANG_BUTTONS[10] );
 
-    // Now add nested template for menu items
-
-    // contribute link
-    if( empty( $topic ))
-    {
-        $contributelink = $_CONF['site_url'] . '/submit.php?type=story';
-        $header->set_var( 'current_topic', '' );
-    }
-    else
-    {
-        $contributelink = $_CONF['site_url']
-                        . '/submit.php?type=story&amp;topic=' . $topic;
-        $header->set_var( 'current_topic', '&amp;topic=' . $topic );
-    }
-
-    $allowedCounter = 0;
-    $header->set_var( 'menuitem_url', $contributelink );
-    $header->set_var( 'menuitem_text', $LANG01[71] );
-    $header->parse( 'menu_elements', 'menuitem', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['submitloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
-    // links link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/links.php' );
-    $header->set_var( 'menuitem_text', $LANG01[72] );
-    $header->parse( 'menu_elements', 'menuitem', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['linksloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
-    // polls link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/pollbooth.php' );
-    $header->set_var( 'menuitem_text', $LANG01[73] );
-    $header->parse( 'menu_elements', 'menuitem', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['pollsloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
-    // calendar link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/calendar.php' );
-    $header->set_var( 'menuitem_text', $LANG01[74] );
-    $header->parse( 'menu_elements', 'menuitem', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['calendarloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
     // Get plugin menu options
     $plugin_menu = PLG_getMenuItems();
 
@@ -920,6 +1081,9 @@ function COM_siteHeader( $what = 'menu' )
     {
         COM_errorLog( 'num plugin menu items in header = ' . count( $plugin_menu ), 1 );
     }
+
+    // Now add nested template for menu items
+    COM_renderMenu( $header, $plugin_menu );
 
     if( count( $plugin_menu ) == 0 )
     {
@@ -943,33 +1107,6 @@ function COM_siteHeader( $what = 'menu' )
 
             next( $plugin_menu );
         }
-    }
-
-    // Search link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/search.php' );
-    $header->set_var( 'menuitem_text', $LANG01[75] );
-    $header->parse( 'menu_elements', 'menuitem', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['searchloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
-    // Stats link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/stats.php' );
-    $header->set_var( 'menuitem_text', $LANG01[76] );
-    $header->parse( 'menu_elements', 'menuitem_last', true );
-    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
-        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['statsloginrequired'] == 0 )))
-    {
-        $header->parse( 'allowed_menu_elements', 'menuitem', true );
-        $allowedCounter++;
-    }
-
-    if( $allowedCounter == 0 )
-    {
-        $header->set_var( 'allowed_menu_elements', '' );
     }
 
     if( $what <> 'none' )

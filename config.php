@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.114 2004/05/13 07:21:20 dhaun Exp $
+// $Id: config.php,v 1.115 2004/05/29 15:46:55 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -185,6 +185,23 @@ $_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
 // | These settings help define your Geeklog site.                             |
 // +---------------------------------------------------------------------------+
 $_CONF['theme']             = 'XSilver';  // default theme
+
+// List of entries that you want to see in the site's menu bar (if you're using
+// a theme that uses the {menu_elements} variable in its header.thtml).
+// Choose any combination of the following (order here = order in the menu).
+$_CONF['menu_elements'] = array
+(
+    // 'home',      // link to homepage
+    'contribute',   // contribute / "submit a story" link
+    'links',        // link to the links section (aka web resources)
+    'polls',        // link to past polls
+    'calendar',     // link to the site calendar
+    'search',       // link to advanced search
+    'stats'         // link to site stats
+    // 'prefs',     // link to user's preferences
+    // 'plugins'    // links added by plugins, like {plg_menu_elements}
+    // 'custom'     // for custom links (see lib-custom.php)
+);
 
 // you shouldn't need to edit the following
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];

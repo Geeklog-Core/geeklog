@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.8 2004/03/06 09:26:48 dhaun Exp $
+// $Id: lib-custom.php,v 1.9 2004/05/29 15:46:56 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -309,6 +309,34 @@ function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priori
     }
 
     return mail ($to, $subject, $message, $headers);
+}
+*/
+
+/**
+* This is an example of a function that returns menu entries to be used for
+* the 'custom' entry in $_CONF['menu_elements'] (see config.php).
+*
+*/
+/*
+function CUSTOM_menuEntries ()
+{
+    global $_CONF, $_USER;
+
+    $myentries = array ();
+
+    // Sample link #1: Link to Gallery
+    $myentries[] = array ('url'   => $_CONF['site_url'] . '/gallery/',
+                          'label' => 'Gallery');
+
+    // Sample link #2: Link to the Personal Calendar - only visible for
+    // logged-in users
+    if (!empty ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $myentries[] = array ('url'   => $_CONF['site_url']
+                                         . '/calendar.php?mode=personal',
+                              'label' => 'My Calendar');
+    }
+
+    return $myentries;
 }
 */
 

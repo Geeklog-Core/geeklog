@@ -3,6 +3,19 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- The contents and order of the menu entries, i.e. of the {menu_elements}
+  variable in header.thtml, is now configurable in config.php (new config
+  variable $_CONF['menu_elements']). It also includes an option to add custom
+  entries by implementing a function CUSTOM_menuEntries() that returns the
+  additional entries [Dirk]
+- Use an UPDATE request when increasing the number of times a story has been
+  emailed [Dirk]
+- Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log,
+  which were caused by collisions of the pseudo-session ids for anonymous
+  users. Geeklog actually handled the problem already - it shouldn't have been
+  logged in the first place [Dirk]
+- When an error occurs while creating a backup, the complete command line
+  used to call mysqldump is now added to error.log [Dirk]
 - Added 'view' mode to allow links directly to a single comment (and optionally
   its children) in comments.php.  [Vinny]
 - Added a few variables to be used in the eventdetails.thtml template file:
