@@ -97,8 +97,13 @@ function itemlist($type) {
 				break;
 			}
 	}
-	$result = dbquery($sql);
-	$nrows = mysql_num_rows($result);
+	$result = dbquery($sql,1);
+	if (mysql_errno()) {
+                #was more than likely a plugin that doesn't need moderation
+                $nrows = -1;
+        } else {
+                $nrows = mysql_num_rows($result);
+        }
 	if ($nrows > 0) {
 		print "<form action={$CONF["base"]}/admin/moderation.php method=POST>\n";
 		print "<input type=hidden name=type value=$type><input type=hidden name=count value=$nrows><input type=hidden name=mode value=moderation>\n";
@@ -127,7 +132,7 @@ function itemlist($type) {
 		print "<tr><td colspan=8 align=center><input type=hidden name=count value=$nrows><input type=submit value={$LANG29[38]}></td></tr>";
 		print "</table></form>";
 	} else {
-		print $LANG29[39];
+		if ($nrows <> -1) print $LANG29[39];
 	}
 	endblock();
 }
