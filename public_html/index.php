@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.33 2002/08/16 15:34:18 dhaun Exp $
+// $Id: index.php,v 1.34 2002/09/09 06:50:24 mlimburg Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -43,10 +43,38 @@ require_once('lib-common.php');
 
 $display .= COM_siteHeader();
 
+/*
+    Staticpage on Frontpage Addon (Hacked together by MLimburg)
+    
+    If a staticpage with the title 'frontpage' exists, then it is shown before the news messages.  
+    If this staticpage has the label 'nonews', then it is shown INSTEAD of news messages.
+    This will only occur on the basic index.php page, and not on the $topic pages.
+*/
+
+$shownews = 'yes';
+
+if( empty($topic) )
+{
+    $spsql = "SELECT sp_content,sp_label FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'";
+    $spresult = DB_fetchArray( DB_query( $spsql ));
+
+    if( $spresult['sp_label'] == 'nonews' )
+    {
+        $shownews = 'no';
+    }
+
+    $display .= $spresult['sp_content'];
+}
+
+if( $shownews == 'yes' )
+{
+
 $maxstories = 0;
+
 if (isset ($HTTP_GET_VARS['page'])) {
     $page = $HTTP_GET_VARS['page'];
 }
+
 if (empty($page)) {
     // If no page sent then assume the first.
     $page = 1;
@@ -177,6 +205,7 @@ if ($nrows > 0) {
         $display .= $LANG05[3];
     }
     $display .= COM_endBlock();
+}
 }
 
 $display .= COM_siteFooter(true); // The true value enables right hand blocks.
