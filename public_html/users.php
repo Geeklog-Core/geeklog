@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.46 2002/11/27 16:35:52 dhaun Exp $
+// $Id: users.php,v 1.47 2002/11/28 11:32:26 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -292,12 +292,12 @@ function emailpassword($username,$msg=0)
         $passwd = substr($passwd,1,8);
         $passwd2 = md5($passwd);
         DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
-        $mailtext = "{$LANG04[15]}\n\n";
-        $mailtext .= "{$LANG04[2]}: $username\n";
-        $mailtext .= "{$LANG04[4]}: $passwd\n\n";
-        $mailtext .= "{$LANG04[14]}\n\n";
-        $mailtext .= "{$_CONF["site_name"]}\n";
-        $mailtext .= "{$_CONF['site_url']}\n";
+        $mailtext = "{$LANG04[15]}\r\n\r\n";
+        $mailtext .= "{$LANG04[2]}: $username\r\n";
+        $mailtext .= "{$LANG04[4]}: $passwd\r\n\r\n";
+        $mailtext .= "{$LANG04[14]}\r\n\r\n";
+        $mailtext .= "{$_CONF["site_name"]}\r\n";
+        $mailtext .= "{$_CONF['site_url']}\r\n";
         if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
             if (empty ($charset)) {
@@ -310,9 +310,9 @@ function emailpassword($username,$msg=0)
         mail($A["email"]
             ,"{$_CONF["site_name"]}: {$LANG04[16]}"
             ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nContent-Type: text/plain; charset={$charset}\nX-Mailer: GeekLog $VERSION"
+            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nContent-Type: text/plain; charset={$charset}\r\nX-Mailer: GeekLog $VERSION"
             );
-			
+
         if ($msg) {
             $retval .= COM_refresh("{$_CONF['site_url']}/index.php?msg=$msg");
         } else {
@@ -321,33 +321,31 @@ function emailpassword($username,$msg=0)
     } else {
         $retval .= COM_siteHeader('menu') . defaultform($LANG04[17]) . COM_siteFooter();
     }
-	
+
     return $retval;
 }
 
 /**
-* Send an email notification for a new submission.
+* Send an email notification when a new user registers with the site.
 *
 * @username string      User name of the new user
+* @email    string      Email address of the new user
+* @uid      int         User id of the new user
 * @queued   bool        true = user was added to user submission queue
 *
 */
-function sendNotification ($username, $queued)
+function sendNotification ($username, $email, $uid, $queued = false)
 {
     global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG04, $LANG08, $LANG28,
            $LANG29;
 
-    $result = DB_query ("SELECT uid,email,regdate FROM {$_TABLES['users']} WHERE username = '{$username}'");
-    $A = DB_fetchArray ($result);
-
     $mailbody = "$LANG04[2]: $username\r\n"
-              . "$LANG04[5]: {$A['email']}\r\n"
-              . "$LANG28[14]: " . strftime ($_CONF['date'],
-                strtotime ($A['regdate'])) . "\r\n\r\n";
+              . "$LANG04[5]: $email\r\n"
+              . "$LANG28[14]: " . strftime ($_CONF['date']) . "\r\n\r\n";
     if ($queued) {
         $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
     } else {
-        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}>\r\n\r\n";
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\r\n\r\n";
     }
     $mailbody .= "\r\n------------------------------\r\n";
     $mailbody .= "\r\n$LANG08[34]\r\n";
@@ -422,11 +420,11 @@ function createuser($username,$email)
                     emailpassword($username, 1);
                     $msg = 1;
                 }
-                sendNotification ($username, $queueUser);
+                sendNotification ($username, $email, $uid, $queueUser);
             } else {
                 emailpassword($username, 1);
                 $msg = 1;
-                sendNotification ($username, false);
+                sendNotification ($username, $email, $uid, false);
             }
             DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
             DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
