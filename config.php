@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.136 2004/09/30 18:10:57 dhaun Exp $
+// $Id: config.php,v 1.137 2004/10/09 19:19:59 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -225,6 +225,12 @@ $_CONF['hide_author_exclusion'] = 0;
 // +---------------------------------------------------------------------------+
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
+// +---------------------------------------------------------------------------+
+// | Support for custom templaes to support advanced Rich Text Editor          |
+// | Checked in comment.php, submit.php, admin/story.php and                   |
+// | staticpages/index.php. If set true and advanced template exists           |
+// +---------------------------------------------------------------------------+
+$_CONF['advanced_editor'] = false;
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
