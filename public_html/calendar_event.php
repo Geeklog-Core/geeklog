@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.17 2002/05/12 17:04:12 dhaun Exp $
+// $Id: calendar_event.php,v 1.18 2002/05/16 14:39:33 mlimburg Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -416,9 +416,12 @@ default:
         $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart asc,title";
     }
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
-    $cal_templates->set_file(array('events'=>'events.thtml'
-                                    ,'details'=>'eventdetails.thtml'
-                                    ,'addremove'=>'addremoveevent.thtml'));
+    $cal_templates->set_file(array(
+        'events'=>'events.thtml',
+        'details'=>'eventdetails.thtml',
+        'addremove'=>'addremoveevent.thtml'
+        ));
+        
     $cal_templates->set_var('lang_addevent', $LANG02[6]);
     $cal_templates->set_var('lang_backtocalendar', $LANG02[15]);
 
@@ -478,8 +481,21 @@ default:
                 if ($A['allday'] == 0 OR ($A['allday'] == 1 AND $A['start'] <> $A['end'])) {
                     $thedatetime = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
                     $cal_templates->set_var('event_start', $thedatetime[0]);
-                    $thedatetime = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
+
+                    if( date('d m Y',$A['start']) == date('d m Y',$A['end']) )
+                    {
+                        $thedatetime[0] = date( 'h:i A', strtotime($A['dateend'].' '.$A['timeend']) );
+                    }
+                    else
+                    {
+                        $thedatetime = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
+                    }
+                    
+
                     $cal_templates->set_var('event_end', $thedatetime[0]);
+
+                    
+                    
                 } else {
                     $thedatetime = strftime('%A, %B %e %Y',strtotime($A['start'] . ' ' . $A['timestart']));
                     $cal_templates->set_var('event_start', $thedatetime);
