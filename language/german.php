@@ -633,7 +633,10 @@ $LANG23 = array(
 	17 => "Du hast keine Zugriffsrechte f&uuml;r diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_url"]}/admin/link.php\">Zur&uuml;ck zum Administrator-Men&uuml;</a>.",
 	18 => 'Neuer Link',
 	19 => 'Admin Home',
-	20 => 'Andere bitte eingeben:'
+	20 => 'Andere bitte eingeben:',
+    21 => 'Speichern',
+    22 => 'Abbruch',
+    23 => 'Loeschen'
 );
 
 ###############################################################################
@@ -1007,8 +1010,8 @@ $LANG_ACCESS = array(
 	lock => "Lock",
 	members => "Mitglieder",
 	anonymous => "Anonymous",
-	permissions => "Permissions",
-	permissionskey => "R = read, E = edit, edit rights assume read rights",
+	permissions => "Rechte",
+	permissionskey => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
 	edit => "Edit",
 	none => "None",
 	accessdenied => "Zugriff verweigert",

@@ -627,7 +627,10 @@ $LANG23 = array(
 	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/link.php\">go back to the link administration screen</a>.",
 	18 => 'New Link',
 	19 => 'Admin Home',
-	20 => 'If other, specify'
+	20 => 'If other, specify',
+    21 => 'save',
+    22 => 'cancel',
+    23 => 'delete'
 );
 
 ###############################################################################
