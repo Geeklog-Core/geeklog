@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.16 2002/02/26 23:04:34 tony_bibbs Exp $
+// $Id: install.php,v 1.17 2002/02/27 20:47:31 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -606,7 +606,7 @@ function INST_saveDatabaseSettings($A)
 
     // To make this easier to automate load, defaults and loop through those instead
     // of doing a set_var for each table
-    if ($A['upgrade'] == 1 && empty($A['prefix'])) {
+    if ($A['upgrade'] == 1 && empty($A['prefix']) AND file_exists($_CONF['path_system'] . 'lib-database.php')) {
         include_once($_CONF['path_system'] . 'lib-database.php');
     } else {
         include_once($_CONF['path_system'] . 'install_templates/database_defaults.php');
@@ -745,6 +745,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 $instDB->dbQuery("DELETE FROM {$_TABLES['usercomment']} WHERE uid > $max_uid");
             }
             $current_gl_version = '1.3';
+            $_SQL = '';
             break;
         case '1.3':
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
@@ -759,6 +760,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 next($_SQL);
             }
             $current_gl_version = '1.3.1';
+            $_SQL = '';
             break;
         case '1.3.1':
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php');
@@ -773,6 +775,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 next($_SQL);
             }
             $current_gl_version = '1.3.2-1';
+            $_SQL = '';
             break;
         case '1.3.2':
         case '1.3.2-1':
@@ -809,6 +812,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 $instDB->dbQuery("UPDATE {$_TABLES['userindex']} SET boxes = '$newblocks' WHERE uid = {$row['uid']}");
             }
             $current_gl_version = '1.3.3';
+            $_SQL = '';
             break;
         default:
             $done = true;
