@@ -25,5 +25,5 @@
                                     <td align="right"><b>{lang_description}:</b></td>
                                     <td width="100%">{event_description}</td>
                                 </tr>
-                                <tr><td colspan="2">{addremove_event}</td></tr>
+                                <tr><td colspan="2">{addremove_event} {edit_icon}</td></tr>
                             </table><br><br>
