@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.35 2004/08/23 19:36:34 dhaun Exp $
+// $Id: links.php,v 1.36 2004/08/28 19:17:58 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -143,7 +143,7 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
-                        stripslashes ($A['description']));
+                        nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
@@ -200,7 +200,7 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
-                        stripslashes ($A['description']));
+                        nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
