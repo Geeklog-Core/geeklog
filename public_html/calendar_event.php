@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.26 2003/08/30 16:39:13 dhaun Exp $
+// $Id: calendar_event.php,v 1.27 2004/01/04 22:14:38 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -50,11 +50,11 @@ function adduserevent($eid)
 {
     global $_USER, $LANG02, $_CONF, $_TABLES;
 
-    $retval .= COM_startBlock($LANG02[11]);
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
+        $retval .= COM_startBlock($LANG02[11]);
         $A = DB_fetchArray($result);
         $cal_template = new Template($_CONF['path_layout'] . 'calendar');
         $cal_template->set_file(array('addevent'=>'addevent.thtml'));
@@ -64,8 +64,8 @@ function adduserevent($eid)
         $cal_template->set_var('lang_event', $LANG02[12]);
         $cal_template->set_var('event_title',stripslashes($A['title']));
 
-        if (!empty($A['url'])) {
-            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . '" target="_blank">');
+        if (!empty ($A['url']) && ($A['url'] != 'http://')) {
+            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . '">');
             $cal_template->set_var('event_end_anchortag', '</a>');
         } else {
             $cal_template->set_var('event_begin_anchortag', '');
@@ -98,6 +98,7 @@ function adduserevent($eid)
         $cal_template->set_var('lang_addtomycalendar', $LANG02[9]);
         $cal_template->parse('output','addevent'); 	
         $retval .= $cal_template->finish($cal_template->get_var('output'));
+        $retval .= COM_endBlock ();
     } else {
         $retval .= COM_showMessage(23);
     }	
@@ -116,7 +117,7 @@ function adduserevent($eid)
 * @reminder         string      Not used yet, for future functionality
 * @emailreminder    string      Not used yet, for future functionality
 */
-function saveuserevent($eid, $reminder, $emailreminder, $mode) 
+function saveuserevent($eid, $reminder, $emailreminder)
 {
     global $_TABLES, $MESSAGE, $_USER, $_CONF;
 
@@ -133,11 +134,15 @@ function saveuserevent($eid, $reminder, $emailreminder, $mode)
     DB_query($savesql);
 */
 
+    // Try to delete the event first in case it has already been added
+    DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+
     $savesql = "INSERT INTO {$_TABLES['personal_events']} (eid,uid,title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," . $_USER['uid'] . ",title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'";
 
     DB_query($savesql);
 
-    return COM_refresh("{$_CONF['site_url']}/calendar.php?mode=$mode&amp;msg=24");
+    return COM_refresh ($_CONF['site_url']
+                        . '/calendar.php?mode=personal&amp;msg=24');
 }
 
 /**
@@ -370,33 +375,53 @@ function setCalendarLanguage (&$aCalendar) {
 
 $display = '';
 
+if (isset ($HTTP_POST_VARS['action'])) {
+    $action = COM_applyFilter ($HTTP_POST_VARS['action']);
+} else {
+    $action = COM_applyFilter ($HTTP_GET_VARS['action']);
+}
+
 switch ($action) {
 case 'addevent':
     $display .= COM_siteHeader();
 
-    if (!empty($eid)) {
-        $display .= adduserevent($eid);
+    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+    if (!empty ($eid)) {
+        $display .= adduserevent ($eid);
     } else {
-        $display .= COM_showMessage(23);
+        $display .= COM_showMessage (23);
     }   
 
-    $display .= COM_endBlock() . COM_siteFooter();
+    $display .= COM_siteFooter ();
     break;
+
 case 'saveuserevent':
-    if (!empty($eid)) {
-        $display .= saveuserevent($eid,$remind,$emailreminder,$mode);
+    $eid = COM_applyFilter ($HTTP_POST_VARS['eid']);
+    if (!empty ($eid)) {
+        $display .= saveuserevent ($eid, $HTTP_POST_VARS['remind'],
+                                   $HTTP_POST_VARS['emailreminder']);
     } else {
-        $display .= COM_siteHeader();
-        $display .= COM_showMessage(23);
-        $display .= COM_siteFooter();
+        $display .= COM_siteHeader ();
+        $display .= COM_showMessage (23);
+        $display .= COM_siteFooter ();
     }
     break;
+
 case 'deleteevent':
-    DB_query("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
-    $display .= COM_refresh($_CONF['site_url'] . '/calendar.php?mode=personal&amp;msg=26');
+    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+    if (!empty ($eid) && ($_USER['uid'] > 1)) {
+        DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+        $display .= COM_refresh ($_CONF['site_url']
+                                 . '/calendar.php?mode=personal&amp;msg=26');
+    } else {
+        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
     break;
+
 default:
-    if (!empty($eid)) {
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+    if (!empty ($eid)) {
         if ($mode == 'personal' AND DB_count($_TABLES['events'],'eid',$eid) == 0) {
             $display .= COM_siteHeader('menu');
             $display .= COM_startBlock($LANG30[38]);
@@ -418,9 +443,12 @@ default:
             $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
     } else {
-        $display .= COM_startBlock($LANG30[10] . " $month/$day/$year");
-        $thedate= $year . "-". $month . "-" . $day;
-        $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart asc,title";
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($LANG30[10] . ' '
+                 . strftime ($_CONF['shortdate'],
+                             mktime (0, 0, 0, $month, $day, $year)));
+        $thedate = sprintf ('%4d-%02d-%02d', $year, $month, $day);
+        $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart ASC,title";
     }
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
     $cal_templates->set_file(array(
@@ -442,7 +470,7 @@ default:
         $cal_templates->set_var('layout_url', $_CONF['layout_url']);
         $cal_templates->parse('output','events');
         $display .= $cal_templates->finish($cal_templates->get_var('output'));
-        $display .= $LANG02[1];
+        $display .= $LANG02[2];
     } else {
         $cal = new Calendar();
         setCalendarLanguage ($cal);
@@ -472,16 +500,16 @@ default:
 
 
                 if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
-                    $tmpresult = DB_query("SELECT * FROM {$_TABLES["personal_events"]} WHERE eid='{$A["eid"]}' AND uid={$_USER['uid']}");
+                    $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
                         $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=' . $mode . '&amp;action=deleteevent">');
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=personal&amp;action=deleteevent">');
                         $cal_templates->set_var('lang_addremovefromcal',$LANG02[10]);
                         $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     } else {
                         $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=' . $mode . '&amp;action=addevent">');
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=personal&amp;action=addevent">');
                         $cal_templates->set_var('lang_addremovefromcal',$LANG02[9]);
                         $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     }
@@ -557,9 +585,9 @@ default:
                 //    .'<p>'.$LANG_ACCESS['eventdenialmsg'] . COM_endBlock() . COM_siteFooter();
             }
         } 
+        $cal_templates->parse('output','events');
+        $display .= $cal_templates->finish($cal_templates->get_var('output')); 
     }
-    $cal_templates->parse('output','events');
-    $display .= $cal_templates->finish($cal_templates->get_var('output')); 
 
     $display .= COM_endBlock() . COM_siteFooter();
 
