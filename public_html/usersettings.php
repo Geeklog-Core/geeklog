@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.68 2003/07/22 18:46:16 dhaun Exp $
+// $Id: usersettings.php,v 1.69 2003/07/25 08:29:55 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -394,7 +394,8 @@ function editpreferences()
         $language = array ();
         $fd = opendir ($_CONF['path_language']);
         while (($file = @readdir ($fd)) !== false) {
-            if (is_file ($_CONF['path_language'] . $file)) {
+            if ((substr ($file, 0, 1) != '.') && preg_match ('/\.php$/i', $file)
+                    && is_file ($_CONF['path_language'] . $file)) {
                 clearstatcache ();
                 $file = str_replace ('.php', '', $file);
                 $uscore = strpos ($file, '_');
