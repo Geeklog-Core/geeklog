@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.44 2002/12/15 13:34:44 dhaun Exp $
+// $Id: block.php,v 1.45 2003/01/10 14:21:28 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -49,6 +49,27 @@ if (!SEC_hasrights('block.edit')) {
         . COM_siteFooter();
     echo $display;
     exit;
+}
+
+/**
+* Check for block topic access (need to handle 'all' and 'homeonly' as
+* special cases)
+*
+* @param        string      $tid        ID for topic to check on
+* @return       int     returns 3 for read/edit 2 for read only 0 for no access
+*
+*/
+function hasBlockTopicAccess ($tid)
+{
+    $access = 0;
+
+    if (($tid == 'all') || ($tid == 'homeonly')) {
+        $access = 3;
+    } else {
+        $access = SEC_hasTopicAccess ($tid);
+    }
+
+    return $access;
 }
 
 /**
@@ -140,7 +161,7 @@ function editblock($bid='')
         $result = DB_query("SELECT * FROM {$_TABLES['blocks']} where bid ='$bid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access == 2 || $access == 0) {
+        if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
             $retval .= COM_startBlock($LANG21[44])
                 .$LANG21[45]
                 .COM_endBlock();
@@ -200,7 +221,7 @@ function editblock($bid='')
     } else if ($A['tid'] == 'homeonly') {
         $block_templates->set_var('homeonly_selected', 'selected="selected"');
     }
-    $block_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A['tid']));
+    $block_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
@@ -297,9 +318,29 @@ function editblock($bid='')
 */
 function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled) 
 {
-    global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
+    global $_TABLES, $_CONF, $LANG21, $LANG01, $MESSAGE, $HTTP_POST_VARS;
 
-    if (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
+    $access = 0;
+    if (DB_count ($_TABLES['blocks'], 'bid', $bid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['blocks']} WHERE bid = '{$bid}'");
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']);
+    } else {
+        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
+                $perm_members, $perm_anon);
+    }
+    if (($access < 3) || !hasBlockTopicAccess ($tid) || !SEC_inGroup ($group_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally create or edit block $bid",1);
+        echo $display;
+        exit;
+    } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
         if ($is_enabled == 'on') {
             $is_enabled = 1;
         } else {
@@ -415,38 +456,35 @@ function listblocks()
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
 
-        $block_templates->set_var('block_id', $A['bid']);
-        $block_templates->set_var('block_title', stripslashes ($A['title']));
-
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access > 0) {
+        if (($access > 0) && (hasBlockTopicAccess ($A['tid']) > 0)) {
             if ($access == 3) {
-                $access = $LANG_ACCESS[edit];
+                $access = $LANG_ACCESS['edit'];
             } else {
-                $access = $LANG_ACCESS[readonly];
+                $access = $LANG_ACCESS['readonly'];
             }
-        } else {
-            $access = $LANG_ACCESS[none];
-        }
-        $block_templates->set_var('block_access', $access);
-        $block_templates->set_var('block_type',$A['type']);
+            $block_templates->set_var('block_access', $access);
+            $block_templates->set_var('block_type',$A['type']);
+            $block_templates->set_var('block_id', $A['bid']);
+            $block_templates->set_var('block_title', stripslashes ($A['title']));
 
-        if ($A['onleft'] == 1) {
-            $side = $LANG21[40];
-        } else {
-            $side = $LANG21[41];
-        }
+            if ($A['onleft'] == 1) {
+                $side = $LANG21[40];
+            } else {
+                $side = $LANG21[41];
+            }
     
-        $block_templates->set_var('block_side', $side);
-        $block_templates->set_var('block_order', $A['blockorder']);
-        $block_templates->set_var('block_topic', $A['tid']); 
-        $block_templates->parse('blocklist_item', 'row', true);
+            $block_templates->set_var('block_side', $side);
+            $block_templates->set_var('block_order', $A['blockorder']);
+            $block_templates->set_var('block_topic', $A['tid']); 
+            $block_templates->parse('blocklist_item', 'row', true);
+        }
     }
 
     $block_templates->parse('output','list');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
     $retval .= COM_endBlock();
-		
+
     return $retval;
 }
 

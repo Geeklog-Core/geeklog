@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.30 2002/12/15 13:34:44 dhaun Exp $
+// $Id: topic.php,v 1.31 2003/01/10 14:21:28 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -61,7 +61,6 @@ function edittopic($tid='')
 {
     global $_TABLES, $LANG27, $_CONF, $_USER, $LANG_ACCESS;
 
-    $retval .= COM_startBlock($LANG27[1]);
     if (!empty($tid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
         $A = DB_fetchArray($result);
@@ -73,6 +72,8 @@ function edittopic($tid='')
             return $retval; 
         }
     }
+
+    $retval .= COM_startBlock($LANG27[1]);
     if (!is_array ($A) || empty ($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
@@ -158,9 +159,29 @@ function edittopic($tid='')
 ###############################################################################
 # Saves $tid to the database
 function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
-	global $_TABLES, $_CONF, $LANG27;
+	global $_TABLES, $_CONF, $LANG27, $MESSAGE;
 
-	if (!empty($tid) && !empty($topic)) {
+	$access = 0;
+    if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']);
+    } else {
+        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
+                $perm_members, $perm_anon);
+    }
+    if (($access < 3) || !SEC_inGroup ($group_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally create or edit topic $tid",1);
+        echo $display;
+        exit;
+    } elseif (!empty($tid) && !empty($topic)) {
 		if ($imageurl == '/images/topics/') { 
 			$imageurl = ''; 
 		}	
@@ -211,34 +232,32 @@ function listtopics() {
             } else {
                 $access = $LANG_ACCESS['readonly'];
             }
-        } else {
-            $access = $LANG_ACCESS['none'];
-        }   
-     
-        $topic_templates->set_var('topic_id', $A['tid']);
-        $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
-        $topic_templates->set_var('topic_access', $access);
-		if (!empty($A["imageurl"])) {
-            if (isset ($_THEME_URL)) {
-                $imagebase = $_THEME_URL;
-            } else {
-                $imagebase = $_CONF['site_url'];
-            }
-            $topic_templates->set_var('image_tag', '<img src="' . $imagebase . $A['imageurl'] . '" border="0" alt=""><br>');
-		} else {
-            $topic_templates->set_var('image_tag', '');
-		}
-		if ($counter == 5) {
-			$counter = 1;
-            $topic_templates->set_var('end_row','</tr>');
-            $topic_templates->parse('list_row','item',true);
-            $topic_templates->set_var('begin_row','<tr align="center" valign="bottom">');
-		} else {
-            $topic_templates->set_var('end_row','');
-            $topic_templates->parse('list_row','item',true);
-            $topic_templates->set_var('begin_row','');
-			$counter = $counter + 1;
-		}			
+
+            $topic_templates->set_var('topic_id', $A['tid']);
+            $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
+            $topic_templates->set_var('topic_access', $access);
+		    if (!empty($A["imageurl"])) {
+                if (isset ($_THEME_URL)) {
+                    $imagebase = $_THEME_URL;
+                } else {
+                    $imagebase = $_CONF['site_url'];
+                }
+                $topic_templates->set_var('image_tag', '<img src="' . $imagebase . $A['imageurl'] . '" border="0" alt=""><br>');
+		    } else {
+                $topic_templates->set_var('image_tag', '');
+		    }
+		    if ($counter == 5) {
+			    $counter = 1;
+                $topic_templates->set_var('end_row','</tr>');
+                $topic_templates->parse('list_row','item',true);
+                $topic_templates->set_var('begin_row','<tr align="center" valign="bottom">');
+		    } else {
+                $topic_templates->set_var('end_row','');
+                $topic_templates->parse('list_row','item',true);
+                $topic_templates->set_var('begin_row','');
+			    $counter = $counter + 1;
+		    }
+        }
 	}
     $topic_templates->set_var('end_row','</tr>');
     $topic_templates->parse('output', 'list');

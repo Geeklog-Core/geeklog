@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.34 2002/12/15 13:34:44 dhaun Exp $
+// $Id: event.php,v 1.35 2003/01/10 14:21:28 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -72,8 +72,6 @@ function editevent($mode, $A)
 
     $retval = '';
 
-	$retval .= COM_startBlock($LANG22[1]);
-
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
@@ -86,9 +84,9 @@ function editevent($mode, $A)
 		if ($access == 0 OR $access == 2) {
             // Uh, oh!  User doesn't have access to this object
             $retval .= COM_startBlock($LANG22[16]);
-            $retval .=  $LANG22[17];
+            $retval .= $LANG22[17];
             $retval .= COM_endBlock();
-            return $retval ;
+            return $retval;
         }
     } else {
         $A['owner_id'] = $_USER['uid'];
@@ -99,6 +97,8 @@ function editevent($mode, $A)
         $A['perm_anon'] = 2;
         $access = 3;
     }
+
+	$retval .= COM_startBlock($LANG22[1]);
 
     if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
@@ -400,13 +400,36 @@ function editevent($mode, $A)
 function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode) 
 {
 	global $_TABLES, $_CONF, $LANG22;
-    
+
+    $access = 0;
+    if (DB_count ($_TABLES['events'], 'eid', $eid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'");
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']);
+    } else {
+        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
+                $perm_members, $perm_anon);
+    }
+    if (($access < 3) || !SEC_inGroup ($group_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally submit or edi
+t story $sid",1);
+        echo $display;
+        exit;
+    }
+
     if ($allday == 'on') {
         $allday = 1;
     } else {
         $allday = 0;
     }
-    
+
     // Make sure start date is before end date
     if (checkdate($start_month, $start_day, $start_year)) {
         $datestart = $start_year . '-' . $start_month . '-' . $start_day;

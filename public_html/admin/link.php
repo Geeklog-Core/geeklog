@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.29 2003/01/01 20:02:18 efarmboy Exp $
+// $Id: link.php,v 1.30 2003/01/10 14:21:28 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -67,8 +67,6 @@ function editlink($mode, $lid = '')
 
     $retval = '';
 
-	$retval .= COM_startBlock($LANG23[1]);
-
     $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
     $link_templates->set_file('editor','linkeditor.thtml');
     $link_templates->set_var('site_url', $_CONF['site_url']);
@@ -82,7 +80,7 @@ function editlink($mode, $lid = '')
             $retval .= COM_startBlock($LANG24[16]);
             $retval .= $LANG23[17];
             $retval .= COM_endBlock();
-            return;
+            return $retval;
         }
 	} else {
 		if ($mode == 'editsubmission') {
@@ -98,6 +96,8 @@ function editlink($mode, $lid = '')
         $A['perm_anon'] = 2;
 		$access = 3;
 	}
+	$retval .= COM_startBlock($LANG23[1]);
+
     $link_templates->set_var('link_id', $A['lid']);
 	if (!empty($lid) && SEC_hasRights('link.edit')) {
 		$link_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG23[23]\" name=\"mode\">");
@@ -169,7 +169,7 @@ function editlink($mode, $lid = '')
 }
 
 ###############################################################################
-# Svaes the links to the database
+# Saves the links to the database
 /**
 * Saves link to the database
 *
@@ -190,29 +190,48 @@ function editlink($mode, $lid = '')
 */
 function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
-	global $_TABLES, $_CONF, $LANG23, $_USER; 
+    global $_TABLES, $_CONF, $LANG23, $MESSAGE, $_USER; 
 
-	// clean 'em up 
-	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
-	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
+    // clean 'em up 
+    $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
+    $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
     $category = addslashes ($category);
 
-	if (!empty($title) && !empty($description) && !empty($url)) {
-		if (!empty($lid)) {
-			DB_delete($_TABLES['linksubmission'],'lid',$lid);
-			DB_delete($_TABLES['links'],'lid',$lid);
-		} else {
-			// this is a submission, set default values
-			$lid = COM_makesid();
-            if (empty($owner_id)) {
-			    $owner_id = $_USER['uid'];
-			    $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
-                $perm_owner = 3;
-                $perm_group = 3;
-                $perm_members = 2;
-                $perm_anon = 2;		
-            }
-		}
+    if (empty ($lid)) {
+        // this is a submission, set default values
+        $lid = COM_makesid();
+        if (empty($owner_id)) {
+            $owner_id = $_USER['uid'];
+            $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                    "grp_name = 'Link Admin'");
+            $perm_owner = 3;
+            $perm_group = 2;
+            $perm_members = 2;
+            $perm_anon = 2;		
+        }
+    }
+
+    $access = 0;
+    if (DB_count ($_TABLES['links'], 'lid', $lid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid = '{$lid}'");
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']);
+    } else {
+        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
+                $perm_members, $perm_anon);
+    }
+    if (($access < 3) || !SEC_inGroup ($group_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit link $lid",1);
+        echo $display;
+        exit;
+    } elseif (!empty($title) && !empty($description) && !empty($url)) {
 
 		if ($categorydd != $LANG23[7] && !empty($categorydd)) {
 			$category = addslashes ($categorydd);
@@ -224,6 +243,9 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
         if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
+        DB_delete($_TABLES['linksubmission'],'lid',$lid);
+        DB_delete($_TABLES['links'],'lid',$lid);
+
 		DB_save($_TABLES['links'],'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . '/link.php?msg=15');
 	} else {
 		$retval .= COM_siteHeader('menu');
@@ -266,19 +288,17 @@ function listlinks()
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {
             if ($access == 3) {
-               $access = $LANG_ACCESS[edit];
+               $access = $LANG_ACCESS['edit'];
             } else {
-               $access = $LANG_ACCESS[readonly];
+               $access = $LANG_ACCESS['readonly'];
             }
-        } else {
-            $access = $LANG_ACCESS[none];
-        }	
-        $link_templates->set_var('link_id', $A['lid']);
-        $link_templates->set_var('link_name', stripslashes($A['title']));
-        $link_templates->set_var('link_access', $access);
-        $link_templates->set_var('link_category', $A['category']);
-        $link_templates->set_var('link_url', $A['url']);
-        $link_templates->parse('link_row', 'row', true);
+            $link_templates->set_var('link_id', $A['lid']);
+            $link_templates->set_var('link_name', stripslashes($A['title']));
+            $link_templates->set_var('link_access', $access);
+            $link_templates->set_var('link_category', $A['category']);
+            $link_templates->set_var('link_url', $A['url']);
+            $link_templates->parse('link_row', 'row', true);
+        }
 	}
     $link_templates->parse('output','list');
     $retval .= $link_templates->finish($link_templates->get_var('output'));

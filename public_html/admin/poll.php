@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.27 2002/12/15 13:34:44 dhaun Exp $
+// $Id: poll.php,v 1.28 2003/01/10 14:21:28 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -80,7 +80,7 @@ if (!SEC_hasRights('poll.edit')) {
 */
 function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 { 
-    global $_TABLES, $LANG25, $_CONF, $_POLL_VERBOSE;
+    global $_TABLES, $LANG25, $_CONF, $MESSAGE, $_POLL_VERBOSE;
 
     $question = COM_stripslashes ($question);
     for ($i = 0; $i < sizeof($A); $i++) {
@@ -89,6 +89,28 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 
     if ($_POLL_VERBOSE) {
         COM_errorLog('**** Inside savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
+    }
+
+    $access = 0;
+    if (DB_count ($_TABLES['pollquestions'], 'qid', $qid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$qid}'");
+        $P = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($P['owner_id'], $P['group_id'],
+                $P['perm_owner'], $P['perm_group'], $P['perm_members'],
+                $P['perm_anon']);
+    } else {
+        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
+                $perm_members, $perm_anon);
+    }
+    if (($access < 3) || !SEC_inGroup ($group_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit poll $pid",1);
+        echo $display;
+        exit;
     }
 
     if (empty($voters)) { 
@@ -154,8 +176,6 @@ function editpoll($qid='')
 
     $retval .= '';
 
-    $retval .= COM_startBlock($LANG25[5]);
-
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('editor'=>'polleditor.thtml','answer'=>'pollansweroption.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
@@ -174,11 +194,13 @@ function editpoll($qid='')
         if ($access == 0 OR $access == 2) {
             // User doesn't have access...bail
             $retval .= COM_startBlock($LANG25[21]);
-            $retval .= $retval .=   $LANG25[22];
+            $retval .= $LANG25[22];
             $retval .= COM_endBlock();
             return $retval;
         }
     }
+
+    $retval .= COM_startBlock($LANG25[5]);
 
     if (!empty($qid) AND $access == 3) {
         $poll_templates->set_var('delete_option', "<input type=\"submit\" name=\"mode\" value=\"$LANG25[16]\">");
@@ -290,26 +312,24 @@ function listpoll()
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {
             if ($access == 3) {
-                $access = $LANG_ACCESS[edit];
+                $access = $LANG_ACCESS['edit'];
             } else {
-                $access = $LANG_ACCESS[readonly];
+                $access = $LANG_ACCESS['readonly'];
             }
-        } else {
-            $access = $LANG_ACCESS[none];
+            $curtime = COM_getUserDateTimeFormat($A["date"]); 
+            if ($A['display'] == 1) {
+                $A['display'] = $LANG25[25];
+            } else {
+                $A['display'] = $LANG25[26];
+            }
+            $poll_templates->set_var('question_id', $A['qid']);
+            $poll_templates->set_var('poll_question', $A['question']);
+            $poll_templates->set_var('poll_access', $access);
+            $poll_templates->set_var('poll_votes', $A['voters']);
+            $poll_templates->set_var('poll_createdate', $curtime[0]);
+            $poll_templates->set_var('poll_homepage', $A['display']);
+            $poll_templates->parse('poll_row','row',true);
         }
-        $curtime = COM_getUserDateTimeFormat($A["date"]); 
-        if ($A['display'] == 1) {
-            $A['display'] = $LANG25[25];
-        } else {
-            $A['display'] = $LANG25[26];
-        }
-        $poll_templates->set_var('question_id', $A['qid']);
-        $poll_templates->set_var('poll_question', $A['question']);
-        $poll_templates->set_var('poll_access', $access);
-        $poll_templates->set_var('poll_votes', $A['voters']);
-        $poll_templates->set_var('poll_createdate', $curtime[0]);
-        $poll_templates->set_var('poll_homepage', $A['display']);
-        $poll_templates->parse('poll_row','row',true);
     }
     $poll_templates->parse('output', 'list');
     $retval .= $poll_templates->finish($poll_templates->get_var('output'));
