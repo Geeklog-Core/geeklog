@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.29 2003/09/01 19:01:05 dhaun Exp $
+// $Id: group.php,v 1.30 2003/09/20 15:35:12 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -586,8 +586,10 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
     } else {
-        DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
-        DB_delete($_TABLES['groups'],'grp_id',$grp_id);
+        DB_delete ($_TABLES['access'], 'acc_grp_id', $grp_id);
+        DB_delete ($_TABLES['group_assignments'], 'ug_grp_id', $grp_id);
+        DB_delete ($_TABLES['group_assignments'], 'ug_main_grp_id', $grp_id);
+        DB_delete ($_TABLES['groups'], 'grp_id', $grp_id);
         $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
     }
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
