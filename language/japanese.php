@@ -81,7 +81,7 @@ $LANG01 = array(
     37 => '投稿記事はありません',
     38 => 'Content Syndication',
     39 => '更新',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => ' あなたの <tt>php.ini</tt> で、<tt>register_globals = Off</tt> になっているようです。Geeklogは、 <tt>register_globals</tt> が <strong>on</strong> になっていなければなりません。 Geeklogを使うために、 <strong>on</strong> にして、Webサーバーを再起動してください。',
     41 => 'ゲストユーザー',
     42 => '投稿者は:',
     43 => '返事を書く',
@@ -91,7 +91,7 @@ $LANG01 = array(
     47 => 'ユーザー管理',
     48 => 'アカウント情報',
     49 => '設定',
-    50 => 'SQL文にエラーがある。',
+    50 => 'SQL文にエラーがあります。',
     51 => 'ヘルプ',
     52 => '新規',
     53 => '管理画面',
@@ -100,7 +100,7 @@ $LANG01 = array(
     56 => '投票',
     57 => 'パスワード',
     58 => 'login',
-    59 => "アカウントがなければ、<a href=\"{$_CONF['site_url']}/users.php?mode=new\">登録</a>できるよ。",
+    59 => "アカウントがなければ、<a href=\"{$_CONF['site_url']}/users.php?mode=new\">登録</a>できます。",
     60 => 'コメントを投稿',
     61 => 'アカウントの作成',
     62 => '段落（程度）',
@@ -151,10 +151,10 @@ $LANG01 = array(
     107 => 'GL Version Test',
     108 => 'キャッシュをクリア',
     109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
+    110 => '投稿をサイトの管理者に知らせる',
     111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    112 => '登録ユーザー数：',
+    113 => '文書'
 );
 
 ###############################################################################
@@ -206,7 +206,7 @@ $LANG03 = array(
     22 => '内容が分かるようなタイトルを付けてください',
     23 => 'メールアドレスは「表示されません」',
     24 => '匿名ユーザー',
-    25 => 'Are you sure you want to report this post to the site admin?',
+    25 => '投稿をサイト管理者に知らせますが、よろしいですか？',
     26 => '%s reported the following abusive comment post:',
     27 => 'Abuse report'
 );
@@ -320,8 +320,8 @@ $LANG04 = array(
     103 => '他のユーザーからのメールを受け取る',
     104 => 'オンラインかどうかを表示する',
     105 => '「現在のログイン状況」に名前を表示する',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    106 => '居住地',
+    107 => '公開プロフィールで表示'
 );
 
 ###############################################################################
@@ -334,8 +334,8 @@ $LANG05 = array(
     4 => '今日の注目記事',
     5 => '次',
     6 => '一つ前',
-    7 => 'First',
-    8 => 'Last'
+    7 => '最初',
+    8 => '最後'
 );
 
 ###############################################################################
@@ -526,7 +526,7 @@ $LANG12 = array(
     16 => '特記事項（必要であれば）',
     17 => '話題',
     18 => 'その他',
-    19 => 'Read First',
+    19 => 'はじめにお読みください',
     20 => '話題がありません',
     21 => '"その他" を選択した場合は、新しい話題名を記入してください',
     22 => '未記入の項目があります',
@@ -587,7 +587,7 @@ $LANG21 = array(
     1 => 'ここを管理する権限がない',
     2 => 'このブロックを編集する権限がない',
     3 => 'ブロックの編集',
-    4 => 'There was a problem reading this feed (see error.log for details).',
+    4 => 'フィードの読み込みで問題が起こりました。（error.logを参照してください。）',
     5 => 'タイトル',
     6 => 'トピック',
     7 => 'すべて',
@@ -598,7 +598,7 @@ $LANG21 = array(
     12 => 'ふつうのブロック',
     13 => 'ポータルブロックのオプション',
     14 => 'RDF URL',
-    15 => 'Last RDF Update',
+    15 => 'RDFの更新日時',
     16 => 'ふつうのブロックのオプション',
     17 => 'ブロックの中身',
     18 => 'ブロックのタイトル・セキュリティレベル・中身を記入してください。',
@@ -640,10 +640,10 @@ $LANG21 = array(
     54 => '保存',
     55 => '中止',
     56 => '削除',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => 'ブロックを下に',
+    58 => 'ブロックを上に',
+    59 => 'ブロックを右側に',
+    60 => 'ブロックを左側に'
 );
 
 ###############################################################################
@@ -651,7 +651,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => '予定の編集',
-    2 => 'Error',
+    2 => 'エラー',
     3 => '予定名',
     4 => '関連URL',
     5 => '開始日',
@@ -672,9 +672,9 @@ $LANG22 = array(
     20 => '保存',
     21 => '中止',
     22 => '削除',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => '開始日がおかしいです',
+    24 => '終了日がおかしいです',
+    25 => '終了日が開始日よりも前です'
 );
 
 ###############################################################################
@@ -720,7 +720,7 @@ $LANG24 = array(
     8 => '保存',
     9 => 'プレビュー',
     10 => '中止',
-    11 => '管理画面',
+    11 => '削除',
     12 => 'ID',
     13 => 'タイトル',
     14 => '話題',
@@ -733,7 +733,7 @@ $LANG24 = array(
     21 => '',
     22 => '記事の一覧',
     23 => '記事を削除・編集するには、記事の番号をクリックすること。記事を見るには、記事のタイトルをクリックする。新しい記事を作成する場合は、「新規」をクリックすること。',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
+    24 => '指定したIDはすでに使われています。別のIDを試してみてください。',
     25 => '',
     26 => '記事のプレビュー',
     27 => '',
@@ -756,10 +756,10 @@ $LANG24 = array(
     44 => '管理画面',
     45 => '件のアクセス',
     46 => '<b>注意:</b> 記事の日付を将来の日付に変更すると、その日まで表示されません。また、RDFヘッドラインにも反映されませんし、検索やサイト情報にも反映されないことに注意してください。',
-    47 => '画像',
-    48 => '画像',
-    49 => '右',
-    50 => '左',
+    47 => 'image',
+    48 => 'image',
+    49 => 'right',
+    50 => 'left',
     51 => '添付した画像を記事に表示するためには、特別な書式が必要です。書式は、[imageX]　、[imageX_right]あるいは、[imageX_left]のいずれかです。ただし、Xは添付した画像の番号です。注意：添付した画像は記事内で使用しなければ記事を保存できません。<BR><P><B>プレビュー</B>: 画像付きの記事はドラフトとして保存して閲覧してください。プレビューボタンは画像が無い場合だけに使用してください。',
     52 => '削除',
     53 => 'は使用されていません。保存する前に本文か詳細説明に画像を使用しなければなりません。',
@@ -767,11 +767,11 @@ $LANG24 = array(
     55 => '記事を保存する際に下記のエラーが発生しました。保存する前に修正してください。',
     56 => '話題用のアイコンを表示',
     57 => '元のサイズの画像を表示',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => '記事の管理',
+    59 => 'オプション',
+    60 => '有効',
+    61 => '自動で圧縮',
+    62 => '自動で削除'
 );
 
 ###############################################################################
@@ -834,8 +834,8 @@ $LANG27 = array(
     22 => 'デフォルト',
     23 => 'このトピックを新規記事投稿の際のデフォルトにします。',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'このトピックを圧縮',
+    26 => 'このトピックを記事のデフォルトにする。デフォルトトピックは一つだけしていできます。'
 );
 
 ###############################################################################
@@ -897,7 +897,7 @@ $LANG29 = array(
     16 => 'ユーザー名',
     17 => '氏名',
     18 => 'Email',
-    34 => 'Command and Control',
+    34 => '投稿の管理',
     35 => '記事の投稿',
     36 => 'リンクの投稿',
     37 => '予定の投稿',
@@ -1020,7 +1020,7 @@ $LANG32 = array(
     29 => 'Geeklogのバージョン',
     30 => 'プラグインを削除しますか？',
     31 => 'このプラグインを削除しますが、よろしいですか？削除する場合は関連するファイルやデータがすべて削除されます。削除する場合は「削除」ボタンをもう一度押してください。',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    32 => '<p><b>AutoLingタグのフォーマットが正しくありません。</b></p>',
     33 => 'Code Version',
     34 => 'Update'
 );
@@ -1029,41 +1029,41 @@ $LANG32 = array(
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
+    1 => 'フィードの作成',
+    2 => '保存',
+    3 => '削除',
+    4 => 'キャンセル',
     10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
-    17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
+    11 => '新しいフィード',
+    12 => '管理画面',
+    13 => 'フィードを修正・削除する場合は、タイトルをクリックしてください。新しいフィードを作成する場合は、「新規フィード」をクリックしてください。',
+    14 => 'タイトル',
+    15 => '種別',
+    16 => 'ファイル名',
+    17 => 'フォーマット',
+    18 => '更新日',
+    19 => '有効',
     20 => 'Yes',
     21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
+    22 => '<i>(フィードがありません)</i>',
+    23 => 'すべての記事',
+    24 => 'フィードの編集',
+    25 => 'フィードのタイトル',
     26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
+    27 => 'エントリの長さ',
+    28 => '(0 = no text, 1 = full text, other = 指定した文字数に制限。)',
+    29 => '詳細',
+    30 => '更新',
+    31 => '文字コード',
+    32 => '言語',
     33 => 'Contents',
     34 => 'Entries',
     35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
+    36 => 'フィードの種別を選択してください。',
+    37 => 'content syndicationを有効にするためには、関係するプラグインを少なくとも一つインストールしておいて下さい。以下では、Geeklogのフィードを作成するのか、プラグインで取得するフィードを作成するのか選択してください。',
+    38 => 'Error: 入力していない項目があります。',
+    39 => 'フィードのタイトル、詳細、ファイル名を入力してください。',
+    40 => 'エントリ数または、取得する時間を入力してください。',
     41 => 'Links',
     42 => 'Events'
 );
@@ -1129,9 +1129,9 @@ $MESSAGE = array(
     55 => 'メールが送信されました。届いたメールの指示にしたがって新しいパスワードを設定してください。',
     56 => 'メールアドレスは別のアカウントで既に使われています。',
     57 => 'アカウントの削除が完了しました。',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated',
+    58 => 'フィードが無事保存されました。',
+    59 => 'フィードが削除されました。',
+    60 => 'プラグインが更新されました。',
     61 => 'Plugin %s: Unknown message placeholder'
 );
 
@@ -1186,13 +1186,13 @@ $LANG_ACCESS = array(
     'listusers' => 'ユーザー一覧の表示',
     'listthem' => 'list',
     'usersingroup' => 'Users in group "%s"',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
+    'usergroupadmin' => 'グループ管理',
+    'add' => '追加',
+    'remove' => '削除',
     'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'groupmembers' => 'グループメンバー',
+    'canteditgroup' => 'グループを編集するためには、グループのメンバーでなければなりません。このメッセージがエラーである場合は、システム管理者に連絡してください。',
+    'cantlistgroup' => 'メンバーリストを閲覧するためには、グループのメンバーでなければなりません。このメッセージがエラーである場合は、システム管理者に連絡してください。'
 );
 
 ###############################################################################
