@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.54 2004/09/04 19:31:02 dhaun Exp $
+// $Id: article.php,v 1.55 2004/09/25 18:50:07 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -157,7 +157,7 @@ if ($A['count'] > 0) {
                                                 $A['title']));
             $display .= COM_siteHeader ('menu');
 
-            DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE sid = '$story'");
+            DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '$story') AND (date <= NOW()) AND (draft_flag = 0)");
 
             if (!empty ($query)) {
                 $A['introtext'] = COM_highlightQuery ($A['introtext'], $query);
