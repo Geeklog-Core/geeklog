@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.28 2002/09/06 13:53:01 dhaun Exp $
+// $Id: moderation.php,v 1.29 2002/09/09 15:35:24 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -389,6 +389,8 @@ function moderation($mid,$action,$type,$count)
                 $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
                 $A = DB_fetchArray ($result);
                 $A['owner_id'] = $A['uid'];
+                $A['title'] = addslashes ($A['title']);
+                $A['introtext'] = addslashes ($A['introtext']);
                 $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
                 $T = DB_fetchArray ($result);
                 DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
