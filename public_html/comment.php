@@ -56,7 +56,7 @@ include_once('lib-common.php');
 */
 function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
-    global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $_USER;
+    global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $_USER;
 	
     if ($_CONF['commentsloginrequired'] == 1 && empty($_USER['username'])) {
         $retval .= COM_refresh($_CONF['site_url'] . '/users.php?msg=' . urlencode($LANG03[6]));
@@ -70,7 +70,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $A = DB_fetchArray($result);
             $last = time() - $A[0];
 			
-            $retval .= COM_startBlock('Speed Limit')
+            $retval .= COM_startBlock($LANG12[26])
                 . $LANG03[7]
                 . $last
                 . $LANG03[8]
