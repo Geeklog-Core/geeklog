@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.8 2005/02/05 05:04:17 vinny Exp $
+// $Id: lib-comment.php,v 1.9 2005/02/18 20:04:22 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -808,7 +808,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
             $postmode = 'html';
         }
     }
-    $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
+    $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
 
     // Get signature
     $sig = '';
