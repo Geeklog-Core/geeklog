@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.84 2004/01/23 10:09:52 dhaun Exp $
+// $Id: usersettings.php,v 1.85 2004/01/24 14:41:38 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -101,8 +101,9 @@ function edituser()
     } else {
         $preferences->set_var ('enctype', '');
     }
-    $preferences->set_var ('fullname_value', $A['fullname']);
-    $preferences->set_var ('new_username_value', $_USER['username']);
+    $preferences->set_var ('fullname_value', htmlspecialchars ($A['fullname']));
+    $preferences->set_var ('new_username_value',
+                           htmlspecialchars ($_USER['username']));
     $preferences->set_var ('password_value', '');
     if ($_CONF['allow_username_change'] == 1) {
         $preferences->parse ('username_option', 'username', true);
@@ -116,9 +117,10 @@ function edituser()
     $selection .= '</select>';
     $preferences->set_var ('cooktime_selector', $selection);
 
-    $preferences->set_var ('email_value', $A['email']);
-    $preferences->set_var ('homepage_value', COM_killJS ($A['homepage']));
-    $preferences->set_var ('signature_value', $A['sig']);
+    $preferences->set_var ('email_value', htmlspecialchars ($A['email']));
+    $preferences->set_var ('homepage_value',
+                           htmlspecialchars (COM_killJS ($A['homepage'])));
+    $preferences->set_var ('signature_value', htmlspecialchars ($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
         $stdLoc = true;
@@ -157,10 +159,11 @@ function edituser()
     DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                                   'username', $username);
 
-    $preferences->set_var ('about_value', $A['about']);
-    $preferences->set_var ('pgpkey_value', $A['pgpkey']);
+    $preferences->set_var ('about_value', htmlspecialchars ($A['about']));
+    $preferences->set_var ('pgpkey_value', htmlspecialchars ($A['pgpkey']));
     $preferences->set_var ('uid_value', $reqid);
-    $preferences->set_var ('username_value', $_USER['username']);
+    $preferences->set_var ('username_value',
+                           htmlspecialchars ($_USER['username']));
 
     if ($_CONF['allow_account_delete'] == 1) {
         $preferences->set_var ('start_block_delete_account',
