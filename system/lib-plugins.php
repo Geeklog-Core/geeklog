@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.3 2001/11/16 18:39:12 tony_bibbs Exp $
+// $Id: lib-plugins.php,v 1.4 2001/11/18 21:53:19 tony_bibbs Exp $
 
 include_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -425,17 +425,19 @@ function PLG_getCCOptions()
 	
     $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
+    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    $cur_plugin = new Plugin();
+    $plugins = array();
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
         $function = 'plugin_cclabel_' . $A['pi_name'];
         if (function_exists($function)) {
-            list($img, $label) = $function();
-            $retval .= '<td width="11%"><a href="'.$_CONF['base'].'/admin/plugins/'.$A['pi_name'].'/'.$A['pi_name'].'.php"><img src="'.$img.'" border="0" alt=""><br>'
-                . $label
-                . '</a></td>' . LB;
+            $cur_plugin->reset();
+	    list($cur_plugin->adminlabel, $cur_plugin->adminurl, $cur_plugin->plugin_image) = $function();
+	    $plugins[$i] = $cur_plugin; 
         }
     }
-    return $retval;
+    return $plugins;
 }
 
 /**
