@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.45 2003/03/11 17:00:56 dhaun Exp $
+// $Id: install.php,v 1.46 2003/03/19 11:13:35 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -116,7 +116,7 @@ function INST_welcomePage()
         $retval .= '</b><br>and it appears your Path to Geeklog is <b>' . $glPath;
     }
     $retval .= '</b></p></td></tr>';
-    $retval .= '<tr><td colspan="2" align="center"><input type="submit" value="Next >>"></td></tr>' . LB;
+    $retval .= '<tr><td colspan="2" align="center"><input type="submit" value="Next &gt;&gt;"></td></tr>' . LB;
     $retval .= '</table>' . LB;
     $retval .= '<input type="hidden" name="page" value="1">' . LB;
     $retval .= '</form>' . LB;
@@ -149,7 +149,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     } else {
         // This is a fresh installation, let them change their table settings
         $db_templates->set_var('upgrade',0);
-        $db_templates->set_var('UPGRADE_OPTIONS','');
+        $db_templates->set_var('UPGRADE_OPTIONS','<tr><td>&nbsp;</td></tr>');
     }
 
     return $db_templates->parse('output','db');
