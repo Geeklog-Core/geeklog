@@ -97,7 +97,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 # Query Database - Main DB function that accepts a query string and provides
 #			 back a result.  This function also traps error codes.
 
-function dbquery($sql) {
+function dbquery($sql,$ignore_errors=0) {
 	global $CONF,$LANG01;
 
 	$db = mysql_connect($CONF["dbhost"],$CONF["dbuser"],$CONF["dbpass"]);
@@ -107,6 +107,7 @@ function dbquery($sql) {
 	if (mysql_errno() == 0 && !empty($result)) {
 		return $result;
 	} else {
+		if ($ignore_errors == 1) return;
 		$errortxt = "{$LANG01[50]} $sql\n";
 		$errortxt .= "                         - {$LANG01[45]}: " . mysql_errno() . "\n";
 		$errortxt .= "			       - {$LANG01[46]}: " . mysql_error();
