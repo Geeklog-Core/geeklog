@@ -3,16 +3,19 @@ plugins can use the spamx engine to examine user submitted text.
 
 The code from comment.php can be used as an example of the call.
 
-// Let plugins have a chance to decide what to do before saving the comment.
-$someError = PLG_commentPreSave($comment,$_CONF['spamx']);
+// Let plugins have a chance to check for SPAM
+$result = PLG_checkforSpam ($comment, $_CONF['spamx']);
     
-// If a plugin returned an error, return it
-if ($someError) {
-    return $someError;
+// Now check the result and redirect to index.php if spam action was taken
+if ($result > 0) {
+    // notice no return value here to prevent spam based denial of service attack
+    echo COM_refresh ($_CONF['site_url'] . '/index.php?msg='
+                      . $result . '&amp;plugin=spamx');
+    exit;
 }
 
 All that is required is to send the comment to spamx with the
-PLG_commentPreSave call.  The two parameters are the comment text itself and
+PLG_checkforSpam call.  The two parameters are the comment text itself and
 an action number with tells spamx what actions to take if spam is found. 
 You can use the built in actions by passing the sum of the numbers of the
 spamx action modules for those actions you want to use.  The actions are
