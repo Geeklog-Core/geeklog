@@ -39,12 +39,14 @@
 // | where the config.php (this file) resides                                  | 
 // +---------------------------------------------------------------------------+
 
-$_CONF['path']          = '{cfg_path}';
-$_CONF['path_system']   = '{cfg_path_system}';
-$_CONF['path_html']     = '{cfg_path_html}';
-$_CONF['path_log']      = '{cfg_path_log}';
-$_CONF['path_language'] = '{cfg_path_language}';
-$_CONF['rdf_file']      = '{cfg_rdf_file}';
+$_CONF['path']              = '{cfg_path}';
+$_CONF['path_system']       = '{cfg_path_system}';
+$_CONF['path_html']         = '{cfg_path_html}';
+$_CONF['path_log']          = '{cfg_path_log}';
+$_CONF['path_language']     = '{cfg_path_language}';
+$_CONF['rdf_file']          = '{cfg_rdf_file}';
+$_CONF['allow_mysqldump']   = '{cfg_allow_mysqldump}';
+$_CONF['backup_path']       = '{cfg_backup_path}';
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
