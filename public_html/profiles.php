@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.30 2004/06/08 09:42:14 dhaun Exp $
+// $Id: profiles.php,v 1.31 2004/06/10 13:34:41 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -127,7 +127,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 */
 function contactform($uid, $subject='', $message='') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN, HTTP_COOKIE_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN, $HTTP_COOKIE_VARS;
 
     $retval = '';
 
