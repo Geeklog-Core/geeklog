@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.31 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-plugins.php,v 1.32 2004/08/26 03:31:30 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -753,6 +753,28 @@ function PLG_profileExtrasSave ($plugin = '')
         PLG_callFunctionForAllPlugins ('plugin_profileextrassave_');
     } else {
         PLG_callFunctionForOnePlugin ('plugin_profileextrassave_' . $plugin);
+    }
+}
+
+/**
+* This function can be called to check if an plugin wants to set a template variable
+* Example in COM_siteHeader, the API call is now added
+* A plugin can now check for templatename == 'header' and then set additional template variables
+*
+* @param   string   $templatename     Name of calling template - used as test in plugin function
+* @param   ref      $template         reference for the Template
+*
+*/
+function PLG_templateSetVars ($templatename, &$template)
+{
+    global $_TABLES;
+
+    $query = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    while (list ($pi_name) = DB_fetchArray($query)) {
+        $function = 'plugin_templatesetvars_' . $pi_name;
+        if (function_exists($function)) {
+            $function ($templatename, $template);
+        }
     }
 }
 
