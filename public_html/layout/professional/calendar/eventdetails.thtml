@@ -9,6 +9,10 @@
                                     <td width="100%">{event_start} - {event_end}</td>
                                 </tr>
                                 <tr valign="top">
+                                    <td align="right"><b>{lang_event_type}:</b></td>
+                                    <td width="100%">{event_type}</td>
+                                </tr>
+                                <tr valign="top">
                                     <td align="right"><b>{lang_where}:</b></td>
                                     <td width="100%">
                                         {event_location}{br0}
