@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.401 2004/12/11 14:57:37 dhaun Exp $
+// $Id: lib-common.php,v 1.402 2004/12/11 22:07:07 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -137,6 +137,19 @@ if( !$_CONF['have_pear'] )
         COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
     }
 }
+
+
+/**
+* This is necessary to ensure compatibility with PHP 4.1.x
+*
+*/
+if( !function_exists( 'is_a' ))
+{
+    require_once( 'PHP/Compat.php' );
+
+    PHP_Compat::loadFunction( 'is_a' );
+}
+
 
 /**
 * Include page time -- used to time how fast each page was created
