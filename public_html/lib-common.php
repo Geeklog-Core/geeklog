@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.332 2004/06/04 21:47:28 tony Exp $
+// $Id: lib-common.php,v 1.333 2004/06/07 18:40:43 tony Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -563,6 +563,14 @@ function COM_article( &$A, $index='', $storytpl='storytext.thtml' )
                 . '<img border="0" src="' . $_CONF['layout_url']
                 . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
                 . $LANG11[3] . '"></a>' );
+        }
+        if ($_CONF['pdf_enabled'] == 1) {
+            $article->set_var('pdf_icon',
+                sprintf('<a href="%s/pdfgenerator.php?pageType=2&pageData=%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s" /></a>',
+                    $_CONF['site_url'], urlencode("{$_CONF['site_url']}/article.php?story={$A['sid']}&mode=print"),
+                    $_CONF['layout_url'], $LANG01[111], $LANG11[5]));
+        } else {
+            $article->set_var('pdf_icon', '');
         }
     }
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
@@ -2379,7 +2387,7 @@ function COM_userMenu( $help='', $title='' )
 
 function COM_adminMenu( $help = '', $title = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $HTTP_SERVER_VARS;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $LANG_PDF, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -2699,6 +2707,17 @@ function COM_adminMenu( $help = '', $title = '' )
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
 
+        // Add PDF Generator Link if the feature is enabled
+        if (($_CONF['pdf_enabled'] == 1) AND (SEC_inGroup('Root'))) {
+            $url = $_CONF['site_url'] . '/pdfgenerator.php';
+            $adminmenu->set_var( 'option_url', $url );
+            $adminmenu->set_var( 'option_label', $LANG_PDF[9] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
+
+            $retval .= $adminmenu->parse( 'item',
+                    ( $thisUrl == $url ) ? 'current' : 'option' );
+        }
+        
         if( SEC_inGroup( 'Root' ))
         {
             $adminmenu->set_var( 'option_url',
