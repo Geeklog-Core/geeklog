@@ -14,6 +14,9 @@
 // URL blacklist changes RSS feed (currently only RSS v1.0 is supported)
 $rss_url = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
 
+// Entire MT-Blacklist (for inital import)
+$mtblacklist_url = 'http://www.jayallen.org/comment_spam/blacklist.txt';
+
 // Spamx urls
 $rss_spamx_url = 'http://www.pigstye.net/backend/spamx_users.rdf';
 $spamx_submit_url = 'http://www.pigstye.net/gplugs/spamx/submit.php';
