@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.9rc1)
 ------------
 
+- Now ccomodate strict webhosts who don't allow file uploads to the standard image
+  directory, you can now set a new configuration variable, $_CONF['path_images']
+  to point to a directory outside of your webtree where article images and user
+  profile pictures will be saved and served from.
 - Make sure the custom registration form is properly called from all relevent
   places (bug #57).
 - Single quotes are now silently stripped from topic IDs (bug #113).
