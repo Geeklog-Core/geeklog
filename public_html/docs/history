@@ -2,6 +2,18 @@ GeekLog History/Changes:
 
 September ??, 2002 (1.3.6)
 ------------------
+- Images in stories can now be resized automatically during upload, provided
+  you have either ImageMagick or netpbm installed. See the image settings in
+  config.php for details.
+- If you create a static page with the title "Frontpage" then the content of
+  this static page will be displayed above the first story on the front page
+  of your site. If you additionally set the label of this static page to
+  "nonews", then the static page will completeley replace the news on the front
+  page of your site.
+  You may want to wrap static pages in a block - set $_SP_CONF['in_block'] = 1;
+  in /path/to/geeklog/plugins/staticpages/config.php
+- A user assigned only to the Mail Admin group wasn't able to use the "Mail
+  Users" function.
 - The filter to disable Javascript onXXX events also changed certain links in
   HTML postings. This should be fixed now.
 - The poll uses a POST instead of a GET request now to at least prevent

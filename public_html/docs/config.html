@@ -15,7 +15,7 @@
 </tr>
 </table>
 
-<h1>GeekLog Configuration Guide</h1>
+<h1>GeekLog Configuration File</h1>
 
 <h2>Setting up config.php</h2>
 
@@ -25,7 +25,7 @@ configuring it to your preferences. This file contains a set of variables
 that are defined below:
 
 
-<h3>Database Settings</h3>
+<h3><a name="database">Database Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -61,7 +61,7 @@ that are defined below:
 </table>
 
 
-<h3>Server Settings</h3>
+<h3><a name="server">Server Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -91,7 +91,7 @@ that are defined below:
 </table>
 
 
-<h3>Site Settings</h3>
+<h3><a name="site">Site Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -141,6 +141,17 @@ that are defined below:
   <td>allow_user_photo</td>
   <td>Can be 1 or 0</td>
   <td>If set to 1, users can upload a photo to their profile</td></tr>
+<tr>
+  <td>site_enabled</td>
+  <td>true</td>
+  <td>A Geeklog site can be disabled quickly (e.g. for maintenance) by setting
+    this to 'false'.</td></tr>
+<tr>
+  <td>site_disabled_msg</td>
+  <td>'Geeklog Site is down. Please come back soon.'</td>
+  <td>This contains the message to display when a Geeklog site is disabled.
+    If the text begins with "http:" then visitors are redirected to that
+    URL.</td></tr>
 </table>
 
 
@@ -185,7 +196,7 @@ that are defined below:
 </table>
 
 
-<h3>Session Settings</h3>
+<h3><a name="session">Session Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -218,7 +229,7 @@ that are defined below:
 </table>
 
 
-<h3>Login settings</h3>
+<h3><a name="login">Login settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -263,7 +274,7 @@ that are defined below:
 </table>
 
 
-<h3>Submission Settings</h3>
+<h3><a name="submission">Submission Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -303,7 +314,7 @@ that are defined below:
 </table>
 
 
-<h3>Topic, What's New &amp; E-mail Settings</h3>
+<h3><a name="misc">Topic, What's New &amp; E-mail Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -356,7 +367,7 @@ that are defined below:
 </table>
 
 
-<h3>Calendar Settings</h3>
+<h3><a name="calendar">Calendar Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -377,7 +388,7 @@ that are defined below:
 </table>
 
 
-<h3>Story Settings</h3>
+<h3><a name="story">Story Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -410,7 +421,7 @@ that are defined below:
 </table>
 
 
-<h3>Comment Settings</h3>
+<h3><a name="comment">Comment Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -435,7 +446,7 @@ that are defined below:
 </table>
 
 
-<h3>Poll Settings</h3>
+<h3><a name="poll">Poll Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -461,7 +472,7 @@ that are defined below:
 </table>
 
 
-<h3>Links Settings</h3>
+<h3><a name="links">Links Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -482,7 +493,65 @@ that are defined below:
 to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 
 
-<h3>Content Control Settings</h3>
+<h3><a name="image">Image Settings</a></h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>image_lib</td>
+  <td>'' (empty string)</td>
+  <td>Set this to either 'imagemagick' or 'netpbm' if images should be
+    resized during upload. Leave as '' if you don't want images to be
+    resized or if you don't have those packages available.</td>
+</tr>
+<tr>
+  <td>path_to_mogrify</td>
+  <td>(commented out)</td>
+  <td>If you chose 'imagemagick' for $_CONF['image_lib'] above, then this
+    should hold the complete path to the mogrify binary (from the ImageMagick
+    package), e.g. '/usr/bin/mogrify'.<br>
+    You will need a fairly recent version of <a
+    href="http://www.imagemagick.org/">ImageMagick</a> for this to work
+    (version 5.4.9 or newer is recommended).</td>
+</tr>
+<tr>
+  <td>path_to_netpbm</td>
+  <td>(commented out)</td>
+  <td>If you chose 'netpbm' for $_CONF['image_lib'] above, then this should
+    hold the complete path to the <em>directory</em> where the binaries from
+    the netpbm package are kept, e.g. '/usr/bin/netpbm/'. Note that the path
+    must end in a slash.<br>
+    Precompiled binaries of the netpbm package for various platforms can be
+    downloaded from the <a
+    href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
+    project</a>.</td>
+</tr>
+<tr>
+  <td>max_image_width</td>
+  <td>300</td>
+  <td>Max. width of an image in pixels. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+<tr>
+  <td>max_image_height</td>
+  <td>300</td>
+  <td>Max. height of an image in pixels. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+<tr>
+  <td>max_image_size</td>
+  <td>1048576 (equals 1 MB)</td>
+  <td>Max. size of an image in bytes. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+</table>
+
+<h3><a name="content">Content Control Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>

@@ -26,21 +26,31 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <h3>New Features</h3>
 
 <ul>
-  <li>User submission queue: When activated (in <tt>config.php</tt>), new
-    users will need to be approved by an admin before they receive their
-    password.</li>
+  <li>Images in articles can now be resized automatically during upload
+    (provided you have either ImageMagick or netpbm installed). See the
+    <a href="config.html#image">configuration description</a> for details.</li>
+  <li>The contents of a static page entitled "Frontpage" will be displayed
+    before the first story on the front page of a Geeklog site. If the static
+    page additionally carries the label "nonews", then it will completely
+    replace the news on the front page.</li>
+  <li>User submission queue: When activated (in <tt><a
+    href="config.html#submission">config.php</a></tt>), new users will need to
+    be approved by an admin before they receive their password.</li>
   <li>The submission queues can be switched off separately, either completely
-    (in <tt>config.php</tt>) or only for certain groups of users (by using the
-    new features story.submit, links.submit, and event.submit).</li>
+    (in <tt><a href="config.html#submission">config.php</a></tt>) or only for
+    certain groups of users (by using the new features story.submit,
+    links.submit, and event.submit).</li>
   <li>When posting source code (e.g. PHP, HTML, ...), you can now use the
     [code] ... [/code] pseudo tags to enclose those portions of your posting
     that should be reproduced verbatim.</li>
   <li>The links section now uses a categorized and paged display (can be
-    switched off separately and even back to the pre-1.3.6 style listing).</li>
-  <li>Anonymous users can now be blocked from almost every part of the site
-    (e.g. links section, site stats, ...), if needed.</li>
+    <a href="config.html#links">switched off</a> separately and even back to the
+    pre-1.3.6 style listing).</li>
+  <li>Anonymous users can now be <a href="config.html#login">blocked</a> from
+    almost every part of the site (e.g. links section, site stats, ...), if
+    needed.</li>
   <li>A Geeklog site can now be disabled easily (e.g. for maintenance) by
-    setting a flag in <tt>config.php</tt>.</li>
+    setting a flag in <tt><a href="config.html#site">config.php</a></tt>.</li>
   <li>Theme changes: Please consult the <a href="theme.html#changes">themes 
     documentation</a> for a list of changes.</li>
 </ul>
