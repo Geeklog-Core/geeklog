@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.2 2003/06/06 17:56:17 tony Exp $
+// $Id: search.class.php,v 1.3 2003/06/23 16:55:27 tony Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -644,8 +644,9 @@ class Search {
         
         $searchmain = new Template($_CONF['path_layout'] . 'search');
         $searchmain->set_file(array('searchresults'=>'searchresults.thtml'));
-        $searchmain->set_var('lang_found', $LANG09[24]);
-        $searchmain->set_var('num_matches', " $start - $end</b> of <b>$nrows.");
+        $tmpTxt = sprintf($LANG09[24], $nrows_plugins);
+        $searchmain->set_var('lang_found', $tmpTxt);
+        $searchmain->set_var('num_matches', '');
         
         if ($keyType == 'any') {
         	$searchQuery = str_replace(' ', "</b>' OR '<b>",$query);
