@@ -39,7 +39,7 @@
     </ul></li>
 </ul>
 
-<h2><a name="overview"></a>Overview</h2>
+<h2><a name="overview">Overview</a></h2>
 
 <p>Geeklog is becoming more and more popular each day and   we,   the   
 Geeklog developers,  are amazed at some of the great  hacks   people   have   
@@ -74,7 +74,7 @@ of plugins to be called. This will allow your plugin the following features:
     dictate your plugins power.</li>
 </ul>
 
-<h2><a name="Functions_for_writing"></a>Functions for writing plugins</h2>
+<h2><a name="Functions_for_writing">Functions for writing plugins</a></h2>
 
 <p>The below functions are what you need to write your own plugin including      
 any extra parameters that you need to pass in. Towards the end of the  
@@ -92,7 +92,7 @@ tarfiles have a strict naming convention that they <em>must</em> follow and it i
   e.g. <tt>photos_1.0_1.3.tar.gz</tt>
 </blockquote>
 
-<h2><a name="mod_functions"></a>Moderation functions</h2>
+<h2><a name="mod_functions">Moderation functions</a></h2>
 
 <p>First note that there are limitations in the current Geeklog codebase that 
 will force you to name your plugin tables used  for submission in a 
@@ -146,7 +146,7 @@ and links then you must implement these functions.</p>
   </tr>
 </table>
 
-<h2><a name="admin_user_functions"></a>Admin and User functions</h2>
+<h2><a name="admin_user_functions">Admin and User functions</a></h2>
 
 <p>If you want your plugin to effect the Admin and User Function blocks    
 that show up on every Geeklog page then you must implement these 
@@ -191,7 +191,7 @@ functions.</p>
           </tr>
       </table>
 
-<h2><a name="Search_Functions"></a>Search Functions</h2>
+<h2><a name="Search_Functions">Search Functions</a></h2>
 
 <p>If you want your plugin to be searchable, implement these functions.</p>
 
@@ -217,7 +217,7 @@ functions.</p>
           </tr>
       </table>
 
-<h2><a name="Stats_Function"></a>Stats Function</h2>
+<h2><a name="Stats_Function">Stats Function</a></h2>
 
 <p>If you want your plugin to show up on the stats page then you must 
 implement these functions.</p>
@@ -239,7 +239,7 @@ Top  Ten Commented  Stories).</td>
           </tr>
       </table>
       
-<h2><a name="Implementing_your_Admin_Interface"></a>Implementing your Admin Interface</h2>
+<h2><a name="Implementing_your_Admin_Interface">Implementing your Admin Interface</a></h2>
 
 <p>The Geeklog Plugin API is just that an API.&nbsp; You obviously have   to  
 write all your plugin code yourself.&nbsp; We have put stubs in place   to 
@@ -254,7 +254,7 @@ you use more that one page for you Admin interface is completely up to you.
 organizational purposes it is important that you follow the standards 
 outlined  in this document.
 
-<h2><a name="Preparing_your_Geeklog_Plugin"></a>Preparing your Geeklog Plugin Distribution</h2>
+<h2><a name="Preparing_your_Geeklog_Plugin">Preparing your Geeklog Plugin Distribution</a></h2>
 
 <h3>The plugin tarfile</h3>
 
@@ -325,8 +325,9 @@ to all  the functions in common.php in your plugin code.</dd>
   for a plugin and you  are installing version 0.2 the code will look for 
 the  update script for the  currently isntalled version (0.1) and if it finds 
  it, in this case update_0.1.sql  then it will execute it automatically.</dd>
+</dl>
 
-<h2><a name="How_Geeklog_Installs_Plugins"></a>How To Install A Geeklog Plugin</h2>
+<h2><a name="How_Geeklog_Installs_Plugins">How To Install A Geeklog Plugin</a></h2>
 
 <p><strong>Note:</strong> Up until Geeklog version 1.3.4, there was an 
 automatic install procedure for plugins. This, however, caused too many 
@@ -360,7 +361,7 @@ http://yourgeeklogsite/admin/plugins/&lt;plugin name&gt;/install.php
 <li>That's it!</li>
 </ol>
 
-<h2><a name="Deliver_Your_Plugin"></a>Deliver Your Plugin!</h2>
+<h2><a name="Deliver_Your_Plugin">Deliver Your Plugin!</a></h2>
 
 <p>Because Geeklog Plugins can affect a Geeklog installation and the users 
 filesystem, our policy is we will not endorse third party plugins unless 
@@ -370,7 +371,7 @@ adverse behavior.&nbsp; Assuming your plugin checks out, we will put your
 tarfile on our site where it can be downloaded by Geeklog users.&nbsp; You  
 can sumbit your plugin to our site at http://geeklog.sourceforge.net
 
-<h2><a name="Desc_of_api"></a>Description of the Geeklog Plugin API</h2>
+<h2><a name="Desc_of_api">Description of the Geeklog Plugin API</a></h2>
 
 <p>This is the function reference for the Geeklog Plugin API,   as  contained  
 in the plugins.php file.&nbsp; This   is provided strictly    for  
@@ -380,12 +381,13 @@ handled in the Geeklog codebase. We do, however, encourage suggestions
 on how you think we can make this API better.
   
   
-<h2><a name="Moderation_Functions_desc"></a>Moderation Functions</h2>
+<h2><a name="Moderation_Functions_desc">Moderation Functions</a></h2>
 
 <p>These are the functions used to allow your plugin 
 to  access    the   moderation   system.</p>
 
       <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
+        <caption align="bottom">Table 1. Moderation Functions</caption>
           <tr>
             <th valign="Top">Function</th>
             <th valign="Top">Description of Function</th>
@@ -432,10 +434,9 @@ so   that     the  plugin submission for a specified plugin gets  saved.</td>
           name&gt; method  of a specified plugin so that the submission is 
  approved.</td>
           </tr>
-        <caption align="bottom">Table 1. Moderation Functions</caption>
 </table>
 
-<h2><a name="adminuser_Functions_desc"></a>Admin and User options functions</h2>
+<h2><a name="adminuser_Functions_desc">Admin and User options functions</a></h2>
 
 <p>These are the functions used to allow your plugin 
 to  access    the   admin   and user system</p>
@@ -473,7 +474,7 @@ so   that     the number of submissions for plugins gets displayed</td>
           </tr>
       </table>
 
-<h2><a name="searching_Functions_desc"></a>Search functions</h2>
+<h2><a name="searching_Functions_desc">Search functions</a></h2>
 
 <p>These are the functions used to allow your plugin 
 to  access    the   search system</p>
@@ -499,7 +500,7 @@ drop  down on   search.php</td>
           </tr>
       </table>
 
-<h2><a name="stats_Functions_desc"></a>Stats functions</h2>
+<h2><a name="stats_Functions_desc">Stats functions</a></h2>
 
 <p>These are the functions used to allow your plugin to access the stats 
 system:</p>
