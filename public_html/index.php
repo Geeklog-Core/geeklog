@@ -5,14 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
+// |                                                                           |
 // | Geeklog homepage.                                                         |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.53 2003/11/16 21:44:18 blaine Exp $
+// $Id: index.php,v 1.54 2004/02/02 19:09:21 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -50,12 +51,9 @@ if (isset ($HTTP_GET_VARS['display']) && empty ($topic)) {
     }
 }
 
-if (isset ($HTTP_GET_VARS['page'])) {
+$page = 1;
+if (isset ($HTTP_GET_VARS['page']) && is_numeric ($HTTP_GET_VARS['page'])) {
     $page = $HTTP_GET_VARS['page'];
-}
-if (empty ($page)) {
-    // If no page sent then assume the first.
-    $page = 1;
 }
 
 require_once('lib-common.php');
@@ -73,30 +71,31 @@ if (!$newstories && !$displayall) {
 
 $display .= COM_siteHeader();
 if (isset ($HTTP_GET_VARS['msg'])) {
-    $display .= COM_showMessage ($HTTP_GET_VARS['msg']);
+    $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'], true));
 }
 
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
 $displayBlock = PLG_showCenterblock (1, $page, $topic); // top blocks
-if ($displayBlock != "") {
-        $display .= $displayBlock;
-        // Check if theme has added the template which allows the centerblock to span the top over the rightblocks
-        if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
-                $topspan = new Template($_CONF['path_layout']);
-                $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
-                $topspan->parse ('output', 'topspan');
-                $display .= $topspan->finish ($topspan->get_var('output'));
-                $GLOBALS['centerspan'] = true;
-        }
+if (!empty ($displayBlock)) {
+    $display .= $displayBlock;
+    // Check if theme has added the template which allows the centerblock
+    // to span the top over the rightblocks
+    if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
+            $topspan = new Template($_CONF['path_layout']);
+            $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
+            $topspan->parse ('output', 'topspan');
+            $display .= $topspan->finish ($topspan->get_var('output'));
+            $GLOBALS['centerspan'] = true;
+    }
 } else {
-        $display .= $displayBlock;
+    $display .= $displayBlock;
 }
 
 $maxstories = 0;
 
-if (!empty($_USER['uid'])) {
+if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     $result = DB_query("SELECT noboxes,maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
     $U = DB_fetchArray($result);
     if ($U['maxstories'] >= $_CONF['minnews']) {
@@ -177,11 +176,11 @@ if ($newstories) {
 $offset = ($page - 1) * $limit;
 $sql .= "ORDER BY featured DESC, date DESC";
 
-$result = DB_query ("SELECT *,unix_timestamp(date) AS day " . $sql
+$result = DB_query ("SELECT *,UNIX_TIMESTAMP(date) AS day " . $sql
         . " LIMIT $offset, $limit");
 $nrows = DB_numRows ($result);
 
-$data = DB_query ("SELECT count(*) AS count " . $sql);
+$data = DB_query ("SELECT COUNT(*) AS count " . $sql);
 $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
