@@ -144,8 +144,8 @@ function liststories($page="1") {
 		}
 		print "<tr><td clospan=6>";
 		if (dbcount("stories") > 50) {
-			$prevpage = $page - 1; 
-			$nextpage = $page + 1; 
+			$prevpage = $page - 1;
+			$nextpage = $page + 1;
 			if ($pagestart >= 50) {
 				print "<a href={$CONF["base"]}/admin/story.php?mode=list&page=$prevpage>{$LANG24[1]}</a> ";
 			}
@@ -155,7 +155,7 @@ function liststories($page="1") {
 		}
 		print "</td></tr></table>\n";
 	}
-	endblock();	
+	endblock();
 }
 
 ###############################################################################
@@ -167,7 +167,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		if ($draft_flag == "on")
 			$draft_flag = 1;
 		else
-			$draft_flag = 0;	
+			$draft_flag = 0;
 
 		if ($featured == "1") {
 			#there can only be one non-draft featured story
@@ -178,7 +178,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 			$frontpage = 1;
 		}
 		$date = date("Y-m-d H:i:s",$unixdate);
-		
+
 
 		# Get the related URLs
 		$fulltext = "$introtext $bodytext";
@@ -195,8 +195,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		}
 		$author = getitem("users","username","uid = $uid");
 		$topic = getitem("topics","topic","tid = '$tid'");
-		$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&author=$uid>More by $author</a>\n";
-		$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&topic=$tid>More from $topic</a>\n";
+		if ($CONF["contributedbyline"] == 1) {
+			$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&author=$uid>{$LANG24[37]} $author</a>\n";
+		}
+		$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&topic=$tid>{$LANG24[38]} $topic</a>\n";
 		$related = addslashes(checkhtml(checkwords($related)));
 
 		# Clean up the text
