@@ -28,6 +28,12 @@
 #	Also deletes all expired sessions from the database, based on the given session lifespan.
 
 function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
+	global $CONF,$VERBOSE,$HTTP_COOKIE_VARS;
+
+	if ($VERBOSE) {
+		errorlog("*************inside new_session*****************",1);
+		errorlog("arguments to new_session: userid = $userid, remote_ip = $remote_ip, lifespan = $lifespan, md5_based = $md5_based",1);
+	}
 
 	mt_srand((double)microtime()*1000000);
 	$sessid = mt_rand();
@@ -47,16 +53,26 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
         $currtime = (string) (time());
         $expirytime = (string) (time() - $lifespan);
 
-        $deleteSQL = "DELETE FROM {$CONF["db_prefix"]}sessions WHERE (start_time < $expirytime)";
-        $delresult = mysql_query($deleteSQL);
-
-        if (!$delresult) {
-		die("Delete failed in new_session()");
-        }
+	if (!isset($HTTP_COOKIE_VARS[$CONF["cookie_session"]])) {
+		#ok, delete any old sessons for this user
+		mysql_query("DELETE FROM sessions WHERE uid = $userid");
+	} else {
+        	$deleteSQL = "DELETE FROM {$CONF["db_prefix"]}sessions WHERE (start_time < $expirytime)";
+        	$delresult = mysql_query($deleteSQL);
+	
+		if ($VERBOSE) {
+			errorlog("Attempted to delete rows from session table with following SQL\n$deleteSQL\n",1);
+			errorlog("Got $delresult as a result from the query",1);
+		}
+	
+       		if (!$delresult) {
+			die("Delete failed in new_session()");
+       		}
+	}
 
         $sql = "INSERT INTO {$CONF["db_prefix"]}sessions (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
-
-        $result = mysql_query($sql);
+	$result = dbquery($sql);
+        #$result = mysql_query($sql);
 
         if ($result) {
 		if ($md5_based == 1) 
@@ -68,6 +84,8 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
 			die("Insert failed in new_session()");
 	}
 
+	if ($VERBOSE) errorlog("*************leaving new_session*****************",1);
+	
 } 
 
 ##/ set_session_cookie /#######################################################
@@ -81,11 +99,9 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
 #	NS4.7.. Haven't tried it with anything else.)
 
 function set_session_cookie($sessid, $cookietime, $cookiename, $cookiepath, $cookiedomain, $cookiesecure) {
-
 	// This sets a cookie that will persist until the user closes their browser window.
 	// since session expiry is handled on the server-side, cookie expiry time isn't a big deal.
 
-	#setcookie($cookiename,$sessid,'',$cookiepath,$cookiedomain,$cookiesecure);
 	setcookie($cookiename,$sessid,'',$cookiepath);
 
 }
