@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.10 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: link.php,v 1.11 2001/12/13 22:41:14 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -199,12 +199,14 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 		} else {
 			// this is a submission, set default values
 			$lid = COM_makesid();
-			$owner_id = $_USER['uid'];
-			$group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
-            $perm_owner = 3;
-            $perm_group = 3;
-            $perm_members = 2;
-            $perm_anon = 2;		
+            if (empty($owner_id)) {
+			    $owner_id = $_USER['uid'];
+			    $group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
+                $perm_owner = 3;
+                $perm_group = 3;
+                $perm_members = 2;
+                $perm_anon = 2;		
+            }
 		}
 
 		if ($categorydd != $LANG23[7] && !empty($categorydd)) {
@@ -214,12 +216,13 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 		}
 
 		// Convert array values to numeric permission values
-        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+        if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
+            list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+        }
 		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/link.php?msg=15');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
-        print "title = $title, url = $url, descr = $description \n";
 		editlink($mode,$lid);
 		$retval .= COM_siteFooter();
         return $retval;
