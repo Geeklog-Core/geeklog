@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.150 2002/09/11 11:47:37 dhaun Exp $
+// $Id: lib-common.php,v 1.151 2002/09/11 12:02:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2289,7 +2289,7 @@ function COM_showBlocks($side, $topic='', $name='all')
                 if (substr ($blockcontent, 0, 1) != '<') {
                     $blockcontent = nl2br ($blockcontent);
                 }
-                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . LB
+                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . $blockcontent . LB
                     . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
             }
         }
