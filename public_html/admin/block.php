@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.18 2001/11/07 23:34:15 tony_bibbs Exp $
+// $Id: block.php,v 1.19 2001/11/19 14:25:58 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -74,6 +74,7 @@ function editdefaultblock($A,$access)
     $block_templates->set_file('editor','defaultblockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('block_id', $A['bid']);
+    $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);
     $block_templates->set_var('lang_topic', $LANG21[6]);
@@ -261,7 +262,7 @@ function editblock($bid='')
 * @perm_anon    array       Permissinos anonymous users have
 *
 */
-function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
 	global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
@@ -308,7 +309,7 @@ function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdat
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-        DB_save($_TABLES['blocks'],'bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
+        DB_save($_TABLES['blocks'],'bid,name,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$name','$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
 
     } else {
         $retval .= COM_siteHeader()
@@ -410,7 +411,7 @@ case 'delete':
     $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'/admin/block.php?msg=12');
         break;
 case 'save':
-	$display .= saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+	$display .= saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     break;
 case 'edit':
     $display .= COM_siteHeader()
