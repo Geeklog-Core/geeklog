@@ -8,7 +8,7 @@
 // | Geeklog story administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2002 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,13 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.54 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: story.php,v 1.55 2002/05/22 14:56:09 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
 *
 * @author   Jason Whittenburg
 * @author   Tony Bibbs <tony@tonybibbs.com>
+* @author   Mark Limburg <mlimburg@users.sourceforge.net>
 *
 */
 
@@ -45,6 +46,7 @@
 * Geeklog commong function library
 */
 include('../lib-common.php');
+
 /**
 * Security check to ensure user even belongs on this page
 */
@@ -773,7 +775,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", 'admin/story.php?msg=9');
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon",'sid',$sid,'admin/story.php?msg=9');
         
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
