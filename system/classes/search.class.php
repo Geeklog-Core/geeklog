@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.13 2003/08/17 19:39:41 dhaun Exp $
+// $Id: search.class.php,v 1.14 2003/08/31 17:20:33 blaine Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -296,7 +296,7 @@ class Search {
                     if (!empty ($urlQuery)) {
                         $articleUrl .= '&amp;query=' . $urlQuery;
                     }
-                    $row = array('<a href="' . $articleUrl . '">' . stripslashes($A['title']) . '</a>',$thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
+                    $row = array('<a href="' .$_CONF['site_url'] .'/'. $articleUrl . '">' . stripslashes($A['title']) . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
                     $story_results->num_searchresults++;
                 } else {
