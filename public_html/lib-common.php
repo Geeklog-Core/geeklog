@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.261 2003/09/14 09:18:04 dhaun Exp $
+// $Id: lib-common.php,v 1.262 2003/09/21 20:07:44 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -546,6 +546,13 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'edit_url', $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $A['sid'] );
         $article->set_var( 'lang_edit_text',  $LANG01[4] );
+        $article->set_var( 'edit_icon', '<a href="' . $_CONF['site_admin_url']
+                . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '"><img src="'
+                . $_CONF['layout_url'] . '/images/edit.gif" alt="' . $LANG01[4]
+                . '" title="' . $LANG01[4] . '" border="0"></a>' );
+        $article->set_var( 'edit_image',  '<img src="' . $_CONF['layout_url']
+                . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
+                . $LANG01[4] . '" border="0">' );
     }
 
     if( $A['featured'] == 1 )
@@ -2970,26 +2977,21 @@ function COM_makesid()
 }
 
 /**
-* checks to see if email address is valid
+* Checks to see if email address is valid.
 *
-* This function COM_checks to see if an email address is in the correct from.
-* Actually, RFC2822 allows for much more obscure addresses ...
+* This function checks to see if an email address is in the correct from.
 *
-* @param        string      $email      Email address to verify
-* @return   boolean True if valid otherwise false
+* @param    string    $email   Email address to verify
+* @return   boolean            True if valid otherwise false
 *
 */
-
-function COM_isemail( $email )
+function COM_isEmail( $email )
 {
-    if( eregi( "^([-_0-9a-z])+([-._0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*.[a-z]{2,3}$", $email, $check ))
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+    require_once( 'Mail/RFC822.php' );
+
+    $rfc822 = new Mail_RFC822;
+
+    return( $rfc822->isValidInetAddress( $email ) ? true : false );
 }
 
 /**
@@ -3012,8 +3014,8 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     static $mailobj;
 
-    include_once ('Mail.php');
-    include_once ('Mail/RFC822.php');
+    include_once( 'Mail.php' );
+    include_once( 'Mail/RFC822.php' );
 
     $method = $_CONF['mail_settings']['backend'];
 
