@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.52 2003/09/06 21:53:42 dhaun Exp $
+// $Id: index.php,v 1.53 2003/11/16 21:44:18 blaine Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -79,7 +79,20 @@ if (isset ($HTTP_GET_VARS['msg'])) {
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
-$display .= PLG_showCenterblock (1, $page, $topic); // top blocks
+$displayBlock = PLG_showCenterblock (1, $page, $topic); // top blocks
+if ($displayBlock != "") {
+        $display .= $displayBlock;
+        // Check if theme has added the template which allows the centerblock to span the top over the rightblocks
+        if (file_exists($_CONF['path_layout'] . 'topcenterblock-span.thtml')) {
+                $topspan = new Template($_CONF['path_layout']);
+                $topspan->set_file (array ('topspan'=>'topcenterblock-span.thtml'));
+                $topspan->parse ('output', 'topspan');
+                $display .= $topspan->finish ($topspan->get_var('output'));
+                $GLOBALS['centerspan'] = true;
+        }
+} else {
+        $display .= $displayBlock;
+}
 
 $maxstories = 0;
 
