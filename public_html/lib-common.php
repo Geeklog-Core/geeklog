@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.200 2003/02/13 17:46:05 dhaun Exp $
+// $Id: lib-common.php,v 1.201 2003/02/20 18:37:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -169,7 +169,14 @@ require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 // way if user logged in and set theme and then logged out we would still know
 // which theme to show them.
 
-if( $_CONF['allow_user_themes'] == 1 )
+if( !empty( $HTTP_POST_VARS['usetheme'] ) && is_dir( $_CONF['path_themes']
+        . $HTTP_POST_VARS['usetheme'] ))
+{
+    $_CONF['theme'] = $HTTP_POST_VARS['usetheme'];
+    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';      
+    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];   
+}
+else if( $_CONF['allow_user_themes'] == 1 )
 {
     if( isset( $HTTP_COOKIE_VARS[$_CONF['cookie_theme']]) && empty($_USER['theme'] ))
     {
@@ -697,7 +704,7 @@ function COM_siteHeader( $what = 'menu' )
 
     // If the theme implemented this for us then call their version instead.
 
-    $function = $_CONF['layout'] . '_siteHeader';
+    $function = $_CONF['theme'] . '_siteHeader';
 
     if( function_exists( $function ))
     {
@@ -879,7 +886,7 @@ function COM_siteFooter( $rightblock = false )
 
     // If the theme implemented this for us then call their version instead.
 
-    $function = $_CONF['layout'] . '_siteFooter';
+    $function = $_CONF['theme'] . '_siteFooter';
 
     if( function_exists( $function ))
     {
@@ -1518,6 +1525,8 @@ function COM_pollVote( $qid )
 {
     global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $LANG01, $_CONF;
 
+    $retval = '';
+
     $question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
     $Q = DB_fetchArray( $question );
 
@@ -1656,12 +1665,14 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 {
     global $_TABLES, $LANG01, $_CONF, $_COM_VERBOSE;
 
+    $retval = '';
+
     $question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
     $Q = DB_fetchArray( $question );
 
     if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 )
     {
-        return;
+        return $retval;
     }
 
     $nquestion = DB_numRows( $question );
@@ -2335,7 +2346,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
             break;
 
     case 'nested':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 ORDER BY date $order LIMIT $limit" );
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 AND type = '$type' ORDER BY date $order LIMIT $limit" );
         $nrows = DB_numRows( $result );
         $retval .= COM_commentBar( $sid, $title, $type, $order, $mode);
 
@@ -2360,7 +2371,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
         break;
     case 'flat':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' ORDER BY date $order LIMIT $limit" );
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = '$type' ORDER BY date $order LIMIT $limit" );
         $nrows = DB_numRows( $result );
         $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
 
@@ -2384,7 +2395,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         break;
 
     case 'threaded':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order LIMIT $limit" );
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid AND type = '$type' ORDER BY date $order LIMIT $limit" );
         $nrows = DB_numRows( $result );
         $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
 
@@ -3791,11 +3802,7 @@ function COM_whatsNewBlock( $help='', $title='' )
         $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
         $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
 
-        $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
-            . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
-            . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
-        $sql .= "{$_TABLES['comments']}.date >= (DATE_SUB( NOW(),INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
-        $sql .= " GROUP BY {$_TABLES['comments']}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
+        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND ({$stsql})) LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (({$posql}))) WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
 
         $result = DB_query( $sql );
 
