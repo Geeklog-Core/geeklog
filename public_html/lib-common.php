@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.178 2002/11/15 15:03:54 dhaun Exp $
+// $Id: lib-common.php,v 1.179 2002/11/18 14:04:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3105,7 +3105,7 @@ function COM_rdfImport( $bid, $rdfurl )
     xml_set_element_handler($xml_parser, 'COM_rdfStartElement', 'COM_rdfEndElement');
     xml_set_character_data_handler( $xml_parser, 'COM_rdfCharacterData' );
 
-    if( $fp = fopen( $rdfurl, 'r' ))
+    if( $fp = @fopen( $rdfurl, 'r' ))
     {
         while( $data = fread( $fp, 4096 ))
         {
