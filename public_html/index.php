@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2002/12/01 10:12:18 dhaun Exp $
+// $Id: index.php,v 1.39 2002/12/30 13:26:22 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -46,16 +46,19 @@ if (isset ($HTTP_GET_VARS['display']) && ($HTTP_GET_VARS['display'] == 'new') &&
 }
 require_once('lib-common.php');
 
-preg_match ("/\/\/([^\/]*)/", $_CONF['site_url'], $server);
-if ($HTTP_SERVER_VARS['HTTP_HOST'] != $server[1]) {
-    // this may be a case of a www. vs. non-www. URL ...
-    if (!empty ($QUERY_STRING)) {
-        $query = '?' . $QUERY_STRING;
-    } else {
-        $query = '';
+if (isset ($HTTP_SERVER_VARS['HTTP_HOST']) &&
+        !empty ($HTTP_SERVER_VARS['HTTP_HOST'])) {
+    preg_match ("/\/\/([^\/]*)/", $_CONF['site_url'], $server);
+    if ($HTTP_SERVER_VARS['HTTP_HOST'] != $server[1]) {
+        // this may be a case of a www. vs. non-www. URL ...
+        if (!empty ($QUERY_STRING)) {
+            $query = '?' . $QUERY_STRING;
+        } else {
+            $query = '';
+        }
+        echo COM_refresh ($_CONF['site_url'] . '/index.php' . $query);
+        exit;
     }
-    echo COM_refresh ($_CONF['site_url'] . '/index.php' . $query);
-    exit;
 }
 
 $display = '';
