@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.23 2002/04/06 03:52:45 tony_bibbs Exp $
+// $Id: install.php,v 1.24 2002/04/16 14:58:51 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -42,47 +42,6 @@ define(LB, "\n");
 // message will get written to installerrors.log as this file may not know
 // anything about error.log (the Geeklog error log file)
 $_INST_DEBUG = false;
-
-
-function INST_getCookieTimeoutValues($selected = '')
-{
-    $timeouts = array(
-        '3600'=>'1 hour',
-        '7200'=>'2 hours',
-        '10800'=>'3 hours',
-        '28800'=>'8 hours',
-        '86400'=>'1 day',
-        '172800'=>'2 days',
-        '604800'=>'1 week',
-        '1209600'=>'2 weeks',
-        '2678400'=>'1 month',
-        '31536000'=>'1 year'
-    );
-    $retval = '';
-    for ($i = 1; $i <= count($timeouts); $i++) {
-        $retval .= '<option value="' . key($timeouts) . '" ';
-        if (key($timeouts) == $selected) {
-            $retval .= 'selected="SELECTED"';
-        }
-        $retval .= '>' . current($timeouts) . '</option>';
-        next($timeouts);
-    }
-    return $retval;
-}
-/**
-* This is called if this is a fresh installation of Geeklog.
-* This will load our system defaults and return them.
-*
-*/
-function INST_loadDefaults($gl_path) 
-{
-    global $_INST_DEBUG;
-
-    $_CONF['path'] = $gl_path . '/';
-    include_once($gl_path . '/config.default');
-
-    return $_CONF;
-}
 
 /**
 * Shows welcome page and gets location of /path/to/geeklog/. NOTE: this
@@ -92,14 +51,6 @@ function INST_loadDefaults($gl_path)
 */
 function INST_welcomePage()
 {
-    // Now write path to config.php to lib-common.php
-    if (!$file = @fopen('./write_test.txt',w)) {
-        $write_privs = false;
-    } else {
-        fclose($file);
-        $write_privs = true;
-    }
-
     $retval = '';
 
     $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
@@ -108,19 +59,11 @@ function INST_welcomePage()
     $retval .= '<title>Geeklog 1.3 Installation</title>' . LB;
     $retval .= '</head>' . LB;
     $retval .= '<body bgcolor="#ffffff">' . LB;
-    $retval .= '<h2>Geeklog Installation (Step 1 of 3)</h2>' . LB;
-    $retval .= '<P>Welcome to Geeklog 1.3.5, the Ultimate Weblog!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3.5 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter either your Geeklog database, your filesystem or both. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.5.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manaully upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4.  Please note this script will not upgrade any beta versions of Geeklog. ';
-    if ($write_privs) {
-        $retval .= '<P>We have performed a test on your system to see if this installation script can write to a file and it CAN.  There are four types of installations this script can do.  The first is a new installation which will create your Geeklog configuration files and set-up your database structures.  The second option is an upgrade installation which is the same as the full installation except your database will be upgraded from a prior Geeklog version.  The third installation option is a database installation only which is useful for people who have manually edited their configuration files and just need the database created and initialized.  The final option is a database upgrade only which is useful for people who have manually edited their configuration files and already have an older Geeklog database they want to upgrade.  Select the option you need in the form below. <P>To make the installation go easier, we need to know where your Geeklog installation resides on the file system.  Please enter the path to your geeklog installation.  On *nix systems that would be something like /path/to/geeklog.  On windows systems this would be something like C:\path\to\geeklog.' . LB;
-        $install_options = '<option value="complete_new">New Installation</option>'.LB;
-        $install_options.= '<option value="complete_upgrade">Upgrade Installation</option>'.LB;
-        $install_options .= '<option value="new_db">New Database Only</option>'.LB;
-        $install_options .= '<option value="upgrade_db">Upgrade Database Only</option>'.LB;
-    } else {
-        $retval .= '<P>We have performed a test on your system to see if this installation script can write to a file and it FAILED.  To install Geeklog you will need to manually create and edit the configuration files (see the docs) <b>BEFORE</b> you run the rest of this script.  The most common reasons for write test failure is 1) your host system does not allow the webserver user or PHP to write to the filesystem or 2) your directy permissions are preventing the webserver user from creating a files.  Given these circumstances, after you have created the configuration files (config.php, lib-database.php, and edited the include path in lib-common.php) there are two types of installations this script can do.  The first is a is a database installation only which is useful for people who have manually edited their configuration files and just need the database created and initialized.  The second option is a database upgrade only which is useful for people who have manually edited their configuration files and already have an older Geeklog database they want to upgrade.  Select the option you need in the form below. <P>To make the installation go easier, we need to know where your Geeklog installation resides on the file system.  Please enter the path to your geeklog installation.  On *nix systems that would be something like /path/to/geeklog.  On windows systems this would be something like C:\path\to\geeklog.' . LB;
-        $install_options = '<option value="new_db">New Database Only</option>'.LB;
-        $install_options .= '<option value="upgrade_db">Upgrade Database Only</option>'.LB;
-    }
+    $retval .= '<h2>Geeklog Installation (Step 1 of 2)</h2>' . LB;
+    $retval .= '<P>Welcome to Geeklog 1.3.5.  This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systemss in a variety of environments we have opted to revert that portion of the installation back to config.php.  With that said, you should edit config.php prior to running this script.  This script will, however, apply the database structures for both fresh installations and upgrades.';  
+    $retval .= '<P>If you are new to Geeklog, welcome!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3.5 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.5.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manaully upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4.  Please note this script will not upgrade any beta versions of Geeklog. ';
+    $install_options = '<option value="new_db">New Database</option>'.LB;
+    $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
     $retval .= '<center>' . LB;
     $retval .= '<form action="install.php" method="post">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0">' . LB;
@@ -139,419 +82,15 @@ function INST_welcomePage()
     return $retval;
 }
 
-/**
-* This function shows the form needed to get the server settings for Geeklog
-*
-* @gl_path          string      Path to Geeklog on the filesystem
-*
-*/
-function INST_getServerSettings($gl_path,$upgrade)
+function INST_getDatabaseSettings($install_type, $geeklog_path)
 {
-    global $_CONF;
-
-    $server_template = new Template($gl_path . '/system/install_templates');
-    $server_template->set_file('server', 'serversettings.tpl');
-    $server_template->set_var('path', $gl_path);
-    $server_template->set_var('upgrade', $upgrade);
-    $server_template->set_var('path_system', $_CONF['path_system']);
-    $server_template->set_var('path_html', $_CONF['path_html']);
-    $server_template->set_var('path_log', $_CONF['path_log']);
-    $server_template->set_var('path_language', $_CONF['path_language']);
-    $server_template->set_var('rdf_file', $_CONF['rdf_file']);
-    if ($_CONF['allow_mysqldump'] == 1) {
-        $server_template->set_var('allow_mysqldump_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('allow_mysqldump_checked', '');
-    }
-    $server_template->set_var('backup_path', $_CONF['backup_path']);
-    $server_template->set_var('site_name', $_CONF['site_name']);
-    $server_template->set_var('site_slogan', $_CONF['site_slogan']);
-    $server_template->set_var('site_email', $_CONF['site_mail']);
-    $server_template->set_var('site_url', $_CONF['site_url']);
-    $server_template->set_var('layout_url', $_CONF['layout_url']);
-    $server_template->set_var('path_themes', $_CONF['path_themes']);
-
-    // Get available themes
-    $server_template->set_var('theme', $_CONF['theme']);
-    if ($_CONF['allow_user_themes'] == 1) {
-        $server_template->set_var('userthemes_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('userthemes_checked', '');
-    }
-    // Get available languages
-    $language_options = '';
-    $fd = opendir($_CONF['path_language']);
-    while (($file = @readdir($fd)) == TRUE) {
-        if (is_file($_CONF['path_language'].$file)) {
-            clearstatcache();
-            $file = str_replace('.php', '', $file);
-            $language_options .= '<option value="' . $file . '" ';
-            if ($_CONF['language'] == $file) {
-                $language_options .= 'selected="SELECTED"';
-            }
-            $language_options .= '>' . $file . '</option>';
-        }
-    }
-    $server_template->set_var('language_options', $language_options);
-
-    // Get locale options
-    $server_template->set_var('locale', $_CONF['locale']);
-
-    // Get date format options
-    $server_template->set_var('date', $_CONF['date']);
-
-    // Get day/time format options
-    $server_template->set_var('daytime', $_CONF['daytime']);
-
-    // Short date options
-    $server_template->set_var('shortdate', $_CONF['shortdate']);
-    if ($_CONF['cookie_ip'] == 1) {
-        $server_template->set_var('cookieip_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('cookieip_checked', '');
-    } 
-
-    // Long-term cookie timeout options
-    $longterm_options = INST_getCookieTimeoutValues($_CONF['default_perm_cookie_timeout']);
-    $server_template->set_var('longterm_options', $longterm_options);
-    $server_template->set_var('cookie_name', $_CONF['cookie_name']);
-
-    // Session cookie timeout options
-    $session_options = INST_getCookieTimeoutValues($_CONF['session_cookie_timeout']        = 7200);
-    $server_template->set_var('session_options', $session_options);
-    $server_template->set_var('cookie_session', $_CONF['cookie_session']);
-    $server_template->set_var('cookie_path', $_CONF['cookie_path']);
-    $server_template->set_var('unzipcommand', $_CONF['unzipcommand']);
-    $server_template->set_var('rmcommand', $_CONF['rmcommand']);
-
-    if ($_CONF['loginrequired'] == 1) {
-        $server_template->set_var('loginrequired_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('loginrequired_checked', '');
-    }
-
-    // Get post mode options
-    if ($_CONF['postmode'] == 'plaintext') {
-        $server_template->set_var('plaintext_selected', 'selected="SELECTED"');
-    } else {
-        $server_template->set_var('html_selected', 'selected="SELECTED"');
-    }
-    $postmode_options = '';
-    $server_template->set_var('postmode_options', $postmode_options);
-    $server_template->set_var('speedlimit', $_CONF['speedlimit']);
-    if ($_CONF['sortmethod'] = 'sortnum') {
-        $server_template->set_var('sortnum_checked', 'selected="SELECTED"');
-        $server_template->set_var('alpha_checked', '');
-    } else {
-        $server_template->set_var('sortnum_checked', '');
-        $server_template->set_var('alpha_checked', 'selected="SELECTED"');
-    }
-    if ($_CONF['showstorycount'] == 1) {
-        $server_template->set_var('showstorycount_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('showstorycount_checked', '');
-    }
-    if ($_CONF['showsubmissioncount'] == 1) {
-        $server_template->set_var('showsubmissioncount_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('showsubmissioncount_checked', '');
-    }
-    if ($_CONF['whatsnewbox'] == 1) {
-        $server_template->set_var('whatsnewbox_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('whatsnewbox_checked', '');
-    }
-    if ($_CONF['whosonline'] == 1) {
-        $server_template->set_var('whosonline_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('whosonline_checked', '');
-    }
-    $server_template->set_var('whosonline_threshold', $_CONF['whosonline_threshold']);
-
-    // Get new story interval options
-    $newstoriesinterval_options = INST_getCookieTimeoutValues($_CONF['newstoriesinterval']);
-    $server_template->set_var('newstoriesinterval_options', $newstoriesinterval_options);
-    // Get new comment interval options
-    $newcommentsinterval_options = INST_getCookieTimeoutValues($_CONF['newcommentsinterval']);
-    $server_template->set_var('newcommentsinterval_options', $newcommentsinterval_options);
-    // Get new interval options
-    $newlinksinterval_options = INST_getCookieTimeoutValues($_CONF['newlinksinterval']);
-    $server_template->set_var('newlinksinterval_options', $newlinksinterval_options);
+    global $_CONF, $_TABLES;
     
-    if ($_CONF['emailstories'] == 1) { 
-        $server_template->set_var('emailstories_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('emailstories_checked', '');
-    }
-
-    if ($_CONF['personalcalendars'] == 1) {
-        $server_template->set_var('personalcalendars_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('personalcalendars_checked', '');
-    }
-    if ($_CONF['showupcomingevents'] == 1) {
-        $server_template->set_var('showupcomingevents_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('showupcomingevents_checked', '');
-    }
-    $server_template->set_var('event_types', $_CONF['event_types']);
-
-    if ($_CONF['backend'] == 1) {
-        $server_template->set_var('backend_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('backend_checked', '');
-    }
-    $server_template->set_var('limitnews', $_CONF['limitnews']);
-    $server_template->set_var('minnews', $_CONF['minnews']);
-    if ($_CONF['olderstuff'] == 1) {
-        $server_template->set_var('olderstuff_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('olderstuff_checked', '');
-    }
-    if ($_CONF['contributedbyline'] == 1) {
-        $server_template->set_var('contributedbyline_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('contributedbyline_checked', '');
-    }
-    if ($_CONF['article_image_align'] == 'right') {
-        $server_template->set_var('right_checked', 'selected="SELECTED"');
-        $server_template->set_var('left_checked', '');
-    } else {
-        $server_template->set_var('right_checked', '');
-        $server_template->set_var('left_checked', 'selected="SELECTED"');
-    }
-    if ($_CONF['commentsloginrequired'] == 1) {
-        $server_template->set_var('commentsloginrequired_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('commentsloginrequired_checked', '');
-    }
-    $server_template->set_var('commentspeedlimit', $_CONF['commentspeedlimit']);
-
-    $server_template->set_var('comment_limit', $_CONF['comment_limit']);
-
-    $server_template->set_var($_CONF['comment_mode'] . '_selected','selected="SELECTED"');
-
-    $server_template->set_var('maxanswers', $_CONF['maxanswers']);
-    
-    $pollcookietime_options = INST_getCookieTimeoutValues($_CONF['pollcookietime']    = '86400');
-    $server_template->set_var('pollcookietime_options', $pollcookietime_options);
-
-    $polladdresstime_options = INST_getCookieTimeoutValues($_CONF['polladdresstime']   = '604800');
-    $server_template->set_var('polladdresstime_options', $polladdresstime_options);
-
-    $server_template->set_var('allowablehtml', $_CONF['allowablehtml']);
-    if ($_CONF['censormode'] == 1) {
-        $server_template->set_var('censormode_checked', 'checked="CHECKED"');
-    } else {
-        $server_template->set_var('censormode_checked', '');
-    }
-    $server_template->set_var('censorreplace', $_CONF['censorreplace']);
-    if (!empty($_CONF['censorlist'])) {
-        $wordlist = implode(',',$_CONF['censorlist']);
-    } else {
-        $wordlist = '';
-    }
-    $server_template->set_var('censorlist',$wordlist);
-
-    return $server_template->parse('output','server');
-    
-}
-
-function INST_saveServerSettings($A) 
-{
-    $config_template = new Template($A['geeklog_path'] . '/system/install_templates');
-    $config_template->set_file(array('config'=>'config.tpl','common'=>'lib-common.tpl'));
-    $config_template->set_var('cfg_path', $A['geeklog_path'] . '/');
-    $config_template->set_var('cfg_path_system',$A['path_system']);
-    $config_template->set_var('cfg_path_html', $A['path_html']);
-    $config_template->set_var('cfg_path_log', $A['path_log']);
-    $config_template->set_var('cfg_path_language', $A['path_language']);
-    $config_template->set_var('cfg_rdf_file', $A['rdf_file']);
-    if ($A['allow_mysqldump'] == 'on') {
-        $config_template->set_var('cfg_allow_mysqldump',1);
-    } else {
-        $config_template->set_var('cfg_allow_mysqldump',0);
-    }
-    $config_template->set_var('cfg_backup_path',$A['backup_path']);
-    $config_template->set_var('cfg_site_name', $A['site_name']);
-    $config_template->set_var('cfg_site_slogan', $A['site_slogan']);
-    $config_template->set_var('cfg_site_mail', $A['site_mail']);
-    $config_template->set_var('cfg_site_url', $A['site_url']);
-    $config_template->set_var('cfg_theme', $A['theme']);
-    $config_template->set_var('cfg_layout_url', $A['site_url'] . '/layout/' . $A['theme']);
-    $config_template->set_var('cfg_path_themes', $A['path_html'] . 'layout/');
-    if ($A['allow_user_themes'] == 'on') {
-        $config_template->set_var('cfg_allow_user_themes',1);
-    } else {
-        $config_template->set_var('cfg_allow_user_themes',0);
-    }
-    $config_template->set_var('cfg_path_layout', $A['path_html'] . 'layout/' . $A['theme'] . '/');
-    $config_template->set_var('cfg_language', $A['language']);
-    $config_template->set_var('cfg_locale', $A['locale']);
-    $config_template->set_var('cfg_date', $A['date']);
-    $config_template->set_var('cfg_daytime', $A['daytime']);
-    $config_template->set_var('cfg_shortdate', $A['shortdate']);
-    if ($A['cookie_ip'] == 'on') {
-        $config_template->set_var('cfg_cookie_ip', 1);
-    } else {
-        $config_template->set_var('cfg_cookie_ip', 0);
-    }
-    $config_template->set_var('cfg_default_perm_cookie_timeout', $A['default_perm_cookie_timeout']);
-    $config_template->set_var('cfg_session_cookie_timeout', $A['session_cookie_timeout']);
-    $config_template->set_var('cfg_cookie_session', $A['cookie_session']);
-    $config_template->set_var('cfg_cookie_name', $A['cookie_name']);
-    $config_template->set_var('cfg_cookie_path', $A['cookie_path']);
-    $config_template->set_var('cfg_unzipcommand', $A['unzipcommand']);
-    $config_template->set_var('cfg_rmcommand', $A['rmcommand']);
-    if ($A['loginrequired'] == 'on') {
-        $config_template->set_var('cfg_loginrequired', 1);
-    } else {
-        $config_template->set_var('cfg_loginrequired', 0);
-    }
-    $config_template->set_var('cfg_postmode', $A['postmode']);
-    $config_template->set_var('cfg_speedlimit', $A['speedlimit']);
-    $config_template->set_var('cfg_sortmethod', $A['sortmethod']);
-    if ($A['showstorycount'] == 'on') {
-        $config_template->set_var('cfg_showstorycount', 1);
-    } else {
-        $config_template->set_var('cfg_showstorycount', 0);
-    }
-    if ($A['showsubmissioncount'] == 'on') {
-        $config_template->set_var('cfg_showsubmissioncount', 1);
-    } else {
-        $config_template->set_var('cfg_showsubmissioncount', 0);
-    }
-    if ($A['whatsnewbox'] == 'on') {
-        $config_template->set_var('cfg_whatsnewbox', 1);
-    } else {
-        $config_template->set_var('cfg_whatsnewbox', 0);
-    }
-    if ($A['whosonline'] == 'on') {
-        $config_template->set_var('cfg_whosonline', 1);
-    } else {
-        $config_template->set_var('cfg_whosonline', 0);
-    }
-    $config_template->set_var('cfg_whosonline_threshold', $A['whosonline_threshold']);
-    if ($A['emailstories'] == 'on') {
-        $config_template->set_var('cfg_emailstories', 1);
-    } else {
-        $config_template->set_var('cfg_emailstories', 0);
-    }
-    $config_template->set_var('cfg_newstoriesinterval', $A['newstoriesinterval']);
-    $config_template->set_var('cfg_newcommentsinterval', $A['newcommentsinterval']);
-    $config_template->set_var('cfg_newlinksinterval', $A['newlinksinterval']);
-    if ($A['personalcalendars'] == 'on') {
-        $config_template->set_var('cfg_personalcalendars', 1);
-    } else {
-        $config_template->set_var('cfg_personalcalendars', 0);
-    }
-    if ($A['showupcomingevents'] == 'on') {
-        $config_template->set_var('cfg_showupcomingevents', 1);
-    } else {
-        $config_template->set_var('cfg_showupcomingevents', 0);
-    }
-    $config_template->set_var('cfg_event_types', $A['event_types']);
-    if ($A['backend'] == 'on') {
-        $config_template->set_var('cfg_backend', 1);
-    } else {
-        $config_template->set_var('cfg_backend', 0);
-    }
-    $config_template->set_var('cfg_limitnews', $A['limitnews']);
-    $config_template->set_var('cfg_minnews', $A['minnews']);
-    if ($A['olderstuff'] == 'on') {
-        $config_template->set_var('cfg_olderstuff', 1);
-    } else {
-        $config_template->set_var('cfg_olderstuff', 0);
-    }
-    $config_template->set_var('cfg_olderstufforder', $A['olderstufforder']);
-    if ($A['contributedbyline'] == 'on') {
-        $config_template->set_var('cfg_contributedbyline', 1);
-    } else {
-        $config_template->set_var('cfg_contributedbyline', 0);
-    }
-    $config_template->set_var('cfg_article_image_align', $A['article_image_align']);
-    if ($A['commentsloginrequired'] == 'on') {
-        $config_template->set_var('cfg_commentsloginrequired', 1);
-    } else {
-        $config_template->set_var('cfg_commentsloginrequired', 0);
-    }
-    $config_template->set_var('cfg_commentspeedlimit', $A['commentspeedlimit']);
-    $config_template->set_var('cfg_comment_limit', $A['comment_limit']);
-    $config_template->set_var('cfg_comment_mode', $A['comment_mode']);
-    $config_template->set_var('cfg_maxanswers', $A['maxanswers']);
-    $config_template->set_var('cfg_pollcookietime', $A['pollcookietime']);
-    $config_template->set_var('cfg_polladdresstime', $A['polladdresstime']);
-    $config_template->set_var('cfg_allowablehtml', $A['allowablehtml']);
-    $config_template->set_var('cfg_parsemode', $A['parsemode']);
-    if ($A['censormode'] == 'on') {
-        $config_template->set_var('cfg_censormode', 1);
-    } else {
-        $config_template->set_var('cfg_censormode', 0);
-    } 
-    $config_template->set_var('cfg_censorreplace', $A['censorreplace']);
-    $censorarray = explode(',',$A['censorlist']);
-    $wordlist = '';
-    for ($j = 1; $j <= count($censorarray); $j++) {
-        $wordlist .= '"' . current($censorarray) . '"';
-        if ($j <> count($censorarray)) {
-            $wordlist .= ',';
-        }
-        next($censorarray);
-    }
-    $config_template->set_var('cfg_censorlist', $wordlist);
-
-    // Done substituting variables...now write it all out!
-    $output = $config_template->parse('output', 'config');
-    $outputfile = $A['geeklog_path'] . '/config.php';
-    if (!$file = @fopen($outputfile,w)) {
-        print 'Unable to open config.php for writing in install script' . "\n";
-        return false;
-    } else {
-        fputs($file,$output);
-        fclose($file);
-    }
-
-    // Now write path to config.php to lib-common.php
-    $outputfile2 = $A['path_html'] . 'lib-common.php';
-    if (!$file = @fopen($outputfile2,w)) {
-        print 'Unable to open lib-common.php for writing in install script' . "\n";
-        return false;
-    } else {
-        $config_template->set_var('config_path', $A['geeklog_path'] . '/');
-        fputs($file, $config_template->parse('output2','common'));
-        fclose($file);
-    }
-
-    return true;
-}
-
-function INST_getDatabaseSettings($geeklog_path,$upgrade)
-{
-    global $_CONF;
-
-    if ($upgrade == 1 AND file_exists($_CONF['path_system'] . 'lib-database.php')) {
-        include_once($_CONF['path_system'] . 'lib-database.php');
-    } else {
-        // In this case load database defaults
-        include_once($_CONF['path_system'] . 'install_templates/database_defaults.php');
-        $_DB_dbms = 'mysql';
-        $_DB_host = 'localhost';
-        $_DB_name = 'geeklog';
-        $_DB_user = 'username';
-        $_DB_pass = '';
-        $_DB_table_prefix = '';
-    }
     $db_templates = new Template($_CONF['path_system'] . 'install_templates');
-    $db_templates->set_file(array('db'=>'databasesettings.tpl','tables'=>'tablesettings.tpl','tableentry'=>'table.tpl'));
-    $db_templates->set_var('dbms', $_DB_dbms);
-    $db_templates->set_var('dbhost', $_DB_host);
-    $db_templates->set_var('dbname', $_DB_name);
-    $db_templates->set_var('dbuser', $_DB_user);
-    $db_templates->set_var('dbpass', $_DB_pass);
-    $db_templates->set_var('dbmysqldump', $_DB_mysqldump_path);
+    $db_templates->set_file(array('db'=>'databasesettings.tpl'));
     $db_templates->set_var('geeklog_path', $geeklog_path);
     
-    if ($upgrade == 1) {
+    if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // The already have a lib-database file...they can't chnage their tables names
         $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4');
@@ -566,87 +105,22 @@ function INST_getDatabaseSettings($geeklog_path,$upgrade)
     } else {
         // This is a fresh installation, let them change their table settings
         $db_templates->set_var('upgrade',0);
-        reset($_TABLES);
-        for ($i = 1; $i <= count($_TABLES); $i++) {
-            $db_templates->set_var('orig_tablename', key($_TABLES));
-            $db_templates->set_var('new_tablename', current($_TABLES));
-            $db_templates->parse('TABLE_ENTRY', 'tableentry', true);
-            next($_TABLES);
-        }
+        //reset($_TABLES);
+        //for ($i = 1; $i <= count($_TABLES); $i++) {
+        //    $db_templates->set_var('orig_tablename', key($_TABLES));
+        //    $db_templates->set_var('new_tablename', current($_TABLES));
+        //    $db_templates->parse('TABLE_ENTRY', 'tableentry', true);
+        //    next($_TABLES);
+        //}
         $db_templates->set_var('UPGRADE_OPTIONS','');
-        $db_templates->parse('DB_TABLE_OPTIONS', 'tables'); 
+        //$db_templates->parse('DB_TABLE_OPTIONS', 'tables'); 
     }
 
     return $db_templates->parse('output','db');
 }
 
-/**
-* This function saves the DB settings
-*
-* Writes DB settings to lib-database.php which in return is included
-* in by lib-common.php 
-*
-* @A    Array   Array of database settings to save
-*
-*/
-function INST_saveDatabaseSettings($A)
-{
-    global $_CONF;
-
-    $db_template = new Template($_CONF['path_system'] . 'install_templates');
-    $db_template->set_file('dblib','lib-database.tpl');
-    $db_template->set_var('dbms', $A['dbms']);
-    $db_template->set_var('dbhost', $A['dbhost']);
-    $db_template->set_var('dbname', $A['dbname']);
-    $db_template->set_var('dbuser', $A['dbuser']);
-    $db_template->set_var('dbpass', $A['dbpass']);
-    $db_template->set_var('dbprefix', $A['prefix']);
-    $db_template->set_var('dbmysqldump', $A['dbmysqldump']);
-
-    // To make this easier to automate load, defaults and loop through those instead
-    // of doing a set_var for each table
-    if ($A['upgrade'] == 1 && empty($A['prefix']) AND file_exists($_CONF['path_system'] . 'lib-database.php')) {
-        include_once($_CONF['path_system'] . 'lib-database.php');
-    } else {
-        include_once($_CONF['path_system'] . 'install_templates/database_defaults.php');
-    }
-    reset($_TABLES);
-
-    // Ok, if this is an upgrade then we will use current table names.  Otherwise
-    // use the user-supplied table names
-    if ($A['upgrade'] == 1) {
-        // This is an upgrade
-        for ($i = 1; $i <= count($_TABLES); $i++) {
-            $varname = 'cfg_tbl_' . key($_TABLES);
-            $db_template->set_var($varname, $A['prefix']. key($_TABLES));
-            next($_TABLES);
-        }
-    } else {
-        // This is a fresh installation, get user settings
-        $db_template->set_var('dbprefix', $A['prefix']);
-        for ($i = 1; $i <= count($_TABLES); $i++) {
-            $varname = 'cfg_tbl_' . key($_TABLES);
-            $db_template->set_var($varname, $A['prefix'] . $A[key($_TABLES)]);
-            next($_TABLES);
-        }
-    }
-
-    // Now write path to config.php to lib-common.php
-    $outputfile = $_CONF['path_system'] . 'lib-database.php';
-    if (!$file = @fopen($outputfile,w)) {
-        print 'Unable to open lib-database.php for writing in install script' . "\n";
-        return false;
-    } else {
-        fputs($file, $db_template->parse('output','dblib'));
-        fclose($file);
-    }
-
-    return true;
-    
-}
-
 function INST_createDatabaseStructures() {
-    global $_CONF;
+    global $_CONF, $_DB_dbms, $_TABLES;
 
     // Because the create table syntax can vary from dbms-to-dbms we are
     // leaving that up to each database driver (e.g. mysql.class.php, 
@@ -654,9 +128,9 @@ function INST_createDatabaseStructures() {
 
 
     // Include lib-database.php now that it exists
-    include_once($_CONF['path_system'] . 'lib-database.php');
-    include_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
-    $instDB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'');
+    //include_once($_CONF['path_system'] . 'lib-database.php');
+    //include_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
+    //$instDB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'');
 
 
     // Get DBMS-specific create table array and data array
@@ -666,25 +140,25 @@ function INST_createDatabaseStructures() {
 
     for ($i = 1; $i <= count($_SQL); $i++) {
         //DB_query(current($_SQL));
-        $progress .= "executing " . current($_SQL) . "<br>\n";
-        $instDB->dbQuery(current($_SQL));
-        $error = $instDB->dbError(current($_SQL));
-        if (!empty($error)) {
-            echo $progress . $error;
-            return false;
-        }
+        //$progress .= "executing " . current($_SQL) . "<br>\n";
+        DB_query(current($_SQL));
+        //$error = $instDB->dbError(current($_SQL));
+        //if (!empty($error)) {
+        //    echo $progress . $error;
+        //    return false;
+        //}
         next($_SQL);
     }
 
     // Now insert mandatory data and a small subset of initial data
     for ($i = 1; $i <= count($_DATA); $i++) {
         $progress .= "executing " . current($_DATA) . "<br>\n";
-        $instDB->dbQuery(current($_DATA));
-        $error = $instDB->dbError(current($_DATA));
-        if (!empty($error)) {
-            echo $progress . $error;
-            return false;
-        }
+        DB_query(current($_DATA));
+        //$error = $instDB->dbError(current($_DATA));
+        //if (!empty($error)) {
+        //    echo $progress . $error;
+        //    return false;
+        //}
         next($_DATA);
     }
 
@@ -697,14 +171,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
     global $_CONF, $_DB_dbms;
 
     // Because the upgrade sql syntax can vary from dbms-to-dbms we are
-    // leaving that up to each database driver
-
-    if (empty($_DB_dbms)) $_DB_dbms = 'mysql';
-
-    // Include lib-database.php now that it exists
-    include_once($_CONF['path_system'] . 'lib-database.php');
-    include_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
-    $instDB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'');
+    // leaving that up to each Geeklog database driver
 
     $done = false;
     $progress = '';
@@ -715,33 +182,33 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.2.5-1_to_1.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                $instDB->dbQuery(current($_SQL),1);
-                $error = $instDB->dbError(current($_SQL));
-                if (!empty($error)) {
-                    echo $progress . $error;
-                    return false;
-                }
+                DB_query(current($_SQL),1);
+                //$error = DB_error(current($_SQL));
+                //if (!empty($error)) {
+                //    echo $progress . $error;
+                //    return false;
+                //}
                 next($_SQL);
             }
             // OK, now we need to add all users except anonymous to the All Users group and Logged in users group
             // I can hard-code these group numbers because the group table was JUST created with these numbers
-            $result = $instDB->dbQuery("SELECT uid FROM {$_TABLES['users']} WHERE uid <> 1");
-            $nrows = $instDB->dbNumRows($result);
+            $result = DB_query("SELECT uid FROM {$_TABLES['users']} WHERE uid <> 1");
+            $nrows = DB_numRows($result);
             for ($i = 1; $i <= $nrows; $i++) {
-                $U = $instDB->dbFetchArray($result);
-                $instDB->dbQuery("INSERT INTO {$_TABLES['group_assignments']} VALUES (2, {$U['uid']}, NULL)");
-                $instDB->dbQuery("INSERT INTO {$_TABLES['group_assignments']} VALUES (13, {$U['uid']}, NULL)");
+                $U = DB_fetchArray($result);
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES (2, {$U['uid']}, NULL)");
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES (13, {$U['uid']}, NULL)");
             }
             // Now take care of any orphans off the user table...and let me curse MySQL lack for supporint foreign
             // keys at this time ;-)
-            $result = $instDB->dbQuery("SELECT MAX(uid) FROM {$_TABLES['users']}");
-            $ITEM = $instDB->dbFetchArray($result);
+            $result = DB_query("SELECT MAX(uid) FROM {$_TABLES['users']}");
+            $ITEM = DB_fetchArray($result);
             $max_uid = $ITEM[0];
             if (!empty($max_uid) AND $max_uid <> 0) {
-                $instDB->dbQuery("DELETE FROM {$_TABLES['userindex']} WHERE uid > $max_uid");
-                $instDB->dbQuery("DELETE FROM {$_TABLES['userinfo']} WHERE uid > $max_uid");
-                $instDB->dbQuery("DELETE FROM {$_TABLES['userprefs']} WHERE uid > $max_uid");
-                $instDB->dbQuery("DELETE FROM {$_TABLES['usercomment']} WHERE uid > $max_uid");
+                DB_query("DELETE FROM {$_TABLES['userindex']} WHERE uid > $max_uid");
+                DB_query("DELETE FROM {$_TABLES['userinfo']} WHERE uid > $max_uid");
+                DB_query("DELETE FROM {$_TABLES['userprefs']} WHERE uid > $max_uid");
+                DB_query("DELETE FROM {$_TABLES['usercomment']} WHERE uid > $max_uid");
             }
             $current_gl_version = '1.3';
             $_SQL = '';
@@ -750,12 +217,12 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                $instDB->dbQuery(current($_SQL),1);
-                $error = $instDB->dbError(current($_SQL));
-                if (!empty($error)) {
-                    echo $progress . $error;
-                    return false;
-                }
+                DB_query(current($_SQL),1);
+                //$error = $instDB->dbError(current($_SQL));
+                //if (!empty($error)) {
+                //    echo $progress . $error;
+                //    return false;
+                //}
                 next($_SQL);
             }
             $current_gl_version = '1.3.1';
@@ -765,12 +232,12 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php');
              for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                $instDB->dbQuery(current($_SQL),1);
-                $error = $instDB->dbError(current($_SQL));
-                if (!empty($error)) {
-                    echo $progress . $error;
-                    return false;
-                }
+                DB_query(current($_SQL),1);
+                //$error = $instDB->dbError(current($_SQL));
+                //if (!empty($error)) {
+                //    echo $progress . $error;
+                //    return false;
+                //}
                 next($_SQL);
             }
             $current_gl_version = '1.3.2-1';
@@ -781,34 +248,34 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.2-1_to_1.3.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                $instDB->dbQuery(current($_SQL),1);
-                $error = $instDB->dbError(current($_SQL));
-                if (!empty($error)) {
-                    echo $progress . $error;
-                    return false;
-                }
+                DB_query(current($_SQL),1);
+                //$error = $instDB->dbError(current($_SQL));
+                //if (!empty($error)) {
+                //    echo $progress . $error;
+                //    return false;
+                //}
                 next($_SQL);
             }
             // Now we need to switch how user blocks are stored.  Right now we only store the blocks the
             // user wants.  This will switch it to store the ones they don't want which allows us to add
             // new blocks and ensure they are shown to the user.
-            $result = $instDB->dbQuery("SELECT {$_TABLES['users']}.uid,boxes FROM {$_TABLES['users']},{$_TABLES['userindex']} WHERE boxes IS NOT NULL AND boxes <> '' AND {$_TABLES['users']}.uid = {$_TABLES['userindex']}.uid");
-            $nrows = $instDB->dbNumRows($result);
+            $result = DB_query("SELECT {$_TABLES['users']}.uid,boxes FROM {$_TABLES['users']},{$_TABLES['userindex']} WHERE boxes IS NOT NULL AND boxes <> '' AND {$_TABLES['users']}.uid = {$_TABLES['userindex']}.uid");
+            $nrows = DB_numRows($result);
             for ($i = 1; $i <= $nrows; $i++) {
-                $row = $instDB->dbFetchArray($result);
+                $row = DB_fetchArray($result);
                 $ublocks = str_replace(' ',',',$row['boxes']);
-                $result2 = $instDB->dbQuery("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($ublocks)");
+                $result2 = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($ublocks)");
                 $newblocks = '';
-                for ($x = 1; $x <= $instDB->dbNumRows($result2); $x++) {
-                    $curblock = $instDB->dbFetchArray($result2);
+                for ($x = 1; $x <= DB_numRows($result2); $x++) {
+                    $curblock = DB_fetchArray($result2);
                     if ($curblock['name'] <> 'user_block' AND $curblock['name'] <> 'admin_block' AND $curblock['name'] <> 'section_block') {
                         $newblocks .= $curblock['bid'];
-                        if ($x <> $instDB->dbNumRows($result2)) {
+                        if ($x <> DB_numRows($result2)) {
                             $newblocks .= ' ';
                         }
                     }
                 }
-                $instDB->dbQuery("UPDATE {$_TABLES['userindex']} SET boxes = '$newblocks' WHERE uid = {$row['uid']}");
+                DB_query("UPDATE {$_TABLES['userindex']} SET boxes = '$newblocks' WHERE uid = {$row['uid']}");
             }
             $current_gl_version = '1.3.3';
             $_SQL = '';
@@ -817,12 +284,12 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                $instDB->dbQuery(current($_SQL),1);
-                $error = $instDB->dbError(current($_SQL));
-                if (!empty($error)) {
-                    echo $progress . $error;
-                    return false;
-                }
+                DB_query(current($_SQL),1);
+                //$error = $instDB->dbError(current($_SQL));
+                //if (!empty($error)) {
+                //    echo $progress . $error;
+                //    return false;
+                //}
                 next($_SQL);
             }
 
@@ -831,13 +298,13 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             break;
 	case '1.3.4':
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.4_to_1.3.5.php');
-	    $result = $instDB->dbQuery("SELECT ft_id FROM {$_TABLES['features']} WHERE ft_name = 'user.mail'");
-	    $row = dbFetchArray($result);            
+            $result = DB_query("SELECT ft_id FROM {$_TABLES['features']} WHERE ft_name = 'user.mail'");
+            $row = DB_fetchArray($result);            
             $mail_ft = $row['ft_id'];
-            $result = $instDB->dbQuery("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name = 'Mail Admin'");
-            $row = dbFetchArray($result);
+            $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name = 'Mail Admin'");
+            $row = DB_fetchArray($result);
             $group_id = $row['grp_id'];
-            $instDB->dbQuery("INSERT INTO {$_TABLES['access']} (acc_grp_id, acc_ft_id) VALUES ($group_id, $mail_ft)");
+            DB_query("INSERT INTO {$_TABLES['access']} (acc_grp_id, acc_ft_id) VALUES ($group_id, $mail_ft)");
 
             $current_gl_version = '1.3.5';
             $_SQL = '';
@@ -851,6 +318,9 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 
 // Main
 
+if ($action == '<< Previous') {
+    $page = 0;
+}
 
 // If possible, load the config file so we can get current settings.  If we
 // can't then that means this is a fresh installation OR they want to start
@@ -859,92 +329,36 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 // Include template class if we got it
 if ($page > 0) {
     include_once($geeklog_path . '/system/classes/template.class.php');
+    include_once($geeklog_path . '/config.php');
+    include_once($geeklog_path . '/system/lib-database.php');
 }
-
-if (file_exists($geeklog_path . '/config.php')) {
-    // We are trying to change settings, load config file
-    $config_file = $geeklog_path . '/config.php';
-    include_once($config_file);
-} else {
-    if ($page > 0) {
-        $_CONF = INST_loadDefaults($geeklog_path);
-    }
-}
-if ($action == '<< Previous') {
-    $page = $page - 2;
-}
-
-// If they are doing a manual installation then scipt the server settings and get
-// to work ;-)
-if ($install_type == 'new_db' OR $install_type == 'upgrade_db') {
-    if ($install_type == 'new_db') {
-        // Right now hard-code this as it is the only option.  In future release we will
-        // use the constant VERSION from the config file
-        if (INST_createDatabaseStructures() == false) {
-            print "error creating database structures";
-            exit;
-        } else {
-            // Done with installation...redirect to success page
-            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
-            exit;
-        }
-    } else {
-        $version = '1.2.5-1';
-        if (INST_doDatabaseUpgrades($version) == false) {
-            print "error upgrading database";
-            exit;
-        } else {
-            // Done with installation...redirect to success page
-            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
-            exit;
-        }
-    }
-} 
 
 $display = '';
 
-/*
-if (empty($upgrade)) {
-    if ($install_type == 'complete_upgrade') {
-        $upgrade = 1;
-    } else {
-        $upgrade = 0;
-    }
-}
-*/
 switch ($page) {
 case 1:
-    //if (empty($upgrade)) $upgrade = 0;
     if ($install_type == 'complete_upgrade') {
         $upgrade = 1;
     } else {
         $upgrade = 0;
     }
-    $display .= INST_getServerSettings($geeklog_path,$upgrade); 
+    $display .= INST_getDatabaseSettings($install_type, $geeklog_path); 
     break;
 case 2:
-    if (INST_saveServerSettings($HTTP_POST_VARS)) {
-        $display .= INST_getDatabaseSettings($geeklog_path,$upgrade);
-    }
-    break;
-case 3:
-    if (INST_saveDatabaseSettings($HTTP_POST_VARS)) {
-        if ($upgrade == 1) {
-            if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
-                // Great, installation is complete
-                // Done with installation...redirect to success page
-                echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
-            }
-        } else {
-            if (INST_createDatabaseStructures()) {
-                // Done with installation...redirect to success page
-                echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
-                // Great, installation is complete
-            }
+    if (!empty($version)) {
+        if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
+            // Great, installation is complete
+            // Done with installation...redirect to success page
+            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
+        }
+    } else {
+        if (INST_createDatabaseStructures()) {
+            // Done with installation...redirect to success page
+            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
+            // Great, installation is complete
         }
     }
     break;
-case 4:
 default:
     // Ok, let's display a welcome page
     $display .= INST_welcomePage();
