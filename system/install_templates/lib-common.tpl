@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.19 2002/01/04 16:15:37 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.20 2002/01/04 17:04:32 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -145,15 +145,6 @@ function COM_article($A,$index='')
 {
     global $_TABLES,$mode,$_CONF,$LANG01,$_USER;
 	
-    if (!empty($_USER['uid'])) {
-        $result = DB_query("SELECT noicons FROM {$_TABLES['userprefs']} WHERE uid = {$_USER['uid']}",1);
-        $nrows = DB_numRows($result);
-        if ($nrows == 1) {
-            $U = DB_fetchArray($result);
-            $_USER['noicons'] = $U['noicons'];
-        }
-    }
-
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
 
@@ -2357,15 +2348,10 @@ function COM_getUserDateTimeFormat($date='')
     // Get display format for time
 
     if ($_USER['uid'] > 1) {
-        $result = DB_query("SELECT format FROM {$_TABLES['dateformats']}, {$_TABLES['userprefs']} WHERE "
-            . "{$_TABLES["dateformats"]}.dfid = {$_TABLES["userprefs"]}.dfid AND uid = {$_USER['uid']}");
-        $nrows = DB_numRows($result);
-        $A = DB_fetchArray($result);
-
-        if (empty($A['format'])) {
+        if (empty($_USER['format'])) {
             $dateformat = $_CONF['date'];
         } else {
-            $dateformat = $A['format'];
+            $dateformat = $_USER['format'];
         }
     } else {    
         $dateformat = $_CONF['date'];
