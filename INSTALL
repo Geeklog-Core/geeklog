@@ -1,8 +1,13 @@
+Updated December 17th, 2001
+
 Quick and Dirty Install
 -----------------------
 
 As of Geeklog 1.3 you now have option of installing Geeklog manually OR using the
-installation script.
+installation script. NOTE: you may be forced to use the manual installation method 
+depending on your hosting situation.  If you run the automated installation steps
+and the script says the write test failed then you will need to follow the manual
+instructions.
 
 To Upgrade
 -----------
@@ -11,8 +16,8 @@ First, back-up any files with custom code in them.  Then remove your current gee
 After that just uncompress the new version and copy the resulting directory to the name of your
 older geeklog version.  This it's just a matter of following the steps below.
 
-Using the installation script (preferred)
-------------------------------------------
+Using the automated installation script (preferred)
+----------------------------------------------------
 1) BACK-UP your database and, if upgrading, your current Geeklog installation
 2) Unpack the tarball *within* your web tree
 3) For *nix installations do a chown -R <webuser>:<webuser> /path/to/geeklog
@@ -38,11 +43,13 @@ Manual installations
 9) Copy /path/to/geeklog/public_html/lib-common.sample to /path/to/geeklog/public_html/lib-common.php
 10) edit lib-common.php and change the path to config.php to point to the right location
 11) Create the database you want Geeklog to reside in
+12) Now point your browser to http://<your_geeklog_domain>/admin/install/install.php
 12a) For fresh installations:
-    - import table.sql in /path/to/geeklog/sql
-    - import data.sql in /path/to/geeklog/sql
+    - select the "New Database Only" option from the installation type drop down
+    - enter the path to your base geeklog directory (where config.php resides)
+    - Hit the "Next" button 
 12b) For upgrades:
-    - cd into /path/to/geeklog/sql/updates
-    - import all necessary upgrade scripts (ignore any scripts ending in .php, those are used by
-      the installation script
+    - select the "Upgrade Database Only" option from teh installation type drop down  
+    - enter the path to your base geeklog directory (where config.php resides)
+    - Hit the "Next" button 
 13) that's it!
