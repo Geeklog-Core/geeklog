@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | story.php                                                                 |
-// | Geeklog story administration page.                                        |
 // |                                                                           |
+// | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.91 2003/05/23 11:43:27 dhaun Exp $
+// $Id: story.php,v 1.92 2003/06/21 08:52:47 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -45,11 +45,11 @@
 /**
 * Geeklog commong function library
 */
-include('../lib-common.php');
+require_once('../lib-common.php');
 /**
 * Security check to ensure user even belongs on this page
 */
-include('auth.inc.php');
+require_once('auth.inc.php');
 
 // Set this to true if you want to have this code output debug messages to 
 // the error log
@@ -58,11 +58,12 @@ $_STORY_VERBOSE = false;
 $display = '';
 
 if (!SEC_hasRights('story.edit')) {
-    $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]); 
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header')); 
     $display .= $MESSAGE[31];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     COM_errorLog("User {$_USER['username']} tried to illegally access the story administration screen",1);
     echo $display;
     exit;
@@ -94,15 +95,17 @@ function storyeditor($sid = '', $mode = '')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2) {
-            $display .= COM_startBlock($LANG24[40]);
+            $display .= COM_startBlock($LANG24[40], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[41];
-            $display .= COM_endBlock();
+            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             $display .= COM_article($A,n);
             return $display;
         } else if ($access == 0) {
-            $display .= COM_startBlock($LANG24[40]);
+            $display .= COM_startBlock($LANG24[40], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[42];
-            $display .= COM_endBlock();
+            $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
             return $display;
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
@@ -194,50 +197,58 @@ function storyeditor($sid = '', $mode = '')
     }
     
     if (!empty($A['title'])) {
-        $display .= COM_startBlock($LANG24[26]);
+        $display .= COM_startBlock ($LANG24[26], '',
+                            COM_getBlockTemplate ('_admin_block', 'header'));
         $A['day'] = $A['unixdate'];
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
         }
         $display .= COM_article($A,"n");
-        $display .= COM_endBlock();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     }
 
-    $display .= COM_startBlock($LANG24[5]);
+    $display .= COM_startBlock ($LANG24[5], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
 
     if ($access == 3) {
-        $story_templates->set_var('delete_option', "<input type=\"submit\" value=\"$LANG24[11]\" name=\"mode\">");
+        $story_templates->set_var ('delete_option',
+            '<input type="submit" value="' . $LANG24[11] . '" name="mode">');
     }
     if ($A['type'] == 'editsubmission' || $mode == 'editsubmission') {
-        $story_templates->set_var('submission_option', '<input type="hidden" name="type" value="submission">');
+        $story_templates->set_var ('submission_option',
+                '<input type="hidden" name="type" value="submission">');
     }
     $story_templates->set_var('lang_author', $LANG24[7]);
-    $story_templates->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}"));
+    $story_templates->set_var ('story_author', DB_getItem ($_TABLES['users'],
+                               'username', "uid = {$A['uid']}"));
     $story_templates->set_var('story_uid', $A['uid']);
 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
     $story_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
-    $story_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
+    $story_templates->set_var ('owner_username', DB_getItem ($_TABLES['users'],
+                               'username', "uid = {$A['owner_id']}"));
     $story_templates->set_var('owner_id', $A['owner_id']);
     $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
     $usergroups = SEC_getUserGroups();
     if ($access == 3) {
-        $groupdd .= '<SELECT name="group_id">';
+        $groupdd .= '<select name="group_id">';
         for ($i = 0; $i < count($usergroups); $i++) {
             $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
             if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                $groupdd .= ' SELECTED';
+                $groupdd .= ' selected="selected"';
             }
             $groupdd .= '>' . key($usergroups) . '</option>';
             next($usergroups);
         }
-        $groupdd .= '</SELECT>';
+        $groupdd .= '</select>';
     } else {
         // they can't set the group then
-        $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
-        $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
+        $groupdd .= DB_getItem ($_TABLES['groups'], 'grp_name',
+                                "grp_id = {$A['group_id']}");
+        $groupdd .= '<input type="hidden" name="group_id" value="'
+                 . $A['group_id'] . '">';
     }
     $story_templates->set_var('group_dropdown', $groupdd);
     $story_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
@@ -263,9 +274,9 @@ function storyeditor($sid = '', $mode = '')
         $ampm = 'am';
     }
     if ($ampm == 'pm') {
-        $story_templates->set_var('publishpm_selected','selected="SELECTED"');
+        $story_templates->set_var ('publishpm_selected', 'selected="selected"');
     } else {
-        $story_templates->set_var('publisham_selected','selected="SELECTED"');
+        $story_templates->set_var ('publisham_selected', 'selected="selected"');
     }
     $month_options = COM_getMonthFormOptions($publish_month);
     $story_templates->set_var('publish_month_options', $month_options);
@@ -300,13 +311,13 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var ('topic_options', COM_topicList ('tid,topic', $A['tid']));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
     if ($A['show_topic_icon'] == 1) {
-        $story_templates->set_var('show_topic_icon_checked', 'checked="CHECKED"');
+        $story_templates->set_var('show_topic_icon_checked', 'checked="checked"');
     } else {
         $story_templates->set_var('show_topic_icon_checked', '');
     }
     $story_templates->set_var('lang_draft', $LANG24[34]);
     if ($A['draft_flag'] == 1) {
-        $story_templates->set_var('is_checked', 'CHECKED');
+        $story_templates->set_var('is_checked', 'checked="checked"');
     }
     $story_templates->set_var('lang_mode', $LANG24[3]);
     $story_templates->set_var('status_options', COM_optionList($_TABLES['statuscodes'],'code,name',$A['statuscode']));
@@ -377,7 +388,7 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('lang_delete', $LANG24[11]); 
     $story_templates->parse('output','editor');
     $display .= $story_templates->finish($story_templates->get_var('output'));
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $display;
 }
@@ -397,9 +408,11 @@ function liststories($page = 1)
 
     $display = '';
 
-    $display .= COM_startBlock($LANG24[22]);
+    $display .= COM_startBlock ($LANG24[22], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    $story_templates->set_file(array('list'=>'liststories.thtml','row'=>'listitem.thtml'));
+    $story_templates->set_file (array ('list' => 'liststories.thtml',
+                                       'row' => 'listitem.thtml'));
 
     $story_templates->set_var('layout_url', $_CONF['layout_url']);
     $story_templates->set_var('site_url', $_CONF['site_url']);
@@ -518,7 +531,7 @@ function liststories($page = 1)
         $story_templates->set_var ('google_paging' ,'');
     }
     $display .= $story_templates->parse('output','list');
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $display;
 }
@@ -649,7 +662,7 @@ function insert_images($sid, $intro, $body)
 /** 
 * Saves story to database
 *
-* @param    string      $type           ??
+* @param    string      $type           story submission or (new) story
 * @param    string      $sid            ID of story to save
 * @param    int         $uid            ID of user that wrote the story
 * @param    string      $tid            Topic ID story belongs to
@@ -694,11 +707,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || (SEC_hasTopicAccess ($tid) < 2) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
-        $display .= COM_siteFooter();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= COM_siteFooter ();
         COM_errorLog("User {$_USER['username']} tried to illegally submit or edit story $sid",1);
         echo $display;
         exit;
@@ -715,8 +729,9 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         } else {
             $draft_flag = 0;
 
-            // OK, if this story was already in the database and the user changed this from a draft
-            // to an actual story then update the date to be now
+            // OK, if this story was already in the database and the user
+            // changed this from a draft to an actual story then update the
+            // date to be now
             if (DB_count($_TABLES['stories'],'sid',$sid) == 1) {
                 if (DB_getItem($_TABLES['stories'],'draft_flag',"sid = '$sid'") == 1) {
                     $unixdate = time();
@@ -762,7 +777,6 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($title))));
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
 
-        
         // Delete any images if needed
         for ($i = 1; $i <= count($delete); $i++) {
             $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename',                    "ai_sid = '$sid' AND ai_img_num = " . key ($delete));
@@ -794,7 +808,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         } else {
             $index_start = 1;
         }
-        
+
         if (count($HTTP_POST_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
             require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
@@ -821,13 +835,15 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 print 'File Upload Errors:<br>' . $upload->printErrors();
                 exit;
             }
-            // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will force any images bigger than
-            // the passed dimensions to be resized.  If mogrify is not set, any images larger than these
-            // dimensions will get validation errors
+
+            // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will
+            // force any images bigger than the passed dimensions to be resized.
+            // If mogrify is not set, any images larger than these dimensions
+            // will get validation errors
             $upload->setMaxDimensions($_CONF['max_image_width'], $_CONF['max_image_height']);
             $upload->setMaxFileSize($_CONF['max_image_size']); // size in bytes, 1048576 = 1MB
 
-            // Set file permissions on file after it gets uploaded (number is in octet)
+            // Set file permissions on file after it gets uploaded (number is in octal)
             $upload->setPerms('0644');
             $filenames = array();
             $end_index = $index_start + $upload->numFiles() - 1;
@@ -844,17 +860,18 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             reset($HTTP_POST_FILES);
             $upload->setDebug(true);
             $upload->uploadFiles();
-            
+
             if ($upload->areErrors()) {
                 $retval = COM_siteHeader('menu');
-                $retval .= COM_startBlock('File Upload Errors');
+                $retval .= COM_startBlock ($LANG24[30], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
                 $retval .= $upload->printErrors(false);
-                $retval .= COM_endBlock();
+                $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
                 $retval .= COM_siteFooter('true');
                 echo $retval;
                 exit; 
             }
-            
+
             reset($filenames);
             for ($z = $index_start; $z <= $end_index; $z++) {
                 DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
@@ -865,14 +882,15 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if ($_CONF['maximagesperarticle'] > 0) {
             list($errors, $introtext, $bodytext) = insert_images($sid, $introtext, $bodytext);
             if (count($errors) > 0) {
-                $display = COM_siteHeader('menu');
-                $display .= COM_startBlock($LANG24[54]);
-                $display .= $LANG24[55] . '<P>';
+                $display = COM_siteHeader ('menu');
+                $display .= COM_startBlock ($LANG24[54], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+                $display .= $LANG24[55] . '<p>';
                 for ($i = 1; $i <= count($errors); $i++) {
                     $display .= current($errors) . '<br>';
                     next($errors);
                 }
-                $display .= COM_endBlock();
+                $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
                 $display .= storyeditor($sid);
                 $display .= COM_siteFooter();
                 echo $display;
@@ -886,7 +904,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $return_to = $_CONF['site_admin_url'] . '/story.php?msg=9';
         }
         DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", $return_to);
-        
+
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
             DB_delete($_TABLES['storysubmission'],'sid',$sid);
