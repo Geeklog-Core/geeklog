@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.12 2002/06/06 07:20:20 dhaun Exp $
+// $Id: mysql.class.php,v 1.13 2002/06/26 14:54:45 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -101,7 +101,7 @@ class database {
         }
 
         // Connect to MySQL server
-        $conn = mysql_pconnect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
+        $conn = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
 
         // Set the database
         @mysql_select_db($this->_name) or die('error selecting database');
