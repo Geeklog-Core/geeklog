@@ -15,7 +15,6 @@
  * magpierss-general@lists.sourceforge.net
  *
  */
- 
 
 /* 
  * NOTES ON RSS PARSING PHILOSOPHY (moderately important):
@@ -75,7 +74,7 @@
  */
 
 class MagpieRSS {
-	/*
+    /*
 	 * Hybrid parser, and object.  (probably a bad idea! :)
 	 *
 	 * Useage Example:
@@ -94,245 +93,220 @@ class MagpieRSS {
 	 *
 	 * see rss_fetch.inc for a simpler interface
 	 */
-	 
-	var $parser;
-	
-	var $current_item	= array();	// item currently being parsed
-    var $items			= array();	// collection of parsed items
-	var $channel		= array();	// hash of channel fields
-	var $textinput		= array();
-	var $image			= array();
-	
-	var $parent_field	= array('RDF');
-	var $current_field	= '';
-	var $current_namespace	= false;
-	
-	var $ERROR = "";
-	
-/*======================================================================*\
+
+    var $parser;
+
+    var $current_item = array(); // item currently being parsed
+    var $items = array(); // collection of parsed items
+    var $channel = array(); // hash of channel fields
+    var $textinput = array();
+    var $image = array();
+
+    var $parent_field = array('RDF');
+    var $current_field = '';
+    var $current_namespace = false;
+
+    var $ERROR = "";
+
+    /*======================================================================*\
     Function: MagpieRSS
     Purpose:  Constructor, sets up XML parser,parses source,
 			  and populates object.. 
 	Input:	  String containing the RSS to be parsed
 \*======================================================================*/
-	function MagpieRSS ($source) {
-		
-		# if PHP xml isn't compiled in, die
-		#
-		if (!function_exists('xml_parser_create')) {
-			$this->error( "Failed to load PHP's XML Extension. " . 
-						  "http://www.php.net/manual/en/ref.xml.php",
-						   E_USER_ERROR );
-		}
-		
-		$parser = @xml_parser_create();
-		
-		if (!is_resource($parser))
-		{
-			$this->error( "Failed to create an instance of PHP's XML parser. " .
-						  "http://www.php.net/manual/en/ref.xml.php",
-						  E_USER_ERROR );
-		}
+    function MagpieRSS ($source)
+    { 
+        // if PHP xml isn't compiled in, die
+        
+        if (!function_exists('xml_parser_create')) {
+            $this->error("Failed to load PHP's XML Extension. " . "http://www.php.net/manual/en/ref.xml.php",
+                E_USER_ERROR);
+        } 
 
-		
-		$this->parser = $parser;
-		
-		# pass in parser, and a reference to this object
-		# setup handlers
-		#
-		xml_set_object( $this->parser, $this );
-		xml_set_element_handler($this->parser, 'start_element', 'end_element');
-		xml_set_character_data_handler( $this->parser, 'cdata' ); 
-	
-		
-		$status = xml_parse( $this->parser, $source );
-		
-		if (! $status ) {
-			$errorcode = xml_get_error_code( $this->parser );
-			if ( $errorcode != XML_ERROR_NONE ) {
-				$xml_error = xml_error_string( $errorcode );
-				$error_line = xml_get_current_line_number($this->parser);
-				$error_col = xml_get_current_column_number($this->parser);
-				$errormsg = "$xml_error at line $error_line, column $error_col";
+        $parser = @xml_parser_create();
 
-				$this->error( $errormsg );
-			}
-		}
-		
-		xml_parser_free( $this->parser );
-	}
-	
-	function start_element ($p, $element, &$attrs) {
-		$element 	= strtolower( $element );
-				
-		# check for a namespace, and split if found
-		#
-		$namespace	= false;
-		if ( strpos( $element, ':' ) ) {
-			list($namespace, $element) = split( ':', $element, 2); 
-		}
-		$this->current_field = $element;
-		if ( $namespace and $namespace != 'rdf' ) {
-			$this->current_namespace = $namespace;
-		}
-		
-		if ( $element == 'channel' ) {
-			array_unshift( $this->parent_field, 'channel' );
-		}
-		elseif ( $element == 'items' ) {
-			array_unshift( $this->parent_field, 'items' );
-		}
-		elseif ( $element == 'item' ) {
-			array_unshift( $this->parent_field, 'item' );
-		}
-		elseif ( $element == 'textinput' ) {
-			array_unshift( $this->parent_field, 'textinput' );
-		}
-		elseif ( $element == 'image' ) {
-			array_unshift( $this->parent_field, 'image' );
-		}
-		
-	}
-	
-	function end_element ($p, $element) {
-		$element = strtolower($element);
-							
-		if ( $element == 'item' ) {		
-			$this->items[] = $this->current_item;
-			$this->current_item = array();
-			array_shift( $this->parent_field );
-		}
-		elseif ( $element == 'channel' or $element == 'items' or 
-				 $element == 'textinput' or $element == 'image' ) {
-			array_shift( $this->parent_field );
-		}
-		
-		$this->current_field = '';
-		$this->current_namespace = false;
-	}
-	
-	function cdata ($p, $text) {
-		# skip item, channel, items first time we see them
-		#
-		if ( $this->parent_field[0] == $this->current_field or
-			 ! $this->current_field ) {
-			return;
-		}
-		elseif ( $this->parent_field[0] == 'channel') {
-			if ( $this->current_namespace ) {
-				$this->append(
-					$this->channel[ $this->current_namespace ][ $this->current_field ],
-					$text);
-			}
-			else {
-				$this->append($this->channel[ $this->current_field ], $text);
-			}
-		
-		}
-		elseif ( $this->parent_field[0] == 'item' ) {
-			if ( $this->current_namespace ) {
-				$this->append(
-					$this->current_item[ $this->current_namespace ][$this->current_field ],
-					$text);
-			}
-			else {
-				$this->append(
-					$this->current_item[ $this->current_field ],
-					$text );
-			}
-		}
-		elseif ( $this->parent_field[0] == 'textinput' ) {
-			if ( $this->current_namespace ) {
-				$this->append(
-					$this->textinput[ $this->current_namespace ][ $this->current_field ],
-					 $text );
-			}
-			else {
-				$this->append(
-					$this->textinput[ $this->current_field ],
-					$text );
-			}
-		}
-		elseif ( $this->parent_field[0] == 'image' ) {
-			if ( $this->current_namespace ) {
-				$this->append(
-					$this->image[ $this->current_namespace ][ $this->current_field ],
-					$text );
-			}
-			else {
-				$this->append(
-					$this->image[ $this->current_field ],
-					$text );
-			}
-		}
-	}
-	
-	function append (&$str1, $str2="") {
-		if (!isset($str1) ) {
-			$str1="";
-		}
-		$str1 .= $str2;
-	}
-	
-	function error ($errormsg, $lvl=E_USER_WARNING) {
-		// append PHP's error message if track_errors enabled
-		if ( $php_errormsg ) { 
-			$errormsg .= " ($php_errormsg)";
-		}
-		$this->ERROR = $errormsg;
-		if ( MAGPIE_DEBUG ) {
-			trigger_error( $errormsg, $lvl);		
-		}
-		else {
-			error_log( $errormsg, 0);
-		}
-	}
-		
+        if (!is_resource($parser)) {
+            $this->error("Failed to create an instance of PHP's XML parser. " . "http://www.php.net/manual/en/ref.xml.php",
+                E_USER_ERROR);
+        } 
 
-/*======================================================================*\
+        $this->parser = $parser; 
+        // pass in parser, and a reference to this object
+        // setup handlers
+        
+        xml_set_object($this->parser, $this);
+        xml_set_element_handler($this->parser, 'start_element', 'end_element');
+        xml_set_character_data_handler($this->parser, 'cdata');
+
+        $status = xml_parse($this->parser, $source);
+
+        if (! $status) {
+            $errorcode = xml_get_error_code($this->parser);
+            if ($errorcode != XML_ERROR_NONE) {
+                $xml_error = xml_error_string($errorcode);
+                $error_line = xml_get_current_line_number($this->parser);
+                $error_col = xml_get_current_column_number($this->parser);
+                $errormsg = "$xml_error at line $error_line, column $error_col";
+
+                $this->error($errormsg);
+            } 
+        } 
+
+        xml_parser_free($this->parser);
+    } 
+
+    function start_element ($p, $element, &$attrs)
+    {
+        $element = strtolower($element); 
+        // check for a namespace, and split if found
+        
+        $namespace = false;
+        if (strpos($element, ':')) {
+            list($namespace, $element) = split(':', $element, 2);
+        } 
+        $this->current_field = $element;
+        if ($namespace and $namespace != 'rdf') {
+            $this->current_namespace = $namespace;
+        } 
+
+        if ($element == 'channel') {
+            array_unshift($this->parent_field, 'channel');
+        } elseif ($element == 'items') {
+            array_unshift($this->parent_field, 'items');
+        } elseif ($element == 'item') {
+            array_unshift($this->parent_field, 'item');
+        } elseif ($element == 'textinput') {
+            array_unshift($this->parent_field, 'textinput');
+        } elseif ($element == 'image') {
+            array_unshift($this->parent_field, 'image');
+        } 
+    } 
+
+    function end_element ($p, $element)
+    {
+        $element = strtolower($element);
+
+        if ($element == 'item') {
+            $this->items[] = $this->current_item;
+            $this->current_item = array();
+            array_shift($this->parent_field);
+        } elseif ($element == 'channel' or $element == 'items' or
+            $element == 'textinput' or $element == 'image') {
+            array_shift($this->parent_field);
+        } 
+
+        $this->current_field = '';
+        $this->current_namespace = false;
+    } 
+
+    function cdata ($p, $text)
+    { 
+        // skip item, channel, items first time we see them
+        
+        if ($this->parent_field[0] == $this->current_field or
+            ! $this->current_field) {
+            return;
+        } elseif ($this->parent_field[0] == 'channel') {
+            if ($this->current_namespace) {
+                $this->append($this->channel[ $this->current_namespace ][ $this->current_field ],
+                    $text);
+            } else {
+                $this->append($this->channel[ $this->current_field ], $text);
+            } 
+        } elseif ($this->parent_field[0] == 'item') {
+            if ($this->current_namespace) {
+                $this->append($this->current_item[ $this->current_namespace ][$this->current_field ],
+                    $text);
+            } else {
+                $this->append($this->current_item[ $this->current_field ],
+                    $text);
+            } 
+        } elseif ($this->parent_field[0] == 'textinput') {
+            if ($this->current_namespace) {
+                $this->append($this->textinput[ $this->current_namespace ][ $this->current_field ],
+                    $text);
+            } else {
+                $this->append($this->textinput[ $this->current_field ],
+                    $text);
+            } 
+        } elseif ($this->parent_field[0] == 'image') {
+            if ($this->current_namespace) {
+                $this->append($this->image[ $this->current_namespace ][ $this->current_field ],
+                    $text);
+            } else {
+                $this->append($this->image[ $this->current_field ],
+                    $text);
+            } 
+        } 
+    } 
+
+    function append (&$str1, $str2 = "")
+    {
+        if (!isset($str1)) {
+            $str1 = "";
+        } 
+        $str1 .= $str2;
+    } 
+
+    function error ($errormsg, $lvl = E_USER_WARNING)
+    { 
+        // append PHP's error message if track_errors enabled
+        if ($php_errormsg) {
+            $errormsg .= " ($php_errormsg)";
+        } 
+        $this->ERROR = $errormsg;
+        if (MAGPIE_DEBUG) {
+            trigger_error($errormsg, $lvl);
+        } else {
+            error_log($errormsg, 0);
+        } 
+    } 
+
+    /*======================================================================*\
 	EVERYTHING BELOW HERE IS FOR DEBUGGING PURPOSES
 \*======================================================================*/
-	function show_list () {
-		echo "<ol>\n";
-		foreach ($this->items as $item) {
-			echo "<li>", $this->show_item( $item );
-		}
-		echo "</ol>";
-	}
-	
-	function show_channel () {
-		echo "channel:<br>";
-		echo "<ul>";
-		while ( list($key, $value) = each( $this->channel ) ) {
-			echo "<li> $key: $value";
-		}
-		echo "</ul>";
-	}
-	
-	function show_item ($item) {
-		echo "item: $item[title]";
-		echo "<ul>";
-		while ( list($key, $value) = each($item) ) {
-			if ( is_array($value) ) {
-				echo "<br><b>$key</b>";
-				echo "<ul>";
-				while ( list( $ns_key, $ns_value) = each( $value ) ) {
-					echo "<li>$ns_key: $ns_value";
-				}
-				echo "</ul>";
-			}
-			else {
-				echo "<li> $key: $value";
-			}
-		}
-		echo "</ul>";
-	}
+    function show_list ()
+    {
+        echo "<ol>\n";
+        foreach ($this->items as $item) {
+            echo "<li>", $this->show_item($item);
+        } 
+        echo "</ol>";
+    } 
 
-/*======================================================================*\
+    function show_channel ()
+    {
+        echo "channel:<br>";
+        echo "<ul>";
+        while (list($key, $value) = each($this->channel)) {
+            echo "<li> $key: $value";
+        } 
+        echo "</ul>";
+    } 
+
+    function show_item ($item)
+    {
+        echo "item: $item[title]";
+        echo "<ul>";
+        while (list($key, $value) = each($item)) {
+            if (is_array($value)) {
+                echo "<br><b>$key</b>";
+                echo "<ul>";
+                while (list($ns_key, $ns_value) = each($value)) {
+                    echo "<li>$ns_key: $ns_value";
+                } 
+                echo "</ul>";
+            } else {
+                echo "<li> $key: $value";
+            } 
+        } 
+        echo "</ul>";
+    } 
+
+    /*======================================================================*\
 	END DEBUGGING FUNCTIONS	
 \*======================================================================*/
-	
-
 
 } # end class RSS
+
 ?>
