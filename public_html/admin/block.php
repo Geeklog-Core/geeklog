@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.57 2004/02/08 19:00:49 dhaun Exp $
+// $Id: block.php,v 1.58 2004/03/21 20:58:54 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -530,8 +530,8 @@ function listblocks()
             $block_templates->set_var('moveTitleMsg', $moveTitleMsg);
             $block_templates->set_var('dnTitleMsg', $LANG21[57]);
             if ($A['blockorder'] != $blockOrd) {
-                $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `blockorder` = ' " .
-                      $blockOrd . "' WHERE `bid` = '" . $A['bid'] ."'";
+                $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = '" .
+                      $blockOrd . "' WHERE bid = '" . $A['bid'] ."'";
                 DB_query($q);
             }
             $block_templates->set_var('block_order', $blockOrd);
@@ -566,19 +566,19 @@ function moveBlock() {
 
         switch ($where) {
 
-            case ("up"): $q = "UPDATE `" . $_TABLES['blocks'] . "` SET blockorder = blockorder-11 WHERE `bid` = '" . $bid . "'";
+            case ("up"): $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = blockorder-11 WHERE bid = '" . $bid . "'";
                          DB_query($q);
                          break;
 
-            case ("dn"): $q = "UPDATE `" . $_TABLES['blocks'] . "` SET blockorder = blockorder+11 WHERE `bid` = '" . $bid . "'";
+            case ("dn"): $q = "UPDATE " . $_TABLES['blocks'] . " SET blockorder = blockorder+11 WHERE bid = '" . $bid . "'";
                          DB_query($q);
                          break;
 
-            case ("0"):  $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `onleft` = '1', blockorder = blockorder-1 WHERE `bid` = '" . $bid ."'";
+            case ("0"):  $q = "UPDATE " . $_TABLES['blocks'] . " SET onleft = '1', blockorder = blockorder-1 WHERE bid = '" . $bid ."'";
                          DB_query($q);
                          break;
 
-            case ("1"):  $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `onleft` = '0',blockorder = blockorder-1 WHERE `bid` = '" . $bid ."'";
+            case ("1"):  $q = "UPDATE " . $_TABLES['blocks'] . " SET onleft = '0',blockorder = blockorder-1 WHERE bid = '" . $bid ."'";
                          DB_query($q);
                          break;
         }
