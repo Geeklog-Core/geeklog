@@ -30,7 +30,17 @@
 // +---------------------------------------------------------------------------+
 //
 
-// NOTE: as of Geeklog 1.3.5 you should not have to manually edit this file
+/**
+* This is the common library for Geeklog.  Through our code, you will see functions
+* with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions can be found in this
+* file.  This file provide all configuration variables needed by Geeklog with a
+* series of includes see futher down.  You only need to modify one line in this file.
+* WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
+* modified frequently by the Geeklog development team.  If you put your hacks in
+* lib-custom.php you will find upgrading much easier. NOTE: as of Geeklog 1.3.5 you
+* should not have to edit this file
+*
+*/
 
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
@@ -86,7 +96,10 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-// Include appropriate DBMS object
+/**
+* Include appropriate DBMS object
+*
+*/
 require_once($_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php');
 
 // Instantiate the database object
@@ -109,7 +122,7 @@ $_DB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'COM_errorLog');
 * not write it then you may or may not get something useful by turning
 * this on.
 *
-* @flag		boolean		true or false
+* @param        boolean     $flag       true or false
 *
 */
 function DB_setdebug($flag)
@@ -124,8 +137,8 @@ function DB_setdebug($flag)
 *
 * This executes the passed SQL and returns the recordset or errors out
 *
-* @sql          string  SQL to be executed
-* @ignore_error int     If 1 this function supresses any error messages
+* @param        string  $sql                SQL to be executed
+* @param        int     $ignore_errors      If 1 this function supresses any error messages
 *
 */
 function DB_query($sql, $ignore_errors=0)
@@ -139,12 +152,13 @@ function DB_query($sql, $ignore_errors=0)
 * Saves information to the database
 *
 * This will use a REPLACE INTO to save a record into the
-* database
+* database. NOTE: this function is going to change in the near future
+* to remove dependency of REPLACE INTO. Please use DB_query if you can
 *
-* @table        string  The table to save to
-* @fields       string  Comma demlimited list of fields to save
-* @values       string  Values to save to the database table
-* @return_page  string  URL to send user to when done
+* @param        string      $table          The table to save to
+* @param        string      $fields         Comma demlimited list of fields to save
+* @param        string      $values         Values to save to the database table
+* @param        string      $return_page    URL to send user to when done
 *
 */
 function DB_save($table,$fields,$values,$return_page='') 
@@ -169,9 +183,10 @@ function DB_save($table,$fields,$values,$return_page='')
 *
 * This will delete some data from the given table where id = value
 *
-* @table        string          Table to delete data from
-* @id           array|string    field name(s) to use in where clause
-* @value        array|string   	value(s) to use in where clause 
+* @param        string              $table          Table to delete data from
+* @param        array|string        $id             field name(s) to use in where clause
+* @param        array|string        $value          value(s) to use in where clause
+* @param        string              $return_page    page to send user to when done
 *
 */
 function DB_delete($table,$id,$value,$return_page='')
@@ -194,9 +209,9 @@ function DB_delete($table,$id,$value,$return_page='')
 /**
 * Gets a single item from the database
 *
-* @table        string        Table to get item from
-* @what         string        field name to get
-* @selection    string        Where clause to use in SQL
+* @param        string      $table      Table to get item from
+* @param        string      $what       field name to get
+* @param        string      $selection  Where clause to use in SQL
 *
 */
 function DB_getItem($table,$what,$selection='') 
@@ -216,12 +231,13 @@ function DB_getItem($table,$what,$selection='')
 * This will change the data in the given table that meet the given criteria and will
 * redirect user to another page if told to do so
 *
-* @table        string          Table to perform change on
-* @item_to_set  string          field name to set 
-* @value_to_set string          Value to set abovle field to 
-* @id           array|string    field name(s) to use in where clause 
-* @value        array|string    Value(s) to use in where clause
-* @return_page	string          page to send user to when done with change
+* @param        string          $table              Table to perform change on
+* @param        string          $item_to_set        field name to set 
+* @param        string          $value_to_set       Value to set abovle field to 
+* @param        array|string    $id                 field name(s) to use in where clause 
+* @param        array|string    $value              Value(s) to use in where clause
+* @param	    string          $return_page        page to send user to when done with change
+* @param        boolean         $supress_quotes     whether or not to use single quotes in where clause
 *
 */
 function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_page='',$supress_quotes=false) 
@@ -247,9 +263,9 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 * given criteria and will redirect user to another page if 
 * told to do so
 *
-* @table        string          Table to perform count on
-* @id           array|string    field name(s) to use in where clause
-* @value        array|string    Value(s) to use in where clause
+* @param        string              $table      Table to perform count on
+* @param        array|string        $id         field name(s) to use in where clause
+* @param        array|string        $value      Value(s) to use in where clause
 *
 */
 function DB_count($table,$id='',$value='') 
@@ -265,13 +281,13 @@ function DB_count($table,$id='',$value='')
 * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
 * to another table.  They can be the same table.
 *
-* @table        string          Table to insert record into
-* @fields       string          Comma delmited list of fields to copy over
-* @values       string          Values to store in database field
-* @tablefrom    string          Table to get record from
-* @id           array|string   	Field name(s) to use in where clause 
-* @value        array|string    Value(s) to use in where clause
-* @return_page  string          Page to send user to when done
+* @param        string          $table          Table to insert record into
+* @param        string          $fields         Comma delmited list of fields to copy over
+* @param        string          $values         Values to store in database field
+* @param        string          $tablefrom      Table to get record from
+* @param        array|string   	$id             Field name(s) to use in where clause 
+* @param        array|string    $value          Value(s) to use in where clause
+* @param        string          $return_page    Page to send user to when done
 *
 */
 function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='') 
@@ -295,7 +311,7 @@ function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
 *
 * This returns the number of rows in a recordset
 *
-* @recordset object     The recordset to operate one
+* @param        object     $recordset      The recordset to operate one
 *
 */
 function DB_numRows($recordset)
@@ -310,9 +326,9 @@ function DB_numRows($recordset)
 *
 * This returns the number of rows in a recordset
 *
-* @recordset    object      The recordset to operate one
-* @row          int         row to get data from
-* @field        string      field to return
+* @param        object      $recordset      The recordset to operate one
+* @param        int         $row            row to get data from
+* @param        string      $field          field to return
 *
 */
 function DB_result($recordset,$row,$field)
@@ -327,7 +343,7 @@ function DB_result($recordset,$row,$field)
 *
 * This returns the number of fields in a recordset
 *
-* @recordset    object     The recordset to operate on
+* @param        object     $recordset       The recordset to operate on
 *
 */
 function DB_numFields($recordset)
@@ -342,8 +358,8 @@ function DB_numFields($recordset)
 *
 * Returns the field name for a given field number
 *
-* @recordset object     The recordset to operate on
-* @fnumber      int     field number to return the name of
+* @param        object      $recordset      The recordset to operate on
+* @param        int         $fnumber        field number to return the name of
 *
 */
 function DB_fieldName($recordset,$fnumber)
@@ -358,7 +374,7 @@ function DB_fieldName($recordset,$fnumber)
 *
 * Retrieves returns the number of effected rows for last query
 *
-* @recordset object     The recordset to operate on
+* @param        object      $recordset      The recordset to operate on
 *
 */
 function DB_affectedRows($recordset)
@@ -373,7 +389,7 @@ function DB_affectedRows($recordset)
 *
 * Gets the next record in a recordset and returns in array
 *
-* @recordset    object  The recordset to operate on
+* @param        object      $recordset      The recordset to operate on
 *
 */
 function DB_fetchArray($recordset)
@@ -388,7 +404,8 @@ function DB_fetchArray($recordset)
 *
 * Returns the last auto_increment ID generated for recordset
 *
-* @recordset    object  Recorset to operate on
+* @param        object      $recordset      Recorset to operate on
+*
 */
 function DB_insertId($recordset='')
 {
@@ -424,7 +441,7 @@ function DB_createDatabaseStructures()
 /**
 * Executes the sql upgrade script(s)
 *
-* @current_gl_version       string      version of geeklog to upgrade from
+* @param        string      $current_gl_version     version of geeklog to upgrade from
 *
 */
 function DB_doDatabaseUpgrade($current_gl_version) 
