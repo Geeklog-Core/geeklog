@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.89 2003/05/09 10:27:45 dhaun Exp $
+// $Id: story.php,v 1.90 2003/05/19 08:52:19 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -128,10 +128,12 @@ function storyeditor($sid = '', $mode = '')
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
+        $A['postmode'] = $_CONF['postmode'];
         $A['statuscode'] = 0;
         $A['featured'] = 0;
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Story Admin'");
+        $A['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                     "grp_name = 'Story Admin'");
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;
