@@ -91,59 +91,68 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
+// Constants used for TTL values below
+define(MINUTE,60);
+define(HOUR,MINUTE * 60);
+define(DAY, HOUR * 24);
+define(WEEK, DAY * 7);
+
+/**
+* Lib security is a bit DB intensive with it's recursive function calls to get usre
+* rights and what not.  This is a general TTL for that entire file
+**/
+$_SECURITY_TTL = HOUR * 2;
+
 /**
 * This is a general Time-To-Live array for the tables.  To start, these values will
 * only be used for calls to DB_count().  We may add references to the values more after
 * we make more concrete decisions as a team
 *
-* NOTE: this array wil be ignored by drivers that don't support SQL caching (e.g. mysql.class.php)
+* NOTE: this array will be ignored by drivers that don't support SQL caching (e.g. mysql.class.php)
 *
 **/
-define(HOUR,3600);
-define(DAY, HOUR * 24);
-define(WEEK, DAY * 7);
 $_ttl_default = HOUR;
-$_TBL_TTL['access']              = $_ttl_default;
-$_TBL_TTL['article_images']      = $_ttl_default;
-$_TBL_TTL['blocks']              = $_ttl_default;
-$_TBL_TTL['commentcodes']        = $_ttl_default;
-$_TBL_TTL['commentmodes']        = $_ttl_default;
-$_TBL_TTL['comments']            = HOUR / 4;
-$_TBL_TTL['commentspeedlimit']   = $_ttl_default;
-$_TBL_TTL['cookiecodes']         = $_ttl_default;
-$_TBL_TTL['dateformats']         = $_ttl_default;
-$_TBL_TTL['events']              = $_ttl_default;
-$_TBL_TTL['eventsubmission']     = $_ttl_default;
-$_TBL_TTL['featurecodes']        = $_ttl_default;
-$_TBL_TTL['features']            = $_ttl_default;
-$_TBL_TTL['frontpagecodes']      = $_ttl_default;
-$_TBL_TTL['group_assignments']   = $_ttl_default;
-$_TBL_TTL['groups']              = HOUR / 2;
-$_TBL_TTL['links']               = $_ttl_default;
-$_TBL_TTL['linksubmission']      = HOUR / 4;
-$_TBL_TTL['maillist']            = $_ttl_default;
-$_TBL_TTL['personal_events']     = 0;
-$_TBL_TTL['plugins']             = $_ttl_default;
-$_TBL_TTL['pollanswers']         = 0;
-$_TBL_TTL['pollquestions']       = $_ttl_default;
-$_TBL_TTL['pollvoters']          = 0;
-$_TBL_TTL['postmodes']           = $_ttl_default;
-$_TBL_TTL['sessions']            = 0;
-$_TBL_TTL['sortcodes']           = $_ttl_default;
-$_TBL_TTL['statuscodes']         = $_ttl_default;
-$_TBL_TTL['stories']             = HOUR / 4;
-$_TBL_TTL['storysubmission']     = HOUR / 4;
-$_TBL_TTL['submitspeedlimit']    = $_ttl_default;
-$_TBL_TTL['topics']              = $_ttl_default;
-$_TBL_TTL['tzcodes']             = $_ttl_default;
-$_TBL_TTL['usercomment']         = 0;
-$_TBL_TTL['userevent']           = 0;
-$_TBL_TTL['userindex']           = 0;
-$_TBL_TTL['userinfo']            = 0;
-$_TBL_TTL['userprefs']           = 0;
-$_TBL_TTL['users']               = HOUR / 4;
-$_TBL_TTL['vars']                = $_ttl_default;
-$_TBL_TTL['wordlist']            = $_ttl_default;
+$_TBL_TTL[$_TABLES['access']]              = $_ttl_default;
+$_TBL_TTL[$_TABLES['article_images']]      = $_ttl_default;
+$_TBL_TTL[$_TABLES['blocks']]              = $_ttl_default;
+$_TBL_TTL[$_TABLES['commentcodes']]        = $_ttl_default;
+$_TBL_TTL[$_TABLES['commentmodes']]        = $_ttl_default;
+$_TBL_TTL[$_TABLES['comments']]            = HOUR / 4;
+$_TBL_TTL[$_TABLES['commentspeedlimit']]   = $_ttl_default;
+$_TBL_TTL[$_TABLES['cookiecodes']]         = $_ttl_default;
+$_TBL_TTL[$_TABLES['dateformats']]         = $_ttl_default;
+$_TBL_TTL[$_TABLES['events']]              = $_ttl_default;
+$_TBL_TTL[$_TABLES['eventsubmission']]     = $_ttl_default;
+$_TBL_TTL[$_TABLES['featurecodes']]        = $_ttl_default;
+$_TBL_TTL[$_TABLES['features']]            = $_ttl_default;
+$_TBL_TTL[$_TABLES['frontpagecodes']]      = $_ttl_default;
+$_TBL_TTL[$_TABLES['group_assignments']]   = $_ttl_default;
+$_TBL_TTL[$_TABLES['groups']]              = HOUR / 2;
+$_TBL_TTL[$_TABLES['links']]               = $_ttl_default;
+$_TBL_TTL[$_TABLES['linksubmission']]      = HOUR / 4;
+$_TBL_TTL[$_TABLES['maillist']]            = $_ttl_default;
+$_TBL_TTL[$_TABLES['personal_events']]     = 0;
+$_TBL_TTL[$_TABLES['plugins']]             = $_ttl_default;
+$_TBL_TTL[$_TABLES['pollanswers']]         = 0;
+$_TBL_TTL[$_TABLES['pollquestions']]       = $_ttl_default;
+$_TBL_TTL[$_TABLES['pollvoters']]          = 0;
+$_TBL_TTL[$_TABLES['postmodes']]           = $_ttl_default;
+$_TBL_TTL[$_TABLES['sessions']]            = 0;
+$_TBL_TTL[$_TABLES['sortcodes']]           = $_ttl_default;
+$_TBL_TTL[$_TABLES['statuscodes']]         = $_ttl_default;
+$_TBL_TTL[$_TABLES['stories']]             = HOUR / 4;
+$_TBL_TTL[$_TABLES['storysubmission']]     = HOUR / 4;
+$_TBL_TTL[$_TABLES['submitspeedlimit']]    = $_ttl_default;
+$_TBL_TTL[$_TABLES['topics']]              = $_ttl_default;
+$_TBL_TTL[$_TABLES['tzcodes']]             = $_ttl_default;
+$_TBL_TTL[$_TABLES['usercomment']]         = 0;
+$_TBL_TTL[$_TABLES['userevent']]           = 0;
+$_TBL_TTL[$_TABLES['userindex']]           = 0;
+$_TBL_TTL[$_TABLES['userinfo']]            = 0;
+$_TBL_TTL[$_TABLES['userprefs']]           = 0;
+$_TBL_TTL[$_TABLES['users']]               = HOUR / 4;
+$_TBL_TTL[$_TABLES['vars']]                = $_ttl_default;
+$_TBL_TTL[$_TABLES['wordlist']]            = $_ttl_default;
 
 /**
 * Include appropriate DBMS object
@@ -324,14 +333,14 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 function DB_count($table,$id='',$value='',$ttl='') 
 {
     global $_DB, $_TBL_TTL;
-
+    
     // If no ttl given, get from $_TBL_TTL
-    if (empty($ttl)) {
+    if (!is_numeric($ttl)) {
         $ttl = $_TBL_TTL[$table];
     }
 
     // If no ttl to this point then default to 0
-    if (empty($ttl)) {
+    if (!is_numeric($ttl)) {
         $ttl = 0;
     }
 
@@ -526,6 +535,13 @@ function DB_doDatabaseUpgrade($current_gl_version)
     global $_DB;
 
     return $_DB->dbDoDatabaseUpgrade($current_gl_version);
+}
+
+function DB_numQueries()
+{
+    global $_DB;
+    
+    return $_DB->dbNumQueries();
 }
 
 ?>
