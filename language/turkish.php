@@ -5,8 +5,9 @@
 # This is the turkish language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
-# Copyright (C) 2003 Sinan Ussakli
-# sinan@ussakli.net
+# Copyright (C) 2003 ScriptEvi.com
+# webmaster@scriptevi.com
+# http://www.scriptevi.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -43,13 +44,13 @@ $LANG_CHARSET = "iso-8859-9";
 
 $LANG01 = array(
 	1 => "Ekleyen:",
-	2 => "okumaya devam et",
+	2 => "devamý",
 	3 => "yorum",
 	4 => "Deðiþtir",
-	5 => "Oy kullan",
+	5 => "Oy Kullan",
 	6 => "Sonuçlar",
 	7 => "Anket Sonuçlarý",
-	8 => "oylar",
+	8 => "oy",
 	9 => "Yönetici kontrolleri:",
 	10 => "Gönderilenler",
 	11 => "Yazýlar",
@@ -65,10 +66,10 @@ $LANG01 = array(
 	21 => "Kullanýcý Adý",
 	22 => "Kullanýcý Tanýmlayýcýsý",
 	23 => "Güvenlik Seviyesi",
-	24 => "Herhangi",
+	24 => "Ýsimsiz Kullanýcý",
 	25 => "Yorum Ekle",
 	26 => "Aþaðýdaki yorumlarýn sorumluluðu gönderene aittir. Sitemiz herhangi bir sorumluluk kabul etmez.",
-	27 => "En Yeni Gönderilen",
+	27 => "En Son",
 	28 => "Sil",
 	29 => "Hiç yorum yapýlmamýþ.",
 	30 => "Eski Yazýlar",
@@ -76,7 +77,7 @@ $LANG01 = array(
 	32 => "Kullanýcý adýnýz yanlýþ",
 	33 => "Hata, kayýt dosyasýna yazýlamýyor",
 	34 => "Hata",
-	35 => "Çýkýþ yap",
+	35 => "Çýkýþ Yap",
 	36 => "",
 	37 => "Kullanýcýlardan hiç bir yazý gelmemiþ",
 	38 => "",
@@ -99,7 +100,7 @@ $LANG01 = array(
 	55 => "Hata",
 	56 => "Oy kullan",
 	57 => "Þifre",
-	58 => "Sisteme gir",
+	58 => "Sisteme Gir",
 	59 => "Hala üye deðilmisiniz?<br><a href=\"{$_CONF['site_url']}/users.php?mode=new\">Üye olun</a>",
 	60 => "Yorum Gönder",
 	61 => "Yeni ",
@@ -108,11 +109,11 @@ $LANG01 = array(
 	64 => "Bu Yazýyý bir Arkadaþýna Gönder",
 	65 => "Basýlabilir Hali",
 	66 => "Takvimim",
-	67 => "", //in turkish welcome to comes after site name. ie. GeekLog Site Welcome to
+	67 => " ne Hoþ Geldiniz", //in turkish welcome to comes after site name. ie. GeekLog Site Welcome to
 	68 => "ana Sayfa",
 	69 => "iletiþim",
 	70 => "ara",
-	71 => "contribute",
+	71 => "yazý ekle",
 	72 => "web kaynaklarý",
 	73 => "geçmiþ anketler",
 	74 => "takvim",
@@ -134,9 +135,9 @@ $LANG01 = array(
 	90 => "Ana Sayfa",
 	91 => "Yaratýlma süresi:",
 	92 => "saniye",
-	93 => "Kopya Hakký",
+	93 => "Copyright",
 	94 => "Bu sayfalarda yayýmlanan materyalin tüm haklarý sahiplerine aittir.",
-	95 => "Güç:",
+	95 => "Powered By:",
 	96 => "Gruplar",
     97 => "Kelime Listesi",
 	98 => "Eklentiler",
@@ -145,9 +146,9 @@ $LANG01 = array(
     101 => 'Etkinliklerim',
     102 => 'Site Etkinlikleri',
     103 => 'Veritabaný Yedekleri',
-    104 => 'tarafýndan',
+    104 => 'ta. Gönderen:',
     105 => 'Kullanýcýlara Mesaj',
-    106 => 'Görünümler',
+    106 => 'Okunma',
     107 => 'GL Sürüm Testi',
     108 => 'Önbelleði Temizle'
 );
@@ -229,7 +230,7 @@ $LANG04 = array(
 	20 => "Belirttiðiniz email adresi gerçek bir email adresine benzemiyor",
 	21 => "Hata",
 	22 => "{$_CONF['site_name']} üye ol!",
-	23 => "Bir kullanýcý hesabý yaratmanýz size {$_CONF['site_name']} üyeliði saðlar. Bu sayede sitede yorumlar ekleyebilir, kendi içeriðinizi ekleyebilirsiniz. Eðer kullanýcý hesabýnýz yoksa sadece Herhangi birisi olarak içerik ve yorum gönderebilirsiniz. Sistemimize verdiðiniz email adresi <b><i>hiç bir zaman</i></b> sitede gösterilmeyecektir.",
+	23 => "Bir kullanýcý hesabý yaratmanýz size {$_CONF['site_name']} üyeliði saðlar. Bu sayede siteye kendinize ait yorumlarýnýzý gönderebilir ve kendi içeriðinizi düzenleyebilirsiniz. Eðer kullanýcý hesabýnýz yoksa sadece Herhangi Birisi-Ýsimsiz Kullanýcý olarak içerik ve yorum gönderebilirsiniz. Sistemimize verdiðiniz email adresi <b><i>hiç bir zaman</i></b> sitede görüntülenmeyecektir.",
 	24 => "Þifreniz verdiðiniz email adresinize gönderilecektir.",
 	25 => "Þifrenizi mi unuttunuz?",
 	26 => "Kullanýcý adýnýzý girin ve Þifremi Gönder tuþuna basýn. Yeni yaratýlacak bir þifre sistemimize kayýtlý olan email adresinize gönderilecektir.",
@@ -277,7 +278,7 @@ $LANG04 = array(
 	68 => "Beni hatýrla:",
 	69 => "Sizi sisteme giriþ yaptýktan sonra hatýrlama süresi",
 	70 => "{$_CONF['site_name']} için içerik ve görünüm ayarlarý düzenleyin",
-	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these great features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  Then use the login form to the left to log in!",
+	71 => "{$_CONF['site_name']} nin en büyük özelliði, içeriðinizi özelleþtirebilir, bu sitenin tüm görüntüsünü deðiþtirebilirsiniz.  Bu büyük avantajlardan yararlanmak için öncelikle {$_CONF['site_name']} ne <a href=\"{$_CONF['site_url']}/users.php?mode=new\">kayýt yapmalýsýnýz</a>.  Zaten kayýtlý bir üyemisiniz?  O zaman sol taraftaki formu kullanarak giriþ yapýnýz!",
     72 => "Tema",
     73 => "Dil",
     74 => "Sitenin görünümünü deðiþtirin!",
@@ -292,7 +293,26 @@ $LANG04 = array(
     83 => 'Yazý gönderme istatistikleri -',
     84 => 'Yazýlan yazýlarýn toplamý:',
     85 => 'Yazýlan yorumlarýn toplamý:',
-    86 => 'Gönderdiði tüm mesajlar:'
+    86 => 'Gönderdiði tüm mesajlar:',
+    87 => 'Giriþ Adýnýz',
+    88 => 'Birisi (belki siz) ' . $_CONF['site_name'] . ', sitesindeki "%s" hesabýnýz için yeni bir þifre istedi <' . $_CONF['site_url'] . ">.\n\nÞayet siz gerçekten bu þifreyi almak istiyorsanýz, lütfen bu linki týklayýn:\n\n",
+    89 => "Þayet bu þifreyi almak istemiyorsanýz, bu mesajý dikkate almayýn ve bu isteði önemsemeyin (þifreniz deðiþmeyecek ve olduðu gibi kalacaktýr).\n\n",
+    90 => 'Aþaðýdaki hesabýnýz için yeni bir þifre girmelisiniz. Not: bu formu gönderinceye kadar eski þifreniz geçerlidir.',
+    91 => 'Yeni Þifre Tespit Et',
+    92 => 'Yeni Þifre Gir',
+    93 => 'Yeni bir þifre isteðiniz %d saniye önceydi. Bu site þifre istekleri arasýnda en az %d saniye olmasýný aramaktadýr.',
+    94 => '"%s" isimli üyenin Hesabýný Sil',
+    95 => 'Aþaðýdaki "hesabý sil" butonuna týklayýnca hesabýnýz, veritabanýmýzdan kaldýrýlacaktýr. Not, bu hesabýnýz altýnda gönderdiðiniz yazýlar ve yorumlar <strong>silinmeyecektir</strong> fakat iletiler "Ýsimsiz Kullanýcý" olarak görüntülenecektir.',
+    96 => 'hesabý sil',
+    97 => 'Hesap Silme Onayý',
+    98 => 'Hesabýnýzý silmek istediðinize eminmisiniz? Böylece yeni bir hesap yaratýncaya kadar bu siteye kayýtlý kullanýcý olarak giremeyeceksiniz. Þayet eminseniz aþaðýdaki formda ki "hesabý sil" butonuna tekrar týklayýnýz.',
+    99 => 'isimli üyenin Gizlilik Seçenekleri',
+    100 => 'Yöneticiden Email',
+    101 => 'Site yöneticilerinden email izni',
+    102 => 'Üyelerden Email',
+    103 => 'Diðer üyelerden email izni',
+    104 => 'Aktifliðinizin Görüntülenmesi',
+    105 => 'Aktif Kullanýcýlar Bloðunda görüntülenme'
 );
 
 ###############################################################################
@@ -302,7 +322,7 @@ $LANG05 = array(
 	1 => "Gösterilecek hiç haber yok",
 	2 => "Gösterilecek hiç haber yazýsý yok. Bu konu hakkýnda hiç haber olmayabilir, veya belirlediðiniz ayarlar yüzünden gösterilemiyor olabilir",
 	3 => " $topic için",
-	4 => "Bugünün Öncelikli Haberi",
+	4 => "Günün Yazýsý",
 	5 => "Sonraki",
 	6 => "Önceki"
 );
@@ -324,7 +344,8 @@ $LANG07 = array(
 	2 => "Anket için verdiðiniz oy kaydedildi",
 	3 => "Oyla",
 	4 => "Anketler",
-	5 => "Oylar"
+	5 => "Oy var",
+    6 => "Diðer anketleri göster"
 );
 
 ###############################################################################
@@ -348,8 +369,8 @@ $LANG08 = array(
 	15 => "HTML kodu çevrilmeyecektir.",
 	16 => "Mesajý Gönder",
 	17 => "Bu Yazýyý bir Arkadaþýna Gönder",
-	18 => "Adý",
-	19 => "Email Adresi",
+	18 => "Alýcýnýn Adý",
+	19 => "Alýcýnýn Email Adresi",
 	20 => "Gönderen Adý",
 	21 => "Gönderen Emaili",
 	22 => "Bütün alanlarý doldurmalýsýnýz",
@@ -364,7 +385,8 @@ $LANG08 = array(
     31 => "Baþlýk",
     32 => "Tarih",
     33 => "Yazýnýn tamamý için:",
-    34 => "Mesajýn Sonu"
+    34 => "Mesajýn Sonu",
+    35 => 'Üzgünüz, bu kullanýcý hiç mail almamayý tercih etmiþ.'
 );
 
 ###############################################################################
@@ -396,7 +418,7 @@ $LANG09 = array(
 	23 => "Okunma Sayýsý",
 	24 => "",
 	25 => "kayýt bulundu. Toplam",
-	26 => "kayýttan. Süre",
+	26 => "kayýt var. Arama süresi",
 	27 => "saniye.",
     28 => 'Aramanýz sonucunda herhangi bir yazý veya yorum bulunamadý',
     29 => 'Yazý ve Yorum Arama Sonuçlarý',
@@ -412,7 +434,22 @@ $LANG09 = array(
     39 => 'Adresler',
     40 => 'Etkinlikler',
     41 => 'Arama yapabilmeniz için en az 3 harften oluþan bir arama sorgusu girmeniz gerekmektedir.',
-    42 => 'Lütfen YYYY-AA-GG (Yýl-Ay-Gün) þeklinde düzenlenmiþ bir tarhi kullanýnýz.'
+    42 => 'Lütfen YYYY-AA-GG (Yýl-Ay-Gün) þeklinde düzenlenmiþ bir tarhi kullanýnýz.',
+    43 => 'tam cümle',
+    44 => 'bütün kelimeler',
+    45 => 'herhangi bir kelime',
+    46 => 'Sonraki',
+    47 => 'Önceki',
+    48 => 'Yazar',
+    49 => 'Tarih',
+    50 => 'Hit',
+    51 => 'Link',
+    52 => 'Konum',
+    53 => 'Yazý Sonuçlarý',
+    54 => 'Yorum Sonuçlarý',
+    55 => 'ibare',
+    56 => 'VE',
+    57 => 'YADA'
 );
 
 ###############################################################################
@@ -549,7 +586,7 @@ $LANG21 = array(
 	11 => "Portal Blok",
 	12 => "Normal Blok",
 	13 => "Portal Blok Özellikleri",
-	14 => "RDF Adresþ",
+	14 => "RDF Adresi",
 	15 => "Son RDF Deðiþikliði",
 	16 => "Normal Blok Özellikleri",
 	17 => "Blok Ýçeriði",
@@ -710,7 +747,8 @@ $LANG24 = array(
     53 => 'kullanýlmadý. Bu resmi özet veya yazý bölümlerinden birinde kullanmadan deðiþiklikleri kaydedemezsiniz',
     54 => 'Eklenen Resimler Kullanýlmadý',
     55 => 'Aþaðýdaki hatalar yazýnýzý kaydetmeye çalýþýrken oluþtu.  Lütfen listelenen hatalarý kontrol edip düzeltiniz',
-    56 => 'Sembolü Göster'
+    56 => 'Sembolü Göster',
+    57 => 'Ölçeksiz resim göster'
 );
 
 ###############################################################################
@@ -769,7 +807,10 @@ $LANG27 = array(
 	18 => "Kontrol Ana Sayfasý",
     19 => 'kaydet',
     20 => 'vazgeç',
-    21 => 'sil'
+    21 => 'sil',
+    22 => 'Varsayýlan',
+    23 => 'bildirilen yeni yazý için bunu varsayýlan baþlýk yap',
+    24 => '(*)'
 );
 
 ###############################################################################
@@ -812,7 +853,9 @@ $LANG28 = array(
     31 => 'Yeni Kullanýcýlar',
     32 => 'Ekleme iþlemi tamamlandý. $successes kullanýcý eklendi ve $failures hata oluþtu',
     33 => 'gönder',
-    34 => 'Hata: Yükleme yapmak için bir dosya seçmiþ olmanýz gerekiyor.'
+    34 => 'Hata: Yükleme yapmak için bir dosya seçmiþ olmanýz gerekiyor.',
+    35 => 'Son Giriþ',
+    36 => '(asla)'
 );
 
 
@@ -854,10 +897,10 @@ $LANG30 = array(
 	6 => "Cuma",
 	7 => "Cumartesi",
 	8 => "Etkinlik Ekle",
-	9 => "Geeklog Etkinliði",
+	9 => "ScriptEvi Etkinliði",
 	10 => "Etkinlikler:",
 	11 => "Genel Takvim",
-	12 => "Benim Takvimim",
+	12 => "Takvimim",
 	13 => "Ocak",
 	14 => "Þubat",
 	15 => "Mart",
@@ -971,16 +1014,23 @@ $MESSAGE = array (
     44 => 'Eklenti baþarýlya yüklendi!',
     45 => 'Eklenti baþarýyla silindi.',
     46 => "Veri tabaný yedekleme programýna eriþimiz yok.  Giriþ izni olmayan tüm etkinlikler kayýtlara geçmektedir.",
-    47 => "Bu özellik sadece Linuz, Unix gibi iþletim sistemlerinde çalýþýr.  Eðer Linux, Unix gibi bir iþletim sistemi kullanýyorsanýz, önbelleðiniz baþarýyla temizlenmiþtir. Eðer Windows kullanýyorsanýz, adodb_*.php  dosyalarýný aratýn ve silin.",
+    47 => "Bu özellik sadece Linux, Unix gibi iþletim sistemlerinde çalýþýr.  Eðer Linux, Unix gibi bir iþletim sistemi kullanýyorsanýz, önbelleðiniz baþarýyla temizlenmiþtir. Eðer Windows kullanýyorsanýz, adodb_*.php  dosyalarýný aratýn ve silin.",
     48 => $_CONF['site_name'] . ' sitesine üyelik baþvurunuz için teþekkür ederiz. Site yönetimi baþvurunuzu inceleyecektir. Eðer kabul alýrsanýz þifreniz belirttiðiniz eðmail adreisne gönderilecektir.',
     49 => "Grubunuz baþarýyla kaydedildi.",
-    50 => "Grup baþarýyla silindi."
+    50 => "Grup baþarýyla silindi.",
+    51 => 'Bu kullanýcý adý zaten kullanýlýyor. Lütfen baþka bir tane seçin.',
+    52 => 'Saðlanan email adresi geçerli bir email adresi olarak gözükmüyor.',
+    53 => 'Yeni þifreniz kabul edildi. Lütfen aþaðýdan yeni þifrenizi kullanarak þimdi giriþ yapýn.',
+    54 => 'Yeni bir þifre isteme süresiniz doldu. Lütfen aþaðýdan tekrar deneyin.',
+    55 => 'Size bir email gönderildi ve az önce yerine ulaþtý. Hesabýnýza yeni bir þifre tayin etmek için mesajdaki talimatlarý lütfen takip ediniz.',
+    56 => 'Saðlanan email adresi zaten baþka bir hesap tarafýndan kullanýlýyor.',
+    57 => 'Hesabýnýz baþarýyla silindi.'
 );
 
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Sisteme eklenti (plug-in) yükleyerek Geeklog'un çalýþmasýný ve belki sisteminizibozabilirsiniz. Sadece <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Ana Sayfasý</a>'ndan yüklediðiniz eklentileri yüklemeniz tavsiye edilir, çünkü bize ulaþan tüm eklentileri çeþitli iþletim sistemleriyle ayrýntýlý testlere sokuyoruz. Özellikle üçüncü firmalardan yüklediðiniz eklentilerin yüklenirken sisteminize zarar verebilecek programlar çalýþtýrabileceðini ve bunlarýn güvenlik açýklarýna neden olabileceðini anlamanýz önemlidir. Bu uyarýya raðmen, biz bu eklentinin yüklenmesinin baþarýyla tamamlanacaðýný garanti etmiyoruz, ve sisteminizde doðacak herhangi bir hasardan dolayý sorumluluk kabul etmiyoruz. Baþka bir deyiþle eklentiyi yüklerken doðacak tüm riskler size aittir.  Ayrýntýlarý öðrenmek isteyenler için her eklenti paketinde yüklemenin el ile yapýlabilmesi için ayrýntýlar ve adýmlar mevcuttur.",
+	1 => "Sisteme eklenti (plug-in) yükleyerek Geeklog'un çalýþmasýný ve belki sisteminizi bozabilirsiniz. Sadece <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Ana Sayfasý</a>'ndan yüklediðiniz eklentileri yüklemeniz tavsiye edilir, çünkü bize ulaþan tüm eklentileri çeþitli iþletim sistemleriyle ayrýntýlý testlere sokuyoruz. Özellikle üçüncü firmalardan yüklediðiniz eklentilerin yüklenirken sisteminize zarar verebilecek programlar çalýþtýrabileceðini ve bunlarýn güvenlik açýklarýna neden olabileceðini anlamanýz önemlidir. Bu uyarýya raðmen, biz bu eklentinin yüklenmesinin baþarýyla tamamlanacaðýný garanti etmiyoruz, ve sisteminizde doðacak herhangi bir hasardan dolayý sorumluluk kabul etmiyoruz. Baþka bir deyiþle eklentiyi yüklerken doðacak tüm riskler size aittir.  Ayrýntýlarý öðrenmek isteyenler için her eklenti paketinde yüklemenin el ile yapýlabilmesi için ayrýntýlar ve adýmlar mevcuttur.",
 	2 => "Eklenti Yükleme ile Ýlgili Yükümler",
 	3 => "Eklenti Yükleme Formu",
 	4 => "Eklenti Dosyasý",
@@ -1043,9 +1093,9 @@ $LANG_ACCESS = array(
 	rightsdescr => "Bir grubun bir eriþim hakký buradan verilebilir veya grubun bir üst grubu varsa o gruba verilerek bu gurubun almasý saðlanabilinir. Aþaðýda eðer seçme kutusu olmayan haklar varsa bunlar bu grubun üyesi olduðu bir üst gruba verilmiþ olan haklardýr. Seçme kutusu olan haklarý seçerek bu gruba daha geniþ bir hak verebilirsiniz.",
 	lock => "Kilit",
 	members => "Üyeler",
-	anonymous => "Herhangi",
+	anonymous => "Ýsimsiz Kullanýcý",
 	permissions => "Ýzinler",
-	permissionskey => "O = oku, D = deðiþtir, haklarda deðiþiklik yap",
+	permissionskey => "R = oku, E = düzenle, haklarda deðiþiklik yap",
 	edit => "Deðiþtir",
 	none => "Hiçbiri",
 	accessdenied => "Eriþim Engellendi",
@@ -1058,7 +1108,10 @@ $LANG_ACCESS = array(
 	save => 'kaydet',
 	cancel => 'vazgeç',
 	delete => 'sil',
-	canteditroot => 'Root grubu deðiþtirmeye çalýþtýnýz, fakat root grubun bir üyesi deðilsiniz. Bu nedenden eriþiminiz engellendi. Eðer bunun bir hata olduðunu düþünüyorsanýz sistem yöneticinize danýþýn.'	
+	canteditroot => 'Root grubu deðiþtirmeye çalýþtýnýz, fakat root grubun bir üyesi deðilsiniz. Bu nedenden eriþiminiz engellendi. Eðer bunun bir hata olduðunu düþünüyorsanýz sistem yöneticinize danýþýn.',
+    listusers => 'Üye Listesi',
+    listthem => 'liste',
+    usersingroup => 'Üye grubu %s'	
 );
 
 #admin/word.php
@@ -1076,15 +1129,16 @@ $LANG_DB_BACKUP = array(
     last_ten_backups => 'Son 10 yedekleme',
     do_backup => 'Yedekleme Yap',
     backup_successful => 'Veritabaný yedeklemesi baþarýyla sonuçlandý.',
-    no_backups => 'Sisteminizde hiç veritabaný yedeði yok',
-    db_explanation => 'Geeklog sisteminin yeni bir yedeðini almak için, aþaðýdaki düðmeye basýn',
+    no_backups => 'Sisteminizde hiç veritabaný yedeði yok.',
+    db_explanation => 'Geeklog sisteminin yeni bir yedeðini almak için, aþaðýdaki butona basýn.',
     not_found => "Hatalý adres veya mysqldump programý çalýþtýrýlýnamýyor.<br>config.php dosyanýzdaki <strong>\$_DB_mysqldump_path</strong> deðiþkenini kontrol edin.<br>Deðiþken þu anki deðeri: <var>{$_DB_mysqldump_path}</var>",
     zero_size => 'Yedekleme baþarýsýz: Dosya boyutu 0 bayt idi.',
     path_not_found => "{$_CONF['backup_path']} adresi yok veya bir klasör deðil",
     no_access => "HATA: Kalsör {$_CONF['backup_path']} eriþilinemiyor.",
     backup_file => 'Yedek dosyasý',
     size => 'Boyut',
-    bytes => 'Bayt'
+    bytes => 'Bayt',
+    total_number => 'Toplam backup sayýsý: %d'
 );
 
 $LANG_BUTTONS = array(
