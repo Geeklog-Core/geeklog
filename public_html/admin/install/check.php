@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.5 2004/08/11 18:35:15 dhaun Exp $
+// $Id: check.php,v 1.6 2004/10/15 18:19:12 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -41,7 +41,7 @@
 
 require_once ('../../lib-common.php');
 
-$numTests   = 6;  // total number of tests to perform
+$numTests   = 5;  // total number of tests to perform
 $successful = 0;  // number of successful tests
 $failed     = 0;  // number of failed tests
 $notTested  = 0;  // number of tests that were skipped (for disabled features)
@@ -153,9 +153,9 @@ if ($_CONF['pdf_enabled'] != 0) {
         echo '<b>pdfs</b> directory is okay.' . LB;
         $successful++;
     }
-} else {
-    echo '<p>PDF support is disabled - <b>pdfs</b> directory not tested.' . LB;
-    $notTested++;
+//} else {
+//    echo '<p>PDF support is disabled - <b>pdfs</b> directory not tested.' . LB;
+//    $notTested++;
 }
 
 echo '<p>Testing <b>data</b> directory ' . $_CONF['path_data'] . ' ...<br>' . LB;

@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.137 2004/10/09 19:19:59 blaine Exp $
+// $Id: config.php,v 1.138 2004/10/15 18:19:12 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -320,56 +320,9 @@ $_CONF['lastlogin']                     = true;
 
 $_CONF['ostype']    = PHP_OS;
 
-// +---------------------------------------------------------------------------+
-// | PDF SETTINGS                                                              |
-// +---------------------------------------------------------------------------+
 
-// Your system must have htmldoc installed.  If you don't have it, you may
-// download it from http://www.easysw.com/htmldoc/ and yes, it runs on windows
-// and *nix
-
-// Enables the PDF generator feature.  1 = on, 0 = off
+// Note: PDF conversion didn't make it into this release. Leave as is.
 $_CONF['pdf_enabled'] = 0;
-
-// Enables the PDF adhoc mode for the general public.  NOTE: this is always
-// enabled for users in the ROOT group. NOTE: generally speaking you will
-// probably want to leave this off unless your site has a particular need for
-// members to do this.
-$_CONF['pdf_adhoc_enabled'] = 0;
-
-// Absolute path to the htmldoc binary
-$_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
-
-// When enabled, this will pump any HTML through HTML tidy in an attempt to
-// make the page XHTML compliant prior to using htmldoc.  NOTE: this tends to
-// improve the chance that the PDF will be generated.  Producing PDF's from
-// Geeklog's print mode should work fine as that is generally XHTML compliant.
-// This is disabled by default because it requires you to install HTML tidy for
-// your platform:
-// http://tidy.sf.net and you need to get the library (see
-// http://tidy.sourceforge.net/libintro.html) and then install the PHP PECL by
-// doing "pear -v install tidy"
-$_CONF['use_html_tidy'] = 0;
-
-// See PHP manual for full list of config options
-$_CONF['tidy_config_options'] = array(
-                                    'output-xhtml' => true,
-                                    'hide-comments' => true
-                                    );
-
-// Path where we will store the generated PDFs
-$_CONF['path_pdf'] = $_CONF['path'] . 'pdfs/';
-
-// If you want a logo added to the top of your PDFs, provide the full file
-// system path here.
-$_CONF['pdf_logo'] = '';
-
-// Font point size (sorry no customization of font type yet)
-$_CONF['pdf_font_size'] = 10;
-
-// PDFs are generated and kept however many days you specify below.  If this
-// is left blank or set to 0 it will default back to 1
-$_CONF['days_to_keep'] = 1;
 
 
 // +---------------------------------------------------------------------------+
@@ -725,7 +678,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.10cvs');
+    define('VERSION', '1.3.10rc1');
 }
 
 $_STATES = array(
