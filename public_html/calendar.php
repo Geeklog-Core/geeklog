@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.47 2004/08/29 14:16:06 dhaun Exp $
+// $Id: calendar.php,v 1.48 2004/09/04 19:42:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -153,6 +153,28 @@ function makeDaysHeadline ()
                 . substr ($LANG30[5], 0, 2) . '</th><th>'
                 . substr ($LANG30[6], 0, 2) . '</th><th>'
                 . substr ($LANG30[7], 0, 2) . '</th></tr>';
+    }
+
+    return $retval;
+}
+
+/**
+* Add the 'mode=' parameter to a URL
+*
+* @param    string  $mode   the mode ('personal' or empty string)
+* @param    boolean $more   whether there are more parameters in the URL or not
+* @param    string          'mode' parameter for the URL or an empty string
+*
+*/
+function addMode ($mode, $more = true)
+{
+    $retval = '';
+
+    if (!empty ($mode)) {
+        $retval .= 'mode=' . $mode;
+        if ($more) {
+            $retval .= '&amp;';
+        }
     }
 
     return $retval;
@@ -597,8 +619,15 @@ case 'week':
             $cal_templates->set_var('class'.$i,'weekview-offday');
         }
         $monthname = $cal->getMonthName($monthnum);
-        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ('%x', $thedate[1]) . '</a>');
-        $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&amp;mode=$mode&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum" . '">' . $LANG30[8] . '</a>');
+        $cal_templates->set_var ('day' . $i, $dayname . ', <a href="'
+            . $_CONF['site_url'] . '/calendar.php?' . addMode ($mode)
+            . 'view=day&amp;day=' . $daynum . '&amp;month=' . $monthnum
+            . '&amp;year=' . $yearnum . '">' . strftime ('%x', $thedate[1])
+            . '</a>');
+        $cal_templates->set_var ('langlink_addevent' . $i, '<a href="'
+            . $_CONF['site_url'] . '/submit.php?type=event&amp;'
+            . addMode ($mode) . 'day=' . $daynum . '&amp;month=' . $monthnum
+            . '&amp;year=' . $yearnum . '">' . $LANG30[8] . '</a>');
         if ($mode == 'personal') {
             $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         } else {
@@ -631,7 +660,10 @@ case 'week':
                 $cal_templates->set_var('event_starttime', $starttime);
                 $cal_templates->set_var('event_endtime', ' - ' . $endtime);
             }
-            $cal_templates->set_var('event_title_and_link', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&amp;eid=' . $A['eid'] . '">' . stripslashes($A['title']) . '</a>');
+            $cal_templates->set_var ('event_title_and_link', '<a href="'
+                . $_CONF['site_url'] . '/calendar_event.php?' . addMode ($mode)
+                . 'eid=' . $A['eid'] . '">' . stripslashes($A['title'])
+                . '</a>');
             // Provide delete event link if user has access
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND $mode == 'personal') {
                 $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" border="0" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif"></a>');
@@ -784,8 +816,11 @@ for ($i = 1; $i <= 6; $i++) {
                 $curday->daynumber = '0' . $curday->daynumber;
             }
 
-            $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&amp;mode=' . $mode . '&amp;day=' . $curday->daynumber. '&amp;month=' . $month
-                . '&amp;year=' . $year . '" class="cal-date">' . $curday->daynumber. '</a><hr>');
+            $cal_templates->set_var ('cal_day_anchortags', '<a href="'
+                . $_CONF['site_url'] . 'calendar.php?view=day&amp;'
+                . addMode ($mode) . 'day=' . $curday->daynumber. '&amp;month='
+                . $month . '&amp;year=' . $year . '" class="cal-date">'
+                . $curday->daynumber. '</a><hr>');
 
             if ($mode == 'personal') {
                 if (strlen($month) == 1) {
@@ -809,11 +844,15 @@ for ($i = 1; $i <= 6; $i++) {
                     if (SEC_hasAccess($results['owner_id'],$results['group_id'],$results['perm_owner'],$results['perm_group'],$results['perm_members'],$results['perm_anon']) > 0) {
                         if ($results['title']) {
                             $cal_templates->set_var('cal_day_entries','');
-                            $entries .= '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&amp;eid=' . $results['eid'] . '" class="cal-event">' . stripslashes ($results['title']) . '</a><hr>';
+                            $entries .= '<a href="' . $_CONF['site_url']
+                                . '/calendar_event.php?' . addMode ($mode)
+                                . 'eid=' . $results['eid']
+                                . '" class="cal-event">'
+                                . stripslashes ($results['title']) . '</a><hr>';
                         }
                     } 
                 }
-                for ($z=$z;$z<=4;$z++) {
+                for ($z = $z; $z <= 4; $z++) {
                     $entries .= '<br>';
                 }
 
