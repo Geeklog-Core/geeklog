@@ -3,8 +3,18 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
-- Introduced function COM_getTopicSQL which returns part of an SQL request to
-  check for a user's topic access [Dirk]
+- Added a printable version for static pages (based on a concept by
+  Jannetta S Lewis). Requires a new template file, printable.thtml, located
+  in the static pages' template directory [Dirk]
+- Added {article_url} variable for article/printable.thtml so that we can
+  print the proper URL to the article if URL rewriting is on [Dirk]
+- Added filtering for the $order parameter in article.php [Dirk]
+- Added {link_actual_url} variable in links.php, holding the actual URL of
+  a link (not Geeklog's redirect URL via portal.php). Updated template
+  file links/linkdetails.thtml in all default themes to use {link_actual_url}
+  in a title attribute for the links [Dirk]
+- The event description now honors linefeeds to allow some basic text
+  formatting [Dirk]
 - Escape all PCRE special characters in the code to highlight search query
   words (bug #200). Also moved the code to its own function, COM_highlightQuery,
   in lib-common.php [Dirk]
@@ -15,10 +25,6 @@ XXX XX, 2004 (1.3.10)
   additional entries [Dirk]
 - Use an UPDATE request when increasing the number of times a story has been
   emailed [Dirk]
-- Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log,
-  which were caused by collisions of the pseudo-session ids for anonymous
-  users. Geeklog actually handled the problem already - it shouldn't have been
-  logged in the first place [Dirk]
 - When an error occurs while creating a backup, the complete command line
   used to call mysqldump is now added to error.log [Dirk]
 - Added 'view' mode to allow links directly to a single comment (and optionally
@@ -46,10 +52,6 @@ XXX XX, 2004 (1.3.10)
   requires a change in the admin/story/storyeditor.thtml template file. [Dirk]
 - Added an option to look up IP addresses (new variable $_CONF['ip_lookup'] in
   config.php, pointing to a service that does IP address lookups) [Dirk]
-- In a user's profile, don't display story or comment titles if the user
-  looking at the profile page doesn't have permissions to view the topic those
-  stories or comments were posted under (bug #208) [Dirk]
-- Fixed incorrect author names in Daily Digest (bug #207) [Dirk]
 - Fixed problems with the database backup when there were spaces in the path to
   the backups directory (bug #185).
 - Added email notification for new comments (feature request #155) [Dirk]
@@ -60,22 +62,16 @@ XXX XX, 2004 (1.3.10)
 - Cached enabled plugins to reduce db queries and improve performance. [Vinny]
 - Fixed SEC_inGroup not using $_GROUPS cache in several instances. [Vinny]
 - mysql.class.php now only runs mysql_connect once per page load.  [Vinny]
-- Fixed Bug #183: COM_extractLinks will now ignore anchor tags that do not
-  contain "href". [Vinny]
 - The "Google paging" now has additional links to jump to the first and last
   page (patch provided by Niels Leenheer). [Dirk]
 - Introduced function COM_makeClickableLinks to turn URLs in text-only posts
   into clickable links (i.e. it's adding <a> tags around URLs). [Dirk]
-- Added check of "speed limit" when saving a comment (savecomment()), and 
-  submitting items (stories, links, etc). [Vinny]
 - Changed the comment insert, delete, display algorithms for improved 
   efficiency. They now use a modified preorder tree traversal method. [Vinny]
 - Comment limit now applies to all the comments displayed, not just the top
   level comments. [Vinny]
 - Added pagination ability to comments ({pagenav} template variable in
   startcomment.thtml). [Vinny]
-- Fixed minor security issue with the Daily Digest, where users still got
-  digests for topics from which they have been removed (bug #178) [Dirk]
 - Fixed typo in timer.class.php that broke the ->restart() function. [Vinny]
 - Make sure the database backup files are always sorted by (last modified) date 
   (found & fixed by Alexander Schmacks). [Dirk]
@@ -100,11 +96,46 @@ XXX XX, 2004 (1.3.10)
   DB_fetchArray has to be set to "true". [Dirk]
 - Removed extra quotes in SQL statements in admin/block.php to ensure
   compatibility with old MySQL versions (reported by Elmer Masters). [Dirk]
-- Fixed SQL error in COM_showTopics when users tried to exclude topics in their
-  preferences (reported by Rob Young). [Dirk]
 - In admin/database.php, if the is_executable function is not available (e.g.
   on Windows), do at least a file_exists to check if the mysqldump executable
   exists in the path given in config.php. [Dirk]
+- Introduced function COM_getTopicSQL which returns part of an SQL request to
+  check for a user's topic access [Dirk]
+  (This was actually introduced in 1.3.9sr1 but missing from the changelog)
+
+
+Jun 1, 2004 (1.3.9sr1)
+-----------
+
+This release addresses the following security issues:
+
+- It was possible to post anonymous comments, even when anonymous comment
+  posting had been switched off in config.php [Vinny, Dirk]
+- Added additional speed limit checks for comments and submissions [Vinny]
+- It was still possible to read the comments to stories, even when the user
+  didn't have access to the story's topic (provided they knew the story id)
+  [Vinny, Dirk]
+- If none of the topics were visible for anonymous users, the site's index
+  page may still have displayed some stories for anonymous users, depending on
+  the stories' permissions [Vinny, Dirk]
+- Users still got Daily Digest emails for topics from which they had been
+  removed (bug #178) [Dirk]
+- It was possible to subscribe to the Daily Digest for all topics, even if the
+  user did not have access to certain topics [Dirk]
+- Don't list stories or comments in the user profile if the current user isn't
+  allowed to see the topics they were posted under (bug #208) [Dirk]
+
+Non-security related fixes:
+
+- Fixed an SQL error in COM_showTopics if users excluded topics in their
+  preferences (reported by Rob Young) [Dirk]
+- Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log
+  (caused by the handling of pseudo-session ids for anonymous users) [Dirk]
+- Fixed incorrect author names in Daily Digest (bug #207) [Dirk]
+- The plugin_profileblocksedit_<plugin-name> Plugin API function wasn't working
+  due to a missing piece of code in usersettings.php [Dirk]
+- COM_extractLinks will now ignore anchor tags that do not contain "href"
+  (bug #183) [Vinny]
 
 
 Mar 14, 2004 (1.3.9)
@@ -406,6 +437,17 @@ Static Pages Plugin 1.4
   deleted or assigned to a Root user (see $_SP_CONF['delete_pages'] option).
 
 Please see docs/staticpages.html for details.
+
+
+Jun 1, 2004 (1.3.8-1sr5)
+-----------
+
+This release fixes a bug due to which it was possible to post anonymous
+comments even when anonymous comment posting had been switched off in
+config.php.
+
+To upgrade from Geeklog 1.3.8-1sr4 to 1.3.8-1sr5, simply upload the included
+comment.php, replacing the file of the same name on your webserver.
 
 
 January 26, 2004 (1.3.8-1sr4)
