@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.1 2003/05/02 03:50:21 tony Exp $
+// $Id: search.class.php,v 1.2 2003/06/06 17:56:17 tony Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -252,17 +252,11 @@ class Search {
             $result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $permsql);
             $B = DB_fetchArray($result_count);
             $story_results = new Plugin();
-            //$story_results->setExpandedSearchSupport(true);
             $story_results->searchlabel = $LANG09[53];
-            //if (!$_CONF['expanded_search_results']) {
-                $story_results->addSearchHeading($LANG09[16]);
-                $story_results->addSearchHeading($LANG09[17]);
-                $story_results->addSearchHeading($LANG09[18]);
-                $story_results->addSearchHeading($LANG09[23]);
-            //} else {
-            //    $story_results->addSearchHeading('');
-            //}
-    
+            $story_results->addSearchHeading($LANG09[16]);
+            $story_results->addSearchHeading($LANG09[17]);
+            $story_results->addSearchHeading($LANG09[18]);
+            $story_results->addSearchHeading($LANG09[23]);
             $story_results->num_searchresults = 0;
             $story_results->num_itemssearched = $B[0];
     
@@ -273,18 +267,8 @@ class Search {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     // get rows    
                     $A['title'] = str_replace('$','&#36;',$A['title']);
-                    /*if ($_CONF['expanded_search_results']) {
-                        $fulltext = $A['introtext'] . ' ' .$A['bodytext'];
-                        $author = '<b>' . $LANG09[48] . ':</b> ' . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'");
-                        $thetime = COM_getUserDateTimeFormat($A['day']);
-                        $thetime = '<b>' . $LANG09[49] . ':</b> ' . $thetime[0];
-                        $hits = '<b>' . $LANG09[50] . ':</b> ' . $A['hits'];
-                        $row = array($A['title'], $this->_getSummary($this->_query, $fulltext), $author, $thetime);
-                    } else {*/
-                        $thetime = COM_getUserDateTimeFormat($A['day']);
-                        $row = array('<a href="article.php?story=' . $A['sid'] . '&query=' . $urlQuery . '">' . stripslashes($A['title']) . '</a>',$thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
-                    //}
-                    
+                    $thetime = COM_getUserDateTimeFormat($A['day']);
+                    $row = array('<a href="article.php?story=' . $A['sid'] . '&query=' . $urlQuery . '">' . stripslashes($A['title']) . '</a>',$thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
                     $story_results->num_searchresults++;
                 } else {
@@ -371,19 +355,11 @@ class Search {
             $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
             $result_count = DB_query($sql);
             $B = DB_fetchArray ($result_count);
-            $A = DB_fetchArray($result_comments);
-            
             $comment_results = new Plugin();
             $comment_results->searchlabel = $LANG09[54];
-            //if (!$_CONF['expanded_search_results']) {
-                $comment_results->addSearchHeading($LANG09[16]);
-                $comment_results->addSearchHeading($LANG09[17]);
-                $comment_results->addSearchHeading($LANG09[18]);
-                $comment_results->addSearchHeading($LANG09[23]);
-            //} else {
-            //    $comment_results->addSearchHeading('');
-            //}
-    
+            $comment_results->addSearchHeading($LANG09[16]);
+            $comment_results->addSearchHeading($LANG09[17]);
+            $comment_results->addSearchHeading($LANG09[18]);
             $comment_results->num_searchresults = 0;
             $comment_results->num_itemssearched = $B[0];
     
@@ -393,13 +369,15 @@ class Search {
             while ($A = DB_fetchArray($result_comments)) {
                 $A['title'] = str_replace('$','&#36;',$A['title']);
                 if ($A['comment_type'] == 'article') {
-                    $A['title'] = '<a href="article.php?story=' . $A['sid'] . '">' . stripslashes($A['title']) . '</a>';
+                    $A['title'] = '<a href="article.php?story=' . $A['sid'] . '#comments">' . stripslashes($A['title']) . '</a>';
                 } else {
                     $A['title'] = '<a href="pollbooth.php?qid=' . $A['sid'] . '&amp;aid=-1#comments">' . stripslashes($A['title']) . '</a>';
                 }
                 
                 $thetime = COM_getUserDateTimeFormat($A['day']);
-                $row = array($A['title'], $thetime[0],DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
+                $row = array($A['title'], $thetime[0],DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+                $comment_results->addSearchResult($row);
+                $comment_results->num_searchresults++;
             }
         } else {
             $comment_results = new Plugin();
@@ -469,12 +447,9 @@ class Search {
             $nrows_links = DB_numRows($result_links);
             $link_results = new Plugin();
             $link_results->searchlabel = $LANG09[38];
-            //if (!$_CONF['expanded_search_results']) {
-                $link_results->addSearchHeading($LANG09[16]);
-                $link_results->addSearchHeading($LANG09[33]);
-                $link_results->addSearchHeading($LANG09[23]);
-            //}
-    
+            $link_results->addSearchHeading($LANG09[16]);
+            $link_results->addSearchHeading($LANG09[33]);
+            $link_results->addSearchHeading($LANG09[23]);
             $link_results->num_searchresults = 0;
             $link_results->num_itemssearched = DB_count($_TABLES['links']);
     
@@ -484,15 +459,9 @@ class Search {
             while ($A = DB_fetchArray($result_links)) {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     $thetime = COM_getUserDateTimeFormat($A['day']);
-                    if ($_CONF['expanded_search_results']) {
-                        $row = array($A['title'], '<a href="' . $_CONF['site_url']
-                            . '/portal.php?what=link&amp;item=' . $A['lid'] . '">'
-                            . $A['url'] . '</a>', $A['hits'], $A['description']);
-                    } else {
-                        $row = array($A['title'], '<a href="' . $_CONF['site_url']
+                    $row = array($A['title'], '<a href="' . $_CONF['site_url']
                             . '/portal.php?what=link&amp;item=' . $A['lid'] . '">'
                             . $A['url'] . '</a>', $A['hits']);
-                    }
                     $link_results->addSearchResult($row);
                     $link_results->num_searchresults++;
                 } else {
@@ -701,25 +670,13 @@ class Search {
         $searchresults = new Template($_CONF['path_layout'] . 'search');
                 
         for ($i = 1; $i <= count($result_plugins); $i++) {
-            /*if ($_CONF['expanded_search_results']) {
-                $searchresults->set_file(array('searchheading'=>'searchresults_heading.thtml',
-                                            'searchrows'=>'searchresults_rows.thtml',
-                                            'searchblock' => 'searchblock.thtml',
-                                            'headingcolumn'=>'headingcolumn.thtml',
-                                            'resultrow'=>'resultrowenhanced.thtml',
-                                            'resulttitle'=>'resulttitle.thtml',
-                                            'resultcolumn'=>'resultcolumn.thtml',
-                                            'resultsummary'=>'resultsummary.thtml',
-                                            'resultauthdatehits'=>'resultauthdatehits.thtml'));
-            } else {*/
-                $searchresults->set_file(array('searchheading'=>'searchresults_heading.thtml',
+            $searchresults->set_file(array('searchheading'=>'searchresults_heading.thtml',
                                             'searchrows'=>'searchresults_rows.thtml',
                                             'searchblock' => 'searchblock.thtml',
                                             'headingcolumn'=>'headingcolumn.thtml',
                                             'resultrow'=>'resultrow.thtml',
                                             'resulttitle'=>'resultcolumn.thtml',
                                             'resultcolumn'=>'resultcolumn.thtml'));
-            //}
             if ($i == 1) {
                 $searchresults->set_var('data_cols','');
                 $searchresults->set_var('headings','');
@@ -736,24 +693,14 @@ class Search {
                 }
                 $searchresults->set_var('results','');
                 for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
-                    //if ($resultNumber >= $start AND $resultNumber <= $end) {
-                        $columns = current($cur_plugin->searchresults);
-                        /*if ($_CONF['expanded_search_results'] AND $cur_plugin->supportsExpandedSearch()) {
+                    $columns = current($cur_plugin->searchresults);
+                    for ($x = 1; $x <= count($columns); $x++) {
                             $searchresults->set_var('data', current($columns));
+                            $searchresults->parse('data_cols','resultcolumn',true);
                             next($columns);
-                            $searchresults->set_var('data2', current($columns));
-                            next($columns);
-                            $searchresults->set_var('data3', current($columns));
-                        } else {*/
-                            for ($x = 1; $x <= count($columns); $x++) {
-                                $searchresults->set_var('data', current($columns));
-                                $searchresults->parse('data_cols','resultcolumn',true);
-                                next($columns);
-                            }
-                        //}
-                        $searchresults->parse('results','resultrow',true);
-                        $searchresults->set_var('data_cols','');
-                    //}
+                    }
+                    $searchresults->parse('results','resultrow',true);
+                    $searchresults->set_var('data_cols','');
                     next($cur_plugin->searchresults);
                     $resultNumber++;
                 }
@@ -764,13 +711,10 @@ class Search {
                 }
                 $searchresults->set_var('end_block', COM_endBlock());
                 $searchblocks .= $searchresults->parse('tmpoutput','searchblock');
-                //$searchmain->set_var('search_blocks', $searchblock
-                //$searchmain->parse('search_blocks', $searchblock, true);
             }
             next($result_plugins);
         }
         $searchmain->set_var('search_blocks', $searchblocks);
-                //$searchmain->parse('search_blocks', $searchblock, true);
         $searchmain->set_var('search_pager', $this->_showPager($resultPage, $pages, ''));
         $retval .= $searchmain->parse('output','searchresults');
         
@@ -1023,8 +967,7 @@ class Search {
         
         // Have plugins do their searches
         list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author);
-        print_r($result_plugins);
-        exit;
+        
         // Add the core GL object search results to plugin results
         $nrows_plugins = $nrows_plugins + $this->story_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->comment_results->num_searchresults;
