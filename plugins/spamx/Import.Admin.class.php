@@ -174,8 +174,9 @@ class Import extends BaseAdmin {
             $entry = trim ($l[0]);
             if (!empty ($entry)) {
                 DB_query ('INSERT INTO ' . $_TABLES['spamx']
-                          . ' VALUES ("MTBlacklist","' . $entry . '")');
-            $count++;
+                          . ' VALUES ("MTBlacklist","' . addslashes ($entry)
+                          . '")');
+                $count++;
             }
         }
 
