@@ -237,7 +237,7 @@ $LANG04 = array(
 	23 => "Indem Du Dich bei {$_CONF['site_name']} anmeldest, kannst Du Artikel und Kommentare unter Deinem eigenen Namen veröffentlichen (andernfalls geht das nur anonym). Übrigens wird Deine E-Mail-Adresse <strong><em>niemals</em></strong> auf dieser Website angezeigt werden.",
 	24 => "Dein Passwort wird Dir an die angegebene E-Mail-Adresse geschickt.",
 	25 => "Passwort vergessen?",
-	26 => "Gib Deinen Usernamen ein und klicke auf Passwort schicken. Ein neues Passwort wird dann an die gespeicherte E-Mail-Adresse geschickt.",
+	26 => "Gib <em>entweder</em> Deinen Usernamen <em>oder</em> die E-Mail-Adresse ein, mit der Du Dich angemeldet hast, und klicke auf Passwort schicken. Eine E-Mail mit einer Anleitung, wie Du ein neues Passwort eingeben kannst, wird dann an die gespeicherte E-Mail-Adresse geschickt.",
 	27 => "Jetzt anmelden!",
 	28 => "Passwort schicken",
 	29 => "logged out from",
@@ -994,7 +994,8 @@ $MESSAGE = array (
     51 => 'Dieser Username ist schon vergeben. Bitte wähle einen anderen.',
     52 => 'Die angegebene E-Mail-Adresse scheint nicht gültig zu sein.',
     53 => 'Dein neues Passwort wurde gespeichert. Bitte melde Dich nun mit dem neuen Passwort an.',
-    54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.'
+    54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.',
+    55 => 'Du solltest in KÜrze eine E-Mail erhalten, in der beschrieben wird, wie Du ein neues Passwort für Deinen Account eingeben kannst.'
 );
 
 // for plugins.php

@@ -231,7 +231,7 @@ $LANG04 = array(
 	23 => "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
 	24 => "Your password will be sent to the email address you enter.",
 	25 => "Did You Forget Your Password?",
-	26 => "Enter your username and click Email Password and a new password will be mailed to the email address on record.",
+	26 => "Enter <em>either</em> your username <em>or</em> the email address you used to register and click Email Password. Instructions on how to set a new password will be mailed to the email address on record.",
 	27 => "Register Now!",
 	28 => "Email Password",
 	29 => "logged out from",
@@ -998,7 +998,8 @@ $MESSAGE = array (
     51 => 'This username is already in use. Please choose another one.',
     52 => 'The email address provided does not appear to be a valid email address',
     53 => 'Your new password has been accepted. Please use your new password below to log in now.',
-    54 => 'Your request for a new password has expired. Please try again below.'
+    54 => 'Your request for a new password has expired. Please try again below.',
+    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.'
 );
 
 // for plugins.php

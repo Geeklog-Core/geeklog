@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.60 2003/05/05 21:11:06 dhaun Exp $
+// $Id: users.php,v 1.61 2003/05/06 10:31:02 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -572,7 +572,7 @@ function createuser($username,$email)
 * @return   string      HTML for login form
 *
 */
-function loginform()
+function loginform ($hide_forgotpw_link = false)
 {
     global $_CONF, $LANG04;
 
@@ -585,7 +585,11 @@ function loginform()
     $user_templates->set_var('lang_message', $LANG04[66]);
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_password', $LANG04[4]);
-    $user_templates->set_var('lang_forgetpassword', $LANG04[25]);
+    if ($hide_forgotpw_link) {
+        $user_templates->set_var('lang_forgetpassword', '');
+    } else {
+        $user_templates->set_var('lang_forgetpassword', $LANG04[25]);
+    }
     $user_templates->set_var('lang_login', $LANG04[80]);
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'login');
@@ -643,6 +647,7 @@ function getpasswordform()
     $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
     $user_templates->set_var('lang_instructions', $LANG04[26]);
     $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('lang_emailpassword', $LANG04[28]);
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'form');
@@ -664,34 +669,18 @@ function defaultform($msg, $referrer='')
 {
     global $LANG04, $_CONF;
 	
-	if (!empty($msg)) {
-		$retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
-	}
-	
-	$retval .= COM_startBlock($LANG04[65])
-		. '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
-		. '<table border="0" cellspacing="0" cellpadding="3">' . LB
-		. '<tr><td colspan="2">' . $LANG04[66] . '</td></tr>' . LB
-		. '<tr><td align="right"><b>' . $LANG04[2] . ':</b></td><td><input type="text" size="16" name="loginname"></td></tr>' . LB
-		. '<tr><td align="right"><b>' . $LANG04[4] . ':</b></td><td><input type="password" name="passwd" size="16"></td></tr>' . LB
-		. '<tr><td align="center" colspan="2"><input type="submit" value="Login"></td></tr>' . LB
-		. '</table></form>'
-		. COM_endBlock();
-	
-	$retval .= COM_startBlock($LANG04[22])
-		. '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
-		. '<table border="0" cellspacing="0" cellpadding="3">' . LB
-		. '<tr><td colspan="2">' . $LANG04[23] . '</td></tr>' . LB
-		. '<tr><td align="right"><b>' . $LANG04[2] 
-        . ':</b></td><td><input type="text" size="16" maxlength="16" name="username"></td></tr>' . LB
-		. '<tr><td align="right"><b>' . $LANG04[5] 
-        . ':</b></td><td><input type="text" size="16" maxlength="32" name="email"></td></tr>' . LB
-		. '<tr><td align="center" class="warning" colspan="2">' . $LANG04[24] . '</td></tr>' . LB
-		. '<tr><td align="center" colspan="2"><input type="hidden" name="mode" value="create"><input type="submit" value="'
-        . $LANG04[27] . '"></td></tr>' . LB 
-        . '</table></form>' 
-        . COM_endBlock();
-	
+    $retval = '';
+
+    if (!empty ($msg)) {
+        $retval .= COM_startBlock ($LANG04[21]) . $msg . COM_endBlock ();
+    }
+
+    $retval .= loginform (true);
+
+    $retval .= newuserform ();
+
+    $retval .= getpasswordform ();
+/*
 	$retval .= COM_startBlock($LANG04[25])
 		. '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
 		. '<table border="0" cellspacing="0" cellpadding="3">' . LB
@@ -702,7 +691,7 @@ function defaultform($msg, $referrer='')
         . '<input type="submit" value="' . $LANG04[28] . '"></td></tr>' . LB
 		. '</table></form>'
 		. COM_endBlock();
-	
+*/
 	return $retval;
 }
 
@@ -826,7 +815,12 @@ case 'emailpasswd':
                  . COM_endBlock ()
                  . COM_siteFooter ();
     } else {
-        $display .= requestpassword ($HTTP_POST_VARS['username'], 1);
+        $username = $HTTP_POST_VARS['username'];
+        if (empty ($username) && !empty ($HTTP_POST_VARS['email'])) {
+            $username = DB_getItem ($_TABLES['users'], 'username',
+                                    "email = '{$HTTP_POST_VARS['email']}'");
+        }
+        $display .= requestpassword ($username, 55);
     }
     break;
 case 'new':

@@ -3,6 +3,8 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- When requesting a new password for your account, you can now enter either
+  your username or the email address you used to register with the site.
 - Added a speed limit for requests for a new password (defaults to 5 minutes
   between requests).
 - The commentspeedlimit and submitspeedlimit tables have been replaced with a
