@@ -1099,7 +1099,8 @@ $LANG_DB_BACKUP = array(
     no_access => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
     backup_file => 'Backup file',
     size => 'Size',
-    bytes => 'Bytes'
+    bytes => 'Bytes',
+    total_number => 'Total number of backups: %d'
 );
 
 $LANG_BUTTONS = array(

@@ -1092,7 +1092,8 @@ $LANG_DB_BACKUP = array(
     no_access => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
     backup_file => 'Backup-Datei',
     size => 'Größe',
-    bytes => 'Bytes'
+    bytes => 'Bytes',
+    total_number => 'Gesamtanzahl Backups: %d'
 );
 
 $LANG_BUTTONS = array(

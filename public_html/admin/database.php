@@ -8,7 +8,7 @@
 // | Geeklog database administration page.                                     |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Blaine Lang      - langmail@sympatico.ca                         |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.7 2003/01/12 09:42:38 dhaun Exp $
+// $Id: database.php,v 1.8 2003/03/27 09:39:51 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -102,45 +102,60 @@ if ($mode == $LANG_DB_BACKUP['do_backup']) {
 // Show last ten backups
 
 if(is_writable($_CONF['backup_path'])) {
-	$backups = array();
-	$display .= COM_startBlock($LANG_DB_BACKUP['last_ten_backups']);
-	$fd = opendir($_CONF['backup_path']);
-	$index = 0;
-	while ((false !== ($file = @readdir ($fd))) && ($index < 10)) {
-	    if ($file <> '.' && $file <> '..' && $file <> 'CVS') {
-	        $index++;
-	        clearstatcache();
+    $backups = array();
+    $display .= COM_startBlock($LANG_DB_BACKUP['last_ten_backups']);
+    $fd = opendir($_CONF['backup_path']);
+    $index = 0;
+    while ((false !== ($file = @readdir ($fd)))) {
+        if ($file <> '.' && $file <> '..' && $file <> 'CVS') {
+            $index++;
+            clearstatcache();
             $backups[] = $file;
     	}
-	}
-	if (is_array($backups) AND $index > 0) {
-	    krsort($backups);
-	    reset($backups);
-        $display .= '<table width="100%" border="0">' . LB;
-        $display .= '<tr><td><b>' . $LANG_DB_BACKUP['backup_file'] . '</b></td><td align="right"><b>' . $LANG_DB_BACKUP['size'] . '</b></td></tr>';
-	    for ($i = 1; $i <= count($backups); $i++) {
-			$backupfile = "{$_CONF['backup_path']}" .current($backups);
-			$backupfilesize = filesize($backupfile);
-	        $display .= '<tr><td>' . current($backups) . '</td><td align="right">' . $backupfilesize . ' <b>' . $LANG_DB_BACKUP['bytes'] . '</b></td></tr>' . LB;
-	        next($backups);
-	    }
-        $display .= '</table>' . LB;
-	} else {
-	   $display .= $LANG_DB_BACKUP['no_backups'];
-	}
-	$display .= COM_endBlock();
+    }
+    if (is_array($backups) AND $index > 0) {
+        krsort($backups);
+        $backups = array_slice ($backups, 0, 10);
+        reset($backups);
+
+        $database = new Template ($_CONF['path_layout'] . 'admin/database');
+        $database->set_file (array ('list' => 'listbackups.thtml',
+                                    'row' => 'listitem.thtml'));
+        $database->set_var ('site_url', $_CONF['site_url']);
+        $database->set_var ('layout_url', $_CONF['layout_url']);
+        $database->set_var ('lang_backupfile', $LANG_DB_BACKUP['backup_file']);
+        $database->set_var ('lang_backupsize', $LANG_DB_BACKUP['size']);
+        $database->set_var ('lang_bytes', $LANG_DB_BACKUP['bytes']);
+
+        for ($i = 1; $i <= count ($backups); $i++) {
+            $backupfile = $_CONF['backup_path'] . current ($backups);
+            $backupfilesize = filesize ($backupfile);
+            $database->set_var ('backup_file', current ($backups));
+            $database->set_var ('backup_size', $backupfilesize);
+            $database->parse ('backup_item', 'row', true);
+            next($backups);
+        }
+        $database->set_var ('number_backups',
+                sprintf ($LANG_DB_BACKUP['total_number'], $index));
+        $display .= $database->parse ('output', 'list');
+    } else {
+        $display .= $LANG_DB_BACKUP['no_backups'];
+    }
+    $display .= COM_endBlock();
+
 	// Show backup form
-	$display .= $LANG_DB_BACKUP['db_explanation'];
-	$display .= '<form name="dobackup" method="post" action="' . $PHP_SELF . '">';
-	$display .= '<input type="submit" name="mode" value="' . $LANG_DB_BACKUP['do_backup'] . '"></form>';
-	$display .= COM_siteFooter();
+    $display .= $LANG_DB_BACKUP['db_explanation'];
+    $display .= '<form name="dobackup" method="post" action="' . $_CONF['site_admin_url'] . '/database.php">';
+    $display .= '<input type="submit" name="mode" value="' . $LANG_DB_BACKUP['do_backup'] . '"></form>';
+    $display .= COM_siteFooter();
 } else {
-	$display .= COM_startBlock($LANG08[06]);
-	$display .= $LANG_DB_BACKUP['no_access'];
-	COM_errorLog($_CONF['backup_path'] . " is not accessible.",1);
-	$display .= COM_endBlock();
-	$display .= COM_siteFooter();
+    $display .= COM_startBlock($LANG08[06]);
+    $display .= $LANG_DB_BACKUP['no_access'];
+    COM_errorLog($_CONF['backup_path'] . " is not accessible.",1);
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
 }
+
 echo $display; 
-    
+
 ?>
