@@ -2,12 +2,29 @@ GeekLog History/Changes:
 
 September ??, 2002 (1.3.6)
 ------------------
+- The filter to disable Javascript onXXX events also changed certain links in
+  HTML postings. This should be fixed now.
+- The poll uses a POST instead of a GET request now to at least prevent
+  primitive manipulation attempts ...
+- Events on the same day were displayed in the order they were entered, not
+  in the order they were scheduled (occured in day, week, and month view).
+- The user function and admin blocks weren't using the proper templates when
+  the theme was using the $_BLOCK_TEMPLATE trick, as outlined in
+  <http://geeklog.sourceforge.net/article.php?story=20020429092841722>.
+- When the first character of the content of a block is a '<' it is now
+  assumed that the block contains HTML and nl2br() is not applied to the
+  block content. This allows proper HTML usage and even the use of Javascript
+  in blocks.
+- Sanity checks have been added to the admin editors (including the editor
+  for static pages) to prevent possible damage to the database in case of
+  incomplete translations (language files) or invalid IDs.
 - The delete button in the plugin editor, which was unused since the removal
   of the automated plugin install (in Geeklog 1.3.4), will now cause a function
   plugin_uninstall_<plugin name> to be called. This allows plugins to uninstall
   themselves (if possible).
 - The author's name was missing from emailed stories. Also changed it so that
   the author's name is only included when $_CONF['contributedbyline'] == 1.
+  The daily digest now also includes the author's name.
 - Fixed the "1054: Unknown column 'deleted' in 'where clause'" SQL error that
   some people were getting when logging out.
 - Submitted stories will now pick up the permissions from the topic they were
