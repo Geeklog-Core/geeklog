@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.71 2004/10/13 13:26:54 dhaun Exp $
+// $Id: install.php,v 1.72 2004/12/19 11:08:07 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -48,7 +48,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.10');
+    define('VERSION', '1.3.11');
 }
 
 
@@ -60,8 +60,6 @@ if (!defined ('VERSION')) {
 */
 function INST_welcomePage()
 {
-    global $HTTP_POST_VARS;
-
     // prepare some hints about what /path/to/geeklog might be ...
     $thisFile = __FILE__;
     $thisFile = strtr ($thisFile, '\\', '/'); // replace all '\' with '/'
@@ -78,8 +76,8 @@ function INST_welcomePage()
     if (!file_exists ($glPath . '/config.php')) {
         $glPath = '';
     }
-    if (empty ($glPath) && !empty ($HTTP_POST_VARS['geeklog_path'])) {
-        $glPath = $HTTP_POST_VARS['geeklog_path'];
+    if (empty ($glPath) && !empty ($_POST['geeklog_path'])) {
+        $glPath = $_POST['geeklog_path'];
         $posted = true;
     }
 
@@ -156,7 +154,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         $cnt = count ($old_versions);
         for ($j = 1; $j <= $cnt; $j++) {
@@ -668,6 +666,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 
             $current_gl_version = '1.3.10';
             break;
+	case '1.3.10':
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.10_to_1.3.11.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
+
+            $current_gl_version = '1.3.11';
         default:
             $done = true;
         }
@@ -676,14 +682,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 }
 
 // Main
-if (isset ($HTTP_POST_VARS['page'])) {
-    $page = $HTTP_POST_VARS['page'];
+if (isset ($_POST['page'])) {
+    $page = $_POST['page'];
 }
 else {
     $page = 0;
 }
 
-if (isset ($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == '<< Previous')) {
+if (isset ($_POST['action']) && ($_POST['action'] == '<< Previous')) {
     $page = 0;
 }
 
@@ -693,7 +699,7 @@ if (isset ($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == '<< Previ
 
 // Include template class if we got it
 if ($page > 0) {
-    $geeklog_path = trim ($HTTP_POST_VARS['geeklog_path']);
+    $geeklog_path = trim ($_POST['geeklog_path']);
     $notapath = false;
     if (!empty ($geeklog_path)) {
         // do some sanity checks ...
@@ -728,13 +734,13 @@ if ($page > 0) {
         $display .= '<body bgcolor="#ffffff">' . LB;
         $display .= '<h2>Geeklog Installation - Error</h2>' . LB;
         if ($notapath) {
-            $display .= '<p><b>' . $HTTP_POST_VARS['geeklog_path'] . '</b> is not a path.<br>Please enter the path to where config.php can be found on your webserver\'s file system.</p>';
+            $display .= '<p><b>' . $_POST['geeklog_path'] . '</b> is not a path.<br>Please enter the path to where config.php can be found on your webserver\'s file system.</p>';
         } else {
-            $display .= '<p>Geeklog could not find config.php in the path you just entered: <b>' . $HTTP_POST_VARS['geeklog_path'] . '</b><br>' . LB;
+            $display .= '<p>Geeklog could not find config.php in the path you just entered: <b>' . $_POST['geeklog_path'] . '</b><br>' . LB;
             $display .= 'Please check this path and try again. Remember that you should be using absolute paths, starting at the root of your file system.</p>' . LB;
         }
         $display .= '<form action="install.php" method="post">' . LB;
-        $display .= '<p align="center"><input type="submit" name="action" value="<< Previous"><input type="hidden" name="geeklog_path" value="' . $HTTP_POST_VARS['geeklog_path'] . '"></p>' . LB . '</form>';
+        $display .= '<p align="center"><input type="submit" name="action" value="<< Previous"><input type="hidden" name="geeklog_path" value="' . $_POST['geeklog_path'] . '"></p>' . LB . '</form>';
         $display .= '</body>' . LB . '</html>';
         echo $display;
         exit;
@@ -745,27 +751,25 @@ $display = '';
 
 switch ($page) {
 case 1:
-    if ($HTTP_POST_VARS['install_type'] == 'complete_upgrade') {
+    if ($_POST['install_type'] == 'complete_upgrade') {
         $upgrade = 1;
     } else {
         $upgrade = 0;
     }
-    $display .= INST_getDatabaseSettings ($HTTP_POST_VARS['install_type'],
-                                          $HTTP_POST_VARS['geeklog_path']); 
+    $display .= INST_getDatabaseSettings ($_POST['install_type'],
+                                          $_POST['geeklog_path']); 
     break;
 
 case 2:
-    if (!empty($HTTP_POST_VARS['version'])) {
-        if (INST_doDatabaseUpgrades ($HTTP_POST_VARS['version'],
-                                     $HTTP_POST_VARS['prefix'])) {
+    if (!empty($_POST['version'])) {
+        if (INST_doDatabaseUpgrades ($_POST['version'], $_POST['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
         }
     } else {
         $use_innodb = false;
-        if (isset ($HTTP_POST_VARS['innodb']) &&
-                ($HTTP_POST_VARS['innodb'] == 'on')) {
+        if (isset ($_POST['innodb']) && ($_POST['innodb'] == 'on')) {
             $use_innodb = true;
         }
         if (INST_createDatabaseStructures ($use_innodb)) {
