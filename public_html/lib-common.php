@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.206 2003/03/15 18:24:57 dhaun Exp $
+// $Id: lib-common.php,v 1.207 2003/03/16 10:25:28 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1139,24 +1139,21 @@ function COM_topicList( $selection, $selected='', $sortcol=1 )
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',',$tmp );
 
-    $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY $select_set[$sortcol]" );
+    $result = DB_query( "SELECT * FROM {$_TABLES['topics']}" . COM_getPermSQL()
+            . " ORDER BY $select_set[$sortcol]" );
     $nrows = DB_numRows( $result );
 
     for( $i = 0; $i < $nrows; $i++ )
     {
         $A = DB_fetchArray( $result );
-        $access = SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] );
-        if( $access > 0 )
+        $retval .= '<option value="' . $A[0] . '"';
+
+        if( $A[0] == $selected )
         {
-            $retval .= '<option value="' . $A[0] . '"';
-
-            if( $A[0] == $selected )
-            {
-                $retval .= ' selected';
-            }
-
-            $retval .= '>' . stripslashes( $A[1] ) . '</option>' . LB;
+            $retval .= ' selected';
         }
+
+        $retval .= '>' . stripslashes( $A[1] ) . '</option>' . LB;
     }
 
     return $retval;
@@ -1790,29 +1787,14 @@ function COM_showTopics( $topic='' )
     global $_TABLES, $_CONF, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
            $page, $newstories;
 
-    $groupList = '';
-    if (!empty ($_USER['uid'])) {
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-    }
-    $permsql = '';
-    if (!empty ($_USER['uid'])) {
-        $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR "
-                 . "(group_id IN ($groupList) AND perm_group >= 2) OR "
-                 . "(perm_members >= 2) OR ";
-    }
-    $permsql .= "(perm_anon >= 2)";
-
-    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE ({$permsql}) ";
+    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']}" . COM_getPermSQL();
     if( $_CONF['sortmethod'] == 'alpha' )
     {
-        $sql .= "ORDER BY topic ASC";
+        $sql .= " ORDER BY topic ASC";
     }
     else
     {
-        $sql .= "ORDER BY sortnum";
+        $sql .= " ORDER BY sortnum";
     }
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
@@ -1845,7 +1827,7 @@ function COM_showTopics( $topic='' )
 
                 if( $_CONF['showstorycount'] )
                 {
-                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}') AND ({$permsql})" );
+                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
                     $T = DB_fetchArray( $rcount );
                     $retval .= $T['count'];
                 }
@@ -1875,7 +1857,7 @@ function COM_showTopics( $topic='' )
 
                 if( $_CONF['showstorycount'] )
                 {
-                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}') AND ({$permsql})" );
+                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
                     $T = DB_fetchArray( $rcount );
                     $retval .= $T['count'];
                 }
@@ -1988,7 +1970,7 @@ function COM_userMenu( $help='', $title='' )
             . '<input type="password" size="10" name="passwd"><br>' . LB
             . '<input type="submit" value="' . $LANG01[58] . '">' . LB
             . '</form>' . $LANG01[59] . LB
-            . COM_endBlock(COM_getBlockTemplate( 'user_block', 'footer' ));
+            . COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
     return $retval;
@@ -3123,7 +3105,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 * @param        string      $rdfurl     URL to get headlines from
 * @param        string      $date       Last time the headlines were imported
 * @see function COM_rdfImport
-* @return       bool        "true" if the block was updated, "false" if not
+* @return   void
 */
 
 function COM_rdfCheck( $bid, $rdfurl, $date )
@@ -3571,14 +3553,6 @@ function COM_emailUserTopics()
 
         $cur_day = strftime( "%D", time() );
 
-        $groups = SEC_getUserGroups( $U['uuid'] );
-        $groupList = '';
-        foreach( $groups as $grp )
-        {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr( $groupList, 0, -1 );
-
         $storysql = "SELECT sid,uid,date AS day,title,introtext,bodytext "
             . "FROM {$_TABLES['stories']} "
             . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
@@ -3602,11 +3576,8 @@ function COM_emailUserTopics()
         }
         else // get all topics this user has access to
         {
-            $topicsql = "SELECT tid FROM {$_TABLES['topics']} WHERE "
-                      . "(owner_id = {$U['uuid']} AND perm_owner >= 2) OR "
-                      . "(group_id IN ($groupList) AND perm_group >= 2) OR "
-                      . "(perm_members >= 2) OR "
-                      . "(perm_anon >= 2)";
+            $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
+                      . COM_getPermSQL( 'WHERE', $U['uuid'] );
             $tresult = DB_query( $topicsql );
             $trows = DB_numRows( $tresult );
             if( $trows > 0 )
@@ -3625,9 +3596,7 @@ function COM_emailUserTopics()
             }
         }
 
-        $storysql .= " AND ((owner_id = {$U['uuid']} AND perm_owner >= 2) OR "
-                  . "(group_id IN ($groupList) AND perm_group >= 2) OR "
-                  . "(perm_members >= 2) OR (perm_anon >= 2))";
+        $storysql .= COM_getPermSQL( 'AND', $U['uuid'] );
 
         $stories = DB_query( $storysql );
         $nsrows = DB_numRows( $stories );
@@ -3721,34 +3690,12 @@ function COM_whatsNewBlock( $help='', $title='' )
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS, $page, $newstories;
 
-    $groupList = '';
-
-    if( !empty( $_USER['uid'] ))
-    {
-        foreach( $_GROUPS as $grp )
-        {
-            $groupList .= $grp . ',';
-        }
-
-        $groupList = substr( $groupList, 0, -1 );
-    }
-
     $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
     if( $_CONF['hidenewstories'] == 0 )
     {
         // Find the newest stories
-        $nesql = '';
-
-        if( !empty( $_USER['uid'] ))
-        {
-            $nesql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-            $nesql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-            $nesql .= "(perm_members >= 2) OR ";
-        }
-
-        $nesql .= "(perm_anon >= 2)";
-        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
+        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSQL( 'AND' );
         $result = DB_query( $sql );
         $A = DB_fetchArray( $result );
         $nrows = $A['count'];
@@ -3805,39 +3752,33 @@ function COM_whatsNewBlock( $help='', $title='' )
         // Go get the newest comments
         $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
 
-        $stsql = '';
         $stwhere = '';
 
         if( !empty( $_USER['uid'] ))
         {
-            $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
-            $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
-            $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
             $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
             $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
-            $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
+            $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL)";
+        }
+        else
+        {
+            $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
         }
 
-        $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
-        $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
-
-        $posql = '';
         $powhere = '';
 
         if( !empty( $_USER['uid'] ))
         {
-            $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
-            $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
-            $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
             $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
             $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-            $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
+        }
+        else
+        {
+            $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
         }
 
-        $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
-        $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-
-        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND ({$stsql})) LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (({$posql}))) WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
+        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
 
         $result = DB_query( $sql );
 
@@ -3914,19 +3855,8 @@ function COM_whatsNewBlock( $help='', $title='' )
         // Get newest links
         $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
 
-        $lisql = '';
-        if( !empty( $_USER['uid'] ))
-        {
-            $lisql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-            $lisql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-            $lisql .= '(perm_members >= 2) OR ';
-        }
-
-        $lisql .= '(perm_anon >= 2)';
-
-        $sql = "SELECT lid,title,url FROM {$_TABLES['links']} "
-            . "WHERE $lisql "
-            . 'ORDER BY lid DESC LIMIT 15';
+        $sql = "SELECT lid,title,url FROM {$_TABLES['links']}"
+             . COM_getPermSQL() . ' ORDER BY lid DESC LIMIT 15';
         $foundone = 0;
         $now = time();
         $desired = $now - $_CONF['newlinksinterval'];
@@ -4679,6 +4609,70 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
 
     return( $related );
 }
+
+/**
+* Return SQL expression to check for permissions.
+*
+* Creates part of an SQL expression that can be used to request items with the
+* standard set of Geeklog permissions.
+*
+* @param        string      $type     part of the SQL expr. e.g. 'WHERE', 'AND'
+* @param        int         $u_id     user id or 0 = current user
+* @param        int         $access   access to check for (2=read, 3=r&write)
+* @param        string      $table    table name if ambiguous (e.g. in JOINs)
+* @return       string      SQL expression string (may be empty)
+*/
+function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
+{
+    global $_USER, $_GROUPS;
+
+    if( !empty( $table ))
+    {
+        $table .= '.';
+    }
+
+    if( $u_id <= 0 )
+    {
+        $uid = $_USER['uid'];    
+        $GROUPS = $_GROUPS;
+    }
+    else
+    {
+        $uid = $u_id;
+        $GROUPS = SEC_getUserGroups( $uid );
+    }
+
+    if( SEC_inGroup( 'Root', $uid ))
+    {
+        return '';
+    }
+
+    $sql = ' ' . $type . ' (';
+
+    if( $uid > 1 )
+    {
+        $sql .= "(({$table}owner_id = '{$uid}') AND ({$table}perm_owner >= $access)) OR ";
+
+        $groupList = '';
+        foreach( $GROUPS as $grp )
+        {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr( $groupList, 0, -1 );
+        $sql .= "(({$table}group_id IN ($groupList)) AND ({$table}perm_group >= $access)) OR ";
+
+        $sql .= "({$table}perm_members >= $access)";
+    }
+    else
+    {
+        $sql .= "{$table}perm_anon >= $access";
+    }
+
+    $sql .= ')';
+
+    return $sql;   
+}
+
 
 /**
 * Strip slashes from a string only when magic_quotes_gpc = on.
