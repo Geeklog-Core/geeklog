@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.10 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: search.php,v 1.11 2001/12/18 21:55:04 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -84,10 +84,8 @@ function searchform()
 	return $retval;
 }
 
-###############################################################################
-# The Search!
-function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
-	
+function searchstories($query,$topic,$datestart,$dateend, $author,$type) 
+{
     global $LANG09, $_CONF, $_TABLES;
 
     include_once($_CONF['path_system'] . 'classes/plugin.class.php');
@@ -187,8 +185,8 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
 
         $searchresults->set_var('start_block_results', COM_startBlock($LANG09[29]));
         if ($nrows_stories + $nrows_comments > 0) {
-		    for ($i=1; $i <= $nrows; $i++) {
-			    if ($A['day'] > $C['day']) {
+            for ($i=1; $i <= $nrows; $i++) {
+                if ($A['day'] > $C['day']) {
                     // print row
                     $searchresults->set_var('data', '<a href="article.php?story=' . $A['sid'] . '">' . stripslashes($A['title']) . '</a>');
                     $searchresults->parse('data_cols','resultcolumn',true);
@@ -204,9 +202,10 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
                     $searchresults->parse('data_cols','resultcolumn',true);
 
                     $searchresults->parse('results','resultrow',true);
+                    $searchresults->set_var('data_cols','');
 	
-				    $A = DB_fetchArray($result_stories);
-			    } else if (strlen($C['day']) > 0) {
+                    $A = DB_fetchArray($result_stories);
+                } else if (strlen($C['day']) > 0) {
                     // print row
                     $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
                     $searchresults->parse('data_cols','resultcolumn',true);
@@ -222,10 +221,11 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
                     $searchresults->parse('data_cols','resultcolumn',true);
 
                     $searchresults->parse('results','resultrow',true);
+                    $searchresults->set_var('data_cols','');
 
-				    $C = DB_fetchArray($result_comments);
-			    } 
-		    }
+                    $C = DB_fetchArray($result_comments);
+                } 
+            }
         } else {
             $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[28] . '</td></tr>');
         }
