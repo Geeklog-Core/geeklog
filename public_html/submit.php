@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.32 2002/08/27 01:18:47 tony_bibbs Exp $
+// $Id: submit.php,v 1.33 2002/09/01 21:43:35 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -420,7 +420,12 @@ function savesubmission($type,$A)
             if ($_CONF['linksubmission'] == 1) {
                 $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
             } else { // add link directly
-                $result = DB_save($_TABLES['links'],'lid,category,url,description,title,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',{$_USER['uid']}", $_CONF['site_url'] . '/links.php');
+                if (empty ($_USER['username'])) { // anonymous user
+                    $owner_id = 1;
+                } else {
+                    $owner_id = $_USER['uid'];
+                }
+                $result = DB_save($_TABLES['links'],'lid,category,url,description,title,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',$owner_id", $_CONF['site_url'] . '/links.php');
             }
         } else {
             $retval .= COM_startBlock($LANG12[22])
