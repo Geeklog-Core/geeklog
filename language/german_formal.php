@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# german.php for geeklog 1.3.8 and down...
+# german_formal.php
 #
 # This is an almost complete german language file for GeekLog.
 # Please contact Dirk Haun <dirk@haun-online.de> if you think anything
@@ -470,7 +470,7 @@ $LANG10 = array(
 	8 => "Artikel-Überschrift",
 	9 => "angezeigt",
 	10 => "Es gibt keine Artikel oder sie wurden von niemandem gelesen.",
-	11 => "Top Ten der Kommentare",
+	11 => 'Top Ten der meistkommentierten Artikel',
 	12 => "Kommentare",
 	13 => "Es gibt keine Artikel oder es wurden keine Kommentare dazu abgegeben.",
 	14 => "Top Ten der Umfragen",
@@ -985,7 +985,7 @@ $MESSAGE = array (
 	11 => "Ihr Block wurde gespeichert.",
 	12 => "Der Block wurde gelöscht.",
 	13 => "Ihre Kategorie wurde gespeichert.",
-	14 => "The topic and all its stories and blocks have been successfully deleted.",
+	14 => 'Die Kategorie und alle zugehörigen Artikel wurden gelöscht.',
 	15 => "Ihr Link wurde gespeichert.",
 	16 => "Der Link wurde gelöscht.",
 	17 => "Ihr Termin wurde gespeichert.",
@@ -1002,22 +1002,22 @@ $MESSAGE = array (
 	28 => "Das Plugin wurde gespeichert.",
 	29 => "Sorry, personal calendars are not enabled on this site",
 	30 => "Zugriff verweigert",
-	31 => "Sorry, you do not have access to the story administration page.  Please note that all attempts to access unauthorized features are logged",
-	32 => "Sorry, you do not have access to the topic administration page.  Please note that all attempts to access unauthorized features are logged",
-	33 => "Sorry, you do not have access to the block administration page.  Please note that all attempts to access unauthorized features are logged",
-	34 => "Sorry, you do not have access to the link administration page.  Please note that all attempts to access unauthorized features are logged",
-	35 => "Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged",
-	36 => "Sorry, you do not have access to the poll administration page.  Please note that all attempts to access unauthorized features are logged",
-	37 => "Sorry, you do not have access to the user administration page.  Please note that all attempts to access unauthorized features are logged",
-	38 => "Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged",
-	39 => "Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged",
+	31 => 'Sie haben keinen Zugriff auf diese Artikel-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	32 => 'Sie haben keinen Zugriff auf diese Kategorie-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werdenprotokolliert.',
+	33 => 'Sie haben keinen Zugriff auf diese Block-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	34 => 'Sie haben keinen Zugriff auf diese Links-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	35 => 'Sie haben keinen Zugriff auf diese Termin-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	36 => 'Sie haben keinen Zugriff auf diese Umfrage-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	37 => 'Sie haben keinen Zugriff auf diese User-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	38 => 'Sie haben keinen Zugriff auf diese Plugin-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
+	39 => 'Sie haben keinen Zugriff auf diese E-Mail-Administrationsseite. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
 	40 => "System-Nachricht",
     41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
     42 => "Your word has been successfully saved.",
 	43 => "The word has been successfully deleted.",
-    44 => 'The plug-in was successfully installed!',
-    45 => 'The plug-in was successfully deleted.',
-    46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
+    44 => 'Das Plugin wurde erfolgreich installiert.',
+    45 => 'Das Plugin wurde gelöscht.',
+    46 => 'Sie haben keinen Zugriff auf die Backup-Funktion. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
     48 => 'Danke, dass Sie sich bei ' . $_CONF['site_name'] . ' angemeldet hast. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.',
     49 => 'Ihre Gruppe wurde gespeichert.',
@@ -1036,7 +1036,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://geeklog.sourceforge.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
+	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
 	2 => "Plugin-Installation -- Disclaimer",
 	3 => "Plugin-Installationsformular",
 	4 => "Plugin-Datei",
@@ -1044,7 +1044,7 @@ $LANG32 = array (
 	6 => "Warnung: Plugin schon installiert!",
 	7 => "Das Plugin, das Sie installieren wollen, ist schon vorhanden. Bitte löschen Sie es, bevor Sie noch einmal versuchen, es zu installieren",
 	8 => "Plugin-Kompatibilitätstest fehlgeschlagen",
-	9 => "Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href=\"http://geeklog.sourceforge.net\">Geeklog</a> oder evtl. eine andere Version dieses Plugins.",
+	9 => "Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href=\"http://www.geeklog.net\">Geeklog</a> oder evtl. eine andere Version dieses Plugins.",
 	10 => "<br><b>Es sind derzeit keine Plugins installiert.</b><br><br>",
 	11 => "Um ein Plugin zu ändern oder löschen, auf die Nummer des Plugins klicken. Wenn Sie auf den Namen des Plugins klicken, wird die Homepage des Plugins aufgerufen. Um ein Plugin zu installieren oder aktualisieren bitte dessen Dokumentation lesen.",
 	12 => '(kein Name angegeben)',
