@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.403 2004/12/16 11:09:52 dhaun Exp $
+// $Id: lib-common.php,v 1.404 2004/12/16 20:49:42 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1223,11 +1223,12 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
     $select_set = explode( ',', $tmp );
 
     $sql = "SELECT $selection FROM $table";
-    if ($where != '') {
+    if( $where != '' )
+    {
         $sql .= " WHERE $where";
     }
     $sql .= " ORDER BY {$select_set[$sortcol]}";
-    $result = DB_query($sql);
+    $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
     for( $i = 0; $i < $nrows; $i++ )
@@ -1235,16 +1236,18 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
         $A = DB_fetchArray( $result, true );
         $retval .= '<option value="' . $A[0] . '"';
 
-        if ( is_array($selected) AND count($selected) > 0 ) {
-            foreach ($selected as $selected_item)
+        if( is_array( $selected ) AND count( $selected ) > 0 )
+        {
+            foreach( $selected as $selected_item )
             {
                 if( $A[0] == $selected_item )
                 {
                     $retval .= ' selected="selected"';
                 }
             }
-        } elseif (!is_array($selected) AND $A[0] == $selected) {
-
+        }
+        elseif( !is_array( $selected ) AND $A[0] == $selected )
+        {
             $retval .= ' selected="selected"';
         }
 
@@ -1914,7 +1917,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
 function COM_showTopics( $topic='' )
 {
-    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
+    global $_CONF, $_TABLES, $_USER, $LANG01, $HTTP_SERVER_VARS,
            $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
@@ -2633,7 +2636,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'story_link', $_CONF['site_url']
                 . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
     }
-    else if ( $type == 'article' )
+    else if( $type == 'article' )
     {
         $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                     . $sid );
@@ -3073,7 +3076,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
                 // We can simplify the query, and hence increase performance
                 // when pid = 0 (when fetching all the comments for a given sid)
-                if ( $cid )
+                if( $cid )
                 {
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
@@ -3397,7 +3400,7 @@ function COM_formatEmailAddress( $name, $address )
     $formatted_name = str_replace( '"', '\\"', $formatted_name );
 
     if(( $name != $formatted_name ) ||
-        (strpos( $formatted_name, '.' ) !== false ))
+        ( strpos( $formatted_name, '.' ) !== false ))
     {
         $formatted_name = '"' . $formatted_name . '"';
     }
@@ -4115,24 +4118,25 @@ function COM_getPassword( $loginname )
 * @return   string     username or fullname - default is username
 *
 */
-function COM_getDisplayName($uid='') {
-   global $_TABLES,$_USER,$_CONF;
+function COM_getDisplayName( $uid = '' )
+{
+    global $_CONF, $_TABLES, $_USER;
  
-   if ($uid == '') {
-      $uid = $_USER['uid'];
-   }
+    if ($uid == '')
+    {
+        $uid = $_USER['uid'];
+    }
 
-   $query = DB_query("SELECT username, fullname FROM {$_TABLES['users']} WHERE uid='$uid' ");
-   list ($username,$fullname) = DB_fetchArray($query);
+     $query = DB_query( "SELECT username, fullname FROM {$_TABLES['users']} WHERE uid='$uid'" );
+    list( $username, $fullname ) = DB_fetchArray( $query );
  
-   if ($fullname != '' AND $_CONF['show_fullname'] == 1) {
-      return $fullname;
-   } else {
-     return $username;
-   }
+    if( $fullname != '' AND $_CONF['show_fullname'] == 1 )
+    {
+        return $fullname;
+    }
+
+    return $username;
 }
-
-
 
 
 /**
@@ -4409,7 +4413,7 @@ function COM_emailUserTopics()
     $users = DB_query( $usersql );
     $nrows = DB_numRows( $users );
 
-    $lastrun = DB_getItem ($_TABLES['vars'], 'value', "name = 'lastemailedstories'");
+    $lastrun = DB_getItem( $_TABLES['vars'], 'value', "name = 'lastemailedstories'" );
 
     // For each user, pull the stories they want and email it to them
     for( $x = 1; $x <= $nrows; $x++ )
@@ -4531,7 +4535,7 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help='', $title='' )
 {
-    global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $page, $newstories;
 
     $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
@@ -4609,7 +4613,11 @@ function COM_whatsNewBlock( $help='', $title='' )
             $retval .= $LANG01[100] . '<br>';
         }
 
-        $retval .= '<br>';
+        if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['hidenewlinks'] == 0 )
+                || ( $_CONF['hidenewplugins'] == 0 ))
+        {
+            $retval .= '<br>';
+        }
     }
 
     if( $_CONF['hidenewcomments'] == 0 )
@@ -4713,7 +4721,10 @@ function COM_whatsNewBlock( $help='', $title='' )
             $retval .= $LANG01[86] . '<br>' . LB;
         }
 
-        $retval .= '<br>';
+        if(( $_CONF['hidenewlinks'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 ))
+        {
+            $retval .= '<br>';
+        }
     }
 
     if( $_CONF['hidenewlinks'] == 0 )
@@ -4759,7 +4770,10 @@ function COM_whatsNewBlock( $help='', $title='' )
             $retval .= $LANG01[88] . '<br>' . LB;
         }
 
-        $retval .= '<br>';
+        if( $_CONF['hidenewplugins'] == 0 )
+        {
+            $retval .= '<br>';
+        }
     }
 
     if( $_CONF['hidenewplugins'] == 0 )
@@ -4781,7 +4795,10 @@ function COM_whatsNewBlock( $help='', $title='' )
                     $retval .= $content[$i] . '<br>' . LB;
                 }
 
-                $retval .= '<br>';
+                if( $i + 1 < $plugins )
+                {
+                    $retval .= '<br>';
+                }
             }
         }
     }
@@ -4804,27 +4821,31 @@ function COM_whatsNewBlock( $help='', $title='' )
 
 function COM_showMessage( $msg, $plugin='' )
 {
-    global $MESSAGE, $_CONF;
+    global $_CONF, $MESSAGE;
 
     $retval = '';
 
     if( $msg > 0 )
     {
-        $timestamp = strftime( $_CONF['daytime'] );
         if( !empty( $plugin ))
         {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
-            if (isset($$var)) {
+            if( isset( $$var ))
+            {
                 $message = $$var;
-            } else {
-                $message = sprintf($MESSAGE['61'],$plugin);
+            }
+            else
+            {
+                $message = sprintf( $MESSAGE[61], $plugin );
             }
         }
         else
         {
             $message = $MESSAGE[$msg];
         }
+
+        $timestamp = strftime( $_CONF['daytime'] );
         $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate( '_msg_block', 'header' ))
             . '<table><tr><td><img src="' . $_CONF['layout_url']
@@ -5500,7 +5521,7 @@ function COM_getRate( $occurrences, $timespan )
         {
             if( $rate > $seconds )
             {
-                $foo = (int)(( $rate / $seconds ) + .5 );
+                $foo = ( int )(( $rate / $seconds ) + .5 );
 
                 if(( $foo < $occurrences ) && ( $foo > 0 ))
                 {
@@ -5991,19 +6012,20 @@ function COM_isFrontpage()
 }
 
 /**
-* Ensure an ID contains only alphanumeric characters (or '-')
+* Ensure an ID contains only alphanumeric characters, dots, dashes, or underscores
 *
 * @param    string  $id     the ID to sanitize
 * @param    boolean $new_id true = create a new ID in case we end up with an empty string
 * @return   string          the sanitized ID
 */
-function COM_sanitizeID ($id, $new_id = true)
+function COM_sanitizeID( $id, $new_id = true )
 {
-    $id = str_replace (' ', '', $id);
-    $id = str_replace (array ('/', '\\', ':', '+'), '-', $id);
-    $id = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $id);
-    if (empty ($id) && $new_id) {
-        $id = COM_makesid ();
+    $id = str_replace( ' ', '', $id );
+    $id = str_replace( array( '/', '\\', ':', '+' ), '-', $id );
+    $id = preg_replace( '/[^a-zA-Z0-9\-_\.]/', '', $id );
+    if( empty( $id ) && $new_id )
+    {
+        $id = COM_makesid();
     }
 
     return $id;
