@@ -29,10 +29,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2002/09/11 10:17:01 dhaun Exp $
+// $Id: index.php,v 1.11 2002/10/16 17:16:16 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
+
+if (!SEC_hasRights('staticpages.edit')) {
+    $display = COM_siteHeader('menu');
+    $display .= COM_startBlock($LANG_STATIC['access_denied']);
+    $display .= $LANG_STATIC['access_denied_msg'];
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+    echo $display;
+    exit;
+}
+
 
 /**
 * Displays the static page form 
