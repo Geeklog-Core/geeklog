@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.9 2002/05/21 15:37:58 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.10 2002/05/22 18:26:34 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -277,7 +277,7 @@ class database {
             $farray = explode(',',$fields);
             $varray = explode(',',$values);
             $sql = "UPDATE $table SET ";
-            for ($i = 0; $i <= count($farray); $i++) {
+            for ($i = 1; $i <= count($farray); $i++) {
                 $sql .= current($farray) . '=' . current($varray);
                 if ($i < count($farray)) {
                     $sql .= ',';
@@ -288,13 +288,15 @@ class database {
             $where_clause = '';
             if (is_array($key_field)) {
                 for ($i = 1; $i <= count($key_field); $i++) {
-                    $where_clause .= current($key_field) . '=' . current($key_value);
+                    $where_clause .= current($key_field) . "='" . current($key_value) . "'";
                     if ($i < count($key_field)) {
                         $where_clause .= ' AND ';
                     }
                     next($key_field);
                     next($key_value);
                 }
+            } else {
+                $where_clause .= $key_field . '=' . "'$key_value'";
             }
             $sql .= " WHERE $where_clause";
         } else {
