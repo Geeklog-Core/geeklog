@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.25 2002/02/26 17:58:48 tony_bibbs Exp $
+// $Id: story.php,v 1.26 2002/03/07 17:47:00 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -134,8 +134,16 @@ function storyeditor($sid, $mode = '')
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
     $story_templates->set_var('site_url', $_CONF['site_url']);
+    if (empty($A['unixdate'])) {
+        if ($A['ampm'] == 'pm') {
+            $A['publish_hour'] = $A['publish_hour'] + 12;
+        }
+        $A['unixdate'] = strtotime($A['publish_year'] . '-' . $A['publish_month'] . '-' . $A['publish_day']
+            . ' ' . $A['publish_hour'] . ':' . $A['publish_minute'] . ':00');
+    }
     if (!empty($A['title'])) {
         $display .= COM_startBlock($LANG24[26]);
+        $A['day'] = $A['unixdate'];
         $display .= COM_article($A,"n");
         $display .= COM_endBlock();
     }
