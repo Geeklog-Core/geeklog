@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | plugins.php                                                               |
-// | Geeklog plugin administration page.                                       |
 // |                                                                           |
+// | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.32 2003/02/04 20:31:57 dhaun Exp $
+// $Id: plugins.php,v 1.33 2003/06/20 15:15:40 dhaun Exp $
 
-include('../lib-common.php');
-include('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -45,11 +45,12 @@ include('auth.inc.php');
 $display = '';
 
 if (!SEC_inGroup('Root')) {
-    $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[38];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     COM_errorLog("User {$_USER['username']} tried to illegally access the poll administration screen",1);
     echo $display;
     exit;
@@ -71,7 +72,7 @@ function plugineditor($pi_name, $confirmed = 0)
         exit;
 	}
 
-	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'");
+	$result = DB_query("SELECT pi_homepage,pi_version,pi_gl_version,pi_enabled FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'");
     if (DB_numRows($result) <> 1) {
         // Serious problem, we got a pi_name that doesn't exists or returned more than one row
         return COM_errorLog('Error in editing plugin ' . $pi_name . '. Either the plugin does not exist '
@@ -87,22 +88,24 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('site_url', $_CONF['site_url']);
     $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
-    $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13]));
+    $plg_templates->set_var('start_block_editor', COM_startBlock ($LANG32[13],
+            '', COM_getBlockTemplate ('_admin_block', 'header')));
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
     $plg_templates->set_var('lang_delete', $LANG32[25]);
-    $public_img = $_CONF['site_url'] . "/" . $pi_name . "/images/" . $pi_name . ".gif";
+    $public_img = $_CONF['site_url'] . '/' . $pi_name . '/images/' . $pi_name . '.gif';
     $fh = @fopen ($public_img, 'r');
     if ($fh === false) {
-        $admin_img = $_CONF['site_admin_url'] . "/plugins/" . $pi_name
-                   . "/images/" . $pi_name . ".gif";
+        $admin_img = $_CONF['site_admin_url'] . '/plugins/' . $pi_name
+                   . '/images/' . $pi_name . '.gif';
         $plg_templates->set_var ('pi_icon', $admin_img);
     } else {
         fclose ($fh);
         $plg_templates->set_var ('pi_icon', $public_img);
     }
     if (!empty($pi_name)) {
-        $plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
+        $plg_templates->set_var ('delete_option', '<input type="submit" value="'
+                                 . $LANG32[25] . '" name="mode">');
     }
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
@@ -119,7 +122,8 @@ function plugineditor($pi_name, $confirmed = 0)
     } else {
         $plg_templates->set_var('enabled_checked', '');
     }
-    $plg_templates->set_var('end_block', COM_endBlock());
+    $plg_templates->set_var('end_block',
+            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
     $retval .= $plg_templates->parse('output', 'editor');
 
@@ -143,7 +147,8 @@ function listplugins($page = 1)
     $plg_templates->set_var('site_url', $_CONF['site_url']);
     $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
-    $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5]));
+    $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5],
+            '', COM_getBlockTemplate ('_admin_block', 'header')));
     $plg_templates->set_var('lang_newplugin', $LANG32[14]);
     $plg_templates->set_var('lang_adminhome', $LANG32[15]);
     $plg_templates->set_var('lang_instructions', $LANG32[11]);
@@ -173,7 +178,8 @@ function listplugins($page = 1)
 		// no plug-ins installed, give a message that says as much
 		$plg_templates->set_var('lang_nopluginsinstalled', $LANG32[10]);
 	}
-    $plg_templates->set_var('end_block', COM_endBlock());
+    $plg_templates->set_var('end_block',
+            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
     $plg_templates->parse('output', 'list');
     $retval .= $plg_templates->finish($plg_templates->get_var('output'));
 	$retval .= show_newplugins();
@@ -212,15 +218,12 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 	}
 }
 
-function removeplugin ($pi_name) {
-    if (PLG_uninstall ($pi_name)) {
-    } else {
-    }
-
-    return $retval;
-}
-
-
+/**
+* Creates list of uninstalled plugins (if any) and offers install link to them.
+*
+* @return   string   HTML containing list of uninstalled plugins
+*
+*/
 function show_newplugins()
 {
     global $_CONF, $_TABLES, $LANG32;
@@ -265,7 +268,8 @@ function show_newplugins()
             $newtemplate->set_var ('layout_url', $_CONF['layout_url']);
             $newtemplate->set_var ('lang_pluginname', $LANG32[16]);
             $newtemplate->set_var ('start_block_newlist',
-                                   COM_startBlock ($LANG32[14]));
+                    COM_startBlock ($LANG32[14], '',
+                            COM_getBlockTemplate ('_admin_block', 'header')));
             for ($i = 0; $i < sizeof ($newplugins); $i++) {
                 $newtemplate->set_var ('lang_install', $LANG32[22]);
                 $newtemplate->set_var ('pi_name', $newplugins[$i]);
@@ -276,11 +280,13 @@ function show_newplugins()
                 $newtemplate->set_var ('end_install_anchortag', '</a>');
                 $newtemplate->parse ('plugin_list', 'row', true);
             }
-            $newtemplate->set_var ('end_block', COM_endBlock ());
+            $newtemplate->set_var ('end_block',
+                COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
             $newtemplate->parse ('output', 'list');
             $retval .= $newtemplate->finish ($newtemplate->get_var ('output'));
         } else {
-            $retval =  COM_startBlock ($LANG32[14]);
+            $retval =  COM_startBlock ($LANG32[14], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
             $retval .= '<table border="0">' . LB;
             $retval .= '<tr><th align="left">' . $LANG32[16] .'</th></tr>' . LB;
             for ($i = 0; $i < sizeof ($newplugins); $i++) {
@@ -290,8 +296,42 @@ function show_newplugins()
                     . '</a></td></tr>' . LB;
             }
             $retval .= '</table>' . LB;
-            $retval .= COM_endBlock ();
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block',
+                                                           'footer'));
         }
+    }
+
+    return $retval;
+}
+
+/**
+* Uninstall a plugin (call its uninstall function).
+*
+* @param    pi_name   string   name of the plugin to uninstall
+* @return             string   HTML for error or success message
+*
+*/
+function do_uninstall ($pi_name)
+{
+    global $_CONF, $MESSAGE;
+
+    $retval = '';
+
+    // if the plugin is disabled, load the functions.inc now
+    if (!function_exists ('plugin_uninstall_' . $pi_name)) {
+        require_once ($_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc');
+    }
+
+    if (PLG_uninstall ($pi_name)) {
+        $retval .= COM_showMessage (45);
+    } else {
+        $timestamp = strftime ($_CONF['daytime']);
+        $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . '<img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.gif" border="0" align="top" alt="">'
+                . $LANG08[6] . '<br><br>'
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
     return $retval;
@@ -302,24 +342,17 @@ function show_newplugins()
 if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     if ($confirmed == 1) {
         $display .= COM_siteHeader('menu');
-        if (PLG_uninstall ($pi_name)) {
-            $display .= COM_showMessage(45);
-        } else {
-            $timestamp = strftime($_CONF['daytime']);
-            $display .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
-                    . '<img src="' . $_CONF['layout_url']
-                    . '/images/sysmessage.gif" border="0" align="top" alt="">'
-                    . $LANG08[6] . '<br><br>' . COM_endBlock ();
-        }
+        $display .= do_uninstall ($pi_name);
         $display .= listplugins($page);
         $display .= COM_siteFooter();
-    } else {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($LANG32[30]);
+    } else { // ask user for confirmation
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($LANG32[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG32[31];
-        $display .= COM_endBlock();
-        $display .= plugineditor($pi_name,1);
-        $display .= COM_siteFooter();
+        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= plugineditor ($pi_name, 1);
+        $display .= COM_siteFooter ();
     }	
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
