@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.77 2004/02/21 19:15:56 blaine Exp $
+// $Id: users.php,v 1.78 2004/05/10 18:20:40 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -138,11 +138,25 @@ function userprofile($user)
     $user_templates->set_var('headline_last10comments', $LANG04[10]);
     $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
+    $result = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
+            . COM_getPermSQL ());
+    $nrows = DB_numRows ($result);
+    $tids = array ();
+    for ($i = 0; $i < $nrows; $i++) {
+        $T = DB_fetchArray ($result);
+        $tids[] = $T['tid'];
+    }
+    $topics = "'" . implode ("','", $tids) . "'";
+
     // list of last 10 stories by this user
-    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
-    $sql .= " ORDER BY unixdate DESC LIMIT 10";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    if (sizeof ($tids) > 0) {
+        $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
+        $sql .= " ORDER BY unixdate DESC LIMIT 10";
+        $result = DB_query($sql);
+        $nrows = DB_numRows($result);
+    } else {
+        $nrows = 0;
+    }
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
@@ -161,15 +175,18 @@ function userprofile($user)
     }
 
     // list of last 10 comments by this user
-    // first, get a list of all stories the current visitor has access to
-    $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
-    $result = DB_query($sql);
-    $numsids = DB_numRows($result);
     $sidArray = array();
-    for ($i = 1; $i <= $numsids; $i++) {
-        $S = DB_fetchArray ($result);
-        $sidArray[] = $S['sid'];
+    if (sizeof ($tids) > 0) {
+        // first, get a list of all stories the current visitor has access to
+        $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid IN ($topics))" . COM_getPermSQL ('AND');
+        $result = DB_query($sql);
+        $numsids = DB_numRows($result);
+        for ($i = 1; $i <= $numsids; $i++) {
+            $S = DB_fetchArray ($result);
+            $sidArray[] = $S['sid'];
+        }
     }
+
     // add all polls the current visitor has access to
     $sql = "SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ();
     $result = DB_query($sql);

@@ -3,6 +3,9 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- In a user's profile, don't display story or comment titles if the user
+  looking at the profile page doesn't have permissions to view the topic those
+  stories or comments were posted under (bug #208) [Dirk]
 - Fixed incorrect author names in Daily Digest (bug #207) [Dirk]
 - Fixed problems with the database backup when there were spaces in the path to
   the backups directory (bug #185).
