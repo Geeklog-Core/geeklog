@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.2 2004/01/07 01:34:10 tony Exp $
+// $Id: getimage.php,v 1.3 2004/01/07 04:23:20 tony Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -74,6 +74,7 @@ if (strstr($image, '..')) {
 
 // Set the path properly
 switch ($mode) {
+    case 'show':
     case 'articles':
         $downloader->setPath($_CONF['path_images'] . 'articles/');
         break;
@@ -90,7 +91,11 @@ switch ($mode) {
 
 // Let's see if we don't have a legit file.  If not bail
 if (is_file($downloader->getPath() . $image)) {
-    $downloader->downloadFile($image);
+    if ($mode == 'show') {
+        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&image=' . $image . '" /></body></html>';
+    } else {
+        $downloader->downloadFile($image);
+    }
 } else {
     COM_errorLog('File, ' . $downloader->getPath() . $image . ', was not found in getimage.php');
 }
