@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.117 2002/07/06 11:21:21 dreamscape Exp $
+// $Id: lib-common.php,v 1.118 2002/07/07 12:51:33 dreamscape Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1850,6 +1850,18 @@ function COM_checkWords($Message)
     return ($EditedMessage);
 }
 
+/**
+*  Takes some amount of text and replaces all javascript events on*= with in
+*
+*  This script takes some amount of text and matches all javascript events, on*= (onBlur= onMouseClick=)
+*  and replaces them with in*=
+*  Essentially this will cause onBlur to become inBlur, onFocus to be inFocus
+*  These are not valid javascript events and the browser will ignore them.
+*/
+function COM_killJS($Message) 
+{
+	return (preg_replace('/on(\w*) ?=/','in\1=',$Message));
+}
 
 /**
 * This function checks html tags.
