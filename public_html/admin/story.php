@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.142 2004/12/17 12:04:46 dhaun Exp $
+// $Id: story.php,v 1.143 2004/12/29 15:06:25 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1154,6 +1154,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         // if the story id has changed, delete the story with the old id
         if ($delete_old_story && !empty ($old_sid)) {
             DB_delete ($_TABLES['stories'], 'sid', $old_sid);
+            DB_query ("UPDATE {$_TABLES['comments']} SET sid = '$sid' WHERE type = 'article' AND sid = '$old_sid'");
         }
 
         // update feed(s) and Older Stories block
