@@ -104,7 +104,7 @@ function itemlist($type) {
 		print "<input type=hidden name=type value=$type><input type=hidden name=count value=$nrows><input type=hidden name=mode value=moderation>\n";
 		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
 		print "<tr align=left><th>&nbsp;</th><th><b>{$H[0]}</b></th><th><b>{$H[1]}</b></th><th><b>{$H[2]}</b></th><th align=center><b>{$LANG29[2]}</b></th><th align=center>";
-		if ($type != "story") print "<b>{$LANG29[1]}</b>";
+		print "<b>{$LANG29[1]}</b>";
 		print "</th></tr>\n";
 		print "<tr style=\"background: black;\" align=left><td colspan=8><img src={$CONF["base"]}/images/speck.gif width=1 height=1</td></tr>\n";
 		for ($i=1; $i<=$nrows; $i++) {
@@ -121,7 +121,7 @@ function itemlist($type) {
 			print "<td>{$A[1]}</td><td>{$A[2]}</td><td>{$A[3]}</td>";
 			print "<td align=center><input type=radio name=action[$i] value=delete></td>";
 			print "<td align=center>";
-			if ($type != "story" ) print "<input type=radio name=action[$i] value=approve><input type=hidden name=id[$i] value={$A[0]}>";
+			print "<input type=radio name=action[$i] value=approve><input type=hidden name=id[$i] value={$A[0]}>";
 			print "</td></tr>\n";
 		}
 		print "<tr><td colspan=8 align=center><input type=hidden name=count value=$nrows><input type=submit value={$LANG29[38]}></td></tr>";
@@ -168,6 +168,10 @@ function moderation($mid,$action,$type,$count) {
 					//There may be some plugin specific processing that needs to 
 					//happen first.
 					DoPluginModerationDelete($type, $mid[$i]);
+				}
+				if (empty($mid[$i])) {
+					errorlog("moderation.php just tried deleting everyting in table {$type}submission because it got an empty id.  Please report this immediately to your site administrator");
+					exit;
 				}
 				dbdelete("{$type}submission","$id",$mid[$i]);
 				break;
