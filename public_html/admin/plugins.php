@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.40 2004/10/03 15:03:39 blaine Exp $
+// $Id: plugins.php,v 1.41 2004/10/16 16:42:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -114,7 +114,7 @@ function plugineditor ($pi_name, $confirmed = 0)
     if ($fh === false) {
         $admin_img = $_CONF['site_admin_url'] . '/plugins/' . $pi_name
                    . '/images/' . $pi_name . '.gif';
-        $fh2 = @fopen ($public_img, 'r');
+        $fh2 = @fopen ($admin_img, 'r');
         if ($fh2 === false) {
             $default_img = $_CONF['site_url'] . '/images/icons/plugins.gif';
             $plg_templates->set_var ('pi_icon', $default_img);
