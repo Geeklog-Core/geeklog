@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.60 2004/02/14 14:27:02 dhaun Exp $
+// $Id: install.php,v 1.61 2004/02/19 12:31:34 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -496,7 +496,9 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 
             $pos = strrpos ($_CONF['rdf_file'], '/');
             $filename = substr ($_CONF['rdf_file'], $pos + 1);
-            DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$_CONF['site_name']}', '{$_CONF['site_slogan']}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+            $sitename = addslashes ($_CONF['site_name']);
+            $siteslogan = addslashes ($_CONF['site_slogan']);
+            DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$sitename}', '{$siteslogan}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
 
             // upgrade static pages plugin
             $spversion = get_SP_ver ();
