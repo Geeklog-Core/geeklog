@@ -88,7 +88,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 				
                 $retval .= COM_startComment($LANG03[14])
                     . COM_comment($HTTP_POST_VARS,1,$type)
-                    . COM_endBlock();
+                    . '</td></tr></table></td></tr></table>';
             } else if ($mode == $LANG03[14]) {
                 $retval .= COM_startBlock($LANG03[17])
                     . $LANG03[12]
