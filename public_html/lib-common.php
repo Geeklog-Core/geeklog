@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.113 2002/06/28 15:02:08 dhaun Exp $
+// $Id: lib-common.php,v 1.114 2002/06/29 22:44:21 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2627,11 +2627,14 @@ function COM_whatsNewBlock($help='',$title='')
                     // Trim the length if over 16 characters, and strip the 'http://'
                     $foundone = 1;
 
+                    $lcount = $_CONF['site_url'] . '/portal.php?url='
+                            . urlencode ($A['url']) . '&amp;what=link&amp;item='
+                            . $A['lid'];
                     if ($itemlen > 16) {
-                        $newlinks []= '<a href="' . $A['url'] . '" target="_blank">' 
+                        $newlinks [] = '<a href="' . $lcount . '">'
                             . substr($A['title'],0,16) . '...</a>' . LB;
                     } else {
-                        $newlinks[] = '<a href="' . $A['url'] . '" target="_blank">'
+                        $newlinks[] = '<a href="' . $lcount . '">'
                             . substr($A['title'],0,$itemlen) . '</a>' . LB;
                     }
                 }
