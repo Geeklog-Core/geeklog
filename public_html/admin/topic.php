@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.37 2003/06/28 11:29:03 dhaun Exp $
+// $Id: topic.php,v 1.38 2004/01/01 21:55:20 blaine Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -179,6 +179,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $tid = str_replace (' ', '', $tid); // silently remove spaces from topic id
+    $tid = str_replace ("'", "", $tid); // silently remove single quotes from topic id
 
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
