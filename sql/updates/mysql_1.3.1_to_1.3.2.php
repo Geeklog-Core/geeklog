@@ -1,4 +1,3 @@
 <?php
-$_SQL[] = "ALTER TABLE {$_TABLES['userindex']} add etids varchar(255) DEFAULT ''";
-
+$_SQL[] = "ALTER TABLE {$_TABLES['userindex']} ADD etids varchar(255) DEFAULT ''";
 ?>
