@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.16 2001/12/07 05:25:46 tony_bibbs Exp $
+// $Id: moderation.php,v 1.17 2002/04/11 17:21:15 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -293,7 +293,7 @@ function moderation($mid,$action,$type,$count)
         $id = 'sid';
         $table = $_TABLES['stories'];
         $submissiontable = $_TABLES['storysubmission'];
-        $fields = 'sid,uid,tid,title,introtext,date';
+        $fields = 'sid,uid,tid,title,introtext,date,postmode';
         break;
     default:
         if (strlen($type) <= 0) {
