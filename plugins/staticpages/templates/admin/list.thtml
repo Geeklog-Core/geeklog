@@ -1,15 +1,18 @@
                                 {start_block_list}
                                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
-                                        <td>
+                                        <td rowspan="2">
                                             <img src="{site_url}/staticpages/images/staticpages.gif">
                                         </td>
                                         <td>[ <a href="{new_page_url}">{lang_newpage}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                                     </tr>
+                                    <tr>
+                                        <td>{lang_instructions}</td>
+                                    </tr>
                                 </table>
                                 <table cellpadding="0" cellspacing="3" border="0" width="100%">
                                     <tr>
-                                        <th align="left">#</th>
+                                        <th align="left" colspan="2">#</th>
                                         <th align="left">{lang_title}</th>
                                         <th>{lang_writtenby}</th>
                                         <th>{lang_lastupdated}</th>

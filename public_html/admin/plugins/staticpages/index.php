@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2003/03/10 15:53:44 dhaun Exp $
+// $Id: index.php,v 1.18 2003/03/10 18:36:01 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -228,13 +228,20 @@ function form ($A, $error = false)
 */
 function staticpageeditor ($sp_id, $mode = '') 
 {
-	global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
+    global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
 
     if (!empty ($sp_id) && $mode == 'edit') {
         $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id' AND " . SP_getPerms ('', '3'));
         $A = DB_fetchArray ($result);
         $A['sp_old_id'] = $A['sp_id'];
     } elseif ($mode == 'edit') {
+        $A['sp_id'] = COM_makesid ();
+        $A['sp_uid'] = $_USER['uid'];
+        $A['unixdate'] = time ();
+        $A['sp_old_id'] = '';
+    } elseif (!empty ($sp_id) && $mode == 'clone') {
+        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id' AND " . SP_getPerms ('', '3'));
+        $A = DB_fetchArray ($result);
         $A['sp_id'] = COM_makesid ();
         $A['sp_uid'] = $_USER['uid'];
         $A['unixdate'] = time ();
@@ -254,7 +261,7 @@ function staticpageeditor ($sp_id, $mode = '')
 
 function liststaticpages ($page = 1) 
 {
-	global $_TABLES, $LANG_STATIC, $_CONF;
+    global $_TABLES, $LANG_STATIC, $_CONF;
 
     $retval = '';
 
@@ -266,6 +273,7 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var('new_page_url', COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit'));
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
+    $sp_templates->set_var('lang_instructions', $LANG_STATIC['instructions']);
     $sp_templates->set_var('lang_title', $LANG_STATIC['title']);
     $sp_templates->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
     $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
@@ -284,6 +292,7 @@ function liststaticpages ($page = 1)
             $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $A['sp_id']));
             $sp_templates->set_var('row_number', $i);
             $sp_templates->set_var('page_display_url',COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
+            $sp_templates->set_var ('page_clone_url', COM_buildURL ($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=clone&amp;sp_id=' . $A['sp_id']));
             $sp_templates->set_var('sp_title', stripslashes ($A['sp_title']));
             $sp_templates->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
 			$curtime = COM_getUserDateTimeFormat($A['unixdate']);
@@ -433,6 +442,10 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     $display .= COM_siteHeader('menu');
     $display .= staticpageeditor($sp_id,$mode);
     $display .= COM_siteFooter();
+} else if ($mode == 'clone') {
+    $display .= COM_siteHeader ('menu');
+    $display .= staticpageeditor ($sp_id,$mode);
+    $display .= COM_siteFooter ();
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
     submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
             $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,

@@ -79,7 +79,8 @@ $LANG_STATIC= array(
     stats_hits => 'Angezeigt',
     stats_no_hits => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
     id => 'ID',
-    duplicate_id => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wähle eine andere ID.'
+    duplicate_id => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wähle eine andere ID.',
+    instructions => 'Auf die Nummer klicken, um eine Statische Seite zu ändern oder zu löschen. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neue Seite (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das [C] klicken, um eine Kopie einer vorhandenen Seite zu erhalten.'
 );
 
 ?>

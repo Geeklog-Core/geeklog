@@ -77,7 +77,8 @@ $LANG_STATIC= array(
     stats_hits => 'Hits',
     stats_no_hits => 'It appears that there are no static pages on this site or no one has ever viewed them.',
     id => 'ID',
-    duplicate_id => 'The ID you chose for this static page is already in use. Please select another ID.'
+    duplicate_id => 'The ID you chose for this static page is already in use. Please select another ID.',
+    instructions => "To modify or delete a static page, click on that page's number below. To view a static page, click on the title of the page you wish to view. To create a new static page click on new page above. Click on [C] to create a copy of an existing page."
 );
 
 ?>
