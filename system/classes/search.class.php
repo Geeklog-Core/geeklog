@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.10 2003/07/24 21:09:45 dhaun Exp $
+// $Id: search.class.php,v 1.11 2003/07/25 10:53:34 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -292,7 +292,11 @@ class Search {
                     // get rows    
                     $A['title'] = str_replace('$','&#36;',$A['title']);
                     $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $row = array('<a href="article.php?story=' . $A['sid'] . '&query=' . $urlQuery . '">' . stripslashes($A['title']) . '</a>',$thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
+                    $articleUrl = 'article.php?story=' . $A['sid'];
+                    if (!empty ($urlQuery)) {
+                        $articleUrl .= '&amp;query=' . $urlQuery;
+                    }
+                    $row = array('<a href="' . $articleUrl . '">' . stripslashes($A['title']) . '</a>',$thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
                     $story_results->num_searchresults++;
                 } else {
