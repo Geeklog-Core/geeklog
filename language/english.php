@@ -172,7 +172,7 @@ $LANG03 = array(
 	5 => "Username",
 	6 => "This site requires you to be logged in to post a comment, please log in.  If you do not have an account you can use the form below to create one.",
 	7 => "Your last comment was ",
-	8 => " seconds ago.  This site requires at least {$_CONF["speedlimit2"]} seconds between comments",
+	8 => " seconds ago.  This site requires at least {$_CONF["commentspeedlimit"]} seconds between comments",
 	9 => "Comment",
 	10 => '',
 	11 => "Submit Comment",
@@ -265,7 +265,9 @@ $LANG04 = array(
 	68 => "Remember Me For",
 	69 => "How long should we remember you after logging in?",
 	70 => "Customize the layout and content of {$_CONF['site_name']}",
-	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these greate features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  The use the login form to the left to log in!"
+	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these greate features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  The use the login form to the left to log in!",
+    72 => "Theme",
+    73 => "Language"
 );
 
 ###############################################################################
