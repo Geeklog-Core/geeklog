@@ -25,9 +25,10 @@
 #
 #	These settings must suit your server environment.
 
-include("/path/to/geeklog/conf-server.php");
+#include("/path/to/geeklog/conf-server.php");
 
-include($CONF['path'].'conf-site.php');
+include('/path/to/geeklog/config.php'); #Temporary until Marks adds the two new config files
+#include($CONF['path'].'conf-site.php')
 include($CONF['path'].$CONF["languagefile"]);
 include($CONF['path_html'].'sessions.php');
 include($CONF['path_html'].'plugins.php');
@@ -1032,7 +1033,7 @@ function showblock($side,$topic="") {
 	if (!empty($topic)) {
 		$sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
 	} else {
-		$sql .= " AND tid = 'all' AND type != 'layout'";
+		$sql .= " AND (tid = 'all' AND type != 'layout')";
 	}
 
 	if (!empty($U["boxes"])) {
