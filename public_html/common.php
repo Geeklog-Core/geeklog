@@ -723,7 +723,7 @@ function usermenu() {
 		print "<a href={$CONF["site_url"]}/usersettings.php?mode=edit>{$LANG01[48]}</a><br>\n";
 		print "<a href={$CONF["site_url"]}/usersettings.php?mode=preferences>{$LANG01[49]}</a><br>\n";
 		print "<a href={$CONF["site_url"]}/usersettings.php?mode=comments>{$LANG01[63]}</a><br>\n";
-		print "<a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG01[19]}</a><p>\n";
+		print "<a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG01[19]}</a>\n";
 		endblock();
 	} else {
 		startblock($LANG01[47]);
