@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.18 2001/12/14 20:06:50 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.19 2001/12/14 22:27:16 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1907,7 +1907,7 @@ function COM_hit()
 */
 function COM_printUpcomingEvents($title='') 
 {
-    global $_TABLES, $LANG01,$_CONF;
+    global $_TABLES, $LANG01,$_CONF, $_USER;
 
     if (empty($title)) {	
         $title = DB_getItem($_TABLES['blocks'],'title',"name = 'events_block'");
@@ -1916,7 +1916,7 @@ function COM_printUpcomingEvents($title='')
 
     $eventSql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['events']} WHERE dateend >= NOW() AND " 
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
-    $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE dateend >= NOW() AND "
+    $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
 
     $allEvents = DB_query($eventSql);
@@ -1927,7 +1927,7 @@ function COM_printUpcomingEvents($title='')
     $oldDate1  = 'no_day';  // Invalid Date!
     $oldDate2  = 'last_d';  // Invalid Date!
 
-    if ($_CONF['personalcalendars'] == 1) {
+    if ($_CONF['personalcalendars'] == 1 AND !empty($_USER['uid'])) {
         $iterations = 2;
     } else {
         $iterations = 1;
