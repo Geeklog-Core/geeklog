@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.217 2003/04/21 16:49:33 dhaun Exp $
+// $Id: lib-common.php,v 1.218 2003/04/28 08:15:33 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3951,7 +3951,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             {
                 $A = DB_fetchArray( $result );
 
-                if( $A['type'] == 'article' )
+                if(( $A['type'] == 'article' ) || empty( $A['type'] ))
                 {
                     $itemlen = strlen( $A['title'] );
                     $titletouse = stripslashes( $A['title'] );
