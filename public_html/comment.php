@@ -120,7 +120,11 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 $result = DB_query("SELECT sig FROM {$_TABLES['users']} WHERE uid = '{$_USER['uid']}'");
                 $U = DB_fetchArray($result);
                 if (!empty($U["sig"])) {
-                    $comment = LB . LB . LB . '-----' . LB . $U[0];
+                    if (!$postmode == 'html') {
+                        $commenttext = LB . LB . LB . '-----' . LB . $U[0];
+                    } else {
+                        $commenttext = '<p>----<br>' . LB . nl2br($U[0]);
+                    }
                 }
             }
                 
