@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.68 2002/09/28 18:29:40 dhaun Exp $
+// $Id: story.php,v 1.69 2002/10/07 14:32:35 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -656,6 +656,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         
         // Get the related URLs
+        $rel = array ();
         $fulltext = "$introtext $bodytext";
         $check = " ";
         while($check != $reg[0]) {
@@ -691,7 +692,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             if ($check != $reg[0]) {
                 // Only write if we are dealing with something other than an image 
                 if(!(stristr($reg[0],"<img "))) { 
-                    $related .= "<li>" . stripslashes($reg[0]);
+                    $rel[] = stripslashes($reg[0]);
                 }
             }
         }
@@ -700,11 +701,11 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $topic = DB_getItem($_TABLES['topics'],'topic',"tid = '$tid'");
 
         if ($_CONF["contributedbyline"] == 1) {
-            $related .= "<li><a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>\n";
+            $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
         }
 
-        $related .= "<li><a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>\n";
-        $related = addslashes(COM_checkHTML(COM_checkWords($related)));
+        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
+        $related = addslashes(COM_checkHTML(COM_checkWords(COM_makeList($rel))));
 
         // Clean up the text
         if ($postmode == "html") {
