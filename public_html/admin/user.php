@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.57 2003/06/23 13:18:30 dhaun Exp $
+// $Id: user.php,v 1.58 2003/07/01 17:07:30 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -229,7 +229,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		}
 
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
-            if (empty ($password)) {
+            if (empty ($passwd)) {
                 // no password? create one ...
                 srand ((double) microtime () * 1000000);
                 $passwd = rand ();
