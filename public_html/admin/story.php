@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.32 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: story.php,v 1.33 2002/04/12 15:55:18 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -238,7 +238,7 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_var('status_options', COM_optionList($_TABLES['statuscodes'],'code,name',$A['statuscode']));
     $story_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$A['commentcode']));
     $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
-    $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',1));
+    $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
     list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
     $story_templates->set_var('lang_introtext', $LANG24[16]);
     $story_templates->set_var('story_introtext', $newintro);
