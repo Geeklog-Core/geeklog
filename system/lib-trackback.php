@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.5 2005/01/29 17:52:55 dhaun Exp $
+// $Id: lib-trackback.php,v 1.6 2005/01/29 22:33:35 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -552,6 +552,62 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     }
 
     return true;
+}
+
+/**
+* Attempt to auto-detect the Trackback URL of a post.
+*
+* @param    string  $url    URL of post with embedded RDF for the Trackback URL
+* @return   mixed           Trackback URL, or false on error
+*
+* Note: The RDF, if found, is only parsed using a regular expression. Using
+*       the XML parser may be more successful on some occassions ...
+*
+*/
+function TRB_detectTrackbackUrl ($url)
+{
+    $fp = @fopen ($url, 'r');
+    if ($fp === false) {
+        return false;
+    }
+    $page = '';
+    $found_start = false;
+    $pos1 = 0;
+    $pos2 = 0;
+    while (!feof ($fp)) {
+        $page .= fread ($fp, 4096);
+        if (!$found_start) {
+            $pos = strpos ($page, '<rdf:RDF ');
+            if ($pos === false) {
+                continue;
+            }
+            $found_start = true;
+            $pos1 = $pos;
+        }
+        if ($found_start) {
+            $pos = strpos ($page, '</rdf:RDF>');
+            if ($pos !== false) {
+                $pos2 = $pos;
+                break;
+            }
+        }
+    }
+    fclose ($fp);
+
+    if ($found_start) {
+        $pos2 += strlen ('</rdf:RDF>');
+        $rdf = substr ($page, $pos1, $pos2 - $pos1);
+
+        // Okay, we COULD fire up the XML parser now. But then again ...
+        preg_match ('/trackback:ping="(.*)"/', $rdf, $matches);
+        if (empty ($matches[1])) {
+            $retval = false;
+        } else {
+            $retval = $matches[1];
+        }
+    }
+
+    return $retval;
 }
 
 ?>
