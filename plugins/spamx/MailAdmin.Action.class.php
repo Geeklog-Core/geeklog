@@ -40,14 +40,29 @@ class MailAdmin extends BaseCommand {
             $uid = 1;
         }
         $uid .= '@' . $_SERVER['REMOTE_ADDR'];
-        $msg = sprintf($LANG_SX00['emailmsg'], $_CONF['site_name'], $uid, $comment);
+        $msg = sprintf ($LANG_SX00['emailmsg'],
+                        $_CONF['site_name'], $uid, $comment);
+
+        $msg .= "\n\nRequest headers:\n";
+        if (function_exists ('getallheaders')) {
+            $headers = getallheaders ();
+            foreach ($headers as $key => $content) {
+                $msg .= $key . ': ' . $content . "\n";
+            }
+        } else {
+            foreach ($_SERVER as $key => $content) {
+                if (substr ($key, 0, 4) == 'HTTP') {
+                    $msg .= $key . ': ' . $content . "\n";
+                }
+            }
+        }
 
         $subject = sprintf ($LANG_SX00['emailsubject'], $_CONF['site_name']);
-        COM_mail($_SPX_CONF['notification_email'], $subject, $msg);
+        COM_mail ($_SPX_CONF['notification_email'], $subject, $msg);
         $result = 8;
-        SPAMX_log('Mail Sent to Admin');
+        SPAMX_log ('Mail Sent to Admin');
         return 0;
-    } 
-} 
+    }
+}
 
 ?>
