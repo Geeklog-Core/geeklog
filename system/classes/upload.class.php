@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.20 2002/11/26 19:40:47 dhaun Exp $
+// $Id: upload.class.php,v 1.21 2002/11/30 15:08:12 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -410,10 +410,10 @@ class upload
 	function _getPermissions()
 	{
         if (is_array($this->_permissions)) {
-            if (count($this->_permissions > 1)) {
+            if (count($this->_permissions) > 1) {
                 $perms = $this->_permissions[$this->_imageIndex];
             } else {
-                $perms = $this->_permissions;
+                $perms = $this->_permissions[0];
             }
         }
         
