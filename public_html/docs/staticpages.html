@@ -1,0 +1,165 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Static Pages plugin</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Static Pages plugin</td>
+</tr>
+</table>
+
+<h1>Static Pages plugin</h1>
+
+<h2><a name="about">What is it?</a></h2>
+
+<p>The Static Pages plugin was originally aimed at creating pages with static content (as opposed to the dynamic pages created by Geeklog) - hence the name. Pages like an "about us" page, a mission statement, etc. would come to mind.</p>
+
+<p>Since then, people have used the Static Pages for all kinds of things and with the inclusion of PHP into Static Pages, even the original name isn't quite right any more ...</p>
+
+
+<h2><a name="history">History</a></h2>
+
+<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.4. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version allows the use of PHP in Static Pages and also supports proper Geeklog permissions.</p>
+
+<p>With Geeklog 1.3.8 and Static Pages 1.3 these two versions have now been merged again. Static Pages 1.3 also includes some new features that were not included in either of its predecessors.</p>
+
+
+<h2><a name="features">Features</a></h2>
+
+<ul>
+  <li>supports <a href="#php">use of PHP</a></li>
+  <li>proper support for Geeklog permissions</li>
+  <li><a href="#id">editable page ID</a> to make more readable URLs</li>
+  <li>Static Pages can be displayed on Geeklog's <a href="#frontpage">index page</a> and can even replace it entirely ("splash screen")</li>
+  <li>Static Pages can be displayed on Geeklog's <a href="#topic">topic pages</a></li>
+  <li>"<a href="#cloning">cloning</a>" of existing pages</li>
+  <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
+</ul>
+
+
+<h2><a name="php">Use of PHP</a></h2>
+
+<p align="center"><em>The use of PHP in Static Pages may result in security issues if not used properly. Use this feature with care!</em></p>
+
+<p>The use of PHP has to be enabled for each individual Static Page. Make sure you check the PHP checkbox below the content edit field. If that checkbox is not checked, your PHP code will be displayed as the page's content instead (i.e. it will not be executed).</p>
+
+<p>To use PHP, the person editing the Static Page will also need to have "staticpages.PHP" permission. This is the default for all users in the "Static Page Admin" group, but you could create a second Admin group with only the "staticpages.edit" and "staticpages.delete" permissions if you don't want to allow all your Static Page Admins to make use of PHP.</p>
+
+<p>Please note that when you enable PHP for a Static Page, the content of the page is treated as PHP source, i.e. you will need to write PHP code. Some examples may help:</p>
+
+<p><strong>Example 1 (wrong!)</strong></p>
+<pre><code>
+    &lt;?php 
+     return "This is a test"; 
+    ?&gt;
+    This is not a test.
+</code></pre>
+
+<p>With PHP enabled, this will not display anything at all. With PHP disabled, it will only display "This is not a test."</p>
+
+<p>Why? Because everything between <code>&lt;?php</code> and <code>?&gt;</code> will <em>always</em> be stripped out, whether the page has been set to PHP mode or not.</p>
+
+<p><strong>Example 2 (good)</strong></p>
+<pre><code>
+    return "This is a test";
+</code></pre>
+
+<p>With PHP enabled, this will display "This is a test". With PHP disabled, it will display the entire PHP code, i.e. <code>return "This is a test";</code>
+
+<p><strong>Example 3 (wrong)</strong></p>
+<pre><code>
+    echo "This is a test";
+</code></pre>
+
+<p>With PHP enabled, this will display "This is a test" - but not where you would expect it. When using PHP in Static Pages, you should not use <code>echo</code> or <code>print</code> but return the content you want to be displayed using a <code>return</code> statement (see example 2).</p>
+
+<h3><a name="phpsummary">Summary</a></h3>
+<ul>
+  <li>You will need to enable the use of PHP for each individual page.</li>
+  <li>Don't include your PHP code in <code>&lt;?php</code> and <code>?&gt;</code> tags.</li>
+  <li>Don't use <code>echo</code> or <code>print</code>.</li>
+  <li>Use <code>return</code> to return the content you want to be displayed.</li>
+</ul>
+
+
+<h2><a name="id">Page ID</a></h2>
+
+<p>When creating a new Static Page, it will be assigned a page ID automatically. This ID consists of the date and time and up to three random digits. When you anticipate that the URL of this page may be used a lot, e.g. quoted in emails, it may make sense to use a more readable ID for the page.</p>
+
+<p>The Static Pages editor will let you change the page ID. For example, you may want to rename the ID for your "about" page from "20030313100131123" to "about", thus creating a URL like</p>
+
+<p align="center"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
+
+<p>which looks much nicer when quoted (and is easier to remember). You could further improve this by making use of Geeklog's <a href="#url">URL rewrite feature</a>.</p>
+
+<p>Please note that you should only use letters and digits for the page ID. Avoid national special characters, most punctuation characters ('-' and '.' should be okay, though) and spaces. The Static Page editor will catch some illegal characters but not all of them ...</p>
+
+
+<h2><a name="frontpage">Using Static Pages on the index page</a></h2>
+
+<p>Sometimes, you may want to display the contents of a Static Page on your site's front page. To do that, create a Static Page and give it the title "frontpage" (without the quotes). The contents of this Static Page will then be displayed above the stories on Geeklog's index page.</p>
+
+<p>You can even take this one step further and make the Static Page replace the index page entirely when you also set the page's label to "nonews".</p>
+
+<p>By setting the permissions accordingly, you can also create Static Pages that are only displayed for anonymous users (e.g. to tell them what they can expect when they register with your site) or logged-in users.</p>
+
+
+<h2><a name="topic">Using Static Pages on topic pages</a></h2>
+
+<p>In addition to being used on the frontpage, you can also create Static Pages that are displayed on top of a topic page (i.e. <tt>index.php?topic=SomeTopic</tt>).</p>
+
+<p>To make use of this feature, create a new Static Page and give it a title consisting of the word "topic:" followed by the topic's ID, e.g. "topic:GeekLog" (without the quotes). The page will then be displayed above the list of stories from that topic.</p>
+
+<p>Make sure you use the topic ID (i.e. the word you see in the URL for that topic), not the topic name (the topic name is what is displayed in Geeklog's Section block).</p>
+
+
+<h2><a name="block">Wrapping Static Pages in a block</a></h2>
+
+<p>Static Pages will be wrapped in a block when <code>$_SP_CONF['in_block']</code> is set to <code>1</code> (in the plugin's <tt>config.php</tt> file). The title of the Static Page is then used as the block title.</p>
+
+<p>However, when using a Static Page on the frontpage or on a topic page, the page's <em>label</em> is used as the block title. A Static Page that is used as a splash screen (with "nonews" as a label) can not be wrapped in a block - you would need to include some PHP code that calls <code>COM_startBlock</code> and <code>COM_endBlock</code> in that case.</p>
+
+
+<h2><a name="cloning">Cloning Static Pages</a></h2>
+
+<p>When you have a lot of similar Static Pages you may want to make a copy of an existing page and then edit that copy. This can easily be done by clicking on the [C] from the list of Static Pages. Doing so will create a copy of that page with a new page ID.</p>
+
+
+<h2><a name="url">URL rewriting</a></h2>
+
+<p align="center"><em>Please note that this feature is considered experimental and is known not to work with IIS.</em></p>
+
+<p>Geeklog supports a form of URL rewriting, i.e. change the look or URLs such that they are more search engine friendly. For example, instead of</p>
+
+<p align="center"><tt>http://yoursite/staticpages/index.php?page=20030313100131123</tt></p>
+
+<p>the URL could look like this</p>
+
+<p align="center"><tt>http://yoursite/staticpages/index.php/20030313100131123</tt></p>
+
+<p>Some search engines are known not to index pages when the URL includes characters like '?' and '='. You could further improve the chances of this page being indexed by <a href="#id">replacing the numeric page ID</a> with a word or expression (preferrably something that corresponds to the page's content), e.g.</p>
+
+<p align="center"><tt>http://yoursite/staticpages/index.php/about</tt></p>
+
+<p>To make use of URL rewriting, you will need to enable it in Geeklog's <tt>config.php</tt> file by setting</p>
+
+<p><code>$_CONF['url_rewrite'] = true;</code></p>
+
+<p>The Static Pages plugin is currently the only plugin known to make use of this feature.</p>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
