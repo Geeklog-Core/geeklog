@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.72 2002/11/26 16:48:15 dhaun Exp $
+// $Id: story.php,v 1.73 2002/11/26 18:07:35 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -209,11 +209,11 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('story_uid', $A['uid']);
 
     // user access info
-    $story_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
-    $story_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
+    $story_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $story_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
     $story_templates->set_var('owner_id', $A['owner_id']);
-    $story_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
     $usergroups = SEC_getUserGroups();
     if ($access == 3) {
@@ -233,10 +233,10 @@ function storyeditor($sid = '', $mode = '')
         $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
     }
     $story_templates->set_var('group_dropdown', $groupdd);
-    $story_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
-    $story_templates->set_var('lang_perm_key', $LANG_ACCESS[permissionskey]);
+    $story_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    $story_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
     $story_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    $story_templates->set_var('permissions_msg', $LANG_ACCESS[permmsg]);
+    $story_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
     $story_templates->set_var('lang_date', $LANG24[15]);
     $publish_month = date('m', $A['unixdate']);
@@ -287,7 +287,7 @@ function storyeditor($sid = '', $mode = '')
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $story_templates->set_var('story_title', stripslashes($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
-    $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
+    $story_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
     if ($A['show_topic_icon'] == 1) {
         $story_templates->set_var('show_topic_icon_checked', 'checked="CHECKED"');
@@ -398,7 +398,7 @@ function liststories($page = 1)
     $story_templates->set_var('lang_adminhome', $LANG24[44]);
     $story_templates->set_var('lang_instructions', $LANG24[23]);
     $story_templates->set_var('lang_title', $LANG24[13]);
-    $story_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $story_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $story_templates->set_var('lang_draft', $LANG24[34]);
     $story_templates->set_var('lang_author', $LANG24[7]);
     $story_templates->set_var('lang_date', $LANG24[15]);
@@ -419,12 +419,12 @@ function liststories($page = 1)
             $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
             if ($access > 0) {
                 if ($access == 3) {
-                    $access = $LANG_ACCESS[edit];
+                    $access = $LANG_ACCESS['edit'];
                 } else {
-                    $access = $LANG_ACCESS[readonly];
+                    $access = $LANG_ACCESS['readonly'];
                 }
             } else {
-                $access = $LANG_ACCESS[none];
+                $access = $LANG_ACCESS['none'];
             }
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $story_templates->set_var('story_id', $A['sid']);
