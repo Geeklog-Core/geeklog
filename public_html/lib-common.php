@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.407 2004/12/22 16:10:28 blaine Exp $
+// $Id: lib-common.php,v 1.408 2004/12/29 08:43:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2649,7 +2649,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
                 . "/comment.php?type=$type&amp;cid=$sid" );
     }
 
-    if( $_USER['uid'] > 1)
+    if( $_USER['uid'] > 1 )
     {
         $username = $_USER['username'];
         $fullname = DB_getItem( $_TABLES['users'], 'fullname',
@@ -2657,8 +2657,10 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     }
     else
     {
-        $username = DB_getItem( $_TABLES['users'], 'username', "uid = '1'" );
-        $fullname = DB_getItem( $_TABLES['users'], 'fullname', "uid = '1'" );
+        $result = DB_query( "SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = 1" );
+        $N = DB_fetchArray( $result );
+        $username = $N['username'];
+        $fullname = $N['fullname'];
     }
     if( empty( $fullname ))
     {
@@ -3785,7 +3787,7 @@ function COM_formatBlock( $A, $noboxes = false )
 
     if( $A['type'] == 'phpblock' && !$_USER['noboxes'] )
     {
-        if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
+        if( !( $A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'" ) == 0 ))
         {
             $function = $A['phpblockfn'];
             $blkheader = COM_startBlock( $A['title'], $A['help'],
@@ -5581,14 +5583,31 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $table .= '.';
     }
-    if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
+    if( $u_id <= 0)
     {
-        $uid = $_USER['uid'];    
-        $GROUPS = $_GROUPS;
+        if( empty( $_USER['uid'] ))
+        {
+            $uid = 1;
+        }
+        else
+        {
+            $uid = $_USER['uid'];
+        }
     }
     else
     {
         $uid = $u_id;
+    }
+    if(( empty( $_USER['uid'] ) && ( $uid == 1 )) || ( $uid == $_USER['uid'] ))
+    {
+        if( empty( $_GROUPS ))
+        {
+            $_GROUPS = SEC_getUserGroups( $uid );
+        }
+        $GROUPS = $_GROUPS;
+    }
+    else
+    {
         $GROUPS = SEC_getUserGroups( $uid );
     }
 
@@ -6045,31 +6064,42 @@ function COM_sanitizeID( $id, $new_id = true )
     return $id;
 }
 
-/** Convert a text based date YYYY-MM-DD to a unix timestamp integer value 
+/**
+* Convert a text based date YYYY-MM-DD to a unix timestamp integer value 
 *
-* @param    string $date     Date in the format YYYY-MM-DD
-* @param    string $time     Option time in the format HH:MM::SS
-* @return   int          UNIX Timestamp
+* @param    string  $date   Date in the format YYYY-MM-DD
+* @param    string  $time   Option time in the format HH:MM::SS
+* @return   int             UNIX Timestamp
 */
-function COM_convertDate2Timestamp($date,$time='') {
-        // Breakup the string using either a space, fwd slash, bkwd slash or colon as a delimiter
-        $atok = strtok($date," /-\\:");
-        while ($atok !== FALSE) {
-            $atoks[] = $atok;
-            $atok = strtok(" /-\\:");  // get the next token
+function COM_convertDate2Timestamp( $date, $time = '' )
+{
+    // Breakup the string using either a space, fwd slash, bkwd slash or
+    // colon as a delimiter
+    $atok = strtok( $date, ' /-\\:' );
+    while( $atok !== FALSE )
+    {
+        $atoks[] = $atok;
+        $atok = strtok( ' /-\\:' );  // get the next token
+    }
+    if( $time == '' )
+    {
+        $timestamp = mktime( 0, 0, 0, $atoks[1], $atoks[2], $atoks[0] );
+    }
+    else
+    {
+        $btok = strtok( $time, ' /-\\:' );
+        while( $btok !== FALSE )
+        {
+            $btoks[] = $btok;
+            $btok = strtok( ' /-\\:' );
         }
-        if ($time == '') {
-            $timestamp = mktime(0,0,0,$atoks[1],$atoks[2],$atoks[0]);
-        } else {
-            $btok = strtok($time," /-\\:");
-            while ($btok !== FALSE) {
-                $btoks[] = $btok;
-                $btok = strtok(" /-\\:");
-            }
-            $timestamp = mktime($btoks[0],$btoks[1],$btoks[2],$atoks[1],$atoks[2],$atoks[0]);
-        }
-        return $timestamp;
+        $timestamp = mktime( $btoks[0], $btoks[1], $btoks[2],
+                             $atoks[1], $atoks[2], $atoks[0] );
+    }
+
+    return $timestamp;
 }
+
 // Now include all plugin functions
 foreach( $_PLUGINS as $pi_name )
 {
