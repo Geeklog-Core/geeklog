@@ -5,13 +5,13 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | calendar.class.php                                                        |
-// | Geeklog calendar library.                                                 |
 // |                                                                           |
+// | Geeklog calendar library.                                                 |
 // +---------------------------------------------------------------------------+
 // | Much of this code is from Jim Wright jdlwright@yahoo.com with minor       |
 // | customizations.                                                           |
 // |                                                                           |
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // +---------------------------------------------------------------------------+
@@ -32,20 +32,21 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.4 2002/05/13 19:18:27 tony_bibbs Exp $
+// $Id: calendar.class.php,v 1.5 2004/07/26 14:32:43 dhaun Exp $
 
 /**
-* This file contains the two classes used to help support the calendar pages.  Please
-* note that our calendar code is in shambles and is hard to understand.  Not so much this file
-* as calendar.php and calendar_event.php.  Those files along with these class need
-* to be reworked to be easier to maintain and support rich calendaring features
+* This file contains the two classes used to help support the calendar pages.
+* Please note that our calendar code is in shambles and is hard to understand.
+* Not so much this file as calendar.php and calendar_event.php.  Those files
+* along with this class need to be reworked to be easier to maintain and
+* support rich calendaring features
 *
-* @auther   Tony Bibbs  <tony@tonybibbs.com>
+* @author   Tony Bibbs  <tony@tonybibbs.com>
 */
 
 /**
-* This class represents the logical structure of a calendar day and is used by the greater
-* calendar class
+* This class represents the logical structure of a calendar day and is used by
+* the greater calendar class
 *
 */
 class CalendarDay {
@@ -121,6 +122,10 @@ class Calendar {
     /**
     * @access private
     */
+    var $_week_start;
+    /**
+    * @access private
+    */
     var $_default_year;
     /**
     * @access private
@@ -174,12 +179,16 @@ class Calendar {
     */
     function getDayOfWeek($day = 1, $month = 1, $year = '')
     {
-	if (empty($year)) {
+	    if (empty($year)) {
             $year = $this->_default_year;
         }
 
         $dateArray = getdate(mktime(0,0,0,$month,$day,$year));
-        return $dateArray['wday'];
+        $result = $dateArray['wday'];
+        if ($this->_week_start == 'Mon') {
+            $result = ($result == 0) ? 6 : $result - 1;
+        }
+        return $result;
     }
 
     /**
@@ -298,6 +307,13 @@ class Calendar {
     *
     */
     function getDayName($day = 1) {
+        if ($this->_week_start == 'Mon') {
+            if ($day == 7) {
+                return $this->_lang_days['sunday'];
+            } else {
+                $day += 1;
+            }
+        }
         switch ($day - 1) {
         case 0:
             return $this->_lang_days['sunday'];
@@ -408,7 +424,7 @@ class Calendar {
     * @param    array       $lang_months    Array of string holding month language
     *
     */
-    function setLanguage($lang_days='', $lang_months='') 
+    function setLanguage($lang_days='', $lang_months='', $week_start='Sun')
     {
         if (empty($lang_days)) {
             $this->_lang_days['sunday'] = 'Sunday';
@@ -437,6 +453,11 @@ class Calendar {
             $this->_lang_months['december'] = 'December';
         } else {
             $this->_lang_months = $lang_months;
+        }
+        if ($week_start != 'Mon') {
+            $this->_week_start = 'Sun';
+        } else {
+            $this->_week_start = $week_start;
         }
     }
     

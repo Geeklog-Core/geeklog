@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.121 2004/07/23 19:10:49 dhaun Exp $
+// $Id: config.php,v 1.122 2004/07/26 14:32:44 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -230,13 +230,14 @@ $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']  = 'english';
-$_CONF['locale']    = 'en-gb';
-$_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
-$_CONF['daytime']   = '%m/%d %I:%M%p';
-$_CONF['shortdate'] = '%x';
-$_CONF['dateonly']  = '%d-%b';
-$_CONF['timeonly']  = '%I:%M %p %Z';
+$_CONF['language']   = 'english';
+$_CONF['locale']     = 'en-gb';
+$_CONF['date']       = '%A, %B %d %Y @ %I:%M %p %Z';
+$_CONF['daytime']    = '%m/%d %I:%M%p';
+$_CONF['shortdate']  = '%x';
+$_CONF['dateonly']   = '%d-%b';
+$_CONF['timeonly']   = '%I:%M %p %Z';
+$_CONF['week_start'] = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // +---------------------------------------------------------------------------+
