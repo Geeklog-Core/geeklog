@@ -188,6 +188,11 @@ answer.</p>
     <tt>admin/link/linkeditor.thtml</tt>,
     <tt>admin/topic/topiceditor.thtml</tt>,
     <tt>submit/submitevent.thtml</tt>, <tt>submit/submitlink.thtml</tt>.</li>
+<li>The hard-coded <code>&amp;nbsp;</code> has been removed from the
+    <code>{welcome_msg}</code> variable. The blank was then added to the
+    <tt>header.thtml</tt> of the Classic, XSilver, and Yahoo themes (the other
+    themes either look fine without it or didn't use <code>{welcome_msg}</code>
+    in the first place).</li>
 <li>An extra <code>table</code> has been removed from the
     <tt>users/profile.thtml</tt> file of the XSilver theme so that the
     username now lines up properly with the other entries.</li>
