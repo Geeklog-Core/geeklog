@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.234 2003/06/28 05:25:27 blaine Exp $
+// $Id: lib-common.php,v 1.235 2003/06/28 17:50:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1903,7 +1903,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                 $poll->set_var( 'poll_comments', '' );
             }
 
-            $poll->set_var('lang_pollquestions', "TESTING");
+            $poll->set_var( 'lang_pollquestions', $LANG07[6] );
 
             $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
 
