@@ -1140,9 +1140,9 @@ $MESSAGE = array(
     59 => 'Der Feed wurde gelöscht.',
     60 => 'Das Plugin wurde erfolgreich aktualisiert.',
     61 => 'Plugin %s: Unbekannter Text-Platzhalter',
-    62 => 'The trackback comment has been deleted.',
-    63 => 'An error occured when deleting the trackback comment.',
-    64 => 'Your trackback comment has been successfully sent.'
+    62 => 'Der Trackback-Kommentar wurde gelöscht.',
+    63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
+    64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.'
 );
 
 ###############################################################################
