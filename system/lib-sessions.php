@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.16 2003/05/08 17:23:10 dhaun Exp $
+// $Id: lib-sessions.php,v 1.17 2003/05/21 10:33:20 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -244,7 +244,11 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND remote_ip = '$remote_ip'");
 
     // Create new session
-    $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
+    if (empty ($md5_sessid)) {
+        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, uid, start_time, remote_ip) VALUES ($sessid, $userid, $currtime, '$remote_ip')";
+    } else {
+        $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
+    }
     $result = DB_query($sql);
     if ($result) {
     	if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
@@ -268,18 +272,28 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
 * later use
 *
 * @param        string      $sessid         Session ID to save to cookie
-* @param        string      $cookietime     Cookie timeout value
+* @param        int         $cookietime     Cookie timeout value (not used)
 * @param        string      $cookiename     Name of cookie to save sessiond ID to
 * @param        string      $cookiepath     Path in which cookie should be sent to server for
 * @param        string      $cookiedomain   Domain in which cookie should be sent to server for
-* @param        string      $cookiesecure   Not sure but don't use it anyway
+* @param        int         $cookiesecure   if =1, set cookie only on https connection
 *
 */
 function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $cookiedomain, $cookiesecure)
 {
-    // This sets a cookie that will persist until the user closes their browser window.
-    // since session expiry is handled on the server-side, cookie expiry time isn't a big deal.
-    setcookie($cookiename,$sessid,0,$cookiepath,$cookiedomain,$cookiesecure);
+    global $_SESS_VERBOSE;
+
+    // This sets a cookie that will persist until the user closes their browser
+    // window. since session expiry is handled on the server-side, cookie expiry
+    // time isn't a big deal.
+    if ($_SESS_VERBOSE) {
+        COM_errorLog ("Setting session cookie: setcookie($cookiename, $sessid, 0, $cookiepath, $cookiedomain, $cookiesecure);", 1);
+    }
+
+    if (setcookie ($cookiename, $sessid, 0, $cookiepath, $cookiedomain,
+                   $cookiesecure) === false) {
+        COM_errorLog ('Failed to set session cookie.', 1);
+    }
 }
 
 /**
