@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2002/04/16 21:11:15 tony_bibbs Exp $
+// $Id: index.php,v 1.2 2002/04/16 21:19:57 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 
@@ -66,7 +66,7 @@ if (!($error)) {
 	    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
 	    $retval .= '<br><br><center>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0] . '<br>'; 
 	    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-		    $retval .= "<a href={$_CONF['site_url']}/admin/plugins/staticpages/index.php?mode=edit&sp_id=$page>";
+		    $retval .= "<a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&sp_id=$page>";
 		    $retval .= $LANG_STATIC[edit] . "</a></center>";
 	    }
 	    $retval .= "<td><img src={$_CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
