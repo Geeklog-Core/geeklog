@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.19 2002/04/14 20:16:08 dhaun Exp $
+// $Id: event.php,v 1.20 2002/05/02 18:24:09 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -66,12 +66,9 @@ if (!SEC_hasRights('event.edit')) {
 * $eid          string      ID of event to edit
 *
 */
-//function editevent($mode, $eid='')
 function editevent($mode, $A) 
 {
 	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
-
-    $eid = $A['eid'];
     
     $retval = '';
 
@@ -83,11 +80,8 @@ function editevent($mode, $A)
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
 
-	if ($mode <> 'editsubmission' AND !empty($eid)) {
-		//$result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
-		//$A = DB_fetchArray($result);
-
-        // Get what level of access user has to this object
+	if ($mode <> 'editsubmission' AND !empty($A['eid'])) {
+		// Get what level of access user has to this object
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 		if ($access == 0 OR $access == 2) {
             // Uh, oh!  User doesn't have access to this object
@@ -97,10 +91,6 @@ function editevent($mode, $A)
             return $retval ;
         }
 	} else {
-		if ($mode == 'editsubmission') {
-			$result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid = '$eid'");
-            $A = DB_fetchArray($result);
-		}
 		$A['owner_id'] = $_USER['uid'];
 		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Event Admin'");
 		$A['perm_owner'] = 3;
@@ -109,22 +99,8 @@ function editevent($mode, $A)
         $A['perm_anon'] = 2;
 		$access = 3;
 	}
-/*
-    if (!empty($A['datestart'])) {
-        $thedatetime = COM_getUserDateTimeFormat($A['datestart']);
-    } else {
-        $thedatetime = COM_getUserDateTimeFormat();
-    }
-    $A['datestart'] = $thedatetime[1];
-    if (!empty($A['dateend'])) {
-        $thedatetime = COM_getUserDateTimeFormat($A['dateend']);
-    } else {
-        $thedatetime = COM_getUserDateTimeFormat();
-    }
-    $A['dateend'] = $thedatetime[1];
-*/
 
-	if ($A['eid'] == '') { 
+    if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
 	}
 
@@ -549,8 +525,8 @@ function listevents()
     return $retval;
 }
 
-###############################################################################
-# MAIN
+// MAIN
+
 switch ($mode) {
 	case 'delete':
 		DB_delete($_TABLES['events'],'eid',$eid);
@@ -560,8 +536,10 @@ switch ($mode) {
 		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode);
 		break;
 	case 'editsubmission':
+        $result = DB_query("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
+		$A = DB_fetchArray($result);
 		$display .= COM_siteHeader('menu');
-		$display .= editevent($mode,$id);
+		$display .= editevent($mode,$A);
 		$display .= COM_siteFooter();
 		break;
 	case 'edit':
