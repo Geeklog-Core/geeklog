@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.29 2002/04/15 18:02:11 dhaun Exp $
+// $Id: user.php,v 1.30 2002/04/19 21:41:22 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -114,6 +114,15 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_regdate', $curtime[0]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
+    if ($_CONF['allow_user_photo'] == 1 AND !empty($A['photo'])) {
+        $user_templates->set_var('user_photo', '<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">');
+        $user_templates->set_var('lang_delete_photo', $LANG28[28]);
+        $user_templates->set_var('delete_photo_option', '<input type="checkbox" name="delete_photo">');
+    } else {
+        $user_templates->set_var('user_photo', '');
+        $user_templates->set_var('lang_delete_photo','');
+        $user_templates->set_var('delete_photo_option','');
+    }
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('user_fullname', $A['fullname']);
     $user_templates->set_var('lang_password', $LANG28[5]); 
@@ -179,9 +188,9 @@ function changepw($uid,$passwd)
 * Saves $uid to the database
 *
 */
-function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups) 
+function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups,$delete_photo = '') 
 {
-	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE;
+	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE, $_USER;
 
 	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
 	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
@@ -199,14 +208,23 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		} else {
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
 		}
+        
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
 			DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-        } else { 
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage' WHERE uid = $uid");
+        } else {
+            $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
+            if (!empty($curphoto) AND $delete_photo == 'on') {
+                if (!unlink($_CONF['path_html'] . 'images/userphotos/' . $curphoto)) {
+                    echo COM_errorLog('Unable to delete photo ' . $curphoto);
+                    exit;
+                }
+                $curphoto = '';
+            }
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto' WHERE uid = $uid");
         }
 		
 		// if groups is -1 then this user isn't allowed to change any groups so ignore
@@ -490,7 +508,7 @@ case $LANG28[19]:
     DB_delete($_TABLES['users'],'uid',$uid,'admin/user.php?msg=22');
     break;
 case $LANG28[20]:
-    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']]);
+    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']],$delete_photo);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
