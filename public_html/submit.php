@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.68 2004/08/04 18:44:23 dhaun Exp $
+// $Id: submit.php,v 1.69 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -56,7 +56,7 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
     global $_CONF, $_TABLES, $_USER, $LANG12, $LANG_LOGIN;
 
     $retval = '';
-	
+
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
 
     $last = COM_checkSpeedlimit ('submit');
@@ -697,7 +697,6 @@ function savesubmission($type,$A)
 // MAIN
 
 $display = '';
-$display .= COM_siteHeader();
 
 // note that 'type' _may_ come in through $HTTP_GET_VARS even when the
 // other parameters are in $HTTP_POST_VARS
@@ -716,6 +715,7 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 $mode = COM_applyFilter ($http_vars['mode']);
 
 if ($mode == $LANG12[8]) { // submit
+    $display .= COM_siteHeader();
     $display .= savesubmission ($type, $HTTP_POST_VARS);
 } else {
     switch($type) {
@@ -767,6 +767,18 @@ if ($mode == $LANG12[8]) { // submit
     $hour = COM_applyFilter ($http_vars['hour'], true);
     $topic = COM_applyFilter ($http_vars['topic']);
 
+    switch ($type) {
+        case 'event':
+            $_CONF['pagetitle'] = $LANG12[4];
+            break;
+        case 'link':
+            $_CONF['pagetitle'] = $LANG12[5];
+            break;
+        default:
+            $_CONF['pagetitle'] = $LANG12[6];
+            break;
+    }
+    $display .= COM_siteHeader();
     $display .= submissionform($type, $mode, $month, $day, $year, $hour, $topic); 
 }
 $display .= COM_siteFooter();

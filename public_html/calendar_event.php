@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.30 2004/06/09 07:53:55 dhaun Exp $
+// $Id: calendar_event.php,v 1.31 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -183,7 +183,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= 12; $i++) {
         $month_options .= '<option value="' . $i . '"';
         if ($i == date('n',strtotime($A['startdate']))) {
-            $month_options .= ' selected="SELECTED"';
+            $month_options .= ' selected="selected"';
         }
         $month_options .= '>' . $i . '</option>';
     }
@@ -193,7 +193,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= 31; $i++) {
         $day_options .= '<option value="' . $i . '"';
         if ($i == date('j',strtotime($A['startdate']))) {
-            $day_options .= ' selected="SELECTED"';
+            $day_options .= ' selected="selected"';
         }
         $day_options .= '>' . $i . '</option>';
     }
@@ -203,7 +203,7 @@ function editpersonalevent($A)
     for ($i = date('Y',strtotime($A['startdate'])); $i <= (date('Y',time()) + 5); $i++) {
         $year_options .= '<option value="' .$i .'"';
         if ($i == date('Y',strtotime($A['startdate']))) {
-            $year_options .= ' selected="SELECTED"';
+            $year_options .= ' selected="selected"';
         }
         $year_options .= '>' . $i . '</option>';
     }
@@ -213,7 +213,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= 12; $i++) {
         $hour_options .= '<option value="' . $i . '"';
         if ($i == date('g',strtotime($A['startdate']))) {
-            $hour_options .= ' selected="SELECTED"';
+            $hour_options .= ' selected="selected"';
         }
         $hour_options .= '>' . $i . '</option>';
     }
@@ -224,13 +224,13 @@ function editpersonalevent($A)
     $cal_templates->set_var('start15_selected','');
     $cal_templates->set_var('start30_selected','');
     $cal_templates->set_var('start45_selected','');
-    $cal_templates->set_var('start' . $startmin . '_selected', 'selected="SELECTED"');
+    $cal_templates->set_var('start' . $startmin . '_selected', 'selected="selected"');
     if (date('a',strtotime($A['startdate'])) == 'am') {
-        $cal_templates->set_var('startam_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('startam_selected', 'selected="selected"');
         $cal_templates->set_var('startpm_selected', '');
     } else {
         $cal_templates->set_var('startam_selected', '');
-        $cal_templates->set_var('startpm_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('startpm_selected', 'selected="selected"');
     }
 
     // Handle end date/time
@@ -241,7 +241,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= 12; $i++) {
         $month_options .= '<option value="' . $i . '"';
         if ($i == date('n',strtotime($A['enddate']))) {
-            $month_options .= ' selected="SELECTED"';
+            $month_options .= ' selected="selected"';
         }
         $month_options .= '>' . $i . '</option>';
     }
@@ -251,7 +251,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= 31; $i++) {
         $day_options .= '<option value="' . $i . '"';
         if ($i == date('j',strtotime($A['enddate']))) {
-            $day_options .= ' selected="SELECTED"';
+            $day_options .= ' selected="selected"';
         }
         $day_options .= '>' . $i . '</option>';
     }
@@ -261,7 +261,7 @@ function editpersonalevent($A)
     for ($i = date('Y',strtotime($A['enddate'])); $i <= (date('Y',time()) + 5); $i++) {
         $year_options .= '<option value="' .$i .'"';
         if ($i == date('Y',strtotime($A['enddate']))) {
-            $year_options .= ' selected="SELECTED"';
+            $year_options .= ' selected="selected"';
         }
         $year_options .= '>' . $i . '</option>';
     }
@@ -274,7 +274,7 @@ function editpersonalevent($A)
         }
         $hour_options .= '<option value="' . $i . '"';
         if ($i == date('g',strtotime($A['enddate']))) {
-            $hour_options .= ' selected="SELECTED"';
+            $hour_options .= ' selected="selected"';
         }
         $hour_options .= '>' . $i . '</option>';
         if ($i == 12) { 
@@ -288,13 +288,13 @@ function editpersonalevent($A)
     $cal_templates->set_var('end15_selected','');
     $cal_templates->set_var('end30_selected','');
     $cal_templates->set_var('end45_selected','');
-    $cal_templates->set_var('end' . $endmin . '_selected', 'selected="SELECTED"');
+    $cal_templates->set_var('end' . $endmin . '_selected', 'selected="selected"');
     if (date('a',strtotime($A['enddate'])) == 'am') {
-        $cal_templates->set_var('endam_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('endam_selected', 'selected="selected"');
         $cal_templates->set_var('endpm_selected', '');
     } else {
         $cal_templates->set_var('endam_selected', '');
-        $cal_templates->set_var('endpm_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('endpm_selected', 'selected="selected"');
     }
 
     $cal_templates->set_var('lang_alldayevent',$LANG12[43]);
@@ -320,7 +320,7 @@ function editpersonalevent($A)
     for ($i = 1; $i <= count($_STATES); $i++) {
         $state_options .= '<option value="' . key($_STATES) . '"';
         if ($A['state'] == key($_STATES)) {
-            $state_options .= ' selected="SELECTED"';
+            $state_options .= ' selected="selected"';
         }
         $state_options .= '>' . current($_STATES) . '</option>';
         next($_STATES);
@@ -425,6 +425,7 @@ default:
     $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
     if (!empty ($eid)) {
         if ($mode == 'personal' AND DB_count($_TABLES['events'],'eid',$eid) == 0) {
+            $_CONF['pagetitle'] = $LANG30[38];
             $display .= COM_siteHeader('menu');
             $display .= COM_startBlock($LANG30[38]);
             $datesql = "SELECT * FROM {$_TABLES['personal_events']} WHERE eid = '$eid'";
@@ -435,29 +436,40 @@ default:
             $display .= COM_siteFooter();
             break;
         } else {
-            $display .= COM_siteHeader('menu');
             if (strpos ($LANG30[9], '%') === false) {
-                $display .= COM_startBlock ($LANG30[9]);
+                $_CONF['pagetitle'] = $LANG30[9];
             } else {
-                $display .= COM_startBlock (sprintf ($LANG30[9],
-                                                     $_CONF['site_name']));
+                $_CONF['pagetitle'] = sprintf ($LANG30[9], $_CONF['site_name']);
             }
+            $display .= COM_siteHeader ('menu');
+            $display .= COM_startBlock ($_CONF['pagetitle']);
+
             $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
     } else {
+        $year = COM_applyFilter ($HTTP_GET_VARS['year']);
+        $month = COM_applyFilter ($HTTP_GET_VARS['month']);
+        $day = COM_applyFilter ($HTTP_GET_VARS['day']);
+        if (($year == 0) || ($month == 0) || ($day == 0)) {
+            $year = date ('Y');
+            $month = date ('n');
+            $day = date ('j');
+        }
+
+        $_CONF['pagetitle'] = $LANG30[10] . ' ' . strftime ($_CONF['shortdate'],
+                              mktime (0, 0, 0, $month, $day, $year));
         $display .= COM_siteHeader ('menu');
-        $display .= COM_startBlock ($LANG30[10] . ' '
-                 . strftime ($_CONF['shortdate'],
-                             mktime (0, 0, 0, $month, $day, $year)));
+        $display .= COM_startBlock ($_CONF['pagetitle']);
+
         $thedate = sprintf ('%4d-%02d-%02d', $year, $month, $day);
         $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart ASC,title";
     }
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
-    $cal_templates->set_file(array(
-        'events'=>'events.thtml',
-        'details'=>'eventdetails.thtml',
-        'addremove'=>'addremoveevent.thtml'
-        ));
+    $cal_templates->set_file (array (
+            'events'    => 'events.thtml',
+            'details'   => 'eventdetails.thtml',
+            'addremove' => 'addremoveevent.thtml'
+            ));
         
     $cal_templates->set_var('lang_addevent', $LANG02[6]);
     $cal_templates->set_var('lang_backtocalendar', $LANG02[15]);
@@ -480,12 +492,12 @@ default:
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                if (strftime("%B",strtotime($A["start"])) != $currentmonth) {
+                if (strftime('%B',strtotime($A['start'])) != $currentmonth) {
                     $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
                     $cal_templates->set_var('lang_month', $str_month);
                     $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
-                    //$display .= '<br><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
-                    $currentmonth = strftime("%B",strtotime($A["start"]));
+                    //$display .= '<br><h1>' . strftime('%B %Y',strtotime($A['start'])) . '</h1>' . LB;
+                    $currentmonth = strftime('%B',strtotime($A['start']));
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 $cal_templates->set_var('site_url', $_CONF['site_url']);
@@ -537,7 +549,7 @@ default:
                     
                     
                 } else {
-                    $thedatetime = strftime("%A, " . $_CONF['shortdate'],strtotime($A['start']));
+                    $thedatetime = strftime('%A, ' . $_CONF['shortdate'],strtotime($A['start']));
                     $cal_templates->set_var('event_start', $thedatetime);
                     $cal_templates->set_var('event_end', $LANG30[26]);
                 }

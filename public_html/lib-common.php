@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.351 2004/08/04 18:42:41 dhaun Exp $
+// $Id: lib-common.php,v 1.352 2004/08/05 12:54:46 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1039,6 +1039,31 @@ function COM_siteHeader( $what = 'menu' )
         'leftblocks'    => 'leftblocks.thtml'
         ));
 
+    // get topic if not on home page
+    if( !isset( $HTTP_GET_VARS['topic'] ))
+    {
+        if( isset( $HTTP_GET_VARS['story'] ))
+        {
+            $sid = COM_applyFilter( $HTTP_GET_VARS['story'] );
+        }
+        elseif( isset( $HTTP_GET_VARS['sid'] ))
+        {
+            $sid = COM_applyFilter( $HTTP_GET_VARS['sid'] );
+        }
+        elseif( isset( $HTTP_POST_VARS['story'] ))
+        {
+            $sid = COM_applyFilter( $HTTP_POST_VARS['story'] );
+        }
+        if( !empty( $sid ))
+        {
+            $topic = DB_getItem( $_TABLES['stories'], 'tid', "sid='$sid'" );
+        }
+    }
+    else
+    {
+        $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
+    }
+
     $pagetitle = '';
     if( isset( $_CONF['pagetitle'] ))
     {
@@ -1046,7 +1071,15 @@ function COM_siteHeader( $what = 'menu' )
     }
     if( empty( $pagetitle ))
     {
-        $pagetitle = $_CONF['site_slogan'];
+        if( empty( $topic ))
+        {
+            $pagetitle = $_CONF['site_slogan'];
+        }
+        else
+        {
+            $pagetitle = DB_getItem( $_TABLES['topics'], 'topic',
+                                     "tid = '$topic'" );
+        }
     }
     if( !empty( $pagetitle ))
     {
@@ -1146,29 +1179,6 @@ function COM_siteHeader( $what = 'menu' )
     if( $what <> 'none' )
     {
         // Now show any blocks -- need to get the topic if not on home page
-        if( !isset( $HTTP_GET_VARS['topic'] ))
-        {
-            if( isset( $HTTP_GET_VARS['story'] ))
-            {
-                $sid = COM_applyFilter( $HTTP_GET_VARS['story'] );
-            }
-            elseif( isset( $HTTP_GET_VARS['sid'] ))
-            {
-                $sid = COM_applyFilter( $HTTP_GET_VARS['sid'] );
-            }
-            elseif( isset( $HTTP_POST_VARS['story'] ))
-            {
-                $sid = COM_applyFilter( $HTTP_POST_VARS['story'] );
-            }
-            if( !empty( $sid ))
-            {
-                $topic = DB_getItem( $_TABLES['stories'], 'tid', "sid='$sid'" );
-            }
-        }
-        else
-        {
-            $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
-        }
         $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
         $header->parse( 'left_blocks', 'leftblocks', true );
     }

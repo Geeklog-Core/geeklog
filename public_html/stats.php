@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.26 2004/07/26 10:12:32 dhaun Exp $
+// $Id: stats.php,v 1.27 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -56,6 +56,7 @@ if (empty ($_USER['username']) &&
 
 // MAIN
 
+$_CONF['pagetitle'] = $LANG10[1];
 $display .= COM_siteHeader() . COM_startBlock($LANG10[1]);
 
 

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search tool.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -31,18 +31,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.52 2004/07/26 10:12:32 dhaun Exp $
+// $Id: search.php,v 1.53 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/search.class.php');
 
-$display = COM_siteHeader();
-
 $searchObj = new Search();
 
 if ($HTTP_GET_VARS['mode'] == 'search') {    
+    $_CONF['pagetitle'] = $LANG09[11];
+    $display = COM_siteHeader();
     $display .= $searchObj->doSearch();
 } else {
+    $_CONF['pagetitle'] = $LANG09[1];
+    $display = COM_siteHeader();
     $display .= $searchObj->showForm();
 }
 

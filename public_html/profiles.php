@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.32 2004/07/27 07:31:54 dhaun Exp $
+// $Id: profiles.php,v 1.33 2004/08/05 12:54:46 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -88,7 +88,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
                 $sig = DB_getItem ($_TABLES['users'], 'sig', "uid={$_USER['uid']}");
                 if (!empty ($sig)) {
                     $sig = strip_tags (COM_stripslashes ($sig));
-                    $sig = "\r\n\r\n-- \r\n" . $sig;
+                    $sig = "\n\n-- \n" . $sig;
                 }
             }
 
@@ -101,12 +101,14 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
+            $_CONF['pagetitle'] = $LANG04[81];
 			$retval .= COM_siteHeader('menu')
 				.COM_errorLog($LANG08[3],2)
 				.contactform($uid,$subject,$message)
 				.COM_siteFooter();
 		}
 	} else {
+        $_CONF['pagetitle'] = $LANG04[81];
 		$retval .= COM_siteHeader('menu')
 			.COM_errorLog($LANG08[4],2)
 			.contactform($uid,$subject,$message)
@@ -355,6 +357,7 @@ switch ($what) {
             $display = COM_refresh ($_CONF['site_url']
                                     . '/article.php?story=' . $sid);
         } else {
+            $_CONF['pagetitle'] = $LANG08[17];
             $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
         }
         break;
@@ -373,6 +376,7 @@ switch ($what) {
     default:
         $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
         if ($uid > 1) {
+            $_CONF['pagetitle'] = $LANG04[81];
             $display .= COM_siteHeader ()
                      . contactform ($uid)
                      . COM_siteFooter ();

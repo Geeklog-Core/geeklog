@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.40 2004/08/04 18:44:54 dhaun Exp $
+// $Id: calendar.php,v 1.41 2004/08/05 12:54:46 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -74,6 +74,7 @@ function getDayViewData($result, $cur_time = '')
     // Get data and increment counters
     $thedata = array();
     $nrows = DB_numRows($result);
+
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
         if ($A['allday'] == 1 OR (($A['datestart'] < date('Y-m-d',$cur_time)) AND ($A['dateend'] > date('Y-m-d',$cur_time)))) {
@@ -320,8 +321,6 @@ function getPriorSunday($month, $day, $year)
     return array($newmonth, $newday, $newyear);
 }
 
-$display .= COM_siteHeader('');
-
 $mode = '';
 if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
@@ -332,6 +331,13 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 if ($mode != 'personal') {
     $mode = '';
 }
+
+if ($mode == 'personal') {
+    $_CONF['pagetitle'] = $LANG12[40];
+} else {
+    $_CONF['pagetitle'] = $LANG12[39];
+}
+$display .= COM_siteHeader ('menu');
 
 // Set mode back to master if user refreshes screen after their session expires
 if (($_USER['uid'] <= 1) AND $mode == 'personal') {
@@ -458,16 +464,16 @@ case 'day':
         $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
-	if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
-	    $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
-	} else {
-	    $cal_templates->set_var('calendar_toggle', '');
-	}
+        if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
+            $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
+        } else {
+            $cal_templates->set_var('calendar_toggle', '');
+        }
     }
     $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$month,$day,$year));
     $cal_templates->set_var('week_num',strftime('%V',$thedate[1]));
     if ($mode == 'personal') {
-        $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
+        $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
     } else {
         $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
     }
@@ -502,43 +508,41 @@ case 'day':
     //$cal_templates->set_var('first_colspan', $maxcols);
     //$cal_templates->set_var('title_colspan', $maxcols + 1);
     for ($i = 0; $i <= 23; $i++) {
-        if ($hourcols[$i] > 0) {
+        $numevents = $hourcols[$i];
+        if ($numevents > 0) {
+            // $colsleft = $maxcols;
+            $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
+            for ($j = 1; $j <= $numevents; $j++) {
+                $A = current ($thedata);
+                $cal_templates->set_var ('event_time',
+                    date ('g:ia', strtotime ($A['datestart'] . ' '
+                                             . $A['timestart'])) . '-'
+                    . date ('g:ia', strtotime ($A['dateend'] . ' '
+                                               . $A['timeend'])));
+                if (SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) > 0 AND $mode == 'personal') {
+                    $cal_templates->set_var ('delete_imagelink', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+                } else {
+                    $cal_templates->set_var('delete_imagelink','');
+                }
+                $cal_templates->set_var('eid', $A['eid']);
+                $cal_templates->set_var('event_title', stripslashes($A['title']));
+                if ($j < $numevents) {
+                    $cal_templates->set_var('br', '<br>');
+                } else {
+                    $cal_templates->set_var('br', '');
+                }
+                $cal_templates->parse('event_entry','event',true);
+                // $colsleft = $colsleft - 1;
+                next($thedata);
+            }
         } else {
             $cal_templates->set_var('event_entry','&nbsp;');
-            //$cal_templates->parse($i . '_cols','column',true);
-            //$cal_templates->parse($i . '_cols','column');
-        }
-        if ($nrows > 0) {
-            $numevents = current($hourcols);
-        }
-
-        //$colsleft = $maxcols;
-        $cal_templates->set_var('layout_url', $_CONF['layout_url']);
-        for ($j = 1; $j <= $numevents; $j++) {
-            $A = current($thedata);
-            $cal_templates->set_var('event_time', date('g:ia',strtotime($A['datestart'].' '.$A['timestart'])) . '-'. date('g:ia',strtotime($A['dateend'].' '.$A['timeend'])));
-            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
-                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
-            } else {
-                $cal_templates->set_var('delete_imagelink','');
-            }
-            $cal_templates->set_var('eid', $A['eid']);
-            $cal_templates->set_var('event_title', stripslashes($A['title']));
-            if ($j < $numevents) {
-                $cal_templates->set_var('br', '<br>');
-            } else {
-                $cal_templates->set_var('br', '');
-            }
-            $cal_templates->parse('event_entry','event',true);
-            $colsleft = $colsleft - 1;
-            next($thedata);
         }
         $cal_templates->set_var ($i . '_hour',
                 strftime ($_CONF['timeonly'], mktime ($i, 0)));
-        $cal_templates->parse($i.'_cols','column',true);
-        if ($nrows > 0) {
-            next($hourcols);
-        }
+        $cal_templates->parse ($i . '_cols', 'column', true);
     }
 
     if ($mode == 'personal') {

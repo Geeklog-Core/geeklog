@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.80 2004/06/17 11:15:29 dhaun Exp $
+// $Id: users.php,v 1.81 2004/08/05 12:54:46 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -62,13 +62,14 @@ $VERBOSE = false;
 *
 * This grabs the user profile for a given user and displays it
 *
-* @param    int     $user       User ID of profile to get
-* @return   string  HTML for user profile page
+* @param    int     $user   User ID of profile to get
+* @param    int     $msg    Message to display (if != 0)
+* @return   string          HTML for user profile page
 *
 */
-function userprofile($user) 
+function userprofile ($user, $msg) 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG04, $LANG01, $LANG_LOGIN, $_GROUPS;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG_LOGIN;
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
@@ -95,6 +96,12 @@ function userprofile($user)
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     $A = DB_fetchArray($result);
+
+    $_CONF['pagetitle'] = $LANG04[1] . ' ' . $A['username'];
+    $retval .= COM_siteHeader ('menu');
+    if ($msg > 0) {
+        $retval .= COM_showMessage ($msg);
+    }
 
     // format date/time to user preference
     $curtime = COM_getUserDateTimeFormat($A["regdate"]);
@@ -271,6 +278,7 @@ function userprofile($user)
     $retval .= $user_templates->finish($user_templates->get_var('output'));	
 
     $retval .= PLG_profileBlocksDisplay ($user);
+    $retval .= COM_siteFooter ();
 
     return $retval;
 }
@@ -682,13 +690,8 @@ case 'logout':
 case 'profile':
     $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
-        $display .= COM_siteHeader('menu');
         $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage ($msg);
-        }
-        $display .= userprofile ($uid);
-        $display .= COM_siteFooter ();
+        $display .= userprofile ($uid, $msg);
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | This is the links page                                                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,13 +32,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.32 2004/06/09 11:30:31 dhaun Exp $
+// $Id: links.php,v 1.33 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 
 // MAIN
 
+$_CONF['pagetitle'] = $LANG06[1];
 $display = COM_siteHeader();
+
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['linksloginrequired'] == 1))) {
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
@@ -59,7 +61,14 @@ if (empty ($_USER['username']) &&
     $display .= COM_startBlock($LANG06[1]);
 
     $linklist = new Template($_CONF['path_layout'] . 'links');
-    $linklist->set_file(array('linklist'=>'links.thtml','catlinks'=>'categorylinks.thtml','link'=>'linkdetails.thtml','catnav'=>'categorynavigation.thtml','catrow'=>'categoryrow.thtml','catcol'=>'categorycol.thtml','actcol'=>'categoryactivecol.thtml','pagenav'=>'pagenavigation.thtml'));
+    $linklist->set_file (array ('linklist' => 'links.thtml',
+                                'catlinks' => 'categorylinks.thtml',
+                                'link'     => 'linkdetails.thtml',
+                                'catnav'   => 'categorynavigation.thtml',
+                                'catrow'   => 'categoryrow.thtml',
+                                'catcol'   => 'categorycol.thtml',
+                                'actcol'   => 'categoryactivecol.thtml',
+                                'pagenav'  => 'pagenavigation.thtml'));
 
     if ($_CONF['linkcols'] > 0) {
         $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
@@ -115,7 +124,7 @@ if (empty ($_USER['username']) &&
     } else {
         $sql .= COM_getPermSQL ();
     }
-    $sql .= " ORDER BY category asc,title";
+    $sql .= ' ORDER BY category asc,title';
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows == 0) {

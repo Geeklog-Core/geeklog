@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.23 2004/04/20 21:54:10 dhaun Exp $
+// $Id: pollbooth.php,v 1.24 2004/08/05 12:54:46 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -169,6 +169,7 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 }
 
 if (empty($qid)) {
+    $_CONF['pagetitle'] = $LANG07[4];
     $display .= COM_siteHeader() . polllist();
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
