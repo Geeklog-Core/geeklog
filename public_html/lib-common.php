@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.327 2004/05/29 15:46:56 dhaun Exp $
+// $Id: lib-common.php,v 1.328 2004/05/30 16:33:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3023,15 +3023,10 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // highlight search terms if specified
         if( !empty( $query ))
         {
-            $mywords = explode( ' ', $query );
-            foreach( $mywords as $searchword )
-            {
-                $searchword = str_replace( '*', '\*', $searchword );
-                $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
-            }
+            $A['comment'] = COM_highlightQuery( $A['comment'], $query );
         }
 
-        $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
+        $A['comment'] = str_replace( '$', '&#36;',  $A['comment'] );
         $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
         $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
 
@@ -5627,6 +5622,40 @@ function COM_makeClickableLinks( $text )
 {
     $text = preg_replace( '/((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '<a href="\\1">\\1</a>', $text );
     $text = str_replace( '<a href="www', '<a href="http://www', $text );
+
+    return $text;
+}
+
+/**
+* Highlight the words from a search query in a given text string.
+*
+* @param    string  $text   the text
+* @param    string  $query  the search query
+* @return   string          the text with highlighted search words
+*
+*/
+function COM_highlightQuery( $text, $query )
+{
+    $query = str_replace( '+', ' ', $query );
+
+    // escape all the other PCRE special characters
+    $query = str_replace( '\\', '\\\\', $query );
+    $query = str_replace( '.', '\.', $query ); 
+    $query = str_replace( '*', '\*', $query );
+    $query = str_replace( '?', '\?', $query );
+    $query = str_replace( '^', '\^', $query );
+    $query = str_replace( '$', '\$', $query );
+    $query = str_replace( '(', '\(', $query );
+    $query = str_replace( ')', '\)', $query );
+    $query = str_replace( ']', '\]', $query );
+    $query = str_replace( '{', '\{', $query );
+    $query = str_replace( '}', '\}', $query );
+
+    $mywords = explode( ' ', $query );
+    foreach( $mywords as $searchword )
+    {
+        $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", '<x>' . $text . '<x>' );
+    }
 
     return $text;
 }

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.44 2004/05/20 18:57:45 vinny Exp $
+// $Id: article.php,v 1.45 2004/05/30 16:33:02 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -145,13 +145,9 @@ if ($A['count'] > 0) {
 
             DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE sid = '$story'");
 
-            if ($query) {
-                $mywords = explode (" ", $query);
-                foreach ($mywords as $searchword) {
-                    $searchword = str_replace ('*', '\*', $searchword);
-                    $A['introtext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['introtext'] . "<x>");
-                    $A['bodytext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')" ,"<x>" . $A['bodytext'] . "<x>");
-                }
+            if (!empty ($query)) {
+                $A['introtext'] = COM_highlightQuery ($A['introtext'], $query);
+                $A['bodytext'] = COM_highlightQuery ($A['bodytext'], $query);
             }
 
             // Display whats related any polls configured for this page
