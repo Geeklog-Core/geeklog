@@ -2,6 +2,7 @@
 
 // Default table names
 $_TABLES['access']              = 'access';
+$_TABLES['article_images']      = 'article_images';
 $_TABLES['blocks']              = 'blocks';
 $_TABLES['commentcodes']        = 'commentcodes';
 $_TABLES['commentmodes']        = 'commentmodes';
