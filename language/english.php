@@ -147,7 +147,8 @@ $LANG01 = array(
     104 => 'by',
     105 => 'Mail Users',
     106 => 'Views',
-    107 => 'GL Version Test'
+    107 => 'GL Version Test',
+    108 => 'Clear Cache'
 );
 
 ###############################################################################
@@ -955,7 +956,8 @@ $MESSAGE = array (
 	43 => "The word has been successfully deleted.",
     44 => 'The plug-in was successfully installed!',
     45 => 'The plug-in was successfully deleted.',
-    46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged"
+    46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
+    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then you cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually."
 );
 
 // for plugins.php
