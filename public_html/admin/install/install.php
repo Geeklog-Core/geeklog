@@ -34,7 +34,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.40 2002/11/25 17:01:08 dhaun Exp $
+// $Id: install.php,v 1.41 2002/12/04 17:25:17 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -336,6 +336,11 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             if (strpos ($dterr, 'date') > 0) {
                 DB_query ("ALTER TABLE {$_TABLES['links']} ADD date datetime default NULL");
             }
+
+            // Fix primary key so that more than one user can add an event
+            // to his/her personal calendar.
+            DB_query ("ALTER TABLE {$_TABLES['personal_events']} DROP PRIMARY KEY, ADD PRIMARY KEY (eid,uid)");
+
             $current_gl_version = '1.3.7';
             $_SQL = '';
             break;

@@ -272,7 +272,7 @@ CREATE TABLE {$_TABLES['personal_events']} (
   location varchar(128) default NULL,
   timestart time default NULL,
   timeend time default NULL,
-  PRIMARY KEY  (eid)
+  PRIMARY KEY  (eid,uid)
 ) TYPE=MyISAM
 ";
 
