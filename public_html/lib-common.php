@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.89 2002/05/03 21:46:47 dhaun Exp $
+// $Id: lib-common.php,v 1.90 2002/05/10 15:08:05 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1830,7 +1830,12 @@ function COM_checkHTML($str)
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace('$','&#36;',$str);
     
-    $str = strip_tags($str,$_CONF['allowablehtml']);
+    if (!SEC_hasRights('story.edit')) {
+        $str = strip_tags($str,$_CONF['allowablehtml']);
+    }
+    else {    
+        $str = strip_tags($str,$_CONF['adminhtml']);
+    }
 
     return $str;
 }
@@ -2144,12 +2149,16 @@ function COM_rdfImport($bid,$rdfurl)
 function COM_allowedhtml() 
 {
     global $_CONF,$LANG01;
-	
-    $retval .= '<span class="warningsmall">'
-        . $LANG01[31]
-        . htmlspecialchars($_CONF['allowablehtml'])
-        . '</span>';
-		
+
+    $retval = '<span class="warningsmall">' . $LANG01[31]; 
+    if (!SEC_hasRights('story.edit')) {
+        $retval .= htmlspecialchars($_CONF['allowablehtml']);
+    }
+    else {
+        $retval .= htmlspecialchars($_CONF['adminhtml']);
+    }
+    $retval .= '</span>';
+
     return $retval;
 }
 

@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.33 2002/05/02 16:14:25 tony_bibbs Exp $
+// $Id: config.php,v 1.34 2002/05/10 15:08:05 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -209,6 +209,7 @@ $_CONF['polladdresstime']   = 604800;
 // Parameters for checking words and HTML tags
 
 $_CONF['allowablehtml'] = '<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>';
+$_CONF['adminhtml'] = $_CONF['allowablehtml'] . ',<table>,<tr>,<td>,<th>';
 $_CONF['parsemode']     = '';
 $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
