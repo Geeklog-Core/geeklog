@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.46 2002/11/28 11:32:26 dhaun Exp $
+// $Id: submit.php,v 1.47 2002/12/03 04:37:40 efarmboy Exp $
 
 require_once('lib-common.php');
 
@@ -658,16 +658,16 @@ function savesubmission($type,$A)
         break;
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
-            // see if this is a submission that needs to be handled by a plugin
-            if (PLG_saveSubmission($type, $A)) {
-                // great, it worked, lets get out of here
+            // Update the submitspeedlimit for user - assuming Plugin approves submission record
     		DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-                break;
-            } else {
-                // something went wrong, exit
-                $retval .= COM_errorLog("Could not save your submission.  Bad type: $type");
-                return $retval;
-            }
+            // see if this is a submission that needs to be handled by a plugin and should include it's own redirect
+			if (!PLG_saveSubmission($type, $A)) {
+			    COM_errorLog("Could not save your submission.  Bad type: $type");
+			}	
+			// plugin and should include it's own redirect - but in case handle it here and redirect to the main page
+			$retval = COM_refresh ($_CONF['site_url'] . '/index.php');
+            return $retval;
+            
         }
         if (!empty($A['title']) && !empty($A['introtext'])) {
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
