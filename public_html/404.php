@@ -2,7 +2,7 @@
 
 require_once ('lib-common.php');
 
-$display = COM_siteHeader ('menu');
+$display = COM_siteHeader ('menu', $LANG_404[1]);
 $display .= COM_startBlock ($LANG_404[1]);
 if (isset ($HTTP_SERVER_VARS['SCRIPT_URI'])) {
     $url = strip_tags ($HTTP_SERVER_VARS['SCRIPT_URI']);
