@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.28 2002/07/23 18:00:19 dhaun Exp $
+// $Id: search.php,v 1.29 2002/07/23 18:03:53 dreamscape Exp $
 
 require_once('lib-common.php');
 
@@ -121,8 +121,8 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
 
     if (($type == 'links') || (($type == 'all') && empty ($author))) {
         $sql = "SELECT lid,title,url,hits,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
-		$sql .= "((title like '%$query%' OR title like '$query%' OR title like '%$query') ";
-		$sql .= "OR (description like '%$query%' OR description like '$query%' OR description like '%$query')) ";
+		$sql .= " title like '%$query%' ";
+		$sql .= " OR description like '%$query%' ";
         if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
@@ -233,9 +233,9 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
     $searchtimer->startTimer();
 	if ($type == 'all' OR $type == 'stories') {
 		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND ";
-		$sql .= "((introtext like '%$query%' OR introtext like '$query%' OR introtext like '%$query') ";
-		$sql .= "OR (bodytext like '%$query%' OR bodytext like '$query%' OR bodytext like '%$query') ";
-		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
+		$sql .= " introtext like '%$query%'  ";
+		$sql .= "OR bodytext like '%$query%' ";
+		$sql .= "OR title like '%$query%'  ";
 		if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
@@ -261,8 +261,8 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 
 	if ($type == 'all' OR $type == 'comments') {
 		$sql = "SELECT sid,title,comment,pid,uid,type as comment_type,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
-		$sql .= "((comment like '%$query%' OR comment like '$query%' OR comment like '%$query') ";
-		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
+		$sql .= " comment like '%$query%' ";
+		$sql .= "OR title like '%$query%' ";
 		if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
