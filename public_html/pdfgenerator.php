@@ -30,9 +30,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.1 2004/06/04 21:44:53 tony Exp $
+// $Id: pdfgenerator.php,v 1.2 2004/06/04 21:49:20 tony Exp $
 
 require_once 'lib-common.php';
+
+// Need ot add error message here from language file
+if ($_CONF['pdf_enabled'] == false) {
+    exit;
+}
 
 /**
 * Fetches a PDF from the Geeklog system
