@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.87 2004/11/14 20:55:14 dhaun Exp $
+// $Id: user.php,v 1.88 2004/11/20 12:16:11 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -225,6 +225,7 @@ function edituser($uid = '', $msg = '')
 *
 * @param    int     $uid        ID of user to change password for
 * @param    string  $passwd     New password
+* @return   string              HTML redirect or error message
 *
 */
 function changepw ($uid, $passwd)
@@ -236,14 +237,16 @@ function changepw ($uid, $passwd)
     if (!empty ($passwd) && !empty ($uid)) {
         $passwd = md5 ($passwd);
         $result = DB_change ($_TABLES['users'], 'passwd', "$passwd",
-                'uid', $uid, $_CONF['site_admin_url'] . '/user.php?mode=none');
+                             'uid', $uid);
+
+        $retval .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=5');
     } else {
         $retval .= COM_siteHeader ('menu');
         $retval .= COM_errorLog ('CHANGEPW ERROR: There was nothing to do!', 3);
         $retval .= COM_siteFooter ();
-        echo $retval;
-        exit;
     }
+
+    return $retval;
 }
 
 /**
@@ -715,8 +718,8 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         $display = $tmp;
     }
 } else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
-    changepw (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
-                               $HTTP_POST_VARS['passwd']);
+    $display .= changepw (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
+                          $HTTP_POST_VARS['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
     $display .= edituser (COM_applyFilter ($HTTP_GET_VARS['uid']));
