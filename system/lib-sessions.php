@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.28 2004/02/14 13:04:10 dhaun Exp $
+// $Id: lib-sessions.php,v 1.29 2004/08/08 17:00:13 blaine Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -235,7 +235,7 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
         $ip = str_replace('.','',$remote_ip);
         $md5_sessid = md5($ip + $sessid);
     } else {
-        $md5_sessid = ''; 		
+        $md5_sessid = '';         
     }
 
     $currtime = (string) (time());
@@ -246,12 +246,12 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     } else {
         $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < $expirytime)";
         $delresult = DB_query($deleteSQL);
-	
+    
         if ($_SESS_VERBOSE) {
             COM_errorLog("Attempted to delete rows from session table with following SQL\n$deleteSQL\n",1);
             COM_errorLog("Got $delresult as a result from the query",1);
         }
-	
+    
         if (!$delresult) {
             die("Delete failed in new_session()");
         }
@@ -268,11 +268,11 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     $result = DB_query($sql);
     if ($result) {
         if ($_CONF['lastlogin'] == true) {
-	        // Update userinfo record to record the date and time as lastlogin
+            // Update userinfo record to record the date and time as lastlogin
             DB_query("UPDATE {$_TABLES['userinfo']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid=$userid");
-	    }
-		if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
-    	if ($_SESS_VERBOSE) COM_errorLog("*************leaving SESS_newSession*****************",1);
+        }
+        if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
+        if ($_SESS_VERBOSE) COM_errorLog("*************leaving SESS_newSession*****************",1);
         if ($md5_based == 1) {
             return $md5_sessid;
         } else {
@@ -385,7 +385,7 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
     global $_TABLES;
 
     $newtime = (string) time();
-	
+    
     if ($md5_based == 1) {
         $sql = "UPDATE {$_TABLES['sessions']} SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
     } else {
@@ -410,10 +410,13 @@ function SESS_endUserSession($userid)
 {
     global $_TABLES;
 
-	$sql = "DELETE FROM {$_TABLES['sessions']} WHERE (uid = $userid)";
-	$result = DB_query($sql);
-	
-	return 1;
+    $sql = "DELETE FROM {$_TABLES['sessions']} WHERE (uid = $userid)";
+    $result = DB_query($sql);
+
+    // Release PHP SESSION
+    HTTP_Session::destroy();
+    
+    return 1;
 }
 
 /**
@@ -436,11 +439,11 @@ function SESS_getUserData($username)
     if(!$result = DB_query($sql)) {
         COM_errorLog("error in get_userdata");
     }
-	
+    
     if(!$myrow = DB_fetchArray($result)) {
         COM_errorLog("error in get_userdata");
     }
-	
+    
     return($myrow);
 }
 
@@ -465,7 +468,7 @@ function SESS_getUserDataFromId($userid)
         $userdata = array("error" => "1");
         return ($userdata);
     }
-	
+    
     if(!$myrow = DB_fetchArray($result)) {
         $userdata = array("error" => "1");
         return ($userdata);

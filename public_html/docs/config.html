@@ -249,6 +249,18 @@ that are defined below:
   <td valign="top"><a name="desc_cookiesecure">cookiesecure</a></td>
   <td valign="top">0</td>
   <td valign="top">Only set to 1 if your site uses HTTPS (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_sessions_usecookie">sessions_usecookie</a></td>
+  <td valign="top"><i>true</i></td>
+  <td valign="top">The Session ID is a unique identifier that needs to be passed to the Webserver to restore the Server based session information. By default a browser cookie will be used to store the session id on the client side. This cookie is only valid for that browser session and unqiue for each browser instance.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_sessionid">sessionid</a></td>
+  <td valign="top">SessionID</td>
+  <td valign="top">The Name of the SessionID variable to use - not the contents just the  name.</td></tr>
+  <tr>
+  <td valign="top"><a name="desc_sessionid_prefix">sessionid_prefix</a></td>
+  <td valign="top">(empty)</td>
+  <td valign="top">In rare cases it may be necessary to use a prefix for the Unique Session ID. Prefix would be added to a ID that is generated based on the current time in microseconds.Prefix can be up to 114 characters long.</td></tr>
 </table>
 
 <h3><a name="cookie">Cookie Names</a></h3>

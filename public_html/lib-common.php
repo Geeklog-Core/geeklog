@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.354 2004/08/07 09:13:38 dhaun Exp $
+// $Id: lib-common.php,v 1.355 2004/08/08 17:00:12 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -111,6 +111,14 @@ if( !empty( $_CONF['timezone'] ) && !ini_get( 'safe_mode' ) &&
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
+/**
+* Include the PEAR Class to support PHP SESSIONS
+* Setup the SESSIONS Class and start SESSIONS and restore any SESSION Based Variables
+*/
+
+require_once ("HTTP/Session.php");
+HTTP_Session::useCookies($_CONF['sessions_usecookie']);
+HTTP_Session::start($_CONF['sessionid'], uniqid($_CONF['sessionid_prefex']));
 
 /**
 * Include page time -- used to time how fast each page was created

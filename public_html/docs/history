@@ -2,7 +2,7 @@ GeekLog History/Changes:
 
 XXX XX, 2004 (1.3.10)
 ------------
-
+- Added support for PHP SESSIONS [Blaine]
 - In the site's page title, replace the site slogan with more meaningful
   information, where possible, e.g. "Submit a Story" on the story submission
   form, "Search Results", etc. (feature request #95) [Dirk]
