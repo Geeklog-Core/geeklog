@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Slightly revamped the install script and made it catch (or silently ignore)
+  the most popular problems with the path to Geeklog ...
 - Removed the hard-coded &nbsp; from {welcome_msg} and added it to the
   header.thtml of the Classic, XSilver, and Yahoo themes (the other themes
   either look fine without it or didn't use {welcome_msg} anyway).

@@ -5,10 +5,10 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
-// | Geeklog installation script.                                              |
 // |                                                                           |
+// | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -35,12 +35,12 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.59 2003/12/28 18:54:00 dhaun Exp $
+// $Id: install.php,v 1.60 2004/02/14 14:27:02 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
-ini_set ("display_errors", "1");
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+@ini_set ("display_errors", "1");
+error_reporting (E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -93,17 +93,16 @@ function INST_welcomePage()
     $retval .= '<title>Geeklog ' . VERSION . ' Installation</title>' . LB;
     $retval .= '</head>' . LB;
     $retval .= '<body text="#000000" bgcolor="#ffffff">' . LB;
-    $retval .= '<h2>Geeklog Installation (Step 1 of 2)</h2>' . LB;
+    $retval .= '<h1>Geeklog Installation (Step 1 of 2)</h1>' . LB;
     $retval .= '<p><strong>Welcome to Geeklog ' . VERSION . '</strong>.  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version ' . VERSION . ' you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.' . LB;
-    $retval .= "<p>If you haven't already done so, you should edit config.php prior to running the script. This script will then apply the database structures for both fresh installations and upgrades." . LB;
-    $retval .= '<h3>Upgrading</h3>' . LB;
-    $retval .= '<p>This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systems in a variety of environments we have opted to revert that portion of the installation back to config.php.';
+    $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades." . LB;
+    $retval .= '<h2>Upgrading</h2>' . LB;
     $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).<p>Please note this script will not upgrade any beta or release candidate versions of Geeklog. ';
     if (!ini_get ('register_globals')) {
-        $retval .= '<h2>Important!</h2>' . LB;
+        $retval .= '<h1>Important!</h1>' . LB;
         $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
     }
-    $retval .= '<h3>Installation Options</h3>' . LB;
+    $retval .= '<h2>Installation Options</h2>' . LB;
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
     $retval .= '<form action="install.php" method="post">' . LB;
@@ -111,7 +110,7 @@ function INST_welcomePage()
     $retval .= '<tr><td align="right">Installation Type:&nbsp;</td><td><select name="install_type">'. LB;
     $retval .= $install_options;
     $retval .= '</select></td></tr>'.LB;
-    $retval .= '<tr><td align="right">Path to Geeklog:&nbsp;</td><td><input type="text" name="geeklog_path" value="' . $glPath . '" size="40"> do not include trailing "/" or "\".</td></tr>'.LB;
+    $retval .= '<tr><td align="right">Path to Geeklog\'s config.php:&nbsp;</td><td><input type="text" name="geeklog_path" value="' . $glPath . '" size="40"></td></tr>'.LB;
     $retval .= '<tr><td colspan="2" align="left"><p><br><strong>Hint:</strong> The complete path to this file is <b>' . $thisFile;
     if (!empty ($glPath) && !$posted) {
         $retval .= '</b><br>and it appears your Path to Geeklog is <b>' . $glPath;
@@ -130,11 +129,11 @@ function INST_welcomePage()
 function INST_getDatabaseSettings($install_type, $geeklog_path)
 {
     global $_CONF, $_TABLES;
-    
-    $db_templates = new Template($_CONF['path_system'] . 'install_templates');
-    $db_templates->set_file(array('db'=>'databasesettings.tpl'));
-    $db_templates->set_var('geeklog_path', $geeklog_path);
-    
+
+    $db_templates = new Template ($_CONF['path_system'] . 'install_templates');
+    $db_templates->set_file (array ('db' => 'databasesettings.tpl'));
+    $db_templates->set_var ('geeklog_path', $geeklog_path);
+
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
@@ -570,22 +569,50 @@ if (isset ($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == '<< Previ
 
 // If possible, load the config file so we can get current settings.  If we
 // can't then that means this is a fresh installation OR they want to start
-// with the our system defaults.
+// with our system defaults.
 
 // Include template class if we got it
 if ($page > 0) {
-    if (!empty ($HTTP_POST_VARS['geeklog_path']) && file_exists ($HTTP_POST_VARS['geeklog_path'] . '/config.php')) {
-        require_once($HTTP_POST_VARS['geeklog_path'] . '/system/classes/template.class.php');
-        require_once($HTTP_POST_VARS['geeklog_path'] . '/config.php');
-        require_once($HTTP_POST_VARS['geeklog_path'] . '/system/lib-database.php');
+    $geeklog_path = trim ($HTTP_POST_VARS['geeklog_path']);
+    $notapath = false;
+    if (!empty ($geeklog_path)) {
+        // do some sanity checks ...
+
+        if (strpos ($geeklog_path, 'http:') !== false) {
+            $notapath = true;
+        }
+        if (strpos ($geeklog_path, 'config.php') !== false) {
+            $pos = strpos ($geeklog_path, 'config.php');
+            if ($pos + strlen ('config.php') == strlen ($geeklog_path)) {
+                // strip 'config.php' silently ...
+                $geeklog_path = substr ($geeklog_path, 0, $pos);
+            }
+        }
+
+        // silently fix the usual problems with slashes ...
+        $geeklog_path = str_replace ('\\', '/', $geeklog_path);
+        $geeklog_path = str_replace ('//', '/', $geeklog_path);
+        while (substr ($geeklog_path, -1) == '/') {
+            $geeklog_path = substr ($geeklog_path, 0, -1);
+        }
+    }
+
+    if (!$notapath && !empty ($geeklog_path) && file_exists ($geeklog_path . '/config.php')) {
+        require_once($geeklog_path . '/system/classes/template.class.php');
+        require_once($geeklog_path . '/config.php');
+        require_once($geeklog_path . '/system/lib-database.php');
     } else {
         $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
         $display .= '<html>' . LB;
         $display .= '<head><title>Geeklog Installation - Error</title></head>' . LB;
         $display .= '<body bgcolor="#ffffff">' . LB;
         $display .= '<h2>Geeklog Installation - Error</h2>' . LB;
-        $display .= "<p>Geeklog could not find config.php in the path you just entered: <b>" . $HTTP_POST_VARS['geeklog_path'] . '</b><br>' . LB;
-        $display .= 'Please check this path and try again.</p>' . LB;
+        if ($notapath) {
+            $display .= '<p><b>' . $HTTP_POST_VARS['geeklog_path'] . '</b> is not a path.<br>Please enter the path to where config.php can be found on your webserver\'s file system.</p>';
+        } else {
+            $display .= '<p>Geeklog could not find config.php in the path you just entered: <b>' . $HTTP_POST_VARS['geeklog_path'] . '</b><br>' . LB;
+            $display .= 'Please check this path and try again. Remember that you should be using absolute paths, starting at the root of your file system.</p>' . LB;
+        }
         $display .= '<form action="install.php" method="post">' . LB;
         $display .= '<p align="center"><input type="submit" name="action" value="<< Previous"><input type="hidden" name="geeklog_path" value="' . $HTTP_POST_VARS['geeklog_path'] . '"></p>' . LB . '</form>';
         $display .= '</body>' . LB . '</html>';
@@ -603,8 +630,10 @@ case 1:
     } else {
         $upgrade = 0;
     }
-    $display .= INST_getDatabaseSettings($HTTP_POST_VARS['install_type'], $HTTP_POST_VARS['geeklog_path']); 
+    $display .= INST_getDatabaseSettings ($HTTP_POST_VARS['install_type'],
+                                          $HTTP_POST_VARS['geeklog_path']); 
     break;
+
 case 2:
     if (!empty($HTTP_POST_VARS['version'])) {
         if (INST_doDatabaseUpgrades ($HTTP_POST_VARS['version'],
@@ -621,6 +650,7 @@ case 2:
         }
     }
     break;
+
 default:
     // Ok, let's display a welcome page
     $display .= INST_welcomePage();
