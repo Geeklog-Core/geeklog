@@ -371,7 +371,7 @@ $LANG09 = array(
 	10 => "Search",
 	11 => "Search Results",
 	12 => "matches",
-	13 => "Story Search Result: No matches",
+	13 => "Search Results: No matches",
 	14 => "There were no matches for your search on",
 	15 => "Please try again.",
 	16 => "Title",
@@ -387,7 +387,18 @@ $LANG09 = array(
 	26 => "items in",
 	27 => "seconds",
     28 => 'No story or comment matches for your search',
-    29 => 'Story and Comment Results'
+    29 => 'Story and Comment Results',
+    30 => 'No links matched your search',
+    31 => 'This plug-in returned no matches',
+    32 => 'Event',
+    33 => 'URL',
+    34 => 'Location',
+    35 => 'All Day',
+    36 => 'No events matched your search',
+    37 => 'Event Results',
+    38 => 'Link Results',
+    39 => 'Links',
+    40 => 'Events'
 );
 
 ###############################################################################
