@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.26 2002/10/30 20:10:21 dhaun Exp $
+// $Id: calendar.php,v 1.27 2003/01/06 18:20:24 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -750,7 +750,7 @@ for ($i = 1; $i <= 6; $i++) {
         }
         $cal_templates->parse('cal_days','day',true);
     }
-    list($wmonth, $wday, $wyear) = getPriorSunday($month, $curday->daynumber, $year);
+    list($wmonth, $wday, $wyear) = getPriorSunday($month, $wday, $year);
     $cal_templates->set_var('wmonth', $wmonth);
     $cal_templates->set_var('wday', $wday);
     $cal_templates->set_var('wyear', $wyear);
