@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.223 2003/05/19 08:47:12 dhaun Exp $
+// $Id: lib-common.php,v 1.224 2003/05/30 16:36:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1722,7 +1722,7 @@ function COM_showPoll( $size, $qid='' )
     }
     else
     {
-        $result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1" );
+        $result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1 ORDER BY date DESC" );
         $nrows = DB_numRows( $result );
 
         if( $nrows > 0 )
