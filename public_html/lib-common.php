@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.108 2002/06/09 08:50:35 dhaun Exp $
+// $Id: lib-common.php,v 1.109 2002/06/23 17:32:33 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2127,65 +2127,111 @@ function COM_rdfCheck($bid,$rdfurl,$date)
 * This will pull content from another site and store it in the database
 * to be shown within a portal block
 *
+* new RDF parser provided by Roger Webster
+*
+*/
+$RDFinsideitem = false;
+$RDFtag = "";
+$RDFtitle = "";
+$RDFlink = "";
+$RDFheadlines = array ();
+
+function COM_rdfStartElement ($parser, $name, $attrs) {
+    global $RDFinsideitem, $RDFtag;
+
+    if ($RDFinsideitem) {
+        $RDFtag = $name;
+    } elseif ($name == "ITEM") {
+        $RDFinsideitem = true;
+    }
+}
+
+function COM_rdfEndElement ($parser, $name) {
+    global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
+
+    if ($name == "ITEM") {
+        $RDFheadlines[] .= '<a href="' . addslashes (trim ($RDFlink)) . '">'
+                        . addslashes (trim ($RDFtitle)) . '</a>';
+        $RDFtitle = "";
+        $RDFlink = "";
+        $RDFinsideitem = false;
+    }
+}
+
+function COM_rdfCharacterData ($parser, $data) {
+    global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink;
+
+    if ($RDFinsideitem) {
+        switch ($RDFtag) {
+            case "TITLE":
+                $RDFtitle .= $data;
+                break;
+            case "LINK":
+                $RDFlink .= $data;
+                break;
+        }
+    }
+}
+
+/**
+* This is the actual RDF parser (the above are just helper functions)
+*
 * @param        string      $bid        Block ID
 * @param        string      $rdfurl     URL to get content from
 * @see function COM_rdfCheck
 *
 */
-function COM_rdfImport($bid,$rdfurl) 
-{
-    global $_TABLES;
+function COM_rdfImport ($bid, $rdfurl) {
+    global $_TABLES, $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
-    $update = date("Y-m-d H:i:s");
-    $result = DB_change($_TABLES['blocks'],'rdfupdated',"$update",'bid',$bid);
-    clearstatcache();
+    $RDFinsideitem = false;
+    $RDFtag = "";
+    $RDFtitle = "";
+    $RDFlink = "";
+    $RDFheadlines = array ();
 
-    if ($fp = fopen($rdfurl, 'r')) {
-        $rdffile = file($rdfurl);
+    $update = date ("Y-m-d H:i:s");
+    $result = DB_change ($_TABLES['blocks'],'rdfupdated',"$update",'bid',$bid);
+    clearstatcache ();
+
+    $rdferror = false;
+    $xml_parser = xml_parser_create ();
+    xml_set_element_handler ($xml_parser, "COM_rdfStartElement",
+                             "COM_rdfEndElement");
+    xml_set_character_data_handler ($xml_parser, "COM_rdfCharacterData");
+    if ($fp = fopen ($rdfurl, 'r')) {
+        while ($data = fread ($fp, 4096)) {
+            if (!xml_parse ($xml_parser, $data, feof ($fp))) {
+                $errmsg = sprintf ("Parse error in %s: %s at line %d", $rdfurl,
+                        xml_error_string (xml_get_error_code ($xml_parser)),
+                        xml_get_current_line_number ($xml_parser));
+                COM_errorLog ($errmsg, 1);
+                $rdferror = true;
+                $result = DB_change ($_TABLES['blocks'], 'content',
+                                     addslashes ($errmsg), 'bid', "$bid");
+                break;
+            }
+        }
         fclose($fp);
-        $num = count($rdffile);
+        xml_parser_free($xml_parser);
 
-        if ($num > 1) {
-            for ($i = 0; $i < $num; $i++) {
-                if ($rdffile[$i] == '') {
-                    continue;
-                }
-
-                if (ereg("<([^<>]*)>([^<>]*)?",$rdffile[$i],$regs)) {
-                    $item = $regs[1];
-                    $data = $regs[2];
-                    if ($item=='channel' || $item=='image' || $item=='item') {
-                        $type = $item;
-                        if ($item == 'item') {
-	                        $di++;
-                        }
-                    } else if (($item == 'title') && ($type == 'item')) {
-                        $channel_data_title[$di]=$data;
-                    } else if (($item == 'link') && ($type == 'item')) {
-                        $channel_data_link[$di]=$data;
-                    }
-                }
-            }
-
-            $headlines = array ();
-            for ($i = 1; $i <= $di; $i++) {
-                $headlines[] .= '<a href="' . addslashes($channel_data_link[$i]) . '">' 
-                    . addslashes($channel_data_title[$i]) . '</a>';
-            }
-            $blockcontent = COM_makeList ($headlines);
+        if (!rdferror) {
+            $blockcontent = COM_makeList ($RDFheadlines);
+            $RDFheadlines = array ();
             $blockcontent = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $blockcontent);
-
             $result = DB_change($_TABLES['blocks'],'content',"$blockcontent",'bid',$bid);
         }
     } else {
-        $retval .= COM_errorLog("can not reach $rdfurl",1);
-        $result = DB_change($_TABLES['blocks'],'content',"GeekLog can not reach the suppiled RDF file at $update. "
+        $rdferror = true;
+        COM_errorLog ("Can not reach $rdfurl", 1);
+        $result = DB_change ($_TABLES['blocks'], 'content',
+              "GeekLog can not reach the suppiled RDF file at $update. "
             . "Please double check the URL provided.  Make sure your url is correctly entered and it begins with "
-            . "http://. GeekLog will try in one hour to fetch the file again.",'bid',"$bid");
+            . "http://. GeekLog will try in one hour to fetch the file again.",
+            'bid', "$bid");
     }
-
-    return $retval;
 }
+
 
 /**
 * Returns what HTML is allows in content
