@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.69 2003/09/01 12:53:06 dhaun Exp $
+// $Id: users.php,v 1.70 2003/10/03 13:01:22 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -662,14 +662,15 @@ case 'logout':
                $_CONF['cookiedomain'], $_CONF['cookiesecure']);
     $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
+
 case 'profile':
-    $uid = strip_tags ($HTTP_GET_VARS['uid']);
-    if (is_numeric ($uid)) {
+    $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+    if (is_numeric ($uid) && ($uid > 0)) {
         $display .= COM_siteHeader('menu');
         // Call custom registration and account record create function if
         // enabled and exists
         if ($_CONF['custom_registration'] AND (function_exists(custom_userform))
-                 AND SEC_hasRights("user.edit")) {
+                 AND SEC_hasRights('user.edit')) {
             $display .= custom_userform ('moderate', $uid);
         } else {
             $display .= userprofile ($uid);
@@ -679,9 +680,12 @@ case 'profile':
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     break;
+
 case 'create':
-    $display .= createuser($HTTP_POST_VARS['username'],$HTTP_POST_VARS['email']);
+    $display .= createuser (COM_applyFilter ($HTTP_POST_VARS['username']),
+                            COM_applyFilter ($HTTP_POST_VARS['email']));
     break;
+
 case 'getpassword':
     $display .= COM_siteHeader ('menu');
     if ($_CONF['passwordspeedlimit'] == 0) {
@@ -699,11 +703,14 @@ case 'getpassword':
     }
     $display .= COM_siteFooter ();
     break;
+
 case 'newpwd':
-    $uid = $HTTP_GET_VARS['uid'];
-    $reqid = $HTTP_GET_VARS['rid'];
-    if (!empty ($uid) && is_numeric ($uid) && !empty ($reqid)) {
-        $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'), array ($uid, $reqid));
+    $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+    $reqid = COM_applyFilter ($HTTP_GET_VARS['rid']);
+    if (!empty ($uid) && is_numeric ($uid) && ($uid > 0) &&
+            !empty ($reqid) && (strlen ($reqid) == 16)) {
+        $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
+                           array ($uid, $reqid));
         if ($valid == 1) {
             $display .= COM_siteHeader ('menu');
             $display .= newpasswordform ($uid, $reqid);
@@ -719,15 +726,17 @@ case 'newpwd':
         $display = COM_refresh ($_CONF['site_url']);
     }
     break;
+
 case 'setnewpwd':
     if (empty ($HTTP_POST_VARS['passwd'])) {
         $display = COM_refresh ($_CONF['site_url']
                  . '/users.php?mode=newpwd&uid=' . $HTTP_POST_VARS['uid']
                  . '&rid=' . $HTTP_POST_VARS['rid']);
     } else {
-        $uid = $HTTP_POST_VARS['uid'];
-        $reqid = $HTTP_POST_VARS['rid'];
-        if (!empty ($uid) && is_numeric ($uid) && !empty ($reqid)) {
+        $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+        $reqid = COM_applyFilter ($HTTP_POST_VARS['rid']);
+        if (!empty ($uid) && is_numeric ($uid) && ($uid > 0) &&
+                !empty ($reqid) && (strlen ($reqid) == 16)) {
             $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
                                array ($uid, $reqid));
             if ($valid == 1) {
@@ -750,6 +759,7 @@ case 'setnewpwd':
         }
     }
     break;
+
 case 'emailpasswd':
     if ($_CONF['passwordspeedlimit'] == 0) {
         $_CONF['passwordspeedlimit'] = 300; // 5 minutes
@@ -764,31 +774,39 @@ case 'emailpasswd':
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
     } else {
-        $username = $HTTP_POST_VARS['username'];
-        if (empty ($username) && !empty ($HTTP_POST_VARS['email'])) {
+        $username = COM_applyFilter ($HTTP_POST_VARS['username']);
+        $email = COM_applyFilter ($HTTP_POST_VARS['email']);
+        if (empty ($username) && !empty ($email)) {
             $username = DB_getItem ($_TABLES['users'], 'username',
-                                    "email = '{$HTTP_POST_VARS['email']}'");
+                                    "email = '$email'");
         }
-        $display .= requestpassword ($username, 55);
+        if (!empty ($username)) {
+            $display .= requestpassword ($username, 55);
+        } else {
+            $display = COM_refresh ($_CONF['site_url']
+                                    . '/users.php?mode=getpassword');
+        }
     }
     break;
+
 case 'new':
     $display .= COM_siteHeader('menu');
     // Call custom registration and account record create function
     // if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+    if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
         $display .= custom_userform('new');
     } else {
         $display .= newuserform($msg);
     }	
     $display .= COM_siteFooter();
     break;
+
 default:
     if (isset ($HTTP_POST_VARS['loginname'])) {
-        $loginname = $HTTP_POST_VARS['loginname'];
+        $loginname = COM_applyFilter ($HTTP_POST_VARS['loginname']);
     }
     if (isset ($HTTP_POST_VARS['passwd'])) {
-        $passwd = $HTTP_POST_VARS['passwd'];
+        $passwd = COM_applyFilter ($HTTP_POST_VARS['passwd']);
     }
     if (!empty($loginname) && !empty($passwd)) {
         $mypasswd = COM_getPassword($loginname);
@@ -876,7 +894,7 @@ default:
             break;
         }
 
-        if ($mode != "new" && empty($msg)) {
+        if ($mode != 'new' && empty($msg)) {
             $msg = $LANG04[31];
         }
 
