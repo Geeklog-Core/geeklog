@@ -22,11 +22,11 @@ $LANG_SX00 = array (
 	'subthis'			=> 'this info to SpamX Central Database',
 	'secbut'			=> 'This second button creates an rdf feed so that others can import your list.',
 	'sitename'			=> 'Site Name: ',
-	'URL'				=> 'URL to Spamx List: ',
+	'URL'				=> 'URL to SpamX List: ',
 	'RDF'				=> 'RDF url: ',
 	'impinst1a'			=> 'Before you use the SpamX comment Spam blocker facility to view and import personal Blacklists from other',
 	'impinst1b'         => ' sites, I ask that you press the following two buttons. (You have to press the last one.)',
-	'impinst2'			=> 'This first submits your website to the Gplugs/Spamx site so that it can be added to the master list of ',
+	'impinst2'			=> 'This first submits your website to the Gplugs/SpamX site so that it can be added to the master list of ',
 	'impinst2a'			=> 'sites sharing their blacklists. (Note: if you have multiple sites you might want to designate one as the ',
 	'impinst2b'			=> 'master and only submit its name. This will allow you to update your sites easily and keep the list smaller.) ',
 	'impinst2c'         => 'After you press the Submit button, press [back] on your browser to return here.',
@@ -63,9 +63,9 @@ $LANG_SX00 = array (
 	'entries'			=> ' entries.',
 	'entriesadded'		=> 'Entries Added',
 	'entriesdeleted'	=> 'Entries Deleted',
-	'viewlog'			=> 'View Spamx Log',
+	'viewlog'			=> 'View SpamX Log',
 	'clearlog'			=> 'Clear Log File',
-	'logcleared'		=> '- Spamx Log File Cleared',
+	'logcleared'		=> '- SpamX Log File Cleared',
     'plugin'            => 'Plugin',
 	'access_denied'     => 'Access Denied',
 	'access_denied_msg' => 'Only Root Users have Access to this Page.  Your user name and IP have been recorded.',
@@ -90,7 +90,9 @@ $LANG_SX00 = array (
     'initial_import'    => 'Initial MT-Blacklist Import',
     'import_success'    => '<p>Successfully imported %d blacklist entries.',
     'import_failure'    => '<p><strong>Error:</strong> No entries found.',
-    'allow_url_fopen'   => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:'
+    'allow_url_fopen'   => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
+    'documentation'     => 'SpamX Plugin Documentation',
+    'plugin_name'       => 'SpamX'
 );
 
 ?>

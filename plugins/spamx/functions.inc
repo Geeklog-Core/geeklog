@@ -94,11 +94,11 @@ function plugin_showstats_spamx($showsitestats)
 */
 function plugin_cclabel_spamx() 
 {
-    global $_CONF;
+    global $_CONF, $LANG_SX00;
 
     $retval = array();
     if (SEC_hasRights('spamx.admin')) {
-        $retval = array('spamx',
+        $retval = array($LANG_SX00['plugin_name'],
                         $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
                         $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
     }
@@ -118,10 +118,10 @@ function plugin_cclabel_spamx()
 */
 function plugin_getadminoption_spamx() 
 {
-    global $_CONF;
+    global $_CONF, $LANG_SX00;
 
     if (SEC_hasRights('spamx.admin')) {
-        return array('spamx',
+        return array($LANG_SX00['plugin_name'],
                      $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
     }
 }
