@@ -1,5 +1,7 @@
 GeekLog History/Changes:
 
+- Fixed bug #531483 where $_CONF['commentsloginrequired'] was set to 'on' or
+  'off' instead of '1' or '0'.
 - Fixed bug #529621 and added the variable layout_url in COM_endBlock in
   lib-common.php
 - (Sort of) fixed bug #530142: {geeklog_blocks} is now set to an empty string
