@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.229 2003/06/21 12:55:51 dhaun Exp $
+// $Id: lib-common.php,v 1.230 2003/06/21 20:43:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1642,7 +1642,7 @@ function COM_pollVote( $qid )
 
             if( $nanswers > 0 )
             {
-                $poll = new Template( $_CONF['path_layout'] . '/pollbooth' );
+                $poll = new Template( $_CONF['path_layout'] . 'pollbooth' );
                 $poll->set_file( array( 'panswer' => 'pollanswer.thtml',
                                         'block' => 'pollblock.thtml',
                                         'comments' => 'pollcomments.thtml' ));
@@ -1824,7 +1824,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                 $retval .= COM_startBlock( $title );
             }
 
-            $poll = new Template( $_CONF['path_layout'] . '/pollbooth' );
+            $poll = new Template( $_CONF['path_layout'] . 'pollbooth' );
             $poll->set_file( array( 'result' => 'pollresult.thtml',
                                     'comments' => 'pollcomments.thtml',
                                     'votes_bar' => 'pollvotes_bar.thtml',
@@ -2474,9 +2474,10 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_inGroup( 'Root' ))
         {
-            $adminmenu->set_var( 'option_url', 'http://www.geeklog.net/versionchecker.php?version=' . VERSION );
+            $adminmenu->set_var( 'option_url',
+               'http://www.geeklog.net/versionchecker.php?version=' . VERSION );
             $adminmenu->set_var( 'option_label', $LANG01[107] );
-            $adminmenu->set_var( 'option_count', 'N/A' );
+            $adminmenu->set_var( 'option_count', VERSION );
 
             $retval .= $adminmenu->parse( 'item', 'option' );
         }
@@ -4090,7 +4091,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
         }
 
-        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
+        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
 
         $result = DB_query( $sql );
 
