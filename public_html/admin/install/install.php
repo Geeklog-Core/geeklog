@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.53 2003/08/11 08:53:04 dhaun Exp $
+// $Id: install.php,v 1.54 2003/08/13 09:00:26 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -46,7 +46,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.8');
+    define('VERSION', '1.3.9');
 }
 
 // Turn this on to have the install process print debug messages.  NOTE: these
@@ -137,7 +137,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         $cnt = count ($old_versions);
         for ($j = 1; $j <= $cnt; $j++) {
@@ -478,6 +478,20 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             }
 
             $current_gl_version = '1.3.8';
+            $_SQL = '';
+            break;
+        case '1.3.8':
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.8_to_1.3.9.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
+
+            $pos = strrpos ($_CONF['rdf_file'], '/');
+            $filename = substr ($_CONF['rdf_file'], $pos + 1);
+            DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$_CONF['site_name']}', '{$_CONF['site_slogan']}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+
+            $current_gl_version = '1.3.9';
             $_SQL = '';
             break;
         default:
