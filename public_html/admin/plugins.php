@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.14 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: plugins.php,v 1.15 2001/12/18 22:58:09 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -301,7 +301,7 @@ function installplugin() {
 		// Move the main web pages to the Geeklog web tree
 		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/public_html', $_CONF['path_html'] . $plugin_name)) {
 			// error doing the copy
-			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $_CONF['path_html'/g] . $plugin_name . '/');
+			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $_CONF['path_html'] . $plugin_name . '/');
 			echo $retval;
             exit;
 		}
