@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.136 2002/08/14 09:40:32 dhaun Exp $
+// $Id: lib-common.php,v 1.137 2002/08/15 16:31:04 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2159,7 +2159,9 @@ function COM_showBlocks($side, $topic='', $name='all')
                         $retval .= $function();
                     } else {
                         // show friendly error message
-                        $retval .= $LANG21[31];
+                        $errmsg = $LANG21[31];
+                        eval ("\$errmsg = \"$errmsg\";"); 
+                        $retval .= $errmsg;
                     }
                     $retval .= COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
                 }

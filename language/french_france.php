@@ -443,7 +443,7 @@ $LANG21 = array (
 
 /* a traduire*/
 30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in custom_code.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
-31 => "Erreur dans le Bloc php.  la Fonction, $function, n'existe pas.",
+31 => 'Erreur dans le Bloc php.  la Fonction, $function, n'existe pas.',
 32 => "Erreur champs manquants",
 33 => "vous devez entrer l'URL du fichier .rdf pour les blocs de portail",
 34 => "Vous devez entrer un titre et une fonction pour les blocs PHP",
