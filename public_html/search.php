@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.9 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: search.php,v 1.10 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -96,7 +96,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
 	if ($type == 'all' OR $type == 'stories') {
-		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_CONF['db_prefix']}stories WHERE (draft_flag = 0) AND ";
+		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND ";
 		$sql .= "((introtext like '%$query%' OR introtext like '$query%' OR introtext like '%$query') ";
 		$sql .= "OR (bodytext like '%$query%' OR bodytext like '$query%' OR bodytext like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
@@ -117,14 +117,14 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
 		$sql .= "ORDER BY date desc";
 		$result_stories = DB_query($sql);
 		$nrows_stories = DB_numRows($result_stories);
-		$result_count = DB_query("select count(*) from stories where draft_flag = 0");
+		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE draft_flag = 0");
 		$B = DB_fetchArray($result_count);
 		$total_stories = $B[0];
 		$A = DB_fetchArray($result_stories);
 	}
 	
 	if ($type == 'all' OR $type == 'comments') {
-		$sql = "SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_CONF['db_prefix']}comments WHERE ";
+		$sql = "SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
 		$sql .= "((comment like '%$query%' OR comment like '$query%' OR comment like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
 		if (!empty($datestart) && !empty($dateend)) {
@@ -142,7 +142,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
 		$sql .= "ORDER BY date desc";
 		$result_comments = DB_query($sql);
 		$nrows_comments  = DB_numRows($result_comments);
-		$total_comments = DB_count("comments");
+		$total_comments = DB_count($_TABLES['comments']);
 		$C = DB_fetchArray($result_comments);
 	}
 

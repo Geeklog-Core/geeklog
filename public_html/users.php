@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.13 2001/11/19 23:35:23 tony_bibbs Exp $
+// $Id: users.php,v 1.14 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -178,8 +178,13 @@ function createuser($username,$email)
         if (COM_isEmail($email)) {
             DB_save($_TABLES['users'],'username,email',"'$username','$email'");
             $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
+
+            // Add user to Logged-in group (i.e. members) and the All Users group (which includes
+            // anonymous users
             $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
+            $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
             DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
+            DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
             DB_query("INSERT INTO {$_TABLES["userprefs"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
@@ -389,12 +394,12 @@ default:
                 if ($VERBOSE) {
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
-                    setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
+                setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
             if ($VERBOSE) {
-                COM_errorLog('NOT trying to set permanent cookie',1);
+                COM_errorLog('NOW trying to set permanent cookie',1);
                 COM_errorLog('Got '.$userid.' from perm cookie in users.php',1);
             }
             if ($userid) {
@@ -407,6 +412,9 @@ default:
                 }
             }
         }
+
+        // Now that we have users data see if their theme cookie is set.  If not set it
+        setcookie('theme',$_USER['theme'],time() + 31536000,$_CONF['cookie_path']);
 	
         // Increment the numlogins counter for this user
         // DB_change("users","numlogins","numlogins + 1","username","$loginname");

@@ -58,10 +58,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 {
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $_USER;
 	
-    if ($_CONF["loginrequired2"] == 1 && empty($_USER['username'])) {
+    if ($_CONF['commentsloginrequired'] == 1 && empty($_USER['username'])) {
         $retval .= COM_refresh($_CONF['site_url'] . '/users.php?msg=' . urlencode($LANG03[6]));
     } else {
-        DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF["speedlimit2"]}");
+        DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF['commentspeedlimit']}");
 
         $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', $REMOTE_ADDR);
 

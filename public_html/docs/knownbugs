@@ -1,3 +1,6 @@
 List of Known Bugs:
 
 1) the emailgeeklogstories functionality isn't working.  This will be addressed in the next release
+2) the installation script does no form validation...should probably change ;-)
+3) seems as though plugins don't work under windows.  This isn't intentional and will be fixed
+4) documents need updating before stable 1.4 release

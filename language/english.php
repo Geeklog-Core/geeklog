@@ -97,7 +97,7 @@ $LANG01 = array(
 	56 => "Vote",
 	57 => "Password",
 	58 => "Login",
-	59 => "Don't have an account yet?  Sign up as a <a href={$_CONF['site_url']}/users.php?mode=new>New User</a>",
+	59 => "Don't have an account yet?  Sign up as a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">New User</a>",
 	60 => "Post a comment",
 	61 => "Create New Account",
 	62 => "words",
@@ -136,7 +136,9 @@ $LANG01 = array(
 	95 => "Powered By",
 	96 => "Groups",
         97 => "Word List",
-	98 => "Plug-ins"
+	98 => "Plug-ins",
+	99 => "STORIES",
+    100 => "No new stories"
 );
 
 ###############################################################################
@@ -447,7 +449,21 @@ $LANG12 = array(
 	34 => "Log Out",
 	35 => "HTML tags are not allowed",
 	36 => "Post Mode",
-	37 => "Submitting an event to {$_CONF["site_name"]} will put your event on the master calendar where users can optionally add your event to their personal calendar. This feature is <b>NOT</b> meant to store your personal events such as birthdays and anniversaries.<br><br>Once you submit your event it will be sent to our administrators and if approved, your event will appear on the master calendar."
+	37 => "Submitting an event to {$_CONF["site_name"]} will put your event on the master calendar where users can optionally add your event to their personal calendar. This feature is <b>NOT</b> meant to store your personal events such as birthdays and anniversaries.<br><br>Once you submit your event it will be sent to our administrators and if approved, your event will appear on the master calendar.",
+    38 => "Add Event To",
+    39 => "Master Calendar",
+    40 => "Personal Calendar",
+    41 => "End Time",
+    42 => "Start Time",
+    43 => "All Day Event",
+    44 => 'Address Line 1',
+    45 => 'Address Line 2',
+    46 => 'City/Town',
+    47 => 'State',
+    48 => 'Zip Code',
+    49 => 'Event Type',
+    50 => 'Edit Event Types',
+    51 => 'Location'
 );
 
 
@@ -518,8 +534,9 @@ $LANG21 = array(
 	44 => "Access Denied",
 	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/block.php\">go back to the block administration screen</a>.",
 	46 => 'New Block',
-	47 => 'Admin Home'
-
+	47 => 'Admin Home',
+    48 => 'Block Name',
+    49 => ' (no spaces and must be unique)'
 );
 
 ###############################################################################
@@ -755,7 +772,12 @@ $LANG30 = array(
 	22 => "October",
 	23 => "November",
 	24 => "December",
-	25 => "Back to "
+	25 => "Back to ",
+    26 => "All Day",
+    27 => "Week",
+    28 => "Personal Calendar for",
+    29 => "Public Calendar",
+    30 => "delete event"
 );
 
 ###############################################################################

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.13 2001/11/18 22:09:02 tony_bibbs Exp $
+// $Id: plugins.php,v 1.14 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -231,7 +231,7 @@ function installpluginform()
 function installplugin() {
 	global $_TABLES, $_CONF, $HTTP_POST_FILES, $LANG32, $LANG01;
 
-	require_once($_CONF["path"] . "/include/upload.class.php");
+	require_once($_CONF['path_system'] . "classes/upload.class.php");
 
 	$upload = new Upload();
   	$upload->setAllowedMimeTypes(array("application/x-tar", "application/x-gzip-compressed","application/x-zip-compressed"));

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.12 2001/11/19 23:51:59 tony_bibbs Exp $
+// $Id: user.php,v 1.13 2001/12/06 21:52:03 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -177,7 +177,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
 	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
 
-    $ucount = DB_getItem($_TABLES['users'],'count(*)',"uid <> $uid");
+    $ucount = DB_getItem($_TABLES['users'],'count(*)',"username = '$username' AND uid <> $uid");
     if ($ucount > 0) {
         // Admin just changes a user's username to one that already exists...bail
         return edituser($uid, 21);
@@ -214,7 +214,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		DB_save($_TABLES['userinfo'],'uid',$uid);
         	$errors = DB_error();
 		if (empty($errors)) { 
-			return COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
+			echo COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
 		} else {
 			$retval .= COM_siteHeader('menu');
             $retval .= COM_errorLog('Error in saveusers in admin/users.php');

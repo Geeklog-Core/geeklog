@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.8 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: topic.php,v 1.9 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -78,7 +78,7 @@ function edittopic($tid='')
         // this is the one instance where we default the group
         // most topics should belong to the normal user group 
         // and the private flag should be turned OFF
-        $A['group_id'] = DB_getItem('groups','grp_id',"grp_name = 'Normal User'");
+        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
         $A['perm_owner'] = 3;
         $A['perm_group'] = 3;
         $A['perm_members'] = 2;
@@ -153,14 +153,15 @@ function edittopic($tid='')
 ###############################################################################
 # Saves $tid to the database
 function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
-	global $_CONF,$LANG27;
+	global $_TABLES, $_CONF, $LANG27;
+
 	if (!empty($tid) && !empty($topic)) {
 		if ($imageurl == '/images/topics/') { 
 			$imageurl = ''; 
 		}	
-		#Convert array values to numeric permission values
+		//Convert array values to numeric permission values
                 list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save('topics','tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_group","admin/topic.php?msg=13");
+		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_group","admin/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG27[7],2);
@@ -240,9 +241,9 @@ $display = '';
 
 switch ($mode) {
 	case 'delete':
-		DB_delete('stories','tid',$tid);
-		DB_delete('blocks','tid',$tid);
-		DB_delete('topics',"tid",$tid,'/admin/topic.php?msg=14');
+		DB_delete($_TABLES['stories'],'tid',$tid);
+		DB_delete($_TABLES['blocks'],'tid',$tid);
+		DB_delete($_TABLES['topics'],'tid',$tid,'admin/topic.php?msg=14');
 		break;
 	case 'save':
 		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.19 2001/11/19 14:25:58 tony_bibbs Exp $
+// $Id: block.php,v 1.20 2001/12/06 21:52:03 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -74,9 +74,10 @@ function editdefaultblock($A,$access)
     $block_templates->set_file('editor','defaultblockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('block_id', $A['bid']);
-    $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('block_name',$A['name']);
+    $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_topic', $LANG21[6]);
     $block_templates->set_var('lang_all', $LANG21[7]);
     $block_templates->set_var('lang_side', $LANG21[39]);
@@ -122,7 +123,7 @@ function editblock($bid='')
     global $_TABLES, $_USER, $LANG21, $_CONF, $LANG_ACCESS;
 
     if (!empty($bid)) {
-        $result = DB_query("SELECT * FROM {$_CONF['db_prefix']}blocks where bid ='$bid'");
+        $result = DB_query("SELECT * FROM {$_TABLES['blocks']} where bid ='$bid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2 || $access == 0) {
@@ -154,7 +155,7 @@ function editblock($bid='')
     $block_templates->set_var('start_block_editor', COM_startBlock($LANG21[3]));
 		
     if ($A['type'] != 'layout') {
-        if (!empty($bid) && SEC_hasrights('block.edit')) {
+        if (!empty($bid) && SEC_hasrights('block.delete')) {
             $block_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
         }
     }
@@ -162,6 +163,9 @@ function editblock($bid='')
     $block_templates->set_var('block_bid', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);	
+    $block_templates->set_var('block_name', $A['name']);
+    $block_templates->set_var('lang_blockname', $LANG21[48]);
+    $block_templates->set_var('lang_nospaces', $LANG21[49]);
     $block_templates->set_var('lang_topic', $LANG21[6]);
     $block_templates->set_var('lang_all', $LANG21[7]);
     $block_templates->set_var('lang_homeonly', $LANG21[43]);
@@ -408,7 +412,7 @@ function listblocks()
 
 switch ($mode) {
 case 'delete':
-    $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'/admin/block.php?msg=12');
+    $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'admin/block.php?msg=12');
         break;
 case 'save':
 	$display .= saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

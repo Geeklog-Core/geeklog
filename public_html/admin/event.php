@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.8 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: event.php,v 1.9 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -68,7 +68,7 @@ if (!SEC_hasRights('event.edit')) {
 */
 function editevent($mode, $eid='') 
 {
-	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS, $_USER;
+	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
 
     $retval = '';
 
@@ -105,6 +105,18 @@ function editevent($mode, $eid='')
 		$access = 3;
 	}
 
+    if (!empty($A['datestart'])) {
+        $thedatetime = COM_getUserDateTimeFormat($A['datestart']);
+    } else {
+        $thedatetime = COM_getUserDateTimeFormat();
+    }
+    $A['datestart'] = $thedatetime[1];
+    if (!empty($A['dateend'])) {
+        $thedatetime = COM_getUserDateTimeFormat($A['dateend']);
+    } else {
+        $thedatetime = COM_getUserDateTimeFormat();
+    }
+    $A['dateend'] = $thedatetime[1];
 	if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
 	}
@@ -116,13 +128,230 @@ function editevent($mode, $eid='')
     $event_templates->set_var('event_id', $A['eid']);
     $event_templates->set_var('lang_eventtitle', $LANG22[3]);
     $event_templates->set_var('event_title', $A['title']);
+    $types  = explode(',',$_CONF['event_types']);
+    for ($i = 1; $i <= count($types); $i++) {
+        $catdd .= '<option value="' . current($types) . '" ';
+        if ($A['event_type'] == current($types)) {
+            $catdd .= 'selected="SELECTED"';
+        }
+        $catdd .= '>' . current($types) . '</option>';
+        next($types);
+    }
+    $event_templates->set_var('lang_eventtype', $LANG12[49]);
+    $event_templates->set_var('lang_editeventtypes', $LANG12[50]);
+    $event_templates->set_var('type_options', $catdd);
     $event_templates->set_var('lang_eventurl', $LANG22[4]);
     $event_templates->set_var('event_url', $A['url']);
     $event_templates->set_var('lang_includehttp', $LANG22[9]);
     $event_templates->set_var('lang_eventstartdate', $LANG22[5]);
-    $event_templates->set_var('event_startdate', $A['datestart']);
+    //$event_templates->set_var('event_startdate', $A['datestart']);
+    $event_templates->set_var('lang_starttime', $LANG12[42]);
+
+    // Combine date/time for easier manipulation
+    $A['datestart'] = $A['datestart'] . ' ' . $A['timestart'];
+    $A['dateend'] = $A['dateend'] . ' ' . $A['timeend'];
+    $start_month = date('m', $A['datestart']);
+    $start_day = date('d', $A['datestart']);
+    $start_year = date('Y', $A['datestart']);
+    $end_month= date('m', $A['dateend']);
+    $end_day = date('d', $A['dateend']);
+    $end_year = date('Y', $A['dateend']);
+    $start_ampm = '';
+    $end_ampm = '';
+    $start_hour = date('H', $A['datestart']);
+    $start_minute = date('i', $A['datestart']);
+    if ($start_hour > 12) {
+        $start_hour = $start_hour - 12;
+        $ampm = 'pm';
+    }
+    if ($ampm == 'pm') {
+        $event_templates->set_var('startpm_selected','selected="SELECTED"');
+    } else {
+        $event_templates->set_var('startam_selected','selected="SELECTED"');
+    }
+    $end_hour = date('H', $A['dateend']);
+    $end_minute = date('i', $A['dateend']);
+    $ampm = '';
+    if ($end_hour > 12) {
+        $end_hour = $end_hour - 12;
+        $ampm = 'pm';
+    }
+    if ($ampm == 'pm') {
+        $event_templates->set_var('endpm_selected', 'selected="SELECTED"');
+    } else {
+        $event_templates->set_var('endam_selected', 'selected="SELECTED"');
+    }
+    for ($j = 1; $j <= 2; $j++) {
+        $month_options = '';
+        for ($i = 1; $i <= 12; $i++) {
+            if ($i < 10) {
+                $mval = '0' . $i;
+            } else {
+                $mval = $i;
+            }
+            $month_options .= '<option value="' . $mval . '" ';
+            if ($j == 1) {
+                if ($i == $start_month) {
+                    $month_options .= 'selected="SELECTED"';
+                }
+            } else {
+                if ($i == $end_month) {
+                    $month_options .= 'selected="SELECTED"';
+                }
+            }
+            $month_options .= '>' . $mval . '</option>';
+        }
+        if ($j == 1) {
+            $event_templates->set_var('startmonth_options', $month_options);
+        } else {
+            $event_templates->set_var('endmonth_options', $month_options);
+        }
+        $day_options = '';
+        for ($i = 1; $i <= 31; $i++) {
+            if ($i < 10) {
+                $dval = '0' . $i;
+            } else {
+                $dval = $i;
+            }
+            $day_options .= '<option value="' . $dval . '" ';
+            if ($j == 1) {
+                if ($i == $start_day) {
+                    $day_options .= 'selected="SELECTED"';
+                }
+            } else {
+                if ($i == $end_day) {
+                    $day_options .= 'selected="SELECTED"';
+                }
+            }
+            $day_options .= '>' . $dval . '</option>';
+        }
+        if ($j == 1) {
+            $event_templates->set_var('startday_options', $day_options);
+        } else {
+            $event_templates->set_var('endday_options', $day_options);
+        }
+        $year_options = '';
+        $cur_year = date('Y',time());
+        for ($i = $cur_year; $i <= $cur_year + 5; $i++) {
+            $year_options .= '<option value="' . $i . '" ';
+            if ($j == 1) {
+                if ($i == $start_year) {
+                    $year_options .= 'selected="SELECTED"';
+                }
+            } else {
+                if ($i == $end_year) {
+                    $year_options .= 'selected="SELECTED"';
+                }
+            }
+            $year_options .= '>' . $i . '</option>';
+        }
+        if ($j == 1) {
+            $event_templates->set_var('startyear_options', $year_options);
+        } else {
+            $event_templates->set_var('endyear_options', $year_options);
+        }
+        $hour_options = '';
+        for ($i = 1; $i <= 11; $i++) {
+            if ($i < 10) {
+                $hval = '0' . $i;
+            } else {
+                $hval = $i;
+            }
+            if ($i == 1 ) {
+                $hour_options .= '<option value="12" ';
+                if ($j == 1) {
+                    if ($start_hour == 12) {
+                        $hour_options .= 'selected="SELECTED"';
+                    }
+                } else {
+                    if ($end_hour == 12) {
+                        $hour_options .= 'selected="SELECTED"';
+                    }
+                }
+                $hour_options .= '>12</option>';
+            }
+            $hour_options .= '<option value="' . $hval . '" ';
+            if ($j == 1) {
+                if ($start_hour == $i) {
+                    $hour_options .= 'selected="SELECTED"';
+                }
+            } else {
+                if ($end_hour == $i) {
+                    $hour_options .= 'selected="SELECTED"';
+                }
+            }
+            $hour_options .= '>' . $i . '</option>';
+        }
+        if ($j == 1) {
+            $event_templates->set_var('starthour_options', $hour_options);
+        } else {
+            $event_templates->set_var('endhour_options', $hour_options);
+        }
+    }
+
+    // Set minute for start time
+    switch ($start_minute) {
+    case '00':
+        $event_templates->set_var('startminuteoption1_selected', 'selected="SELECTED"');
+        break;
+    case '15':
+        $event_templates->set_var('startminuteoption2_selected', 'selected="SELECTED"');
+        break;
+    case '30':
+        $event_templates->set_var('startminuteoption3_selected', 'selected="SELECTED"');
+        break;
+    case '45':
+        $event_templates->set_var('startminuteoption4_selected', 'selected="SELECTED"');
+        break;
+    }
+
+    // Set minute for end time
+    switch ($end_minute) {
+    case '00':
+        $event_templates->set_var('endminuteoption1_selected', 'selected="SELECTED"');
+        break;
+    case '15':
+        $event_templates->set_var('endminuteoption2_selected', 'selected="SELECTED"');
+        break;
+    case '30':
+        $event_templates->set_var('endminuteoption3_selected', 'selected="SELECTED"');
+        break;
+    case '45':
+        $event_templates->set_var('endminuteoption4_selected', 'selected="SELECTED"');
+        break;
+    }
+
+    $event_templates->set_var('lang_enddate', $LANG12[13]);
     $event_templates->set_var('lang_eventenddate', $LANG22[6]);
     $event_templates->set_var('event_enddate', $A['dateend']);
+    $event_templates->set_var('hour_options', $hour_options);
+    $event_templates->set_var('lang_enddate', $LANG12[13]);
+    $event_templates->set_var('lang_endtime', $LANG12[41]);
+    $event_templates->set_var('lang_alldayevent',$LANG12[43]);
+    if ($A['allday'] == 1) {
+        $event_templates->set_var('allday_checked', 'checked="CHECKED"');
+    }
+    $event_templates->set_var('lang_location',$LANG12[51]);
+    $event_templates->set_var('event_location', $A['location']);
+    $event_templates->set_var('lang_addressline1',$LANG12[44]);
+    $event_templates->set_var('event_address1', $A['address1']);
+    $event_templates->set_var('lang_addressline2',$LANG12[45]);
+    $event_templates->set_var('event_address2', $A['address2']);
+    $event_templates->set_var('lang_city',$LANG12[46]);
+    $event_templates->set_var('event_city', $A['city']);
+    $event_templates->set_var('lang_state',$LANG12[47]);
+    $state_options = '';
+    for ($i = 1; $i <= count($_STATES); $i++) {
+        $state_options .= '<option value="' . key($_STATES) . '" ';
+        if (key($_STATES) == $A['state']) {
+            $state_options .= 'selected="SELECTED"';
+        }
+        $state_options .= '>' . current($_STATES) . '</option>';
+        next($_STATES);
+    }
+    $event_templates->set_var('state_options',$state_options);
+    $event_templates->set_var('lang_zipcode',$LANG12[48]);
+    $event_templates->set_var('event_zipcode', $A['zipcode']);
     $event_templates->set_var('lang_eventlocation', $LANG22[7]);
     $event_templates->set_var('event_location', $A['location']);
     $event_templates->set_var('lang_eventdescription', $LANG22[8]);
@@ -163,8 +392,6 @@ function editevent($mode, $eid='')
     return $retval;
 }
 
-###############################################################################
-# Svaes the events evente database
 /**
 * Saves an event to the database
 *
@@ -183,22 +410,59 @@ function editevent($mode, $eid='')
 * @perm_anon    string          Permissions anonymous users have
 *
 */
-function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
 	global $_TABLES, $_CONF, $LANG22;
 
+    // Make sure start date is before end date
+    if (checkdate($start_month, $start_day, $start_year)) {
+        $datestart = $start_year . '-' . $start_month . '-' . $start_day;
+        $timestart = $start_hour . ':' . $start_minute . ':00';
+    } else {
+        return COM_errorLog("Bad start date",2);
+    }
+    if (checkdate($end_month, $end_day, $end_year)) {
+        $dateend = $end_year . '-' . $end_month . '-' . $end_day;
+        $timeend = $end_hour . ':' . $end_minute . ':00';
+    } else {
+        return COM_errorLog("Bad end date", 2);
+    }
+    if ($allday == 0) {
+        if ($enddate < $startdate) {
+            return COM_errorLog("End date is before start date");
+        }
+    }
 	// clean 'em up 
 	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
 	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
-	$title = addslashes(COM_checkHTML(COM_checkWords($location)));
-
+	$location = addslashes(COM_checkHTML(COM_checkWords($location)));
+	$address1 = addslashes(COM_checkHTML(COM_checkWords($address1)));
+	$address2 = addslashes(COM_checkHTML(COM_checkWords($address2)));
+    $city = addslashes(COM_checkHTML(COM_checkWords($city)));
+    $zipcode =  addslashes(COM_checkHTML(COM_checkWords($zipcode)));
+    // Add 12 to make time on 24 hour clock if needed
+    if ($start_ampm == 'pm' AND $start_hour <> 12) {
+        $start_hour = $start_hour + 12;
+    }
+    // If 12AM set hour to 00
+    if ($start_ampm == 'am' AND $start_hour == 12) {
+        $start_hour = '00';
+    }
+    // Add 12 to make time on 24 hour clock if needed
+    if ($end_ampm == 'pm' AND $end_hour <> 12) {
+        $end_hour = $end_hour + 12;
+    }
+    // If 12AM set hour to 00
+    if ($end_ampm == 'am' AND $end_hour == 12) {
+        $end_hour = '00';
+    }
 	if (!empty($eid) && !empty($description) && !empty($title)) {
 		DB_delete($_TABLES['eventsubmission'],'eid',$eid);
 
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-		DB_save($_TABLES['events'],'eid,title,url,datestart,dateend,location,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$url','$datestart','$dateend','$location','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
+		DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,dateend,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		COM_errorLog($LANG22[10],2);
@@ -207,7 +471,6 @@ function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$
         return $retval;
 	}
 }
-
 /**
 * lists all the events in the system
 *
@@ -265,7 +528,7 @@ switch ($mode) {
 		DB_delete($_TABLES['events'],'eid',$eid,'/admin/event.php?msg=18');
 		break;
 	case 'save':
-		$display .= saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		$display .= saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case 'editsubmission':
 		$display .= COM_siteHeader('menu');

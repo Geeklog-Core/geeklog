@@ -1,6 +1,6 @@
 # MySQL dump 8.14
 #
-# Host: localhost    Database: geeklog
+# Host: localhost    Database: geeklog 
 #--------------------------------------------------------
 # Server version	3.23.41
 
@@ -116,7 +116,6 @@ CREATE TABLE events (
   eid varchar(20) NOT NULL default '',
   title varchar(128) default NULL,
   description text,
-  location text,
   datestart date default NULL,
   dateend date default NULL,
   url varchar(128) default NULL,
@@ -126,6 +125,16 @@ CREATE TABLE events (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  address1 varchar(40) default NULL,
+  address2 varchar(40) default NULL,
+  city varchar(60) default NULL,
+  state char(2) default NULL,
+  zipcode varchar(5) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  event_type varchar(40) NOT NULL default '',
+  location varchar(128) default NULL,
+  timestart time default NULL,
+  timeend time default NULL,
   PRIMARY KEY  (eid)
 ) TYPE=MyISAM;
 
@@ -137,10 +146,19 @@ CREATE TABLE eventsubmission (
   eid varchar(20) NOT NULL default '',
   title varchar(128) default NULL,
   description text,
-  location text,
+  location varchar(128) default NULL,
   datestart date default NULL,
   dateend date default NULL,
   url varchar(128) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  zipcode varchar(5) default NULL,
+  state char(2) default NULL,
+  city varchar(60) default NULL,
+  address2 varchar(40) default NULL,
+  address1 varchar(40) default NULL,
+  event_type varchar(40) NOT NULL default '',
+  timestart time default NULL,
+  timeend time default NULL,
   PRIMARY KEY  (eid)
 ) TYPE=MyISAM;
 
@@ -248,15 +266,34 @@ CREATE TABLE maillist (
 ) TYPE=MyISAM;
 
 #
-# Table structure for table 'metars'
+# Table structure for table 'personal_events'
 #
 
-CREATE TABLE metars (
-  metar varchar(255) NOT NULL default '',
-  timestamp timestamp(14) NOT NULL,
-  station varchar(4) NOT NULL default '',
-  PRIMARY KEY  (station),
-  UNIQUE KEY station (station)
+CREATE TABLE personal_events (
+  eid varchar(20) NOT NULL default '',
+  title varchar(128) default NULL,
+  event_type varchar(40) NOT NULL default '',
+  datestart date default NULL,
+  dateend date default NULL,
+  address1 varchar(40) default NULL,
+  address2 varchar(40) default NULL,
+  city varchar(60) default NULL,
+  state char(2) default NULL,
+  zipcode varchar(5) default NULL,
+  allday tinyint(1) NOT NULL default '0',
+  url varchar(128) default NULL,
+  description text,
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  uid mediumint(8) NOT NULL default '0',
+  location varchar(128) default NULL,
+  timestart time default NULL,
+  timeend time default NULL,
+  PRIMARY KEY  (eid)
 ) TYPE=MyISAM;
 
 #
@@ -463,16 +500,6 @@ CREATE TABLE usercomment (
 ) TYPE=MyISAM;
 
 #
-# Table structure for table 'userevent'
-#
-
-CREATE TABLE userevent (
-  uid mediumint(8) NOT NULL default '1',
-  eid varchar(20) NOT NULL default '',
-  PRIMARY KEY  (uid,eid)
-) TYPE=MyISAM;
-
-#
 # Table structure for table 'userindex'
 #
 
@@ -542,16 +569,5 @@ CREATE TABLE vars (
   name varchar(20) NOT NULL default '',
   value varchar(128) default NULL,
   PRIMARY KEY  (name)
-) TYPE=MyISAM;
-
-#
-# Table structure for table 'wordlist'
-#
-
-CREATE TABLE wordlist (
-  wid mediumint(8) unsigned NOT NULL auto_increment,
-  word varchar(255) NOT NULL default '',
-  replaceword varchar(255) NOT NULL default '',
-  PRIMARY KEY  (wid)
 ) TYPE=MyISAM;
 

@@ -1,5 +1,7 @@
 GeekLog Readme
-November 05, 2001
+December 4, 2001
+
+For the quick-and-dirty installation instructions see INSTALL
 
 WELCOME
 -------
@@ -16,6 +18,7 @@ what we can do to make GeekLog better.
 
 GeekLog's feature are as follows:
 
+- Easy to use installation script
 - Full localization and locale aware.
 - Threaded comment system that support different modes.
 - User-specified theming engine for custom look and feel.
@@ -32,8 +35,8 @@ GeekLog's feature are as follows:
 - Robust calendar feature with support for personalized calendars.
 - Plugin support with API for developers.
 - A fully configurable block system, with php-in-block support.
-- Robust *nix-like security model for all objects which can be extended to be
-  use within plugins
+- Robust *nix-like security model for all objects which can be extended for 
+  use in plugins
 - Spam protection features and protection of user email addresses
 - Well organized codebase, use of PHP's Object-Oriented features
 - Thin database abstraction layer allowing Geeklog to be ported to DBMS's other 

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.15 2001/11/19 22:23:09 tony_bibbs Exp $
+// $Id: article.php,v 1.16 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -135,12 +135,12 @@ if ($A['count'] > 0) {
 		// }
 		
         $story_template->set_var('formatted_article', COM_article($A,'n'));
-        $story_template->parse('output', 'article');
-        $display .= $story_template->finish($story_template->get_var('output'));
 		// Display the comments, if there are any ..
 		if ($A['commentcode'] >= 0) {
-				$display .= COM_userComments($story,$A['title'],'article',$order,$mode);
+				$story_template->set_var('commentbar', COM_userComments($story,$A['title'],'article',$order,$mode));
 		}
+        $story_template->parse('output', 'article');
+        $display .= $story_template->finish($story_template->get_var('output'));
 		$display .= COM_siteFooter();
 	}
 } else {

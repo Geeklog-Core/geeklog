@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.2 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.3 2001/12/06 21:52:05 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -343,7 +343,7 @@ function SESS_getUserData($username)
 {
     global $_TABLES;
 
-    $sql = "SELECT {$_TABLES["users"]}.uid, username, username name, email, homepage, sig, noicons, dfid "
+    $sql = "SELECT {$_TABLES["users"]}.uid, username, username name, email, homepage,theme, sig, noicons, dfid "
         . "FROM {$_TABLES['users']}, {$_TABLES['userprefs']} "
         . "WHERE {$_TABLES["userprefs"]}.uid = {$_TABLES["users"]}.uid AND username = '$username'";
 

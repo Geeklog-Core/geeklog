@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.3 2001/11/16 18:39:12 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.4 2001/12/06 21:52:05 tony_bibbs Exp $
 
 class database {
 
@@ -302,13 +302,17 @@ class database {
     * @value        array|string    Value for id2
     *
     */
-    function dbChange($table,$item_to_set,$value_to_set,$id,$value)
+    function dbChange($table,$item_to_set,$value_to_set,$id,$value, $supress_quotes=false)
     {
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside dbChange ***");
         }
 
-        $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
+        if ($supress_quotes) {
+            $sql = "UPDATE $table SET $item_to_set = $value_to_set";
+        } else {
+            $sql = "UPDATE $table SET $item_to_set = '$value_to_set'";
+        } 
 
         if (is_array($id) || is_array($value)) {
             if (is_array($id) && is_array($value) && count($id) == count($value)) {
@@ -599,7 +603,6 @@ class database {
 	
 	return;
     }
-
 }
 
 ?>

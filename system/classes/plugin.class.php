@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.2 2001/11/16 18:39:12 tony_bibbs Exp $
+// $Id: plugin.class.php,v 1.3 2001/12/06 21:52:05 tony_bibbs Exp $
 
 class Plugin {
 
@@ -38,6 +38,7 @@ class Plugin {
     // PUBLIC PROPERTIES
     var $adminlabel;
     var $adminurl;
+    var $plugin_image;
     var $plugin_name;
 
     // Search properties
@@ -77,6 +78,7 @@ class Plugin {
     {
         $adminlabel = '';
         $aadminurl = '';
+	$plugin_image = '';
         $numsubmissions = '';
         $plugin_name = '';
         $searchlabel = '';

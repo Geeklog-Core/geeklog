@@ -1,461 +1,111 @@
-Wed 14 Nov 2001 03:19:40 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:19:40 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:19:40 PM CST - type = all 
-Wed 14 Nov 2001 03:19:40 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:19:41 PM CST - result =  
-Wed 14 Nov 2001 03:19:41 PM CST - count = 0 
-Wed 14 Nov 2001 03:19:41 PM CST - column val =  
-Wed 14 Nov 2001 03:20:16 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:20:16 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:20:16 PM CST - type = all 
-Wed 14 Nov 2001 03:20:16 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:20:16 PM CST - result =  
-Wed 14 Nov 2001 03:20:16 PM CST - count = 0 
-Wed 14 Nov 2001 03:20:16 PM CST - column val =  
-Wed 14 Nov 2001 03:21:22 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:21:22 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:21:22 PM CST - type = all 
-Wed 14 Nov 2001 03:21:23 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:21:23 PM CST - result =  
-Wed 14 Nov 2001 03:21:23 PM CST - count = 0 
-Wed 14 Nov 2001 03:21:23 PM CST - column val =  
-Wed 14 Nov 2001 03:24:38 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:24:38 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:24:38 PM CST - type = all 
-Wed 14 Nov 2001 03:24:38 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:24:38 PM CST - 1064: You have an error in your SQL syntax near 'WHERE uid = '2'' at line 1 SQL in question: SELECT username FROM  WHERE uid = '2' 
-Wed 14 Nov 2001 03:25:24 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:25:24 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:25:24 PM CST - type = all 
-Wed 14 Nov 2001 03:25:24 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:25:24 PM CST - 1064: You have an error in your SQL syntax near 'WHERE uid = 2' at line 1 SQL in question: SELECT username FROM  WHERE uid = 2 
-Wed 14 Nov 2001 03:25:45 PM CST - checking to see if plugin_dopluginsearch_staticpages exists 
-Wed 14 Nov 2001 03:25:45 PM CST - *** inside plugin_dopluginsearch_staticpages ***  
-Wed 14 Nov 2001 03:25:45 PM CST - type = all 
-Wed 14 Nov 2001 03:25:45 PM CST - static pages search query = SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ((sp_content like '%static%' OR sp_content like 'static%' OR sp_content like '%static') OR (sp_title like '%static%' OR sp_title like 'static%' OR sp_title like '%static')) ORDER BY sp_date desc 
-Wed 14 Nov 2001 03:25:45 PM CST - result[1] = <a href=http://tbibbs/staticpage/page.php?page=20011114131926711>Privacy Policy</a>,Wed Nov 14, '01 01:19PM,Admin,0 
-Wed 14 Nov 2001 03:25:45 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT username FROM users WHERE uid =  
-Wed 14 Nov 2001 03:29:37 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT username FROM users WHERE uid =  
-Wed 14 Nov 2001 04:03:40 PM CST - column val = <a href=http://tbibbs/staticpage/page.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:03:40 PM CST - column val = Wednesday 
-Wed 14 Nov 2001 04:03:40 PM CST - column val =  November 14 2001 @ 01:19 PM CST 
-Wed 14 Nov 2001 04:03:40 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:03:40 PM CST - column val = 0 
-Wed 14 Nov 2001 04:04:57 PM CST - column val = <a href=http://tbibbs/staticpage/page.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:04:57 PM CST - column val = Wednesday 
-Wed 14 Nov 2001 04:04:57 PM CST - column val =  November 14 2001 @ 01:19 PM CST 
-Wed 14 Nov 2001 04:04:57 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:04:57 PM CST - column val = 0 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = <a href=http 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = //tbibbs/staticpage/page.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = Wednesday, November 14 2001 @ 01 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = 19 PM CST 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:08:15 PM CST - column val = 0 
-Wed 14 Nov 2001 04:15:57 PM CST - column val = <a href=http://tbibbs/staticpage/page.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:15:57 PM CST - column val = Wednesday, November 14 2001 @ 01:19 PM CST 
-Wed 14 Nov 2001 04:15:57 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:15:57 PM CST - column val = 0 
-Wed 14 Nov 2001 04:20:10 PM CST - column val = <a href=http://tbibbs/staticpages/page.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:20:10 PM CST - column val = Wednesday, November 14 2001 @ 01:19 PM CST 
-Wed 14 Nov 2001 04:20:10 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:20:10 PM CST - column val = 0 
-Wed 14 Nov 2001 04:20:37 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:20:37 PM CST - column val = Wednesday, November 14 2001 @ 01:19 PM CST 
-Wed 14 Nov 2001 04:20:37 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:20:37 PM CST - column val = 0 
-Wed 14 Nov 2001 04:24:30 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:24:30 PM CST - column val = Wed Nov 14, '01 01:19PM 
-Wed 14 Nov 2001 04:24:30 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:24:30 PM CST - column val = 3 
-Wed 14 Nov 2001 04:28:21 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114131926711>Privacy Policy</a> 
-Wed 14 Nov 2001 04:28:21 PM CST - column val = Wed Nov 14, '01 01:19PM 
-Wed 14 Nov 2001 04:28:21 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:28:21 PM CST - column val = 3 
-Wed 14 Nov 2001 04:36:52 PM CST - Could not find plugin function: plugin_itemlist_staticpages 
-Wed 14 Nov 2001 04:37:14 PM CST - NUMROWS: 2 
-Wed 14 Nov 2001 04:47:59 PM CST - *** inside removeplugins *** 
-Wed 14 Nov 2001 04:47:59 PM CST - About to call PLG_uninstall function for staticpages 
-Wed 14 Nov 2001 04:47:59 PM CST - Dropping staticpage table 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove the Static Page Admin Group 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove rights to staticpage.edit from all groups 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove rights to staticpage.delete from all groups 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove root users from admin of static pages 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove the staticpage.edit feature 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove the staticpage.delete feature 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to remove the group id from the vars table 
-Wed 14 Nov 2001 04:47:59 PM CST - success 
-Wed 14 Nov 2001 04:47:59 PM CST - Attempting to unregister the plugin from Geeklog 
-Wed 14 Nov 2001 04:47:59 PM CST - ...success 
-Wed 14 Nov 2001 04:47:59 PM CST - leaving plugin_uninstall_staticpages 
-Wed 14 Nov 2001 04:47:59 PM CST - successfully uninstalled data and data structures for plugin staticpages 
-Wed 14 Nov 2001 04:47:59 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/plugins/staticpages 
-Wed 14 Nov 2001 04:48:00 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/staticpages 
-Wed 14 Nov 2001 04:48:00 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/admin/plugins/staticpages 
-Wed 14 Nov 2001 04:48:00 PM CST - *** Leaving removeplugin *** 
-Wed 14 Nov 2001 04:48:20 PM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to install the Static Page Plugin 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to create table staticpage for Static Page plugin 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to create Static Page admin group 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - About to save group_id to vars table for use during uninstall 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to add staticpages.edit feature 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to add staticpages.delete feature 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to give Static Page Admin group access to staticpages.edit feature 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to give Static Page Admin group access to staticpages.delete feature 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Attempting to give all users in Root group access static page admin group 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Registering Static Page plugin with Geeklog 
-Wed 14 Nov 2001 04:48:20 PM CST - ...success 
-Wed 14 Nov 2001 04:48:20 PM CST - Succesfully installed the Static Page Plugin! 
-Wed 14 Nov 2001 04:48:20 PM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
-Wed 14 Nov 2001 04:48:43 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:48:43 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:48:43 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:48:43 PM CST - column val = 0 
-Wed 14 Nov 2001 04:48:51 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:48:51 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:48:51 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:48:51 PM CST - column val = 0 
-Wed 14 Nov 2001 04:50:15 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:50:15 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:50:15 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:50:15 PM CST - column val = 0 
-Wed 14 Nov 2001 04:50:40 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:50:40 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:50:40 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:50:40 PM CST - column val = 0 
-Wed 14 Nov 2001 04:50:44 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:50:44 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:50:44 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:50:44 PM CST - column val = 0 
-Wed 14 Nov 2001 04:51:16 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:51:16 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:51:16 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:51:16 PM CST - column val = 0 
-Wed 14 Nov 2001 04:51:32 PM CST - column val = <a href=http://tbibbs/staticpages/index.php?page=20011114164831651>Test</a> 
-Wed 14 Nov 2001 04:51:32 PM CST - column val = Wed Nov 14, '01 04:48PM 
-Wed 14 Nov 2001 04:51:32 PM CST - column val = Admin 
-Wed 14 Nov 2001 04:51:32 PM CST - column val = 1 
-Wed 14 Nov 2001 04:51:53 PM CST - *** inside removeplugins *** 
-Wed 14 Nov 2001 04:51:53 PM CST - About to call PLG_uninstall function for staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - Dropping staticpage table 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove the Static Page Admin Group 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove rights to staticpage.edit from all groups 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove rights to staticpage.delete from all groups 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove root users from admin of static pages 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove the staticpage.edit feature 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove the staticpage.delete feature 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to remove the group id from the vars table 
-Wed 14 Nov 2001 04:51:53 PM CST - success 
-Wed 14 Nov 2001 04:51:53 PM CST - Attempting to unregister the plugin from Geeklog 
-Wed 14 Nov 2001 04:51:53 PM CST - ...success 
-Wed 14 Nov 2001 04:51:53 PM CST - leaving plugin_uninstall_staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - successfully uninstalled data and data structures for plugin staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/plugins/staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/admin/plugins/staticpages 
-Wed 14 Nov 2001 04:51:53 PM CST - *** Leaving removeplugin *** 
-Thu 15 Nov 2001 08:32:41 AM CST - Error, invalid usernamet! 
-Thu 15 Nov 2001 08:46:35 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 08:46:43 AM CST - theme is Classic 
-Thu 15 Nov 2001 08:46:43 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:03:45 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:03:56 AM CST - theme is Yahoo 
-Thu 15 Nov 2001 09:03:57 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:06:19 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:06:47 AM CST - theme is Digital_Monochrome 
-Thu 15 Nov 2001 09:06:47 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:07:20 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:07:25 AM CST - theme is Yahoo 
-Thu 15 Nov 2001 09:07:26 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:07:39 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:07:45 AM CST - theme is Digital_Monochrome 
-Thu 15 Nov 2001 09:07:45 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:11:59 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:11:59 AM CST - lang: September 
-Thu 15 Nov 2001 09:11:59 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:11:59 AM CST - lang: September 
-Thu 15 Nov 2001 09:11:59 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:11:59 AM CST - lang: September 
-Thu 15 Nov 2001 09:11:59 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:12:00 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:00 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:12:00 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:00 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:12:00 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:00 AM CST - 30th IS NOT NULL 
-Thu 15 Nov 2001 09:12:22 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:12:27 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:12:28 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:12:31 AM CST - theme is Digital_Monochrome 
-Thu 15 Nov 2001 09:12:32 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:12:37 AM CST - theme is Yahoo 
-Thu 15 Nov 2001 09:12:37 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:12:41 AM CST - lang: September 
-Thu 15 Nov 2001 09:12:41 AM CST - 30th IS NOT NULL 
-Thu 15 Nov 2001 09:13:44 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:13:50 AM CST - theme is Digital_Monochrome 
-Thu 15 Nov 2001 09:13:51 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:13:53 AM CST - lang: September 
-Thu 15 Nov 2001 09:13:53 AM CST - 30th IS NOT NULL 
-Thu 15 Nov 2001 09:14:08 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:14:12 AM CST - theme is Classic 
-Thu 15 Nov 2001 09:14:13 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 9 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 11 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:16 AM CST - MONTH: 10 
-Thu 15 Nov 2001 09:14:16 AM CST - lang: September 
-Thu 15 Nov 2001 09:14:17 AM CST - 30th IS NOT NULL 
-Thu 15 Nov 2001 09:16:42 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:16:47 AM CST - theme is Darkly_Light 
-Thu 15 Nov 2001 09:16:47 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:17:20 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:18:37 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:18:45 AM CST - theme is Classic 
-Thu 15 Nov 2001 09:18:46 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:18:59 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:19:06 AM CST - theme is Digital_Monochrome 
-Thu 15 Nov 2001 09:19:06 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:20:08 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:20:13 AM CST - theme is Darkly_Light 
-Thu 15 Nov 2001 09:20:14 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:37:04 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:37:08 AM CST - theme is Yahoo 
-Thu 15 Nov 2001 09:37:09 AM CST - THEMEDIR: /var/www/livestockworld/public_html/layout/ 
-Thu 15 Nov 2001 09:37:27 AM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to install the Static Page Plugin 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to create table staticpage for Static Page plugin 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to create Static Page admin group 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - About to save group_id to vars table for use during uninstall 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to add staticpages.edit feature 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to add staticpages.delete feature 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to give Static Page Admin group access to staticpages.edit feature 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to give Static Page Admin group access to staticpages.delete feature 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Attempting to give all users in Root group access static page admin group 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Registering Static Page plugin with Geeklog 
-Thu 15 Nov 2001 09:37:28 AM CST - ...success 
-Thu 15 Nov 2001 09:37:28 AM CST - Succesfully installed the Static Page Plugin! 
-Thu 15 Nov 2001 09:37:28 AM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
-Thu 15 Nov 2001 12:18:36 PM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/bookreview_0.1_1.3.tar.gz 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to install the Book Review Plugin 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to create table bookreview for Book Review plugin 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to create table bookreviewsubmission for Book Review plugin 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to create Book Review admin group 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - About to save group_id to vars table for use during uninstall 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to add bookreview.edit feature 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to add bookreview.moderate feature 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to give Book Review Admin group access to bookreview.edit feature 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to give Book Review Admin group access to bookreview.moderate feature 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Attempting to give all users in Root group access static page admin group 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Registering Book Review plugin with Geeklog 
-Thu 15 Nov 2001 12:18:37 PM CST - ...success 
-Thu 15 Nov 2001 12:18:37 PM CST - Succesfully installed the Book Review Plugin! 
-Thu 15 Nov 2001 12:18:37 PM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/bookreview_0.1_1.3.tar.gz 
-Thu 15 Nov 2001 03:19:26 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT username FROM users WHERE uid =  
-Thu 15 Nov 2001 03:23:05 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT username FROM users WHERE uid =  
-Thu 15 Nov 2001 03:29:05 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT username FROM users WHERE uid =  
-Thu 15 Nov 2001 03:47:50 PM CST - 1064: You have an error in your SQL syntax near 'WHERE uid = 2' at line 1 SQL in question: SELECT username FROM  WHERE uid = 2 
-Thu 15 Nov 2001 03:49:03 PM CST - 1064: You have an error in your SQL syntax near 'WHERE uid = 2' at line 1 SQL in question: SELECT username FROM  WHERE uid = 2 
-Thu 15 Nov 2001 04:37:07 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 04:38:52 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 04:39:18 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:40:01 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:40:06 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:41:49 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:43:22 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:44:07 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:44:22 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:45:06 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:46:16 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:18 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:21 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:32 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:35 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:39 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:42 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:49:57 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:51:14 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:51:18 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:51:25 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:53:02 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 04:53:50 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:02:27 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:03:07 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:03:20 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:05:48 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:05:49 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:05:53 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:05:53 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:10:11 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:10:11 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:14:20 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:14:20 PM CST - sql = SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:14:20 PM CST - sql = SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC 
-Thu 15 Nov 2001 05:14:20 PM CST - sql = SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC 
-Thu 15 Nov 2001 05:14:20 PM CST - sql =  
-Thu 15 Nov 2001 05:14:20 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:17:09 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:17:09 PM CST - sql = SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:17:09 PM CST - sql = SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC 
-Thu 15 Nov 2001 05:17:09 PM CST - sql = SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC 
-Thu 15 Nov 2001 05:18:38 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:18:39 PM CST - sql = SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:18:39 PM CST - sql = SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC 
-Thu 15 Nov 2001 05:18:39 PM CST - sql = SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC 
-Thu 15 Nov 2001 05:18:39 PM CST - type = staticpages 
-Thu 15 Nov 2001 05:22:54 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:22:54 PM CST - sql = SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:22:54 PM CST - sql = SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC 
-Thu 15 Nov 2001 05:22:54 PM CST - sql = SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC 
-Thu 15 Nov 2001 05:22:54 PM CST - type = staticpages 
-Thu 15 Nov 2001 05:23:14 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:23:15 PM CST - sql = SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:23:15 PM CST - sql = SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC 
-Thu 15 Nov 2001 05:23:15 PM CST - sql = SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC 
-Thu 15 Nov 2001 05:23:15 PM CST - type = staticpages 
-Thu 15 Nov 2001 05:23:15 PM CST - sql =  
-Thu 15 Nov 2001 05:23:15 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:23:15 PM CST - type = bookreview 
-Thu 15 Nov 2001 05:23:15 PM CST - sql in itemlist SELECT br_id AS id,title,category,authors,UNIX_TIMESTAMP(date) AS day FROM bookreviewsubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:23:15 PM CST - sql = SELECT br_id AS id,title,category,authors,UNIX_TIMESTAMP(date) AS day FROM bookreviewsubmission ORDER BY date ASC 
-Thu 15 Nov 2001 05:27:49 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:27:49 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:28:11 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:29:04 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:30:12 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:30:12 PM CST - 1064: You have an error in your SQL syntax near 'WHERE br_id = '2001111517054745'' at line 1 SQL in question: REPLACE INTO bookreview (br_id,uid,category,title,pages,isbn,publisher,authors,introtext,reviewtext,date) SELECT br_id,uid,category,title,pages,isbn,publisher,authors,introtext,reviewtext,date FROM  WHERE br_id = '2001111517054745' 
-Thu 15 Nov 2001 05:33:55 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:33:55 PM CST - 1064: You have an error in your SQL syntax near 'WHERE br_id = '2001111517054745'' at line 1 SQL in question: REPLACE INTO bookreview (br_id,uid,category,title,pages,isbn,publisher,authors,introtext,reviewtext,date) SELECT br_id,uid,category,title,pages,isbn,publisher,authors,introtext,reviewtext,date FROM  WHERE br_id = '2001111517054745' 
-Thu 15 Nov 2001 05:37:25 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:37:26 PM CST - 1065: Query was empty SQL in question:  
-Thu 15 Nov 2001 05:37:41 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:44:59 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:45:02 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:46:27 PM CST - num plugin menu items in header = 2 
-Thu 15 Nov 2001 05:46:31 PM CST - *** inside removeplugins *** 
-Thu 15 Nov 2001 05:46:31 PM CST - About to call PLG_uninstall function for staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - Dropping staticpage table 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove the Static Page Admin Group 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove rights to staticpage.edit from all groups 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove rights to staticpage.delete from all groups 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove root users from admin of static pages 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove the staticpage.edit feature 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove the staticpage.delete feature 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to remove the group id from the vars table 
-Thu 15 Nov 2001 05:46:31 PM CST - success 
-Thu 15 Nov 2001 05:46:31 PM CST - Attempting to unregister the plugin from Geeklog 
-Thu 15 Nov 2001 05:46:31 PM CST - ...success 
-Thu 15 Nov 2001 05:46:31 PM CST - leaving plugin_uninstall_staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - successfully uninstalled data and data structures for plugin staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/plugins/staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/admin/plugins/staticpages 
-Thu 15 Nov 2001 05:46:31 PM CST - *** Leaving removeplugin *** 
-Thu 15 Nov 2001 05:46:31 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 05:46:35 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 05:46:39 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 05:46:42 PM CST - num plugin menu items in header = 1 
-Thu 15 Nov 2001 05:46:46 PM CST - *** inside removeplugins *** 
-Thu 15 Nov 2001 05:46:46 PM CST - About to call PLG_uninstall function for bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - Dropping bookreview table 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Dropping bookreviewsubmission table 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove the Book Review Admin Group 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove rights to bookreview.edit from all groups 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove rights to bookreview.moderate from all groups 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove root users from admin of Book Review 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove the bookreview.edit feature 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove the bookreview.moderate feature 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to remove the group id from the vars table 
-Thu 15 Nov 2001 05:46:46 PM CST - success 
-Thu 15 Nov 2001 05:46:46 PM CST - Attempting to unregister the plugin from Geeklog 
-Thu 15 Nov 2001 05:46:46 PM CST - ...success 
-Thu 15 Nov 2001 05:46:46 PM CST - leaving plugin_uninstall_bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - successfully uninstalled data and data structures for plugin bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/plugins/bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - executing the following: /bin/rm -Rf /var/www/livestockworld/public_html/admin/plugins/bookreview 
-Thu 15 Nov 2001 05:46:46 PM CST - *** Leaving removeplugin *** 
-Thu 15 Nov 2001 05:46:47 PM CST - num plugin menu items in header = 0 
+Thu 06 Dec 2001 10:33:21 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:34:33 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:35:08 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:36:18 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:36:18 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:38:30 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:38:30 AM CST - blocks = 8 
+Thu 06 Dec 2001 10:38:30 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:39:13 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:39:13 AM CST - blocks = 8 
+Thu 06 Dec 2001 10:39:13 AM CST - BOXES =  
+Thu 06 Dec 2001 10:39:13 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:39:49 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:39:49 AM CST - blocks = 8 
+Thu 06 Dec 2001 10:39:49 AM CST - BOXES =  
+Thu 06 Dec 2001 10:39:49 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:40:41 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:40:41 AM CST - blocks = 6 
+Thu 06 Dec 2001 10:40:41 AM CST - BOXES =  
+Thu 06 Dec 2001 10:40:41 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:44:00 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:44:00 AM CST - blocks = Array 
+Thu 06 Dec 2001 10:44:00 AM CST - BOXES = Array 
+Thu 06 Dec 2001 10:44:24 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:44:24 AM CST - blocks = Array 
+Thu 06 Dec 2001 10:44:24 AM CST - BOXES = Array 
+Thu 06 Dec 2001 10:44:32 AM CST - block table = gl_blocks 
+Thu 06 Dec 2001 10:44:32 AM CST - blocks =  
+Thu 06 Dec 2001 10:44:32 AM CST - BOXES =  
+Thu 06 Dec 2001 10:44:32 AM CST - BOXES is empty 
+Thu 06 Dec 2001 10:47:07 AM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to install the Static Page Plugin 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to create table staticpage for Static Page plugin 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to create Static Page admin group 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - About to save group_id to vars table for use during uninstall 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to add staticpages.edit feature 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to add staticpages.delete feature 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to give Static Page Admin group access to staticpages.edit feature 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to give Static Page Admin group access to staticpages.delete feature 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Attempting to give all users in Root group access static page admin group 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Registering Static Page plugin with Geeklog 
+Thu 06 Dec 2001 10:47:07 AM CST - ...success 
+Thu 06 Dec 2001 10:47:07 AM CST - Succesfully installed the Static Page Plugin! 
+Thu 06 Dec 2001 10:47:07 AM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 10:53:51 AM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 10:53:51 AM CST - Unable to copy /var/www/livestockworld/plugins/staticpages/public_html/ to staticpages/ 
+Thu 06 Dec 2001 10:55:07 AM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to install the Static Page Plugin 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to create table staticpage for Static Page plugin 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to create Static Page admin group 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - About to save group_id to vars table for use during uninstall 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to add staticpages.edit feature 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to add staticpages.delete feature 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to give Static Page Admin group access to staticpages.edit feature 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to give Static Page Admin group access to staticpages.delete feature 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Attempting to give all users in Root group access static page admin group 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Registering Static Page plugin with Geeklog 
+Thu 06 Dec 2001 10:55:07 AM CST - ...success 
+Thu 06 Dec 2001 10:55:07 AM CST - Succesfully installed the Static Page Plugin! 
+Thu 06 Dec 2001 10:55:07 AM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 11:04:26 AM CST - 1146: Table 'livestockworlddev.stories' doesn't exist SQL in question: SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM stories WHERE (draft_flag = 0) AND ((introtext like '%Welcome%' OR introtext like 'Welcome%' OR introtext like '%Welcome') OR (bodytext like '%Welcome%' OR bodytext like 'Welcome%' OR bodytext like '%Welcome') OR (title like '%Welcome%' OR title like 'Welcome%' OR title like '%Welcome')) ORDER BY date desc 
+Thu 06 Dec 2001 11:05:04 AM CST - 1146: Table 'livestockworlddev.stories' doesn't exist SQL in question: select count(*) from stories where draft_flag = 0 
+Thu 06 Dec 2001 11:06:05 AM CST - 1064: You have an error in your SQL syntax near 'WHERE draft_flag = 0' at line 1 SQL in question: SELECT count(*) FROM  WHERE draft_flag = 0 
+Thu 06 Dec 2001 11:07:06 AM CST - 1146: Table 'livestockworlddev.comments' doesn't exist SQL in question: SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM comments WHERE ((comment like '%Welcome%' OR comment like 'Welcome%' OR comment like '%Welcome') OR (title like '%Welcome%' OR title like 'Welcome%' OR title like '%Welcome')) ORDER BY date desc 
+Thu 06 Dec 2001 11:09:08 AM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: DELETE FROM gl_commentspeedlimit WHERE date < unix_timestamp() -  
+Thu 06 Dec 2001 11:55:01 AM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 11:55:01 AM CST - Unable to copy /var/www/livestockworld/plugins/staticpages/public_html/ to staticpages/ 
+Thu 06 Dec 2001 12:04:28 PM CST - command = /bin/tar -C /var/www/livestockworld/plugins/ -xzf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to install the Static Page Plugin 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to create table staticpage for Static Page plugin 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to create Static Page admin group 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - About to save group_id to vars table for use during uninstall 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to add staticpages.edit feature 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to add staticpages.delete feature 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to give Static Page Admin group access to staticpages.edit feature 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to give Static Page Admin group access to staticpages.delete feature 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Attempting to give all users in Root group access static page admin group 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Registering Static Page plugin with Geeklog 
+Thu 06 Dec 2001 12:04:28 PM CST - ...success 
+Thu 06 Dec 2001 12:04:28 PM CST - Succesfully installed the Static Page Plugin! 
+Thu 06 Dec 2001 12:04:28 PM CST - command = /bin/rm -Rf /var/www/livestockworld/plugins/staticpages_0.1_1.3.tar.gz 
+Thu 06 Dec 2001 12:29:14 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT *,unix_timestamp(date) AS nice_date FROM gl_comments WHERE sid = '20010719095630103' AND pid = 0 ORDER BY date ASC LIMIT  
+Thu 06 Dec 2001 12:29:37 PM CST - 1064: You have an error in your SQL syntax near '' at line 1 SQL in question: SELECT *,unix_timestamp(date) AS nice_date FROM gl_comments WHERE sid = '20010719095630103' AND pid = 0 ORDER BY date ASC LIMIT  
+Thu 06 Dec 2001 01:36:15 PM CST - 1146: Table 'livestockworlddev.gl_sessions' doesn't exist SQL in question: SELECT uid FROM gl_sessions WHERE (sess_id = '288583788') AND (start_time > 1007660175) AND (remote_ip = '127.0.0.1') 
+Thu 06 Dec 2001 01:39:10 PM CST - 1146: Table 'livestockworlddev.gl_sessions' doesn't exist SQL in question: SELECT uid FROM gl_sessions WHERE (sess_id = '288583788') AND (start_time > 1007660350) AND (remote_ip = '127.0.0.1') 
+Thu 06 Dec 2001 02:59:04 PM CST - 1146: Table 'livestockworlddev.gl_sessions' doesn't exist SQL in question: SELECT uid FROM gl_sessions WHERE (sess_id = '288583788') AND (start_time > 1007665144) AND (remote_ip = '127.0.0.1') 
+Thu 06 Dec 2001 02:59:40 PM CST - 1146: Table 'livestockworlddev.gl_sessions' doesn't exist SQL in question: SELECT uid FROM gl_sessions WHERE (sess_id = '288583788') AND (start_time > 1007665180) AND (remote_ip = '127.0.0.1') 

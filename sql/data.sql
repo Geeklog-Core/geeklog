@@ -1,6 +1,6 @@
 # MySQL dump 8.14
 #
-# Host: localhost    Database: geeklog
+# Host: localhost    Database: geeklog 
 #--------------------------------------------------------
 # Server version	3.23.41
 
@@ -24,19 +24,19 @@ INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (12,8);
 INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (13,10);
 INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (14,11);
 INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (15,11);
+INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (16,4);
 
 #
 # Dumping data for table 'blocks'
 #
 
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (3,'User Block','all',2,'gldefault','','0000-00-00 00:00:00','',1,'',1,2,3,3,2,2,'user_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (4,'Admin Block','all',1,'gldefault','','0000-00-00 00:00:00','',1,'',1,2,3,3,2,2,'admin_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (5,'Section Block','all',0,'gldefault','','0000-00-00 00:00:00','',1,'',1,2,3,3,2,2,'section_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (6,'Poll Block','all',2,'gldefault','','0000-00-00 00:00:00','',0,'0',1,2,3,3,2,2,'poll_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (7,'Events Block','all',3,'gldefault','','0000-00-00 00:00:00','',1,'',1,2,3,3,2,2,'events_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (8,'Whats New Block','all',3,'gldefault','','0000-00-00 00:00:00','',0,'1',1,2,3,3,2,2,'whats_new_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (9,'GeekLog 1.3','all',1,'normal','','0000-00-00 00:00:00','Welcome to GeekLog 1.3!  There have been many improvments to GeekLog since 1.2.5-1, namely the addition of plug-in support, improved security and themes.  Please read the release notes in the /docs directory and go over the install guide.',0,'',4,2,3,3,2,2,'first_block');
-INSERT INTO blocks (bid, title, tid, blockorder, type, rdfurl, rdfupdated, content, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon, name) VALUES (10,'User Rights','all',5,'phpblock','','0000-00-00 00:00:00','',1,'phpblock_showrights',4,7,3,3,2,2,'security_rights_block');
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,'user_block','gldefault','User Block','all',2,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,'admin_block','gldefault','Admin Block','all',1,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (5,'section_block','gldefault','Section Block','all',0,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (6,'poll_block','gldefault','Poll Block','all',2,'','','0000-00-00 00:00:00',0,'0',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,'events_block','gldefault','Events Block','all',3,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (8,'whats_new_block','gldefault','Whats New Block','all',3,'','','0000-00-00 00:00:00',0,'1',1,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (9,'first_block','normal','GeekLog 1.3','all',1,'Welcome to GeekLog 1.3!  There have been many improvments to GeekLog since 1.2.5-1, namely the addition of plug-in support, improved security, flexible database abstraction layer, themes and a new installation script.  Please read the release notes in the /docs directory and go over the install guide.','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2);
 
 #
 # Dumping data for table 'commentcodes'
@@ -62,11 +62,15 @@ INSERT INTO commentmodes (mode, name) VALUES ('nocomment','No Comments');
 INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (21,'geeklogpollquestion','2001-07-19 14:44:54','I love Geeklog!','I can\'t make up my mind...I love it all!',0,0,0,1);
 INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (22,'geeklogpollquestion','2001-07-19 14:48:23','We are glad you like it!','We are happy you like Geeklog.  Please be sure to join the <a   href=http://lists.sourceforge.net/lists/listinfo/geeklog-devel target=_new>geeklog mailing</a> list!',0,0,21,2);
 INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (23,'20010719095630103','2001-07-19 15:02:57','Other Admin accounts','Remember, the admin accounts that come with a fresh Geeklog installation are for demonstration purposes only.  You should delete them if you don\'t plan on using them or at least change their passwords.',0,0,0,2);
+INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (24,'20011115154118159','2001-11-15 16:50:09','test comment','will this work?',0,0,0,2);
+INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (25,'20011115154118159','2001-11-15 16:51:13','test comment','will this work?',0,0,0,2);
+INSERT INTO comments (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (26,'20011029162602450','2001-12-03 14:36:21','Test','Test',0,0,0,2);
 
 #
 # Dumping data for table 'commentspeedlimit'
 #
 
+INSERT INTO commentspeedlimit (id, ipaddress, date) VALUES (3,'127.0.0.1',1007411781);
 
 #
 # Dumping data for table 'cookiecodes'
@@ -108,15 +112,12 @@ INSERT INTO dateformats (dfid, format, description) VALUES (18,'%a %d %b %I:%M%p
 # Dumping data for table 'events'
 #
 
-INSERT INTO events (eid, title, description, location, datestart, dateend, url, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20011003090039479','Testin this mug\'','Test','Testin this mug\'','2001-10-04','2001-10-04','',7,2,3,3,2,2);
-INSERT INTO events (eid, title, description, location, datestart, dateend, url, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20011030085351523','Des Moines, Iowa','Test','Des Moines, Iowa','2001-10-30','2001-10-30','http://www.tonybibbs.com',7,2,3,3,2,2);
-INSERT INTO events (eid, title, description, location, datestart, dateend, url, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20011101081539417','My Test Event','test','test	','2001-11-01','2001-11-02','http://www.tonybibbs.com',1,1,3,3,2,2);
 
 #
 # Dumping data for table 'eventsubmission'
 #
 
-INSERT INTO eventsubmission (eid, title, description, location, datestart, dateend, url) VALUES ('2001110114064662','Test event','test','Test','2001-11-02','2001-11-03','http://www.tonybibbs.com');
+INSERT INTO eventsubmission (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2001110114064662','Test event','test','Test','2001-11-02','2001-11-03','http://www.tonybibbs.com',0,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL);
 
 #
 # Dumping data for table 'featurecodes'
@@ -144,6 +145,7 @@ INSERT INTO features (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (12,'poll.edi
 INSERT INTO features (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (13,'plugin.edit','Access to plugin editor',1);
 INSERT INTO features (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (14,'group.edit','Ability to edit groups',1);
 INSERT INTO features (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (15,'group.delete','Ability to delete groups',1);
+INSERT INTO features (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (16,'block.delete','Ability to delete a block',1);
 
 #
 # Dumping data for table 'frontpagecodes'
@@ -188,7 +190,6 @@ INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (5,8,NU
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (6,6,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,10,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (12,11,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (3,12,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (3,3,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,5,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,6,NULL);
@@ -197,9 +198,7 @@ INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,8,NU
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,9,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,10,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,11,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,12,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,3,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,7,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,3,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,5,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,6,NULL);
@@ -208,9 +207,7 @@ INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,8,N
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,9,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,10,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,11,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,12,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (11,13,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (1,NULL,14);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (10,2,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,2,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,2,NULL);
@@ -237,23 +234,21 @@ INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (8,'Poll Ad
 INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (9,'User Admin','Has full access to user features',1);
 INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (10,'Plugin Admin','Has full access to plugin features',1);
 INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (11,'Group Admin','Is a User Admin with Acces to Groups too',1);
-INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (12,'Mail Admin','Can Mail Utility',1);
+INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (12,'Mail Admin','Can Use Mail Utility',1);
 INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All users except anonymous should belong to this group',1);
-INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (14,'Tonys Test Group','Testing',0);
 
 #
 # Dumping data for table 'links'
 #
 
-INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095147683','Geeklog Sites','http://www.geeklog.org','The source for stuff...nifty stuff','Geeklog.org',0,NULL,1,2,3,3,2,2);
-INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095621775','Geeklog Sites','http://www.devgeek.org','The place to talk about and contribute to the development of Geeklog','DevGeek',78,NULL,1,2,3,3,2,0);
-INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('2001071910450356','Geeklog Sites','http://www.iowaoutdoors.org','Your source for hunting and fishing information in Iowa.','Iowa Outdoors',0,NULL,5,2,3,3,2,2);
+INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095147683','Geeklog Sites','http://geeklog.sourceforge.net','The source for stuff...nifty stuff','Geeklog Project',52,NULL,5,2,3,3,2,2);
+INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095621775','Geeklog Sites','http://www.devgeek.org','The place to talk about and contribute to the development of Geeklog','DevGeek',78,NULL,5,2,3,3,2,2);
+INSERT INTO links (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('2001071910450356','Geeklog Sites','http://www.iowaoutdoors.org','Your source for hunting and fishing information in Iowa.','Iowa Outdoors',10,NULL,5,2,3,3,2,2);
 
 #
 # Dumping data for table 'linksubmission'
 #
 
-INSERT INTO linksubmission (lid, category, url, description, title, hits, date) VALUES ('20011101140601418','Cool Sites','http://www.tonybibbs.com','Test','Tony Bibbs\\\' Homepage',NULL,NULL);
 
 #
 # Dumping data for table 'maillist'
@@ -263,10 +258,9 @@ INSERT INTO maillist (code, name) VALUES (0,'Don\'t Email');
 INSERT INTO maillist (code, name) VALUES (1,'Email Headlines Each Night');
 
 #
-# Dumping data for table 'metars'
+# Dumping data for table 'personal_events'
 #
 
-INSERT INTO metars (metar, timestamp, station) VALUES (' KDSM 081754Z 16018G24KT 10SM FEW150 OVC250 18/08 A3001 RMK AO2 PK WND 15027/1701 SLP162 T01830078 10183 20106 58016',20011008175400,'KDSM');
 
 #
 # Dumping data for table 'plugins'
@@ -277,17 +271,19 @@ INSERT INTO metars (metar, timestamp, station) VALUES (' KDSM 081754Z 16018G24KT
 # Dumping data for table 'pollanswers'
 #
 
-INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'New Security Model',20);
-INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Improved Calendar',11);
-INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Plugin-Support',31);
-INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'User-Defined Themes',88);
-INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Other',3);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Installation Script',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'User-Defined Themes',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Plugin-Support',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'Improved Calendar',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'New Security Model',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Database Abstraction',0);
+INSERT INTO pollanswers (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',7,'Other',0);
 
 #
 # Dumping data for table 'pollquestions'
 #
 
-INSERT INTO pollquestions (qid, question, voters, date, display, commentcode, statuscode, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',153,'2001-10-29 09:36:39',1,0,0,8,2,3,3,2,2);
+INSERT INTO pollquestions (qid, question, voters, date, display, commentcode, statuscode, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,'2001-12-04 12:43:20',1,0,0,8,2,3,3,2,2);
 
 #
 # Dumping data for table 'pollvoters'
@@ -305,7 +301,7 @@ INSERT INTO postmodes (code, name) VALUES ('html','HTML Formatted');
 # Dumping data for table 'sessions'
 #
 
-INSERT INTO sessions (sess_id, start_time, remote_ip, uid, md5_sess_id) VALUES (583297965,1004972399,'192.168.20.2',2,'');
+INSERT INTO sessions (sess_id, start_time, remote_ip, uid, md5_sess_id) VALUES (1656579804,1007501087,'127.0.0.1',2,'');
 
 #
 # Dumping data for table 'sortcodes'
@@ -326,8 +322,7 @@ INSERT INTO statuscodes (code, name) VALUES (10,'Archive');
 # Dumping data for table 'stories'
 #
 
-INSERT INTO stories (sid, uid, tid, title, introtext, bodytext, hits, date, comments, related, featured, commentcode, statuscode, postmode, frontpage, draft_flag, numemails, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095630103',2,'GeekLog','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site with the exception of Admin who has access to everything.  The password for each account is <b>password</b>. \r\r<P>\r<ul>Accounts:\r<li>Admin</li>\r<li>StoryAdmin</li>\r<li>LinkAdmin</li>\r<li>BlockAdmin</li>\r<li>EventAdmin</li>\r<li>TopicAdmin</li>\r<li>MailAdmin</li>\r<li>PollAdmin</li>\r<li>UserAdmin</li>\r<li>GroupAdmin</li>\r</ul>','',172,'2001-07-19 09:56:30',1,'<li><a href=http://tbibbs/search.php?mode=search&type=stories&author=2>More by Admin</a><li><a href=http://tbibbs/search.php?mode=search&type=stories&topic=GeekLog>More from GeekLog</a>',1,0,0,'html',1,0,1,2,3,3,3,2,2);
-INSERT INTO stories (sid, uid, tid, title, introtext, bodytext, hits, date, comments, related, featured, commentcode, statuscode, postmode, frontpage, draft_flag, numemails, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20011029162602450',2,'GeekLog','Second Articles','This is a test','',172,'2001-11-01 16:50:08',0,'<li><a href=http://tbibbs/search.php?mode=search&type=stories&author=2>More by Admin</a><li><a href=http://tbibbs/search.php?mode=search&type=stories&topic=GeekLog>More from GeekLog</a>',0,0,0,'html',1,0,1,2,3,3,3,2,2);
+INSERT INTO stories (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095630103',2,0,'GeekLog','2001-07-19 09:56:30','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site with the exception of Admin who has access to everything.  The password for each account is <b>password</b>. \r\r<P>\r<ul>Accounts:\r<li>Admin</li>\r<li>StoryAdmin</li>\r<li>LinkAdmin</li>\r<li>BlockAdmin</li>\r<li>EventAdmin</li>\r<li>TopicAdmin</li>\r<li>MailAdmin</li>\r<li>PollAdmin</li>\r<li>UserAdmin</li>\r<li>GroupAdmin</li>\r</ul>','',173,1,1,'<li><a href=http://tbibbs/search.php?mode=search&type=stories&author=2>More by Admin</a><li><a href=http://tbibbs/search.php?mode=search&type=stories&topic=GeekLog>More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2);
 
 #
 # Dumping data for table 'storysubmission'
@@ -415,7 +410,6 @@ INSERT INTO tzcodes (tz, offset, description) VALUES ('iss',7200,'Israel Standar
 #
 
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (-1,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (3,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (0,'threaded','ASC',100);
@@ -429,39 +423,38 @@ INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (1
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (11,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (12,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (13,'threaded','ASC',100);
-
-#
-# Dumping data for table 'userevent'
-#
-
-INSERT INTO userevent (uid, eid) VALUES (2,'20011101081539417');
+INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (14,'threaded','ASC',100);
+INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (15,'threaded','ASC',100);
+INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (16,'threaded','ASC',100);
+INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (17,'threaded','ASC',100);
 
 #
 # Dumping data for table 'userindex'
 #
 
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (-1,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (1,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (2,'','','',0,5);
+INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (2,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (3,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (5,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (0,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (4,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (8,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (6,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (7,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (9,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (10,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (11,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (12,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (13,'','','',0,NULL);
+INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (14,'','','',0,NULL);
+INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (15,'','','',0,NULL);
+INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (16,'','','',0,NULL);
+INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (17,'','','',0,NULL);
 
 #
 # Dumping data for table 'userinfo'
 #
 
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (1,'Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner ','','',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (-1,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (3,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (5,NULL,NULL,'',0,0,0);
@@ -475,15 +468,18 @@ INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, last
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (11,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (12,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (13,NULL,NULL,'',0,0,0);
+INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (14,NULL,NULL,'',0,0,0);
+INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (15,NULL,NULL,'',0,0,0);
+INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (16,NULL,NULL,'',0,0,0);
+INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (17,NULL,NULL,'',0,0,0);
 
 #
 # Dumping data for table 'userprefs'
 #
 
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (1,0,0,0,'',0);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,0,0,'',1);
+INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (3,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (-1,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (5,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (0,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (4,0,1,0,'edt',1);
@@ -495,13 +491,17 @@ INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (11,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (12,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (13,0,1,0,'edt',1);
+INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (14,0,1,0,'edt',1);
+INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (15,0,1,0,'edt',1);
+INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (16,0,1,0,'edt',1);
+INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (17,0,1,0,'edt',1);
 
 #
 # Dumping data for table 'users'
 #
 
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2001-09-28 13:36:52',0,NULL);
-INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','tony@tonybibbs.com','http://www.tonybibbs.com','','0000-00-00 00:00:00',0,'Yahoo');
+INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://geekog.sourceforge.net','','0000-00-00 00:00:00',0,NULL);
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'StoryAdmin','Story Admin','5f4dcc3b5aa765d61d8327deb882cf99','root','http://geeklog.sourceforge.net','','2001-09-28 13:36:56',NULL,NULL);
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (5,'PollAdmin','Poll Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (6,'TopicAdmin','Topic Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
@@ -510,29 +510,12 @@ INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdat
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (9,'EventAdmin','Event Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (10,'UserAdmin','User Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
 INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (11,'MailAdmin','Mail Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
-INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (12,'StoryAdmin2','2nd Story Admin so you can test','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
-INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (13,'GroupAdmin','Group Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
+INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (12,'GroupAdmin','Group Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL);
 
 #
 # Dumping data for table 'vars'
 #
 
-INSERT INTO vars (name, value) VALUES ('totalhits','172');
-INSERT INTO vars (name, value) VALUES ('lastemailedstories','2001-09-26 19:17:13');
-
-#
-# Dumping data for table 'wordlist'
-#
-
-INSERT INTO wordlist (wid, word, replaceword) VALUES (1,'fuck','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (2,'cunt','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (3,'fucker','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (4,'fucking','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (5,'pussy','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (6,'cock','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (7,'cum','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (8,'twat','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (9,'bitch','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (10,'motherfucker','*censored*');
-INSERT INTO wordlist (wid, word, replaceword) VALUES (11,'bastard','*censored*');
+INSERT INTO vars (name, value) VALUES ('totalhits','0');
+INSERT INTO vars (name, value) VALUES ('lastemailedstories','');
 

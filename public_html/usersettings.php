@@ -361,7 +361,7 @@ function savepreferences($A)
 
     $TIDS = @array_values($A['topics']);
     $AIDS = @array_values($A['users']);
-    $BOXES = @array_values($A['blocks']);
+    $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
 
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
@@ -377,7 +377,7 @@ function savepreferences($A)
         for ($i = 0; $i < sizeof($BOXES); $i++) {
             $boxes .= $BOXES[$i] . ' ';
         }
-    }
+    } 
 
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}' WHERE uid = {$_USER['uid']}");

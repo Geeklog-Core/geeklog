@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.6 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: pollbooth.php,v 1.7 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -45,10 +45,16 @@ include_once('lib-common.php');
 function pollsave() 
 {
     global $_TABLES, $qid, $aid, $db, $REMOTE_ADDR, $LANG07;
-	
-    DB_change($_TABLES['pollquestions'],'voters','voters + 1','qid',$qid);
-    DB_change($_TABLES['pollanswers'],'votes','votes + 1','qid',$qid,'aid',$aid);
-    DB_save($_TABLES['COM_pollVoters'],'ipaddress, date, qid',"'$REMOTE_ADDR',unix_timestamp(),'$qid'");
+
+    DB_setDebug(true);	
+    DB_change($_TABLES['pollquestions'],'voters',"voters + 1",'qid',$qid,'',true);
+    $id[1] = 'qid';
+    $value[1] = $qid;
+    $id[2] = 'aid';
+    $value[2] = $aid;
+    // This call to DB-change will properly supress the insertion of quoes around $value in the sql
+    DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
+    DB_save($_TABLES['pollvoters'],'ipaddress, date, qid',"'$REMOTE_ADDR',unix_timestamp(),'$qid'");
     $retval .= COM_startBlock($LANG07[1])
         . $LANG07[2] . ' ' . $qid
         . COM_endBlock()
@@ -102,7 +108,7 @@ function polllist()
 // an aid of -1 will display the select poll
 
 if ($reply == $LANG01[25]) {
-	$display .= COM_refresh("{$_CONF['site_url']}/comment.php?sid=$qid&pid=$pid&type=$type");
+	$display .= COM_refresh($_CONF['site_url'] . "/comment.php?sid=$qid&pid=$pid&type=$type");
 	echo $display;
 	exit;			
 }

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.6 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: group.php,v 1.7 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -121,25 +121,19 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
 	
 	//$groups = SEC_getUserGroups('','',$grp_id);
-    $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
-    $num_groups = DB_numRows($tmp);
-    for ($x = 1; $x <= $num_groups; $x++) {
-        $G = DB_fetchArray($tmp);
-        if ($x > 1) {
-            $selected .= ',' . $G['ug_main_grp_id'];
-        } else {
-            $selected .= $G['ug_main_grp_id'];
+    if (!empty($grp_id)) {
+        $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
+        $num_groups = DB_numRows($tmp);
+        for ($x = 1; $x <= $num_groups; $x++) {
+            $G = DB_fetchArray($tmp);
+            if ($x > 1) {
+                $selected .= ' ' . $G['ug_main_grp_id'];
+            } else {
+                $selected .= $G['ug_main_grp_id'];
+            }
         }
     }
 	if ($A['grp_gl_core'] == 1) {
-        /*
-		if (is_array($groups)) {
-            $selected = implode(',',$groups);
-        } else {
-            $selected = '';
-        }
-        */
-
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[coregroupmsg]);
 
 		if (!empty($selected)) {
@@ -161,13 +155,13 @@ function editgroup($grp_id = '')
             $group_templates->set_var('group_options', $groupoptions);
         }
 	} else {
-        /*
+/*
 		if (is_array($groups)) {
             $selected = implode(' ',$groups);
         } else {
             $selected = '';
         }
-        */
+*/
 
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[groupmsg]);
         COM_errorLog("SELECTED: $selected");

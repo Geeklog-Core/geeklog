@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.14 2001/11/19 22:39:30 tony_bibbs Exp $
+// $Id: moderation.php,v 1.15 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -169,7 +169,7 @@ function itemlist($type)
     switch ($type) {
     case 'event':
         $retval .= COM_startBlock($LANG29[37],'cceventsubmission.html');
-        $sql = "SELECT eid AS id,title,datestart,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
+        $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
         $H = array("Title","Start Date","URL");
         break;
     case 'link':
@@ -280,16 +280,19 @@ function moderation($mid,$action,$type,$count)
     case 'event':
         $id = 'eid';
         $table = $_TABLES['events'];
-        $fields = 'eid,title,description,location,datestart,dateend,url';
+        $submissiontable = $_TABLES['eventsubmission'];
+        $fields = 'eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url';
         break;
     case 'link':
         $id = 'lid';
         $table = $_TABLES['links'];
+        $submissiontable = $_TABLES['linksubmission'];
         $fields = 'lid,category,url,description,title';
         break;
 	case 'story':
         $id = 'sid';
         $table = $_TABLES['stories'];
+        $submissiontable = $_TABLES['storysubmission'];
         $fields = 'sid,uid,tid,title,introtext,date';
         break;
     default:
@@ -316,11 +319,9 @@ function moderation($mid,$action,$type,$count)
             break;
         case 'approve':
             if ((strlen($type) > 0) && ($type <> 'story')) {
-                //There may be some plugin specific processing that needs to happen first.
+                //This is called in case this is a plugin. There may be some plugin specific processing that needs to happen first.
                 $retval .= PLG_approveSubmission($type,$mid[$i]);
-                DB_copy("$table","$fields","$fields",$submissiontable,"$id",$mid[$i]);
-            } else {
-                DB_copy("$table","$fields","$fields",$_TABLES["{$type}submission"],"$id",$mid[$i]);
+                DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
             }
             break;
         }

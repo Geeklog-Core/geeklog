@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.9 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: link.php,v 1.10 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -89,7 +89,7 @@ function editlink($mode, $lid = '')
 		}
 		$A['hits'] = 0;
 		$A['owner_id'] = $_USER['uid'];
-		$A['group_id'] = getitem('groups','grp_id',"grp_name = 'Link Admin'");
+		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
 		$A['perm_owner'] = 3;
         $A['perm_group'] = 3;
         $A['perm_members'] = 2;
@@ -105,10 +105,10 @@ function editlink($mode, $lid = '')
     $link_templates->set_var('lang_linkurl', $LANG23[4]);
     $link_templates->set_var('link_url', $A['url']);
     $link_templates->set_var('lang_category', $LANG23[5]);
-	$result	= DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}");
-	$nrows	= DB_numRows($result);
-	if ($nrows>0) {
-		$catdd = '<option value="' . $LANG23[7] . '">' . $LANG23[7] . '</option>';
+    $result	= DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}");
+    $nrows	= DB_numRows($result);
+    $catdd = '<option value="' . $LANG23[7] . '">' . $LANG23[7] . '</option>';
+	if ($nrows > 0) {
 		for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
             $category = $C['category'];
@@ -118,9 +118,9 @@ function editlink($mode, $lid = '')
             }
 			$catdd .= '>' . $category . '</option>';
 		}
-        $link_templates->set_var('category_options', $catdd); 
-        $link_templates->set_var('lang_ifotherspecify', $LANG23[20]);
 	}
+    $link_templates->set_var('category_options', $catdd); 
+    $link_templates->set_var('lang_ifotherspecify', $LANG23[20]);
     $link_templates->set_var('lang_linkhits', $LANG23[8]); 
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG23[9]);
@@ -185,11 +185,13 @@ function editlink($mode, $lid = '')
 */
 function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
-	global $_TABLES, $_CONF, $LANG23; 
+	global $_TABLES, $_CONF, $LANG23, $_USER; 
+    
 
 	// clean 'em up 
 	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
 	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
+
 	if (!empty($title) && !empty($description) && !empty($url)) {
 		if (!empty($lid)) {
 			DB_delete($_TABLES['linksubmission'],'lid',$lid);
@@ -217,6 +219,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
+        print "title = $title, url = $url, descr = $description \n";
 		editlink($mode,$lid);
 		$retval .= COM_siteFooter();
         return $retval;
@@ -279,7 +282,7 @@ function listlinks()
 
 switch ($mode) {
 	case 'delete':
-		DB_delete($_TABLES['links'],'lid',$lid,'/admin/link.php?msg=16');
+		DB_delete($_TABLES['links'],'lid',$lid,'admin/link.php?msg=16');
 		break;
 	case 'save':
 		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

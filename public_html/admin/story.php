@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.18 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: story.php,v 1.19 2001/12/06 21:52:03 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -250,9 +250,8 @@ function liststories($page="1")
     }
 
     $limit = (50 * $page) - 50;
-    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_CONF['db_prefix']}stories ORDER BY date DESC LIMIT $limit,50");
+    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} ORDER BY date DESC LIMIT $limit,50");
     $nrows = DB_numRows($result);
-    COM_errorLog("NUMROWS: $nrows",1);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $scount = (50 * $page) - 50 + $i;
@@ -296,16 +295,29 @@ function liststories($page="1")
             if ($pagestart >= 50) {
                 $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
                     . $prevpage . '">' . $LANG24[1] . '</a> ');
+            } else {
+	        $story_templates->set_var('previouspage_link','');
             }
             if ($pagestart <= (DB_count($_TABLES['stories']) - 50)) {
                 $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
                     . $nextpage . '">' . $LANG24[2] . '</a> ');
+            } else {
+	        $story_templates->set_var('nextpage_link','');
             }
+        } else {
+	    $story_templates->set_var('previouspage_link','');
+	    $story_templates->set_var('nextpage_link','');
         }
+           
 
-        $story_templates->parse('output','list');
-        $display .= $story_templates->finish($story_templates->get_var('output')); 
+    } else {
+        // There are no news items
+        $story_templates->set_var('storylist_item','<tr><td colspan="7">There are no stories in the system</td></tr>');
+	$story_templates->set_var('previouspage_link','');
+	$story_templates->set_var('nextpage_link','');
+	
     }
+    $display .= $story_templates->parse('output','list');
     $display .= COM_endBlock();
 
     return $display;
@@ -447,7 +459,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if ($type = 'submission') {
             DB_delete($_TABLES['storysubmission'],'sid',$sid);
         }
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", '/admin/story.php?msg=9');
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", 'admin/story.php?msg=9');
 
     } else {
         $display .= COM_siteHeader('menu');
@@ -466,9 +478,9 @@ $display = '';
 switch ($mode) {
 case 'delete':
     if ($type == 'submission') {
-        DB_delete($_TABLES['storysubmission'],'sid',$sid,"/admin/moderation.php");
+        DB_delete($_TABLES['storysubmission'],'sid',$sid,"admin/moderation.php");
     } else {
-        DB_delete($_TABLES['stories'],'sid',$sid,"/admin/story.php?msg=10");
+        DB_delete($_TABLES['stories'],'sid',$sid,"admin/story.php?msg=10");
     }
     break;
 case 'preview':
