@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2003/03/10 10:50:00 dhaun Exp $
+// $Id: index.php,v 1.17 2003/03/10 15:53:44 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -341,7 +341,7 @@ function liststaticpages ($page = 1)
 */
 function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id)
 {
-	global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
+    global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
     $sp_id = str_replace (' ', '', $sp_id);
     $sp_id = str_replace (array ('_', '/', '\\', ':'), '-', $sp_id);
@@ -356,8 +356,10 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         if ($sp_id != $sp_old_id) {
             $duplicate_id = true;
         }
-    } else {
-        $delete_old_page = true;
+    } elseif (!empty ($sp_old_id)) {
+        if ($sp_id != $sp_old_id) {
+            $delete_old_page = true;
+        }
     }
 
     if ($duplicate_id) {
@@ -367,9 +369,9 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         $retval .= COM_siteFooter ();
         echo $retval;
     } elseif (!empty ($sp_title) && !empty ($sp_content)) {
-		$date = date ("Y-m-d H:i:s", $unixdate);
+        $date = date ("Y-m-d H:i:s", $unixdate);
 
-		if (empty ($sp_hits)) $sp_hits = 0;
+        if (empty ($sp_hits)) $sp_hits = 0;
 
         if ($sp_onmenu== 'on') {
             $sp_onmenu = 1;
@@ -377,7 +379,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
             $sp_onmenu = 0;
         }
 
-		// Clean up the text
+        // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
             $sp_content = COM_checkWords ($sp_content); 
             $sp_title = COM_checkWords ($sp_title);
@@ -398,18 +400,18 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         }
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf'");
-        if ($delete_old_page) {
+        if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
         echo COM_refresh ($_CONF['site_admin_url']
                           . '/plugins/staticpages/index.php');
-	} else {
+    } else {
         $retval .= COM_siteHeader ();
         $retval .= COM_errorLog ($LANG_STATIC['no_title_or_content'], 2);
         $retval .= staticpageeditor ($sp_id);
         $retval .= COM_siteFooter ();
         echo $retval;
-	}
+    }
 }
 
 
