@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.52 2004/01/23 16:56:22 dhaun Exp $
+// $Id: comment.php,v 1.53 2004/02/27 20:19:28 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -406,12 +406,6 @@ case $LANG01[28]: // Delete
                                COM_applyFilter ($sid), COM_applyFilter ($type));
     break;
 case 'display':
-    if ($_USER['uid'] > 1) {
-        $commentmode = DB_getItem ($_TABLES['usercomment'], 'commentmode',
-                                   "uid = {$_USER['uid']}");
-    } else {
-        $commentmode = $_CONF['comment_mode'];
-    }
     $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
     $type = COM_applyFilter ($HTTP_GET_VARS['type']);
     if (!empty ($sid) && !empty ($type)) {
@@ -429,7 +423,7 @@ case 'display':
         if ($allowed == 1) {
             $display .= COM_userComments ($sid,
                     strip_tags ($HTTP_GET_VARS['title']), $type,
-                    COM_applyFilter ($HTTP_GET_VARS['order']), $commentmode,
+                    COM_applyFilter ($HTTP_GET_VARS['order']), 'threaded',
                     COM_applyFilter ($HTTP_GET_VARS['pid'], true));
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
