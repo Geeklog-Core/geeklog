@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.46 2002/12/14 20:50:42 dhaun Exp $
+// $Id: search.php,v 1.47 2003/01/09 09:30:36 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -327,7 +327,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
         $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
         $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
 
-		$sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
+		$sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['pollquestions']}.qid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
         $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) ";
         $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) ";
         $sql .= "WHERE ";
@@ -430,7 +430,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
                         if ($C['comment_type'] == 'article') {
                             $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
                         } else {
-                            $searchresults->set_var('data', '<a href="pollbooth.php?qid=' . $C['sid'] . '&amp;aid=-1#comments">' . stripslashes($C['title']) . '</a>');
+                            $searchresults->set_var('data', '<a href="pollbooth.php?qid=' . $C['qid'] . '&amp;aid=-1#comments">' . stripslashes($C['title']) . '</a>');
                         }
                         $searchresults->parse('data_cols','resultcolumn',true);
 
