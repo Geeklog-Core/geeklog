@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.257 2003/09/08 17:33:00 dhaun Exp $
+// $Id: lib-common.php,v 1.258 2003/09/12 09:31:34 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -822,10 +822,11 @@ function COM_siteHeader( $what = 'menu' )
     }
     else
     {
-        $contributelink = $_CONF['site_url'] . '/submit.php?type=story&amp;topic=' . $topic;
+        $contributelink = $_CONF['site_url']
+                        . '/submit.php?type=story&amp;topic=' . $topic;
         $header->set_var( 'current_topic', '&amp;topic=' . $topic );
     }
-    $header->set_var( 'menuitem_url', $contributelink);
+    $header->set_var( 'menuitem_url', $contributelink );
     $header->set_var( 'menuitem_text', $LANG01[71] );
     $header->parse( 'menu_elements', 'menuitem', true );
 
@@ -852,18 +853,18 @@ function COM_siteHeader( $what = 'menu' )
         COM_errorLog( 'num plugin menu items in header = ' . count( $plugin_menu ), 1 );
     }
 
-    if( count($plugin_menu) == 0 )
+    if( count( $plugin_menu ) == 0 )
     {
         $header->parse( 'plg_menu_elements', 'menuitem_none', true );
     }
     else
     {
-        for( $i = 1; $i <= count($plugin_menu); $i++ )
+        for( $i = 1; $i <= count( $plugin_menu ); $i++ )
         {
-            $header->set_var( 'menuitem_url', current($plugin_menu) );
-            $header->set_var( 'menuitem_text', key($plugin_menu) );
+            $header->set_var( 'menuitem_url', current( $plugin_menu ));
+            $header->set_var( 'menuitem_text', key( $plugin_menu ));
 
-            if( $i == count($plugin_menu) )
+            if( $i == count( $plugin_menu ))
             {
                 $header->parse( 'plg_menu_elements', 'menuitem_last', true );
             }
@@ -889,20 +890,28 @@ function COM_siteHeader( $what = 'menu' )
     if( $what <> 'none' )
     {
         // Now show any blocks -- need to get the topic if not on home page
-        if (!isset($HTTP_GET_VARS['topic'])) {
-            if (isset($HTTP_GET_VARS['story'])) {
+        if( !isset( $HTTP_GET_VARS['topic'] ))
+        {
+            if( isset( $HTTP_GET_VARS['story'] ))
+            {
                 $sid = $HTTP_GET_VARS['story'];
-            } elseif (isset($HTTP_GET_VARS['sid'])) {
+            }
+            elseif( isset( $HTTP_GET_VARS['sid'] ))
+            {
                 $sid = $HTTP_GET_VARS['sid'];
-            } elseif (isset($HTTP_POST_VARS['story'])) {
+            }
+            elseif( isset( $HTTP_POST_VARS['story'] ))
+            {
                 $sid = $HTTP_POST_VARS['story'];
             }
-            if (isset($sid)) {
-              $topic = DB_getItem($_TABLES['stories'], "tid", "sid='$sid'");
+            if( isset( $sid ))
+            {
+                $topic = DB_getItem( $_TABLES['stories'], 'tid', "sid='$sid'" );
             }
-
-        } else {
-                $topic = $HTTP_GET_VARS['topic'];
+        }
+        else
+        {
+            $topic = $HTTP_GET_VARS['topic'];
         }
         $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
         $header->parse( 'left_blocks', 'leftblocks', true );
@@ -922,8 +931,12 @@ function COM_siteHeader( $what = 'menu' )
 
     $tmp = $header->parse( 'index_header', 'header' );
 
-    return eval( "?>" . $tmp );
-    return $header->finish( $header->get_var( 'index_header' ));
+    ob_start();
+    eval( '?>' . $tmp );
+    $retval = ob_get_contents();
+    ob_end_clean();
+
+    return $retval;
 }
 
 
@@ -3796,7 +3809,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
 
 function COM_emailUserTopics()
 {
-    global $_TABLES, $LANG08, $LANG24, $_CONF, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $LANG08, $LANG24;
 
     $subject = strip_tags( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() ));
 
