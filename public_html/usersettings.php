@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.104 2004/09/29 10:36:29 dhaun Exp $
+// $Id: usersettings.php,v 1.105 2004/09/30 18:14:29 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -1115,6 +1115,9 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&msg=5');
         break;
+    default:
+        $display = COM_refresh($_CONF['site_url'] . '/index.php');
+        break;
     }
 } else {
     if ($mode == 'preferences') {
@@ -1124,7 +1127,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
         $display .= COM_endBlock();
         $display .= COM_siteFooter();
     } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        $display = COM_refresh($_CONF['site_url'] . '/index.php');
     }
 }
 
