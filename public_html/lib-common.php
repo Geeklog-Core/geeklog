@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.246 2003/08/18 08:36:57 dhaun Exp $
+// $Id: lib-common.php,v 1.247 2003/08/18 14:34:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3641,6 +3641,26 @@ function COM_emailUserTopics()
 {
     global $_TABLES, $LANG08, $LANG24, $_CONF, $LANG_CHARSET;
 
+    // prepare email header - it's always the same for all users
+    $charset = $LANG_CHARSET;
+    if( empty( $charset ))
+    {
+        $charset = $_CONF['default_charset'];
+        if( empty( $charset ))
+        {
+            $charset = "iso-8859-1";
+        }
+    }
+
+    $mailfrom = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
+              . "Return-Path: <{$_CONF['site_mail']}>\r\n"
+              . "X-Mailer: GeekLog " . VERSION . "\r\n"
+              . "Content-Type: text/plain; charset={$charset}";
+
+    $subject = strip_tags( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() ));
+
+    $authors = array();
+
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
         . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
@@ -3656,28 +3676,14 @@ function COM_emailUserTopics()
     {
         $U = DB_fetchArray( $users );
 
-        $cur_day = strftime( "%D", time() );
-
         $storysql = "SELECT sid,uid,date AS day,title,introtext,bodytext "
             . "FROM {$_TABLES['stories']} "
             . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
 
         if( !empty( $U['etids'] ))
         {
-            $storysql .= " AND (";
             $ETIDS = explode( ' ', $U['etids'] );
-
-            for( $i = 0; $i < sizeof( $ETIDS ); $i++ )
-            {
-                if( $i == (sizeof( $ETIDS ) - 1 ))
-                {
-                    $storysql .= "tid = '$ETIDS[$i]')";
-                }
-                else
-                {
-                    $storysql .= "tid = '$ETIDS[$i]' OR ";
-                }
-            }
+            $storysql .= " AND (tid='" . implode( "' OR tid='", $ETIDS ) . "')";
         }
         else // get all topics this user has access to
         {
@@ -3715,7 +3721,7 @@ function COM_emailUserTopics()
 
         $mailtext = $LANG08[29] . strftime( $_CONF['shortdate'], time() ) . "\n";
 
-        for( $y=0; $y < $nsrows; $y++ )
+        for( $y = 0; $y < $nsrows; $y++ )
         {
             // Loop through stories building the requested email message
             $S = DB_fetchArray( $stories );
@@ -3725,7 +3731,11 @@ function COM_emailUserTopics()
                 . COM_undoSpecialChars( stripslashes( $S['title'] )) . "\n";
             if( $_CONF['contributedbyline'] == 1 )
             {
-                $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
+                if( empty( $authors[$S['uid']] ))
+                {
+                    $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
+                    $authors[$S['uid']] = $storyauthor;
+                }
                 $mailtext .= "$LANG24[7]: " . $storyauthor . "\n";
             }
 
@@ -3756,29 +3766,10 @@ function COM_emailUserTopics()
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
 
-        $charset = $LANG_CHARSET;
-        if( empty( $charset ))
-        {
-            $charset = $_CONF['default_charset'];
-            if( empty( $charset ))
-            {
-                $charset = "iso-8859-1";
-            }
-        }
-
-        $mailfrom = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
-                  . "Return-Path: <{$_CONF['site_mail']}>\r\n"
-                  . "Content-Type: text/plain; charset={$charset}\r\n"
-                  . "X-Mailer: GeekLog " . VERSION;
-
-        $subject = strip_tags( stripslashes( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() )));
-
         @mail( $toemail, $subject, $mailtext, $mailfrom );
     }
 
-    $tmpdate = date( "Y-m-d H:i:s", time() );
-
-    DB_query( "UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'" );
+    DB_query( "UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'" );
 }
 
 /**
