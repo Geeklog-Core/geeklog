@@ -31,8 +31,22 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id
+// $Id: usersettings.php,v 1.31 2002/05/22 13:00:49 tony_bibbs Exp $
 
+/**
+* This is the user preferences page where user's can update their account information
+* and display preferences.  This file is in bad shape as it needs to be moved to use
+* our HTML templates
+*
+* @author   Tony Bibbbs <tony@tonybibbs.com>
+* @author   Jason Whittenburg
+* @author   Mark Limburg <mlimburg@users.sourceforge.net>
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 include_once('lib-common.php');
 
 // Set this to true to have this script generate various debug messages in
@@ -45,7 +59,9 @@ $_US_VERBOSE = false;
 // debug($HTTP_POST_VARS);
 
 /**
-* Shows the user's current settings
+* Shows the user's account information
+*
+* @return   string  HTML for the edit user form
 *
 */
 function edituser() 
@@ -138,6 +154,8 @@ function edituser()
 
 /**
 * Displays user preferences
+*
+* @return   string  HTML for user preferences form
 *
 */
 function editpreferences() 
@@ -320,6 +338,8 @@ function editpreferences()
 /**
 * Shows comment preferences form
 *
+* @return   string  HTML for comment preferences form
+*
 */
 function editcommentprefs() 
 {
@@ -360,7 +380,7 @@ function editcommentprefs()
 /**
 * Saves the user's information back to the database
 *
-* @A        array       User's data
+* @param    array   $A  User's data
 *
 */
 function saveuser($A) 
@@ -444,7 +464,7 @@ function saveuser($A)
 /**
 * Saves user's perferences back to the database
 *
-* @A        array       User's data to save
+* @param    array   $A  User's data to save
 *
 */
 function savepreferences($A) 
@@ -515,7 +535,7 @@ function savepreferences($A)
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'","usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",'uid',$_USER['uid'],"usersettings.php?mode=preferences&msg=6");
 
 }
 
@@ -555,7 +575,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         savepreferences($HTTP_POST_VARS);
         break;
     case 'savecomments':
-        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'","usersettings.php?mode=comments&msg=7");
+        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'",'uid',$_USER['uid'],"usersettings.php?mode=comments&msg=7");
         break;
     }
 } else {
