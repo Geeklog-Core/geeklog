@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.93 2004/10/23 10:23:01 dhaun Exp $
+// $Id: users.php,v 1.94 2005/01/06 10:01:11 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -71,8 +71,11 @@ function userprofile ($user, $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG_LOGIN;
 
+    $retval = '';
+
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
+        $retval .= COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG_LOGIN[1], '',
                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
@@ -84,11 +87,10 @@ function userprofile ($user, $msg = 0)
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_siteFooter ();
  
         return $retval;
     }
-
-    $retval = '';
 
     $result = DB_query("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows($result);
