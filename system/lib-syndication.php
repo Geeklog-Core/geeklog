@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.6 2004/01/21 20:49:29 dhaun Exp $
+// $Id: lib-syndication.php,v 1.7 2004/03/23 20:00:41 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -352,8 +352,8 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
             $storytext = trim( $storytext );
             $storytext = preg_replace( "/(\015)/", "", $storytext );
 
-            $storylink = $_CONF['site_url'] . '/article.php?story='
-                       . $row['sid'];
+            $storylink = COM_buildUrl( $_CONF['site_url']
+                                       . '/article.php?story=' . $row['sid'] );
 
             $content[] = array( 'title'  => $storytitle,
                                 'text'   => $storytext,
@@ -439,7 +439,8 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
         $storytext = trim( $storytext );
         $storytext = preg_replace( "/(\015)/", "", $storytext );
 
-        $storylink = $_CONF['site_url'] . '/article.php?story=' . $row['sid'];
+        $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                   . $row['sid'] );
 
         $content[] = array( 'title'  => $storytitle,
                             'text'   => $storytext,
