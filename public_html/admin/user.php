@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.80 2004/08/11 18:14:42 dhaun Exp $
+// $Id: user.php,v 1.81 2004/08/15 08:46:49 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -143,15 +143,26 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
-    if ($_CONF['allow_user_photo'] == 1 AND !empty($A['photo'])) {
-        $user_templates->set_var('user_photo', '<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
-        $user_templates->set_var('lang_delete_photo', $LANG28[28]);
-        $user_templates->set_var('delete_photo_option', '<input type="checkbox" name="delete_photo">');
+
+    if (($_CONF['allow_user_photo'] == 1) && !empty ($A['photo'])) {
+        if (strstr ($_CONF['path_images'], $_CONF['path_html'])) {
+            $imgpath = substr ($_CONF['path_images'],
+                               strlen ($_CONF['path_html']));
+            $user_templates->set_var ('user_photo', '<img src="'
+                . $_CONF['site_url'] . '/' . $imgpath . 'userphotos/'
+                . $A['photo'] . '" alt="">');
+        } else {
+            $user_templates->set_var ('user_photo', '<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $A['photo'] . '" alt="">');
+        }
+        $user_templates->set_var ('lang_delete_photo', $LANG28[28]);
+        $user_templates->set_var ('delete_photo_option',
+                '<input type="checkbox" name="delete_photo">');
     } else {
-        $user_templates->set_var('user_photo', '');
-        $user_templates->set_var('lang_delete_photo','');
-        $user_templates->set_var('delete_photo_option','');
+        $user_templates->set_var ('user_photo', '');
+        $user_templates->set_var ('lang_delete_photo', '');
+        $user_templates->set_var ('delete_photo_option', '');
     }
+
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('user_fullname', htmlspecialchars($A['fullname']));
     $user_templates->set_var('lang_password', $LANG28[5]); 
