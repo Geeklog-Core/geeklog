@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.4 2004/01/07 04:52:38 tony Exp $
+// $Id: getimage.php,v 1.5 2004/01/11 19:15:13 dhaun Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -89,12 +89,18 @@ switch ($mode) {
 // Let's see if we don't have a legit file.  If not bail
 if (is_file($downloader->getPath() . $image)) {
     if ($mode == 'show') {
-        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&image=' . $image . '" /></body></html>';
+        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt="" /></body></html>';
     } else {
         $downloader->downloadFile($image);
     }
 } else {
-    COM_errorLog('File, ' . $downloader->getPath() . $image . ', was not found in getimage.php');
+    $display = COM_errorLog('File, ' . $downloader->getPath() . $image . ', was not found in getimage.php');
+
+    if ($mode == 'show') {
+        echo COM_siteHeader ('menu') . $display . COM_siteFooter ();
+    } else {
+        header ('HTTP/1.0 404 Not Found');
+    }
 }
 
 ?>
