@@ -37,6 +37,7 @@ INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rd
 INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (7,'events_block','gldefault','Events Block','all',3,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2);
 INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (8,'whats_new_block','gldefault','Whats New Block','all',3,'','','0000-00-00 00:00:00',0,'1',1,2,3,3,2,2);
 INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (9,'first_block','normal','GeekLog 1.3','all',1,'Welcome to GeekLog 1.3!  There have been many improvments to GeekLog since 1.2.5-1, namely the addition of plug-in support, improved security, flexible database abstraction layer, themes and a new installation script.  Please read the release notes in the /docs directory and go over the install guide.','','0000-00-00 00:00:00',0,'',4,2,3,3,2,2);
+INSERT INTO blocks (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (10,'whosonline_block','phpblock','Who\'s Online','all',0,'','','0000-00-00 00:00:00',0,'phpblock_whosonline',4,2,3,3,2,2);
 
 #
 # Dumping data for table 'commentcodes'
@@ -207,7 +208,6 @@ INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,8,N
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,9,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,10,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (13,11,NULL);
-INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (11,13,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (10,2,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,2,NULL);
 INSERT INTO group_assignments (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,2,NULL);
