@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.27 2003/06/20 14:43:06 dhaun Exp $
+// $Id: group.php,v 1.28 2003/06/28 11:24:45 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -367,6 +367,8 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
             print COM_errorLog("sorry, no valid features were passed to this core group and saving could cause problem...bailing");
             exit;
         }
+        $grp_descr = COM_stripslashes ($grp_descr);
+        $grp_descr = addslashes ($grp_descr);
         if (empty($grp_id)) {
             DB_query("REPLACE INTO {$_TABLES['groups']} (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
         } else {
