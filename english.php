@@ -798,10 +798,10 @@ $LANG_ACCESS = array(
 	coregroup => "Core Group",
 	yes => "Yes",
 	no => "No",
-	corerightsdescr => "This group is a core Geeklog Group.  Therefore the rights for this group cannot be edited.  Below is a read-only list of the rights this group has access to.",
-	groupmsg => "Below are the groups that you can make this group a part of.  Check the box next to the groups below that you wish to make this group a part of.",
-	coregroupmsg => "This group is a core Geeklog Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
-	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights given directly to this group.",
+	corerightsdescr => "This group is a core {$CONF["site_name"]} Group.  Therefore the rights for this group cannot be edited.  Below is a read-only list of the rights this group has access to.",
+	groupmsg => "Security Groups on this site are hierarchical.  By adding this group to any of the groups below you will giving this group the same rights that those groups have.  Where possible it is encouraged you use the groups below to give rights to a group.  If you need this group to have custom rights then you can select the rights to various site features in the section below called 'Rights'.  To add this group to any of the ones below simply check the box next to the group(s) that you want.",
+	coregroupmsg => "This group is a core {$CONF["site_name"]} Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
+	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.",
 	lock => "Lock",
 	members => "Members",
 	anonymous => "Anonymous",
@@ -811,6 +811,8 @@ $LANG_ACCESS = array(
 	none => "None",
 	accessdenied => "Access Denied",
 	storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!",
-	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!"
+	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!",
+	nogroupsforcoregroup => "This group doesn't belong to any of the other groups",
+	grouphasnorights => "This group doesn't have access to any of the administrative features of this site" 
 );
 ?>
