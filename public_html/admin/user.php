@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.20 2002/03/08 22:53:58 tony_bibbs Exp $
+// $Id: user.php,v 1.21 2002/03/23 21:44:56 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -197,13 +197,15 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
 		}
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
-            $sql = "INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')";
+            DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
+			DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
         } else { 
-            $sql = "UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage' WHERE uid = $uid"; 
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage' WHERE uid = $uid");
         }
-
-		$result = DB_query($sql);
-
+		
 		// if groups is -1 then this user isn't allowed to change any groups so ignore
 		if (is_array($groups)) {
 			if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
