@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog configuration file.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2003 by the following authors:                         |
+// | Copyright (C) 2001-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony@tonybibbs.com                                  |
 // |          Dirk Haun  - dirk@haun-online.de                                 |
@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.104 2004/01/07 04:35:04 tony Exp $
+// $Id: config.php,v 1.105 2004/02/07 17:41:15 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -115,6 +115,7 @@ $_CONF['path_system']     = $_CONF['path'] . 'system/';
 $_CONF['path_log']        = $_CONF['path'] . 'logs/';
 $_CONF['path_language']   = $_CONF['path'] . 'language/';
 $_CONF['backup_path']     = $_CONF['path'] . 'backups/';
+
 // If you set path_images to something other than the default, you will need to
 // make sure that you add the following subdirectories to that directory:
 // articles/, userphotos/
@@ -124,8 +125,8 @@ $_CONF['path_images']     = $_CONF['path_html'] . 'images/';
 // | PEAR Settings                                                             |
 // |                                                                           |
 // | Geeklog uses PEAR to send emails (see "Email Settings" below). Here you   |
-// | can Geeklog wether to use the PEAR packages installed on your server or   |
-// | to use the included packages.                                             |
+// | can tell Geeklog whether to use the PEAR packages installed on your       |
+// | server or to use the included packages.                                   |
 // +---------------------------------------------------------------------------+
 
 // If your server is running PHP 4.3.0 (or newer) then chances are that PEAR
@@ -188,7 +189,7 @@ $_CONF['theme']             = 'XSilver';  // default theme
 // you shouldn't need to edit the following
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
-$_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
+$_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] . '/';
 
 // optional settings (1 = on, 0 = off)
 $_CONF['allow_user_themes']   = 1;
@@ -209,6 +210,8 @@ $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
+// |                                                                           |
+// | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
 $_CONF['language']  = 'english';
 $_CONF['locale']    = 'en-gb';
@@ -449,7 +452,7 @@ $_CONF['rdf_language']  = 'en-gb';
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.
-// $_CONF['copyrightyear'] = '2003';
+// $_CONF['copyrightyear'] = '2004';
 
 
 // Optional Image Settings
@@ -565,6 +568,10 @@ $_CONF['admin_html'] = array (
     'td'    => array('class' => 1, 'id' => 1, 'align' => 1, 'valign' => 1,
                      'colspan' => 1, 'rowspan' => 1)
 );
+
+// list of protocols that are allowed in links
+$_CONF['allowed_protocols'] = array ('http:', 'https:', 'ftp:');
+
 
 // Parameters for checking for "bad" words
 $_CONF['censormode']    = 1;

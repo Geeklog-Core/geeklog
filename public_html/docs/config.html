@@ -750,8 +750,7 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
     <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_user_html">user_html</a></td>
-  <td valign="top">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;ol&gt;,&lt;ul&gt;,<br>
-      &lt;li&gt;,&lt;code&gt;,&lt;pre&gt;</td>
+  <td valign="top">&lt;p&gt;, &lt;b&gt;, &lt;i&gt;, &lt;a&gt;, &lt;em&gt;, &lt;br&gt;, &lt;tt&gt;, &lt;hr&gt;, &lt;ol&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;code&gt;, &lt;pre&gt;</td>
   <td valign="top">HTML tags and attributes that normal users are allowed to
       use in story submissions and comments.</td></tr>
 <tr>
@@ -760,6 +759,10 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td valign="top">HTML tags and attributes that admin users are allowed to
       use (in addition to those from user_html). Redefining a tag with
       additional attributes will overwrite the definition from user_html.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_allowed_protocols">allowed_protocols</a></td>
+  <td valign="top">array ('http:', 'https:', 'ftp:');</td>
+  <td valign="top">Defines which protocols are allowed in links (i.e. HTML <code>&lt;a&gt;</code> tags).<br><strong>Note:</strong> The kses class used to filter these protocols has a hard-coded list of allowed protocols to which the above will be <em>added</em>. It is currently not possible to <em>remove</em> any of the default protocols (which include, for example, 'mailto:', 'gopher:', and 'news:').</td></tr>
 <tr>
   <td valign="top"><a name="desc_censormode">censormode</a></td>
   <td valign="top">1</td>
@@ -770,9 +773,7 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td valign="top">Text to replace a censored word with</td></tr>
 <tr>
   <td valign="top"><a name="desc_censorlist">censorlist</a></td>
-  <td valign="top">array("fuck","cunt","fucker","fucking","pussy","cock",<br>
-                  "c0ck","cum","twat","clit","bitch","fuk","fuking", <br>
-                  "motherfucker")</td>
+  <td valign="top">array("fuck", "cunt", "fucker", "fucking", "pussy", "cock", "c0ck", "cum", "twat", "clit", "bitch", "fuk", "fuking", "motherfucker")</td>
   <td valign="top">An array of censored words</td></tr>
 </table>
 

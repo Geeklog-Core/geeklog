@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.280 2004/02/07 09:49:09 dhaun Exp $
+// $Id: lib-common.php,v 1.281 2004/02/07 17:41:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3028,7 +3028,14 @@ function COM_checkHTML( $str )
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
     $filter = new kses;
-    $filter->Protocols( array( "http:", "https:", "ftp:" ));
+    if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( sizeof( $_CONF['allowed_protocols'] ) > 0 ))
+    {
+        $filter->Protocols( $_CONF['allowed_protocols'] );
+    }
+    else
+    {
+        $filter->Protocols( array( 'http:', 'https:', 'ftp:' ));
+    }
 
     if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['admin_html'] ))       
     {
