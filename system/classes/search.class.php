@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.30 2005/01/05 13:01:25 dhaun Exp $
+// $Id: search.class.php,v 1.31 2005/01/24 10:35:55 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -248,7 +248,7 @@ class Search {
                 $sql .= "AND (tid = '$this->_topic') ";
             }
             if (!empty($this->_author) && ($this->_author > 0)) {
-                $sql .= "AND (uid = '$this->_author') ";
+                $sql .= "AND (s.uid = '$this->_author') ";
             }
             $permsql = COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
             $sql .= $permsql;
