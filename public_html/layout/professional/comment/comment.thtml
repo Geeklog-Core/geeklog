@@ -3,4 +3,4 @@
 {start_author_anchortag}{author}{end_author_anchortag} {lang_on}
 {date}</div>
     <div style="verticle-align: top">{comments}</div>
-    <div><span {hide_if_preview}>[ <span {dynamic_hide} onclick="loadFragmentInToElement('{site_url}/comment.php?mode=fetch&cid={cid}&full=false','{cid}');"><img alt="--" src="{site_url}/images/dyncollapse.gif"/> |</span> <a href="{site_url}/comment.php?sid={sid}&amp;pid={pid}&amp;title={title}&amp;type={type}">{lang_replytothis}</a> {parent_link} {delete_option}]</span></div>
+    <div><span {dynamic_hide} onclick="loadFragmentInToElement('{site_url}/comment.php?mode=fetch&amp;cid={cid}&amp;full=false','c{cid}');"><img alt="--" src="{site_url}/images/dyncollapse.gif"/></span> <span {hide_if_preview}>[ <a href="{site_url}/comment.php?sid={sid}&amp;pid={pid}&amp;title={title}&amp;type={type}">{lang_replytothis}</a> {parent_link} {delete_option}]</span></div>
