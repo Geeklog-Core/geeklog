@@ -6,10 +6,10 @@
 // | Geeklog homepage.                                                         |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2003,2004 by the following authors:                         |
 // |                                                                           |
 // | Authors:   Matt Kruse  - matt@mattkruse.com                               |
-// |            Blaine Lang - blaine@portalparts.comceforge.net                |
+// |            Blaine Lang - blaine@portalparts.com                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
