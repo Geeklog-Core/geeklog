@@ -1051,6 +1051,7 @@ $LANG_ACCESS = array(
 	adminhome => 'Admin Home',
 	save => 'save',
 	cancel => 'cancel',
+	delete => 'delete',
 	canteditroot => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error'	
 );
 

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.17 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: group.php,v 1.18 2002/07/23 15:09:21 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -81,15 +81,15 @@ function editgroup($grp_id = '')
 
     $retval = '';
 
-	$retval .= COM_startBlock($LANG_ACCESS[groupeditor]);
+	$retval .= COM_startBlock($LANG_ACCESS['groupeditor']);
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor','groupeditor.thtml');
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
-    $group_templates->set_var('lang_save', $LANG_ACCESS[save]);
-    $group_templates->set_var('lang_cancel', $LANG_ACCESS[cancel]);
+    $group_templates->set_var('lang_save', $LANG_ACCESS['save']);
+    $group_templates->set_var('lang_cancel', $LANG_ACCESS['cancel']);
 
 	if (!empty($grp_id)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
@@ -98,7 +98,7 @@ function editgroup($grp_id = '')
 	    // If this is a not Root user (e.g. Group Admin) and they are editing the 
 	    // Root root then bail...they can't change groups
 		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == "Root")) {
-            $retval .= $LANG_ACCESS[canteditroot];
+            $retval .= $LANG_ACCESS['canteditroot'];
 			$retval .= COM_endBlock();
 			return $retval;
 		}
@@ -114,7 +114,7 @@ function editgroup($grp_id = '')
 	if (!empty($grp_id)) {
 		if ($A['grp_gl_core'] == 0) {
 			// Groups tied to Geeklogs functionality shouldn't be deleted
-            $group_templates->set_var('delete_option', '<input type="submit" value="delete" name="mode">');
+            $group_templates->set_var('delete_option', '<input type="submit" value="' . $LANG_ACCESS['delete'] . '" name="mode">');
             $group_templates->set_var('group_core', 0);
 		} else {
             $group_templates->set_var('group_core', 1);
@@ -133,9 +133,9 @@ function editgroup($grp_id = '')
 	}
     $group_templates->set_var('group_name', $A['grp_name']);
 
-    $group_templates->set_var('lang_description', $LANG_ACCESS[description]);
+    $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('group_description', $A['grp_descr']);
-    $group_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
+    $group_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
 	
 	//$groups = SEC_getUserGroups('','',$grp_id);
     if (!empty($grp_id)) {
@@ -151,7 +151,7 @@ function editgroup($grp_id = '')
         }
     }
 	if ($A['grp_gl_core'] == 1) {
-        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[coregroupmsg]);
+        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS['coregroupmsg']);
 
 		if (!empty($selected)) {
             $inclause = str_replace(' ',',',$selected);
@@ -163,7 +163,7 @@ function editgroup($grp_id = '')
 
 		if ($nrows == 0) {
 			// this group doesn't belong to anything...give a friendly message
-            $group_templates->set_var('group_options', $LANG_ACCESS[nogroupsforcoregroup]);
+            $group_templates->set_var('group_options', $LANG_ACCESS['nogroupsforcoregroup']);
 		} else {
             $groupoptions = '';
             for ($i = 1; $i <= $nrows; $i++) {
@@ -173,7 +173,7 @@ function editgroup($grp_id = '')
             $group_templates->set_var('group_options', $groupoptions);
         }
 	} else {
-        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[groupmsg]);
+        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS['groupmsg']);
         COM_errorLog("SELECTED: $selected");
 		// You can no longer give access to the Root group....it's pointless and doesn't
         // make any sense
@@ -183,12 +183,12 @@ function editgroup($grp_id = '')
             $group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_name <> 'Root'",''));
         }
 	}
-    $group_templates->set_var('lang_rights', $LANG_ACCESS[rights]);
+    $group_templates->set_var('lang_rights', $LANG_ACCESS['rights']);
 
 	if ($A['grp_gl_core'] == 1) {
-        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS[corerightsdescr]);
+        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS['corerightsdescr']);
 	} else {
-        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS[rightsdescr]);
+        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS['rightsdescr']);
 	}
 
 	$group_templates->set_var('rights_options', printrights($grp_id, $A['grp_gl_core']));
@@ -277,7 +277,7 @@ function printrights($grp_id='', $core=0)
 	}
 	if ($ftcount == 0) {
 		// This group doesn't have rights to any features
-		$retval .= '<td colspan="3">' . $LANG_ACCESS[grouphasnorights] . '</td>';
+		$retval .= '<td colspan="3">' . $LANG_ACCESS['grouphasnorights'] . '</td>';
 	}
     
 	$retval .= '</tr>' . LB;
@@ -342,8 +342,8 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=13');
 	} else {
 		$retval .= COM_siteHeader('menu');
-		$retval .= COM_startBlock($LANG_ACCESS[missingfields]);
-		$retval .= $LANG_ACCESS[missingfieldsmsg];
+		$retval .= COM_startBlock($LANG_ACCESS['missingfields']);
+		$retval .= $LANG_ACCESS['missingfieldsmsg'];
 		$retval .= COM_endBlock();
 		$retval .= editgroup($grp_id);
 		$retval .= COM_siteFooter();
@@ -361,28 +361,28 @@ function listgroups()
 {
 	global $_TABLES, $_CONF, $LANG_ACCESS;
 
-    $retval .= COM_startBlock($LANG_ACCESS[groupmanager]);
+    $retval .= COM_startBlock($LANG_ACCESS['groupmanager']);
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file(array('list'=>'grouplist.thtml','row'=>'listitem.thtml'));
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
-    $group_templates->set_var('lang_newgroup', $LANG_ACCESS[newgroup]);
-    $group_templates->set_var('lang_adminhome', $LANG_ACCESS[adminhome]);
-    $group_templates->set_var('lang_instructions', $LANG_ACCESS[newgroupmsg]); 
-    $group_templates->set_var('lang_groupname', $LANG_ACCESS[groupname]);
-    $group_templates->set_var('lang_description', $LANG_ACCESS[description]);
-    $group_templates->set_var('lang_coregroup', $LANG_ACCESS[coregroup]);
+    $group_templates->set_var('lang_newgroup', $LANG_ACCESS['newgroup']);
+    $group_templates->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
+    $group_templates->set_var('lang_instructions', $LANG_ACCESS['newgroupmsg']); 
+    $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
+    $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
+    $group_templates->set_var('lang_coregroup', $LANG_ACCESS['coregroup']);
 
     $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
     $nrows = DB_numRows($result);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         if ($A['grp_gl_core'] == 1) {
-            $core = $LANG_ACCESS[yes];
+            $core = $LANG_ACCESS['yes'];
         } else {
-            $core = $LANG_ACCESS[no];
+            $core = $LANG_ACCESS['no'];
         }
         $group_templates->set_var('group_id', $A['grp_id']);
         $group_templates->set_var('group_name', $A['grp_name']);
@@ -398,27 +398,24 @@ function listgroups()
 }
 
 // MAIN
-switch ($mode) {
-	case 'delete':
-		DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
-		DB_delete($_TABLES['groups'],'grp_id',$grp_id);
-        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=14');
-		break;
-	case 'save':
-		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);
-		break;
-	case 'edit':
-		$display .= COM_siteHeader('menu');
-		$display .= editgroup($grp_id);
-		$display .= COM_siteFooter();
-		break;
-	case 'cancel':
-	default:
-		$display .= COM_siteHeader('menu');
-		$display .= COM_showMessage($msg);
-		$display .= listgroups();
-		$display .= COM_siteFooter();
-		break;
+if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
+    DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
+    DB_delete($_TABLES['groups'],'grp_id',$grp_id);
+    $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=14');
+}
+else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
+    $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);
+}
+else if ($mode == 'edit') {
+    $display .= COM_siteHeader('menu');
+    $display .= editgroup($grp_id);
+    $display .= COM_siteFooter();
+}
+else {
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listgroups();
+    $display .= COM_siteFooter();
 }
 
 echo $display;
