@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.6 2001/12/14 15:00:10 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.7 2001/12/14 15:01:15 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -39,7 +39,7 @@ $_COM_VERBOSE = false;
 // +---------------------------------------------------------------------------+
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
-include_once('{config_path}/config.php');
+include_once('{config_path}config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
