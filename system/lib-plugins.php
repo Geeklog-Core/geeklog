@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.12 2002/11/15 15:50:15 dhaun Exp $
+// $Id: lib-plugins.php,v 1.13 2002/12/03 03:20:57 efarmboy Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -140,7 +140,6 @@ function PLG_upgrade($type)
 function PLG_uninstall($type)
 {
     if (empty($type)) return false;
-
     $retval = PLG_callFunctionForOnePlugin('plugin_uninstall_' . $type);
 
     if (empty($retval)) {
@@ -209,12 +208,15 @@ function PLG_supportsComments($type)
 *
 * @param        string      $type       Plugin to have handle the comment
 * @param        string      $id         Comment ID maybe?!?
+* @param		string		$operation  "save" or "delete"
 * 
 */
-function PLG_handlePluginComment($type, $id) 
+function PLG_handlePluginComment($type, $id,$operation='') 
 {
 	$args[1] = $id;
-	PLG_callFunctionForOnePlugin('plugin_commentsave_' . $type, $args);
+	$args[2] = $operation;
+
+	PLG_callFunctionForOnePlugin('plugin_handlecomment_' . $type, $args);
 }
 
 
@@ -378,7 +380,6 @@ function PLG_getSubmissionCount()
 function PLG_getUserOptions() 
 {
     global $_TABLES;
-
     $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $plugin = new Plugin();
