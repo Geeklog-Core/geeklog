@@ -39,6 +39,53 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td colspan="2"><hr></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">{php_msg}</td>
+                                            <td><input type="{php_type}" name="sp_php" value="1" {php_checked}>&nbsp;&nbsp;{php_warn}</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">{exit_msg}</td>
+                                            <td><input type="checkbox" name="sp_nf" value="1" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><hr></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_accessrights}<b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_owner}:</td>
+                                            <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_group}:</td>
+                                            <td>
+                                                {group_dropdown}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{lang_perm_key}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                            {permissions_editor}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{permissions_msg}<td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><hr><td>
+                                        </tr>
+                                        <tr>
                                             <td align="right">{lang_hits}:</td>
                                             <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits}</td>
                                         </tr>

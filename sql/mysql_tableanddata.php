@@ -533,20 +533,27 @@ CREATE TABLE {$_TABLES['article_images']} (
 
 $_SQL[40] = "
 CREATE TABLE {$_TABLES['staticpage']} (
-  sp_id varchar(20) DEFAULT '' NOT NULL,
-  sp_uid mediumint(8) DEFAULT '1' NOT NULL,
-  sp_title varchar(128) DEFAULT '' NOT NULL,
-  sp_content text DEFAULT '' NOT NULL,
-  sp_hits mediumint(8) unsigned DEFAULT '0' NOT NULL,
-  sp_date datetime NOT NULL,
-  sp_format varchar(20) NOT NULL,
-  sp_onmenu tinyint(1) unsigned NOT NULL DEFAULT '0',
-  sp_label varchar(64),
-  INDEX staticpage_sp_id(sp_id),
-  INDEX staticpage_sp_uid(sp_uid),
-  INDEX staticpage_sp_date(sp_date),
-  INDEX staticpage_sp_onmenu(sp_onmenu),
-  PRIMARY KEY (sp_id)
+  sp_id varchar(20) NOT NULL default '',
+  sp_uid mediumint(8) NOT NULL default '1',
+  sp_title varchar(128) NOT NULL default '',
+  sp_content text NOT NULL,
+  sp_hits mediumint(8) unsigned NOT NULL default '0',
+  sp_date datetime NOT NULL default '0000-00-00 00:00:00',
+  sp_format varchar(20) NOT NULL default '',
+  sp_onmenu tinyint(1) unsigned NOT NULL default '0',
+  sp_label varchar(64) default NULL,
+  group_id mediumint(8) unsigned NOT NULL default '1',
+  owner_id mediumint(8) unsigned NOT NULL default '1',
+  perm_owner tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_members tinyint(1) unsigned NOT NULL default '2',
+  perm_anon tinyint(1) unsigned NOT NULL default '2',
+  sp_php tinyint(1) unsigned NOT NULL default '0',
+  sp_nf tinyint(1) unsigned default '0',
+  PRIMARY KEY  (sp_id),
+  KEY staticpage_sp_uid (sp_uid),
+  KEY staticpage_sp_date (sp_date),
+  KEY staticpage_sp_onmenu (sp_onmenu)
 ) TYPE=MyISAM
 ";
  
@@ -570,6 +577,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (15,
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (16,4) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (17,14) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (18,14) ";
+$_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (22,14) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (3,'user_block','gldefault','User Functions','all',2,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (4,'admin_block','gldefault','Admins Only','all',1,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2) ";
@@ -644,6 +652,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (19,'story.submit','May skip the story submission queue',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (20,'link.submit','May skip the link submission queue',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (21,'event.submit','May skip the event submission queue',1) ";
+$_DATA[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES (22,'staticpages.PHP','Ability use PHP in static pages',0) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (0,'Show Only in Topic') ";
 $_DATA[] = "INSERT INTO {$_TABLES['frontpagecodes']} (code, name) VALUES (1,'Show on Front Page') ";
@@ -826,8 +835,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, em
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('rdf_sids','')";
-$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('staticpages','1')";
-$_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('sp_group_id','15')";
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
 

@@ -2,16 +2,17 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 0.2 for Geeklog - The Ultimate Weblog                 |
+// | Static Pages Plugin 1.3 for Geeklog - The Ultimate Weblog                 |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
 // | This file installs and removes the data structures for the Static Pages   |
 // | plugin for Geeklog.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002,2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Tom Willett      - twillett@users.sourceforge.net
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.8 2002/11/27 19:45:24 dhaun Exp $
+// $Id: install.php,v 1.9 2003/03/09 11:47:22 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -76,8 +77,19 @@ function plugin_install_staticpages()
         . "sp_format varchar(20) NOT NULL,"
         . "sp_onmenu tinyint(1) unsigned NOT NULL DEFAULT '0',"
         . "sp_label varchar(64),"
-        . "PRIMARY KEY (sp_id)"
-        . ")";
+        . "group_id mediumint(8) unsigned NOT NULL default '1',"
+        . "owner_id mediumint(8) unsigned NOT NULL default '1',"
+        . "perm_owner tinyint(1) unsigned NOT NULL default '3',"
+        . "perm_group tinyint(1) unsigned NOT NULL default '3',"
+        . "perm_members tinyint(1) unsigned NOT NULL default '2',"
+        . "perm_anon tinyint(1) unsigned NOT NULL default '2',"
+        . "sp_php tinyint(1) unsigned NOT NULL default '0',"
+        . "sp_nf tinyint(1) unsigned default '0',"
+        . "PRIMARY KEY (sp_id),"
+        . "KEY staticpage_sp_uid (sp_uid),"
+        . "KEY staticpage_sp_date (sp_date),"
+        . "KEY staticpage_sp_onmenu (sp_onmenu)"
+        . ") TYPE=MyISAM";
 
     COM_errorLog("Attempting to create table staticpage for Static Page plugin", 1);
     DB_query($createsql,1);
@@ -96,23 +108,11 @@ function plugin_install_staticpages()
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     COM_errorLog('...success',1);
     $steps['insertgroup'] = 1;
 
-    // Save the grp id for later uninstall
-    COM_errorLog('About to save group_id to vars table for use during uninstall',1);
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('sp_group_id', LAST_INSERT_ID())",1);
-    if (DB_error()) {
-        plugin_uninstall_staticpages($steps);
-        return false;
-        exit;
-    }
-    COM_errorLog('...success',1);
-    $steps['savedgroupid'] = 1;
-
-    $group_id = DB_getItem($_TABLES['vars'], 'value', "name = 'sp_group_id'");
+    $group_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
 
     // Add static page features
     COM_errorLog('Attempting to add staticpages.edit feature',1);
@@ -121,7 +121,6 @@ function plugin_install_staticpages()
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     $edit_id = DB_insertId();
     COM_errorLog('...success',1);
@@ -133,19 +132,28 @@ function plugin_install_staticpages()
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     $delete_id = DB_insertId();
     COM_errorLog('...success',1);
     $steps['insertedfeaturedelete'] = 1;
 
+    COM_errorLog('Attempting to add staticpages.PHP feature',1);
+    DB_query("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) "
+        . "VALUES ('staticpages.PHP','Ability use PHP in static pages')",1);
+    if (DB_error()) {
+        plugin_uninstall_staticpages($steps);
+        return false;
+    }
+    $php_id = DB_insertId();
+    COM_errorLog('...success',1);
+    $steps['insertedphpfeature'] = 1;
+    
     // Now add the features to the group
     COM_errorLog('Attempting to give Static Page Admin group access to staticpages.edit feature',1);
     DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($edit_id, $group_id)");
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     COM_errorLog('...success',1);
     $steps['addededittogroup'] = 1;
@@ -155,30 +163,36 @@ function plugin_install_staticpages()
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     COM_errorLog('...success',1);
     $steps['addeddeletetogroup'] = 1;
 
+    COM_errorLog('Attempting to give Static Page Admin group access to staticpages.PHP feature',1);
+    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($php_id, $group_id)",1);
+    if (DB_error()) {
+        plugin_uninstall_staticpages($steps);
+        return false;
+    }
+    COM_errorLog('...success',1);
+    $steps['addedphptogroup']=1;
+    
     // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
     COM_errorLog('Attempting to give all users in Root group access static page admin group',1);
     DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     COM_errorLog('...success',1);
     $steps['addedrootuserstogroup'] = 1;
 
     // Register the plugin with Geeklog
     if (DB_count($_TABLES['plugins'],'pi_name','staticpages') > 0) {
-        COM_errorLog('Attempting to remove staticpage rentry prior to adding an updated entry',1);
+        COM_errorLog('Attempting to remove staticpage entry prior to adding an updated entry',1);
         DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'staticpages'");
         if (DB_error()) {
             plugin_uninstall_staticpages($steps);
             return false;
-            exit;
         }
         COM_errorLog('...success',1);
     } else {
@@ -189,13 +203,11 @@ function plugin_install_staticpages()
     COM_errorLog('Registering Static Page plugin with Geeklog', 1);
     DB_delete($_TABLES['plugins'],'pi_name','staticpages');
     DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
-        . "VALUES ('staticpages', '{$_SP_CONF['version']}', '1.3.7', 'http://www.tonybibbs.com', 1)");
-    DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('staticpages','1')");
+        . "VALUES ('staticpages', '{$_SP_CONF['version']}', '1.3.8', 'http://www.tonybibbs.com', 1)");
 
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
-        exit;
     }
     COM_errorLog('...success',1);
     COM_errorLog('Succesfully installed the Static Page Plugin!',1);
@@ -203,51 +215,35 @@ function plugin_install_staticpages()
     return true;
 }
 
-/* 
-MAIN:  OK, I wanted to keep this simple so this is how this works.  When ran for the first
-time, this file will attempt to install the datastructures immediately.  When that is complete,
-it will insert a record into the Geeklog vars table (name = 'staticpages', value = 1) which will
-lock this file from being executed at by anyone.
-
-If you want to remove this plugin you would set the value in that record to 0 and then this script
-will uninstall the plugin.  All this is outlined in the INSTALL and UNINSTALL documents.
-*/
-
 $display = COM_siteHeader();
 
-if (DB_count($_TABLES['vars'], 'name', 'staticpages') == 0) {
-    // Record in vars table doesn' exit, install this plugin
-    if (plugin_install_staticpages()) {
-        $display .= COM_startBlock($LANG_STATIC['installation_complete']);
-        $display .= $LANG_STATIC['installation_complete_msg'];
-        $display .= COM_endBlock();
+if ($action == 'uninstall') {
+    if (plugin_uninstall_staticpages ()) {
+        $display .= COM_showMessage (45);
     } else {
-        // Error occured
-        $display .= COM_startBlock($LANG_STATIC['installation_failed']);
-        $display .= $LANG_STATIC['installation_failed_msg'];
-        $display .= COM_endBlock();
-    }   
-} else {
-    // This plugin is installed, see if it is locked or not
-    if (DB_getItem($_TABLES['vars'],'value',"name = 'staticpages'") == 1) {
-        // This is locked, do nothing
-        $display .= COM_startBlock($LANG_STATIC['system_locked']);
-        $display .= $LANG_STATIC['system_locked_msg'];
-        $display .= COM_endBlock();
-    } else {
-        // Uninstall plugin
-        if (plugin_uninstall_staticpages()) {
-            // Uninstall worked
-            $display .= COM_startBlock($LANG_STATIC['uninstall_complete']);
-            $display .= $LANG_STATIC['uninstall_complete_msg'];
-            $display .= COM_endBlock();
-        } else {
-            // Uninstall failed
-            $display .= COM_startBlock($LANG_STATIC['uninstall_failed']);
-            $display .= $LANG_STATIC['uninstall_failed_msg'];
-            $display .= COM_endBlock();
-        }
+        $timestamp = strftime($_CONF['daytime']);
+        $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp)
+                 . '<p><img src="' . $_CONF['layout_url']
+                 . '/images/sysmessage.gif" border="0" align="top" alt="">'
+                 . $LANG08[6] . '</p>' . COM_endBlock ();
     }
+} else if (DB_count ($_TABLES['plugins'], 'pi_name', 'staticpages') == 0) {
+    // plugin not installed - do it now
+    if (plugin_install_staticpages ()) {
+        $display = COM_refresh ($_CONF['site_admin_url']
+                                . '/plugins.php?msg=44');
+    } else {
+        $timestamp = strftime($_CONF['daytime']);
+        $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp)
+                 . '<p><img src="' . $_CONF['layout_url']
+                 . '/images/sysmessage.gif" border="0" align="top" alt="">'
+                 . $LANG08[6] . '</p>' . COM_endBlock ();
+    }
+} else {
+    // plugin already installed
+    $display .= COM_startBlock ($LANG32[6])
+             . '<p>' . $LANG32[7] . '</p>'
+             . COM_endBlock ();
 }
 
 $display .= COM_siteFooter();

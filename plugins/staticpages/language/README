@@ -2,10 +2,6 @@ This directory contains the language files for the Static Pages plugin. The
 plugin will pick the appropriate language file automatically based on the
 language settings in your user settings or the default language in config.php.
 
-IMPORTANT: If there is no language file for your language, then the plugin
-will not work. In that case, simply copy one of the existing language files
-and give it the same name as the language file you're using in
-/path/to/geeklog/language. So e.g. if your language setting is 'dutch', you
-need to have a file 'dutch.php' in this directory. If there is none, you
-could make a copy of 'english.php' and name that copy 'dutch.php'.
+If there is no language file for your language, then the plugin will revert
+to english.php.
 

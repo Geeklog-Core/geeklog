@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.41 2003/02/14 04:36:31 blaine Exp $
+// $Id: index.php,v 1.42 2003/03/09 11:47:22 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -80,37 +80,55 @@ if (empty ($topic)) {
     // check if static pages plugin is installed and enabled
     if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
 
-        $spsql = "SELECT sp_content,sp_label,sp_format FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'";
-        $spresult = DB_fetchArray (DB_query ($spsql));
+        $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage' AND " . SP_getPerms ();
+        $result = DB_query ($spsql);
 
-        if ($spresult['sp_label'] == 'nonews') { // replace news entirely
-            $shownews = false;
-            switch ($spresult['sp_format']) {
-                case 'noblocks':
-                    $display .= COM_siteHeader ('none');
-                    break;
-                case 'allblocks':
-                case 'leftblocks':
-                    $display .= COM_siteHeader ('menu');
-                    break;
+        if (DB_numRows ($result) > 0) {
+            $spresult = DB_fetchArray ($result);
+
+            if ($spresult['sp_label'] == 'nonews') { // replace news entirely
+                $shownews = false;
+                switch ($spresult['sp_format']) {
+                    case 'noblocks':
+                        $display .= COM_siteHeader ('none');
+                        break;
+                    case 'allblocks':
+                    case 'leftblocks':
+                        $display .= COM_siteHeader ('menu');
+                        break;
+                }
+
+                // Check for type (ie html or php)
+                if ($spresult['sp_php'] == 1) {
+                    $display .= eval (stripslashes ($spresult['sp_content']));
+                } else {
+                    $display .= stripslashes ($spresult['sp_content']);
+                }
+
+                if ($spresult['sp_format'] == 'allblocks') {
+                    $display .= COM_siteFooter (true);
+                } else if ($spresult['sp_format'] != 'blankpage') {
+                    $display .= COM_siteFooter ();
+                }
+            } else { // display static page content before the news
+                $display .= COM_siteHeader ();
+                if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                    $display .= COM_startBlock ($spresult['sp_label']);
+                }
+
+                // Check for type (ie html or php)
+                if ($spresult['sp_php'] == 1) {
+                    $display .= eval (stripslashes ($spresult['sp_content']));
+                } else {
+                    $display .= stripslashes ($spresult['sp_content']);
+                }
+
+                if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                    $display .= COM_endBlock ();
+                }
             }
-
-            $display .= stripslashes ($spresult['sp_content']);
-
-            if ($spresult['sp_format'] == 'allblocks') {
-                $display .= COM_siteFooter (true);
-            } else if ($spresult['sp_format'] != 'blankpage') {
-                $display .= COM_siteFooter ();
-            }
-        } else { // display static page content before the news
+        } else {
             $display .= COM_siteHeader();
-            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                $display .= COM_startBlock ($spresult['sp_label']);
-            }
-            $display .= stripslashes ($spresult['sp_content']);
-            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                $display .= COM_endBlock ();
-            }
         }
     } else {
         $display .= COM_siteHeader();
@@ -121,7 +139,7 @@ if (empty ($topic)) {
 
 // Show any Plugin formatted blocks
 // Requires a plugin to have a function called plugin_centerblock_<plugin_name>
-$display .= PLG_showCenterblock();
+$display .= PLG_showCenterblock ();
 
 if ($shownews) {
 
@@ -281,6 +299,8 @@ if ($nrows > 0) {
 
 $display .= COM_siteFooter(true); // The true value enables right hand blocks.
 
+} else {
+    $display = COM_showMessage ($HTTP_GET_VARS['msg']) . $display;
 }
 
 // Output page 

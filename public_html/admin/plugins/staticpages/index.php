@@ -2,15 +2,17 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 0.1                                           |
+// | Static Pages Geeklog Plugin 1.3                                           |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // | Administration page.                                                      |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Phill Gillespie  - phill@mediaaustralia.com.au                   |
+// |          Tom Willett      - twillett@users.sourceforge.net
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2003/01/29 17:08:52 dhaun Exp $
+// $Id: index.php,v 1.15 2003/03/09 11:47:22 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -54,19 +56,64 @@ if (!SEC_hasRights('staticpages.edit')) {
 */ 
 function form($A, $error=false) 
 {
-	global $_TABLES, $PHP_SELF, $_CONF, $HTTP_POST_VARS, $_USER, $LANG_STATIC,$_SP_CONF;
+	global $_TABLES, $PHP_SELF, $_CONF, $HTTP_POST_VARS, $_USER, $LANG_STATIC,$_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
 
+	if (!empty($sp_id) && $mode=='edit') {
+    	$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+	} else {
+    	$A['owner_id'] = $_USER['uid'];
+		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
+		$A['perm_owner'] = 3;
+		$A['perm_group'] = 3;
+		$A['perm_members'] = 2;
+		$A['perm_anon'] = 2;
+		$access = 3;
+	}
     $retval = '';
 
+    if (empty($A['owner_id'])) {
+	    $error = COM_startBlock($LANG_ACCESS['accessdenied']);
+    	$error .= $LANG_STATIC['deny_msg'];
+	    $error .= COM_endBlock();
+    }
+    
     if ($error) {
         $retval .= $error . "<br><br>";
     } else {
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
         if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
-            $sp_template->set_file('form','editor_advanced.thtml');
+            $sp_template->set_file ('form', 'editor_advanced.thtml');
         } else {
-            $sp_template->set_file('form','editor.thtml');
+            $sp_template->set_file ('form', 'editor.thtml');
         }
+        $sp_template->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
+    	$sp_template->set_var('lang_owner', $LANG_ACCESS['owner']);
+		$sp_template->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
+		$sp_template->set_var('owner_id', $A['owner_id']);
+   		$sp_template->set_var('lang_group', $LANG_ACCESS['group']);
+    	$usergroups = SEC_getUserGroups();
+    	if ($access == 3) {
+			$groupdd .= '<select name="group_id">';
+        	for ($i = 0; $i < count($usergroups); $i++) {
+            	$groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
+            	if ($A['group_id'] == $usergroups[key($usergroups)]) {
+                	$groupdd .= ' SELECTED';
+            	}
+            	$groupdd .= '>' . key($usergroups) . '</option>';
+            	next($usergroups);
+        	}
+        	$groupdd .= '</select>';
+    	} else {
+        	// they can't set the group then
+        	$groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
+        	$groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
+    	}
+    	$sp_template->set_var('group_dropdown', $groupdd);
+    	$sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    	$sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    	$sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
+    	$sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+		$sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC['staticpageeditor']));
@@ -80,8 +127,31 @@ function form($A, $error=false)
         $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
         $sp_template->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
         $sp_template->set_var('sp_uid', $A['sp_uid']);
+        if (SEC_hasRights ('staticpages.PHP')) {
+            if ($A['sp_php'] == 1) {
+    	        $sp_template->set_var('php_checked','checked');
+    	        $sp_template->set_var('php_type','checkbox');
+            } else {
+                $sp_template->set_var('php_checked','');
+            }
+            $sp_template->set_var('php_type','checkbox');
+            $sp_template->set_var('php_warn',$LANG_STATIC['php_warn']);
+            $sp_template->set_var('php_msg',$LANG_STATIC['php_msg']);
+        } else {
+  	    $sp_template->set_var('php_type','hidden');
+            $sp_template->set_var('php_warn','');
+            $sp_template->set_var('php_msg','');
+            $sp_template->set_var('php_checked','');
+        }
+        $sp_template->set_var('exit_msg',$LANG_STATIC['exit_msg']);
+        if ($A['sp_nf'] == 1) {
+            $sp_template->set_var('exit_checked','checked');
+        } else {
+            $sp_template->set_var('exit_checked','');
+        }
+        $sp_template->set_var('exit_info',$LANG_STATIC['exit_info']);
 
-		$curtime = COM_getUserDateTimeFormat();
+        $curtime = COM_getUserDateTimeFormat();
 
         $sp_template->set_var('lang_lastupdated', $LANG_STATIC['date']);
         $sp_template->set_var('sp_formateddate', $curtime[0]);
@@ -155,7 +225,7 @@ function staticpageeditor($sp_id, $mode = '')
 	global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
 
 	if (!empty($sp_id) && $mode == 'edit') {
-		$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'");
+		$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id' AND " . SP_getPerms('','3'));
 		$A = DB_fetchArray($result);
 	} elseif ($mode == 'edit') {
 		$A['sp_id'] = COM_makesid();
@@ -194,7 +264,7 @@ function liststaticpages($page = 1)
 	//if (empty($page)) $page = 1;
 	//$limit = (50 * $page) - 50;
 	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC LIMIT $limit,50");
-	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC");
+	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE " . SP_getPerms('','3') . " ORDER BY sp_date DESC");
 	$nrows = DB_numRows($result);
 	if ($nrows > 0) {
  		for ($i = 1; $i <= $nrows; $i++) {
@@ -247,9 +317,18 @@ function liststaticpages($page = 1)
 * @unixdate     string      date page was last updated
 * @sp_hits      int         Number of page views
 * @sp_format    string      HTML or plain text
+* @sp_onmenu    int         Flag to place entry on menu
+* @sp_label     string      Menu Entry
+* @owner_id     int         Permission bits
+* @group_id     int
+* @perm_owner   int
+* @perm_members int
+* @perm_anon    int
+* @sp_php       int         Flag to indicate PHP usage
+* @sp_nf        int         Flag to indicate type of not found message
 *
 */
-function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label)
+function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf)
 {
 	global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
@@ -283,7 +362,12 @@ function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hit
 		//$sp_title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_title))));
 		//$sp_label = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_label))));
 
-		DB_save($_TABLES['staticpage'],'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+        //If user does not have php edit perms, then set php flag to 0.
+        if (!SEC_hasRights('staticpages.PHP')) {
+	        $sp_php='0';
+        }
+        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);		
+		DB_save($_TABLES['staticpage'],'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf',"'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
 
 	} else {
         $retval .= COM_siteHeader();
@@ -314,7 +398,8 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     $display .= staticpageeditor($sp_id,$mode);
     $display .= COM_siteFooter();
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
-    submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format,$sp_onmenu,$sp_label);
+    submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format,$sp_onmenu,$sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf);
+    COM_errorlog("Saved Static Page " . $sp_id,1);
 } else {
     $display .= COM_siteHeader('menu');
     $display .= liststaticpages($sp_id);
