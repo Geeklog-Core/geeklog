@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.48 2003/12/05 13:32:43 dhaun Exp $
+// $Id: comment.php,v 1.49 2003/12/22 20:34:34 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -236,9 +236,10 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
     $retval = '';
 
     if (empty ($sid) || empty ($title) || empty ($comment) || empty ($type) ||
-            ($uid == 0) || ($uid != $_USER['uid']) ||
-            (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
-            ($_CONF['commentsloginrequired'] == 1)))) {
+            ($uid < 1) || (($uid != $_USER['uid']) &&
+            !empty ($_USER['username'])) || (empty ($_USER['username'])
+            && (($_CONF['loginrequired'] == 1) ||
+           ($_CONF['commentsloginrequired'] == 1)))) {
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
         return $retval;
     }
