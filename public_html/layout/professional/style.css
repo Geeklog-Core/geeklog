@@ -640,3 +640,79 @@ TD.forumRollOut   {
     padding-left:5px;
     font-family: Verdana, Helvetica, sans-serif;
 }
+/* New Plugin CSS Declarations */
+.pluginBG              { background-color: #1C1E2D; }
+.pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; font-size: 85%; font-family: Verdana, sans-serif; }
+.pluginHeader          { color: #1A3955; font-weight: bolder; font-size: 95%; background-color: #CCC; padding:5px; }
+.pluginFooter          { background-color:#EFEFEF; }
+.pluginAlert           { padding:5px 15px 5px 15px; color:#D8010E; background-color: #FEF1B4; font-weight:bold;}
+
+.pluginSolidOutline    { background-color: #396998; }
+.pluginSolidFill       { background-color: #1A3955; }
+.pluginCellTitle       { color: #1C1E2D; font-weight: bold; font-size: 80%; font-family: Verdana, sans-serif; background-color: #E5E5EA; }
+.pluginCellFill        { background-color: #E5E5EA; }
+.pluginCellText        { color: #000; font-weight: plain; font-size: 75%; font-family: Verdana, sans-serif; background-color: #F7F7F7; }
+.pluginTinyText        { font-size:70%; }
+.pluginSmallText       { font-size:80%; }
+.pluginMediumText      { font-size:85%; }
+.pluginLargeText       { font-size:90%; }
+.pluginAltText         { color: #FFF }
+
+.pluginRow1            { background-color: #EFEFEF; }
+.pluginRow2            { background-color: #D9D9D9; }
+
+.pluginRollOver         { color: #1C1E2D; background-color: #FFFF8F; }
+.pluginRollOut          { color: #1C1E2D; background-color: #F7F7F7; }
+
+.pluginLinks A:link     { color: #0000FF; font-style: normal; font-weight: plain; text-decoration: none }
+.pluginLinks A:visited  { color: #1E1E8E; font-style: normal; font-weight: plain; text-decoration: none }
+.pluginLinks A:hover    { color: #0000FF; font-style: normal; font-weight: plain; text-decoration: underline }
+.pluginBreadCrumbs, .pluginBreadCrumbs A:link     { color: #EFEFEF; font-style: normal; font-weight: plain; text-decoration: none }
+.pluginBreadCrumbs A:visited  { color: #EFEFEF; font-style: normal; font-weight: plain; text-decoration: none }
+.pluginBreadCrumbs A:hover    { color: gold; font-style: normal; font-weight: plain; text-decoration: none }
+
+A.pluginButton:link, A.pluginButton:visited {
+    color: #000;
+    text-align: center;
+    padding-top: 2px;
+    display: block;
+    height: 19px;
+    text-decoration: none;
+    background-color: transparent;
+}
+A.pluginButton:hover { 
+    color: blue; 
+    text-align: center; 
+    padding-top: 2px; 
+    background: center url(navbar/images/button_over.gif); 
+    background-repeat: repeat-x; 
+    display: block; 
+    height: 19px; 
+    text-decoration: none; 
+    background-color: 
+    transparent;
+}
+
+#navcontainer a { text-decoration: none; }
+
+#navcontainer ul  {
+    margin: 0px;
+    list-style-type: none;
+    position: relative;
+    border: 0px;
+    background-color: #667AB3;
+    padding: 5px 0px 0px 0px;
+    height:26px;
+}
+
+#navcontainer li { float: left; display: inline; margin:0px; padding-top:6px; padding-bottom:5px;}
+#navcontainer ul a,
+#navcontainer ul a:link,
+#navcontainer ul a:visited  { background-color: #4358E1; border:0px solid #4358E1; color: white; padding: 5px; margin:2px; }
+#navcontainer ul a:hover,
+#navcontainer ul a:focus  { background-color: #55516B; border: 0px solid black; padding-bottom:7px; color: white; }
+
+/* current Link */
+#navcontainer ul a#current { background-color: #F2F2F2; border: 0px solid black; padding-bottom:7px; color: #4358E1; }
+#navcontainer ul a#current:link,
+#navcontainer ul a#current:visited { font-weight: bold; }
