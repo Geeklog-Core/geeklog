@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.42 2002/03/09 19:36:57 dhaun Exp $
+// $Id: lib-common.php,v 1.43 2002/03/17 17:55:20 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -168,7 +168,7 @@ function COM_article($A,$index='')
             $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
             $article->set_var('end_contributedby_anchortag', '</a>');
         } else {
-            $article->set_var('contrributedby_user', $LANG01[1].' '.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+            $article->set_var('contributedby_user', $LANG01[1].' '.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
         }
     }
 	
