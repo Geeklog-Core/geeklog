@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.43 2002/04/23 12:21:43 dhaun Exp $
+// $Id: story.php,v 1.44 2002/04/23 17:13:36 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -203,8 +203,10 @@ function storyeditor($sid = '', $mode = '')
     $publish_second = date('s', $A['unixdate']);
     $story_templates->set_var('publish_second', $publish_second);
     $publish_ampm = '';
-    if ($publish_hour > 12) {
-        $publish_hour = $publish_hour - 12;
+    if ($publish_hour >= 12) {
+        if ($publish_hour > 12) {
+            $publish_hour = $publish_hour - 12;
+        }
         $ampm = 'pm';
     }
     if ($ampm == 'pm') {
