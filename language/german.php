@@ -571,7 +571,7 @@ $LANG21 = array(
         30 => "Wenn einer Deiner Bl&ouml;cke PHP-Code verwenden soll, gib hier bitte den Namen der Funktion ein. Der Funktionsname muss mit \"phpblock_\" (z.B. phpblock_getweather) beginnen. Wenn sie diese Namenskonvention nicht einh&auml;lt, wird die Funktion NICHT aufgerufen. Das soll verhindern, dass Hacker evtl. gef&auml;hrlichen Code einschleusen k&ouml;nnen. Den Funktionsnamen NICHT mit einem Klammerpaar \"()\" abschliessen. Ferner wird empfohlen, all Deinen Code f&uuml;r PHP-Bl&ouml;cke in der Datei /pfad/zu/geeklog/system/lib-custom.php abzulegen. Dort kann der Code auch dann unver&auml;ndert bleiben, wenn Du auf eine neuere Geeklog-Version umsteigst.",
         31 => "Fehler in PHP-Block: Funktion $function existiert nicht.",
         32 => "Fehler: Feld(er) fehlt/fehlen",
-        33 => "F&uuml;r Portal-Bl&ouml;cke muss eine URL f&uuml;r zur .rdf-Datei eingegeben werden",
+        33 => "F&uuml;r Portal-Bl&ouml;cke muss eine URL zur RDF-Datei angegeben werden",
         34 => "F&uuml;r PHP-Blo&ouml;cke muss ein Titel und der Funktionsname eingegeben werden",
         35 => "F&uuml;r normale Bl&ouml;cke muss ein Titel und der Inhalt eingegeben werden",
         36 => "F&uuml; Layout-Bl&ouml;cke muss der Inhalt eingegeben werden",
@@ -879,11 +879,11 @@ $LANG30 = array(
     28 => "Pers&ouml;nlicher Kalender f&uuml;r",
     29 => "&Ouml;ffentlicher Kalender",
     30 => "Termin l&ouml;schen",
-    31 => "Add",
+    31 => "Hinzufuegen",
     32 => "Termin",
     33 => "Datum",
     34 => "Uhrzeit",
-    35 => "Quick Add",
+    35 => "Neuer Termin",
     36 => "Submit",
     37 => "Sorry, der Pers&ouml;nliche Kalender ist auf dieser Site nicht verf&uuml;gbar",
     38 => "Pers&ouml;nlicher Termin-Editor",
@@ -914,12 +914,13 @@ $LANG31 = array(
   17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Noch eine Nachricht schreiben</a>",
   18 => "An",
   19 => "HINWEIS: Wenn Du eine Nachricht an alle eingetragenen Benutzer schicken willst, musst Du die Gruppe Logged-in Users ausw&auml;hlen.",
-  20 => "<successcount> Nachrichten erfolgreich verschickt, bei <failcount> Nachrichten traten Fehler auf. Details k&ouml;nnen der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">zur&uuml;ck zum Admin-Men&uuml; gehen</a>.",
+  20 => "<successcount> Nachricht(en) erfolgreich verschickt, bei <failcount> Nachricht(en) traten Fehler auf. Details k&ouml;nnen der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">zur&uuml;ck zum Admin-Men&uuml; gehen</a>.",
   21 => 'Fehler',
   22 => 'Erfolgreich',
   23 => 'Keine Fehler',
   24 => 'Keine erfolgreich',
-  25 => '-- Gruppe w&auml;hlen --'
+  25 => '-- Gruppe w&auml;hlen --',
+    26 => "Um eine E-Mail verschicken zu k&ouml;nnen, m&uuml;ssen alle Felder ausgef&uuml;llt und eine Gruppe von Benutzern aus dem Drop-Down-Men&uuml; ausgew&auml;hlt werden."
 );
 
 

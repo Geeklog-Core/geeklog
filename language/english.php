@@ -913,7 +913,8 @@ $LANG31 = array(
     22 => 'Successes',
     23 => 'No failures',
     24 => 'No successes',
-    25 => '-- Select Group --'
+    25 => '-- Select Group --',
+    26 => "Please fill in all the fields on the form and select a group of users from the drop down."
 );
 
 

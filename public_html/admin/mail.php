@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.12 2002/06/05 12:49:22 dhaun Exp $
+// $Id: mail.php,v 1.13 2002/08/09 22:20:00 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -111,17 +111,17 @@ function send_messages($vars)
     global $_CONF, $LANG31, $_TABLES, $LANG_CHARSET;
 
     $retval = '';
-    
+
  	if (empty($vars['fra']) OR empty($vars['fraepost']) OR empty($vars['subject'])
         OR empty($vars['message']) OR empty($vars['to_group'])) {
-  		echo $LANG31[2];
+  		echo $LANG31[26];
   		exit;
 	}
-    
+
 	// Header information
 	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\n";
 	$headers .= "X-Sender: <{$vars['fraepost']}>\n"; 
-	$headers .= "X-Mailer: PHP\n"; // mailer
+	$headers .= "X-Mailer: GeekLog " . VERSION . "\n"; // mailer
     
 	// Urgent message!
 	if (isset($vars['priority'])) {
