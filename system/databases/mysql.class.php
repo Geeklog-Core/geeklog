@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.8 2002/05/20 16:43:55 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.9 2002/05/21 15:37:58 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -66,6 +66,10 @@ class database {
     * @access private
     */
     var $_errorlog_fn = '';
+    /**
+    * @access private
+    */
+    var $_numQueries = 0;
 
     // PRIVATE METHODS
 
@@ -191,6 +195,17 @@ class database {
     }
 
     /**
+    * Returns the number of queries executed so far
+    *
+    * @return   int     Number of queries executed
+    *
+    */
+    function dbNumQueries()
+    {
+        return $this->_numQueries;
+    }
+    
+    /**
     * Executes a query on the MySQL server
     *
     * This executes the passed SQL and returns the recordset or errors out
@@ -211,6 +226,8 @@ class database {
         // Connect to database server
         $db = $this->_connect();
 
+        $this->_numQueries++;
+        
         // Run query
         if ($ignore_errors == 1) {
             $result = @mysql_query($sql,$db);
@@ -240,22 +257,51 @@ class database {
     /**
     * Saves information to the database
     *
-    * This will use a REPLACE INTO to save a record into the
-    * database
+    * This will use $key_field and $key_value to see if an UPDATE or INSERT
+    * statement is needed.  This does support concatenated keys
     *
-    * @param    string      $table      The table to save to
-    * @param    string      $fields     string  Comma demlimited list of fields to save
-    * @param    string      $values     Values to save to the database table
+    * @param    string          $table      The table to save to
+    * @param    string          $fields     string  Comma demlimited list of fields to save
+    * @param    string          $values     Values to save to the database table
+    * @param    string|array    $key_field  string or string array of all key fields
+    * @param    string|array    $key_value  string or string array of all key values
     *
     */
-    function dbSave($table,$fields,$values)
+    function dbSave($table, $fields, $values, $key_field = '', $key_value = '')
     {
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside database->dbSave ***<BR>");
         }
-
-        $sql = "REPLACE INTO $table ($fields) VALUES ($values)";
-
+        
+        if (DB_count($table,$key_field, $key_value,0) > 0) {
+            $farray = explode(',',$fields);
+            $varray = explode(',',$values);
+            $sql = "UPDATE $table SET ";
+            for ($i = 0; $i <= count($farray); $i++) {
+                $sql .= current($farray) . '=' . current($varray);
+                if ($i < count($farray)) {
+                    $sql .= ',';
+                }
+                next($farray);
+                next($varray);
+            }
+            $where_clause = '';
+            if (is_array($key_field)) {
+                for ($i = 1; $i <= count($key_field); $i++) {
+                    $where_clause .= current($key_field) . '=' . current($key_value);
+                    if ($i < count($key_field)) {
+                        $where_clause .= ' AND ';
+                    }
+                    next($key_field);
+                    next($key_value);
+                }
+            }
+            $sql .= " WHERE $where_clause";
+        } else {
+            
+            $sql = "INSERT INTO $table ($fields) VALUES ($values)";
+        }
+                
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
@@ -379,64 +425,6 @@ class database {
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbChange ***");
         }
-
-    }
-
-    /**
-    * Returns the number of records for a query that meets the given criteria
-    *
-    * This will build a SELECT count(*) statement with the given criteria and
-    * return the result
-    *
-    * @param    string          $table  Table to perform count on
-    * @param    array|string    $id     field name(s) of fields to use in where clause
-    * @param    array|string    $value  Value(s) to use in where clause
-    * @return   boolean     returns count on success otherwise false
-    *
-    */
-    function dbCount($table,$id='',$value='')
-    {
-        if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCount ***<br>");
-        }
-
-        $sql = "SELECT COUNT(*) FROM $table";
-
-        if (is_array($id) || is_array($value)) {
-            if (is_array($id) && is_array($value) && count($id) == count($value)) {
-                // they are arrays, traverse them and build sql
-                $sql .= ' WHERE ';
-                for ($i = 1; $i <= count($id); $i++) {
-                    if ($i == count($id)) {
-                        $sql .= current($id) . " = '" . current($value) . "'";
-                    } else {
-                        $sql .= current($id) . " = '" . current($value) . "' AND ";
-                    }
-                    next($id);
-                    next($value);
-                }
-            } else {
-                // error, they both have to be arrays and of the
-                // same size
-                return false;
-            }
-        } else {
-            if (!empty($id) && !empty($value)) {
-                $sql .= " WHERE $id = '$value'";
-            }
-        }
-
-        if ($this->isVerbose()) {
-            print "\n*** sql = $sql ***<br>";
-        }
-
-        $result = $this->dbQuery($sql);
-
-        if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCount ***<BR>");
-        }
-
-        return ($this->dbResult($result,0));
 
     }
 
