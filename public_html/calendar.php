@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.11 2001/12/17 16:38:52 tony_bibbs Exp $
+// $Id: calendar.php,v 1.12 2002/01/04 22:30:32 tony_bibbs Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -90,6 +90,8 @@ function getDayViewData($result, $cur_time = '')
 */
 function getSmallCalendar($m, $y, $mode='')
 {
+    global $_CONF;
+
     $retval = '';
     $mycal = new Calendar();
 
