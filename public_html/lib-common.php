@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.245 2003/08/17 09:38:01 dhaun Exp $
+// $Id: lib-common.php,v 1.246 2003/08/18 08:36:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -4731,12 +4731,10 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
         eregi( "<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>", $fulltext, $reg );
 
         // this gets what is between <a href=...> and </a>
-        preg_match( "/<a href=([^\]]+)>([^\]]+)<\/a>/", stripslashes( $reg[0] ),
-                $url_text);
+        preg_match( "/<a href=([^\]]+)>([^\]]+)<\/a>/", $reg[0], $url_text);
         if( empty( $url_text[1] ))
         {
-            preg_match( "/<A HREF=([^\]]+)>([^\]]+)<\/A>/",
-                    stripslashes( $reg[0] ), $url_text );
+            preg_match( "/<A HREF=([^\]]+)>([^\]]+)<\/A>/", $reg[0], $url_text );
         }
 
         $orig = $reg[0];
@@ -4765,7 +4763,7 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
             // Only write if we are dealing with something other than an image
             if( !( stristr( $reg[0], "<img " )))
             {
-                $rel[] = stripslashes( $reg[0] );
+                $rel[] = COM_checkHTML( $reg[0] );
             }
         }
     }
@@ -4809,7 +4807,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
     $related = '';
     if( sizeof( $rel ) > 0 )
     {
-        $related = COM_checkHTML( COM_checkWords( COM_makeList( $rel )));
+        $related = COM_checkWords( COM_makeList( $rel ));
     }
 
     return( $related );

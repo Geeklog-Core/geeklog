@@ -1,5 +1,10 @@
 GeekLog History/Changes:
 
+- What's Related applied COM_checkHTML() on the entire block instead of on the
+  individual items, thus stripping out HTML from the template file (bug #52).
+- Words from a search query are now properly hightlighted in comments when the
+  words occured only in the comments (but not in the story).
+- Fixed parse errors in the french_canada.php language file (bug #53).
 - Integrated Vincent Furia's new comment code to use templates for comments
   (instead of hard-coded HTML).
   New template files: comment/comment.thtml, comment/thread.thtml.
