@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.71 2002/04/20 19:39:20 dhaun Exp $
+// $Id: lib-common.php,v 1.72 2002/04/22 16:15:02 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -146,7 +146,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 */
 function COM_article($A,$index='') 
 {
-    global $_TABLES,$mode,$_CONF,$LANG01,$_USER;
+    global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05;
 	
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
@@ -158,7 +158,7 @@ function COM_article($A,$index='')
     }
 
     $article = new Template($_CONF['path_layout']);
-    $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
+    $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml','featuredarticle'=>'featuredstorytext.thtml','featuredbodytext'=>'featuredstorybodytext.thtml'));
     $article->set_var('layout_url',$_CONF['layout_url']);
     $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
@@ -201,9 +201,9 @@ function COM_article($A,$index='')
         } else if ($A['commentcode'] >= 0) {
             $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&amp;pid=0&amp;type=article">'.$LANG01[60].'</a>';
         }
-	$article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">' 
+        $article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">' 
             . '<img src="' . $_CONF['layout_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>');
-	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&amp;mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
+        $article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&amp;mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
     }
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -213,10 +213,16 @@ function COM_article($A,$index='')
     }
 
     $article->set_var('recent_post_anchortag', $recent_post_anchortag);
-	
-    $article->parse('story_bodyhtml','bodytext',true);
-    $article->parse('finalstory','article');
 
+    if ($A['featured'] == 1) {
+        $article->set_var('lang_todays_featured_article', $LANG05[4]);
+        $article->parse('story_bodyhtml','featuredbodytext',true);
+        $article->parse('finalstory','featuredarticle');
+    } else {
+        $article->parse('story_bodyhtml','bodytext',true);
+        $article->parse('finalstory','article');
+    }
+    
     return $article->finish($article->get_var('finalstory'));
 }
 
