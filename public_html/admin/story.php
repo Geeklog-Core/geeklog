@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.107 2003/09/20 16:50:35 dhaun Exp $
+// $Id: story.php,v 1.108 2003/09/28 13:23:42 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -492,7 +492,11 @@ function liststories($page = 1)
             $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
             if ($access > 0) {
                 if ($access == 3) {
-                    $access = $LANG_ACCESS['edit'];
+                    if (SEC_hasTopicAccess ($A['tid']) == 3) {
+                        $access = $LANG_ACCESS['edit'];
+                    } else {
+                        $access = $LANG_ACCESS['readonly'];
+                    }
                 } else {
                     $access = $LANG_ACCESS['readonly'];
                 }
