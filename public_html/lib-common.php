@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.387 2004/10/17 10:42:24 dhaun Exp $
+// $Id: lib-common.php,v 1.388 2004/10/19 10:51:19 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3356,6 +3356,31 @@ function COM_isEmail( $email )
 }
 
 /**
+* Takes a name and an email address and returns a string that vaguely
+* resembles an email address specification conforming to RFC(2)822 ...
+*
+* @param    string  $name       name, e.g. John Doe
+* @param    string  $address    email address only, e.g. john.doe@example.com
+* @return   string              formatted email address
+*
+*/
+function COM_formatEmailAddress( $name, $address )
+{
+    $formatted_name = $name;
+
+    $formatted_name = str_replace( ':', '', $formatted_name );
+    $formatted_name = str_replace( '"', '\\"', $formatted_name );
+
+    if(( $name != $formatted_name ) ||
+        (strpos( $formatted_name, '.' ) !== false ))
+    {
+        $formatted_name = '"' . $formatted_name . '"';
+    }
+
+    return $formatted_name . ' <' . $address . '>';
+}
+
+/**
 * Send an email.
 *
 * All emails sent by Geeklog are sent through this function now.
@@ -3374,11 +3399,6 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     global $_CONF, $LANG_CHARSET;
 
     static $mailobj;
-
-    // According to RFC(2)822, colons can be used in email addresses to address
-    // groups - which is probably not what we have in mind here, so remove them
-    $to = str_replace( ':', '', $to );
-    $from = str_replace( ':', '', $from );
 
     if( function_exists( 'CUSTOM_mail' ))
     {
@@ -3418,7 +3438,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     if( empty( $from ))
     {
-        $from = $_CONF['site_name'] . ' <' . $_CONF['site_mail'] . '>';
+        $from = COM_formatEmailAddress( $_CONF['site_name'], $_CONF['site_mail']);
     }
 
     $headers = array();
@@ -3701,7 +3721,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 * COM_showBlocks OR from plugin code
 *
 * @param        array     $A          Block Record
-* @param        bool      $hnoboxes   Set to true if userpref is no blocks
+* @param        bool      $noboxes    Set to true if userpref is no blocks
 * @return       string    HTML Formated block
 *
 */
@@ -4678,6 +4698,8 @@ function COM_whatsNewBlock( $help='', $title='' )
         {
             $retval .= $LANG01[88] . '<br>' . LB;
         }
+
+        $retval .= '<br>';
     }
 
     if( $_CONF['hidenewplugins'] == 0 )
@@ -4698,6 +4720,8 @@ function COM_whatsNewBlock( $help='', $title='' )
                 {
                     $retval .= $content[$i] . '<br>' . LB;
                 }
+
+                $retval .= '<br>';
             }
         }
     }
@@ -5648,7 +5672,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 */
 function COM_makeClickableLinks( $text )
 {
-    $text = preg_replace( '/([^"])((((ht|f)tps?):(\/\/)|www\.)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '\\1<a href="\\2">\\2</a>', $text );
+    $text = preg_replace( '/([^"]?)((((ht|f)tps?):(\/\/)|www\.)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '\\1<a href="\\2">\\2</a>', $text );
     $text = str_replace( '<a href="www', '<a href="http://www', $text );
 
     return $text;
