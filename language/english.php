@@ -834,7 +834,7 @@ $LANG31 = array(
 	16 => "Successfully sent messages to: ",
 	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>",
     18 => "To",
-    19 => "NOTE: if you wish to send a message to all logged in users, select the Logged-in Users group from the drop down.",
+    19 => "NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.",
     20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Send another message</a> or you can <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">go back to the administration page</a>.",
     21 => 'Failures',
     22 => 'Successes',
