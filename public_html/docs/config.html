@@ -219,7 +219,7 @@ that are defined below:
     <th width="63%">Description</th></tr>
 <tr>
   <td valign="top"><a name="desc_cookie_ip">cookie_ip</a></td>
-  <td valign="top">1</td>
+  <td valign="top">0</td>
   <td valign="top">Session ID to contain IP address of user as well as random number. This is more secure but will more than likely require dialed up users to login each and every time. (0=no, 1=yes)</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_perm_cookie_timeout">default_perm_cookie_timeout</a></td>
@@ -230,19 +230,56 @@ that are defined below:
   <td valign="top">7200</td>
   <td valign="top">Session cookie timeout (in seconds).</td></tr>
 <tr>
+  <td valign="top"><a name="desc_cookie_path">cookie_path</a></td>
+  <td valign="top">/</td>
+  <td valign="top">Cookie path (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookiedomain">cookiedomain</a></td>
+  <td valign="top"><i>(empty)</i></td>
+  <td valign="top">The domain that the cookie is available. Geeklog will attempt to guess the correct value for this setting (based on the 'site_url' variable). See the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookiesecure">cookiesecure</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Only set to 1 if your site uses HTTPS (see the <a href="http://www.php.net/manual/en/function.setcookie.php">PHP manual</a> for details).</td></tr>
+</table>
+
+<h3><a name="cookie">Cookie Names</a></h3>
+
+<p>These variables define the names of all of Geeklog's cookies. They can easily be changed in case there's a name collision with the cookies used by some other software package that you may use on your site.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
   <td valign="top"><a name="desc_cookie_session">cookie_session</a></td>
   <td valign="top">gl_session</td>
-  <td valign="top">What the session ID is stored as in the cookie.</td></tr>
+  <td valign="top">Name of the cookie that stores the session ID.</td></tr>
 <tr>
   <td valign="top"><a name="desc_cookie_name">cookie_name</a></td>
   <td valign="top">geeklog</td>
-  <td valign="top">The name of the cookie.</td></tr>
+  <td valign="top">Name of the permanent cookie.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_cookie_path">cookie_path</a></td>
-  <td valign="top">/</td>
-  <td valign="top">Cookie path.</td></tr>
+  <td valign="top"><a name="desc_cookie_password">cookie_password</a></td>
+  <td valign="top">password</td>
+  <td valign="top">Name of the password cookie.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookie_theme">cookie_theme</a></td>
+  <td valign="top">theme</td>
+  <td valign="top">Name of the theme cookie.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookie_language">cookie_language</a></td>
+  <td valign="top">language</td>
+  <td valign="top">Name of the language cookie.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookie_lastvisit">cookie_lastvisit</a></td>
+  <td valign="top">LastVisit</td>
+  <td valign="top">Name of the cookie that stores the time of the last visit (used in session handling).</td></tr>
+<tr>
+  <td valign="top"><a name="desc_cookie_lastvisittemp">cookie_lastvisittemp</a></td>
+  <td valign="top">LastVisitTemp</td>
+  <td valign="top">Name of a temporary cookie that stores the time of the last visit (used in session handling).</td></tr>
 </table>
-
 
 <h3><a name="login">Login settings</a></h3>
 
