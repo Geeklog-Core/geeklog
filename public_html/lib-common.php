@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.94 2002/05/14 12:30:20 mlimburg Exp $
+// $Id: lib-common.php,v 1.95 2002/05/14 18:25:27 tony_bibbs Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -57,6 +57,16 @@ $_COM_VERBOSE = false;
 *
 */
 require_once('/path/to/geeklog/config.php');
+
+// Before we do anything else, check to ensure site is enabled
+if (!$_CONF['site_enabled']) {
+    if (empty($_CONF['site_disabled_msg'])) {
+        print $_CONF['site_name'] . ' is temporarily down.  Please check back soon';
+    } else {
+        print $_CONF['site_disabled_msg'];
+    }
+    exit;
+}
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
@@ -118,7 +128,6 @@ require_once($_CONF['path_system'] . 'lib-plugins.php');
 *
 */
 require_once($_CONF['path_system'] . 'lib-sessions.php');
-
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That
@@ -202,6 +211,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 *
 * @param	array       $A      Data to display as an article
 * @param	string		$index  whether or not this is the index page
+* @return   string      HTML for the article
 *
 */
 function COM_article($A,$index='') 
@@ -210,8 +220,6 @@ function COM_article($A,$index='')
 	
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
-
-
 
     // If plain text then replace newlines with <br> tags
     if ($A['postmode'] == 'plaintext') {
@@ -1830,6 +1838,23 @@ function COM_checkHTML($str)
     
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace('$','&#36;',$str);
+    $start_pos = strpos(strtolower($str),'[code]');
+    if (!($start_pos === false)) {
+        $end_pos = strpos(strtolower($str),'[/code]');
+        $end_pos = $end_pos + 7;
+    }
+    if (!($start_pos === false) AND !($end_pos === false)) {
+        $orig_pre_string = substr($str, $start_pos, $end_pos - $start_pos);
+        $new_pre_string = str_replace('\\', '&#092;',$orig_pre_string);
+        $new_pre_string = str_replace('<','&lt;',$new_pre_string);
+        $new_pre_string = str_replace('>','&gt;',$new_pre_string);
+        $new_pre_string = str_replace('[code]','',$new_pre_string);
+        $new_pre_string = str_replace('[CODE]','',$new_pre_string);
+        $new_pre_string = str_replace('[/code]','',$new_pre_string);
+        $new_pre_string = str_replace('[/CODE]','',$new_pre_string);
+        $new_pre_string = nl2br($new_pre_string);
+        $str = str_replace($orig_pre_string, '<code><pre>'.$new_pre_string.'</pre></code>', $str);    
+    }
     
     if (!SEC_hasRights('story.edit')) {
         $str = strip_tags($str,$_CONF['allowablehtml']);
