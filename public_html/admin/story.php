@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.63 2002/08/27 00:43:23 tony_bibbs Exp $
+// $Id: story.php,v 1.64 2002/09/06 13:53:01 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -111,12 +111,14 @@ function storyeditor($sid = '', $mode = '')
         $A["commentcode"] = $_CONF['comment_code'];
         $A["featured"] = 0;
         $A["statuscode"] = 0;
-        $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Story Admin'");
-        $A['perm_owner'] = 3;
-        $A['perm_group'] = 3;
-        $A['perm_members'] = 2;
-        $A['perm_anon'] = 2;
+        $A['owner_id'] = $A['uid'];
+        $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+        $T = DB_fetchArray ($result);
+        $A['group_id'] = $T['group_id'];
+        $A['perm_owner'] = $T['perm_owner'];
+        $A['perm_group'] = $T['perm_group'];
+        $A['perm_members'] = $T['perm_members'];
+        $A['perm_anon'] = $T['perm_anon'];
         $access = 3;
     } elseif ($mode == "edit") {
         $A['sid'] = COM_makesid();

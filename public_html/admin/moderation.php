@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.27 2002/08/14 21:43:11 dhaun Exp $
+// $Id: moderation.php,v 1.28 2002/09/06 13:53:01 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -339,7 +339,7 @@ function userlist () {
 */
 function moderation($mid,$action,$type,$count) 
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
 
     $retval = '';
 
@@ -385,10 +385,21 @@ function moderation($mid,$action,$type,$count)
             DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
             break;
         case 'approve':
-            // This is called in case this is a plugin. There may be some plugin specific 
-            // processing that needs to happen first.
-            $retval .= PLG_approveSubmission($type,$mid[$i]);
-            DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
+            if ($type == 'story') {
+                $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
+                $A = DB_fetchArray ($result);
+                $A['owner_id'] = $A['uid'];
+                $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+                $T = DB_fetchArray ($result);
+                DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+                "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+                DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
+            } else {
+                // This is called in case this is a plugin. There may be some
+                // plugin specific processing that needs to happen first.
+                $retval .= PLG_approveSubmission($type,$mid[$i]);
+                DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
+            }
             break;
         }
     }
