@@ -115,12 +115,12 @@ $LANG01 = array(
     68 => "home",
     69 => "contact",
     70 => "zoeken",
-    71 => "bijdrage",
+    71 => "uw Bijdrage",
     72 => "Web Latijn",
-    73 => "vorige opinie peilingen",
+    73 => "Opinie's",
     74 => "Kalender",
-    75 => "geavanceerd zoeken",
-    76 => "portaal statistieken",
+    75 => "gericht Zoeken",
+    76 => "Statistieken",
     77 => "Plugins",
     78 => "Komende evenementen",
     79 => "Wat is nieuw",
@@ -395,7 +395,7 @@ $LANG08 = array(
 # search.php
 
 $LANG09 = array(
-    1 => "Geavanceerd Zoeken",
+    1 => "Gericht Zoeken",
     2 => "Trefwoorden",
     3 => "Thema",
     4 => "Alle",
@@ -415,7 +415,7 @@ $LANG09 = array(
     18 => "Auteur",
     19 => "Zoek in de gehele {$_CONF["site_name"]} database van nieuwe en oude artikelen",
     20 => "Datum",
-    21 => "naar",
+    21 => "tot",
     22 => "(Datum Formaat JJJJ-MM-DD)",
     23 => "Hits",
     24 => "Gevonden",
@@ -1150,7 +1150,7 @@ $LANG_BUTTONS = array(
     7 => "Portaal Stats",
     8 => "Persoonlijk",
     9 => "Zoek",
-    10 => "geavanceerd zoeken"
+    10 => "gericht zoeken"
 );
 
 $LANG_404 = array(
