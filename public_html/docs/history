@@ -1,6 +1,6 @@
 GeekLog History/Changes:
 
-February 25, 2002
+March 1, 2002
 -----------------
 - Admins can now manually edit the publish date of an article.  This include the ability
   to set the date for a time in the future.  In that case the article is completely 
@@ -11,6 +11,9 @@ February 25, 2002
   of the ones they do want to see.  This will allow any new block to show up by default as
   expected.
 - Removed hardcoded english from COM_emailUserTopics
+- Fixed minor security bug with whats new block. It would display items the user didn't have access too (however, if they click them they would correctly get the access denied message)
+- Topic administration page now default the group to 'Topic Admin' properly
+- Topic administration now save anonymous permissions properly
 
 February 22, 2002
 -----------------
