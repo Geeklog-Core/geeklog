@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.302 2004/03/21 18:31:11 dhaun Exp $
+// $Id: lib-common.php,v 1.303 2004/03/21 20:53:30 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -52,7 +52,7 @@ error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
 */
 
 /**
-* Turn this on go get various debug messages from the code in this library
+* Turn this on to get various debug messages from the code in this library
 * @global Boolean $_COM_VERBOSE
 */
 
@@ -1230,7 +1230,7 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1 )
 
     for( $i = 0; $i < $nrows; $i++ )
     {
-        $A = DB_fetchArray( $result );
+        $A = DB_fetchArray( $result, true );
         $retval .= '<option value="' . $A[0] . '"';
 
         if( $A[0] == $selected )
@@ -1274,7 +1274,7 @@ function COM_topicList( $selection, $selected='', $sortcol=1 )
 
     for( $i = 0; $i < $nrows; $i++ )
     {
-        $A = DB_fetchArray( $result );
+        $A = DB_fetchArray( $result, true );
         $retval .= '<option value="' . $A[0] . '"';
 
         if( $A[0] == $selected )
@@ -1340,7 +1340,7 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
     for( $i = 0; $i < $nrows; $i++ )
     {
         $access = true;
-        $A = DB_fetchArray( $result );
+        $A = DB_fetchArray( $result, true );
 
         if( $table == $_TABLES['topics'] AND SEC_hasTopicAccess( $A['tid'] ) == 0 )
         {
@@ -4632,7 +4632,7 @@ function COM_getUserCookieTimeout()
 
 function phpblock_whosonline()
 {
-    global $_CONF,$_TABLES,$LANG01;
+    global $_CONF, $_TABLES, $LANG01;
 
     $retval = '';
 

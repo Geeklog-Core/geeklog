@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.47 2004/01/31 09:22:48 dhaun Exp $
+// $Id: moderation.php,v 1.48 2004/03/21 20:53:32 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -272,7 +272,7 @@ function itemlist($type)
         $mod_templates->set_var('lang_delete', $LANG29[1]);
  
         for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray($result);
+            $A = DB_fetchArray($result, true);
             if ($type == 'story') {
                 $A[2] = strftime("%c",$A[2]);
             }
@@ -414,7 +414,7 @@ function draftlist ()
                     . $A['id']);
             $mod_templates->set_var('lang_edit', $LANG29[3]);
             $mod_templates->set_var('data_col1', stripslashes($A['title']));
-            $mod_templates->set_var('data_col2', strftime ("%c", $A[day]));
+            $mod_templates->set_var('data_col2', strftime ("%c", $A['day']));
             $mod_templates->set_var('data_col3', stripslashes($A['tid']));
             $mod_templates->set_var('cur_row', $i);
             $mod_templates->set_var('item_id', $A['id']);

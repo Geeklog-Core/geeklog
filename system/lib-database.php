@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
 // +---------------------------------------------------------------------------+
@@ -29,6 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
+// $Id: lib-database.php,v 1.29 2004/03/21 20:53:32 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -220,7 +221,7 @@ function DB_getItem($table,$what,$selection='')
     } else {
         $result = DB_query("SELECT $what FROM $table");
     }
-    $ITEM = DB_fetchArray($result);
+    $ITEM = DB_fetchArray($result, true);
     return $ITEM[0];
 }
 
@@ -384,14 +385,15 @@ function DB_affectedRows($recordset)
 * Gets the next record in a recordset and returns in array
 *
 * @param        object      $recordset      The recordset to operate on
+* @param        boolean     $both           get both assoc and numeric indices
 * @return       Array      Returns data for a record in an array
 *
 */
-function DB_fetchArray($recordset)
+function DB_fetchArray($recordset, $both = true)
 {
     global $_DB;
 
-    return $_DB->dbFetchArray($recordset);
+    return $_DB->dbFetchArray($recordset, $both);
 }
 
 /**

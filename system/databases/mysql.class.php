@@ -5,10 +5,10 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | mysql.class.php                                                           |
-// | mysql database class                                                      |
 // |                                                                           |
+// | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.15 2003/10/03 12:03:10 dhaun Exp $
+// $Id: mysql.class.php,v 1.16 2004/03/21 20:53:34 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -620,12 +620,18 @@ class database {
     * Gets the next record in a recordset and returns in array
     *
     * @param    object      $recordset  The recordset to operate on
+    * @param    boolean     $both       get both assoc and numeric indices
     * @return   array       Returns data array of current row from recordset
     *
     */
-    function dbFetchArray($recordset)
+    function dbFetchArray($recordset, $both = false)
     {
-        return @mysql_fetch_array($recordset);
+        if ($both) {
+            $result_type = MYSQL_BOTH;
+        } else {
+            $result_type = MYSQL_ASSOC;
+        }
+        return @mysql_fetch_array($recordset, $result_type);
     }
 
     /**

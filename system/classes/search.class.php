@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.21 2004/02/14 13:36:19 dhaun Exp $
+// $Id: search.class.php,v 1.22 2004/03/21 20:53:33 dhaun Exp $
 
 if (eregi ('search.class.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -285,7 +285,7 @@ class Search {
             $result_stories = DB_query($sql);
             $nrows_stories = DB_numRows($result_stories);
             $result_count = DB_query("SELECT COUNT(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . $permsql);
-            $B = DB_fetchArray($result_count);
+            $B = DB_fetchArray($result_count, true);
             $story_results = new Plugin();
             $story_results->searchlabel = $LANG09[53];
             $story_results->addSearchHeading($LANG09[16]);
@@ -389,7 +389,7 @@ class Search {
             $result_comments = DB_query($sql);
             $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
             $result_count = DB_query($sql);
-            $B = DB_fetchArray ($result_count);
+            $B = DB_fetchArray ($result_count, true);
             $comment_results = new Plugin();
             $comment_results->searchlabel = $LANG09[54];
             $comment_results->addSearchHeading($LANG09[16]);

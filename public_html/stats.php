@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.24 2003/06/25 08:39:02 dhaun Exp $
+// $Id: stats.php,v 1.25 2004/03/21 20:53:30 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -99,7 +99,7 @@ if ($nrows > 0) {
         $questions .= "'" . $A['qid'] . "'";
     }
     $result = DB_query ("SELECT SUM(votes) FROM {$_TABLES['pollanswers']} WHERE qid IN ({$questions})");
-    $A = DB_fetchArray($result);
+    $A = DB_fetchArray($result, true);
     $total_answers = $A[0];
 } else {
     $total_answers = 0;
