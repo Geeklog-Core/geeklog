@@ -25,13 +25,13 @@ if (!empty($CONF["pagetitle"])) {
 </table>
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
-<tr align=center valign=middle bgcolor=DDDDDD><td height=20><a href=<?php echo $CONF["base"]; ?>/submit.php?type=story>contribute</a> 
-&#149; <a href=<?php echo $CONF["base"]; ?>/links.php>web resources</a> 
-&#149; <a href=<?php echo $CONF["base"]; ?>/pollbooth.php>past polls</a> 
-&#149; <a href=<?php echo $CONF["base"]; ?>/calendar.php>calendar</a> 
+<tr align=center valign=middle bgcolor=DDDDDD><td height=20><a href=<?php echo $CONF["base"]; ?>/submit.php?type=story><?php print $LANG01[71];?></a> 
+&#149; <a href=<?php echo $CONF["base"]; ?>/links.php><?php print $LANG01[72];?></a> 
+&#149; <a href=<?php echo $CONF["base"]; ?>/pollbooth.php><?php print $LANG01[73];?></a> 
+&#149; <a href=<?php echo $CONF["base"]; ?>/calendar.php><?php print $LANG01[74];?></a> 
 <?php PrintPluginHeaderMenuItems(); ?>
-&#149; <a href=<?php echo $CONF["base"]; ?>/search.php>advanced search</a>  
-&#149; <a href=<?php echo $CONF["base"]; ?>/stats.php>site statistics</a></td></tr>
+&#149; <a href=<?php echo $CONF["base"]; ?>/search.php><?php print $LANG01[75];?></a>  
+&#149; <a href=<?php echo $CONF["base"]; ?>/stats.php><?php print $LANG01[76];?></a></td></tr>
 <tr><td bgcolor=AAAAAA><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=1></td></tr>
 <tr><td bgcolor=EEEEEE><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=10></td></tr>
 </table>
