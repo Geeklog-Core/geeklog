@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.294 2004/02/28 20:22:36 vinny Exp $
+// $Id: lib-common.php,v 1.295 2004/02/28 21:36:08 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2606,7 +2606,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'lang_login_logout', $LANG01[61] );
     }
 
-    if( !empty( $HTTP_GET_VARS['qid'] ))
+    if( $type == "poll" )
     {
         $commentbar->set_var( 'parent_url', $_CONF['site_url']
                               . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1' );
