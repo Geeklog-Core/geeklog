@@ -44,14 +44,14 @@ $CONF["sitemail"] = "admin@yourdomain.com";
 # The base url for this geeklog installation
 $CONF["base"] = "http://www.yourdomain.com";
 
-# Location of your geeklog installation.  Should point to 
+# Location of your geeklog installation.  Should point to
 # where you have config.php located, must have trailing '/'
 $CONF["path"] = "/path/to/geeklog/";
 
 # Directory where web pages are stored, must have trailing '/'
-$CONF["html"] = $CONF["path"] . "public_html/"; 
+$CONF["html"] = $CONF["path"] . "public_html/";
 
-# You can have only one of the following two lines uncommented. The 
+# You can have only one of the following two lines uncommented. The
 # first one is for *nix users and assumes you are using tar.
 # The second entry is for windows users and this is configured to work with
 # FilZip.  You can get FilZip from http://www.filzip.com.  Make sure
@@ -77,11 +77,11 @@ $CONF["shortdate"] = "%x";
 # User Account Access Control Settings
 
 # Short term session cookie timeout is the same for admin and non-admins
-# note: 3600 = 1 hour.  ipbasedsessid will store md5(remoteip + randomnum) 
-# as the session ID in the cookie. This is more secure but will more than 
+# note: 3600 = 1 hour.  ipbasedsessid will store md5(remoteip + randomnum)
+# as the session ID in the cookie. This is more secure but will more than
 # likely require dialed up users to login each and every time.  If
 # ipbasedsessid is turned off (which it is by default) it will just store
-# a random number as the session ID in the cookie. 
+# a random number as the session ID in the cookie.
 $CONF["ipbasedsessid"] = 1;
 $CONF["sesscookietimeout"] = "7200";
 $CONF["sesscookiename"] = "gl_session";
@@ -89,7 +89,7 @@ $CONF["cookiename"] = "geeklog";
 $CONF["cookiepath"] = "/";
 
 # This is really redundant but I am including this as a reminder that those
-# people writing Geeklog Plug-ins that are OS dependent should check either the 
+# people writing Geeklog Plug-ins that are OS dependent should check either the
 # $CONF variable below or PHP_OS directly.  If you are writing an addon that is
 # OS specific your addon should check the system is using the right OS.  If not,
 # be sure to show a friendly message that says their GL distro isn't running the
@@ -105,11 +105,11 @@ $CONF["topicadmin"] = 200;
 $CONF["linkadmin"] = 150;
 $CONF["eventadmin"] = 150;
 $CONF["polladmin"] = 200;
-$CONF["useradmin"] = 200; 
+$CONF["useradmin"] = 200;
 $CONF["commentadmin"] = 200; //deletion of comments
 $CONF["emailadmin"] = 200; //allows admin to email other admins or all GL users
 
-# The value below needs to be equal to the 
+# The value below needs to be equal to the
 # lowest seclevel found in the ones above
 # This is temporary until I find a better fix
 $CONF["lowestadmin"] = 150;
@@ -124,12 +124,12 @@ $CONF["speedlimit"] = "300";
 $CONF["sortmethod"] = "sortnum"; //can be sortnum or alpha
 
 //show the number of stories in a topic in Section Block
-$CONF["showstorycount"] = 1; 
+$CONF["showstorycount"] = 1;
 
 //show the number of story submissions for a topic in Section Block
 $CONF["showsubmissioncount"] = 1;
 
-//show any new articles, comments and links 
+//show any new articles, comments and links
 $CONF["whatsnewbox"] = 1;
 
 //Let users get stories emailed to them
@@ -154,6 +154,7 @@ $CONF["limitnews"] = "10";
 $CONF["minnews"] = "1"; // minimum number of stories per page
 $CONF["olderstuff"] = 1;
 $CONF["olderstufforder"] = 2;
+$CONF["contributedbyline"] = 1; // if 1, show contributed by line
 
 # Comment Settings
 
