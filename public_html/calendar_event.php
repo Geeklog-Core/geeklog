@@ -8,7 +8,7 @@
 // | Shows details of an event or events                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.27 2004/01/04 22:14:38 dhaun Exp $
+// $Id: calendar_event.php,v 1.28 2004/05/16 19:14:15 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -48,7 +48,7 @@ require_once($_CONF['path_system'] . 'classes/calendar.class.php');
 */
 function adduserevent($eid) 
 {
-    global $_USER, $LANG02, $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_USER, $_STATES, $LANG01, $LANG02;
 
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
@@ -561,10 +561,18 @@ default:
                 if (empty($A['state']) or ($A['state'] == '--')) 
                 {
                     $cal_templates->set_var('event_state', '');
+                    $cal_templates->set_var('event_state_name', '');
+                    $cal_templates->set_var('event_state_only', '');
+                    $cal_templates->set_var('event_state_name_only', '');
                 }
                 else
                 {
                     $cal_templates->set_var('event_state', ', ' . $A['state']);
+                    $cal_templates->set_var('event_state_name',
+                                            ', ' . $_STATES[$A['state']]);
+                    $cal_templates->set_var('event_state_only', $A['state']);
+                    $cal_templates->set_var('event_state_name_only',
+                                            $_STATES[$A['state']]);
                 }
                 $cal_templates->set_var('event_zip', $A['zipcode']);
                 if (!empty ($A['location']) && (!empty ($A['address1']) ||
@@ -584,7 +592,24 @@ default:
                 //$display .= '<br><b>'.$LANG_ACCESS['accessdenied'].'</b>'
                 //    .'<p>'.$LANG_ACCESS['eventdenialmsg'] . COM_endBlock() . COM_siteFooter();
             }
-        } 
+        }
+
+        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('event.edit')) {
+            $editurl = $_CONF['site_admin_url']
+                     . '/event.php?mode=edit&amp;eid=' . $eid;
+            $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'
+                    . $LANG01[4] . '</a>');
+            $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
+                    . '"><img src="' . $_CONF['layout_url']
+                    . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
+                    . $LANG01[4] . '" border="0"></a>');
+        } else {
+            $cal_templates->set_var ('event_edit', '');
+            $cal_templates->set_var ('edit_icon', '');
+        }
+
         $cal_templates->parse('output','events');
         $display .= $cal_templates->finish($cal_templates->get_var('output')); 
     }

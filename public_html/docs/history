@@ -3,6 +3,11 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.10)
 ------------
 
+- Added a few variables to be used in the eventdetails.thtml template file:
+  {event_state_name} (full name of the state), {event_state_only} and
+  {event_state_name_only} (abbreviated and full state name without the comma),
+  {event_edit} (link to edit the event, if allowed for the current user),
+  {edit_icon} (same, but with the edit icon instead of a text link) [Dirk]
 - Registered users can now report abusive comments to the site admin (inspired
   by Feature Request #171, which actually requested this for the forums).
   Requires new text strings in the language files and a new template file,
