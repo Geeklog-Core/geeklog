@@ -83,9 +83,9 @@ $LANG01 = array(
 	34 => "Fehler",
 	35 => "Abmelden",
 	36 => "am",
-	37 => "Keine Artikel.",
-	38 => '',
-	39 => "Neuladen",
+	37 => 'Keine Artikel.',
+	38 => 'Content Syndication',
+	39 => 'Neuladen',
 	40 => '',
 	41 => "Gäste",
 	42 => "Autor:",
@@ -1025,7 +1025,9 @@ $MESSAGE = array (
     54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.',
     55 => 'Du solltest in Kürze eine E-Mail erhalten, in der beschrieben wird, wie Du ein neues Passwort für Deinen Account eingeben kannst.',
     56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.',
-    57 => 'Dein Account wurde gelöscht.'
+    57 => 'Dein Account wurde gelöscht.',
+    58 => 'Der Feed wurde gespeichert.',
+    59 => 'Der Feed wurde gelöscht.'
 );
 
 // for plugins.php
@@ -1062,6 +1064,46 @@ $LANG32 = array (
     29 => 'Geeklog-Version',
     30 => 'Plugin löschen?',
     31 => 'Bist Du sicher, dass Du dieses Plugin löschen willst? Dies wird alle Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Du sicher bist, dann klicke jetzt bitte noch einmal auf Löschen.'
+);
+
+// for syndication.php
+
+$LANG33 = array (
+    1 => 'Feed anlegen',
+    2 => 'Speichern',
+    3 => 'Löschen',
+    4 => 'Abbruch',
+    10 => 'Content Syndication',
+    11 => 'Neuer Feed',
+    12 => 'Admin Home',
+    13 => 'Um einen Feed zu ändern oder zu löschen, auf den Titel des Feeds (s.u.) klicken. Um einen neuen Feed anzulegen, auf Neuer Feed (s.o.) klicken.',
+    14 => 'Titel',
+    15 => 'Art',
+    16 => 'Dateiname',
+    17 => 'Format',
+    18 => 'letztes Update',
+    19 => 'Aktiv',
+    20 => 'Ja',
+    21 => 'Nein',
+    22 => '<i>(keine Feeds)</i>',
+    23 => 'alle Artikel',
+    24 => 'Feed-Editor',
+    25 => 'Feed-Titel',
+    26 => 'Limit',
+    27 => 'Länge d. Einträge',
+    28 => '(0 = ohne Text, 1 = kompletter Text, anderer Wert = nur so viele Zeichen)',
+    29 => 'Beschreibung',
+    30 => 'Letztes Update',
+    31 => 'Zeichensatz',
+    32 => 'Sprache',
+    33 => 'Kategorie',
+    34 => 'Einträge',
+    35 => 'Stunden',
+    36 => 'Art des Feeds festlegen',
+    37 => 'Du hast (mindestens) ein Plugin installiert, das Content Syndication unterstützt. Bitte wähle zunächst aus, ob Du einen Feed für Geeklog oder für ein Plugin anlegen willst.',
+    38 => 'Fehler: Nicht alle Felder ausgefüllt',
+    39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
+    40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.'
 );
 
 $LANG_ACCESS = array(

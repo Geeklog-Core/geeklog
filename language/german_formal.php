@@ -300,9 +300,9 @@ $LANG04 = array(
     85 => 'Gesamtanzahl Kommentare',
     86 => 'Alle Artikel und Kommentare von',
 	87 => 'Ihr Username',
-    88 => 'Jemand (möglicherweise Sie selbst) haben ein neues Passwort für Ihren Account "%s" auf ' . $_CONF['site_name'] . ' <' . $_CONF['site_url'] . "> angefordert.\n\nWenn Sie tatsächlich ein neues Passwort benötigst, klicken Sie bitte auf den folgenden Link:\n\n",
-    89 => 'Möchten Sie Ihr Passwort nicht ändern, so kannst diese E-Mail einfach ignoriert bleiben (Ihr bisheriges Passwort bleibt dann unverändert gültig).\n\n',
-    90 => 'Hier kannst  jetzt ein neues Passwort für Ihren Account eingeben werden . Ihr altes Passwort bleibt noch solange gültig, bis Sie dieses Formular abschicken.',
+    88 => 'Jemand (möglicherweise Sie selbst) hat ein neues Passwort für Ihren Account "%s" auf ' . $_CONF['site_name'] . ' <' . $_CONF['site_url'] . "> angefordert.\n\nWenn Sie tatsächlich ein neues Passwort benötigst, klicken Sie bitte auf den folgenden Link:\n\n",
+    89 => 'Möchten Sie Ihr Passwort nicht ändern, so können Sie diese E-Mail einfach ignorieren (Ihr bisheriges Passwort bleibt dann unverändert gültig).\n\n',
+    90 => 'Hier können Sie jetzt ein neues Passwort für Ihren Account eingeben. Ihr altes Passwort bleibt noch solange gültig, bis Sie dieses Formular abschicken.',
     91 => 'Neues Passwort',
     92 => 'Neues Passwort eingeben',
     93 => 'Sie haben zuletzt vor %d Sekunden ein neues Passwort angefordert. Zwischen zwei Passwort-Anforderungen müssen aber mindestens %d Sekunden vergangen sein.',
@@ -1020,8 +1020,17 @@ $MESSAGE = array (
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
     48 => 'Danke, dass Sie sich bei ' . $_CONF['site_name'] . ' angemeldet hast. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.',
-    49 => "Ihre Gruppe wurde gespeichert.",
-    50 => "Die Gruppe wurde gelöscht."
+    49 => 'Ihre Gruppe wurde gespeichert.',
+    50 => 'Die Gruppe wurde gelöscht.',
+    51 => 'Dieser Username ist schon vergeben. Bitte wählen Sie einen anderen.',
+    52 => 'Die angegebene E-Mail-Adresse scheint nicht gültig zu sein.',
+    53 => 'Ihr neues Passwort wurde gespeichert. Bitte melden Sie sich nun mit dem neuen Passwort an.',
+    54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordern Sie erneut ein neues Passwort an.',
+    55 => 'Sie sollten in Kürze eine E-Mail erhalten, in der beschrieben wird, wie Sie ein neues Passwort für Ihren Account eingeben können.',
+    56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.',
+    57 => 'Ihr Account wurde gelöscht.',
+    58 => 'Der Feed wurde gespeichert.',
+    59 => 'Der Feed wurde gelöscht.'
 );
 
 // for plugins.php
@@ -1058,6 +1067,46 @@ $LANG32 = array (
     29 => 'Geeklog-Version',
     30 => 'Plugin löschen?',
     31 => 'Sind Sie sicher, dass Sie dieses Plugin löschen wollen? Dies wird alle Dateien, Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Sie sicher sind, dann klicken Sie jetzt bitte noch einmal auf Löschen.'
+);
+
+// for syndication.php
+
+$LANG33 = array (
+    1 => 'Feed anlegen',
+    2 => 'Speichern',
+    3 => 'Löschen',
+    4 => 'Abbruch',
+    10 => 'Content Syndication',
+    11 => 'Neuer Feed',
+    12 => 'Admin Home',
+    13 => 'Um einen Feed zu ändern oder zu löschen, auf den Titel des Feeds (s.u.) klicken. Um einen neuen Feed anzulegen, auf Neuer Feed (s.o.) klicken.',
+    14 => 'Titel',
+    15 => 'Art',
+    16 => 'Dateiname',
+    17 => 'Format',
+    18 => 'letztes Update',
+    19 => 'Aktiv',
+    20 => 'Ja',
+    21 => 'Nein',
+    22 => '<i>(keine Feeds)</i>',
+    23 => 'alle Artikel',
+    24 => 'Feed-Editor',
+    25 => 'Feed-Titel',
+    26 => 'Limit',
+    27 => 'Länge d. Einträge',
+    28 => '(0 = ohne Text, 1 = kompletter Text, anderer Wert = nur so viele Zeichen)',
+    29 => 'Beschreibung',
+    30 => 'Letztes Update',
+    31 => 'Zeichensatz',
+    32 => 'Sprache',
+    33 => 'Kategorie',
+    34 => 'Einträge',
+    35 => 'Stunden',
+    36 => 'Art des Feeds festlegen',
+    37 => 'Sie haben (mindestens) ein Plugin installiert, das Content Syndication unterstützt. Bitte wählen Sie zunächst aus, ob Sie einen Feed für Geeklog oder für ein Plugin anlegen wollen.',
+    38 => 'Fehler: Nicht alle Felder ausgefüllt',
+    39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
+    40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.'
 );
 
 $LANG_ACCESS = array(
