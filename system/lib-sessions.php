@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.25 2003/12/28 18:48:05 dhaun Exp $
+// $Id: lib-sessions.php,v 1.26 2004/01/23 20:04:19 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -91,11 +91,11 @@ function SESS_sessionCheck()
     $logged_in = 0;
     $userdata = Array();
 
-    // Check for a cookie on the users's machine.  If the cookie exists, build an
-    // array of the users info and setup the theme.
+    // Check for a cookie on the users's machine.  If the cookie exists, build
+    // an array of the users info and setup the theme.
     
-    if (isset($HTTP_COOKIE_VARS[$_CONF["cookie_session"]])) {
-        $sessid = $HTTP_COOKIE_VARS[$_CONF["cookie_session"]];
+    if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_session']])) {
+        $sessid = $HTTP_COOKIE_VARS[$_CONF['cookie_session']];
         if ($_SESS_VERBOSE) {
             COM_errorLog("got $sessid as the session id from lib-common.php",1);
         }
@@ -183,9 +183,9 @@ function SESS_sessionCheck()
     // Update the LastVisit cookie. This cookie is updated each time auth.php runs
     setcookie($_CONF['cookie_lastvisit'], time(), $expiredate1,  $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
-    // Set LastVisitTemp cookie, which only gets the time from the LastVisit cookie
-    // if it does not exist yet otherwise, it gets the time from the LastVisitTemp
-    // cookie
+    // Set LastVisitTemp cookie, which only gets the time from the LastVisit
+    // cookie if it does not exist yet otherwise, it gets the time from the
+    // LastVisitTemp cookie
     if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_lastvisittemp']])) {
         $temptime = $HTTP_COOKIE_VARS[$_CONF['cookie_lastvisit']];
     } else {
@@ -199,8 +199,11 @@ function SESS_sessionCheck()
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
     }
 
-    return $_USER;
+    if (!isset ($_USER['uid'])) {
+        $_USER['uid'] = 1; // must be an anonymous user
+    }
 
+    return $_USER;
 }
 
 /**
@@ -331,7 +334,7 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 */
 function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0) 
 {
-    global $_TABLES, $_SESS_VERBOSE;
+    global $_CONF, $_TABLES, $_SESS_VERBOSE;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("****Inside SESS_getUserIdFromSession",1);
