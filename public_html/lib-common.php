@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.112 2002/06/28 09:58:19 dhaun Exp $
+// $Id: lib-common.php,v 1.113 2002/06/28 15:02:08 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2392,16 +2392,22 @@ function COM_printUpcomingEvents($help='',$title='')
 
             if ($numDays < 14) {
                 // Display the url now!
-                $newevents[] = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
-                    . '">' . stripslashes($theEvent['title']) . '</a>';
+                $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
+                if ($z == 2) {
+                    $newevent .= 'mode=personal&amp;';
+                }
+                $newevent .= 'eid=' . $theEvent['eid'] . '">'
+                          . stripslashes($theEvent['title']) . '</a>';
+                $newevents[] = $newevent;
             }
-            $theRow ++ ;
+            $theRow++;
         }
 
+        if (!empty ($newevents)) {
+            $retval .= COM_makeList ($newevents);
+            $newevents = array ();
+        }
     } // end for z
-    if (!empty ($newevents)) {
-        $retval .= COM_makeList ($newevents);
-    }
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 
     return $retval;
