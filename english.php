@@ -585,7 +585,8 @@ $LANG24 = array(
 	38 => "More from",
 	39 => "Emails",
 	40 => "Access Denied",
-	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done."
+	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done.",
+	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>."
 );
 
 ###############################################################################
@@ -781,7 +782,7 @@ $LANG_ACCESS = array(
 	accessrights => "Access Rights",
 	owner => "Owner",
 	grantgrouplabel => "Grant Above Group Edit Rights",
-	grantgroupmsg => "NOTE: If you don't grant the group edit rights then only the <b>owner</b> and Root users will be able to edit this item. Only select a group with access to this administration screen",
+	permmsg => "NOTE: members is all logged in members of the site and anonymous is all users browsing the site that aren't logged in.",
 	securitygroups => "Security Groups",
 	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$CONF["site_url"]}/admin/users.php\">User Administration page</a>.",
 	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
@@ -797,6 +798,19 @@ $LANG_ACCESS = array(
 	coregroup => "Core Group",
 	yes => "Yes",
 	no => "No",
-	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights given directly to this group."
+	corerightsdescr => "This group is a core Geeklog Group.  Therefore the rights for this group cannot be edited.  Below is a read-only list of the rights this group has access to.",
+	groupmsg => "Below are the groups that you can make this group a part of.  Check the box next to the groups below that you wish to make this group a part of.",
+	coregroupmsg => "This group is a core Geeklog Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
+	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights given directly to this group.",
+	lock => "Lock",
+	members => "Members",
+	anonymous => "Anonymous",
+	permissions => "Permissions",
+	permissionskey => "R = read, E = edit, edit rights assume read rights",
+	edit => "Edit",
+	none => "None",
+	accessdenied => "Access Denied",
+	storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!",
+	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!"
 );
 ?>
