@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.26 2003/06/19 20:01:41 dhaun Exp $
+// $Id: group.php,v 1.27 2003/06/20 14:43:06 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -421,7 +421,7 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 */
 function listgroups() 
 {
-	global $_TABLES, $_CONF, $LANG_ACCESS;
+    global $_TABLES, $_CONF, $LANG_ACCESS;
 
     $retval .= COM_startBlock ($LANG_ACCESS['groupmanager'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -437,6 +437,7 @@ function listgroups()
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('lang_coregroup', $LANG_ACCESS['coregroup']);
+    $group_templates->set_var('lang_list_users', $LANG_ACCESS['listusers']);
 
     $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
     $nrows = DB_numRows($result);
@@ -451,10 +452,126 @@ function listgroups()
         $group_templates->set_var('group_name', $A['grp_name']);
         $group_templates->set_var('group_description', $A['grp_descr']);
         $group_templates->set_var('group_core', $core);
+        $group_templates->set_var('lang_list', $LANG_ACCESS['listthem']);
         $group_templates->parse('group_row', 'row', true);
     }
     $group_templates->parse('output', 'list');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
+    return $retval;
+}
+
+/**
+* Get a list (actually an array) of all groups this group belongs to.
+*
+* @param   basegroup   int     id of group
+* @return              array   array of all groups 'basegroup' belongs to
+*
+*/
+function getGroupList ($basegroup)
+{
+    global $_TABLES;
+
+    $to_check = array ();
+    array_push ($to_check, $basegroup);
+
+    $checked = array ();
+
+    while (sizeof ($to_check) > 0) {
+        $thisgroup = array_pop ($to_check);
+        if ($thisgroup > 0) {
+            $result = DB_query ("SELECT ug_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $thisgroup");
+            $numGroups = DB_numRows ($result);
+            for ($i = 0; $i < $numGroups; $i++) {
+                $A = DB_fetchArray ($result);
+                if (!in_array ($A['ug_grp_id'], $checked)) {
+                    if (!in_array ($A['ug_grp_id'], $to_check)) {
+                        array_push ($to_check, $A['ug_grp_id']);
+                    }
+                }
+            }
+            $checked[] = $thisgroup;
+        }
+    }
+
+    return $checked;
+}
+
+/**
+* Display a list of all users in a given group.
+*
+* @param   grp_id        int      group id
+* @param   curpage       int      page number
+* @param   query_limit   int      users per page
+* @return                string   HTML for user listing
+*
+*/
+function listusers ($grp_id, $curpage = 1, $query_limit = 50)
+{
+    global $_TABLES, $_CONF, $LANG28, $LANG_ACCESS;
+
+    $retval = '';
+
+    if ($curpage <= 0) {
+        $curpage = 1;
+    }
+    if ($query_limit == 0) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    $offset = (($curpage - 1) * $limit);
+
+    $groups = getGroupList ($grp_id);
+    $groupList = implode (',', $groups);
+
+    $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
+    $result = DB_query ("SELECT DISTINCT uid,username,fullname,email " . $sql
+                        . " ORDER BY username LIMIT $offset,$limit");
+    $nrows = DB_numRows ($result);
+
+    $cntresult = DB_query ("SELECT COUNT(DISTINCT {$_TABLES['users']}.uid) AS count " . $sql);
+    $C = DB_fetchArray ($cntresult);
+    $num_pages = ceil ($C['count'] / $limit);
+
+    $headline = sprintf ($LANG_ACCESS['usersingroup'],
+                         DB_getItem ($_TABLES['groups'], 'grp_name',
+                         "grp_id = '$grp_id'"));
+    $retval .= COM_startBlock ($headline . ' (' . $C['count'] . ')', '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $user_templates = new Template ($_CONF['path_layout'] . 'admin/user');
+    $user_templates->set_file (array ('list' => 'plainlist.thtml',
+                                      'row' => 'listitem.thtml'));
+    $user_templates->set_var ('site_url', $_CONF['site_url']);
+    $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var ('layout_url', $_CONF['layout_url']);
+    $user_templates->set_var ('lang_adminhome', $LANG28[16]);
+    $user_templates->set_var ('lang_username', $LANG28[3]);
+    $user_templates->set_var ('lang_fullname', $LANG28[4]);
+    $user_templates->set_var ('lang_emailaddress', $LANG28[7]);
+
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $user_templates->set_var ('user_id', $A['uid']);
+        $user_templates->set_var ('username', $A['username']);
+        $user_templates->set_var ('user_fullname', $A['fullname']);
+        $user_templates->set_var ('user_email', $A['email']);
+        $user_templates->parse ('user_row', 'row', true);
+    }
+
+    if ($num_pages > 1) {
+        $base_url = $_CONF['site_admin_url']
+                  . '/group.php?mode=listusers&amp;grp_id=' . $grp_id;
+        $user_templates->set_var ('google_paging',
+                COM_printPageNavigation ($base_url, $curpage, $num_pages));    
+    } else {
+        $user_templates->set_var ('google_paging', '');
+    }
+    $user_templates->parse ('output', 'list');
+    $retval .= $user_templates->finish ($user_templates->get_var ('output'));
+
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
@@ -477,6 +594,10 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $display .= COM_siteHeader('menu');
     $display .= editgroup($grp_id);
     $display .= COM_siteFooter();
+} else if ($mode == 'listusers') {
+    $display .= COM_siteHeader ('menu');
+    $display .= listusers ($grp_id, $page);
+    $display .= COM_siteFooter ();
 }
 else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
