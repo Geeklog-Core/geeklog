@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.17 2002/04/23 09:17:51 dhaun Exp $
+// $Id: link.php,v 1.18 2002/05/04 14:54:23 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -100,7 +100,7 @@ function editlink($mode, $lid = '')
 	}
     $link_templates->set_var('link_id', $A['lid']);
 	if (!empty($lid) && SEC_hasRights('link.edit')) {
-		$link_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
+		$link_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG23[23]\" name=\"mode\">");
     }
     $link_templates->set_var('lang_linktitle', $LANG23[3]);
     $link_templates->set_var('link_title', stripslashes($A['title']));
@@ -128,6 +128,8 @@ function editlink($mode, $lid = '')
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG23[9]);
     $link_templates->set_var('link_description', stripslashes($A['description']));
+    $link_templates->set_var('lang_save', $LANG23[21]); 
+    $link_templates->set_var('lang_cancel', $LANG23[22]); 
 
 	// user access info
     $link_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
@@ -289,10 +291,10 @@ function listlinks()
 // MAIN
 
 switch ($mode) {
-	case 'delete':
+	case "$LANG23[22]":
 		DB_delete($_TABLES['links'],'lid',$lid,'admin/link.php?msg=16');
 		break;
-	case 'save':
+	case "$LANG23[21]":
 		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case 'editsubmission':
@@ -305,7 +307,7 @@ switch ($mode) {
 		$display .= editlink($mode,$lid);
 		$display .= COM_siteFooter();
 		break;
-	case 'cancel':
+	case "$LANG23[22]":
 	default:
 		$display .= COM_siteHeader('menu');
 		$display .= COM_showMessage($msg);
