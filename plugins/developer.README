@@ -1,4 +1,4 @@
-This file was last update on August 14th, 2001
+This file was last update on September 14th, 2001
 
 This README will explain how you can quickly develop Geeklog Plug-ins.  Please take the time to read this as this will save you time and possibly trouble with getting your Geeklog Plug-in to work.
 
@@ -236,4 +236,4 @@ That's it!
 6) Deliver Your Plugin!
 -----------------------
 
-Because Geeklog Plugins can affect a Geeklog installation and the users filesystem, our policy is we will not endorse third party plugins unless they have been tested by the Geeklog Development team.  Why?  We will make sure that your plugin installs successfully and doesn't have any adverse behavior.  Assuming your plugin checks out, we will put your tarfile on our site where it can be downloaded by Geeklog users.  You can sumbit your plugin to our site at http://www.geeklog.org
+Because Geeklog Plugins can affect a Geeklog installation and the users filesystem, our policy is we will not endorse third party plugins unless they have been tested by the Geeklog Development team.  Why?  We will make sure that your plugin installs successfully and doesn't have any adverse behavior.  Assuming your plugin checks out, we will put your tarfile on our site where it can be downloaded by Geeklog users.  You can sumbit your plugin to our site at http://geeklog.sourceforge.net
