@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.44 2002/07/23 12:58:48 dhaun Exp $
+// $Id: config.php,v 1.45 2002/07/30 21:32:28 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -166,6 +166,12 @@ $_CONF['emailuserloginrequired'] = 0;
 
 // Submission Settings
 
+// enable (set to 1) or disable (set to 0) submission queues:
+$_CONF['storysubmission'] = 1;
+$_CONF['linksubmission'] = 1;
+$_CONF['eventsubmission'] = 1;
+$_CONF['usersubmission'] = 0;
+
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;         // in seconds
 
@@ -198,10 +204,6 @@ $_CONF['emailstories'] = 0;
 // 0 = send only title + link, 1 = send entire introtext,
 // any other number = max. number of characters per story
 $_CONF['emailstorieslength'] = 1;
-
-// Set to 1 if users need to be approved before they are granted access
-// to the site.
-$_CONF['usersubmission'] = 0;
 
 // When user submission is activated, allow users from these domains to
 // register without having to go through the submission queue.

@@ -31,14 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.27 2002/07/30 18:42:18 dhaun Exp $
+// $Id: submit.php,v 1.28 2002/07/30 21:32:28 dhaun Exp $
 
 require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Shows a given submission form
@@ -447,7 +447,11 @@ function savesubmission($type,$A)
             }
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
+            if ($_CONF['linksubmission'] == 1) {
+                $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
+            } else { // add link directly
+                $result = DB_save($_TABLES['links'],'lid,category,url,description,title,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',{$_USER['uid']}", $_CONF['site_url'] . '/links.php');
+            }
         } else {
             $retval .= COM_startBlock($LANG12[22])
                 . $LANG12[23]
@@ -516,7 +520,11 @@ function savesubmission($type,$A)
             }
 
             if ($A['calendar_type'] == 'master') {
-                $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
+                if ($_CONF['eventsubmission'] == 1) {
+                    $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
+                } else {
+                    $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$_USER['uid']}", $_CONF['site_url'] . '/calendar.php');
+                }
             } else {
                 if (empty($A['uid'])) {
                     $A['uid'] = $_USER['uid'];
@@ -558,7 +566,13 @@ function savesubmission($type,$A)
                 $_USER['uid'] = 1;
             }					
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
+            if ($_CONF['storysubmission'] == 1) {
+                DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
+            } else { // post this story directly
+                $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
+                $T = DB_fetchArray ($result);
+                DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,date,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}", $_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+            }
         } else {
             $retval .= COM_startBlock($LANG12[22])
                 . $LANG12[23]
