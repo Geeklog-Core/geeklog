@@ -84,9 +84,9 @@ $LANG01 = array(
 	35 => "Abmelden",
 	36 => "am",
 	37 => "Keine Artikel.",
-	38 => "",
+	38 => '',
 	39 => "Neuladen",
-	40 => "",
+	40 => '',
 	41 => "Gäste",
 	42 => "Autor:",
 	43 => "Antwort schreiben",
@@ -161,51 +161,51 @@ $LANG01 = array(
 # calendar.php
 
 $LANG02 = array(
-	1 => "Terminkalender",
-	2 => "Sorry, es gibt keine Termine anzuzeigen.",
-	3 => "Wann",
-	4 => "Wo",
-	5 => "Beschreibung",
-	6 => "Termin hinzufügen",
-	7 => "Anstehende Termine",
-	8 => 'Wenn Du diesen Termin zu Deinem Kalender hinzufügst, kannst Du Dir schneller einen Überblick über die Termine verschaffen, die Dich interessieren, indem Du einfach auf "Mein Kalender" klickst.',
-	9 => "Zu Meinem Kalender hinzufügen",
-	10 => "Aus Meinem Kalender entfernen",
-	11 => "Termin wird zum Kalender von {$_USER['username']} hinzugefügt",
-	12 => "Termin",
-	13 => "Beginnt",
-	14 => "Endet",
-        15 => "Zurück zum Kalender"
+    1 => 'Terminkalender',
+    2 => 'Sorry, es gibt keine Termine anzuzeigen.',
+    3 => 'Wann',
+    4 => 'Wo',
+    5 => 'Beschreibung',
+    6 => 'Termin hinzufügen',
+    7 => 'Anstehende Termine',
+    8 => 'Wenn Du diesen Termin zu Deinem Kalender hinzufügst, kannst Du Dir schneller einen Überblick über die Termine verschaffen, die Dich interessieren, indem Du einfach auf "Mein Kalender" klickst.',
+    9 => 'Zu Meinem Kalender hinzufügen',
+    10 => 'Aus Meinem Kalender entfernen',
+    11 => "Termin wird zum Kalender von {$_USER['username']} hinzugefügt",
+    12 => 'Termin',
+    13 => 'Beginnt',
+    14 => 'Endet',
+    15 => 'Zurück zum Kalender'
 );
 
 ###############################################################################
 # comment.php
 
 $LANG03 = array(
-	1 => "Kommentar schreiben",
-	2 => "Format",
-	3 => "Abmelden",
-	4 => "Account anlegen",
-	5 => "Username",
-	6 => "Um einen Kommentar abgeben zu können, musst Du angemeldet sein. Wenn Du noch keinen Account hast, benutze bitte das Formular um einen anzulegen.",
-	7 => "Dein letzter Kommentar war vor ",
-	8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF["commentspeedlimit"]} Sekunden vergangen sein.",
-	9 => "Kommentar",
-	10 => '',
-	11 => "Kommentar abschicken",
-        12 => "Bitte die Felder Betreff <em>und</em> Kommentar ausfüllen, um einen Kommentar zu diesem Artikel abzugeben.",
-	13 => "Deine Information",
-	14 => "Vorschau",
-	15 => "",
-	16 => "Betreff",
-	17 => "Fehler",
-	18 => 'Wichtige Hinweise:',
-	19 => 'Bitte gib nur Kommentare ab, die zum Thema gehören.',
-	20 => 'Beziehe Dich möglichst auf Kommentare anderer Personen statt einen neuen Thread zu eröffnen.',
-	21 => 'Lies bitte die vorhandenen Kommentare bevor Du Deinen eigenen abgibst, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
-	22 => 'Benutze eine eindeutige Betreffzeile, die den Inhalt Deines Kommentars zusammenfasst.',
-	23 => 'Deine E-Mail-Adresse wird NICHT veröffentlicht.',
-	24 => 'Anonymous'
+    1 => 'Kommentar schreiben',
+    2 => 'Format',
+    3 => 'Abmelden',
+    4 => 'Account anlegen',
+    5 => 'Username',
+    6 => 'Um einen Kommentar abgeben zu können, musst Du angemeldet sein. Wenn Du noch keinen Account hast, benutze bitte das Formular um einen anzulegen.',
+    7 => 'Dein letzter Kommentar war vor ',
+    8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF['commentspeedlimit']} Sekunden vergangen sein.",
+    9 => 'Kommentar',
+    10 => '',
+    11 => 'Kommentar abschicken',
+    12 => 'Bitte die Felder Betreff <em>und</em> Kommentar ausfüllen, um einen Kommentar zu diesem Artikel abzugeben.',
+    13 => 'Deine Information',
+    14 => 'Vorschau',
+    15 => '',
+    16 => 'Betreff',
+    17 => 'Fehler',
+    18 => 'Wichtige Hinweise:',
+    19 => 'Bitte gib nur Kommentare ab, die zum Thema gehören.',
+    20 => 'Beziehe Dich möglichst auf Kommentare anderer Personen statt einen neuen Thread zu eröffnen.',
+    21 => 'Lies bitte die vorhandenen Kommentare bevor Du Deinen eigenen abgibst, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
+    22 => 'Benutze eine eindeutige Betreffzeile, die den Inhalt Deines Kommentars zusammenfasst.',
+    23 => 'Deine E-Mail-Adresse wird NICHT veröffentlicht.',
+    24 => 'Anonymous'
 );
 
 ###############################################################################
@@ -311,32 +311,32 @@ $LANG04 = array(
 # index.php
 
 $LANG05 = array(
-	1 => "Keine Artikel",
-	2 => "Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Deine Einstellungen sind zu restriktiv",
-	3 => " für die Kategorie $topic.",
-	4 => "Hauptartikel",
-	5 => "weiter",
-	6 => "zurück"
+    1 => 'Keine Artikel',
+    2 => 'Es gibt keine Artikel, die angezeigt werden könnten. Entweder gibt es für diese Kategorie keine Artikel oder Deine Einstellungen sind zu restriktiv',
+    3 => " für die Kategorie $topic.",
+    4 => 'Hauptartikel',
+    5 => 'weiter',
+    6 => 'zurück'
 );
 
 ###############################################################################
 # links.php
 
 $LANG06 = array(
-	1 => "Links",
-	2 => "Es gibt keine Links anzuzeigen.",
-	3 => "Link hinzufügen"
+    1 => 'Links',
+    2 => 'Es gibt keine Links anzuzeigen.',
+    3 => 'Link hinzufügen'
 );
 
 ###############################################################################
 # pollbooth.php
 
 $LANG07 = array(
-	1 => "Stimme gespeichert",
-	2 => "Deine Stimme wurde für die Umfrage gespeichert: ",
-	3 => "Stimme",
-	4 => "Umfragen im System",
-	5 => "Stimme(n)"
+    1 => 'Stimme gespeichert',
+    2 => 'Deine Stimme wurde für die Umfrage gespeichert: ',
+    3 => 'Stimme',
+    4 => 'Umfragen im System',
+    5 => 'Stimme(n)'
 );
 
 ###############################################################################
@@ -431,40 +431,40 @@ $LANG09 = array(
 # stats.php
 
 $LANG10 = array(
-	1 => "Site-Statistik",
-	2 => "Gesamtzahl der Seitenabrufe",
-	3 => "Anzahl Artikel (Kommentare)",
-	4 => "Anzahl Umfragen (Stimmen)",
-	5 => "Anzahl Links (Klicks)",
-	6 => "Anzahl Termine",
-	7 => "Top Ten der Artikel",
-	8 => "Artikel-Überschrift",
-	9 => "Angezeigt",
-	10 => "Es gibt keine Artikel oder sie wurden von niemandem gelesen.",
-	11 => "Top Ten der Kommentare",
-	12 => "Kommentare",
-	13 => "Es gibt keine Artikel oder es wurden keine Kommentare dazu abgegeben.",
-	14 => "Top Ten der Umfragen",
-	15 => "Thema der Umfrage",
-	16 => "Stimmen",
-	17 => "Es gibt keine Umfragen oder es wurden keine Stimmen abgegeben.",
-	18 => "Top Ten der Links",
-	19 => "Links",
-	20 => "Angeklickt",
-	21 => "Es gibt keine Links oder sie wurden von niemandem angeklickt.",
-	22 => "Top Ten der verschickten Artikel",
-	23 => "E-Mails",
-	24 => "Es wurden keine Artikel per E-Mail verschickt."
+    1 => 'Site-Statistik',
+    2 => 'Gesamtzahl der Seitenabrufe',
+    3 => 'Anzahl Artikel (Kommentare)',
+    4 => 'Anzahl Umfragen (Stimmen)',
+    5 => 'Anzahl Links (Klicks)',
+    6 => 'Anzahl Termine',
+    7 => 'Top Ten der Artikel',
+    8 => 'Artikel-Überschrift',
+    9 => 'Angezeigt',
+    10 => 'Es gibt keine Artikel oder sie wurden von niemandem gelesen.',
+    11 => 'Top Ten der Kommentare',
+    12 => 'Kommentare',
+    13 => 'Es gibt keine Artikel oder es wurden keine Kommentare dazu abgegeben.',
+    14 => 'Top Ten der Umfragen',
+    15 => 'Thema der Umfrage',
+    16 => 'Stimmen',
+    17 => 'Es gibt keine Umfragen oder es wurden keine Stimmen abgegeben.',
+    18 => 'Top Ten der Links',
+    19 => 'Links',
+    20 => 'Angeklickt',
+    21 => 'Es gibt keine Links oder sie wurden von niemandem angeklickt.',
+    22 => 'Top Ten der verschickten Artikel',
+    23 => 'E-Mails',
+    24 => 'Es wurden keine Artikel per E-Mail verschickt.'
 );
 
 ###############################################################################
 # article.php
 
 $LANG11 = array(
-	1 => "Zum Thema",
-	2 => "An einen Freund schicken",
-	3 => "Druckfähige Version",
-	4 => "Optionen"
+    1 => 'Zum Thema',
+    2 => 'An einen Freund schicken',
+    3 => 'Druckfähige Version',
+    4 => 'Optionen'
 );
 
 ###############################################################################
@@ -491,7 +491,7 @@ $LANG12 = array(
 	18 => "Andere",
 	19 => "Bitte lesen",
 	20 => "Fehler: Kategorie fehlt",
-	21 => "When selecting \"Other\" please also provide a category name",
+	21 => 'Wenn Du "Andere" auswählst, gib bitte auch eine neue Kategorie ein',
 	22 => "Fehler: Nicht alle Felder ausgefüllt",
 	23 => "Bitte alle Felder des Formulars ausfüllen. Alle Felder werden benötigt.",
 	24 => "Beitrag gespeichert",
@@ -535,13 +535,13 @@ $LANG12 = array(
 # auth.inc.php
 
 $LANG20 = array(
-	1 => "Bitte authentifizieren!",
-	2 => "Zugriff verweigert! Login-Information ungültig",
-	3 => "Ungültiges Passwort für User",
-	4 => "Username:",
-	5 => "Passwort:",
-	6 => "Zugriffe auf die Administrationsseiten dieser Website werden aufgezeichnet und kontrolliert.<br>Diese Seiten sind nur für befugte Personen zugänglich.",
-	7 => "einloggen"
+    1 => 'Bitte authentifizieren!',
+    2 => 'Zugriff verweigert! Login-Information ungültig',
+    3 => 'Ungültiges Passwort für User',
+    4 => 'Username:',
+    5 => 'Passwort:',
+    6 => 'Zugriffe auf die Administrationsseiten dieser Website werden aufgezeichnet und kontrolliert.<br>Diese Seiten sind nur für befugte Personen zugänglich.',
+    7 => 'einloggen'
 );
 
 ###############################################################################
@@ -551,7 +551,7 @@ $LANG21 = array(
 	1 => "Ungenügende Rechte",
 	2 => "Du hast nicht die nötigen Rechte, um diesen Block ändern zu können.",
 	3 => "Block-Editor",
-	4 => "",
+	4 => '',
 	5 => "Block-Titel",
 	6 => "Kategorie",
 	7 => "Alle",
@@ -611,7 +611,7 @@ $LANG21 = array(
 
 $LANG22 = array(
 	1 => "Termin-Editor",
-	2 => "",
+	2 => '',
 	3 => "Titel",
 	4 => "URL",
 	5 => "Startdatum",
@@ -639,7 +639,7 @@ $LANG22 = array(
 
 $LANG23 = array(
 	1 => "Link-Editor",
-	2 => "",
+	2 => '',
 	3 => "Titel",
 	4 => "URL",
 	5 => "Kategorie",
@@ -678,7 +678,7 @@ $LANG24 = array(
 	9 => "Vorschau",
 	10 => "Abbruch",
 	11 => "Löschen",
-	12 => "",
+	12 => '',
 	13 => "Titel",
 	14 => "Kategorie",
 	15 => "Datum",
@@ -686,17 +686,17 @@ $LANG24 = array(
 	17 => "Haupttext",
 	18 => "Treffer",
 	19 => "Kommentare",
-	20 => "",
-	21 => "",
+	20 => '',
+	21 => '',
 	22 => "Artikel-Liste",
 	23 => "Auf die Nummer klicken, um einen Artikel zu ändern oder zu löschen. Um einen Artikel anzusehen, auf dessen Titel klicken. Auf Neuer Artikel (s.o.) klicken, um einen neuen Artikel zu schreiben.",
-	24 => "",
-	25 => "",
+	24 => '',
+	25 => '',
 	26 => "Artikel-Vorschau",
-	27 => "",
-	28 => "",
-	29 => "",
-	30 => "",
+	27 => '',
+	28 => '',
+	29 => '',
+	30 => '',
 	31 => "Bitte mindestens die Felder Titel und Einleitung ausfüllen",
 	32 => "Hauptartikel",
 	33 => "Es kann nur einen Hauptartikel geben",
@@ -731,7 +731,7 @@ $LANG24 = array(
 
 $LANG25 = array(
 	1 => "Modus",
-	2 => "",
+	2 => '',
 	3 => "angelegt",
 	4 => "Umfrage $qid wurde gespeichert",
 	5 => "Umfrage editieren",
@@ -746,7 +746,7 @@ $LANG25 = array(
 	14 => "Speichern",
 	15 => "Abbruch",
 	16 => "Löschen",
-	17 => "",
+	17 => '',
 	18 => "Liste der Umfragen",
 	19 => "Um eine Umfrage zu ändern oder löschen, auf die Umfrage klicken. Mit Neue Umfrage (s.o.) wird eine neue Umfrage angelegt.",
 	20 => "Stimmen",
@@ -836,25 +836,25 @@ $LANG28 = array(
 # moderation.php
 
 $LANG29 = array(
-    1 => "Akzeptieren",
-    2 => "Löschen",
-    3 => "Editieren",
+    1 => 'Akzeptieren',
+    2 => 'Löschen',
+    3 => 'Editieren',
     4 => 'Profil',
-    10 => "Titel",
-    11 => "Startdatum",
-    12 => "URL",
-    13 => "Kategorie",
-    14 => "Datum",
-    15 => "Kategorie",
+    10 => 'Titel',
+    11 => 'Startdatum',
+    12 => 'URL',
+    13 => 'Kategorie',
+    14 => 'Datum',
+    15 => 'Kategorie',
     16 => 'Username',
     17 => 'Name',
     18 => 'E-Mail',
-    34 => "Kommandozentrale",
-    35 => "Beiträge: Artikel",
-    36 => "Beiträge: Links",
-    37 => "Beiträge: Termine",
-    38 => "Abschicken",
-    39 => "Derzeit gibt es keine Beiträge zu moderieren.",
+    34 => 'Kommandozentrale',
+    35 => 'Beiträge: Artikel',
+    36 => 'Beiträge: Links',
+    37 => 'Beiträge: Termine',
+    38 => 'Abschicken',
+    39 => 'Derzeit gibt es keine Beiträge zu moderieren.',
     40 => 'Neue User'
 );
 
@@ -995,34 +995,35 @@ $MESSAGE = array (
     52 => 'Die angegebene E-Mail-Adresse scheint nicht gültig zu sein.',
     53 => 'Dein neues Passwort wurde gespeichert. Bitte melde Dich nun mit dem neuen Passwort an.',
     54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.',
-    55 => 'Du solltest in KÜrze eine E-Mail erhalten, in der beschrieben wird, wie Du ein neues Passwort für Deinen Account eingeben kannst.'
+    55 => 'Du solltest in Kürze eine E-Mail erhalten, in der beschrieben wird, wie Du ein neues Passwort für Deinen Account eingeben kannst.',
+    56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.'
 );
 
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
-	2 => "Plugin-Installation -- Disclaimer",
-	3 => "Plugin-Installationsformular",
-	4 => "Plugin-Datei",
-	5 => "Plugin-Liste",
-	6 => "Warnung: Plugin schon installiert!",
-	7 => "Das Plugin, das Du installieren willst, ist schon vorhande. Bitte lösche es, bevor Du noch einmal versuchst, es zu installieren",
-	8 => "Plugin-Kompatibilitätstest fehlgeschlagen",
-	9 => "Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href=\"http://www.geeklog.net\">Geeklog</a> oder evtl. eine andere Version dieses Plugins.",
-	10 => "<br><b>Es sind derzeit keine Plugins installiert.</b><br><br>",
-	11 => "Um ein Plugin zu ändern oder löschen, auf die Nummer des Plugins klicken. Wenn Du auf den Namen des Plugins klickst, wird die Homepage des Plugins aufgerufen. Um ein Plugin zu installieren oder aktualisieren bitte dessen Dokumentation lesen.",
-	12 => '(kein Name angegeben)',
-	13 => 'Plugin-Editor',
-	14 => 'Neues Plugin',
-	15 => 'Admin Home',
-	16 => 'Name des Plugins',
-	17 => 'Plugin-Version',
-	18 => 'Geeklog-Version',
-	19 => 'Aktiv',
-	20 => 'Ja',
-	21 => 'Nein',
-	22 => 'Installieren',
+    1 => 'Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href="http://www.geeklog.net/">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.',
+    2 => 'Plugin-Installation -- Disclaimer',
+    3 => 'Plugin-Installationsformular',
+    4 => 'Plugin-Datei',
+    5 => 'Plugin-Liste',
+    6 => 'Warnung: Plugin schon installiert!',
+    7 => 'Das Plugin, das Du installieren willst, ist schon vorhanden. Bitte lösche es, bevor Du noch einmal versuchst, es zu installieren',
+    8 => 'Plugin-Kompatibilitätstest fehlgeschlagen',
+    9 => 'Dieses Plugin benötigt eine neuere Version von Geeklog. Abhilfe schafft ein Update von <a href="http://www.geeklog.net/">Geeklog</a> oder evtl. eine andere Version dieses Plugins.',
+    10 => '<br><b>Es sind derzeit keine Plugins installiert.</b><br><br>',
+    11 => "Um ein Plugin zu ändern oder löschen, auf die Nummer des Plugins klicken. Wenn Du auf den Namen des Plugins klickst, wird die Homepage des Plugins aufgerufen. Um ein Plugin zu installieren oder aktualisieren bitte dessen Dokumentation lesen.",
+    12 => '(kein Name angegeben)',
+    13 => 'Plugin-Editor',
+    14 => 'Neues Plugin',
+    15 => 'Admin Home',
+    16 => 'Name des Plugins',
+    17 => 'Plugin-Version',
+    18 => 'Geeklog-Version',
+    19 => 'Aktiv',
+    20 => 'Ja',
+    21 => 'Nein',
+    22 => 'Installieren',
     23 => 'Speichern',
     24 => 'Abbruch',
     25 => 'Löschen',
@@ -1035,62 +1036,51 @@ $LANG32 = array (
 );
 
 $LANG_ACCESS = array(
-    access => "Zugriff",
-    ownerroot => "Eigent./Root",
-    group => "Gruppe",
-    readonly => "Nur Lesen",
-    accessrights => "Zugriffsrechte",
-    owner => "Eigent.",
-    grantgrouplabel => "Grant Above Group Edit Rights",
-    permmsg => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.",
-    securitygroups => "Security-Gruppen",
+    access => 'Zugriff',
+    ownerroot => 'Eigent./Root',
+    group => 'Gruppe',
+    readonly => 'Nur Lesen',
+    accessrights => 'Zugriffsrechte',
+    owner => 'Eigent.',
+    grantgrouplabel => 'Grant Above Group Edit Rights',
+    permmsg => 'Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.',
+    securitygroups => 'Security-Gruppen',
     editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/user.php\">User Administration page</a>.",
-    securitygroupsmsg => "Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User gehört.",
-    groupeditor => "Gruppen-Editor",
-    description => "Beschreibung",
-    name => "Name",
-     rights => "Rechte",
-    missingfields => "Fehlende Angaben",
-    missingfieldsmsg => "Du musst den Namen und eine Beschreibung für die Gruppe angeben.",
-    groupmanager => "Gruppen-Manager",
-    newgroupmsg => "Um eine Gruppe zu ändern oder löschen, einfach auf den Namen der Gruppe klicken. Neue Gruppe (s.o.) legt eine neue Gruppe an. Hinweis: Core-Gruppen können nicht gelöscht werden, da sie vom System benötigt werden.",
-    groupname => "Gruppen-Name",
-    coregroup => "Core-Gruppe",
-    yes => "Ja",
-    no => "Nein",
+    securitygroupsmsg => 'Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User gehört.',
+    groupeditor => 'Gruppen-Editor',
+    description => 'Beschreibung',
+    name => 'Name',
+    rights => 'Rechte',
+    missingfields => 'Fehlende Angaben',
+    missingfieldsmsg => 'Du musst den Namen und eine Beschreibung für die Gruppe angeben.',
+    groupmanager => 'Gruppen-Manager',
+    newgroupmsg => 'Um eine Gruppe zu ändern oder löschen, einfach auf den Namen der Gruppe klicken. Neue Gruppe (s.o.) legt eine neue Gruppe an. Hinweis: Core-Gruppen können nicht gelöscht werden, da sie vom System benötigt werden.',
+    groupname => 'Gruppen-Name',
+    coregroup => 'Core-Gruppe',
+    yes => 'Ja',
+    no => 'Nein',
     corerightsdescr => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
-    groupmsg => "Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Du diese Gruppe zu einer der folgenden Gruppen hinzufügst, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, kannst Du die gewünschte(n) Gruppe(n) einfach anklicken.",
+    groupmsg => 'Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Du diese Gruppe zu einer der folgenden Gruppen hinzufügst, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, kannst Du die gewünschte(n) Gruppe(n) einfach anklicken.',
     coregroupmsg => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
-    rightsdescr => "Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.",
-    lock => "Lock",
-    members => "Mitglieder",
-    anonymous => "Anonymous",
-    permissions => "Rechte",
-    permissionskey => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
-    edit => "Edit",
-    none => "None",
-    accessdenied => "Zugriff verweigert",
+    rightsdescr => 'Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.',
+    lock => 'Lock',
+    members => 'Mitglieder',
+    anonymous => 'Anonymous',
+    permissions => 'Rechte',
+    permissionskey => 'R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus',
+    edit => 'Edit',
+    none => 'None',
+    accessdenied => 'Zugriff verweigert',
     storydenialmsg => "Du hast nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
     eventdenialmsg => "Du hast nicht die nötigen Rechte, um diesen Termin abzurufen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
-    nogroupsforcoregroup => "Diese Gruppe gehört zu keiner anderen Gruppe.",
-    grouphasnorights => "Diese Gruppe hat keine Rechte für die Administration der Website",
+    nogroupsforcoregroup => 'Diese Gruppe gehört zu keiner anderen Gruppe.',
+    grouphasnorights => 'Diese Gruppe hat keine Rechte für die Administration der Website',
     newgroup => 'Neue Gruppe',
     adminhome => 'Admin Home',
     save => 'Speichern',
     cancel => 'Abbruch',
     delete => 'Löschen',
     canteditroot => 'Du hast versucht die Gruppe Root zu ändern, obwohl Du selbst nicht Mitglied dieser Gruppe bist. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.'	
-);
-
-#admin/word.php
-$LANG_WORDS = array(
-    editor => "Word Replacment editor",
-    wordid => "Word ID",
-    intro => "To modify or delete a word, click on that word.  To create a new word replacement click the new word button to the left.",
-    wordmanager => "Word Manager",
-    word => "Word",
-    replacmentword => "Replacment Word",
-    newword => "New Word"
 );
 
 $LANG_DB_BACKUP = array(
@@ -1110,16 +1100,16 @@ $LANG_DB_BACKUP = array(
 );
 
 $LANG_BUTTONS = array(
-    1 => "Home",
-    2 => "Kontakt",
-    3 => "Mitmachen",
-    4 => "Links",
-    5 => "Umfragen",
-    6 => "Kalender",
-    7 => "Statistik",
-    8 => "Einstellungen",
-    9 => "Suchen",
-    10 => "Erweiterte Suche"
+    1 => 'Home',
+    2 => 'Kontakt',
+    3 => 'Mitmachen',
+    4 => 'Links',
+    5 => 'Umfragen',
+    6 => 'Kalender',
+    7 => 'Statistik',
+    8 => 'Einstellungen',
+    9 => 'Suchen',
+    10 => 'Erweiterte Suche'
 );
 
 $LANG_404 = array (
