@@ -31,22 +31,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.20 2003/06/25 08:39:02 dhaun Exp $
+// $Id: pollbooth.php,v 1.21 2003/10/11 13:57:57 dhaun Exp $
 
 require_once('lib-common.php');
 
 /**
 * Saves a user's vote
 *
-* Saves the users vote, if allowed for the poll $qid.  NOTE
-* all data comes from form post
+* Saves the users vote, if allowed for the poll $qid.
+* NOTE: all data comes from form post
 *
-* @return   string  HTML for poll results
+* @param    string   $qid   poll id
+* @param    int      $aid   selected answer
+* @return   string   HTML for poll results
 *
 */
-function pollsave() 
+function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $qid, $aid, $db, $REMOTE_ADDR, $LANG07;
+    global $_TABLES, $REMOTE_ADDR, $LANG07;
 
     DB_change($_TABLES['pollquestions'],'voters',"voters + 1",'qid',$qid,'',true);
     $id[1] = 'qid';
@@ -134,31 +136,47 @@ function polllist()
 // an aid of -1 will display the select poll
 
 if ($reply == $LANG01[25]) {
-	$display .= COM_refresh($_CONF['site_url'] . "/comment.php?sid=$qid&pid=$pid&type=$type");
-	echo $display;
-	exit;			
+    $display .= COM_refresh($_CONF['site_url'] . "/comment.php?sid=$qid&pid=$pid&type=$type");
+    echo $display;
+    exit;			
 }
+
+if (isset ($HTTP_POST_VARS['qid'])) { // assume we came here through a POST
+    $qid = COM_applyFilter ($HTTP_POST_VARS['qid']);
+    $aid = COM_applyFilter ($HTTP_POST_VARS['aid'], true);
+    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+} else {
+    $qid = COM_applyFilter ($HTTP_GET_VARS['qid']);
+    $aid = COM_applyFilter ($HTTP_GET_VARS['aid']);
+    if ($aid > 0) { // you can't vote with a GET request
+        $aid = -1;
+    }
+    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+}
+
 if (empty($qid)) {
-	$display .= COM_siteHeader() . polllist();
-} else if (empty($aid)) {
-	$display .= COM_siteHeader();
-	if (empty($HTTP_COOKIE_VARS[$qid])) {
-		$display .= COM_pollVote($qid);
-	} else {
-		$display .= COM_pollResults($qid,400,$order,$mode);
-	}
-} else if (isset ($HTTP_POST_VARS['aid']) && ($HTTP_POST_VARS['aid'] > 0) &&
+    $display .= COM_siteHeader() . polllist();
+} else if ($aid == 0) {
+    $display .= COM_siteHeader();
+    if (empty($HTTP_COOKIE_VARS[$qid])) {
+        $display .= COM_pollVote($qid);
+    } else {
+        $display .= COM_pollResults($qid,400,$order,$mode);
+    }
+} else if (($aid > 0) && ($aid <= $_CONF['maxanswers']) &&
         empty($HTTP_COOKIE_VARS[$qid])) {
-    $aid = $HTTP_POST_VARS['aid'];
     setcookie ($qid, $aid, time() + $_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
-    $display .= COM_siteHeader() . pollsave();
+    $display .= COM_siteHeader() . pollsave($qid, $aid);
 } else {
-	$display .= COM_siteHeader()
-		.COM_pollResults($qid,400,$order,$mode);
+    $display .= COM_siteHeader()
+             . COM_pollResults($qid,400,$order,$mode);
 }
 $display .= COM_siteFooter();
+
 echo $display;
 
 ?>
