@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.265 2003/10/11 11:43:35 dhaun Exp $
+// $Id: lib-common.php,v 1.266 2003/11/15 18:55:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1779,9 +1779,10 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
             }
             if( $scale > 399 && $Q['commentcode'] >= 0 )
             {
-                $delete_option = ( SEC_hasAccess( $Q['owner_id'],
-                    $Q['group_id'], $Q['perm_owner'], $Q['perm_group'],
-                    $Q['perm_members'], $Q['perm_anon'] ) == 3 ? true : false );
+                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                    SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
+                    $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
+                    $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
                                              $order, $mode, $delete_option ); 
             }
