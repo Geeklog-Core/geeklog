@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.34 2004/08/06 08:55:36 dhaun Exp $
+// $Id: profiles.php,v 1.35 2004/08/08 19:59:45 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -215,21 +215,24 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 {
  	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
+    $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                                         . '/article.php?story=' . $sid));
+
     // check for correct $_CONF permission
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
-        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+        return $retval;
     }
 
     // check if emailing of stories is disabled
     if ($_CONF['hideemailicon'] == 1) {
-        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+        return $retval;
     }
 
     // check mail speedlimit
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
     if (COM_checkSpeedlimit ('mail') > 0) {
-        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+        return $retval;
     }
 
  	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
@@ -250,10 +253,12 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
     $mailtext .= LB
-		.COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
-		.COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
-		.'------------------------------------------------------------'.LB
-		.$LANG08[24].LB.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
+		. COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
+		. COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
+		. '------------------------------------------------------------'.LB
+		. $LANG08[24] . LB
+        . COM_buildUrl ($_CONF['site_url'] . '/article.php?story=' . $sid
+                        . '#comments');
 
  	$mailto = $to . ' <' . $toemail . '>';
  	$mailfrom = $from . ' <' . $fromemail . '>';
@@ -261,8 +266,6 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 
     COM_mail ($toemail, $subject, $mailtext, $mailfrom);
     COM_updateSpeedlimit ('mail');
-
- 	$retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
 
 	// Increment numemails counter for story
     DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
@@ -352,8 +355,8 @@ switch ($what) {
         if (empty ($sid)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         } else if ($_CONF['hideemailicon'] == 1) {
-            $display = COM_refresh ($_CONF['site_url']
-                                    . '/article.php?story=' . $sid);
+            $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                                    . '/article.php?story=' . $sid));
         } else {
             $display .= COM_siteHeader ('menu', $LANG08[17])
                      . mailstoryform ($sid)
