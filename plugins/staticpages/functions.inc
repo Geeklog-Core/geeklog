@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.32 2004/02/07 13:00:13 dhaun Exp $
+// $Id: functions.inc,v 1.33 2004/02/14 17:20:41 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -466,6 +466,37 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     return $retval;
 }
 
+/**
+* A user is about to be deleted. Update ownership of any static pages owned
+* by that user or delete them.
+*
+* @param   uid   int   User id of deleted user
+*
+*/
+function plugin_user_delete_staticpages($uid)
+{
+    global $_TABLES, $_SP_CONF;
+
+    if (DB_count ($_TABLES['staticpage'],
+            "(sp_uid = $uid) OR (owner_id = $uid)") == 0) {
+        return;
+    }
+
+    if ($_SP_CONF['delete_pages'] == 1) {
+        // delete the pages
+        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE (sp_uid = $uid) OR (owner_id = $uid)");
+    } else {
+        // assign ownership to a user from the Root group
+        $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                 "grp_name = 'Root'");
+        $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid");
+        $A = DB_fetchArray ($result);
+        $rootuser = $A['ug_uid'];
+
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_uid = $rootuser WHERE sp_uid = $uid");
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
+    }
+}
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
