@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2002/04/11 19:47:27 tony_bibbs Exp $
+// $Id: index.php,v 1.21 2002/04/16 20:27:03 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -73,6 +73,11 @@ $display .= COM_showMessage($msg);
 // Geeklog now allows for articles to be published in the future.  Because of this, we need to check
 // to see if we need to rebuild the RDF file in the case that any such articles have now been published
 COM_rdfUpToDateCheck();
+
+// For similar reasons, we need to see if there are currently two featured articles.  Can only have one
+// but you can have one current featured article and one for the future...this check will set the latest
+// one as featured solely
+COM_featuredCheck();
 
 
 $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
