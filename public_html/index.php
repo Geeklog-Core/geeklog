@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.40 2002/12/31 10:58:55 dhaun Exp $
+// $Id: index.php,v 1.41 2003/02/14 04:36:31 blaine Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -118,6 +118,10 @@ if (empty ($topic)) {
 } else {
     $display .= COM_siteHeader();
 }
+
+// Show any Plugin formatted blocks
+// Requires a plugin to have a function called plugin_centerblock_<plugin_name>
+$display .= PLG_showCenterblock();
 
 if ($shownews) {
 

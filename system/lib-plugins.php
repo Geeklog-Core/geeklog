@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.13 2002/12/03 03:20:57 efarmboy Exp $
+// $Id: lib-plugins.php,v 1.14 2003/02/14 04:36:32 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -559,6 +559,32 @@ function PLG_getModerationValues($type)
 function PLG_showSubmitForm($type) 
 {
 	return PLG_callFunctionForOnePlugin('plugin_submit_' . $type);
+}
+
+/**
+* This function will show the centerblock for any plugin 
+* It will be display before any news and after any defined staticpage content.
+* The plugin is responsible to format the output correctly.
+*
+* @return  Formatted center block content
+*
+*/
+function PLG_showCenterblock() 
+{
+    global $_TABLES;
+
+    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    $plugin = new Plugin();
+    $counter = 0;
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_centerblock_' . $A['pi_name'];
+        if (function_exists($function)) {
+		   $retval .= $function();
+        }
+    }
+    return $retval;
 }
 
 ?>
