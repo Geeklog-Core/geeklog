@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2002/10/16 17:16:16 dhaun Exp $
+// $Id: index.php,v 1.12 2002/10/31 18:05:40 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -200,7 +200,7 @@ function liststaticpages($page = 1)
             $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $A['sp_id']));
             $sp_templates->set_var('row_number', $i);
             $sp_templates->set_var('page_display_url',COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
-            $sp_templates->set_var('sp_title', $A['sp_title']);
+            $sp_templates->set_var('sp_title', stripslashes ($A['sp_title']));
             $sp_templates->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
 			$curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $sp_templates->set_var('sp_date', $curtime[0]);

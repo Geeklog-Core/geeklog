@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.14 2002/10/16 17:21:21 dhaun Exp $
+// $Id: functions.inc,v 1.15 2002/10/31 18:05:37 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -178,6 +178,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 	for ($i = 1; $i <= $plugin_results->num_searchresults; $i++) {
         $A = DB_fetchArray($result);
         $thetime = COM_getUserDateTimeFormat($A['day']);
+        $A['sp_title'] = stripslashes ($A['sp_title']);
         $row = array('<a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']) . '">' . $A['sp_title'] . '</a>',
                     $thetime[0],
                     DB_getItem($_TABLES['users'],'username',"uid = '{$A["sp_uid"]}'"),
