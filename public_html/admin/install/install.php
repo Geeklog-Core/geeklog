@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.75 2005/01/16 19:19:02 dhaun Exp $
+// $Id: install.php,v 1.76 2005/01/28 12:40:16 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -53,6 +53,56 @@ if (!defined ('VERSION')) {
 
 
 /**
+* Returns the PHP version
+*
+* Note: Removes appendices like 'rc1', etc.
+*
+* @return   array   the 3 separate parts of the PHP version number
+*
+*/
+function php_v ()
+{
+    $phpv = explode ('.', phpversion ());
+                                                                                
+    return array ($phpv[0], $phpv[1], (int) $phpv[2]);
+}
+
+/**
+* Returns the MySQL version
+*
+* @return   array   the 3 separate parts of the MySQL version number
+*
+*/
+function mysql_v ()
+{
+    global $_DB_host, $_DB_user, $_DB_pass;
+
+    mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
+    $mysqlv = '';
+
+    // mysql_get_server_info() is only available as of PHP 4.0.5
+    $phpv = php_v ();
+    if (($phpv[0] > 4) || (($phpv[0] == 4) && ($phpv[1] > 0)) ||
+        (($phpv[0] == 4) && ($phpv[1] == 0) && ($phpv[2] > 4))) {
+        $mysqlv = mysql_get_server_info();
+    }
+
+    if (!empty ($mysqlv)) {
+        preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
+        $mysqlmajorv = $match[1];
+        $mysqlminorv = $match[2];
+        $mysqlrev = $match[3];
+    } else {
+        $mysqlmajorv = 0;
+        $mysqlminorv = 0;
+        $mysqlrev = 0;
+    }
+    mysql_close ();
+
+    return array ($mysqlmajorv, $mysqlminorv, $mysqlrev);
+}
+
+/**
 * Shows welcome page and gets location of /path/to/geeklog/. NOTE: this
 * Doesn't use the template class because we need to know the path to geeklog
 * before we can include it.
@@ -60,6 +110,40 @@ if (!defined ('VERSION')) {
 */
 function INST_welcomePage()
 {
+    global $_DB_dbms;
+
+    $retval = '';
+
+    $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
+    $retval .= '<html>' . LB;
+    $retval .= '<head>' . LB;
+    $retval .= '<title>Geeklog ' . VERSION . ' Installation</title>' . LB;
+    $retval .= '</head>' . LB;
+    $retval .= '<body>' . LB;
+
+    // check the minimum requirements
+
+    $phpv = php_v ();
+    if (($phpv[0] < 4) || (($phpv[0] == 4) && ($phpv[1] < 1))) {
+        $retval .= '<h1>PHP 4.1.0 required</h1>' . LB;
+        $retval .= '<p>Sorry, but Geeklog now requires at least PHP 4.1.0 to run. Please upgrade your PHP install or ask your hosting service to do it for you.</p>' . LB;
+        $retval .= '</body>' . LB . '</html>' . LB;
+
+        return $retval;
+    }
+
+    if ($_DB_dbms == 'mysql') {
+        $myv = mysql_v ();
+        if (($myv[0] < 3) || (($myv[0] == 3) && ($myv[1] < 23)) ||
+                (($myv[0] == 3) && ($myv[1] == 23) && ($myv[2] < 2))) {
+            $retval .= '<h1>MySQL 3.23.2 required</h1>' . LB;
+            $retval .= '<p>Sorry, but Geeklog now requires at least MySQL 3.23.2 to run. Please upgrade your MySQL install or ask your hosting service to do it for you.</p>' . LB;
+            $retval .= '</body>' . LB . '</html>' . LB;
+
+            return $retval;
+        }
+    }
+
     // prepare some hints about what /path/to/geeklog might be ...
     $thisFile = __FILE__;
     $thisFile = strtr ($thisFile, '\\', '/'); // replace all '\' with '/'
@@ -81,44 +165,48 @@ function INST_welcomePage()
         $posted = true;
     }
 
-    $retval = '';
-
-    $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
-    $retval .= '<html>' . LB;
-    $retval .= '<head>' . LB;
-    $retval .= '<title>Geeklog ' . VERSION . ' Installation</title>' . LB;
-    $retval .= '</head>' . LB;
-    $retval .= '<body text="#000000" bgcolor="#ffffff">' . LB;
     $retval .= '<h1>Geeklog Installation (Step 1 of 2)</h1>' . LB;
-    $retval .= '<p><strong>Welcome to Geeklog ' . VERSION . '</strong>.  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version ' . VERSION . ' you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.' . LB;
-    $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades." . LB;
+    $retval .= '<p><strong>Welcome to Geeklog ' . VERSION . '</strong> and thank you for choosing Geeklog. You are only 2 steps away from having Geeklog running on your system.</p>' . LB;
+    $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades.</p>" . LB;
+
     $retval .= '<h2>Upgrading</h2>' . LB;
-    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).<p>Please note this script will not upgrade any beta or release candidate versions of Geeklog. ';
+    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  <strong>This installation script will alter your Geeklog database.</strong> Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>!</p>' . LB;
+    $retval .= '<p>Please make sure to select the correct Geeklog version you are coming from on the next screen. This script will do incremental upgrades after this version (i.e. you can upgrade directly from any old version to ' . VERSION . ').</p>' . LB;
+    $retval .= '<p>Please note this script will <strong>not upgrade</strong> any beta or release candidate versions of Geeklog.</p>' . LB;
 
-    $globals_off = false;
-    $old_php     = false;
-
-    $phpv = explode ('.', phpversion ());
-    $phpv[2] = substr ($phpv[2], 0, 1); // get rid of 'pl1' etc.
-    if (($phpv[0] < 4) || (($phpv[0] == 4) && ($phpv[1] < 1))) {
-        $old_php = true;
-    }
+    $globals_off     = false;
+    $long_arrays_off = false;
+    $warn_message    = '';
+    $help_message    = '';
 
     if (!ini_get ('register_globals')) {
         $globals_off = true;
+        $warn_message .= '<code>register_globals = Off</code>';
+        $help_message .= '<code>register_globals = On</code>';
     }
 
-    if ($globals_off || $old_php) {
-        $retval .= '<h1>Important!</h1>' . LB;
-
-        if ($old_php) {
-            $retval .= '<p><font color="red"><strong>Note:</strong> Geeklog requires PHP 4.1.0 or newer to run. Please upgrade your PHP or ask your hosting service to do it (this is actually in your own interest, as old versions of PHP have security issues).</font></p>' . LB;
+    $phpv = php_v ();
+    if (($phpv[0] >= 5) && !ini_get ('register_long_arrays')) {
+        $long_arrays_off = true;
+        if (!empty ($warn_message)) {
+            $warn_message .= ' and ';
         }
-
-        if ($globals_off) {
-            $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
+        $warn_message .= '<code>register_long_arrays = Off</code>';
+        if (!empty ($help_message)) {
+            $help_message .= ' and ';
         }
+        $help_message .= '<code>register_long_arrays = On</code>';
     }
+
+    if ($globals_off || $long_arrays_off) {
+        $retval .= '<h1>Important Note</h1>' . LB;
+
+        $retval .= '<p><font color="red"><strong>Note:</strong> You have '
+                . $warn_message .' in your <tt>php.ini</tt>. While Geeklog itself will work just fine with that setting, many of the available plugins and add-ons may not. You may want to set '
+                . $help_message . ' (and restart your webserver) if you plan to install any of those add-ons.</font></p>' . LB;
+        $retval .= '<p>If you don\'t know where your <tt>php.ini</tt> file is located, please <a href="info.php">click here</a>.</p>' . LB;
+    }
+
     $retval .= '<h2>Installation Options</h2>' . LB;
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
@@ -153,8 +241,9 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
 
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
-        // They already have a lib-database file...they can't change their tables names
+
         $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9','1.3.10','1.3.11');
+
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         $cnt = count ($old_versions);
         for ($j = 1; $j <= $cnt; $j++) {
@@ -213,40 +302,6 @@ function INST_createDatabaseStructures ($use_innodb = false)
 
             DB_query ($sql);
             next ($_SQL);
-        }
-
-        mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
-        $mysqlv = '';
-
-        // mysql_get_server_info() is only available as of PHP 4.0.5
-        $phpv = explode ('.', phpversion ());
-        $phpv[2] = substr ($phpv[2], 0, 1); // get rid of 'pl1' etc.
-        if (($phpv[0] > 4) || (($phpv[0] == 4) && ($phpv[1] > 0)) ||
-            (($phpv[0] == 4) && ($phpv[1] == 0) && ($phpv[2] > 4))) {
-            $mysqlv = mysql_get_server_info();
-        }
-
-        if (!empty ($mysqlv)) {
-            preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
-            $mysqlmajorv = $match[1];
-            $mysqlminorv = $match[2];
-            $mysqlrev = $match[3];
-        } else {
-            $mysqlmajorv = 0;
-            $mysqlminorv = 0;
-            $mysqlrev = 0;
-        }
-        mysql_close();
-
-        if ((($mysqlmajorv == 3) && ($mysqlminorv >= 23) && ($mysqlrev >= 2)) ||
-             ($mysqlmajorv > 3)) {
-            // http://www.mysql.com/doc/en/Problems_with_NULL.html
-            // Note that you can only add an index on a column that can have
-            // NULL values if you are using MySQL Version 3.23.2 or newer
-            for ($i = 1; $i <= count ($_INDEX); $i++) {
-                DB_query (current ($_INDEX));
-                next ($_INDEX);
-            }
         }
 
     } else { // in the highly unlikely event that we're not on MySQL ...
