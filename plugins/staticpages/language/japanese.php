@@ -95,7 +95,12 @@ $LANG_STATIC= array(
     centerblock_top => '上部',
     centerblock_feat => '注目記事',
     centerblock_bottom => '下部',
-    centerblock_entire => 'ページ全体'
+    centerblock_entire => 'ページ全体',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

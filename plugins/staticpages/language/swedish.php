@@ -95,7 +95,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Högst upp',
     centerblock_feat => 'Huvudartikel',
     centerblock_bottom => 'Längst ner',
-    centerblock_entire => 'Hela sidan'
+    centerblock_entire => 'Hela sidan',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

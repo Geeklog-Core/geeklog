@@ -93,7 +93,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Góra',
     centerblock_feat => 'Strona Dnia',
     centerblock_bottom => 'Dó³',
-    centerblock_entire => 'Ca³a Strona'
+    centerblock_entire => 'Ca³a Strona',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

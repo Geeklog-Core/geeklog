@@ -95,7 +95,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Top',
     centerblock_feat => 'Feat. Story',
     centerblock_bottom => 'Bottom',
-    centerblock_entire => 'Entire Page'
+    centerblock_entire => 'Entire Page',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

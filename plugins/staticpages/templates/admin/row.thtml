@@ -1,12 +1,12 @@
     <tr align="center">
         <td align="left">
-            <a href="{page_edit_url}">{row_number}</a>
+            <a href="{page_edit_url}" title="{lang_title_edit}">{row_number}</a>
         </td>
         <td align="left">
-            [<a href="{page_clone_url}">C</a>]
+            [<a href="{page_clone_url}" title="{lang_title_copy}">C</a>]
         </td>
         <td align="left">
-            <a href="{page_display_url}">{sp_title}</a>
+            <a href="{page_display_url}" title="{lang_title_display}">{sp_title}</a>
         </td>
         <td>{sp_centerblock}</td>
         <td>{username}</td>

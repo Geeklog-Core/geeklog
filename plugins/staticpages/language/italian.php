@@ -93,7 +93,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Capo Pag.',
     centerblock_feat => 'Art. Evidenz.',
     centerblock_bottom => 'Fine Pag.',
-    centerblock_entire => 'Intera Pagina'
+    centerblock_entire => 'Intera Pagina',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

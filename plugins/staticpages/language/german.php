@@ -97,7 +97,10 @@ $LANG_STATIC= array(
     'centerblock_bottom' => 'unten',
     'centerblock_entire' => 'Ganze Seite',
     'inblock_msg' => 'Im Block: ',
-    'inblock_info' => 'Seite in einen Block packen.'
+    'inblock_info' => 'Seite in einen Block packen.',
+    'title_edit' => 'Seite ändern',
+    'title_copy' => 'Seite kopieren',
+    'title_display' => 'Seite anzeigen'
 );
 
 ?>

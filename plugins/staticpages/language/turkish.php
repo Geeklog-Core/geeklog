@@ -94,7 +94,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Üst',
     centerblock_feat => 'Gün. Yazýsý',
     centerblock_bottom => 'Alt',
-    centerblock_entire => 'Tam Sayfa'
+    centerblock_entire => 'Tam Sayfa',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>

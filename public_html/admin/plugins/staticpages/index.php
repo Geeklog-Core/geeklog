@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2003/12/28 18:54:00 dhaun Exp $
+// $Id: index.php,v 1.28 2003/12/29 13:44:43 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -344,6 +344,9 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
     $sp_templates->set_var('lang_url', $LANG_STATIC['url']);
     $sp_templates->set_var('lang_centerblock', $LANG_STATIC['head_centerblock']);
+    $sp_templates->set_var ('lang_title_edit', $LANG_STATIC['title_edit']);
+    $sp_templates->set_var ('lang_title_copy', $LANG_STATIC['title_copy']);
+    $sp_templates->set_var ('lang_title_display', $LANG_STATIC['title_display']);
 
     $perpage = 50;
     if ($page <= 0) {

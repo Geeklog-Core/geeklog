@@ -93,7 +93,12 @@ $LANG_STATIC= array(
     centerblock_top => 'Bovenaan',
     centerblock_feat => 'HoofdArtikel',
     centerblock_bottom => 'Onderaan',
-    centerblock_entire => 'Gehele pagina'
+    centerblock_entire => 'Gehele pagina',
+    'inblock_msg' => 'In a block: ',
+    'inblock_info' => 'Wrap Static Page in a block.',
+    'title_edit' => 'Edit page',
+    'title_copy' => 'Make a copy of this page',
+    'title_display' => 'Display page'
 );
 
 ?>
