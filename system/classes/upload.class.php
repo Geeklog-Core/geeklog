@@ -29,33 +29,33 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.8 2002/04/22 21:56:16 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.9 2002/05/07 21:54:46 tony_bibbs Exp $
 
 class upload
 {
     // Private Properties
-    var $_errors;               // Array
-    var $_warnings;             // Array
-    var $_debugMessages;        // Array
-    var $_allowedMimeTypes;     // Array
-    var $_availableMimeTypes;   // Array
-    var $_filesToUpload;        // Array
-    var $_currentFile;          // Array
-    var $_allowedIPS;           // Array
-    var $_uploadedFiles;        // Array
-    var $_maxImageWidth;        // Pixels
-    var $_maxImageHeight;       // Pixels
-    var $_maxFileSize;          // Long, in bytes
-    var $_fileUploadDirectory;  // String
-    var $_fileNames;            // String
-    var $_permissions;          // String
-    var $_logFile;              // String
-    var $_doLogging;            // Boolean
-    var $_continueOnError;      // Boolean
-    var $_debug;                // Boolean
-    var $_limitByIP;            // Boolean
-    var $_numSuccessfulUploads; // Integer
-    var $_imageIndex;           // Integer
+    var $_errors = array();               // Array
+    var $_warnings = array();             // Array
+    var $_debugMessages = array();        // Array
+    var $_allowedMimeTypes = array();     // Array
+    var $_availableMimeTypes = array();   // Array
+    var $_filesToUpload = array();        // Array
+    var $_currentFile = array();          // Array
+    var $_allowedIPS = array();           // Array
+    var $_uploadedFiles = array();        // Array
+    var $_maxImageWidth = 300;            // Pixels
+    var $_maxImageHeight = 300;           // Pixels
+    var $_maxFileSize = 1048576;          // Long, in bytes
+    var $_fileUploadDirectory = '';       // String
+    var $_fileNames = '';                 // String
+    var $_permissions = '';               // String
+    var $_logFile = '';                   // String
+    var $_doLogging = false;              // Boolean
+    var $_continueOnError = false;        // Boolean
+    var $_debug = false;                  // Boolean
+    var $_limitByIP = false;              // Boolean
+    var $_numSuccessfulUploads = 0;       // Integer
+    var $_imageIndex = 0;                 // Integer
     
     /**
     * Constructor
@@ -63,27 +63,6 @@ class upload
     */
     function upload()
     {
-        $this->_errors = array();
-        $this->_warnings = array();
-        $this->_debugMessages = array();
-        $this->_allowedMimeTypes = array();
-        $this->_availableMimeTypes = array();
-        $this->_currentFile = array();
-        $this->_uploadedFiles = array();
-        $this->_maxImageWidth = 300;
-        $this->_maxImageHeight = 300;
-        $this->_maxFileSize = 1048576; // 1MB = 1048576
-        $this->_fileUploadDirectory = '';
-        $this->_fileNames = '';
-        $this->_permissions = '';
-        $this->_logFile = '';
-        $this->_doLogging = false;
-        $this->_continueOnError = false;
-        $this->_numSuccessfulUploads = 0;
-        $this->_imageIndex = 0;
-        $this->_maxFileUploadsPerForm = 5;
-        $this->_limitByIP = false;
-        
         $this->_setAvailableMimeTypes();
     }
     
@@ -92,7 +71,8 @@ class upload
     /**
     * Adds a warning that was encountered
     *
-    * @warningText  string  Text of warning
+    * @access   private
+    * @param    string  $warningText     Text of warning
     *
     */
     function _addWarning($warningText)
@@ -108,7 +88,8 @@ class upload
 	/**
 	* Adds an error that was encountered
 	*
-	* @errorText    string  Text of error
+	* @access   private
+	* @param    string      $errorText      Text of error
 	*
 	*/
 	function _addError($errorText)
@@ -124,7 +105,8 @@ class upload
     /**
     * Adds a debug message
     *
-    * @debugText    string  Text of debug message
+    * @access   private
+    * @param        string      $debugText      Text of debug message
     *
     */
     function _addDebugMsg($debugText)
@@ -140,8 +122,10 @@ class upload
     /**
     * Logs an item to the log file
     *
-    * @logtype  string  can be 'warning' or 'error'
-    * @text     string  Text to log to log file
+    * @access   private
+    * @param    string      $logtype    can be 'warning' or 'error'
+    * @param    string      $text       Text to log to log file
+    * @return   boolean     Whether or not we successfully logged an item
     *
     */
 	function _logItem($logtype, $text)
@@ -161,7 +145,8 @@ class upload
     /**
     * Defines superset of available Mime types.
     *
-    * @mimeTypes    array   string array of valid mime types this object will accept
+    * @access   private
+    * @param    array   $mimeTypes  string array of valid mime types this object will accept
     *
     */
     function _setAvailableMimeTypes($mimeTypes = array())
@@ -195,6 +180,8 @@ class upload
     /**
     * Checks if current file is an image
     *
+    * @access private
+    * @return boolean   returns true if file is an image, otherwise false
     */    
     function _isImage()
     {
@@ -220,6 +207,8 @@ class upload
     /**
 	* Verifies the file size meets specified size limitations
 	*
+	* @access private
+	* @return boolean   returns true of file size is within our limits otherwise false
 	*/
 	function _fileSizeOk()
 	{
@@ -237,6 +226,9 @@ class upload
     /**
     * Checks to see if file is an image and, if so, whether or not
     * it meets width and height limitations
+    *
+    * @access   private
+    * @return   boolean     returns true if image height/width meet our limitations otherwise false
     *
     */
 	function _imageSizeOK()
@@ -275,6 +267,8 @@ class upload
 	/**
 	* Gets the width and height of an image
 	*
+	* @access private
+	* @return array     Array with width and height of current image
 	*/
 	function _getImageDimensions()
 	{
@@ -288,6 +282,9 @@ class upload
 	/**
 	* Gets destination file name for current file
 	*
+	* @access private
+	* @return string    returns destination file name
+	* 
 	*/
 	function _getDestinationName()
 	{
@@ -304,6 +301,9 @@ class upload
 
     /**
     * Gets permissions for a file.  This is used to do a chmod
+    *
+    * @access   private
+    * @return   string  returns final permisisons for current file
     *
     */
 	function _getPermissions()
@@ -326,6 +326,9 @@ class upload
 	/**
 	* This function actually completes the upload of a file
 	*
+	* @access   private
+	* @return   boolean     true if copy succeeds otherwise false
+	* 
 	*/
 	function _copyFile()
 	{
@@ -357,8 +360,13 @@ class upload
         }
 	}
 	
-    // Public Methods
-    
+    /**
+    * Allows you to override default max file size
+    *
+    * @param    int     $size_in_bytes      Max. size for uploaded files
+    * @return   boolean true if we set it OK, otherwise false
+    * 
+    */
     function setMaxFileSize($size_in_bytes)
     {
         if (!is_numeric($size_in_bytes)) {
@@ -373,8 +381,8 @@ class upload
     * so from a set of VERY specific IP's.  This is only good for those who are
     * paranoid
     *
-    * @validIPS     array   Array of valid IP addresses to allow file uploads from
-    *
+    * @param    array   $validIPS   Array of valid IP addresses to allow file uploads from
+    * @return   boolean returns true if we successfully limited the IP's, otherwise false
     */
     function limitByIP($validIPS = array('127.0.0.1'))
     {
@@ -394,7 +402,7 @@ class upload
     *
     * NOTE: this only effects the actual file upload process.
     *
-    * @switch   boolean     true or false
+    * @param    boolean     $switch     true or false
     *
     */
     function setContinueOnError($switch)
@@ -409,8 +417,9 @@ class upload
     /**
     * Sets log file
     *
-    * @fileName     string      fully qualified path to log files
-    *
+    * @param    string  $fileName   fully qualified path to log files
+    * @return   boolean returns true if we set the log file, otherwise false
+    * 
     */
     function setLogFile($logFile = '')
     {
@@ -427,7 +436,7 @@ class upload
     /**
     * Enables/disables logging of errors and warnings
     *
-    * $switch   boolean     flag, true or false
+    * @param    boolean     $switch     flag, true or false
     *
     */
     function setLogging($switch)
@@ -445,6 +454,8 @@ class upload
     /**
     * Returns whether or not logging is enabled
     *
+    * @return   boolean returns true if logging is enabled otherwise false
+    * 
     */
     function loggingEnabled()
     {
@@ -455,7 +466,7 @@ class upload
     * Will force the debug messages in this class to be
     * printed
     *
-    * @switch   boolean     flag, true or false
+    * @param    boolean     $switch     flag, true or false
     *
     */
     function setDebug($switch)
@@ -471,6 +482,9 @@ class upload
     
     /**
     * This function will print any errors out.  This is useful in debugging
+    *
+    * @param    boolean     $verbose    whether or not to print immediately or return only a string
+    * @return   string  if $verbose is false it returns all errors otherwise just an empty string
     *
     */
     function printErrors($verbose=true)
@@ -526,6 +540,8 @@ class upload
     /**
     * Returns if any errors have been encountered thus far
     *
+    * @return   boolean returns true if there were errors otherwise false
+    *
     */
     function areErrors()
     {
@@ -539,7 +555,7 @@ class upload
     /**
     * Sets allowed mime types for this instance
     *
-    * @allowedMimeTypes     array   Array of allowed mime types
+    * @param    array   allowedMimeTypes        Array of allowed mime types
     *
     */
     function setAllowedMimeTypes($mimeTypes = array())
@@ -550,6 +566,8 @@ class upload
 	/**
 	* Gets allowed mime types for this instance
 	*
+	* @return   array   Returns array of allowed mime types
+	*
 	*/
 	function getAllowedMimeTypes()
 	{
@@ -558,6 +576,8 @@ class upload
 	
     /**
     * Checks to see that mime type for current file is allowed for upload
+    *
+    * @return   boolean     true if current file's mime type is allowed otherwise false
     *
     */
     function checkMimeType()
@@ -573,7 +593,8 @@ class upload
     /**
     * Sets file upload path
     *
-    * @uploadDir    string  Directory on server to store uploaded files
+    * @param    string  $uploadDir  Directory on server to store uploaded files
+    * @return   boolean returns true if we successfully set path otherwise false
     *
     */
     function setPath($uploadDir)
@@ -596,6 +617,8 @@ class upload
 	/**
 	* Returns directory to upload to
 	*
+	* @return   string  returns path to file upload directory
+	*
 	*/
 	function getPath()
 	{
@@ -609,7 +632,7 @@ class upload
     * number of file names sent doesn't match the number of uploaded
     * files a warning will be generated but processing will continue
     *
-    * @fileNames    string/Array    A string or string array of file names
+    * @param    string|array    $fileNames      A string or string array of file names
     *
     */
     function setFileNames($fileNames = 'geeklog_uploadedfile')
@@ -630,7 +653,7 @@ class upload
     * left alone.  NOTE: this is meant to be called BEFORE you do the upload
     * and ideally is called right after setFileNames()
     *
-    * $perms    String/Array    A string or string array of file permissions
+    * @param    string|array    $perms      A string or string array of file permissions
     *
     */
     function setPerms($perms)
@@ -646,6 +669,8 @@ class upload
     /**
     * Returns how many actual files were sent for upload.  NOTE: this will
     * ignore HTML file fields that were left blank.
+    *
+    * @return   int returns number of files were sent to be uploaded
     *
     */
 	function numFiles()
@@ -671,9 +696,9 @@ class upload
 	}
 	
 	/**
-	* Uploads any posted files. If form has more than one file field, this will
-	* return false if any errors were encountered.
+	* Uploads any posted files.
 	*
+	* @return   boolean returns true if no errors were encountered otherwise false
 	*/
 	function uploadFiles()
 	{
