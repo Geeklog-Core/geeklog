@@ -130,7 +130,10 @@ $LANG01 = array(
 	89 => "There are no upcoming events",
 	90 => "Home",
 	91 => "Created this page in",
-	92 => "seconds"
+	92 => "seconds",
+	93 => "Copyright",
+	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
+	95 => "Powered By"
 );
 
 ###############################################################################
@@ -719,7 +722,8 @@ $MESSAGE = array (
 	25 => "Cannot open your personal calendar until you login",
 	26 => "Event was successfully removed from your personal calendar",
 	27 => "Message successfully sent.",
-	28 => "The plug-in has been successfully saved"
+	28 => "The plug-in has been successfully saved",
+	29 => "Sorry, personal calendars are not enabled on this site"
 );
 
 #for plugins.php
