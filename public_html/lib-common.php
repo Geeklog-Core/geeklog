@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.103 2002/05/20 20:13:32 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.104 2002/05/22 10:18:08 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2419,7 +2419,7 @@ function COM_emailUserTopics()
             continue;
         }
 
-        $mailtext = $LANG08[29] . date("Y-m-d",time()) . "\n";
+        $mailtext = $LANG08[29] . strftime($_CONF['shortdate'], time()) . "\n";
         for ($y=0; $y<$nsrows; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
