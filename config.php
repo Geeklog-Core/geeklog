@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.117 2004/06/07 15:21:12 tony Exp $
+// $Id: config.php,v 1.118 2004/06/07 19:09:53 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -308,6 +308,10 @@ $_CONF['ostype']    = PHP_OS;
 
 // Enables the PDF generator feature.  1 = on, 0 = off
 $_CONF['pdf_enabled'] = 0;
+// Enables the PDF adhoc mode for the general public.  NOTE: this is always enabled
+// for users in the ROOT group. NOTE: generally speaking you will probably want to
+// leave this off unless your site has a particular need for members to do this.
+$_CONF['pdf_adhoc_enabled'] = 0;
 // Absolute path to the htmldoc binary
 $_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
 // Path where we will store the generated PDF's
