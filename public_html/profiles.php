@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.7 2001/12/14 15:29:37 tony_bibbs Exp $
+// $Id: profiles.php,v 1.8 2001/12/14 15:40:07 tony_bibbs Exp $
 
 include('lib-common.php');
 
@@ -131,6 +131,7 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
  	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid' ";
  	$result = DB_query($sql);
  	$A = DB_fetchArray($result);
+    $shortmsg = stripslashes($shortmsg);
  	$mailtext = $LANG08[23].LB;
 	if (strlen($shortmsg) > 0) {
 		$mailtext .= $LANG08[28].LB;
