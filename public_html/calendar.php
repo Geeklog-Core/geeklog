@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.34 2004/01/23 12:13:58 dhaun Exp $
+// $Id: calendar.php,v 1.35 2004/01/23 12:38:39 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -298,6 +298,10 @@ if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
 }
 
+if ($mode != 'personal') {
+    $mode = '';
+}
+
 // Set mode back to master if user refreshes screen after their session expires
 if (empty ($_USER['uid']) AND $mode == 'personal') {
     $mode = '';
@@ -326,6 +330,10 @@ if (isset ($HTTP_POST_VARS['view'])) {
     $view = COM_applyFilter ($HTTP_POST_VARS['view']);
 } else if (isset ($HTTP_GET_VARS['view'])) {
     $view = COM_applyFilter ($HTTP_GET_VARS['view']);
+}
+
+if (!in_array ($view, array ('month', 'week', 'day'))) {
+    $view = '';
 }
 
 if (isset ($HTTP_POST_VARS['year']) || isset ($HTTP_POST_VARS['month']) ||
@@ -416,7 +424,7 @@ case 'day':
     $cal_templates->set_var('currentday', strftime('%A, %x',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
-        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
 	if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
@@ -518,7 +526,7 @@ case 'week':
     $cal_templates->set_var('lang_week', $LANG30[27]);
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
-        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
 	if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
