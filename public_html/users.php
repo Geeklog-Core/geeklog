@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.88 2004/09/08 09:42:02 dhaun Exp $
+// $Id: users.php,v 1.89 2004/09/19 17:55:59 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -682,8 +682,9 @@ $display = '';
 
 switch ($mode) {
 case 'logout':
-    if (!empty($_USER['uid']) AND $_USER['uid'] > 1) {
-        SESS_endUserSession($_USER['uid']);
+    if (!empty ($_USER['uid']) AND $_USER['uid'] > 1) {
+        SESS_endUserSession ($_USER['uid']);
+        PLG_logoutUser ($_USER['uid']);
     }
     setcookie ($_CONF['cookie_session'], '', time() - 10000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
@@ -844,6 +845,7 @@ default:
         $_USER=$userdata;
         $sessid = SESS_newSession($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+        PLG_loginUser ($_USER['uid']);
 
         // Now that we handled session cookies, handle longterm cookie
         if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']]) || !isset($HTTP_COOKIE_VARS['password'])) {

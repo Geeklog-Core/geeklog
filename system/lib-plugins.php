@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.37 2004/09/16 19:11:14 dhaun Exp $
+// $Id: lib-plugins.php,v 1.38 2004/09/19 17:55:59 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -676,6 +676,44 @@ function PLG_deleteUser ($uid)
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
+        if (function_exists ($function)) {
+            $function ($uid);
+        }
+    }
+}
+
+/**
+* This function will inform all plugins when a user logs in
+*
+* @param     int     $uid     user id
+*
+*/
+function PLG_loginUser ($uid)
+{
+    global $_TABLES, $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_user_login_' . $pi_name;
+        if (function_exists ($function)) {
+            $function ($uid);
+        }
+    }
+}
+
+/**
+* This function will inform all plugins when a user logs out.
+* Plugins should not rely on this ever being called, as the user may simply
+* close the browser instead of logging out.
+*
+* @param     int     $uid     user id
+*
+*/
+function PLG_logoutUser ($uid)
+{
+    global $_TABLES, $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_user_logout_' . $pi_name;
         if (function_exists ($function)) {
             $function ($uid);
         }
