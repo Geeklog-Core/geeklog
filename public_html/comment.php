@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.46 2003/09/14 09:07:54 dhaun Exp $
+// $Id: comment.php,v 1.47 2003/11/16 18:22:33 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -60,7 +60,7 @@ require_once('lib-common.php');
 * @param    string  $title      Title of comment
 * @param    string  $comment    Text of comment
 * @param    string  $sid        ID of object comment belongs to
-* @param    string  $pid        ID of parent comment
+* @param    int     $pid        ID of parent comment
 * @param    string  $type       Type of object comment is posted to
 * @param    string  $mode       Mode, e.g. 'preview'
 * @param    string  $postmode   Indicates if comment is plain text or HTML
@@ -69,18 +69,9 @@ require_once('lib-common.php');
 */
 function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
-    global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $LANG_LOGIN, $_USER;
+    global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG03, $LANG12, $LANG_LOGIN;
 
     $retval = '';
-
-    if (empty ($postmode)) {
-        $postmode = $_CONF['postmode'];
-    }
-
-    $sig = '';
-    if ($uid > 1) {
-        $sig = DB_getItem ($_TABLES['users'], 'sig', "uid = '$uid'");
-    }
 
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
@@ -109,6 +100,16 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 . $LANG03[8]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         } else {
+
+            if (empty ($postmode)) {
+                $postmode = $_CONF['postmode'];
+            }
+
+            $sig = '';
+            if ($uid > 1) {
+                $sig = DB_getItem ($_TABLES['users'], 'sig', "uid = '$uid'");
+            }
+
             if ($postmode == 'html') {
                 $commenttext = stripslashes($comment);
                 $commenttext = str_replace('$','&#36;',$commenttext);
@@ -143,6 +144,10 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
 
+                if (empty ($HTTP_POST_VARS['username'])) {
+                    $HTTP_POST_VARS['username'] = DB_getItem ($_TABLES['users'],
+                            'username', "uid = {$HTTP_POST_VARS['uid']}");
+                }
                 $thecomments = COM_getComment ($HTTP_POST_VARS, 'flat', $type,
                                                'ASC', false, true );
 
@@ -218,17 +223,25 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 * @param        string      $title      Title of comment
 * @param        string      $comment    Text of comment
 * @param        string      $sid        ID of object receiving comment
-* @param        string      $pid        ID of parent comment
+* @param        int         $pid        ID of parent comment
 * @param        string      $type       Type of comment this is (article, poll, etc)
 * @param        string      $postmode   Indicates if text is HTML or plain text
 * @return       string      either nothing or HTML formated error
 *
 */
-function savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode) 
+function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
 {
-    global $_TABLES, $_CONF, $LANG03, $REMOTE_ADDR; 
+    global $_CONF, $_TABLES, $_USER, $LANG03;
 
     $retval = '';
+
+    if (empty ($sid) || empty ($title) || empty ($comment) || empty ($type) ||
+            ($uid == 0) || ($uid != $_USER['uid']) ||
+            (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+            ($_CONF['commentsloginrequired'] == 1)))) {
+        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        return $retval;
+    }
 
     // Get signature
     $sig = '';
@@ -291,19 +304,19 @@ function savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode)
 /**
 * Deletes a given comment
 *
-* @param    string      $cid    Comment ID
+* @param    int         $cid    Comment ID
 * @param    string      $sid    ID of object comment belongs to
 * @param    string      $type   Comment type (e.g. article, poll, etc)
 * @return   string      Returns string needed to redirect page to right place
 *
 */
-function deletecomment($cid,$sid,$type) 
+function deletecomment ($cid, $sid, $type) 
 {
-    global $_TABLES, $_CONF, $_USER, $REMOTE_ADDR;
+    global $_CONF, $_TABLES, $_USER, $REMOTE_ADDR;
 
     $retval = '';
 
-    if (!empty ($sid) && !empty ($cid) && is_numeric ($cid)) {
+    if (is_numeric ($cid) && ($cid > 0) && !empty ($sid) && !empty ($type)) {
 
         // only comments of type 'article' and 'poll' are handled by Geeklog
         if (($type == 'article') || ($type == 'poll')) {
@@ -311,14 +324,18 @@ function deletecomment($cid,$sid,$type)
             if ($type == 'article') {
                 $table = $_TABLES['stories'];
                 $idname = 'sid';
+                $has_editPermissions = SEC_hasRights ('story.edit');
             } else {
                 $table = $_TABLES['pollquestions'];
                 $idname = 'qid';
+                $has_editPermissions = SEC_hasRights ('poll.edit');
             }
             $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$table} WHERE {$idname} = '{$sid}'");
             $A = DB_fetchArray ($result);
-            if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
+
+            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                    $A['perm_members'], $A['perm_anon']) == 3) {
                 $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
 
                 DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
@@ -332,7 +349,7 @@ function deletecomment($cid,$sid,$type)
                     DB_change ($_TABLES['stories'], 'comments', $comments,
                                'sid', $sid);
                     $retval .= COM_refresh ($_CONF['site_url']
-                            . '/article.php?story=' . $sid);
+                            . '/article.php?story=' . $sid . '#comments');
                 }
             } else {
                 COM_errorLog ('User ' . $_USER['username'] . ' (IP: '
@@ -355,26 +372,65 @@ function deletecomment($cid,$sid,$type)
 }
 
 // MAIN
-$title = strip_tags ($title);
 switch ($mode) {
-case $LANG03[14]: //Preview
+case $LANG03[14]: // Preview
     $display .= COM_siteHeader()
-        . commentform($uid,$title,$comment,$sid,$pid,$type,$mode,$postmode)
+        . commentform (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
+            strip_tags ($HTTP_POST_VARS['title']), $HTTP_POST_VARS['comment'],
+            COM_applyFilter ($HTTP_POST_VARS['sid']),
+            COM_applyFilter ($HTTP_POST_VARS['pid'], true),
+            COM_applyFilter ($HTTP_POST_VARS['type']),
+            COM_applyFilter ($HTTP_POST_VARS['mode']),
+            COM_applyFilter ($HTTP_POST_VARS['postmode']))
         . COM_siteFooter(); 
     break;
-case $LANG03[11]: //Submit Comment
-    $display .= savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode);
+case $LANG03[11]: // Submit Comment
+    $display .= savecomment (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
+            strip_tags ($HTTP_POST_VARS['title']), $HTTP_POST_VARS['comment'],
+            COM_applyFilter ($HTTP_POST_VARS['sid']),
+            COM_applyFilter ($HTTP_POST_VARS['pid'], true),
+            COM_applyFilter ($HTTP_POST_VARS['type']),
+            COM_applyFilter ($HTTP_POST_VARS['postmode']));
     break;
-case $LANG01[28]: //Delete
-    $display .= deletecomment (strip_tags ($cid), strip_tags ($sid), $type);
+case $LANG01[28]: // Delete
+    $display .= deletecomment (COM_applyFilter ($cid, true),
+                               COM_applyFilter ($sid), COM_applyFilter ($type));
     break;
 case 'display':
+    if ($_USER['uid'] > 1) {
+        $commentmode = DB_getItem ($_TABLES['usercomment'], 'commentmode',
+                                   "uid = {$_USER['uid']}");
+    } else {
+        $commentmode = $_CONF['comment_mode'];
+    }
     $display .= COM_siteHeader()
-        . COM_userComments($sid,$title,$type,$order,'threaded',$pid)
+        . COM_userComments (COM_applyFilter ($HTTP_GET_VARS['sid']),
+                strip_tags ($HTTP_GET_VARS['title']),
+                COM_applyFilter ($HTTP_GET_VARS['type']),
+                COM_applyFilter ($HTTP_GET_VARS['order']), $commentmode,
+                COM_applyFilter ($HTTP_GET_VARS['pid'], true))
         . COM_siteFooter();
     break;
 default:
-    if (!empty($sid)) {
+    if (isset ($HTTP_POST_VARS['sid'])) {
+        $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
+        $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+    } else {
+        $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
+        $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+    }
+    if (!empty ($sid)) {
+        if (isset ($HTTP_POST_VARS['title'])) {
+            $title = COM_applyFilter ($HTTP_POST_VARS['title']);
+            $pid = COM_applyFilter ($HTTP_POST_VARS['pid'], true);
+            $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+            $postmode = COM_applyFilter ($HTTP_POST_VARS['postmode']);
+        } else {
+            $title = COM_applyFilter ($HTTP_GET_VARS['title']);
+            $pid = COM_applyFilter ($HTTP_GET_VARS['pid'], true);
+            $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+            $postmode = COM_applyFilter ($HTTP_GET_VARS['postmode']);
+        }
         if (empty ($title)) {
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
@@ -385,16 +441,26 @@ default:
             }
             $title = str_replace ('$', '&#36;', $title);
         }
-        $display .= COM_siteHeader()
-            . commentform('',$title,'',$sid,$pid,$type,$mode,$postmode)
-            . COM_siteFooter();
+        if (!empty ($type)) {
+            $display .= COM_siteHeader()
+                . commentform ($_USER['uid'], $title, '', $sid, $pid, $type,
+                               $mode, $postmode)
+                . COM_siteFooter();
+        } else {
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+        }
     } else {
         // This could still be a plugin wanting comments
-        if (strlen($type) > 0) {
-            $display .= PLG_callCommentForm($type,$cid);
+        if (isset ($HTTP_POST_VARS['cid'])) {
+            $cid = COM_applyFilter ($HTTP_POST_VARS['cid'], true);
+        } else {
+            $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
+        }
+        if (!empty ($type) && ($cid > 0)) {
+            $display .= PLG_callCommentForm ($type, $cid);
         } else {
             // must be a mistake at this point
-            $display .= COM_refresh("{$_CONF['site_url']}/index.php");
+            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         }
     }
 }

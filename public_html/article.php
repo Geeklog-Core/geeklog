@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.36 2003/10/14 18:38:26 dhaun Exp $
+// $Id: article.php,v 1.37 2003/11/16 18:22:33 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -54,8 +54,23 @@ require_once('lib-common.php');
 
 // MAIN
 
+if (isset ($HTTP_POST_VARS['story'])) {
+    $story = COM_applyFilter($HTTP_POST_VARS['story']);
+} else {
+    $story = COM_applyFilter($HTTP_GET_VARS['story']);
+}
+if (empty ($story)) {
+    echo COM_refresh ($_CONF['site_url'] . '/index.php');
+    exit();
+}
+
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
-if (PLG_supportsComments($type)) {
+if (isset ($HTTP_POST_VARS['type'])) {
+    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+} else {
+    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+}
+if (!empty ($type) && PLG_supportsComments ($type)) {
     // Yes, this is a plugin wanting to be commented on...do it
     $display .= PLG_callCommentForm($type,$story,$mode,$order,$reply);
     echo $display;
