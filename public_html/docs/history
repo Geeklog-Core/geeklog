@@ -3,6 +3,12 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added paging to the plugin editor (for more than 25 installed plugins).
+  A {google_paging} variable is needed in admin/plugins/pluginlist.thtml for
+  the paging links to show up [Dirk]
+- Emails sent from the Admin's mail form (admin/mail.php) were always sent
+  with the site name and site email address, even if you entered something else
+  in the form. Also made admin/mail/mailform.thtml slightly less ugly [Dirk]
 - When deleting a topic, keep the blocks assigned to that topic (bug #247).
   They're assigned to 'all topics' and disabled, but kept around now. The same
   applies for topic feeds, which weren't handled at all before [Dirk]
@@ -74,7 +80,7 @@ XXX XX, 2004 (1.3.10)
 - Added an option to look up IP addresses (new variable $_CONF['ip_lookup'] in
   config.php, pointing to a service that does IP address lookups) [Dirk]
 - Fixed problems with the database backup when there were spaces in the path to
-  the backups directory (bug #185).
+  the backups directory (bug #185). [Dirk]
 - Added email notification for new comments (feature request #155) [Dirk]
 - Added tracking of IP addresses of comment posters (as suggested by Michael
   Jervis) [Dirk]
