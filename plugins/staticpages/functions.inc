@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.29 2004/01/18 10:16:23 dhaun Exp $
+// $Id: functions.inc,v 1.30 2004/01/21 19:13:34 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -347,7 +347,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 */
 function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $HTTP_GET_VARS;
 
     $retval = '';
 
@@ -374,7 +374,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
+    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php,sp_inblock FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query ($spsql);
 
     $pages = DB_numRows ($result);
@@ -395,7 +395,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
             }
 
-            if (($_SP_CONF['in_block'] == 1) &&
+            if (($spresult['sp_inblock'] == 1) &&
                     ($spresult['sp_format'] != 'blankpage') &&
                     !empty ($spresult['sp_title'])) {
                 $retval .= COM_startBlock ($spresult['sp_title']);
@@ -414,10 +414,15 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     $retval .= stripslashes ($spresult['sp_content']);
                 }
             } else {
-                $retval .= stripslashes ($spresult['sp_content']);
+                if ($spresult['sp_php'] != 0) {
+                    COM_errorLog ("PHP in static pages is disabled. Can not display page '$sp_id'.", 1);
+                    $retval .= $LANG_STATIC['deny_msg'];
+                } else {
+                    $retval .= stripslashes ($spresult['sp_content']);
+                }
             }
 
-            if (($_SP_CONF['in_block'] == 1) &&
+            if (($spresult['sp_inblock'] == 1) &&
                     ($spresult['sp_format'] != 'blankpage') &&
                     !empty ($spresult['sp_title'])) {
                 $retval .= COM_endBlock ();

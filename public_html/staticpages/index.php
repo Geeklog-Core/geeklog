@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.15 2004/01/14 18:05:42 dhaun Exp $
+// $Id: index.php,v 1.16 2004/01/21 19:13:34 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -88,7 +88,12 @@ if (!($error)) {
             $retval .= stripslashes ($A['sp_content']);
         }
     } else {
-        $retval .= stripslashes ($A['sp_content']);
+        if ($A['sp_php'] != 0) {
+            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
+            $retval .= $LANG_STATIC['deny_msg'];
+        } else {
+            $retval .= stripslashes ($A['sp_content']);
+        }
     }
     if ($A['sp_format'] <> 'blankpage') {
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
