@@ -653,7 +653,9 @@ $LANG21 = array(
     57 => 'Block nach unten',
     58 => 'Block nach oben',
     59 => 'Block auf die rechte Seite',
-    60 => 'Block auf die linke Seite'
+    60 => 'Block auf die linke Seite',
+    61 => 'Ohne Titel',
+    62 => 'Artikel-Limit'
 );
 
 ###############################################################################

@@ -648,7 +648,9 @@ $LANG21 = array(
     57 => 'Move Block Down',
     58 => 'Move Block Up',
     59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    60 => 'Move block to the left side',
+    61 => 'No Title',
+    62 => 'Article Limit'
 );
 
 ###############################################################################
