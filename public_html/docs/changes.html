@@ -36,22 +36,31 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
 <h3>New Features</h3>
 
 <ul>
+<li><a href="spamx.html">SpamX plugin</a> included. Tom Willet has kindly
+    provided his spam detection plugin, which is now part of the default
+    Geeklog install.<br>
+    The plugin has been modified slightly to store the blacklists in the
+    database. Users of the previous version of the plugin will have to manually
+    add their personal blacklist to the database via the plugin's admin
+    panel.</li>
 <li>Story Archive feature: It is now possible to move stories to an "archive"
     topic or have them deleted automatically at a given time.</li>
 <li>PDF support: Stories can be converted into PDFs (requires installation
     of third-party software - see config.php for details).</li>
-<li>Customizable menu bar: The site's menu bar can now be configured in
-    config.php, i.e. you can choose which entries should be displayed there and
-    in which order. It's also possible to add custom entries by providing a
-    function in lib-custom.php.</li>
+<li>Customizable menu bar: The site's menu bar can now be <a
+    href="config.html#desc_menu_elements">configured</a> in config.php, i.e.
+    you can choose which entries should be displayed there and in which order.
+    It's also possible to add custom entries by providing a function in
+    lib-custom.php.</li>
 <li>Clickable links in text postings: URLs in non-HTML postings are now
     recognized by Geeklog and displayed as clickable links.</li>
 <li>Customizable welcome email: The email that is sent out to users
     registering with your site is now fully customizable by providing the
     text in a text file (/path/to/geeklog/data/welcome_email.txt).</li>
-<li>Timezone hack: The popular "timezone hack" is now included. It lets you
-    set the site's timezone for when your server is located in another
-    timezone.</li>
+<li>Timezone hack: The popular "<a
+    href="http://www.geeklog.net/forum/viewtopic.php?showtopic=40196">timezone
+    hack</a>" is now included. It lets you set the site's timezone for when
+    your server is located in another timezone.</li>
 </ul>
 
 <h3>Other Improvements</h3>
@@ -66,7 +75,7 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     version of a static page.</li>
 </ul>
 
-<h4>Comments</h4>
+<h3>Comments</h3>
 
 <ul>
 <li>The comment code has undergone major changes to improve performance and
@@ -81,20 +90,41 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     <a href="http://sf.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>, which include a Whois function).</li>
 </ul>
 
-<h3>Bugfixes</h3>
+<h3>Security-related fixes</h3>
+
+<p><strong>Note:</strong> All of the following bugs were problems with
+Geeklog's permissions system and fall into the "information leakage" category,
+i.e. under certain circumstances, site content was visible to persons who
+shouldn't be able to see it. None of these bugs were exploitable in the sense
+that they could be used to gain privileges or cause damage to Geeklog or the
+environment it's running in.</p>
+
+<ul>
+<li>Group Admins were able to list the members of all groups, even if they were
+    not members of those groups.</li>
+<li>Group Admins were given a list of all the groups in the system, even if
+    they were not members of those groups (bug #280).</li>
+<li>Story and Event Admins were always given a list of all the stories / all
+    the events, even when they didn't have read access to them (bug #269).</li>
+<li>It was possible to request comments from stories even if the user didn't
+    have permission to read the story (provided you knew both the story and
+    the comment id).</li>
+</ul>
+
+<h3>Other bugfixes</h3>
 
 <ul>
 <li>Previewing and saving a story submission left the submitted story in the
     submission queue, but did additionally save it as a new story.</li>
-<li>Deleting an event from the personal calendar didn't work.</li>
+<li>Deleting an event from the personal calendar didn't work (bug #199).</li>
 <li>Old userphotos weren't removed when the new photo had a different file
-    type (e.g. when changing from a .gif to a .jpg).</li>
+    type, e.g. when changing from a .gif to a .jpg (bug #228).</li>
 <li>Scaling images didn't work when the image exceeded the max. height but
-    not the max. width.</li>
+    not the max. width (bug #242).</li>
 <li>Keeping an unscaled image wasn't possible when using gdlib to rescale
-    images.</li>
-<li>The tarball also includes updates PEAR packages which should address the
-    email problems some users were having.</p>
+    images (bug #197).</li>
+<li>The tarball also includes updated PEAR packages which should address the
+    email problems some users were having (bug #246).</p>
 </ul>
 
 <p>This release contains various improvements provided by the Geeklog community
