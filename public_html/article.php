@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.45 2004/05/30 16:33:02 dhaun Exp $
+// $Id: article.php,v 1.46 2004/06/17 19:34:32 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -62,6 +62,10 @@ if (isset ($HTTP_POST_VARS['story'])) {
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
+}
+$order = COM_applyFilter ($order);
+if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
+    $order = '';
 }
 
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
@@ -135,6 +139,9 @@ if ($A['count'] > 0) {
             $story_template->set_var('story_id', $A['sid']);
             $story_template->set_var('story_comments', DB_count($_TABLES['comments'],'sid',$A['sid']));
             $story_template->set_var('lang_comments', $LANG01[3]);
+            $articleUrl = COM_buildUrl ($_CONF['site_url']
+                                        . '/article.php?story=' . $A['sid']);
+            $story_template->set_var ('article_url', $articleUrl);
             $story_template->parse('output','article');
             $display = $story_template->finish($story_template->get_var('output')); 
         } else {
