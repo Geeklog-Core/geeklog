@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.33 2003/07/14 17:02:42 dhaun Exp $
+// $Id: poll.php,v 1.34 2003/09/01 19:01:06 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -197,7 +197,7 @@ function editpoll($qid='')
 {
     global $_TABLES, $LANG25, $_CONF, $_USER, $LANG_ACCESS;
 
-    $retval .= '';
+    $retval = '';
 
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('editor'=>'polleditor.thtml','answer'=>'pollansweroption.thtml'));
@@ -405,7 +405,9 @@ if ($mode == 'edit') {
     }
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     $display .= listpoll();
     $display .= COM_siteFooter();
 }

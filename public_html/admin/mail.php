@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.18 2003/09/01 12:53:06 dhaun Exp $
+// $Id: mail.php,v 1.19 2003/09/01 19:01:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -176,7 +176,7 @@ function send_messages($vars)
 
 	$failcount = count($failures);
 	$successcount = count($successes);
-	$mailresult .= str_replace('<successcount>',$successcount,$LANG31[20]);
+	$mailresult = str_replace('<successcount>',$successcount,$LANG31[20]);
 	$retval .= str_replace('<failcount>',$failcount,$mailresult);
 	$retval .= "<h2>{$LANG31[21]}</h2>";
 	for ($i = 1; $i <= count($failures); $i++) {
@@ -202,7 +202,7 @@ function send_messages($vars)
 
 $display .= COM_siteHeader();
 
-if ($mail == 'mail') {
+if (isset ($HTTP_POST_VARS['mail']) && ($HTTP_POST_VARS['mail'] == 'mail')) {
     $display .= send_messages($HTTP_POST_VARS);
 } else {
     $display .= display_form();

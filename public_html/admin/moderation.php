@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.42 2003/08/12 21:10:05 dhaun Exp $
+// $Id: moderation.php,v 1.43 2003/09/01 19:01:06 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -381,7 +381,7 @@ function draftlist ()
 {
     global $_TABLES, $_CONF, $LANG24, $LANG29;
 
-    $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
+    $retval = COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
             COM_getBlockTemplate ('_admin_block', 'header'));
 
     $topicsql = buildTopicSql ();
@@ -641,19 +641,18 @@ function moderateusers ($uid, $action, $count)
 
 $display = '';
 $display .= COM_siteHeader();
-$display .= COM_showMessage($msg);
+if (isset ($msg)) {
+    $display .= COM_showMessage($msg);
+}
 
-switch ($mode) {
-case 'moderation':
+if (isset ($HTTP_POST_VARS['mode']) && ($HTTP_POST_VARS['mode'] == 'moderation')) {
     if ($type == 'user') {
         $display .= moderateusers($id,$action,$count);
     } else {
         $display .= moderation($id,$action,$type,$count);
     }
-    break;
-default:
+} else {
     $display .= commandcontrol();
-    break;
 }
 
 $display .= COM_siteFooter();

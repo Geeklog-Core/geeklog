@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.28 2003/06/28 11:24:45 dhaun Exp $
+// $Id: group.php,v 1.29 2003/09/01 19:01:05 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -145,6 +145,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
 
 	//$groups = SEC_getUserGroups('','',$grp_id);
+    $selected = '';
     if (!empty($grp_id)) {
         $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
         $num_groups = DB_numRows($tmp);
@@ -360,7 +361,7 @@ function printrights($grp_id='', $core=0)
 */
 function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
 {
-	global $_TABLES, $_CONF, $LANG_ACCESS;
+	global $_TABLES, $_CONF, $LANG_ACCESS, $VERBOSE;
 
     if (!empty($grp_name) && !empty($grp_descr)) {
         if ($grp_gl_core == 1 AND !is_array($features)) {
@@ -425,7 +426,7 @@ function listgroups()
 {
     global $_TABLES, $_CONF, $LANG_ACCESS;
 
-    $retval .= COM_startBlock ($LANG_ACCESS['groupmanager'], '',
+    $retval = COM_startBlock ($LANG_ACCESS['groupmanager'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
@@ -603,7 +604,9 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
 }
 else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     $display .= listgroups();
     $display .= COM_siteFooter();
 }

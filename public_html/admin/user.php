@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.61 2003/09/01 12:53:06 dhaun Exp $
+// $Id: user.php,v 1.62 2003/09/01 19:01:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -210,6 +210,8 @@ function changepw($uid,$passwd)
 function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups,$delete_photo = '') 
 {
 	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE, $_USER;
+
+	$retval = '';
 
 	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
 	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
@@ -626,7 +628,9 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     if (empty($offset)) {
         $offset = 0;
     }

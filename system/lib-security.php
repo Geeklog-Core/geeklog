@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.15 2003/09/01 14:43:04 dhaun Exp $
+// $Id: lib-security.php,v 1.16 2003/09/01 19:01:07 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -371,7 +371,7 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 {
     global $LANG_ACCESS;
 
-    $retval .= '<table cellpadding="0" cellspacing="0" border="0">' . LB . '<tr>' . LB
+    $retval = '<table cellpadding="0" cellspacing="0" border="0">' . LB . '<tr>' . LB
         . '<td colspan="3"><b>' . $LANG_ACCESS['owner'] . '</b></td>'  .LB
         . '<td colspan="3"><b>' . $LANG_ACCESS['group'] . '</b></td>' . LB
         . '<td><b>' . $LANG_ACCESS['members'] . '</b></td>' . LB

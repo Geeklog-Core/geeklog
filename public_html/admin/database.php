@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.12 2003/06/19 17:37:37 dhaun Exp $
+// $Id: database.php,v 1.13 2003/09/01 19:01:05 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -60,7 +60,8 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
 
 // Perform the backup if asked
 
-if ($mode == $LANG_DB_BACKUP['do_backup']) {
+if (isset ($HTTP_POST_VARS['mode']) &&
+        ($HTTP_POST_VARS['mode'] == $LANG_DB_BACKUP['do_backup'])) {
     if (is_dir ($_CONF['backup_path'])) {
         $curdatetime = date ("Y_m_d");
         $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.40 2003/08/12 10:49:24 dhaun Exp $
+// $Id: event.php,v 1.41 2003/09/01 19:01:05 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -116,6 +116,7 @@ function editevent($mode, $A)
     $event_templates->set_var('event_title', stripslashes ($A['title']));
     $types  = explode(',',$_CONF['event_types']);
     asort ($types);
+    $catdd = '';
     for ($i = 1; $i <= count($types); $i++) {
         $catdd .= '<option value="' . current($types) . '"';
         if ($A['event_type'] == current($types)) {
@@ -151,9 +152,6 @@ function editevent($mode, $A)
     $start_minute = date('i', $start_stamp);
     if ($start_hour > 12) {
         $start_hour = $start_hour - 12;
-        $ampm = 'pm';
-    }
-    if ($ampm == 'pm') {
         $event_templates->set_var('startpm_selected','selected="SELECTED"');
     } else {
         $event_templates->set_var('startam_selected','selected="SELECTED"');
@@ -608,7 +606,9 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     $display .= listevents();
     $display .= COM_siteFooter();
 }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.24 2003/09/01 14:43:04 dhaun Exp $
+// $Id: lib-plugins.php,v 1.25 2003/09/01 19:01:07 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -552,8 +552,10 @@ function PLG_getCCOptions()
 */
 function PLG_showModerationList() 
 {
-	global $_TABLES, $_CONF;
-	
+    global $_TABLES, $_CONF;
+
+    $retval = '';
+
     $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     for ($i = 1; $i <=$nrows; $i++) {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.16 2003/05/08 17:23:10 dhaun Exp $
+// $Id: auth.inc.php,v 1.17 2003/09/01 19:01:05 dhaun Exp $
 
 // MAIN
 
@@ -41,6 +41,8 @@ if (!empty($loginname) && !empty($passwd)) {
     srand((double)microtime()*1000000);
     $mypasswd = rand();
 }
+
+$display = '';
 
 if (!empty($passwd) && $mypasswd == md5($passwd)) {
     $userdata = SESS_getUserData($loginname);

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.1 2003/08/12 21:10:06 dhaun Exp $
+// $Id: lib-syndication.php,v 1.2 2003/09/01 19:01:07 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -44,7 +44,7 @@ $_SYND_DEBUG = false;
 */
 function SYND_feedUpdateCheckAll( $update_info, $limit )
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
 
     $where = '';
     if( !empty( $limit ))
@@ -114,7 +114,7 @@ function SYND_feedUpdateCheckAll( $update_info, $limit )
 */
 function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
 
     $where = '';
     if( !empty( $limit ))
@@ -319,7 +319,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
 */
 function SYND_updateFeed( $fid )
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
 
     $result = DB_query( "SELECT * FROM {$_TABLES['syndication']} WHERE fid = $fid");
     $A = DB_fetchArray( $result );

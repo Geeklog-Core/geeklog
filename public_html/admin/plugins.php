@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.34 2003/07/05 16:37:58 dhaun Exp $
+// $Id: plugins.php,v 1.35 2003/09/01 19:01:06 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -374,7 +374,9 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     $display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     $display .= listplugins($page);
     $display .= COM_siteFooter();
 }

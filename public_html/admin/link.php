@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.34 2003/06/21 08:57:13 dhaun Exp $
+// $Id: link.php,v 1.35 2003/09/01 19:01:05 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -136,11 +136,11 @@ function editlink($mode, $lid = '')
     $link_templates->set_var('lang_cancel', $LANG23[22]); 
 
 	// user access info
-    $link_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
-    $link_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $link_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
+    $link_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $link_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}")); 
     $link_templates->set_var('link_ownerid', $A['owner_id']);
-    $link_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $link_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
     $usergroups = SEC_getUserGroups();
     if ($access == 3) {
@@ -160,10 +160,10 @@ function editlink($mode, $lid = '')
 		$groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
 	}
     $link_templates->set_var('group_dropdown', $groupdd);
-    $link_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
-    $link_templates->set_var('lang_permissionskey', $LANG_ACCESS[permissionskey]);
+    $link_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    $link_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $link_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    $link_templates->set_var('lang_lockmsg', $LANG_ACCESS[lockmsg]);
+    $link_templates->set_var('lang_lockmsg', $LANG_ACCESS['permmsg']);
     $link_templates->parse('output', 'editor');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
@@ -272,9 +272,9 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 */
 function listlinks() 
 {
-	global $_TABLES, $LANG23, $LANG_ACCESS, $_CONF;
+    global $_CONF, $_TABLES, $LANG23, $LANG_ACCESS;
 
-    $retavl .= '';
+    $retval = '';
 
     $retval .= COM_startBlock ($LANG23[11], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -288,7 +288,7 @@ function listlinks()
     $link_templates->set_var('lang_adminhome', $LANG23[19]);
     $link_templates->set_var('lang_instructions', $LANG23[12]);
     $link_templates->set_var('lang_linktitle', $LANG23[13]);
-    $link_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $link_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $link_templates->set_var('lang_linkcategory', $LANG23[14]);
     $link_templates->set_var('lang_linkurl', $LANG23[15]); 
 
@@ -342,7 +342,9 @@ if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
+    if (isset ($msg)) {
+        $display .= COM_showMessage($msg);
+    }
     $display .= listlinks();
     $display .= COM_siteFooter();
 }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2003/08/02 17:19:35 dhaun Exp $
+// $Id: index.php,v 1.26 2003/09/01 19:01:06 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -82,7 +82,7 @@ function form ($A, $error = false)
         $retval .= $error . "<br><br>";
     } else {
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
-        if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
@@ -93,12 +93,13 @@ function form ($A, $error = false)
         $sp_template->set_var('owner_id', $A['owner_id']);
         $sp_template->set_var('lang_group', $LANG_ACCESS['group']);
     	$usergroups = SEC_getUserGroups();
+        $groupdd = '';
     	if ($access == 3) {
 			$groupdd .= '<select name="group_id">';
         	for ($i = 0; $i < count($usergroups); $i++) {
             	$groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
             	if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                	$groupdd .= ' SELECTED';
+                	$groupdd .= ' selected="selected"';
             	}
             	$groupdd .= '>' . key($usergroups) . '</option>';
             	next($usergroups);

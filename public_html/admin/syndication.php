@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.1 2003/08/12 21:10:05 dhaun Exp $
+// $Id: syndication.php,v 1.2 2003/09/01 19:01:06 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -506,9 +506,11 @@ else if (($http_input_vars['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
 }
 else
 {
-    $display .= COM_siteHeader ('menu')
-             . COM_showMessage ($http_input_vars['msg'])
-             . listfeeds ()
+    $display .= COM_siteHeader ('menu');
+    if (isset ($http_input_vars['msg'])) {
+        $display .= COM_showMessage ($http_input_vars['msg']);
+    }
+    $display .= listfeeds ()
              . COM_siteFooter ();
 }
 
