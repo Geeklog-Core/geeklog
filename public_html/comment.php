@@ -80,12 +80,12 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
     } else {
         DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF['commentspeedlimit']}");
 
-        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', $REMOTE_ADDR);
-
+        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', "$REMOTE_ADDR");
+        
         if ($id > 0) {
             $result = DB_query("SELECT date FROM {$_TABLES['commentspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
             $A = DB_fetchArray($result);
-            $last = time() - $A[0];
+            $last = time() - $A[DB_fieldName($result,0)];
 			
             $retval .= COM_startBlock($LANG12[26])
                 . $LANG03[7]
@@ -210,9 +210,9 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
     } else {
         $comment .= LB . LB . LB . '-----' . LB . $sig;
     }
-    
-    DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
 
+    DB_save($_TABLES['commentspeedlimit'],'ipaddress, date', "'$REMOTE_ADDR'," . time(), 'ipaddress', "'$REMOTE_ADDR'");
+    
     // Clean 'em up a bit!
     if ($postmode == 'html') {
         $comment = addslashes(COM_checkHTML(COM_checkWords($comment)));
@@ -224,7 +224,7 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 
     if (!empty($title) && !empty($comment)) {
         DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
-		
+        
         // See if plugin will handle this
 		PLG_handlePluginComment($type,$sid);
 		
