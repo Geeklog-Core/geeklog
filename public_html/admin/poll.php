@@ -8,7 +8,7 @@
 // | Geeklog poll administration page                                          |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2002 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,12 +31,28 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.15 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: poll.php,v 1.16 2002/05/22 14:52:24 tony_bibbs Exp $
+
+/**
+* Poll administration page
+*
+* @author   Tony Bibbs  <tony@tonybibbs.com>
+* @author   Mark Limburg <mlimburg@users.sourceforge.net>
+* @author   Jason Whittenburg
+*
+*/
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
 
+/**
+* Geeklog common function library
+*/
 include("../lib-common.php");
+
+/**
+* Admin authenticator
+*/
 include('auth.inc.php');
 
 $display = '';
@@ -62,20 +78,20 @@ if (!SEC_hasRights('poll.edit')) {
 *
 * Saves a poll question and potential answers to the database
 *
-* @qid              string          Question ID
-* @display          int             Flag to indicate if poll appears on homepage
-* @question         string          The text for the question
-* @voters           int             Number of votes
-* @statuscode       string          ??
-* @commentcode      string          Indicates if users can comment on poll
-* @A                array           Array of possible answers
-* @V                array           Array of vote per each answer 
-* @owner_id         int             ID of poll owner
-* @group_id         int             ID of group poll belongs to
-* @perm_owner       int             Permissions the owner has on poll
-* @perm_grup        int             Permissions the group has on poll
-* @perm_members     int             Permissions logged in members have on poll
-* @perm_anon        int             Permissions anonymous users have on poll
+* @param    string      $qid            Question ID
+* @param    int         $display        Flag to indicate if poll appears on homepage
+* @param    string      $question       The text for the question
+* @param    int         $voters         Number of votes
+* @param    string      $statuscode     ??
+* @param    string      $commentcode    Indicates if users can comment on poll
+* @param    array       $A              Array of possible answers
+* @param    array       $V              Array of vote per each answer 
+* @param    int         $owner_id       ID of poll owner
+* @param    int         $group_id       ID of group poll belongs to
+* @param    array       $perm_owner     Permissions the owner has on poll
+* @param    array       $perm_group     Permissions the group has on poll
+* @param    array       $perm_members   Permissions logged in members have on poll
+* @param    array       $perm_anon      Permissions anonymous users have on poll
 *
 */
 function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
@@ -115,7 +131,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 
     // Save poll question
     DB_setDebug(true);
-    DB_save($_TABLES['pollquestions'],"qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql);
+    DB_save($_TABLES['pollquestions'],"qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql,'qid',$qid);
     DB_setDebug(false);
 
     // Save poll answers
@@ -124,7 +140,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
             if (empty($V[$i])) { 
                 $V[$i] = "0"; 
             }
-            DB_save($_TABLES['pollanswers'],'qid, aid, answer, votes',"'$qid', $i+1, '$A[$i]', $V[$i]");
+            DB_save($_TABLES['pollanswers'],'qid, aid, answer, votes',"'$qid', $i+1, '$A[$i]', $V[$i]",array('qid','aid'),array($qid,$i+1));
         }
     }
 
@@ -140,7 +156,8 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 *
 * Diplays the poll editor form
 *
-* @qid      string      ID of poll to edit
+* @param    string      $qid        ID of poll to edit
+* @return   string      HTML for poll editor
 *
 */
 function editpoll($qid='') 
@@ -254,6 +271,8 @@ function editpoll($qid='')
 
 /**
 * lists existing polls
+*
+* @return   string  HTML for poll listing
 *
 */
 function listpoll() 
