@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.23 2002/01/24 22:14:42 dreamscape Exp $
+// $Id: story.php,v 1.24 2002/01/25 17:44:57 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -384,7 +384,11 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if ($featured == "1") {
             // there can only be one non-draft featured story
             if ($draft_flag == 0) {
-                DB_change($_TABLES['stories'],'featured','0','featured','1','draft_flag','0');
+                $id[1] = 'featured';
+                $values[1] = 1;
+                $id[2] = 'draft_flag';
+                $values[2] = 0;
+                DB_change($_TABLES['stories'],'featured','0',$id,$values);
             }
 
             // if set to featured force to show on front page
