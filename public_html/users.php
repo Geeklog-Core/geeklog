@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.35 2002/07/23 08:51:40 dhaun Exp $
+// $Id: users.php,v 1.36 2002/08/04 09:48:58 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -283,12 +283,15 @@ function createuser($username,$email)
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
             if ($_CONF['usersubmission'] == 1) {
                 $passwd = md5('');
+                DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
                 $msg = 48;
             } else {
                 emailpassword($username, 1);
                 $msg = 1;
             }
-            DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
+            DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
+            DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
+
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
             $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();
