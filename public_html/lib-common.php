@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.28 2002/01/24 14:16:08 dreamscape Exp $
+// $Id: lib-common.php,v 1.29 2002/02/05 16:42:05 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -39,7 +39,7 @@ $_COM_VERBOSE = false;
 // +---------------------------------------------------------------------------+
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
-include_once('/home/httpd/html/geeklog-1.3/config.php');
+include_once('/path/to/geeklog/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
@@ -326,7 +326,7 @@ function COM_siteHeader($what = 'menu')
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
     $header->set_var('site_url', $_CONF['site_url']);
     $header->set_var('layout_url', $_CONF['layout_url']);
-    $header->set_var('site_email', $_CONF['site_mail']);
+    $header->set_var('site_mail', "mailto:{$_CONF['site_mail']}");
     $header->set_var('site_name', $_CONF['site_name']);
     $msg = '&nbsp;'.$LANG01[67].' '.$_CONF['site_name'];
     if (!empty($_USER['username'])) {
