@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.81 2004/08/15 08:46:49 dhaun Exp $
+// $Id: user.php,v 1.82 2004/08/15 09:37:03 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -59,7 +59,9 @@ if (!SEC_hasRights('user.edit')) {
 /**
 * Shows the user edit form
 *
-* @uid          int         User to edit
+* @param    int     $uid    User to edit
+* @param    int     $msg    Error message to display
+* @return   string          HTML for user edit form
 *
 */
 function edituser($uid = '', $msg = '') 
@@ -217,35 +219,47 @@ function edituser($uid = '', $msg = '')
 /**
 * Changes a user's password
 *
-* @uid      int     ID of user to change password for
-* @passwd   int     New password
+* @param    int     $uid        ID of user to change password for
+* @param    string  $passwd     New password
 *
 */
-function changepw($uid,$passwd) 
+function changepw ($uid, $passwd)
 {
-    global $_TABLES, $_CONF; 
+    global $_CONF, $_TABLES;
 
     $retval = '';
 
-    if (!empty($passwd) && !empty($uid)) {
-        $passwd = md5($passwd);
-        $result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,$_CONF['site_admin_url'] . '/user.php?mode=none');    
+    if (!empty ($passwd) && !empty ($uid)) {
+        $passwd = md5 ($passwd);
+        $result = DB_change ($_TABLES['users'], 'passwd', "$passwd",
+                'uid', $uid, $_CONF['site_admin_url'] . '/user.php?mode=none');
     } else {
-        $retval .= COM_siteHeader('menu');
-        $retval .= COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
-        $retval .= COM_siteFooter();
+        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_errorLog ('CHANGEPW ERROR: There was nothing to do!', 3);
+        $retval .= COM_siteFooter ();
         echo $retval;
         exit;
     }
 }
 
 /**
-* Saves $uid to the database
+* Saves user to the database
+*
+* @param    int     $uid            user id
+* @param    string  $usernmae       (short) user name
+* @param    string  $fullname       user's full name
+* @param    string  $email          user's email address
+* @param    string  $regdate        date the user registered with the site
+* @param    string  $homepage       user's homepage URL
+* @param    array   $groups         groups the user belongs to
+* @param    string  $delete_photo   delete user's photo if == 'on'
+* @return   string                  HTML redirect or error message
 *
 */
-function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups,$delete_photo = '') 
+function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $homepage, $groups, $delete_photo = '') 
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
+
     $retval = '';
 
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);    
@@ -352,9 +366,10 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
         if (empty($errors)) { 
             echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
         } else {
-            $retval .= COM_siteHeader('menu');
-            $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/user.php');
-            $retval .= COM_siteFooter();
+            $retval .= COM_siteHeader ('menu');
+            $retval .= COM_errorLog ('Error in saveusers in '
+                                     . $_CONF['site_admin_url'] . '/user.php');
+            $retval .= COM_siteFooter ();
             echo $retval;
             exit;
         }
@@ -379,10 +394,16 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 /**
 * Lists all users in the system
 *
+* @param    int     $offset         start of list
+* @param    int     $curpage        current page
+* @param    string  $query          query string for search
+* @param    int     $query_limit    max. entries per page
+* @return   string                  HTML for list of users
+*
 */
-function listusers($offset, $curpage, $query = '', $query_limit = 50) 
+function listusers ($offset, $curpage, $query = '', $query_limit = 50) 
 {
-    global $_TABLES, $LANG28, $_CONF;
+    global $_CONF, $_TABLES, $LANG28;
         
     $retval = '';
 
@@ -471,7 +492,7 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
 * @return   string          HTML with success or error message
 *
 */
-function importusers($file)
+function importusers ($file)
 {
     global $_CONF, $_TABLES, $LANG04, $LANG28, $HTTP_POST_FILES;
 
@@ -605,6 +626,12 @@ function importusers($file)
     return $retval;
 }
 
+/**
+* Send password to newly created user
+*
+* @param    string  $username   name of user
+*
+*/
 function emailpassword ($username)
 {
     global $_TABLES;
@@ -613,25 +640,34 @@ function emailpassword ($username)
     if (!empty ($email)) {
         USER_createAndSendPassword ($username, $email);
     }
-
-    return $retval;
 }
 
 
-function display_form()
+/**
+* Display "batch add" (import) form
+*
+* @return   string      HTML for import form
+*
+*/
+function display_form ()
 {
     global $_CONF, $LANG28;
 
-    $retval = '<form action="' . $_CONF['site_admin_url'] . '/user.php" method="post" enctype="multipart/form-data">'
+    $retval = '<form action="' . $_CONF['site_admin_url']
+            . '/user.php" method="post" enctype="multipart/form-data">'
             . $LANG28[29] . ': <input type="file" name="importfile" size="40">'
             . '<input type="hidden" name="mode" value="import">'
-            . '<input type="submit" name="submit" value="' . $LANG28[30] . '"></form>';
+            . '<input type="submit" name="submit" value="' . $LANG28[30]
+            . '"></form>';
 
     return $retval;
 }
 
 /**
 * Delete a user
+*
+* @param    int     $uid    id of user to delete
+* @return   string          HTML redirect
 *
 */
 function deleteUser ($uid)
@@ -652,6 +688,7 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 } else if (isset ($HTTP_GET_VARS['mode'])) {
     $mode = $HTTP_GET_VARS['mode'];
 }
+
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
     if ($uid > 1) {
@@ -677,13 +714,13 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     changepw (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
                                $HTTP_POST_VARS['passwd']);
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $LANG28[1]);
     $display .= edituser (COM_applyFilter ($HTTP_GET_VARS['uid']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= importusers ($HTTP_POST_VARS['file']);
 } else if ($mode == 'importform') {
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader('menu', $LANG28[24]);
     $display .= COM_startBlock ($LANG28[24], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= $LANG28[25] . '<br><br>';
@@ -691,7 +728,7 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader ('menu', $LANG28[11]);
     if (isset ($HTTP_POST_VARS['q']) || isset ($HTTP_POST_VARS['query_limit'])) {
         $VARS = $HTTP_POST_VARS;
     } else {
