@@ -5,14 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | moderation.php                                                            |
+// |                                                                           |
 // | Geeklog main administration page.                                         |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.32 2003/01/01 20:02:19 efarmboy Exp $
+// $Id: moderation.php,v 1.33 2003/03/21 14:58:49 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -238,8 +239,9 @@ function itemlist($type)
                 $A[2] = strftime("%c",$A[2]);
             }
             if ($isplugin)  {
-                $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/plugins/' . $type . '/' 
-                    . $type . '.php?mode=editsubmission&amp;id=' . $A['id']);
+                $mod_templates->set_var ('edit_submission_url',
+                    $_CONF['site_admin_url'] . '/plugins/' . $type
+                    . '/index.php?mode=editsubmission&amp;id=' . $A['id']);
             } else {
                 $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/' .  $type
                     . '.php?mode=editsubmission&amp;id=' . $A['id']); 
@@ -268,9 +270,9 @@ function itemlist($type)
             $retval .= $LANG29[39];
         }
     }
-	
+
     $retval .= COM_endBlock();
-	
+
     return $retval;
 }
 
@@ -379,10 +381,10 @@ function moderation($mid,$action,$type,$count)
                 $retval .= PLG_deleteSubmission($type, $mid[$i]);
             }
             if (empty($mid[$i])) {
-                $retval .= COM_errorLog("moderation.php just tried deleting everyting in table {$type}submission because it got an empty id.  Please report this immediately to your site administrator");
+                $retval .= COM_errorLog("moderation.php just tried deleting everything in table $submissiontable because it got an empty id.  Please report this immediately to your site administrator");
                 return $retval;
             }
-            DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
+            DB_delete($submissiontable,"$id",$mid[$i]);
             break;
         case 'approve':
             if ($type == 'story') {
@@ -396,7 +398,7 @@ function moderation($mid,$action,$type,$count)
                 $T = DB_fetchArray ($result);
                 DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                 "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['related']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
-                DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
+                DB_delete($_TABLES["storysubmission"],"$id",$mid[$i]);
             } else {
                 // This is called in case this is a plugin. There may be some
                 // plugin specific processing that needs to happen.
@@ -466,7 +468,7 @@ function moderateusers ($uid, $action, $count) {
                     }
                     mail($A["email"], "{$_CONF["site_name"]}: {$LANG04[16]}",
                         $mailtext,
-                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nContent-Type: text/plain; charset={$charset}\nX-Mailer: GeekLog $VERSION");
+                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog $VERSION\r\nContent-Type: text/plain; charset={$charset}");
                 }
                 break;
         }
