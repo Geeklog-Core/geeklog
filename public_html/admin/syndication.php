@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.4 2003/09/12 11:51:03 dhaun Exp $
+// $Id: syndication.php,v 1.5 2003/12/28 18:45:05 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -245,7 +245,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_cancel', $LANG33[4]);
     if ($A['fid'] > 0) {
         $feed_template->set_var ('delete_option', '<input type="submit" value="'
-                                 . $LANG33[3] . '" name="mode"');
+                                 . $LANG33[3] . '" name="mode">');
     }
     $feed_template->set_var ('feed_id', $A['fid']);
     $feed_template->set_var ('feed_title', $A['title']);
