@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.77 2003/01/01 18:54:46 dhaun Exp $
+// $Id: story.php,v 1.78 2003/01/05 20:48:56 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -635,11 +635,31 @@ function insert_images($sid, $intro, $body)
 */
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
-    global $_TABLES, $_CONF, $LANG24, $HTTP_POST_FILES;
+    global $_TABLES, $_CONF, $LANG24, $MESSAGE, $HTTP_POST_FILES;
         
-    if (!empty($title) && !empty($introtext)) {
+    $access = 0;
+    if (DB_count ($_TABLES['stories'], 'sid', $sid) > 0) {
+        // if this story already exists, check if the submitter is allowed to
+        // save / modify it
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '{$sid}'");
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+    } else {
+        // on new stories, check for proper topic access
+        $access = SEC_hasTopicAccess ($tid);
+    }
+    if ($access < 3) {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= $MESSAGE[31];
+        $display .= COM_endBlock();
+        $display .= COM_siteFooter();
+        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit story $sid",1);
+        echo $display;
+        exit;
+    } elseif (!empty($title) && !empty($introtext)) {
         $date = date("Y-m-d H:i:s",$unixdate);
-        
+
         if (empty($hits)) {
             $hits = 0;
         }
