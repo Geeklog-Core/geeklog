@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.88 2003/06/22 15:47:13 blaine Exp $
+// $Id: config.php,v 1.89 2003/06/22 22:07:42 dhaun Exp $
 
 // When setting up Geeklog for the first time, you only need to make sure the
 // settings in the following 3 sections are correct:
@@ -146,6 +146,10 @@ $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
 $_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
 $_CONF['allow_user_photo']    = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
+
+// hides the list of authors from the preferences
+$_CONF['hide_author_exclusion'] = 0;
+
 
 // +---------------------------------------------------------------------------+
 // | Support for custom user registration form and account details             |

@@ -303,7 +303,14 @@ $LANG04 = array(
     95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
     96 => 'delete account',
     97 => 'Confirm Account Deletion',
-    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.'
+    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
+    99 => 'Privacy Options for',
+    100 => 'Email from Admin',
+    101 => 'Allow email from Site Admins',
+    102 => 'Email from Users',
+    103 => 'Allow email from other users',
+    104 => 'Show Online Status',
+    105 => 'Show up in Who\'s Online block'
 );
 
 ###############################################################################
@@ -376,7 +383,8 @@ $LANG08 = array(
     31 => "Title",
     32 => "Date",
     33 => "Read the full article at",
-    34 => "End of Message"
+    34 => "End of Message",
+    35 => 'Sorry, this user prefers not to receive any emails.'
 );
 
 ###############################################################################

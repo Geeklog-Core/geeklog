@@ -309,7 +309,14 @@ $LANG04 = array(
     95 => 'Du kannst Deinen Account löschen, indem Du auf den "Account Löschen"-Button klickst. Artikel und Kommentare, die Du unter diesem Account geschrieben hast, werden <strong>nicht</strong> gelöscht, werden aber fortan als vom User "Anonymous" geschrieben erscheinen.',
     96 => 'Account Löschen',
     97 => 'Account Löschen bestätigen',
-    98 => 'Bist Du sicher, dass Du Deinen Account löschen willst? Du wirst Dich danach nicht mehr einloggen können (es sei denn, Du legst einen neuen Account an). Wenn Du Dir sicher bist, klicke bitte noch einmal auf "Account Löschen".'
+    98 => 'Bist Du sicher, dass Du Deinen Account löschen willst? Du wirst Dich danach nicht mehr einloggen können (es sei denn, Du legst einen neuen Account an). Wenn Du Dir sicher bist, klicke bitte noch einmal auf "Account Löschen".',
+    99 => 'Privatsphäre-Einstellungen für',
+    100 => 'E-Mail von Admin',
+    101 => 'Erlaube E-Mails von Site-Admins',
+    102 => 'E-Mail von Usern',
+    103 => 'Erlaube E-Mails von anderen Usern',
+    104 => 'Online-Status zeigen',
+    105 => 'Unter "Wer ist online?"'
 );
 
 ###############################################################################
@@ -382,7 +389,8 @@ $LANG08 = array(
     31 => "Titel",
     32 => "Datum",
     33 => "Kompletter Artikel unter",
-    34 => "Ende dieser Nachricht"
+    34 => 'Ende dieser Nachricht',
+    35 => 'Sorry, dieser User möchte keine E-Mails bekommen.'
 );
 
 ###############################################################################

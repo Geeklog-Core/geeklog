@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.62 2003/06/12 19:45:08 dhaun Exp $
+// $Id: usersettings.php,v 1.63 2003/06/22 22:07:42 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -292,7 +292,7 @@ function editpreferences()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
 
-    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes,emailfromadmin,emailfromuser,showonline FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
 
@@ -312,7 +312,8 @@ function editpreferences()
                                    'boxes' => 'boxesblock.thtml',
                                    'comment' => 'commentblock.thtml',
                                    'language' => 'language.thtml',
-                                   'theme' => 'theme.thtml'
+                                   'theme' => 'theme.thtml',
+                                   'privacy' => 'privacyblock.thtml'
                                   ));
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
@@ -336,7 +337,6 @@ function editpreferences()
     $preferences->set_var ('lang_dateformat', $LANG04[42]);
     $preferences->set_var ('lang_excludeditems', $LANG04[54]);
     $preferences->set_var ('lang_topics', $LANG04[48]);
-    $preferences->set_var ('lang_authors', $LANG04[56]);
     $preferences->set_var ('lang_emailedtopics', $LANG04[76]);
     $preferences->set_var ('lang_boxes', $LANG04[55]);
     $preferences->set_var ('lang_displaymode', $LANG04[57]);
@@ -345,6 +345,12 @@ function editpreferences()
     $preferences->set_var ('lang_sortorder_text', $LANG04[61]);
     $preferences->set_var ('lang_commentlimit', $LANG04[59]);
     $preferences->set_var ('lang_commentlimit_text', $LANG04[62]);
+    $preferences->set_var ('lang_emailfromadmin', $LANG04[100]);
+    $preferences->set_var ('lang_emailfromadmin_text', $LANG04[101]);
+    $preferences->set_var ('lang_emailfromuser', $LANG04[102]);
+    $preferences->set_var ('lang_emailfromuser_text', $LANG04[103]);
+    $preferences->set_var ('lang_showonline', $LANG04[104]);
+    $preferences->set_var ('lang_showonline_text', $LANG04[105]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
 
     $preferences->set_var ('start_block_display',
@@ -357,7 +363,10 @@ function editpreferences()
             COM_startBlock ($LANG04[47] . ' ' . $_USER['username']));
     $preferences->set_var ('start_block_comment',
             COM_startBlock ($LANG04[64] . ' ' . $_USER['username']));
-    $preferences->set_var ('end_block', COM_endBlock ());
+    $preferences->set_var ('end_block_comment', COM_endBlock ());
+    $preferences->set_var ('start_block_privacy',
+            COM_startBlock ($LANG04[99] . ' ' . $_USER['username']));
+    $preferences->set_var ('end_block_privacy', COM_endBlock ());
 
     $preferences->set_var ('display_headline',
                            $LANG04[45] . ' ' . $_USER['username']);
@@ -369,6 +378,8 @@ function editpreferences()
                            $LANG04[47] . ' ' . $_USER['username']);
     $preferences->set_var ('comment_headline',
                            $LANG04[64] . ' ' . $_USER['username']);
+    $preferences->set_var ('privacy_headline',
+                           $LANG04[99] . ' ' . $_USER['username']);
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
@@ -463,12 +474,31 @@ function editpreferences()
     $preferences->set_var ('dateformat_selector', $selection);
     $preferences->parse ('display_block', 'display', true);
 
+    // privacy options block
+    if ($A['emailfromadmin'] == 1) {
+        $preferences->set_var ('emailfromadmin_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var ('emailfromadmin_checked', '');
+    }
+    if ($A['emailfromuser'] == 1) {
+        $preferences->set_var ('emailfromuser_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var ('emailfromuser_checked', '');
+    }
+    if ($A['showonline'] == 1) {
+        $preferences->set_var ('showonline_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var ('showonline_checked', '');
+    }
+    $preferences->parse ('privacy_block', 'privacy', true);
+
     // excluded items block
     $permissions = COM_getPermSQL ('');
     $preferences->set_var ('exclude_topic_checklist',
         COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']));
 
-    if ($_CONF['contributedbyline'] == 1) {
+    if (($_CONF['contributedbyline'] == 1) &&
+        ($_CONF['hide_author_exclusion'] == 0)) {
         $result = DB_query ("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
         $nrows = DB_numRows ($result);
         unset ($where);
@@ -477,9 +507,11 @@ function editpreferences()
             $where .= "uid = '$W[0]' OR ";
         }
         $where .= "uid = '1'";
+        $preferences->set_var ('lang_authors', $LANG04[56]);
         $preferences->set_var ('exclude_author_checklist',
             COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']));
     } else {
+        $preferences->set_var ('lang_authors', '');
         $preferences->set_var ('exclude_author_checklist', '');
     }
     $preferences->parse ('exclude_block', 'exclude', true);
@@ -727,7 +759,7 @@ function saveuser($A)
         $A['pgpkey'] = addslashes ($A['pgpkey']);
 
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}',emailfromadmin='{$A['emailfromadmin']}',emailfromuser='{$A['emailfromuser']}',notonline='{$A['notonline']}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . $A["pgpkey"] . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
 
         if ($_US_VERBOSE) {
@@ -752,6 +784,9 @@ function savepreferences($A)
     if ($A['noicons'] == 'on') $A['noicons'] = 1;
     if ($A["willing"] == 'on') $A["willing"] = 1;
     if ($A['noboxes'] == 'on') $A['noboxes'] = 1;
+    if ($A['emailfromadmin'] == 'on') $A['emailfromadmin'] = 1;
+    if ($A['emailfromuser'] == 'on') $A['emailfromuser'] = 1;
+    if ($A['showonline'] == 'on') $A['showonline'] = 1;
 
     if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
@@ -813,7 +848,7 @@ function savepreferences($A)
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
 
-    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
+    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {
         $etids = '-';

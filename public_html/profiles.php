@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.22 2003/05/30 08:16:34 dhaun Exp $
+// $Id: profiles.php,v 1.23 2003/06/22 22:07:42 dhaun Exp $
 
 include('lib-common.php');
 
@@ -124,30 +124,47 @@ function contactform($uid, $subject='', $message='')
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock();
-    }
-    else {
-        $result = DB_query ("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
-        $A = DB_fetchArray ($result);
+    } else {
+        $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+        $P = DB_fetchArray ($result);
+        if (SEC_inGroup ('Root') || SEC_hasRights ('user.mail')) {
+            $isAdmin = true;
+        } else {
+            $isAdmin = false;
+        }
+        if ((($P['emailfromadmin'] == 1) && $isAdmin) ||
+            (($P['emailfromuser'] == 1) && !$isAdmin)) {
 
-        $retval = COM_startBlock ($LANG08[10] . ' ' . $A['username']);
-        $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
-        $mail_template->set_file ('form', 'contactuserform.thtml');	
-        $mail_template->set_var ('site_url', $_CONF['site_url']);
-        $mail_template->set_var ('lang_description', $LANG08[26]);
-        $mail_template->set_var ('lang_username', $LANG08[11]);
-        $mail_template->set_var ('username', $_USER['username']);
-        $mail_template->set_var ('lang_useremail', $LANG08[12]);
-        $mail_template->set_var ('useremail', $_USER['email']);
-        $mail_template->set_var ('lang_subject', $LANG08[13]);
-        $mail_template->set_var ('subject', $subject);
-        $mail_template->set_var ('lang_message', $LANG08[14]);
-        $mail_template->set_var ('message', $message);
-        $mail_template->set_var ('lang_nohtml', $LANG08[15]);
-        $mail_template->set_var ('lang_submit', $LANG08[16]);
-        $mail_template->set_var ('uid', $uid);
-        $mail_template->parse ('output', 'form');
-        $retval .= $mail_template->finish ($mail_template->get_var ('output'));
-        $retval .= COM_endBlock ();
+            $username = DB_getItem ($_TABLES['users'], 'username',
+                                    "uid = '$uid'");
+            $retval = COM_startBlock ($LANG08[10] . ' ' . $username);
+            $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
+            $mail_template->set_file ('form', 'contactuserform.thtml');	
+            $mail_template->set_var ('site_url', $_CONF['site_url']);
+            $mail_template->set_var ('lang_description', $LANG08[26]);
+            $mail_template->set_var ('lang_username', $LANG08[11]);
+            $mail_template->set_var ('username', $_USER['username']);
+            $mail_template->set_var ('lang_useremail', $LANG08[12]);
+            $mail_template->set_var ('useremail', $_USER['email']);
+            $mail_template->set_var ('lang_subject', $LANG08[13]);
+            $mail_template->set_var ('subject', $subject);
+            $mail_template->set_var ('lang_message', $LANG08[14]);
+            $mail_template->set_var ('message', $message);
+            $mail_template->set_var ('lang_nohtml', $LANG08[15]);
+            $mail_template->set_var ('lang_submit', $LANG08[16]);
+            $mail_template->set_var ('uid', $uid);
+            $mail_template->parse ('output', 'form');
+            $retval .= $mail_template->finish ($mail_template->get_var ('output'));
+            $retval .= COM_endBlock ();
+        } else {
+            $username = DB_getItem ($_TABLES['users'], 'username',
+                                    "uid = '$uid'");
+            $retval = COM_startBlock ($LANG08[10] . ' ' . $username, '',
+                              COM_getBlockTemplate ('_msg_block', 'header'));
+            $retval .= $LANG08[35];
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                           'footer'));
+        }
     }
 
     return $retval;

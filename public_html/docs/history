@@ -3,6 +3,13 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Added new block "Privacy Options" to the Preferences:
+  + chose to receive email from admins and/or other users
+  + chose to show up in Who's Online block
+  (Feature requests #609758 and #609759)
+- New config option $_CONF['hide_author_exclusion'] to hide the author
+  exclusion list from the user's preferences (useful e.g. when it's a rather
+  long list but hardly used by the users of your site).
 - Added tracking of users lastlogin to the userinfo table.
   New $_CONF['lastlogin'] added to config.php - SESSION SETTINGS area
 - Added an option in admin/group.php to list all the users belonging to a group.

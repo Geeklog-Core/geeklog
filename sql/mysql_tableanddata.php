@@ -486,6 +486,8 @@ CREATE TABLE {$_TABLES['userprefs']} (
   tzid char(3) NOT NULL default 'edt',
   emailstories tinyint(4) NOT NULL default '1',
   emailfromadmin tinyint(1) NOT NULL default '1',
+  emailfromuser tinyint(1) NOT NULL default '1',
+  showonline tinyint(1) NOT NULL default '1',
   PRIMARY KEY  (uid)
 ) TYPE=MyISAM
 ";
