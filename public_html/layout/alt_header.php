@@ -1,7 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<title><?php echo "{$CONF["sitename"]} - {$CONF["siteslogan"]}"; ?></title>
+<?php
+$window_title = $CONF["sitename"];
+if (!empty($CONF["pagetitle"])) {
+        $window_title = $window_title . " - " . $CONF["pagetitle"];
+} else {
+        $window_title = $window_title . " - " . $CONF["siteslogan"];
+}
+?>
+<title><?php echo $window_title ?></title>
 <?php include("{$CONF["path"]}/public_html/layout/smartstyle.css"); ?>
 </head>
 <body background="<?php echo $CONF["base"]; ?>/images/bg.gif" link=444444 vlink=444444 alink=444444 leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
