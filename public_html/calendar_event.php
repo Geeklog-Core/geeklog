@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.8 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: calendar_event.php,v 1.9 2001/12/10 16:16:47 tony_bibbs Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -60,7 +60,7 @@ function adduserevent($eid)
         $cal_template->set_file(array('addevent'=>'addevent.thtml'));
         $cal_template->set_var('intro_msg', $LANG02[8]);
         $cal_template->set_var('lang_event', $LANG02[12]);
-        $cal_template->set_var('event_title',stripslahes($A['title']));
+        $cal_template->set_var('event_title',stripslashes($A['title']));
 
         if (!empty($A['url'])) {
             $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . ' target="_blank">');
