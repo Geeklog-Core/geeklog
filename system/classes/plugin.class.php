@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.8 2003/02/20 19:21:31 dhaun Exp $
+// $Id: plugin.class.php,v 1.9 2003/05/02 04:04:18 tony Exp $
 
 /**
 * This is a poorly thought out class that is used pretty much as a structure when
@@ -55,6 +55,11 @@ class Plugin {
     var $searchresults = array();
     var $num_itemssearched = 0; 
     var $num_searchheadings = 0;
+    /**
+    * @access private
+    * @var boolean
+    */
+    var $_expandedSearchSupport = false;
 
     // Submission properties
     var $num_submissions = 0;
@@ -83,21 +88,21 @@ class Plugin {
     */
     function reset()
     {
-        $adminlabel = '';
-        $aadminurl = '';
-        $plugin_image = '';
-        $num_submissions = 0;
-        $plugin_name = '';
-        $searchlabel = '';
-        $searchheading = array();
-        $num_searchresults = 0;
-        $searchresults = array();
-        $num_itemssearched = 0;
-        $num_searchheadings = 0; 
-        $submissionlabel = '';
-        $submissionhelpfile = '';
-        $getsubmissionssql = '';
-        $submissionheading = array();
+        $this->adminlabel = '';
+        $this->adminurl = '';
+        $this->plugin_image = '';
+        $this->num_submissions = 0;
+        $this->plugin_name = '';
+        $this->searchlabel = '';
+        $this->searchheading = array();
+        $this->num_searchresults = 0;
+        $this->searchresults = array();
+        $this->num_itemssearched = 0;
+        $this->num_searchheadings = 0; 
+        $this->submissionlabel = '';
+        $this->submissionhelpfile = '';
+        $this->getsubmissionssql = '';
+        $this->submissionheading = array();
     }
    
     /**
@@ -134,6 +139,37 @@ class Plugin {
     {
         $this->submissionheading[$this->num_submissions] = $heading;
         $this->num_submissions = $this->num_submissions + 1;
+    }
+    
+    /**
+    * Sets whether or not the plugin supports expanded search
+    * results
+    *
+    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @access public
+    * @param boolean $switch True if expanded search is supported otherwise false
+    *
+    */
+    function setExpandedSearchSupport($switch)
+    {
+        if (!is_bool($switch)) {
+            $switch = false;
+        }
+        
+        $this->_expandedSearchSupport = $switch;
+    }
+    
+    /**
+    * Returns if plugin supports expanded searches
+    *
+    * @author Tony Bibbs <tony AT geeklog DOT net>
+    * @access public
+    * @return boolean True if expanded search is supported otherwise false
+    *
+    */
+    function supportsExpandedSearch()
+    {
+        return $this->_expandedSearchSupport;
     }
 }
 
