@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.48 2004/09/04 19:42:48 dhaun Exp $
+// $Id: calendar.php,v 1.49 2004/09/25 19:36:28 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -233,10 +233,6 @@ function getSmallCalendar ($m, $y, $mode = '')
                 }
                 $retval .= $curday->daynumber;
             } else {
-                if ($i > 1) {
-                    $i = 7;
-                    $j = 8;
-                }
                 $retval .= ' class="smallcal-day-empty">&nbsp;';
             }
             $retval .= '</td>' . LB;
