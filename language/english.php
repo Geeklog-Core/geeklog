@@ -81,7 +81,7 @@ $LANG01 = array(
 	38 => "",
 	39 => "Refresh",
 	40 => "",
-	41 => "",
+	41 => "Guest Users",
 	42 => "Authored by:",
 	43 => "Reply to This",
 	44 => "Parent",
@@ -283,7 +283,9 @@ $LANG04 = array(
     76 => "If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!",
     77 => "Photo",
     78 => "Add a picture of yourself!",
-    79 => "Check here to delete this picture"
+    79 => "Check here to delete this picture",
+    80 => "Login",
+    81 => "Send Email"
 );
 
 ###############################################################################
@@ -499,7 +501,8 @@ $LANG12 = array(
     49 => 'Event Type',
     50 => 'Edit Event Types',
     51 => 'Location',
-    52 => 'Delete'
+    52 => 'Delete',
+    53 => 'Create Account'
 );
 
 
@@ -1068,6 +1071,12 @@ $LANG_BUTTONS = array(
     8 => "Personalize",
     9 => "Search",
     10 => "advanced search"
+);
+
+$LANG_404 = array(
+    1 => "404 Error",
+    2 => "Gee, I've looked everywhere but I can not find <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    3 => "<p>We're sorry, but the file you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.phpi\">search page</a> to see if you can find what you lost."
 );
 
 ?>

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.91 2002/05/10 16:20:06 dhaun Exp $
+// $Id: lib-common.php,v 1.92 2002/05/11 18:09:07 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2697,7 +2697,7 @@ function COM_getUserCookieTimeout()
 */
 function phpblock_whosonline()
 {
-    global $_CONF,$_TABLES;
+    global $_CONF,$_TABLES,$LANG01;
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
@@ -2708,14 +2708,14 @@ function phpblock_whosonline()
         $A = DB_fetchArray($result);
         $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' . $A['username'] . '</a>';
         if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
-            $retval .= '&nbsp;<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '"><img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif" border="0"></a>';
+            $retval .= '&nbsp;<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '"><img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif" border="0" alt=""></a>';
         }
         $retval .= '<br>';
     }
     $num_anon = DB_query("SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1");
     $num_anon = DB_numRows($num_anon);
     if ($num_anon > 0) {
-        $retval .= 'Guest Users: ' . $num_anon . '<br>';
+        $retval .= $LANG01[41] . ': ' . $num_anon . '<br>';
     }
     return $retval;
 }

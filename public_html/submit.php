@@ -341,9 +341,9 @@ function submitstory()
         $storyform->set_var('lang_loginout', $LANG12[34]);
     } else {
         $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php');
-        $storyform->set_var('lang_loginout', 'Log In');
+        $storyform->set_var('lang_loginout', $LANG12[2]);
         $storyform->set_var('seperator', ' | ');
-        $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new">Create Account</a>');
+        $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new">' . $LANG12[53] . '</a>');
     }
 
     $storyform->set_var('lang_title', $LANG12[10]);

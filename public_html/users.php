@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.28 2002/05/01 13:10:54 dhaun Exp $
+// $Id: users.php,v 1.29 2002/05/11 18:09:07 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -79,7 +79,7 @@ function userprofile($user)
     $user_templates->set_var('user_regdate', $A['regdate']);
     $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('user_id', $user);
-    $user_templates->set_var('lang_sendemail', 'Send Email');
+    $user_templates->set_var('lang_sendemail', $LANG04[81]);
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', $A['homepage']);
     $user_templates->set_var('lang_bio', $LANG04[7]);
@@ -231,7 +231,7 @@ function loginform()
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_password', $LANG04[4]);
     $user_templates->set_var('lang_forgetpassword', $LANG04[25]);
-    $user_templates->set_var('lang_login', 'Login');
+    $user_templates->set_var('lang_login', $LANG04[80]);
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'login');
     $retval .= $user_templates->finish($user_templates->get_var('output'));

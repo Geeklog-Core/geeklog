@@ -87,7 +87,7 @@ $LANG01 = array(
 	38 => "",
 	39 => "Neuladen",
 	40 => "",
-	41 => "",
+	41 => "G&auml;ste",
 	42 => "Autor:",
 	43 => "Antwort schreiben",
 	44 => "vorherige",
@@ -104,7 +104,7 @@ $LANG01 = array(
 	55 => "Fehler in",
 	56 => "Abstimmen",
 	57 => "Passwort",
-	58 => "Login",
+	58 => "Anmelden",
 	59 => "Noch nicht registriert? Melde Dich jetzt als <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User</a> an",
 	60 => "Kommentar schreiben",
 	61 => "Neuen Account anlegen",
@@ -204,7 +204,7 @@ $LANG03 = array(
 	21 => 'Lies bitte die vorhandenen Kommentare bevor Du Deinen eigenen abgibst, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
 	22 => 'Benutze eine eindeutige Betreffzeile, die den Inhalt Deines Kommentars zusammenfasst.',
 	23 => 'Deine E-Mail-Adresse wird NICHT ver&ouml;ffentlicht.',
-	24 => 'Anonymer User'
+	24 => 'Anonymous'
 );
 
 ###############################################################################
@@ -276,7 +276,7 @@ $LANG04 = array(
 	63 => "Dein Passwort sollte in K&uuml;rze per E-Mail eintreffen. Bitte beachte die Hinweise in der E-Mail und Danke f&uuml;r Dein Interesse an " . $_CONF["site_name"],
 	64 => "Kommentar-Einstellungen f&uuml;r",
 	65 => "Bitte noch einmal versuchen, Dich anzumelden",
-	66 => "Hast Du Dich vertippt? Bitte versuch noch einmal, Dich hier anzumelden. Oder m&ouml;chtest Du Dich als <a href=\"{$_CONF['site_url']}/users.php?mode=new\">neuer User anmelden</a>?",
+	66 => "Hast Du Dich vertippt? Bitte versuch noch einmal, Dich hier anzumelden. Oder m&ouml;chtest Du Dich <a href=\"{$_CONF['site_url']}/users.php?mode=new\">als neuer User registrieren</a>?",
 	67 => "Mitglied seit",
 	68 => "Angemeldet f&uuml;r",
 	69 => "Wie lange soll das System Dich nach dem Anmelden erkennen?",
@@ -289,7 +289,9 @@ $LANG04 = array(
     76 => "W&auml;hle Kategorien aus der folgenden Liste und Du bekommst einmal pro Tag eine E-Mail mit einer &Uuml;bersicht aller neuen Artikel in den ausgew&auml;hlten Kategorien. Du brauchst nur die Kategorien anzukreuzen, die Dich interessieren.",
     77 => "Foto",
     78 => "Ein Bild von Dir",
-    79 => "Ankreuzen, um dieses Bild zu l&ouml;schen:"
+    79 => "Ankreuzen, um dieses Bild zu l&ouml;schen:",
+    80 => "Anmelden",
+    81 => "E-Mail schreiben"
 );
 
 ###############################################################################
@@ -455,12 +457,12 @@ $LANG11 = array(
 
 $LANG12 = array(
 	1 => "To submit a $type you are required to be logged in as a user.",
-	2 => "Login",
+	2 => "Anmelden",
 	3 => "Neuer User",
 	4 => "Einen Termin einreichen",
 	5 => "Einen Link einreichen",
 	6 => "Einen Artikel einreichen",
-	7 => "Login is Required",
+	7 => "Anmeldung erforderlich",
 	8 => "Abschicken",
 	9 => "Wenn Du Informationen einreichen m&ouml;chtest, die auf dieser Site ver&ouml;ffentlicht werden sollen, dann bitten wir Dich, folgende Punkte zu beachten:<ul><li>Bitte alle Felder ausf&uuml;llen, sie werden ben&ouml;tigt<li>Bitte nur vollst&auml;ndige und exakte Information einreichen<li>URLs vor dem Abschicken unbedingt noch einmal kontrollieren ...</ul>",
 	10 => "Titel",
@@ -471,7 +473,7 @@ $LANG12 = array(
 	15 => "Beschreibung",
 	16 => "oder andere Kategorie",
 	17 => "Kategorie",
-	18 => "Other",
+	18 => "Andere",
 	19 => "Bitte lesen",
 	20 => "Fehler: Kategorie fehlt",
 	21 => "When selecting \"Other\" please also provide a category name",
@@ -505,7 +507,8 @@ $LANG12 = array(
     49 => 'Art des Termins',
     50 => 'Edit Termin Types',
     51 => 'Ort',
-    52 => 'L&ouml;schen'
+    52 => 'L&ouml;schen',
+    53 => 'Account anlegen'
 );
 
 
@@ -860,7 +863,7 @@ $LANG30 = array(
 	23 => "November",
 	24 => "Dezember",
 	25 => "Zur&uuml;ck zum ",
-    26 => "All Day",
+    26 => "ganzt&auml;gig",
     27 => "Woche",
     28 => "Pers&ouml;nlicher Kalender f&uuml;r",
     29 => "&Ouml;ffentlicher Kalender",
@@ -871,7 +874,7 @@ $LANG30 = array(
     34 => "Uhrzeit",
     35 => "Quick Add",
     36 => "Submit",
-    37 => "Sorry, the personal calendar feature is not enabled on this site",
+    37 => "Sorry, der Pers&ouml;nliche Kalender ist auf dieser Site nicht verf&uuml;gbar",
     38 => "Pers&ouml;nlicher Termin-Editor",
     39 => 'Tag',
     40 => 'Woche',
@@ -1075,5 +1078,11 @@ $LANG_BUTTONS = array(
     9 => "Suchen",
     10 => "Erweiterte Suche"
 );
+
+$LANG_404 = array (
+    1 => 'Fehler 404',
+    2 => "Hmm, ich habe alles versucht, aber <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b> war nicht aufzufinden.",
+    3 => "<p>Sorry, diese Seite oder Datei existiert nicht. Du k&ouml;nntest es auf der <a href=\"{$_CONF['site_url']}\">Startseite</a> oder mit der <a href=\"{$_CONF['site_url']}/search.php\">Suchfunktion</a> probieren, vielleicht wirst Du ja f&uuml;ndig ..."
+); 
 
 ?>
