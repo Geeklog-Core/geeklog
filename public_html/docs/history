@@ -2,6 +2,10 @@ GeekLog History/Changes:
 
 February 22, 2002
 -----------------
+- Removed some outdated themes (hence the 1.3.2-1 version number)
+
+February 22, 2002
+-----------------
 - Added Canadian French, German and Polish translations
 - Fixed bug that kept front page with multiple polls from working right
 - Added missing help field to block table
