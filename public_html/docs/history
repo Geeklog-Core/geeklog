@@ -1,5 +1,21 @@
 GeekLog History/Changes:
 
+??? ??, 2004
+------------
+
+- Implemented a change to DB_fetchArray, suggested by Niels Leenheer:
+  Geeklog will now, by default, only return associative array indices. In case
+  the numeric indices are needed, a new (optional) second parameter for
+  DB_fetchArray has to be set to "true".
+- Removed extra quotes in SQL statements in admin/block.php to ensure
+  compatibility with old MySQL versions.
+- Fixed SQL error in COM_showTopics when users tried to exclude topics in their
+  preferences.
+- In admin/database.php, if the is_executable function is not available (e.g.
+  on Windows), do at least a file_exists to check if the mysqldump executable
+  exists in the path given in config.php.
+
+
 Mar 14, 2004 (1.3.9)
 ------------
 
