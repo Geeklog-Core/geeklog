@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Fixed problems with the database backup when there were spaces in the path to
+  the backups directory (bug #185).
 - Added email notification for new comments (feature request #155) [Dirk]
 - Added tracking of IP addresses of comment posters (as suggested by Michael
   Jervis) [Dirk]

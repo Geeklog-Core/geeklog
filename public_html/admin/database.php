@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.16 2004/03/29 18:59:25 dhaun Exp $
+// $Id: database.php,v 1.17 2004/05/09 16:51:45 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -92,7 +92,7 @@ if (isset ($HTTP_POST_VARS['mode']) &&
         if (!empty ($_CONF['mysqldump_options'])) {
             $command .= ' ' . $_CONF['mysqldump_options'];
         }
-        $command .= " $_DB_name > {$backupfile}"; 
+        $command .= " $_DB_name > \"$backupfile\"";
 
         if (function_exists ('is_executable')) {
             $canExec = is_executable($_DB_mysqldump_path);
