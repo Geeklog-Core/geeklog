@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.62 2005/01/28 10:04:14 dhaun Exp $
+// $Id: article.php,v 1.63 2005/01/30 13:51:09 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -238,14 +238,16 @@ if ($A['count'] > 0) {
                                       $order, $mode, 0, $page, false, $delete_option));
         }
         if ($_CONF['trackback_enabled']) {
-            if (SEC_inGroup ('Root')) {
-                $url = $_CONF['site_admin_url']
-                     . '/trackback.php?mode=new&amp;id=' . $A['sid'];
-                $story_template->set_var ('send_trackback_link', '<a href="'
-                     . $url . '">' . $LANG_TRB['send_trackback'] . '</a>');
-                $story_template->set_var ('send_trackback_url', $url);
-                $story_template->set_var ('lang_send_trackback_text',
-                                          $LANG_TRB['send_trackback']);
+            if (SEC_hasRights ('story.ping')) {
+                if (($A['draft'] == 0) && ($A['day'] < time ())) {
+                    $url = $_CONF['site_admin_url']
+                         . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
+                    $story_template->set_var ('send_trackback_link', '<a href="'
+                         . $url . '">' . $LANG_TRB['send_trackback'] . '</a>');
+                    $story_template->set_var ('send_trackback_url', $url);
+                    $story_template->set_var ('lang_send_trackback_text',
+                                              $LANG_TRB['send_trackback']);
+                }
             }
 
             $permalink = COM_buildUrl ($_CONF['site_url']

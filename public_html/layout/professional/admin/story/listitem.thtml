@@ -11,4 +11,5 @@
                                     <td>{story_date}</td>
                                     <td>{story_topic}</td>
                                     <td>{story_feature}</td>
+                                    <td>{story_ping}</td>
                                 </tr>

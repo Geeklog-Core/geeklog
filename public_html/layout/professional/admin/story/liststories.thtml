@@ -22,6 +22,7 @@
                                     <th>{lang_date}</th>
                                     <th>{lang_topic}</th>
                                     <th>{lang_featured}</th>
+                                    <th>{lang_ping}</th>
                                 </tr>
                                 {storylist_item}
                                 <tr>

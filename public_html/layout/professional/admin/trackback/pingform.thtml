@@ -1,0 +1,20 @@
+{lang_ping_explain}
+{ping_results}
+<form action="{php_self}" method="POST">
+    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+        <tr>
+            <td align="center">{pingback_button}</td>
+            <td>{lang_pingback_short} </td>
+        </tr>
+        <tr>
+            <td align="center">{ping_button}</td>
+            <td>{lang_ping_short} </td>
+        </tr>
+        <tr>
+            <td align="center">{trackback_button}</td>
+            <td>{lang_trackback_short} </td>
+        </tr>
+    </table>
+    {hidden_input_fields}
+    <p class="warningsmall" align="center">{lang_may_take_a_while}</p>
+</form>

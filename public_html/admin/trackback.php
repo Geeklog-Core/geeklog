@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.4 2005/01/29 17:52:55 dhaun Exp $
+// $Id: trackback.php,v 1.5 2005/01/30 13:51:10 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -150,25 +150,38 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
 * permissions first.
 *
 * @param    int     $id     ID of the trackback comment to delete
-* @return   bool            true = success, false = failure
+* @return   string          HTML redirect
 *
 */
 function deleteTrackbackComment ($id)
 {
     global $_TABLES;
 
-    $deleted = false;
+    $retval = COM_refresh ($_CONF['site_admin_url'] . '/trackback.php?mgs=63');
 
     $cid = addslashes ($id);
     $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
     list ($sid, $type) = DB_fetchArray ($result);
 
-    if (TRB_allowDelete ($sid, $type)) {
-        TRB_deleteTrackbackComment ($id);
-        $deleted = true;
+    if ($type == 'article') {
+        $url = STORY_getItemInfo ($sid, 'url');
+    } else {
+        $url = PLG_getItemInfo ($type, $sid, 'url');
     }
 
-    return $deleted;
+    if (TRB_allowDelete ($sid, $type)) {
+        TRB_deleteTrackbackComment ($id);
+        $msg = 62;
+    } else {
+        $msg = 63;
+    }
+    if (strpos ($url, '?') === false) {
+        $url .= '?msg=' . $msg;
+    } else {
+        $url .= '&msg=' . $msg;
+    }
+
+    return COM_refresh ($url);
 }
 
 /**
@@ -187,6 +200,128 @@ function showTrackbackMessage ($title, $message)
                                COM_getBlockTemplate ('_msg_block', 'header'))
             . $message
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+    return $retval;
+}
+
+/**
+* Send a Pingback to all the links in $text, advertising our post at $url
+*
+* @param    string  $url    URL of a post on our site
+* @param    string  $text   text of a story etc., will be searched for links
+* @return   string          pingback results
+*
+*/
+function sendPingbacks ($url, $text)
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+
+    $retval .= '<p>Pingback results:</p>';
+
+    // extract all links from the text
+    preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
+                    $matches);
+    $numlinks = count ($matches[0]);
+    if ($numlinks > 0) {
+        $links = array ();
+        for ($i = 0; $i < $numlinks; $i++) {
+            $links[$matches[2][$i]] = $matches[1][$i];
+        }
+        $links = array_unique ($links);
+
+        $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+        $template->set_file (array ('list' => 'pingbacklist.thtml',
+                                    'item' => 'pingbackitem.thtml'));
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
+        $template->set_var ('lang_resend', $LANG_TRB['resend']);
+
+        foreach ($links as $key => $URLtoPing) {
+            $result = PNB_sendPingback ($url, $URLtoPing);
+            $resend = '';
+            if (empty ($result)) {
+                $result = '<b>' . $LANG_TRB['pingback_success'] . '</b>';
+            } else if ($result != $LANG_TRB['no_pingback_url']) {
+                $result = '<span class="warningsmall">' . $result . '</span>';
+                // TBD: $resend = '...';
+            }
+            $parts = parse_url ($URLtoPing);
+
+            $template->set_var ('url_to_ping', $URLtoPing);
+            $template->set_var ('link_text', $key);
+            $template->set_var ('host_name', $parts['host']);
+            $template->set_var ('pingback_result', $result);
+            $template->set_var ('resend', $resend);
+            $template->parse ('pingback_results', 'item', true);
+        }
+        $template->parse ('output', 'list');
+        $retval .= $template->finish ($template->get_var ('output'));
+
+    } else {
+        $retval = $LANG_TRB['no_links_pingback'];
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare a list of all links in a story/item so that we can ask the user
+* which one to send the trackback to.
+*
+* @param    string  $type   type of entry ('article' = story, etc.)
+* @param    string  $id     ID of that entry
+* @param    string  $text   text of that entry, to get the links from
+* @return   string          formatted list of links
+*
+*/
+function prepareAutodetect ($type, $id, $text)
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+
+    $baseurl = $_CONF['site_admin_url']
+             . '/trackback.php?mode=autodetect&id=' . $id;
+    if ($type != 'article') {
+        $baseurl .= '&type' . $type;
+    }
+
+    // extract all links from the text
+    preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
+                    $matches);
+    $numlinks = count ($matches[0]);
+    if ($numlinks > 0) {
+        $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+        $template->set_file (array ('list' => 'autodetectlist.thtml',
+                                    'item' => 'autodetectitem.thtml'));
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+        $template->set_var ('layout_url', $_CONF['layout_url']);
+
+        $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&id=' . $id;
+        if ($type != 'article') {
+            $url .= '&type=' . $type;
+        }
+        $template->set_var ('lang_trackback_explain',
+                            sprintf ($LANG_TRB['trackback_explain'], $url));
+
+        for ($i = 0; $i < $numlinks; $i++) {
+            $url = urlencode ($matches[1][$i]);
+            $link = $baseurl .= '&url=' . $url;
+
+            $template->set_var ('autodetect_link', $link);
+            $template->set_var ('link_text', $matches[2][$i]);
+            $template->set_var ('link_url', $matches[1][$i]);
+            $template->parse ('autodetect_items', 'item', true);
+        }
+        $template->parse ('output', 'list');
+        $retval .= $template->finish ($template->get_var ('output'));
+    } else {
+        $retval .= $LANG_TRB['no_links_trackback'];
+    }
 
     return $retval;
 }
@@ -210,13 +345,7 @@ if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
 if ($mode == 'delete') {
     $cid = COM_applyFilter ($_REQUEST['cid'], true);
     if ($cid > 0) {
-        if (deleteTrackbackComment ($cid)) {
-            $display = COM_refresh ($_CONF['site_admin_url']
-                                    . '/trackback.php?msg=62');
-        } else {
-            $display = COM_refresh ($_CONF['site_admin_url']
-                                    . '/trackback.php?msg=63');
-        }
+        $display = deleteTrackbackComment ($cid);
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
@@ -284,6 +413,209 @@ if ($mode == 'delete') {
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
+} else if ($mode == 'pingback') {
+    $type = COM_applyFilter ($_REQUEST['type']);
+    if (empty ($type)) {
+        $type = 'article';
+    }
+    $id = COM_applyFilter ($_REQUEST['id']);
+    if (!empty ($id)) {
+        if ($type == 'article') {
+            list ($url, $fulltext) = STORY_getItemInfo ($id, 'url,description');
+        } else {
+            list ($url, $fulltext) = PLG_getItemInfo ($type, $id,
+                                                      'url,description');
+        }
+        $display .= COM_siteHeader ('menu', $LANG_TRB['pingback'])
+                  . COM_startBlock ($LANG_TRB['pingback_results'])
+                  . sendPingbacks ($url, $fulltext)
+                  . COM_endBlock ()
+                  . COM_siteFooter ();
+    } else {
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    }
+} else if ($mode == 'sendall') {
+    $id = COM_applyFilter ($_REQUEST['id']);
+    if (empty ($id)) {
+        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    }
+    $type = COM_applyFilter ($_REQUEST['type']);
+    if (empty ($type)) {
+        $type = 'article';
+    }
+
+    $pingback_sent = false;
+    $ping_sent = false;
+    $trackback_sent = false;
+    if (isset ($_REQUEST['pingback_sent'])) {
+        $pingback_sent = true;
+    }
+    if (isset ($_REQUEST['ping_sent'])) {
+        $ping_sent = true;
+    }
+    if (isset ($_REQUEST['trackback_sent'])) {
+        $trackback_sent = true;
+    }
+
+    $pingresult = '';
+    if (isset ($_POST['what']) && is_array ($_POST['what'])) {
+        $what = $_POST['what'];
+        if (isset ($what[0])) {         // Pingback
+            if ($type == 'article') {
+                list ($url, $fulltext) = STORY_getItemInfo ($id,
+                                                            'url,description');
+            } else {
+                list ($url, $fulltext) = PLG_getItemInfo ($type, $id,
+                                                          'url,description');
+            }
+            $pingresult = sendPingbacks ($url, $fulltext);
+            $pingback_sent = true;
+        } else if (isset ($what[1])) {  // Ping
+            // TBD
+        } else if (isset ($what[2])) {  // Trackback
+            $url = $_CONF['site_admin_url'] . '/trackback?mode=pretrackback&id='
+                 . $id;
+            if ($type != 'article') {
+                $url .= '&type=' . $type;
+            }
+            echo COM_refresh ($url);
+            exit;
+        }
+    }
+
+    if ($type == 'article') {
+        $title = STORY_getItemInfo ($id, 'title');
+    } else {
+        $title = PLG_getItemInfo ($type, $id, 'title');
+    }
+
+    $display .= COM_siteHeader ('menu', $LANG_TRB['send_pings']);
+    $display .= COM_startBlock (sprintf ($LANG_TRB['send_pings_for'], $title));
+
+    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+    $template->set_file (array ('form' => 'pingform.thtml'));
+    $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $template->set_var ('layout_url', $_CONF['layout_url']);
+    $template->set_var ('php_self', $_CONF['site_admin_url']
+                                    . '/trackback.php');
+    $template->set_var ('lang_may_take_a_while', $LANG_TRB['may_take_a_while']);
+    $template->set_var ('lang_ping_explain', $LANG_TRB['ping_all_explain']);
+
+    $template->set_var ('ping_results', $pingresult);
+
+    if ($_CONF['pingback_enabled']) {
+        if (!$pingback_sent) {
+            $template->set_var ('lang_pingback_button',
+                                $LANG_TRB['pingback_button']);
+            $template->set_var ('lang_pingback_short',
+                                $LANG_TRB['pingback_short']);
+            $button = '<input type="submit" name="what[0]" value="'
+                    . $LANG_TRB['pingback_button'] . '">';
+            $template->set_var ('pingback_button', $button);
+        }
+    } else {
+        $template->set_var ('pingback_button', $LANG_TRB['pingback_disabled']);
+    }
+    if ($_CONF['ping_enabled']) {
+        if (!$ping_sent) {
+            $template->set_var ('lang_ping_button', $LANG_TRB['ping_button']);
+            $template->set_var ('lang_ping_short', $LANG_TRB['ping_short']);
+            $button = '<input type="submit" name="what[1]" value="'
+                    . $LANG_TRB['ping_button'] . '">';
+            $template->set_var ('ping_button', $button);
+        }
+    } else {
+        $template->set_var ('ping_button', $LANG_TRB['ping_disabled']);
+    }
+    if ($_CONF['trackback_enabled']) {
+        if (!$trackback_sent) {
+            $template->set_var ('lang_trackback_button',
+                                $LANG_TRB['trackback_button']);
+            $template->set_var ('lang_trackback_short',
+                                $LANG_TRB['trackback_short']);
+            $button = '<input type="submit" name="what[2]" value="'
+                    . $LANG_TRB['trackback_button'] . '">';
+            $template->set_var ('trackback_button', $button);
+        }
+    } else {
+        $template->set_var ('trackback_button', $LANG_TRB['trackback_disabled']);
+    }
+
+    $hidden = '';
+    if ($pingback_sent) {
+        $hidden .= '<input type="hidden" name="pingback_sent" value="1">';
+    }
+    if ($ping_sent) {
+        $hidden .= '<input type="hidden" name="ping_sent" value="1">';
+    }
+    if ($trackback_sent) {
+        $hidden .= '<input type="hidden" name="trackback_sent" value="1">';
+    }
+    $hidden .= '<input type="hidden" name="id" value="' . $id . '">';
+    $hidden .= '<input type="hidden" name="type" value="' . $type . '">';
+    $hidden .= '<input type="hidden" name="mode" value="sendall">';
+    $template->set_var ('hidden_input_fields', $hidden);
+
+    $template->parse ('output', 'form');
+    $display .= $template->finish ($template->get_var ('output'));
+
+    $display .= COM_endBlock ();
+    $display .= COM_siteFooter ();
+} else if ($mode == 'pretrackback') {
+    $id = COM_applyFilter ($_REQUEST['id']);
+    if (empty ($id)) {
+        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    }
+    $type = COM_applyFilter ($_REQUEST['type']);
+    if (empty ($type)) {
+        $type = 'article';
+    }
+
+    if ($type == 'article') {
+        $fulltext = STORY_getItemInfo ($id, 'description');
+    } else {
+        $fulltext = PLG_getItemInfo ($type, $id, 'description');
+    }
+
+    $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
+              . COM_startBlock ($LANG_TRB['select_url'])
+              . prepareAutodetect ($type, $id, $fulltext)
+              . COM_endBlock ()
+              . COM_siteFooter ();
+} else if ($mode == 'autodetect') {
+    $id = COM_applyFilter ($_REQUEST['id']);
+    $url = $_REQUEST['url'];
+    if (empty ($id) || empty ($url)) {
+        echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+        exit;
+    }
+    $type = COM_applyFilter ($_REQUEST['type']);
+    if (empty ($type)) {
+        $type = 'article';
+    }
+
+    $trackbackUrl = TRB_detectTrackbackUrl ($url);
+
+    if ($type == 'article') {
+        list ($url, $title, $excerpt) = STORY_getItemInfo ($id,
+                                                           'url,title,excerpt');
+    } else {
+        list ($url, $title, $excerpt) = PLG_getItemInfo ($type, $id,
+                                                         'url,title,excerpt');
+    }
+    $excerpt = trim (strip_tags ($excerpt));
+    $blog = TRB_filterBlogname ($_CONF['site_name']);
+
+    $display .= COM_siteHeader ('menu', $LANG_TRB['trackback']);
+    if ($trackbackUrl === false) {
+        $display .= showTrackbackMessage ($LANG_TRB['not_found'],
+                                          $LANG_TRB['autodetect_failed']);
+    }
+    $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog)
+             . COM_siteFooter ();
 } else {
     $display .= COM_siteHeader ('menu');
 

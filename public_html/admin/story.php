@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.144 2004/12/31 10:22:45 dhaun Exp $
+// $Id: story.php,v 1.145 2005/01/30 13:51:10 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -551,12 +551,18 @@ function storyeditor($sid = '', $mode = '')
 * @return   string  HTML for story listing
 *
 */
-function liststories($page = 1) 
+function liststories ($page = 1) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
            $_POST, $_GET;
 
     $display = '';
+
+    $ping_allowed = false;
+    if (SEC_hasRights ('story.ping') &&
+            ($_CONF['trackback_enabled'] || $_CONF['pingback_enabled'])) {
+        $ping_allowed = true;
+    }
 
     $display .= COM_startBlock ($LANG24[22], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
@@ -577,6 +583,11 @@ function liststories($page = 1)
     $story_templates->set_var('lang_date', $LANG24[15]);
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('lang_featured', $LANG24[32]); 
+    if ($ping_allowed) {
+        $story_templates->set_var('lang_ping', $LANG24[20]);
+    } else {
+        $story_templates->set_var('lang_ping', '');
+    }
 
     if (!empty ($_GET['tid'])) {
         $current_topic = $_GET['tid'];
@@ -664,6 +675,15 @@ function liststories($page = 1)
                 $story_templates->set_var('story_feature', $LANG24[35]);
             } else {
                 $story_templates->set_var('story_feature', $LANG24[36]);
+            }
+            if ($ping_allowed && ($A['draft_flag'] == 0) &&
+                    ($A['unixdate'] < time())) {
+                $url = $_CONF['site_admin_url']
+                     . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
+                $story_templates->set_var ('story_ping', '<a href="' . $url
+                        . '">' . $LANG24[21] . '</a>');
+            } else {
+                $story_templates->set_var ('story_ping', '');
             }
             $story_templates->parse('storylist_item','row',true);
         }

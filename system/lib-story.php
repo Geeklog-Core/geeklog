@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.19 2005/01/29 18:03:13 dhaun Exp $
+// $Id: lib-story.php,v 1.20 2005/01/30 13:51:09 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -206,10 +206,11 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'story_introtext_only', $introtext );
         $article->set_var( 'story_bodytext_only', $bodytext );
 
-        if( $_CONF['trackback_enabled'] && SEC_hasRights( 'story.ping' ))
+        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ) && 
+                SEC_hasRights( 'story.ping' ))
         {
-            $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id='
-                 . $A['sid'];
+            $url = $_CONF['site_admin_url']
+                 . '/trackback.php?mode=sendall&amp;id=' . $A['sid'];
             $article->set_var( 'send_trackback_link', '<a href="' . $url . '">'
                  . $LANG_TRB['send_trackback'] . '</a>' );
             $article->set_var( 'send_trackback_url', $url );

@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.153 2005/01/28 10:04:14 dhaun Exp $
+// $Id: config.php,v 1.154 2005/01/30 13:51:08 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -486,6 +486,9 @@ $_CONF['trackback_enabled'] = true;
 
 // Disable pingbacks by setting this to 'false'
 $_CONF['pingback_enabled'] = true;
+
+// Not implemented yet ...
+$_CONF['ping_enabled'] = false;
 
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)

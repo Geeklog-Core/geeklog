@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.2 2005/01/29 11:25:06 dhaun Exp $
+// $Id: lib-pingback.php,v 1.3 2005/01/30 13:51:09 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -118,11 +118,13 @@ function PNB_getPingbackUrl ($url)
 */
 function PNB_sendPingback ($sourceURI, $targetURI)
 {
+    global $LANG_TRB;
+
     $retval = '';
 
     $pingback = PNB_getPingbackUrl ($targetURI);
     if (empty ($pingback)) {
-        return 'No pingback URL found.';
+        return $LANG_TRB['no_pingback_url'];
     }
 
     $parts = parse_url ($pingback);
