@@ -179,27 +179,33 @@ function install_spamx_plugin ()
     $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
     $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
     $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
-    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 
-    $spxversion = get_SPX_ver ();
-    if ($spxversion == 0) { // plugin not installed yet
+    $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
+                            "grp_name = 'spamx Admin'");
+    if ($group_id <= 0) {
         DB_query ($_SPX_ADMIN); // add SpamX Admin group
         $group_id = DB_insertId ();
-
+    }
+    $feat_id = DB_getItem ($_TABLES['features'], 'ft_id',
+                           "ft_name = 'spamx.admin'");
+    if ($feat_id <= 0) {
         DB_query ($_SPX_FEAT); // add 'spamx.admin' feature
         $feat_id = DB_insertId ();
+    }
+    if (DB_getItem ($_TABLES['access'], 'acc_grp_id', "acc_ft_id = $feat_id")
+        != $group_id) {
         // add feature to spamx admin group
         DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, $group_id)");
-
+    }
+    if (DB_getItem ($_TABLES['group_assignments'], 'ug_main_grp_id', "ug_uid = NULL AND ug_grp_id = 1") != $group_id) {
         // make Root group a member of the SpamX Admin group
         DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
-    } else if ($spxversion == 1) { // version 1.0 already installed
-        // delete plugin entry so that we can update it below
-        DB_delete ($_TABLES['plugins'], 'pi_name', 'spamx');
     }
 
+    $spxversion = get_SPX_Ver ();
     if (($spxversion == 0) || ($spxversion == 1)) {
-        DB_query ($_SPX_PLUGIN); // add entry to 'plugins' table
+        // delete plugin entry so that we can update it below
+        DB_delete ($_TABLES['plugins'], 'pi_name', 'spamx');
 
         // create 'spamx' table
         if (innodb_supported ()) {
@@ -210,7 +216,10 @@ function install_spamx_plugin ()
         foreach ($_SPX_DATA as $data) { // add initial plugin data
             DB_query ($data);
         }
+
+        DB_query ($_SPX_PLUGIN); // add entry to 'plugins' table
     }
+
 
     return true;
 }

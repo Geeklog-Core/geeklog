@@ -894,7 +894,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedsto
 $_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
 $_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
 $_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
 
