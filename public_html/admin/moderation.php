@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.12 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: moderation.php,v 1.13 2001/11/18 21:51:44 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -118,10 +118,16 @@ function commandcontrol()
     $admin_templates->set_var('option_label',$LANG01[35]);
     $admin_templates->parse('cc_main_options','ccitem',true);
 
-#		. ShowPluginModerationOptions()
-
-    $admin_templates->parse('output','cc');
-    $retval .= $admin_templates->finish($admin_templates->get_var('output'));
+    $plugins = PLG_getCCOptions();
+    for ($i = 1; $i <= count($plugins); $i++) {
+    	$cur_plugin = current($plugins);
+        $admin_templates->set_var('page_url', $cur_plugin->adminurl);
+        $admin_templates->set_var('page_image', $cur_plugin->plugin_image);
+        $admin_templates->set_var('option_label', $cur_plugin->adminlabel);
+        $admin_templates->parse('plugin_options','ccitem',true);
+	next($plugins);
+    }
+    $retval .= $admin_templates->parse('output','cc');
 
     $retval .= COM_endBlock();
 		
