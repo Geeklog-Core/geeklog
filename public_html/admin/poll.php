@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.40 2004/09/29 13:15:27 dhaun Exp $
+// $Id: poll.php,v 1.41 2004/09/29 17:43:43 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -242,7 +242,7 @@ function editpoll ($qid = '')
         if (isset ($_GROUPS['Poll Admin'])) {
             $Q['group_id'] = $_GROUPS['Poll Admin'];
         } else {
-            $Q['group_id'] = $_GROUPS['Logged-in Users'];
+            $Q['group_id'] = SEC_getFeatureGroup ('poll.edit');
         }
         $Q['perm_owner'] = 3;
         $Q['perm_group'] = 2;

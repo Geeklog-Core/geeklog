@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.21 2004/09/28 17:34:34 vinny Exp $
+// $Id: lib-security.php,v 1.22 2004/09/29 17:43:43 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -247,8 +247,8 @@ function SEC_hasTopicAccess($tid)
 /**
 * Checks if current user has access to the given object
 *
-* This function SEC_takes the access info from a Geeklog object
-* and let's us know if the have access to the object
+* This function takes the access info from a Geeklog object
+* and let's us know if they have access to the object
 * returns 3 for read/edit, 2 for read only and 0 for no
 * access
 *
@@ -288,7 +288,7 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
             // This is an anonymous user, return it's rights
             return $perm_anon;
         } else {
-            // This is a logged in memeber, return their rights
+            // This is a logged in member, return their rights
             return $perm_members;
         }
     }
@@ -588,6 +588,50 @@ function SEC_getPermissionValue($perm_x)
     }
 
     return $retval;
+}
+
+/**
+* Return the group to a given feature.
+*
+* Scenario: We have a feature and we want to know from which group the user
+* got this feature. Always returns the lowest group ID, in case the feature
+* has been inherited from more than one group.
+*
+* @param    string  $feature    the feature, e.g 'story.edit'
+* @param    int     $uid        (optional) user ID
+* @return   int                 group ID or 0
+*
+*/
+function SEC_getFeatureGroup ($feature, $uid = '')
+{
+    global $_GROUPS, $_TABLES, $_USER;
+
+    if (empty ($uid)) {
+        if (empty ($_USER['uid'])) {
+            $uid = 1;
+        } else {
+            $uid = $_USER['uid'];
+        }
+        if (empty ($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups ($uid);
+        }
+    } else {
+        $_GROUPS = SEC_getUserGroups ($uid);
+    }
+
+    $group = 0;
+
+    $ft_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
+    if (($ft_id > 0) && (sizeof ($_GROUPS) > 0)) {
+        $grouplist = implode (',', $_GROUPS);
+        $result = DB_query ("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
+        $A = DB_fetchArray ($result);
+        if (isset ($A['acc_grp_id'])) {
+            $group = $A['acc_grp_id'];
+        }
+    }
+
+    return $group;
 }
 
 ?>

@@ -3,6 +3,10 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Fixed hard-coded default group names in the Admin sections (e.g. when a user
+  had story.edit permissions but was not in the Story Admin group, any new
+  story created by that user would default to being owned by the Story Admin
+  group nonetheless) [Dirk]
 - Introduced new plugin API functions plugin_user_changed_xxx and
   plugin_group_changed_xxx to inform plugins when a user's information
   (profile or settings) or a group (new, edit, delete) has been changed [Dirk]

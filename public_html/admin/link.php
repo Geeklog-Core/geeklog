@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.44 2004/09/29 13:15:27 dhaun Exp $
+// $Id: link.php,v 1.45 2004/09/29 17:43:43 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -100,7 +100,7 @@ function editlink ($mode, $lid = '')
         if (isset ($_GROUPS['Link Admin'])) {
             $A['group_id'] = $_GROUPS['Link Admin'];
         } else {
-            $A['group_id'] = $_GROUPS['Logged-in Users'];
+            $A['group_id'] = SEC_getFeatureGroup ('link.edit');
         }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
@@ -224,7 +224,7 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
             if (isset ($_GROUPS['Link Admin'])) {
                 $group_id = $_GROUPS['Link Admin'];
             } else {
-                $group_id = $_GROUPS['Logged-in Users'];
+                $group_id = SEC_getFeatureGroup ('link.edit');
             }
             $perm_owner = 3;
             $perm_group = 2;

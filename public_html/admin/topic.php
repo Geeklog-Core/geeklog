@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.47 2004/09/29 13:15:27 dhaun Exp $
+// $Id: topic.php,v 1.48 2004/09/29 17:43:43 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -89,7 +89,7 @@ function edittopic ($tid = '')
         if (isset ($_GROUPS['Topic Admin'])) {
             $A['group_id'] = $_GROUPS['Topic Admin'];
         } else {
-            $A['group_id'] = $_GROUPS['Logged-in Users'];
+            $A['group_id'] = SEC_getFeatureGroup ('topic.edit');
         }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;

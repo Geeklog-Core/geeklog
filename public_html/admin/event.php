@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.51 2004/09/29 13:15:27 dhaun Exp $
+// $Id: event.php,v 1.52 2004/09/29 17:43:43 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -108,9 +108,9 @@ function editevent ($mode, $A, $msg = '')
     } else {
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Event Admin'])) {
-            $A['group_id'] = $_GROUPS['Topic Admin'];
+            $A['group_id'] = $_GROUPS['Event Admin'];
         } else {
-            $A['group_id'] = $_GROUPS['Logged-in Users'];
+            $A['group_id'] = SEC_getFeatureGroup ('event.edit');
         }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
