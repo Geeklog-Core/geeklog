@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.189 2002/11/30 14:15:20 dhaun Exp $
+// $Id: lib-common.php,v 1.190 2002/12/02 17:52:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3885,9 +3885,8 @@ function COM_whatsNewBlock( $help='', $title='' )
                     $foundone = 1;
 
                     // redirect link via portal.php so we can count the clicks
-                    $lcount = $_CONF['site_url'] . '/portal.php?url='
-                            . urlencode( $A['url'] )
-                            . '&amp;what=link&amp;item=' . $A['lid'];
+                    $lcount = $_CONF['site_url']
+                            . '/portal.php?what=link&amp;item=' . $A['lid'];
 
                     // Trim the length if over 16 characters
                     $itemlen = strlen( $A['title'] );

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.24 2002/11/29 16:04:54 dhaun Exp $
+// $Id: links.php,v 1.25 2002/12/02 17:52:25 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -132,8 +132,7 @@ if (empty ($_USER['username']) &&
             for ($i = 0; $i < $nrows; $i++) {
                 $A = DB_fetchArray($result);
                 $linklist->set_var('link_url', $_CONF['site_url'] .
-                    '/portal.php?url=' . urlencode($A['url']) .
-                    '&amp;what=link&amp;item=' . $A['lid']);
+                    '/portal.php?what=link&amp;item=' . $A['lid']);
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
@@ -174,8 +173,7 @@ if (empty ($_USER['username']) &&
                     $linklist->set_var('link_category',$currentcategory);
                 }
                 $linklist->set_var('link_url', $_CONF['site_url'] .
-                    '/portal.php?url=' . urlencode($A['url']) .
-                    '&amp;what=link&amp;item=' . $A['lid']);
+                    '/portal.php?what=link&amp;item=' . $A['lid']);
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.44 2002/11/09 20:23:14 dhaun Exp $
+// $Id: search.php,v 1.45 2002/12/02 17:52:25 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -159,9 +159,8 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                 $thetime = COM_getUserDateTimeFormat($A['day']);
                 $row = array($A['title'], '<a href="' . $_CONF['site_url']
-                     . '/portal.php?url=' . urlencode ($A['url'])
-                     . '&amp;what=link&amp;item=' . $A['lid'] . '">' . $A['url']
-                     . '</a>', $A['hits']);
+                     . '/portal.php?what=link&amp;item=' . $A['lid'] . '">'
+                     . $A['url'] . '</a>', $A['hits']);
                 $link_results->addSearchResult($row);
                 $link_results->num_searchresults++;
             } else {
