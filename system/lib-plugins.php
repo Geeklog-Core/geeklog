@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.55 2005/01/28 10:04:14 dhaun Exp $
+// $Id: lib-plugins.php,v 1.56 2005/01/28 23:14:29 vinny Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -307,7 +307,7 @@ function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $v
 * @return an error otherwise false if no errors were encountered
 *
 */
-function PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)
+function PLG_commentPreSave($uid, &$title, &$comment, $sid, $pid, $type, &$postmode)
 {
 	global $_PLUGINS;
 
