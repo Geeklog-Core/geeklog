@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.79 2004/12/14 22:33:22 dhaun Exp $
+// $Id: submit.php,v 1.80 2004/12/19 10:08:57 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -262,7 +262,7 @@ function submitlink()
 */
 function submitstory($topic = '') 
 {
-    global $_CONF, $_TABLES, $_USER, $_POST, $LANG12;
+    global $_CONF, $_TABLES, $_USER, $LANG12;
 
     $retval = '';
 
