@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.225 2003/06/08 18:20:06 blaine Exp $
+// $Id: lib-common.php,v 1.226 2003/06/16 17:20:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2041,27 +2041,48 @@ function COM_showTopics( $topic='' )
 
 function COM_userMenu( $help='', $title='' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $HTTP_SERVER_VARS;
 
     if( $_USER['uid'] > 1 )
     {
-        $adminmenu = new Template( $_CONF['path_layout'] );
-        $adminmenu->set_file( 'option', 'useroption.thtml' );
+        $usermenu = new Template( $_CONF['path_layout'] );
+        $usermenu->set_file( array( 'option' => 'useroption.thtml',
+                                    'current' => 'useroption_off.thtml' ));
 
         if( empty( $title ))
         {
             $title = DB_getItem( $_TABLES['blocks'], 'title', "name='user_block'" );
         }
 
+        // what's our current URL?
+        $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
+        if( empty( $thisUrl ))
+        {
+            $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
+        }
+        if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+        {
+            $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
+        }
+
         $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'user_block', 'header' ));
 
         if( $_CONF['personalcalendars'] == 1 )
         {
-            $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/calendar.php?mode=personal' );
-            $adminmenu->set_var( 'option_label', $LANG01[66] );
-            $adminmenu->set_var( 'option_count', '' );
+            $url = $_CONF['site_url'] . '/calendar.php?mode=personal';
+            $usermenu->set_var( 'option_label', $LANG01[66] );
+            $usermenu->set_var( 'option_count', '' );
+            if( $thisUrl == $url )
+            {
+                $usermenu->set_var( 'option_url', '' );
+                $retval .= $usermenu->parse( 'item', 'current' );
+            }
+            else
+            {
+                $usermenu->set_var( 'option_url', $url );
+                $retval .= $usermenu->parse( 'item', 'option' );
+            }
 
-            $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
         // This function will show the user options for all installed plugins (if any)
@@ -2072,37 +2093,63 @@ function COM_userMenu( $help='', $title='' )
         for( $i = 1; $i <= $nrows; $i++ )
         {
             $plg = current( $plugin_options );
-            $adminmenu->set_var( 'option_url', $plg->adminurl );
-            $adminmenu->set_var( 'option_label', $plg->adminlabel );
+            $usermenu->set_var( 'option_label', $plg->adminlabel );
 
-            if( !empty($plg->numsubmissions ))
+            if( !empty( $plg->numsubmissions ))
             {
-                $adminmenu->set_var( 'option_count', '(' . $plg->numsubmissions . ')' );
+                $usermenu->set_var( 'option_count', '(' . $plg->numsubmissions . ')' );
             }
             else
             {
-                $adminmenu->set_var( 'option_count', '' );
+                $usermenu->set_var( 'option_count', '' );
             }
 
-            $retval .= $adminmenu->parse( 'item', 'option' );
-
+            if( $thisUrl == $plg->adminurl )
+            {
+                $usermenu->set_var( 'option_url', '' );
+                $retval .= $usermenu->parse( 'item', 'current' );
+            }
+            else
+            {
+                $usermenu->set_var( 'option_url', $plg->adminurl );
+                $retval .= $usermenu->parse( 'item', 'option' );
+            }
             next( $plugin_options );
         }
 
-        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/usersettings.php?mode=edit' );
-        $adminmenu->set_var( 'option_label', $LANG01[48] );
-        $adminmenu->set_var( 'option_count', '' );
-        $retval .= $adminmenu->parse( 'item', 'option' );
+        $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
+        $usermenu->set_var( 'option_label', $LANG01[48] );
+        $usermenu->set_var( 'option_count', '' );
+        if( $thisUrl == $url )
+        {
+            $usermenu->set_var( 'option_url', '' );
+            $retval .= $usermenu->parse( 'item', 'current' );
+        }
+        else
+        {
+            $usermenu->set_var( 'option_url', $url );
+            $retval .= $usermenu->parse( 'item', 'option' );
+        }
 
-        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/usersettings.php?mode=preferences' );
-        $adminmenu->set_var( 'option_label', $LANG01[49] );
-        $adminmenu->set_var( 'option_count', '' );
-        $retval .= $adminmenu->parse( 'item', 'option' );
+        $url = $_CONF['site_url'] . '/usersettings.php?mode=preferences';
+        $usermenu->set_var( 'option_label', $LANG01[49] );
+        $usermenu->set_var( 'option_count', '' );
+        if( $thisUrl == $url )
+        {
+            $usermenu->set_var( 'option_url', '' );
+            $retval .= $usermenu->parse( 'item', 'current' );
+        }
+        else
+        {
+            $usermenu->set_var( 'option_url', $url );
+            $retval .= $usermenu->parse( 'item', 'option' );
+        }
 
-        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/users.php?mode=logout' );
-        $adminmenu->set_var( 'option_label', $LANG01[19] );
-        $adminmenu->set_var( 'option_count', '' );
-        $retval .= $adminmenu->parse( 'item', 'option' );
+        $url = $_CONF['site_url'] . '/users.php?mode=logout';
+        $usermenu->set_var( 'option_label', $LANG01[19] );
+        $usermenu->set_var( 'option_count', '' );
+        $usermenu->set_var( 'option_url', $url );
+        $retval .= $usermenu->parse( 'item', 'option' );
 
         $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
