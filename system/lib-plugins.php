@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.28 2004/04/28 03:21:38 vinny Exp $
+// $Id: lib-plugins.php,v 1.29 2004/07/11 18:18:05 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -338,15 +338,17 @@ function PLG_supportsExpandedSearch($type)
 * and return their results.  Results comeback in an array of HTML 
 * formatted table rows that can be quickly printed by search.php 
 *
-* @param        string      $query          What the user searched for
-* @param        date        $datestart      beginning of date range to search for
-* @param        date        $dateend        ending date range to search for
-* @param        string      $topic          the topic the user searched within 
-* @param        int         $author         UID...only return results for this person
-* @return       array       Returns search results
+* @param    string  $query      What the user searched for
+* @param    date    $datestart  beginning of date range to search for
+* @param    date    $dateend    ending date range to search for
+* @param    string  $topic      the topic the user searched within 
+* @param    string  $type       Type of items they are searching, or 'all'
+* @param    int     $author     UID...only return results for this person
+* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+* @return   array               Returns search results
 *
 */
-function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author) 
+function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all') 
 {
     global $_TABLES, $_CONF, $_PLUGINS;
 
@@ -358,10 +360,10 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_dopluginsearch_' . $pi_name;
         if (function_exists($function)) {
-            $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author);
+            $plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author, $keyType);
             $nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
             $total_plugins = $total_plugins + $plugin_result->num_itemssearched;
-            $search_results[$i] = $plugin_result;
+            $search_results[] = $plugin_result;
         } // no else because implementation of this API function not required
     }
     return array($nrows_plugins, $total_plugins, $search_results);

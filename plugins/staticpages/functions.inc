@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.34 2004/02/22 17:23:20 dhaun Exp $
+// $Id: functions.inc,v 1.35 2004/07/11 18:18:06 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -94,7 +94,7 @@ function plugin_commentsupport_staticpages()
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
 *
-* @showsitestate        int         Flag to let us know which stats to get
+* @param    int     showsitestate   Flag to let us know which stats to get
 */
 function plugin_showstats_staticpages($showsitestats) 
 {
@@ -162,28 +162,22 @@ function plugin_searchtypes_staticpages()
 * for the header and table rows back to search.php where it will be formated and
 * printed 
 *
-* @query            string          Keywords user is looking for
-* @datestart        date/time       Start date to get results for
-* @dateend          date/time       End date to get results for
-* @topic            string          The topic they were searching in
-* @type             string          Type of items they are searching
-* @author           string          Get all results by this author
+* @param    string  $query      Keywords user is looking for
+* @param    date    $datestart  Start date to get results for
+* @param    date    $dateend    End date to get results for
+* @param    string  $topic      The topic they were searching in
+* @param    string  $type       Type of items they are searching, or 'all'
+* @param    int     $author     Get all results by this author
+* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
 *
 * Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string. 
 */
-function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author) 
+function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author, $keyType) 
 {
-    global $_CONF, $_TABLES, $LANG_STATIC, $HTTP_GET_VARS, $HTTP_POST_VARS;
+    global $_CONF, $_TABLES, $LANG_STATIC;
 
     if (empty($type)) {
         $type = 'all';
-    }
-
-    $keyType = '';
-    if (isset ($HTTP_POST_VARS['keyType'])) {
-        $keyType = COM_applyFilter ($HTTP_POST_VARS['keyType']);
-    } else if (isset ($HTTP_GET_VARS['keyType'])) {
-        $keyType = COM_applyFilter ($HTTP_GET_VARS['keyType']);
     }
 
     // Bail if we aren't supppose to do our search
@@ -194,9 +188,8 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
         return $plugin_results;
     }
 
-    // Build search SQL - Modified to exclude static PHP pages from search.
-    $query = addslashes ($query);
-    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) as day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != '1')";
+    // Build search SQL - exclude static PHP pages from search.
+    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != 1)";
 
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
@@ -254,7 +247,6 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $result = DB_query ($sql);
 
     // OK, now return coma delmited string of table header labels
-    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'staticpages';
     $plugin_results->searchlabel = $LANG_STATIC['results'];
@@ -340,11 +332,10 @@ function plugin_getadminoption_staticpages()
 * perm_anon       | tinyint(1) unsigned  
 * This will work with the standard GL tables
 *
-* @table	str	Table name (used in joins)
-* @access	int	Access if blank read access  2 = read 3 = read/edit
-* @u_id int     User ID if blank current user
-*
-* @return string	Where clause of sql statement
+* @param    string  $table  Table name (used in joins)
+* @param    int     $access Access if blank read access  2 = read 3 = read/edit
+* @param    int     $u_id   User ID if blank current user
+* @return   string          Where clause of sql statement
 *
 */
 function SP_getPerms ($table = '', $access = '2', $u_id = '')
@@ -409,7 +400,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     // If there are no featured stories, we won't be called with $where == 2.
     // So, if asked to display pages for the top of the page, check if we
     // have pages to be displayed after the featured story and if there is
-    // no features story, display those pages as well.
+    // no featured story, display those pages as well.
     if ($where == 1) {
         if (DB_count ($_TABLES['stories'], 'featured', 1) == 0) {
             // no featured story found - redefine $moresql
@@ -532,7 +523,7 @@ function plugin_user_delete_staticpages($uid)
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
                                  "grp_name = 'Root'");
-        $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid");
+        $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
         $A = DB_fetchArray ($result);
         $rootuser = $A['ug_uid'];
 

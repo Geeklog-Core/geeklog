@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Plugins are now getting the key type passed to their search function, so that
+  they can perform a search for the "exact phrase", "all of these words", or
+  "any of these words" as selected from the search form.
 - Use URL rewriting for the link to a story's printer-friendly version, when
   activated (bug #201) [Dirk]
 - Resizing an image didn't work when the image height exceeded the max. height
