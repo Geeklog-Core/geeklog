@@ -134,7 +134,8 @@ $LANG01 = array(
 	93 => "Copyright",
 	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
 	95 => "Powered By",
-	96 => "Groups"
+	96 => "Groups",
+    97 => "Word List"
 );
 
 ###############################################################################

@@ -791,6 +791,9 @@ function adminmenu() {
 		if (hasrights('plugin.edit')) {
 			print "<a href=\"{$CONF["site_url"]}/admin/plugins.php\">{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
 		}
+		if (hasrights('Root')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/word.php\">{$LANG01[97]}</a> (" . dbcount("wordlist") . ")<br>\n";
+		}
 
 		// This function wil show the admin options for all installed plugins (if any)
 
