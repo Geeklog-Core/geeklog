@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.57 2004/05/01 17:57:04 vinny Exp $
+// $Id: index.php,v 1.58 2004/05/30 23:27:28 blaine Exp $
 
 require_once('lib-common.php');
 
@@ -67,7 +67,7 @@ if (!$newstories && !$displayall) {
 
 $display .= COM_siteHeader();
 if (isset ($HTTP_GET_VARS['msg'])) {
-    $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'], true));
+    $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'], true),COM_applyFilter ($HTTP_GET_VARS['plugin']));
 }
 
 

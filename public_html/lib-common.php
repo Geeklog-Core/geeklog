@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.328 2004/05/30 16:33:02 dhaun Exp $
+// $Id: lib-common.php,v 1.329 2004/05/30 23:27:28 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4736,11 +4736,12 @@ function COM_whatsNewBlock( $help='', $title='' )
 * Pulls $msg off the URL string and gets the corresponding message and returns
 * it for display on the calling page
 *
-* @param        int     $msg        ID of message to show
+* @param      int     $msg        ID of message to show
+* @param      string  $plugin     Optional Name of plugin to lookup plugin defined message
 * @return     string  HTML block with message
 */
 
-function COM_showMessage( $msg )
+function COM_showMessage( $msg, $plugin='' )
 {
     global $MESSAGE, $_CONF;
 
@@ -4749,16 +4750,24 @@ function COM_showMessage( $msg )
     if( $msg > 0 )
     {
         $timestamp = strftime( $_CONF['daytime'] );
+        if ($plugin != '') {
+            $var = 'PLG_'.$plugin.'_MESSAGE'.$msg;
+            global $$var;
+            $message = $$var;
+        } else {
+            $message = $MESSAGE[$msg];
+        }
         $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate( '_msg_block', 'header' ))
-            . '<img src="' . $_CONF['layout_url']
-            . '/images/sysmessage.gif" border="0" align="top" alt="">'
-            . $MESSAGE[$msg] . '<br><br>'
+            . '<table><tr><td><img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.gif" border="0" align="top" alt=""></td>'
+            . '<td style="padding:5px;">'. $message . '</td></tr></table>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
 
     return $retval;
 }
+
 
 /**
 * Prints Google(tm)-like paging navigation
