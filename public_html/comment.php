@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.44 2003/06/25 08:39:02 dhaun Exp $
+// $Id: comment.php,v 1.45 2003/08/17 09:38:01 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -139,15 +139,17 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 $start = new Template( $_CONF['path_layout'] . 'comment' );
-                $start->set_file( array( 'startcomment' => 'startcomment.thtml' ));
+                $start->set_file( array( 'comment' => 'startcomment.thtml' ));
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
 
-                $thecomments = COM_comment ($HTTP_POST_VARS, 1, $type, 0,
-                                            'flat', true);
+                $thecomments = COM_getComment ($HTTP_POST_VARS, 'flat', $type,
+                                               'ASC', true );
 
                 $start->set_var( 'comments', $thecomments );
-                $retval .= $start->finish( $start->parse( 'output', 'startcomment' ));
+                $retval .= COM_startBlock ($LANG03[14])
+                        . $start->finish( $start->parse( 'output', 'comment' ))
+                        . COM_endBlock ();
             } else if ($mode == $LANG03[14]) {
                 $retval .= COM_startBlock ($LANG03[17], '',
                                COM_getBlockTemplate ('_msg_block', 'header'))

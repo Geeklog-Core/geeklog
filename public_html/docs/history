@@ -1,5 +1,9 @@
 GeekLog History/Changes:
 
+- Integrated Vincent Furia's new comment code to use templates for comments
+  (instead of hard-coded HTML).
+  New template files: comment/comment.thtml, comment/thread.thtml.
+  Updated: comment/startcomment.thtml
 - New Admin interface for content syndication (RSS feeds etc.). This lets you
   create feeds for all the stories and per topic. Plugins can also provide
   feeds (through extensions of the Plugin API). Additional feed formats

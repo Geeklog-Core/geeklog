@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.244 2003/08/12 21:10:04 dhaun Exp $
+// $Id: lib-common.php,v 1.245 2003/08/17 09:38:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1112,7 +1112,7 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1 )
 
         if( $A[0] == $selected )
         {
-            $retval .= ' selected';
+            $retval .= ' selected="selected"';
         }
 
         $retval .= '>' . $A[1] . '</option>' . LB;
@@ -2471,16 +2471,156 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 }    
 
 /**
+* This function prints $A (an individual comment) in comment format
+* 
+* @param     array      $A         Associative array based on comment record
+* @param     string     $mode      'flat', 'threaded', etc
+* @param     string     $type      Type of item (article, poll, etc.)
+* @param     string     $order     How to order the comments 'ASC' or 'DESC'
+* @param     boolean    $preview   Preview display (for edit) or not
+* @return    string     HTML       Formated Comment 
+*
+*/
+function COM_getComment( $A, $mode, $type, $order, $preview = false )
+{
+    global $_CONF, $_TABLES, $LANG01, $query;
+
+    static $template;
+    static $indent = 0;
+
+    if( !isset( $_CONF['comment_indent'] ))
+    {
+        $_CONF['comment_indent'] = 25;
+    }
+
+    if( !isset( $template ))
+    {
+        $template = new Template( $_CONF['path_layout'] . 'comment' );
+        $template->set_file( array( 'comment' => 'comment.thtml',
+                                    'thread'  => 'thread.thtml'  ));
+
+        // general variables
+        $template->set_var( 'site_url', $_CONF['site_url'] );
+        $template->set_var( 'layout_url', $_CONF['layout_url'] );
+
+        $template->set_var( 'lang_replytothis', $LANG01[43] );
+        $template->set_var( 'lang_reply', $LANG01[25] );
+        $template->set_var( 'lang_authoredby', $LANG01[42] );
+        $template->set_var( 'lang_on', $LANG01[36] );
+    }
+    
+    // comment variables
+    $template->set_var( 'indent', $indent );
+    $template->set_var( 'pid', $A['cid'] );
+    $template->set_var( 'author', $A['username'] );
+    $template->set_var( 'author_id', $A['uid'] );
+    if( $A['uid'] > 1 )
+    {
+        $template->set_var( 'start_author_anchortag', '<a href="'
+                . $_CONF['site_url'] . '/users.php?mode?profile&amp;uid='
+                . $A['uid'] . '">' );
+        $template->set_var( 'end_author_anchortag', '</a>' );
+    }
+    else
+    {
+        $template->set_var( 'start_author_anchortag', '' );
+        $template->set_var( 'end_author_anchortag', '' );
+    }
+    if( $preview )
+    {
+        $template->set_var( 'hide_if_preview', 'style="display:none"' );
+    }
+    else
+    {
+        $template->set_var( 'hide_if_preview', '' );
+    }
+    if( empty( $A['nice_date'] ))
+    {
+        $A['nice_date'] = time ();
+    }
+    $template->set_var( 'date', strftime( $_CONF['date'], $A['nice_date'] ));
+    $template->set_var( 'sid', $A['sid'] );
+    $template->set_var( 'type', $A['type'] );
+
+    if( $preview )
+    {
+        $template->set_var( 'delete_option', '' );
+    }
+    // NOTE: the following check is nonsense (but fully 1.3.8 compatible ;-)
+    else if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 )
+    {
+        $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
+                . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
+                . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'
+                . $LANG01[28] . '</a> ' );
+    }
+
+    $A['title'] = stripslashes( $A['title'] );
+    $A['title'] = str_replace( '$', '&#36;', $A['title'] );
+
+    // and finally: format the actual text of the comment
+    $A['comment'] = stripslashes( $A['comment'] );
+    if( preg_match( '/<.*>/', $A['comment'] ) == 0 )
+    {
+        $A['comment'] = nl2br( $A['comment'] );
+    }
+    if( !empty( $query ))
+    {
+        $mywords = explode( ' ', $query );
+        foreach( $mywords as $searchword )
+        {
+            $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
+        }
+    }
+    $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
+    $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
+    $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
+
+    $template->set_var( 'title', $A['title'] );
+    $template->set_var( 'comments', $A['comment'] );
+
+    if( $mode == 'threaded' && $indent > 0 )
+    {
+        $retval = $template->parse( 'output', 'thread' );	
+    }
+    else
+    {
+        $retval = $template->parse( 'output', 'comment' ); 
+    }
+
+    if( !$preview && ( $mode == 'nested' || $mode == 'threaded' ))
+    {
+    	$indent += $_CONF['comment_indent'];
+
+        // get children
+        $q = "SELECT c.*,u.username,unix_timestamp(c.date) AS nice_date "
+           . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
+           . "WHERE c.uid = u.uid AND sid = '{$A['sid']}' AND pid = {$A['cid']} "
+           . "ORDER BY date $order";
+        $result = DB_query( $q );
+        while( $A = DB_fetchArray( $result ))
+        {
+            $retval .= COM_getComment( $A, $mode, $type, $order );
+        }
+    
+    	$indent -= $_CONF['comment_indent'];
+    }
+
+    return $retval;
+}
+
+/**
 * This function displays the comments in a high level format.
 *
 * Begins displaying user comments for an item
 *
-* @param        string      $sid        ID for item to show comments for
-* @param        string      $title      Title of item
-* @param        string      $type       Type of item (article,photo,link,etc.)
-* @param        string      $order      How to order the comments 'ASC' or 'DESC'
-* @param        string      $mode       comment mode (nested, flat, etc.)
-* @param        int         $pid        Parent ID
+* @param        string      $sid       ID for item to show comments for
+* @param        string      $title     Title of item
+* @param        string      $type      Type of item (article, poll, etc.)
+* @param        string      $order     How to order the comments 'ASC' or 'DESC'
+* @param        string      $mode      comment mode (nested, flat, etc.)
+* @param        int         $pid       Parent ID
 * @see function COM_commentBar
 * @see function COM_commentChildren
 * @return     string  HTML Formated Comments
@@ -2488,7 +2628,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 */
 function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid=0 )
 {
-    global $_TABLES, $_CONF, $LANG01, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG01;
 
     if( !empty( $_USER['uid'] ) && empty( $order ) && empty( $mode ))
     {
@@ -2514,267 +2654,44 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $limit = $_CONF['comment_limit'];
     }
 
-    if( $mode == 'nocomments' )
-    {
-        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
-    }
-    else
-    {
-        $comment = new Template( $_CONF['path_layout'] . 'comment' );
-        $comment->set_file( array( 'startcomment' => 'startcomment.thtml' ));
-        $comment->set_var( 'site_url', $_CONF['site_url'] );
-        $comment->set_var( 'layout_url', $_CONF['layout_url'] );
+    $template = new Template( $_CONF['path_layout'] . 'comment' );
+    $template->set_file( array( 'commentarea' => 'startcomment.thtml' ));
+    $template->set_var( 'site_url', $_CONF['site_url'] );
+    $template->set_var( 'layout_url', $_CONF['layout_url'] );
+    $template->set_var( 'commentbar',
+                         COM_commentBar( $sid, $title, $type, $order, $mode ));
 
-        $thecomments = '';
+    if ( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' )
+    {
+        // build query
         switch( $mode )
         {
-            case 'nested':
-            {
-                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 AND type = '$type' ORDER BY date $order LIMIT $limit" );
-                $nrows = DB_numRows( $result );
-                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
-
-                if( $nrows > 0 )
-                {
-                    for( $i = 0; $i < $nrows; $i++ )
-                    {
-                        $A = DB_fetchArray( $result );
-                        $thecomments .= COM_comment( $A, 0, $type, 0, $mode );
-                        $thecomments .= COM_commentChildren( $sid, $A['cid'], $order, $mode, $type );
-                    }
-                }
-                else
-                {
-                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
-                }
-            }
-            break;
-
             case 'flat':
-            {
-                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = '$type' ORDER BY date $order LIMIT $limit" );
-                $nrows = DB_numRows( $result );
-                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+            	$q = "SELECT c.*,u.username,unix_timestamp(date) AS nice_date "
+                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                   . "WHERE c.uid = u.uid AND sid = '$sid' AND type = '$type' "
+                   . "ORDER BY date $order LIMIT $limit";
+                break;
 
-                if( $nrows > 0 )
-                {
-                    for( $i =0; $i < $nrows; $i++ )
-                    {
-                        $A = DB_fetchArray( $result );
-                        $thecomments .= COM_comment( $A, 0 ,$type, 0, $mode );
-                    }
-                }
-                else
-                {
-                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
-                }
-            }
-            break;
-
+            case 'nested':
             case 'threaded':
-            {
-                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid AND type = '$type' ORDER BY date $order LIMIT $limit" );
-                $nrows = DB_numRows( $result );
-                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
-
-                if( $nrows > 0 )
-                {
-                    for( $i = 0; $i < $nrows; $i++ )
-                    {
-                        $A = DB_fetchArray( $result );
-                        $thecomments .= COM_comment( $A, 0, $type, 0, $mode)
-                            . '<tr><td>'
-                            . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type )
-                            . '</td></tr>';
-                    }
-                }
-                else
-                {
-                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
-                }
-            }
-            break;
+            default:
+                $q = "SELECT c.*,u.username,unix_timestamp(date) AS nice_date "
+                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                   . "WHERE c.uid = u.uid AND sid = '$sid' AND pid = 0 AND type = '$type' "
+                   . "ORDER BY date $order LIMIT $limit";
+                break;
         }
 
-        $comment->set_var( 'comments', $thecomments );
-        $retval .= $comment->finish( $comment->parse( 'output', 'startcomment' ));
-    }
-
-    return $retval;
-}
-
-/**
-* Prints the next level of children for a given comment
-*
-* This is called recursivley to display all the comments for a given
-* comment
-*
-* @param        string      $sid        ID for item comments belong to
-* @param        string      $pid        Parent ID
-* @param        string      $order      Order to show comments in 'ASC' or 'DESC'
-* @param        string      $mode       Mode (e.g. nested, flat, etc)
-* @param        string      $type       Type of item (article, photo, link, etc.)
-* @param        int         $level      How deep in comment thread we are
-* @see COM_commentBar
-* @see COM_userComments
-*
-*/
-
-function COM_commentChildren( $sid, $pid, $order, $mode, $type, $level=0 )
-{
-    global $_TABLES, $_CONF;
-
-    $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order" );
-    $nrows = DB_numRows( $result );
-
-    if( $nrows > 0 )
-    {
-        if( $mode == 'threaded' )
+        $thecomments = '';
+        $result = DB_query( $q );
+        while ($A = DB_fetchArray( $result ))
         {
-            $retval .= '<ul>';
+            $thecomments .= COM_getComment( $A, $mode, $type, $order );
         }
 
-        for( $i = 0; $i < $nrows; $i++ )
-        {
-            $A = DB_fetchArray( $result );
-            $retval .= COM_comment( $A, 0, $type, $level + 1, $mode)
-                . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type, $level + 1 );
-        }
-
-        if( $mode == 'threaded' )
-        {
-            $retval .= '</ul>';
-        }
-    }
-
-    return $retval;
-}
-
-/**
-* This function prints $A (an individual comment) in comment format
-*
-* @param        array       $A          Associative array based on comment record from DB
-* @param        string      $mode       'flat', 'threaded', etc
-* @param        int         $level      how deep in comment thread
-* @param        string      $mode       WTF?  This can't be used twice!?!
-* @param        boolean     $ispreview  Preview display (for edit) or not
-* @return     string      HTML Formated Comment
-*
-*/
-
-function COM_comment( $A, $mode=0, $type, $level=0, $mode='flat', $ispreview=false )
-{
-    global $_TABLES, $_CONF, $LANG01, $_USER, $order, $query;
-
-    $level = $level * 25;
-
-    // if no date, make it now!
-    if( empty( $A['nice_date'] ))
-    {
-        $A['nice_date'] = time();
-    }
-
-    $A['title'] = stripslashes( $A['title'] );
-
-    if( $mode == 'threaded' && $level > 0 )
-    {
-        $retval .= '<li><b><a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
-            . '&amp;title=' . urlencode( $A['title'] ) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' . $A['pid'].'">'
-            . $A['title'] . '</a></b> - ' . $LANG01[42] . ' ';
-
-        if( $A['uid'] == 1 )
-        {
-            $retval .= $LANG01[24];
-        }
-        else
-        {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                . DB_getItem( $_TABLES['users'], 'username', "uid = '{$A['uid']}'" ) . '</a>';
-        }
-
-        $A['nice_date'] = strftime( $_CONF['date'], $A['nice_date'] );
-        $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . LB;
-    }
-    else
-    {
-        if( $level > 0 )
-        {
-            $retval .= '<tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB
-                . '<tr><td rowspan="3" width="' . $level . '"><img src="' . $_CONF['site_url']
-                . '/images/speck.gif" width="' . $level . '" height="100%" alt=""></td>' . LB;
-        }
-        else
-        {
-            $retval .= '<tr>';
-        }
-
-        if( !empty( $query ))
-        {
-            $mywords = explode( ' ', $query );
-            foreach( $mywords as $searchword )
-            {
-                $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
-            }
-        }
-
-        $A['title'] = str_replace( '$', '&#36;', $A['title'] );
-        $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
-        $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
-        $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
-
-        $retval .= '<td class="commenttitle">' . stripslashes( $A['title'] ) . '</td></tr>' . LB
-            . '<tr><td>' . $LANG01[42] . ' ';
-
-        if( $A['uid'] == 1 )
-        {
-            $retval .= $LANG01[24];
-        }
-        else
-        {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                . DB_getItem( $_TABLES['users'], 'username', "uid = '{$A['uid']}'" ) .'</a>';
-        }
-
-        $A['nice_date'] = strftime( $_CONF['date'], $A['nice_date'] );
-        $comment = stripslashes( $A['comment'] );
-        if( preg_match( '/<.*>/', $comment ) == 0 )
-        {
-            $comment = nl2br( $comment );
-        }
-        $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . '</td></tr>' . LB
-                . '<tr><td valign="top">' . $comment;
-
-        if( $mode == 0 && $ispreview == false )
-        {
-            $retval .= '<p>[ <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&amp;pid='
-                . $A['cid'] . '&amp;title=' . rawurlencode( $A['title'] ) . '&amp;type=' . $type . '">' . $LANG01[43]
-            . '</a> ';
-
-            // Until I find a better way to parent, we're stuck with this...
-            if( $mode == 'threaded' && $A['pid'] != 0 )
-            {
-                $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
-                $P = DB_fetchArray( $result );
-                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
-                    . '&amp;title=' . rawurlencode( $P['title'] ) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
-                    . $P['pid'] . '">' . $LANG01[44] . '</a> ';
-            }
-
-            if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 )
-            {
-                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=' . $LANG01[28] . '&amp;cid='
-                    . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'  . $LANG01[28] . '</a> ';
-            }
-
-            $retval .= ']<br>';
-        }
-
-        $retval .= '</td></tr>' . LB;
-
-        if( $level > 0 )
-        {
-            $retval .= '</table></td></tr>' . LB;
-        }
+        $template->set_var( 'comments', $thecomments );
+        $retval = $template->parse( 'output', 'commentarea' );
     }
 
     return $retval;
@@ -4879,7 +4796,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
            ( $_CONF['searchloginrequired'] == 0 ))) {
         // add a link to "search by author"
         if( $_CONF["contributedbyline"] == 1 )
-    {
+        {
             $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
             $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
         }
