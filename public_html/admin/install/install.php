@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.2 2001/12/11 20:11:53 tony_bibbs Exp $
+// $Id: install.php,v 1.3 2001/12/11 21:02:30 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -718,7 +718,6 @@ if ($action == '<< Previous') {
 }
 switch ($page) {
 case 1:
-    if (empty($upgrade)) $upgrade = 0;
     $display .= INST_getServerSettings($geeklog_path,$upgrade); 
     break;
 case 2:
