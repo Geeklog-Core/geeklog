@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.39 2002/04/22 17:06:44 tony_bibbs Exp $
+// $Id: story.php,v 1.40 2002/04/22 21:30:46 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -165,6 +165,7 @@ function storyeditor($sid = '', $mode = '')
     // user access info
     $story_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
     $story_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $story_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
     $story_templates->set_var('owner_id', $A['owner_id']);
     $story_templates->set_var('lang_group', $LANG_ACCESS[group]);
 
@@ -664,11 +665,17 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
             $upload->setFileNames($filenames);
             reset($HTTP_POST_FILES);
+            $upload->setDebug(true);
             $upload->uploadFiles();
+            
             if ($upload->areErrors()) {
-               print "ERRORS<BR>";
-               $upload->printErrors();
-               exit; 
+                $retval = COM_siteHeader('menu');
+                $retval .= COM_startBlock('File Upload Errors');
+                $retval .= $upload->printErrors(false);
+                $retval .= COM_endBlock();
+                $retval .= COM_siteFooter('true');
+                echo $retval;
+                exit; 
             }
             
             reset($filenames);
@@ -721,6 +728,16 @@ case 'delete':
     if ($type == 'submission') {
         DB_delete($_TABLES['storysubmission'],'sid',$sid,"admin/moderation.php");
     } else {
+        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
+        $nrows = DB_numRows($result);
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
+            if (!unlink($filename)) {
+                echo COM_errorLog('Unable to remove the following image from the article: ' . $filename);
+                exit;
+            }
+        }
         DB_delete($_TABLES['article_images'],'ai_sid',$sid);
         DB_delete($_TABLES['comments'],'sid',$sid);
         DB_delete($_TABLES['stories'],'sid',$sid,"admin/story.php?msg=10");
