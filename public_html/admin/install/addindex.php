@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: addindex.php,v 1.1 2002/11/24 20:15:14 dhaun Exp $
+// $Id: addindex.php,v 1.2 2002/12/28 20:10:06 dhaun Exp $
 
 
 // Add missing indexes to Geeklog tables
@@ -59,7 +59,7 @@ if (!SEC_inGroup ('Root')) {
 
 // list according to Jeff's post on geeklog-devel (2002-10-14)
 // plus stories.hits (Rob Griffiths) plus group_assignments.ug_uid
-// <http://geeklog.sourceforge.net/article.php?story=20021011151827972>
+// <http://www.geeklog.net/article.php?story=20021011151827972>
 
 $index['comments']          = "cid,type,sid,date,uid";
 $index['stories']           = "sid,tid,date,uid,frontpage,featured,hits";

@@ -1,5 +1,5 @@
 GeekLog Readme
-August 11, 2002
+December 28, 2002
 
 For the installation instructions please see docs/install.html
 
@@ -50,7 +50,7 @@ it really interests you (or you having trouble sleeping) go ahead and read it.
 
 In a nice gesture you could provide a link back to us:
 
-http://geeklog.sourceforge.net
+http://www.geeklog.net
 
 There is also a button that is in the release that we would appreciate you use
 (in public_html/images/buttons).
@@ -59,11 +59,11 @@ SUPPORT
 -------
 The best support channel is a mailing list located at:
 
-http://lists.sourceforge.net/mailman/listinfo/geeklog-devel
+http://lists.geeklog.net/listinfo/geeklog-users
 
 Additionally the GeekLog home page is a good source of information at:
 
-http://geeklog.sourceforge.net
+http://www.geeklog.net
 
 
 There is also a IRC channel, where we have live Geeklog chat.  Once you have
@@ -102,7 +102,7 @@ SPECIAL THANKS
 
 I want to send out thanks to:
 
-Jason Whittenberg - He is the original Geeklog developer!
+Jason Whittenburg - He is the original Geeklog developer!
 PHPWebLog Project - Some of the functions in GeekLog came from them!
 PHPSlash Project - Some of the functions in GeekLog came from them!
 thatphpware Project - Some of the functions in GeekLog came from them!
