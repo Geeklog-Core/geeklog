@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- The "Google paging" now has additional links to jump to the first and last
+  page (patch provided by Niels Leenheer).
+- Introduced function COM_makeClickableLinks to turn URLs in text-only posts
+  into clickable links (i.e. it's adding <a> tags around URLs). [Dirk]
 - Added check of "speed limit" when saving a comment (savecomment()). [Vinny]
 - Changed the comment insert, delete, display algorithms for improved 
   efficiency. They now use a modified preorder tree traversal method. [Vinny]
