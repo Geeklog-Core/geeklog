@@ -31,12 +31,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.28 2002/04/14 20:16:07 dhaun Exp $
+// $Id: block.php,v 1.29 2002/05/05 09:34:51 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// COM_debug($HTTP_POST_VARS);
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -95,6 +95,8 @@ function editdefaultblock($A,$access)
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
+    $block_templates->set_var('lang_save', $LANG21[54]);
+    $block_templates->set_var('lang_cancel', $LANG21[55]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } else if ($A['onleft'] == 0) {
@@ -171,7 +173,7 @@ function editblock($bid='')
 		
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
-            $block_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
+            $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG21[56]\" name=\"mode\">");
         }
     }
 
@@ -203,6 +205,8 @@ function editblock($bid='')
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
     $block_templates->set_var('lang_right', $LANG21[41]);
+    $block_templates->set_var('lang_save', $LANG21[54]);
+    $block_templates->set_var('lang_cancel', $LANG21[55]);
     if ($A['onleft'] == 1) {
         $block_templates->set_var('left_selected', 'selected="selected"');
     } else if ($A['onleft'] == 0) {
@@ -226,7 +230,7 @@ function editblock($bid='')
     $block_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = '{$A['owner_id']}'"));
     $block_templates->set_var('owner_id', $A['owner_id']);
     $block_templates->set_var('lang_group', $LANG_ACCESS['group']);
-		
+
     $usergroups = SEC_getUserGroups();
 
     $groupdd = '';
@@ -444,12 +448,23 @@ function listblocks()
 }
 
 // MAIN
-
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = $HTTP_POST_VARS['mode'];
+}
+elseif (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = $HTTP_GET_VARS['mode'];
+}
+if (isset ($HTTP_POST_VARS['bid'])) {
+    $bid = $HTTP_POST_VARS['bid'];
+}
+elseif (isset ($HTTP_GET_VARS['bid'])) {
+    $bid = $HTTP_GET_VARS['bid'];
+}
 switch ($mode) {
-case 'delete':
+case "$LANG21[56]":
     $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'admin/block.php?msg=12');
         break;
-case 'save':
+case "$LANG21[54]":
 	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled);
     break;
 case 'edit':
@@ -457,7 +472,7 @@ case 'edit':
         .editblock($bid)
         .COM_siteFooter();
 	break;
-case 'cancel':
+case "$LANG21[55]":
 default:
     $display .= COM_siteHeader()
         .COM_showMessage($msg)
