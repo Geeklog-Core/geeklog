@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.29 2002/08/27 00:27:26 tony_bibbs Exp $
+// $Id: comment.php,v 1.30 2002/08/27 14:11:15 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -323,7 +323,7 @@ default:
         if (empty ($title)) {
             $result = DB_query ("SELECT title FROM {$_TABLES['stories']} WHERE sid = '$sid'");
             $A = DB_fetchArray ($result);
-            $title = $A['title'];         
+            $title = str_replace('$','&#36;',$A['title']);
         }
         $display .= COM_siteHeader()
             . commentform('','','',$title,'',$sid,$pid,$type,$mode,$postmode)

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.17 2002/06/24 19:24:38 dhaun Exp $
+// $Id: stats.php,v 1.18 2002/08/27 14:11:15 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -118,7 +118,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', stripslashes ($A['title']));
+        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['hits']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
@@ -142,7 +142,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);	
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', stripslashes ($A['title']));
+        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['comments']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
@@ -166,7 +166,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', stripslashes ($A['title']));
+        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['numemails']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
@@ -212,7 +212,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $stat_templates->set_var('item_url', $_CONF['site_url'] . '/portal.php?url=' . $A['url'] . '&amp;what=link&amp;item=' . $A['lid']);
-        $stat_templates->set_var('item_text', $A['title']);
+        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['hits']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
