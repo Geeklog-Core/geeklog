@@ -135,7 +135,8 @@ $LANG01 = array(
 	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
 	95 => "Powered By",
 	96 => "Groups",
-    97 => "Word List"
+        97 => "Word List",
+	98 => "Plug-ins"
 );
 
 ###############################################################################
@@ -144,14 +145,18 @@ $LANG01 = array(
 $LANG02 = array(
 	1 => "Calendar of Events",
 	2 => "I'm Sorry, there are no events to display.",
-	3 => "When:",
-	4 => "Where:",
-	5 => "Description:",
+	3 => "When",
+	4 => "Where",
+	5 => "Description",
 	6 => "Add A Event",
 	7 => "Upcoming Events",
-	8 => "By adding this event to your calendar you can quickly view only the events you are interested in by clicking \"My calendar\" from the Members Only area.",
+	8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the Members Only area.',
 	9 => "Add to My Calendar",
-	10 => "Remove from My Calendar"
+	10 => "Remove from My Calendar",
+	11 => "Adding Event to {$_USER['username']}'s Calendar",
+	12 => "Event",
+	13 => "Starts",
+	14 => "Ends"
 );
 
 ###############################################################################
@@ -279,7 +284,9 @@ $LANG06 = array(
 $LANG07 = array(
 	1 => "Vote Saved",
 	2 => "Your vote was saved for the poll",
-	3 => "Vote"
+	3 => "Vote",
+	4 => "Polls in System",
+	5 => "Votes"
 );
 
 ###############################################################################
@@ -342,7 +349,11 @@ $LANG09 = array(
 	20 => "Date",
 	21 => "to",
 	22 => "(Date Format MM-DD-YYYY)",
-	23 => "Hits"
+	23 => "Hits",
+	24 => "Found",
+	25 => "matches for",
+	26 => "items in",
+	27 => "seconds"
 );
 
 ###############################################################################
@@ -494,7 +505,9 @@ $LANG21 = array(
 	42 => "You must enter the blockorder and security level for Geeklog default blocks",
 	43 => "Homepage Only",
 	44 => "Access Denied",
-	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/block.php\">go back to the block administration screen</a>."
+	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/block.php\">go back to the block administration screen</a>.",
+	46 => 'New Block',
+	47 => 'Admin Home'
 
 );
 
@@ -518,7 +531,9 @@ $LANG22 = array(
 	14 => "Start Date",
 	15 => "End Date",
 	16 => "Access Denied",
-	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>."
+	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>.",
+	18 => 'New Event',
+	19 => 'Admin Home'
 );
 
 ###############################################################################
@@ -541,7 +556,10 @@ $LANG23 = array(
 	14 => "Link Category",
 	15 => "Link URL",
 	16 => "Access Denied",
-	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/link.php\">go back to the link administration screen</a>."
+	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/link.php\">go back to the link administration screen</a>.",
+	18 => 'New Link',
+	19 => 'Admin Home',
+	20 => 'If other, specify'
 );
 
 ###############################################################################
@@ -589,7 +607,10 @@ $LANG24 = array(
 	39 => "Emails",
 	40 => "Access Denied",
 	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done.",
-	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>."
+	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>.",
+	43 => 'New Story',
+	44 => 'Admin Home',
+	45 => 'Access'
 );
 
 ###############################################################################
@@ -617,7 +638,11 @@ $LANG25 = array(
 	19 => "To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.",
 	20 => "Voters",
 	21 => "Access Denied",
-	22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/poll.php\">go back to the poll administration screen</a>."
+	22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/poll.php\">go back to the poll administration screen</a>.",
+	23 => 'New Poll',
+	24 => 'Admin Home',
+	25 => 'Yes',
+	26 => 'No'
 );
 
 ###############################################################################
@@ -636,7 +661,12 @@ $LANG27 = array(
 	10=> "Sort Order",
 	11 => "Stories/Page",
 	12 => "Access Denied",
-	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/topic.php\">go back to the topic administration screen</a>."
+	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/topic.php\">go back to the topic administration screen</a>.",
+	14 => "Sort Method",
+	15 => "alphabetical",
+	16 => "default is",
+	17 => "New Topic",
+	18 => "Admin Home"
 );
 
 ###############################################################################
@@ -656,7 +686,16 @@ $LANG28 = array(
 	11 => "User Manager",
 	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left.",
 	13 => "SecLev",
-	14 => "Reg. Date"
+	14 => "Reg. Date",
+	15 => 'New User',
+	16 => 'Admin Home',
+	17 => 'changepw',
+	18 => 'cancel',
+	19 => 'delete',
+	20 => 'save',
+	18 => 'cancel',
+	19 => 'delete',
+	20 => 'save'
 );
 
 
@@ -666,6 +705,7 @@ $LANG28 = array(
 $LANG29 = array(
 	1 => "Approve",
 	2 => "Delete",
+	3 => "Edit",
 	34 => "Command and Control",
 	35 => "Story Submissions",
 	36 => "Link Submissions",
@@ -689,7 +729,20 @@ $LANG30 = array(
 	9 => "Geeklog Event",
 	10 => "Events for",
 	11 => "Master Calendar",
-	12 => "My Calendar"
+	12 => "My Calendar",
+	13 => "January",
+	14 => "February",
+	15 => "March",
+	16 => "April",
+	17 => "May",
+	18 => "June",
+	19 => "July",
+	20 => "August",
+	21 => "September",
+	22 => "October",
+	23 => "November",
+	24 => "December",
+	25 => "Back to "
 );
 
 ###############################################################################
@@ -764,7 +817,7 @@ $MESSAGE = array (
 	43 => "The word has been successfully deleted."
 );
 
-#for plugins.php
+// for plugins.php
 
 $LANG32 = array (
 	1 => "<br>Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=http://www.geeklog.org>Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.<br><br>",
@@ -777,7 +830,9 @@ $LANG32 = array (
 	8 => "Plugin Compatibility Check Failed",
 	9 => "This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href=http://www.geeklog.org>Geeklog</a> or get a newer version of the plug-in.",
 	10 => "<br><b>There are no plugins currently installed.</b><br><br>",
-	11 => "To modify or delete a plug-in, click on that plug-in's number below. To learn more about a plug-in, click the plug-in name and you will be directed to that plug-in's website. To install or upgrade a plug-in click on new plug-in above."
+	11 => "To modify or delete a plug-in, click on that plug-in's number below. To learn more about a plug-in, click the plug-in name and you will be directed to that plug-in's website. To install or upgrade a plug-in click on new plug-in above.",
+	12 => 'no plugin name provided to plugineditor()',
+	13 => 'Plugin Editor'
 );
 
 $LANG_ACCESS = array(
@@ -819,7 +874,12 @@ $LANG_ACCESS = array(
 	storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!",
 	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$CONF["site_name"]} to receive full membership access!",
 	nogroupsforcoregroup => "This group doesn't belong to any of the other groups",
-	grouphasnorights => "This group doesn't have access to any of the administrative features of this site" 
+	grouphasnorights => "This group doesn't have access to any of the administrative features of this site",
+	newgroup => 'New Group',
+	adminhome => 'Admin Home',
+	save => 'save',
+	cancel => 'cancel',
+	canteditroot => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error'	
 );
 
 #admin/word.php
