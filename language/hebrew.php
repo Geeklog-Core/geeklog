@@ -1,9 +1,9 @@
 <?php
 
 ###############################################################################
-# english.php # עברי19/02/2004
-# this is "hebrew.php" verthin of heb lang() Tal V
-# This is the english language page for GeekLog!
+# hebrew.php # last Update  01/03/2004 01:35
+# this is "hebrew.php" Written by Tal Vizel tal-hebrew-lang-gl@1212.co.il
+# This is the Hebrew language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -44,7 +44,7 @@ $LANG_CHARSET = "utf-8";
 $LANG01 = array(
 	1 => "נכתב על-ידי", # "Contributed by:",
 	2 => "פרטים נוספים", # "read more",
-	3 => "הערות", # "comments",
+	3 => "תגובות", # "comments",
 	4 => "עריכה", # "Edit",
 	5 => "סקר השבוע", #"Vote",
 	6 => "תוצאות", #"Results",
@@ -65,26 +65,26 @@ $LANG01 = array(
 	21 => "שם משתמש", #"Username",
 	22 => "קוד משתמש", # "User ID",
 	23 => "רמת אבטחה", # "Security Level",
-	24 => "אנונימי", # "Anonymous",
+	24 => "אורח/ת באתר", # "Anonymous",
 	25 => "תגובה", # "Reply",
 	26 => "אין אתר זה אחרי לחומר הנכתב בו. האחריות על על כותבי ההודעות בלבד!", # "The following comments are owned by whoever posted them. This site is not responsible for what they say.",
 	27 => "ההודעה החדשה ביותר", # "Most Recent Post",
 	28 => "מחק", # "Delete",
-	29 => "אין תגובות על הודעה זו", # "No user comments.",
+	29 => "לא נרשמו תגובות", # "No user comments.",
 	30 => "מאמרים ישנים", # "Older Stories",
 	31 => "אפשר כתיבת HTML", # "Allowed HTML Tags:",
 	32 => "הודעת שגיאה, חסר שם משתמש!", # "Error, invalid username",
 	33 => "הודעת שגיאה, לא מצליח לכתוב לקובץ log", # "Error, could not write to the log file",
 	34 => "ישנה שגיאה! Error", # "Error",
 	35 => "התנתק Logout", # "Logout",
-	36 => "מחובר", # "on",
-	37 => "No user stories",
+	36 => "בשעה:", # "on",
+	37 => "טרם נכתבו הודעות  ", # "No user stories",
 
 	38 => "38",
 	39 => "רענן", # "Refresh",
 	40 => "40",
 	41 => "אורח", # "Guest Users",
-	42 => "אושר על-ידי:", # "Authored by:",
+	42 => "נכתב על-ידי:", # "Authored by:",
 	43 => "הוסף תגובה", # "Reply to This",
 	44 => "ראשי", # "Parent",
 	45 => "מספר הודעת שגיאה של MySQL:", #  "MySQL Error Number",
@@ -216,7 +216,7 @@ $LANG04 = array(
 	4 => "סיסמה", # "Password",
 	5 => "דואל", # "Email",
 	6 => "אתר בית", # "Homepage",
-	7 => "Bio",
+	7 => "פרטים אישיים:", # "Bio",
 	8 => "מפתח PGP", # "PGP Key",
 	9 => "שמור נתונים", # "Save Information",
 	10 => "עשרת התגובות האחרונות של", # "Last 10 comments for user",
@@ -235,9 +235,9 @@ $LANG04 = array(
 	23 => "יצירת חשבון ב{$_CONF['site_name']} תאפשר לך להינות מכל האפשרויות והשירותים המתקדמים שהאתר מציע. למי שלא יהיה חשבון אמנם אמנם יוכל לפרסם הודעות משלו אך לא יוכל להגיע עם הודעות ומאמרים של אחרים. האימייל שנמסר שנמסר בזמן הרישום <b>לא</b> יפורסם באתר באופן אוטומטי אלה ידרוש שינוי הגדרות לשם כך על-ידך", # "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
 	24 => "סיסמתך תשלך לכתובת האימייל שהוקלדה על-ידך", # "Your password will be sent to the email address you enter.",
 	25 => "האם שחכת את הסיסמה?", # "Did You Forget Your Password?",
-	26 => "Enter your username and click Email Password and a new password will be mailed to the email address on record.",
+	26 => "הכנס את שם המשתמש שלך ולחץ על <b> שלח סיסמה חדשה לאימייל </b> וסיסמה חדשה תישלח לאימייל שרשום במערכת.", # "Enter your username and click Email Password and a new password will be mailed to the email address on record.",
 	27 => "הרשם/מי עכשיו!", # "Register Now!",
-	28 => "סיסמה לאימייל", # "Email Password",
+	28 => "שלח סיסמה חדשה לאימייל", # "Email Password",
 	29 => "התנתק/י מ", # "logged out from",
 	30 => "התחבר מה", # "logged in from",
 	31 => "הפונקציה שבחרת לעשות דורשת התחברות לאתר על-ידי הכנסת שם משתמש וסיסמה", # "The function you have selected requires you to be logged in",
@@ -249,18 +249,18 @@ $LANG04 = array(
 	37 => "אשר/י את תגובתך", # "Applied to your comments",
 	38 => "הכל באחריותך, כולם יכולים לקרא זאת!", # "It's all about you! Everyone can read this",
 	39 => "מפתח ה PGP הפומבי שלך", # "Your public PGP key to share",
-	40 => "אין אייקון לנושא", # "No Topic Icons",
+	40 => "בטל הצגת איקון המדור", # "No Topic Icons",
 	41 => "Willing to Moderate",
 	42 => "תצורת הצגת התאריך", # "Date Format",
-	43 => "Maximum Stories",
-	44 => "No boxes",
-	45 => "מאפיני תצוגה ל", # "Display Preferences for",
+	43 => "מקסימום הודעות לדף", # "Maximum Stories",
+	44 => "בטל הצגת קוביות מידע", # "No boxes",
+	45 => "מאפייני תצוגה של", # "Display Preferences for",
 	46 => "Excluded Items for",
 	47 => "News box Configuration for",
 	48 => "הודאות/מאמרים", # "Topics",
-	49 => "אין אייקון נושא במאמר/הודעה" , # "No icons in stories",
+	49 => "לא יוצג האייקון המופיע לצד ההודעה" , # "No icons in stories",
 	50 => "בטל/י סימון אם אנך מעוניין בפונקציה זו", # "Uncheck this if you aren't interested",
-	51 => "רק ההודעות/מאמרים החדשים", # "Just the news stories",
+	51 => "יופיעו רק הודעות ללא הקוביות בצדדים", # "Just the news stories",
 	52 => "ברירת המחדל היא 10", # "The default is 10",
 	53 => "Receive the days stories every night",
 	54 => "Check the boxes for the topics and authors you don't want to see.",
@@ -274,7 +274,7 @@ $LANG04 = array(
 	62 => "ברירת המחדל היא 100", # "The default is 100",
 	63 => "הסיסמה נשלחה אליך באמצעות המייל ואתה אמור לקבל אותה בכל רגע. אנא עקוב אחר ההוראות שבמייל. ברכות על הצתרפותך ל
 " . $_CONF["site_name"], # "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using " . $_CONF["site_name"],
-	64 => "מאפיני תגובה ל", # "Comment Preferences for",
+	64 => "מאפייני תגובה של", # "Comment Preferences for",
 	65 => "נסה/י להכנס שוב", # "Try Logging in Again",
 	66 => "You may have mistyped your login credentials.  Please try logging in again below. Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
 	67 => "חברים חדשים מאז", # "Member Since",
@@ -292,30 +292,30 @@ $LANG04 = array(
     79 => "לחץ/י כאן בכדי למחוק את התמונה", # "Check here to delete this picture"
     80 => "התחבר", #"Login",
     81 => "שלח דואל", #"Send Email",
-    82 => 'Last 10 stories for user',
-    83 => 'הצג סטטיס�יקה למש�תמש', # 'Posting  statistics for user',
-    84 => 'סהכ הודעות באתר הזה הוא', # 'Total number of  articles:',
-    85 => 'זהכ תגובות באתר זה הם:', # 'Total number of  comments:',
+    82 => 'עשרת ההודעות האחרונות של ', # 'Last 10 stories for user',
+    83 => 'הצג סטטיסטיקה למשתמש ', # 'Posting  statistics for user',
+    84 => 'סהכ הודעות:', # 'Total number of  articles:',
+    85 => 'סהכ  תגובות:', # 'Total number of  comments:',
     86 => 'מצא הודעות שנכתבו על-ידי ', # 'Find all  postings by',
     87 => 'שם המשתמש שלך הוא ', # 'Your login name',
     88 => 'Someone (possibly you) has requested a new password for your account "%s" on ' . $_CONF['site_name'] . ', <' . $_CONF['site_url'] . ">.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
     89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
-    90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
+    90 => 'הכנס את סיסמתך החדשה בדף זה. לידיעתך סיסמתך הישנה תישאר בתוקף עד שתלחץ על אישור בדף זה.', # 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'שנה סיסמה', # 'Set New Password',
     92 => 'הכנס סיסמה חדשה ', # 'Enter New Password',
-    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
-    94 => 'Delete Account "%s"',
+    93 => 'הבקשה האחרונה שלך לקבלת סיסמה חדשה הייתה לפני%d  שניות. מסיבות אבטחה דרוש להמתין לפחות%d  שניות.', # 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
+    94 => 'מחק את חשבון של  מהמערכת', # 'Delete Account "%s"',
     95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    96 => 'delete account',
+    96 => 'מחק חשבון זה', # 'delete account',
     97 => 'Confirm Account Deletion',
     98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
-    99 => 'Privacy Options for',
-    100 => 'Email from Admin',
-    101 => 'Allow email from Site Admins',
-    102 => 'Email from Users',
-    103 => 'Allow email from other users',
-    104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    99 => 'דרישות הפרטיות של', # 'Privacy Options for',
+    100 => 'קבלת הודעות מהאדמיניסטראטור', # 'Email from Admin',
+    101 => 'אשר קבלת הודעות במייל ממנהל האתר ', # 'Allow email from Site Admins',
+    102 => 'קבלת הודעות ממשתמשים', # 'Email from Users',
+    103 => 'אישר קבלת הודעות ממשתמשים באתר', # 'Allow email from other users',
+    104 => 'הצג מי נמצא באתר', # 'Show Online Status',
+    105 => 'מציג את כל מי שנמצא באתר', # 'Show up in Who\'s Online block'
 );
 
 ###############################################################################
@@ -348,7 +348,7 @@ $LANG07 = array(
 	3 => "הצבע", # "Vote",
 	4 => "סקרים במערכת", # "Polls in System",
 	5 => "הצביעו", # "Votes"
-	6 => "View other poll questions"
+	6 => "צפה בסקרים נוספים", #"View other poll questions"
 );
 
 ###############################################################################
@@ -436,24 +436,24 @@ $LANG09 = array(
     38 => 'הקישורים שנמצאו הם', # 'Link Results',
     39 => 'קישורים', # 'Links',
     40 => 'אירועים', # 'Events'
-    41 => 'Your query string should have at least 3 characters.',
+    41 => 'חובה להכניס לפחות 3 תווים.', # 'Your query string should have at least 3 characters.',
     42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).',
     42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).',
-    43 => 'exact phrase',
-    44 => 'all of these words',
-    45 => 'any of these words',
-    46 => 'Next',
-    47 => 'Previous',
-    48 => 'Author',
-    49 => 'Date',
-    50 => 'Hits',
-    51 => 'Link',
-    52 => 'Location',
+    43 => 'בדיוק כפי שהוקלד (חייבת להיות התאמה מדויקת של המחרוזת כדי שתהיה תוצאה)', # 'exact phrase',
+    44 => 'כל המילים יחד (כל המילים חייבות להופיע אבל לא בהכרח בסדר כתיבתם)', # 'all of these words',
+    45 => 'כל אחת מהמילים (יהיו תוצאות גם אם רק מילה אחת תופיע)', # 'any of these words',
+    46 => 'הבא', # 'Next',
+    47 => 'הקודם', # 'Previous',
+    48 => 'הכותב', # 'Author',
+    49 => 'תאריך', # 'Date',
+    50 => 'כניסות', # 'Hits',
+    51 => 'קישור', # 'Link',
+    52 => 'מיקום', # 'Location',
     53 => 'Story Results',
     54 => 'Comment Results',
     55 => 'the phrase',
-    56 => 'AND',
-    57 => 'OR'
+    56 => 'סיום', 'AND',
+    57 => 'או', # 'OR'
 );
 
 ###############################################################################
@@ -493,7 +493,7 @@ $LANG11 = array(
 	1 => "לינקים בהודעה זו", # "What's Related",
 	2 => "שלח את ההודעה/מאמר לחבר", # "Mail Story to a Friend",
 	3 => "גרסה להדפסה", # "Printable Story Format",
-	4 => "אפשרויות להודעה/מאמר", # "Story Options"
+	4 => "אפשרויות להודעה זו:", # "Story Options"
 );
 
 ###############################################################################
@@ -838,7 +838,7 @@ $LANG28 = array(
 	14 => "Reg. Date",
 	15 => 'משתמש חדש', # 'New User',
 	16 => 'Admin Home',
-	17 => 'changepw',
+	17 => 'שנֶה סיסמה', # 'changepw',
 	18 => 'ביטול', # 'cancel',
 	19 => 'מחק', # 'delete',
 	20 => 'שמור', # 'save',
@@ -1094,14 +1094,14 @@ $LANG_ACCESS = array(
 	groupmsg => "Security Groups on this site are hierarchical.  By adding this group to any of the groups below you will giving this group the same rights that those groups have.  Where possible it is encouraged you use the groups below to give rights to a group.  If you need this group to have custom rights then you can select the rights to various site features in the section below called 'Rights'.  To add this group to any of the ones below simply check the box next to the group(s) that you want.",
 	coregroupmsg => "This group is a core {$_CONF["site_name"]} Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
 	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.",
-	lock => "Lock",
-	members => "Members",
-	anonymous => "Anonymous",
-	permissions => "Permissions",
+	lock => "נעולה", # "Lock",
+	members => "חברים רשומים באתר", # "Members",
+	anonymous => "אורח/ת באתר", # "Anonymous",
+	permissions => "הרשאה", # "Permissions",
 	permissionskey => "R = read, E = edit, edit rights assume read rights",
-	edit => "Edit",
-	none => "None",
-	accessdenied => "Access Denied",
+	edit => "עריכה", # "Edit",
+	none => "אין", # "None",
+	accessdenied => "אין לך הרשאות כניסה!", # "Access Denied",
 	storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
 	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
 	nogroupsforcoregroup => "This group doesn't belong to any of the other groups",
