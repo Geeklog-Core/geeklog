@@ -30,11 +30,31 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.9 2002/06/06 07:20:20 dhaun Exp $
+// $Id: lib-security.php,v 1.10 2002/08/21 20:08:59 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
 * *nix-style security system.  
+*
+* Programming notes:  For items you need security on you need the following for
+* each record in your database:
+* owner_id        | mediumint(8)          
+* group_id        | mediumint(8)          
+* perm_owner      | tinyint(1) unsigned   
+* perm_group      | tinyint(1) unsigned   
+* perm_members    | tinyint(1) unsigned  
+* perm_anon       | tinyint(1) unsigned  
+*
+* For display one function can handle most needs:
+* function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
+* A call to this function will allow you to determine if the current user should see the item.
+*
+* For the admin screen several functions will make life easier:
+* function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
+* This function displays the permissions widget with arrays for each permission
+* function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon)
+* This function takes the permissions from the previous function and converts them into 
+* an integer for saving back to the database.
 *
 */
 
@@ -48,10 +68,16 @@ $_SEC_VERBOSE = false;
 * all the groups a user belongs to.  This function is called recursively
 * as groups can belong to other groups
 *
-* @param        int     $uid            User ID to get information for
-* @param        string  $usergroups     comma delimited string of groups user belongs to
-* @param        int     $cur_grp_id     Current group the function is working with in tree
-* @return       array   Array of group ID's user belongs to
+* Note: this is an expensive function -- if you are concerned about speed it should only 
+*       be used once at the beginning of a page.  The resulting array $_GROUPS can then be
+*       used through out the page.
+*
+* @return array Array of group ID's user belongs to
+*
+* @param        int     $uid            User ID to get information for. If empty current user.
+* @param        string  $usergroups     DO NOT USE (for recursion) comma delimited string of groups user belongs to
+* @param        int     $cur_grp_id     DO NOT USE (for recursion) Current group the function is working with in tree
+* @return	array	Associative Array grp_name -> ug_main_grp_id
 *
 */
 function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
@@ -120,8 +146,8 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
 * looks up whether a user belongs to a specified group
 *
 * @param        string      $grp_to_verify      Group we want to see if user belongs to
-* @param        int         $uid                ID for user to check
-* @param        string      $cur_grp_id         Current group we are working with in hierarchy
+* @param        int         $uid                ID for user to check. If empty current user.
+* @param        string      $cur_grp_id         NOT USED Current group we are working with in hierarchy
 * @return       boolean     true if user is in group, otherwise false
 *
 */
@@ -183,9 +209,9 @@ function SEC_isModerator()
 }
 
 /**
-* Checks to see if user has access to view a topic
+* Checks to see if current user has access to view a topic
 *
-* Checks to see if user has access to view a topic
+* Checks to see if current user has access to view a topic
 *
 * @param        string      $tid        ID for topic to check on
 * @return       boolean     true if user has access to topic, otherwise false
@@ -206,7 +232,7 @@ function SEC_hasTopicAccess($tid)
 }
 
 /**
-* Checks if user has access to the given object
+* Checks if current user has access to the given object
 *
 * This function SEC_takes the access info from a Geeklog object
 * and let's us know if the have access to the object
@@ -219,7 +245,7 @@ function SEC_hasTopicAccess($tid)
 * @param        int     $perm_group     Permissions the gorup has
 * @param        int     $perm_members   Permissions logged in members have
 * @param        int     $perm_anon      Permissions anonymous users have
-* @return       boolean returns if user has access to an object
+* @return       int 	returns 3 for read/edit 2 for read only 0 for no access
 *
 */
 function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
@@ -256,14 +282,14 @@ function SEC_hasAccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members
 }
 
 /**
-* Checks if user has rights to a feature
+* Checks if current user has rights to a feature
 *
 * Takes either a single feature or an array of features and returns
-* an array of wheather the user has those rights
+* an array of whether the user has those rights
 *
 * @param        string|array        $features       Features to check
-* @param        string              $operator       If checking more than one feature this operator is used
-* @return       boolean     Returns true if user has access to given feature(s) otherwise false
+* @param        string              $operator       Either 'and' or 'or'. Default is 'and'.  Used if checking more than one feature.
+* @return       boolean     Return true if current user has access to feature(s), otherwise false.
 *
 */
 function SEC_hasRights($features,$operator='AND')
@@ -326,11 +352,11 @@ function SEC_hasRights($features,$operator='AND')
 * This will return the HTML needed to create the security control see on the admin
 * screen for GL objects (i.e. stories, links, etc)
 *
-* @param        int     $perm_owner     Permissions the owner has
+* @param        int     $perm_owner     Permissions the owner has 1 = edit 2 = read 3 = read/edit
 * @param        int     $perm_group     Permission the group has
 * @param        int     $perm_members   Permissions logged in members have
 * @param        int     $perm_anon      Permissions anonymous users have
-* @return       string  needed HTML...should eventually be moved to a template
+* @return       string  needed HTML (table) in HTML $perm_owner = array of permissions [edit,read], etc edit = 1 if permission, read = 2 if permission
 *
 */
 function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon)
@@ -395,10 +421,11 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 * Gets everything a user has permissions to within the system
 *
 * This is part of the Geeklog security implmentation.  This function
-* will get all the permissions the current user has
+* will get all the permissions the current user has call itself recursively.
 *
-* @param        int     $grp_id     Current group function is working on
-* @return       array   returns an array of features the user has access to
+* @param        int     $grp_id     DO NOT USE (Used for reccursion) Current group function is working on
+* @uid		int	$uid        User to check, if empty current user.
+* @return       string   returns comma delimited list of features the user has access to
 *
 */
 function SEC_getUserPermissions($grp_id='',$uid='')
@@ -482,11 +509,13 @@ function SEC_getUserPermissions($grp_id='',$uid='')
 * This function will take all permissions for an object and get the numeric value
 * that can then be used to save the database.
 *
-* @param        array       $perm_owner     Array of owner permissions
+* @param        array       $perm_owner     Array of owner permissions  These arrays are set up by SEC_getPermissionsHTML
 * @param        array       $perm_group     Array of group permissions
 * @param        array       $perm_members   Array of member permissions
 * @param        array       $perm_anon      Array of anonymous user permissions
-* @return       array       returns numeric equivalent for each permissions array
+* @return       array       returns numeric equivalent for each permissions array (2 = read, 3=edit/read)
+* @see	SEC_getPermissionsHTML
+* @see  SEC_getPermissionValue
 *
 */
 function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon) 
@@ -541,7 +570,8 @@ function SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_ano
 * to prepare the permissions to be save to the database
 *
 * @param        array       $perm_x     Array of permission values
-* @return       int         integer representation of a permission array
+* @return       int         integer representation of a permission array 2 = read 3 = edit/read
+* @see SEC_getPermissionValues
 *
 */
 function SEC_getPermissionValue($perm_x) 
