@@ -267,6 +267,7 @@ CREATE TABLE {$_TABLES['plugins']} (
   pi_gl_version varchar(20) NOT NULL default '',
   pi_enabled tinyint(3) unsigned NOT NULL default '1',
   pi_homepage varchar(128) NOT NULL default '',
+  INDEX plugins_enabled(pi_enabled),
   PRIMARY KEY  (pi_name)
 ) TYPE=MyISAM
 ";
