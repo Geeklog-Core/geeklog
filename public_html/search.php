@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.45 2002/12/02 17:52:25 dhaun Exp $
+// $Id: search.php,v 1.46 2002/12/14 20:50:42 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -123,10 +123,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
         $type = 'all';
     }
 
-    // Note: When searching for "all" with an empty query string and any of
-    // the author, date start or date end fields NOT empty, we just skip the
-    // search, since links don't have an author or a date.
-    if (($type == 'links') || !(($type == 'all') && empty ($query) && (!empty ($author) || !empty ($datestart) || !empty ($dateend)))) {
+    if (($type == 'links') || ($type == 'all')) {
         $sql = "SELECT lid,title,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE ";
 		$sql .= " (title like '%$query%' ";
 		$sql .= " OR description like '%$query%') ";
