@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.26 2003/03/27 20:20:00 dhaun Exp $
+// $Id: upload.class.php,v 1.27 2003/05/23 11:43:27 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -251,24 +251,24 @@ class upload
         if (sizeof($mimeTypes) == 0) {
             $this->_availableMimeTypes = 
             array(
-                'application/x-gzip-compressed' 	=> '.tar.gz, .tgz',
+                'application/x-gzip-compressed' 	=> '.tar.gz,.tgz',
                 'application/x-zip-compressed' 		=> '.zip',
                 'application/x-tar'					=> '.tar',
-                'text/plain'						=> '.php, .txt, .inc (etc)',
-                'text/html'							=> '.html, .htm (etc)',
-                'image/bmp' 						=> '.bmp, .ico',
+                'text/plain'						=> '.phps,.txt,.inc',
+                'text/html'							=> '.html,.htm',
+                'image/bmp' 						=> '.bmp,.ico',
                 'image/gif' 						=> '.gif',
-                'image/pjpeg'						=> '.jpg, .jpeg',
-                'image/jpeg'						=> '.jpg, .jpeg',
-                'image/png'						=> '.png',
+                'image/pjpeg'						=> '.jpg,.jpeg',
+                'image/jpeg'						=> '.jpg,.jpeg',
+                'image/png'							=> '.png',
                 'image/x-png'						=> '.png',
-                'audio/mpeg'						=> '.mp3 etc',
+                'audio/mpeg'						=> '.mp3',
                 'audio/wav'							=> '.wav',
                 'application/pdf'					=> '.pdf',
                 'application/x-shockwave-flash' 	=> '.swf',
                 'application/msword'				=> '.doc',
                 'application/vnd.ms-excel'			=> '.xls',
-                'application/octet-stream'			=> '.exe, .fla, .psd (etc)'
+                'application/octet-stream'			=> '.fla,.psd'
             );
         } else {
             $this->_availableMimeTypes = $mimeTypes;
@@ -879,12 +879,21 @@ class upload
         if ($sc > 0) {
             $this->_currentFile['type'] = substr ($this->_currentFile['type'], 0, $sc);
         }
-        if (!in_array($this->_currentFile['type'],$this->getAllowedMimeTypes())) {
-			$this->_addError('Mime type, ' . $this->_currentFile['type'] . ', not in list of allowed mime types');
-			return false;
-		} else {
-			return true;
-		}
+        $mimeTypes = $this->getAllowedMimeTypes ();
+        foreach ($mimeTypes as $mimeT => $extList) {
+            if ($mimeT == $this->_currentFile['type']) {
+                $extensions = explode (',', $extList);
+                $fileName = $this->_currentFile['name'];
+                foreach ($extensions as $ext) {
+                    if (strcasecmp (substr ($fileName, -strlen ($ext)), $ext) == 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        $this->_addError ('Mime type, ' . $this->_currentFile['type']
+                          . ', not in list of allowed mime types');
+        return false;
     }
     
     /**
