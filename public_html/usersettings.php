@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.54 2003/01/19 10:39:34 dhaun Exp $
+// $Id: usersettings.php,v 1.55 2003/02/07 00:29:32 blaine Exp $
 
 include_once('lib-common.php');
 
@@ -53,6 +53,10 @@ function edituser()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER;
 
+	// Call custom account form and edit function if enabled and exists
+	if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+        return custom_userform('edit',$_USER['uid']);
+	} 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
@@ -500,6 +504,12 @@ function saveuser($A)
             setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $A['cooktime'],$_CONF['cookie_path']);   
         }
 
+     	// Call custom account registration and save function if enabled and exists
+	    if ($_CONF['custom_registration'] AND (function_exists(custom_usersave))) {
+		    custom_usersave($_USER['uid']);
+	        return COM_refresh("{$_CONF['site_url']}/usersettings.php?mode=edit&msg=5");
+		}
+			
         if ($_CONF['allow_user_photo'] == 1) {
             include_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();

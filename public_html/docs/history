@@ -13,6 +13,12 @@ GeekLog History/Changes:
   were not sufficient. If the parameter was 0 - it was assuming it was empty.
   Consequence: The dbdelete would delete all records or dbcount would return count(*) 
   
+- Feb 6/03: (Blaine)  Added support for custom user registration and account profile
+  Added hooks to users.php, usersettings.php  and admin/user.php and new $_CONF parm to enable
+  Developer is responsible for code to handle new form processing, 
+  account record save, update and delete.
+ 
+  
 January 13, 2003 (1.3.7sr1)
 ----------------
 

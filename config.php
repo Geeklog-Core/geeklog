@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.71 2003/01/19 10:39:33 dhaun Exp $
+// $Id: config.php,v 1.72 2003/02/07 00:29:32 blaine Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -107,6 +107,13 @@ $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
 $_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
 $_CONF['allow_user_photo']    = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
+
+// ****************************************************************************
+// * Support for custom user registration form and account details            *
+// * Requires custom functions to be written that can be placed in lib-custom *
+// * Function hooks are in users.php, usersettings.php and admin/user.php     *
+// ****************************************************************************
+$_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
 // ****************************************************************************
 // * If you set up Geeklog for the first time, you shouldn't need to change   *

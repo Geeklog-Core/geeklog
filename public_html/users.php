@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.51 2003/01/12 17:37:23 dhaun Exp $
+// $Id: users.php,v 1.52 2003/02/07 00:29:32 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -440,6 +440,11 @@ function createuser($username,$email)
             DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
             DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
 
+			// Call custom registration and account record create function if enabled and exists
+  	        if ($_CONF['custom_registration'] AND (function_exists(custom_usercreate))) {
+			    custom_usercreate($uid);
+			}
+			
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
             $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();
@@ -632,7 +637,12 @@ case 'emailpasswd':
     break;
 case 'new':
     $display .= COM_siteHeader('menu');
-    $display .= newuserform($msg);
+	// Call custom registration and account record create function if enabled and exists
+	if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+        $display .= custom_userform('new');
+	} else {
+	    $display .= newuserform($msg);
+	}	
     $display .= COM_siteFooter();
     break;
 default:
