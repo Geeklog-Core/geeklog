@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.17 2002/01/11 17:52:14 tony_bibbs Exp $
+// $Id: user.php,v 1.18 2002/03/07 16:42:02 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -193,13 +193,10 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
         $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
 		if (($uid == 1) or !empty($passwd)) { 
 			$passwd = md5($passwd);
-			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage,regdate) VALUES ($uid,'$username','$fullname','$passwd','$email','$homepage','$regdate')";
 		} else {
-			$sql = "SELECT passwd FROM {$_TABLES['users']} WHERE uid = $uid";
-			$result = DB_query($sql);
-			$A = DB_fetchArray($result);
-			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage,regdate) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$email','$homepage','$regdate')";
+            $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
 		} 
+        $sql = "UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage' WHERE uid = $uid"; 
 		$result = DB_query($sql);
 
 		// if groups is -1 then this user isn't allowed to change any groups so ignore
@@ -215,11 +212,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 				}
 			}
 		}
-		DB_save($_TABLES['userprefs'],'uid',$uid);
-		DB_save($_TABLES['usercomment'],'uid',$uid);
-		DB_save($_TABLES['userindex'],'uid',$uid);
-		DB_save($_TABLES['userinfo'],'uid',$uid);
-        	$errors = DB_error();
+        $errors = DB_error();
 		if (empty($errors)) { 
 			echo COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
 		} else {
