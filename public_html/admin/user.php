@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.13 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: user.php,v 1.14 2001/12/07 15:50:03 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -290,7 +290,7 @@ case $LANG28[19]:
     DB_delete($_TABLES['users'],'uid',$uid,'admin/user.php?msg=22');
     break;
 case $LANG28[20]:
-    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups);
+    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']]);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
