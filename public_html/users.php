@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.68 2003/08/22 20:48:26 dhaun Exp $
+// $Id: users.php,v 1.69 2003/09/01 12:53:06 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -259,7 +259,7 @@ function userprofile($user)
 */
 function emailpassword($username,$msg=0) 
 {
-    global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $LANG04;
 
     $result = DB_query("SELECT email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows($result);
@@ -281,20 +281,9 @@ function emailpassword($username,$msg=0)
         $mailtext .= "{$LANG04[14]}\n\n";
         $mailtext .= "{$_CONF["site_name"]}\n";
         $mailtext .= "{$_CONF['site_url']}\n";
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty ($charset)) {
-                $charset = "iso-8859-1";
-            }
-        }
-        else {
-            $charset = $LANG_CHARSET;
-        }
-        mail($A["email"]
-            ,"{$_CONF["site_name"]}: {$LANG04[16]}"
-            ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
-            );
+
+        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+        COM_mail ($A['email'], $subject, $mailtext);
 
         if ($msg) {
             $retval .= COM_refresh("{$_CONF['site_url']}/index.php?msg=$msg");
@@ -318,7 +307,7 @@ function emailpassword($username,$msg=0)
 */
 function requestpassword ($username, $msg = 0)
 {
-    global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $LANG04;
 
     $result = DB_query ("SELECT uid,email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows ($result);
@@ -337,19 +326,8 @@ function requestpassword ($username, $msg = 0)
         $mailtext .= "{$_CONF["site_name"]}\n";
         $mailtext .= "{$_CONF['site_url']}\n";
 
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty ($charset)) {
-                $charset = "iso-8859-1";
-            }
-        } else {
-            $charset = $LANG_CHARSET;
-        }
-        mail ($A['email'],
-              "{$_CONF['site_name']}: {$LANG04[16]}",
-              $mailtext,
-              "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\nReturn-Path: <{$_CONF['site_mail']}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
-             );
+        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+        COM_mail ($A['email'], $subject, $mailtext);
 
         if ($msg) {
             $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
@@ -410,8 +388,7 @@ function newpasswordform ($uid, $requestid)
 */
 function sendNotification ($username, $email, $uid, $queued = false)
 {
-    global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG04, $LANG08, $LANG28,
-           $LANG29;
+    global $_CONF, $_TABLES, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
 
     $mailbody = "$LANG04[2]: $username\n"
               . "$LANG04[5]: $email\n"
@@ -426,21 +403,7 @@ function sendNotification ($username, $email, $uid, $queued = false)
     $mailbody .= "\n------------------------------\n";
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
-
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-        if (empty ($charset)) {
-            $charset = "iso-8859-1";
-        }
-    } else {
-        $charset = $LANG_CHARSET;
-    }
-    $mailheaders = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
-                 . "Return-Path: {$_CONF['site_mail']}\r\n"
-                 . "X-Mailer: GeekLog " . VERSION . "\r\n"
-                 . "Content-Type: text/plain; charset=$charset";
-
-    @mail ($_CONF['site_mail'], $mailsubject, $mailbody, $mailheaders);
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**

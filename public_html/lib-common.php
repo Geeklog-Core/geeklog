@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.248 2003/08/21 21:19:46 dhaun Exp $
+// $Id: lib-common.php,v 1.249 2003/09/01 12:53:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2938,6 +2938,53 @@ function COM_isemail( $email )
     }
 }
 
+function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0 )
+{
+    global $_CONF, $LANG_CHARSET;
+
+    if( empty( $LANG_CHARSET ))
+    {
+        $charset = $_CONF['default_charset'];
+        if( empty( $charset ))
+        {
+            $charset = 'iso-8859-1';
+        }
+    }
+    else
+    {
+        $charset = $LANG_CHARSET;
+    }
+
+    $headers = '';
+
+    if( empty( $from ))
+    {
+        $headers .= "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
+                 . "Return-Path: <{$_CONF['site_mail']}>\r\n";
+    }
+    else
+    {
+        $headers .= "From: $from\r\n";
+    }
+    if( $html )
+    {
+        $headers .= "Content-Type: text/html; charset=$charset\r\n"
+                 . "Content-Transfer-Encoding: 8bit\r\n";
+    }
+    else
+    {
+        $headers .= "Content-Type: text/plain; charset=$charset\r\n";
+    }
+    if( $priority > 0 )
+    {
+        $headers .= 'X-Priority: ' . $priority . "\r\n";
+    }
+    $headers .= 'X-Mailer: GeekLog ' . VERSION;
+
+    return mail( $to, $subject, $message, $headers );
+}
+
+
 /**
 * Creates older stuff block
 *
@@ -3659,22 +3706,6 @@ function COM_emailUserTopics()
 {
     global $_TABLES, $LANG08, $LANG24, $_CONF, $LANG_CHARSET;
 
-    // prepare email header - it's always the same for all users
-    $charset = $LANG_CHARSET;
-    if( empty( $charset ))
-    {
-        $charset = $_CONF['default_charset'];
-        if( empty( $charset ))
-        {
-            $charset = "iso-8859-1";
-        }
-    }
-
-    $mailfrom = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
-              . "Return-Path: <{$_CONF['site_mail']}>\r\n"
-              . "X-Mailer: GeekLog " . VERSION . "\r\n"
-              . "Content-Type: text/plain; charset={$charset}";
-
     $subject = strip_tags( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() ));
 
     $authors = array();
@@ -3781,10 +3812,9 @@ function COM_emailUserTopics()
         $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
 
-        $toemail = $U['email'];
-        $mailto = "{$U['username']} <{$toemail}>";
+        $mailto = $U['username'] . ' <' . $toemail . '>';
 
-        @mail( $toemail, $subject, $mailtext, $mailfrom );
+        COM_mail( $mailto, $subject, $mailtext );
     }
 
     DB_query( "UPDATE {$_TABLES['vars']} SET value = NOW() WHERE name = 'lastemailedstories'" );

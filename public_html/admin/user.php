@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.60 2003/08/21 09:29:10 dhaun Exp $
+// $Id: user.php,v 1.61 2003/09/01 12:53:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -513,7 +513,7 @@ function importusers($file)
 
 function emailpassword($username)
 {
-    global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $LANG04;
 
     $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows($result);
@@ -531,21 +531,11 @@ function emailpassword($username)
         $mailtext .= "{$LANG04[14]}\n\n";
         $mailtext .= "{$_CONF["site_name"]}\n";
         $mailtext .= "{$_CONF['site_url']}\n";
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty ($charset)) {
-                $charset = "iso-8859-1";
-            }
-        }
-        else {
-            $charset = $LANG_CHARSET;
-        }
-        mail($A["email"]
-            ,"{$_CONF["site_name"]}: {$LANG04[16]}"
-            ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
-            );
+
+        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+        COM_mail ($A['email'], $subject, $mailtext);
     }
+
     return $retval;
 }
 

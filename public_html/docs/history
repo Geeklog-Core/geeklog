@@ -1,5 +1,7 @@
 GeekLog History/Changes:
 
+- Introduced function COM_mail(). From now on, all Geeklog email will be sent
+  from this function (instead of using PHP's mail() function directly).
 - When users try to register with an empty username or invalid email address,
   make sure we're displaying a custom registration form (if one exists) when
   displaying the error message (part 1 of bug #57).

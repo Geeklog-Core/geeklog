@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.24 2003/06/25 08:39:02 dhaun Exp $
+// $Id: profiles.php,v 1.25 2003/09/01 12:53:06 dhaun Exp $
 
 include('lib-common.php');
 
@@ -49,20 +49,12 @@ include('lib-common.php');
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG08, $LANG_CHARSET;
+    global $_CONF, $_TABLES, $_USER, $LANG08;
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
         if (COM_isemail($authoremail)) {
             $result = DB_query("SELECT username,email FROM {$_TABLES['users']} WHERE uid = $uid");
             $A = DB_fetchArray($result);
-            if (empty ($LANG_CHARSET)) {
-                $charset = $_CONF['default_charset'];
-                if (empty ($charset)) {
-                    $charset = "iso-8859-1";
-                }
-            } else {
-                $charset = $LANG_CHARSET;
-            }
 
             // Append the user's signature to the message
             $sig = '';
@@ -74,14 +66,12 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
                 }
             }
 
-            $subject = strip_tags (stripslashes ($subject));
+            $subject = strip_tags (COM_stripslashes ($subject));
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-            $RET = @mail($A['email'], $subject,
-                strip_tags(stripslashes($message)) . $sig,
-                "From: $author <$authoremail>\r\n" .
-                "Return-Path: <$authoremail>\r\n" .
-                "X-Mailer: GeekLog " . VERSION . "\r\n" .
-                "Content-Type: text/plain; charset=$charset");
+            $message = strip_tags (COM_stripslashes ($message)) . $sig;
+            $from = $author . ' <' . $authoremail . '>';
+            COM_mail ($A['email'], $subject, $message, $from);
+
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
 			$retval .= COM_siteHeader("menu")
@@ -95,6 +85,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 			.contactform($uid,$subject,$message)
 			.COM_siteFooter();
 	}
+
 	return $retval;
 }
 
@@ -184,46 +175,47 @@ function contactform($uid, $subject='', $message='')
 #				this code
 #
 
-function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg) 
+function mailstory ($sid, $to, $toemail, $from, $fromemail, $sid, $shortmsg) 
 {
- 	global $_TABLES, $_CONF, $LANG01, $LANG08, $A;
-	
- 	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid' ";
- 	$result = DB_query($sql);
- 	$A = DB_fetchArray($result);
-    $shortmsg = stripslashes($shortmsg);
- 	$mailtext = $LANG08[23].LB;
-	if (strlen($shortmsg) > 0) {
-		$mailtext .= $LANG08[28].LB;
+ 	global $_CONF, $_TABLES, $LANG01, $LANG08;
+
+ 	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
+ 	$result = DB_query ($sql);
+ 	$A = DB_fetchArray ($result);
+    $shortmsg = COM_stripslashes ($shortmsg);
+ 	$mailtext = $LANG08[23] . LB;
+	if (strlen ($shortmsg) > 0) {
+		$mailtext .= LB . $LANG08[28] . LB;
 	}
+    $mailtext .= '------------------------------------------------------------'
+              . LB . LB
+              . COM_undoSpecialChars (stripslashes ($A['title'])) . LB
+              . strftime ($_CONF['date'], $A['day']) . LB;
+
     if ($_CONF['contributedbyline'] == 1) {
         $author = DB_getItem ($_TABLES['users'], 'username', "uid={$A['uid']}");
-    }
-
-	$mailtext .= '------------------------------------------------------------'.LB.LB
-		. COM_undoSpecialChars (stripslashes ($A['title'])) . LB
-		.strftime($_CONF['date'],$A['day']).LB;
-    if ($_CONF['contributedbyline'] == 1) {
-		$mailtext .= $LANG01[1] . ' ' . $author . LB;
+        $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
     $mailtext .= LB
 		.COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
 		.COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
 		.'------------------------------------------------------------'.LB
 		.$LANG08[24].LB.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
-	
- 	$mailto = $to.' <'.$toemail.'>';
- 	$mailfrom = 'From: '.$from.' <'.$fromemail.'>';
+
+ 	$mailto = $to . ' <' . $toemail . '>';
+ 	$mailfrom = $from . ' <' . $fromemail . '>';
  	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
-	
- 	@mail($toemail,$subject,$mailtext,$mailfrom);
- 	$retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
+
+    COM_mail ($toemail, $subject, $mailtext, $mailfrom);
+
+ 	$retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+
 	// Increment numemails counter for story
 	$result = DB_query("SELECT numemails FROM {$_TABLES['stories']} WHERE sid = '$sid'");
 	$A = DB_fetchArray($result);
 	$numemails = $A['numemails'] + 1;
 	DB_change($_TABLES['stories'],'numemails',$numemails,'sid',$sid);
-	
+
 	return $retval;
 }
 

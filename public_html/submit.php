@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.55 2003/08/12 21:10:04 dhaun Exp $
+// $Id: submit.php,v 1.56 2003/09/01 12:53:06 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -409,8 +409,8 @@ function submitstory($topic = '')
 */
 function sendNotification ($table, $A)
 {
-    global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG02, $LANG06, $LANG08,
-           $LANG09, $LANG12, $LANG24, $LANG29, $LANG30;
+    global $_CONF, $_TABLES, $LANG01, $LANG02, $LANG06, $LANG08, $LANG09,
+           $LANG12, $LANG24, $LANG29, $LANG30;
 
     switch ($table) {
         case $_TABLES['storysubmission']:
@@ -425,22 +425,22 @@ function sendNotification ($table, $A)
             $topic = stripslashes (DB_getItem ($_TABLES['topics'], 'topic',
                                                "tid = '{$A['tid']}'"));
 
-            $mailbody = "$LANG08[31]: {$title}\r\n"
-                      . "$LANG24[7]: {$storyauthor}\r\n"
-                      . "$LANG08[32]: " . strftime ($_CONF['date']) . "\r\n"
-                      . "$LANG24[14]: {$topic}\r\n\r\n";
+            $mailbody = "$LANG08[31]: {$title}\n"
+                      . "$LANG24[7]: {$storyauthor}\n"
+                      . "$LANG08[32]: " . strftime ($_CONF['date']) . "\n"
+                      . "$LANG24[14]: {$topic}\n\n";
 
             if ($_CONF['emailstorieslength'] > 0) {
                 if ($_CONF['emailstorieslength'] > 1) {
                     $introtext = substr ($introtext, 0,
                             $_CONF['emailstorieslength']) . '...';
                 }
-                $mailbody .= $introtext . "\r\n\r\n";
+                $mailbody .= $introtext . "\n\n";
             }
             if ($table == $_TABLES['storysubmission']) {
-                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
             } else {
-                $mailbody .= "$LANG08[33] <{$_CONF['site_url']}/article.php?story={$A['sid']}>\r\n\r\n";
+                $mailbody .= "$LANG08[33] <{$_CONF['site_url']}/article.php?story={$A['sid']}>\n\n";
             }
             $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
             break;
@@ -450,21 +450,21 @@ function sendNotification ($table, $A)
             $title = stripslashes ($A['title']);
             $description = stripslashes ($A['description']);
 
-            $mailbody = "$LANG09[16]: $title\r\n"
+            $mailbody = "$LANG09[16]: $title\n"
                       . "$LANG09[17]: " . strftime ($_CONF['date'],
                         strtotime ($A['datestart'] . ' ' . $A['timestart']));
             if ($A['allday']) {
                 $mailbody .= ' (' . $LANG30[26] . ')';
             }
-            $mailbody .= "\r\n";
+            $mailbody .= "\n";
             if (!empty ($A['url']) && ($A['url'] != 'http://')) {
-                $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\r\n";
+                $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\n";
             }
-            $mailbody .= "\r\n" . $description . "\r\n\r\n";
+            $mailbody .= "\n" . $description . "\n\n";
             if ($table == $_TABLES['eventsubmission']) {
-                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
             } else {
-                $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\r\n\r\n";
+                $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid={$A['eid']}>\n\n";
             }
             $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
             break;
@@ -474,37 +474,24 @@ function sendNotification ($table, $A)
             $title = stripslashes ($A['title']);
             $description = stripslashes ($A['description']);
 
-            $mailbody = "$LANG12[10]: $title\r\n"
-                      . "$LANG12[11]: <{$A['url']}>\r\n"
-                      . "$LANG12[17]: {$A['category']}\r\n\r\n"
-                      . $description . "\r\n\r\n";
+            $mailbody = "$LANG12[10]: $title\n"
+                      . "$LANG12[11]: <{$A['url']}>\n"
+                      . "$LANG12[17]: {$A['category']}\n\n"
+                      . $description . "\n\n";
             if ($table == $_TABLES['linksubmission']) {
-                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
             } else {
-                $mailbody .= "$LANG06[1] <{$_CONF['site_url']}/links.php?category=" . urlencode ($A['category']) . ">\r\n\r\n";
+                $mailbody .= "$LANG06[1] <{$_CONF['site_url']}/links.php?category=" . urlencode ($A['category']) . ">\n\n";
             }
             $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[36];
             break;
     }
 
-    $mailbody .= "\r\n------------------------------\r\n";
-    $mailbody .= "\r\n$LANG08[34]\r\n";
-    $mailbody .= "\r\n------------------------------\r\n";
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
 
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-        if (empty ($charset)) {
-            $charset = "iso-8859-1";
-        }
-    } else {
-        $charset = $LANG_CHARSET;
-    }
-    $mailheaders = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
-                 . "Return-Path: {$_CONF['site_mail']}\r\n"
-                 . "Content-Type: text/plain; charset=$charset\r\n"
-                 . "X-Mailer: GeekLog " . VERSION;
-
-    @mail ($_CONF['site_mail'], $mailsubject, $mailbody, $mailheaders);
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**

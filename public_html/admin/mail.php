@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.17 2003/06/19 20:01:41 dhaun Exp $
+// $Id: mail.php,v 1.18 2003/09/01 12:53:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -122,32 +122,19 @@ function send_messages($vars)
   		exit;
 	}
 
-	// Header information
-	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\r\n";
-	$headers .= "X-Sender: <{$vars['fraepost']}>\r\n";
-	$headers .= "X-Mailer: GeekLog " . VERSION . "\r\n"; // mailer
-    
-	// Urgent message!
-	if (isset($vars['priority'])) {
- 		$headers .= "X-Priority: 1\r\n";
-	}
-
-	$headers .= "Return-Path: <{$vars['fraepost']}>\r\n";  // Return path for errors
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-        if (empty ($charset)) {
-            $charset = "iso-8859-1";
-        }
+    // Urgent message!
+    if (isset ($vars['priority'])) {
+        $priority = 1;
     } else {
-        $charset = $LANG_CHARSET;
+        $priority = 0;
     }
 
-	// If you want to send html mail
-	if (isset($vars['html'])) { 
- 		$headers .= "Content-Type: text/html; charset=$charset\r\n"; // Mime type 
-	} else {
-        $headers .= "Content-Type: text/plain; charset=$charset\r\n";
-	}
+    // If you want to send html mail
+    if (isset ($vars['html'])) { 
+        $html = true;
+    } else {
+        $html = false;
+    }
 
 	// and now mail it
 	if (!isset($vars['overstyr'])) {
@@ -178,13 +165,13 @@ function send_messages($vars)
  		}
  		$til .= '<' . $A['email'] . '>';
  		$sendttil .= $til . '<br>';
- 
- 		if (!mail($A['email'], stripslashes ($vars['subject']),
-                stripslashes ($vars['message']), $headers)) {
+
+        if (!COM_mail ($A['email'], COM_stripslashes ($vars['subject']),
+                COM_stripslashes ($vars['message']), '', $html, $priority)) {
             $failures[] .= $til;
- 		} else {
+        } else {
             $successes[] = $til;
- 		}
+        }
 	}
 
 	$failcount = count($failures);
