@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.92 2003/06/21 08:52:47 dhaun Exp $
+// $Id: story.php,v 1.93 2003/06/28 12:52:38 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -195,7 +195,7 @@ function storyeditor($sid = '', $mode = '')
         $A['unixdate'] = strtotime($A['publish_year'] . '-' . $A['publish_month'] . '-' . $A['publish_day']
             . ' ' . $publish_hour . ':' . $A['publish_minute'] . ':00');
     }
-    
+
     if (!empty($A['title'])) {
         $display .= COM_startBlock ($LANG24[26], '',
                             COM_getBlockTemplate ('_admin_block', 'header'));
@@ -898,7 +898,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
         }
 
-        if ($type = 'submission') {
+        if ($type == 'submission') {
             $return_to = $_CONF['site_admin_url'] . '/moderation.php?msg=9';
         } else {
             $return_to = $_CONF['site_admin_url'] . '/story.php?msg=9';
@@ -906,7 +906,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", $return_to);
 
         // If this is done as part of moderation stuff then delete the submission
-        if ($type = 'submission') {
+        if ($type == 'submission') {
             DB_delete($_TABLES['storysubmission'],'sid',$sid);
         }
     } else {
