@@ -3,6 +3,9 @@ GeekLog History/Changes:
 December ??, 2002 (1.3.7)
 -----------------
 
+- When updating events in the master calendar, make sure copies of such events
+  in the personal calendars are updated as well (including deleting them, when
+  the original event is removed from the master calendar).
 - Fixed PRIMARY KEY for table personal_events, so that more than one user can
   add an event to his/her personal calendar.
 

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.32 2002/11/27 18:11:26 dhaun Exp $
+// $Id: event.php,v 1.33 2002/12/07 16:25:09 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -466,7 +466,17 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . '/event.php?msg=17');
+        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        if (DB_count ($_TABLES['personal_events'], 'eid', $eid) > 0) {
+            $result = DB_query ("SELECT uid FROM {$_TABLES['personal_events']} WHERE eid = '{$eid}'");
+            $numrows = DB_numRows ($result);
+            for ($i = 1; $i <= $numrows; $i++) {
+                $P = DB_fetchArray ($result);
+                DB_save ($_TABLES['personal_events'], 'eid,title,event_type,datestart,dateend,address1,address2,city,state,zipcode,allday,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,uid,location,timestart,timeend',
+                    "$eid,'$title','$event_type','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode',$allday,'$url','$description',$group_id,$owner_id,$perm_owner,$perm_group,$perm_members,$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
+            }
+        }
+        return COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG22[10],2);
@@ -534,7 +544,9 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
         COM_errorLog ('Attempted to delete event eid=' . $eid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/event.php');
     } else {
-        DB_delete($_TABLES['events'],'eid',$eid,$_CONF['site_admin_url'] . '/event.php?msg=18');
+        DB_delete($_TABLES['events'],'eid',$eid);
+        DB_delete($_TABLES['personal_events'],'eid',$eid);
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=18');
     }
 } else if (($mode == $LANG22[20]) && !empty ($LANG22[20])) { // save
     $display .= saveevent ($eid, $title, $event_type, $url, $allday,
