@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.47 2002/08/03 16:54:51 dhaun Exp $
+// $Id: config.php,v 1.48 2002/08/06 17:36:38 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -215,7 +215,6 @@ $_CONF['newcommentsinterval'] = 172800;
 $_CONF['newlinksinterval']    = 1209600;
 
 // Calendar Settings
-//$_CONF['enablecalendar']      = 1; // NOT IMPLEMENTED YET 
 $_CONF['personalcalendars']     = 1;
 $_CONF['showupcomingevents']    = 1;
 $_CONF['event_types']           = 'Anniversary,Appointment,Birthday,Business,Education,Holiday,Meeting,Miscellaneous,Personal,Phone Call,Special Occasion,Travel,Vacation';
@@ -247,7 +246,6 @@ $_CONF['polladdresstime']   = 604800;
 
 $_CONF['allowablehtml'] = '<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>,<code>,<pre>';
 $_CONF['adminhtml'] = $_CONF['allowablehtml'] . ',<table>,<tr>,<td>,<th>';
-$_CONF['parsemode']     = '';
 $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
@@ -260,7 +258,6 @@ if (!defined ('VERSION')) {
     define('VERSION', '1.3.6');
 }
 
-//$_CONF['default_state_cde'] = 'IA'; // NOT IMPLEMENTED
 $_STATES = array(
         '--'=>'',
         'AL'=>'Alabama',
