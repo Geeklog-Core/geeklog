@@ -29,14 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.1 2001/10/17 23:20:47 tony_bibbs Exp $
+// $Id: lib-database.php,v 1.2 2001/10/17 23:40:30 tony_bibbs Exp $
 
 // Database connection parameters
 $_DB_dbms           = 'mysql';
 $_DB_host           = 'localhost';
-$_DB_name           = 'livestockworlddev';
-$_DB_user           = 'root';
-$_DB_pass           = '';
+$_DB_name           = 'geeklog';
+$_DB_user           = 'username';
+$_DB_pass           = 'password';
 $_DB_table_prefix   = ''; // e.g. 'gl_'
 
 // +---------------------------------------------------------------------------+
