@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.345 2004/07/26 15:30:54 dhaun Exp $
+// $Id: lib-common.php,v 1.346 2004/07/27 18:37:16 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2695,8 +2695,9 @@ function COM_refresh( $url )
 */
 function COM_commentBar( $sid, $title, $type, $order, $mode )
 {
-    global $_TABLES, $LANG01, $_USER, $_CONF, $HTTP_GET_VARS;
+    global $_TABLES, $LANG01, $_USER, $_CONF, $_REQUEST, $HTTP_SERVER_VARS;
 
+    $page = array_pop(explode('/', $HTTP_SERVER_VARS['PHP_SELF']));
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
@@ -2746,12 +2747,29 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'lang_login_logout', $LANG01[61] );
     }
 
-    if( $type == "poll" )
+    if ( $page == 'comment.php' ) 
     {
-        $commentbar->set_var( 'parent_url', $_CONF['site_url']
-                              . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1' );
+        $commentbar->set_var( 'parent_url', 
+                              $_CONF['site_url'] . '/comment.php' );
+        $hidden = '';
+        if ( $_REQUEST['mode'] == 'view' ) {
+            $hidden .= '<input type="hidden" name="cid" value="' . $_REQUEST['cid'] . '">';
+            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['cid'] . '">';
+        }
+        else if ( $_REQUEST['mode'] == 'display' ) {
+            $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
+        }
+        $commentbar->set_var( 'hidden_field', $hidden . 
+                '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
+    }
+    else if( $type == "poll" )
+    {
+        $commentbar->set_var( 'parent_url', 
+                              $_CONF['site_url'] . '/pollbooth.php' );
         $commentbar->set_var( 'hidden_field',         
-                '<input type="hidden" name="scale" value="400">' );
+                '<input type="hidden" name="scale" value="400">' .
+                '<input type="hidden" name="qid" value="' . $sid . '">' .
+                '<input type="hidden" name="aid" value="-1">' );
     }
     else
     {
@@ -2768,9 +2786,17 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'order_selector', $selector);
 
     // Mode
-    $selector = '<select name="mode">' . LB
-              . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
-              . LB . '</select>';
+    if ( $page == 'comment.php' ) 
+    {
+        $selector = '<select name="format">';
+    }
+    else
+    {
+        $selector = '<select name="mode">';
+    }
+    $selector .= LB
+               . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
+               . LB . '</select>';
     $commentbar->set_var( 'mode_selector', $selector);
 
     return $commentbar->finish( $commentbar->parse( 'output', 'commentbar' ));

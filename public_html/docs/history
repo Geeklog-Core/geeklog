@@ -3,6 +3,10 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Improved the commentbar to logically support comments viewed from comment.php
+  [Vinny]
+- Removed a bug in comment.php that allowed a story/comment mismatch during 
+  display.  This was not exploitable.  [Vinny]
 - Integrated the timezone hack to compensate for time differences when your
   webserver is located in another timezone (original timezone hack by Yew Loong,
   with additions by "Joe" as well as several other geeklog.net users) [Dirk]

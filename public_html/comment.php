@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.68 2004/06/30 00:04:37 vinny Exp $
+// $Id: comment.php,v 1.69 2004/07/27 18:37:16 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -655,7 +655,11 @@ function send_report ($cid, $type)
 
 
 // MAIN
-switch ($mode) {
+if ( isset($_REQUEST['reply']) ) {
+    $_REQUEST['mode'] = '';
+}
+
+switch ( $_REQUEST['mode'] ) {
 case $LANG03[14]: // Preview
     $display .= COM_siteHeader()
         . commentform (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
@@ -683,7 +687,7 @@ case $LANG01[28]: // Delete
     break;
 
 case 'view':
-    $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
+    $cid = COM_applyFilter ($_REQUEST['cid'], true);
     if ($cid > 0) {
         $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
         $A = DB_fetchArray( DB_query($sql) );
@@ -702,13 +706,19 @@ case 'view':
         }
         $display .= COM_siteHeader();
         if ($allowed == 1) {
-            $format = COM_applyFilter ($HTTP_GET_VARS['format']);
-            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {  //FIXME
-                $format = 'threaded';
+            $format = COM_applyFilter ($_REQUEST['format']);
+            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
+                if ( $_USER['uid'] > 1 ) {
+                    $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
+                                          "uid = {$_USER['uid']}" );
+                }
+                if ( empty($format) || $_USER['uid'] <= 1 ) {
+                    $format = $_CONF['comment_mode'];
+                }
             }
             $display .= COM_userComments ($sid, $title, $type, 
-                            COM_applyFilter ($HTTP_GET_VARS['order']), $format, $cid,
-                            COM_applyFilter ($HTTP_GET_VARS['page']), true);
+                            COM_applyFilter ($_REQUEST['order']), $format, $cid,
+                            COM_applyFilter ($_REQUEST['page'], true), true);
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'))
@@ -722,9 +732,13 @@ case 'view':
     break;
 
 case 'display':
-    $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
-    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
-    if (!empty ($sid) && !empty ($type)) {
+    $pid = COM_applyFilter ($_REQUEST['pid'], true);
+    if ($pid > 0) {
+        $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $pid";
+        $A = DB_fetchArray( DB_query($sql) );
+        $sid = $A['sid'];
+        $title = $A['title'];
+        $type = $A['type'];
         $allowed = 1;
         if ($type == 'article') {
             $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
@@ -737,11 +751,13 @@ case 'display':
         }
         $display .= COM_siteHeader();
         if ($allowed == 1) {
-            $display .= COM_userComments ($sid,
-                    strip_tags ($HTTP_GET_VARS['title']), $type,
-                    COM_applyFilter ($HTTP_GET_VARS['order']), 'threaded',
-                    COM_applyFilter ($HTTP_GET_VARS['pid'], true),
-                    COM_applyFilter ($HTTP_GET_VARS['page'], true));
+            $format = COM_applyFilter ($_REQUEST['format']);
+            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
+                $format = 'threaded';
+            }
+            $display .= COM_userComments ($sid, $title, $type,
+                    COM_applyFilter ($_REQUEST['order']), $format, $pid,
+                    COM_applyFilter ($_REQUEST['page'], true));
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'))
