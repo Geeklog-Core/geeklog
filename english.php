@@ -476,7 +476,11 @@ $LANG21 = array(
         35 => "You must enter the title and the content for normal blocks",
         36 => "You must enter the content for layout blocks",
         37 => "Bad PHP block function name",
-        38 => "Functions for PHP Blocks must have the prefix 'phpblock_' (e.g. phpblock_getweather).  The 'phpblock_' prefix is required for security reasons to prevent the execution of arbitrary code."
+        38 => "Functions for PHP Blocks must have the prefix 'phpblock_' (e.g. phpblock_getweather).  The 'phpblock_' prefix is required for security reasons to prevent the execution of arbitrary code.",
+	39 => "Side",
+	40 => "Left",
+	41 => "Right",
+	42 => "You must enter the blockorder and security level for Geeklog default blocks"
 );
 
 ###############################################################################
