@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.74 2003/03/16 03:58:43 mlimburg Exp $
+// $Id: config.php,v 1.75 2003/03/21 13:55:38 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -310,13 +310,23 @@ $_CONF['event_types']           = 'Anniversary,Appointment,Birthday,Business,Edu
 
 // Story Settings
 $_CONF['maximagesperarticle']   = 5;
-$_CONF['backend']               = 1;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
+
+// RDF feed settings
+$_CONF['backend']               = 1;    // 1 = active, 0 = off
+// This allows a person to limit the rdf feed to a certain number of stories
+// (e.g. 10 or 12) or else limit the rdf feed to all stories within a certain
+// period of time in hours (e.g. 24h or 168h). 
+$_CONF['rdf_limit']             = 10;   // number of stories (10) or hours (24h)
+// Include the story's entire intro text in the feed (= 1) or limit the number
+// of characters from the intro text (any number > 1) or don't include the text
+// at all (= 0).
+$_CONF['rdf_storytext']         = 0;
 
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.

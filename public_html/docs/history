@@ -3,6 +3,11 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Integrated Vincent Furia's improvements for COM_exportRDF. You can now use
+  $_CONF['rdf_limit'] to limit the number of stories in the RDF file by
+  setting this to a number (e.g. 10) or a number of hours (e.g. 24h).
+  $_CONF['rdf_storytext'] lets you add the story's introtext to the RDF feed.
+  Also fixed a bug with un-escaped special characters in the feed's title.
 - A Static Page with a title of "topic:<topic-id>" (e.g. topic:GeekLog) will
   be displayed on top of the index page for that topic (based on a hack by
   James Fryer).
@@ -21,7 +26,7 @@ GeekLog History/Changes:
 - Fixed malformed cookie (used $_CONF['site_url'] instead of
   $_CONF['cookiedomain']), found & fixed by Jon Evans.
 - Fixed mixing of comments from different plugins, found & fixed by Alan McKay.
-- A theme can provide it's own functions to render the site header and footer
+- A theme can provide its own functions to render the site header and footer
   (this is not a new feature). Geeklog now expects those functions to be named
   <themename>_siteHeader and <themename>_siteFoote, respectively. Until now,
   it was, however, looking for the wrong function names ...
@@ -64,9 +69,14 @@ GeekLog History/Changes:
   directory).
 
 - Updated French language file, provided by Jaques.
+- Updated Hellenic (Greek) language file, provided by Access-=-Denied Networks
+- Updated Spanish and Spanish (Argentina) language files,
+  provided by Fernando Bernardini
 - New Slovenian language file, provided by gape
 - New Slovak language file, provided by Rado
 - New Romanian language file, provided by Dan Gheorghitza
+- New Chinese language file (gb2312 encoding), provided by Crocodile King
+- New Czech language file, provided by Hermes Trismegistos
 
 
 January 13, 2003 (1.3.7sr1)

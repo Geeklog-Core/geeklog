@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.207 2003/03/16 10:25:28 dhaun Exp $
+// $Id: lib-common.php,v 1.208 2003/03/21 13:55:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1273,7 +1273,7 @@ function COM_debug( $A )
 * Creates a vaild RDF file from the stories
 *
 * The core of this code has been lifted from phpweblog which is licenced
-* under the GPL.
+* under the GPL. It has since been heavily modified.
 *
 * @see function COM_rdfUpToDateCheck
 *
@@ -1281,17 +1281,56 @@ function COM_debug( $A )
 
 function COM_exportRDF()
 {
-    global $_TABLES, $_CONF, $_COM_VERBOSE, $LANG01;
+    global $_TABLES, $_CONF, $LANG01;
 
-    if ($_CONF['backend']>0)
+    if( $_CONF['backend'] > 0 )
     {
         $outputfile = $_CONF['rdf_file'];
         $rdencoding = 'UTF-8';
-        $rdtitle = $_CONF['site_name'];
+        $rdtitle = htmlspecialchars( $_CONF['site_name'] );
         $rdlink = $_CONF['site_url'];
-        $rddescr = $_CONF['site_slogan'];
+        $rddescr = htmlspecialchars( $_CONF['site_slogan'] );
         $rdlang = $_CONF['locale'];
-        $result = DB_query( "SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 20" );
+
+        $where = '';
+        if( !empty( $_CONF['rdf_limit'] ))
+        {
+            if( substr( $_CONF['rdf_limit'], -1 ) == 'h' ) // last xx hours
+            {
+                $limit = '';
+                $hours = substr( $_CONF['rdf_limit'], 0, -1 );
+                $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+            }
+            else
+            {
+                $limit = ' LIMIT ' . $_CONF['rdf_limit'];
+            }
+        }
+        else
+        {
+            $limit = ' LIMIT 10';
+        }
+
+        // get list of topics that anonymous users have access to
+        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+                             . COM_getPermSQL( 'WHERE', 1 ));
+        $tnumrows = DB_numRows( $tresult );
+        $tlist = '';
+        for( $i = 1; $i <= $tnumrows; $i++ )
+        {
+            $T = DB_fetchArray( $tresult );
+            $tlist .= "'" . $T['tid'] . "'";
+            if( $i < $tnumrows )
+            {
+                $tlist .= ',';
+            }
+        }
+        if( !empty( $tlist ))
+        {
+            $where .= " AND (tid IN ($tlist))";
+        }
+
+        $result = DB_query( "SELECT sid,title,introtext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limit" );
 
         if( !$file = @fopen( $outputfile, w ))
         {
@@ -1310,40 +1349,59 @@ function COM_exportRDF()
 
             $sids = '';
             $nrows = DB_numRows( $result );
-            $actualcount = 0;
 
-            for( $i = 1; $i <= $nrows AND $actualcount < 10; $i++ )
+            for( $i = 1; $i <= $nrows; $i++ )
             {
                 $row = DB_fetchArray( $result );
-                $topic_anon = DB_getItem( $_TABLES['topics'], 'perm_anon', "tid='{$row['tid']}'" );
+                $sids .= $row['sid'];
 
-                // Only add to RDF feed if anonymous has access to it
-
-                if( $row['perm_anon'] == 2 AND $topic_anon == 2 )
+                if( $i <> $nrows )
                 {
-                    $sids .= $row['sid'];
+                    $sids .= ',';
+                }
 
-                    if( $i <> $nrows )
+                $title = 'title';
+                $link = 'sid';
+
+                if( $_CONF['rdf_storytext'] > 0 )
+                {
+                    $desc = '<description>';
+
+                    $storytext = stripslashes( strip_tags( $row['introtext'] ));
+                    $storytext = trim( $storytext );
+                    $storytext = preg_replace( "/(\015)/", "", $storytext);
+
+                    if( $_CONF['rdf_storytext'] > 1 )
                     {
-                        $sids .= ',';
+                        if( strlen( $storytext ) > $_CONF['rdf_storytext'] )
+                        {
+                            $storytext = substr( $storytext, 0,
+                                    $_CONF['rdf_storytext'] ) . '...';
+                        }
                     }
 
-                    $title = 'title';
-                    $link = 'sid';
-                    $author = 'author';
-
-                    fputs ( $file, "<item>\n" );
-
-                    $title = '<title>' . htmlspecialchars( stripslashes( $row[$title] )) . "</title>\n";
-                    $author = '<author>' . htmlspecialchars( stripslashes( $row[$author] )) . "</author>\n";
-                    $link  = "<link>{$_CONF['site_url']}/article.php?story={$row[$link]}</link>\n";
-
-                    fputs( $file,  $title );
-                    fputs( $file,  $link );
-                    fputs( $file, "</item>\n\n" );
-
-                    $actualcount++;
+                    $desc .= $storytext . "</description>\n";
                 }
+                else
+                {
+                    $desc = '';
+                }
+
+                fputs ( $file, "<item>\n" );
+
+                $title = '<title>'
+                       . htmlspecialchars( stripslashes( $row[$title] ))
+                       . "</title>\n";
+                $link  = '<link>' . $_CONF['site_url'] . '/article.php?story='
+                       . $row[$link] . "</link>\n";
+
+                fputs( $file,  $title );
+                fputs( $file,  $link );
+                if( !empty( $desc ))
+                {
+                    fputs( $file,  $desc );
+                }
+                fputs( $file, "</item>\n\n" );
             }
 
             DB_query( "UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'" );
@@ -1357,7 +1415,7 @@ function COM_exportRDF()
 
 /**
 *
-* Checks to see if RDF file needs updating and updates it if sol
+* Checks to see if RDF file needs updating and updates it if so.
 * Checks to see if we need to update the RDF as a result
 * of an article with a future publish date reaching it's
 * publish time and if so updates the RDF file.
@@ -1368,37 +1426,79 @@ function COM_exportRDF()
 
 function COM_rdfUpToDateCheck()
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
 
-    $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10" );
-    $nrows = DB_numRows( $result );
-    $sids = '';
-
-    for( $i = 1; $i <= $nrows; $i++ )
+    if( $_CONF['backend'] > 0 )
     {
-        $A = DB_fetchArray( $result );
-        $sids .= $A['sid'];
-
-        if( $i <> $nrows )
+        $where = '';
+        if( !empty( $_CONF['rdf_limit'] ))
         {
-            $sids .= ',';
+            if( substr( $_CONF['rdf_limit'], -1 ) == 'h' ) // last xx hours
+            {
+                $limit = '';
+                $hours = substr( $_CONF['rdf_limit'], 0, -1 );
+                $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+            }
+            else
+            {
+                $limit = ' LIMIT ' . $_CONF['rdf_limit'];
+            }
         }
-    }
+        else
+        {
+            $limit = ' LIMIT 10';
+        }
 
-    $last_rdf_sids = DB_getItem( $_TABLES['vars'], 'value', "name = 'rdf_sids'" );
+        // get list of topics that anonymous users have access to
+        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+                             . COM_getPermSQL( 'WHERE', 1 ));
+        $tnumrows = DB_numRows( $tresult );
+        $tlist = '';
+        for( $i = 1; $i <= $tnumrows; $i++ )
+        {
+            $T = DB_fetchArray( $tresult );
+            $tlist .= "'" . $T['tid'] . "'";
+            if( $i < $tnumrows )
+            {
+                $tlist .= ',';
+            }
+        }
+        if( !empty( $tlist ))
+        {
+            $where .= " AND (tid IN ($tlist))";
+        }
 
-    if( $sids <> $last_rdf_sids )
-    {
-        COM_exportRDF();
+        $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limit" );
+        $nrows = DB_numRows( $result );
+        $sids = '';
+
+        for( $i = 1; $i <= $nrows; $i++ )
+        {
+            $A = DB_fetchArray( $result );
+            $sids .= $A['sid'];
+
+            if( $i <> $nrows )
+            {
+                $sids .= ',';
+            }
+        }
+
+        $last_rdf_sids = DB_getItem( $_TABLES['vars'], 'value',
+                                     "name = 'rdf_sids'" );
+
+        if( $sids <> $last_rdf_sids )
+        {
+            COM_exportRDF ();
+        }
     }
 }
 
 /**
 * Checks and Updates the featured status of all articles.
 *
-* Checks to see if any articles that were published for the future have been published and, if
-* so, will see if they are featured.  If they are featured, this will set old featured article (if
-* if there is one) to normal
+* Checks to see if any articles that were published for the future have been
+* published and, if so, will see if they are featured.  If they are featured,
+* this will set old featured article (if there is one) to normal
 *
 */
 
