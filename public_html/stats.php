@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.8 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: stats.php,v 1.9 2001/12/07 05:53:54 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -53,24 +53,24 @@ $stat_templates->set_var('lang_totalhitstosystem',$LANG10[2]);
 $stat_templates->set_var('total_hits', $totalhits);
 	
 $total_stories = DB_count($_TABLES['stories'],'draft_flag','0');
-$comments = DB_count('comments');
+$comments = DB_count($_TABLES['comments']);
 $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
 $stat_templates->set_var('total_stories',$total_stories);
 $stat_templates->set_var('total_comments',$comments);
 
-$total_polls = DB_count('pollquestions');
+$total_polls = DB_count($_TABLES['pollquestions']);
 $total_answers = DB_getItem($_TABLES['pollanswers'],'SUM(votes)');
 $stat_templates->set_var('lang_polls_answers',$LANG10[4]);
 $stat_templates->set_var('total_polls',$total_polls);
 $stat_templates->set_var('total_answers', $total_answers);
 
-$total_links = DB_count('links');
+$total_links = DB_count($_TABLES['links']);
 $total_clicks = DB_getItem($_TABLES['links'],'SUM(hits)');
 $stat_templates->set_var('lang_links_clicks',$LANG10[5]);
 $stat_templates->set_var('total_links',$total_links);
 $stat_templates->set_var('total_clicks',$total_clicks);
 
-$total_events = DB_count('events');
+$total_events = DB_count($_TABLES['events']);
 $stat_templates->set_var('lang_events',$LANG10[6]);
 $stat_templates->set_var('total_events',$total_events);
 
@@ -110,7 +110,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Commented Stories
 	
-$result = DB_query("SELECT sid,title,comments from stories WHERE draft_flag = 0 AND uid > 1 and comments > 0 ORDER BY comments desc LIMIT 10");
+$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE draft_flag = 0 AND uid > 1 and comments > 0 ORDER BY comments desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[11]);
 if ($nrows > 0) {
@@ -157,7 +157,7 @@ $stat_templates->set_var('stat_row','');
 	
 // Top Ten Polls
 	
-$result = DB_query("SELECT qid,question,voters from pollquestions WHERE voters > 0 ORDER BY voters desc LIMIT 10");
+$result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE voters > 0 ORDER BY voters desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[14]);
 if ($nrows>0) {
@@ -180,7 +180,7 @@ $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
 	
 // Top Ten Links
-$result = DB_query("SELECT lid,url,title,hits from links WHERE hits > 0 ORDER BY hits desc LIMIT 10");
+$result = DB_query("SELECT lid,url,title,hits from {$_TABLES['links']} WHERE hits > 0 ORDER BY hits desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[18]);
 if ($nrows > 0) {
