@@ -31,9 +31,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.15 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: group.php,v 1.16 2002/05/13 20:53:07 tony_bibbs Exp $
 
+/**
+* This file is the Geeklog Group administration page
+*
+* @author   Tony Bibbs  <tony@tonybibbs.com>
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once('../lib-common.php');
+
+/**
+* Verifies that current user even has access to the page to this point
+*/
 require_once('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -57,7 +71,8 @@ if (!SEC_hasRights('group.edit')) {
 /**
 * Shows the group editor form
 *
-* @grp_id           string      ID of group to edit
+* @param    string      $grp_id     ID of group to edit
+* @return   string      HTML for group editor
 *
 */
 function editgroup($grp_id = '') 
@@ -158,29 +173,15 @@ function editgroup($grp_id = '')
             $group_templates->set_var('group_options', $groupoptions);
         }
 	} else {
-/*
-		if (is_array($groups)) {
-            $selected = implode(' ',$groups);
-        } else {
-            $selected = '';
-        }
-*/
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[groupmsg]);
         COM_errorLog("SELECTED: $selected");
-		// Only Root users can give rights to Root
-		if (SEC_inGroup('Root')) {
-			if (!empty($grp_id)) {
-				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id",$selected));
-			} else {
-				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name','',''));
-			}
-		} else {
-			if (!empty($grp_id)) {
-				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected));
-			} else {
-				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_name <> 'Root'",''));
-			}
-		}
+		// You can no longer give access to the Root group....it's pointless and doesn't
+        // make any sense
+        if (!empty($grp_id)) {
+            $group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected));
+        } else {
+            $group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_name <> 'Root'",''));
+        }
 	}
     $group_templates->set_var('lang_rights', $LANG_ACCESS[rights]);
 
@@ -197,6 +198,15 @@ function editgroup($grp_id = '')
 	return $retval;
 }
 
+/**
+* Prints the features a group has access.  Please follow the comments in the code
+* closely if you need to modify this function. Also right is synonymous with feature
+*
+* @param    mixed       $grp_id     ID to print rights for
+* @param    boolean     $core       indicates if group is a core Geeklog group
+* @return   string      HTML for rights
+*
+*/
 function printrights($grp_id='', $core=0) 
 {
 	global $_TABLES, $VERBOSE, $_USER, $LANG_ACCESS;
@@ -278,12 +288,13 @@ function printrights($grp_id='', $core=0)
 /**
 * Save a group to the database
 *
-* @grp_id           string      ID of group to save
-* @grp_name         string      Group Name
-* @grp_descr        string      Description of group
-* @grp_gl_core      int         Flag that indicates if this is a core Geeklog group
-* @features         array       Features the group has access to
-* @groups           array       Groups this group will belong to
+* @param    string  $grp_id         ID of group to save
+* @param    string  $grp_name       Group Name
+* @param    string  $grp_descr      Description of group
+* @param    boolean $grp_gl_core    Flag that indicates if this is a core Geeklog group
+* @param    array   $features       Features the group has access to
+* @param    array   $groups         Groups this group will belong to
+* @return   string  Either empty string on success (cause of refresh) or HTML for some sort of error
 *
 */
 function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
@@ -343,6 +354,8 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 /**
 * Lists all the groups in the system
 *
+* @return   string  HTML for group listing
+*
 */
 function listgroups() 
 {
@@ -384,10 +397,9 @@ function listgroups()
     return $retval;
 }
 
-###############################################################################
-# MAIN
+// MAIN
 switch ($mode) {
-	case "delete":
+	case 'delete':
 		DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
 		DB_delete($_TABLES['groups'],'grp_id',$grp_id);
         echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=14');
@@ -395,12 +407,12 @@ switch ($mode) {
 	case 'save':
 		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);
 		break;
-	case "edit":
+	case 'edit':
 		$display .= COM_siteHeader('menu');
 		$display .= editgroup($grp_id);
 		$display .= COM_siteFooter();
 		break;
-	case "cancel":
+	case 'cancel':
 	default:
 		$display .= COM_siteHeader('menu');
 		$display .= COM_showMessage($msg);
