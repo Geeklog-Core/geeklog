@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.64 2003/05/20 08:55:13 dhaun Exp $
+// $Id: users.php,v 1.65 2003/05/21 16:35:22 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -456,6 +456,8 @@ function createuser($username,$email)
     global $_TABLES, $LANG04, $_CONF;
 
     if (COM_isEmail($email)) {
+
+        $username = trim ($username);
 
         $ucount = DB_count($_TABLES['users'],'username',$username);
         $ecount = DB_count($_TABLES['users'],'email',$email);
