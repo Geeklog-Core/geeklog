@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.53 2004/02/27 20:19:28 vinny Exp $
+// $Id: comment.php,v 1.54 2004/03/02 08:20:07 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -440,14 +440,14 @@ default:
     if (isset ($HTTP_POST_VARS['sid'])) {
         $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
         $type = COM_applyFilter ($HTTP_POST_VARS['type']);
-        $title = COM_applyFilter ($HTTP_POST_VARS['title']);
+        $title = strip_tags ($HTTP_POST_VARS['title']);
         $pid = COM_applyFilter ($HTTP_POST_VARS['pid'], true);
         $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
         $postmode = COM_applyFilter ($HTTP_POST_VARS['postmode']);
     } else {
         $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
         $type = COM_applyFilter ($HTTP_GET_VARS['type']);
-        $title = COM_applyFilter ($HTTP_GET_VARS['title']);
+        $title = strip_tags ($HTTP_GET_VARS['title']);
         $pid = COM_applyFilter ($HTTP_GET_VARS['pid'], true);
         $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
         $postmode = COM_applyFilter ($HTTP_GET_VARS['postmode']);
