@@ -156,7 +156,7 @@ $LANG01 = array(
 
 $LANG02 = array(
 	1 => "Calendar of Events",
-	2 => "I'm Sorry, there are no events to display.",
+	2 => "I'm sorry, there are no events to display.",
 	3 => "When",
 	4 => "Where",
 	5 => "Description",
@@ -518,7 +518,7 @@ $LANG12 = array(
 	22 => "Error: Missing Fields",
 	23 => "Please fill in all the fields on the form.  All fields are required.",
 	24 => "Submission Saved",
-	25 => "Yours $type submission has been saved successfully.",
+	25 => "Your $type submission has been saved successfully.",
 	26 => "Speed Limit",
 	27 => "Username",
 	28 => "Topic",
@@ -600,7 +600,7 @@ $LANG21 = array(
 	27 => "PHP Block",
     28 => "PHP Block Options",
     29 => "Block Function",
-    30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in /path/to/geeklog/system/lib-custom.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
+    30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthesis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in /path/to/geeklog/system/lib-custom.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
     31 => 'Error in PHP Block.  Function, %s, does not exist.',
     32 => "Error Missing Field(s)",
     33 => "You must enter the URL to the RSS file for portal blocks",
@@ -972,7 +972,7 @@ $MESSAGE = array (
 	3 => "Thank-you for submitting a link to {$_CONF["site_name"]}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF["site_url"]}/links.php>links</a> section.",
 	4 => "Thank-you for submitting an event to {$_CONF["site_name"]}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href={$_CONF["site_url"]}/calendar.php>calendar</a> section.",
 	5 => "Your account information has been successfully saved.",
-	6 => "Your display preferences have been successfully saved.",
+	6 => "Your preferences have been successfully saved.",
 	7 => "Your comment preferences have been successfully saved.",
 	8 => "You have been successfully logged out.",
 	9 => "Your story has been successfully saved.",
@@ -1031,7 +1031,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
+	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
 	2 => "Plug-in Installation Disclaimer",
 	3 => "Plug-in Installation Form",
 	4 => "Plug-in File",
