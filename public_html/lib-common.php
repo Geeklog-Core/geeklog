@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.146 2002/08/27 16:21:05 dhaun Exp $
+// $Id: lib-common.php,v 1.147 2002/08/27 16:58:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2814,19 +2814,20 @@ function COM_whatsNewBlock($help='',$title='')
             }
             // Trim the length if over 20 characters
             if ($itemlen > 20) {
-                $acomment = $urlstart . substr($titletouse,0,20) . '... ';
+                $titletouse = substr ($titletouse, 0, 17);
+                $acomment = str_replace ('$','&#36;', $titletouse) . '...';   
+                $acomment = str_replace (' ', '&nbsp;', $acomment);
                 if ($A['dups'] > 1) {
-                    $acomment .= '[+' . $A['dups'] . ']';
+                    $acomment .= ' [+' . $A['dups'] . ']';
                 }
-                $acomment .= '</a>';
             } else {
-                $acomment = $urlstart . $titletouse;
+                $acomment = str_replace ('$','&#36;', $titletouse);
+                $acomment = str_replace (' ', '&nbsp;', $acomment);
                 if ($A['dups'] > 1) {
-                    $acomment .= '[+' . $A['dups'] . ']';
+                    $acomment .= ' [+' . $A['dups'] . ']';
                 }
-                $acomment .= '</a>';
             }
-            $newcomments[] = $acomment;
+            $newcomments[] = $urlstart . $acomment . '</a>';
         }
         $retval .= COM_makeList ($newcomments);
     } else {
