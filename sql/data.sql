@@ -156,7 +156,7 @@ INSERT INTO statuscodes VALUES (10,'Archive');
 # Dumping data for table 'stories'
 #
 
-INSERT INTO stories VALUES ('20010719095630103',2,'GeekLog','Welcome to Geeklog!','Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. To log in to the admin section click <a      href=admin/index.php>here</a>. The default username and password for the admin is: <br><br><b>username:</b> Admin<br><b>password:</b> password','',20,'2001-07-19 09:56:30',2,'<li><a     href=admin/index.php>here</a><li><a  href=http://gldevel.iowaoutdoors.org/search.php?mode=search&type=stories&author=2>More by Admin</a>\n<li><a  href=http://gldevel.iowaoutdoors.org/search.php?mode=search&type=stories&topic=GeekLog>More from GeekLog</a>\n',1,0,0,'html',1,0);
+INSERT INTO stories VALUES ('20010719095630103',2,'GeekLog','Welcome to Geeklog!','Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. To log in to the admin section click <a      href=admin/index.php>here</a>. The default username and password for the admin is: <br><br><b>username:</b> Admin<br><b>password:</b> password','',20,'2001-07-19 09:56:30',2,0,'<li><a     href=admin/index.php>here</a><li><a  href=http://gldevel.iowaoutdoors.org/search.php?mode=search&type=stories&author=2>More by Admin</a>\n<li><a  href=http://gldevel.iowaoutdoors.org/search.php?mode=search&type=stories&topic=GeekLog>More from GeekLog</a>\n',1,0,0,'html',1,0);
 
 #
 # Dumping data for table 'submitspeedlimit'
@@ -312,10 +312,10 @@ INSERT INTO userprefs VALUES (10,0,1,0,'edt',1);
 # Dumping data for table 'users'
 #
 
-INSERT INTO users VALUES (1,'Anonymous','Anonymous','',0,NULL,NULL,'');
-INSERT INTO users VALUES (3,'Admin2','GeekLog Junior Admin Account','5f4dcc3b5aa765d61d8327deb882cf99',150,'root','http://geeklog.newsgeeks.com','');
-INSERT INTO users VALUES (4,'Admin3','GeekLog Story Reporter Account','5f4dcc3b5aa765d61d8327deb882cf99',100,'root','http://geeklog.newsgeeks.com','');
-INSERT INTO users VALUES (2,'Admin','Geeklog Admin Account','5f4dcc3b5aa765d61d8327deb882cf99',255,'root@localhost.com','http://www.geeklog.org','');
+INSERT INTO users VALUES (1,'Anonymous','Anonymous','',0,NULL,NOW(),NULL,'');
+INSERT INTO users VALUES (3,'Admin2','GeekLog Junior Admin Account','5f4dcc3b5aa765d61d8327deb882cf99',150,'root',NOW(),'http://geeklog.newsgeeks.com','');
+INSERT INTO users VALUES (4,'Admin3','GeekLog Story Reporter Account','5f4dcc3b5aa765d61d8327deb882cf99',100,'root',NOW(),'http://geeklog.newsgeeks.com','');
+INSERT INTO users VALUES (2,'Admin','Geeklog Admin Account','5f4dcc3b5aa765d61d8327deb882cf99',255,'root@localhost.com',NOW(),'http://www.geeklog.org','');
 
 #
 # Dumping data for table 'vars'
