@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.313 2004/04/10 02:28:07 vinny Exp $
+// $Id: lib-common.php,v 1.314 2004/04/10 18:42:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2673,7 +2673,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 */
 function COM_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
 {
-    global $_CONF, $_TABLES, $LANG01;
+    global $_CONF, $_TABLES, $LANG01, $query;
     
     $indent = 0;  // begin with 0 indent
     $level = array(); // used to track depth
