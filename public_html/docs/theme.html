@@ -131,7 +131,7 @@ over these two directories from one of the themes that come with Geeklog
 on). It seems like most Geeklog themes didn't change these files anyway, so
 this shouldn't be too much of a hassle ...</p>
 
-<p>Other changes:</p>
+<h3>Other changes</h3>
 <ul>
   <li>The template file <tt>admin/mail/mailform.thtml</tt> has been added.
     This form for sending emails to other users of the site was previously
@@ -168,11 +168,21 @@ this shouldn't be too much of a hassle ...</p>
     <tt>config.php</tt>.</li>
 </ul>
 
-<p><strong>CSS changes:</strong> The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.</p>
-
-<p>Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
+<h3>CSS changes</h3>
+<ul>
+<li>The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.<br>
+Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
 <b>cal-futureday</b>, <b>cal-nullday</b>, <b>weekview-curday</b>,
-<b>weekview-offday</b></p>
+<b>weekview-offday</b></li>
+<li>A new class named <b>pagenav</b> can be used to format the paged
+  navigation.<br>
+  Please note that this change was made <em>after</em> the release of Geeklog
+  1.3.6rc1 and affects the use of the paged navigation in
+  <tt>admin/user/userslist.thtml</tt> and <tt>links/links.thtml</tt>: In
+  1.3.6rc1, the navigation was wrapped in &lt;p&gt; tags in those files. As
+  of Geeklog 1.3.6 however, the function producing the navigation will wrap
+  it in a &lt;div&gt; automatically.</li>
+</ul>
 
 <p><strong>Note:</strong> Theme authors are encouraged to specify a character
 set in the <tt>header.thtml</tt> of their themes like this:</p>

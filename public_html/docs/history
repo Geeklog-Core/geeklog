@@ -2,6 +2,16 @@ GeekLog History/Changes:
 
 September ??, 2002 (1.3.6)
 ------------------
+- The delete button in the plugin editor, which was unused since the removal
+  of the automated plugin install (in Geeklog 1.3.4), will now cause a function
+  plugin_uninstall_<plugin name> to be called. This allows plugins to uninstall
+  themselves (if possible).
+- The author's name was missing from emailed stories. Also changed it so that
+  the author's name is only included when $_CONF['contributedbyline'] == 1.
+- Fixed the "1054: Unknown column 'deleted' in 'where clause'" SQL error that
+  some people were getting when logging out.
+- Submitted stories will now pick up the permissions from the topic they were
+  posted under (instead of using default permissions).
 - Added new features story.submit, link.submit, event.submit which, when
   assigned to a group, allow members of that group to post directly (skipping
   the submission queue) even when the submissione queue is active.
@@ -16,8 +26,11 @@ September ??, 2002 (1.3.6)
 - Anonymous users were able to submit comments even when $_CONF['loginrequired']
   was set to 1.
 - Fixed a search bug introduced in 1.3.6rc1 when searching by author.
+- When updating from an earlier version, the install script will no longer try
+  to rename the staticpage table when no prefix is used in the database.
 - PLG_getUserOptions() will no longer return empty menu options.
 - Updated Italian language file, provided by quess65
+- Changed some wording in the German language file
 - Fixed spelling errors in the English language file
 
 

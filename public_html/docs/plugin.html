@@ -25,6 +25,7 @@
       <li><a href="#admin_user_functions">Admin and User Functions</a></li>
       <li><a href="#Search_Functions">Search Functions</a></li>
       <li><a href="#Stats_Function">Stats Function</a></li>
+      <li><a href="#Uninstall_Function">Uninstall Function</a></li>
     </ul></li>
   <li><a href="#Implementing_your_Admin_Interface">Implementing your Admin Interface</a></li>
   <li><a href="#Preparing_your_Geeklog_Plugin">Preparing your Geeklog Plugin Distribution</a></li>
@@ -220,10 +221,10 @@ functions.</p>
 <h2><a name="Stats_Function">Stats Function</a></h2>
 
 <p>If you want your plugin to show up on the stats page then you must 
-implement these functions.</p>
+implement this function.</p>
 
       <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 4. Stats functions</caption>
+        <caption align="bottom">Table 4. Stats function</caption>
           <tr>
             <th valign="Top">Function</th>
             <th valign="Top">Description of Function</th>
@@ -238,7 +239,24 @@ implement these functions.</p>
 Top  Ten Commented  Stories).</td>
           </tr>
       </table>
-      
+
+<h2><a name="Uninstall_Function">Uninstall Function</a></h2>
+
+<p>If you want to give your plugin the ability to uninstall itself then you must implement this function.</p>
+
+      <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
+        <caption align="bottom">Table 5. Uninstall function</caption>
+          <tr>
+            <th valign="Top">Function</th>
+            <th valign="Top">Description of Function</th>
+          </tr>
+          <tr>
+            <td valign="Top" class="codeheader">plugin_uninstall_&lt;plugin 
+     name&gt;</td>
+            <td valign="Top" class="code">This function does not take any parameters. The plugin should try and uninstall itself, especially removing all its tables and data structures from the database.<br>
+The function should return <code>true</code> if the uninstall succeeded and <code>false</code> if it failed.</td>
+          </tr>
+      </table>
 <h2><a name="Implementing_your_Admin_Interface">Implementing your Admin Interface</a></h2>
 
 <p>The Geeklog Plugin API is just that an API.&nbsp; You obviously have   to  

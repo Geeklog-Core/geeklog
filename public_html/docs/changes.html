@@ -29,7 +29,9 @@ and / or obvious changes. For a detailed list of changes, please consult the
   <li>User submission queue: When activated (in <tt>config.php</tt>), new
     users will need to be approved by an admin before they receive their
     password.</li>
-  <li>The submission queues can be switched off separately.</li>
+  <li>The submission queues can be switched off separately, either completely
+    (in <tt>config.php</tt>) or only for certain groups of users (by using the
+    new features story.submit, links.submit, and event.submit).</li>
   <li>When posting source code (e.g. PHP, HTML, ...), you can now use the
     [code] ... [/code] pseudo tags to enclose those portions of your posting
     that should be reproduced verbatim.</li>
@@ -47,8 +49,8 @@ and / or obvious changes. For a detailed list of changes, please consult the
 
 <ul>
   <li>Several fixes have been made to ensure that permissions are taken into
-    account properly (e.g. not revealing story titles of stories that the
-    user has no access to).</li>
+    account properly (e.g. not revealing titles of stories that the user has no
+    access to).</li>
   <li>Several fixes have been made to make sure that Geeklog can now be
     properly localized (provided you have a language file that is up to date
     and have chosen the proper <a href="config.html#locale">locale settings</a>
