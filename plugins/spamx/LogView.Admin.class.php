@@ -17,9 +17,9 @@ class LogView extends BaseAdmin {
      */
     function display()
     {
-        global $_CONF, $HTTP_POST_VARS, $LANG_SX00;
+        global $_CONF, $_POST, $LANG_SX00;
 
-        $action = COM_applyFilter($HTTP_POST_VARS['action']);
+        $action = COM_applyFilter($_POST['action']);
         $path = $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=LogView';
         $log = 'spamx.log';
         $display .= "<form method=\"post\" action=\"{$path}\">";

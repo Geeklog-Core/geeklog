@@ -21,18 +21,18 @@ class EditBlackList extends BaseAdmin {
      */
     function display()
     {
-        global $_CONF, $HTTP_GET_VARS, $HTTP_POST_VARS, $_TABLES, $LANG_SX00;
+        global $_CONF, $_GET, $_POST, $_TABLES, $LANG_SX00;
 
         require_once $_CONF['path'] . 'plugins/spamx/rss.inc.php';
 
-        $action = COM_applyFilter($HTTP_GET_VARS['action']);
+        $action = COM_applyFilter($_GET['action']);
         if (empty($action)) {
-            $action = COM_applyFilter($HTTP_POST_VARS['paction']);
+            $action = COM_applyFilter($_POST['paction']);
         } 
 
-        $entry = COM_applyFilter($HTTP_GET_VARS['entry']);
+        $entry = COM_applyFilter($_GET['entry']);
         if (empty($entry)) {
-            $entry = COM_applyFilter($HTTP_POST_VARS['pentry']);
+            $entry = COM_applyFilter($_POST['pentry']);
         } 
 
         if ($action == 'delete') {

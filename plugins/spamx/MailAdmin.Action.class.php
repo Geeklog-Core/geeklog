@@ -1,7 +1,7 @@
 <?php
 /**
- * File: DeleteComment.Action.class.php
- * This is the Delete Comment Action  for the Geeklog SpamX Plug-in!
+ * File: MailAdmin.Action.class.php
+ * This is the Mail Admin Action for the Geeklog SpamX Plug-in!
  * 
  * Copyright (C) 2004 by the following authors:
  * Author		Tom Willett		tomw@pigstye.net

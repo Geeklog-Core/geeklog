@@ -32,7 +32,7 @@ class MTBlackList extends BaseCommand {
      */
     function execute($comment)
     {
-        global $_CONF, $_USER, $_TABLES, $REMOTE_ADDR, $LANG_SX00;
+        global $_CONF, $_USER, $_TABLES, $_SERVER, $LANG_SX00;
 
         /**
          * Include Blacklist Data
@@ -46,7 +46,7 @@ class MTBlackList extends BaseCommand {
             $val = $A['value'];
             if (@preg_match("#$val#", $comment)) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] . $_USER['uid'] . $LANG_SX00['fsc2'] . $REMOTE_ADDR);
+                SPAMX_log($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] . $_USER['uid'] . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
                 break;
             } 
         } 

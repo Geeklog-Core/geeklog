@@ -1,18 +1,13 @@
 <?php
 /**
-* file:  Import.Admin.class.php
-* MTBlacklist refresh module
+* file:  MassDelete.Admin.class.php
+* Mass delete comment spam
 *
-* Updates Sites MT Blacklist via Master MT Blacklist rss feed
-* 
 * Copyright (C) 2004 by the following authors:
 *
 * @ Author		Tom Willett		tomw@pigstye.net
 *
 * Licensed under GNU General Public License
-*
-* Based on MT-Blacklist Updater by
-* Cheah Chu Yeow (http://blog.codefront.net/)
 *
 */
 
@@ -25,12 +20,12 @@ class MassDelete extends BaseAdmin {
 	* 
 	*/
 	function display(){
-		global $_CONF, $HTTP_POST_VARS, $_TABLES, $LANG_SX00;
+		global $_CONF, $_POST, $_TABLES, $LANG_SX00;
 		
 		$display = $LANG_SX00['masshead'];
 
-		$act = $HTTP_POST_VARS['action'];
-		$lmt = $HTTP_POST_VARS['limit'];
+		$act = $_POST['action'];
+		$lmt = $_POST['limit'];
 
 		if (($act == $LANG_SX00['deletespam']) && ($lmt>0)) {
 			$numc = 0;
@@ -98,7 +93,7 @@ class MassDelete extends BaseAdmin {
 	*/
 	function delcomment ($cid, $sid, $type) 
 	{
-    	global $_CONF, $_TABLES, $_USER, $REMOTE_ADDR;
+    	global $_CONF, $_TABLES, $_USER;
 
 	    $retval = '';
 
