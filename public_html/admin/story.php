@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.128 2004/08/23 12:38:51 dhaun Exp $
+// $Id: story.php,v 1.129 2004/08/25 22:54:25 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -341,7 +341,7 @@ function storyeditor($sid = '', $mode = '')
 
     $story_templates->set_var('story_unixstamp', $A['unixdate']); 
     /* Auto Story Arhive or Delete Feature */
-    if ($A['expiredate'] == 0) {
+    if ($A['expiredate'] == 0 or date('Y', $A['expiredate']) < 2000) {
         $A['expiredate'] = time();
     }
     $expire_month = date('m', $A['expiredate']);
