@@ -117,10 +117,10 @@ $LANG01 = array(
 	70 => "Suchen",
 	71 => "Mitmachen",
 	72 => "Links",
-	73 => "Alte Umfragen",
+	73 => "Umfragen",
 	74 => "Kalender",
 	75 => "Erweiterte Suche",
-	76 => "Site-Statistik",
+	76 => "Statistik",
 	77 => "Plugins",
 	78 => "Anstehende Termine",
 	79 => "Was ist neu",
@@ -284,9 +284,9 @@ $LANG04 = array(
     74 => "&Auml;ndere das Aussehen dieser Site",
     75 => "Artikel per E-Mail f&uuml;r",
     76 => "W&auml;hle Kategorien aus der folgenden Liste und Du bekommst einmal pro Tag eine E-Mail mit einer &Uuml;bersicht aller neuen Artikel in den ausgew&auml;hlten Kategorien. Du brauchst nur die Kategorien anzukreuzen, die Dich interessieren.",
-    77 => "Photo",
-    78 => "Add a picture of yourself!",
-    79 => "Check here to delete this picture"
+    77 => "Foto",
+    78 => "Ein Bild von Dir",
+    79 => "Ankreuzen, um dieses Bild zu l&ouml;schen:"
 );
 
 ###############################################################################
@@ -773,7 +773,7 @@ $LANG28 = array(
     25 => 'Hier k&ouml;nnen Userdaten aus einer Datei in Geeklog importiert werden. Die Import-Datei muss ein Textfile sein, bei dem die Datens&auml;tze durch Tabs getrennt sind. Zudem m&uuml;ssen die Felder in der Reihenfolge Richtiger Name - Username - E-Mail-Adresse vorliegen. Jeder so importierte User bekommt eine E-Mail mit einem Zufallspasswort zugeschickt. Pro Zeile darf nur ein User stehen. Wenn sich die Importdatei nicht an dieses Format h&auml;lt, kann es zu Problemen kommen, die nur in m&uuml;hseliger Handarbeit behoben werden k&ouml;nnen. Also die Eintr&auml;ge lieber zweimal &uuml;berpr&uuml;fen ...',
     26 => 'Suche',
     27 => 'Anzahl Treffer',
-    28 => 'Check here to delete this picture'
+    28 => "Ankreuzen, um dieses Bild zu l&ouml;schen:"
 );
 
 
@@ -1018,6 +1018,19 @@ $LANG_DB_BACKUP = array(
     backup_successful => 'Backup der Datenbank war erfolgreich.',
     no_backups => 'Keine Backups im System',
     db_explanation => 'Um ein neues Backup Deines Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken'
+);
+
+$LANG_BUTTONS = array(
+    1 => "Home",
+    2 => "Kontakt",
+    3 => "Mitmachen",
+    4 => "Links",
+    5 => "Umfragen",
+    6 => "Kalender",
+    7 => "Statistik",
+    8 => "Einstellungen",
+    9 => "Suchen",
+    10 => "Erweiterte Suche"
 );
 
 ?>

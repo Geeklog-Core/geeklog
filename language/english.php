@@ -1014,4 +1014,17 @@ $LANG_DB_BACKUP = array(
     db_explanation => 'To create a new backup of your Geeklog system, hit the button below'
 );
 
+$LANG_BUTTONS = array(
+    1 => "Home",
+    2 => "Contact",
+    3 => "Get Published",
+    4 => "Links",
+    5 => "Polls",
+    6 => "Calendar",
+    7 => "Site Stats",
+    8 => "Personalize",
+    9 => "Search",
+    10 => "advanced search"
+);
+
 ?>
