@@ -148,7 +148,8 @@ $LANG01 = array(
     101 => 'Meine Termine',
     102 => 'Allgemeine Termine',
     103 => 'DB Backups',
-    104 => 'von'
+    104 => 'von',
+    105 => 'Mail Users'
 );
 
 ###############################################################################
@@ -752,7 +753,10 @@ $LANG28 = array(
 	19 => 'Loeschen',
 	20 => 'Speichern',
     21 => 'Dieser Username existiert bereits.',
-    22 => 'Fehler'
+    22 => 'Fehler',
+    23 => 'Batch Add',
+    24 => 'Batch Import of Users',
+    25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!'
 );
 
 
@@ -818,7 +822,7 @@ $LANG30 = array(
 ###############################################################################
 # admin/mail.php
 $LANG31 = array(
- 	1 => "Mail",
+ 	1 => $_CONF['site_name'] . " Mail Utility",
  	2 => "From",
  	3 => "Reply-to",
  	4 => "Subject",
@@ -834,7 +838,14 @@ $LANG31 = array(
  	14 => "Ignore user settings",
  	15 => "Error when sending to: ",
 	16 => "Successfully sent messages to: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>"
+  17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>",
+  18 => "To",
+  19 => "NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.",
+  20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Send another message</a> or you can <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">go back to the administration page</a>.",
+  21 => 'Failures',
+  22 => 'Successes',
+  23 => 'No failures',
+  24 => 'No successes'
 );
 
 
