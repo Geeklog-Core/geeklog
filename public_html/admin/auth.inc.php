@@ -35,11 +35,16 @@ if (!empty($loginname) && !empty($passwd)) {
 if (!empty($passwd) && $mypasswd == md5($passwd)) {
 	$userdata = get_userdata($loginname);
         $USER=$userdata;
-        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["s esscookietimeout"], $CONF["cookie_ip"]);
-        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cook iesecure"]);
+        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["sesscookietimeout"], $CONF["cookie_ip"]);
+        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
 
-	refresh("{$CONF["site_url"]}/admin/moderation.php");
-} else if ($USER["seclev"] < 100) {
+	if (!hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
+		refresh($CONF['site_url'] . '/admin/moderation.php');
+	} else {
+		refresh($CONF['site_url'] . '/index.php');
+	}
+
+} else if (!hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
 	site_header("");
 	#print "<br>Input: " . md5($passwd) . "<br>Database: $mypasswd<br>"; 
 	startblock($LANG20[01]);
