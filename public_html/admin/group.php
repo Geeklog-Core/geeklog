@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.11 2002/01/03 22:19:23 tony_bibbs Exp $
+// $Id: group.php,v 1.12 2002/03/05 19:38:54 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -250,7 +250,7 @@ function printrights($grp_id='', $core=0)
 
 		if ((($grpftarray[$A['ft_name']] == 'direct') OR empty($grpftarray[$A['ft_name']])) AND ($core == 0)) {
 			$ftcount++;
-			$retval .= '<td><input type="checkbox" name="features[]" value="'. $A['acc_ft_id'] . '"';
+			$retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
 			if ($grpftarray[$A['ft_name']] == 'direct') {
 				$retval .= ' CHECKED';
 			} 
