@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.27 2002/10/14 19:38:33 dhaun Exp $
+// $Id: topic.php,v 1.28 2002/11/25 21:10:47 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -142,7 +142,7 @@ function edittopic($tid='')
     $topic_templates->set_var('story_limit', $A['limitnews']);
     $topic_templates->set_var('lang_defaultis', $LANG27[16]);
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
-    $topic_templates->set_var('topic_name', $A['topic']);
+    $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
 	if (empty($A['tid'])) { 
         $A['imageurl'] = '/images/icons/'; 
     }
@@ -216,7 +216,7 @@ function listtopics() {
         }   
      
         $topic_templates->set_var('topic_id', $A['tid']);
-        $topic_templates->set_var('topic_name', $A['topic']);
+        $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
         $topic_templates->set_var('topic_access', $access);
 		if (!empty($A["imageurl"])) {
             if (isset ($_THEME_URL)) {

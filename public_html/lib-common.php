@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.183 2002/11/25 18:36:35 dhaun Exp $
+// $Id: lib-common.php,v 1.184 2002/11/25 21:10:43 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -386,7 +386,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         $result = DB_query( "SELECT imageurl,topic FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'" );
         $T = DB_fetchArray( $result );
 
-        $topicname = htmlspecialchars( $T['topic'] );
+        $topicname = htmlspecialchars( stripslashes( $T['topic'] ));
         $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
         if( !empty( $T['imageurl'] ))
         {
@@ -1201,11 +1201,11 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 
             if( $A[2] < 10 && $A[2] > 0 )
             {
-                $retval .= '><b>' . $A[1] . '</b><br>' . LB;
+                $retval .= '><b>' . stripslashes( $A[1] ) . '</b><br>' . LB;
             }
             else
             {
-                $retval .= '>' . $A[1] . '<br>' . LB;
+                $retval .= '>' . stripslashes( $A[1] ) . '<br>' . LB;
             }
         }
     }
@@ -1789,7 +1789,7 @@ function COM_showTopics( $topic='' )
         {
             if( $A['tid'] == $topic )
             {
-                $retval .= $A['topic'];
+                $retval .= stripslashes( $A['topic'] );
 
                 if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
                 {
@@ -1819,7 +1819,7 @@ function COM_showTopics( $topic='' )
             }
             else
             {
-                $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . $A['topic'] . '</b></a> ';
+                $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . stripslashes( $A['topic'] ) . '</b></a> ';
 
                 if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
                 {
