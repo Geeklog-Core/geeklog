@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.16 2002/01/03 21:46:49 tony_bibbs Exp $
+// $Id: plugins.php,v 1.17 2002/03/07 20:28:40 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -235,7 +235,7 @@ function installplugin() {
 	require_once($_CONF['path_system'] . "classes/upload.class.php");
 
 	$upload = new Upload();
-  	$upload->setAllowedMimeTypes(array("application/x-tar", "application/x-gzip-compressed","application/x-zip-compressed"));
+  	$upload->setAllowedMimeTypes(array("application/x-tar", "application/x-gzip-compressed","application/x-zip-compressed","application/x-gzip"));
    	$upload->setUploadPath($_CONF["path"] .  "/plugins");
    	if ($upload->doUpload()) {
 		//Good, file got uploaded, now install everything
