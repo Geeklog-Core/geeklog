@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.48 2004/07/11 19:17:48 dhaun Exp $
+// $Id: article.php,v 1.49 2004/07/18 11:53:35 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -58,11 +58,13 @@ if (isset ($HTTP_POST_VARS['mode'])) {
     $story = COM_applyFilter ($HTTP_POST_VARS['story']);
     $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
     $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+    $query = COM_applyFilter ($HTTP_POST_VARS['query']);
 } else {
     COM_setArgNames (array ('story', 'mode'));
     $story = COM_applyFilter (COM_getArgument ('story'));
     $mode = COM_applyFilter (COM_getArgument ('mode'));
     $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+    $query = COM_applyFilter ($HTTP_GET_VARS['query']);
 }
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
