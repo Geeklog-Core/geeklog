@@ -55,7 +55,7 @@ function CallFunctionForAllPlugins($function_name) {
                 $A = mysql_fetch_array($result);
                 $function = $function_name . $A['pi_name'];
                 if (function_exists($function)) {
-                        $function();
+                        return $function();
 		}
         }
 }
@@ -116,6 +116,12 @@ function CallFunctionForOnePlugin($function, $args="") {
 	} else {
 		return false;
 	}
+}
+
+#Geeklog is asking if the user is a moderator for any installed plugins.
+#Let's find out!
+function IsPluginModerator() {
+	return CallFunctionForAllPlugins('plugin_ismoderator_');
 }
 
 #if plugin developer decides they want to customize the blocks on the left hand side then 
