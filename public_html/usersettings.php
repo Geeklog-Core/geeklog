@@ -186,27 +186,29 @@ function editpreferences()
         }
     }
     $retval .= $language_options;
-    $retval .= '</select></td></tr>'
-	. '<tr valign="top">' . LB
-	. "<td align=right><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
-	. '<td><select name="theme">'.LB;
+    $retval .= '</select></td></tr>';
+    if ($_CONF['allow_user_themes'] == 1) {
+	$retval .= '<tr valign="top">' . LB
+	    . "<td align=\"right\"><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
+	    . '<td><select name="theme">'.LB;
 
-    if (empty($_USER['theme'])) {
-        $usertheme = $_CONF['theme'];
-    } else {
-        $usertheme = $_USER['theme'];
-    }
-    $themes = COM_getThemes();
-    for ($i = 1; $i <= count($themes); $i++) {
-        $retval .= '<option value="' . current($themes) . '"';
-        if ($usertheme == current($themes)) {
-            $retval .= ' SELECTED';
+        if (empty($_USER['theme'])) {
+            $usertheme = $_CONF['theme'];
+        } else {
+            $usertheme = $_USER['theme'];
         }
-        $retval .= '>' . str_replace('_',' ',current($themes)) . '</option>' . LB;
-        next($themes);
+        $themes = COM_getThemes();
+        for ($i = 1; $i <= count($themes); $i++) {
+            $retval .= '<option value="' . current($themes) . '"';
+            if ($usertheme == current($themes)) {
+                $retval .= ' SELECTED';
+            }
+            $retval .= '>' . str_replace('_',' ',current($themes)) . '</option>' . LB;
+            next($themes);
+        }
+        $retval .= '</select>' . LB . '</td></tr>' . LB;
     }
-    $retval .= '</select>' . LB . '</td></tr>' . LB
-        . '<tr valign="top">' . LB
+    $retval .= '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
         . '<td><input type="checkbox" name="noicons"';
 
