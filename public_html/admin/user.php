@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.76 2004/06/19 17:09:34 dhaun Exp $
+// $Id: user.php,v 1.77 2004/07/01 22:29:49 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -162,7 +162,11 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
 
     if ($_CONF['custom_registration'] AND (function_exists('custom_useredit'))) {
-        $user_templates->set_var('customfields', custom_useredit($uid) );
+        if (!empty ($uid) && ($uid > 1)) {
+            $user_templates->set_var('customfields', custom_useredit($uid) );
+        } else {
+            $user_templates->set_var('customfields', custom_useredit($A['uid']) );
+        }
     }
 
     if (SEC_inGroup('Group Admin')) {
@@ -281,8 +285,8 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             }
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-            if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
-                custom_usersave($uid);
+            if ($_CONF['custom_registration'] AND (function_exists('custom_usercreate'))) {
+                custom_usercreate($uid);
             }
             PLG_createUser ($uid);
         } else {
