@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.15 2002/04/11 19:24:59 tony_bibbs Exp $
+// $Id: calendar.php,v 1.16 2002/04/11 19:45:57 tony_bibbs Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -652,7 +652,7 @@ for ($i = 1; $i <= 6; $i++) {
             
             $query2 = DB_query($calsql);
             $q2_numrows = DB_numRows($query2);
-            if ($curday->daynumber == '03') print "$curday->daynumber: $calsql, $q2_numrows<br>";
+            
             if ($q2_numrows > 0) {
                 $entries = '';
                 for ($z = 1; $z <= $q2_numrows; $z++) {
