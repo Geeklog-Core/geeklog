@@ -1019,7 +1019,7 @@ $MESSAGE = array (
     45 => 'Das Plugin wurde gelöscht.',
     46 => 'Sie haben keinen Zugriff auf die Backup-Funktion. Alle Versuche, auf Features ohne entsprechende Berechtigung zuzugreifen, werden protokolliert.',
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
-    48 => 'Danke, dass Sie sich bei ' . $_CONF['site_name'] . ' angemeldet hast. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.',
+    48 => 'Danke, dass Sie sich bei ' . $_CONF['site_name'] . ' angemeldet haben. Ihr Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, werden Sie ein Passwort per E-Mail erhalten.',
     49 => 'Ihre Gruppe wurde gespeichert.',
     50 => 'Die Gruppe wurde gelöscht.',
     51 => 'Dieser Username ist schon vergeben. Bitte wählen Sie einen anderen.',
@@ -1107,7 +1107,8 @@ $LANG33 = array (
     38 => 'Fehler: Nicht alle Felder ausgefüllt',
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
-    41 => 'Links'
+    41 => 'Links',
+    42 => 'Termine'
 );
 
 $LANG_ACCESS = array(

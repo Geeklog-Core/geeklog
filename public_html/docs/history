@@ -42,9 +42,10 @@ September ??, 2003 (1.3.9rc1)
   New template files: comment/comment.thtml, comment/thread.thtml.
   Updated: comment/startcomment.thtml
 - New Admin interface for content syndication (RSS feeds etc.). This lets you
-  create feeds for all the stories and per topic. Plugins can also provide
-  feeds (through extensions of the Plugin API). Additional feed formats
-  (other than RSS) can be implemented as new classes (xxx.feed.class.php).
+  create feeds for all the stories and per topic as well as for links and
+  (upcoming) events. Plugins can also provide feeds (through extensions of the
+  Plugin API). Additional feed formats (other than RSS 0.91) can be implemented
+  as new classes (xxx.feed.class.php).
   Includes new admin/syndication template directory.
 - Don't display the "delete" button in the Admin's Event editor when we're
   editing a new event (reported by Simon Lord).

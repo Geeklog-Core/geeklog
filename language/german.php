@@ -1104,7 +1104,8 @@ $LANG33 = array (
     38 => 'Fehler: Nicht alle Felder ausgefüllt',
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
     40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
-    41 => 'Links'
+    41 => 'Links',
+    42 => 'Termine'
 );
 
 $LANG_ACCESS = array(

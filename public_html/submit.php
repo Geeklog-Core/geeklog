@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.56 2003/09/01 12:53:06 dhaun Exp $
+// $Id: submit.php,v 1.57 2003/09/12 11:51:03 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -552,6 +552,7 @@ function savesubmission($type,$A)
                 if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
                     sendNotification ($_TABLES['links'], $A);
                 }
+                COM_rdfUpToDateCheck ();
             }
         } else {
             $retval .= COM_startBlock ($LANG12[22], '',
@@ -637,6 +638,7 @@ function savesubmission($type,$A)
                     if (isset ($_CONF['notification']) && in_array ('event', $_CONF['notification'])) {
                         sendNotification ($_TABLES['events'], $A);
                     }
+                    COM_rdfUpToDateCheck ();
                 }
             } else {
                 if (empty($A['uid'])) {

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.3 2003/09/08 17:33:00 dhaun Exp $
+// $Id: lib-syndication.php,v 1.4 2003/09/12 11:51:03 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -202,6 +202,54 @@ function SYND_feedUpdateCheckLinks( $update_info, $limit )
 }
 
 /**
+* Check if a feed for the events needs to be updated.
+*
+* @param    string   $update_info   list of event ids
+* @param    string   $limit         number of entries or number of hours
+* @return   bool                    false = feed needs to be updated
+*
+*/
+function SYND_feedUpdateCheckEvents( $update_info, $limit )
+{
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
+
+    $where = '';
+    if( !empty( $limit ))
+    {
+        if( substr( $limit, -1 ) == 'h' ) // next xx hours
+        {
+            $limitsql = '';
+            $hours = substr( $limit, 0, -1 );
+            $where = " AND (datestart <= DATE_ADD(NOW(), INTERVAL $hours HOUR))";
+        }
+        else
+        {
+            $limitsql = ' LIMIT ' . $limit;
+        }
+    }
+    else
+    {
+        $limitsql = ' LIMIT 10';
+    }
+
+    $result = DB_query( "SELECT eid FROM {$_TABLES['events']} WHERE perm_anon > 0 AND dateend >= NOW()$where ORDER BY datestart,timestart $limitsql" );
+
+    $eids = array();
+    for( $i = 0; $i < $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
+        $eids[] = $A['eid'];
+    }
+    $current = implode( ',', $eids );
+
+    if ($_SYND_DEBUG) {
+        COM_errorLog ("Update check for events: comparing new list ($current) with old list ($update_info)", 1);
+    }
+
+    return ( $current != $update_info ) ? false : true;
+}
+
+/**
 * Check if the feed contents need to be updated.
 *
 * @param    string   plugin   plugin name
@@ -226,6 +274,12 @@ function SYND_feedUpdateCheck( $plugin, $feed, $topic, $update_data, $limit )
         case '::links':
         {
             $is_current = SYND_feedUpdateCheckLinks( $update_data, $limit );
+        }
+        break;
+
+        case '::events':
+        {
+            $is_current = SYND_feedUpdateCheckEvents( $update_data, $limit );
         }
         break;
 
@@ -422,12 +476,13 @@ function SYND_getFeedContentLinks( $limit, &$link, &$update )
         else
         {
             $limitsql = ' LIMIT ' . $limit;
-            $where = " ORDER BY lid DESC";
+            $where = ' ORDER BY lid DESC';
         }
     }
     else
     {
         $limitsql = ' LIMIT 10';
+        $where = ' ORDER BY lid DESC';
     }
 
     $result = DB_query( "SELECT lid,owner_id,title,description,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['links']} WHERE perm_anon > 0 $where $limitsql" );
@@ -463,6 +518,79 @@ function SYND_getFeedContentLinks( $limit, &$link, &$update )
 }
 
 /**
+* Get content for a feed that holds all links.
+*
+* @param    string   $limit    number of entries or number of stories
+* @param    string   $link     link to homepage
+* @param    string   $update   list of story ids
+* @return   array              content of the feed
+*
+*/
+function SYND_getFeedContentEvents( $limit, &$link, &$update )
+{
+    global $_TABLES, $_CONF, $LANG01;
+
+    $where = '';
+    if( !empty( $limit ))
+    {
+        if( substr( $limit, -1 ) == 'h' ) // next xx hours
+        {
+            $limitsql = '';
+            $hours = substr( $limit, 0, -1 );
+            $where = " AND (datestart <= DATE_ADD(NOW(), INTERVAL $hours HOUR))";
+        }
+        else
+        {
+            $limitsql = ' LIMIT ' . $limit;
+        }
+    }
+    else
+    {
+        $limitsql = ' LIMIT 10';
+    }
+
+    $result = DB_query( "SELECT eid,owner_id,title,description FROM {$_TABLES['events']} WHERE perm_anon > 0 AND dateend >= NOW()$where ORDER BY datestart,timestart $limitsql" );
+
+    $content = array();
+    $eids = array();
+    $nrows = DB_numRows( $result );
+
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $row = DB_fetchArray( $result );
+        $eids[] = $row['eid'];
+
+        $eventtitle = stripslashes( $row['title'] );
+        $eventtext  = stripslashes( $row['description'] );
+        $eventlink  = $_CONF['site_url'] . '/calendar_event.php?eid='
+                    . $row['eid'];
+
+        // Need to reparse the date from the event id
+        $myyear = substr( $row['eid'], 0, 4 );
+        $mymonth = substr( $row['eid'], 4, 2 );
+        $myday = substr( $row['eid'], 6, 2 );
+        $myhour = substr( $row['eid'], 8, 2 );
+        $mymin = substr( $row['eid'], 10, 2 );
+        $mysec = substr( $row['eid'], 12, 2 );
+        $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
+        $creationtime = strtotime( $newtime );
+
+        $content[] = array( 'title'  => $eventtitle,
+                            'text'   => $eventtext,
+                            'link'   => $eventlink,
+                            'uid'    => $row['owner_id'],
+                            'date'   => $creationtime,
+                            'format' => 'plaintext'
+                          );
+    }
+
+    $link = $_CONF['site_url'] . '/calendar.php';
+    $update = implode( ',', $eids );
+
+    return $content;
+}
+
+/**
 * Update a feed.
 *
 * @param   int   $fid   feed id
@@ -493,7 +621,13 @@ function SYND_updateFeed( $fid )
             }
             elseif( $A['topic'] == '::links')
             {
-                $content = SYND_getFeedContentLinks( $A['limits'], $link, $data );
+                $content = SYND_getFeedContentLinks( $A['limits'], $link,
+                                                     $data );
+            }
+            elseif( $A['topic'] == '::events')
+            {
+                $content = SYND_getFeedContentEvents( $A['limits'], $link,
+                                                      $data );
             }
             else // feed for a single topic only
             {

@@ -1098,7 +1098,8 @@ $LANG33 = array (
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links'
+    41 => 'Links',
+    42 => 'Events'
 );
 
 $LANG_ACCESS = array(

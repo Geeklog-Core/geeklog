@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.41 2003/09/01 19:01:05 dhaun Exp $
+// $Id: event.php,v 1.42 2003/09/12 11:51:03 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -489,10 +489,10 @@ t story $sid",1);
         $timestart = $start_hour . ':' . $start_minute . ':00';
         $timeend = $end_hour . ':' . $end_minute . ':00';
     }
-            
+
 	if (!empty($eid) AND !empty($description) AND !empty($title)) {
 		DB_delete($_TABLES['eventsubmission'],'eid',$eid);
-        
+
         DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         if (DB_count ($_TABLES['personal_events'], 'eid', $eid) > 0) {
             $result = DB_query ("SELECT uid FROM {$_TABLES['personal_events']} WHERE eid = '{$eid}'");
@@ -503,6 +503,8 @@ t story $sid",1);
                     "$eid,'$title','$event_type','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode',$allday,'$url','$description',$group_id,$owner_id,$perm_owner,$perm_group,$perm_members,$perm_anon,{$P['uid']},'$location','$timestart','$timeend'");
             }
         }
+        COM_rdfUpToDateCheck ();
+
         return COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
@@ -512,6 +514,7 @@ t story $sid",1);
         return $retval;
 	}
 }
+
 /**
 * lists all the events in the system
 *
