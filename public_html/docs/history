@@ -1,5 +1,71 @@
 GeekLog History/Changes:
 
+- User photos are now resized according to the image dimensions in config.php
+  (if an imagelib is configured - otherwise images exceeding those dimensions
+  are rejected).
+- Added a check for the proper permissions on the admin page of the Static
+  Pages plugin.
+- Plugins can now return "false" (or an empty array) from
+  plugin_cclabel_<plugin-name> so that the plugin's icon does not show up
+  in moderation.php if the user does not have the proper access rights for the
+  plugin. Changed the Static Pages plugin to do exactly that.
+- Fixed the use of multiple [code] ... [/code] sections.
+- PHP blocks which return an empty string are not displayed any more. This
+  enables PHP blocks to "hide" themselves.
+- Searching for links caused an SQL error on installs that were upgraded
+  from Geeklog 1.1 (missing "date" field in links table). However, links don't
+  use that field anyway, so searching by date was removed. Also, the results
+  are now sorted by link title.
+- The calendar displayed an empty last week (in month view) for some months,
+  e.g. November 2002.
+- COM_pollResults() will not use the side block templates when called from
+  pollbooth.php (thus allowing different block layouts for the poll results
+  in a side block and in pollbooth.php).
+- Allow for theme-based topic icons by using the $_THEME_URL variable as the
+  base directory for topic icons (if that variable is set).
+- Fixed display (or lack thereof) of $ signs in portal blocks
+- Updated Dutch language file, provided by R.F. van der Veen
+- Updated French language file, provided by Florent Guiliani
+- lib-common.php didn't use $_CONF['path_language'] to include the default
+  language file
+- What's Related block
+  + content is now set for all user submitted stories (previously, links where
+    only added in stories submitted by the Admin or user submissions edited by
+    the Admin)
+  + block is not displayed when it's empty
+  + now uses COM_makeList() (i.e. the list.thtml and listitem.thtml template
+    files) instead of hard-coded <li> tags
+- The What's Related and Story Options blocks can now be used independent of
+  each other in the article/article.thtml template file - use {whats_related},
+  {story_options} or {whats_related_story_options}.
+- Theme authors can now use the $_BLOCK_TEMPLATE "hack" for the What's Related
+  and Story Options blocks as well (using 'whats_related_block' and
+  'story_options_block' as the block names).
+- Fixed the "noboxes" feature where all blocks (with the exception of the
+  section, login / user functions, and admin blocks) are hidden.
+- Changed admin/link/listitem.thtml so that the URLs in the Admin's list of
+  links are clickable.
+- Fixed an SQL error when calling search.php and there were no stories and no
+  comments in the system.
+- Fixed an SQL error in the user profile when there were no stories and no polls
+  in the system.
+- Fixed date bug when previewing stories to be posted around the noon hour in
+  the admin story editor.
+- Added sanity checks in admin/story.php to prevent possible loss of stories
+  when using an incomplete language file.
+- Fixed a variable in admin/plugins/editor.ththml of the Smooth Blue theme
+- Fixed a typo and a grammatical error in english.php
+- Fixed problems with the "static page as frontpage" hack:
+  + will now check if the static pages plugin is installed and enabled
+  + uses sp_format (i.e. display blocks as specified in the static pages editor)
+  + added a missing stripslashes() call
+  New: When you have $_SP_CONF['in_block'] == 1 and the label of the static
+  page is neither empty nor "nonews" then that label is used as the block title
+  for the static page.
+- The "userevent" table is back in lib-database.php. Geeklog doesn't use this
+  table any more, but the name is needed when upgrading from old versions.
+
+
 September 20, 2002 (1.3.6)
 ------------------
 - Images in stories can now be resized automatically during upload, provided
