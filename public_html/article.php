@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.22 2002/08/27 14:11:15 dhaun Exp $
+// $Id: article.php,v 1.23 2002/09/13 13:25:21 mlimburg Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -94,6 +94,7 @@ if ($A['count'] > 0) {
             $story_template->set_var('story_introtext',nl2br(stripslashes($A['introtext'])));
             $story_template->set_var('story_bodytext', nl2br(stripslashes($A['bodytext'])));
             $story_template->set_var('site_url',$_CONF['site_url']);
+            $story_template->set_var('layout_url',$_CONF['layout_url']);
             $story_template->set_var('story_id', $A['sid']);
             $story_template->set_var('story_comments', DB_count($_TABLES['comments'],'sid',$A['sid']));
             $story_template->set_var('lang_comments', $LANG01[3]);
