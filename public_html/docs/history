@@ -3,6 +3,12 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.9rc1)
 ------------
 
+- COM_accessLog() now logs the user's uid and IP address automatically.
+- The option to stay logged in for 1 year has been removed.
+- Fixed display of default blocks in the user preferences.
+- If the user chose not to see certain topics (by selecting them from the
+  "Excluded Items" list in the preferences) then don't list those topics in
+  the Topics block.
 - After saving your account information, you are now redirected to your
   profile page, so that you can see your changes as they would be displayed
   for other users of the site.
