@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.198 2003/01/19 17:18:31 dhaun Exp $
+// $Id: lib-common.php,v 1.199 2003/01/29 17:08:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -614,7 +614,7 @@ function COM_getBlockTemplate( $blockname, $which )
 * @return   array   All installed themes
 */
 
-function COM_getThemes()
+function COM_getThemes($all = false)
 {
     global $_CONF;
 
@@ -626,7 +626,7 @@ function COM_getThemes()
 
     // If users aren't allowed to change their theme then only return the default theme
 
-    if( $_CONF['allow_user_themes'] == 0 )
+    if(( $_CONF['allow_user_themes'] == 0 ) && !$all )
     {
         $themes[$index] = $_CONF['theme'];
     }
@@ -899,6 +899,10 @@ function COM_siteFooter( $rightblock = false )
     $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $footer->set_var( 'site_name', $_CONF['site_name'] );
     $footer->set_var( 'site_slogan', $_CONF['site_slogan'] );
+    $rdf = substr_replace( $_CONF['rdf_file'], $_CONF['site_url'], 0,
+                           strlen( $_CONF['path_html'] ) - 1 );
+    $footer->set_var( 'rdf_file', $rdf );
+
     $year = date( 'Y' );
     $copyrightyear = $year;
     if( !empty( $_CONF['copyrightyear'] ))
