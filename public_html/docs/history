@@ -1,5 +1,29 @@
 GeekLog History/Changes:
 
+- Fixed bug #529621 and added the variable layout_url in COM_endBlock in
+  lib-common.php
+- (Sort of) fixed bug #530142: {geeklog_blocks} is now set to an empty string
+  in lib-common.php
+- Fixed bug #531018: {contributedby_use} had an 'r' too many in lib-common.php
+- There have been lots of minor changes in the themes so that they now contain
+  valid HTML. Nearly all those change fall into one of the following categories:
+  + changed '&' in URLs to '&amp;'
+  + added alt="" to <img> tags
+  + changed the script tags to <script type="text/javascript">
+  + changed the DOCTYPE to HTML 4.01 (there is a bug in the HTML 4.0
+    specification which prevents the use of 'name' attributes in forms).
+  + added '#' signs in front of colour values (mostly in the Classic theme)
+  These kinds of changes have also been applied to index.php and lib-common.php
+- During those changes for valid HTML, some typos were corrected:
+  + Classic/header.thtml: added a missing <b> before {welcome_message}
+  + Classic/storytext.thtml: added a missing 'n' in {end_contributedby_anchortag}
+  + Yahoo/header.thml referred to a non-existent file "spec.gif"
+  + Yahoo/footer.thml: there was an extra quote after align="right"
+  + Digital_Monochrom/admin/plugins/editor.thml: file was missing - copied
+    over from the Classic theme)
+  + Digital_Monochrom/footer.thtml: added a missing ';' after &nbsp
+- admin/install/install.php had two <body> tags but was missing the </head>
+
 March 7, 2002
 -----------------
 - Fixed broken older stories block (lib-common.php)
