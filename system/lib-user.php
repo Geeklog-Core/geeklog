@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.3 2004/05/15 13:02:21 dhaun Exp $
+// $Id: lib-user.php,v 1.4 2004/07/27 07:33:57 dhaun Exp $
 
 if (eregi ('lib-user.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -131,7 +131,7 @@ function USER_deleteAccount ($uid)
     // in case the user owned any objects that require Admin access, assign
     // them to the Root user with the lowest uid
     $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
-    $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid");
+    $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
     $A = DB_fetchArray ($result);
     $rootuser = $A['ug_uid'];
 
