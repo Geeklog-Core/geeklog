@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.13 2002/01/22 12:49:13 dreamscape Exp $
+// $Id: calendar.php,v 1.14 2002/03/16 18:44:48 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -98,12 +98,12 @@ function getSmallCalendar($m, $y, $mode='')
     $mycal->setCalendarMatrix($m,$y);
 
     if (!empty($mode)) {
-        $mode = '&mode=' . $mode;
+        $mode = '&amp;mode=' . $mode;
     }
 
     $retval .= '<font size=-2>' . LB . '<table>' . LB 
-        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&year=' . $y . $mode . '">' 
-        . $mycal->getMonthName($m) . '<a></td></tr>'
+        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&amp;year=' . $y . $mode . '">' 
+        . $mycal->getMonthName($m) . '</a></td></tr>'
         . '<tr><th>S</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>S</th></tr>'.LB;
 
     for ($i = 1; $i <= 6; $i++) {
@@ -336,11 +336,11 @@ case 'day':
     $cal_templates->set_var('currentday', strftime('%A %B %e, %Y',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
-        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&view=day&month=$month&day=$day&year=$year\">" . $LANG30[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
 	if (!empty($_USER['uid'])) {
-	    $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&view=day&month=$month&day=$day&year=$year\">" . $LANG30[12] . '</a>]');
+	    $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
 	} else {
 	    $cal_templates->set_var('calendar_toggle', '');
 	}
@@ -361,7 +361,7 @@ case 'day':
         for ($i = 1; $i <= count($alldaydata); $i++) {
             $A = current($alldaydata);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
-                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
             } else {
                 $cal_templates->set_var('delete_imagelink','');
             }
@@ -399,7 +399,7 @@ case 'day':
             $A = current($thedata);
             $cal_templates->set_var('event_time', date('g:ia',strtotime($A['datestart'].' '.$A['timestart'])) . '-'. date('g:ia',strtotime($A['dateend'].' '.$A['timeend'])));
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
-                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
             } else {
                 $cal_templates->set_var('delete_imagelink','');
             }
@@ -437,11 +437,11 @@ case 'week':
     $cal_templates->set_var('lang_week', $LANG30[27]);
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
-        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&view=week&month=$month&day=$day&year=$year\">" . $LANG30[11] . '</a>]');
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
 	if (!empty($_USER['uid'])) {
-            $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&view=week&month=$month&day=$day&year=$year\">" . $LANG30[12] . '</a>]');
+            $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
 	} else {
             $cal_templates->set_var('calendar_toggle', '');
 	}
@@ -489,8 +489,8 @@ case 'week':
             $cal_templates->set_var('class'.$i,'weekview_offday');
         }
         $monthname = $cal->getMonthName($monthnum);
-        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&view=day&day=$daynum&month=$monthnum&year=$yearnum\">" . $monthname . ' ' . $daynum . ', ' . $yearnum . '</a>');
-        $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&mode=$mode&day=$daynum&month=$monthnum&year=$yearnum" . '">' . $LANG30[8] . '</a>');
+        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . $monthname . ' ' . $daynum . ', ' . $yearnum . '</a>');
+        $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&amp;mode=$mode&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum" . '">' . $LANG30[8] . '</a>');
         if ($mode == 'personal') {
             $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart";
         } else {
@@ -523,10 +523,10 @@ case 'week':
                 $cal_templates->set_var('event_starttime', $starttime);
                 $cal_templates->set_var('event_endtime', ' - ' . $endtime);
             }
-            $cal_templates->set_var('event_title_and_link', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&eid=' . $A['eid'] . '">' . stripslashes($A['title']) . '</a>');
+            $cal_templates->set_var('event_title_and_link', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&amp;eid=' . $A['eid'] . '">' . stripslashes($A['title']) . '</a>');
             // Provide delete event link if user has access
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND $mode == 'personal') {
-                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" border="0" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif"></a>');
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" border="0" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif"></a>');
             } else {
                 $cal_templates->set_var('delete_imagelink','');
             }
@@ -636,8 +636,8 @@ for ($i = 1; $i <= 6; $i++) {
                 $curday->daynumber = '0' . $curday->daynumber;
             }
 
-            $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&mode=' . $mode . '&day=' . $curday->daynumber. '&month=' . $month
-                . '&year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
+            $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&amp;mode=' . $mode . '&amp;day=' . $curday->daynumber. '&amp;month=' . $month
+                . '&amp;year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
 
             // NEED TO CHANGE TO GET ENTRIES
             if ($mode == 'personal') {
@@ -657,7 +657,7 @@ for ($i = 1; $i <= 6; $i++) {
                     if (SEC_hasAccess($results['owner_id'],$results['group_id'],$results['perm_owner'],$results['perm_group'],$results['perm_members'],$results['perm_anon']) > 0) {
                         if ($results['title']) {
                             $cal_templates->set_var('cal_day_entries','');
-                            $entries .= '<a href="calendar_event.php?mode=' . $mode . '&eid=' . $results['eid'] . '" class="cal_event">' 
+                            $entries .= '<a href="calendar_event.php?mode=' . $mode . '&amp;eid=' . $results['eid'] . '" class="cal_event">' 
                                 . stripslashes($results['title']) . '</a><hr>';
                         }
                     } 

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.12 2002/01/11 21:01:37 tony_bibbs Exp $
+// $Id: calendar_event.php,v 1.13 2002/03/16 18:44:48 dhaun Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -136,7 +136,7 @@ function saveuserevent($eid, $reminder, $emailreminder, $mode)
 
     DB_query($savesql);
 
-    return COM_refresh("{$_CONF['site_url']}/calendar.php?mode=$mode&msg=24");
+    return COM_refresh("{$_CONF['site_url']}/calendar.php?mode=$mode&amp;msg=24");
 }
 
 /**
@@ -365,7 +365,7 @@ case 'saveuserevent':
     break;
 case 'deleteevent':
     DB_query("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
-    $display .= COM_refresh($_CONF['site_url'] . '/calendar.php?mode=personal&msg=26');
+    $display .= COM_refresh($_CONF['site_url'] . '/calendar.php?mode=personal&amp;msg=26');
     break;
 default:
     if (!empty($eid)) {
@@ -436,12 +436,12 @@ default:
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
                         $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&mode=' . $mode . '&action=deleteevent">');
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=' . $mode . '&amp;action=deleteevent">');
                         $cal_templates->set_var('lang_addremovefromcal',$LANG02[10]);
                         $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     } else {
                         $cal_templates->set_var('addremove_begin_anchortag','<a href="'
-                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&mode=' . $mode . '&action=addevent">');
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&amp;mode=' . $mode . '&amp;action=addevent">');
                         $cal_templates->set_var('lang_addremovefromcal',$LANG02[9]);
                         $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     }
