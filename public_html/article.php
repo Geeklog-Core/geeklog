@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.38 2003/11/23 09:57:22 dhaun Exp $
+// $Id: article.php,v 1.39 2003/12/12 21:58:10 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -140,7 +140,7 @@ if ($A['count'] > 0) {
                                                 $A['title']));
             $display .= COM_siteHeader ('menu');
 
-            DB_change ($_TABLES['stories'], 'hits', DB_getItem ($_TABLES['stories'], 'hits', "sid = '$story'") + 1, 'sid', $story);
+            DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE sid = '$story'");
 
             if ($query) {
                 $mywords = explode (" ", $query);
