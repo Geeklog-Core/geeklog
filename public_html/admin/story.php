@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.58 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: story.php,v 1.59 2002/08/03 16:54:51 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -108,7 +108,7 @@ function storyeditor($sid = '', $mode = '')
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
         $A = DB_fetchArray($result);
         $A['show_topic_icon'] = 1;
-        $A["commentcode"] = 0;
+        $A["commentcode"] = $_CONF['comment_code'];
         $A["featured"] = 0;
         $A["statuscode"] = 0;
         $A['owner_id'] = $_USER['uid'];
@@ -123,7 +123,7 @@ function storyeditor($sid = '', $mode = '')
         $A['show_topic_icon'] = 1;
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
-        $A['commentcode'] = 0;
+        $A['commentcode'] = $_CONF['comment_code'];
         $A['statuscode'] = 0;
         $A['featured'] = 0;
         $A['owner_id'] = $_USER['uid'];

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.20 2002/07/19 12:00:31 dhaun Exp $
+// $Id: poll.php,v 1.21 2002/08/03 16:54:51 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -185,7 +185,7 @@ function editpoll($qid='')
         $Q['perm_members'] = 2;
         $Q['perm_anon'] = 2;
         $Q['statuscode'] = 0;
-        $Q['commentcode'] = 0;
+        $Q['commentcode'] = $_CONF['comment_code'];
         $access = 3;
     }
 

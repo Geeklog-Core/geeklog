@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.46 2002/08/02 14:51:51 dhaun Exp $
+// $Id: config.php,v 1.47 2002/08/03 16:54:51 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -232,6 +232,8 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['commentspeedlimit']     = 45;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
 $_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
+// Allow / disallow comments to stories by default (can be changed individually for every story)
+$_CONF['comment_code']          = 0; // 0 = comments enabled, -1 = disabled
 
 // Poll Settings
 $_CONF['maxanswers']        = 10;
