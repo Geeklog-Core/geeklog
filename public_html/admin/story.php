@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.129 2004/08/25 22:54:25 blaine Exp $
+// $Id: story.php,v 1.130 2004/08/29 18:52:16 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -143,6 +143,7 @@ function storyeditor($sid = '', $mode = '')
             COM_accessLog("User {$_USER['username']} tried to illegally access story $sid.");
             return $display;
         }
+        $A['old_sid'] = $A['sid'];
     } elseif (!empty($sid) && $mode == 'editsubmission') {
         $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, "
@@ -158,6 +159,7 @@ function storyeditor($sid = '', $mode = '')
             $A['owner_id'] = $A['uid'];
             $access = 3;
             $A['title'] = htmlspecialchars ($A['title']);
+            $A['old_sid'] = $A['sid'];
         } else {
             // that submission doesn't seem to be there any more (may have been
             // handled by another Admin) - take us back to the moderation page
@@ -165,6 +167,7 @@ function storyeditor($sid = '', $mode = '')
         }
     } elseif ($mode == 'edit') {
         $A['sid'] = COM_makesid();
+        $A['old_sid'] = '';
         $A['show_topic_icon'] = 1;
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
@@ -478,6 +481,8 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('lang_emails', $LANG24[39]); 
     $story_templates->set_var('story_emails', $A['numemails']);
     $story_templates->set_var('story_id', $A['sid']);
+    $story_templates->set_var('old_story_id', $A['old_sid']);
+    $story_templates->set_var('lang_sid', $LANG24[12]); 
     $story_templates->set_var('lang_save', $LANG24[8]); 
     $story_templates->set_var('lang_preview', $LANG24[9]); 
     $story_templates->set_var('lang_cancel', $LANG24[10]); 
@@ -861,21 +866,36 @@ function insert_images($sid, $intro, $body)
 * @param    int         $delete         String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-    
+
+    // some minimal sanitizing on the story id ...
+    $sid = str_replace (' ', '', $sid);
+    $sid = str_replace (array ('_', '/', '\\', ':'), '-', $sid);
+    if (empty ($sid)) {
+        $sid = COM_makesid ();
+    }
+
+    $duplicate_sid = false;
+    $delete_old_story = false;
     $access = 0;
     if (DB_count ($_TABLES['stories'], 'sid', $sid) > 0) {
+        if ($sid != $old_sid) {
+            $duplicate_sid = true;
+        }
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '{$sid}'");
         $A = DB_fetchArray ($result);
         $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']);
     } else {
+        if (!empty ($old_sid) && ($sid != old_sid)) {
+            $delete_old_story = true;
+        }
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
@@ -887,6 +907,13 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
         COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
+        echo $display;
+        exit;
+    } elseif ($duplicate_sid) {
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_errorLog ($LANG24[24], 2);
+        $display .= storyeditor ($sid);
+        $display .= COM_siteFooter ();
         echo $display;
         exit;
     } elseif (!empty($title) && !empty($introtext)) {
@@ -1068,10 +1095,20 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
         }
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode','$expire','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode','$expire','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
 
         // If this is done as part of the moderation then delete the submission
-        DB_delete ($_TABLES['storysubmission'], 'sid', $sid);
+        if (empty ($old_sid)) {
+            $del_sid = $sid;
+        } else {
+            $del_sid = $old_sid;
+        }
+        DB_delete ($_TABLES['storysubmission'], 'sid', $del_sid);
+
+        // if the story id has changed, delete the story with the old id
+        if ($delete_old_story && !empty ($old_sid)) {
+            DB_delete ($_TABLES['stories'], 'sid', $old_sid);
+        }
 
         // update feed(s) and Older Stories block
         COM_rdfUpToDateCheck ();
@@ -1137,7 +1174,7 @@ $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
     $type = COM_applyFilter ($HTTP_POST_VARS['type']);
-    if (!isset ($sid) || empty ($sid) || ($sid == 0)) {
+    if (!isset ($sid) || empty ($sid)) {
         COM_errorLog ('Attempted to delete story sid=' . $sid);
         echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
     } else if ($type == 'submission') {
@@ -1232,7 +1269,8 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  $HTTP_POST_VARS['perm_owner'], $HTTP_POST_VARS['perm_group'],
                  $HTTP_POST_VARS['perm_members'], $HTTP_POST_VARS['perm_anon'],
                  $HTTP_POST_VARS['delete'],
-                 COM_applyFilter ($HTTP_POST_VARS['show_topic_icon']));
+                 COM_applyFilter ($HTTP_POST_VARS['show_topic_icon']),
+                 COM_applyFilter ($HTTP_POST_VARS['old_sid']));
 } else { // 'cancel' or no mode at all
     $type = COM_applyFilter ($HTTP_POST_VARS['type']);
     if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&

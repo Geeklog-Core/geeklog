@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Story IDs are now editable (just like the IDs of static pages). [Dirk]
+  Important: Update the story editor template (admin/story/storyeditor.thtml)!
 - Fixed a bug that reset every user's password request as soon as some user
   changed their account information (bug #265) [Dirk]
 - Added support for the URL rewriting to portal.php [Dirk]

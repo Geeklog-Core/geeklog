@@ -153,7 +153,12 @@ $LANG01 = array(
     105 => 'Mail an User',
     106 => 'Angezeigt',
     107 => 'Update verfügbar?',
-    108 => 'Cache löschen'
+    108 => 'Cache löschen',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -190,12 +195,12 @@ $LANG03 = array(
     7 => 'Dein letzter Kommentar war vor ',
     8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF['commentspeedlimit']} Sekunden vergangen sein.",
     9 => 'Kommentar',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Kommentar abschicken',
     12 => 'Bitte die Felder Betreff <em>und</em> Kommentar ausfüllen, um einen Kommentar zu diesem Artikel abzugeben.',
     13 => 'Deine Information',
     14 => 'Vorschau',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Betreff',
     17 => 'Fehler',
     18 => 'Wichtige Hinweise:',
@@ -204,7 +209,10 @@ $LANG03 = array(
     21 => 'Lies bitte die vorhandenen Kommentare bevor Du Deinen eigenen abgibst, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
     22 => 'Benutze eine eindeutige Betreffzeile, die den Inhalt Deines Kommentars zusammenfasst.',
     23 => 'Deine E-Mail-Adresse wird NICHT veröffentlicht.',
-    24 => 'Anonymous'
+    24 => 'Anonymous',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -327,7 +335,9 @@ $LANG05 = array(
     3 => ' für die Kategorie %s.',
     4 => 'Hauptartikel',
     5 => 'weiter',
-    6 => 'zurück'
+    6 => 'zurück',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -492,7 +502,8 @@ $LANG11 = array(
     1 => 'Zum Thema',
     2 => 'An einen Freund schicken',
     3 => 'Druckfähige Version',
-    4 => 'Optionen'
+    4 => 'Optionen',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -642,7 +653,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Termin-Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Titel',
     4 => 'URL',
     5 => 'Startdatum',
@@ -662,7 +673,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'Speichern',
     21 => 'Abbruch',
-    22 => 'Löschen'
+    22 => 'Löschen',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -709,7 +723,7 @@ $LANG24 = array(
     9 => 'Vorschau',
     10 => 'Abbruch',
     11 => 'Löschen',
-    12 => '',
+    12 => 'ID',
     13 => 'Titel',
     14 => 'Kategorie',
     15 => 'Datum',
@@ -721,7 +735,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Artikel-Liste',
     23 => 'Auf die Nummer klicken, um einen Artikel zu ändern oder zu löschen. Um einen Artikel anzusehen, auf dessen Titel klicken. Auf Neuer Artikel (s.o.) klicken, um einen neuen Artikel zu schreiben.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Artikel-Vorschau',
     27 => '',
@@ -754,7 +768,12 @@ $LANG24 = array(
     54 => 'Nicht verwendete Bilder',
     55 => 'Folgende Fehler traten beim Versuch, den Artikel zu speichern, auf. Bitte diese Fehler beheben und den Artikel noch einmal speichern.',
     56 => 'mit Icon',
-    57 => 'Bild in Originalgröße'
+    57 => 'Bild in Originalgröße',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -816,7 +835,9 @@ $LANG27 = array(
     21 => 'Löschen',
     22 => 'Default',
     23 => 'Zur Default-Kategorie für neue Artikel machen',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -1179,7 +1200,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Backup der Datenbank war erfolgreich.',
     'no_backups' => 'Keine Backups im System',
     'db_explanation' => 'Um ein neues Backup Deines Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken',
-    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>\$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup fehlgeschlagen: Datei ist 0 Bytes groß.',
     'path_not_found' => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
     'no_access' => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
@@ -1214,6 +1235,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Anmeldung erforderlich',
@@ -1221,4 +1243,25 @@ $LANG_LOGIN = array(
     3 => 'Anmelden',
     4 => 'Neuer User'
 );
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
 ?>
