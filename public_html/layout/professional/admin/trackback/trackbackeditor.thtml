@@ -3,7 +3,7 @@
         <tr>
             <td align="right"><b>{lang_trackback_url}:</b></td>
             <td>
-                <input type="text" size="50" maxsize="255" name="target" value="{target_url}">
+                <input type="text" size="50" maxsize="{max_url_length}" name="target" value="{target_url}">
             </td>
         </tr>
         <tr>
