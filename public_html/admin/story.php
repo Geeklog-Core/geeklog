@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.98 2003/07/06 13:55:58 dhaun Exp $
+// $Id: story.php,v 1.99 2003/07/25 10:08:55 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -923,39 +923,62 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     }
 }
 
+/**
+* Delete a story from the database.
+*
+* @param    string   $sid   id of story to delete
+* @return   string          HTML for a redirect to admin/story.php
+*
+*/
+function deletestory ($sid)
+{
+    global $_TABLES, $_CONF;
+
+    $result = DB_query ("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
+    $nrows = DB_numRows ($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
+        if (!@unlink ($filename)) {
+            // log the problem but don't abort the script
+            echo COM_errorLog ('Unable to remove the following image from the article: ' . $filename);
+        }
+
+        // remove unscaled image, if it exists
+        $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                                           strrpos ($A['ai_filename'], '.'), 1);
+        $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                  . $lFilename_large;
+        if (file_exists ($lFilename_large_complete)) {
+            if (!@unlink ($lFilename_large_complete)) {
+                // again, log the problem but don't abort the script
+                echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
+            }
+        }
+    }
+    DB_delete ($_TABLES['article_images'], 'ai_sid', $sid);
+    DB_delete ($_TABLES['comments'], 'sid', $sid);
+    DB_delete ($_TABLES['stories'], 'sid', $sid);
+
+    // update RSS feed and Older Stories block
+    COM_exportRDF ();
+    COM_olderStuff ();
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');
+}
+
 // MAIN
 
 $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (!isset ($sid) || empty ($sid) || ($sid == 0)) {
         COM_errorLog ('Attempted to delete story sid=' . $sid);
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/story.php');
+        echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
     } else if ($type == 'submission') {
-        DB_delete($_TABLES['storysubmission'],'sid',$sid,$_CONF['site_admin_url'] . "/moderation.php");
+        DB_delete ($_TABLES['storysubmission'], 'sid', $sid,
+                   $_CONF['site_admin_url'] . '/moderation.php');
     } else {
-        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
-        $nrows = DB_numRows($result);
-        for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
-            if (!@unlink($filename)) {
-                echo COM_errorLog('Unable to remove the following image from the article: ' . $filename);
-            }
-
-            // remove unscaled image, if it exists
-            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
-                    strrpos ($A['ai_filename'], '.'), 1);
-            $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
-                                      . $lFilename_large;
-            if (file_exists ($lFilename_large_complete)) {
-                if (!@unlink ($lFilename_large_complete)) {
-                    echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-                }
-            }
-        }
-        DB_delete($_TABLES['article_images'],'ai_sid',$sid);
-        DB_delete($_TABLES['comments'],'sid',$sid);
-        DB_delete($_TABLES['stories'],'sid',$sid,$_CONF['site_admin_url'] . "/story.php?msg=10");
+        echo deletestory ($sid);
     }
 } else if (($mode == $LANG24[9]) && !empty ($LANG24[9])) { // preview
     $display .= COM_siteHeader('menu');
