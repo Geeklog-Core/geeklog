@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.13 2001/12/14 22:28:34 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.14 2001/12/17 15:52:38 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2129,11 +2129,12 @@ function COM_whatsNewBlock($title='')
 	
     $sql = "SELECT DISTINCT *, count(*) AS dups, {$_TABLES["comments"]}.cid,{$_TABLES["comments"]}.sid,"
         . "{$_TABLES["stories"]}.sid,{$_TABLES["stories"]}.title,max(UNIX_TIMESTAMP({$_TABLES["comments"]}.date)) "
-        . "AS day FROM {$_TABLES["comments"]},{$_TABLES["stories"]} WHERE ";
+        . "AS day,'story' as cmt_type FROM {$_TABLES["comments"]},{$_TABLES["stories"]} WHERE ";
     $now = time();
     $desired = $now - $_CONF['newcommentsinterval'];
     $sql .= "UNIX_TIMESTAMP({$_TABLES["comments"]}.date) > {$desired} and ({$_TABLES["stories"]}.sid={$_TABLES["comments"]}.sid) GROUP BY {$_TABLES["comments"]}.sid";
     $result = DB_query($sql);
+
     $nrows = DB_numRows($result);
 
     // Cap max displayed at 15
