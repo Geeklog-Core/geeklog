@@ -168,6 +168,12 @@ $_CONF['showsubmissioncount'] = '{cfg_showsubmissioncount}';
 // Show any new articles, comments and links
 $_CONF['whatsnewbox'] = '{cfg_whatsnewbox}';
 
+// Show Who's online block
+$_CONF['whosonline'] = '{cfg_whosonline}';
+
+// How long an anonymous (guest) user session is good for
+$_CONF['whosonline_threshold'] = '{cfg_whosonline_threshold}'; // in seconds
+
 // Let users get stories emailed to them
 // Requires cron and the use of php as a shell script
 $_CONF['emailstories'] = '{cfg_emailstories}';
