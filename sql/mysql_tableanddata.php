@@ -889,11 +889,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, em
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 
-
-# Initial data for spamx plugin
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
-
-
 #
 # These indexes are only added for MySQL version 3.23.2 and up
 #

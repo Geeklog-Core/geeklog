@@ -185,9 +185,6 @@ function install_spamx_plugin ()
     $_SPX_FEAT = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('spamx.admin', 'spamx Admin', 0) ";
     $_SPX_ADMIN = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('spamx Admin', 'Users in this group can administer the spamx plugin',0) ";
 
-    // initial data for 'spamx' table
-    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
-
     $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                             "grp_name = 'spamx Admin'");
     if ($group_id <= 0) {
@@ -220,9 +217,6 @@ function install_spamx_plugin ()
             DB_query (str_replace ('MyISAM', 'InnoDB', $_SPX_TABLE));
         } else {
             DB_query ($_SPX_TABLE);
-        }
-        foreach ($_SPX_DATA as $data) { // add initial plugin data
-            DB_query ($data);
         }
 
         DB_query ($_SPX_PLUGIN); // add entry to 'plugins' table
