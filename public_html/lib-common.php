@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.227 2003/06/16 20:08:50 dhaun Exp $
+// $Id: lib-common.php,v 1.228 2003/06/19 11:00:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1925,8 +1925,8 @@ function COM_showTopics( $topic='' )
 
     $retval = '';
     $sections = new Template( $_CONF['path_layout'] );
-    $sections->set_file( array( 'option' => 'useroption.thtml',
-                                'inactive' => 'useroption_off.thtml' ));
+    $sections->set_file( array( 'option' => 'topicoption.thtml',
+                                'inactive' => 'topicoption_off.thtml' ));
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
     $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
@@ -2069,6 +2069,22 @@ function COM_userMenu( $help='', $title='' )
         if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
         {
             $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
+        }
+        if( empty( $thisUrl ))
+        {
+            $firstslash = strpos( $_CONF['site_url'], '/' );
+            if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
+            {
+                // site is in the document root
+                $thisUrl = $_CONF['site_url'] . $HTTP_SERVER_VARS['REQUEST_URI'];
+            }
+            else
+            {
+                // extract server name first
+                $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
+                $thisUrl = substr( $_CONF['site_url'], 0, $pos )
+                         . $HTTP_SERVER_VARS['REQUEST_URI'];
+            }
         }
 
         $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'user_block', 'header' ));
@@ -2216,6 +2232,22 @@ function COM_adminMenu( $help = '', $title = '' )
         if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
         {
             $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
+        }
+        if( empty( $thisUrl ))
+        {
+            $firstslash = strpos( $_CONF['site_url'], '/' );
+            if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
+            {
+                // site is in the document root
+                $thisUrl = $_CONF['site_url'] . $HTTP_SERVER_VARS['REQUEST_URI'];
+            }
+            else
+            {
+                // extract server name first
+                $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
+                $thisUrl = substr( $_CONF['site_url'], 0, $pos )
+                         . $HTTP_SERVER_VARS['REQUEST_URI'];
+            }
         }
 
         $adminmenu = new Template( $_CONF['path_layout'] );
