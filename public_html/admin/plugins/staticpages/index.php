@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2003/03/10 18:36:01 dhaun Exp $
+// $Id: index.php,v 1.19 2003/03/11 17:00:57 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -231,7 +231,11 @@ function staticpageeditor ($sp_id, $mode = '')
     global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
 
     if (!empty ($sp_id) && $mode == 'edit') {
-        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id' AND " . SP_getPerms ('', '3'));
+        $perms = SP_getPerms ('', '3');
+        if (!empty ($perms)) {
+            $perms = ' AND ' . $perms;
+        }
+        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . $perms);
         $A = DB_fetchArray ($result);
         $A['sp_old_id'] = $A['sp_id'];
     } elseif ($mode == 'edit') {
@@ -240,7 +244,11 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['unixdate'] = time ();
         $A['sp_old_id'] = '';
     } elseif (!empty ($sp_id) && $mode == 'clone') {
-        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id' AND " . SP_getPerms ('', '3'));
+        $perms = SP_getPerms ('', '3');
+        if (!empty ($perms)) {
+            $perms = ' AND ' . $perms;
+        }
+        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . $perms);
         $A = DB_fetchArray ($result);
         $A['sp_id'] = COM_makesid ();
         $A['sp_uid'] = $_USER['uid'];
@@ -282,7 +290,11 @@ function liststaticpages ($page = 1)
 	//if (empty($page)) $page = 1;
 	//$limit = (50 * $page) - 50;
 	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC LIMIT $limit,50");
-	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE " . SP_getPerms('','3') . " ORDER BY sp_date DESC");
+        $perms = SP_getPerms ('', '3');
+        if (!empty ($perms)) {
+            $perms = ' WHERE ' . $perms;
+        }
+	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']}" . $perms . " ORDER BY sp_date DESC");
 	$nrows = DB_numRows($result);
 	if ($nrows > 0) {
  		for ($i = 1; $i <= $nrows; $i++) {

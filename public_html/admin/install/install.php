@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.44 2003/03/09 18:10:26 dhaun Exp $
+// $Id: install.php,v 1.45 2003/03/11 17:00:56 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -403,7 +403,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     . "ADD COLUMN group_id mediumint(8) unsigned DEFAULT '1',"
                     . "ADD COLUMN owner_id mediumint(8) unsigned DEFAULT '1',"
                     . "ADD COLUMN perm_owner tinyint(1) unsigned DEFAULT '3',"
-                    . "ADD COLUMN perm_group tinyint(1) unsigned DEFAULT '3',"
+                    . "ADD COLUMN perm_group tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN perm_members tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN perm_anon tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN sp_php tinyint(1) unsigned DEFAULT '0',"
@@ -428,6 +428,15 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 
                 // remove Static Pages Admin group id
                 DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'sp_group_id'");
+
+                if ($spversion == 1) {
+                    $result = DB_query ("SELECT DISTINCT sp_uid FROM {$_TABLES['staticpage']}");
+                    $authors = DB_numRows ($result);
+                    for ($i = 0; $i < $authors; $i++) {
+                        $A = DB_fetchArray ($result);
+                        DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = '{$A['sp_uid']}' WHERE sp_uid = '{$A['sp_uid']}'");
+                    }
+                }
             }
 
             $current_gl_version = '1.3.8';

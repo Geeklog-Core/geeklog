@@ -545,7 +545,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
   group_id mediumint(8) unsigned NOT NULL default '1',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
-  perm_group tinyint(1) unsigned NOT NULL default '3',
+  perm_group tinyint(1) unsigned NOT NULL default '2',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   sp_php tinyint(1) unsigned NOT NULL default '0',

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.9 2003/03/09 11:47:22 dhaun Exp $
+// $Id: install.php,v 1.10 2003/03/11 17:00:57 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -80,7 +80,7 @@ function plugin_install_staticpages()
         . "group_id mediumint(8) unsigned NOT NULL default '1',"
         . "owner_id mediumint(8) unsigned NOT NULL default '1',"
         . "perm_owner tinyint(1) unsigned NOT NULL default '3',"
-        . "perm_group tinyint(1) unsigned NOT NULL default '3',"
+        . "perm_group tinyint(1) unsigned NOT NULL default '2',"
         . "perm_members tinyint(1) unsigned NOT NULL default '2',"
         . "perm_anon tinyint(1) unsigned NOT NULL default '2',"
         . "sp_php tinyint(1) unsigned NOT NULL default '0',"

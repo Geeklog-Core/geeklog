@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.10 2003/03/09 11:47:22 dhaun Exp $
+// $Id: index.php,v 1.11 2003/03/11 17:00:57 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -49,7 +49,11 @@ if (empty ($page)) {
     $error = 1;
 }
 
-$result = DB_query ("SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page') AND " . SP_getPerms ());
+$perms = SP_getPerms ();
+if (!empty ($perms)) {
+    $perms = ' AND ' . $perms;
+}
+$result = DB_query ("SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
 $count = DB_numRows ($result);
 
 if ($count == 0 || $count > 1) {

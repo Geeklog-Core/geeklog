@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.42 2003/03/09 11:47:22 dhaun Exp $
+// $Id: index.php,v 1.43 2003/03/11 17:00:56 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -80,7 +80,11 @@ if (empty ($topic)) {
     // check if static pages plugin is installed and enabled
     if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
 
-        $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage' AND " . SP_getPerms ();
+        $perms = SP_getPerms ();
+        if (!empty ($perms)) {
+            $perms = ' AND ' . $perms;
+        }
+        $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'" . $perms;
         $result = DB_query ($spsql);
 
         if (DB_numRows ($result) > 0) {
@@ -208,11 +212,13 @@ if (!empty ($_USER['uid'])) {
     $groupList = substr ($groupList, 0, -1);
     $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
     $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-    $sql .= "(perm_members >= 2) OR ";
+    $sql .= "(perm_members >= 2))";
+} else {
+    $sql .= "perm_anon >= 2)";
 }
-$sql .= "(perm_anon >= 2))";
 
 if (!empty($U['aids'])) {
+    $sql .= ' ';
     $AIDS = explode(' ',$U['aids']);
     for ($z = 0; $z < sizeof($AIDS); $z++) {
         $sql .= "AND uid != '$AIDS[$z]' ";
@@ -220,6 +226,7 @@ if (!empty($U['aids'])) {
 }
 
 if (!empty($U['tids'])) {
+    $sql .= ' ';
     $TIDS = explode(' ',$U['tids']);
     for ($z = 0; $z < sizeof($TIDS); $z++) {
         $sql .= "AND tid != '$TIDS[$z]' ";
@@ -227,7 +234,7 @@ if (!empty($U['tids'])) {
 }
 
 if ($newstories) {
-    $sql .= "AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND))";
+    $sql .= "AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) ";
 }
 
 $offset = ($page - 1) * $limit;
@@ -248,9 +255,10 @@ if (!empty ($_USER['uid'])) {
     // Note: $groupList re-used from above
     $countsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
     $countsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-    $countsql .= "(perm_members >= 2) OR ";
+    $countsql .= "(perm_members >= 2))";
+} else {
+    $countsql .= "perm_anon >= 2)";
 }
-$countsql .= "(perm_anon >= 2))";
 
 if ($newstories) {
     $countsql .= " AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND))";
@@ -263,17 +271,15 @@ $num_pages = ceil($D['count'] / $limit);
 if ($nrows > 0) {
     for ($x = 1; $x <= $nrows; $x++) {
         $A = DB_fetchArray($result);
-        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-            if ($A['featured'] == 1) {
-                $feature = 'true';
-            } elseif (($x == 1) && ($_CONF['showfirstasfeatured'] == 1)) {
-                $feature = 'true';
-                $A['featured'] = 1;
-            }
-            $display .= COM_article($A,'y');
+        if ($A['featured'] == 1) {
+            $feature = 'true';
+        } elseif (($x == 1) && ($_CONF['showfirstasfeatured'] == 1)) {
+            $feature = 'true';
+            $A['featured'] = 1;
         }
+        $display .= COM_article($A,'y');
     }
-    
+
     // Print Google-like paging navigation
     if (empty($topic)) {
         $base_url = $_CONF['site_url'] . '/index.php';

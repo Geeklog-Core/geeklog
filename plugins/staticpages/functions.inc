@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.18 2003/03/09 11:47:22 dhaun Exp $
+// $Id: functions.inc,v 1.19 2003/03/11 17:00:56 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -102,14 +102,22 @@ function plugin_showstats_staticpages($showsitestats)
     $stat_templates->set_file (array ('itemstats'=>'itemstatistics.thtml',
                                       'statrow'=>'singlestat.thtml'));
     if ($showsitestats == 1) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']} WHERE " . SP_getPerms ());
+        $perms = SP_getPerms ();
+        if (!empty ($perms)) {
+            $perms = ' WHERE ' . $perms;
+        }
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
         $retval .= '<tr><td>' . $LANG_STATIC['staticpages'] . '</td>';
         $retval .= '<td align="right">' . $total_pages . '&nbsp;&nbsp;</td></tr></table>';
     } else {
-        $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0 AND" . SP_getPerms() . ' ORDER BY sp_hits DESC LIMIT 10');
+        $perms = SP_getPerms ();
+        if (!empty ($perms)) {
+            $perms = ' AND ' . $perms;
+        }
+        $result = DB_query ("SELECT sp_id,sp_title,sp_hits FROM {$_TABLES['staticpage']} WHERE sp_hits > 0" . $perms . ' ORDER BY sp_hits DESC LIMIT 10');
         $nrows  = DB_numRows ($result);
         $retval .= COM_startBlock ($LANG_STATIC['stats_headline']);
         if ($nrows > 0) {
@@ -261,7 +269,11 @@ function plugin_getadminoption_staticpages()
     global $_CONF, $LANG_STATIC, $_TABLES;
 
     if (SEC_hasRights ('staticpages.edit,staticpages.delete', 'OR')) {
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']} WHERE " . SP_getPerms ('','3'));
+        $perms = SP_getPerms ('', '3');
+        if (!empty ($perms)) {
+            $perms = ' WHERE ' . $perms;
+        }
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         return array ($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
@@ -271,7 +283,8 @@ function plugin_getadminoption_staticpages()
 /**
 * Return SQL where statement with appropriate permissions
 *
-* Takes User id and permission and returns SQL where clause which will return the appropriate objects.
+* Takes User id and permission and returns SQL where clause which will return
+* the appropriate objects.
 * This assumes that the table has the following security structure:
 * owner_id        | mediumint(8)          
 * group_id        | mediumint(8)          
@@ -288,28 +301,44 @@ function plugin_getadminoption_staticpages()
 * @return string	Where clause of sql statement
 *
 */
-function SP_getPerms($table='',$access='2',$u_id='')
+function SP_getPerms ($table = '', $access = '2', $u_id = '')
 {
-	global $_USER, $_GROUPS;
-	
-	if ($table != '') { $table .= '.'; }
-	if ($u_id == '') {
-		$uid = $_USER['uid'];
-		$GROUPS = $_GROUPS;
-	} else {
-		$uid = $u_id;
-		$GROUPS = SEC_getUserGroups($uid);
+    global $_USER, $_GROUPS;
+
+    if ($table != '') { $table .= '.'; }
+
+    if ($u_id == '') {
+        $uid = $_USER['uid'];
+        $GROUPS = $_GROUPS;
+    } else {
+        $uid = $u_id;
+        $GROUPS = SEC_getUserGroups ($uid);
 	}
-	$where = "((" . $table . "perm_anon >= $access)";
-	// check to see if anonymous user
-	if ($uid > 1) {
-		$where .= " OR (" . $table . "perm_members >= $access)";
-		foreach ($GROUPS as $group) {
-			$where .= " OR ((" . $table . "group_id = $group) AND (" . $table . "perm_group >= $access))";
-		}
-		$where .= " OR ((" . $table . "owner_id = $uid) AND (" . $table . "perm_owner >= $access))";
-	}
-	return $where . ")"; 
+
+    if (SEC_inGroup ('Root', $uid)) {
+        return '';
+    }
+
+    $sql = '(';
+
+    if ($uid > 1) {
+        $sql .= "((owner_id = '{$uid}') AND (perm_owner >= $access)) OR ";
+
+        $groupList = '';
+        foreach ($GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+        $sql .= "((group_id IN ($groupList)) AND (perm_group >= $access)) OR ";
+
+        $sql .= "(perm_members >= $access)";
+    } else {
+        $sql .= "perm_anon >= $access";
+    }
+
+    $sql .= ')';
+
+    return $sql;
 }
 
 /**
