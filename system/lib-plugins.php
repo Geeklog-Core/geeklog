@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.34 2004/09/03 19:59:56 tony Exp $
+// $Id: lib-plugins.php,v 1.35 2004/09/06 00:49:11 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -800,10 +800,9 @@ function PLG_profileExtrasSave ($plugin = '')
 */
 function PLG_templateSetVars ($templatename, &$template)
 {
-    global $_TABLES;
+    global $_TABLES, $_PLUGINS;
 
-    $query = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-    while (list ($pi_name) = DB_fetchArray($query)) {
+    foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
         if (function_exists($function)) {
             $function ($templatename, $template);
@@ -843,20 +842,72 @@ function PLG_getHeaderCode()
 *
 */
 function PLG_replacetags($content) {
-    global $_TABLES;
+    global $_TABLES, $_PLUGINS, $LANG32;
 
-    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-    $nrows = DB_numRows($result);
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $function = 'plugin_replacetags_' . $A['pi_name'];
+    // Determine which Core Modules and Plugins support AutoLinks
+    $autolinkModules = array('story' => 'story');
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_autotags_' . $pi_name;
         if (function_exists($function)) {
-            $content = $function($content);
+            $autotag = $function('tagname');
+            $autolinkModules[$pi_name]  = $autotag;
         }
     }
-    /* Now check if GL Core Story API exists */
-    if (function_exists('plugin_replacetags_story')) {
-        $content = plugin_replacetags_story($content);
+
+    // For each supported module - scan the content looking for any AutoLink tags
+    $tags = array();
+    foreach ($autolinkModules as $module => $moduletag) {
+        $autotag_prefix = '['. $moduletag;
+        $offset = $prev_offset = 0;
+        $strlen = strlen($content);
+        while ($offset < $strlen) {
+            $start_pos = strpos( strtolower( $content ), $autotag_prefix, $offset );
+            if( $start_pos !== FALSE ) {
+               $end_pos = strpos( strtolower( $content ), ']', $start_pos );
+               $next_tag = strpos( strtolower( $content ), '[', $start_pos +1);
+               if( $end_pos > $start_pos AND (($end_pos < $next_tag OR $next_tag == FALSE)) ) {
+                    $taglength = $end_pos - $start_pos + 1;
+                    $tag = substr($content,$start_pos,$taglength);
+                    $parms = explode(' ',$tag);
+                    // $LANG32['32'] used to format Address link - default add brackets like [ here ]
+                    $label = sprintf( $LANG32['33'] ,str_replace(']','',substr($tag,strlen($parms[0])+1)) );
+                    $parms = explode(':',$parms[0]);
+                    $fileid = $parms['1'];
+                    $newtag = array (
+                        'module'    => $module,
+                        'tagstr'    => $tag,
+                        'startpos'  => $start_pos,
+                        'length'    => $taglength,
+                        'parm1'     => $fileid,
+                        'parm2'     => $label
+                    );
+                    $tags[] = $newtag;
+
+                } else {
+                    /* Error tags do not match - return with no changes */
+                    return $content . $LANG32['32'];
+                }
+                $prev_offset = $offset;
+                $offset = $end_pos;
+            } else {
+                $prev_offset = $end_pos;
+                $end_pos = $strlen;
+                $offset = $strlen;
+            }
+        }
+    }
+
+    // If we have found 1 or more AutoLink tag
+    if (count($tags) > 0) {       // Found the [tag] - Now process them all
+        foreach ($tags as $autotag) {
+            $function = 'plugin_autotags_' . $autotag['module'];
+            if ($autotag['module'] == 'story') {
+                $filelink = '<a href="'.$_CONF['site_url'].'/article.php?story='.$autotag['parm1'].'">'.$autotag['parm2'].'</a>';
+                $content = str_replace($autotag['tagstr'],$filelink,$content);
+            } elseif (function_exists($function)) {
+                $content = $function('parse',$content,$autotag);
+            }
+        }
     }
 
     return $content;
