@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.11 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: users.php,v 1.12 2001/11/19 22:11:23 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -175,16 +175,17 @@ function createuser($username,$email)
     $ecount = DB_count($_TABLES['users'],'email',$email);
 	
     if ($ucount == 0 && ecount == 0) {
-        if (isemail($email)) {
+        if (COM_isEmail($email)) {
             DB_save($_TABLES['users'],'username,email',"'$username','$email'");
             $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
-            $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Normal User'");
+            $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
             DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
             DB_query("INSERT INTO {$_TABLES["userprefs"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
             emailpassword($username, 1);
+            return COM_refresh($_CONF['site_url'] . '/index.php?msg=1');
         } else {
             $retval .= COM_siteHeader('Menu') . defaultform($LANG04[18]) . COM_siteFooter();
         }
