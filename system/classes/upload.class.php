@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.25 2003/03/09 01:20:35 blaine Exp $
+// $Id: upload.class.php,v 1.26 2003/03/27 20:20:00 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -105,6 +105,10 @@ class upload
     * @access private
     */
     var $_autoResize = false;             // boolean
+    /**
+    * @access private
+    */
+    var $_keepOriginalImage = false;      // boolean
     /**
     * @access private
     */
@@ -464,29 +468,55 @@ class upload
                 $newsize = $newwidth . 'x' . $newheight;
                 $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
                 $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
+
+                if ($this->_keepOriginalImage) {
+                    $filename = $this->_fileUploadDirectory . '/'
+                              . $this->_getDestinationName ();
+                    $lFilename_large = substr_replace ($this->_getDestinationName (), '_original.', strrpos ($this->_getDestinationName (), '.'), 1);
+                    $lFilename_large_complete = $this->_fileUploadDirectory
+                                              . '/' .  $lFilename_large;
+                    if (!copy ($filename, $lFilename_large_complete)) {
+                        $this->_addError ("Couldn't copy $filename to $lFilename_large_complete.  You'll need to remove both files.");
+                        $this->printErrors ();
+                        exit;
+                    }
+                }
+
                 exec($cmd, $mogrify_output, $retval);
             } else {
                 // use netpm
-                $cmd = $_CONF['path_to_netpbm'];
+                $cmd = $this->_pathToNetPBM;
                 $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                 $cmd_end = ' ' . $filename . ' | ' . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
                 // convert to pnm, resize, convert back
-                if (eregi('\.png', $filename)) {
+                if (eregi ('\.png', $filename)) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.png';
-		    $cmd .= $this->_pathToNetPBM . 'pngtopnm ' . $cmd_end . 'pnmtopng > ' . $tmpfile;
-	        } else {
-                    if (eregi('\.(jpg|jpeg)', $filename)) {
-                        $tmpfile = $this->_fileUploadDirectory . '/tmp.jpg';
-		        $cmd .= $this->_pathToNetPBM . 'jpegtopnm ' . $cmd_end . 'ppmtojpeg > ' . $tmpfile;
-                    }  else {
-                        if (eregi('\.gif', $filename)) {
-                            $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
-	  	            $cmd .= $this->_pathToNetPBM . 'giftopnm ' . $cmd_end . 'ppmquant 256 | ' . $this->_pathToNetPBM . 'ppmtogif > ' . $tmpfile;
-                        }
-                    }
-	        }
+                    $cmd .= 'pngtopnm ' . $cmd_end . 'pnmtopng > ' . $tmpfile;
+                } else if (eregi ('\.(jpg|jpeg)', $filename)) {
+                    $tmpfile = $this->_fileUploadDirectory . '/tmp.jpg';
+                    $cmd .= 'jpegtopnm ' . $cmd_end . 'ppmtojpeg > ' . $tmpfile;
+                }  else if (eregi ('\.gif', $filename)) {
+                    $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
+                    $cmd .= 'giftopnm ' . $cmd_end . 'ppmquant 256 | '
+                         . $this->_pathToNetPBM . 'ppmtogif > ' . $tmpfile;
+                } else {
+                    $this->_addError ("Image format of file $filename is not supported.");
+                    $this->printErrors ();
+                    exit;
+                }
                 $this->_addDebugMsg('Attempting to resize with this command (netpbm): ' . $cmd);
                 exec($cmd, $netpbm_output, $retval);
+
+                if ($this->_keepOriginalImage) {
+                    $lFilename_large = substr_replace ($this->_getDestinationName(), '_original.', strrpos ($this->_getDestinationName (), '.'), 1);
+                    $lFilename_large_complete = $this->_fileUploadDirectory
+                                              . '/' .  $lFilename_large;
+                    if (!copy ($filename, $lFilename_large_complete)) {
+                        $this->_addError ("Couldn't copy $filename to $lFilename_large_complete.  You'll need to remove both files.");
+                        $this->printErrors ();
+                        exit;
+                    }
+                }
 
                 // Move tmp file to actual file
                 if (!copy($tmpfile,$filename)) {
@@ -624,6 +654,20 @@ class upload
         $this->_maxFileUploadsPerForm = $maxfiles;
         return true;
     }    
+
+    /**
+    * Allows you to keep the original (unscaled) image.
+    *
+    * @param    boolean   $keepit   true = keep original, false = don't
+    * @return   boolean   true if we set values OK, otherwise false
+    *
+    */
+    function keepOriginalImage ($keepit)
+    {
+        $this->_keepOriginalImage = $keepit;
+
+        return true;
+    }
     
     /**
     * Extra security option that forces all attempts to upload a file to be done

@@ -715,7 +715,8 @@ $LANG24 = array(
     53 => 'wurde nicht verwendet. Du musst dieses Bild im Text des Artikels verwenden oder es löschen bevor Du Deine Änderungen sichern kannst.',
     54 => 'Nicht verwendete Bilder',
 	 55 => 'Folgende Fehler traten beim Versuch, den Artikel zu speichern, auf. Bitte diese Fehler beheben und den Artikel noch einmal speichern.',
-    56 => 'mit Icon'
+    56 => 'mit Icon',
+    57 => 'Bild in Originalgröße'
 );
 
 ###############################################################################

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.83 2003/03/24 17:42:17 dhaun Exp $
+// $Id: story.php,v 1.84 2003/03/27 20:20:00 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -535,9 +535,26 @@ function replace_images($sid, $intro, $body)
         } else {
             $sizeattributes = '';
         }
-        $norm = '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
-        $left = '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
-        $right = '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
+
+        $lLinkPrefix = '';      
+        $lLinkSuffix = '';
+        if ($_CONF['keep_unscaled_image'] == 1) {
+            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                    strrpos ($A['ai_filename'], '.'), 1);
+            $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                      . $lFilename_large;
+            $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
+                                 . $lFilename_large;
+            if (file_exists ($lFilename_large_complete)) {
+                $lLinkPrefix = '<a href="' . $lFilename_large_URL
+                             . '" title="' . $LANG24[57] . '">';
+                $lLinkSuffix = '</a>';
+            }
+        }
+
+        $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix;
+        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix;
+        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix;
         $fulltext = $intro . ' ' . $body;
         $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         $intro = str_replace($norm, '[' . $LANG24[48] . $i . ']', $intro);
@@ -576,6 +593,23 @@ function insert_images($sid, $intro, $body)
         } else {
             $sizeattributes = '';
         }
+
+        $lLinkPrefix = '';
+        $lLinkSuffix = '';
+        if ($_CONF['keep_unscaled_image'] == 1) {
+            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                    strrpos ($A['ai_filename'], '.'), 1);
+            $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                      . $lFilename_large;
+            $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
+                                 . $lFilename_large;
+            if (file_exists ($lFilename_large_complete)) {
+                $lLinkPrefix = '<a href="' . $lFilename_large_URL
+                             . '" title="' . $LANG24[57] . '">';   
+                $lLinkSuffix = '</a>';
+            }
+        }
+
         $norm = '[' . $LANG24[48] . $i . ']';
         $left = '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']';
         $right = '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']';
@@ -587,16 +621,16 @@ function insert_images($sid, $intro, $body)
         } else {
             // Only parse if we haven't encountered any error to this point
             if (count($errors) == 0) {
-                $intro = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
-                $body = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
-                $intro = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
-                $body = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
-                $intro = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
-                $body = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
+                $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $body);
+                $intro = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $body);
+                $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">' . $lLinkSuffix, $body);
             }
         }
     }
-    
+
     return array($errors, $intro, $body);
 }
 
@@ -719,11 +753,25 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         
         // Delete any images if needed
         for ($i = 1; $i <= count($delete); $i++) {
-            $curfile = $_CONF['path_html'] . 'images/articles/' . DB_getItem($_TABLES['article_images'],'ai_filename',"ai_sid = '$sid' AND ai_img_num = " . key($delete));
+            $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename',                    "ai_sid = '$sid' AND ai_img_num = " . key ($delete));
+            $curfile = $_CONF['path_html'] . 'images/articles/' . $ai_filename;
             if (!unlink($curfile)) {
                 echo COM_errorLog("Unable to delete image $curfile. Please check file permissions");
                 exit;
             }
+
+            // remove unscaled image, if it exists
+            $lFilename_large = substr_replace ($ai_filename, '_original.',
+                    strrpos ($ai_filename, '.'), 1);
+            $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                      . $lFilename_large;
+            if (file_exists ($lFilename_large_complete)) {
+                if (!unlink ($lFilename_large_complete)) {
+                    echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
+                    exit;
+                }
+            }
+
             DB_query("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($delete));
             next($delete);
         }
@@ -750,6 +798,11 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                     $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];
                 }    
                 $upload->setAutomaticResize(true);
+                if ($_CONF['keep_unscaled_image'] == 1) {
+                    $upload->keepOriginalImage (true);
+                } else {
+                    $upload->keepOriginalImage (false);
+                }
             }
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png','image/png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {
@@ -848,6 +901,18 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
             if (!unlink($filename)) {
                 echo COM_errorLog('Unable to remove the following image from the article: ' . $filename);
                 exit;
+            }
+
+            // remove unscaled image, if it exists
+            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                    strrpos ($A['ai_filename'], '.'), 1);
+            $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                      . $lFilename_large;
+            if (file_exists ($lFilename_large_complete)) {
+                if (!unlink ($lFilename_large_complete)) {
+                    echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
+                    exit;
+                }
             }
         }
         DB_delete($_TABLES['article_images'],'ai_sid',$sid);

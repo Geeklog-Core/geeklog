@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.76 2003/03/22 14:04:53 dhaun Exp $
+// $Id: config.php,v 1.77 2003/03/27 20:20:00 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -362,6 +362,10 @@ $_CONF['image_lib']             = ''; // can be netpbm, imagemagick
 // adjust the path below.  The only programs you need from netpbm are giftopnm,
 // jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
 //$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
+
+// When set to 1, Geeklog will keep the original, unscaled images and make
+// the smaller image link to the unscaled image.
+$_CONF['keep_unscaled_image']   = 0; // 1 = keep original images
 
 // Story image settings
 $_CONF['max_image_width']       = 300;  // In pixels

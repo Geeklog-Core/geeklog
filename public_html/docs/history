@@ -3,6 +3,16 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- New config option $_CONF['keep_unscaled_image'] allows you to keep the
+  original, unscaled image after upload (in stories only, for now). The smaller,
+  scaled image will be used as a thumbnail and link to the original image
+  (based on code provided by Alexander Schmacks).
+- In database.php:
+  + Made sure we really display the last 10 backups (fix by Alexander Schmacks)
+  + Display total number of backups in the directory
+  + Moved hard-coded HTML for the list of backups to template files
+  + Replaced $PHP_SELF with $_CONF['site_admin_url']/database.php since
+    $PHP_SELF seems to cause problems in some environments
 - You can now make one topic the default topic. The topic selection in the
   story submission form will then default to this topic.
 - When clicking on the "contribute" link from the topic index page, the new

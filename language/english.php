@@ -720,7 +720,8 @@ $LANG24 = array(
     53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
-    56 => 'Show Topic Icon'
+    56 => 'Show Topic Icon',
+    57 => 'View unscaled image'
 );
 
 ###############################################################################
