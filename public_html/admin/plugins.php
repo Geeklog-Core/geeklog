@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.22 2002/05/03 12:01:10 dhaun Exp $
+// $Id: plugins.php,v 1.23 2002/05/03 12:15:17 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -90,16 +90,13 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
     $plg_templates->set_var('lang_delete', $LANG32[25]);
-    $plg_templates->set_var('pi_name', $pi_name);
-    $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
-    $plg_templates->set_var('pi_version', $A['pi_version']);
-    $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
     $plg_templates->set_var('pi_icon', $_CONF['site_url'] . "/" . $pi_name . "/images/" . $pi_name . ".gif");
 	if (!empty($pi_name)) {
 		$plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
 	}
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
+    $plg_templates->set_var('pi_name', $pi_name);
     $plg_templates->set_var('lang_pluginhomepage', $LANG32[27]);
     $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
     $plg_templates->set_var('lang_pluginversion', $LANG32[28]);
