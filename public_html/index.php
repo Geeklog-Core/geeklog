@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.60 2004/07/31 03:30:35 blaine Exp $
+// $Id: index.php,v 1.61 2004/08/01 21:37:50 blaine Exp $
 
 require_once('lib-common.php');
 
@@ -130,9 +130,10 @@ $expiresql = DB_query("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['st
                             . " AND (expire <= NOW()) AND (statuscode >= 10)");
 while (list ($sid,$expiretopic,$title,$expire,$statuscode) = DB_fetchArray($expiresql)) {
     if ($statuscode == 10) {
-        if (DB_COUNT($_TABLES['topics'],"tid", $_CONF['archivetopic']) > 0) {
-            COM_errorLOG("Archive Story: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
-            DB_query("UPDATE {$_TABLES['stories']} SET tid = '{$_CONF['archivetopic']}' WHERE sid='{$sid}'");
+        if (DB_COUNT($_TABLES['topics'],'archive_flag', '1') == 1) {
+            $archivetid = DB_getItem($_TABLES['topics'],'tid',"archive_flag='1'");
+            COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
+            DB_query("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
         } else {
             COM_errorLOG("ERROR: Archive Topic does not exist. Attempt to archive Story: $sid");
         }

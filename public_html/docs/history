@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Improvements to the Story Archive Feature, UI tweaks, Language Extraction,
+  Added new field to the topics table. Admin now sets the archive topic in 
+  the Topic Editor. Only one topic can be used - logic enforced. [blaine]
 - Don't emit the <br><br> in article.php when the story's body text is empty
   (based on patch #147, provided by Andy Maloney) [Dirk]
 - Set {article_url} variable when displaying the story in article.php [Dirk]

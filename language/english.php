@@ -762,7 +762,12 @@ $LANG24 = array(
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -824,7 +829,9 @@ $LANG27 = array(
     21 => 'delete',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################

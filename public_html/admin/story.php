@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.122 2004/07/31 13:19:06 dhaun Exp $
+// $Id: story.php,v 1.123 2004/08/01 21:37:50 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -383,8 +383,13 @@ function storyeditor($sid = '', $mode = '')
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked4', 'checked="checked"');
     } else {
-        $story_templates->set_var('archivedisabled', 'disabled');
+        $story_templates->set_var('showarchivedisabled', true);
     }
+    $story_templates->set_var('lang_archivetitle', $LANG24[58]);
+    $story_templates->set_var('lang_option', $LANG24[59]);
+    $story_templates->set_var('lang_enabled', $LANG24[60]);
+    $story_templates->set_var('lang_optionarchive', $LANG24[61]);
+    $story_templates->set_var('lang_optiondelete', $LANG24[62]);
     $story_templates->set_var('lang_title', $LANG24[13]);
     if ($A['postmode'] == 'plaintext') {
         $A['title'] = str_replace ('$', '&#36;', $A['title']);

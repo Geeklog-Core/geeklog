@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.43 2004/07/13 20:48:21 dhaun Exp $
+// $Id: topic.php,v 1.44 2004/08/01 21:37:50 blaine Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -169,6 +169,18 @@ function edittopic ($tid = '')
         $topic_templates->set_var ('default_checked', '');
     }
 
+    $topic_templates->set_var ('lang_archivetopic', $LANG27[25]);
+    $topic_templates->set_var ('lang_archivetext', $LANG27[26]);
+    $topic_templates->set_var ('archive_disabled', '');
+    if ($A['archive_flag'] == 1) {
+        $topic_templates->set_var ('archive_checked', 'checked="checked"');
+    } else {
+        $topic_templates->set_var ('archive_checked', '');
+        // Only 1 topic can be the archive topic - so check if there already is one
+        if (DB_count($_TABLES['topics'],'archive_flag', '1') > 0) {
+            $topic_templates->set_var ('archive_disabled', 'disabled');
+        }
+    }
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -193,7 +205,7 @@ function edittopic ($tid = '')
 * @param    string  $is_default     'on' if this is the default topic
 * @return   string                  HTML redirect or error message
 */
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default)
+function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default,$is_archive)
 {
     global $_CONF, $_TABLES, $LANG27, $MESSAGE;
 
@@ -236,8 +248,12 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         } else {
             $is_default = 0;
         }
+        // Only 1 topic can be the archive topic - so check if there already is one
+        if (DB_count($_TABLES['topics'],'archive_flag', '1') > 0) {
+            $is_archive = 0;
+        }
 
-        DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, archive_flag, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,'$is_archive',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         $retval = COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=13');
     } else {
         $retval .= COM_siteHeader('menu');
@@ -395,7 +411,8 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
                            $HTTP_POST_VARS['perm_group'],
                            $HTTP_POST_VARS['perm_members'],
                            $HTTP_POST_VARS['perm_anon'],
-                           $HTTP_POST_VARS['is_default']);
+                           $HTTP_POST_VARS['is_default'],
+                           $HTTP_POST_VARS['is_archive']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= edittopic (COM_applyFilter ($HTTP_GET_VARS['tid']));
