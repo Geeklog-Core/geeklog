@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.18 2002/01/11 17:59:52 tony_bibbs Exp $
+// $Id: users.php,v 1.19 2002/01/12 04:12:07 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -95,7 +95,7 @@ function userprofile($user)
             $user_templates->set_var('comment_begin_href', '<a href="' .$_CONF['site_url'] 
                 . '/comment.php?mode=display&sid=' . $C['sid'] . '&title=' . urlencode($C['title']) 
                 . '&pid=' . $C['pid'] . '">');
-            $user_templates->set_var('comment_title', $C['title']);
+            $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
             $user_templates->set_var('comment_date', $commenttime[0]); 
