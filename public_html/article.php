@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.37 2003/11/16 18:22:33 dhaun Exp $
+// $Id: article.php,v 1.38 2003/11/23 09:57:22 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -202,7 +202,7 @@ if ($A['count'] > 0) {
                                  ? true : false);
                 $story_template->set_var ('commentbar',
                         COM_userComments ($story, $A['title'], 'article',
-                                          $order, $mode, $delete_option));
+                                          $order, $mode, 0, $delete_option));
             }
             $display .= $story_template->finish ($story_template->parse ('output', 'article'));
             $display .= COM_siteFooter ();

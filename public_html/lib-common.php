@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.267 2003/11/16 21:44:18 blaine Exp $
+// $Id: lib-common.php,v 1.268 2003/11/23 09:57:22 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1788,7 +1788,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
-                                             $order, $mode, $delete_option ); 
+                                             $order, $mode, 0, $delete_option ); 
             }
         }
     }
@@ -2709,13 +2709,14 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
 * @param        string      $type      Type of item (article, poll, etc.)
 * @param        string      $order     How to order the comments 'ASC' or 'DESC'
 * @param        string      $mode      comment mode (nested, flat, etc.)
+* @param        int         $pid       id of parent comment
 * @param        boolean     $delete_option   if current user can delete comments
 * @see function COM_commentBar
 * @see function COM_commentChildren
 * @return     string  HTML Formated Comments
 *
 */
-function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $delete_option = false )
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $delete_option = false )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -2767,7 +2768,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
             default:
                 $q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(date) AS nice_date "
                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                   . "WHERE c.uid = u.uid AND sid = '$sid' AND pid = 0 AND type = '$type' "
+                   . "WHERE c.uid = u.uid AND sid = '$sid' AND pid = $pid AND type = '$type' "
                    . "ORDER BY date $order LIMIT $limit";
                 break;
         }
