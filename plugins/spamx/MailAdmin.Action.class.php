@@ -32,9 +32,15 @@ class MailAdmin extends BaseCommand {
 
     function execute($comment)
     {
-        global $result, $_USER, $_CONF, $LANG_SX00, $_SPX_CONF, $comment;
+        global $result, $_CONF, $_USER, $LANG_SX00, $_SPX_CONF;
 
-        $msg = sprintf($LANG_SX00['emailmsg'], $_CONF['site_name'], $_USER['uid'], $comment);
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
+        $uid .= '@' . $_SERVER['REMOTE_ADDR'];
+        $msg = sprintf($LANG_SX00['emailmsg'], $_CONF['site_name'], $uid, $comment);
 
         COM_mail($_SPX_CONF['notification_email'], 'Spam Comment at ' . $_CONF['site_name'], $msg);
         $result = 8;

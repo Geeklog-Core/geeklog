@@ -29,7 +29,7 @@ class BlackList extends BaseCommand {
      */
     function execute($comment)
     {
-        global $_CONF, $result, $_USER, $_TABLES, $_SERVER, $LANG_SX00;
+        global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
         /**
          * Include Blacklist Data

@@ -32,7 +32,7 @@ class MTBlackList extends BaseCommand {
      */
     function execute($comment)
     {
-        global $_CONF, $_USER, $_TABLES, $_SERVER, $LANG_SX00;
+        global $_CONF, $_USER, $_TABLES, $LANG_SX00;
 
         /**
          * Include Blacklist Data
