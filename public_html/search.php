@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.43 2002/11/01 20:37:33 dhaun Exp $
+// $Id: search.php,v 1.44 2002/11/09 20:23:14 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -608,8 +608,7 @@ function searchresults($A)
 }
 
 /**
-* Does a rudimentary check of the date format (should be YYYY-MM-DD).
-* No, it does not check for leap years or the correct number of days in a month.
+* Does a check of the date format (should be YYYY-MM-DD).
 *
 * @param  string  $date  date string to check
 * @return bool    true if correct, false if not
@@ -627,7 +626,7 @@ function simpleDateCheck ($date)
                 $dt = explode ($delim1, $date);
                 if (($dt[0] >= 1970) && (($dt[1] >= 1) && ($dt[1] <= 12)) &&
                         (($dt[2] >= 1) && ($dt[2] <= 31))) {
-                    $ok = true; // that should do ...
+                    $ok = checkdate ($dt[1], $dt[2], $dt[0]);
                 }
             }
         }
