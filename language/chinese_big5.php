@@ -4,7 +4,7 @@
 # chinese_big5.php
 #
 # Last Modified:20021023
-# Version: 0.9
+# Version: 0.91
 #
 # This is the Chinese (big5) language page for GeekLog!
 #
@@ -129,8 +129,8 @@ $LANG01 = array(
     77 => "Plugins",
     78 => "即將發生的事",
     79 => "新鮮的東西",
-    80 => "最新的故事",
-    81 => "個新故事(",
+    80 => "個新故事(",
+    81 => "新的故事(",
     82 => " 小時內)",
     83 => "意見",
     84 => "連結",
@@ -418,7 +418,9 @@ $LANG09 = array(
     37 => "事件的結果",
     38 => "連結的結果",
     39 => "連結",
-    40 => "事件"
+    40 => "事件",
+    41 => '搜尋的關鍵詞最少要有三個字。',
+    42 => '請使用 YYYY-MM-DD (年-月-日) 日期格式。'
 );
 
 ###############################################################################
@@ -1029,7 +1031,7 @@ $LANG_ACCESS = array(
     grantgrouplabel => "給予之上小組編輯權利",
     permmsg => "注意︰會員是指所有註冊和登入的用戶；而匿名是指所有非註冊的瀏覽者或沒有登入的用戶。",
     securitygroups => "安全小組",
-    editrootmsg => "即使你是用戶管理員；但你不能編輯 root 用戶。你能編輯所有的用戶除了 root 用戶。請注意所有企圖非法地編輯 root 用戶的動作已被記錄。請回到<a href=\"{$_CONF["site_admin_url"]}/users.php\">用戶管理頁</a>去。",
+    editrootmsg => "即使你是用戶管理員；但你不能編輯 root 用戶。你能編輯所有的用戶除了 root 用戶。請注意所有企圖非法地編輯 root 用戶的動作已被記錄。請回到<a href=\"{$_CONF["site_admin_url"]}/user.php\">用戶管理頁</a>去。",
     securitygroupsmsg => "選擇這位用戶屬於的小組。",
     groupeditor => "小組編輯器",
     description => "描述",
