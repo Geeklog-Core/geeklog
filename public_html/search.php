@@ -74,7 +74,7 @@ function searchform() {
 function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 	global $LANG09;
 	if ($type == 'all' OR $type == 'stories') {
-		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM stories WHERE (draft_flag = 0) AND ";
+		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$CONF["db_prefix"]}stories WHERE (draft_flag = 0) AND ";
 		$sql .= "((introtext like '%$query%' OR introtext like '$query%' OR introtext like '%$query') ";
 		$sql .= "OR (bodytext like '%$query%' OR bodytext like '$query%' OR bodytext like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
@@ -101,7 +101,7 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 		$A = mysql_fetch_array($result_stories);
 	}
 	if ($type == 'all' OR $type == 'comments') {
-		$sql = "SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM comments WHERE ";
+		$sql = "SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$CONF["db_prefix"]}comments WHERE ";
 		$sql .= "((comment like '%$query%' OR comment like '$query%' OR comment like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
 		if (!empty($datestart) && !empty($dateend)) {
@@ -176,12 +176,12 @@ function searchresults($A) {
 ###############################################################################
 # MAIN
 
-include("layout/header.php");
+site_header("menu");
 if ($mode == "search") {
 	searchstories($query,$topic,$datestart,$dateend,$author,$type);
 } else {
 	searchform();
 }
-include("layout/footer.php");
+site_footer();
 
 ?>

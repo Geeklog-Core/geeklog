@@ -38,7 +38,7 @@ include("custom_code.php");
 
 function edituser() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT fullname,email,homepage,sig,emailstories,about,pgpkey FROM users,userprefs,userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
+	$result = dbquery("SELECT fullname,email,homepage,sig,emailstories,about,pgpkey FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs,{$CONF["db_prefix"]}userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	startblock("{$LANG04[1]} {$USER["username"]}","");
 	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
@@ -51,7 +51,7 @@ function edituser() {
 #	print "<tr valign=top><td align=right><b>{$LANG04[13]}:</b><br><small>{$LANG04[53]}</small></td><td><select name=emailstories>";
 #	optionlist("maillist","code,name",$A["emailstories"]);
 #	print "</select></td></tr>\n";
-	$result = dbquery("SELECT about,pgpkey FROM userinfo WHERE uid = {$USER["uid"]}");
+	$result = dbquery("SELECT about,pgpkey FROM {$CONF["db_prefix"]}userinfo WHERE uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	print "<tr valign=top><td align=right><b>{$LANG04[7]}:</b><br><small>{$LANG04[38]}</small></td><td><textarea name=about cols=45 rows=6 wrap=virtual>{$A["about"]}</textarea></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[8]}:</b><br><small>{$LANG04[39]}</small></td><td><textarea name=pgpkey cols=45 rows=6 wrap=virtual>{$A["pgpkey"]}</textarea></td></tr>\n";
@@ -66,7 +66,7 @@ function edituser() {
 
 function editpreferences() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM userprefs,userindex WHERE userindex.uid = {$USER["uid"]} AND userprefs.uid = {$USER["uid"]}");
+	$result = dbquery("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM {$CONF["db_prefix"]}userprefs,userindex WHERE userindex.uid = {$USER["uid"]} AND userprefs.uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	if ($A["maxstories"] < 5) $A["maxstories"] = 5;
 	startblock("{$LANG04[45]} {$USER["username"]}","");
@@ -104,7 +104,7 @@ function editpreferences() {
 	print "</td><td><img src={$CONF["site_url"]}/images/speck.gif width=40 height=1></td>";
 	if ($CONF["contributedbyline"] == 1) {
 		print "<td><b>{$LANG04[56]}</b><br>";
-		$result = dbquery("SELECT DISTINCT uid FROM stories");
+		$result = dbquery("SELECT DISTINCT uid FROM {$CONF["db_prefix"]}stories");
 		$nrows = mysql_num_rows($result);
 		unset($where);
 		for ($i=0; $i<$nrows; $i++) {
@@ -134,7 +134,7 @@ function editpreferences() {
 
 function editcommentprefs() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT commentmode,commentorder,commentlimit FROM usercomment WHERE uid = {$USER["uid"]}");
+	$result = dbquery("SELECT commentmode,commentorder,commentlimit FROM {$CONF["db_prefix"]}usercomment WHERE uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	if (empty($A["commentmode"])) $A["commentmode"] = "threaded";
 	if (empty($A["commentorder"])) $A["commentorder"] = 0;
@@ -214,22 +214,22 @@ function savepreferences($A) {
 if (!empty($USER["username"]) && !empty($mode)) {
 	switch ($mode) {
 		case "preferences":
-			include("layout/header.php");
+			site_header("menu");
 			showmessage($msg);
 			editpreferences();
-			include("layout/footer.php");
+			site_footer();
 			break;
 		case "comments":
-			include("layout/header.php");
+			site_header("menu");
 			showmessage($msg);
 			editcommentprefs();
-			include("layout/footer.php");
+			site_footer();
 			break;
 		case "edit":
-			include("layout/header.php");
+			site_header("menu");
 			showmessage($msg);
 			edituser();
-			include("layout/footer.php");
+			site_footer();
 			break;
 		case "saveuser":
 			saveuser($HTTP_POST_VARS);

@@ -42,7 +42,7 @@ if (DoPluginCommentSupportCheck($type)) {
 	refresh("{$CONF["site_url"]}/comment.php?sid=$story&pid=$pid&type=$type");
 }
 
-$result = dbquery("SELECT count(*) as count FROM stories WHERE sid = '$story'");
+$result = dbquery("SELECT count(*) as count FROM {$CONF["db_prefix"]}stories WHERE sid = '$story'");
 $A = mysql_fetch_array($result);
 if ($A["count"] > 0) {
 	if ($reply == $LANG01[25]) {
@@ -70,9 +70,9 @@ if ($A["count"] > 0) {
                 $A = mysql_fetch_array($result);
                 $CONF["pagetitle"] = stripslashes($A["title"]);
 
-		include("layout/header.php");
+		site_header("menu");
 		dbchange("stories","hits","hits + 1","sid",$story);
-		$sql	= "SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story' ";
+		$sql	= "SELECT *,unix_timestamp(date) AS day from {$CONF["db_prefix"]}stories WHERE sid = '$story' ";
 		$result = dbquery($sql);
 		$A = mysql_fetch_array($result);
 		article($A,"n");
@@ -96,7 +96,7 @@ if ($A["count"] > 0) {
 			print "<tr><td>&nbsp;</td><td colspan=3 valign=top>\n";
 			usercomments($story,$A["title"],"article",$order,$mode);
 		}
-		include("layout/footer.php");
+		site_footer();
 	}
 } else {
 	refresh("{$CONF["site_url"]}/index.php");

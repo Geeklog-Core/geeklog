@@ -29,19 +29,19 @@ include("custom_code.php");
 ###############################################################################
 # MAIN
 
-include("layout/header.php");
+site_header("menu");
 startblock($LANG10[1]);
 print "<table cellpadding=0 cellspacing=1 border=0 width=\"99%\">\n";
-$result = dbquery("SELECT value FROM vars WHERE name = 'totalhits'");
+$result = dbquery("SELECT value FROM {$CONF["db_prefix"]}vars WHERE name = 'totalhits'");
 $A = mysql_fetch_row($result);
 print "<tr><td align=left>{$LANG10[2]}</td><td>{$A[0]}</td></tr>\n";
-$result = dbquery("SELECT count(*) FROM stories WHERE draft_flag = 0");
+$result = dbquery("SELECT count(*) FROM {$CONF["db_prefix"]}stories WHERE draft_flag = 0");
 $A = mysql_fetch_row($result);
 $tmp2 = dbcount("comments");
 print "<tr><td align=left>{$LANG10[3]}</td><td>{$A[0]}({$tmp2})</td></tr>\n";
 
 	$tmp = dbcount("pollquestions");
-	$result = dbquery("SELECT votes FROM pollanswers");
+	$result = dbquery("SELECT votes FROM {$CONF["db_prefix"]}pollanswers");
 	$nrows = mysql_num_rows($result);
 	$tmp2 = 0;
 	for ($i=0; $i<$nrows; $i++) {
@@ -51,7 +51,7 @@ print "<tr><td align=left>{$LANG10[3]}</td><td>{$A[0]}({$tmp2})</td></tr>\n";
 	print "<tr><td align=left>{$LANG10[4]}</td><td>{$tmp}({$tmp2})</td></tr>\n"; 
 
 	$tmp = dbcount("links");
-	$result = dbquery("SELECT hits FROM links");
+	$result = dbquery("SELECT hits FROM {$CONF["db_prefix"]}links");
 	$nrows = mysql_num_rows($result);
 	$tmp2 = 0;
 	for ($i=0; $i<$nrows; $i++) {
@@ -148,6 +148,6 @@ endblock();
 // Now show stats for any plugins that want to be included
 ShowPluginStats(2);
 
-include("layout/footer.php");
+site_footer();
 
 ?>

@@ -38,14 +38,14 @@ include("custom_code.php");
 
 function userprofile($user) {
 	global $CONF,$LANG04;
-	$result = dbquery("SELECT username,fullname,homepage FROM users WHERE uid = $user");
+	$result = dbquery("SELECT username,fullname,homepage FROM {$CONF["db_prefix"]}users WHERE uid = $user");
 	$A = mysql_fetch_array($result);
 	startblock("{$LANG04[1]} {$A["username"]}");
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td>{$A["username"]} ({$A["fullname"]})</td></tr>\n";
 	print "<tr><td align=right><b>{$LANG04[5]}:</b></td><td><a href={$CONF["site_url"]}/profiles.php?uid=$user>Send Email</a></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG04[6]}:</b></td><td><a href={$A["homepage"]}>{$A["homepage"]}</a></td></tr>\n";
-	$result = dbquery("SELECT about,pgpkey FROM userinfo WHERE uid = $user");
+	$result = dbquery("SELECT about,pgpkey FROM {$CONF["db_prefix"]}userinfo WHERE uid = $user");
 	$B = mysql_fetch_array($result);
 	print "<tr><td valign=top align=right><b>{$LANG04[7]}:</b></td><td>{$B["about"]}</td></tr>\n";
 	print "<tr><td valign=top align=right><b>{$LANG04[8]}:</b></td><td>" . nl2br($B["pgpkey"]) . "</td></tr>\n";
@@ -53,7 +53,7 @@ function userprofile($user) {
 	endblock();
 	startblock("{$LANG04[10]} {$A["username"]}");
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	$result = dbquery("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM comments WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
+	$result = dbquery("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}comments WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
 	$nrows = mysql_num_rows($result);
 	if ($nrows > 0) {
 		for ($i=1; $i <= $nrows; $i++) {
@@ -72,7 +72,7 @@ function userprofile($user) {
 
 function emailpassword($username,$msg=0) {
 	global $CONF,$LANG04;
-	$result = dbquery("SELECT email FROM users WHERE username = '$username'");
+	$result = dbquery("SELECT email FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
 	$nrows = mysql_num_rows($result);
 	if ($nrows == 1) {
 		srand((double)microtime()*1000000);
@@ -96,9 +96,9 @@ function emailpassword($username,$msg=0) {
 		else
 			refresh("{$CONF["site_url"]}/index.php");
 	} else {
-		include("layout/header.php");
+		site_header("menu");
 		defaultform($LANG04[17]);
-		include("layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -112,20 +112,20 @@ function createuser($username,$email) {
 	if ($ucount == 0 && ecount == 0) {
 		if (isemail($email)) {
 			dbsave("users","username,seclev,email","'$username',0,'$email'");
-			dbquery("INSERT INTO userprefs (uid) SELECT uid FROM users WHERE username = '$username'");
-			dbquery("INSERT INTO userindex (uid) SELECT uid FROM users WHERE username = '$username'");
-			dbquery("INSERT INTO usercomment (uid) SELECT uid FROM users WHERE username = '$username'");
-			dbquery("INSERT INTO userinfo (uid) SELECT uid FROM users WHERE username = '$username'");
+			dbquery("INSERT INTO userprefs (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
+			dbquery("INSERT INTO userindex (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
+			dbquery("INSERT INTO usercomment (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
+			dbquery("INSERT INTO userinfo (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
 			emailpassword($username, 1);
 		} else {
-			include("layout/header.php");
+			site_header("menu");
 			defaultform($LANG04[18]);
-			include("layout/footer.php");
+			site_footer();
 		}
 	} else {
-		include("layout/header.php");
+		site_header("menu");
 		defaultform($LANG04[19]);
-		include("layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -182,9 +182,9 @@ switch ($mode) {
                 refresh("{$CONF["site_url"]}/index.php?msg=8");
                 break;
 	case "profile":
-		include("layout/header.php");
+		site_header("menu");
 		userprofile($uid);
-		include("layout/footer.php");
+		site_footer();
 		break;
 	case "create":
 		createuser($username,$email);
@@ -213,10 +213,10 @@ switch ($mode) {
                                 refresh("{$CONF["site_url"]}/index.php");
                         }
                 } else {
-                        include("layout/header.php");
+                        site_header("menu");
                         if ($mode != "new" && empty($msg)) $msg = $LANG04[31];
                         defaultform($msg);
-                        include("layout/footer.php");
+                        site_footer();
 
                 }
                 break;

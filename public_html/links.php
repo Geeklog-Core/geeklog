@@ -29,7 +29,7 @@ include("custom_code.php");
 ###############################################################################
 # MAIN
 
-include("layout/header.php");
+site_header("menu");
 startblock($LANG06[1]);
 print "[ <a href={$CONF["site_url"]}/submit.php?type=link>{$LANG06[3]}</a> ]";
 $result = dbquery("SELECT * from links ORDER BY category asc,title");
@@ -50,6 +50,6 @@ if ($nrows==0) {
 	} 
 }
 endblock();
-include("layout/footer.php");
+site_footer();
 
 ?>

@@ -73,7 +73,7 @@ function editdefaultblock($A) {
 function editblock($bid="") {
 	global $USER,$LANG21,$CONF;
 	if (!empty($bid)) {
-		$result = dbquery("SELECT * FROM blocks where bid ='$bid'");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks where bid ='$bid'");
 		$A = mysql_fetch_array($result);
 		if ($USER["seclev"] < $A["seclev"]) {
 			accesslog("{$USER["name"]} attempted to edit bid $bid without rights to the block");
@@ -199,7 +199,7 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
 
 		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft","admin/block.php?msg=11");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
                 startblock($LANG21[32]);
                 if ($type == "portal") {
                         #portal block is missing fields
@@ -219,7 +219,7 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
                 }
                 endblock();
                 editblock($bid);
-                include("../layout/footer.php");
+                site_footer();
 	}
 }
 
@@ -232,8 +232,8 @@ function listblocks() {
 	adminedit("block",$LANG21[25]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
 	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG21[21]}</th><th>{$LANG21[22]}</th><th>{$LANG21[39]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
-	#$result = dbquery("SELECT bid,title,seclev,type,blockorder,tid,onleft FROM blocks ORDER BY type,title asc");
-	$result = dbquery("SELECT * FROM blocks ORDER BY onleft DESC,blockorder");
+	#$result = dbquery("SELECT bid,title,seclev,type,blockorder,tid,onleft FROM {$CONF["db_prefix"]}blocks ORDER BY type,title asc");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks ORDER BY onleft DESC,blockorder");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -266,16 +266,16 @@ switch ($mode) {
 		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft);
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		editblock($bid);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listblocks();
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

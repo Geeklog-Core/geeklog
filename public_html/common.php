@@ -26,11 +26,10 @@ $VERSION="1.3";
 #
 #	These settings must suit your server environment.
 
-#include('/path/to/geeklog/conf-server.php');
+include('D:/Archive/Mark/My Websites/cvs-geeklog/geeklog-1.3/config.php');
 
-include('/path/to/geeklog/config.php'); #Temporary until Marks adds the two new config files
-#include($CONF['path'].'conf-site.php')
 include($CONF['path'].$CONF["languagefile"]);
+include($CONF['path_html'].'layout/'.$CONF["layout"].'/index.php');
 include($CONF['path_html'].'sessions.php');
 include($CONF['path_html'].'plugins.php');
 
@@ -87,7 +86,7 @@ setcookie("LastVisitTemp", $temptime ,$expiredate2, $CONF["cookie_path"], $CONF[
 # BLOCK LOADER - Load all definable HTML blocks in to memory
 ###############################################################################
 
-$result = dbquery("SELECT title,content FROM blocks WHERE type = 'layout'");
+$result = dbquery("SELECT title,content FROM {$CONF["db_prefix"]}blocks WHERE type = 'layout'");
 $nrows = mysql_num_rows($result);
 for ($i = 1; $i <= $nrows; $i++) {
 	$A = mysql_fetch_array($result);
@@ -114,8 +113,8 @@ function dbquery($sql,$ignore_errors=0) {
 	} else {
 		if ($ignore_errors == 1) return;
 		$errortxt = "{$LANG01[50]} $sql\n";
-		$errortxt .= "                         - {$LANG01[45]}: " . mysql_errno() . "\n";
-		$errortxt .= "			       - {$LANG01[46]}: " . mysql_error();
+		$errortxt .= " - {$LANG01[45]}: " . mysql_errno() . "\n";
+		$errortxt .= " - {$LANG01[46]}: " . mysql_error();
 		errorlog ($errortxt);
 		exit;
 	}
@@ -126,7 +125,7 @@ function dbquery($sql,$ignore_errors=0) {
 
 function dbdelete($table,$id,$value,$return="") {
 	global $CONF;
-	$sql = "DELETE FROM $table";
+	$sql = "DELETE FROM {$CONF["db_prefix"]}$table";
 	if (!empty($id) && !empty($value)) {
 		 $sql .= " WHERE $id = '$value'";
 	}
@@ -145,12 +144,15 @@ function dbdelete($table,$id,$value,$return="") {
 
 function dbsave($table,$fields,$values,$return="") {
 	global $CONF;
-	$sql = "REPLACE INTO $table ($fields) VALUES ($values)";
+
+	$sql = "REPLACE INTO {$CONF["db_prefix"]}$table ($fields) VALUES ($values)";
 	dbquery($sql);
+
 	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
+
 	if (!empty($return)) {
 		refresh("{$CONF["site_url"]}/$return");
 	}
@@ -161,18 +163,23 @@ function dbsave($table,$fields,$values,$return="") {
 
 function dbchange($table,$id,$value,$id2="",$value2="",$id3="",$value3="",$return="") {
 	global $CONF;
-	$sql = "UPDATE $table SET $id = $value";
+	
+	$sql = "UPDATE {$CONF["db_prefix"]}$table SET $id = $value";
+
 	if (!empty($id2) && !empty($value2)) {
 		$sql .= " WHERE $id2 = '$value2'";
 		if (!empty($id3) && !empty($value3)) {
 			$sql .= " AND $id3 = '$value3'";
 		}
 	}
+
 	dbquery($sql);
+
 	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
+
 	if (!empty($return)) {
 		refresh("{$CONF["site_url"]}/$return");
 	}
@@ -182,7 +189,10 @@ function dbchange($table,$id,$value,$id2="",$value2="",$id3="",$value3="",$retur
 # Counts the # of times $what appears a $feild in the $table
 
 function dbcount($table,$id="",$value="",$id2="",$value2="") {
-	$sql = "SELECT COUNT(*) FROM $table";
+	global $CONF;
+	
+	$sql = "SELECT COUNT(*) FROM {$CONF["db_prefix"]}$table";
+
 	if (!empty($id) && !empty($value)) {
 		$sql .= " WHERE $id = '$value'";
 		#if (!empty($id2) && !empty($value2)) {
@@ -190,6 +200,7 @@ function dbcount($table,$id="",$value="",$id2="",$value2="") {
 			$sql .= " AND $id2 = '$value2'";
 		}
 	}
+
 	$result = dbquery($sql);
 	return (mysql_result($result,0));
 }
@@ -199,17 +210,21 @@ function dbcount($table,$id="",$value="",$id2="",$value2="") {
 
 function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 	global $CONF;
-	$sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
+
+	$sql = "REPLACE INTO {$CONF["db_prefix"]}$table ($fields) SELECT $values FROM {$CONF["db_prefix"]}$tablefrom";
 	if (!empty($id) && !empty($value)) {
 		 $sql .= " WHERE $id = '$value'";
 	}
+
 	errorlog('sql ' . $sql);
 	dbquery($sql);
 	dbdelete($tablefrom,$id,$value);
+
 	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
+
 	if (!empty($return)) {
 		refresh("{$CONF["site_url"]}/$return");
 	}
@@ -225,7 +240,7 @@ function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 function article($A,$index="") {
 	global $mode,$CONF,$LANG01,$USER;
 	if (!empty($USER["uid"])) {
-		$result = dbquery("SELECT noicons FROM userprefs WHERE uid = {$USER["uid"]}",1);
+		$result = dbquery("SELECT noicons FROM {$CONF["db_prefix"]}userprefs WHERE uid = {$USER["uid"]}",1);
 		$nrows = mysql_num_rows($result);
 		if ($nrows == 1) {
 			$U = mysql_fetch_array($result);
@@ -263,7 +278,7 @@ function article($A,$index="") {
 		}
 		if ($A["commentcode"] >= 0 && $A["comments"] > 0) {
 			print "<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments> {$A["comments"]} {$LANG01[3]}</a>\n";
-			$result = dbquery("SELECT UNIX_TIMESTAMP(date) AS day FROM comments WHERE sid = '{$A["sid"]}' ORDER BY date desc LIMIT 1");
+			$result = dbquery("SELECT UNIX_TIMESTAMP(date) AS day FROM {$CONF["db_prefix"]}comments WHERE sid = '{$A["sid"]}' ORDER BY date desc LIMIT 1");
 			$C = mysql_fetch_array($result);
 			print "<br><span class=storybyline>{$LANG01[27]}: " . strftime($CONF["daytime"],$C["day"]) . "</span>\n";
 		} else if ($A["commentcode"] >= 0) {
@@ -312,7 +327,7 @@ function adminedit($type,$text="") {
 		return;
 	} else {
 		print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-		print "<tr><td rowspan=2><img src={$CONF["site_url"]}/images/admin/$type.gif></td>";
+		print "<tr><td rowspan=2><img src={$CONF["site_url"]}/images/icons/$type.gif></td>";
 		print "<td>[ <a href={$CONF["site_url"]}/admin/$type.php?mode=edit>{$LANG01[52]} $type</a> | <a href={$CONF["site_url"]}/admin>{$LANG01[53]}</a> ]</td></tr>";
 		print "<tr><td>$text</td></tr>";
 		print "</table><p>";
@@ -342,7 +357,7 @@ function endblock() {
 # $selection is a selection list in the format of $id,$title
 
 function getitem($table,$what,$selection) {
-	$result = dbquery("SELECT $what FROM $table WHERE $selection");
+	$result = dbquery("SELECT $what FROM {$CONF["db_prefix"]}$table WHERE $selection");
 	$ITEM = mysql_fetch_array($result);
 	return $ITEM[0];
 }
@@ -353,7 +368,7 @@ function getitem($table,$what,$selection) {
 
 function optionlist($table,$selection,$selected="") {
 	$select_set = explode(",", $selection);
-	$result = dbquery("SELECT $selection FROM $table ORDER BY $select_set[1]");
+	$result = dbquery("SELECT $selection FROM {$CONF["db_prefix"]}$table ORDER BY $select_set[1]");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -368,7 +383,7 @@ function optionlist($table,$selection,$selected="") {
 # $selection is a selection list in the format of $id, $title
 
 function checklist($table,$selection,$where="",$selected="") {
-	$sql = "SELECT $selection FROM $table";
+	$sql = "SELECT $selection FROM {$CONF["db_prefix"]}$table";
 	if (!empty($where)) $sql .= " WHERE $where";
 	$result = dbquery($sql);
 	$nrows = mysql_num_rows($result);
@@ -419,7 +434,7 @@ function export_rdf() {
 		$rddescr = $CONF["site_slogan"];
 		$rdlang	= $CONF["locale"];
 
-		$result = dbquery("SELECT * FROM stories WHERE uid > 1 ORDER BY date DESC limit 10");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}stories WHERE uid > 1 ORDER BY date DESC limit 10");
        		if (!$file = @fopen($outputfile,w)) {
 			errorlog("{LANG01[54]} $outputfile",1);
 		} else {
@@ -507,7 +522,7 @@ function pollvote($qid) {
 	global $HTTP_COOKIE_VARS,$REMOTE_ADDR,$LANG01,$CONF;
 	$id = dbcount("pollvoters","ipaddress",$REMOTE_ADDR,"qid",$qid);
 	if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
-		$question = @dbquery("select question,voters,commentcode FROM pollquestions WHERE qid='$qid'");
+		$question = @dbquery("select question,voters,commentcode FROM {$CONF["db_prefix"]}pollquestions WHERE qid='$qid'");
 		$nquesion = mysql_num_rows($question);
 		if ($nquestion = 1) {
 			$answers	= dbquery("select answer,aid from pollanswers WHERE qid='$qid'");
@@ -541,7 +556,7 @@ function pollvote($qid) {
 
 function showpoll($size,$qid="") {
 	global $HTTP_COOKIE_VARS,$REMOTE_ADDR,$CONF;
-	dbquery("DELETE FROM pollvoters WHERE date < unix_timestamp() - {$CONF["polladdresstime"]}");
+	dbquery("DELETE FROM {$CONF["db_prefix"]}pollvoters WHERE date < unix_timestamp() - {$CONF["polladdresstime"]}");
 	if (!empty($qid)) {
 		$id = dbcount("pollvoters","ipaddress",$REMOTE_ADDR,"qid",$qid);
 		if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
@@ -622,9 +637,9 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 function showtopics($topic="") {
 	global $CONF, $USER, $LANG01, $PHP_SELF;
 	if ($CONF["sortmethod"] == 'alpha')
-		$result = dbquery("SELECT tid,topic FROM topics ORDER BY tid ASC");
+		$result = dbquery("SELECT tid,topic FROM {$CONF["db_prefix"]}topics ORDER BY tid ASC");
 	else
-		$result = dbquery("SELECT tid,topic FROM topics ORDER BY sortnum");
+		$result = dbquery("SELECT tid,topic FROM {$CONF["db_prefix"]}topics ORDER BY sortnum");
 
 	$nrows = mysql_num_rows($result);
 	#Give a link to the hompage here since a lot of people use this
@@ -773,7 +788,7 @@ function commentbar($sid,$title,$type,$order,$mode) {
 function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 	global $CONF,$LANG01,$USER;
 	if (!empty($USER["uid"]) && empty($order) && empty($mode)) {
-		$result = dbquery("SELECT commentorder,commentmode,commentlimit FROM usercomment WHERE uid = '{$USER["uid"]}'");
+		$result = dbquery("SELECT commentorder,commentmode,commentlimit FROM {$CONF["db_prefix"]}usercomment WHERE uid = '{$USER["uid"]}'");
 		$U = mysql_fetch_array($result);
 		$order = $U[0];
 		$mode = $U[1];
@@ -788,7 +803,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			print "<p>";
 			break;
 		case "nested":
-			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM comments WHERE sid = '$sid' AND pid = 0 ORDER By date $order LIMIT $limit");
+			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM {$CONF["db_prefix"]}comments WHERE sid = '$sid' AND pid = 0 ORDER By date $order LIMIT $limit");
 			$nrows = mysql_num_rows($result);
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
@@ -806,7 +821,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			}
 			break;
 		case "flat":
-			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM comments WHERE sid = '$sid' ORDER By date $order LIMIT $limit");
+			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM {$CONF["db_prefix"]}comments WHERE sid = '$sid' ORDER By date $order LIMIT $limit");
 			$nrows = mysql_num_rows($result);
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
@@ -823,7 +838,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			}
 			break;
 		case "threaded":
-			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM comments WHERE sid = '$sid' AND pid = $pid ORDER By date $order LIMIT $limit");
+			$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM {$CONF["db_prefix"]}comments WHERE sid = '$sid' AND pid = $pid ORDER By date $order LIMIT $limit");
 			$nrows = mysql_num_rows($result);
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
@@ -849,7 +864,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 # This function finds and prints the children of cid
 
 function commentchildren($sid,$pid,$order,$mode,$type,$level=0) {
-	$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM comments WHERE sid = '$sid' AND pid = $pid ORDER By date $order");
+	$result = dbquery("SELECT *,unix_timestamp(date) AS nice_date FROM {$CONF["db_prefix"]}comments WHERE sid = '$sid' AND pid = $pid ORDER By date $order");
 	$nrows = mysql_num_rows($result);
 	if ($nrows>0) {
 		if ($mode == "threaded") { print "<UL>"; }
@@ -998,7 +1013,7 @@ function isemail($email) {
 function olderstuff() {
 	global $CONF,$LANG01;
 	if ($CONF["olderstuff"] == 1) {
-		$result = dbquery("SELECT sid,title,comments,unix_timestamp(date) AS day FROM stories ORDER BY date desc LIMIT {$CONF["limitnews"]}, {$CONF["limitnews"]}");
+		$result = dbquery("SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$CONF["db_prefix"]}stories ORDER BY date desc LIMIT {$CONF["limitnews"]}, {$CONF["limitnews"]}");
 		$nrows = mysql_num_rows($result);
 		if ($nrows>0) {
 			$day = "noday";
@@ -1028,14 +1043,14 @@ function showblock($side,$topic="") {
 
 	#Get user preferences on blocks
 	if (!empty($USER["uid"])) {
-		$result = dbquery("SELECT boxes,noboxes FROM userindex WHERE uid = '{$USER["uid"]}'");
+		$result = dbquery("SELECT boxes,noboxes FROM {$CONF["db_prefix"]}userindex WHERE uid = '{$USER["uid"]}'");
 		$U = mysql_fetch_array($result);
 	}
 
 	if ($side == "left") {
-		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM blocks WHERE onleft = 1";
+		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$CONF["db_prefix"]}blocks WHERE onleft = 1";
 	} else {
-		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM blocks WHERE onleft = 0";
+		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$CONF["db_prefix"]}blocks WHERE onleft = 0";
 	}
 
 	if (!empty($topic)) {
@@ -1050,7 +1065,7 @@ function showblock($side,$topic="") {
 		for ($i=0; $i<sizeof($BOXES); $i++) {
 			$sql .= "bid = '$BOXES[$i]' OR ";
 		}
-		$result = dbquery("SELECT bid FROM blocks WHERE title = 'User Block' OR title = 'Section Block'");
+		$result = dbquery("SELECT bid FROM {$CONF["db_prefix"]}blocks WHERE title = 'User Block' OR title = 'Section Block'");
 		$nrows = mysql_num_rows($result);
 		for ($i=1;$i<=$nrows;$i++) {
 			$A = mysql_fetch_array($result);
@@ -1178,7 +1193,7 @@ function allowedhtml() {
 
 function getpassword($loginname) {
 	global $LANG01;
-	$result = dbquery("SELECT passwd FROM users WHERE username='$loginname'");
+	$result = dbquery("SELECT passwd FROM {$CONF["db_prefix"]}users WHERE username='$loginname'");
 	$tmp = mysql_errno();
 	$nrows = mysql_num_rows($result);
 	if (($tmp == 0) && ($nrows == 1)) {
@@ -1271,7 +1286,7 @@ function emailusertopics() {
         global $LANG08,$CONF;
 
         // Get users who want stories emailed to them
-        $users = dbquery("SELECT username,email, etids FROM users, userindex WHERE userindex.uid = users.uid AND etids IS NOT NULL");
+        $users = dbquery("SELECT username,email, etids FROM {$CONF["db_prefix"]}users, {$CONF["db_prefix"]}userindex WHERE userindex.uid = users.uid AND etids IS NOT NULL");
         $nrows = mysql_num_rows($users);
         $file = @fopen("testemail.txt",w);
         fputs($file, "got $nrows users who want stories emailed to them\n");
@@ -1280,7 +1295,7 @@ function emailusertopics() {
                 fputs($file, "inside for loop\n");
                 $U = mysql_fetch_array($users);
                 $cur_day = strftime("%D",time());
-		$result = dbquery("SELECT value AS lastrun FROM vars WHERE name = 'lastemailedstories'");
+		$result = dbquery("SELECT value AS lastrun FROM {$CONF["db_prefix"]}vars WHERE name = 'lastemailedstories'");
 		$L = mysql_fetch_array($result);
                 $storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where date >= '" . $L["lastrun"] . "' AND (";
                 //$storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where DATE_FORMAT(date,'%Y-%m-%d') = '" . strftime('%Y-%m-%d',time()) . "' AND (";
@@ -1332,7 +1347,7 @@ function whatsnewblock() {
 	if ($CONF["whatsnewbox"] == 0) return;
 
 	#find the newest stories; change 86400 to your desired interval in seconds
-	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM stories WHERE ";
+	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$CONF["db_prefix"]}stories WHERE ";
 	$now = time();
 	$desired = $now - $CONF["newstoriesinterval"];
 
@@ -1354,7 +1369,7 @@ function whatsnewblock() {
 
 	#now go get the newest comments; change 172800 to desired interval in seconds
 	print "<b>{$LANG01[83]}</b> <small>{$LANG01[85]}</small><br>";
-	$sql    = "SELECT distinct *, count(*) as dups, comments.cid,comments.sid,stories.sid,stories.title,max(UNIX_TIMESTAMP(comments.date)) as day FROM comments,stories where ";
+	$sql    = "SELECT distinct *, count(*) as dups, comments.cid,comments.sid,stories.sid,stories.title,max(UNIX_TIMESTAMP(comments.date)) as day FROM {$CONF["db_prefix"]}comments,stories where ";
 	$now = time();
 	$desired = $now - $CONF["newcommentsinterval"];
 	$sql .= "UNIX_TIMESTAMP(comments.date) > {$desired} and (stories.sid=comments.sid) GROUP BY comments.sid ORDER BY day DESC";
@@ -1386,7 +1401,7 @@ function whatsnewblock() {
 
 	#get newest links; change 1209600 to desired interval in seconds
 	print "<b>{$LANG01[84]}</b> <small>{$LANG01[87]}</small><br> ";
-	$sql    = "SELECT * FROM links  ORDER BY lid DESC";
+	$sql    = "SELECT * FROM {$CONF["db_prefix"]}links  ORDER BY lid DESC";
 	$foundone = 0;
 	$now = time();
 	$desired = $now - $CONF["newlinksinterval"];
@@ -1427,7 +1442,7 @@ function whatsnewblock() {
 /*
 	#get newest events; change 2592000 to desired interval in seconds
 	print "<b>EVENTS</b> <small>last 30 days</small><br> ";
-	$sql    = "SELECT * FROM events  ORDER BY eid DESC";
+	$sql    = "SELECT * FROM {$CONF["db_prefix"]}events  ORDER BY eid DESC";
 	$foundone = 0;
 	$now = time();
 	$desired = $now - 2592000;
@@ -1568,7 +1583,7 @@ function getuserdatetimeformat($date="") {
 
         #Get display format for time
         if ($USER["uid"] > 1) {
-                $result = dbquery("SELECT format FROM dateformats, userprefs WHERE dateformats.dfid = userprefs.dfid AND uid = {$USER["uid"]}");
+                $result = dbquery("SELECT format FROM {$CONF["db_prefix"]}dateformats, {$CONF["db_prefix"]}userprefs WHERE dateformats.dfid = userprefs.dfid AND uid = {$USER["uid"]}");
                 $nrows = mysql_num_rows($result);
                 $A = mysql_fetch_array($result);
                 if (empty($A["format"])) {

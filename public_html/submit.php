@@ -40,11 +40,11 @@ include("custom_code.php");
 
 function submissionform($type="story") {
 	global $CONF,$LANG12,$REMOTE_ADDR,$USER;
-	dbquery("DELETE FROM submitspeedlimit WHERE date < unix_timestamp() - {$CONF["speedlimit"]}");
+	dbquery("DELETE FROM {$CONF["db_prefix"]}submitspeedlimit WHERE date < unix_timestamp() - {$CONF["speedlimit"]}");
 	$id = dbcount("submitspeedlimit","ipaddress",$REMOTE_ADDR);
 	if ($id > 0) {
 		startblock($LANG12[26]);
-		$result = dbquery("SELECT date FROM submitspeedlimit WHERE ipaddress = '$REMOTE_ADDR'");
+		$result = dbquery("SELECT date FROM {$CONF["db_prefix"]}submitspeedlimit WHERE ipaddress = '$REMOTE_ADDR'");
 		$A = mysql_fetch_row($result);
 		$last = time() - $A[0];
 		print "{$LANG12[30]}$last{$LANG12[31]}<br>";
@@ -107,7 +107,7 @@ function submitlink() {
 	print "<tr><td align=right><b>{$LANG12[10]}:</b></td><td><input type=text size=36 maxlength=96 name=title></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG12[11]}:</b></td><td><input type=text size=36 maxlength=96 name=url value=\"http://\"></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG12[17]}:</b></td><td><select name=categorydd>\n";
-	$result = dbquery("SELECT DISTINCT category FROM links");
+	$result = dbquery("SELECT DISTINCT category FROM {$CONF["db_prefix"]}links");
 	$nrows = mysql_num_rows($result);
 	if ($nrows > 0) {
 		for ($i=0; $i<$nrows; $i++) {
@@ -255,7 +255,7 @@ function savesubmission($type,$A) {
 ###############################################################################
 # MAIN
 
-include("layout/header.php");	
+site_header("menu");	
 
 if ($mode == $LANG12[8]) { 
 	savesubmission($type,$HTTP_POST_VARS);
@@ -263,6 +263,6 @@ if ($mode == $LANG12[8]) {
 	submissionform($type); 
 }
 
-include("layout/footer.php");	
+site_footer();	
 
 ?>

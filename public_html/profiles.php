@@ -33,7 +33,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message) {
 	global $CONF,$LANG08;
 	if (!empty($author) && !empty($subject) && !empty($message)) {
 		if (isemail($authoremail)) {
-			$result = dbquery("SELECT * FROM users WHERE uid = $uid");
+			$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}users WHERE uid = $uid");
 			$A = mysql_fetch_array($result);
 			$tmp	= urlencode($LANG08[1]);
 			$RET	= @mail("{$A["username"]} <{$A["email"]}>",
@@ -42,16 +42,16 @@ function contactemail($uid,$author,$authoremail,$subject,$message) {
 			"From: $author <$authoremail>\nReturn-Path: <$authoremail>\nX-Mailer: GeekLog $VERSION");
 			refresh($CONF["site_url"] . "/index.php?msg=27");
 		} else {
-			include("layout/header.php");
+			site_header("menu");
 			errorlog($LANG08[3],2);
 			contactform($uid,$subject,$message);
-			include("layout/footer.php");
+			site_footer();
 		}
 	} else {
-		include("layout/header.php");
+		site_header("menu");
 		errorlog($LANG08[4],2);
 		contactform($uid,$subject,$message);
-		include("layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -60,7 +60,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message) {
 
 function contactform($uid,$subject="",$message="") {
 	global $HTTP_COOKIE_VARS,$CONF,$LANG08;
-	$result = dbquery("SELECT username FROM users WHERE uid = $uid");
+	$result = dbquery("SELECT username FROM {$CONF["db_prefix"]}users WHERE uid = $uid");
 	$A = mysql_fetch_array($result);
 	print "<form action={$CONF["site_url"]}/profiles.php method=POST name=contact>";
 	startblock("{$LANG08[10]} {$A["username"]}");
@@ -129,7 +129,7 @@ function mailstoryform($sid) {
  	global $HTTP_COOKIE_VARS,$CONF,$LANG08,$USER;
  	startblock($LANG08[17]); 
  	if (!empty($USER["name"])) {
-  		$result = dbquery("SELECT email FROM users WHERE uid = {$USER["uid"]}");
+  		$result = dbquery("SELECT email FROM {$CONF["db_prefix"]}users WHERE uid = {$USER["uid"]}");
   		$A = mysql_fetch_array($result);
   		$from = $USER["name"];
   		$fromemail = $A["email"];
@@ -166,18 +166,18 @@ switch ($what) {
 		contactemail($uid,$author,$authoremail,$subject,$message);
 		break;
 	case "emailstory":
-		include("layout/header.php");
+		site_header("menu");
 		mailstoryform($sid);
-		include("layout/footer.php");
+		site_footer();
 		break;
 	case "sendstory":
 		mailstory($sid,$to,$toemail,$from,$fromemail,$sid,$shortmsg);
 		break;
 	default:
 		if (!empty($uid)) {
-			include("layout/header.php");
+			site_header("menu");
 			contactform($uid);
-			include("layout/footer.php");
+			site_footer();
 		} else {
 			refresh($CONF["site_url"]);
 		}

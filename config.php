@@ -38,6 +38,7 @@ $CONF["db_name"]		= "geeklog";
 $CONF["db_host"]		= "localhost";
 $CONF["db_user"]		= "yourname";
 $CONF["db_pass"]		= "yourpass";
+$CONF["db_prefix"]		= "gl_";
 
 ##/ SERVER SETTINGS /##########################################################
 #
@@ -57,6 +58,9 @@ $CONF["site_name"]		= "Geeklog Site";
 $CONF["site_slogan"]	= "Another Nifty GeekLog Site";
 $CONF["site_mail"]		= "admin@yourdomain.com";
 $CONF["site_url"]		= "http://www.yourdomain.com";
+
+$CONF["layout"]			= "classic";
+$CONF["layout_url"]		= $CONF["site_url"].'/layout/'.$CONF["layout"];
 
 ##/ LOCALE SETTINGS /##########################################################
 

@@ -31,7 +31,7 @@ include("custom_code.php");
 function adduserevent($eid) {
 	global $USER, $LANG02;
 	startblock("Adding Event to {$USER["username"]}'s Calendar");
-	$eventsql = "SELECT *, datestart AS start, dateend AS end FROM events where eid='$eid'";
+	$eventsql = "SELECT *, datestart AS start, dateend AS end FROM {$CONF["db_prefix"]}events where eid='$eid'";
 	$result = dbquery($eventsql);
 	$nrows = mysql_num_rows($result);
 	if ($nrows == 1) {
@@ -73,13 +73,13 @@ function saveuserevent($eid, $reminder, $emailreminder) {
 
 switch ($mode) {
 	case "addevent":
-		include("layout/header.php");
+		site_header("menu");
 		if (!empty($eid)) 
 			adduserevent($eid);
 		else
 			showmessage(23);
 		endblock();
-		include("layout/footer.php");
+		site_footer();
 		break;
 	case "saveuserevent":
 		if (!empty($eid))
@@ -92,18 +92,18 @@ switch ($mode) {
 		refresh($CONF["site_url"] . "/calendar.php?msg=26");
 		break;
 	default:
-		include("layout/header.php");
+		site_header("menu");
 		if (!empty($eid)) {
 			startblock($LANG30[9]);
-			$datesql = "SELECT *,datestart AS start,dateend AS end FROM events WHERE eid = '$eid'";
+			$datesql = "SELECT *,datestart AS start,dateend AS end FROM {$CONF["db_prefix"]}events WHERE eid = '$eid'";
 		} else {
 			startblock($LANG30[10] . " $month/$day/$year");
 			$thedate= $year . "-". $month . "-" . $day;
-			$datesql = "SELECT *,datestart AS start,dateend AS end FROM events WHERE \"$thedate\" BETWEEN datestart and dateend ORDER BY datestart asc,title";
+			$datesql = "SELECT *,datestart AS start,dateend AS end FROM {$CONF["db_prefix"]}events WHERE \"$thedate\" BETWEEN datestart and dateend ORDER BY datestart asc,title";
 
 		}
 		print "[ <a href={$CONF["site_url"]}/submit.php?type=event>{$LANG02[6]}</a> ][ <a href={$CONF["site_url"]}/calendar.php>Back to Calendar</a> ]<br>";
-		//dbquery("delete FROM events WHERE dateend < CURDATE()");
+		//dbquery("delete FROM {$CONF["db_prefix"]}events WHERE dateend < CURDATE()");
 		$result = dbquery($datesql);
 
 		$nrows = mysql_num_rows($result);
@@ -135,6 +135,6 @@ switch ($mode) {
 		}
 	
 		endblock();
-		include("layout/footer.php");
+		site_footer();
 } // end switch
 ?>

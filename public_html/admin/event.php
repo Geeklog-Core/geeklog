@@ -41,7 +41,7 @@ function editevent($eid="") {
 	global $LANG22,$CONF;
 	startblock($LANG22[1]);
 	if (!empty($eid)) {
-		$result = dbquery("SELECT * FROM events where eid ='$eid'");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}events where eid ='$eid'");
 		$A = mysql_fetch_array($result);
 	} 
 	print "<form action={$CONF["site_url"]}/admin/event.php name=events method=post>";
@@ -78,10 +78,10 @@ function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description) 
 	if (!empty($eid) && !empty($description) && !empty($title)) {
 		dbsave("events","eid,title,url,datestart,dateend,location,description","$eid,'$title','$url','$datestart','$dateend','$location','$description'","admin/event.php?msg=17");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog($LANG22[10],2);
 		editevent($eid);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -94,7 +94,7 @@ function listevents() {
 	adminedit("event",$LANG22[12]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><th align=left>{$LANG22[13]}</th><th>{$LANG22[14]}</th><th>{$LANG22[15]}</th></tr>";
-	$result = dbquery("SELECT eid,title,datestart,dateend FROM events ORDER BY datestart");
+	$result = dbquery("SELECT eid,title,datestart,dateend FROM {$CONF["db_prefix"]}events ORDER BY datestart");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -116,16 +116,16 @@ switch ($mode) {
 		saveevent($eid,$title,$url,$datestart,$dateend,$location,$description);
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		editevent($eid);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listevents();
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

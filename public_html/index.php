@@ -29,18 +29,19 @@ include("custom_code.php");
 ###############################################################################
 # MAIN
 
-include("layout/header.php");
+site_header("menu");
+
 $maxstories = 0;
 
 // if no page sent then assume the first
 if (empty($page)) $page = 1;
 
 if (!empty($USER["uid"])) {
-	$result = dbquery("SELECT noboxes,maxstories,tids,aids FROM userindex WHERE uid = '{$USER["uid"]}'");
+	$result = dbquery("SELECT noboxes,maxstories,tids,aids FROM {$CONF["db_prefix"]}userindex WHERE uid = '{$USER["uid"]}'");
 	$U = mysql_fetch_array($result);
 	if ($U["maxstories"] >= $CONF["minnews"]) $maxstories = $U["maxstories"];
 	if ((!empty($topic)) && ($maxstories == 0)) {
-		$tmp = dbquery("SELECT limitnews FROM topics WHERE tid = '{$topic}'");
+		$tmp = dbquery("SELECT limitnews FROM {$CONF["db_prefix"]}topics WHERE tid = '{$topic}'");
 		$T = mysql_fetch_array($tmp);
 		if ($T["limitnews"] >= $CONF["minnews"])
 			$maxstories = $T["limitnews"];
@@ -60,7 +61,7 @@ for ($i=0;$i<=1;$i++) {
 
 	if ($page>1) $i = 1;
 
-	$sql	= "SELECT *,unix_timestamp(date) AS day FROM stories WHERE draft_flag = 0";
+	$sql	= "SELECT *,unix_timestamp(date) AS day FROM {$CONF["db_prefix"]}stories WHERE draft_flag = 0";
 
 	# if a topic was provided only select those stories.
 	if (!empty($topic)) {
@@ -95,7 +96,7 @@ for ($i=0;$i<=1;$i++) {
 	$result = dbquery($sql);
 	$nrows = mysql_num_rows($result);
 
-	$countsql = "SELECT count(*) count FROM stories WHERE draft_flag = 0";
+	$countsql = "SELECT count(*) count FROM {$CONF["db_prefix"]}stories WHERE draft_flag = 0";
 	if (!empty($topic)) {
 		$countsql = $countsql . " AND tid='$topic'";
 	} else {
@@ -140,7 +141,8 @@ if ($U["noboxes"] != 1) {
 } else {
 	print "<td>&nbsp";
 }
-include("layout/footer.php");
+
+site_footer();
 
 ?>
 

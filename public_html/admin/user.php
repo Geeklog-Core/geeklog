@@ -34,11 +34,11 @@ function edituser($uid="") {
 	global $LANG28,$CONF;
 	startblock($LANG28[1]);
 	if (!empty($uid)) {
-		$result = dbquery("SELECT * FROM users where uid ='$uid'");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}users where uid ='$uid'");
 		$A = mysql_fetch_array($result);
 	}
 	if ($A["uid"] == "") {
-                $tmp = dbquery("SELECT MAX(uid) AS max FROM users");
+                $tmp = dbquery("SELECT MAX(uid) AS max FROM {$CONF["db_prefix"]}users");
                 $T = mysql_fetch_array($tmp);
                 $A["uid"] = $T["max"] + 1;
         }
@@ -70,9 +70,9 @@ function changepw($uid,$passwd) {
 		$passwd = md5($passwd);
 		$result = dbchange("users","passwd","'$passwd'","uid",$uid,"admin/user.php?mode=none");	
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog("CHANGEPW ERROR: There was nothing to do!",3);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -84,12 +84,12 @@ function saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$homepage) {
 	if (!empty($username) && !empty($email)) {
 		if (($uid == 1) or !empty($passwd)) { 
 			$passwd = md5($passwd);
-			$sql = "REPLACE INTO users (uid,username,fullname,passwd,seclev,email,homepage) VALUES ($uid,'$username','$fullname','$passwd','$seclev','$email','$homepage')";
+			$sql = "REPLACE INTO {$CONF["db_prefix"]}users (uid,username,fullname,passwd,seclev,email,homepage) VALUES ($uid,'$username','$fullname','$passwd','$seclev','$email','$homepage')";
 		} else {
-			$sql = "SELECT passwd FROM users WHERE uid = $uid";
+			$sql = "SELECT passwd FROM {$CONF["db_prefix"]}users WHERE uid = $uid";
 			$result = dbquery($sql);
 			$A = mysql_fetch_array($result);
-			$sql = "REPLACE INTO users (uid,username,fullname,passwd,seclev,email,homepage) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$seclev','$email','$homepage')";
+			$sql = "REPLACE INTO {$CONF["db_prefix"]}users (uid,username,fullname,passwd,seclev,email,homepage) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$seclev','$email','$homepage')";
 		} 
 		$result = dbquery($sql);
 		dbsave("userprefs","uid",$uid);
@@ -100,16 +100,16 @@ function saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$homepage) {
 		if ($tmp == 0) { 
 			refresh("{$CONF["site_url"]}/admin/user.php?msg=21");
 		} else {
-			include("../layout/header.php");
+			site_header("menu");
 			$tmp = "SAVEUSERS ERROR <BR>" . $sql . " <BR> " . mysql_error();
 			errorlog($tmp,3);
-			include("../layout/footer.php");
+			site_footer();
 		}
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog($LANG28[10],2);
 		edituser($uid);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -122,7 +122,7 @@ function listusers() {
 	adminedit("user",$LANG28[12]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><th align=left>{$LANG28[3]}</th><th>{$LANG28[4]}</th><th>{$LANG28[13]}</th><th>{$LANG28[7]}</th></tr>";
-	$result = dbquery("SELECT uid,username,fullname,seclev,email FROM users WHERE uid > 1");
+	$result = dbquery("SELECT uid,username,fullname,seclev,email FROM {$CONF["db_prefix"]}users WHERE uid > 1");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -148,16 +148,16 @@ switch ($mode) {
 		changepw($uid,$passwd);
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		edituser($uid);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listusers();
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

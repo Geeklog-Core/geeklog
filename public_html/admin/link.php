@@ -41,7 +41,7 @@ function editlink($lid="") {
 	global $LANG23,$CONF;
 	startblock($LANG23[1]);
 	if (!empty($lid)) {
-		$result = dbquery("SELECT * FROM links where lid ='$lid'");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}links where lid ='$lid'");
 		$A = mysql_fetch_array($result);
 	} 
 	print "<form action={$CONF["site_url"]}/admin/link.php method=post>";
@@ -101,10 +101,10 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits) {
 		}
 		dbsave("links","lid,category,url,description,title,hits","$lid,'$category','$url','$description','$title','$hits'","admin/link.php?msg=15");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog($LANG23[10],2);
 		editlink($lid);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -117,7 +117,7 @@ function listlinks() {
 	adminedit("link",$LANG23[12]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><th align=left>{$LANG23[13]}</th><th>{$LANG23[14]}</th><th>{$LANG23[15]}</th></tr>";
-	$result = dbquery("SELECT lid,title,category,url FROM links");
+	$result = dbquery("SELECT lid,title,category,url FROM {$CONF["db_prefix"]}links");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -139,16 +139,16 @@ switch ($mode) {
 		savelink($lid,$category,$categorydd,$url,$description,$title,$hits);
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		editlink($lid);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listlinks();
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

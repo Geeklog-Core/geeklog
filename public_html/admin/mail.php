@@ -53,7 +53,7 @@ if (isset($mail)) {
 
 	/* and now mail it */
 	if (!isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email,emailstories  FROM users,userprefs WHERE users.uid > 1";
+ 		$sql = "SELECT username,fullname,email,emailstories  FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs WHERE users.uid > 1";
  		$sql .= " AND users.uid = userprefs.uid AND userprefs.emailstories = 1";
  		if ($sendtil == "adm") {
   			$sql .= " AND users.seclev > 99";
@@ -61,7 +61,7 @@ if (isset($mail)) {
 	}
 
 	if (isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email  FROM users WHERE uid > 1";
+ 		$sql = "SELECT username,fullname,email  FROM {$CONF["db_prefix"]}users WHERE uid > 1";
  		if ($sendtil == "adm") {
   			$sql .= " AND users.seclev > 99";
  		}
@@ -93,7 +93,7 @@ if (isset($mail)) {
 }
 
 global $CONF,$LANG31;
-include("../layout/header.php");
+site_header("menu");
 
 if ($USER["seclev"] >= $CONF["sec_email"]) {
  	$disabled = "";
@@ -180,5 +180,5 @@ echo "
 endblock();
 echo "</form>";
 }  
-include("../layout/footer.php");
+site_footer();
 ?>

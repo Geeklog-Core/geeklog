@@ -40,7 +40,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
 
 	refresh("{$CONF["site_url"]}/admin/moderation.php");
 } else if ($USER["seclev"] < 100) {
-	include("../layout/alt_header.php");
+	site_header("");
 	#print "<br>Input: " . md5($passwd) . "<br>Database: $mypasswd<br>"; 
 	startblock($LANG20[01]);
 	if (!empty($warn)) {
@@ -54,7 +54,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
 	print "<tr><td colspan=2 align=center class=warning><br>{$LANG20[06]}\n";
 	print "<input type=hidden name=warn value=1><br><br><input type=submit name=mode value=\"{$LANG20[07]}\"></td><td></table></form>\n";
 	endblock();
-	include("../layout/footer.php");
+	site_footer();
 	exit();
 }
 

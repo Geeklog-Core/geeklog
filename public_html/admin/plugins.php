@@ -44,7 +44,7 @@ function plugineditor($pi_name,$confirmed=0) {
 		errorlog("no plugin name provided to plugineditor()");
 		return;
 	}
-	$result = dbquery("SELECT * FROM plugins WHERE pi_name = '$pi_name'");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_name = '$pi_name'");
 	$A = mysql_fetch_array($result);
 	startblock("Plugin Editor");
 	print "<form action={$CONF["site_url"]}/admin/plugins.php method=post>";
@@ -82,7 +82,7 @@ function listplugins($page="1") {
 	adminedit("plugins",$LANG32[11]);
 	if (empty($page)) $page = 1;
 	$limit = (50 * $page) - 50;
-	$result = dbquery("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM plugins");
+	$result = dbquery("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$CONF["db_prefix"]}plugins");
 	$nrows = mysql_num_rows($result);
 	if ($nrows > 0) {
 		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
@@ -130,10 +130,10 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 		}
 		dbsave("plugins","pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage","'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'","admin/plugins.php?msg=28");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog("error saving plugin, no pi_name provided",1);
 		plugineditor($pi_name);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -314,7 +314,7 @@ function installplugin() {
 function removeplugin($plugin_name) {
 	global $CONF;
 
-	$result = dbquery("SELECT * FROM plugins WHERE pi_name = '$plugin_name'");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_name = '$plugin_name'");
 	if (mysql_num_rows($result) == 1) {
 		#good, found the row
 		$A = mysql_fetch_array($result);
@@ -373,22 +373,22 @@ switch ($mode) {
 		if ($confirmed == 1) {
 			removeplugin($pi_name);
 		} else {
-			include("../layout/header.php");
+			site_header("menu");
 			startblock($LANG32[13]);
 			print $LANG32[12];
 			endblock();
 			plugineditor($pi_name,1);
-			include("../layout/footer.php");
+			site_footer();
 		}	
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		if (empty($pi_name)) {
 			installpluginform();
 		} else {
 			plugineditor($pi_name);
 		}
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "save":
 		saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
@@ -398,10 +398,10 @@ switch ($mode) {
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listplugins($page);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

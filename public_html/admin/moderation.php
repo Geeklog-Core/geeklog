@@ -42,15 +42,15 @@ function commandcontrol() {
 	startblock($LANG29[34]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr align=center valign=top>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/admin/story.gif border=0><br>{$LANG01[11]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/admin/block.gif border=0><br>{$LANG01[12]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/admin/topic.gif border=0><br>{$LANG01[13]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/admin/link.gif border=0><br>{$LANG01[14]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/admin/event.gif border=0><br>{$LANG01[15]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/admin/poll.gif border=0><br>{$LANG01[16]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/admin/user.gif border=0><br>{$LANG01[17]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/admin/plugins.gif border=0><br>Plug-ins</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/index.php?mode=logout><img src={$CONF["site_url"]}/images/admin/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/icons/story.gif border=0><br>{$LANG01[11]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/icons/block.gif border=0><br>{$LANG01[12]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/icons/topic.gif border=0><br>{$LANG01[13]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/icons/link.gif border=0><br>{$LANG01[14]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/icons/event.gif border=0><br>{$LANG01[15]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/icons/poll.gif border=0><br>{$LANG01[16]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/icons/user.gif border=0><br>{$LANG01[17]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/icons/plugins.gif border=0><br>Plug-ins</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/index.php?mode=logout><img src={$CONF["site_url"]}/images/icons/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
 	ShowPluginModerationOptions();
 	print "</tr></table>";
 	endblock();
@@ -69,12 +69,12 @@ function itemlist($type) {
 	switch ($type) {
 		case "event":
 			startblock($LANG29[37],"cceventsubmission.html");
-			$sql = "SELECT eid AS id,title,datestart,url FROM eventsubmission ORDER BY datestart ASC";
+			$sql = "SELECT eid AS id,title,datestart,url FROM {$CONF["db_prefix"]}eventsubmission ORDER BY datestart ASC";
 			$H =  array("Title","Start Date","URL");
 			break;
 		case "link":
 			startblock($LANG29[36],"cclinksubmission.html");
-			$sql = "SELECT lid AS id,title,category,url FROM linksubmission ORDER BY title ASC";
+			$sql = "SELECT lid AS id,title,category,url FROM {$CONF["db_prefix"]}linksubmission ORDER BY title ASC";
 			$H =  array("Title","Category","URL");
 			break;
 		default:
@@ -92,7 +92,7 @@ function itemlist($type) {
 				}
 			} else {
 				startblock($LANG29[35],"ccstorysubmission.html");
-				$sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM storysubmission ORDER BY date ASC";
+				$sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$CONF["db_prefix"]}storysubmission ORDER BY date ASC";
 				$H =  array("Title","Date","Topic");
 				break;
 			}
@@ -196,7 +196,8 @@ function moderation($mid,$action,$type,$count) {
 ###############################################################################
 # MAIN
 
-include("../layout/header.php");
+site_header("menu");
+
 switch ($mode) {
 	case "moderation":
 		moderation($id,$action,$type,$count);
@@ -205,7 +206,7 @@ switch ($mode) {
 		commandcontrol();
 		break;
 }
-include("../layout/footer.php");
+site_footer();
 
 
 ?>

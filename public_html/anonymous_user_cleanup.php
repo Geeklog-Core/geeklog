@@ -53,7 +53,7 @@ include("common.php");
 # comments, etc to use the new id of 1. 
 		
 #get username of current user that has uid of 1
-$result = dbquery("SELECT username FROM users WHERE uid = 1");
+$result = dbquery("SELECT username FROM {$CONF["db_prefix"]}users WHERE uid = 1");
 $nrows = mysql_num_rows($result);
 
 #we should get exactly one row back
@@ -75,7 +75,7 @@ if ($nrows == 1) {
 		
 		dbquery($sql);
 
-		$result = dbquery("SELECT MAX(uid) as max_id FROM users");
+		$result = dbquery("SELECT MAX(uid) as max_id FROM {$CONF["db_prefix"]}users");
 		$ID = mysql_fetch_array($result);
 		$newid = $ID["max_id"] + 1;
 		$sql = "UPDATE users SET uid = $newid WHERE uid = 1";
@@ -118,7 +118,7 @@ if ($nrows == 1) {
 			}
 
 			#Now get the current id for anonymous user
-			$result = dbquery("SELECT uid FROM users WHERE username = 'Anonymous'");
+			$result = dbquery("SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = 'Anonymous'");
 			$A = mysql_fetch_array($result);
 			$old_anon_uid = $A["uid"];
 			

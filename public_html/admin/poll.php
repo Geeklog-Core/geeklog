@@ -111,7 +111,7 @@ function listpoll() {
 	adminedit("poll",$LANG25[19]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
 	print "<tr><th align=left>$LANG25[9]</th><th>$LANG25[20]</th><th>$LANG25[3]</th><th>$LANG25[8]</th></tr>";
-	$result = dbquery("SELECT * FROM pollquestions");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}pollquestions");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -140,9 +140,9 @@ switch($mode)
 		}
 		break;
 	case "edit":
-	        include("../layout/header.php");
+	        site_header("menu");
         	editpoll($qid);
-        	include("../layout/footer.php");
+        	site_footer();
 		break;
 	case "delete":
 		if (!empty($qid))
@@ -153,10 +153,10 @@ switch($mode)
 		break;
 	case cancel:
 	default:
- 		include("../layout/header.php");
+ 		site_header("menu");
 		showmessage($msg);
 		listpoll();
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

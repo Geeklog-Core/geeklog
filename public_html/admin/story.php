@@ -40,10 +40,10 @@ include("auth.inc.php");
 function storyeditor($sid,$mode="") {
 	global $HTTP_POST_VARS,$USER,$CONF,$LANG24;
 	if (!empty($sid) && $mode == "edit") {
-		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM stories WHERE sid = '$sid'");
+		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
 	} elseif (!empty($sid) && $mode == "editsubmission") {
-		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM storysubmission WHERE sid = '$sid'");
+		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}storysubmission WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
 		$A["commentcode"] = 0;
 		$A["featured"] = 0;
@@ -126,7 +126,7 @@ function liststories($page="1") {
 	adminedit("story",$LANG24[23]);
 	if (empty($page)) $page = 1;
 	$limit = (50 * $page) - 50;
-	$result = dbquery("SELECT sid,uid,tid,title,featured, draft_flag,UNIX_TIMESTAMP(date) AS unixdate FROM stories ORDER BY date DESC LIMIT $limit,50");
+	$result = dbquery("SELECT sid,uid,tid,title,featured, draft_flag,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories ORDER BY date DESC LIMIT $limit,50");
 	$nrows = mysql_num_rows($result);
 	if ($nrows > 0) {
 		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
@@ -245,10 +245,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		if ($type = "submission") dbdelete("storysubmission","sid",$sid);
 		dbsave("stories","sid,uid,tid,title,introtext,bodytext,date,comments,related,commentcode,statuscode,postmode,featured,frontpage,draft_flag","$sid,$uid,'$tid','$title','$introtext','$bodytext','$date','$comments','$related','$commentcode','$statuscode','$postmode','$featured','$frontpage',$draft_flag","admin/story.php?msg=9");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog($LANG24[31],2);
 		storyeditor($sid);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -264,29 +264,29 @@ switch ($mode) {
 		}
 		break;
 	case "preview":
-		include("../layout/header.php");
+		site_header("menu");
 		storyeditor($sid,$mode);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		storyeditor($sid,$mode);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "editsubmission":
-		include("../layout/header.php");
+		site_header("menu");
 		storyeditor($id,$mode);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "save":
 		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$unixdate,$commentcode,$statuscode,$postmode,$featured,$frontpage, $draft_flag);
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		liststories($page);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 }
 

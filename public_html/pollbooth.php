@@ -45,7 +45,7 @@ function pollsave() {
 
 function polllist() {
 	global $CONF,$LANG07;
-	$result = dbquery("SELECT qid FROM pollquestions");
+	$result = dbquery("SELECT qid FROM {$CONF["db_prefix"]}pollquestions");
 	$nrows = mysql_num_rows($result);
 	$counter = 0;
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>\n";
@@ -78,10 +78,10 @@ if ($reply == $LANG01[25]) {
 	exit;			
 }
 if (empty($qid)) {
-	include("layout/header.php");
+	site_header("menu");
 	polllist();
 } else if (empty($aid)) {
-	include("layout/header.php");
+	site_header("menu");
 	if (empty($HTTP_COOKIE_VARS[$qid])) {
 		pollvote($qid);
 	} else {
@@ -89,12 +89,12 @@ if (empty($qid)) {
 	}
 } else if ($aid  > 0  and empty($HTTP_COOKIE_VARS[$qid])) {
 	setcookie($qid,$aid,time()+$CONF["pollcookietime"]);
-	include("layout/header.php");
+	site_header("menu");
 	pollsave();
 } else {
-	include("layout/header.php");
+	site_header("menu");
 	pollresults($qid,400,$order,$mode);
 }
-include("layout/footer.php");
+site_footer();
 
 ?>

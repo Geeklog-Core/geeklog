@@ -41,7 +41,7 @@ function edittopic($tid="") {
 	global $LANG27,$CONF;
 	startblock($LANG27[1]);
 	if (!empty($tid)) {
-		$result = dbquery("SELECT * FROM topics where tid ='$tid'");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics where tid ='$tid'");
 		$A = mysql_fetch_array($result);
 	}	 
 	print "<form action={$CONF["site_url"]}/admin/topic.php method=post>";
@@ -57,7 +57,7 @@ function edittopic($tid="") {
 		print "<tr><td align=right>{$LANG27[10]}:</td><td><input type=text size=3 maxlength=3 name=sortnum value=\"{$A["sortnum"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG27[11]}:</td><td><input type=text size=3 maxlength=3 name=limitnews value=\"{$A["limitnews"]}\"> (default is {$CONF["limitnews"]})</td></tr>";
 	print "<tr><td align=right>{$LANG27[3]}:</td><td><input type=text size=48 name=topic value=\"{$A["topic"]}\"></td></tr>";
-	if ($A["tid"] == "") { $A["imageurl"] = "/images/topics/"; }
+	if ($A["tid"] == "") { $A["imageurl"] = "/images/icons/"; }
 	print "<tr><td align=right>{$LANG27[4]}:</td><td><input type=text size=48 maxlength=96 name=imageurl value=\"{$A["imageurl"]}\"></td></tr>";
 	print "<tr><td colspan=2 class=warning>{$LANG27[6]}</td></tr>";
 	print "</table></form>";
@@ -73,10 +73,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews) {
 		if ($imageurl == "/images/topics/") { $imageurl = ""; }	
 		dbsave("topics","tid, topic, imageurl, sortnum, limitnews","'$tid', '$topic', '$imageurl','$sortnum','$limitnews'","admin/topic.php?msg=13");
 	} else {
-		include("../layout/header.php");
+		site_header("menu");
 		errorlog($LANG27[7],2);
 		edittopic($tid);
-		include("../layout/footer.php");
+		site_footer();
 	}
 }
 
@@ -89,7 +89,7 @@ function listtopics() {
 	adminedit("topic",$LANG27[9]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr align=center valign=bottom>";
-	$result = dbquery("SELECT * FROM topics");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics");
 	$nrows = mysql_num_rows($result);
 	$counter = 1;
 	for ($i=0;$i<$nrows;$i++) {
@@ -123,16 +123,16 @@ switch ($mode) {
 		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews);
 		break;
 	case "edit":
-		include("../layout/header.php");
+		site_header("menu");
 		edittopic($tid);
-		include("../layout/footer.php");
+		site_footer();
 		break;
 	case "cancel":
 	default:
-		include("../layout/header.php");
+		site_header("menu");
 		showmessage($msg);
 		listtopics();
-		include("../layout/footer.php");
+		site_footer();
 		break;}
 
 ?>

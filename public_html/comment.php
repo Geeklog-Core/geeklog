@@ -41,11 +41,11 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid="0",$type,$mode,
 	if ($CONF["loginrequired2"] == 1 && empty($USER["username"])) {
 		refresh("{$CONF["site_url"]}/users.php?msg=" . urlencode($LANG03[6]));
 	} else {
-		dbquery("DELETE FROM commentspeedlimit WHERE date < unix_timestamp() - {$CONF["speedlimit2"]}");
+		dbquery("DELETE FROM {$CONF["db_prefix"]}commentspeedlimit WHERE date < unix_timestamp() - {$CONF["speedlimit2"]}");
 		$id = dbcount("commentspeedlimit","ipaddress",$REMOTE_ADDR);
 		if ($id > 0) {
 			startblock("Speed Limit");
-			$result = dbquery("SELECT date FROM commentspeedlimit WHERE ipaddress = '$REMOTE_ADDR'");
+			$result = dbquery("SELECT date FROM {$CONF["db_prefix"]}commentspeedlimit WHERE ipaddress = '$REMOTE_ADDR'");
 			$A = mysql_fetch_row($result);
 			$last = time() - $A[0];
 			print "{$LANG03[7]}$last{$LANG03[8]}<br>";
@@ -70,7 +70,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid="0",$type,$mode,
 				$mode = "error";
 			}
 			if (!empty($USER["uid"]) && empty($comment)) {
-				$result = dbquery("SELECT sig FROM users WHERE uid = '{$USER["uid"]}'");
+				$result = dbquery("SELECT sig FROM {$CONF["db_prefix"]}users WHERE uid = '{$USER["uid"]}'");
 				$U = mysql_fetch_row($result);
 				if (!empty($U["sig"])) $comment = "\n\n\n-----\n{$U[0]}";
 				$A["postmode"] = "html";
@@ -143,10 +143,10 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 			refresh("{$CONF["site_url"]}/article.php?story=$sid");
 		}
 	} else {
-		include("layout/header.php");
+		site_header("menu");
 		errorlog ($LANG03[12],2);
 		commentform($sid,$poll);
-		include("layout/footer.php");
+		site_footer();
 		exit;
 	}
 }
@@ -157,7 +157,7 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 function deletecomment($cid,$sid,$type) {
 	global $CONF;
 	if (!empty($cid) && !empty($sid)) {
-		$result = dbquery("SELECT pid FROM comments WHERE cid = $cid");
+		$result = dbquery("SELECT pid FROM {$CONF["db_prefix"]}comments WHERE cid = $cid");
 		$A = mysql_fetch_array($result);
 		dbchange("comments","pid",$A["pid"],"pid",$cid);
 		dbdelete("comments","cid",$cid);
@@ -180,9 +180,9 @@ function deletecomment($cid,$sid,$type) {
 
 switch ($mode) {
 	case $LANG03[14]: //Preview
-		include("layout/header.php");
+		site_header("menu");
 		commentform($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$mode,$postmode);
-		include("layout/footer.php");
+		site_footer();
 		break;
 	case $LANG03[11]: //Submit Comment
 		savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode);
@@ -191,15 +191,15 @@ switch ($mode) {
 		deletecomment($cid,$sid,$type);
 		break;
 	case display:
-		include("layout/header.php");
+		site_header("menu");
 		usercomments($sid,$title,$type,$order,"threaded",$pid);
-		include("layout/footer.php");
+		site_footer();
 		break;
 	default:
 		if (!empty($sid)) {
-			include("layout/header.php");
+			site_header("menu");
 			commentform("","","",$title,"",$sid,$pid,$type,$mode,$postmode);
-			include("layout/footer.php");
+			site_footer();
 		} else {
 			// This could still be a plugin wanting comments
 			if (strlen($type) > 0) {

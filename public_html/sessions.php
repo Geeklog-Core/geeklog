@@ -47,14 +47,14 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
         $currtime = (string) (time());
         $expirytime = (string) (time() - $lifespan);
 
-        $deleteSQL = "DELETE FROM sessions WHERE (start_time < $expirytime)";
+        $deleteSQL = "DELETE FROM {$CONF["db_prefix"]}sessions WHERE (start_time < $expirytime)";
         $delresult = mysql_query($deleteSQL);
 
         if (!$delresult) {
 		die("Delete failed in new_session()");
         }
 
-        $sql = "INSERT INTO sessions (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
+        $sql = "INSERT INTO {$CONF["db_prefix"]}sessions (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
 
         $result = mysql_query($sql);
 
@@ -101,9 +101,9 @@ function get_userid_from_session($sessid, $cookietime, $remote_ip, $md5_based=0)
 	$mintime = time() - $cookietime;
 
 	if ($md5_based == 1) {
-		$sql = "SELECT uid FROM sessions WHERE (md5_sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+		$sql = "SELECT uid FROM {$CONF["db_prefix"]}sessions WHERE (md5_sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
 	} else {
-		$sql = "SELECT uid FROM sessions WHERE (sess_id = $sessid) AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+		$sql = "SELECT uid FROM {$CONF["db_prefix"]}sessions WHERE (sess_id = $sessid) AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
 	}
         $result = dbquery($sql);
 
@@ -131,9 +131,9 @@ function update_session_time($sessid, $md5_based=0) {
 	$newtime = (string) time();
 	
 	if ($md5_based == 1) {
-		$sql = "UPDATE sessions SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
+		$sql = "UPDATE {$CONF["db_prefix"]}sessions SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
 	} else {
-		$sql = "UPDATE sessions SET start_time=$newtime WHERE (sess_id = $sessid)";
+		$sql = "UPDATE {$CONF["db_prefix"]}sessions SET start_time=$newtime WHERE (sess_id = $sessid)";
 	}
 
         $result = dbquery($sql);
@@ -152,7 +152,7 @@ function update_session_time($sessid, $md5_based=0) {
 
 function end_user_session($userid, $db) {
 
-	$sql = "DELETE FROM sessions WHERE (uid = $userid)";
+	$sql = "DELETE FROM {$CONF["db_prefix"]}sessions WHERE (uid = $userid)";
 	$result = dbquery($sql);
 	
 	if (!$result) {
@@ -200,7 +200,7 @@ function make_login_logout_link($user_logged_in, $url_phpbb) {
 #	Gets user's data based on their username
 
 function get_userdata($username) {
-	$sql = "SELECT  users.uid, username, username name, seclev, email, homepage, sig,noicons, dfid FROM users, userprefs WHERE userprefs.uid = users.uid AND username = '$username'";
+	$sql = "SELECT  users.uid, username, username name, seclev, email, homepage, sig,noicons, dfid FROM {$CONF["db_prefix"]}users, {$CONF["db_prefix"]}userprefs WHERE userprefs.uid = users.uid AND username = '$username'";
 
 	if(!$result = dbquery($sql)) {
 		errorlog("error in get_userdata");
@@ -217,7 +217,7 @@ function get_userdata($username) {
 
 function get_userdata_from_id($userid) {
 
-	$sql = "SELECT * FROM users WHERE uid = $userid";
+	$sql = "SELECT * FROM {$CONF["db_prefix"]}users WHERE uid = $userid";
 
 	if(!$result = dbquery($sql)) {
 		$userdata = array("error" => "1");
