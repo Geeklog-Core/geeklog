@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Replaced 'ppmtojpeg' with 'pnmtojpeg' when using NetPBM for scaling
+  uploaded JPEG images (bug #257) [Dirk]
 - Added a check (and a warning message) for PHP 4.1.0 to the install script,
   as that is our new minimum requirement [Dirk]
 - Rewrote install/success.php and added a link to install/check.php [Dirk]

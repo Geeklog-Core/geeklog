@@ -22,6 +22,115 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes1310">Geeklog 1.3.10</a></h2>
+
+<!--
+<h3>New Default Theme</h3>
+
+<p>This release comes with a new default theme: We've chosen the Professional
+theme, kindly provided by Victor B. Gonzales (of <a href="http://aeonserv.com">Aeonserv</a> fame). The theme has been modified slightly and is now fully HTML 4.01 and CSS compliant.</p>
+
+<p>We've also decided to remove the old set of themes (Classic, Clean, Digital Monchrome, Gameserver, Smooth Blue, XSilver, Yahoo) from the distribution. They are now available as a separate tarball.</p>
+-->
+
+<h3>New Features</h3>
+
+<ul>
+<li>Story Archive feature: It is now possible to move stories to an "archive"
+    topic or have them deleted automatically at a given time.</li>
+<li>PDF support: Stories can be converted into PDFs (requires installation
+    of third-party software - see config.php for details).</li>
+<li>Customizable menu bar: The site's menu bar can now be configured in
+    config.php, i.e. you can choose which entries should be displayed there and
+    in which order. It's also possible to add custom entries by providing a
+    function in lib-custom.php.</li>
+<li>Clickable links in text postings: URLs in non-HTML postings are now
+    recognized by Geeklog and displayed as clickable links.</li>
+<li>Customizable welcome email: The email that is sent out to users
+    registering with your site is now fully customizable by providing the
+    text in a text files (/path/to/geeklog/data/welcome_email.txt).</li>
+<li>Timezone hack: The popular "timezone hack" is now included. It lets you
+    set the site's timezone for when your server is located in another
+    timezone.</li>
+</ul>
+
+<h3>Other Improvements</h3>
+
+<ul>
+<li>Various changes have been made to improve the overall performance.</li>
+<li>The calendar's week can now either start on a Sunday or a Monday.</li>
+<li>The Static Pages plugin now has an option to display a printer-friendly
+    version of a static page.</li>
+</ul>
+
+<h4>Comments</h4>
+
+<ul>
+<li>The comment code has undergone major changes to improve performance and
+    add improvements like the ability to link to individual comments,
+    paging comments, etc.</li>
+<li>Users can now report abusive comments to the site admin.</li>
+<li>The site admin can get an email notification when a new comment is
+    posted (similar to the notification emails for new stories, links,
+    events, and users).</li>
+<li>The IP addresses of comment posters are now tracked and can be looked up
+    directly by linking to a Whois service (or you can install Tom Willet's
+    <a href="http://sf.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a>, which include a Whois function).</li>
+</ul>
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>Previewing and saving a story submission left the submitted story in the
+    submission queue, but did additionally save it as a new story.</li>
+<li>Deleting an event from the personal calendar didn't work.</li>
+<li>Old userphotos weren't removed when the new photo had a different file
+    type (e.g. when changing from a .gif to a .jpg).</li>
+<li>Scaling images didn't work when the image exceeded the max. height but
+    not the max. width.</li>
+<li>Keeping an unscaled image wasn't possible when using gdlib to rescale
+    images.</li>
+</ul>
+
+<p>This release contains various improvements provided by the Geeklog community
+(see the <tt>docs/history</tt> file for proper credits). Thank you!</p>
+
+
+<h2><a name="changes139sr1">Geeklog 1.3.9sr1</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>It was possible to post anonymous comments, even when anonymous comment
+    posting had been switched off in config.php.<br>
+    This bug was apparently exploited by spammers to send hundreds of spam
+    posts to certain Geeklog sites.</li>
+<li>Added additional speed limit checks for comments and submissions.</li>
+<li>If none of the topics were visible for anonymous users, the site's index
+    page may still have displayed some stories for anonymous users, depending
+    on the stories' permissions.</li>
+<li>Users still got Daily Digest emails for topics from which they had been
+    removed (bug #178).</li>
+<li>It was possible to subscribe to the Daily Digest for all topics, even if
+    the user did not have access to certain topics.</li>
+<li>Comments to stories were sometimes listed in a user's profile, even if the
+    user viewing the profile didn't have permissions to access the story the
+    comments belonged to.</li>
+</ol>
+
+<h3>Other fixes</h3>
+<ul>
+<li>Fixed an SQL error in <code>COM_showTopics</code> if users excluded topics
+    from their preferences.</li>
+<li>Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log,
+    caused by the handling of pseudo-session ids for anonymous users.</li>
+<li>Fixed incorrect author names in Daily Digest (bug #207).</li>
+<li>The <code>plugin_profileblocksedit_<i>plugin-name</i> Plugin API function
+    wasn't working due to a missing piece of code in usersettings.php.</li>
+<li><code>COM_extractLinks</code> will now ignore anchor tags that do not
+    contain "<code>href</code>" (bug #183).</li>
+</ul>
+
+
 <h2><a name="changes139">Geeklog 1.3.9</a></h2>
 
 <h3>New Features</h3>

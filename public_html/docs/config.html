@@ -92,6 +92,9 @@ that are defined below:
 <tr><td valign="top"><a name="desc_backup_path">backup_path</a></td>
     <td valign="top">Base path with "/backups/" suffix</td>
     <td valign="top">location where mysqldump (see above) will store database backups</td></tr>
+<tr><td valign="top"><a name="desc_path_data">path_data</a></td>
+    <td valign="top">/path/to/geeklog/data/</td>
+    <td valign="top">File system path for the data directory, used e.g. for the user batch add feature</td></tr>
 </table>
 
 
@@ -568,7 +571,7 @@ options:</p>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
   <td valign="top"><i>not set</i></td>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report missuse to ISPs, etc.<br>
-<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's Nettools package, in wich case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';</code></td></tr>
+<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sf.net/project/showfiles.php?group_id=68255&package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';</code></td></tr>
 </table>
 
 
