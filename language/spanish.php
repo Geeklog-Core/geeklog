@@ -90,7 +90,7 @@ $LANG01 = array(
 	46 => "Mensaje de Error MySQL",
 	47 => "Funciones de Usuario",
 	48 => "Mi cuenta",
-	49 => "Mis Preferencias",
+ 	49 => "Preferencia",
 	50 => "Error en una sentencia SQL",
 	51 => "ayuda",
 	52 => "Nuevo",
@@ -234,7 +234,7 @@ $LANG04 = array(
 	23 => "Crear una cuenta le dará los beneficios de los usuarios de {$_CONF['site_name']} y le permitirá enviar noticias, comentarios, etc. Si no tiene una cuenta sólo lo podrá hacer anónimamente. Queremos remarcar que su email <b><i>nunca</i></b> será publicado en este sitio.",
 	24 => "Su password será enviado a la dirección de email que ingrese.",
 	25 => "Olvidó su Password?",
-	26 => "Ingrese su nombre de usuario y elija 'Enviar el Password por email' y su nuevo password será enviado por email a su dirección",
+ 	26 => "Ingresa <em>o</em> tu nombre de usuario <em>o</em> la dirección de correo electrónico que utilizaste para registrarte y pulsa Enviar Contraseña. Te llegarán por correo electrónico las instrucciones para crear una contraseña nueva a la dirección que figura en el archivo,.",
 	27 => "¡Regístrate ahora!",
 	28 => "Enviar el password por email",
 	29 => "desconectado de",
@@ -294,7 +294,26 @@ $LANG04 = array(
     83 => 'Estadísticas de noticias para el usuario',
     84 => 'Número total de artículos:',
     85 => 'Número total de comentarios:',
-    86 => 'Encontrar todas las noticias de'
+     86 => 'Buscar todos los comentarios de',
+     87 => 'To nombre de acceso',
+     88 => 'Alguien (posiblemente tú mismo) ha solicitado una contraseña nueva para tu cuenta  "%s" en ' . $_CONF['site_name'] . ', <' . $_CONF['site_url'] . ">.\n\nSi quieres de verdad que se lleve a cabo esta acción, por favor pulsa en el enlace siguiente:\n\n",
+     89 => "si no quieres que se lleve a cabo esta acción, simplemente ignora este mensaje y la petición sera desatendida (tu contraseña no se modificará).\n\n",
+     90 => 'Puedes ingresar abajo una contraseña nueva para tu cuenta. Por favor, toma nota que la contraseña antigua seguirá siendo válida hasta que envies este formulario.',
+     91 => 'Crear Contraseña Nueva',
+     92 => 'Ingresar Contraseña Nueva',
+     93 => 'Tu última petición de una contraseña nueva fue hace %d segundos. Este sitio requiere como mínimo %d segundos entre peticiones de contraseñas.',
+     94 => 'Borrar la cuenta "%s"',
+     95 => 'Pulsar abajo el botón "borrar la cuenta" para retirar tu cuenta de nuestra base de datos. Por favor, toma nota que cualquier noticia o comentario que hayas contribuído bajo esta cuenta <strong>no</strong> se borrará, sino que aparecerán como "Anónimos".',
+     96 => 'borrar la cuenta',
+     97 => 'Confirmar el borrado de la Cuenta',
+     98 => '¿Estás seguro que quieres borrar tu cuenta? Al hacerlo así, no podrás acceder a este sitio otra vez (a no ser que crees una cuenta nueva). Si estás seguro, pulsa "borrar cuenta" de nuevo en el formulario de abajo.',
+     99 => 'Opciones de privacidad para',
+     100 => 'Correo del(a) Administrador(a)',
+     101 => 'Permitir correo de los(as) Administradores(as) del sitio',
+     102 => 'Correo de usuarios',
+     103 => 'Permitir correo de otros usuarios',
+     104 => 'Mostrar el estado de quien está conectado',
+     105 => 'Mostrar en el bloque Who\'s Online (usuarios conectados)'
 );
 
 
@@ -327,7 +346,8 @@ $LANG07 = array(
 	2 => "Su voto fue computado para la encuesta",
 	3 => "Vote",
 	4 => "Encuestas en el sistema",
-	5 => "Votos"
+ 	5 => "Votos",
+ 	6 => "Ver las otras preguntas de la encuesta"
 );
 
 ###############################################################################
@@ -367,7 +387,8 @@ $LANG08 = array(
     31 => "Título",
     32 => "Fecha",
     33 => "Lea la Noticia completa en",
-    34 => "Fin del Mensaje"
+    34 => "Final del mensaje",
+    35 => 'Lo siento, este usuario prefiere no recibir mensajes.'
 );
 
 ###############################################################################
@@ -396,10 +417,10 @@ $LANG09 = array(
 	20 => "Fecha",
 	21 => "a",
 	22 => "(Formato de fecha DD-MM-YYYY)",
-	23 => "Accesos",
-	24 => "Se encontraron",
-	25 => "coincidencias para",
-	26 => "items en",
+ 	23 => "Vistas",
+ 	24 => "Encontrados %d elementos",
+ 	25 => "Ha buscado",
+ 	26 => "elementos ",
 	27 => "segundos",
     28 => 'No se encontraron coincidencias en Noticias y Comentarios',
     29 => 'Resultados para Noticias y Comentarios',
@@ -415,7 +436,22 @@ $LANG09 = array(
     39 => 'Enlaces',
     40 => 'Eventos',
     41 => 'Tu búsqueda  debe tener al menos 3 letras.',
-    42 => 'Por favor utiliza un formato de fecha como este DD-MM-YYYY (día-mes-año).'
+     42 => 'Por favor utiliza una fecha formateada como YYYY-MM-DD (año-mes-día).',
+     43 => 'frase exacta',
+     44 => 'todas estas palabras',
+     45 => 'cualquiera de estas palabras',
+     46 => 'Siguiente',
+     47 => 'Anterior',
+     48 => 'Autor(a)',
+     49 => 'Fecha',
+     50 => 'Vistas',
+     51 => 'Enlace',
+     52 => 'Ubicación',
+     53 => 'Resultados de la noticia',
+     54 => 'Resultados de Commentario',
+     55 => 'la frase',
+     56 => 'Y',
+     57 => 'O'
 );
 
 ###############################################################################
@@ -614,7 +650,7 @@ $LANG22 = array(
 	9 => "(incluir http://)",
 	10 => "Necesita completar todos los campos de este formulario.",
 	11 => "Administrador del Evento",
-	12 => "Para modificar o borrar el evento seleccionarlo más abajo. Para crear uno nuevo seleccionar 'Nuevo Evento' más arriba.",
+ 	12 => "Para modificar o borrar un evento, pulsa en ese evento abajo. Para crear un Nuevo Evento pulsa sobre evento Nuevo arriba. Pulsa sobre [C] para crear una copia de un evento ya existente.",
 	13 => "Título",
 	14 => "Fecha de Inicio",
 	15 => "Fecha de Finalización",
@@ -690,8 +726,8 @@ $LANG24 = array(
 	27 => "",
 	28 => "",
 	29 => "",
-	30 => "",
-        31 => "Por favor complete los campos Autor, Introducción y Texto",
+ 	30 => 'Errores al Subir Archivos',
+ 	31 => "Por favor rellena los campos de Título e Intro",
 	32 => "Destacado",
 	33 => "Sólo puede haber una Noticia destacada",
 	34 => "Borrador",
@@ -717,7 +753,8 @@ $LANG24 = array(
         53 => 'no fue usada.  Debe incluir esta imagen en la Introducción o el Texto para poder grabar los cambios',
         54 => 'Imágenes no utilizadas',
         55 => 'Los siguientes errores ocurriron al querer grabar su Noticia. Por favor corrija los errores antes de grabar.',
-        56 => 'Mostrar Icono de Tema'
+     56 => 'Mostrar icono de Tema',
+     57 => 'Ver imagen sin proporción'
 );
 
 ###############################################################################
@@ -725,7 +762,7 @@ $LANG24 = array(
 
 $LANG25 = array(
 	1 => "Modo",
-	2 => "",
+ 	2 => 'Por favor teclea una pregunta y como mínimo una respuesta.',
 	3 => "Fecha de creación",
 	4 => "Encuesta $qid grabada",
 	5 => "Editar la Encuesta",
@@ -740,7 +777,7 @@ $LANG25 = array(
 	14 => "grabar",
 	15 => "cancelar",
 	16 => "borrar",
-	17 => "",
+ 	17 => 'Por favor teclea un nombre de identificación (ID) de la encuesta',
 	18 => "Listado de Encuestas",
 	19 => "Para modificar o borrar una Encuesta elíjala en la lista de abajo. Para crear una nueva selecione 'Nueva Encuesta' más arriba.",
 	20 => "Votantes",
@@ -764,7 +801,7 @@ $LANG27 = array(
 	6 => "Al borrar una Sección se borrarán todas sus Noticias y Bloques asociados",
 	7 => "Por favor complete los campos ID y Nombre",
         8 => "Administrador de Secciones",
-        9 => "Para modificar o borrar una Sección elíjala en la lista de abajo. Para crear una nueva selecione 'Nueva Sección' más arriba. Entre paréntesis figura el nivel de acceso que posee.",
+ 	9 => "Para modificar o borrar un tema, pulsa sobre ese tema. Para crear un tema nuevo, pulsa el botón de Nuevo Tema en la izquierda. Encontrarás tu nivel de acceso para tema en paréntesis. El asterisco(*) denota el tema  por defecto.",
 	10=> "Nro. de Orden",
 	11 => "Noticias/Página",
 	12 => "Acceso Denegado",
@@ -776,7 +813,10 @@ $LANG27 = array(
 	18 => "Página de Inicio - Administrador",
         19 => 'grabar',
         20 => 'cancelar',
-        21 => 'borrar'
+     21 => 'borrar',
+     22 => 'Por defecto',
+     23 => 'convertir en el tema por defecto para nuevas contribuciones',
+     24 => '(*)'
 );
 
 ###############################################################################
@@ -792,17 +832,14 @@ $LANG28 = array(
 	7 => "Dirección de Email",
 	8 => "Página de Inicio",
 	9 => "(no use espacios)",
-	10 => "Por favor complete los campos Nombre de Usuario, Nombre Completo, Nivel de Seguridad y Dirección de Email",
+ 	10 => " Por favor, rellena los campos de Nombre de Usuario y dirección de correo electrónico",
 	11 => "Administrador de Usuarios",
-	12 => "Para modificar o borrar un Usuario elíjalo en la lista de abajo. Para crear uno nuevo selecione 'Nuevo Usuario' más arriba.",
+ 	12 => "Para modificar o borrar a un usuario, pulsa sobre ese usuario abajo.  Para crear un usuario nuevo pulsa el botón de Nuevo Usuario en la izquierda. Puedes hacer búsquedas sencillas al teclear partes del nombre de usuario, dirección de correo electrónico o nombre completo (por ejemplo *son* o *.edu) en el formulario de abajo..",
 	13 => "Nivel de seguridad",
         14 => "Fecha de Registro",
 	15 => 'Nuevo Usuario',
 	16 => 'Página de Inicio - Administrador',
 	17 => 'Cambiar-Password',
-	18 => 'Cancelar',
-	19 => 'Borrar',
-	20 => 'Grabar',
 	18 => 'Cancelar',
 	19 => 'Borrar',
 	20 => 'Grabar',
@@ -819,7 +856,9 @@ $LANG28 = array(
     31 => 'Nuevos Usuarios',
     32 => 'Proceso finalizado. Se importaron $successes y hubieron $failures fallos',
     33 => 'enviar',
-    34 => 'Error: Debes especificar un fichero a enviar.'
+    34 => 'Error: Tienes que especificar el archivo que quieres subir.',
+    35 => 'Ultimo acceso',
+    36 => '(nunca)'
 );
 
 ###############################################################################
@@ -860,7 +899,7 @@ $LANG30 = array(
 	6 => "Viernes",
 	7 => "Sábado",
 	8 => "Agregar un Evento",
-	9 => "Evento de Argos",
+ 	9 => 'Evento de %s',
 	10 => "Eventos para",
 	11 => "Calendario Maestro",
 	12 => "Mi Calendario",
@@ -982,7 +1021,14 @@ $MESSAGE = array (
 
    48 => 'Gracias por registrarte como miembro en ' . $_CONF['site_name'] . '. Nuestro equipo comprobará tu solicitud. Si es aprobada, te será enviado tu password a la dirección email que has indicado.',
     49 => "Tu grupo ha sido grabado con éxito.",
-    50 => "El grupo ha sido borrado con éxito."
+    50 => "El grupo se ha borrado satisfactoriamente.",
+    51 => 'Este nombre de usuario ya está en uso. Por favor, elige otro.',
+    52 => 'La dirección facilitada no parece una dirección válida de correo electrónico.',
+    53 => 'Tu contraseña nueva ha sido aceptada. Por favor, utiliza la contraseña nueva que parece abajo para ingresar de nuevo.',
+    54 => 'Tu petición de contraseña nueva ha caducado. Por favor, vuelve a intertarlo abajo.',
+    55 => 'El sistema te han enviado un correo electrónico y te llegará en breve. Por favor, sigue las instrucciones del mensaje para crear una contraseña nueva para tu cuenta.',
+    56 => 'La dirección de correo electrónico facilitada ya está en uso en otra cuenta.',
+    57 => 'Tu cuenta se ha borrrado satisfactoriamente.'
 );
 
 
@@ -1075,31 +1121,15 @@ $LANG_ACCESS = array(
 	save => 'Grabar',
 	cancel => 'Cancelar',
       delete => 'borrar',
-	canteditroot => 'Ha intentado editar el Grupo Root. Como no es miembro del grupo no tiene acceso al mismo. Si cree que esto ha sido un error por favor contacte al administrador del sistema.'
-
+ 	canteditroot => 'Has intentado editar el grupo Root (Raíz) pero no perteneces al grupo Root por lo que se te ha denegado el acceso.  Por favor, contacta con el(la) administrador(a) del sistema si crees que se trata de un errror',
+     listusers => 'Listado de Usuarios',
+     listthem => 'listado',
+     usersingroup => 'Usuarios en el grupo %s'
 );
 
 #####################################################################################
 
-#admin/word.php
-
-$LANG_WORDS = array(
-
-    editor => "Editor de Palabras de Reemplazo",
-    wordid => "ID de la Palabra",
-    intro => "Para modificar o borrar una palabra selecciónela. Para agregar una palabra utilice el botón 'Nueva Palabra', a la izquierda.",
-    wordmanager => "Administrador de Palabras",
-    word => "Palabra",
-    replacmentword => "Palabra de Reemplazo",
-    newword => "Nueva Palabra"
-
-);
-
-
-
-
 $LANG_DB_BACKUP = array(
-
     last_ten_backups => 'Últimos 10 Back-ups',
     do_backup => 'Hacer un Backup',
     backup_successful => 'El back up de la base se ha realizado con éxito.',
@@ -1111,8 +1141,8 @@ $LANG_DB_BACKUP = array(
     no_access => "ERROR: La carpeta {$_CONF['backup_path']} no es accesible.",
     backup_file => 'Archivo de backup',
     size => 'Tamaño',
-    bytes => 'Bytes'
-
+    bytes => 'Bytes',
+    total_number => 'Número total de copias de seguridad: %d'
 );
 
 
@@ -1134,7 +1164,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "Error 404",
-    2 => "Buah, he mirado en todos los lados pero no puedo encontrar <b>%s</b>.",
+    2 => "Vaya, he buscado por todos los sitios, pero no puedo encontrar <b>%s</b>.",
     3 => "<p>Lo sentimos, pero el fichero que pides no existe. Por favor, consulta la <a href=\"{$_CONF['site_url']}\">página principal</a> o la <a href=\"{$_CONF['site_url']}/search.php\">página de búsqueda</a> para ver si puedes encontrar lo que has perdido."
 );
 
