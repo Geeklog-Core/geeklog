@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.12 2001/11/19 22:11:23 tony_bibbs Exp $
+// $Id: users.php,v 1.13 2001/11/19 23:35:23 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -187,10 +187,10 @@ function createuser($username,$email)
             emailpassword($username, 1);
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=1');
         } else {
-            $retval .= COM_siteHeader('Menu') . defaultform($LANG04[18]) . COM_siteFooter();
+            $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();
         }
     } else {
-        $retval .= COM_siteHeader('Menu') . defaultform($LANG04[19]) . COM_siteFooter();
+        $retval .= COM_siteHeader('Menu') . newuserform($LANG04[19]) . COM_siteFooter();
     }
 	
     return $retval;
@@ -230,12 +230,15 @@ function loginform()
 * @referrer     string      page to send user to after registration
 * 
 */
-function newuserform()
+function newuserform($msg = '')
 {
     global $LANG04, $_CONF;
 
     $retval = '';
     
+	if (!empty($msg)) {
+		$retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
+	}
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform','registrationform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
