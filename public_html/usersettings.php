@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.94 2004/03/27 20:22:30 dhaun Exp $
+// $Id: usersettings.php,v 1.95 2004/03/28 18:34:17 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -1044,6 +1044,11 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
         } else {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
+        break;
+    case 'plugin':
+        PLG_profileExtrasSave ($HTTP_POST_VARS['plugin']);
+        $display = COM_refresh ($_CONF['site_url']
+                                . '/usersettings.php?mode=edit&msg=5');
         break;
     }
 } else {
