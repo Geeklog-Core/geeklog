@@ -21,6 +21,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
   onleft tinyint(3) unsigned NOT NULL default '1',
   phpblockfn varchar(64) default '',
+  help varchar(128) default '',
   group_id mediumint(8) unsigned NOT NULL default '1',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
