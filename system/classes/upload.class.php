@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.24 2003/02/02 21:14:07 dhaun Exp $
+// $Id: upload.class.php,v 1.25 2003/03/09 01:20:35 blaine Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -611,6 +611,19 @@ class upload
 
         return true;
     }
+    
+    /**
+    * Sets the max number of files that can be uploaded per form
+    *
+    * @param     int       $maxfiles    Maximum number of files to allow. Default is 5
+    * @return    boolean   True if set, false otherwise
+    *
+    */
+    function setMaxFileUploads($maxfiles)
+    {
+        $this->_maxFileUploadsPerForm = $maxfiles;
+        return true;
+    }    
     
     /**
     * Extra security option that forces all attempts to upload a file to be done
