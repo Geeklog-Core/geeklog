@@ -289,6 +289,9 @@ $LANG04 = array(
     81 => "Send Email",
     82 => 'Last 10 stories for user',
     83 => 'Posting statistics for user',
+    84 => 'Total number of articles:',
+    85 => 'Total number of comments:',
+    86 => 'Find all postings by'
 );
 
 ###############################################################################
