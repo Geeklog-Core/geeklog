@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.28 2002/04/09 18:33:02 tony_bibbs Exp $
+// $Id: story.php,v 1.29 2002/04/10 16:10:09 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -254,7 +254,7 @@ function storyeditor($sid, $mode = '')
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
                 $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '" target="_blank">' . $I['ai_filename'] . '</a>';
-                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$z . ']"><BR>';
+                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><BR>';
             }
         }
         
@@ -632,6 +632,8 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 print 'File Upload Errors:<BR>' . $upload->printErrors();
                 exit;
             }
+            // Set file permissions on file after it gets uploaded (number is in octet)
+            $upload->setPerms('0644');
             $filenames = array();
             $end_index = $index_start + $upload->numFiles() - 1;
             for ($z = $index_start; $z <= $end_index; $z++) {
