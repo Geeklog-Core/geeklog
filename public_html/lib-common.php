@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.85 2002/05/02 20:47:28 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.86 2002/05/02 21:12:30 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -333,7 +333,7 @@ function COM_getThemes()
 */
 function COM_siteHeader($what = 'menu')
 {
-    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS;
+    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS, $LANG_CHARSET;
   
     // If the theme implemented this for us then call their version
     // instead.
@@ -362,7 +362,16 @@ function COM_siteHeader($what = 'menu')
     $header->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.gif' );
     $header->set_var('css_url', $_CONF['layout_url'] . '/style.css');
     $header->set_var('theme', $_CONF['theme']);
-
+    if (empty($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+        if (empty ($charset)) {
+            $charset = "iso-8859-1";
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+    $header->set_var('charset', $charset);
+    
     // Now add variables for buttons like e.g. those used by the Yahoo theme   
     $header->set_var('button_home', $LANG_BUTTONS[1]);
     $header->set_var('button_contact', $LANG_BUTTONS[2]);
@@ -2172,7 +2181,7 @@ function COM_printUpcomingEvents($help='',$title='')
 */
 function COM_emailUserTopics() 
 {
-    global $_TABLES, $LANG08, $_CONF;
+    global $_TABLES, $LANG08, $_CONF, $LANG_CHARSET;
 
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
@@ -2222,6 +2231,9 @@ function COM_emailUserTopics()
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
         $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
+        if (!empty ($LANG_CHARSET)) {
+            $mailfrom .= "\nContent-Type: text/plain; charset={$LANG_CHARSET}";
+        }
         $subject = strip_tags(stripslashes($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d',time())));
         @mail($toemail,$subject,$mailtext,$mailfrom);
     }
