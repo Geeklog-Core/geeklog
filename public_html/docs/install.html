@@ -168,43 +168,16 @@ in the URL.</p>
 				</tr>
 			</table>
 			<br>
-			<li>Create the database you want Geeklog to reside in. If you are not familiar with using MySQL, you are urged to get <a href="http://www.phpmyadmin.org/" target="_blank">phpMyAdmin</a> and use it to create a new database. If you have no idea what the previous two sentences mean, contact your sysadmin for help.<br>
+			<li>Create the database you want Geeklog to reside in. If you are not familiar with using MySQL, you are urged to get <a href="http://www.phpmyadmin.net/" target="_blank">phpMyAdmin</a> and use it to create a new database. If you have no idea what the previous two sentences mean, contact your sysadmin for help.<br>
 				<br>
-			<li>Edit config.php with the appropriate settings for your server. For installation, this basically means "set your paths," as all other variables can be changed after a successful installation. The config.php file contains comments to help you out. Windows users, you should be able to use the Unix '/' in your paths without any problems. Otherwise, you will need to use the doubled Windows slashes '\\'.<br>
-Please read the comments in config.php carefully.<br>
+			<li>Edit config.php with the appropriate settings for your server. For installation, this basically means "set your paths," as all other variables can be changed after a successful installation. The config.php file contains comments to help you out.<br><br>
+Windows users, you should be able to use the Unix '/' in your paths without any problems. Otherwise, you will need to use the doubled Windows slashes '\\'.<br><br>
+<em>Please read the comments in config.php carefully.</em><br>
 				<br>
-			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-				<tr>
-					<td bgcolor="white">
-						<div align="left">
-							<p><font color="#FF0000">NOTE FOR RETURNING USERS OF GEEKLOG:</font></p>
-							<p>Please note that the database settings are back in <b>config.php</b>. This is to make it so that you do not have to edit lib-database.php</p>
-						</div>
-					</td>
-				</tr>
-			</table>
-			<br>
 			<li>Edit <b>lib-common.php</b> and change the require_once() at the top to point to the location of your <b>config.php</b> file.<br>
 				<br>
 			<li>Open your browser and navigate to <b>http://yourgeeklogsite/admin/install/install.php</b> and follow the directions!<br>
 				<br>
-			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
-				<tr>
-					<td bgcolor="white">
-						<p><font color="#FF0000">SPECIAL NOTE:</font></p>
-						<p>Some users may get the following error message during install:</p>
-						<p><code>"1121: Column 'ug_grp_id' is used with UNIQUE or INDEX but is not defined as NOT NULL" </code></p>
-						<p>This error is caused by having a slightly out of date version of MySQL. There are two easy ways to fix the problem: </p>
-						<p>Solution #1 = Get your ISP to upgrade MySQL or do it yourself.</p>
-						<p>Solution #2 = Edit the file sql/mysql_tableanddata.php and remove lines 176 and 375. They read:</p>
-						<p><code>INDEX group_assignments_ug_grp_id(ug_grp_id), </code></p>
-						<p>and </p>
-						<p><code>INDEX stories_tid(tid), </code></p>
-						<p>Make sure you remove the entire line, including the comma. Once those lines are removed, you need to drop all the tables that were created by the installation script and re-run the installation script.</p>
-					</td>
-				</tr>
-			</table>
-			<br>
 			<li>Once you see the success message, you are ready to go. <b>You can now 
 			  delete the admin/install directory</b> (and all files within 
 			  it).<br><br>
@@ -214,6 +187,7 @@ Please read the comments in config.php carefully.<br>
 			
 			
 		</ol>
+<p>If you run into problems or keep getting error messages, please see the section on <a href="#installprob">common installation problems<a/> below.</p>
 	</td>
 </tr>
 <tr>
@@ -311,33 +285,8 @@ Please read the comments in config.php carefully.<br>
 				</tr>
 			</table>
 		</div>
-		<div align="center">
-			<br>
-			<br>
-			<table width="95%" border="0" cellspacing="0" cellpadding="4">
-				<tr>
-					<td bgcolor="#ffedf2"><b>I get the following error message after step two of the install script:</b>
-						<p><code>"1121: Column 'ug_grp_id' is used with UNIQUE or INDEX but is not defined as NOT NULL"</code></p>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<p><strong>Answer:</strong></p>
-						<p>This error is caused by having a slightly out of date version of MySQL. There are two easy ways to fix the problem:</p>
-						<p>Solution #1 = Get your ISP to upgrade MySQL or do it yourself.<br>
-							Solution #2 = Edit the file sql/mysql_tableanddata.php and remove lines 176 and 375. They read:</p>
-						<p><code>INDEX group_assignments_ug_grp_id(ug_grp_id),</code></p>
-						<p>and</p>
-						<p><code>INDEX stories_tid(tid),</code></p>
-						<p>Make sure you remove the entire line, including the comma. Once those lines are removed, you need to drop all the tables that were created by the installation script and re-run the installation script.</p>
-
-<p><strong>Note:</strong> In December 2002, several <a href="http://security.e-matters.de/advisories/042002.html">security issues</a> have been found in MySQL. To fix these, MySQL AB has released <a href="http://www.mysql.com/documentation/mysql/bychapter/manual_News.html#News-3.23.54">MySQL version 3.23.54</a>. It may be a good idea to upgrade your MySQL installation (or ask your hosting service to do so).</p>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<br>
-		</div>
+                <br>
+                <br>
 		<div align="center">
 			<table width="95%" border="0" cellspacing="0" cellpadding="4">
 				<tr>
@@ -350,7 +299,8 @@ Please read the comments in config.php carefully.<br>
 					<td>
 						<p><small>(line numbers may vary)</small></p>
 						<p><strong>Answer:</strong></p>
-						<p>You have most likely used WinZip to decompress the Geeklog files. As noted <a href="#ParseError">at the top of this document</a>, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system</p>
+						<p>You have most likely used WinZip to decompress the Geeklog files. As noted <a href="#ParseError">at the top of this document</a>, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system.</p>
+<p>Similar parse errors can occur when you use a "WYSIWYG" HTML editor, such as Dreamweaver, to edit the lib-common.php. In that case, please get a fresh copy of the lib-common.php file and make your changes again, using another editor.</p>
 					</td>
 				</tr>
 			</table>
