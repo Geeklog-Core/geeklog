@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.8 2003/07/20 16:03:19 blaine Exp $
+// $Id: search.class.php,v 1.9 2003/07/23 17:13:51 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -807,7 +807,7 @@ class Search {
     function _isSearchAllowed()
     {
         global $_USER, $_CONF;
-        
+
         if (empty($_USER['username']) AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] == 2))) {
             return false;
         }
@@ -818,7 +818,30 @@ class Search {
         
         return true;
     }
-    
+
+    /**
+    * Determines if user is allowed to use the search form
+    *
+    * Geeklog has a number of settings that may prevent
+    * the access anonymous users have to the search engine.
+    * This performs those checks
+    *
+    * @author Dirk Haun <Dirk AT haun-online DOT de>
+    * @access private
+    * @return boolean True if form usage is allowed, otherwise false
+    *
+    */
+    function _isFormAllowed ()
+    {
+        global $_USER, $_CONF;
+
+        if (empty($_USER['username']) AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1))) {
+            return false;
+        }
+
+        return true;
+    }
+
     function _getSummary($query,$fullText)
     {
         global $_CONF;
@@ -891,6 +914,11 @@ class Search {
     function showForm()
     {
         global $_TABLES, $LANG09, $_CONF;
+
+        // Verify current user my use the search form
+        if (!$this->_isFormAllowed()) {
+            return $this->_getAccessDeniedMessage();
+        }
 
         $retval .= COM_startBlock($LANG09[1],'advancedsearch.html');
         $searchform = new Template($_CONF['path_layout'].'search');
