@@ -478,6 +478,7 @@ CREATE TABLE {$_TABLES['users']} (
   regdate datetime NOT NULL default '0000-00-00 00:00:00',
   cookietimeout int(8) unsigned default '0',
   theme varchar(64) default NULL,
+  language varchar(64) default NULL,
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username)
 ) TYPE=MyISAM

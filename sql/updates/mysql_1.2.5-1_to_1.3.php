@@ -140,6 +140,7 @@ $_SQL[l2] = "ALTER TABLE {$_TABLES['users']} ADD regdate datetime NOT NULL defau
 $_SQL[m2] = "ALTER TABLE {$_TABLES['users']} ADD cookietimeout int(8) unsigned default '0'";
 $_SQL[n2] = "ALTER TABLE {$_TABLES['users']} ADD theme varchar(64) default NULL";
 $_SQL[o2] = "ALTER TABLE {$_TABLES['users']} DROP seclev";
+$_SQL[p2] = "ALTER TABLE {$_TABLES['users']} ADD language varchar(64) default NULL";
 
 // Now include needed data
 $_SQL[1] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
