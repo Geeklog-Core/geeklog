@@ -5,10 +5,10 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-database.php                                                          |
-// | Geeklog database library.                                                 |
 // |                                                                           |
+// | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
 // +---------------------------------------------------------------------------+
@@ -31,15 +31,10 @@
 //
 
 /**
-* This is the common library for Geeklog.  Through our code, you will see functions
-* with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions can be found in this
-* file.  This file provide all configuration variables needed by Geeklog with a
-* series of includes see futher down.  You only need to modify one line in this file.
-* WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
-* modified frequently by the Geeklog development team.  If you put your hacks in
-* lib-custom.php you will find upgrading much easier. NOTE: as of Geeklog 1.3.5 you
-* should not have to edit this file
+* This is the high-level database layer for Geeklog (for the low-level stuff,
+* see the system/databases directory).
 *
+* NOTE: As of Geeklog 1.3.5 you should not have to edit this file any more.
 */
 
 // +---------------------------------------------------------------------------+
@@ -103,6 +98,10 @@ $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 // +---------------------------------------------------------------------------+
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
+
+if (eregi ('lib-database.php', $PHP_SELF)) {
+    die ('This file can not be used on its own.');
+}
 
 /**
 * Include appropriate DBMS object

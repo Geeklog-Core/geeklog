@@ -29,10 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.4 2003/09/12 11:51:03 dhaun Exp $
+// $Id: lib-syndication.php,v 1.5 2003/12/28 18:48:05 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
+
+if (eregi ('lib-syndication.php', $PHP_SELF)) {
+    die ('This file can not be used on its own.');
+}
 
 /**
 * Check if a feed for all stories needs to be updated.

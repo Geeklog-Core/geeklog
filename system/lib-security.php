@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-security.php                                                          |
-// | Geeklog security library.                                                 |
 // |                                                                           |
+// | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.17 2003/09/28 13:20:04 dhaun Exp $
+// $Id: lib-security.php,v 1.18 2003/12/28 18:48:05 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -61,6 +61,10 @@
 
 // Turn this on go get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
+
+if (eregi ('lib-security.php', $PHP_SELF)) {
+    die ('This file can not be used on its own.');
+}
 
 /**
 * Returns the groups a user belongs to

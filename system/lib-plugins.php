@@ -5,12 +5,13 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-plugins.php                                                           |
-// | This file implements plugin support in Geeklog.                           |
 // |                                                                           |
+// | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Dirk Haun        - dirk@haun-online.de
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,14 +30,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.25 2003/09/01 19:01:07 dhaun Exp $
+// $Id: lib-plugins.php,v 1.26 2003/12/28 18:48:05 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
-* implement to get tight intergration with Geeklog.
+* implement to get tight integration with Geeklog.
 * See each function for more details.
 *
 */
+
+if (eregi ('lib-plugins.php', $PHP_SELF)) {
+    die ('This file can not be used on its own.');
+}
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -778,9 +783,9 @@ function PLG_profileBlocksDisplay ($uid)
 }
 
 /**
-* The user wants to save changes to his/her profile. Any plugin that added it's
+* The user wants to save changes to his/her profile. Any plugin that added its
 * own variables or blocks to the profile input form will now have to extract
-* it's data and save it.
+* its data and save it.
 * Plugins will have to refer to the global $HTTP_POST_VARS array to get the
 * actual data.
 *
