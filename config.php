@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.28 2002/04/17 16:27:54 tony_bibbs Exp $
+// $Id: config.php,v 1.29 2002/04/19 21:38:00 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -80,6 +80,7 @@ $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
 $_CONF['allow_user_themes'] = 1;
+$_CONF['allow_user_photo'] = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
