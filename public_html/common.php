@@ -55,15 +55,33 @@ $userdata = Array();
 // new code for the session ID cookie..
 if(isset($HTTP_COOKIE_VARS[$CONF["cookie_session"]])) {
         $sessid = $HTTP_COOKIE_VARS[$CONF["cookie_session"]];
-        $userid = get_userid_from_session($sessid, $CONF["cookie_timeout"], $REMOTE_ADDR, $CONF["cookie_ip"]);
+	if ($VERBOSE) errorlog ("got $sessid as the session id from common.php",1);
+        $userid = get_userid_from_session($sessid, $CONF["session_cookie_timeout"], $REMOTE_ADDR, $CONF["cookie_ip"]);
         if ($userid) {
            $user_logged_in = 1;
            update_session_time($sessid, $CONF["cookie_ip"]);
            $userdata = get_userdata_from_id($userid);
            $USER = $userdata;
         }
-} else
-        errorlog("sessioncookie NOT set", 1);
+} else {
+	if ($VERBOSE) errorlog ("session cookie not found from common.php",1);
+	#see if the persistent cookie exists
+	if (isset($HTTP_COOKIE_VARS[$CONF["cookie_name"]])) {
+		#ok, session cookie doesn't exist but perm cookie does.
+		#start a new session cookie;
+		if ($VERBOSE) errorlog ("perm cookie found from common.php",1);
+		$userid = $HTTP_COOKIE_VARS[$CONF["cookie_name"]];
+		if ($userid) {
+           		$user_logged_in = 1;
+			#create new session, write cookie
+			$sessid = new_session($userid, $REMOTE_ADDR, $CONF["session_cookie_timeout"], $CONF["cookie_ip"]);
+			set_session_cookie($sessid, $CONF["session_cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+           		#update_session_time($sessid, $CONF["cookie_ip"]);
+           		$userdata = get_userdata_from_id($userid);
+           		$USER = $userdata;
+        	}
+	}
+}
 
 // set expire dates: one for a year, one for 10 minutes
 $expiredate1 = time() + 3600 * 24 * 365;
@@ -372,9 +390,9 @@ function getitem($table,$what,$selection) {
 # Creates a <option> list from a database list for use in forms
 # $selection is a selection list in the format of $id,$title
 
-function optionlist($table,$selection,$selected="") {
+function optionlist($table,$selection,$selected="",$sortcol=1) {
 	$select_set = explode(",", $selection);
-	$result = dbquery("SELECT $selection FROM {$CONF["db_prefix"]}$table ORDER BY $select_set[1]");
+	$result = dbquery("SELECT $selection FROM {$CONF["db_prefix"]}$table ORDER BY $select_set[$sortcol]");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
@@ -1428,7 +1446,7 @@ function whatsnewblock() {
 	$sql    = "SELECT distinct *, count(*) as dups, comments.cid,comments.sid,stories.sid,stories.title,max(UNIX_TIMESTAMP(comments.date)) as day FROM {$CONF["db_prefix"]}comments,stories where ";
 	$now = time();
 	$desired = $now - $CONF["newcommentsinterval"];
-	$sql .= "UNIX_TIMESTAMP(comments.date) > {$desired} and (stories.sid=comments.sid) GROUP BY comments.sid ORDER BY day DESC";
+	$sql .= "UNIX_TIMESTAMP(comments.date) > {$desired} and (stories.sid=comments.sid) GROUP BY comments.sid";# ORDER BY day DESC";
 	$result = dbquery($sql);
 	$nrows = mysql_num_rows($result);
 	#cap max displayed at 15
@@ -1438,13 +1456,19 @@ function whatsnewblock() {
 			$A      = mysql_fetch_array($result);
 			$robtime = strftime("%D %T",$A["day"]);
 			$itemlen = strlen($A["title"]);
+
+			if ($A["cmt_type"] == 'story') {
+				$urlstart = "<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments>";
+			} else {
+				$urlstart = "<a href={$CONF["site_url"]}/pollbooth.php?qid={$A["qid"]}&aid=-1#comments>";
+			}
 			#trim the length if over 26 characters
 			if ($itemlen > 26) {
-				print "<font class=storyclose>&#149; <a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments>" . substr($A["title"],0,26) . "... ";
+				print "<font class=storyclose>&#149; " . $urlstart . substr($A["title"],0,26) . "... ";
 				if ($A["dups"] > 1) print "[+{$A["dups"]}]";
 				print "</a></font><br>\n";
 			} else {
-				print "<font class=storyclose>&#149; <a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments>{$A["title"]} ";
+				print "<font class=storyclose>&#149; " . $urlstart . "{$A["title"]} ";
 				if ($A["dups"] > 1) print "[+{$A["dups"]}]";
 				print "</a></font><br>\n";
 			}
@@ -1671,6 +1695,19 @@ function getuserdatetimeformat($date="") {
         return array($date, $stamp);
 }
 
+function getusercookietimeout() {
+	global $USER;
+
+	if (empty($USER)) return '';
+	
+	$timeoutvalue = getitem('users','cookietimeout',"uid = {$USER["uid"]}");
+	if (empty($timeoutvalue)) {
+		$timeoutvalue = $CONF["default_perm_cookie_timeout"];
+	}
+
+	return $timeoutvalue;
+}
+
 function getusergroups($uid='',$usergroups='',$cur_grp_id='') {
 	global $USER,$VERBOSE;
 
@@ -1738,23 +1775,23 @@ function ingroup($grp_to_verify,$uid="",$cur_grp_id="") {
 	}
 	return false;
 }
-	
+
 function ismoderator() {
-	global $USER,$RIGHTS;
+        global $USER,$RIGHTS;
 
-	#loop through GL core rights.
-	for ($i=0;$i<count($RIGHTS);$i++) {
-		if (stristr($RIGHTS[$i],'.moderate')) {
-			return true;
-		}
-	}
+        #loop through GL core rights.
+        for ($i=0;$i<count($RIGHTS);$i++) {
+                if (stristr($RIGHTS[$i],'.moderate')) {
+                        return true;
+                }
+        }
 
-	#if we get this far they are not a Geeklog moderator
-	#see if they are a plugin moderator
-	return IsPluginModerator();
-		
+        #if we get this far they are not a Geeklog moderator
+        #see if they are a plugin moderator
+        return IsPluginModerator();
+                
 }
-
+	
 #checks to see if user has access to view a topic
 function hastopicaccess($tid) {
 	if (empty($tid)) return 0;
