@@ -133,6 +133,7 @@ DROP TABLE userevent;
 ALTER TABLE users ADD regdate datetime NOT NULL default '0000-00-00 00:00:00';
 ALTER TABLE users ADD cookietimeout int(8) unsigned default '0';
 ALTER TABLE users ADD theme varchar(64) default NULL;
+ALTER TABLE users ADD language varchar(64) default NULL;
 ALTER TABLE users DROP seclev;
 INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (1,3) ;
 INSERT INTO access (acc_ft_id, acc_grp_id) VALUES (2,3) ;
