@@ -59,7 +59,7 @@ $_CONF['site_url']      = '{cfg_site_url}';
 $_CONF['theme']         = '{cfg_theme}';
 $_CONF['layout_url']    = '{cfg_layout_url}';
 $_CONF['path_themes']   = '{cfg_path_html}layout';
-$_CONF['path_layout']   = '{cfg_path_themes}{cfg_theme}';
+$_CONF['path_layout']   = '{cfg_path_themes}{cfg_theme}/';
 $_CONF['allow_user_themes'] = '{cfg_allow_user_themes}';
 
 // +---------------------------------------------------------------------------+
