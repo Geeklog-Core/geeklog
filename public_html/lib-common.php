@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.177 2002/11/08 11:18:46 dhaun Exp $
+// $Id: lib-common.php,v 1.178 2002/11/15 15:03:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -361,6 +361,23 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
             $article->set_var( 'contributedby_url', $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
+
+            $photo = DB_getItem( $_TABLES['users'], 'photo',
+                    "uid = {$A['uid']}" );
+            if( !empty( $photo ))
+            {
+                if( empty( $fullname ))
+                {
+                    $altname = $username;
+                }
+                else
+                {
+                    $altname = $fullname;
+                }
+                $article->set_var( 'contributedby_photo', '<img src="'
+                        . $_CONF['site_url'] . '/images/userphotos/' . $photo
+                        . '" alt="' . $altname . '">' );
+            }
         }
     }
 
@@ -2729,7 +2746,7 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $sql = "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (draft_flag = 0) AND (featured = 0) ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql = "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0) AND (featured = 0) ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
@@ -2870,7 +2887,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
     if( $side == 'left' )
     {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1 ";
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
     }
     else
     {
@@ -2880,7 +2897,6 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     if( !empty( $topic ))
     {
         $sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
-
     }
     else
     {
@@ -2910,21 +2926,18 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     {
         $A = DB_fetchArray( $result );
 
-        if( $A['type'] == 'portal' )
+        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
         {
-            COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] );
-        }
+            if( $A['type'] == 'portal' )
+            {
+                COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] );
+            }
 
-        if( $A['type'] == 'gldefault' )
-        {
-            if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+            if( $A['type'] == 'gldefault' )
             {
                 $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
             }
-        }
 
-        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
-        {
             if( $A['type'] == 'phpblock' && !$U['noboxes'] )
             {
                 if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
