@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.99 2003/09/06 17:28:06 dhaun Exp $
+// $Id: config.php,v 1.100 2003/09/20 16:50:35 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -472,6 +472,10 @@ $_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 // adjust the path below.  The only programs you need from netpbm are giftopnm,
 // jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
 //$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
+
+// Uncomment the following line if you experience problems with the image
+// upload. Debug messages will be added to the error.log file.
+// $_CONF['debug_image_upload'] = true;
 
 // When set to 1, Geeklog will keep the original, unscaled images and make
 // the smaller image link to the unscaled image.

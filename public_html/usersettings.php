@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.75 2003/09/14 22:40:56 blaine Exp $
+// $Id: usersettings.php,v 1.76 2003/09/20 16:50:35 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -705,6 +705,10 @@ function saveuser($A)
                     $upload->setGDLib ();
                 }
                 $upload->setAutomaticResize(true);
+                if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
+                    $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+                    $upload->setDebug (true);
+                }
             }
             $upload->setAllowedMimeTypes(array('image/gif'=>'.gif','image/jpeg'=>'.jpg,.jpeg','image/pjpeg'=>'.jpg,.jpeg','image/x-png'=>'.png','image/png'=>'.png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {
