@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.400 2004/12/10 09:22:22 dhaun Exp $
+// $Id: lib-common.php,v 1.401 2004/12/11 14:57:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3718,7 +3718,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
         if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
         {
-            $retval .= COM_formatBlock( $A, $U['noboxes'] );
+            $retval .= COM_formatBlock( $A, $_USER['noboxes'] );
         }
     }
 
@@ -5886,10 +5886,18 @@ function COM_getCurrentURL()
 {
     global $_CONF, $HTTP_SERVER_VARS;
 
-    $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
-    if( empty( $thisUrl ))
+    $thisUrl = '';
+
+    if( empty( $HTTP_SERVER_VARS['SCRIPT_URI'] ))
     {
-        $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
+        if( !empty( $HTTP_SERVER_VARS['DOCUMENT_URI'] ))
+        {
+            $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
+        }
+    }
+    else
+    {
+        $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
     }
     if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
     {
