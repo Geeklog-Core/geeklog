@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.23 2002/09/13 13:25:21 mlimburg Exp $
+// $Id: article.php,v 1.24 2002/10/07 20:41:30 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -139,12 +139,16 @@ if ($A['count'] > 0) {
             $LANG11[2] . '</a>',
             '<a href="' . $_CONF['site_url'] .  '/article.php?story=' . $story .
             '&amp;mode=print">' . $LANG11[3] . '</a>');
-        $story_template->set_var('whats_related_story_options', COM_startBlock($LANG11[1])
-            . nl2br($A['related'])
-            . COM_endBlock()
-            . COM_startBlock($LANG11[4])
+        $story_template->set_var ('whats_related_story_options',
+            COM_startBlock ($LANG11[1], '',
+                COM_getBlockTemplate ('whats_related_block', 'header'))
+            . $A['related']
+            . COM_endBlock(COM_getBlockTemplate('whats_related_block','footer'))
+            . COM_startBlock ($LANG11[4], '',
+                COM_getBlockTemplate ('story_options_block', 'header'))
             . COM_makeList ($story_options)
-            . COM_endBlock());
+            . COM_endBlock(COM_getBlockTemplate('story_options_block','footer'))
+        );
 
         // if (DB_count($_TABLES['pollquestions'],'qid',$story) > 0) {
         //  $display .= COM_showPoll(80,$story);
