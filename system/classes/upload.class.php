@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.30 2003/09/07 17:41:40 dhaun Exp $
+// $Id: upload.class.php,v 1.31 2004/01/12 20:07:41 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -475,7 +475,7 @@ class upload
 
             if ($this->_imageLib == 'imagemagick') {
                 $newsize = $newwidth . 'x' . $newheight;
-                $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
+                $cmd = $this->_pathToMogrify . ' -resize '. $newsize . " '" . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . "' 2>&1";
                 $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
 
                 if ($this->_keepOriginalImage) {
@@ -497,7 +497,7 @@ class upload
 
                 $cmd = $this->_pathToNetPBM;
                 $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
-                $cmd_end = ' ' . $filename . ' | ' . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
+                $cmd_end = " '" . $filename . "' | " . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
                 // convert to pnm, resize, convert back
                 if (eregi ('\.png', $filename)) {
                     $tmpfile = $this->_fileUploadDirectory . '/tmp.png';
