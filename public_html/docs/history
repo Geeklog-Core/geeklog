@@ -1,8 +1,15 @@
 GeekLog History/Changes:
 
-December ??, 2002 (1.3.7rc1)
------------------
+December 3, 2002 (1.3.7rc1)
+----------------
 
+- Modifed savesubmission() to better handle Plugin return - Bug ID 642106
+- Modified Comment Plugin API Comment call - PLG_handlePluginComment now passes
+  $operation to indicate a 'save' or 'delete'.
+- Fixed problems with the portal.php redirect for links (bug #579221).
+- Fixed a problem when uploading images with certain versions of Opera.
+- When deleting a topic, also remove stories for that topic from the submission
+  queue.
 - Added a redirect in index.php when the site was called up with the "wrong"
   URL (i.e. not the one that has been set in $_CONF['site_url']), thus
   fixing the "www vs. non-www" problem where people showed up in Who's Online
@@ -30,7 +37,7 @@ December ??, 2002 (1.3.7rc1)
   photos ($_CONF['max_photo_width'] etc.).
 - Fixed a problem when resizing GIF images using the netpbm tools.
 - Check the topic permissions when presenting a list of topics in the Admin
-  story editor (i.e. the StoryAdmin may not have access to all topics).
+  story editor (since the StoryAdmin may not have access to all topics).
 - Removed the Normal / Archive / Refreshing drop down menus from the admin
   story and poll editors since they're not used anyway.
 - In the links section, do not display link categories when the current user
@@ -146,8 +153,8 @@ December ??, 2002 (1.3.7rc1)
 - Fixed date bug when previewing stories to be posted around the noon hour in
   the admin story editor.
 - Added sanity checks in admin/story.php to prevent possible loss of stories
-  when using an incomplete language file.
-- Fixed a variable in admin/plugins/editor.ththml of the Smooth Blue theme
+  when using an incomplete language file (or manipulating the URL).
+- Fixed a variable in admin/plugins/editor.ththml of the Smooth Blue theme.
 - Fixed a typo and a grammatical error in english.php
 - Fixed problems with the "static page as frontpage" hack:
   + will now check if the static pages plugin is installed and enabled
@@ -160,14 +167,14 @@ December ??, 2002 (1.3.7rc1)
   table any more, but the name is needed when upgrading from old versions.
 
 Localisation:
-- New Polish language file for the Static Pages plugin, provided by Robert Stadnik
-- New Spanish language file for the Static Pages Plugin, provided by gorka
 - New Chinese language file (Big 5 encoding), provided by Jacky Chan
 - New Swedish language file, provided by Markus Berg
-- Updated Dutch language file, provided by R.F. van der Veen
+- Updated Dutch language file, provided by R. F. van der Veen
 - Updated French language file, provided by Florent Guiliani
 - The German language file now uses the proper national special characters
   (umlauts) instead of HTML entities.
+ _ New Polish language file for the Static Pages plugin, provided by Robert Stadnik
+- New Spanish language file for the Static Pages Plugin, provided by gorka
 
 
 September 20, 2002 (1.3.6)
