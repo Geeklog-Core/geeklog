@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.19 2002/07/30 17:21:56 dhaun Exp $
+// $Id: group.php,v 1.20 2002/08/06 18:05:41 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -53,7 +53,7 @@ require_once('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 $display = '';
 
@@ -250,8 +250,8 @@ function printrights($grp_id='', $core=0)
 		}
 	} 
 
-	// OK, now loop through and print all the features giving edit rights to only the ones that
-	// are direct features
+	// OK, now loop through and print all the features giving edit rights
+    // to only the ones that are direct features
 	$ftcount = 0;
     $retval = '<tr>' . LB;
 	for ($i = 1; $i <= $nfeatures; $i++) {		
@@ -271,7 +271,7 @@ function printrights($grp_id='', $core=0)
 			// either this is an indirect right OR this is a core feature
 			if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core == 0)) {
 				$ftcount++;
-				$retval .= '<td><input type="hidden" name="features[]" value="' . $A['ft_id'] . '">' . $A['ft_name'] . '</td>';
+                $retval .= '<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(<i>' .  $A['ft_name'] . '</i>)</td>';
 			}
 		}
 	}
