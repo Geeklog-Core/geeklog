@@ -31,7 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.140 2002/08/20 13:08:59 dhaun Exp $
+// $Id: lib-common.php,v 1.141 2002/08/22 14:43:44 dhaun Exp $
+
+// Prevent PHP from reporting uninitialized variables
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -47,16 +50,15 @@
 *
 */
 
-// Prevent PHP from reporting uninitialized variables
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
-
-// Turn this on go get various debug messages from the code in this library
+/**
+* Turn this on go get various debug messages from the code in this library
+* @global Boolean $_COM_VERBOSE
+*/
 $_COM_VERBOSE = false; 
 
 /**
 * Configuration Include: You should ONLY have to modify this line.
 * Leave the rest of this file intact!
-*
 */
 require_once('/path/to/geeklog/config.php');
 
@@ -80,7 +82,7 @@ if (!$_CONF['site_enabled']) {
 // +---------------------------------------------------------------------------+
 
 /**
-* Include page time used to time how fast each page was created
+* Include page time -- used to time how fast each page was created
 *
 */
 require_once($_CONF['path_system'] . 'classes/timer.class.php');
@@ -88,10 +90,11 @@ $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
 /**
-* include URL class that provide optional URL rewriting functionality.  Please
-* note this code is still experimental and is only currently used by the
-* staticpages plugin
+* Include URL class 
 *
+* This provides optional URL rewriting functionality.  
+* Please note this code is still experimental and is only currently used by the
+* staticpages plugin.
 */
 require_once($_CONF['path_system'] . 'classes/url.class.php');
 $_URL = new url($_CONF['url_rewrite']);
@@ -104,8 +107,9 @@ $_URL = new url($_CONF['url_rewrite']);
 require_once($_CONF['path_system'] . 'classes/template.class.php');
 
 /**
-* This is the database library.  Including this give you a working
-* connection to the database
+* This is the database library.  
+*
+* Including this give you a working connection to the database
 *
 */
 require_once($_CONF['path_system'] . 'lib-database.php');
@@ -117,16 +121,19 @@ require_once($_CONF['path_system'] . 'lib-database.php');
 require_once($_CONF['path_system'] . 'lib-security.php');
 
 /**
-* This is the custom library which is the sandbox for every Geeklog Admin
-* to play in.  We will never modify this file.  This should hold all custom
-* hacks to make upgrading easier
+* This is the custom library.
+*
+* It is the sandbox for every Geeklog Admin to play in.  
+* We will never modify this file.  This should hold all custom
+* hacks to make upgrading easier.
 *
 */
 require_once($_CONF['path_system'] . 'lib-custom.php');
 
 /**
-* Include plugin class.  This is a poorly implemented class that was not
-* very well thought out.  Still very necessary
+* Include plugin class.  
+* This is a poorly implemented class that was not very well thought out.  
+* Still very necessary
 */
 require_once($_CONF['path_system'] . 'lib-plugins.php');
 
@@ -156,7 +163,9 @@ if ($_CONF['allow_user_themes'] == 1) {
         }
     }
 }
-
+/**
+* Include theme functions file
+*/
 // Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
     require_once($_CONF['path_layout'] . 'functions.php');
@@ -190,12 +199,30 @@ if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'") == 1
     DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . (time() - $_CONF['whosonline_threshold']));
 }
 
+/**
+*
+* Language include
+*
+*/
 require_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 
 setlocale(LC_ALL, $_CONF['locale']);
 
 // Get user permissions
+/**
+* Global array of current user permissions [read,edit]
+*
+* @global array	$_RIGHTS
+* 
+*/
 $_RIGHTS = explode(',',SEC_getUserPermissions());
+
+/**
+* Global array of groups current user belongs to
+*
+* @global array $_GROUPS
+*
+*/
 $_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
@@ -214,14 +241,14 @@ for ($i = 1; $i <= $nrows; $i++) {
 // +---------------------------------------------------------------------------+
 
 /**
-* Displays the array passed to it as an article
+* Returns the array (created from db record) passed to it as formated HTML
 *
-* Displays the given article data in formatted HTML.  Called by index.php and
+* Formats the given article data into HTML.  Called by index.php and
 * admin/story.php (when previewing)
 *
-* @param	array       $A      Data to display as an article
-* @param	string		$index  whether or not this is the index page
-* @return   string      HTML for the article
+* @param	array       $A      Data to display as an article (associative array from record from gl_stories
+* @param	string		$index  whether or not this is the index page if 'n' then compact display for index page else display full article
+* @return   string      Article as formated HTML
 *
 */
 function COM_article($A,$index='') 
@@ -326,12 +353,12 @@ function COM_article($A,$index='')
 * blockfooter.html will be used.
 *
 * @param        string      $blockname      corresponds to name field in block table
-* @param        string      $which          can be either 'header' or 'footer'
+* @param        string      $which          can be either 'header' or 'footer' for corresponding template
 * @see function COM_startBlock
 * @see function COM_endBlock
 * @see function COM_showBlocks
 * @see function COM_showBlock
-*
+* @return	string	template name
 */
 function COM_getBlockTemplate($blockname,$which)
 {
@@ -378,6 +405,7 @@ function COM_getBlockTemplate($blockname,$which)
 * Gets all directory names in /path/to/geeklog/themes/ and returns all the 
 * directories
 *
+* @return	array	All installed themes
 */
 function COM_getThemes()
 {
@@ -411,8 +439,41 @@ function COM_getThemes()
 * This loads the proper templates, does variable substitution and returns the 
 * HTML for the site header with or without blocks depending on the value of $what
 *
-* @param        string      $what       can be either 'menu' or 'none'.
+* Programming Note:
+*
+* The two functions COM_siteHeader and COM_siteFooter provide the framework for page display 
+* in Geeklog.  COM_siteHeader controls the display of the Header and left blocks and COM_siteFooter
+* controls the dsiplay of the right blocks and the footer.  You use them like a sandwich.  Thus the 
+* following code will display a Geeklog page with both right and left blocks displayed.
+*
+* -------------------------------------------------------------------------------------
+* <?php
+* require_once('lib-common.php');
+* $display .= COM_siteHeader();	//Change to COM_siteHeader('none') to not display left blocks
+* $display .= "Here is your html for display";
+* $display .= COM_siteFooter(true);  // Change to COM_siteFooter() to not display right blocks
+* echo $display;
+* ?>
+* ---------------------------------------------------------------------------------------
+* Note that the default for the header is to display the left blocks and the default of the
+* footer is to not display the right blocks.
+*
+* This sandwich produces code like this (greatly simplified)
+*
+* // COM_siteHeader
+* <table><tr><td colspan="3">Header</td></tr>
+* <tr><td>Left Blocks</td><td>
+*
+* // Your HTML goes here
+* Here is your html for display
+*
+* // COM_siteFooter
+* </td><td>Right Blocks</td></tr>
+* <tr><td colspan="3">Footer</td></table>
+*
+* @param        string      $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @see function COM_siteFooter
+* @return	string	This returns formated HTML containing the site header
 *
 */
 function COM_siteHeader($what = 'menu')
@@ -568,8 +629,9 @@ function COM_siteHeader($what = 'menu')
 * This loads the proper templates, does variable substitution and returns the 
 * HTML for the site footer.
 *
-* @param        boolean     $rightblock     Whether or not to show blocks on right hand side
+* @param        boolean     $rightblock     Whether or not to show blocks on right hand side default is no
 * @see function COM_siteHeader
+* @return	string	Formated HTML containing site footer and optionally right blocks
 *
 */
 function COM_siteFooter($rightblock = false)
@@ -626,10 +688,18 @@ function COM_siteFooter($rightblock = false)
 * Prints out standard block header but pulling header HTML formatting from 
 * the database.
 *
+* Programming Note:  The two functions COM_startBlock and COM_endBlock are used to sandwich your
+* block content or use COM_startComment and COM_endBlock for comments.  These functions are not 
+* used only for blocks but anything that uses that format, e.g. Stats page.  They are used like
+* COM_siteHeader and COM_siteFooter but for internal page elements.
+*
+*
 * @param        string      $title      Value to set block title to
 * @param        string      $helpfile   Help file, if one exists
 * @param        string      $template   HTML template file to use to format the block
-* @see function COM_endBlock
+* @see COM_endBlock
+* @see COM_siteHeader  For similiar construct
+* @return	string	Formatted HTML containing block header
 *
 */
 function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml') 
@@ -663,6 +733,7 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
 * Closes out COM_startBlock
 *
 * @param        string      $template       HTML template file used to format block footer
+* @return	string	Formatted HTML to close block
 * @see function COM_startBlock
 *
 */
@@ -680,15 +751,15 @@ function COM_endBlock($template='blockfooter.thtml')
 }
 
 /**
-* Prints Admin option on moderation.php
+* Prints Admin option on moderation.php  DO NOT USE THIS FUNCTION.
 *
 * This prints an image/label pair on moderation.php  This should not be
 * used by any of our pages anymore but we need to test that out before
-* removing permanently.  DO NOT USE THIS FUNCTION
+* removing permanently.  
 *
 * @param    string      $type       Type of adminedit we are creating
 * @param    string      $text       Text label
-*
+* @return   string      Formated HTML
 */
 function COM_adminEdit($type,$text='') 
 {
@@ -708,6 +779,11 @@ function COM_adminEdit($type,$text='')
 /**
 * Same as COM_startBlock, but set up for the comments
 *
+* Use COM_endBlock to end comment
+*
+* @return	string	Formated HTML Starting Comment block
+* @see	COM_startBlock
+*
 */
 function COM_startComment() 
 {
@@ -724,10 +800,11 @@ function COM_startComment()
 * Creates option list form field using given arguments
 *
 * @param        string      $table      Database Table to get data from
-* @param        string      $selection  Comma delimited string of fields to pull
-* @param        string      $selected   Value to set to SELECTED
-* @param        int         $sortcol    Which field to sort option list by
+* @param        string      $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
+* @param        string      $selected   Value (from $selection) to set to SELECTED or default
+* @param        int         $sortcol    Which field to sort option list by 0 (value) or 1 (label)
 * @see function COM_checkList
+* @return	string	Formated HTML of option values
 * 
 */
 function COM_optionList($table,$selection,$selected='',$sortcol=1) 
@@ -756,6 +833,12 @@ function COM_optionList($table,$selection,$selected='',$sortcol=1)
 * This is a variation of COM_optionList() from lib-common.php. It will add
 * only those topics to the option list which are accessible by the current
 * user.
+*
+* @param        string      $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
+* @param        string      $selected   Value (from $selection) to set to SELECTED or default
+* @param        int         $sortcol    Which field to sort option list by 0 (value) or 1 (label)
+* @see function COM_optionList
+* @return	string	Formated HTML of option values
 *
 */
 function COM_topicList ($selection, $selected='', $sortcol=1) {
@@ -789,9 +872,10 @@ function COM_topicList ($selection, $selected='', $sortcol=1) {
 *
 * @param        string      $table      DB Table to pull data from
 * @param        string      $selection  Comma delimited list of fields to pull from table
-* @param        string      $where      Where clause
+* @param        string      $where      Where clause of SQL statement
 * @param        string      $selected   Value to set to CHECKED
 * @see function COM_optionList
+* @return	string	HTML with Checkbox code
 *
 */ 
 function COM_checkList($table,$selection,$where='',$selected='') 
@@ -845,13 +929,14 @@ function COM_checkList($table,$selection,$where='',$selected='')
 }
 
 /**
-* Prints out the HTTP headers post information for debugging
+* Prints out an associative array for debugging
 *
 * The core of this code has been lifted from phpweblog which is licenced
 * under the GPL.  This is not used very much in the code but you can use it
 * if you see fit
 *
 * @param        array       $A      Array to loop through and print values for
+* @return	string	Formated HTML List
 *
 */
 function COM_debug($A) 
@@ -934,9 +1019,11 @@ function COM_exportRDF()
 }
 
 /**
+* 
+* Checks to see if RDF file needs updating and updates it if sol
 * Checks to see if we need to update the RDF as a result
 * of an article with a future publish date reaching it's 
-* publish time
+* publish time and if so updates the RDF file.
 *
 * @see function COM_exportRDF
 *
@@ -962,6 +1049,8 @@ function COM_rdfUpToDateCheck()
 }
 
 /**
+* Checks and Updates the featured status of all articles.
+*
 * Checks to see if any articles that were published for the future have been published and, if
 * so, will see if they are featured.  If they are featured, this will set old featured article (if
 * if there is one) to normal
@@ -979,14 +1068,16 @@ function COM_featuredCheck()
 }
 
 /**
+*
 * Logs messages to error.log or the web page or both
 *
 * Prints a well formatted message to either the web page, error log
 * or both.
 *
 * @param        string      $logentry       Text to log to error log
-* @param        int         $actionid       1 = write to log file, 2 = write to screen (default) and file
+* @param        int         $actionid       1 = write to log file, 2 = write to screen (default) both
 * @see function COM_accesslog
+* @return	string	If $actionid = 2 or '' then HTML formated string (wrapped in block) else nothing
 *
 */
 function COM_errorLog($logentry, $actionid = '') 
@@ -1059,6 +1150,7 @@ function COM_accesslog($logentry)
 * @param      string      $qid      ID for poll question
 * @see function COM_pollResults
 * @see function COM_showPoll
+* @return		string	HTML Formatted Poll
 *
 */
 function COM_pollVote($qid) 
@@ -1120,10 +1212,11 @@ function COM_pollVote($qid)
 * This will determine if a user needs to see the poll form OR the poll
 * result.
 *
-* @param        int        $sise       ??
+* @param        int        $sise       Size in pixels of poll results
 * @param        string     $qid        Question ID to show (optional)
 * @see function COM_pollVote
 * @see function COM_pollResults
+* @return    String  HTML Formated string of Poll
 *
 */
 function COM_showPoll($size,$qid='') 
@@ -1169,11 +1262,12 @@ function COM_showPoll($size,$qid='')
 * Shows the poll results for a give poll question
 *
 * @param        string      $qid        ID for poll question to show
-* @param        int         $scale      Size to scale formatted results to
-* @param        string      $order      ??
-* @param        string      $mode       ??
-* @see function COM_pollVote
-* @see function COM_showPoll
+* @param        int         $scale      Size in pixels to scale formatted results to
+* @param        string      $order      'ASC' or 'DESC' for Comment ordering (SQL statment ordering)
+* @param        string      $mode       Comment Mode possible values 'nocomment', 'flat', 'nested', 'threaded'
+* @see COM_pollVote
+* @see COM_showPoll
+* @return     string   HTML Formated Poll Results
 *
 */
 function COM_pollResults($qid,$scale=400,$order='',$mode='') 
@@ -1252,9 +1346,11 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 * Shows all available topics
 *
 * Show the topics in the system the user has access to and prints them in HTML.
-* This function is used to show the topics in the sections block.
+* This function is used to show the topics in the sections block. Topics have href and 
+* are seperated by line breaks.
 * 
-* @param        string      $topic      Topic currently selected
+* @param        string      $topic      TopicID of currently selected
+* @return	string	  HTML formated topic list
 *
 */
 function COM_showTopics($topic='') 
@@ -1328,10 +1424,10 @@ function COM_showTopics($topic='')
 /**
 * Shows the user their menu options
 *
-* This shows the average joe use their menu options
+* This shows the average joe use their menu options. This is the user block on right side
 *
 * @param        string      $help       Help file to show
-* @title        string      $title      ??
+* @param        string      $title      Title of Menu
 * @see function COM_adminMenu
 *
 */
@@ -1411,10 +1507,10 @@ function COM_userMenu($help='',$title='')
 * Prints administration menu
 *
 * This will return the administration menu items that the user has
-* sufficient rights to
+* sufficient rights to -- Admin Block on right side.
 *
 * @param        string      $help       Help file to show
-* @title        string      $title      ??
+* @param        string      $title      Menu Title
 * @see function COM_userMenu
 *
 */
@@ -1571,8 +1667,9 @@ function COM_refresh($url)
 * @param        string      $type       Type of item (i.e. story, photo, etc)
 * @param        string      $order      Order that comments are displayed in
 * @param        string      $mode       Mode (nested, flat, etc.)
-* @see function COM_userComments
-* @see function COM_commentChildren
+* @see COM_userComments
+* @see COM_commentChildren
+* @return     string   HTML Formated comment bar
 *
 */
 function COM_commentBar($sid,$title,$type,$order,$mode) 
@@ -1634,11 +1731,12 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
 * @param        string      $sid        ID for item to show comments for
 * @param        string      $title      Title of item
 * @param        string      $type       Type of item (article,photo,link,etc.)
-* @param        string      $order      How to order the comments
+* @param        string      $order      How to order the comments 'ASC' or 'DESC'
 * @param        string      $mode       comment mode (nested, flat, etc.)
-* @param        int         $pid        ???
+* @param        int         $pid        Parent ID
 * @see function COM_commentBar
 * @see function COM_commentChildren
+* @return     string  HTML Formated Comments
 *
 */
 function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0) 
@@ -1734,8 +1832,8 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
 * comment 
 *
 * @param        string      $sid        ID for item comments belong to
-* @param        string      $pid        ??
-* @param        string      $order      Order to show comments in
+* @param        string      $pid        Parent ID
+* @param        string      $order      Order to show comments in 'ASC' or 'DESC'
 * @param        string      $mode       Mode (e.g. nested, flat, etc)
 * @param        string      $type       Type of item (article, photo, link, etc.)
 * @param        int         $level      How deep in comment thread we are
@@ -1767,13 +1865,14 @@ function COM_commentChildren($sid,$pid,$order,$mode,$type,$level=0)
 
 
 /**
-* Need to read up on this one, no clue what it does
+* This function prints $A (an individual comment) in comment format
 *
-* @param        array       $A          ??
-* @param        int         $mode       ??
-* @param        int         $level      ??
+* @param        array       $A          Associative array based on comment record from DB
+* @param        string      $mode       'flat', 'threaded', etc
+* @param        int         $level      how deep in comment thread
 * @param        string      $mode       WTF?  This can't be used twice!?!
-* @param        boolean     $ispreview  ??
+* @param        boolean     $ispreview  Preview display (for edit) or not
+* @return     string      HTML Formated Comment
 *
 */
 function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false) 
@@ -1864,6 +1963,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 *
 * @param        string      $Message        String to check
 * @see function COM_checkHTML
+* @return	string	Edited $Message
 *
 */
 function COM_checkWords($Message)
@@ -1903,6 +2003,11 @@ function COM_checkWords($Message)
 *  and replaces them with in*=
 *  Essentially this will cause onBlur to become inBlur, onFocus to be inFocus
 *  These are not valid javascript events and the browser will ignore them.
+* @param	string	$Message	Text to filter
+* @return	string	$Message with java filtered
+* @see	COM_checkWords
+* @see  COM_checkHTML
+*
 */
 function COM_killJS($Message) 
 {
@@ -1913,10 +2018,12 @@ function COM_killJS($Message)
 * This function checks html tags.
 *
 * The core of this code has been lifted from phpslash which is licenced under
-* the GPL.
+* the GPL.  It checks to see that the HTML tags are on the approved list and
+* removes them if not.
 *
 * @param        string      $str        HTML to check
 * @see function COM_checkHTML
+* @return	string	Filtered HTML
 *
 */
 function COM_checkHTML($str) 
@@ -1967,6 +2074,8 @@ function COM_checkHTML($str)
 * (.000001th of a second) since the last full second. NOTE: this is now used for more than
 * just stories!
 *
+* @return	string	$sid  Story ID
+*
 */
 function COM_makesid() 
 {
@@ -1983,6 +2092,7 @@ function COM_makesid()
 * This function COM_checks to see if an email address is in the correct from
 *
 * @param        string      $email      Email address to verify
+* @return	boolean	True if valid otherwise false
 *
 */
 function COM_isemail($email) 
@@ -1998,7 +2108,8 @@ function COM_isemail($email)
 * Creates older stuff block
 *
 * Creates the olderstuff block for display.
-*
+* Actually updates the olderstuff record in the gl_blocks database.
+* @return	void
 */
 function COM_olderStuff() 
 {
@@ -2042,10 +2153,11 @@ function COM_olderStuff()
 * This shows a single block and is typically called from
 * COM_showBlocks OR from plugin code
 *
-* @param        string      $name       Logical name of block (not same as title)
+* @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'events_block', 'poll_block', 'whats_new_block'.
 * @param        string      $help       Help file location
 * @param        string      $title      Title shown in block header
 * @see function COM_showBlocks
+* @return	string	HTML Formated block
 *
 */
 function COM_showBlock($name,$help='',$title='')
@@ -2087,12 +2199,13 @@ function COM_showBlock($name,$help='',$title='')
 * Shows Geeklog blocks
 *
 * Returns HTML for blocks on a given side and, potentially, for
-* a given topic
+* a given topic. Currentlly only used by static pages.
 * 
 * @param        string      $side       Side to get blocks for (right or left for now)
 * @param        string      $topic      Only get blocks for this topic
-* @param        string      $name       Block name
+* @param        string      $name       Block name (not used)
 * @see function COM_showBlock
+* @return	string	HTML Formated blocks
 *
 */
 function COM_showBlocks($side, $topic='', $name='all') 
@@ -2183,7 +2296,7 @@ function COM_showBlocks($side, $topic='', $name='all')
 * @param        string      $rdfurl     URL to get headlines from
 * @param        string      $date       Last time the headlines were imported
 * @see function COM_rdfImport
-*
+* @return	void
 */
 function COM_rdfCheck($bid,$rdfurl,$date) 
 {
@@ -2313,6 +2426,7 @@ function COM_rdfImport ($bid, $rdfurl) {
 * you can modify this by changing $_CONF['allowablehtml'] in 
 * config.php
 *
+* @return	string	HTML <span> enclosed string
 */
 function COM_allowedhtml() 
 {
@@ -2336,6 +2450,7 @@ function COM_allowedhtml()
 * Fetches a password for the given user
 *
 * @param        string      $loginname      username to get password for
+* @return	string	   Password or ''
 *
 */
 function COM_getpassword($loginname) 
@@ -2377,7 +2492,7 @@ function COM_hit()
 *
 * @param        string      $help       Help file for block
 * @param        string      $title      Title to be used in block header
-*
+* @return	string	HTML formated block containing events.
 */
 function COM_printUpcomingEvents($help='',$title='') 
 {
@@ -2509,6 +2624,7 @@ function COM_printUpcomingEvents($help='',$title='')
 * will receive any new article for in a daily digest. As of 10/15/2001 this
 * isn't working entirely (usersettings.php needs to be modified)
 *
+* @return	void
 */
 function COM_emailUserTopics() 
 {
@@ -2586,7 +2702,8 @@ function COM_emailUserTopics()
 * Return the HTML that shows any new stories, comments, etc
 *
 * @param        string      $help       Help file for block
-* @title        string      $title      Title used in block header
+* @param        string      $title      Title used in block header
+* @return     string  Return the HTML that shows any new stories, comments, etc
 *
 */
 function COM_whatsNewBlock($help='',$title='') 
@@ -2783,7 +2900,7 @@ function COM_whatsNewBlock($help='',$title='')
 * it for display on the calling page
 *
 * @param        int     $msg        ID of message to show
-*
+* @return     string  HTML block with message
 */
 function COM_showMessage($msg) 
 {
@@ -2807,7 +2924,7 @@ function COM_showMessage($msg)
 * @param        string      $base_url       base url to use for all generated links
 * @param        int         $curpage        current page we are on
 * @param        int         $num_pages      Total number of pages
-*
+* @return	string	 HTML formated widget 
 */
 function COM_printPageNavigation($base_url, $curpage, $num_pages)
 {
@@ -2862,7 +2979,7 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages)
 * is the formated date and array[1] is the unixtimestamp
 *
 * @param        string      $date       date to format, otherwise we format current date/time
-*
+* @return	array	array[0] is the formated date and array[1] is the unixtimestamp.
 */
 function COM_getUserDateTimeFormat($date='') 
 {
@@ -2908,6 +3025,7 @@ function COM_getUserDateTimeFormat($date='')
 * In account preferences users can specify when their long-term cookie expires.  This
 * function returns that value.
 *
+* @return	int	Cookie time out value in seconds
 */
 function COM_getUserCookieTimeout() 
 {
@@ -2928,7 +3046,7 @@ function COM_getUserCookieTimeout()
 
 /**
 * Shows who is online in slick little block
-*
+* @return	string  HTML string of online users seperated by line breaks.
 */
 function phpblock_whosonline()
 {
@@ -2963,7 +3081,7 @@ function phpblock_whosonline()
 * @see function COM_getYearFormOptions
 * @see function COM_getHourFormOptions
 * @see function COM_getMinuteFormOptions
-*
+* @return	string	HTML Months as option values
 */
 function COM_getMonthFormOptions($selected = '') 
 {
@@ -2986,12 +3104,12 @@ function COM_getMonthFormOptions($selected = '')
 /**
 * Gets the <option> values for calendar days
 *
-* @param        string      $selected       Selected month
+* @param        string      $selected       Selected day
 * @see function COM_getMonthFormOptions
 * @see function COM_getYearFormOptions
 * @see function COM_getHourFormOptions
 * @see function COM_getMinuteFormOptions
-*
+* @return string HTML days as option values
 */
 function COM_getDayFormOptions($selected = '')
 {
@@ -3014,11 +3132,15 @@ function COM_getDayFormOptions($selected = '')
 /**
 * Gets the <option> values for calendar years
 *
-* @param        string      $selected       Selected month
+* Returns Option list Containing 5 years starting with current 
+* unless @selected is < current year then starts with @selected
+*
+* @param        string      $selected       Selected year
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getHourFormOptions
 * @see function COM_getMinuteFormOptions
+* @return string  HTML years as option values
 */
 function COM_getYearFormOptions($selected = '')
 {
@@ -3043,11 +3165,12 @@ function COM_getYearFormOptions($selected = '')
 /**
 * Gets the <option> values for clock hours
 *
-* @param        string      $selected       Selected month
+* @param        string      $selected       Selected hour
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getYearFormOptions
 * @see function COM_getMinuteFormOptions
+* @return string	HTML string of options
 */
 function COM_getHourFormOptions($selected = '')
 {
@@ -3075,13 +3198,14 @@ function COM_getHourFormOptions($selected = '')
 }
 
 /**
-* Gets the <option> values for calendar years
+* Gets the <option> values for clock minutes
 *
-* @param        string      $selected       Selected month
+* @param        string      $selected       Selected minutes
 * @see function COM_getMonthFormOptions
 * @see function COM_getDayFormOptions
 * @see function COM_getHourFormOptions
 * @see function COM_getYearFormOptions
+* @return string  HTML of option minutes
 */
 function COM_getMinuteOptions($selected = '')
 {
@@ -3102,11 +3226,12 @@ function COM_getMinuteOptions($selected = '')
 }
 
 /**
-* Creates a list from the given array (one list item per array element),
-* using the list.thtml and listitem.thtml templates.
+* Creates an HTML unordered list from the given array.
+* It formats one list item per array element, using the list.thtml 
+* and listitem.thtml templates.
 *
 * @param        array       $listofitems        Items to list out
-*
+* @return	string	HTML unordered list of array items
 */
 function COM_makeList($listofitems) {
     global $_CONF;
@@ -3130,7 +3255,7 @@ function COM_makeList($listofitems) {
 * This function returns a crawler friendly URL (if possible)
 *
 * @param        string      $url        URL to try to build crawler friendly URL for
-*
+* @return	string	    Rewritten URL
 */
 function COM_buildURL($url)
 {
@@ -3145,7 +3270,7 @@ function COM_buildURL($url)
 * This function sets the name of the arguments found in url
 *
 * @param        array       $names      Names of arguments in query string to assign to values
-*
+* @return	boolean		True if suscessful
 */
 function COM_setArgNames($names)
 {
@@ -3160,7 +3285,7 @@ function COM_setArgNames($names)
 * returns value for specified argument
 *
 * @param        string      $name       argument to get value for
-*
+* @return	string	   Argument value
 */
 function COM_getArgument($name)
 {
@@ -3176,12 +3301,13 @@ function COM_getArgument($name)
 * the smallest #/time interval
 *
 * @param	int		$occurrences		how many occurrences during time interval
-* @param	int		$timespan			time interval
+* @param	int		$timespan			time interval in seconds
+* @return	int	Seconds per interval
 */
 function COM_getRate($occurrences, $timespan)
 {
 	// want to define some common time words (yes, dirk, i need to put this in LANG)
-	// time words and there value in seconds
+	// time words and their value in seconds
 	// week is 7 * day, month is 30 * day, year is 365.25 * day
 	$common_time = array(
 		"second" => 1,
