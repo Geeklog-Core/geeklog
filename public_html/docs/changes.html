@@ -142,6 +142,24 @@ environment it's running in.</p>
 (see the <tt>docs/history</tt> file for proper credits). Thank you!</p>
 
 
+<h2><a name="changes139sr2">Geeklog 1.3.9sr2</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>Fixed a cross site scripting vulnerability caused by using the variable
+    <code>$topic</code> in the language files (bug #293).</li>
+<li>Prevent comment posts on stories or polls were comment posting has been
+    disabled.</li>
+</ol>
+
+<h3>Other fixes</h3>
+<ul>
+<li>Fixed <tt>lib-plugins.php</tt> to work properly with PHP 5.</li>
+<li>The complete tarball also includes updated PEAR packaged that fix
+    some of the reported email problems.</li>
+</ul>
+
+
 <h2><a name="changes139sr1">Geeklog 1.3.9sr1</a></h2>
 <p>This release addresses the following security issues:</p>
 
@@ -240,6 +258,28 @@ static pages without having to use the PHP <code>return</code> statement.</p>
 
 <p>There have also been a lot of changes to improve security, especially
 against SQL injections.</p>
+
+
+<h2><a name="changes138-1sr6">Geeklog 1.3.8-1sr6</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>Fixed a cross site scripting vulnerability caused by using the variable
+    <code>$topic</code> in the language files (bug #293).</li>
+<li>Prevent comment posts on stories or polls were comment posting has been
+    disabled.</li>
+</ol>
+
+
+<h2><a name="changes138-1sr5">Geeklog 1.3.8-1sr5</a></h2>
+<p>This release addresses the following security issue:</p>
+
+<ol>
+<li>It was possible to post anonymous comments, even when anonymous comment
+    posting had been switched off in config.php.<br>
+    This bug was apparently exploited by spammers to send hundreds of spam
+    posts to certain Geeklog sites.</li>
+</ol>
 
 
 <h2><a name="changes138-1sr4">Geeklog 1.3.8-1sr4</a></h2>
