@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.9 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: poll.php,v 1.10 2002/01/03 21:47:25 tony_bibbs Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -260,6 +260,7 @@ function listpoll()
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('list'=>'polllist.thtml','row'=>'listitem.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
+    $poll_templates->set_var('layout_url', $_CONF['layout_url']);
     $poll_templates->set_var('lang_newpoll', $LANG25[23]);
     $poll_templates->set_var('lang_adminhome', $LANG25[24]);
     $poll_templates->set_var('lang_instructions', $LANG25[19]);
