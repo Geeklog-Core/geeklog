@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.17 2004/04/26 16:49:13 vinny Exp $
+// $Id: mysql.class.php,v 1.18 2004/07/13 19:00:03 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -637,18 +637,18 @@ class database {
     /**
     * Returns the last ID inserted
     *
-    * Returns the last auto_increment ID generated for recordset
+    * Returns the last auto_increment ID generated
     *
-    * @param    object      $recordset      Recorset to operate on
-    * @return   int     Returns last auto-generated ID
+    * @param    resource    $link_identifier    identifier for opened link
+    * @return   int                             Returns last auto-generated ID
     *
     */
-    function dbInsertId($recordset='')
+    function dbInsertId($link_identifier = '')
     {
-        if (empty($recordset)) {
+        if (empty($link_identifier)) {
             return @mysql_insert_id();
         } else {
-            return @mysql_insert_id($recordset);
+            return @mysql_insert_id($link_identifier);
         }
     }
 

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.29 2004/03/21 20:53:32 dhaun Exp $
+// $Id: lib-database.php,v 1.30 2004/07/13 19:00:03 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -399,17 +399,17 @@ function DB_fetchArray($recordset, $both = true)
 /**
 * Returns the last ID inserted
 *
-* Returns the last auto_increment ID generated for recordset
+* Returns the last auto_increment ID generated
 *
-* @param        object      $recordset      Recorset to operate on
-* @return       int         Returns the last ID auto-generated
+* @param    resources   $link_identifier    identifier for opened link
+* @return   int                             Returns the last ID auto-generated
 *
 */
-function DB_insertId($recordset='')
+function DB_insertId($link_identifier = '')
 {
     global $_DB;
 
-    return $_DB->dbInsertId($recordset);
+    return $_DB->dbInsertId($link_identifier);
 }
 
 /**
