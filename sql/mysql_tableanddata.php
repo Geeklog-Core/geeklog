@@ -496,6 +496,15 @@ CREATE TABLE {$_TABLES['vars']} (
 ) TYPE=MyISAM
 ";
 
+$_SQL[40] = "
+CREATE TABLE {$_TABLES['article_images']} (
+  ai_sid varchar(20) NOT NULL,
+  ai_img_num tinyint(2) unsigned NOT NULL,
+  ai_img_path varchar(128) NOT NULL,
+  PRIMARY KEY (ai_sid,ai_img_num)
+); TYPE=MyISAM
+";
+ 
 $_DATA[1] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
 $_DATA[2] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (2,3) ";
 $_DATA[3] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (3,5) ";
@@ -504,6 +513,7 @@ $_DATA[5] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (5,
 $_DATA[6] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (5,11) ";
 $_DATA[7] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (6,9) ";
 $_DATA[8] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (6,11) ";
+$_DATA[333] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES(7,12) ";
 $_DATA[9] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (8,7) ";
 $_DATA[10] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (9,7) ";
 $_DATA[11] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (10,4) ";
