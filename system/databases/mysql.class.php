@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.16 2004/03/21 20:53:34 dhaun Exp $
+// $Id: mysql.class.php,v 1.17 2004/04/26 16:49:13 vinny Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -58,6 +58,10 @@ class database {
     * @access private
     */
     var $_pass = '';
+    /**
+    * @access private
+    */
+    var $_db = '';
     /**
     * @access private
     */
@@ -105,12 +109,12 @@ class database {
         }
 
         // Connect to MySQL server
-        $conn = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
+        $this->_db = mysql_connect($this->_host,$this->_user,$this->_pass) or die('Cannnot connect to DB server');
 
         // Set the database
         @mysql_select_db($this->_name) or die('error selecting database');
 
-        if (!$conn) {
+        if (!($this->_db)) {
             if ($this->isVerbose()) {
                 $this->_errorlog("\n*** Error in database->_connect ***");
             }
@@ -122,9 +126,6 @@ class database {
         if ($this->isVerbose()) {
             $this->_errorlog("\n***leaving database->_connect***<br>");
         }
-
-        // return connection object
-        return $conn;
     }
 
     // PUBLIC METHODS
@@ -149,6 +150,8 @@ class database {
         $this->_pass = $dbpass;
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
+
+        $this->_connect();
     }
 
     /**
@@ -227,14 +230,11 @@ class database {
             $this->_errorlog("\n*** sql to execute is $sql ***<br>");
         }
 
-        // Connect to database server
-        $db = $this->_connect();
-
         // Run query
         if ($ignore_errors == 1) {
-            $result = @mysql_query($sql,$db);
+            $result = @mysql_query($sql,$this->_db);
         } else {
-            $result = @mysql_query($sql,$db) or die($this->dbError($sql));
+            $result = @mysql_query($sql,$this->_db) or die($this->dbError($sql));
         }
 
         // If OK, return otherwise echo error
@@ -671,8 +671,8 @@ class database {
                 return 'An SQL error has occured. Please see error.log for details.';
             }
         }
-	
-	return;
+
+        return;
     }
 }
 
