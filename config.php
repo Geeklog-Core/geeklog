@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.143 2004/11/06 17:13:48 blaine Exp $
+// $Id: config.php,v 1.144 2004/11/13 18:08:17 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -659,6 +659,8 @@ $_CONF['admin_html'] = array (
 // list of protocols that are allowed in links
 $_CONF['allowed_protocols'] = array ('http:', 'https:', 'ftp:');
 
+// disables autolinks if set to 1
+$_CONF['disable_autolinks'] = 0; // 0 = autolinks enabled
 
 // Parameters for checking for "bad" words
 $_CONF['censormode']    = 1;
@@ -696,7 +698,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.10rc2');
+    define('VERSION', '1.3.10rc3');
 }
 
 $_STATES = array(

@@ -891,6 +891,11 @@ admin panel.</p>
   <td valign="top">array ('http:', 'https:', 'ftp:');</td>
   <td valign="top">Defines which protocols are allowed in links (i.e. HTML <code>&lt;a&gt;</code> tags).<br><strong>Note:</strong> The kses class used to filter these protocols has a hard-coded list of allowed protocols to which the above will be <em>added</em>. It is currently not possible to <em>remove</em> any of the default protocols (which include, for example, 'mailto:', 'gopher:', and 'news:').</td></tr>
 <tr>
+  <td valign="top"><a name="desc_disable_autolinks">disable_autolinks</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If set to 1, disables the autolinks. I.e. links using the
+    [story:] etc. syntax are not interpreted any more.</td></tr>
+<tr>
   <td valign="top"><a name="desc_censormode">censormode</a></td>
   <td valign="top">1</td>
   <td valign="top">Censor submissions and comments (0=no, 1=yes)</td></tr>

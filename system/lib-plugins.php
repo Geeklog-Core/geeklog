@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.49 2004/10/23 17:58:44 dhaun Exp $
+// $Id: lib-plugins.php,v 1.50 2004/11/13 18:08:17 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -936,7 +936,12 @@ function PLG_getHeaderCode()
 */
 function PLG_collectTags ()
 {
-    global $_PLUGINS;
+    global $_CONF, $_PLUGINS;
+
+    if (isset ($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
+        // autolinks are disabled - return an empty array
+        return array ();
+    }
 
     // Determine which Core Modules and Plugins support AutoLinks
     //                        'tag'   => 'module'
@@ -973,6 +978,11 @@ function PLG_collectTags ()
 function PLG_replaceTags ($content)
 {
     global $_CONF, $_PLUGINS, $LANG32;
+
+    if (isset ($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
+        // autolinks are disabled - return $content unchanged
+        return $content;
+    }
 
     $autolinkModules = PLG_collectTags ();
 
