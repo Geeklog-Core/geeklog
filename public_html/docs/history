@@ -1,5 +1,43 @@
 GeekLog History/Changes:
 
+Dec 31, 2004 (1.3.11)
+------------
+
+Geeklog 1.3.11 addresses the following security issues:
+
+1. It was possible to submit stories anonymously even if anonymous submissions
+   were turned off in config.php (reported by Barry Wong).
+   These stories still ended up in the submission queue, though, unless you
+   disabled it in config.php.
+2. Some of the parameters in link and event submissions weren't filtered,
+   leaving them open to potential SQL injections.
+3. The links for the What's Related block were created from the unfiltered story
+   text, opening the possibility of XSS attacks (reported by Vincent Furia).
+
+Bugfixes:
+
+- Added a missing stripslashes() call for the topic name in the What's Related
+  block (bug #351) [Dirk]
+  (affected file: system/lib-story.php)
+- Fixed problems in the story editor when editing plain-text posts with
+  uploaded images (bug #356) [Dirk]
+  (affected file: public_html/admin/story.php)
+- When changing a story ID, update the story ID in any comments to that story,
+  too (bug #357) [Dirk]
+  (affected file: public_html/admin/story.php)
+- Fixed handling of autotags that started with the same substring, e.g. for
+  2 tags 'mytag' and 'mytagtwo', the second tag would not be recognized
+  (reported by Dr. Shakagee) [Dirk]
+  (affected file: system/lib-plugins.php)
+- Fixed caching of $_GROUPS [Dirk]
+  (affected files: system/lib-security.php, public_html/lib-common.php)
+- Made a minor optimization to save one SQL request when displaying the comment
+  bar for anonymous users [Dirk]
+  (affected file: public_html/lib-common.php)
+- Updated Slovenian language file, provided by gape.
+  (affected file: language/slovenian.php)
+
+
 Dec 22, 2004 (1.3.11rc1)
 ------------
 
@@ -522,6 +560,19 @@ Static Pages Plugin 1.4.1
   static page ID, while installs upgraded from an earlier version allowed up
   to 40 characters [Dirk]
 - New Portuguese (Brazil) language file, provided by Alcides Soares Filho.
+
+
+Dec 31, 2004 (1.3.9sr3)
+------------
+
+This release addresses 2 security issues:
+
+1. It was possible to submit stories anonymously even if anonymous submissions
+   were turned off in config.php (reported by Barry Wong).
+   These stories still ended up in the submission queue, though, unless you
+   disabled it in config.php.
+2. Some of the parameters in link and event submissions weren't filtered,
+   leaving them open to potential SQL injections.
 
 
 Oct 8, 2004 (1.3.9sr2)

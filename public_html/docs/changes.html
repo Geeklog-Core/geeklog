@@ -24,8 +24,22 @@ of files that have been changed since the last release.</p>
 
 <h2><a name="changes1311">Geeklog 1.3.11</a></h2>
 
-<p>Geeklog 1.3.11 is a bugfix release over Geeklog 1.3.10 and is meant to replace 1.3.10. The change in the version number was necessary since one of the bugfixes involves a change in the database.</p>
+<p>Geeklog 1.3.11 is a <strong>bugfix and security release</strong> over Geeklog 1.3.10 and is meant to replace 1.3.10. The change in the version number was necessary since one of the bugfixes involves a change in the database.</p>
 
+<h3>Security issues</h3>
+<ol>
+<li>It was possible to submit stories anonymously even if anonymous submissions
+    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br>
+    These stories still ended up in the submission queue, though, unless you
+    disabled it in <tt>config.php</tt>.</li>
+<li>Some of the parameters in link and event submissions weren't filtered,
+    leaving them open to potential SQL injections.</li>
+<li>The links for the What's Related block were created from the unfiltered
+    story text, opening the possibility of XSS attacks (reported by Vincent
+    Furia).</li>
+</ol>
+
+<h3>Bugfixes</h3>
 <ul>
 <li>Fixes the length of the 'sid' field in the gl_comments table. Using story IDs longer than 20 characters prevented comment posts from being associated with the story.</li>
 <li>Ensures compatibility with PHP 4.1.x (includes updated PEAR packages).</li>
@@ -37,7 +51,7 @@ of files that have been changed since the last release.</p>
 <li>Various other fixes, see <tt>docs/history</tt> for details.</li>
 </ul>
 
-<p>Upgrading from Geeklog 1.3.10 should be relatively painless, as there weren't any changes in the themes, language files, or config.php over 1.3.10.</p>
+<p>We strongly advise users of Geeklog 1.3.10 to upgrade to 1.3.11 ASAP. Upgrading should be relatively painless, as there weren't any changes in the themes, language files, or config.php over 1.3.10.</p>
 
 
 <h2><a name="changes1310">Geeklog 1.3.10</a></h2>
@@ -183,6 +197,18 @@ the editable story IDs and the story archive options)!</p>
 
 <p>This release contains various improvements provided by the Geeklog community
 (see the <tt>docs/history</tt> file for proper credits). Thank you!</p>
+
+<h2><a name="changes139sr3">Geeklog 1.3.9sr3</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>It was possible to submit stories anonymously even if anonymous submissions
+    were turned off in <tt>config.php</tt> (reported by Barry Wong).<br>
+    These stories still ended up in the submission queue, though, unless you
+    disabled it in <tt>config.php</tt>.</li>
+<li>Some of the parameters in link and event submissions weren't filtered,
+    leaving them open to potential SQL injections.</li>
+</ol>
 
 
 <h2><a name="changes139sr2">Geeklog 1.3.9sr2</a></h2>
