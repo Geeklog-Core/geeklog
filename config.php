@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.39 2002/06/24 19:24:37 dhaun Exp $
+// $Id: config.php,v 1.40 2002/07/18 08:59:25 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -163,7 +163,7 @@ $_CONF['searchloginrequired'] = 0;
 
 // Submission Settings
 
-$_CONF['postmode']      = 'plaintext';  // can be plaintext or html
+$_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;         // in seconds
 
 // Topic Settings
@@ -173,13 +173,16 @@ $_CONF['speedlimit']    = 45;         // in seconds
 // have this sort alphabetically by changing the value to 'alpha' (default is
 // by 'sortnum'
 
-$_CONF['sortmethod'] = 'sortnum';
+$_CONF['sortmethod'] = 'sortnum'; // or 'alpha'
 
 // Show the number of stories in a topic in Section Block
 $_CONF['showstorycount'] = 1;
 
 // Show the number of story submissions for a topic in Section Block
 $_CONF['showsubmissioncount'] = 1;
+
+// Show blocks for empty search results
+$_CONF['showemptysearchresults'] = 0;
 
 // How long an anonymous (guest) user session is good for
 $_CONF['whosonline_threshold'] = 300; // in seconds
@@ -239,7 +242,9 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 if (!defined ('LB')) {
     define('LB',"\n");
 }
-define('VERSION', '1.3.5');
+if (!defined ('VERSION')) {
+    define('VERSION', '1.3.6');
+}
 
 //$_CONF['default_state_cde'] = 'IA'; // NOT IMPLEMENTED
 $_STATES = array(
