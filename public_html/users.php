@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.79 2004/05/15 13:02:20 dhaun Exp $
+// $Id: users.php,v 1.80 2004/06/17 11:15:29 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -829,7 +829,7 @@ default:
         srand((double)microtime()*1000000);
         $mypasswd = rand();
     }
-    if (!empty($passwd) && $mypasswd == md5($passwd)) {
+    if (!empty ($passwd) && !empty ($mypasswd) && ($mypasswd == md5($passwd))) {
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
         $userdata = SESS_getUserData($loginname);
         $_USER=$userdata;
@@ -837,7 +837,7 @@ default:
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
         // Now that we handled session cookies, handle longterm cookie
-        if (!isset($HTTP_COOKIE_VARS[$_CONF["cookie_name"]]) || !isset($HTTP_COOKIE_VARS['password'])) {
+        if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']]) || !isset($HTTP_COOKIE_VARS['password'])) {
             // Either their cookie expired or they are new
             $cooktime = COM_getUserCookieTimeout();
             if ($VERBOSE) {

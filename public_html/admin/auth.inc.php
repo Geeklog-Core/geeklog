@@ -8,11 +8,11 @@
 // | Geeklog admin authentication module                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.18 2003/12/28 18:50:07 dhaun Exp $
+// $Id: auth.inc.php,v 1.19 2004/06/17 11:15:29 dhaun Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $PHP_SELF))
@@ -42,7 +42,7 @@ if (eregi ('auth.inc.php', $PHP_SELF))
 // MAIN
 
 if (!empty($loginname) && !empty($passwd)) {
-    $mypasswd = COM_getpassword($loginname);
+    $mypasswd = COM_getPassword($loginname);
 } else {
     srand((double)microtime()*1000000);
     $mypasswd = rand();
@@ -50,15 +50,17 @@ if (!empty($loginname) && !empty($passwd)) {
 
 $display = '';
 
-if (!empty($passwd) && $mypasswd == md5($passwd)) {
-    $userdata = SESS_getUserData($loginname);
-    $_USER=$userdata;
-    $sessid = SESS_newSession($_USER['uid'], $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+if (!empty ($passwd) && !empty ($mypasswd) && ($mypasswd == md5 ($passwd))) {
+    $_USER = SESS_getUserData ($loginname);
+    $sessid = SESS_newSession ($_USER['uid'], $REMOTE_ADDR,
+            $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+    SESS_setSessionCookie ($sessid, $_CONF['session_cookie_timeout'],
+            $_CONF['cookie_session'], $_CONF['cookie_path'],
+            $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
-    // #Now that we handled session cookies, handle longterm cookie
+    // Now that we handled session cookies, handle longterm cookie
 
-    if (!isset($HTTP_COOKIE_VARS[$_CONF["cookie_name"]])) {
+    if (!isset ($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
 
         // Either their cookie expired or they are new
 

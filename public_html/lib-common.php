@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.333 2004/06/07 18:40:43 tony Exp $
+// $Id: lib-common.php,v 1.334 2004/06/17 11:15:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4096,12 +4096,12 @@ function COM_allowedHTML()
 *
 * Fetches a password for the given user
 *
-* @param        string      $loginname      username to get password for
-* @return   string     Password or ''
+* @param    string  $loginname  username to get password for
+* @return   string              Password or ''
 *
 */
 
-function COM_getpassword( $loginname )
+function COM_getPassword( $loginname )
 {
     global $_TABLES, $LANG01;
 
@@ -4116,9 +4116,11 @@ function COM_getpassword( $loginname )
     }
     else
     {
-        $tmp = $LANG01[32] . ': ' . $loginname;
+        $tmp = $LANG01[32] . ": '" . $loginname . "'";
         COM_errorLog( $tmp, 1 );
     }
+
+    return '';
 }
 
 /**
