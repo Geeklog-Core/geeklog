@@ -29,21 +29,61 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.1 2002/04/25 21:37:33 tony_bibbs Exp $
+// $Id: downloader.class.php,v 1.2 2002/05/13 18:53:07 tony_bibbs Exp $
 
+/**
+* This class allows you to download a file from outside the web tree.  Many hooks
+* around security and file types have been added for customization within any app
+*
+* @author   Tony Bibbs
+*
+*/
 class downloader
 {
     // Private Properties
+    /**
+    * @access private
+    */
     var $_errors;               // Array
+    /**
+    * @access private
+    */
     var $_warnings;             // Array
+    /**
+    * @access private
+    */
     var $_debugMessages;        // Array
+    /**
+    * @access private
+    */
     var $_allowedExtensions;    // Array
+    /**
+    * @access private
+    */
     var $_availableExtensions;  // Array
+    /**
+    * @access private
+    */
     var $_allowedIPS;           // Array
+    /**
+    * @access private
+    */
     var $_sourceDirectory;      // String
+    /**
+    * @access private
+    */
     var $_logFile;              // String
+    /**
+    * @access private
+    */
     var $_doLogging;            // Boolean
+    /**
+    * @access private
+    */
     var $_debug;                // Boolean
+    /**
+    * @access private
+    */
     var $_limitByIP;            // Boolean
     
     /**
@@ -68,7 +108,8 @@ class downloader
     /**
     * Adds a warning that was encountered
     *
-    * @warningText  string  Text of warning
+    * @param    string      $warningTextText of warning
+    * @access   private
     *
     */
     function _addWarning($warningText)
@@ -84,7 +125,8 @@ class downloader
 	/**
 	* Adds an error that was encountered
 	*
-	* @errorText    string  Text of error
+	* @param    string      $errorText  Text of error
+	* @access   private
 	*
 	*/
 	function _addError($errorText)
@@ -100,7 +142,8 @@ class downloader
     /**
     * Adds a debug message
     *
-    * @debugText    string  Text of debug message
+    * @param    string      $debugText      Text of debug message
+    * @access   private
     *
     */
     function _addDebugMsg($debugText)
@@ -116,8 +159,10 @@ class downloader
     /**
     * Logs an item to the log file
     *
-    * @logtype  string  can be 'warning' or 'error'
-    * @text     string  Text to log to log file
+    * @param    string      $logtype        can be 'warning' or 'error'
+    * @param    string      $text           Text to log to log file
+    * @return   boolean     true on success otherwise false
+    * @access   private
     *
     */
 	function _logItem($logtype, $text)
@@ -137,7 +182,7 @@ class downloader
 	/**
     * Defines superset of available Mime types.
     *
-    * @mimeTypes    array   string array of valid mime types this object will accept
+    * @param    array       $extensions     string array of valid mime types this object will accept
     *
     */
     function _setAvailableExtensions($extensions = array())
@@ -181,7 +226,8 @@ class downloader
     * so from a set of VERY specific IP's.  This is only good for those who are
     * paranoid
     *
-    * @validIPS     array   Array of valid IP addresses to allow file uploads from
+    * @param    $array      $validIPS   Array of valid IP addresses to allow file uploads from
+    * @return   boolean     returns true on success otherwise false
     *
     */
     function limitByIP($validIPS = array('127.0.0.1'))
@@ -199,7 +245,8 @@ class downloader
     /**
     * Sets log file
     *
-    * @fileName     string      fully qualified path to log files
+    * @param        string      $fileName       fully qualified path to log files
+    * @return       boolean     true on success otherwise false
     *
     */
     function setLogFile($logFile = '')
@@ -217,7 +264,7 @@ class downloader
     /**
     * Enables/disables logging of errors and warnings
     *
-    * $switch   boolean     flag, true or false
+    * @param    boolean     $switch     flag, true or false
     *
     */
     function setLogging($switch)
@@ -235,6 +282,8 @@ class downloader
     /**
     * Returns whether or not logging is enabled
     *
+    * @return   boolean     true if logging is enabled otherwise false
+    *
     */
     function loggingEnabled()
     {
@@ -245,7 +294,7 @@ class downloader
     * Will force the debug messages in this class to be
     * printed
     *
-    * @switch   boolean     flag, true or false
+    * @param    boolean     $switch     flag, true or false
     *
     */
     function setDebug($switch)
@@ -261,6 +310,9 @@ class downloader
     
     /**
     * This function will print any errors out.  This is useful in debugging
+    *
+    * @param    boolean     $verbose    will print errors to web browser if true
+    * @return   boolean     string of all errors
     *
     */
     function printErrors($verbose=true)
@@ -316,6 +368,8 @@ class downloader
     /**
     * Returns if any errors have been encountered thus far
     *
+    * @return       boolean     True if errors occurred otherwise false
+    *
     */
     function areErrors()
     {
@@ -329,7 +383,7 @@ class downloader
     /**
     * Sets allowed mime types for this instance
     *
-    * @allowedMimeTypes     array   Array of allowed mime types
+    * @param    array       $allowedMimeTypes   Array of allowed mime types
     *
     */
     function setAllowedExtensions($validExtensions = array())
@@ -350,6 +404,8 @@ class downloader
 	/**
 	* Gets allowed mime types for this instance
 	*
+	* @return   array       array of allowed mime types/file extensions
+	*
 	*/
 	function getAllowedExtensions()
 	{
@@ -358,6 +414,9 @@ class downloader
 	
     /**
     * Checks to see that mime type for current file is allowed for upload
+    *
+    * @param        string      $extension      Verifies file extension is allowed for download
+    * @return       boolean     true if allowed otherwise false
     *
     */
     function checkExtension($extension)
@@ -373,7 +432,8 @@ class downloader
     /**
     * Sets file upload path
     *
-    * @uploadDir    string  Directory on server to store uploaded files
+    * @param    string      $uploadDir      Directory on server to store uploaded files
+    * @return   boolean     true on success otherwise false
     *
     */
     function setPath($uploadDir)
@@ -396,12 +456,21 @@ class downloader
 	/**
 	* Returns directory to upload to
 	*
+	* @return   string      returns directory where files for downloading reside
+	*
 	*/
 	function getPath()
 	{
         return $this->_sourceDirectory;
 	}
 	
+    /**
+    * Attempts to dowload a file
+    *
+    * @param    $string     $fileName       file to download without path
+    * @return   boolean     true on success otherwise false
+    *
+    */
 	function downloadFile($fileName)
 	{
         // Ensure file exists        
@@ -433,7 +502,8 @@ class downloader
 
             fpassthru( $fp );
         }
-            	
+        
+        return true;  	
 	}
 	
 }
