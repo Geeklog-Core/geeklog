@@ -38,7 +38,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.2 2001/10/29 23:37:56 tony_bibbs Exp $
+// $Id: lib-custom.php,v 1.3 2002/07/29 12:18:17 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
