@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.116 2004/06/04 21:51:14 tony Exp $
+// $Id: config.php,v 1.117 2004/06/07 15:21:12 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -306,8 +306,8 @@ $_CONF['ostype']    = PHP_OS;
 // download it from http://www.easysw.com/htmldoc/ and yes, it runs on windows
 // and *nix
 
-// Enables the PDF generator feature.  
-$_CONF['pdf_enabled'] = false;
+// Enables the PDF generator feature.  1 = on, 0 = off
+$_CONF['pdf_enabled'] = 0;
 // Absolute path to the htmldoc binary
 $_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
 // Path where we will store the generated PDF's
