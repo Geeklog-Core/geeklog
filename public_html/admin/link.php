@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.14 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: link.php,v 1.15 2002/04/12 16:20:06 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -102,7 +102,7 @@ function editlink($mode, $lid = '')
 		$link_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
     }
     $link_templates->set_var('lang_linktitle', $LANG23[3]);
-    $link_templates->set_var('link_title', $A['title']);
+    $link_templates->set_var('link_title', stripslashes($A['title']));
     $link_templates->set_var('lang_linkurl', $LANG23[4]);
     $link_templates->set_var('link_url', $A['url']);
     $link_templates->set_var('lang_category', $LANG23[5]);
@@ -125,7 +125,7 @@ function editlink($mode, $lid = '')
     $link_templates->set_var('lang_linkhits', $LANG23[8]); 
     $link_templates->set_var('link_hits', $A['hits']);
     $link_templates->set_var('lang_linkdescription', $LANG23[9]);
-    $link_templates->set_var('link_description', $A['description']);
+    $link_templates->set_var('link_description', stripslashes($A['description']));
 
 	// user access info
     $link_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
@@ -270,7 +270,7 @@ function listlinks()
             $access = $LANG_ACCESS[none];
         }	
         $link_templates->set_var('link_id', $A['lid']);
-        $link_templates->set_var('link_name', $A['title']);
+        $link_templates->set_var('link_name', stripslashes($A['title']));
         $link_templates->set_var('link_access', $access);
         $link_templates->set_var('link_category', $A['category']);
         $link_templates->set_var('link_url', $A['url']);
