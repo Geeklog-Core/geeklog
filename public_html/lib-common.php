@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.290 2004/02/22 20:09:36 dhaun Exp $
+// $Id: lib-common.php,v 1.291 2004/02/27 20:17:59 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2645,11 +2645,13 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     static $template;
     static $indent = 0;
 
+    // Make sure we have a default value for comment indentation
     if( !isset( $_CONF['comment_indent'] ))
     {
         $_CONF['comment_indent'] = 25;
     }
 
+    // Initialize the comment templates if not already done
     if( !isset( $template ))
     {
         $template = new Template( $_CONF['path_layout'] . 'comment' );
@@ -2706,6 +2708,8 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
         $template->set_var( 'start_author_anchortag', '' );
         $template->set_var( 'end_author_anchortag', '' );
     }
+    
+    // this will hide HTML that should not be viewed in preview mode
     if( $preview )
     {
         $template->set_var( 'hide_if_preview', 'style="display:none"' );
@@ -2714,6 +2718,23 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     {
         $template->set_var( 'hide_if_preview', '' );
     }
+    
+    // for threaded mode, add a link to comment parent
+    if( $mode == 'threaded' && $A['pid'] != 0 )
+    {
+        $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
+        $P = DB_fetchArray( $result );
+        $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
+               . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+               . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
+               . $P['pid'];
+        $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
+    }
+    else
+    {
+        $template->set_var( 'parent_link', '');
+    }
+    
     if( empty( $A['nice_date'] ))
     {
         $A['nice_date'] = time ();
@@ -2722,6 +2743,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     $template->set_var( 'sid', $A['sid'] );
     $template->set_var( 'type', $A['type'] );
 
+    // If deletion is allowed, displays delete link
     if( $delete_option )
     {
         $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
@@ -2743,6 +2765,8 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     {
         $A['comment'] = nl2br( $A['comment'] );
     }
+    
+    // highlight search terms if specified
     if( !empty( $query ))
     {
         $mywords = explode( ' ', $query );
@@ -2759,6 +2783,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     $template->set_var( 'title', $A['title'] );
     $template->set_var( 'comments', $A['comment'] );
 
+    // parse the templates
     if( $mode == 'threaded' && $indent > 0 )
     {
         $template->set_var( 'pid', $A['pid'] );
@@ -2770,6 +2795,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
         $retval = $template->parse( 'output', 'comment' ); 
     }
 
+    // print the comment's children
     if( !$preview && ( $mode == 'nested' || $mode == 'threaded' ))
     {
     	$indent += $_CONF['comment_indent'];
