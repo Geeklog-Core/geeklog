@@ -557,7 +557,8 @@ $LANG21 = array(
     49 => ' (no spaces and must be unique)',
     50 => 'Help File URL',
     51 => 'include http://',
-    52 => 'If you leave this blank the help icon for this block will not be displayed'
+    52 => 'If you leave this blank the help icon for this block will not be displayed',
+    53 => 'Enabled'
 );
 
 ###############################################################################
@@ -743,7 +744,7 @@ $LANG28 = array(
 	9 => "(do not use spaces)",
 	10 => "Please fill in the Username, Full name, Security Level and Email Address fields",
 	11 => "User Manager",
-	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left.",
+	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left. You can do simple searches by entering parts of a username,email address or fullname (e.g.*son* or *.edu) in the form below.",
 	13 => "SecLev",
 	14 => "Reg. Date",
 	15 => 'New User',
@@ -759,7 +760,9 @@ $LANG28 = array(
     22 => 'Error',
     23 => 'Batch Add',
     24 => 'Batch Import of Users',
-    25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!'
+    25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!',
+    26 => 'Search',
+    27 => 'Limit Results'
 );
 
 
