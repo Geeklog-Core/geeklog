@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.47 2003/11/16 18:22:33 dhaun Exp $
+// $Id: comment.php,v 1.48 2003/12/05 13:32:43 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -393,7 +393,7 @@ case $LANG03[11]: // Submit Comment
             COM_applyFilter ($HTTP_POST_VARS['postmode']));
     break;
 case $LANG01[28]: // Delete
-    $display .= deletecomment (COM_applyFilter ($cid, true),
+    $display .= deletecomment (COM_applyFilter ($cid),
                                COM_applyFilter ($sid), COM_applyFilter ($type));
     break;
 case 'display':
@@ -452,11 +452,11 @@ default:
     } else {
         // This could still be a plugin wanting comments
         if (isset ($HTTP_POST_VARS['cid'])) {
-            $cid = COM_applyFilter ($HTTP_POST_VARS['cid'], true);
+            $cid = COM_applyFilter ($HTTP_POST_VARS['cid']);
         } else {
-            $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
+            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
         }
-        if (!empty ($type) && ($cid > 0)) {
+        if (!empty ($type) && !empty ($cid)) {
             $display .= PLG_callCommentForm ($type, $cid);
         } else {
             // must be a mistake at this point
