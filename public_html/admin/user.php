@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.11 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: user.php,v 1.12 2001/11/19 23:51:59 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -59,11 +59,15 @@ if (!SEC_hasRights('user.edit')) {
 * @uid          int         User to edit
 *
 */
-function edituser($uid = '') 
+function edituser($uid = '', $msg = '') 
 {
 	global $_TABLES, $LANG28, $_CONF, $LANG_ACCESS, $_USER;
 
     $retval = '';
+
+    if (!empty($msg)) {
+        $retval .= COM_startBlock($LANG28[22]) . $LANG28[$msg] . COM_endBlock();
+    }
 
 	$retval .= COM_startBlock($LANG28[1]);
 
@@ -162,14 +166,22 @@ function changepw($uid,$passwd)
 	}
 }
 
-###############################################################################
-# Saves $uid to the database
+/**
+* Saves $uid to the database
+*
+*/
 function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups) 
 {
 	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE;
 
 	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
 	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
+
+    $ucount = DB_getItem($_TABLES['users'],'count(*)',"uid <> $uid");
+    if ($ucount > 0) {
+        // Admin just changes a user's username to one that already exists...bail
+        return edituser($uid, 21);
+    }
 
 	if (!empty($username) && !empty($email)) {
 		if (($uid == 1) or !empty($passwd)) { 
@@ -279,6 +291,12 @@ case $LANG28[19]:
     break;
 case $LANG28[20]:
     $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups);
+    if (!empty($display)) {
+        $tmp = COM_siteHeader('menu');
+        $tmp .= $display;
+        $tmp .= COM_siteFooter('menu');
+        $display = $tmp;
+    }
     break;
 case $LANG28[17]:
     changepw($uid,$passwd);
