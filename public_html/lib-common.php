@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.132 2002/08/07 08:47:21 dhaun Exp $
+// $Id: lib-common.php,v 1.133 2002/08/08 08:09:37 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2096,7 +2096,7 @@ function COM_showBlock($name,$help='',$title='')
 */
 function COM_showBlocks($side, $topic='', $name='all') 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG21;
+    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS;
 
     // Get user preferences on blocks
 	
@@ -2114,7 +2114,11 @@ function COM_showBlocks($side, $topic='', $name='all')
     if (!empty($topic)) {
         $sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
     } else {
-        $sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type != 'layout'))";
+        if ($HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php") {
+            $sql .= " AND (tid = 'all' AND type <> 'layout')";
+        } else {
+            $sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type <> 'layout'))";
+        }
     }
 
     if (!empty($U['boxes'])) {
