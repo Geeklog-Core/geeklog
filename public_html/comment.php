@@ -79,8 +79,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 if ($postmode == 'html') {
                     $comment = stripslashes(COM_checkHTML(COM_checkWords($comment)));
+                    $commenttext = htmlspecialchars($comment);
                 } else {
                     $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
+                    $commenttext = $comment;
                 }
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
@@ -130,7 +132,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $comment_template->set_var('lang_title', $LANG03[16]);
             $comment_template->set_var('title', stripslashes($title));
             $comment_template->set_var('lang_comment', $LANG03[9]);
-            $comment_template->set_var('comment', $comment);
+            $comment_template->set_var('comment', $commenttext);
             $comment_template->set_var('lang_postmode', $LANG03[2]);
             $comment_template->set_var('postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$postmode));
             $comment_template->set_var('allowed_html', COM_allowedHTML());
