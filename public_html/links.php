@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.31 2003/12/11 09:47:05 dhaun Exp $
+// $Id: links.php,v 1.32 2004/06/09 11:30:31 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -131,6 +131,7 @@ if (empty ($_USER['username']) &&
                 $A = DB_fetchArray($result);
                 $linklist->set_var('link_url', $_CONF['site_url'] .
                     '/portal.php?what=link&amp;item=' . $A['lid']);
+                $linklist->set_var ('link_actual_url', $A['url']);
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
@@ -187,6 +188,7 @@ if (empty ($_USER['username']) &&
                 }
                 $linklist->set_var('link_url', $_CONF['site_url'] .
                     '/portal.php?what=link&amp;item=' . $A['lid']);
+                $linklist->set_var ('link_actual_url', $A['url']);
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
