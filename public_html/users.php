@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.19 2002/01/12 04:12:07 tony_bibbs Exp $
+// $Id: users.php,v 1.20 2002/01/12 04:19:14 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -55,15 +55,12 @@ function userprofile($user)
 
     $retval .= '';
 	
-    $result = DB_query("SELECT username,fullname,regdate,homepage FROM {$_TABLES["users"]} WHERE uid = $user");
+    $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $A = DB_fetchArray($result);
 
     // format date/time to user preference
     $curtime = COM_getUserDateTimeFormat($A["regdate"]);
     $A['regdate'] = $curtime[0];
-
-    $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = $user");
-    $B = DB_fetchArray($result);
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml'));
@@ -81,9 +78,9 @@ function userprofile($user)
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', $A['homepage']);
     $user_templates->set_var('lang_bio', $LANG04[7]);
-    $user_templates->set_var('user_bio', $A['about']); 
+    $user_templates->set_var('user_bio', nl2br(stripslashes($A['about']))); 
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
-    $user_templates->set_var('user_pgp', nl2br($B['pgpkey']));
+    $user_templates->set_var('user_pgp', nl2br($A['pgpkey']));
     $user_templates->set_var('start_block_last10comments', COM_startBlock($LANG04[10] . ' ' . $A['username']));
     $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
     $nrows = DB_numRows($result);
