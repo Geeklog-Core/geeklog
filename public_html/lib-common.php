@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.31 2002/02/07 22:31:33 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.32 2002/02/22 21:55:24 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -788,7 +788,9 @@ function COM_pollVote($qid)
     }
 	
     $nquestion = DB_numRows($question);
-    $id = DB_count($_TABLES['pollvoters'],'ipaddress',$REMOTE_ADDR,'qid',$qid);
+    $fields = array('ipaddress','qid');
+    $values = array($REMOTE_ADDR,$qid);
+    $id = DB_count($_TABLES['pollvoters'], $fields, $values);
 
     if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
         if ($nquestion == 1) {
@@ -844,9 +846,9 @@ function COM_showPoll($size,$qid='')
 	DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}");
 
 	if (!empty($qid)) {
-		$id = DB_count($_TABLES['pollvoters'],'ipaddress',$REMOTE_ADDR,'qid',$qid);
+		$pcount = DB_count($_TABLES['pollvoters'],'ipaddress',$REMOTE_ADDR,'qid',$qid);
 
-		if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
+		if (empty($HTTP_COOKIE_VARS[$qid]) && $pcount == 0) {
 			$retval .= COM_pollVote($qid);
 		} else {
 			$retval .= COM_pollResults($qid,$size);
@@ -859,9 +861,10 @@ function COM_showPoll($size,$qid='')
 			for ($i = 1; $i <= $nrows; $i++) {
 				$Q = DB_fetchArray($result);
 				$qid = $Q['qid'];
-				$id = DB_count($_TABLES['pollvoters'],'ipaddress',$REMOTE_ADDR,'qid',$qid);
-
-				if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
+                $id = array('ipaddress','qid');
+                $value = array($REMOTE_ADDR,$qid);
+				$pcount = DB_count($_TABLES['pollvoters'],$id, $value);
+				if (!isset($HTTP_COOKIE_VARS[$qid]) && $pcount == 0) {
 					$retval .= COM_pollVote($qid);
 				} else {
 					$retval .= COM_pollResults($qid,$size);
