@@ -111,6 +111,7 @@ function storyeditor($sid,$mode="") {
 	print "</td></tr>\n";
 	print "<tr><td align=right>{$LANG24[18]}:</td><td><input type=hidden name=hits value={$A["hits"]}>{$A["hits"]}</td></tr>";
 	print "<tr><td align=right>{$LANG24[19]}:</td><td>{$A["comments"]}<input type=hidden name=comments value={$A["comments"]}>";
+	print "<tr><td align=right>{$LANG24[39]}:</td><td>{$A["numemails"]}<input type=hidden name=numemails value={$A["numemails"]}>";
 	print "<input type=hidden name=sid value={$A["sid"]}></td></tr>";
 	print "</table>";
 	endblock();
@@ -168,7 +169,7 @@ function liststories($page="1") {
 ###############################################################################
 # Saves a story to the database
 
-function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixdate,$commentcode,$statuscode,$postmode,$featured,$frontpage,$draft_flag) {
+function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails) {
 	global $CONF,$LANG24;
 	if (!empty($title) && !empty($introtext)) {
 		if ($draft_flag == "on")
@@ -184,6 +185,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 			#if set to featured force to show on front page
 			$frontpage = 1;
 		}
+		if (empty($numemails)) {
+			$numemails = 0;
+		}
+
 		$date = date("Y-m-d H:i:s",$unixdate);
 
 
@@ -243,7 +248,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		$title = addslashes(htmlspecialchars(strip_tags(checkwords($title))));
 		$comments = dbcount("comments","sid",$sid);
 		if ($type = "submission") dbdelete("storysubmission","sid",$sid);
-		dbsave("stories","sid,uid,tid,title,introtext,bodytext,date,comments,related,commentcode,statuscode,postmode,featured,frontpage,draft_flag","$sid,$uid,'$tid','$title','$introtext','$bodytext','$date','$comments','$related','$commentcode','$statuscode','$postmode','$featured','$frontpage',$draft_flag","admin/story.php?msg=9");
+		dbsave("stories","sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails","$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails","admin/story.php?msg=9");
 	} else {
 		site_header("menu");
 		errorlog($LANG24[31],2);
@@ -279,7 +284,7 @@ switch ($mode) {
 		site_footer();
 		break;
 	case "save":
-		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$unixdate,$commentcode,$statuscode,$postmode,$featured,$frontpage, $draft_flag);
+		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails);
 		break;
 	case "cancel":
 	default:
