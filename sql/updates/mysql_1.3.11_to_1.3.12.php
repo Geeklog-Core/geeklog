@@ -17,6 +17,21 @@ $_SQL[] = "CREATE TABLE {$_TABLES['trackback']} (
   INDEX trackback_type(type)
 ) TYPE=MyISAM";
 
+$_SQL[] = "CREATE TABLE {$_TABLES['pingservice']} (
+  pid smallint(5) unsigned NOT NULL auto_increment,
+  name varchar(128) default NULL,
+  ping_url varchar(255) default NULL,
+  site_url varchar(255) default NULL,
+  method varchar(80) default NULL,
+  is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (pid),
+  INDEX pingservice_is_enabled(is_enabled)
+) TYPE=MyISAM";
+
+$_SQL[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'blo.gs', 'http://blo.gs/', 'http://ping.blo.gs/', 'weblogUpdates.extendedPing', 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (2, 'Weblogs.Com', 'http://www.weblogs.com/', 'http://rpc.weblogs.com/RPC2', 'weblogUpdates.ping', 1)";
+$_SQL[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (3, 'Blogrolling.com', 'http://fresh.blogrolling.com/', 'http://rpc.blogrolling.com/pinger/', 'weblogUpdates.ping', 1)";
+
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NOT NULL default '0' AFTER rdfupdated";
 
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)";

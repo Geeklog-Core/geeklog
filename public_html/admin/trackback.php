@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.8 2005/02/01 08:20:57 dhaun Exp $
+// $Id: trackback.php,v 1.9 2005/02/03 19:57:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -278,7 +278,7 @@ function sendPingbacks ($type, $id)
 */
 function sendPings ($type, $id)
 {
-    global $_CONF, $LANG_TRB;
+    global $_CONF, $_TABLES, $LANG_TRB;
 
     $retval = '';
 
@@ -293,33 +293,40 @@ function sendPings ($type, $id)
     $template->set_var ('lang_resend', $LANG_TRB['resend']);
     $template->set_var ('lang_results', $LANG_TRB['ping_results']);
 
-    $counter = 1;
-    foreach ($_CONF['ping_sites'] as $site) {
-        $resend = '';
-        if ($site['method'] == 'weblogUpdates.ping') {
-            $result = PNB_sendPing ($site['ping_url'], $_CONF['site_name'],
-                                    $_CONF['site_url'], $itemurl);
-        } else if ($site['method'] == 'weblogUpdates.extendedPing') {
-            $result = PNB_sendExtendedPing ($site['ping_url'],
-                $_CONF['site_name'], $_CONF['site_url'], $itemurl, $feedurl);
-        } else {
-            $result = $LANG_TRB['unknown_method'] . ': ' . $site['method'];
-        }
-        if (empty ($result)) {
-            $result = '<b>' . $LANG_TRB['ping_success'] . '</b>';
-        } else {
-            $result = '<span class="warningsmall">' . $result . '</span>';
-        }
+    $result = DB_query ("SELECT ping_url,method,name,site_url FROM {$_TABLES['pingservice']} WHERE is_enabled = 1");
+    $services = DB_numRows ($result);
+    if ($services > 0) {
+        for ($i = 0; $i < $services; $i++) {
+            $A = DB_fetchArray ($result);
+            $resend = '';
+            if ($A['method'] == 'weblogUpdates.ping') {
+                $result = PNB_sendPing ($A['ping_url'], $_CONF['site_name'],
+                                        $_CONF['site_url'], $itemurl);
+            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
+                $result = PNB_sendExtendedPing ($A['ping_url'],
+                            $_CONF['site_name'], $_CONF['site_url'], $itemurl,
+                            $feedurl);
+            } else {
+                $result = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
+            }
+            if (empty ($result)) {
+                $result = '<b>' . $LANG_TRB['ping_success'] . '</b>';
+            } else {
+                $result = '<span class="warningsmall">' . $result . '</span>';
+            }
 
-        $template->set_var ('service_name', $site['name']);
-        $template->set_var ('service_url', $site['site_url']);
-        $template->set_var ('service_ping_url', $site['ping_url']);
-        $template->set_var ('ping_result', $result);
-        $template->set_var ('resend', $resend);
-        $template->set_var ('alternate_row',
-                ($counter % 2) == 0 ? 'row-even' : 'row-odd');
-        $template->parse ('ping_results', 'item', true);
-        $counter++;
+            $template->set_var ('service_name', $A['name']);
+            $template->set_var ('service_url', $A['site_url']);
+            $template->set_var ('service_ping_url', $A['ping_url']);
+            $template->set_var ('ping_result', $result);
+            $template->set_var ('resend', $resend);
+            $template->set_var ('alternate_row',
+                                (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+            $template->parse ('ping_results', 'item', true);
+        }
+    } else {
+        $template->set_var ('ping_results', '<tr><td colspan="2">' .
+                            $LANG_TRB['no_services'] . '</td></tr>');
     }
     $template->parse ('output', 'list');
     $retval .= $template->finish ($template->get_var ('output'));
@@ -406,8 +413,296 @@ function getItemInfo ($type, $id, $what)
     }
 }
 
+/**
+* Display a list of all weblog directory services in the system
+*
+* @param    int     $page   page to start
+* @param    int     $msg    ID of a message to display or 0
+* @return   string          HTML for the list
+*
+*/
+function listServices ($page = 1, $msg = 0)
+{
+    global $_CONF, $_TABLES, $LANG_TRB;
+
+    $retval = '';
+
+    $retval .= COM_siteHeader ('menu', $LANG_TRB['services_headline']);
+    if ($msg > 0) {
+        $retval .= COM_showMessage ($msg);
+    }
+    $retval .= COM_startBlock ($LANG_TRB['services_headline'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+    $template->set_file (array ('list' => 'servicelist.thtml',
+                                'row'  => 'serviceitem.thtml'));
+    $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $template->set_var ('layout_url', $_CONF['layout_url']);
+
+    $template->set_var ('lang_adminhome', $LANG_TRB['admin_home']);
+    $template->set_var ('lang_newservice', $LANG_TRB['new_service']);
+    $template->set_var ('lang_instructions', $LANG_TRB['service_explain']);
+    $template->set_var ('lang_name', $LANG_TRB['service']);
+    $template->set_var ('lang_method', $LANG_TRB['ping_method']);
+    $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
+    $template->set_var ('lang_site', $LANG_TRB['service_website']);
+    $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
+
+    if ($page < 1) {
+        $page = 1;
+    }
+    $limit = (50 * $page) - 50;
+    $result = DB_query ("SELECT * FROM {$_TABLES['pingservice']} ORDER BY name LIMIT $limit,50");
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $template->set_var ('row_num', $i + $limit + 1);
+            $template->set_var ('service_id', $A['pid']);
+            $template->set_var ('service_name', $A['name']);
+            $template->set_var ('service_ping_url', $A['ping_url']);
+            $template->set_var ('service_site_url', $A['site_url']);
+            $template->set_var ('service_method_name', $A['method']);
+            if ($A['method'] == 'weblogUpdates.ping') {
+                $template->set_var ('service_method',
+                                    $LANG_TRB['ping_standard']);
+            } else if ($A['method'] == 'weblogUpdates.extendedPing') {
+                $template->set_var ('service_method',
+                                    $LANG_TRB['ping_extended']);
+            } else {
+                $template->set_var ('service_method',
+                        '<span class="warningsmall">' .
+                        $LANG_TRB['ping_unknown'] .  '</span>');
+            }
+            if ($A['is_enabled'] == 1) {
+                $template->set_var ('is_enabled', 'checked="checked"');
+            } else {
+                $template->set_var ('is_enabled', '');
+            }
+            $template->parse ('services_list', 'row', true);
+        }
+    } else {
+        $template->set_var ('services_list', '<tr><td colspan="5">'
+                            . $LANG_TRB['no_services'] . '</td></tr>');
+    }
+
+    $num_pages = ceil (DB_count ($_TABLES['pingservice']) / 50);
+
+    $base_url = $_CONF['site_admin_url'] . '/trackback.php';
+    if ($num_pages > 1) {
+        $template->set_var ('google_paging',
+                COM_printPageNavigation ($base_url, $page, $num_pages));
+    } else {
+        $template->set_var ('google_paging', '');
+    }
+    $template->parse ('output', 'list');
+    $retval .= $template->finish ($template->get_var ('output'));
+
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_siteFooter ();
+
+    return $retval;
+}
+
+/**
+* Display weblog directory service editor
+*
+* @param    int     $pid            ID of the service or 0 for new service
+* @param    string  $msg            an error message to display
+* @param    string  $new_name       name of the service
+* @param    string  $new_site_url   URL of the service's site
+* @param    string  $new_ping_url   URL to ping at the service
+* @param    string  $new_method     ping method to use
+* @param    int     $new_enabled    service is enabled (1) / disabled (0)
+* @return   string                  HTML for the editor
+*
+*/
+function editServiceForm ($pid, $msg = '', $new_name = '', $new_site_url = '', $new_ping_url = '', $new_method = '', $new_enabled = -1)
+{
+    global $_CONF, $_TABLES, $LANG_TRB;
+
+    $retval = '';
+
+    if ($pid > 0) {
+        $result = DB_query ("SELECT * FROM {$_TABLES['pingservice']} WHERE pid = '$pid'");
+        $A = DB_fetchArray ($result);
+    } else {
+        $A['is_enabled'] = 1;
+        $A['method'] = 'weblogUpdates.ping';
+    }
+
+    if (!empty ($new_name)) {
+        $A['name'] = $new_name;
+    }
+    if (!empty ($new_site_url)) {
+        $A['site_url'] = $new_site_url;
+    }
+    if (!empty ($new_ping_url)) {
+        $A['ping_url'] = $new_ping_url;
+    }
+    if (!empty ($new_method)) {
+        $A['method'] = $new_method;
+    }
+    if ($new_enabled >= 0) {
+        $A['is_enabled'] = $new_enabled;
+    }
+
+    $retval .= COM_siteHeader ('menu', $LANG_TRB['edit_service']);
+
+    if (!empty ($msg)) {
+        $retval .= showTrackbackMessage ('Error', $msg);
+    }
+
+    $retval .= COM_startBlock ($LANG_TRB['edit_service'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
+    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+    $template->set_file (array ('editor' => 'serviceeditor.thtml'));
+    $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $template->set_var ('layout_url', $_CONF['layout_url']);
+    $template->set_var ('max_url_length', 255);
+    $template->set_var ('method_ping', 'weblogUpdates.ping');
+    $template->set_var ('method_ping_extended', 'weblogUpdates.extendedPing');
+
+    $template->set_var ('lang_name', $LANG_TRB['service']);
+    $template->set_var ('lang_site_url', $LANG_TRB['service_website']);
+    $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
+    $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
+    $template->set_var ('lang_method', $LANG_TRB['ping_method']);
+    $template->set_var ('lang_method_standard', $LANG_TRB['ping_standard']);
+    $template->set_var ('lang_method_extended', $LANG_TRB['ping_extended']);
+    $template->set_var ('lang_save', $LANG_TRB['button_save']);
+    $template->set_var ('lang_cancel', $LANG_TRB['button_cancel']);
+
+    if ($pid > 0) {
+        $template->set_var ('delete_option', '<input type="submit" value="'
+                . $LANG_TRB['button_delete'] . '" name="servicemode[2]">');
+    } else {
+        $template->set_var ('delete_option', '');
+    }
+
+    $template->set_var ('service_id', $A['pid']);
+    $template->set_var ('service_name', $A['name']);
+    $template->set_var ('service_site_url', $A['site_url']);
+    $template->set_var ('service_ping_url', $A['ping_url']);
+    if ($A['is_enabled'] == 1) {
+        $template->set_var ('is_enabled', 'checked="checked"');
+    } else {
+        $template->set_var ('is_enabled', '');
+    }
+    if ($A['method'] == 'weblogUpdates.ping') {
+        $template->set_var ('standard_is_checked', 'checked="checked"');
+        $template->set_var ('extended_is_checked', '');
+    } else {
+        $template->set_var ('standard_is_checked', '');
+        $template->set_var ('extended_is_checked', 'checked="checked"');
+    }
+
+    $template->parse ('output', 'editor');
+    $retval .= $template->finish ($template->get_var ('output'));
+
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_siteFooter ();
+
+    return $retval;
+}
+
+/**
+* Save information of a weblog directory service
+*
+* @param    int     $pid        ID of service or 0 for new entry
+* @param    string  $name       name of the service
+* @param    string  $site_url   Homepage URL of the service
+* @param    string  $ping_url   URL to ping at the service
+* @param    string  $method     method used for the ping
+* @param    string  $enabled    'on' when enabled
+* @return   string              HTML redirect or service editor
+*
+*/
+function saveService ($pid, $name, $site_url, $ping_url, $method, $enabled)
+{
+    global $_CONF, $_TABLES, $LANG_TRB;
+
+    $enabled = ($enabled == 'on' ? 1 : 0);
+    if ($method == 'extended') {
+        $method = 'weblogUpdates.extendedPing';
+    } else {
+        $method = 'weblogUpdates.ping';
+    }
+
+    $name     = strip_tags (COM_stripslashes ($name));
+    $site_url = strip_tags (COM_stripslashes ($site_url));
+    $ping_url = strip_tags (COM_stripslashes ($ping_url));
+
+    $errormsg = '';
+    if (empty ($name)) {
+        $errormsg = $LANG_TRB['error_site_name'];
+    } else {
+        // all URLs must start with http: or https:
+        $parts = explode (':', $site_url);
+        if (($parts[0] != 'http') && ($parts[0] != 'https')) {
+            $errormsg = $LANG_TRB['error_site_url'];
+        } else {
+            $parts = explode (':', $ping_url);
+            if (($parts[0] != 'http') && ($parts[0] != 'https')) {
+                $errormsg = $LANG_TRB['error_ping_url'];
+            }
+        }
+    }
+
+    if (!empty ($errormsg)) {
+        return editServiceForm ($pid, $errormsg, $name, $site_url, $ping_url,
+                                $method, $enabled);
+    }
+
+    $name     = addslashes ($name);
+    $site_url = addslashes ($site_url);
+    $ping_url = addslashes ($ping_url);
+
+    if ($pid > 0) {
+        DB_save ($_TABLES['pingservice'],
+                 'pid,name,site_url,ping_url,method,is_enabled',
+                 "'$pid','$name','$site_url','$ping_url','$method','$enabled'");
+    } else {
+        DB_save ($_TABLES['pingservice'],
+                 'name,site_url,ping_url,method,is_enabled',
+                 "'$name','$site_url','$ping_url','$method','$enabled'");
+    }
+
+    return COM_refresh ($_CONF['site_admin_url']
+                        . '/trackback?mode=listservice&msg=65');
+}
+
+/**
+* Toggle status of a ping service from enabled to disabled and back
+*
+* @param    int     $pid    ID of the service
+* @return   void
+*
+*/
+function changeServiceStatus ($pid)
+{
+    global $_TABLES;
+
+    $pid = addslashes (COM_applyFilter ($pid, true));
+    if (!empty ($pid)) {
+        $is_enabled = 1;
+        if (DB_getItem ($_TABLES['pingservice'], 'is_enabled', "pid = '$pid'")) {
+            $is_enabled = 0;
+        }
+        DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '$is_enabled' WHERE pid = '$pid'");
+    }
+}
+
 // MAIN
 $display = '';
+
+if ($_CONF['ping_enabled'] && isset ($_POST['serviceChange'])) {
+    changeServiceStatus ($_POST['serviceChange']);
+}
 
 if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
     $mode = $_POST['mode'];
@@ -418,8 +713,50 @@ if (isset ($_POST['mode']) && is_array ($_POST['mode'])) {
     } else {
         $mode = '';
     }
+} else if (isset ($_POST['servicemode']) && is_array ($_POST['servicemode'])) {
+    $mode = $_POST['servicemode'];
+    if (isset ($mode[0])) {
+        $mode = 'saveservice';
+    } else if (isset ($mode[2])) {
+        $mode = 'deleteservice';
+    } else { // $mode[1], Cancel
+        $mode = '';
+    }
 } else {
     $mode = COM_applyFilter ($_REQUEST['mode']);
+}
+
+// sanity check for modes, depending on enabled features ...
+if (!$_CONF['ping_enabled']) {
+    if (($mode == 'deleteservice') || ($mode == 'saveservice') ||
+            ($mode == 'editservice')) {
+        $mode = '';
+    }
+}
+if (!$_CONF['trackback_enabled']) {
+    if (($mode == 'send') || ($mode == 'new') || ($mode == 'pretrackback') ||
+            ($mode == 'autodetect') || ($mode == 'preview')) {
+        $mode = '';
+    }
+}
+if (!$_CONF['pingback_enabled']) {
+    if ($mode == 'pingback') {
+        $mode = '';
+    }
+}
+if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled']) {
+    if ($mode == 'delete') {
+        $mode = '';
+    }
+}
+
+// default action depends on which features are enabled ...
+if (empty ($mode)) {
+    if ($_CONF['ping_enabled']) {
+        $mode = 'listservice';
+    } else if ($_CONF['trackback_enabled']) {
+        $mode = 'fresh';
+    }
 }
 
 if ($mode == 'delete') {
@@ -657,7 +994,7 @@ if ($mode == 'delete') {
     }
     $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog)
              . COM_siteFooter ();
-} else {
+} else if ($mode == 'fresh') {
     $display .= COM_siteHeader ('menu');
 
     if (isset ($_REQUEST['msg'])) {
@@ -705,6 +1042,31 @@ if ($mode == 'delete') {
     $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
 
     $display .= COM_siteFooter ();
+} else if ($mode == 'deleteservice') {
+    $pid = COM_applyFilter ($_POST['service_id'], true);
+    if ($pid > 0) {
+        DB_delete ($_TABLES['pingservice'], 'pid', $pid);
+        $display = COM_refresh ($_CONF['site_admin_url']
+                 . '/trackback.php?mode=listservice&msg=66');
+    } else {
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    }
+} else if ($mode == 'saveservice') {
+    $display .= saveService (COM_applyFilter ($_POST['service_id'], true),
+                             $_POST['service_name'], $_POST['service_site_url'],
+                             $_POST['service_ping_url'], $_POST['method'],
+                             $_POST['is_enabled']);
+
+} else if ($mode == 'editservice') {
+    $pid = COM_applyFilter ($_GET['service_id'], true);
+
+    $display .= editServiceForm ($pid);
+} else if ($mode == 'listservice') {
+    $page = COM_applyFilter ($_REQUEST['page'], true);
+    $msg = COM_applyFilter ($_REQUEST['msg'], true);
+    $display .= listServices ($page, $msg);
+} else {
+    $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
 }
 
 echo $display;

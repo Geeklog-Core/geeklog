@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.155 2005/01/30 20:01:22 dhaun Exp $
+// $Id: config.php,v 1.156 2005/02/03 19:57:39 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -487,32 +487,8 @@ $_CONF['trackback_enabled'] = true;
 // Disable pingbacks by setting this to 'false'
 $_CONF['pingback_enabled'] = true;
 
-// Disable pinging weblog directory services by setting thsi to 'false'.
+// Disable pinging weblog directory services by setting this to 'false'.
 $_CONF['ping_enabled'] = true;
-
-// Weblog directory services to ping
-//
-// PRELIMINARY - THESE WILL BE MOVED TO THE DATABASE EVENTUALLY
-//
-$_CONF['ping_sites'] = array (
-/*
-    array ('name'     => 'blo.gs',
-           'ping_url' => 'http://ping.blo.gs/',
-           'site_url' => 'http://blo.gs',
-           'method'   => 'weblogUpdates.extendedPing'
-          ),
-    array ('name'     => 'Weblogs.Com',
-           'ping_url' => 'http://rpc.weblogs.com/RPC2',
-           'site_url' => 'http://www.weblogs.com',
-           'method'   => 'weblogUpdates.ping'
-          ),
-    array ('name'     => 'Blogrolling.com',
-           'ping_url' => 'http://rpc.blogrolling.com/pinger/',
-           'site_url' => 'http://fresh.blogrolling.com/',
-           'method'   => 'weblogUpdates.ping'
-          )
-*/
-);
 
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)

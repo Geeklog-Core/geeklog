@@ -595,6 +595,18 @@ CREATE TABLE {$_TABLES['trackback']} (
 ";
 
 $_SQL[41] = "
+CREATE TABLE {$_TABLES['pingservice']} (
+  pid smallint(5) unsigned NOT NULL auto_increment,
+  name varchar(128) default NULL,
+  ping_url varchar(255) default NULL,
+  site_url varchar(255) default NULL,
+  method varchar(80) default NULL,
+  is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
+  PRIMARY KEY (pid),
+  INDEX pingservice_is_enabled(is_enabled)
+) TYPE=MyISAM
+";
+$_SQL[41] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
@@ -802,6 +814,10 @@ $_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, ti
 
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
+
+$_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (1, 'blo.gs', 'http://blo.gs/', 'http://ping.blo.gs/', 'weblogUpdates.extendedPing', 1)";
+$_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (2, 'Weblogs.Com', 'http://www.weblogs.com/', 'http://rpc.weblogs.com/RPC2', 'weblogUpdates.ping', 1)";
+$_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url, method, is_enabled) VALUES (3, 'Blogrolling.com', 'http://fresh.blogrolling.com/', 'http://rpc.blogrolling.com/pinger/', 'weblogUpdates.ping', 1)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.4.1','1.3.10',1,'http://www.tonybibbs.com') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";

@@ -773,7 +773,7 @@ $LANG24 = array(
     52 => 'Delete',
     53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
     54 => 'Attached Images Not Used',
-    55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
+    55 => 'The following errors occurred while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
     57 => 'View unscaled image',
     58 => 'Story Management',
@@ -1143,8 +1143,10 @@ $MESSAGE = array(
     60 => 'The plugin was successfully updated',
     61 => 'Plugin %s: Unknown message placeholder',
     62 => 'The trackback comment has been deleted.',
-    63 => 'An error occured when deleting the trackback comment.',
-    64 => 'Your trackback comment has been successfully sent.'
+    63 => 'An error occurred when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.',
+    65 => 'Weblog directory service successfully saved.',
+    66 => 'The weblog directory service has been deleted.'
 );
 
 ###############################################################################
@@ -1339,7 +1341,27 @@ $LANG_TRB = array(
     'may_take_a_while'   => 'Please note that sending Pingbacks and Pings may take a while.',
     'ping_results'       => 'Ping results',
     'unknown_method'     => 'Unknown ping method',
-    'ping_success'       => 'Ping sent.'
+    'ping_success'       => 'Ping sent.',
+    'error_site_name'    => 'Please enter the site\'s name.',
+    'error_site_url'     => 'Please enter the site\'s URL.',
+    'error_ping_url'     => 'Please enter a valid Ping URL.',
+    'no_services'        => 'No weblog directory services configured.',
+    'services_headline'  => 'Weblog Directory Services',
+    'admin_home'         => 'Admin Home',
+    'new_service'        => 'New Service',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the name of that service below. To add a new weblog directory service click on New Service above.',
+    'service'            => 'Service',
+    'ping_method'        => 'Ping method',
+    'service_enabled'    => 'Enabled',
+    'service_website'    => 'Website',
+    'service_ping_url'   => 'URL to ping',
+    'ping_standard'      => 'Standard Ping',
+    'ping_extended'      => 'Extended Ping',
+    'ping_unknown'       => '(unknown method)',
+    'edit_service'       => 'Edit Weblog Directory Service',
+    'button_save'        => 'Save',
+    'button_cancel'      => 'Cancel',
+    'button_delete'      => 'Delete'
 );
 
 ###############################################################################

@@ -1,0 +1,20 @@
+    <tr>
+        <td>
+            {row_num}
+        </td>
+        <td align="center">
+            <form action="{site_admin_url}/trackback.php" method="POST">
+                <input type="checkbox" name="serviceenable" onclick="submit()" value="{service_id}" {is_enabled}>
+                <input type="hidden" name="serviceChange" value="{service_id}">
+            </form>
+        </td>
+        <td>
+            <a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{service_name}</a>
+        </td>
+        <td>
+            {service_method}
+        </td>
+        <td>
+            <a href="{service_site_url}">{service_site_url}</a>
+        </td>
+    </tr>

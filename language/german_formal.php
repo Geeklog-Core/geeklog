@@ -1146,7 +1146,9 @@ $MESSAGE = array(
     61 => 'Plugin %s: Unbekannter Text-Platzhalter',
     62 => 'Der Trackback-Kommentar wurde gelöscht.',
     63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
-    64 => 'Ihr Trackback-Kommentar wurde erfolgreich verschickt.'
+    64 => 'Ihr Trackback-Kommentar wurde erfolgreich verschickt.',
+    65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
+    66 => 'Das Weblog-Verzeichnis wurde gelöscht.'
 );
 
 ###############################################################################
@@ -1317,8 +1319,8 @@ $LANG_TRB = array(
     'error_unspecified'  => 'Fehler nicht näher spezifiziert.',
     'select_url'         => 'Trackback-URL auswählen',
     'not_found'          => 'Trackback-URL nicht gefunden',
-    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag, zu dem der Kommentar gesendet werden sollte, finden. Bitte geben Sie die Trackback-URL von Hand ein.',
-    'trackback_explain'  => 'Aus den unten aufgeführten Links können Sie jetzt den Beitrag auswählen, zu dem Ihr Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls können Sie die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>, wenn Sie sie schon wissen.',
+    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte geben Sie die Trackback-URL von Hand ein.',
+    'trackback_explain'  => 'Aus den unten aufgeführten Links können Sie jetzt den Beitrag auswählen, zu dem Ihr Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls können Sie die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
     'no_links_trackback' => 'Keine Links gefunden. Für diesen Beitrag können keine Trackback-Kommentare gesendet werden.',
     'pingback'           => 'Pingback',
     'pingback_results'   => 'Pingback-Ergebnisse',
@@ -1341,7 +1343,27 @@ $LANG_TRB = array(
     'may_take_a_while'   => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.',
     'ping_results'       => 'Ping-Ergebnisse',
     'unknown_method'     => 'Unbekannte Ping-Methode',
-    'ping_success'       => 'Ping gesendet.'
+    'ping_success'       => 'Ping gesendet.',
+    'error_site_name'    => 'Bitte geben Sie den Namen der Site ein.',
+    'error_site_url'     => 'Bitte geben Sie die URL der Site ein.',
+    'error_ping_url'     => 'Bitte geben Sie die Ping-URL der Site ein.',
+    'no_services'        => 'Es sind keine Weblog-Verzeichnis konfiguriert.',
+    'services_headline'  => 'Weblog-Verzeichnisse',
+    'admin_home'         => 'Admin Home',
+    'new_service'        => 'Neues Verzeichnis',
+    'service_explain'    => 'Um ein Weblog-Verzeichnis zu ändern oder zu löschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
+    'service'            => 'Verzeichnis',
+    'ping_method'        => 'Ping-Methode',
+    'service_enabled'    => 'Aktiv',
+    'service_website'    => 'Website',
+    'service_ping_url'   => 'Ping-URL',
+    'ping_standard'      => 'Normaler Ping',
+    'ping_extended'      => 'Erweiterter Ping',
+    'ping_unknown'       => '(unbekannte Methode)',
+    'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
+    'button_save'        => 'Speichern',
+    'button_cancel'      => 'Abbruch',
+    'button_delete'      => 'Löschen'
 );
 
 ###############################################################################

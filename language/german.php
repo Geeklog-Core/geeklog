@@ -779,7 +779,7 @@ $LANG24 = array(
     57 => 'Bild in Originalgröße',
     58 => 'Artikel-Verwaltung',
     59 => 'Option',
-    60 => 'Aktiviert',
+    60 => 'Aktiv',
     61 => 'automatisch archivieren',
     62 => 'automatisch löschen'
 );
@@ -1145,7 +1145,9 @@ $MESSAGE = array(
     61 => 'Plugin %s: Unbekannter Text-Platzhalter',
     62 => 'Der Trackback-Kommentar wurde gelöscht.',
     63 => 'Beim Löschen des Trackback-Kommentars trat ein Fehler auf.',
-    64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.'
+    64 => 'Dein Trackback-Kommentar wurde erfolgreich verschickt.',
+    65 => 'Das Weblog-Verzeichnis wurde gespeichert.',
+    66 => 'Das Weblog-Verzeichnis wurde gelöscht.'
 );
 
 ###############################################################################
@@ -1316,8 +1318,8 @@ $LANG_TRB = array(
     'error_unspecified'  => 'Fehler nicht näher spezifiziert.',
     'select_url'         => 'Trackback-URL auswählen',
     'not_found'          => 'Trackback-URL nicht gefunden',
-    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag, zu dem der Kommentar gesendet werden sollte, finden. Bitte gib die Trackback-URL von Hand ein.',
-    'trackback_explain'  => 'Aus den unten aufgeführten Links kannst Du jetzt den Beitrag auswählen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>, wenn Du sie schon weißt.',
+    'autodetect_failed'  => 'Geeklog konnte keine Trackback-URL für den Beitrag finden, zu dem der Kommentar gesendet werden sollte. Bitte gib die Trackback-URL von Hand ein.',
+    'trackback_explain'  => 'Aus den unten aufgeführten Links kannst Du jetzt den Beitrag auswählen, zu dem Dein Kommentar gesendet werden soll. Geeklog wird versuchen, die Trackback-URL selbst zu ermitteln. Andernfalls kannst Du die Trackback-URL aber auch <a href="%s">von Hand eingeben</a>.',
     'no_links_trackback' => 'Keine Links gefunden. Für diesen Beitrag können keine Trackback-Kommentare gesendet werden.',
     'pingback'           => 'Pingback',
     'pingback_results'   => 'Pingback-Ergebnisse',
@@ -1340,7 +1342,27 @@ $LANG_TRB = array(
     'may_take_a_while'   => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.',
     'ping_results'       => 'Ping-Ergebnisse',
     'unknown_method'     => 'Unbekannte Ping-Methode',
-    'ping_success'       => 'Ping gesendet.'
+    'ping_success'       => 'Ping gesendet.',
+    'error_site_name'    => 'Bitte gib den Namen der Site ein.',
+    'error_site_url'     => 'Bitte gib die URL der Site ein.',
+    'error_ping_url'     => 'Bitte gib die Ping-URL der Site ein.',
+    'no_services'        => 'Es sind keine Weblog-Verzeichnis konfiguriert.',
+    'services_headline'  => 'Weblog-Verzeichnisse',
+    'admin_home'         => 'Admin Home',
+    'new_service'        => 'Neues Verzeichnis',
+    'service_explain'    => 'Um ein Weblog-Verzeichnis zu ändern oder zu löschen, auf dessen Namen klicken. Um ein neues Weblog-Verzeichnis einzutragen, auf Neues Verzeichnis klicken.',
+    'service'            => 'Verzeichnis',
+    'ping_method'        => 'Ping-Methode',
+    'service_enabled'    => 'Aktiv',
+    'service_website'    => 'Website',
+    'service_ping_url'   => 'Ping-URL',
+    'ping_standard'      => 'Normaler Ping',
+    'ping_extended'      => 'Erweiterter Ping',
+    'ping_unknown'       => '(unbekannte Methode)',
+    'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
+    'button_save'        => 'Speichern',
+    'button_cancel'      => 'Abbruch',
+    'button_delete'      => 'Löschen'
 );
 
 ###############################################################################

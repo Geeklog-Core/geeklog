@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.415 2005/02/01 08:20:56 dhaun Exp $
+// $Id: lib-common.php,v 1.416 2005/02/03 19:57:40 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2525,7 +2525,15 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/trackback.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[116] );
-            $adminmenu->set_var( 'option_count', 'N/A' );
+            if( $_CONF['ping_enabled'] )
+            {
+                $count = DB_count( $_TABLES['pingservice'] );
+                $adminmenu->set_var( 'option_count', $count );
+            }
+            else
+            {
+                $adminmenu->set_var( 'option_count', 'N/A' );
+            }
 
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );

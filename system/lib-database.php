@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.34 2005/01/16 19:14:29 dhaun Exp $
+// $Id: lib-database.php,v 1.35 2005/02/03 19:57:40 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -65,6 +65,7 @@ $_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
 $_TABLES['maillist']            = $_DB_table_prefix . 'maillist';
 $_TABLES['personal_events']     = $_DB_table_prefix . 'personal_events';
+$_TABLES['pingservice']         = $_DB_table_prefix . 'pingservice';
 $_TABLES['plugins']             = $_DB_table_prefix . 'plugins';
 $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
 $_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';

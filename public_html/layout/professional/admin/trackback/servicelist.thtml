@@ -1,0 +1,20 @@
+<table border="0" cellspacing="0" cellpadding=2 width="100%">
+    <tr>
+        <td rowspan="2"><img src="{site_url}/images/icons/ping.gif" alt=""></td>
+        <td>[ <a href="{site_admin_url}/trackback.php?mode=editservice">{lang_newservice}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
+    </tr>
+    <tr>
+        <td>{lang_instructions}</td>
+    </tr>
+</table>
+
+<table width="100%" border="0" cellspacing="1" cellpadding="3">
+    <tr>
+        <th>#</th>
+        <th>{lang_enabled}</th>
+        <th>{lang_name}</th>
+        <th>{lang_method}</th>
+        <th>{lang_site}</th>
+    </tr>
+    {services_list}
+</table>
