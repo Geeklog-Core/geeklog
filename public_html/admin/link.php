@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.16 2002/04/14 18:58:43 dhaun Exp $
+// $Id: link.php,v 1.17 2002/04/23 09:17:51 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -106,6 +106,7 @@ function editlink($mode, $lid = '')
     $link_templates->set_var('link_title', stripslashes($A['title']));
     $link_templates->set_var('lang_linkurl', $LANG23[4]);
     $link_templates->set_var('link_url', $A['url']);
+    $link_templates->set_var('lang_includehttp', $LANG23[6]);
     $link_templates->set_var('lang_category', $LANG23[5]);
     $result	= DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}");
     $nrows	= DB_numRows($result);
