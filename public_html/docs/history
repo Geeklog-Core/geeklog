@@ -3,6 +3,13 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Incorporated the new syndication framework for reading and writing feeds of
+  different formats (RSS, RDF, Atom), provided by Michael Jervis (patch #352).
+  Please note that the feed writer classes, system/classes/*.feed.class.php,
+  are now obsolete and can be removed.
+  This also addresses Task #19 ("RSS import class") and Feature Request #67
+  ("Limiting number of entries in RSS feeds").
+- Story, event, and link submissions are now also checked for spam [Dirk]
 - Added support for sending and receiving trackback comments (Feature Request
   #34) [Dirk]
   This feature can be disabled by setting $_CONF['trackback_enabled'] = false;
