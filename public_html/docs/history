@@ -1,5 +1,27 @@
 GeekLog History/Changes:
 
+Mar ??, 2004 (1.3.9rc3)
+------------
+
+- Made an attempt to recover from duplicate session ids for anonymous users.
+- Adding new topics always resulted in n "Please fill in the Topic ID and Topic
+  Name fields" error message, even if you did fill in both fields (this bug was
+  only introduced in 1.3.9rc2).
+- Filter out backslashes.
+- Comment titles were cut off at the first single or double quote.
+- The text string $LANG04[89] in all language files must be enclosed in
+  double quotes, not single quotes.
+
+- Updated Hebrew language file, provided by Tal Vizel.
+- Updated Polish language file, provided by Robert Stadnik.
+- Updated Polish language file for the Static Pages plugin, provided by
+  Robert Stadnik
+- Updated Russian language file, provided by Denis Kuznetsov.
+- Updated Slovenian language file, provided by gape.
+- Included UTF-8 versions of the Croatian and Japanese language files,
+  provided by Samuel Stone.
+
+
 Feb 29, 2004 (1.3.9rc2)
 ------------
 
@@ -10,7 +32,7 @@ Feb 29, 2004 (1.3.9rc2)
   If you are upgrading from 1.3.9rc1, you will need to run the following SQL
   request manually:
 
-      ALTER TABLE gl_blocks CHANGE blockorder blockorder smallint(5) unsigned NOT NULL default '1'";
+      ALTER TABLE gl_blocks CHANGE blockorder blockorder smallint(5) unsigned NOT NULL default '1';
 
   Replacing "gl_blocks" with the proper table name, if you are using a table
   prefix other than 'gl_'. This step is not necessary when upgrading from 1.3.8
