@@ -1,4 +1,5 @@
-Static Pages Geeklog Plugin 0.1.0 - Installation Instructions
+Plugin - Installation Instructions
+Last Updated: April 16, 2002
 
 What You Need To Know
 ----------------------
@@ -11,23 +12,9 @@ to being released to the public.  That is also the URL where you can get all the
 endorsed by Geeklog.  Authors may opt not to take advantage of that and can, instead, post a URL to their 
 plug-in development site to our homepage at http://geeklog.sourceforge.net.
 
-As of Geeklog version 1.3, you can now upload plug-in modules that will extend the functionality
+As of Geeklog version 1.3, you can now install plug-in modules that will extend the functionality
 of your Geeklog system.  It is very important that you understand which version of Geeklog various
-plug-ins are compatible with particularly if you opt for the manual installation.  To do this quickly, 
-it is important you understand the naming convention used when naming the plugin installation files 
-(which are nothing more than tarball or Zip files).
-
-Plug-ins are named in the following manner:
-
-<plugin-name>_<plugin-version>_<geeklog-version>.<filetype>
-
-An example of one such file name would be:
-
-staticpages_0.1.0_1.3.tar.gz
-
-In this example the plugin-name is staticpages.  The version of staticpages is 0.1.0 and it is compatible
-with Geeklog 1.3.  Now, this plugin may run on later versions of Geeklog but the lowest supported version
-is always used.  Be sure to read up on any pertinent details on the homepage for the plugin.
+plug-ins are compatible with.
 
 As of Geeklog version 1.3 we have added a data abstraction layer that can allow you to run Geeklog with a
 DBMS other than MySQL.  Similarly, plug-ins will be using this abstraction layer in their code so it may be
@@ -51,17 +38,8 @@ SourceForge website at http://sourceforge.net/projects/geeklog.
 
 Web-based Installation
 ----------------------
-You can install plugins via the web administration interface that comes with Geeklog.  This assumes
-you have already downloaded the plugin to your local filesystem (desktop computer):
-
-1) Open the following location in your Geeklog domain, http://<url_to_geeklog/admin/plugins.php
-2) Select the "New Plug-in" option.
-3) On the resulting form click 'browse' and navigate to a select the plug-in's tarball OR zip file
-4) Click the "Install" button
-
-That's it, Geeklog will then upload the plugin tarball, extract it, copy the files to the correct location
-in your Geeklog installation and setup any needed database structures.  If you encounter errors be sure to
-check /path/to/geeklog/logs/error.log as we do our best to print installation progess of all plugins
+No longer supported because it proved too difficult to support web-based installations across all operating
+system in all sorts of hosted environments.
 
 Manual Installation
 --------------------
@@ -75,6 +53,5 @@ You can optionally install plugins manually:
 5) *CAREFULLY* read /path/to/geeklog/<plugin-name>/README for any special instructions OR installation gotchas
 6) copy /path/to/geeklog/<plugin-name>/public_html to /path/to/geeklog/public_html/<plugin-name>
 7) copy /path/to/geeklog/<plugin-name>/admin to /path/to/geeklog/public_html/admin/plugins/<plugin-name>
-8) Import table.sql into your database and, optionally, data.sql if such a file exists (NOTE: neither of
-   these files may be there...that is OK! You just get to skip this step ;-)
+8) navigate your browser to http://yourgeeklogdomain/admin/plugins/<plugin-name>/install.php
 9) That's it! 
