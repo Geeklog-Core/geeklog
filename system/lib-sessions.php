@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.5 2002/01/09 17:36:18 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.6 2002/01/11 17:06:34 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -290,7 +290,11 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
     }
 
     if (!$row) {	
-        return 0;
+        if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
+            return $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
+        } else {
+            return 0;
+        }
     } else {
         return $row[uid];
     }
