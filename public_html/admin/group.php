@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.35 2004/02/08 14:17:50 dhaun Exp $
+// $Id: group.php,v 1.36 2004/02/29 18:45:13 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -292,12 +292,17 @@ function printrights ($grp_id = '', $core = 0)
 
     // get a list of all the features that the current user (i.e. Group Admin)
     // has access to, so we only include these features in the list below
-    $GroupAdminFeatures = SEC_getUserPermissions ();
-    $availableFeatures = explode (',', $GroupAdminFeatures);
-    $GroupAdminFeatures = "'" . implode ("','", $availableFeatures) . "'";
+    if (!SEC_inGroup('Root')) {
+        $GroupAdminFeatures = SEC_getUserPermissions ();
+        $availableFeatures = explode (',', $GroupAdminFeatures);
+        $GroupAdminFeatures = "'" . implode ("','", $availableFeatures) . "'";
+        $ftWhere = ' WHERE ft_name IN (' . $GroupAdminFeatures . ')';
+    } else {
+        $ftWhere = '';
+    }
 
     // now query for all available features
-    $features = DB_query ("SELECT ft_id,ft_name FROM {$_TABLES['features']} WHERE ft_name IN ($GroupAdminFeatures) ORDER BY ft_name");
+    $features = DB_query ("SELECT ft_id,ft_name FROM {$_TABLES['features']}{$ftWhere} ORDER BY ft_name");
     $nfeatures = DB_numRows($features);
 
 	if (!empty($grp_id)) {
@@ -413,12 +418,19 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 
         // now save the features
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_grp_id = $grp_id");
-        $GroupAdminFeatures = SEC_getUserPermissions ();
-        $availableFeatures = explode (',', $GroupAdminFeatures);
-        for ($i = 1; $i <= sizeof($features); $i++) {
-            if (in_array (current ($features), $availableFeatures)) {
-                DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
-                next($features);
+        if (SEC_inGroup ('Root')) {
+            for ($i = 1; $i <= sizeof ($features); $i++) {
+                DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current ($features) . ",$grp_id)");
+                next ($features);
+            }
+        } else {
+            $GroupAdminFeatures = SEC_getUserPermissions ();
+            $availableFeatures = explode (',', $GroupAdminFeatures);
+            for ($i = 1; $i <= sizeof($features); $i++) {
+                if (in_array (current ($features), $availableFeatures)) {
+                    DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
+                    next($features);
+                }
             }
         }
         if ($VERBOSE) {
