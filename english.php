@@ -127,7 +127,8 @@ $LANG01 = array(
 	86 => "No new comments",
 	87 => "last 2 wks",
 	88 => "No recent new links",
-	89 => "There are no upcoming events"
+	89 => "There are no upcoming events",
+	90 => "Home"
 );
 
 ###############################################################################
