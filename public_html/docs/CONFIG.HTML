@@ -12,6 +12,7 @@
 </style>
 </HEAD>
 <body link=444444 vlink=444444 alink=444444 leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 background="images/bg.gif">
+<base class="usual">
 <TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
   <TBODY>
   <TR vAlign=center align=right>
@@ -37,7 +38,7 @@
   <TBODY>
   <TR vAlign=center align=middle bgColor=#dddddd>
     <TD height=20>
-      <div align="center"><font class="usual">configuration • <a href="CUSTOMIZATION.HTML">customization</a>
+      <div align="center">configuration • <a href="CUSTOMIZATION.HTML">customization</a>
         • <a href="INSTALL.HTML">installation</a></font></div>
     </TD>
   </TR>
@@ -58,9 +59,9 @@
       width=1></TD>
   </TR>
   <TR bgColor=#dddddd>
-    <TD height=20><font class="usual">&nbsp;<B>GeekLog
+    <TD height=20>&nbsp;<B>GeekLog
       Configuration</B></font></TD>
-    <TD align=right><B><font class="usual">Last Updated: 19 August 2001</font></B></TD>
+    <TD align=right><B>Last Updated: 19 August 2001</font></B></TD>
   </TR>
   <TR>
     <TD bgColor=#aaaaaa colSpan=2><IMG height=1 src="images/speck.gif"
@@ -72,261 +73,297 @@
   </TR>
   </TBODY>
 </TABLE>
-<TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#ffffff border=0>
+<TABLE cellSpacing=0 cellPadding=5 width="100%" bgColor=#ffffff border=0 class="usual">
   <TBODY>
   <TR>
     <TD vAlign=top rowSpan=2> <font face="Verdana, Arial, Helvetica, sans-serif" size="5"><b>GeekLog
       Configuration Guide</b></font>
       <ul>
-        <li> <b><font class="usual"><a href="#overview">Overview</a></font></b></li>
-        <li> <b><font class="usual"><a href="#config.php">Configuring config.php</a></font></b></li>
-        <li> <b><font class="usual"><a href="#localization">Localization</a></font></b></li>
+        <li> <b><a href="#overview">Overview</a></font></b></li>
+        <li> <b><a href="#config.php">Configuring config.php</a></font></b></li>
+        <li> <b><a href="#localization">Localization</a></font></b></li>
         <ul>
-          <li> <b><font class="usual"><a href="#locale">Locale and Date Formats</a></font></b></li>
+          <li> <b><a href="#locale">Locale and Date Formats</a></font></b></li>
         </ul>
-        <li> <b><font class="usual"><a href="#support">Support</a></font></b></li>
+        <li> <b><a href="#support">Support</a></font></b></li>
       </ul>
       <p><font class="chaptertitle"><b><a name="overview"></a>Overview</b></font></p>
-      <p><font class="usual">GeekLog was developed for the Security Geeks web
+      <p>GeekLog was developed for the Security Geeks web
         site and has been released under the GNU GPL for use by others.&nbsp;
         Configuring GeekLog is meant to be an easy process though it will require
         you to have access to several components of your system. </font> </p>
-      <p><font class="usual">This document is still evolving, so there may be
+      <p>This document is still evolving, so there may be
         unintended omissions or various steps may be over or under explained.
         It's assumed that you have some working experience with some form of&nbsp;Apache,
         SQL databases, and PHP. You are also expected to like cats.</font></p>
       <p><font class="chaptertitle"><b><a name="config.php"></a>Configuring config.php</b></font></p>
-      <p><font class="usual">GeekLog's setting are configured in a text file called
+      <p>GeekLog's setting are configured in a text file called
         config.php.&nbsp; It is necessary to edit this file to get your system
         running as well as configuring it to your preferences.&nbsp; This file
-        contains a set of variables that are defined below: </font> </p>
+        contains a set of variables that are defined below: </p>
+  
+      <!---Database Settings --->
+
       <p><font class="sectiontitle"><b>Database Settings</b> </font>
-      <table BORDER width="100%" >
+      <table BORDER width="100%" class="usual">
         <tr bgcolor="#000000">
           <td bgcolor="#000000" width="9%"><b><font color="#FFFFFF" class="usual">Variable</font></b></td>
           <td width="13%"><b><font color="#FFFFFF" class="usual">Default Value</font></b></td>
           <td width="78%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="9%"><font class="usual">dbname</font></td>
-          <td width="13%"><font class="usual">geeklog</font></td>
-          <td width="78%"><font class="usual">Database Name</font></td>
+          <td width="9%">db_name</font></td>
+          <td width="13%">geeklog</font></td>
+          <td width="78%">Database Name</font></td>
         </tr>
         <tr>
-          <td width="9%"><font class="usual">dbhost</font></td>
-          <td width="13%"><font class="usual">localhost</font></td>
-          <td width="78%"><font class="usual">Database Server (to be entered in
+          <td width="9%">db_host</font></td>
+          <td width="13%">localhost</font></td>
+          <td width="78%">Database Server (to be entered in
             the form: <i>hostname:port:unixsocket</i>). In most cases you won't
             need to change the default value.</font></td>
         </tr>
         <tr>
-          <td width="9%"><font class="usual">dbuser</font></td>
-          <td width="13%"><font class="usual">root</font></td>
-          <td width="78%"><font class="usual">Database User Account</font></td>
+          <td width="9%">db_user</font></td>
+          <td width="13%">root</font></td>
+          <td width="78%">Database User Account</font></td>
         </tr>
         <tr>
-          <td width="9%"><font class="usual">dbpass</font></td>
-          <td width="13%"></td>
-          <td width="78%"><font class="usual">Database User Password</font></td>
+          <td width="9%">db_pass</font></td>
+          <td width="13%">null</td>
+          <td width="78%">Database User Password</font></td>
+        </tr>
+        <tr class="usual">
+          <td width="9%">db_prefix</font></td>
+          <td width="13%">null</td>
+          <td width="78%">Allows you to change the default table names for geeklog</font></td>
         </tr>
       </table>
-      <p><font class="sectiontitle"><b>Site Settings</b> </font>
-      <table BORDER width="100%" >
+  
+      <!---Server Settings --->
+
+      <p><font class="sectiontitle"><b>Server Settings</b> </font>
+      <table BORDER width="100%" class="usual">
         <tr bgcolor="#000000">
           <td bgcolor="#000000" width="8%"><b><font color="#FFFFFF" class="usual">Variable</font></b></td>
           <td width="29%"><b><font color="#FFFFFF" class="usual">Default Value</font></b></td>
           <td width="63%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="8%"><font class="usual">sitename</font></td>
-          <td width="29%"><font class="usual">GeekLog Site</font></td>
-          <td width="63%"><font class="usual">Name of your site</font></td>
-        </tr>
-        <tr>
-          <td width="8%"><font class="usual">siteslogan</font></td>
-          <td width="29%"><font class="usual">Another Nifty GeekLog Site</font></td>
-          <td width="63%"><font class="usual">Slogan for your site.&nbsp; This
-            is added to the HTML title field</font></td>
-        </tr>
-        <tr>
-          <td width="8%"><font class="usual">sitemail</font></td>
-          <td width="29%"><font class="usual">admin@yourdomain.com</font></td>
-          <td width="63%"><font class="usual">E-mail address for all admin mail</font></td>
-        </tr>
-        <tr>
-          <td width="8%"><font class="usual">base</font></td>
-          <td width="29%"><font class="usual">http://www.yourdomain.com</font></td>
-          <td width="63%"><font class="usual">Base URL for your site (no trailing
-            slash) </font></td>
-        </tr>
-        <tr>
-          <td width="8%"><font class="usual">path</font></td>
-          <td width="29%"><font class="usual">/path/to/geeklog/</font></td>
-          <td width="63%"><font class="usual">Base file system path for your site
+          <td width="8%">path</font></td>
+          <td width="29%">/path/to/geeklog/</font></td>
+          <td width="63%">Base file system path for your site
             (trailing slash necessary)</font></td>
         </tr>
         <tr>
-          <td width="8%"><font class="usual">logpath</font></td>
-          <td width="29%"><font class="usual"><i>Above path with &quot;logs&quot;
+          <td width="8%">path_log</font></td>
+          <td width="29%"><i>Above path with &quot;logs&quot;
             suffix</i></font></td>
-          <td width="63%"><font class="usual">File system path for the log files</font></td>
+          <td width="63%">File system path for the log files</font></td>
         </tr>
         <tr>
-          <td width="8%"><font class="usual">rdfpath</font></td>
-          <td width="29%"><font class="usual"><i>Above path with &quot;public_html/backend/geeklog.rdf&quot;
+          <td width="8%">path_html</font></td>
+          <td width="29%"><i>Above path with &quot;public_html&quot;
             suffix</i></font></td>
-          <td width="63%"><font class="usual">File system path for the RDF file</font></td>
+          <td width="63%">location of HTML files (if not public_html)</font></td>
+        </tr>
+        <tr>
+          <td width="8%">path_rdf</font></td>
+          <td width="29%"><i>HTML path with &quot;/backend/geeklog.rdf&quot;
+            suffix</i></font></td>
+          <td width="63%">File system path for the RDF file</font></td>
+        </tr>
+        </table>
+        
+        <!--- site settings --->
+        
+        <p><font class="sectiontitle"><b>Site Settings</b> </font>
+      <table BORDER width="100%" class="usual">
+        <tr bgcolor="#000000">
+          <td bgcolor="#000000" width="8%"><b><font color="#FFFFFF" class="usual">Variable</font></b></td>
+          <td width="29%"><b><font color="#FFFFFF" class="usual">Default Value</font></b></td>
+          <td width="63%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
+        </tr>
+        <tr>
+          <td width="8%">site_name</font></td>
+          <td width="29%">GeekLog Site</font></td>
+          <td width="63%">Name of your site</font></td>
+        </tr>
+        <tr>
+          <td width="8%">site_slogan</font></td>
+          <td width="29%">Another Nifty GeekLog Site</font></td>
+          <td width="63%">Slogan for your site.&nbsp; This
+            is added to the HTML title field</font></td>
+        </tr>
+        <tr>
+          <td width="8%">site_mail</font></td>
+          <td width="29%">admin@yourdomain.com</font></td>
+          <td width="63%">E-mail address for all admin mail</font></td>
+        </tr>
+        <tr>
+          <td width="8%">site_url</font></td>
+          <td width="29%">http://www.yourdomain.com</font></td>
+          <td width="63%">Base URL for your site (no trailing
+            slash) </font></td>
+        </tr>
+        <tr>
+          <td width="8%">layout</font></td>
+          <td width="29%">classic</font></td>
+          <td width="63%">Default layout to use on the site</font></td>
+        </tr>
+        <tr>
+          <td width="8%">layout_path</font></td>
+          <td width="29%">Site URL path, with layout dir and default layout</font></td>
+          <td width="63%">Location of the default layout</font></td>
         </tr>
       </table>
+
+      <!--- Locale Settings --->
+
       <p><font class="sectiontitle"><b>Locale Settings</b> </font>
-      <table BORDER width="100%" >
+      <table BORDER width="100%" class="usual">
         <tr bgcolor="#000000">
           <td bgcolor="#000000" width="10%"><b><font color="#FFFFFF" class="usual">Variable</font></b></td>
           <td width="17%"><b><font color="#FFFFFF" class="usual">Default Value</font></b></td>
           <td width="73%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="10%"><font class="usual">languagefile</font></td>
-          <td width="17%"><font class="usual">/english.php</font></td>
-          <td width="73%"><font class="usual">Name of your language file.&nbsp;
+          <td width="10%">languagefile</font></td>
+          <td width="17%">/english.php</font></td>
+          <td width="73%">Name of your language file.&nbsp;
             Additional language files are avaiable for download at http://www.geeklog.org.&nbsp;
             If you translate a language file, please send it to us.</font></td>
         </tr>
         <tr>
-          <td width="10%"><font class="usual">locale</font></td>
-          <td width="17%"><font class="usual">en-us</font></td>
-          <td width="73%"><font class="usual">Locale for the system</font></td>
+          <td width="10%">locale</font></td>
+          <td width="17%">en-gb</font></td>
+          <td width="73%">Locale for the system</font></td>
         </tr>
         <tr>
-          <td width="10%"><font class="usual">date</font></td>
-          <td width="17%"><font class="usual">%A, %B %d %Y @ %I:%M %p %Z</font></td>
-          <td width="73%"><font class="usual">Date format used for most of the
+          <td width="10%">date</font></td>
+          <td width="17%">%A, %B %d %Y @ %I:%M %p %Z</font></td>
+          <td width="73%">Date format used for most of the
             site, including story displays. See date formats below.</font></td>
         </tr>
         <tr>
-          <td width="10%"><font class="usual">daytime</font></td>
-          <td width="17%"><font class="usual">%m/%d %I:%M%p</font></td>
-          <td width="73%"><font class="usual">Date format used when a shorter
+          <td width="10%">daytime</font></td>
+          <td width="17%">%m/%d %I:%M%p</font></td>
+          <td width="73%">Date format used when a shorter
             date is needed. See date formats below.</font></td>
         </tr>
         <tr>
-          <td width="10%"><font class="usual">shortdate</font></td>
-          <td width="17%"><font class="usual">%x</font></td>
-          <td width="73%"><font class="usual">Date format this is the shortest
+          <td width="10%">shortdate</font></td>
+          <td width="17%">%x</font></td>
+          <td width="73%">Date format this is the shortest
             date. See date formats below.</font></td>
         </tr>
       </table>
-      <p><font class="sectiontitle"><b>User Account Access Control Settings</b></font></p>
-      <table width="100%" border="1">
-        <tr bgcolor="#000000">
-          <td width="16%"><font class="usual" color="#FFFFFF"><b>Variable</b></font></td>
-          <td width="13%"><font class="usual" color="#FFFFFF"><b>Default Value</b></font></td>
-          <td width="71%"><font class="usual" color="#FFFFFF"><b>Description</b></font></td>
-        </tr>
-        <tr>
-          <td width="16%"><font class="usual">ipbasedsessid</font></td>
-          <td width="13%"><font class="usual">1</font></td>
-          <td width="71%"><font class="usual">Session ID to contain IP address
-            of user as well as random number. This is more secure but will more
-            than likely require dialed up users to login each and every time.
-            (0=no, 1=yes)</font></td>
-        </tr>
-        <tr>
-          <td width="16%"><font class="usual">sesscookietimeout</font></td>
-          <td width="13%"><font class="usual">7200</font></td>
-          <td width="71%"><font class="usual">Session cookie timeout (in seconds).</font></td>
-        </tr>
-        <tr>
-          <td width="16%"><font class="usual">sesscookiename</font></td>
-          <td width="13%"><font class="usual">gl_session</font></td>
-          <td width="71%"><font class="usual">What the session ID is stored as
-            in the cookie.</font></td>
-        </tr>
-        <tr>
-          <td width="16%"><font class="usual">cookiename</font></td>
-          <td width="13%"><font class="usual">geeklog</font></td>
-          <td width="71%"><font class="usual">The name of the cookie.</font></td>
-        </tr>
-        <tr>
-          <td width="16%"><font class="usual">cookiepath</font></td>
-          <td width="13%"><font class="usual">/</font></td>
-          <td width="71%"><font class="usual">Cookie path. </font></td>
-        </tr>
-      </table>
+
+      <!--- Security Settings --->
+
       <p><font class="sectiontitle"><b>Security Settings</b></font></p>
-      <table width="100%" border="1">
+      <table width="100%" border="1" class="usual">
         <tr bgcolor="#000000">
           <td width="14%"><font color="#FFFFFF" class="usual"><b>Variable</b></font></td>
           <td width="13%"><font color="#FFFFFF" class="usual"><b>Default Value</b></font></td>
           <td width="73%"><font color="#FFFFFF" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>Description</b></font></td>
         </tr>
         <tr>
-          <td width="14%" class="usual">storyadmin</td>
+          <td width="14%" class="usual">sec_mod</td>
+          <td width="13%" class="usual">100</td>
+          <td width="73%" class="usual">Standard Moderator Security setting.</td>
+        </tr>
+        <tr>
+          <td width="14%" class="usual">sec_story</td>
           <td width="13%" class="usual">150</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete stories.</td>
+          <td width="73%" class="usual">Story moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">moderator</td>
+          <td width="14%" class="usual">sec_links</td>
           <td width="13%" class="usual">150</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to be a moderator.</td>
+          <td width="73%" class="usual">Links moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">blockadmin</td>
+          <td width="14%" class="usual">sec_event</td>
           <td width="13%" class="usual">150</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete blocks.</td>
+          <td width="73%" class="usual">Event moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">topicadmin</td>
-          <td width="13%" class="usual">200</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete topics.</td>
-        </tr>
-        <tr>
-          <td width="14%" class="usual">linkadmin</td>
+          <td width="14%" class="usual">sec_poll</td>
           <td width="13%" class="usual">150</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete links.</td>
+          <td width="73%" class="usual">Poll moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">eventadmin</td>
-          <td width="13%" class="usual">150</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete events.</td>
-        </tr>
-        <tr>
-          <td width="14%" class="usual">polladmin</td>
+          <td width="14%" class="usual">sec_topic</td>
           <td width="13%" class="usual">200</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete polls.</td>
+          <td width="73%" class="usual">Topic moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">useradmin</td>
+          <td width="14%" class="usual">sec_block</td>
           <td width="13%" class="usual">200</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to add/edit/delete users.</td>
+          <td width="73%" class="usual">Block moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">commentadmin</td>
+          <td width="14%" class="usual">sec_user</td>
           <td width="13%" class="usual">200</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to delete comments.</td>
+          <td width="73%" class="usual">User moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">emailadmin</td>
+          <td width="14%" class="usual">sec_delstory</td>
           <td width="13%" class="usual">200</td>
-          <td width="73%" class="usual">Minimum security level (SecLev) required
-            to e-mail users.</td>
+          <td width="73%" class="usual">Comment moderator level.</td>
         </tr>
         <tr>
-          <td width="14%" class="usual">lowestadmin</td>
+          <td width="14%" class="usual">sec_email</td>
+          <td width="13%" class="usual">200</td>
+          <td width="73%" class="usual">Email other users level.</td>
+        </tr>
+        <tr>
+          <td width="14%" class="usual">sec_lowest</td>
           <td width="13%" class="usual">150</td>
           <td width="73%" class="usual">This value should be equal to the lowest
             value above.</td>
         </tr>
       </table>
+
+      <p><font class="sectiontitle"><b>User Account Access Control Settings</b></font></p>
+      <table width="100%" border="1">
+        <tr bgcolor="#000000">
+          <td width="16%"><font class="usual" color="#FFFFFF"><b>Variable</b></td>
+          <td width="13%"><font class="usual" color="#FFFFFF"><b>Default Value</b></td>
+          <td width="71%"><font class="usual" color="#FFFFFF"><b>Description</b></td>
+        </tr>
+        <tr>
+          <td width="16%">ipbasedsessid</td>
+          <td width="13%">1</td>
+          <td width="71%">Session ID to contain IP address
+            of user as well as random number. This is more secure but will more
+            than likely require dialed up users to login each and every time.
+            (0=no, 1=yes)</td>
+        </tr>
+        <tr>
+          <td width="16%">sesscookietimeout</td>
+          <td width="13%">7200</td>
+          <td width="71%">Session cookie timeout (in seconds).</td>
+        </tr>
+        <tr>
+          <td width="16%">sesscookiename</td>
+          <td width="13%">gl_session</td>
+          <td width="71%">What the session ID is stored as
+            in the cookie.</td>
+        </tr>
+        <tr>
+          <td width="16%">cookiename</td>
+          <td width="13%">geeklog</td>
+          <td width="71%">The name of the cookie.</td>
+        </tr>
+        <tr>
+          <td width="16%">cookiepath</td>
+          <td width="13%">/</td>
+          <td width="71%">Cookie path. </td>
+        </tr>
+      </table>
+
       <p><font class="sectiontitle"><b>Submission Settings</b> </font>
       <table BORDER width="100%" >
         <tr bgcolor="#000000">
@@ -335,16 +372,16 @@
           <td width="75%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="12%"><font class="usual">loginrequired</font></td>
-          <td width="13%"><font class="usual">0</font></td>
-          <td width="75%"><font class="usual">Login required to submit items (0=no,
-            1=yes)</font></td>
+          <td width="12%">loginrequired</td>
+          <td width="13%">0</td>
+          <td width="75%">Login required to submit items (0=no,
+            1=yes)</td>
         </tr>
         <tr>
-          <td width="12%"><font class="usual">speedlimit</font></td>
-          <td width="13%"><font class="usual">0</font></td>
-          <td width="75%"><font class="usual">Minimum delay between submissions
-            (in seconds).</font></td>
+          <td width="12%">speedlimit</td>
+          <td width="13%">0</td>
+          <td width="75%">Minimum delay between submissions
+            (in seconds).</td>
         </tr>
       </table>
       <p class="sectiontitle"><b>Topic, What's New &amp; E-mail Settings</b>
@@ -435,28 +472,28 @@
           <td width="73%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="15%"><font class="usual">backend</font></td>
-          <td width="12%"><font class="usual">1</font></td>
-          <td width="73%"><font class="usual">Create an RSS/RDF file for the stories
-            in rdfpath (0=no, 1=yes)</font></td>
+          <td width="15%">backend</td>
+          <td width="12%">1</td>
+          <td width="73%">Create an RSS/RDF file for the stories
+            in rdfpath (0=no, 1=yes)</td>
         </tr>
         <tr>
-          <td width="15%"><font class="usual">limitnews</font></td>
-          <td width="12%"><font class="usual">10</font></td>
-          <td width="73%"><font class="usual">Number of stories to limit the index
-            page to, this same number will appear in the older stuff block</font></td>
+          <td width="15%">limitnews</td>
+          <td width="12%">10</td>
+          <td width="73%">Number of stories to limit the index
+            page to, this same number will appear in the older stuff block</td>
         </tr>
         <tr>
-          <td width="15%"><font class="usual">olderstuff</font></td>
-          <td width="12%"><font class="usual">1</font></td>
-          <td width="73%"><font class="usual">Use the olderstuff block (0=no,
-            1=yes)</font></td>
+          <td width="15%">olderstuff</td>
+          <td width="12%">1</td>
+          <td width="73%">Use the olderstuff block (0=no,
+            1=yes)</td>
         </tr>
         <tr>
-          <td width="15%"><font class="usual">olderstufforder</font></td>
-          <td width="12%"><font class="usual">2</font></td>
-          <td width="73%"><font class="usual">Order code to display the olderstuff
-            block in</font></td>
+          <td width="15%">olderstufforder</td>
+          <td width="12%">2</td>
+          <td width="73%">Order code to display the olderstuff
+            block in</td>
         </tr>
         <tr>
           <td width="15%" class="usual">contributedbyline</td>
@@ -473,16 +510,16 @@
           <td width="75%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="12%"><font class="usual">speedlimit2</font></td>
-          <td width="13%"><font class="usual">60</font></td>
-          <td width="75%"><font class="usual">Number of seconds between posting
-            comment for the user</font></td>
+          <td width="12%">speedlimit2</td>
+          <td width="13%">60</td>
+          <td width="75%">Number of seconds between posting
+            comment for the user</td>
         </tr>
         <tr>
-          <td width="12%"><font class="usual">loginrequired2</font></td>
-          <td width="13%"><font class="usual">0</font></td>
-          <td width="75%"><font class="usual">Login required to post comments
-            (0=no, 1=yes)</font></td>
+          <td width="12%">loginrequired2</td>
+          <td width="13%">0</td>
+          <td width="75%">Login required to post comments
+            (0=no, 1=yes)</td>
         </tr>
       </table>
       <p><font class="sectiontitle"><b>Poll Settings</b></font>
@@ -493,28 +530,28 @@
           <td width="74%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="13%"><font class="usual">maxanswers</font></td>
-          <td width="13%"><font class="usual">10</font></td>
-          <td width="74%"><font class="usual">Maximum number of possible answers
-            for the poll editor</font></td>
+          <td width="13%">maxanswers</td>
+          <td width="13%">10</td>
+          <td width="74%">Maximum number of possible answers
+            for the poll editor</td>
         </tr>
         <tr>
-          <td width="13%"><font class="usual">pollcookietime</font></td>
-          <td width="13%"><font class="usual">86400</font></td>
-          <td width="74%"><font class="usual">Number of seconds to set a poll
-            answer cookie to time out on</font></td>
+          <td width="13%">pollcookietime</td>
+          <td width="13%">86400</td>
+          <td width="74%">Number of seconds to set a poll
+            answer cookie to time out on</td>
         </tr>
         <tr>
-          <td width="13%"><font class="usual">polladdresstime</font></td>
-          <td width="13%"><font class="usual">604800</font></td>
-          <td width="74%"><font class="usual">Number of seconds to set a poll
-            answer IP address to time out on</font></td>
+          <td width="13%">polladdresstime</td>
+          <td width="13%">604800</td>
+          <td width="74%">Number of seconds to set a poll
+            answer IP address to time out on</td>
         </tr>
         <tr>
-          <td width="13%"><font class="usual">pollorder</font></td>
-          <td width="13%"><font class="usual">1</font></td>
-          <td width="74%"><font class="usual">Order code to display the poll block
-            in</font></td>
+          <td width="13%">pollorder</td>
+          <td width="13%">1</td>
+          <td width="74%">Order code to display the poll block
+            in</td>
         </tr>
       </table>
       <p><font class="sectiontitle"><b>Content Control Settings</b></font>
@@ -525,35 +562,35 @@
           <td width="48%"><b><font color="#FFFFFF" class="usual">Description</font></b></td>
         </tr>
         <tr>
-          <td width="11%"><font class="usual">allowablehtml</font></td>
-          <td width="41%"><font class="usual">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;li&gt;,&lt;ol&gt;,<br>
-            &lt;div&gt;,&lt;ul&gt;</font></td>
-          <td width="48%"><font class="usual">Allowed HTML in stories submissions
-            and comments.</font></td>
+          <td width="11%">allowablehtml</td>
+          <td width="41%">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;li&gt;,&lt;ol&gt;,<br>
+            &lt;div&gt;,&lt;ul&gt;</td>
+          <td width="48%">Allowed HTML in stories submissions
+            and comments.</td>
         </tr>
         <tr>
-          <td width="11%"><font class="usual">censormode</font></td>
-          <td width="41%"><font class="usual">1</font></td>
-          <td width="48%"><font class="usual">Censor submissions and comments
-            (0=no, 1=yes)</font></td>
+          <td width="11%">censormode</td>
+          <td width="41%">1</td>
+          <td width="48%">Censor submissions and comments
+            (0=no, 1=yes)</td>
         </tr>
         <tr>
-          <td width="11%"><font class="usual">censorreplace</font></td>
-          <td width="41%"><font class="usual">*censored*</font></td>
-          <td width="48%"><font class="usual">Text to replace a censored word
-            with</font></td>
+          <td width="11%">censorreplace</td>
+          <td width="41%">*censored*</td>
+          <td width="48%">Text to replace a censored word
+            with</td>
         </tr>
         <tr>
-          <td width="11%"><font class="usual">censorlist</font></td>
-          <td width="41%"><font class="usual">array("fuck","cunt","fucker","fucking","pussy","cock",
+          <td width="11%">censorlist</td>
+          <td width="41%">array("fuck","cunt","fucker","fucking","pussy","cock",
             <br>
             "c0ck","cum","twat","clit","bitch","fuk","fuking", <br>
-            "motherfucker")</font></td>
-          <td width="48%"><font class="usual">An array of censored words</font></td>
+            "motherfucker")</td>
+          <td width="48%">An array of censored words</td>
         </tr>
       </table>
       <p><font class="chaptertitle"><b><a name="localization"></a>Localization</b></font></p>
-      <p><font class="usual">Localizing GeekLog is now fairly easy. All strings
+      <p>Localizing GeekLog is now fairly easy. All strings
         are contained in a language file, the default file that ships with the
         tar ball is english.php.&nbsp; As people translate the file, local versions
         will be posted on the <a href="http://www.geeklog.org/download.php">GeekLog
@@ -561,7 +598,7 @@
         please forward me a copy at <a href="mailto:tony@tonybibbs.com">tony@tonybibbs.com</a>.</font>
       </p>
       <p><font class="chaptertitle"><b><a name="locale"></a>Locale and Date Formats</b></font></p>
-      <p><font class="usual">You can set the locale and date format in the config.php
+      <p>You can set the locale and date format in the config.php
         file.&nbsp; To set the locale, set the variable to the proper string or
         if you leave it blank it will pull the default locale from the operating
         system.&nbsp; The date formats are handled by your locale. Isn't that
@@ -570,7 +607,7 @@
         some systems the command <i>locale -a</i> will display all available locales
         on a system. If a local doesn't exist you can create it using the <i>localedef</i>
         command. </font> </p>
-      <p><font class="usual">More info on locale: <a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>
+      <p>More info on locale: <a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>
         <br>
         More info on localdef: <a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a></font></p>
       <font face="Verdana, Arial, Helvetica, sans-serif" size="3"> <b>Date Format
@@ -625,23 +662,23 @@
       </ul>
       <font class="chaptertitle"><b><a name="support"></a>Support</b></font>
       <ul>
-        <li> <font class="usual"><b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">SourceForge</a>.</font></li>
-        <li> <font class="usual"><b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
+        <li> <b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">SourceForge</a>.</font></li>
+        <li> <b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
           list</a>.</font></li>
-        <li> <font class="usual"><b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">SourceForge</a>.</font></li>
-        <li> <font class="usual"><b>General Help</b> - A better place for general
+        <li> <b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">SourceForge</a>.</font></li>
+        <li> <b>General Help</b> - A better place for general
           "I can't do it!" help is the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
           list</a>. Stuff that may be of more general interest is welcome here;
           but you will probably get better help on the lists.</font></li>
-        <li> <font class="usual"><b>Link submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=link">contribute
+        <li> <b>Link submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=link">contribute
           link</a> link to tell us about your new site running GeekLog.</font></li>
-        <li> <font class="usual"><b>Story submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=story">contribute
+        <li> <b>Story submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=story">contribute
           news</a> link to tell us your ideas for the GeekLog site and questions.
           DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">bug
           reports</a>. Also try not to use it for general "I can't do this!" help;
           you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
           list</a>.</font></li>
-        <li> <font class="usual"><b>Feature requests</b> - Where to send feature
+        <li> <b>Feature requests</b> - Where to send feature
           requests depends a bit on what the request is. In general, the mailing
           list is a decent place, and if it is something significant, you may
           want to send it in as a story submission. You may also want to go over
@@ -672,9 +709,9 @@
       &quot;Baba&quot; Marikar</font></a> <font face="Verdana, Arial, Helvetica, sans-serif" size="1">&amp;
       <a href="mailto:tony@tonybibbs.com">Tony Bibbs</a><br>
       All trademarks and copyrights on this page are owned by their respective
-      owners. GeekLog is copyleft.</font></TD>
+      owners. GeekLog is copyleft.</td>
     <TD align=right><font face="Verdana, Arial, Helvetica, sans-serif" size="1">GeekLog
-      v1.2.4</font></TD>
+      v1.2.4</td>
   </TR>
   <TR>
     <TD bgColor=#aaaaaa colSpan=2><IMG height=1 src="images/speck.gif"
