@@ -135,10 +135,14 @@ function editpreferences()
 
     $A = DB_fetchArray($result);
 
-    if ($A['maxstories'] < 5) {
+    // OK, if maxstories is empty then set it to 10.  If they have somehting smaller than 5 set it
+    // to 5 because, hey, this is a news site
+    if (empty($A['maxstories'])) {
+        $A['maxstories'] = 10;
+    } else if ($A['maxstories'] < 5) {
         $A['maxstories'] = 5;
     }
-	
+
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
         . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
@@ -237,16 +241,14 @@ function editpreferences()
         . '</tr>' . LB
         . '</table>'
         . COM_endBlock();
-	
     $retval .= COM_startBlock($LANG04[46] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">'.LB
         . '<tr>' . LB
         . '<td colspan="3">' . $LANG04[54] . '</td>' . LB
         . '</tr>' . LB
         . '<tr valign="top">' . LB
-        . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic','',"'{$A['tids']}'") . '</td>' . LB
+        . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic','',$A['tids']) . '</td>' . LB
         . '<td><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="40" height="1"></td>' . LB;
-		
     if ($_CONF['contributedbyline'] == 1) {
         $retval .= '<td><b>' . $LANG04[56] . '</b><br>';
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
@@ -257,7 +259,7 @@ function editpreferences()
             $where .= "uid = '$W[0]' OR ";
         }
         $where .= "uid = '1'";
-        $retval .= COM_checkList($_TABLES['users'],'uid,username',$where,"'{$A['aids']}'").'</td>'.LB;
+        $retval .= COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']).'</td>'.LB;
     }
 	
     $retval .= '</tr>' . LB . '</table>' . COM_endBlock();
@@ -385,8 +387,8 @@ function savepreferences($A)
     unset($aids);
     unset($boxes);
 
-    $TIDS = @array_values($A['topics']);
-    $AIDS = @array_values($A['users']);
+    $TIDS = @array_values($A[$_TABLES['topics']]);
+    $AIDS = @array_values($A[$_TABLES['users']]);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
 
     if (sizeof($TIDS) > 0) {
