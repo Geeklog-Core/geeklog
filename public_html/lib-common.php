@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.96 2002/05/15 01:12:38 mlimburg Exp $
+// $Id: lib-common.php,v 1.97 2002/05/15 15:59:19 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1877,7 +1877,7 @@ function COM_checkHTML($str)
         $new_pre_string = str_replace('[/code]','',$new_pre_string);
         $new_pre_string = str_replace('[/CODE]','',$new_pre_string);
         $new_pre_string = nl2br($new_pre_string);
-        $str = str_replace($orig_pre_string, '<code><pre>'.$new_pre_string.'</pre></code>', $str);    
+        $str = str_replace($orig_pre_string, '<pre><code>'.$new_pre_string.'</code></pre>', $str);    
     }
     
     if (!SEC_hasRights('story.edit')) {

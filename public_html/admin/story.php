@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.50 2002/05/14 20:22:25 tony_bibbs Exp $
+// $Id: story.php,v 1.51 2002/05/15 15:59:20 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -275,10 +275,10 @@ function storyeditor($sid = '', $mode = '')
         $newintro = str_replace('$','&#36;',$newintro);
     } else {
         // Insert [code] and [/code] if needed
-        $newintro = str_replace('<code><pre>','[code]',$newintro);
-        $newbody = str_replace('<code><pre>','[code]',$newbody);
-        $newintro = str_replace('</pre></code>','[/code]',$newintro);
-        $newbody = str_replace('</pre></code>','[/code]',$newbody);
+        $newintro = str_replace('<pre><code>','[code]',$newintro);
+        $newbody = str_replace('<pre><code>','[code]',$newbody);
+        $newintro = str_replace('</code></pre>','[/code]',$newintro);
+        $newbody = str_replace('</code></pre>','[/code]',$newbody);
     }
     $newintro = str_replace('{','&#123;',$newintro);
     $newintro = str_replace('}','&#125;',$newintro);
