@@ -1,6 +1,6 @@
 GeekLog History/Changes:
 
-Feb ??, 2004 (1.3.9rc1)
+Feb 16, 2004 (1.3.9rc1)
 ------------
 
 - Use COM_getYearFormOptions() etc. for the event submission form in
