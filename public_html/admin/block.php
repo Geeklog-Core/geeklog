@@ -49,8 +49,16 @@ function editdefaultblock($A) {
 	print "<input type=hidden name=tid value=all></td></tr>";
 	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
-        print "<option value=1>{$LANG21[40]}:</option>";
-        print "<option value=0>{$LANG21[41]}:</option>";
+        print "<option value=1";
+	if ($A["onleft"] == 1) {
+		print " SELECTED";
+	}
+	print ">{$LANG21[40]}</option>";
+        print "<option value=0";
+	if ($A["onleft"] == 0) {
+		print " SELECTED";
+	}
+	print ">{$LANG21[41]}</option>";
         print "</SELECT>";
 	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";	
 	print "<tr><td align=right>{$LANG21[10]}:</td><td>gldefault</td></tr>";
@@ -101,8 +109,16 @@ function editblock($bid="") {
 	print "</select></td></tr>";
 	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
-	print "<option value=1>{$LANG21[40]}:</option>";
-	print "<option value=0>{$LANG21[41]}:</option>";
+	print "<option value=1";
+	if ($A["onleft"] == 1) {
+		print " SELECTED";
+	}
+	print ">{$LANG21[40]}</option>";
+	print "<option value=0";
+	if ($A["onleft"] == 0) {
+		print " SELECTED";
+	}
+	print ">{$LANG21[41]}</option>";
 	print "</SELECT>";	
 	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[10]}:</td><td><select name=type>";
