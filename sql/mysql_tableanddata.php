@@ -76,6 +76,7 @@ CREATE TABLE {$_TABLES['comments']} (
   INDEX comments_uid(uid),
   INDEX comments_lft(lft),
   INDEX comments_rht(rht),
+  INDEX comments_date(date),
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
 ";
@@ -123,6 +124,8 @@ CREATE TABLE {$_TABLES['events']} (
   timeend time default NULL,
   INDEX events_eid(eid),
   INDEX events_event_type(event_type),
+  INDEX events_datestart(datestart),
+  INDEX events_dateend(dateend),
   PRIMARY KEY  (eid)
 ) TYPE=MyISAM
 ";
@@ -182,6 +185,7 @@ CREATE TABLE {$_TABLES['group_assignments']} (
   ug_uid mediumint(8) unsigned default NULL,
   ug_grp_id mediumint(8) unsigned default NULL,
   INDEX group_assignments_ug_main_grp_id(ug_main_grp_id),
+  INDEX group_assignments_ug_uid(ug_uid),
   KEY ug_main_grp_id (ug_main_grp_id)
 ) TYPE=MyISAM
 ";
@@ -213,6 +217,8 @@ CREATE TABLE {$_TABLES['links']} (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX links_lid(lid),
+  INDEX links_category(category),
+  INDEX links_date(date),
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
@@ -308,6 +314,7 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
+  INDEX pollquestions_date(date),
   PRIMARY KEY  (qid)
 ) TYPE=MyISAM
 ";
@@ -404,6 +411,8 @@ CREATE TABLE {$_TABLES['stories']} (
   INDEX stories_hits(hits),
   INDEX stories_statuscode(statuscode),
   INDEX stories_expire(expire),
+  INDEX stories_date(date),
+  INDEX stories_frontpage(frontpage),
   PRIMARY KEY  (sid)
 ) TYPE=MyISAM
 ";
@@ -494,6 +503,7 @@ CREATE TABLE {$_TABLES['userindex']} (
   maxstories tinyint(4) default NULL,
   INDEX userindex_uid(uid),
   INDEX userindex_noboxes(noboxes),
+  INDEX userindex_maxstories(maxstories),
   PRIMARY KEY  (uid)
 ) TYPE=MyISAM
 ";
@@ -578,8 +588,8 @@ CREATE TABLE {$_TABLES['trackback']} (
   ipaddress varchar(15) NOT NULL default '',
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid),
-  INDEX trackback_url(url)
-  INDEX trackback_type(type)
+  INDEX trackback_url(url),
+  INDEX trackback_type(type),
   INDEX trackback_date(date)
 ) TYPE=MyISAM
 ";
@@ -907,26 +917,5 @@ $_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, em
 
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
-
-#
-# These indexes are only added for MySQL version 3.23.2 and up
-#
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['events']} ADD INDEX events_datestart(datestart)";
-$_INDEX[] = "ALTER TABLE {$_TABLES['events']} ADD INDEX events_dateend(dateend)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_uid(ug_uid)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['links']} ADD INDEX links_category(category)";
-$_INDEX[] = "ALTER TABLE {$_TABLES['links']} ADD INDEX links_date(date)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_date(date)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)";
-$_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)";
 
 ?>
