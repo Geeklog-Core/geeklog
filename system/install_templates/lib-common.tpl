@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.16 2001/12/17 16:51:35 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.17 2001/12/19 21:47:44 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -135,8 +135,14 @@ function COM_article($A,$index='')
         }
     }
 
-	$curtime = COM_getUserDateTimeFormat($A['day']);
-	$A['day'] = $curtime[0];
+    $curtime = COM_getUserDateTimeFormat($A['day']);
+    $A['day'] = $curtime[0];
+
+    // If plain text then replace newlines with <br> tags
+    if ($A['postmode'] == 'plaintext') {
+        $A['introtext'] = nl2br($A['introtext']);
+        $A['bodytext'] = nl2br($A['bodytext']);
+    }
 
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
