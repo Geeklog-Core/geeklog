@@ -152,7 +152,9 @@ $LANG01 = array(
     107 => 'GL Version Test',
     108 => 'Clear Cache',
     109 => 'Report abuse',
-    110 => 'Report this post to the site admin'
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users'
 );
 
 ###############################################################################
@@ -496,7 +498,8 @@ $LANG11 = array(
     1 => 'What\'s Related',
     2 => 'Mail Story to a Friend',
     3 => 'Printable Story Format',
-    4 => 'Story Options'
+    4 => 'Story Options',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -506,7 +509,7 @@ $LANG12 = array(
     1 => "To submit a {$type} you are required to be logged in as a user.",
     2 => 'Login',
     3 => 'New User',
-    4 => 'Submit a Event',
+    4 => 'Submit an Event',
     5 => 'Submit a Link',
     6 => 'Submit a Story',
     7 => 'Login is Required',
@@ -646,7 +649,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Event Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Event Title',
     4 => 'Event URL',
     5 => 'Event Start Date',
@@ -654,7 +657,7 @@ $LANG22 = array(
     7 => 'Event Location',
     8 => 'Event Description',
     9 => '(include http://)',
-    10 => 'You must provide the dates/times, description and event location!',
+    10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that event below.  To create a new event click on new event above. Click on [C] to create a copy of an existing event.',
     13 => 'Event Title',
@@ -666,7 +669,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'save',
     21 => 'cancel',
-    22 => 'delete'
+    22 => 'delete',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -752,13 +758,18 @@ $LANG24 = array(
     48 => 'image',
     49 => 'right',
     50 => 'left',
-    51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<BR><P><B>PREVIEWING</B>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
+    51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<br><p><b>PREVIEWING</b>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
     52 => 'Delete',
     53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -820,7 +831,9 @@ $LANG27 = array(
     21 => 'delete',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -1224,6 +1237,28 @@ $LANG_LOGIN = array(
     2 => 'Sorry, to access this area you need to be logged in as a user.',
     3 => 'Login',
     4 => 'New User'
+);
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written'
+         . ' to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.'
+         . 'The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => 'No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page
+          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF\'s in an ad-hoc fashion.',
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem
+          persists.',
+    9 => 'PDF Generator',
+    10 => 'This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This
+           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site',
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

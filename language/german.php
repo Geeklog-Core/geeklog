@@ -499,7 +499,8 @@ $LANG11 = array(
     1 => 'Zum Thema',
     2 => 'An einen Freund schicken',
     3 => 'Druckfähige Version',
-    4 => 'Optionen'
+    4 => 'Optionen',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -649,7 +650,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Termin-Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Titel',
     4 => 'URL',
     5 => 'Startdatum',
@@ -657,7 +658,7 @@ $LANG22 = array(
     7 => 'Ort',
     8 => 'Beschreibung',
     9 => '(mit http://)',
-    10 => 'Es müssen mindestens Datum und Uhrzeit, Beschreibung und Ort angegeben werden!',
+    10 => 'Es müssen mindestens Datum und Uhrzeit, Titel und Beschreibung angegeben werden!',
     11 => 'Termin-Manager',
     12 => 'Auf einen Termin klicken, um ihn zu ändern oder löschen. Mit Neuer Termin (s.o.) wird ein neuer Termin angelegt. [C] erzeugt eine Kopie eines vorhandenen Termins.',
     13 => 'Titel',
@@ -669,7 +670,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'Speichern',
     21 => 'Abbruch',
-    22 => 'Löschen'
+    22 => 'Löschen',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -761,7 +765,12 @@ $LANG24 = array(
     54 => 'Nicht verwendete Bilder',
     55 => 'Folgende Fehler traten beim Versuch, den Artikel zu speichern, auf. Bitte diese Fehler beheben und den Artikel noch einmal speichern.',
     56 => 'mit Icon',
-    57 => 'Bild in Originalgröße'
+    57 => 'Bild in Originalgröße',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -823,7 +832,9 @@ $LANG27 = array(
     21 => 'Löschen',
     22 => 'Default',
     23 => 'Zur Default-Kategorie für neue Artikel machen',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -1221,12 +1232,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Anmeldung erforderlich',
     2 => 'Sorry, aber um auf diesen Bereich zugreifen zu können, musst Du als Benutzer angemeldet sein.',
     3 => 'Anmelden',
     4 => 'Neuer User'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>
