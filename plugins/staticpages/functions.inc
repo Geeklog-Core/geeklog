@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.33 2004/02/14 17:20:41 dhaun Exp $
+// $Id: functions.inc,v 1.34 2004/02/22 17:23:20 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -173,10 +173,17 @@ function plugin_searchtypes_staticpages()
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author) 
 {
-    global $_TABLES, $_CONF, $LANG_STATIC;
+    global $_CONF, $_TABLES, $LANG_STATIC, $HTTP_GET_VARS, $HTTP_POST_VARS;
 
     if (empty($type)) {
         $type = 'all';
+    }
+
+    $keyType = '';
+    if (isset ($HTTP_POST_VARS['keyType'])) {
+        $keyType = COM_applyFilter ($HTTP_POST_VARS['keyType']);
+    } else if (isset ($HTTP_GET_VARS['keyType'])) {
+        $keyType = COM_applyFilter ($HTTP_GET_VARS['keyType']);
     }
 
     // Bail if we aren't supppose to do our search
@@ -189,9 +196,45 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 
     // Build search SQL - Modified to exclude static PHP pages from search.
     $query = addslashes ($query);
-    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) as day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != '1' AND";
-    $sql .= "((sp_content like '%$query%' OR sp_content like '$query%' OR sp_content like '%$query') ";
-    $sql .= "OR (sp_title like '%$query%' OR sp_title like '$query%' OR sp_title like '%$query'))";
+    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) as day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != '1')";
+
+    if (!empty ($query)) {
+        if ($keyType == 'phrase') {
+            $mysearchterm = addslashes ($query);
+            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
+                 . " OR (sp_title LIKE '%$mysearchterm%'))";
+        } else if ($keyType == 'all') {
+            $mywords = explode (' ', $query);
+            $sql .= ' AND (';
+            $tmp = '';
+            foreach ($mywords AS $mysearchterm) {
+                $mysearchterm = addslashes (trim ($mysearchterm));
+                if (!empty ($mysearchterm)) {
+                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
+                         . " OR (sp_title LIKE '%$mysearchterm%') AND ";
+                }
+            }
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
+            $sql .= $tmp . ')';
+        } else if ($keyType == 'any') {
+            $mywords = explode (' ', $query);
+            $sql .= ' AND (';
+            $tmp = '';
+            foreach ($mywords AS $mysearchterm) {
+                $mysearchterm = addslashes (trim ($mysearchterm));
+                if (!empty ($mysearchterm)) {
+                    $tmp .= "(sp_content LIKE '%$mysearchterm%')"
+                         . " OR (sp_title LIKE '%$mysearchterm%') OR ";
+                }
+            }
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
+            $sql .= $tmp . ')';
+        } else {
+            $mysearchterm = addslashes ($query);
+            $sql .= " AND ((sp_content LIKE '%$mysearchterm%')"
+                 . " OR (sp_title LIKE '%$mysearchterm%'))";
+        }
+    }
 
     if (!empty ($datestart) && !empty ($dateend)) {
         $delim = substr ($datestart, 4, 1);
@@ -203,9 +246,9 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     if (!empty ($author)) {
-        $sql .= "AND (sp_uid = '$author') ";
+        $sql .= "AND (sp_uid = '$author')";
     }
-    $sql    .= ") ORDER BY sp_date desc";
+    $sql    .= " ORDER BY sp_date desc";
 
     // Perform search
     $result = DB_query ($sql);
