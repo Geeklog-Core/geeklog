@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.67 2003/07/25 08:11:28 dhaun Exp $
+// $Id: users.php,v 1.68 2003/08/22 20:48:26 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -455,11 +455,11 @@ function sendNotification ($username, $email, $uid, $queued = false)
 */
 function createuser($username,$email) 
 {
-    global $_TABLES, $LANG04, $_CONF;
+    global $_CONF, $_TABLES, $LANG01, $LANG04;
 
-    if (COM_isEmail($email)) {
+    $username = trim ($username);
 
-        $username = trim ($username);
+    if (COM_isEmail ($email) && !empty ($username)) {
 
         $ucount = DB_count($_TABLES['users'],'username',$username);
         $ecount = DB_count($_TABLES['users'],'email',$email);
@@ -533,9 +533,18 @@ function createuser($username,$email)
             $retval .= COM_siteFooter ();
         }
     } else {
-        $retval .= COM_siteHeader ('Menu')
-                . newuserform ($LANG04[18])
-                . COM_siteFooter();
+        if (empty ($username)) {
+            $msg = $LANG01[32]; // invalid username
+        } else {
+            $msg = $LANG04[18]; // invalid email address
+        }
+        $retval .= COM_siteHeader ('menu');
+        if ($_CONF['custom_registration'] && function_exists(custom_userform)) {
+            $retval .= custom_userform ('new', '', $msg);
+        } else {
+            $retval .= newuserform ($msg);
+        }
+        $retval .= COM_siteFooter();
     }
 
     return $retval;
