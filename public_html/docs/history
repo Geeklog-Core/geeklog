@@ -1,5 +1,8 @@
 GeekLog History/Changes:
 
+- You can now block anonymous users from accessing any part of a Geeklog site
+  or you can block them from certain parts, e.g. block anonymous access to the
+  calendar (via a new set of XXXloginrequired flags in config.php).
 - New RDF/RSS parser, provided by Roger Webster. This should now properly
   import even those RDF feeds which Geeklog previously refused to display.
 - Updated language files:

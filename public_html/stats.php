@@ -31,14 +31,32 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.16 2002/05/20 19:39:47 dhaun Exp $
+// $Id: stats.php,v 1.17 2002/06/24 19:24:38 dhaun Exp $
 
 require_once('lib-common.php');
+
+if (empty ($_USER['username']) &&
+    (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {
+    $display = COM_siteHeader('');
+    $display .= COM_startBlock($LANG_LOGIN[1]);
+    $login = new Template($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var('output'));
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+    echo $display; 
+    exit;
+}
 
 // MAIN
 
 $display .= COM_siteHeader() . COM_startBlock($LANG10[1]);
-		
+
 
 $stat_templates = new Template($_CONF['path_layout'] . 'stats');
 $stat_templates->set_file(array('stats'=>'stats.thtml',

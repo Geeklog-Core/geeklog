@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.38 2002/06/06 07:20:19 dhaun Exp $
+// $Id: config.php,v 1.39 2002/06/24 19:24:37 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -62,7 +62,7 @@ $_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
 // | SERVER SETTINGS                                                           |
 // |                                                                           |
 // | All paths must have a trailing slash ('/'). The 'path' value signifies    |
-// | where the config.php (this file) resides                                  | 
+// | where the config.php (this file) resides                                  |
 // +---------------------------------------------------------------------------+
 $_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
 $_CONF['path_system']       = $_CONF['path'] . 'system/';
@@ -151,9 +151,18 @@ $_CONF['ostype']    = PHP_OS;
 // | for most situations.                                                      |
 // +---------------------------------------------------------------------------+
 
+// this lets you select which functions are available for registered users only 
+$_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else 
+$_CONF['submitloginrequired'] = 0;
+$_CONF['commentsloginrequired'] = 0;
+$_CONF['linksloginrequired'] = 0;
+$_CONF['pollsloginrequired'] = 0;
+$_CONF['calendarloginrequired'] = 0;
+$_CONF['statsloginrequired'] = 0;
+$_CONF['searchloginrequired'] = 0;
+
 // Submission Settings
 
-$_CONF['loginrequired'] = 0; 
 $_CONF['postmode']      = 'plaintext';  // can be plaintext or html
 $_CONF['speedlimit']    = 45;         // in seconds
 
@@ -206,7 +215,6 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 	
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;
-$_CONF['commentsloginrequired'] = 0;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
 $_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
 

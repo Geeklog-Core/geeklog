@@ -1082,4 +1082,11 @@ $LANG_404 = array(
     3 => "<p>We're sorry, but the file you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
 );
 
+$LANG_LOGIN = array (
+    1 => 'Login required',
+    2 => 'Sorry, to access this area you need to be logged in as a user.',
+    3 => 'Login',
+    4 => 'New User'
+);
+
 ?>

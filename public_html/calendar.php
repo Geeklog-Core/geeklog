@@ -31,10 +31,28 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.21 2002/05/20 19:39:47 dhaun Exp $
+// $Id: calendar.php,v 1.22 2002/06/24 19:24:38 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
+
+if (empty ($_USER['username']) &&
+    (($_CONF['loginrequired'] == 1) || ($_CONF['calendarloginrequired'] == 1))) {
+    $display = COM_siteHeader('');
+    $display .= COM_startBlock($LANG_LOGIN[1]);
+    $login = new Template($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('site_url', $_CONF['site_url']);   
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var('output'));
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+    echo $display;
+    exit;
+}
 
 function getDayViewData($result, $cur_time = '')
 {
@@ -758,7 +776,7 @@ $cal_templates->parse('add_event_option','addevent',true);
 
 $cal_templates->parse('output','calendar');
 $display .= $cal_templates->finish($cal_templates->get_var('output'));
-	
+
 $display .= COM_siteFooter();
 break;
 

@@ -1088,4 +1088,11 @@ $LANG_404 = array (
     3 => "<p>Sorry, diese Seite oder Datei existiert nicht. Du k&ouml;nntest es auf der <a href=\"{$_CONF['site_url']}\">Startseite</a> oder mit der <a href=\"{$_CONF['site_url']}/search.php\">Suchfunktion</a> probieren, vielleicht wirst Du ja f&uuml;ndig ..."
 ); 
 
+$LANG_LOGIN = array (
+    1 => 'Anmeldung erforderlich',
+    2 => 'Sorry, aber um auf diesen Bereich zugreifen zu k&ouml;nnen, musst Du als Benutzer angemeldet sein.', 
+    3 => 'Anmelden',
+    4 => 'Neuer User'
+);
+
 ?>

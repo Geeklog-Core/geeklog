@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.20 2002/05/23 20:06:21 dhaun Exp $
+// $Id: search.php,v 1.21 2002/06/24 19:24:38 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -497,9 +497,23 @@ function searchresults($A)
 // MAIN
 $display .= COM_siteHeader();
 if ($mode == 'search') {
-	$display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
+    $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
 } else {
-	$display .= searchform();
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] == 1))) {  
+        $display .= COM_startBlock($LANG_LOGIN[1]);
+        $login = new Template($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $display .= $login->finish ($login->get_var('output'));
+        $display .= COM_endBlock();
+    } else {
+        $display .= searchform();
+    }
 }
 $display .= COM_siteFooter();
 echo $display;

@@ -52,7 +52,8 @@ require_once('lib-common.php');
 */
 function submissionform($type='story', $mode = '', $month='', $day='', $year='', $hour='') 
 {
-    global $_TABLES, $_CONF, $LANG12, $REMOTE_ADDR, $_USER, $HTTP_POST_VARS;
+    global $_TABLES, $_CONF, $LANG12, $REMOTE_ADDR, $_USER, $HTTP_POST_VARS,
+           $LANG_LOGIN;
 
     $retval = '';
 	
@@ -71,14 +72,15 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
             . $LANG12[31]
             . COM_endBlock();
     } else {
-        if ($_CONF['loginrequired'] == 1 && empty($_USER['username'])) {
-            $retval .= COM_startBlock($LANG12[7]);
+        if (empty ($_USER['username']) &&
+            (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
+            $retval .= COM_startBlock($LANG_LOGIN[1]);
             $loginreq = new Template($_CONF['path_layout'] . 'submit');
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
-            $loginreq->set_var('login_message', $LANG12[1]);
+            $loginreq->set_var('login_message', $LANG_LOGIN[2]);
             $loginreq->set_var('site_url', $_CONF['site_url']);
-            $loginreq->set_var('lang_login', $LANG12[2]);
-            $loginreq->set_var('lang_newuser', $LANG12[3]);
+            $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
+            $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
             $loginreq->parse('errormsg', 'loginreq');
             $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
             $retval .= COM_endBlock();

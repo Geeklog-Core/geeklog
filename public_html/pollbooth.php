@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.13 2002/05/21 21:13:11 tony_bibbs Exp $
+// $Id: pollbooth.php,v 1.14 2002/06/24 19:24:38 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -75,33 +75,44 @@ function pollsave()
 */
 function polllist() 
 {
-    global $_TABLES, $_CONF, $LANG07;
-	
-    $result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']}");
-    $nrows = DB_numRows($result);
-    $retval = '';
-    $retval .= COM_startBlock($LANG07[4]);
-    $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
-    $pollitem->set_file('pollitem', 'polllist.thtml');
-    for ($i = 1; $i <= $nrows; $i++) {
-        $Q = DB_fetchArray($result);
-        $pollitem->set_var('item_num', $i);
-        $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
-        $pollitem->set_var('poll_question', stripslashes($Q['question']));
-        $pollitem->set_var('poll_votes', $Q['voters']);
-        $pollitem->set_var('lang_votes', $LANG07[5]);
-        if ($i == $nrows) {
-            $pollitem->set_var('ending_br', '<br><br>');
-        } else {
-            $pollitem->set_var('ending_br', '');
-        }
-        $pollitem->parse('output', 'pollitem');
-        $retval .= $pollitem->finish($pollitem->get_var('output'));
-    }
+    global $_TABLES, $_CONF, $_USER, $LANG07, $LANG_LOGIN;
 
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['pollsloginrequired'] == 1))) {
+        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $login = new Template($_CONF['path_layout'] . 'submit'); 
+        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $retval .= $login->finish ($login->get_var('output'));
+    } else {
+        $result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']}");
+        $nrows = DB_numRows($result);
+        $retval = COM_startBlock($LANG07[4]);
+        $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
+        $pollitem->set_file('pollitem', 'polllist.thtml');
+        for ($i = 1; $i <= $nrows; $i++) {
+            $Q = DB_fetchArray($result);
+            $pollitem->set_var('item_num', $i);
+            $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
+            $pollitem->set_var('poll_question', stripslashes($Q['question']));
+            $pollitem->set_var('poll_votes', $Q['voters']);
+            $pollitem->set_var('lang_votes', $LANG07[5]);
+            if ($i == $nrows) {
+                $pollitem->set_var('ending_br', '<br><br>');
+            } else {
+                $pollitem->set_var('ending_br', '');
+            }
+            $pollitem->parse('output', 'pollitem');
+            $retval .= $pollitem->finish($pollitem->get_var('output'));
+        }
+    }
     $retval .= COM_endBlock();
 	
-	return $retval;
+    return $retval;
 }
 
 // MAIN
