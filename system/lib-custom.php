@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.10 2004/10/09 20:42:26 blaine Exp $
+// $Id: lib-custom.php,v 1.11 2004/11/03 14:54:43 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -269,15 +269,26 @@ function custom_userform($uid="",$msg="") {
 
 
 /**
-* Custom function to retrieve and return a formatted block that is enabled.
-* @param   array      $showblocks         An array of block names to retrieve and format
-* @return   string  Formated HTML containing site footer and optionally right blocks
+* Custom function to retrieve and return a formatted list of blocks
+* Can be used when calling COM_siteHeader or COM_SiteFooter
+
+* Example: 
+* 1: Setup an array of blocks to display
+* 2: Call COM_siteHeader or COM_siteFooter
+*
+*  $myblocks = array ('site_menu','site_news','poll_block');
+
+* COM_siteHeader( array('COM_showCustomBlocks',$myblocks) ) ;
+* COM_siteFooter( true, array('COM_showCustomBlocks',$myblocks));
+
+* @param   array   $showblocks    An array of block names to retrieve and format
+* @return  string                 Formated HTML containing site footer and optionally right blocks
 */
 function custom_showBlocks($showblocks) {
     global $_CONF, $_TABLES;
     $retval = '';
     foreach($showblocks as $block) {
-        $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help FROM {$_TABLES['blocks']} WHERE name='$block' and is_enabled = '1'";
+        $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help FROM {$_TABLES['blocks']} WHERE name='$block'";
         $result = DB_query($sql);
         if (DB_numRows($result) == 1) {
             $A = DB_fetchArray($result);
