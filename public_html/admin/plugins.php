@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.15 2001/12/18 22:58:09 tony_bibbs Exp $
+// $Id: plugins.php,v 1.16 2002/01/03 21:46:49 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -130,6 +130,7 @@ function listplugins($page = 1)
     $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file(array('list'=>'pluginlist.thtml','row'=>'listitem.thtml'));
     $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('layout_url', $_CONF['layout_url']);
     $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5]));
     $plg_templates->set_var('lang_newplugin', $LANG32[14]);
     $plg_templates->set_var('lang_adminhome', $LANG32[15]);
