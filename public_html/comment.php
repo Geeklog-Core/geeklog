@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.42 2003/05/05 16:53:37 dhaun Exp $
+// $Id: comment.php,v 1.43 2003/05/11 18:28:55 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -253,21 +253,25 @@ function savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode)
 
     $title = addslashes(strip_tags(COM_checkWords($title)));
 
-    if (!empty($title) && !empty($comment)) {
+    if (!empty ($title) && !empty ($comment)) {
         COM_updateSpeedlimit ('comment');
-        DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
-
-        // See if plugin will handle this to update it's records
-        PLG_handlePluginComment($type,$sid,'save');
-
-        // If we reach here then no plugin issued a COM_refresh() so continue
+        DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,type',
+                "'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
 
         if ($type == 'poll') {
-            $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid&aid=-1");
-        } else {
-            $comments = DB_count($_TABLES['comments'],'sid',$sid);
+            $retval = COM_refresh ($_CONF['site_url']
+                    . "/pollbooth.php?qid=$sid&aid=-1");
+        } elseif ($type == 'article') {
+            $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
             DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
+            $retval = COM_refresh ($_CONF['site_url']
+                    . "/article.php?story=$sid");
+        } else { // assume it's a comment handled by a plugin
+            $cid = DB_getItem ($_TABLES['comments'], 'cid', "(type = '$type') AND (pid = '$pid') AND (sid = '$sid') AND (uid = '$uid')");
+            $retval = PLG_handlePluginComment ($type, $cid, 'save');
+            if (empty ($retval)) {
+                $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
         }
     } else {
         $retval .= COM_siteHeader()
@@ -295,31 +299,48 @@ function deletecomment($cid,$sid,$type)
     $retval = '';
 
     if (!empty ($sid) && !empty ($cid) && is_numeric ($cid)) {
-        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '{$sid}'");
-        $A = DB_fetchArray ($result);
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
-            $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
 
-            DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
-            DB_delete ($_TABLES['comments'], 'cid', $cid);
+        // only comments of type 'article' and 'poll' are handled by Geeklog
+        if (($type == 'article') || ($type == 'poll')) {
 
-            // See if plugin will handle this to update it's records
-            PLG_handlePluginComment($type,$sid,'delete');
-
-            if ($type == 'poll') {
-                $retval .= COM_refresh ($_CONF['site_url']
-                        . '/pollbooth.php?qid=$sid&aid=-1');
+            if ($type == 'article') {
+                $table = $_TABLES['stories'];
+                $idname = 'sid';
             } else {
-                $comments = DB_count($_TABLES['comments'],'sid',$sid);
-                DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-                $retval .= COM_refresh ($_CONF['site_url']
-                        . '/article.php?story=$sid');
+                $table = $_TABLES['pollquestions'];
+                $idname = 'qid';
+            }
+            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$table} WHERE {$idname} = '{$sid}'");
+            $A = DB_fetchArray ($result);
+            if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
+                $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
+
+                DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
+                DB_delete ($_TABLES['comments'], 'cid', $cid);
+
+                if ($type == 'poll') {
+                    $retval .= COM_refresh ($_CONF['site_url']
+                            . '/pollbooth.php?qid=' . $sid . '&aid=-1');
+                } else {
+                    $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                    DB_change ($_TABLES['stories'], 'comments', $comments,
+                               'sid', $sid);
+                    $retval .= COM_refresh ($_CONF['site_url']
+                            . '/article.php?story=' . $sid);
+                }
+            } else {
+                COM_errorLog ('User ' . $_USER['username'] . ' (IP: '
+                        . $REMOTE_ADDR . ') tried to illegally delete comment '
+                        . $cid . ' from ' . $type . ' ' . $sid);
+                $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
         } else {
-            COM_errorLog ('User ' . $_USER['username'] . ' (IP: ' . $REMOTE_ADDR
-                    . ') tried to illegally delete comment ' . $cid
-                    . ' from ' . $type . ' ' . $sid);
-            $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            // See if plugin will handle this
+            $retval = PLG_handlePluginComment ($type, $cid, 'delete');
+            if (empty ($retval)) {
+                $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
         }
     } else {
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -350,7 +371,13 @@ case 'display':
 default:
     if (!empty($sid)) {
         if (empty ($title)) {
-            $title = DB_getItem ($_TABLES['stories'], 'title', "sid = '{$sid}'");
+            if ($type == 'article') {
+                $title = DB_getItem ($_TABLES['stories'], 'title',
+                                     "sid = '{$sid}'");
+            } elseif ($type == 'poll') {
+                $title = DB_getItem ($_TABLES['pollquestions'], 'question',
+                                     "qid = '{$sid}'");
+            }
             $title = str_replace ('$', '&#36;', $title);
         }
         $display .= COM_siteHeader()

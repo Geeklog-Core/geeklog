@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.17 2003/05/02 04:05:35 tony Exp $
+// $Id: lib-plugins.php,v 1.18 2003/05/11 18:28:55 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -204,24 +204,24 @@ function PLG_supportsComments($type)
 }
 
 /**
-* No clue what this does yet
+* Plugin should perform an operation on one of its comments.
 *
 * @param        string      $type       Plugin to have handle the comment
-* @param        string      $id         Comment ID maybe?!?
-* @param		string		$operation  "save" or "delete"
-* 
+* @param        string      $id         Comment ID
+* @param        string      $operation  "save" or "delete"
+* @return       string      COM_refresh() string to redirect to the proper URL
 */
-function PLG_handlePluginComment($type, $id,$operation='') 
+function PLG_handlePluginComment ($type, $id, $operation='') 
 {
-	$args[1] = $id;
-	$args[2] = $operation;
+    $args[1] = $id;
+    $args[2] = $operation;
 
-	PLG_callFunctionForOnePlugin('plugin_handlecomment_' . $type, $args);
+    return PLG_callFunctionForOnePlugin('plugin_handlecomment_' . $type, $args);
 }
 
 
 /**
-* User has reuested to create a comment for the plugin
+* User has requested to create a comment for the plugin
 * Redirects user to comment form if initial comment for plugin record or returns
 * formated HTML including the Site footer and the comments 
 *

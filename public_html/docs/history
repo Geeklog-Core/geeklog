@@ -3,6 +3,11 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Changes handling of plugin comments slightly: Plugins will have to do the
+  'delete' operation on their comments on their own now since Geeklog can't
+  possibly know which (if any) permissions are needed to delete a comment.
+  The 'id' parameter in the call to plugin_handlecomment_<type> will now
+  always be the comment id.
 - In another attempt to solve the various issues regarding "www vs. non-www"
   URLs and related login problems:
   + Made sure all setcookie() calls use all 6 parameters
