@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.38 2002/08/10 18:11:53 dhaun Exp $
+// $Id: users.php,v 1.39 2002/08/13 20:11:08 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -230,7 +230,7 @@ function userprofile($user)
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
-    $sql = "SELECT count(*) count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
+    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
     if (!empty ($_USER['uid'])) {
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
@@ -240,7 +240,7 @@ function userprofile($user)
     $N = DB_fetchArray ($result);
     $user_templates->set_var('number_stories', $N['count']);
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $sql = "SELECT count(*) count FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList))";
+    $sql = "SELECT count(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList))";
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
     $user_templates->set_var('number_comments', $N['count']);

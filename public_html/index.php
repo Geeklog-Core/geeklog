@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2002/08/08 18:00:28 dhaun Exp $
+// $Id: index.php,v 1.32 2002/08/13 20:11:08 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -127,7 +127,7 @@ $sql .= "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 $result = DB_query($sql);
 $nrows = DB_numRows($result);
 
-$countsql = "SELECT count(*) count FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
+$countsql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
 if (!empty($topic)) {
     $countsql = $countsql . " AND tid='$topic'";
 } else {
