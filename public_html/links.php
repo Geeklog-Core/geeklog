@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.19 2002/08/14 18:10:39 dhaun Exp $
+// $Id: links.php,v 1.20 2002/09/16 13:00:38 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -147,7 +147,7 @@ if (empty ($_USER['username']) &&
                         '&amp;what=link&amp;item=' . $A['lid']);
                     $linklist->set_var('link_name', stripslashes($A['title']));
                     $linklist->set_var('link_hits', $A['hits']);
-                    $linklist->set_var('link_description', $A['description']);
+                    $linklist->set_var('link_description', stripslashes ($A['description']));
                     $linklist->parse('link_details', 'link', true);
                 }
             }
