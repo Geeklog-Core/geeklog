@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.13 2002/08/09 22:20:00 dhaun Exp $
+// $Id: mail.php,v 1.14 2002/11/21 18:22:56 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -152,16 +152,16 @@ function send_messages($vars)
  		$sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
         $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id = {$vars['to_group']}";
 	}
-    
+
 	if (isset($vars['overstyr'])) {
  		$sql = "SELECT username,fullname,email  FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
         $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id = {$vars['to_group']}";
 	}
- 
+
 	$sendttil = '';
 	$result = DB_query($sql);
 	$nrows = DB_numRows($result);
-    
+
     // Loop through and send the messages!
     $successes = array();
     $failures = array();
@@ -174,9 +174,10 @@ function send_messages($vars)
   			$til .= $A['fullname'];
  		}
  		$til .= '<' . $A['email'] . '>';
- 		$sendttil .= $til . '<BR>';
+ 		$sendttil .= $til . '<br>';
  
- 		if (!mail($til, $vars['subject'], $vars['message'], $headers)) {
+ 		if (!mail($til, stripslashes ($vars['subject']),
+                stripslashes ($vars['message']), $headers)) {
             $failures[] .= $til;
  		} else {
             $successes[] = $til;
