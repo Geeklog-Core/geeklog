@@ -1151,15 +1151,16 @@ $LANG_ACCESS = array(
 	'save' => 'save',
 	'cancel' => 'cancel',
 	'delete' => 'delete',
-	'canteditroot' => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error',
+	'canteditroot' => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error.',
     'listusers' => 'List Users',
     'listthem' => 'list',
-    'usersingroup' => 'Users in group %s',
+    'usersingroup' => 'Users in group "%s"',
     'usergroupadmin' => 'User Group Administration',
     'add'         => 'Add',
     'remove'      => 'Remove',
     'availmembers'  => 'Available Members',
-    'groupmembers' => 'Group Members'
+    'groupmembers' => 'Group Members',
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
 );
 
 $LANG_DB_BACKUP = array(

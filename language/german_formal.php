@@ -1163,7 +1163,8 @@ $LANG_ACCESS = array(
     'add'         => 'Add',
     'remove'      => 'Remove',
     'availmembers'  => 'Available Members',
-    'groupmembers' => 'Group Members'
+    'groupmembers' => 'Group Members',
+    'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, müssen Sie selbst ein Mitglied der Gruppe sein. Wenden Sie sich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'
 );
 
 $LANG_DB_BACKUP = array(
