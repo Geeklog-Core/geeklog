@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.52 2004/09/29 17:43:43 dhaun Exp $
+// $Id: event.php,v 1.53 2004/12/10 09:26:17 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -633,6 +633,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
     $A = DB_fetchArray ($result);
     $A['eid'] = COM_makesid ();
+    $A['owner_id'] = $_USER['uid'];
     $display .= COM_siteHeader ('menu');
     $display .= editevent ($mode, $A);
     $display .= COM_siteFooter ();
