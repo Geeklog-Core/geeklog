@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.33 2002/09/01 21:43:35 dhaun Exp $
+// $Id: submit.php,v 1.34 2002/09/01 21:48:13 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -498,7 +498,12 @@ function savesubmission($type,$A)
                 if ($_CONF['eventsubmission'] == 1) {
                     $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
                 } else {
-                    $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',{$_USER['uid']}", $_CONF['site_url'] . '/calendar.php');
+                    if (empty ($_USER['username'])) { // anonymous user
+                        $owner_id = 1;
+                    } else {
+                        $owner_id = $_USER['uid'];
+                    }
+                    $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id", $_CONF['site_url'] . '/calendar.php');
                 }
             } else {
                 if (empty($A['uid'])) {
