@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.38 2003/06/16 18:00:31 dhaun Exp $
+// $Id: moderation.php,v 1.39 2003/06/19 17:38:41 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -54,10 +54,10 @@ function commandcontrol()
     $retval = '';
 
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
-    $admin_templates->set_file(array('cc'=>'moderation.thtml',
-                                        'ccitem' => 'ccitem.thtml'));
+    $admin_templates->set_file (array ('cc' => 'moderation.thtml',
+                                       'ccitem' => 'ccitem.thtml'));
     
-    $retval .= COM_startBlock ($LANG29[34], '',
+    $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (SEC_hasRights('story.edit')) {
@@ -197,14 +197,9 @@ function itemlist($type)
                 // Great, we found the plugin, now call it's itemlist method
                 $plugin = new Plugin();
                 $plugin = $function();
-                if (!empty($plugin->submissionhelpfile)) {
-                    $retval .= COM_startBlock ($plugin->submissionlabel,
-                            $plugin->submissionhelpfile,
-                            COM_getBlockTemplate ('_admin_block', 'header'));
-                } else {
-                    $retval .= COM_startBlock ($plugin->submissionlabel, '',
-                            COM_getBlockTemplate ('_admin_block', 'header'));
-                }
+                $helpfile = $plugin->submissionhelpfile;
+                $retval .= COM_startBlock ($plugin->submissionlabel, $helpfile,
+                               COM_getBlockTemplate ('_admin_block', 'header'));
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
                 $isplugin = true;
