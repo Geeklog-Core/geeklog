@@ -148,7 +148,8 @@ $LANG01 = array(
 	99 => "ARTIKEL",
     100 => "Keine neuen Artikel",
     101 => 'Meine Events',
-    102 => 'Site-Events'
+    102 => 'Site-Events',
+    103 => 'DB Backups'
 );
 
 ###############################################################################
@@ -343,7 +344,9 @@ $LANG08 = array(
 	25 => "You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system",
 	26 => "This form will allow you to send an email to the selected user.  All fields are required.",
 	27 => "Short message",
-	28 => "$from wrote: $shortmsg"
+	28 => "$from wrote: $shortmsg",
+    29 => "This is the daily digest from {$_CONF['site_name']} for ",
+    30 => " Daily Newsletter for "
 );
 
 ###############################################################################
@@ -654,7 +657,8 @@ $LANG24 = array(
 	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>.",
 	43 => 'New Story',
 	44 => 'Admin Home',
-	45 => 'Access'
+	45 => 'Access',
+    46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RDF headline feed and it will be ignored by the search and statistics pages.'
 );
 
 ###############################################################################
@@ -875,7 +879,8 @@ $MESSAGE = array (
     42 => "Your word has been successfully saved.",
 	43 => "The word has been successfully deleted.",
     44 => 'The plug-in was successfully installed!',
-    45 => 'The plug-in was successfully deleted.'
+    45 => 'The plug-in was successfully deleted.',
+    46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged"
 );
 
 // for plugins.php
@@ -971,4 +976,13 @@ $LANG_WORDS = array(
     replacmentword => "Replacment Word",
     newword => "New Word"
 );
+
+$LANG_DB_BACKUP = array(
+    last_ten_backups => 'Last 10 Back-ups',
+    do_backup => 'Do Backup',
+    backup_successful => 'Database back up was successful.',
+    no_backups => 'No backups in the system',
+    db_explanation => 'To create a new backup of your Geeklog system, hit the button below'
+);
+
 ?>
