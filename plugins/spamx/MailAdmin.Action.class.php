@@ -32,12 +32,13 @@ class MailAdmin extends BaseCommand {
 
 	function execute()
 	{
-		global $result, $_CONF, $LANG_SX00, $comment, $spamx_notification_email;
+		global $result, $_CONF, $LANG_SX00, $_SPX_CONF, $comment;
+
 		$msg = 'A new comment has been posted at ' . $_CONF['site_name'] . ":\n";
 		$msg .= "Title: {$comment['title']}\n";
 		$msg .= "UID: {$comment['uid']}\n";
 		$msg .= "Content: {$comment['comment']}";
-		COM_mail($spamx_notification_email, 'Spam Comment at ' . $_CONF['site_name'], $msg);
+		COM_mail($_SPX_CONF['notification_email'], 'Spam Comment at ' . $_CONF['site_name'], $msg);
 		$result = '';
 		SPAMX_log('Mail Sent to Admin');
 		return 1;

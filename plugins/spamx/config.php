@@ -12,22 +12,23 @@
 */
 
 // URL blacklist changes RSS feed (currently only RSS v1.0 is supported)
-$rss_url = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
+$_SPX_CONF['rss_url'] = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
 
 // Entire MT-Blacklist (for inital import)
-$mtblacklist_url = 'http://www.jayallen.org/comment_spam/blacklist.txt';
+$_SPX_CONF['mtblacklist_url'] = 'http://www.jayallen.org/comment_spam/blacklist.txt';
 
-// Spamx urls
-$rss_spamx_url = 'http://www.pigstye.net/backend/spamx_users.rdf';
-$spamx_submit_url = 'http://www.pigstye.net/gplugs/spamx/submit.php';
+// SpamX urls
+$_SPX_CONF['spamx_rss_url'] = 'http://www.pigstye.net/backend/spamx_users.rdf';
+$_SPX_CONF['spamx_submit_url'] = 'http://www.pigstye.net/gplugs/spamx/submit.php';
 
 // address which mail admin module will use
-$spamx_notification_email = $_CONF['site_mail'];
+$_SPX_CONF['notification_email'] = $_CONF['site_mail'];
 
 // This sets Ban Plugin Table Prefix the Same as Geeklog
-$_BAN_table_prefix = $_DB_table_prefix;
+$_SPX_table_prefix = $_DB_table_prefix;
 
 // DO NOT CHANGE THE STUFF BELOW UNLESS YOU KNOW WHAT YOU ARE DOING
-// Add Spamx Plugin table to $_TABLES array
-$_TABLES['spamx']      = $_BAN_table_prefix . 'spamx';
+// Add SpamX Plugin table to $_TABLES array
+$_TABLES['spamx']      = $_SPX_table_prefix . 'spamx';
+
 ?>

@@ -58,12 +58,12 @@ class Import extends BaseAdmin {
     */
     function _update_blacklist ()
     {
-        global $_CONF, $_TABLES, $LANG_SX00, $rss_url;
+        global $_CONF, $_TABLES, $LANG_SX00, $_SPX_CONF;
 
         require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_fetch.inc');
         require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_utils.inc');
 
-        $rss = fetch_rss($rss_url);
+        $rss = fetch_rss($_SPX_CONF['rss_url']);
         // entries to add and delete, according to the blacklist changes feed
         $to_add = array();
         $to_delete = array();
@@ -114,11 +114,11 @@ class Import extends BaseAdmin {
     */
     function _initial_import ()
     {
-        global $_CONF, $_TABLES, $LANG_SX00, $mtblacklist_url;
+        global $_CONF, $_TABLES, $LANG_SX00, $_SPX_CONF;
 
         if (ini_get ('allow_url_fopen')) {
 
-            $blacklist = file ($mtblacklist_url);
+            $blacklist = file ($_SPX_CONF['mtblacklist_url']);
             $count = $this->_do_import ($blacklist);
 
             if ($count > 0) {
@@ -149,8 +149,8 @@ class Import extends BaseAdmin {
             } else {
                 $display = sprintf ($LANG_SX00['allow_url_fopen'],
                                     $_CONF['path_data']);
-                $display .= '<p><a href="' . $mtblacklist_url . '">'
-                         . $mtblacklist_url . '</a>';
+                $display .= '<p><a href="' . $_SPX_CONF['mtblacklist_url']
+                         . '">' . $_SPX_CONF['mtblacklist_url'] . '</a>';
             }
         }
 

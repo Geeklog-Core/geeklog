@@ -19,13 +19,14 @@ class ViewBlacklist extends BaseAdmin {
 	* 
 	*/
 	function display(){
-		global $_CONF, $rss_spamx_url, $HTTP_GET_VARS, $HTTP_POST_VARS, $_TABLES, $spamx_submit_url, $LANG_SX00;
-		
+        global $_CONF, $_TABLES, $HTTP_GET_VARS, $HTTP_POST_VARS,
+               $LANG_SX00, $_SPX_CONF;
+
 		require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_fetch.inc');
 		require_once($_CONF['path'] . 'plugins/spamx/magpierss/rss_utils.inc');
 		require_once($_CONF['path'] . 'plugins/spamx/rss.inc.php');
 		
-		$result = DB_query("SELECT * FROM {$_TABLES['spamx']} where name='Personal'");
+		$result = DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='Personal'");
 		$nrows=DB_numRows($result);
 		for($i=1;$i<=$nrows;$i++) {
 			$A=DB_fetchArray($result);
@@ -34,7 +35,7 @@ class ViewBlacklist extends BaseAdmin {
 		$action = SPAMX_applyFilter($HTTP_GET_VARS['action']);
 		$paction = SPAMX_applyFilter($HTTP_POST_VARS['paction']);
 		$site = SPAMX_applyFilter($HTTP_GET_VARS['site']);
-		$rss = fetch_rss($rss_spamx_url);
+		$rss = fetch_rss($_SPX_CONF['spamx_rss_url']);
 		if ($action == 'import') {
 			$rdf='';
 			foreach($rss->items as $item) {
@@ -78,7 +79,7 @@ class ViewBlacklist extends BaseAdmin {
 			$display .= $LANG_SX00['impinst2'] . $LANG_SX00['impinst2a'] . $LANG_SX00['impinst2b'];
 			$display .= $LANG_SX00['impinst2c'] . '</p>';
 			$display .= $LANG_SX00['impinst3'];
-			$display .= '<form method="post" action="' . $spamx_submit_url . '">';
+			$display .= '<form method="post" action="' . $_SPX_CONF['spamx_submit_url'] . '">';
 			$display .= '<table>';
 			$display .= '<tr><td>' . $LANG_SX00['sitename'] . '</td><td><input type="text" size="45" name="site" value="' . $_CONF['site_name'] . '"></td></tr>';
 			$display .= '<tr><td>' . $LANG_SX00['URL'] . '</td><td><input type="text" size="45" name="url" value="' . $_CONF['site_url'] . '/spamx/index.php"></td></tr>';
