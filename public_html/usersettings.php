@@ -38,13 +38,16 @@ include("custom_code.php");
 
 function edituser() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT fullname,email,homepage,sig,emailstories,about,pgpkey FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs,{$CONF["db_prefix"]}userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
+	$result = dbquery("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs,{$CONF["db_prefix"]}userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	startblock("{$LANG04[1]} {$USER["username"]}","");
 	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[3]}:</b><br><small>{$LANG04[34]}</small></td><td><input type=text name=fullname size=32 maxlength=80 value=\"{$A["fullname"]}\"></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[4]}:</b><br><small>{$LANG04[35]}</small></td><td><input type=password name=passwd size=16 maxlength=32 value=\"{$A["passwd"]}\"></td></tr>\n";
+	print "<tr valign=middle><td align=right><b>{$LANG04[68]}</b><br><small>{$LANG04[69]}:</small></td><td><SELECT name=cooktime>";
+	optionlist('cookiecodes','cc_value,cc_descr',$A["cookietimeout"],0);
+	print "</SELECT></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[5]}:</b><br><small>{$LANG04[33]}</small></td><td><input type=text name=email size=32 maxlength=96 value=\"{$A["email"]}\"></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[6]}:</b><br><small>{$LANG04[36]}</small></td><td><input type=text name=homepage size=32 maxlength=96 value=\"{$A["homepage"]}\"></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[32]}:</b><br><small>{$LANG04[37]}</small></td><td><textarea name=sig cols=45 rows=3 wrap=virtual>{$A["sig"]}</textarea></td></tr>\n";
@@ -164,10 +167,15 @@ function saveuser($A) {
 	if (!empty($A["passwd"])) {
 		$passwd = md5($A["passwd"]);
 		dbchange("users","passwd","'$passwd'","uid",$USER["uid"]);
-		setcookie("gl_password",$passwd,0,"/");
+		#setcookie("gl_password",$passwd,0,"/");
 	}
 	if (isemail($A["email"])) {
-		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}' WHERE uid={$USER["uid"]}");
+		if ($A["cooktime"] > 0) {
+			setcookie($CONF["cookie_name"],$USER["uid"],time() + $cooktime,$CONF["cookie_path"]);	
+		} else {
+			$A["cooktime"] = "NULL";
+		}
+		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]} WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userinfo SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$USER["uid"]}");
 		refresh("{$CONF["site_url"]}/usersettings.php?mode=edit&msg=5");
