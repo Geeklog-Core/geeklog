@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.16 2002/01/09 18:19:07 tony_bibbs Exp $
+// $Id: users.php,v 1.17 2002/01/09 22:22:52 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -381,7 +381,7 @@ default:
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
         // Now that we handled session cookies, handle longterm cookie
-        if (!isset($HTTP_COOKIE_VARS[$_CONF["cookie_name"]])) {
+        if (!isset($HTTP_COOKIE_VARS[$_CONF["cookie_name"]]) || !isset($HTTP_COOKIE_VARS['password'])) {
             // Either their cookie expired or they are new
             $cooktime = COM_getUserCookieTimeout();
             if ($VERBOSE) {
