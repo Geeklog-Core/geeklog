@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.17 2002/03/09 19:36:57 dhaun Exp $
+// $Id: index.php,v 1.18 2002/04/10 20:33:27 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -43,8 +43,6 @@ if (empty($page)) {
     // If no page sent then assume the first.
     $page = 1;
 }
-
-//$display .= site_header('menu');
 
 if (!empty($_USER['uid'])) {
     $result = DB_query("SELECT noboxes,maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
@@ -66,10 +64,8 @@ if (!empty($_USER['uid'])) {
 } else {
     $U['maxstories'] = $_CONF['limitnews'];
 }
-$limit = (($U['maxstories'] * $page) - ($U['maxstories']) - 1);
-if ($limit < 0) {
-    $limit = 0;
-}
+
+$limit = $U['maxstories'];
 
 // Show any messages that may need to be displayed
 $display .= COM_showMessage($msg);
@@ -78,71 +74,68 @@ $display .= COM_showMessage($msg);
 // to see if we need to rebuild the RDF file in the case that any such articles have now been published
 COM_rdfUpToDateCheck();
 
-for ($i = 0; $i <= 1; $i++) {
-    if ($page > 1) $i = 1;
-    $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
 
-    // if a topic was provided only select those stories.
-    if (!empty($topic)) {
-        $sql .= " AND tid = '$topic' AND ";
-    } else {
-        $sql .= " AND frontpage = 1 AND ";
+$sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
+
+// if a topic was provided only select those stories.
+if (!empty($topic)) {
+    $sql .= " AND tid = '$topic' ";
+} else {
+    $sql .= " AND frontpage = 1 ";
+}
+
+if (!empty($U['aids'])) {
+    $AIDS = explode(' ',$U['aids']);
+    for ($z = 0; $z < sizeof($AIDS); $z++) {
+        $sql .= "AND uid != '$AIDS[$z]' ";
     }
+}
 
-    if (!empty($U['aids'])) {
-        $AIDS = explode(' ',$U['aids']);
-        for ($z = 0; $z < sizeof($AIDS); $z++) {
-            $sql .= " uid != '$AIDS[$z]' AND ";
-        }
+if (!empty($U['tids'])) {
+    $TIDS = explode(' ',$U['tids']);
+    for ($z = 0; $z < sizeof($TIDS); $z++) {
+        $sql .= "AND tid != '$TIDS[$z]' ";
     }
+}
 
-    if (!empty($U['tids'])) {
-        $TIDS = explode(' ',$U['tids']);
-        for ($z = 0; $z < sizeof($TIDS); $z++) {
-            $sql .= " tid != '$TIDS[$z]' AND ";
-        }
-    }
+$offset = ($page - 1) * $limit;
+$sql .= "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
-    // If this is the first pass get the featured story, if any
-    if ($i == 0) {
-        $sql .= ' featured = 1 ORDER BY date desc LIMIT 1';
-    } else {
-        if ($feature == 'true') {
-            $U['maxstories'] = $U['maxstories'] - 1;
-        }
-        $sql .= " featured != 1 ORDER BY date desc LIMIT $limit,{$U['maxstories']} ";
-    }
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+$result = DB_query($sql);
+$nrows = DB_numRows($result);
 
-    $countsql = "SELECT count(*) count FROM {$_TABLES['stories']} WHERE draft_flag = 0";
-    if (!empty($topic)) {
-        $countsql = $countsql . " AND tid='$topic'";
-    } else {
-        $countsql = $countsql . ' AND frontpage = 1';
-    }
-    $data = DB_query($countsql);
-    $D = DB_fetchArray($data);
+$countsql = "SELECT count(*) count FROM {$_TABLES['stories']} WHERE draft_flag = 0";
+if (!empty($topic)) {
+    $countsql = $countsql . " AND tid='$topic'";
+} else {
+    $countsql = $countsql . ' AND frontpage = 1';
+}
+$data = DB_query($countsql);
+$D = DB_fetchArray($data);
+$num_pages = ceil($D['count'] / $limit);
 
-    $num_pages = ceil($D["count"] / $U['maxstories']);
-    if ($nrows > 0) {
-        for ($x = 1; $x <= $nrows; $x++) {
-            $A	= DB_fetchArray($result);
-            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                if ($i == 0) {
-                    $display .= '<b>'.$LANG05[4].':</b>';
-                    $A['title'] = '<big>'.$A['title'].'</big>';
-                    $feature = 'true';
-                }
-                $display .= COM_article($A,'y');
+if ($nrows > 0) {
+    for ($x = 1; $x <= $nrows; $x++) {
+        $A	= DB_fetchArray($result);
+        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+            if ($A['featured'] == 1) {
+                $display .= '<b>'.$LANG05[4].':</b>';
+                $A['title'] = '<big>'.$A['title'].'</big>';
+                $feature = 'true';
             }
+            $display .= COM_article($A,'y');
         }
-
-        // Print Google-like paging navigation
-        if ($i==1) {
-            $display .= COM_printPageNavigation($page, $num_pages, $topic);
-        }
-    } else if ($i == 1 && $feature != 'true') {
+    }
+    
+    // Print Google-like paging navigation
+    if (empty($topic)) {
+        $base_url = $_CONF['site_url'] . '/index.php';
+    } else {
+        $base_url = $_CONf['site_url'] . '/index.php?topic=' . $topic;
+    }
+    $display .= COM_printPageNavigation($base_url,$page, $num_pages);
+} else {
+    if ($A['featured'] == 1) {
         $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
         if (!empty($topic)) {
             $display .= $LANG05[3]; 
@@ -151,8 +144,8 @@ for ($i = 0; $i <= 1; $i++) {
     }
 }
 
-# Display any blocks, polls, olderstuff configured for this page
-# </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
+// Display any blocks, polls, olderstuff configured for this page
+// </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
 if ($U['noboxes'] != 1) {
     $display .= '</td><td><img src="' . $_CONF['site_url'] . '/images/speck.gif" height="1" width="10" alt=""></td>' . LB
         . '<td valign="top" width="180">' . LB . COM_showBlocks('right',$topic)
