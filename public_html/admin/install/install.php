@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.66 2004/08/05 07:36:13 dhaun Exp $
+// $Id: install.php,v 1.67 2004/08/11 18:36:18 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -48,7 +48,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.9');
+    define('VERSION', '1.3.10');
 }
 
 // Turn this on to have the install process print debug messages.  NOTE: these
@@ -100,9 +100,30 @@ function INST_welcomePage()
     $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades." . LB;
     $retval .= '<h2>Upgrading</h2>' . LB;
     $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).<p>Please note this script will not upgrade any beta or release candidate versions of Geeklog. ';
+
+    $globals_off = false;
+    $old_php     = false;
+
+    $phpv = explode ('.', phpversion ());
+    $phpv[2] = substr ($phpv[2], 0, 1); // get rid of 'pl1' etc.
+    if (($phpv[0] < 4) || (($phpv[0] == 4) && ($phpv[1] < 1))) {
+        $old_php = true;
+    }
+
     if (!ini_get ('register_globals')) {
+        $globals_off = true;
+    }
+
+    if($globals_off || $old_php) {
         $retval .= '<h1>Important!</h1>' . LB;
-        $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
+
+        if($old_php) {
+            $retval .= '<p><font color="red"><strong>Note:</strong> Geeklog requires PHP 4.1.0 or newer to run. Please upgrade your PHP or ask your hosting service to do it (this is actually in your own interest, as old versions of PHP have security issues).</font></p>' . LB;
+        }
+
+        if($globals_off) {
+            $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
+        }
     }
     $retval .= '<h2>Installation Options</h2>' . LB;
     $install_options = '<option value="new_db">New Database</option>'.LB;
