@@ -10,7 +10,7 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2002 by the following authors:                              |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            | 	
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.17 2002/09/20 02:24:27 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.18 2002/09/20 08:56:23 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -439,10 +439,9 @@ class upload
             $this->_addError('Specified upload directory, ' . $this->_fileUploadDirectory . ' exists but is not writable');
             return false;
         }
-        $sizeOK = false;
+        $sizeOK = true;
         if (!($this->_imageSizeOK(false)) AND $this->_autoResize) { 
             $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
-            $sizeOK = true;
             if ($imageInfo['width'] > $this->_maxImageWidth) {
                 $sizeOK = false;
             }
