@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.99 2002/05/20 16:33:20 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.100 2002/05/20 18:12:04 tony_bibbs Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -164,7 +164,7 @@ if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
 }
 
 // Handle Who's online hack if desired
-if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'") == 1) {
+if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'",DAY) == 1) {
     if (empty($_USER['uid']) OR $_USER['uid'] == 1) {
         // The following code handles anonymous users so they show up properly
         DB_query("DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1");
@@ -192,7 +192,7 @@ $_GROUPS = SEC_getUserGroups($_USER['uid']);
 // | BLOCK LOADER: Load all definable HTML blocks in to memory                 |
 // +---------------------------------------------------------------------------+
 
-$result = DB_query("SELECT title,content FROM {$_TABLES['blocks']} WHERE type = 'layout'");
+$result = DB_query("SELECT title,content FROM {$_TABLES['blocks']} WHERE type = 'layout'",0,DAY);
 $nrows = DB_numRows($result);
 for ($i = 1; $i <= $nrows; $i++) {
     $A = DB_fetchArray($result);
@@ -240,15 +240,15 @@ function COM_article($A,$index='')
         $article->set_var('lang_contributed_by',$LANG01[1]);
         if ($A['uid'] > 1) {
             $article->set_var('start_contributedby_anchortag', '<a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&amp;uid='.$A['uid'].'">');
-            $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+            $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'",WEEK));
             $article->set_var('end_contributedby_anchortag', '</a>');
         } else {
-            $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = 1"));
+            $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = 1",WEEK));
         }
     }
 	
 	if ($_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1) {
-        $top = DB_getItem($_TABLES['topics'],'imageurl',"tid = '{$A['tid']}'");
+        $top = DB_getItem($_TABLES['topics'],'imageurl',"tid = '{$A['tid']}'",1,DAY);
         if (!empty($top)) { 
             $article->set_var('story_anchortag_and_image', '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_image_align'].'" src="'.$_CONF['site_url'].$top.'" alt="'.$A['tid'].'" border="0"></a>');
         }
@@ -559,7 +559,7 @@ function COM_siteHeader($what = 'menu')
 */
 function COM_siteFooter($rightblock = false)
 {
-    global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic;
+    global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic, $PHP_SELF;
 
     // If the theme implemented this for us then call their version
     // instead.
@@ -596,6 +596,10 @@ function COM_siteFooter($rightblock = false)
         $footer->set_var('right_blocks', '');
     }
     
+    //if ($_COM_VERBOSE) {
+        COM_errorLog($PHP_SELF . ' required the execution of ' . DB_numQueries() . ' queries');
+    //}
+        
     // Actually parse the template and make variable substitutions
     $footer->parse('index_footer','footer');
 
@@ -858,7 +862,7 @@ function COM_exportRDF()
             $actualcount = 0;
             for ($i = 1; $i <= $nrows AND $actualcount < 10; $i++) {
                 $row = DB_fetchArray($result);
-                $topic_anon = DB_getItem($_TABLES['topics'],'perm_anon',"tid='{$row['tid']}'");
+                $topic_anon = DB_getItem($_TABLES['topics'],'perm_anon',"tid='{$row['tid']}'",HOUR);
                 // Only add to RDF feed if anonymous has access to it
                 if ($row['perm_anon'] == 2 AND $topic_anon == 2) {
                     $sids .= $row['sid'];
@@ -898,7 +902,7 @@ function COM_rdfUpToDateCheck()
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10");
+    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10",0,HOUR / 4);
     $nrows = DB_numRows($result);
     $sids = '';
     for ($i = 1; $i <= $nrows; $i++) {
@@ -908,7 +912,7 @@ function COM_rdfUpToDateCheck()
             $sids .= ',';
         }
     }
-    $last_rdf_sids = DB_getItem($_TABLES['vars'],'value',"name = 'rdf_sids'");
+    $last_rdf_sids = DB_getItem($_TABLES['vars'],'value',"name = 'rdf_sids'",0,HOUR / 4);
     if ($sids <> $last_rdf_sids) {
         COM_exportRDF();
     }
@@ -924,7 +928,7 @@ function COM_featuredCheck()
 {
     global $_TABLES;
     $curdate = date("Y-m-d H:i:s",time());
-    if (DB_getItem($_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'") > 1) {
+    if (DB_getItem($_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'",600) > 1) {
         // OK, we have two featured stories, fix that
         $sid = DB_getItem($_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1");
         DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'");
@@ -1215,9 +1219,9 @@ function COM_showTopics($topic='')
     global $_TABLES, $_CONF, $_USER, $LANG01, $PHP_SELF;
 	
     if ($_CONF['sortmethod'] == 'alpha') {
-        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC");
+        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC",0,DAY);
     } else {
-        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY sortnum");
+        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY sortnum",0,DAY);
     }
 
     $nrows = DB_numRows($result);
@@ -1238,7 +1242,7 @@ function COM_showTopics($topic='')
                 if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
                     $retval .= ' (';
                     if ($_CONF['showstorycount']) {
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'",0,HOUR/4);
                         $T = DB_fetchArray($rcount);
                         $retval .= $T['count'];
                     }
@@ -1246,7 +1250,7 @@ function COM_showTopics($topic='')
                         if ($_CONF['showstorycount']) {
                             $retval .= '/';
                         }
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'",0,HOUR/4);
                         $T = DB_fetchArray($rcount);
                         $retval .= $T['count'];
                     }
@@ -1259,7 +1263,7 @@ function COM_showTopics($topic='')
                 if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
                     $retval .= '(';
                     if ($_CONF['showstorycount']) {
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'",0,HOUR/4);
                         $T = DB_fetchArray($rcount);
                         $retval .= $T['count'];
                     }
@@ -1298,7 +1302,7 @@ function COM_userMenu($help='',$title='')
         $adminmenu->set_file('option', 'useroption.thtml');
 
         if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'],'title',"name='user_block'");
+            $title = DB_getItem($_TABLES['blocks'],'title',"name='user_block'",DAY);
         }
         $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('user_block', 'header'));
 			
@@ -1381,7 +1385,7 @@ function COM_adminMenu($help = '', $title = '')
         $adminmenu->set_file('option', 'adminoption.thtml');
 
         if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'],'title',"name='admin_block'");
+            $title = DB_getItem($_TABLES['blocks'],'title',"name='admin_block'",DAY);
         }
 	    $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('admin_block', 'header'));
         if (SEC_isModerator()) {
@@ -1937,7 +1941,7 @@ function COM_olderstuff()
 
     if ($_CONF['olderstuff'] == 1) {
         $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " 
-        . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
+        . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}",0,600);
         $nrows = DB_numRows($result);
 
         if ($nrows>0) {
@@ -2062,7 +2066,7 @@ function COM_showBlocks($side, $topic='', $name='all')
     }
     
     $sql .= ' ORDER BY blockorder,title asc';
-    $result	= DB_query($sql);
+    $result	= DB_query($sql,0,DAY);
     $nrows = DB_numRows($result);	
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
@@ -2266,7 +2270,7 @@ function COM_printUpcomingEvents($help='',$title='')
     global $_TABLES, $LANG01,$_CONF, $_USER;
 
     if (empty($title)) {
-        $title = DB_getItem($_TABLES['blocks'],'title',"name = 'events_block'");
+        $title = DB_getItem($_TABLES['blocks'],'title',"name = 'events_block'",0,DAY);
     }
     $retval .= COM_startBlock($title, '', COM_getBlockTemplate('events_block', 'header'));
 
@@ -2275,7 +2279,7 @@ function COM_printUpcomingEvents($help='',$title='')
     $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
 
-    $allEvents = DB_query($eventSql);
+    $allEvents = DB_query($eventSql,0,600);
     $numRows   = DB_numRows($allEvents);
     $totalrows = $numRows;
     $numDays   = 0;         // Without limits, I'll force them.
@@ -2461,10 +2465,10 @@ function COM_whatsNewBlock($help='',$title='')
     $desired = $now - $_CONF['newstoriesinterval'];
     $sql .= "UNIX_TIMESTAMP(date) > {$desired}"; // ORDER BY day DESC"
     $sql .= " AND draft_flag = 0 AND date <= NOW()";
-    $result = DB_query($sql);
+    $result = DB_query($sql,0,180);
     $nrows = DB_numRows($result);
     if (empty($title)) {
-        $title = DB_getItem($_TABLES['block'],'title',"name='whats_new_block'");
+        $title = DB_getItem($_TABLES['block'],'title',"name='whats_new_block'",0,DAY);
     }
     $retval .= COM_startBlock($title, $help, COM_getBlockTemplate('whats_new_block', 'header'));
 
@@ -2496,7 +2500,7 @@ function COM_whatsNewBlock($help='',$title='')
     $now = time();
     $desired = $now - $_CONF['newcommentsinterval'];    
     $sql .= "UNIX_TIMESTAMP({$_TABLES["comments"]}.date) > {$desired} GROUP BY {$_TABLES["comments"]}.sid";
-    $result = DB_query($sql);
+    $result = DB_query($sql,0,180);
 
     $nrows = DB_numRows($result);
 
@@ -2550,7 +2554,7 @@ function COM_whatsNewBlock($help='',$title='')
     $foundone = 0;
     $now = time();
     $desired = $now - $_CONF['newlinksinterval'];
-    $result = DB_query($sql);
+    $result = DB_query($sql,0,180);
     $nrows = DB_numRows($result);
 
     // Cap max displayed at 15
@@ -2779,7 +2783,7 @@ function phpblock_whosonline()
 }
 
 // Now include all plugin functions
-$result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
+$result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1",0,HOUR);
 $nrows = DB_numRows($result);
 for ($i = 1; $i <= $nrows; $i++) {
 	$A = DB_fetchArray($result);
