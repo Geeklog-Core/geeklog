@@ -8,11 +8,12 @@
 // | User authentication module.                                               |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.52 2003/02/07 00:29:32 blaine Exp $
+// $Id: users.php,v 1.53 2003/02/23 14:57:12 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -444,7 +445,9 @@ function createuser($username,$email)
   	        if ($_CONF['custom_registration'] AND (function_exists(custom_usercreate))) {
 			    custom_usercreate($uid);
 			}
-			
+
+            PLG_createUser ($uid);
+
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
             $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();

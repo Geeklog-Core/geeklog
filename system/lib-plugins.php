@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.14 2003/02/14 04:36:32 blaine Exp $
+// $Id: lib-plugins.php,v 1.15 2003/02/23 14:57:12 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -585,6 +585,48 @@ function PLG_showCenterblock()
         }
     }
     return $retval;
+}
+
+/**
+* This function will inform all plugins when a new user account is created.
+*
+* @param     int     $uid     user id of the new user account
+*
+*/
+function PLG_createUser ($uid)
+{
+    global $_TABLES;
+
+    $result = DB_query ("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows ($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $function = 'plugin_user_create_' . $A['pi_name'];
+        if (function_exists ($function)) {
+            $function ($uid);
+        }
+    }
+}
+
+/**
+* This function will inform all plugins when a user account is deleted.
+*
+* @param     int     $uid     user id of the deleted user account
+*
+*/
+function PLG_deleteUser ($uid)
+{
+    global $_TABLES;
+
+    $result = DB_query ("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows ($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $function = 'plugin_user_delete_' . $A['pi_name'];
+        if (function_exists ($function)) {
+            $function ($uid);
+        }
+    }
 }
 
 ?>

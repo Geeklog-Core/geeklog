@@ -4,15 +4,16 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-user.php                                                              |
+// | user.php                                                                  |
 // | Geeklog user administration page.                                         |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.47 2003/02/07 15:51:49 blaine Exp $
+// $Id: user.php,v 1.48 2003/02/23 14:57:12 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -211,7 +212,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		} else {
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
 		}
-        
+
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
             DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
@@ -222,6 +223,8 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             }
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+
+            PLG_createUser ($uid);
         } else {
             $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
             if (!empty($curphoto) AND $delete_photo == 'on') {
@@ -410,7 +413,7 @@ function importusers($file)
         $ecount = DB_count($_TABLES['users'],'email',$email);
         
         if ($verbose_import) {
-            $retval .="<BR><B>Working on username=$u_name, fullname=$full_name, and email=$email</B><BR>\n";
+            $retval .="<br><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br>\n";
             COM_errorLog("Working on username=$u_name, fullname=$full_name, and email=$email",1);
         }
         
@@ -435,22 +438,24 @@ function importusers($file)
                 DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
                 DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
                 $retval .= emailpassword($u_name, 1);
-                
+
+                PLG_createUser ($uid);
+
                 if ($verbose_import) {
-                    $retval .= "<BR> Account for <B>$u_name</B> created successfully.<BR>\n";
+                    $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";
                     COM_errorLog("Account for $u_name created successfully",1);
                 }
                 $successes++;
             } else {
                 if ($verbose_import) {
-                    $retval .= "<BR><B>$email</B> is not a valid email address, account not created<BR>\n"; // malformed email
+                    $retval .= "<br><b>$email</b> is not a valid email address, account not created<br>\n"; // malformed email
                     COM_errorLog("$email is not a valid email address, account not created",1);
                 }
                 $failures++;
             } // end if COM_isEmail($email)
         } else {
             if ($verbose_import) {
-                $retval .= "<BR><B>$u_name</B> already exists, account not created.<BR>\n"; // users already exists
+                $retval .= "<br><b>$u_name</b> already exists, account not created.<br>\n"; // users already exists
                 COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
             }
             $failures++;
@@ -538,6 +543,8 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
 	    if ($_CONF['custom_registration'] AND (function_exists(custom_userdelete))) {
             custom_userdelete($uid);
 	    } 
+
+        PLG_deleteUser ($uid);
 		
         // what to do with orphan stories/comments?
 
