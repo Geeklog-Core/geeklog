@@ -14,7 +14,7 @@
 
 						
 							<tr><td align="center">{edit_link}<br>
-							  {readmore_link} <a href="{comments_url}">{comments_text}</a><br>
+							  {readmore_link} {start_comments_anchortag}{comments_text}{end_comments_anchortag}<br>
 {recent_post_anchortag}<br></td></tr>
 							
 							</table></td>
