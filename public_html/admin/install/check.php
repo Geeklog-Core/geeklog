@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.2 2002/07/07 18:05:24 dhaun Exp $
+// $Id: check.php,v 1.3 2003/03/19 15:41:08 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -85,7 +85,7 @@ if (!$errfile || !$accfile) {
     $successful++;
 }
 
-echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . '/backend/ ...<br>' . LB;
+echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . 'backend/ ...<br>' . LB;
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
         echo '<font color="#ff0000">Could not open the RDF file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rdf</b> file in that directory to <b>chmod 775</b>.' . LB;
