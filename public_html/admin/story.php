@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.30 2002/04/10 16:18:50 tony_bibbs Exp $
+// $Id: story.php,v 1.31 2002/04/10 20:32:24 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -195,6 +195,8 @@ function storyeditor($sid, $mode = '')
     $publish_year = date('Y', $A['unixdate']);
     $publish_hour = date('H', $A['unixdate']);
     $publish_minute = date('i', $A['unixdate']);
+    $publish_second = date('s', $A['unixdate']);
+    $story_templates->set_var('publish_second', $publish_second);
     $publish_ampm = '';
     if ($publish_hour > 12) {
         $publish_hour = $publish_hour - 12;
@@ -731,7 +733,7 @@ case 'save':
     if ($publish_ampm == 'pm') {
         $publish_hour = $publish_hour + 12;
     }
-    $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:00");
+    $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete);
     break;
 case 'cancel':
