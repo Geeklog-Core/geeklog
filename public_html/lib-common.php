@@ -31,7 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.56 2002/04/11 16:14:18 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.57 2002/04/11 16:51:57 tony_bibbs Exp $
+
+// Prevent PHP from reporting uninitialized variables
+error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
