@@ -244,7 +244,8 @@ $LANG04 = array(
 	63 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using " . $CONF["site_name"],
 	64 => "Comment Preferences for",
 	65 => "Try Logging in Again",
-	66 => "You may have mistyped your login credentials.  If so, you may try logging in again below. If you can't remember your password you can have a new one sent to by filling out the password form at the bottom of this page."
+	66 => "You may have mistyped your login credentials.  If so, you may try logging in again below. If you can't remember your password you can have a new one sent to by filling out the password form at the bottom of this page.",
+	67 => "Member Since"
 );
 
 ###############################################################################
@@ -364,7 +365,10 @@ $LANG10 = array(
 	18 => "Top Ten Links",
 	19 => "Links",
 	20 => "Hits",
-	21 => "It appears that there are no links on this site or no one has ever clicked on one."
+	21 => "It appears that there are no links on this site or no one has ever clicked on one.",
+	22 => "Top Ten Emailed Stories",
+	23 => "Emails",
+	24 => "It appears that no one has emaild a story on this site"
 );
 
 ###############################################################################
@@ -632,7 +636,8 @@ $LANG28 = array(
 	10 => "Please fill in the Username, Full name, Security Level and Email Address fields",
 	11 => "User Manager",
 	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left.",
-	13 => "SecLev"
+	13 => "SecLev",
+	14 => "Reg. Date"
 );
 
 
