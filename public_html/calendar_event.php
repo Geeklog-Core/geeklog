@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.20 2002/06/28 11:58:19 dhaun Exp $
+// $Id: calendar_event.php,v 1.21 2002/08/08 10:03:08 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -117,7 +117,7 @@ function adduserevent($eid)
 */
 function saveuserevent($eid, $reminder, $emailreminder, $mode) 
 {
-    global $_TABLES, $MESSAGE, $_USER;
+    global $_TABLES, $MESSAGE, $_USER, $_CONF;
 
     /* Below code is for future functionality
     if (strlen($emailreminder) == 0) {
