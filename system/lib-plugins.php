@@ -29,15 +29,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.5 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: lib-plugins.php,v 1.6 2002/05/07 19:37:20 tony_bibbs Exp $
+
+/**
+* This is the plugin library for Geeklog.  This is the API that plugins can implement
+* to get tight intergration with Geeklog. See each function for more detail
+*
+*/
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
 /**
 * Calls a function for all enabled plugins
 *
-* @function     string          holds name of function to call
-* @args         array           arguments to send to function
+* @param     string     $function_name      holds name of function to call
 *
 */
 function PLG_callFunctionForAllPlugins($function_name) 
@@ -63,8 +68,8 @@ function PLG_callFunctionForAllPlugins($function_name)
 * This function can handle up to 5 arguments and if more exist it will
 * try to pass the entire args array to the function.
 *
-* @function         string      holds name of function to call
-* @args             array       arguments to send to function
+* @param        string      $function       holds name of function to call
+* @param        array       $args           arguments to send to function
 *
 */
 function PLG_callFunctionForOnePlugin($function, $args='') 
@@ -100,9 +105,9 @@ function PLG_callFunctionForOnePlugin($function, $args='')
 }
 
 /**
-* Installs a plugin
+* Tells a plugin to install itself. NOTE: not currently used anymore
 *
-* @type         string          Plugin name
+* @param        string      $type       Plugin name
 *
 */
 function PLG_install($type)
@@ -111,9 +116,9 @@ function PLG_install($type)
 }
 
 /**
-* Upgrades a plugin
+* Upgrades a plugin. Tells a plugin to upgrade itself. NOTE: not currenlty used
 *
-* @type         string          Plugin name
+* @param        string      $type       Plugin name
 *
 */
 function PLG_upgrade($type)
@@ -122,9 +127,9 @@ function PLG_upgrade($type)
 }
 
 /**
-* Uninstalls a plugin
+* Tells a plugin to uninstall itself.
 *
-* @type         string          Plugin name
+* @param        string      $type       Plugin to uninstall
 *
 */
 function PLG_uninstall($type)
@@ -181,7 +186,7 @@ function PLG_getMenuItems()
 /**
 * Returns if a specific plugin supports user comments
 *
-* @type         string      Plugin type
+* @param        string      $type       Plugin to check comment support for
 *
 */
 function PLG_supportsComments($type) 
@@ -191,6 +196,9 @@ function PLG_supportsComments($type)
 
 /**
 * No clue what this does yet
+*
+* @param        string      $type       Plugin to have handle the comment
+* @param        string      $id         Comment ID maybe?!?
 *
 */
 function PLG_handlePluginComment($type, $id) 
@@ -208,7 +216,7 @@ function PLG_handlePluginComment($type, $id)
 * for the plugin.  If $showsitestats is 0 then it will return the plugin
 * specific stats
 *
-* @showsitestats - flag indicated type of stats to return 
+* @param        boolean     $showsitestats      flag indicated type of stats to return 
 *
 */
 function PLG_getPluginStats($showsitestats) 
@@ -259,11 +267,11 @@ function PLG_getSearchTypes()
 * and return their results.  Results comeback in an array of HTML 
 * formatted table rows that can be quickly printed by search.php 
 *
-* @query - what the user searched for
-* @datestart - beginning of date range to search for
-* @dateend   - ending date range to search for
-* @topic	- the topic the user searched within 
-* @author    - only return results for this person
+* @param        string      $query          What the user searched for
+* @param        date        $datestart      beginning of date range to search for
+* @param        date        $dateend        ending date range to search for
+* @topic        string      $topic          the topic the user searched within 
+* @author       int         $author         only return results for this person
 *
 */
 function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author) 
@@ -377,8 +385,9 @@ function PLG_getAdminOptions()
 * plugin_moderationapproves_photos which approves an item from the
 * submission queue for a plugin.
 *
-* @type - used to figure out which plugin to work with
-* @id - used to identify the record to approve
+* @param        string      $type       Plugin name to do submission approval for
+* @param        string      $id         used to identify the record to approve
+*
 */
 function PLG_approveSubmission($type, $id) 
 {
@@ -391,8 +400,8 @@ function PLG_approveSubmission($type, $id)
 * plugin_moderationdelete_photos which deletes an item from the
 * submission queue for a plugin.  
 *
-* @type - used to figure out which plugin to work with
-* @id - used to identify the record for which to delete
+* @param        string      $type       Plugin to do submission deletion for
+* @param        string      $id         used to identify the record for which to delete
 *
 */
 function PLG_deleteSubmission($type, $id) 
@@ -405,8 +414,9 @@ function PLG_deleteSubmission($type, $id)
 * This function calls the plugin_savesubmission_<pluginname> to save
 * a user submission
 *
-* @type - used to figure out which plugin to work with
-* @A - holds data to save 
+* @param        string      $type       Plugin to save submission for
+* @param        array       $A          holds plugin specific data to save
+*
 */
 function PLG_saveSubmission($type, $A) 
 {
@@ -463,7 +473,7 @@ function PLG_showModerationList()
 * This function is responsible for setting the plugin-specific values
 * needed by moderation.php to approve stuff.
 *
-* @type         string      Plugin to call function for
+* @param        string      $type       Plugin to call function for
 *
 */
 function PLG_getModerationValues($type) 
@@ -475,7 +485,7 @@ function PLG_getModerationValues($type)
 * This function is resonsible for calling plugin_submit_<pluginname> so
 * that the submission form for the plugin is displayed.
 *
-* ARGUMENTS: $type - used to identify the plugin to show the submit form 
+* @param        string      $type       Plugin to show submission form for
 *
 */
 function PLG_showSubmitForm($type) 
