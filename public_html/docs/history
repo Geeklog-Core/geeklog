@@ -3,6 +3,19 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- COM_checkHTML and COM_allowedHTML now accept an additional parameter in form
+  of a comma-separated list of permissions. If the current user has at least
+  one of those permissions, they are assumed to be an "Admin" and the functions
+  will use the $_CONF['admin_html'] list of HTML tags for them (bugs #114 and
+  #118) [Dirk]
+- COM_allowedHTML now has an option to only return the list of allowed HTML
+  tags without the "Allowed HTML" text (bug #118) [Dirk]
+- For the poll block, always use the block title stored in the database (bug
+  #205) [Dirk]
+- It is now again possible to have a different number of stories per page
+  for individual topics. Users have to set their preferred number of stories
+  per page to 0 (zero) in their preferences, though, as the user preferences
+  will always override this setting (bug #190) [Dirk]
 - The Professional theme, kindly provided by Victor B. Gonzalez, is our new
   default theme now.
 - In the calendar's day and week view, event permissions weren't checked
@@ -287,6 +300,7 @@ Static Pages Plugin 1.4.1
 - Added a printable version for static pages (based on a concept by
   Jannetta S Lewis). Requires a new template file, printable.thtml, located
   in the static pages' template directory [Dirk]
+- Added support for autolinks and provide a [staticpage:] autotag.
 - Added an option to sort the static pages that are added to a site's menu
   (see {plg_menu_elements} in header.thtml) by id, label, title, or date [Dirk]
 - The block templates used to wrap a static page in a block can now be

@@ -17,7 +17,7 @@
 
 <h1>Changes</h1>
 
-<p>This document is intended to give a quick overview over the most import
+<p>This document is intended to give a quick overview over the most important
 and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
@@ -51,6 +51,17 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     lib-custom.php.</li>
 <li>Clickable links in text postings: URLs in non-HTML postings are now
     recognized by Geeklog and displayed as clickable links.</li>
+<li>Autolinks are a new form of links that can be used in stories and comments.
+    An autolink takes the form
+    <code>[<i>name</i>:<i>id</i> <i>link text</i>]</code> where <i>name</i> is
+    the tag name, <i>id</i> is the ID of an object the link should be pointing
+    to, and <i>link text</i> is used as the text of the link.<br>
+    Example: <code>[story:email-bug About the email bug]</code> would be
+    translated into <code>&lt;a href="http://example.com/article.php/email-bug"&gt;About the email bug&lt;/a&gt;</code><br>
+    Predefined autotags are <code>[story:]</code> to link to stories and
+    <code>[event:]</code> to link to events. Plugins can define their own
+    autotags to provide links to objects under their control. The Static Pages
+    plugin already provides a <code>[staticpage:]</code> autotag.</li>
 <li>Customizable welcome email: The email that is sent out to users
     registering with your site is now fully customizable by providing the
     text in a text file (/path/to/geeklog/data/welcome_email.txt).</li>
