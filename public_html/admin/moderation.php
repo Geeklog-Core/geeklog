@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.18 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: moderation.php,v 1.19 2002/04/21 20:34:51 dhaun Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -170,12 +170,12 @@ function itemlist($type)
     case 'event':
         $retval .= COM_startBlock($LANG29[37],'cceventsubmission.html');
         $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
-        $H = array("Title","Start Date","URL");
+        $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
         break;
     case 'link':
         $retval .= COM_startBlock($LANG29[36],'cclinksubmission.html');
         $sql = "SELECT lid AS id,title,category,url FROM {$_TABLES['linksubmission']} ORDER BY title ASC";
-        $H = array("Title","Category","URL");
+        $H = array($LANG29[10],$LANG29[13],$LANG29[12]);
         break;
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
@@ -197,7 +197,7 @@ function itemlist($type)
         } else {
             $retval .= COM_startBlock($LANG29[35],'ccstorysubmission.html');
             $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']} ORDER BY date ASC";
-            $H =  array("Title","Date","Topic");
+            $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             break;
         }
     }
