@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.145 2005/01/30 13:51:10 dhaun Exp $
+// $Id: story.php,v 1.146 2005/02/06 10:57:48 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -132,7 +132,7 @@ function storyeditor($sid = '', $mode = '')
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[41];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= STORY_renderArticle ($A, 'n');
+            $display .= STORY_renderArticle ($A, 'p');
             COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
             return $display;
         } else if ($access == 0) {
@@ -287,9 +287,9 @@ function storyeditor($sid = '', $mode = '')
                 list ($errors, $B['introtext'], $B['bodytext']) = insert_images ($A['sid'], $B['introtext'], $B['bodytext']);
             }
 
-            $display .= STORY_renderArticle ($B, 'n');
+            $display .= STORY_renderArticle ($B, 'p');
         } else {
-            $display .= STORY_renderArticle ($A, 'n');
+            $display .= STORY_renderArticle ($A, 'p');
         }
         $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     }

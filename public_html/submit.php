@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.81 2005/01/22 18:14:41 dhaun Exp $
+// $Id: submit.php,v 1.82 2005/02/06 10:57:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -316,7 +316,7 @@ function submitstory($topic = '')
             $A['introtext'] = COM_makeClickableLinks ($A['introtext']);
         }
         $retval .= COM_startBlock($LANG12[32])
-                . STORY_renderArticle ($A, 'n')
+                . STORY_renderArticle ($A, 'p')
                 . COM_endBlock();
     }
 

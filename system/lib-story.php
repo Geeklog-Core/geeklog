@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.21 2005/01/30 20:01:22 dhaun Exp $
+// $Id: lib-story.php,v 1.22 2005/02/06 10:57:48 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -47,7 +47,7 @@ if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
 * submit.php, and admin/story.php (when previewing)
 *
 * @param    array       $A      Data to display as an article (associative array from record from gl_stories)
-* @param    string      $index  whether or not this is the index page if 'n' then compact display for index page else display full article
+* @param    string      $index  whether or not this is the index page if 'n' then compact display for index page else display full article, also: 'p' = preview
 * @return   string      Article as formated HTML
 *
 * Note: Formerly named COM_article
@@ -186,7 +186,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $introtext = stripslashes( $A['introtext'] );
     $introtext = PLG_replacetags($introtext);   // Replace any plugin autolink tags
 
-    if( $index == 'n' )
+    if(( $index == 'n' ) || ( $index == 'p' ))
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
         if( empty( $A['bodytext'] ))
@@ -328,7 +328,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
-    if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ))
+    if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ) AND ( $index != 'p' ))
     {
         $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url']
                 . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '">'
