@@ -29,31 +29,38 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.4 2002/04/16 15:42:39 tony_bibbs Exp $
+// $Id: plugin.class.php,v 1.5 2002/05/13 18:57:45 tony_bibbs Exp $
 
+/**
+* This is a poorly thought out class that is used pretty much as a structure when
+* we need to pass plugin data back and forth
+*
+* @author   Tony Bibbs <tony@tonybibbs.com>
+*
+*/
 class Plugin {
 
     // PRIVATE PROPERTIES
 
     // PUBLIC PROPERTIES
-    var $adminlabel;
-    var $adminurl;
-    var $plugin_image;
-    var $plugin_name;
+    var $adminlabel = '';
+    var $adminurl = '';
+    var $plugin_image = '';
+    var $plugin_name = '';
 
     // Search properties
-    var $searchlabel;
-    var $num_searchresults;
+    var $searchlabel = '';
+    var $num_searchresults = 0;
     var $searchheading = array();
     var $searchresults = array();
-    var $num_itemssearched; 
-    var $num_searchheadings;
+    var $num_itemssearched = 0; 
+    var $num_searchheadings = 0;
 
     // Submission properties
-    var $numsubmissions;
-    var $submissionlabel;
-    var $submissionhelpfile;
-    var $getsumbissionssql;
+    var $numsubmissions = '';
+    var $submissionlabel = '';
+    var $submissionhelpfile = '';
+    var $getsumbissionssql = '';
     var $submissionheading = array();
     
 
@@ -97,7 +104,7 @@ class Plugin {
     * Adds a header that will be used in outputing search results for this
     * plugin
     *
-    * @heading      string      Heading label
+    * @param    string      $heading    Heading label
     *
     */ 
     function addSearchHeading($heading)
@@ -109,7 +116,7 @@ class Plugin {
     /**
     * Adds a search result to the result array.
     *
-    * @result_string        string      Holds coma delimited set of data
+    * @param    string      $result_string      Holds coma delimited set of data
     *
     */
     function addSearchResult($result_string)
@@ -117,6 +124,12 @@ class Plugin {
         $this->searchresults[] = $result_string;
     }     
 
+    /**
+    * Hrm, can't remember what this does exactly
+    *
+    * @param    string      $heading    string for heading
+    *
+    */
     function addSubmissionHeading($heading)
     {
         $this->num_submissions = $this->num_submissions + 1;
