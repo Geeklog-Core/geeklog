@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.111 2004/01/18 14:41:22 dhaun Exp $
+// $Id: story.php,v 1.112 2004/01/23 20:44:44 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -111,7 +111,7 @@ function storyeditor($sid = '', $mode = '')
             COM_accessLog("User {$_USER['username']} tried to illegally access story $sid.");
             return $display;
         }
-    } elseif (!empty($sid) && $mode == "editsubmission") {
+    } elseif (!empty($sid) && $mode == 'editsubmission') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
         if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray($result);
@@ -134,7 +134,7 @@ function storyeditor($sid = '', $mode = '')
             // handled by another Admin) - take us back to the moderation page
             return COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
         }
-    } elseif ($mode == "edit") {
+    } elseif ($mode == 'edit') {
         $A['sid'] = COM_makesid();
         $A['show_topic_icon'] = 1;
         $A['uid'] = $_USER['uid'];
@@ -169,21 +169,21 @@ function storyeditor($sid = '', $mode = '')
         
         // Convert array values to numeric permission values
         list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($A["postmode"] == "html") {
-            $A["introtext"] = COM_checkHTML(COM_checkWords($A["introtext"]));
-            $A["bodytext"] = COM_checkHTML(COM_checkWords($A["bodytext"]));
-            $A["title"] = COM_checkHTML(htmlspecialchars(COM_checkWords($A["title"])));
+        if ($A['postmode'] == 'html') {
+            $A['introtext'] = COM_checkHTML(COM_checkWords($A['introtext']));
+            $A['bodytext'] = COM_checkHTML(COM_checkWords($A['bodytext']));
+            $A['title'] = COM_checkHTML(htmlspecialchars(COM_checkWords($A['title'])));
         } else {
-            $A["introtext"] = htmlspecialchars(COM_checkWords($A["introtext"]));
-            $A["bodytext"] = htmlspecialchars(COM_checkWords($A["bodytext"]));
-            $A["title"] = htmlspecialchars(COM_checkWords($A["title"]));
+            $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
+            $A['bodytext'] = htmlspecialchars(COM_checkWords($A['bodytext']));
+            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
         }
         $A['title'] = strip_tags($A['title']);
     }
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
     } else {
         $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
@@ -241,6 +241,7 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
     $usergroups = SEC_getUserGroups();
+    $groupdd = '';
     if ($access == 3) {
         $groupdd .= '<select name="group_id">';
         for ($i = 0; $i < count($usergroups); $i++) {
@@ -449,8 +450,9 @@ function liststories($page = 1)
         $page = 1;
     }
 
-    if ($current_topic == $LANG09['9']) {
+    if ($current_topic == $LANG09[9]) {
         $excludetopics = '';
+        $seltopics = '';
         $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
         $tresult = DB_query( $topicsql );
         $trows = DB_numRows( $tresult );     
@@ -471,7 +473,6 @@ function liststories($page = 1)
             }
             $excludetopics .= ") ";
         } 
-
     } else {
         $excludetopics = " WHERE tid = '$current_topic' ";
         $seltopics = COM_topicList ('tid,topic', $current_topic);
@@ -1048,6 +1049,13 @@ function deletestory ($sid)
 }
 
 // MAIN
+$mode = '';
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+} else if (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+}
+
 $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if (!isset ($sid) || empty ($sid) || ($sid == 0)) {
