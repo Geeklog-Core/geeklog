@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.67 2002/12/30 13:28:52 dhaun Exp $
+// $Id: config.php,v 1.68 2003/01/09 09:41:50 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -68,7 +68,8 @@ $_CONF['path']            = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog/
 
 // You only need to change this if you moved or renamed the public_html
 // directory. In that case, you should specify the complete path to the
-// directory like this: $_CONF['path_html'] = '/path/to/your/public_html/';
+// directory like this (i.e. without the $_CONF['path']):
+// $_CONF['path_html']    = '/path/to/your/public_html/';
 $_CONF['path_html']       = $_CONF['path'] . 'public_html/';
 
 // you shouldn't need to edit the following
@@ -288,6 +289,11 @@ $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.
 $_CONF['showfirstasfeatured']   = 0;
+
+// Uncomment the following line to set the copyright year in the site's footer
+// to a specific year. Otherwise, the current year will be used.
+// $_CONF['copyrightyear'] = 2003;
+
 
 // Optional Image Settings
 

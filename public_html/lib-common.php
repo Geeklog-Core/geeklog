@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.195 2002/12/31 11:45:24 dhaun Exp $
+// $Id: lib-common.php,v 1.196 2003/01/09 09:41:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -896,8 +896,22 @@ function COM_siteFooter( $rightblock = false )
 
     $footer->set_var( 'site_url', $_CONF['site_url']);
     $footer->set_var( 'layout_url',$_CONF['layout_url']);
-    $footer->set_var( 'copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; 2002 ' . $_CONF['site_name'] . '<br>&nbsp;' . $LANG01[94] );
-    $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; 2002 ' . $_CONF['site_name'] );
+    $footer->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
+    $footer->set_var( 'site_name', $_CONF['site_name'] );
+    $footer->set_var( 'site_slogan', $_CONF['site_slogan'] );
+    $year = date( 'Y' );
+    $copyrightyear = $year;
+    if( !empty( $_CONF['copyrightyear'] ))
+    {
+        $copyrightyear = $_CONF['copyrightyear'];
+    }
+    $footer->set_var( 'copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; '
+            . $copyrightyear . ' ' . $_CONF['site_name'] . '<br>&nbsp;'
+            . $LANG01[94] );
+    $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; '
+            . $copyrightyear . ' ' . $_CONF['site_name'] );
+    $footer->set_var( 'current_year', $year );
+    $footer->set_var( 'lang_copyright', $LANG01[93] );
     $footer->set_var( 'trademark_msg', $LANG01[94] );
     $footer->set_var( 'powered_by', $LANG01[95] );
     $footer->set_var( 'geeklog_url', 'http://www.geeklog.net/' );
