@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.33 2002/08/05 17:18:55 dhaun Exp $
+// $Id: search.php,v 1.34 2002/08/15 13:02:48 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -512,9 +512,10 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 
         $retval .= $searchresults->parse('output','searchresults');
 	} else {
-		$retval .= COM_startBlock($LANG09[13])
-                    . $LANG09[14].' <b>'.$query.'</b> '.$LANG09[15]
+        $retval .= COM_startBlock($LANG09[13])
+                    . $LANG09[14] . ' <b>' . $query . '</b>. ' . $LANG09[15]
 			        . COM_endBlock();
+        $retval .= searchform ();
 	}
 
 	return $retval;
