@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.41 2003/04/28 12:55:31 dhaun Exp $
+// $Id: comment.php,v 1.42 2003/05/05 16:53:37 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -57,24 +57,29 @@ require_once('lib-common.php');
 * Displays the comment form
 *
 * @param    int     $uid        User ID
-* @param    string  $save       ??
-* @param    string  $anon       Indicates if this is posted anonymously
 * @param    string  $title      Title of comment
 * @param    string  $comment    Text of comment
 * @param    string  $sid        ID of object comment belongs to
-* @param    string  $pid        ??
+* @param    string  $pid        ID of parent comment
 * @param    string  $type       Type of object comment is posted to
-* @param    string  $mode       ??
+* @param    string  $mode       Mode, e.g. 'preview'
 * @param    string  $postmode   Indicates if comment is plain text or HTML
 * @return   string  HTML for comment form
 *
 */
-function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
+function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $LANG_LOGIN, $_USER;
 
-	if ($uid > 1) {
-        $sig = DB_getItem($_TABLES['users'], 'sig', "uid='$uid'");
+    $retval = '';
+
+    if (empty ($postmode)) {
+        $postmode = $_CONF['postmode'];
+    }
+
+    $sig = '';
+    if ($uid > 1) {
+        $sig = DB_getItem ($_TABLES['users'], 'sig', "uid = '$uid'");
     }
 
     if (empty($_USER['username']) &&
@@ -91,15 +96,11 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
         $retval .= COM_endBlock();
         return $retval;
     } else {
-        DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF['commentspeedlimit']}");
+        COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
 
-        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', $REMOTE_ADDR);
+        $last = COM_checkSpeedlimit ('comment');
 
-        if ($id > 0) {
-            $result = DB_query("SELECT date FROM {$_TABLES['commentspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
-            $A = DB_fetchArray($result);
-            $last = time() - $A[0];
-
+        if ($last > 0) {
             $retval .= COM_startBlock($LANG12[26])
                 . $LANG03[7]
                 . $last
@@ -151,11 +152,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                     . COM_endBlock();
                 $mode = 'error';
             }
-                
-            if (empty($postmode)) {
-                $postmode = $_CONF['postmode'];
-            }
-	       
+
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
             if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'comment/commentform_advanced.thtml')) {
                 $comment_template->set_file('form','commentform_advanced.thtml');
@@ -168,7 +165,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $comment_template->set_var('sid', $sid);
             $comment_template->set_var('pid', $pid);
             $comment_template->set_var('type', $type);
-	
+
             if (!empty($_USER['username'])) {
                 $comment_template->set_var('uid', $_USER['uid']);
                 $comment_template->set_var('username', $_USER['username']);
@@ -180,7 +177,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new'); 
                 $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[04]);
             }
-		
+
             $comment_template->set_var('lang_title', $LANG03[16]);
             $comment_template->set_var('title', stripslashes($title));
             $comment_template->set_var('lang_comment', $LANG03[9]);
@@ -195,17 +192,17 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $comment_template->set_var('lang_instr_line4', $LANG03[22]);	
             $comment_template->set_var('lang_instr_line5', $LANG03[23]);	
             $comment_template->set_var('lang_preview', $LANG03[14]);
-            
+
             if (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
 
-		    $comment_template->set_var('end_block', COM_endBlock());	
+            $comment_template->set_var('end_block', COM_endBlock());	
             $comment_template->parse('output', 'form');
             $retval .= $comment_template->finish($comment_template->get_var('output'));
         }
     }
-	
+
     return $retval;
 }
 
@@ -213,20 +210,20 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 * Save a comment
 *
 * @param        int         $uid        User ID of user making the comment
-* @param        string      $save       ??
-* @param        string      $anon       Indicates an anonymous post
 * @param        string      $title      Title of comment
 * @param        string      $comment    Text of comment
 * @param        string      $sid        ID of object receiving comment
 * @param        string      $pid        ID of parent comment
-* @param        string      $type       Type of comment this is (story, poll, etc)
+* @param        string      $type       Type of comment this is (article, poll, etc)
 * @param        string      $postmode   Indicates if text is HTML or plain text
 * @return       string      either nothing or HTML formated error
 *
 */
-function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode) 
+function savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode) 
 {
     global $_TABLES, $_CONF, $LANG03, $REMOTE_ADDR; 
+
+    $retval = '';
 
     // Get signature
     $sig = '';
@@ -257,33 +254,29 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
     $title = addslashes(strip_tags(COM_checkWords($title)));
 
     if (!empty($title) && !empty($comment)) {
-        DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
+        COM_updateSpeedlimit ('comment');
         DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
-		
+
         // See if plugin will handle this to update it's records
         PLG_handlePluginComment($type,$sid,'save');
-		
+
         // If we reach here then no plugin issued a COM_refresh() so continue
 
-        $comments = DB_count($_TABLES['comments'],'sid',$sid);
-		
         if ($type == 'poll') {
-            if ($comments > 0) {
-                DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            }			
             $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid&aid=-1");
         } else {
+            $comments = DB_count($_TABLES['comments'],'sid',$sid);
             DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
             $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
         }
     } else {
         $retval .= COM_siteHeader()
-            . commentform ($uid, $save, $anon, $title, $comment, $sid, $pid,
-                           $type, $LANG03[14], $postmode)
+            . commentform ($uid, $title, $comment, $sid, $pid, $type,
+                           $LANG03[14], $postmode)
             . COM_siteFooter();
     }
 
-	return $retval;
+    return $retval;
 }
 
 /**
@@ -291,7 +284,7 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 *
 * @param    string      $cid    Comment ID
 * @param    string      $sid    ID of object comment belongs to
-* @param    string      $type   Comment type (e.g. story, poll, etc)
+* @param    string      $type   Comment type (e.g. article, poll, etc)
 * @return   string      Returns string needed to redirect page to right place
 *
 */
@@ -299,35 +292,34 @@ function deletecomment($cid,$sid,$type)
 {
     global $_TABLES, $_CONF, $_USER, $REMOTE_ADDR;
 
+    $retval = '';
+
     if (!empty ($sid) && !empty ($cid) && is_numeric ($cid)) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '{$sid}'");
-        $P = DB_fetchArray ($result);
+        $A = DB_fetchArray ($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
-            $result = DB_query("SELECT pid FROM {$_TABLES['comments']} WHERE cid = $cid");
-            $A = DB_fetchArray($result);
+            $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
 
-            DB_change($_TABLES['comments'],'pid',$A['pid'],'pid',$cid);
-            DB_delete($_TABLES['comments'],'cid',$cid);
+            DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
+            DB_delete ($_TABLES['comments'], 'cid', $cid);
 
             // See if plugin will handle this to update it's records
             PLG_handlePluginComment($type,$sid,'delete');
 
-            $comments = DB_count($_TABLES['comments'],'sid',$sid);
-
             if ($type == 'poll') {
-                if ($comments > 0) {
-                    DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-                }
-                $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid&aid=-1");
+                $retval .= COM_refresh ($_CONF['site_url']
+                        . '/pollbooth.php?qid=$sid&aid=-1');
             } else {
+                $comments = DB_count($_TABLES['comments'],'sid',$sid);
                 DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-                $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");	 
+                $retval .= COM_refresh ($_CONF['site_url']
+                        . '/article.php?story=$sid');
             }
         } else {
             COM_errorLog ('User ' . $_USER['username'] . ' (IP: ' . $REMOTE_ADDR
                     . ') tried to illegally delete comment ' . $cid
-                    . ' from story ' . $sid);
-            $retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);	 
+                    . ' from ' . $type . ' ' . $sid);
+            $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
     } else {
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -341,16 +333,16 @@ $title = strip_tags ($title);
 switch ($mode) {
 case $LANG03[14]: //Preview
     $display .= COM_siteHeader()
-        . commentform($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$mode,$postmode)
+        . commentform($uid,$title,$comment,$sid,$pid,$type,$mode,$postmode)
         . COM_siteFooter(); 
     break;
 case $LANG03[11]: //Submit Comment
-    $display .= savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode);
+    $display .= savecomment($uid,$title,$comment,$sid,$pid,$type,$postmode);
     break;
 case $LANG01[28]: //Delete
     $display .= deletecomment (strip_tags ($cid), strip_tags ($sid), $type);
     break;
-case display:
+case 'display':
     $display .= COM_siteHeader()
         . COM_userComments($sid,$title,$type,$order,'threaded',$pid)
         . COM_siteFooter();
@@ -358,12 +350,11 @@ case display:
 default:
     if (!empty($sid)) {
         if (empty ($title)) {
-            $result = DB_query ("SELECT title FROM {$_TABLES['stories']} WHERE sid = '$sid'");
-            $A = DB_fetchArray ($result);
-            $title = str_replace('$','&#36;',$A['title']);
+            $title = DB_getItem ($_TABLES['stories'], 'title', "sid = '{$sid}'");
+            $title = str_replace ('$', '&#36;', $title);
         }
         $display .= COM_siteHeader()
-            . commentform('','','',$title,'',$sid,$pid,$type,$mode,$postmode)
+            . commentform('',$title,'',$sid,$pid,$type,$mode,$postmode)
             . COM_siteFooter();
     } else {
         // This could still be a plugin wanting comments
