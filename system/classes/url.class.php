@@ -30,14 +30,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.5 2002/05/08 18:26:07 tony_bibbs Exp $
+// $Id: url.class.php,v 1.6 2003/07/14 10:10:42 dhaun Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
 * http://www.example.com/index.php/arg_value_1/arg_value_2/ instead of
 * uglier http://www.example.com?arg1=value1&arg2=value2.
 * NOTE: this does not currently work under windows as there is a well documented
-* but with IIS and PATH_INFO.  Not sure yet if this will work with windows under
+* bug with IIS and PATH_INFO.  Not sure yet if this will work with windows under
 * apache.  This was built so you could use this class and just disable it
 * if you are an IIS user.
 *
@@ -76,9 +76,9 @@ class url {
     */
     function _getArguments()
     {
-        global $PATH_INFO;
+        global $HTTP_SERVER_VARS;
 
-        $this->_arguments = explode('/',$PATH_INFO);
+        $this->_arguments = explode('/',$HTTP_SERVER_VARS['PATH_INFO']);
         array_shift($this->_arguments);
     }
 
