@@ -229,12 +229,6 @@ function editpreferences()
         . '<td align="right"><b>' . $LANG04[42] . ':</b></td>' . LB
         . '<td><select name="dfid">' . LB
         . COM_optionList($_TABLES['dateformats'],'dfid,description',$A['dfid'])
-//		. '</select>' . LB
-//        . '</td></tr>' . LB
-//        . '<tr valign="top">' . LB
-//        . '<td align="right"><b>Time Zone:</b></td>' . LB
-//		. '<td align=left><select name=tzid>' . LB
-//		. COM_optionList($_TABLES['tzcodes'],'tz,description',$A['tzid'])
         . '</select></td>' . LB
         . '</tr>' . LB
         . '</table>'
@@ -293,7 +287,7 @@ function editpreferences()
         .' </tr>' . LB
         . '<tr>' . LB
         . '<td>'
-        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',"(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND name IN ('whats_new_block','poll_block','events_block')) ORDER BY onleft desc,blockorder,title",$selectedblocks)
+        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',"(type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block')) ORDER BY onleft desc,blockorder,title",$selectedblocks)
         . '</td>'.LB
         . '</tr>'.LB
         . '</table>'
