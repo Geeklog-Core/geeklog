@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.40 2002/10/21 16:46:59 dhaun Exp $
+// $Id: search.php,v 1.41 2002/10/28 17:19:44 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -623,7 +623,9 @@ if (empty ($_USER['username']) &&
     $query = strip_tags ($query);
     if ((strlen ($query) < 3) && (empty ($topic) || ($topic == '0')) &&
             (empty ($datestart) && empty ($dateend)) && (empty ($type) || ($type == 'all')) && (empty ($author) || ($author == '0'))) {
-        $display .= COM_showMessage (50);
+        $display .= COM_startBlock ($LANG09[13])
+                 . $LANG09[41] . ' ' . $LANG09[15]
+                 . COM_endBlock();
         $display .= searchform ();
     } else {
         $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);

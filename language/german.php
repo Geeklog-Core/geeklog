@@ -415,7 +415,8 @@ $LANG09 = array(
     37 => 'Ergebnisse: Termine',
     38 => 'Ergebnisse: Links',
     39 => 'Links',
-    40 => 'Termine'
+    40 => 'Termine',
+    41 => 'Dein Suchbegriff sollte mindestens 3 Zeichen lang sein.'
 );
 
 ###############################################################################

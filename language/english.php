@@ -409,7 +409,8 @@ $LANG09 = array(
     37 => 'Event Results',
     38 => 'Link Results',
     39 => 'Links',
-    40 => 'Events'
+    40 => 'Events',
+    41 => 'Your query string should have at least 3 characters.'
 );
 
 ###############################################################################
