@@ -1,5 +1,7 @@
 GeekLog History/Changes:
 
+- Added an 'edit' link to links/linkdetails.thtml, so that (Link) Admins can
+  edit links easily (contributed by Euan McKay).
 - What's Related applied COM_checkHTML() on the entire block instead of on the
   individual items, thus stripping out HTML from the template file (bug #52).
 - Words from a search query are now properly hightlighted in comments when the

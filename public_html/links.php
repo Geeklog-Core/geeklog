@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.26 2003/06/25 08:39:02 dhaun Exp $
+// $Id: links.php,v 1.27 2003/08/18 09:53:37 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -139,6 +139,14 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
                         stripslashes ($A['description']));
+                if (SEC_hasRights ('link.edit')) {
+                    $linklist->set_var ('link_edit', '<a href="'
+                            . $_CONF['site_admin_url']
+                            . '/link.php?mode=edit&amp;lid=' . $A['lid'] . '">'
+                            . $LANG01[4] . '</a>');
+                } else {
+                    $linklist->set_var ('link_edit', '');
+                }
                 $linklist->parse('link_details', 'link', true);
             }
             $linklist->parse('category_links','catlinks',true);
@@ -180,6 +188,14 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
                         stripslashes ($A['description']));
+                if (SEC_hasRights ('link.edit')) {
+                    $linklist->set_var ('link_edit', '<a href="'
+                            . $_CONF['site_admin_url']
+                            . '/link.php?mode=edit&amp;lid=' . $A['lid'] . '">'
+                            . $LANG01[4] . '</a>');
+                } else {
+                    $linklist->set_var ('link_edit', '');
+                }
                 $linklist->parse('link_details', 'link', true);
             }
         }
