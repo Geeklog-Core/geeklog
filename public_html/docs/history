@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 February 22, 2002
 -----------------
+- Added Canadian French, German and Polish translations
 - Fixed bug that kept front page with multiple polls from working right
 - Added missing help field to block table
 - Added block to usersettings where user can pick topics to receive articles for in an
