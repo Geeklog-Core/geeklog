@@ -1,5 +1,8 @@
 GeekLog History/Changes:
 
+- Fixed the "12pm bug": Posting a story between 12 and 1 pm would result in
+  the story being posted with a date in 1969.
+- Use mysql_connect() instead of mysql_pconnect() in MySQL class.
 - In the admin menu, the count of available submissions is now displayed
   according to the admin's access rights (e.g. don't count story submissions
   for someone who's only a link admin).
