@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.36 2004/02/29 18:45:13 dhaun Exp $
+// $Id: group.php,v 1.37 2004/07/24 18:26:32 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -44,12 +44,12 @@
 /**
 * Geeklog common function library
 */
-require_once('../lib-common.php');
+require_once ('../lib-common.php');
 
 /**
 * Verifies that current user even has access to the page to this point
 */
-require_once('auth.inc.php');
+require_once ('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -59,14 +59,14 @@ require_once('auth.inc.php');
 $display = '';
 
 // Make sure user has rights to access this page 
-if (!SEC_hasRights('group.edit')) {
+if (!SEC_hasRights ('group.edit')) {
     $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($MESSAGE[30], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[32];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    COM_accessLog("User {$_USER['username']} tried to illegally access the group administration screen.");
+    COM_accessLog ("User {$_USER['username']} tried to illegally access the group administration screen.");
     echo $display;
     exit;
 }
@@ -313,7 +313,7 @@ function printrights ($grp_id = '', $core = 0)
         // via membership to another group.  These are not editable and must,
         // instead, be removed from that group directly
 		$indirectfeatures = getIndirectFeatures ($grp_id);
-		$indirectfeatures = explode(',',$indirectfeatures);
+		$indirectfeatures = explode (',', $indirectfeatures);
 
 		// Build an array of indirect features
 		for ($i = 0; $i < sizeof($indirectfeatures); $i++) {		
@@ -329,7 +329,7 @@ function printrights ($grp_id = '', $core = 0)
 		}
 
 		// Now merge the two arrays	
-		$grpftarray = array_merge($grpftarray,$grpftarray1);
+		$grpftarray = array_merge ($grpftarray, $grpftarray1);
 		if ($VERBOSE) {
 			// this is for debugging purposes
 			for ($i = 1; $i < sizeof($grpftarray); $i++) {
@@ -383,14 +383,14 @@ function printrights ($grp_id = '', $core = 0)
 * @param    boolean $grp_gl_core    Flag that indicates if this is a core Geeklog group
 * @param    array   $features       Features the group has access to
 * @param    array   $groups         Groups this group will belong to
-* @return   string  Either empty string on success (cause of refresh) or HTML for some sort of error
+* @return   string                  HTML refresh or error message
 *
 */
-function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
+function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $groups) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
-    if (!empty($grp_name) && !empty($grp_descr)) {
+    if (!empty ($grp_name) && !empty ($grp_descr)) {
         $GroupAdminGroups = SEC_getUserGroups ();
         if (!empty ($grp_id) && ($grp_id > 0) &&
                 !in_array ($grp_id, $GroupAdminGroups)) {
@@ -400,7 +400,7 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
         }
 
         if ($grp_gl_core == 1 AND !is_array ($features)) {
-            COM_errorLog("Sorry, no valid features were passed to this core group ($grp_id) and saving could cause problem...bailing.");
+            COM_errorLog ("Sorry, no valid features were passed to this core group ($grp_id) and saving could cause problem...bailing.");
 
             return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
         }
@@ -644,7 +644,7 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     return $retval;
 }
 
-function grp_selectUsers($group_id = "0", $allusers=false)
+function grp_selectUsers ($group_id = '0', $allusers = false)
 {
     global $_TABLES, $_USER;
 
@@ -666,13 +666,14 @@ function grp_selectUsers($group_id = "0", $allusers=false)
             $retval .= '<option value="' . $uid . '">'. $username . '</option>';
         }
     }
+
     return $retval;
 }
 
 
-function editusers($group)
+function editusers ($group)
 {
-    global $_CONF, $_TABLES, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
 
     $thisUsersGroups = SEC_getUserGroups ();
     if (!empty ($group) && ($group > 0) &&
@@ -709,11 +710,11 @@ function editusers($group)
     $groupmembers->parse ('output', 'groupmembers');
     $retval .= $groupmembers->finish($groupmembers->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    Return $retval;
 
+    return $retval;
 }
 
-function savegroupusers($groupid,$groupmembers)
+function savegroupusers ($groupid, $groupmembers)
 {
     global $_CONF, $_TABLES;
 
@@ -729,6 +730,9 @@ function savegroupusers($groupid,$groupmembers)
 
 /**
 * Delete a group
+*
+* @param    int     $grp_id     id of group to delete
+* @return   string              HTML redirect
 *
 */
 function deleteGroup ($grp_id)
@@ -758,7 +762,16 @@ function deleteGroup ($grp_id)
 }
 
 // MAIN
+$http_input_vars = array();
+if (count ($HTTP_POST_VARS) == 0) {
+    $http_input_vars = $HTTP_GET_VARS;
+} else {
+    $http_input_vars = $HTTP_POST_VARS;
+}
+$mode = $http_input_vars['mode'];
+
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
+    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
@@ -766,29 +779,39 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
         $display .= deleteGroup ($grp_id);
     }
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
-    $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,
-            $HTTP_POST_VARS[$_TABLES['groups']]);
+    $display .= savegroup ($HTTP_POST_VARS['grp_id'],
+                           $HTTP_POST_VARS['grp_name'],
+                           $HTTP_POST_VARS['grp_descr'],
+                           $HTTP_POST_VARS['grp_gl_core'],
+                           $HTTP_POST_VARS['features'],
+                           $HTTP_POST_VARS[$_TABLES['groups']]);
 } else if ($mode == 'savegroupusers') {
-    $display .= savegroupusers($grp_id, $HTTP_POST_VARS['groupmembers']);
+    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $display .= savegroupusers ($grp_id, $HTTP_POST_VARS['groupmembers']);
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader('menu');
-    $display .= editgroup($grp_id);
-    $display .= COM_siteFooter();
+    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $display .= COM_siteHeader ('menu');
+    $display .= editgroup ($grp_id);
+    $display .= COM_siteFooter ();
 } else if ($mode == 'listusers') {
+    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $page = COM_applyFilter ($http_input_vars['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= listusers ($grp_id, $page);
     $display .= COM_siteFooter ();
 } else if ($mode == 'editusers') {
+    $grp_id = COM_applyFilter ($http_input_vars['grp_id'], true);
+    $page = COM_applyFilter ($http_input_vars['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= editusers ($grp_id, $page);
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu');
-    if (isset ($msg)) {
-        $display .= COM_showMessage($msg);
+    $display .= COM_siteHeader ('menu');
+    if (isset ($http_input_vars['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($http_input_vars['msg'], true));
     }
-    $display .= listgroups();
-    $display .= COM_siteFooter();
+    $display .= listgroups ();
+    $display .= COM_siteFooter ();
 }
 
 echo $display;
