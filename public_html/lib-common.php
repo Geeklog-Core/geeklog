@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.251 2003/09/04 09:50:15 dhaun Exp $
+// $Id: lib-common.php,v 1.252 2003/09/04 21:32:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3886,7 +3886,7 @@ function COM_emailUserTopics()
         $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
 
-        $mailto = $U['username'] . ' <' . $toemail . '>';
+        $mailto = $U['username'] . ' <' . $U['email'] . '>';
 
         COM_mail( $mailto, $subject, $mailtext );
     }
