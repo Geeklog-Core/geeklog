@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.43 2004/08/07 09:14:28 dhaun Exp $
+// $Id: calendar.php,v 1.44 2004/08/07 10:20:01 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -233,74 +233,28 @@ function getQuickAdd($tpl, $month, $day, $year)
 {
     global $LANG30;
 
-    for ($z = 1; $z <= 12; $z++) {
-        if ($z < 10) {
-           $mval = '0' . $z;
-        } else {
-           $mval = $z;
-        }
-        $month_options .= '<option value="' . $mval . '" ';
-        if ($z == $month) {
-            $month_options .= 'selected="selected"';
-        }
-        $month_options .= '>' . $mval . '</option>';
-    }
-    $tpl->set_var('month_options', $month_options);
+    $tpl->set_var ('month_options', COM_getMonthFormOptions ($month));
+    $tpl->set_var ('day_options', COM_getDayFormOptions ($day));
+    $tpl->set_var ('year_options', COM_getYearFormOptions ($year));
 
-    $day_options = '';
-    for ($z = 1; $z <= 31; $z++) {
-        $day_options .= '<option value="' . $z . '" ';
-        if ($z == $day) {
-            $day_options .= 'selected="selected"';
-        }
-        $day_options .= '>' . $z. '</option>';
-    }
-    $tpl->set_var('day_options', $day_options);
-
-    $cur_year = date('Y',time());
-    for ($z = $cur_year; $z <= $cur_year + 5; $z++) {
-        $year_options .= '<option value="' . $z . '" ';
-        if ($z == $year) {
-            $year_options .= 'selected="selected"';
-        }
-        $year_options .= '>' . $z . '</option>';
-    }
-    $tpl->set_var('year_options', $year_options);
-
-    $cur_hour = date('H',time());
+    $cur_hour = date ('H', time ());
     if ($cur_hour >= 12) {
-        $tpl->set_var('pm_selected','selected="selected"');
+        $tpl->set_var ('pm_selected', 'selected="selected"');
     } else {
-        $tpl->set_var('am_selected','selected="selected"');
+        $tpl->set_var ('am_selected', 'selected="selected"');
     }
-    if ($cur_hour > 12) $cur_hour = $cur_hour-12;
-    for ($z = 1; $z <= 11; $z++) {
-        if ($z < 10) {
-            $hval = '0' . $z;
-        } else {
-            $hval = $z;
-        }
-        if ($z == 1 ) {
-            $hour_options .= '<option value="12" ';
-            if ($cur_hour == 12) {
-                $hour_options .= 'selected="selected"';
-            }
-            $hour_options .= '>12</option>';
-        }
-        $hour_options .= '<option value="' . $hval . '" ';
-        if ($cur_hour == $z) {
-            $hour_options .= 'selected="selected"';
-        }
-        $hour_options .= '>' . $z . '</option>';
+    if ($cur_hour > 12) {
+        $cur_hour = $cur_hour - 12;
     }
-    $tpl->set_var('hour_options', $hour_options);
-    $tpl->set_var('lang_event', $LANG30[32]);
-    $tpl->set_var('lang_date', $LANG30[33]);
-    $tpl->set_var('lang_time', $LANG30[34]);
-    $tpl->set_var('lang_add', $LANG30[31]);
-    $tpl->set_var('lang_quickadd', $LANG30[35]);
-    $tpl->set_var('lang_submit', $LANG30[36]);
-    $tpl->parse('quickadd_form','quickadd',true);
+    $tpl->set_var('hour_options', COM_getHourFormOptions ($cur_hour));
+
+    $tpl->set_var ('lang_event', $LANG30[32]);
+    $tpl->set_var ('lang_date', $LANG30[33]);
+    $tpl->set_var ('lang_time', $LANG30[34]);
+    $tpl->set_var ('lang_add', $LANG30[31]);
+    $tpl->set_var ('lang_quickadd', $LANG30[35]);
+    $tpl->set_var ('lang_submit', $LANG30[36]);
+    $tpl->parse ('quickadd_form', 'quickadd', true);
 
     return $tpl;
 }
