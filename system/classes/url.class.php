@@ -2,15 +2,21 @@
 
 class url {
     var $_arguments;		// Array of argument names
+    var $_enabled;
     
     /**
     * Constructor
     *
+    * @enabled  boolean whether rewriting is enabled
+    *
     */
-    function url()
+    function url($enabled=true)
     {
+        $this->setEnabled($enabled);
         $this->_arguments = array();
-        $this->_getArguments();
+        if ($this->_enabled) {
+            $this->_getArguments();
+        }
     }
 
     /**
@@ -25,6 +31,30 @@ class url {
         array_shift($this->_arguments);
     }
 
+    /**
+    * Enables url rewriting, otherwise URL's are passed back
+    *
+    * @switch   boolean     true/false
+    *
+    */
+    function setEnabled($switch)
+    {
+        if ($switch) {
+            $this->_enabled = true;
+        } else {
+            $this->_enabled = false;
+        }
+    }
+    
+    /**
+    * Returns whether or not URL rewriting is enabled
+    *
+    */
+    function isEnabled()
+    {
+        return $this->_enabled;
+    }
+    
     /**
     * Returns the number of variables found in query string
     *
@@ -70,9 +100,18 @@ class url {
     */
     function getArgument($name)
     {
+        global $HTTP_GET_VARS;
+        
+        // if in GET VARS array return it 
+        if (!empty($HTTP_GET_VARS[$name])) {
+            return $HTTP_GET_VARS[$name];
+        }
+        
+        // ok, pull from query string
         if (in_array($name,array_keys($this->_arguments))) {
             return $this->_arguments[$name];
-        } 
+        }
+        
         return '';
     }
 
@@ -84,6 +123,10 @@ class url {
     */
     function buildURL($url)
     {
+        if (!$this->isEnabled()) {
+            return $url;
+        }
+        
         $pos = strpos($url,'?');
         $query_string = substr($url,$pos+1);
         $finalList = array();
