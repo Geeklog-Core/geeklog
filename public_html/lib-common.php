@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.161 2002/09/18 11:33:41 dhaun Exp $
+// $Id: lib-common.php,v 1.162 2002/09/18 15:23:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1319,10 +1319,12 @@ function COM_errorLog($logentry, $actionid = '')
                 {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
                 }
-                
-                fputs( $file, "$timestamp - $logentry \n" );
+                else
+                {
+                    fputs( $file, "$timestamp - $logentry \n" );
+                }
                 break;
-                
+
            case 2:
                 $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
                 break;
@@ -1334,9 +1336,11 @@ function COM_errorLog($logentry, $actionid = '')
                 {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
                 }
-                
-                fputs( $file, "$timestamp - $logentry \n" );
-                $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                else
+                {
+                    fputs( $file, "$timestamp - $logentry \n" );
+                    $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                }
                 break;
         }
     }
