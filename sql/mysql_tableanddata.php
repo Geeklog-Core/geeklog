@@ -20,6 +20,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   content text,
   rdfurl varchar(255) default NULL,
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
+  rdflimit smallint(5) unsigned NOT NULL default '0',
   onleft tinyint(3) unsigned NOT NULL default '1',
   phpblockfn varchar(64) default '',
   help varchar(128) default '',

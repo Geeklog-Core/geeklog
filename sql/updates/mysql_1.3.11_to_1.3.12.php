@@ -16,4 +16,6 @@ $_SQL[] = "CREATE TABLE {$_TABLES['trackback']} (
   INDEX trackback_type(type)
 ) TYPE=MyISAM";
 
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NOT NULL default '0' AFTER rdfupdated";
+
 ?>
