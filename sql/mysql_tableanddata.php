@@ -889,7 +889,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0'
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 
 #
-# Dumping data for spamx
+# These indexes are only added for MySQL version 3.23.2 and up
 #
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
