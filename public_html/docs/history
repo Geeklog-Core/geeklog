@@ -1,5 +1,21 @@
 GeekLog History/Changes:
 
+- Added $_CONF['skip_preview'] to allow submission of comments and stories
+  without previewing (defaults to off).
+- Search queries with less than 3 characters are now rejected to reduce server
+  load.
+- (Event)Admins couldn't add events directly to their personal calendar
+  (found & fixed by Kenn Osborne).
+- Fixed a nasty bug in SEC_inGroup() (in lib-security.php) that let a user
+  admin change the password of a root user, so that effectively every user
+  admin could become a root user ...
+- Topics are now sorted alphabetically by the topic name instead of by topic id.
+- Added new variables that can be used in the story template files.
+- New config options $_CONF['dateonly'] and $_CONF['timeonly'] which hold the
+  format string for day + month (to be used in the Upcoming Events and Older
+  Stories blocks) and the time (to be used for event details).
+- Fixed calls to unknown function printErrorMsgs in the file upload class.
+- Any search is now blocked when $_CONF['searchloginrequired'] = 1
 - New options in config.php:
   $_CONF['upcomingeventsrange'] = no. of days to look ahead for upcoming events
   $_CONF['emailstoryloginrequired'] = disallow "send story be email" for

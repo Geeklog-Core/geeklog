@@ -188,6 +188,17 @@ that are defined below:
   <td>Date format this is the shortest date. See <a href="#date_formats">date 
     formats</a> below.</td></tr>
 <tr>
+  <td>dateonly</td>
+  <td>%d-%b</td>
+  <td>Short date format (day and month only), to be used e.g. in the
+    Upcoming Events and Older Stories blocks. See <a href="#date_formats">date
+    formats</a> below.</td></tr>
+<tr>
+  <td>timeonly</td>
+  <td>%I:%M %p %Z</td>
+  <td>Format string for the time only, to be used e.g. on the Event Details
+    page. See <a href="#date_formats">date formats</a> below.</td></tr>
+<tr>
   <td>default_charset</td>
   <td>iso-8859-1</td>
   <td>Character encoding used by Geeklog when serving HTML pages or 
@@ -314,6 +325,11 @@ that are defined below:
   <td>speedlimit</td>
   <td>45</td>
   <td>Minimum delay between submissions in seconds. This helps prevent Denial of Service (DOS) attacks</td></tr>
+<tr>
+  <td>skip_preview</td>
+  <td>0</td>
+  <td>If 1, allows submission of stories and comments without previewing (i.e. the submission form will always have a Preview <em>and</em> a Submit button).</td></tr>
+</table>
 </table>
 
 
