@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.303 2004/03/21 20:53:30 dhaun Exp $
+// $Id: lib-common.php,v 1.304 2004/03/23 19:57:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1266,7 +1266,7 @@ function COM_topicList( $selection, $selected='', $sortcol=1 )
     $retval = '';
 
     $tmp = str_replace( 'DISTINCT ', '', $selection );
-    $select_set = explode( ',',$tmp );
+    $select_set = explode( ',', $tmp );
 
     $result = DB_query( "SELECT * FROM {$_TABLES['topics']}" . COM_getPermSQL()
             . " ORDER BY $select_set[$sortcol]" );
@@ -1590,11 +1590,11 @@ function COM_accessLog( $logentry )
 
 function COM_pollVote( $qid )
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $LANG01, $_CONF;
+    global $_CONF, $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $LANG01;
 
     $retval = '';
 
-    $question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
+    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
     $Q = DB_fetchArray( $question );
 
     if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon'] ) == 0 )
@@ -1759,7 +1759,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
     $retval = '';
 
-    $question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
+    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
     $Q = DB_fetchArray( $question );
 
     if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 )
@@ -1773,11 +1773,11 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
     {
         if( $_CONF['answerorder'] == 'voteorder' )
         {
-            $answers = DB_query( "SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
+            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
         }
         else
         {
-            $answers = DB_query( "SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
+            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
         }
 
         $nanswers = DB_numRows( $answers );
@@ -1910,7 +1910,7 @@ function COM_showTopics( $topic='' )
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
         if (!empty ($tids)) {
-            $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
+            $sql .= " AND (tid NOT IN ('" . str_replace( ' ', "','", $tids )
                  . "'))";
         }
     }
