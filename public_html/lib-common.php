@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.307 2004/03/31 18:56:14 dhaun Exp $
+// $Id: lib-common.php,v 1.308 2004/04/02 04:42:17 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-require_once( '/path/to/geeklog/config.php' );
+require_once( '/home/vmf/cvs/geeklog-1.3/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -1880,7 +1880,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
-                                             $order, $mode, 0, $delete_option ); 
+                                             $order, $mode, 0, 1, $delete_option ); 
             }
         }
     }
@@ -2655,10 +2655,13 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     return $commentbar->finish( $commentbar->parse( 'output', 'commentbar' ));
 }    
 
+
 /**
-* This function prints $A (an individual comment) in comment format
+* This function prints &$comments (db results set of comments) in comment format
+* -For previews, &$comments is assumed to be an associative array containing
+*  data for a single comment.
 * 
-* @param     array      $A         Associative array based on comment record
+* @param     array      &$comments Database result set of comments to be printed
 * @param     string     $mode      'flat', 'threaded', etc
 * @param     string     $type      Type of item (article, poll, etc.)
 * @param     string     $order     How to order the comments 'ASC' or 'DESC'
@@ -2667,182 +2670,177 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 * @return    string     HTML       Formated Comment 
 *
 */
-function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $preview = false )
+function COM_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
 {
-    global $_CONF, $_TABLES, $LANG01, $query;
+    global $_CONF, $_TABLES, $LANG01;
+    
+    $indent = 0;  // begin with 0 indent
+    $level = array(); // used to track depth
+    $retval = ''; // initialize return value
 
-    static $template;
-    static $indent = 0;
-
+    $template = new Template( $_CONF['path_layout'] . 'comment' );
+    $template->set_file( array( 'comment' => 'comment.thtml',
+                                'thread'  => 'thread.thtml'  ));
+                                
+    // generic template variables
+    $template->set_var( 'site_url', $_CONF['site_url'] );
+    $template->set_var( 'layout_url', $_CONF['layout_url'] );
+    $template->set_var( 'lang_replytothis', $LANG01[43] );
+    $template->set_var( 'lang_reply', $LANG01[25] );
+    $template->set_var( 'lang_authoredby', $LANG01[42] );
+    $template->set_var( 'lang_on', $LANG01[36] );
+    $template->set_var( 'order', $order );    
+    
     // Make sure we have a default value for comment indentation
     if( !isset( $_CONF['comment_indent'] ))
     {
         $_CONF['comment_indent'] = 25;
     }
-
-    // Initialize the comment templates if not already done
-    if( !isset( $template ))
+    
+    if ( $preview )
     {
-        $template = new Template( $_CONF['path_layout'] . 'comment' );
-        $template->set_file( array( 'comment' => 'comment.thtml',
-                                    'thread'  => 'thread.thtml'  ));
-
-        // general variables
-        $template->set_var( 'site_url', $_CONF['site_url'] );
-        $template->set_var( 'layout_url', $_CONF['layout_url'] );
-
-        $template->set_var( 'lang_replytothis', $LANG01[43] );
-        $template->set_var( 'lang_reply', $LANG01[25] );
-        $template->set_var( 'lang_authoredby', $LANG01[42] );
-        $template->set_var( 'lang_on', $LANG01[36] );
+        $A = $comments;   
+    }
+    else
+    {
+        $A = DB_fetchArray($comments);
     }
     
-    // comment variables
-    $template->set_var( 'indent', $indent );
-    $template->set_var( 'order', $order );
-    $template->set_var( 'author', $A['username'] );
-    $template->set_var( 'author_id', $A['uid'] );
-    if( $A['uid'] > 1 )
+    do
     {
-        if( empty( $A['fullname'] ))
+        // determines indentation for current comment
+        if ( $mode == 'threaded' || $mode = 'nested' )
+        {
+            $indent = ($A['indent'] - 1) * $_CONF['comment_indent'];
+        }
+        
+        // comment variables
+        $template->set_var( 'indent', $indent );
+        $template->set_var( 'author', $A['username'] );
+        $template->set_var( 'author_id', $A['uid'] );
+        
+        if( $A['uid'] > 1 )
+        {
+            if( empty( $A['fullname'] ))
+            {
+                $template->set_var( 'author_fullname', $A['username'] );
+                $alttext = $A['username'];
+            }
+            else
+            {
+                $template->set_var( 'author_fullname', $A['fullname'] );
+                $alttext = $A['fullname'];
+            }
+            
+            if( !empty( $A['photo'] ))
+            {
+                $template->set_var( 'author_photo', '<img src="'
+                                    . $_CONF['site_url']
+                                    . '/images/userphotos/' . $A['photo']
+                                    . '" alt="' . $alttext . '">' );
+            }
+            else
+            {
+                $template->set_var( 'author_photo', '' );
+            }
+            
+            $template->set_var( 'start_author_anchortag', '<a href="'
+                    . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                    . $A['uid'] . '">' );
+            $template->set_var( 'end_author_anchortag', '</a>' );
+        }
+        else
         {
             $template->set_var( 'author_fullname', $A['username'] );
-            $alttext = $A['username'];
-        }
-        else
-        {
-            $template->set_var( 'author_fullname', $A['fullname'] );
-            $alttext = $A['fullname'];
-        }
-        if( !empty( $A['photo'] ))
-        {
-            $template->set_var( 'author_photo', '<img src="'
-                                . $_CONF['site_url']
-                                . '/images/userphotos/' . $A['photo']
-                                . '" alt="' . $alttext . '">' );
-        }
-        else
-        {
             $template->set_var( 'author_photo', '' );
+            $template->set_var( 'start_author_anchortag', '' );
+            $template->set_var( 'end_author_anchortag', '' );
         }
-        $template->set_var( 'start_author_anchortag', '<a href="'
-                . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
-                . $A['uid'] . '">' );
-        $template->set_var( 'end_author_anchortag', '</a>' );
-    }
-    else
-    {
-        $template->set_var( 'author_fullname', $A['username'] );
-        $template->set_var( 'author_photo', '' );
-        $template->set_var( 'start_author_anchortag', '' );
-        $template->set_var( 'end_author_anchortag', '' );
-    }
     
-    // this will hide HTML that should not be viewed in preview mode
-    if( $preview )
-    {
-        $template->set_var( 'hide_if_preview', 'style="display:none"' );
-    }
-    else
-    {
-        $template->set_var( 'hide_if_preview', '' );
-    }
-    
-    // for threaded mode, add a link to comment parent
-    if( $mode == 'threaded' && $A['pid'] != 0 )
-    {
-        $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
-        $P = DB_fetchArray( $result );
-        $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
-               . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
-               . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
-               . $P['pid'];
-        $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
-    }
-    else
-    {
-        $template->set_var( 'parent_link', '');
-    }
-    
-    if( empty( $A['nice_date'] ))
-    {
-        $A['nice_date'] = time ();
-    }
-    $template->set_var( 'date', strftime( $_CONF['date'], $A['nice_date'] ));
-    $template->set_var( 'sid', $A['sid'] );
-    $template->set_var( 'type', $A['type'] );
-
-    // If deletion is allowed, displays delete link
-    if( $delete_option )
-    {
-        $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
-                . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
-                . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'
-                . $LANG01[28] . '</a> ' );
-    }
-    else
-    {
-        $template->set_var( 'delete_option', '' );
-    }
-
-    $A['title'] = stripslashes( $A['title'] );
-    $A['title'] = str_replace( '$', '&#36;', $A['title'] );
-
-    // and finally: format the actual text of the comment
-    $A['comment'] = stripslashes( $A['comment'] );
-    if( preg_match( '/<.*>/', $A['comment'] ) == 0 )
-    {
-        $A['comment'] = nl2br( $A['comment'] );
-    }
-    
-    // highlight search terms if specified
-    if( !empty( $query ))
-    {
-        $mywords = explode( ' ', $query );
-        foreach( $mywords as $searchword )
+        // this will hide HTML that should not be viewed in preview mode
+        if( $preview )
         {
-            $searchword = str_replace( '*', '\*', $searchword );
-            $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
+            $template->set_var( 'hide_if_preview', 'style="display:none"' );
         }
-    }
-    $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
-    $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
-    $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
-
-    $template->set_var( 'title', $A['title'] );
-    $template->set_var( 'comments', $A['comment'] );
-
-    // parse the templates
-    if( $mode == 'threaded' && $indent > 0 )
-    {
-        $template->set_var( 'pid', $A['pid'] );
-        $retval = $template->parse( 'output', 'thread' );	
-    }
-    else
-    {
-        $template->set_var( 'pid', $A['cid'] );
-        $retval = $template->parse( 'output', 'comment' ); 
-    }
-
-    // print the comment's children
-    if( !$preview && ( $mode == 'nested' || $mode == 'threaded' ))
-    {
-    	$indent += $_CONF['comment_indent'];
-
-        // get children
-        $q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(c.date) AS nice_date "
-           . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
-           . "WHERE c.uid = u.uid AND sid = '{$A['sid']}' AND pid = {$A['cid']} "
-           . "ORDER BY date $order";
-        $result = DB_query( $q );
-        while( $A = DB_fetchArray( $result ))
+        else
         {
-            $retval .= COM_getComment( $A, $mode, $type, $order, $delete_option );
+            $template->set_var( 'hide_if_preview', '' );
         }
     
-    	$indent -= $_CONF['comment_indent'];
-    }
+        // for threaded mode, add a link to comment parent
+        if( $mode == 'threaded' && $A['pid'] != 0 )
+        {
+            $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
+            $P = DB_fetchArray( $result );
+            $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
+                   . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+                   . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
+                   . $P['pid'];
+            $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
+        }
+        else
+        {
+            $template->set_var( 'parent_link', '');
+        }
+    
+        $template->set_var( 'date', strftime( $_CONF['date'], $A['nice_date'] ));
+        $template->set_var( 'sid', $A['sid'] );
+        $template->set_var( 'type', $A['type'] );
 
+        // If deletion is allowed, displays delete link
+        if( $delete_option )
+        {
+            $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
+                    . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
+                    . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'
+                    . $LANG01[28] . '</a> ' );
+        }
+        else
+        {
+            $template->set_var( 'delete_option', '' );
+        }
+
+        $A['title'] = stripslashes( $A['title'] );
+        $A['title'] = str_replace( '$', '&#36;', $A['title'] );
+
+        // and finally: format the actual text of the comment
+        $A['comment'] = stripslashes( $A['comment'] );
+        if( preg_match( '/<.*>/', $A['comment'] ) == 0 )
+        {
+            $A['comment'] = nl2br( $A['comment'] );
+        }
+    
+        // highlight search terms if specified
+        if( !empty( $query ))
+        {
+            $mywords = explode( ' ', $query );
+            foreach( $mywords as $searchword )
+            {
+                $searchword = str_replace( '*', '\*', $searchword );
+                $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
+            }
+        }
+        
+        $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
+        $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
+        $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
+
+        $template->set_var( 'title', $A['title'] );
+        $template->set_var( 'comments', $A['comment'] );
+
+        // parse the templates
+        if( $mode == 'threaded' && $indent > 0 )
+        {
+            $template->set_var( 'pid', $A['pid'] );
+            $retval .= $template->parse( 'output', 'thread' );   
+        }
+        else
+        {
+            $template->set_var( 'pid', $A['cid'] );
+            $retval .= $template->parse( 'output', 'comment' ); 
+        }
+    } while ($A = DB_fetchArray($comments));
+    
     return $retval;
 }
 
@@ -2863,7 +2861,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
 * @return     string  HTML Formated Comments
 *
 */
-function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $delete_option = false )
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $delete_option = false )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -2896,44 +2894,78 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
     {
         $limit = $_CONF['comment_limit'];
     }
+    
+    if( !is_numeric($page) || $page < 1 )
+    {
+        $page = 1;
+    }
+
+    $start = $limit * ($page - 1);
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'commentarea' => 'startcomment.thtml' ));
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
     $template->set_var( 'commentbar',
-                         COM_commentBar( $sid, $title, $type, $order, $mode ));
-
+                        COM_commentBar( $sid, $title, $type, $order, $mode));
+    
     if ( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' )
     {
         // build query
         switch( $mode )
         {
             case 'flat':
-            	$q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(date) AS nice_date "
+                $count = DB_count($_TABLES['comments'], "sid", $sid);
+            
+                $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
+                     . "unix_timestamp(c.date) AS nice_date "
                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                   . "WHERE c.uid = u.uid AND sid = '$sid' AND type = '$type' "
-                   . "ORDER BY date $order LIMIT $limit";
+                   . "WHERE c.uid = u.uid AND c.sid = '$sid' "
+                   . "ORDER BY date $order LIMIT $start, $limit";
                 break;
 
             case 'nested':
             case 'threaded':
             default:
-                $q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(date) AS nice_date "
-                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                   . "WHERE c.uid = u.uid AND sid = '$sid' AND pid = $pid AND type = '$type' "
-                   . "ORDER BY date $order LIMIT $limit";
+                // count the total number of applicable comments
+                $q2 = "SELECT COUNT(*) as count "
+                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
+                    . "WHERE c.lft BETWEEN c2.lft AND c2.rht "
+                    . "AND c2.pid = $pid";
+                $result = DB_query($q2);
+                list($count) = DB_fetchArray($result);
+
+                if( $order == 'DESC' )
+                {
+                    $cOrder = 'c.rht DESC';
+                }
+                else
+                {
+                    $cOrder = 'c.lft ASC'; 
+                }                            
+                $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
+                     . "unix_timestamp(c.date) AS nice_date, COUNT(c2.cid) as indent "
+                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
+                     . "{$_TABLES['comments']} as c3, {$_TABLES['users']} as u "
+                   . "WHERE c.sid = '$sid' AND c.uid = u.uid AND c3.pid = $pid "
+                     . "AND c2.lft >= c3.lft AND c2.rht <= c3.rht "
+                     . "AND c.lft BETWEEN c2.lft AND c2.rht "
+                   . "GROUP BY c.cid "
+                   . "ORDER BY $cOrder LIMIT $start, $limit";
                 break;
         }
 
         $thecomments = '';
         $result = DB_query( $q );
-        while ($A = DB_fetchArray( $result ))
-        {
-            $thecomments .= COM_getComment( $A, $mode, $type, $order,
-                                            $delete_option );
-        }
-
+        $thecomments .= COM_getComment( $result, $mode, $type, $order,
+                                        $delete_option );
+        
+        // Pagination
+        $tot_pages =  ceil( $count / $limit );
+        $pLink = $_CONF['site_url'] . "/article.php?story=$sid&amp;type=$type&amp;order=$order&amp;mode=$mode";
+        $template->set_var( 'pagenav',
+                         COM_printPageNavigation($pLink, $page, $tot_pages));
+        
         $template->set_var( 'comments', $thecomments );
         $retval = $template->parse( 'output', 'commentarea' );
     }

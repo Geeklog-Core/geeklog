@@ -64,11 +64,15 @@ CREATE TABLE {$_TABLES['comments']} (
   score tinyint(4) NOT NULL default '0',
   reason tinyint(4) NOT NULL default '0',
   pid int(10) unsigned NOT NULL default '0',
+  lft int(10) unsigned NOT NULL default '0',
+  rht int(10) unsigned NOT NULL default '0',
   uid mediumint(8) NOT NULL default '1',
   INDEX comments_cid(cid),
   INDEX comments_type(type),
   INDEX comments_sid(sid),
   INDEX comments_uid(uid),
+  INDEX comments_lft(lft),
+  INDEX comments_rht(rht),
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
 ";

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.54 2004/03/02 08:20:07 dhaun Exp $
+// $Id: comment.php,v 1.55 2004/04/02 04:42:17 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -250,6 +250,18 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         return $retval;
     }
 
+    // Check for people breaking the speed limit
+    COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
+    $last = COM_checkSpeedlimit ('comment');
+    if ($last > 0) {
+        $retval .= COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG03[7]
+                . $last
+                . $LANG03[8]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        return $retval;
+    }
+
     // Clean 'em up a bit!
     if ($postmode == 'html') {
         $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
@@ -282,8 +294,22 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         COM_updateSpeedlimit ('comment');
         $title = addslashes ($title);
         $comment = addslashes ($comment);
-        DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,type',
-                "'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
+
+        // Insert the comment into the comment table
+        if ($pid > 0) {
+            $rht = DB_getItem($_TABLES['comments'], 'rht', "cid = $pid");
+            DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
+                   . "WHERE lft >= $rht");
+            DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
+                   . "WHERE rht >= $rht");
+            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,type',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,'$type'");            
+        } else {
+            $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)');
+            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,type',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,'$type'");               
+        }
+
 
         if ($type == 'poll') {
             $retval = COM_refresh ($_CONF['site_url']
@@ -345,10 +371,15 @@ function deletecomment ($cid, $sid, $type)
             if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
-                $pid = DB_getItem ($_TABLES['comments'], 'pid', "cid = '$cid'");
-
+                $result = DB_query("SELECT pid, rht FROM {$_TABLES['comments']} "
+                                 . "WHERE cid = $cid");
+                list($pid,$rht) = DB_fetchArray($result); 
                 DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
                 DB_delete ($_TABLES['comments'], 'cid', $cid);
+                DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
+                   . "WHERE lft >= $rht");
+                DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
+                   . "WHERE rht >= $rht");
 
                 if ($type == 'poll') {
                     $retval .= COM_refresh ($_CONF['site_url']
@@ -424,7 +455,8 @@ case 'display':
             $display .= COM_userComments ($sid,
                     strip_tags ($HTTP_GET_VARS['title']), $type,
                     COM_applyFilter ($HTTP_GET_VARS['order']), 'threaded',
-                    COM_applyFilter ($HTTP_GET_VARS['pid'], true));
+                    COM_applyFilter ($HTTP_GET_VARS['pid'], true),
+                    COM_applyFilter ($HTTP_GET_VARS['page'], true));
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'))

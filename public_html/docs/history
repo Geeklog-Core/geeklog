@@ -3,6 +3,13 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Added check of "speed limit" when saving a comment (savecomment()). [Vinny]
+- Changed the comment insert, delete, display algorithms for improved 
+  efficiency. They now use a modified preorder tree traversal method. [Vinny]
+- Comment limit now applies to all the comments displayed, not just the top
+  level level comments. [Vinny]
+- Added pagination ability to comments ({pagenav} template variable in
+  startcomment.thtml). [Vinny]
 - Fixed minor security issue with the Daily Digest, where users still got
   digests for topics from which they have been removed (bug #178) [Dirk]
 - Fixed typo in timer.class.php that broke the ->restart() function. [Vinny]

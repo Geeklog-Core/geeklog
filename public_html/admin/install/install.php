@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.63 2004/03/22 19:07:49 dhaun Exp $
+// $Id: install.php,v 1.64 2004/04/02 04:42:16 vinny Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -137,7 +137,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7','1.3.8','1.3.9');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         $cnt = count ($old_versions);
         for ($j = 1; $j <= $cnt; $j++) {
@@ -589,6 +589,15 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 
             $current_gl_version = '1.3.9';
             $_SQL = '';
+            break;
+	case '1.3.9':
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.9_to_1.3.10.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
+            commentsToPreorderTree();
+            $current_gl_version = '1.3.10';
             break;
         default:
             $done = true;
