@@ -20,7 +20,7 @@
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Blaine Lang      - geeklog@langfamily.ca                         |
+// |          Blaine Lang      - blaine@portalparts.com                        |
 // |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.9 2004/05/29 15:46:56 dhaun Exp $
+// $Id: lib-custom.php,v 1.10 2004/10/09 20:42:26 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -263,6 +263,27 @@ function custom_userform($uid="",$msg="") {
     $user_templates->parse('output', 'memberdetail');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
+    return $retval;
+}
+
+
+
+/**
+* Custom function to retrieve and return a formatted block that is enabled.
+* @param   array      $showblocks         An array of block names to retrieve and format
+* @return   string  Formated HTML containing site footer and optionally right blocks
+*/
+function custom_showBlocks($showblocks) {
+    global $_CONF, $_TABLES;
+    $retval = '';
+    foreach($showblocks as $block) {
+        $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help FROM {$_TABLES['blocks']} WHERE name='$block' and is_enabled = '1'";
+        $result = DB_query($sql);
+        if (DB_numRows($result) == 1) {
+            $A = DB_fetchArray($result);
+            $retval .= COM_formatBlock($A);
+        }
+    }
     return $retval;
 }
 
