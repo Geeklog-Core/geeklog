@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.138 2004/12/10 09:29:51 dhaun Exp $
+// $Id: story.php,v 1.139 2004/12/11 15:01:57 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1286,7 +1286,9 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     submitstory (COM_applyFilter ($_POST['type']),
                  COM_applyFilter ($_POST['sid']), $uid,
                  COM_applyFilter ($_POST['tid']),
-                 $_POST['title'], $_POST['introtext'], $_POST['bodytext'],
+                 COM_stripslashes ($_POST['title']),
+                 COM_stripslashes ($_POST['introtext']),
+                 COM_stripslashes ($_POST['bodytext']),
                  COM_applyFilter ($_POST['hits'], true), $unixdate, $expiredate,
                  COM_applyFilter ($_POST['comments'], true),
                  COM_applyFilter ($_POST['featured'], true),
