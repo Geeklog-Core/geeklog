@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.9 2004/09/05 08:41:43 dhaun Exp $
+// $Id: lib-story.php,v 1.10 2004/09/08 02:30:45 blaine Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -168,6 +168,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                 . $A['sid'] );
     $introtext = stripslashes( $A['introtext'] );
+    $introtext = PLG_replacetags($introtext);   // Replace any plugin autolink tags
+
     if( $index == 'n' )
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
@@ -179,6 +181,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         else
         {
             $bodytext = stripslashes( $A['bodytext'] );
+            $bodytext = PLG_replacetags($bodytext);   // Replace any plugin autolink tags
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );

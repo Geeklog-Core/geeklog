@@ -1017,8 +1017,7 @@ $LANG32 = array(
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => '[&nbsp;%s&nbsp;]'
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>'
 );
 
 ###############################################################################

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.35 2004/09/06 00:49:11 blaine Exp $
+// $Id: lib-plugins.php,v 1.36 2004/09/08 02:30:45 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -869,16 +869,14 @@ function PLG_replacetags($content) {
                     $taglength = $end_pos - $start_pos + 1;
                     $tag = substr($content,$start_pos,$taglength);
                     $parms = explode(' ',$tag);
-                    // $LANG32['32'] used to format Address link - default add brackets like [ here ]
-                    $label = sprintf( $LANG32['33'] ,str_replace(']','',substr($tag,strlen($parms[0])+1)) );
+                    $label = str_replace(']','',substr($tag,strlen($parms[0])+1));
                     $parms = explode(':',$parms[0]);
-                    $fileid = $parms['1'];
                     $newtag = array (
                         'module'    => $module,
                         'tagstr'    => $tag,
                         'startpos'  => $start_pos,
                         'length'    => $taglength,
-                        'parm1'     => $fileid,
+                        'parm1'     => $parms['1'],
                         'parm2'     => $label
                     );
                     $tags[] = $newtag;
