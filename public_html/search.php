@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.36 2002/09/01 21:19:53 dhaun Exp $
+// $Id: search.php,v 1.37 2002/09/16 17:34:42 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -178,7 +178,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
     }
 
     if (($type == 'events') || (($type == 'all') && empty ($author))) {
-		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
+		$sql = "SELECT eid,title,location,datestart,dateend,timestart,timeend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
         $sql .= "(title like '%$query%' OR ";
         $sql .= "location like '%$query%' ";
 		$sql .= "OR description like '%$query%') ";
