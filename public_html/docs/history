@@ -1,8 +1,12 @@
 GeekLog History/Changes:
 
-Nov ??, 2004 (1.3.10rc3)
+Nov 21, 2004 (1.3.10rc3)
 ------------
 
+- Fixed comments for the DB_result (in lib-database.php) and dbResult
+  (in mysql.class.php) functions (bug #320) [Dirk]
+- Display a success message when using the "changepw" option in admin/user.php
+  [Dirk]
 - When changing a username, make sure to change the name of the user's photo,
   too (bug #321) [Dirk]
 - Links in "plain text" stories and comments are now made clickable (i.e.
@@ -32,6 +36,8 @@ Nov ??, 2004 (1.3.10rc3)
 - Updated Japanese language files (euc-jp and UTF-8), provided by Yusuke Sakata
 - Updated Polish language file, provided by Robert Stadnik
 - Updated Slovenian language file, provided by gape
+- Updated Spanish language file, provided by Angel Romero
+- Updated Swedish language file, provided by Markus Berg
 
 
 Oct 24, 2004 (1.3.10rc2)
