@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Fixed Bug #183: COM_extractLinks will now ignore anchor tags that do not
+  contain "href". [Vinny]
 - The "Google paging" now has additional links to jump to the first and last
   page (patch provided by Niels Leenheer).
 - Introduced function COM_makeClickableLinks to turn URLs in text-only posts
