@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.192 2002/12/09 22:01:12 efarmboy Exp $
+// $Id: lib-common.php,v 1.193 2002/12/16 09:22:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -255,7 +255,10 @@ if( DB_getItem( $_TABLES['blocks'], 'is_enabled', "name = 'whosonline_block'" ) 
 
 require_once( $_CONF['path_language'] . $_CONF['language'] . '.php' );
 
-setlocale( LC_ALL, $_CONF['locale'] );
+if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
+{
+    setlocale( LC_TIME, $_CONF['locale'] );
+}
 
 /**
 * Global array of current user permissions [read,edit]
