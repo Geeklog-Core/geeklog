@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.1 2005/01/16 19:14:29 dhaun Exp $
+// $Id: lib-trackback.php,v 1.2 2005/01/17 16:20:26 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -457,7 +457,7 @@ function TRB_renderTrackbackComments ($sid, $type, $title, $permalink, $trackbac
 */
 function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
 {
-    global $_CONF;
+    global $_CONF, $LANG_TRB, $LANG_CHARSET;
 
     if (empty ($blog)) {
         $blog = $_CONF['site_name'];
@@ -475,16 +475,27 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     if (!is_resource ($sock)) {
         COM_errorLog ('Trackback: Could not connect to ' . $t);
 
-        return 'Could not open socket.';
+        return $LANG_TRB['error_socket'];
     }
 
     $toSend = 'url=' . rawurlencode ($url) . '&title=' . rawurlencode ($title)
             . '&blog_name=' . rawurlencode ($blog) . '&excerpt='
             . rawurlencode ($excerpt);
 
+    if (empty ($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+                                                                                
+        if (empty ($charset)) {
+            $charset = 'iso-8859-1';
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+
     fputs ($sock, 'POST ' . $target['path'] . $target['query'] . " HTTP/1.1\n");
     fputs ($sock, 'Host: ' . $target['host'] . "\n");
-    fputs ($sock, "Content-type: application/x-www-form-urlencoded\n");
+    fputs ($sock, 'Content-type: application/x-www-form-urlencoded; charset='
+                  . $charset . "\n");
     fputs ($sock, 'Content-length: ' . strlen ($toSend) . "\n");
     fputs ($sock, "Connection: close\n\n");
     fputs ($sock, $toSend);
@@ -500,7 +511,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
     $r1 = strpos ($res, '<error>');
     $r2 = strpos ($res, '</error>');
     if (($r1 === false) || ($r2 === false)) {
-        return 'Response not understood.';
+        return $LANG_TRB['error_response'];
     }
     $r1 += strlen ('<error>');
     $e = trim (substr ($res, $r1, $r2 - $r1));
@@ -510,7 +521,7 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
         $r2 = strpos ($res, '</message>');
         $r1 += strlen ('<message>');
         if (($r1 === false) || ($r2 === false)) {
-            return 'Unspecified error.';
+            return $LANG_TRB['error_unspecified'];
         }
         $m = trim (substr ($res, $r1, $r2 - $r1));
 

@@ -1302,7 +1302,10 @@ $LANG_TRB = array (
     'url_missing'        => 'No Entry URL',
     'url_required'       => 'Please enter at least a URL for the entry.',
     'target_missing'     => 'No Trackback URL',
-    'target_required'    => 'Please enter a trackback URL'
+    'target_required'    => 'Please enter a trackback URL',
+    'error_socket'       => 'Could not open socket.',
+    'error_response'     => 'Response not understood.',
+    'error_unspecified'  => 'Unspecified error.'
 );
 
 ###############################################################################
