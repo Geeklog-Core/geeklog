@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.7 2002/11/27 19:33:44 dhaun Exp $
+// $Id: install.php,v 1.8 2002/11/27 19:45:24 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -192,8 +192,7 @@ function plugin_install_staticpages()
         . "VALUES ('staticpages', '{$_SP_CONF['version']}', '1.3.7', 'http://www.tonybibbs.com', 1)");
     DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('staticpages','1')");
 
-    //if (DB_error()) {
-    if (true) {
+    if (DB_error()) {
         plugin_uninstall_staticpages($steps);
         return false;
         exit;
