@@ -29,11 +29,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.8 2002/06/29 17:59:55 dhaun Exp $
+// $Id: lib-plugins.php,v 1.9 2002/08/22 14:45:51 dhaun Exp $
 
 /**
-* This is the plugin library for Geeklog.  This is the API that plugins can implement
-* to get tight intergration with Geeklog. See each function for more detail
+* This is the plugin library for Geeklog.  This is the API that plugins can
+* implement to get tight intergration with Geeklog.
+* See each function for more details.
 *
 */
 
@@ -118,7 +119,7 @@ function PLG_install($type)
 }
 
 /**
-* Upgrades a plugin. Tells a plugin to upgrade itself. NOTE: not currenlty used
+* Upgrades a plugin. Tells a plugin to upgrade itself. NOTE: not currently used
 *
 * @param        string      $type       Plugin name
 * @return       boolean     Returns true on success otherwise false
@@ -165,10 +166,10 @@ function PLG_isModerator()
 /**
 * Gives plugins a chance to print their menu items in header
 *
-* Note that this is fairly unflexible.  This simply loops through the plugins in the
-* database in the order they were installed and get their menu items.  If you want 
-* more flexibility in your menu then you should hard code the menu items in header.thtml for
-* the theme(s) you are using.
+* Note that this is fairly unflexible.  This simply loops through the plugins
+* in the database in the order they were installed and get their menu items.
+* If you want more flexibility in your menu then you should hard code the menu
+* items in header.thtml for the theme(s) you are using.
 *
 * @return   array   Returns menu options for plugin
 *
@@ -232,6 +233,8 @@ function PLG_getPluginStats($showsitestats)
 {
     global $_TABLES;
 
+    $retval = '';
+
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
 	for ($i = 1; $i <= $nrows; $i++) {
@@ -239,9 +242,11 @@ function PLG_getPluginStats($showsitestats)
 		$function = 'plugin_showstats_' . $A['pi_name'];
 		if (function_exists($function)) {
 			//great, stats function is there, call it
-			$function($showsitestats);
+			$retval .= $function($showsitestats);
 		} // no else because this is not a required API function
 	}
+
+    return $retval;
 }
 
 /**
@@ -339,8 +344,8 @@ function PLG_getSubmissionCount()
 
 /**
 * This function will show any plugin user options in the
-* user block on every page NOTE: the plugin is responsible for it's own
-* security.
+* user block on every page
+* NOTE: the plugin is responsible for it's own security.
 *
 * @return   array   Returns options to add to user menu
 *
@@ -370,8 +375,8 @@ function PLG_getUserOptions()
 /** 
 * This function will show any plugin adminstrative options in the
 * admin functions block on every page (assuming the user is an admin
-* and is logged in).  NOTE: the plugin is responsible for it's own
-* security. 
+* and is logged in).
+* NOTE: the plugin is responsible for it's own security. 
 *
 * @return   array   Returns options to put in admin menu
 *
@@ -401,7 +406,7 @@ function PLG_getAdminOptions()
 
 /**
 * This function is responsible for calling
-* plugin_moderationapproves_photos which approves an item from the
+* plugin_moderationapproves_<pluginname> which approves an item from the
 * submission queue for a plugin.
 *
 * @param        string      $type       Plugin name to do submission approval for
@@ -417,7 +422,7 @@ function PLG_approveSubmission($type, $id)
 
 /**
 * This function is responsible for calling 
-* plugin_moderationdelete_photos which deletes an item from the
+* plugin_moderationdelete_<pluginname> which deletes an item from the
 * submission queue for a plugin.  
 *
 * @param        string      $type       Plugin to do submission deletion for
