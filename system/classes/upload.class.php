@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.21 2002/11/30 15:08:12 dhaun Exp $
+// $Id: upload.class.php,v 1.22 2002/12/02 13:40:09 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -818,6 +818,10 @@ class upload
     */
     function checkMimeType()
     {
+        $sc = strpos ($this->_currentFile['type'], ';');
+        if ($sc > 0) {
+            $this->_currentFile['type'] = substr ($this->_currentFile['type'], 0, $sc);
+        }
         if (!in_array($this->_currentFile['type'],$this->getAllowedMimeTypes())) {
 			$this->_addError('Mime type, ' . $this->_currentFile['type'] . ', not in list of allowed mime types');
 			return false;
