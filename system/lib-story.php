@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.4 2004/08/25 21:25:48 blaine Exp $
+// $Id: lib-story.php,v 1.5 2004/08/26 19:13:28 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -133,9 +133,12 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         }
     }
 
+    $topicname = htmlspecialchars( stripslashes( $A['topic'] ));
+    $article->set_var( 'story_topic_id', $A['tid'] );
+    $article->set_var( 'story_topic_name', $topicname );
+
     if( $_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1 )
     {
-        $topicname = htmlspecialchars( stripslashes( $A['topic'] ));
         $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
         if( !empty( $A['imageurl'] ))
         {
@@ -154,8 +157,6 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                     . $topicurl . '">' . $topicimage . '</a>' );
             $article->set_var( 'story_topic_image', $topicimage );
         }
-        $article->set_var( 'story_topic_id', $A['tid'] );
-        $article->set_var( 'story_topic_name', $topicname );
         $article->set_var( 'story_topic_url', $topicurl );
     }
 
