@@ -3,6 +3,9 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- New search: You can search for the exact phrase, all of the words, or any of
+  the words from the query. Search words are highlighted in stories. Also,
+  results in stories and comments are listed separately.
 - Added new block "Privacy Options" to the Preferences:
   + chose to receive email from admins and/or other users
   + chose to show up in Who's Online block
@@ -22,6 +25,9 @@ GeekLog History/Changes:
 - Posts (stories and comments) from deleted users will now be reassigned to
   user "Anonymous".
 - Removed the Geeklog version number from the footer of the default themes.
+  Instead, the version number is now displayed in the headline of the "Command
+  and Control" block (moderation.php) and next to the "GL Version Test" entry
+  in the Admin's functions block.
 - New Norwegian language file, provided by Torfinn Ingolfsen.
 - Introduced new config.php variable $_CONF['mysqldump_options'] that holds
   additional options to be used when Geeklog calls mysqldump to do a backup
@@ -180,6 +186,7 @@ Static Pages Plugin 1.3
   display mode and position can now be selected from drop-down menus in the
   static pages editor.
 
+Please see docs/staticpages.html for details.
 
 May 26, 2003 (1.3.7sr2)
 ------------

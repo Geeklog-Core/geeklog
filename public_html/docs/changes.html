@@ -22,6 +22,59 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes138">Geeklog 1.3.8</a></h2>
+
+<h3>New Features</h3>
+
+<p>Geeklog 1.3.8 Includes the <strong>Static Pages 1.3 plugin</strong> which
+replaces <em>both</em> the Static Pages 1.1 and 1.2 plugins. See the <a
+href="staticpages.html">Static Pages documentation</a> for details.</p>
+
+<ul>
+  <li>The search function has been rewritten. You can now search for the
+    exact phrase, all the words, or any of the words from a query. Search
+    words are also highlighted in stories.
+  <li>New Privacy options: Users can decide whether they want to receive
+    email from other users and/or admins and whether they want to show up in
+    the Who's Online block.
+  <li>You can now make one topic the default topic. The topic selection in the
+    story submission form will then default to that topic. However, when
+    browsing by topic (index.php?topic=Geeklog etc) new story submissions will
+    default to the current topic.
+  <li>When scaling is configured for images in stories, you can now keep the
+    unscaled image (has to be enabled in config.php first). In that case, the
+    scaled-down image in the story will serve as a thumbnail and link to the
+    unscaled image.
+  <li>You can give your users the ability to change their username and delete
+    their account. Both features have to be enabled in config.php.
+  <li>Extended Plugin API: Plugins can now display content in Geeklog's
+    center area and add their own information to the user profile.
+  <li>There's a new API for custom registration forms.
+  <li>There have been quite a few theme changes in order to move most larger
+    portions of hard-coded HTML to template files and to give theme designers
+    more control over the layout. Please consult the <a
+    href="theme.html#changes">themes documentation</a> for a list of changes.</li>
+</ul>
+
+<h3>Bugfixes</h3>
+
+<ul>
+  <li>The "forgot password" function has been rewritten. Instead of resetting
+    your old password and sending you a new one, you will now receive an
+    email with a unique link in it. If you follow this link, you can enter a
+    new password directly. Otherwise, you can simply ignore the email and your
+    old password will be remain valid.
+  <li>The poll editor let you enter one answer too many (i.e. when the max.
+    number of answers was set to 10 you could actually enter 11). Please check
+    your existing polls or you may lose the last answer if you exceeded the
+    max. number of answers in a poll (adjust $_CONF['maxanswers'] accordingly,
+    if necessary).
+  <li>Geeklog should install and run again on old versions of MySQL
+    (specifically, 3.22.xx). Please note that some of these old versions aren't
+    even supported by MySQL AB any more and MySQL installs older than 3.23.54
+    are having security issues.
+</ul>
+
 <h2><a name="changes137sr2">Geeklog 1.3.7sr2</a></h2>
 
 <h3>Security issues</h3>
