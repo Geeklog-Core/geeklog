@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.12 2003/08/02 22:07:42 blaine Exp $
+// $Id: search.class.php,v 1.13 2003/08/17 19:39:41 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -354,7 +354,7 @@ class Search {
             }
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
     
-            $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
+            $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
@@ -390,10 +390,15 @@ class Search {
             // headings above!
             while ($A = DB_fetchArray($result_comments)) {
                 $A['title'] = str_replace('$','&#36;',$A['title']);
-                if ($A['comment_type'] == 'article') {
-                    $A['title'] = '<a href="article.php?story=' . $A['sid'] . '#comments">' . stripslashes($A['title']) . '</a>';
+                if (!empty ($this->_query)) {
+                    $querystring = '&amp;query=' . $this->_query;
                 } else {
-                    $A['title'] = '<a href="pollbooth.php?qid=' . $A['sid'] . '&amp;aid=-1#comments">' . stripslashes($A['title']) . '</a>';
+                    $querystring = '';
+                }
+                if ($A['comment_type'] == 'article') {
+                    $A['title'] = '<a href="article.php?story=' . $A['sid'] . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
+                } else {
+                    $A['title'] = '<a href="pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1' . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
                 }
                 
                 $thetime = COM_getUserDateTimeFormat($A['day']);
