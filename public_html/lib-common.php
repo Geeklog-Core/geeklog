@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.201 2003/02/20 18:37:51 dhaun Exp $
+// $Id: lib-common.php,v 1.202 2003/02/23 22:28:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2239,61 +2239,88 @@ function COM_refresh( $url )
 * @return     string   HTML Formated comment bar
 *
 */
-
 function COM_commentBar( $sid, $title, $type, $order, $mode )
 {
     global $_TABLES, $LANG01, $_USER, $_CONF, $HTTP_GET_VARS;
 
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
-    $retval .= '<a name="comments"></a>';
 
-    // Build comment control bar
+    $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
+    $commentbar->set_file( array( 'commentbar' => 'commentbar.thtml' ));
+    $commentbar->set_var( 'site_url', $_CONF['site_url'] );
+    $commentbar->set_var( 'layout_url', $_CONF['layout_url'] );
 
-    $retval .= '<table cellspacing="0" cellpadding="0" border="0" width="100%">' . LB
-        . '<tr><td align="center" class="commentbar1"><b>' . stripslashes($title) . '</b> | '
-        . $nrows . ' ' . $LANG01[3] . ' | ';
+    $commentbar->set_var( 'lang_comments', $LANG01[3] );
+    $commentbar->set_var( 'lang_refresh', $LANG01[39] );
+    $commentbar->set_var( 'lang_reply', $LANG01[25] );
+    $commentbar->set_var( 'lang_disclaimer', $LANG01[26] );
+
+    $commentbar->set_var( 'story_title', stripslashes( $title ));
+    $commentbar->set_var( 'num_comments', $nrows );
+    $commentbar->set_var( 'comment_type', $type );
+
+    if( $_USER['uid'] > 1)
+    {
+        $username = $_USER['username'];
+        $fullname = DB_getItem( $_TABLES['users'], 'fullname',
+                                "uid = '{$_USER['uid']}'" ); 
+    }
+    else
+    {
+        $username = DB_getItem( $_TABLES['users'], 'username', "uid = '1'" );
+        $fullname = DB_getItem( $_TABLES['users'], 'fullname', "uid = '1'" );
+    }
+    if( empty( $fullname ))
+    {
+        $fullname = $username;
+    }
+    $commentbar->set_var( 'user_name', $username );   
+    $commentbar->set_var( 'user_fullname', $fullname );    
 
     if( !empty( $_USER['username'] ))
     {
-        $retval .= $_USER['username'] . ' <a href="' . $_CONF['site_url'] . '/users.php?mode=logout" class="commentbar1">'
-            . $LANG01[35] . '</a>';
+        $commentbar->set_var( 'user_nullname', $username );
+        $commentbar->set_var( 'login_logout_url',
+                              $_CONF['site_url'] . '/users.php?mode=logout' );
+        $commentbar->set_var( 'lang_login_logout', $LANG01[35] );
     }
     else
     {
-        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=new" class="commentbar1">' . $LANG01[61] . '</a>';
+        $commentbar->set_var( 'user_nullname', '' );
+        $commentbar->set_var( 'login_logout_url',
+                              $_CONF['site_url'] . '/users.php?mode=new' );
+        $commentbar->set_var( 'lang_login_logout', $LANG01[61] );
     }
-
-    $retval .= '</td></tr>' . LB . '<tr><td align="center" class="commentbar2">';
 
     if( !empty( $HTTP_GET_VARS['qid'] ))
     {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1" method="POST">' . LB
-            . '<input type="hidden" name="scale" value="400">' . LB;
+        $commentbar->set_var( 'parent_url', $_CONF['site_url']
+                              . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1' );
+        $commentbar->set_var( 'hidden_field',         
+                '<input type="hidden" name="scale" value="400">' );
     }
     else
     {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/article.php" method="POST">' . LB
-            . '<input type="hidden" name="story" value="' . $sid . '">' . LB;
+        $commentbar->set_var( 'parent_url',
+                              $_CONF['site_url'] . '/article.php' );
+        $commentbar->set_var( 'hidden_field',
+                '<input type="hidden" name="story" value="' . $sid . '">' );
     }
 
     // Order
-    $retval .= '<select name="order">'
-        . COM_optionList( $_TABLES['sortcodes'], 'code,name', $order )
-        .'</select> ';
+    $selector = '<select name="order">' . LB
+              . COM_optionList( $_TABLES['sortcodes'], 'code,name', $order )
+              . LB . '</select>';
+    $commentbar->set_var( 'order_selector', $selector);
 
     // Mode
-    $retval .= '<select name="mode">'
-        . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
-        . '</select> '
-        . '<input type="submit" value="'. $LANG01[39] . '"> '
-        . '<input type="hidden" name="type" value="'.$type . '">'
-        . '<input type="hidden" name="pid" value="0">'
-        . '<input type="submit" name="reply" value="' . $LANG01[25] . '"></form></td></tr>' . LB
-        . '<tr><td align="center" class="commentbar3">' . $LANG01[26] . '</td></tr>' . LB
-        . '</table>' . LB;
+    $selector = '<select name="mode">' . LB
+              . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
+              . LB . '</select>';
+    $commentbar->set_var( 'mode_selector', $selector);
 
-    return $retval;
-}
+    return $commentbar->finish( $commentbar->parse( 'output', 'commentbar' ));
+}    
 
 /**
 * This function displays the comments in a high level format.
