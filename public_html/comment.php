@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.37 2002/12/03 03:11:00 efarmboy Exp $
+// $Id: comment.php,v 1.38 2003/01/13 18:54:45 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -285,33 +285,45 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 */
 function deletecomment($cid,$sid,$type) 
 {
-    global $_TABLES, $_CONF;
+    global $_TABLES, $_CONF, $_USER, $REMOTE_ADDR;
 
-    if (!empty($cid) && !empty($sid)) {
-        $result = DB_query("SELECT pid FROM {$_TABLES['comments']} WHERE cid = $cid");
-        $A = DB_fetchArray($result);
+    if (!empty ($sid) && !empty ($cid) && is_numeric ($cid)) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '{$sid}'");
+        $P = DB_fetchArray ($result);
+        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
+            $result = DB_query("SELECT pid FROM {$_TABLES['comments']} WHERE cid = $cid");
+            $A = DB_fetchArray($result);
 
-        DB_change($_TABLES['comments'],'pid',$A['pid'],'pid',$cid);
-        DB_delete($_TABLES['comments'],'cid',$cid);
-		
-		// See if plugin will handle this to update it's records
-        PLG_handlePluginComment($type,$sid,'delete');
+            DB_change($_TABLES['comments'],'pid',$A['pid'],'pid',$cid);
+            DB_delete($_TABLES['comments'],'cid',$cid);
 
-        $comments = DB_count($_TABLES['comments'],'sid',$sid);
+		    // See if plugin will handle this to update it's records
+            PLG_handlePluginComment($type,$sid,'delete');
 
-        if ($type == 1) {
-            if ($comments > 0) {
+            $comments = DB_count($_TABLES['comments'],'sid',$sid);
+
+            if ($type == 1) {
+                if ($comments > 0) {
+                    DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
+                }
+                $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid");
+            } else {
                 DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            }			
-            $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid");
+                $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");	 
+            }
         } else {
-            DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");	 
+            COM_errorLog ('User ' . $_USER['username'] . ' (IP: ' . $REMOTE_ADDR
+                    . ') tried to illegally delete comment ' . $cid
+                    . ' from story ' . $sid);
+            $retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);	 
         }
+    } else {
+        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
-	
+
     return $retval;
 }
+
 // MAIN
 $title = strip_tags ($title);
 switch ($mode) {
@@ -324,7 +336,7 @@ case $LANG03[11]: //Submit Comment
     $display .= savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode);
     break;
 case $LANG01[28]: //Delete
-    $display .= deletecomment($cid,$sid,$type);
+    $display .= deletecomment (strip_tags ($cid), strip_tags ($sid), $type);
     break;
 case display:
     $display .= COM_siteHeader()
