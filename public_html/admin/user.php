@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.82 2004/08/15 09:37:03 dhaun Exp $
+// $Id: user.php,v 1.83 2004/09/24 10:27:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -435,10 +435,10 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
     $user_templates->set_var($limit . '_selected', 'selected="selected"');
     
-    if (!empty($query)) {
+    if (!empty ($query)) {
         $query = addslashes (str_replace ('*', '%', $query));
         $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
-                           "uid > 1 AND username LIKE '$query'") / $limit);
+                "uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')") / $limit);
         if ($num_pages < $curpage) {
             $curpage = 1;
         }
@@ -475,7 +475,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     if ($num_pages > 1) {
         $user_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
     } else {
-    $user_templates->set_var('google_paging', '');
+        $user_templates->set_var('google_paging', '');
     }
     $user_templates->parse('output', 'list');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
