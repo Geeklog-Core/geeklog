@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.48 2003/03/11 10:14:49 dhaun Exp $
+// $Id: block.php,v 1.49 2003/03/28 15:42:43 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -325,7 +325,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $access = 0;
-    if (DB_count ($_TABLES['blocks'], 'bid', $bid) > 0) {
+    if (($bid > 0) && DB_count ($_TABLES['blocks'], 'bid', $bid) > 0) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['blocks']} WHERE bid = '{$bid}'");
         $A = DB_fetchArray ($result);
         $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
