@@ -494,4 +494,5 @@ INSERT INTO users (uid, username, fullname, passwd, email, homepage, sig, regdat
 
 INSERT INTO vars (name, value) VALUES ('totalhits','0');
 INSERT INTO vars (name, value) VALUES ('lastemailedstories','');
+INSERT INTO vars (name, value) VALUES ('rdf_sids','');
 
