@@ -80,6 +80,7 @@ $_TABLES['speedlimit']          = $_DB_table_prefix . 'speedlimit';
 $_TABLES['statuscodes']         = $_DB_table_prefix . 'statuscodes';
 $_TABLES['stories']             = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
+$_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
@@ -175,11 +176,6 @@ function DB_save($table,$fields,$values,$return_page='')
 
     $_DB->dbSave($table,$fields,$values);
 
-    if ($table == $_TABLES['stories']) {
-       COM_exportRDF();
-       COM_olderStuff();
-    }
-
     if (!empty($return_page)) {
        print COM_refresh("$return_page");
     }
@@ -202,11 +198,6 @@ function DB_delete($table,$id,$value,$return_page='')
     global $_DB,$_TABLES,$_CONF;
 
     $_DB->dbDelete($table,$id,$value);
-
-    if ($table == $_TABLES['stories']) {
-        COM_exportRDF();
-        COM_olderStuff();
-    }
 
     if (!empty($return_page)) {
         print COM_refresh("$return_page");
@@ -255,11 +246,6 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 
     $_DB->dbChange($table,$item_to_set,$value_to_set,$id,$value,$supress_quotes);
 
-    if ($table == $_TABLES['stories']) {
-        COM_exportRDF();
-        COM_olderStuff();
-    }
-
     if (!empty($return_page)) {
         print COM_refresh("$return_page");
     }
@@ -304,11 +290,6 @@ function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
     global $_DB,$_TABLES,$_CONF;
 
     $_DB->dbCopy($table,$fields,$values,$tablefrom,$id,$value);
-
-    if ($table == $_TABLES['stories']) {
-        COM_exportRDF();
-        COM_olderStuff();
-    }
 
     if (!empty($return_page)) {
         print COM_refresh("$return_page");

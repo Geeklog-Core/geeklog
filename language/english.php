@@ -78,7 +78,7 @@ $LANG01 = array(
 	35 => "Logout",
 	36 => "on",
 	37 => "No user stories",
-	38 => "",
+	38 => 'Content Syndication',
 	39 => "Refresh",
 	40 => "",
 	41 => "Guest Users",
@@ -1019,7 +1019,9 @@ $MESSAGE = array (
     54 => 'Your request for a new password has expired. Please try again below.',
     55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
     56 => 'The email address provided is already in use for another account.',
-    57 => 'Your account has been successfully deleted.'
+    57 => 'Your account has been successfully deleted.',
+    58 => 'Your feed has been successfully saved.',
+    59 => 'The feed has been successfully deleted.'
 );
 
 // for plugins.php
@@ -1056,6 +1058,46 @@ $LANG32 = array (
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+);
+
+// for syndication.php
+
+$LANG33 = array (
+    1 => 'create feed',
+    2 => 'save',
+    3 => 'delete',
+    4 => 'cancel',
+    10 => 'Content Syndication',
+    11 => 'New Feed',
+    12 => 'Admin Home',
+    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
+    14 => 'Title',
+    15 => 'Type',
+    16 => 'Filename',
+    17 => 'Format',
+    18 => 'last updated',
+    19 => 'Enabled',
+    20 => 'Yes',
+    21 => 'No',
+    22 => '<i>(no feeds)</i>',
+    23 => 'all Stories',
+    24 => 'Feed Editor',
+    25 => 'Feed Title',
+    26 => 'Limit',
+    27 => 'Length of entries',
+    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
+    29 => 'Description',
+    30 => 'Last Update',
+    31 => 'Character Set',
+    32 => 'Language',
+    33 => 'Topic',
+    34 => 'Entries',
+    35 => 'Hours',
+    36 => 'Select type of feed',
+    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
+    38 => 'Error: Missing Fields',
+    39 => 'Please fill in the Feed Title, Description, and Filename.',
+    40 => 'Please enter a  number of entries or number of hours.'
 );
 
 $LANG_ACCESS = array(
@@ -1107,17 +1149,6 @@ $LANG_ACCESS = array(
     listusers => 'List Users',
     listthem => 'list',
     usersingroup => 'Users in group %s'
-);
-
-#admin/word.php
-$LANG_WORDS = array(
-    editor => "Word Replacment editor",
-    wordid => "Word ID",
-    intro => "To modify or delete a word, click on that word.  To create a new word replacement click the new word button to the left.",
-    wordmanager => "Word Manager",
-    word => "Word",
-    replacmentword => "Replacment Word",
-    newword => "New Word"
 );
 
 $LANG_DB_BACKUP = array(

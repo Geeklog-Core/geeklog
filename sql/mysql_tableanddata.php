@@ -412,6 +412,29 @@ CREATE TABLE {$_TABLES['storysubmission']} (
 ";
 
 $_SQL[30] = "
+CREATE TABLE {$_TABLES['syndication']} (
+  fid int unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL default 'geeklog',
+  topic varchar(48) NOT NULL default '::all',
+  format varchar(20) NOT NULL default 'rss',
+  limits varchar(5) NOT NULL default '10',
+  content_length smallint(5) unsigned NOT NULL default '0',
+  title varchar(40) NOT NULL default '',
+  description text,
+  filename varchar(40) NOT NULL default 'geeklog.rdf',
+  charset varchar(20) NOT NULL default 'UTF-8',
+  language varchar(20) NOT NULL default 'en-gb',
+  is_enabled tinyint(1) unsigned NOT NULL default '1',
+  updated datetime NOT NULL default '0000-00-00 00:00:00',
+  update_info text,
+  PRIMARY KEY (fid),
+  INDEX syndication_type(type),
+  INDEX syndication_is_enabled(is_enabled),
+  INDEX syndication_updated(updated)
+) TYPE=MyISAM
+";
+
+$_SQL[31] = "
 CREATE TABLE {$_TABLES['topics']} (
   tid varchar(20) NOT NULL default '',
   topic varchar(48) default NULL,
@@ -429,7 +452,7 @@ CREATE TABLE {$_TABLES['topics']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[31] = "
+$_SQL[32] = "
 CREATE TABLE {$_TABLES['tzcodes']} (
   tz char(3) NOT NULL default '',
   offset int(1) default NULL,
@@ -438,7 +461,7 @@ CREATE TABLE {$_TABLES['tzcodes']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[32] = "
+$_SQL[33] = "
 CREATE TABLE {$_TABLES['usercomment']} (
   uid mediumint(8) NOT NULL default '1',
   commentmode varchar(10) NOT NULL default 'threaded',
@@ -448,7 +471,7 @@ CREATE TABLE {$_TABLES['usercomment']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[33] = "
+$_SQL[34] = "
 CREATE TABLE {$_TABLES['userindex']} (
   uid mediumint(8) NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
@@ -463,7 +486,7 @@ CREATE TABLE {$_TABLES['userindex']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[34] = "
+$_SQL[35] = "
 CREATE TABLE {$_TABLES['userinfo']} (
   uid mediumint(8) NOT NULL default '1',
   about text,
@@ -477,7 +500,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[35] = "
+$_SQL[36] = "
 CREATE TABLE {$_TABLES['userprefs']} (
   uid mediumint(8) NOT NULL default '1',
   noicons tinyint(3) unsigned NOT NULL default '0',
@@ -492,7 +515,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[36] = "
+$_SQL[37] = "
 CREATE TABLE {$_TABLES['users']} (
   uid mediumint(8) NOT NULL auto_increment,
   username varchar(16) NOT NULL default '',
@@ -512,7 +535,7 @@ CREATE TABLE {$_TABLES['users']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[37] = "
+$_SQL[38] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value varchar(128) default NULL,
@@ -520,7 +543,7 @@ CREATE TABLE {$_TABLES['vars']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[38] = "
+$_SQL[39] = "
 CREATE TABLE {$_TABLES['article_images']} (
   ai_sid varchar(20) NOT NULL,
   ai_img_num tinyint(2) unsigned NOT NULL,
@@ -529,7 +552,7 @@ CREATE TABLE {$_TABLES['article_images']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[39] = "
+$_SQL[40] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(20) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
@@ -749,6 +772,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (10,'Archi
 $_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20030101093000103',2,0,'GeekLog','2003-01-01 09:30:00','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site. While Admin has access to everything, Moderator only has access to the areas related to stories, links, and events. The password for each account is <b>password</b>. \r\r<p>Accounts:\r<ul>\r<li>Admin</li>\r<li>Moderator</li>\r</ul>','',100,1,0,'<li><a href=\"/search.php?mode=search&amp;type=stories&amp;author=2\">More by Admin</a><li><a href=\"/search.php?mode=search&amp;type=stories&amp;topic=GeekLog\">More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20030101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2003-01-01 12:05:56','html') ";
+
+$_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('geeklog', '::all', 'rss', 10, 0, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rdf', 'UTF-8', 'en-gb', 1, '0000-00-00 00:00:00', NULL)";
 
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.gif',1,10,6,2,3,2,2,2)";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,10,6,2,3,2,2,2)";

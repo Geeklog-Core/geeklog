@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.99 2003/07/25 10:08:55 dhaun Exp $
+// $Id: story.php,v 1.100 2003/08/12 21:10:05 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -909,10 +909,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", $return_to);
 
-        // If this is done as part of moderation stuff then delete the submission
+        // If this is done as part of the moderation then delete the submission
         if ($type == 'submission') {
             DB_delete($_TABLES['storysubmission'],'sid',$sid);
         }
+        COM_rdfUpToDateCheck ();
+        COM_olderStuff ();
     } else {
         $display .= COM_siteHeader('menu');
         $display .= COM_errorLog($LANG24[31],2);
@@ -961,7 +963,7 @@ function deletestory ($sid)
     DB_delete ($_TABLES['stories'], 'sid', $sid);
 
     // update RSS feed and Older Stories block
-    COM_exportRDF ();
+    COM_rdfUpToDateCheck ();
     COM_olderStuff ();
 
     return COM_refresh ($_CONF['site_admin_url'] . '/story.php?msg=10');

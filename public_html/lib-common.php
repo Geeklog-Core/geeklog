@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.243 2003/08/05 19:03:50 dhaun Exp $
+// $Id: lib-common.php,v 1.244 2003/08/12 21:10:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -140,6 +140,13 @@ require_once( $_CONF['path_system'] . 'lib-database.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-security.php' );
+
+/**
+* This is the syndication library used to offer (RSS) feeds.
+*
+*/
+
+require_once( $_CONF['path_system'] . 'lib-syndication.php' );
 
 /**
 * This is the custom library.
@@ -1267,240 +1274,50 @@ function COM_debug( $A )
 }
 
 /**
-* Creates a vaild RDF file from the stories
-*
-* The core of this code has been lifted from phpweblog which is licenced
-* under the GPL. It has since been heavily modified.
-*
-* @see function COM_rdfUpToDateCheck
-*
-*/
-
-function COM_exportRDF()
-{
-    global $_TABLES, $_CONF, $LANG01;
-
-    if( $_CONF['backend'] > 0 )
-    {
-        $outputfile = $_CONF['rdf_file'];
-        if( !empty( $_CONF['default_charset'] ))
-        {
-            $rdencoding = $_CONF['default_charset'];
-        }
-        else
-        {
-            $rdencoding = 'UTF-8';
-        }
-        $rdtitle = htmlspecialchars( $_CONF['site_name'] );
-        $rdlink = $_CONF['site_url'];
-        $rddescr = htmlspecialchars( $_CONF['site_slogan'] );
-        if( !empty( $_CONF['rdf_language'] ))
-        {
-            $rdlang = $_CONF['rdf_language'];
-        }
-        else
-        {
-            $rdlang = $_CONF['locale'];
-        }
-
-        $where = '';
-        if( !empty( $_CONF['rdf_limit'] ))
-        {
-            if( substr( $_CONF['rdf_limit'], -1 ) == 'h' ) // last xx hours
-            {
-                $limit = '';
-                $hours = substr( $_CONF['rdf_limit'], 0, -1 );
-                $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
-            }
-            else
-            {
-                $limit = ' LIMIT ' . $_CONF['rdf_limit'];
-            }
-        }
-        else
-        {
-            $limit = ' LIMIT 10';
-        }
-
-        // get list of topics that anonymous users have access to
-        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
-                             . COM_getPermSQL( 'WHERE', 1 ));
-        $tnumrows = DB_numRows( $tresult );
-        $tlist = '';
-        for( $i = 1; $i <= $tnumrows; $i++ )
-        {
-            $T = DB_fetchArray( $tresult );
-            $tlist .= "'" . $T['tid'] . "'";
-            if( $i < $tnumrows )
-            {
-                $tlist .= ',';
-            }
-        }
-        if( !empty( $tlist ))
-        {
-            $where .= " AND (tid IN ($tlist))";
-        }
-
-        $result = DB_query( "SELECT sid,title,introtext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limit" );
-
-        if( !$file = @fopen( $outputfile, w ))
-        {
-            COM_errorLog( "{$LANG01[54]} $outputfile", 1 );
-        }
-        else
-        {
-            fputs( $file, "<?xml version=\"1.0\" encoding=\"$rdencoding\"?>\n\n" );
-            fputs( $file, "<!DOCTYPE rss PUBLIC \"-//Netscape Communications//DTD RSS 0.91//EN\"\n \"http://my.netscape.com/publish/formats/rss-0.91.dtd\">\n" );
-            fputs( $file, "<rss version=\"0.91\">\n\n" );
-            fputs( $file, "<channel>\n" );
-            fputs( $file, "<title>$rdtitle</title>\n" );
-            fputs( $file, "<link>$rdlink</link>\n" );
-            fputs( $file, "<description>$rddescr</description>\n" );
-            fputs( $file, "<language>$rdlang</language>\n\n" );
-
-            $sids = '';
-            $nrows = DB_numRows( $result );
-
-            for( $i = 1; $i <= $nrows; $i++ )
-            {
-                $row = DB_fetchArray( $result );
-                $sids .= $row['sid'];
-
-                if( $i <> $nrows )
-                {
-                    $sids .= ',';
-                }
-
-                $title = 'title';
-                $link = 'sid';
-
-                if( $_CONF['rdf_storytext'] > 0 )
-                {
-                    $desc = '<description>';
-
-                    $storytext = stripslashes( strip_tags( $row['introtext'] ));
-                    $storytext = trim( $storytext );
-                    $storytext = preg_replace( "/(\015)/", "", $storytext);
-
-                    if( $_CONF['rdf_storytext'] > 1 )
-                    {
-                        if( strlen( $storytext ) > $_CONF['rdf_storytext'] )
-                        {
-                            $storytext = substr( $storytext, 0,
-                                    $_CONF['rdf_storytext'] ) . '...';
-                        }
-                    }
-
-                    $desc .= htmlspecialchars( $storytext )
-                          . "</description>\n";
-                }
-                else
-                {
-                    $desc = '';
-                }
-
-                fputs ( $file, "<item>\n" );
-
-                $title = '<title>'
-                       . htmlspecialchars( stripslashes( $row[$title] ))
-                       . "</title>\n";
-                $link  = '<link>' . $_CONF['site_url'] . '/article.php?story='
-                       . $row[$link] . "</link>\n";
-
-                fputs( $file,  $title );
-                fputs( $file,  $link );
-                if( !empty( $desc ))
-                {
-                    fputs( $file,  $desc );
-                }
-                fputs( $file, "</item>\n\n" );
-            }
-
-            DB_query( "UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'" );
-
-            fputs( $file, "</channel>\n" );
-            fputs( $file, "</rss>\n" );
-            fclose( $file );
-        }
-    }
-}
-
-/**
 *
 * Checks to see if RDF file needs updating and updates it if so.
 * Checks to see if we need to update the RDF as a result
 * of an article with a future publish date reaching it's
 * publish time and if so updates the RDF file.
 *
-* @see function COM_exportRDF
+* @see file lib-syndication.php
 *
 */
-
 function COM_rdfUpToDateCheck()
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
 
     if( $_CONF['backend'] > 0 )
     {
-        $where = '';
-        if( !empty( $_CONF['rdf_limit'] ))
+        $result = DB_query( "SELECT fid,type,topic,limits,update_info FROM {$_TABLES['syndication']} WHERE is_enabled = 1" );
+        $num = DB_numRows( $result );
+        for( $i = 0; $i < $num; $i++)
         {
-            if( substr( $_CONF['rdf_limit'], -1 ) == 'h' ) // last xx hours
+            $A = DB_fetchArray( $result );
+
+            $is_current = true;
+            if( $A['type'] == 'geeklog' )
             {
-                $limit = '';
-                $hours = substr( $_CONF['rdf_limit'], 0, -1 );
-                $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+                if( $A['topic'] == '::all' )
+                {
+                    $is_current = SYND_feedUpdateCheckAll( $A['update_info'],
+                                                           $A['limits'] );
+                }
+                else
+                {
+                    $is_current = SYND_feedUpdateChecktopic( $A['topic'],
+                            $A['update_info'], $A['limits'] );
+                }
             }
             else
             {
-                $limit = ' LIMIT ' . $_CONF['rdf_limit'];
+                $is_current = PLG_feedUpdateCheck( $A['type'], $A['fid'],
+                        $A['topic'], $A['update_info'], $A['limits'] );
             }
-        }
-        else
-        {
-            $limit = ' LIMIT 10';
-        }
-
-        // get list of topics that anonymous users have access to
-        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
-                             . COM_getPermSQL( 'WHERE', 1 ));
-        $tnumrows = DB_numRows( $tresult );
-        $tlist = '';
-        for( $i = 1; $i <= $tnumrows; $i++ )
-        {
-            $T = DB_fetchArray( $tresult );
-            $tlist .= "'" . $T['tid'] . "'";
-            if( $i < $tnumrows )
+            if( !$is_current )
             {
-                $tlist .= ',';
+                SYND_updateFeed( $A['fid'] );
             }
-        }
-        if( !empty( $tlist ))
-        {
-            $where .= " AND (tid IN ($tlist))";
-        }
-
-        $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limit" );
-        $nrows = DB_numRows( $result );
-        $sids = '';
-
-        for( $i = 1; $i <= $nrows; $i++ )
-        {
-            $A = DB_fetchArray( $result );
-            $sids .= $A['sid'];
-
-            if( $i <> $nrows )
-            {
-                $sids .= ',';
-            }
-        }
-
-        $last_rdf_sids = DB_getItem( $_TABLES['vars'], 'value',
-                                     "name = 'rdf_sids'" );
-
-        if( $sids <> $last_rdf_sids )
-        {
-            COM_exportRDF ();
         }
     }
 }
@@ -2460,6 +2277,18 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[105] );
             $adminmenu->set_var( 'option_count', 'N/A' );
+
+            $retval .= $adminmenu->parse( 'item',
+                    ( $thisUrl == $url ) ? 'current' : 'option' );
+        }
+
+        if(( $_CONF['backend'] == 1 ) && SEC_inGroup( 'Root' ))
+        {
+            $url = $_CONF['site_admin_url'] . '/syndication.php';
+            $adminmenu->set_var( 'option_url', $url );
+            $adminmenu->set_var( 'option_label', $LANG01[38] );
+            $count = DB_count( $_TABLES['syndication'] );
+            $adminmenu->set_var( 'option_count', $count );
 
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.22 2003/07/25 10:44:39 dhaun Exp $
+// $Id: lib-plugins.php,v 1.23 2003/08/12 21:10:06 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -809,7 +809,121 @@ function PLG_getHeaderCode()
             $headercode .= $function();
         }
     }
-	return $headercode;
+
+    return $headercode;
+}
+
+/**
+* Prepare a list of all plugins that support feeds. To do this, we re-use
+* plugin_getfeednames_<plugin name> and only keep the names of those plugins
+* which support that function
+*
+* @return   array   array of plugin names (can be empty)
+*
+*/
+function PLG_supportingFeeds ()
+{
+    global $_TABLES;
+
+    $plugins = array ();
+
+    $result = DB_query ("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows ($result);
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $function = 'plugin_getfeednames_' . $A['pi_name'];
+        if (function_exists ($function)) {
+            $feeds = $function ();
+            if (is_array ($feeds) && (sizeof ($feeds) > 0)) {
+                $plugins[] = $A['pi_name'];
+            }
+        }
+    }
+
+    return $plugins;
+}
+
+/**
+* Ask the plugin for a list of feeds it supports. The plugin is expected to
+* return an array of id/name pairs where 'id' is the plugin's internal id
+* for the feed and 'name' is what will be presented to the user.
+*
+* @param    string   plugin   plugin name
+* @return   array             array of id/name pairs
+*
+*/
+function PLG_getFeedNames ($plugin)
+{
+    global $_TABLES;
+
+    $feeds = array ();
+
+    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+        $function = 'plugin_getfeednames_' . $plugin;
+        if (function_exists ($function)) {
+            $feeds = $function ();
+        }
+    }
+
+    return $feeds;
+}
+
+/**
+* Get the content of a feed from the plugin.
+* The plugin is expected to return an array holding the content of the feed
+* and to fill in 'link' (some link that represents the same content on the
+* site as that in the feed) and 'update_data' (to be stored for later up-to-date
+* checks.
+*
+* @param    string   plugin        plugin name
+* @param    int      feed          feed id
+* @param    string   link          link to content on the site
+* @param    string   update_data   information for later up-to-date checks
+* @return   array                  content of feed
+*
+*/
+function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
+{
+    global $_TABLES;
+
+    $content = array ();
+
+    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+        $function = 'plugin_getfeedcontent_' . $plugin;
+        if (function_exists ($function)) {
+            $content = $function ($feed, $link, $update_data);
+        }
+    }
+
+    return $content;
+}
+
+/**
+* The plugin is expected to check if the feed content needs to be updated.
+* This is called from COM_rdfUpToDateCheck() every time Geeklog's index.php
+* is displayed - it should try to be as efficient as possible ...
+*
+* @param    string   plugin   plugin name
+* @param    int      feed     feed id
+* @param    string   topic    "topic" of the feed - plugin specific
+* @param    string   limit    number of entries or number of hours
+* @return   bool              false = feed has to be updated, true = ok
+*
+*/
+function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
+{
+    global $_TABLES;
+
+    $is_current = true;
+
+    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+        $function = 'plugin_feedupdatecheck_' . $plugin;
+        if (function_exists ($function)) {
+            $is_current = $function ($feed, $topic, $update_data, $limit);
+        }
+    }
+
+    return $is_current;
 }
 
 ?>

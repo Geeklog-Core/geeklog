@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.54 2003/06/25 08:39:02 dhaun Exp $
+// $Id: submit.php,v 1.55 2003/08/12 21:10:04 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -710,6 +710,9 @@ function savesubmission($type,$A)
                 $T = DB_fetchArray ($result);
                 $related = addslashes (COM_whatsRelated ($introtext, $_USER['uid'], $A['tid']));
                 DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}','{$related}',NOW(),{$_CONF['comment_code']},'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+
+                COM_rdfUpToDateCheck ();
+                COM_olderStuff ();
                 if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {
                     $A['uid'] = $_USER['uid'];
                     sendNotification ($_TABLES['stories'], $A);

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.41 2003/07/14 10:35:09 dhaun Exp $
+// $Id: moderation.php,v 1.42 2003/08/12 21:10:05 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -547,8 +547,14 @@ function moderation($mid,$action,$type,$count)
                 DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                 "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['related']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES["storysubmission"],"$id",$mid[$i]);
+
+                COM_rdfUpToDateCheck ();    
+                COM_olderStuff ();    
             } else if ($type == 'draft') {
                 DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = {$mid[$i]}");
+
+                COM_rdfUpToDateCheck ();    
+                COM_olderStuff ();    
             } else {
                 // This is called in case this is a plugin. There may be some
                 // plugin specific processing that needs to happen.
