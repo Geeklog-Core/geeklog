@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.14 2004/12/22 16:10:30 blaine Exp $
+// $Id: lib-story.php,v 1.15 2004/12/31 10:31:35 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -423,7 +423,9 @@ function STORY_whatsRelated( $related, $uid, $tid )
 
         // add a link to "search by topic"
         $topic = DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" );
-        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
+        $rel[] = '<a href="' . $_CONF['site_url']
+               . '/search.php?mode=search&amp;type=stories&amp;topic=' . $tid
+               . '">' . $LANG24[38] . ' ' . stripslashes( $topic ) . '</a>';
     }
 
     $related = '';
