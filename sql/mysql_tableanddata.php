@@ -775,18 +775,18 @@ $_DATA[259] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commento
 $_DATA[260] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (12,'threaded','ASC',100) ";
 
 
-$_DATA[266] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (1,'','','','',0,NULL) ";
-$_DATA[267] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL) ";
-$_DATA[268] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (3,'','','','',0,NULL) ";
-$_DATA[269] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (5,'','','','',0,NULL) ";
-$_DATA[270] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (0,'','','','',0,NULL) ";
-$_DATA[272] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (8,'','','','',0,NULL) ";
-$_DATA[273] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (6,'','','','',0,NULL) ";
-$_DATA[273] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (7,'','','','',0,NULL) ";
-$_DATA[274] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (9,'','','','',0,NULL) ";
-$_DATA[275] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (10,'','','','',0,NULL) ";
-$_DATA[276] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (11,'','','','',0,NULL) ";
-$_DATA[277] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, eids, aids, boxes, noboxes, maxstories) VALUES (12,'','','','',0,NULL) ";
+$_DATA[266] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','','','',0,NULL) ";
+$_DATA[267] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL) ";
+$_DATA[268] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (3,'','','','',0,NULL) ";
+$_DATA[269] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (5,'','','','',0,NULL) ";
+$_DATA[270] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (0,'','','','',0,NULL) ";
+$_DATA[272] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (8,'','','','',0,NULL) ";
+$_DATA[273] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (6,'','','','',0,NULL) ";
+$_DATA[273] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (7,'','','','',0,NULL) ";
+$_DATA[274] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (9,'','','','',0,NULL) ";
+$_DATA[275] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (10,'','','','',0,NULL) ";
+$_DATA[276] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (11,'','','','',0,NULL) ";
+$_DATA[277] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (12,'','','','',0,NULL) ";
 
 $_DATA[283] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (1,'Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner Owner ','','',0,0,0) ";
 $_DATA[284] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0) ";
