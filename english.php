@@ -699,6 +699,10 @@ $LANG31 = array(
 ###############################################################################
 # confirmation and error messages
 
+$MESSAGE_HEADER = array (
+    1 => "System Message"
+);
+
 $MESSAGE = array (
 	1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using " . $CONF["site_name"],
 	2 => "Thank-you for submitting your story to {$CONF["site_name"]}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
