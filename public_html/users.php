@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.44 2002/09/06 14:00:39 dhaun Exp $
+// $Id: users.php,v 1.45 2002/09/28 18:50:42 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -202,7 +202,11 @@ function userprofile($user)
         }
     }
     // then, find all comments by the user in those stories and polls
-    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList)) ORDER BY unixdate DESC LIMIT 10";
+    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) ";
+    if (!empty ($sidList)) {
+        $sql .= " AND (sid in ($sidList))";
+    }
+    $sql .= " ORDER BY unixdate DESC LIMIT 10";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
@@ -246,7 +250,10 @@ function userprofile($user)
     $N = DB_fetchArray ($result);
     $user_templates->set_var('number_stories', $N['count']);
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $sql = "SELECT count(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList))";
+    $sql = "SELECT count(*) AS count FROM {$_TABLES['comments']} WHERE (uid = $user)";
+    if (!empty ($sidList)) {
+        $sql .= " AND (sid in ($sidList))";
+    }
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
     $user_templates->set_var('number_comments', $N['count']);
