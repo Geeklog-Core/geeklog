@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.402 2004/12/11 22:07:07 dhaun Exp $
+// $Id: lib-common.php,v 1.403 2004/12/16 11:09:52 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3519,7 +3519,7 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $sql = "SELECT sid,tid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0) ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql = "SELECT sid,tid,title,comments,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getTopicSQL( 'AND', 1 ) . " ORDER BY featured DESC, date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
@@ -3537,32 +3537,28 @@ function COM_olderStuff()
         for( $i = 0; $i < $nrows; $i++ )
         {
             $A = DB_fetchArray( $result );
-            $topic_anon = DB_getItem( $_TABLES['topics'], 'perm_anon', "tid='{$A['tid']}'" );
 
-            if( $topic_anon == 2 )
+            $daycheck = strftime( '%A', $A['day'] );
+            if( $day != $daycheck )
             {
-                $daycheck = strftime( '%A', $A['day'] );
-                if( $day != $daycheck )
+                if( $day != 'noday' )
                 {
-                    if( $day != 'noday' )
-                    {
-                        $daylist = COM_makeList( $oldnews, 'list-older-stories' );
-                        $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
-                                                 '', $daylist );
-                        $string .= $daylist . '<br>';
-                    }
-
-                    $day2 = strftime( $dateonly, $A['day'] );
-                    $string .= '<b>' . $daycheck . '</b> <small>' . $day2
-                            . '</small>' . LB;
-                    $oldnews = array();
-                    $day = $daycheck;
+                    $daylist = COM_makeList( $oldnews, 'list-older-stories' );
+                    $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
+                                             '', $daylist );
+                    $string .= $daylist . '<br>';
                 }
 
-                $oldnews[] = '<a href="' . COM_buildUrl( $_CONF['site_url']
-                    . '/article.php?story=' . $A['sid'] ) . '">' . $A['title']
-                    . '</a> (' . $A['comments'] . ')';
+                $day2 = strftime( $dateonly, $A['day'] );
+                $string .= '<b>' . $daycheck . '</b> <small>' . $day2
+                        . '</small>' . LB;
+                $oldnews = array();
+                $day = $daycheck;
             }
+
+            $oldnews[] = '<a href="' . COM_buildUrl( $_CONF['site_url']
+                . '/article.php?story=' . $A['sid'] ) . '">' . $A['title']
+                . '</a> (' . $A['comments'] . ')';
         }
 
         if( !empty( $oldnews ))

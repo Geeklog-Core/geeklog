@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.84 2004/11/13 21:41:59 dhaun Exp $
+// $Id: comment.php,v 1.85 2004/12/16 11:09:51 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -52,7 +52,7 @@ require_once('lib-common.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 /**
 * Displays the comment form
@@ -70,7 +70,7 @@ require_once('lib-common.php');
 */
 function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
-    global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG03, $LANG12, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
 
     $retval = '';
 
@@ -147,7 +147,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $title = str_replace('{','&#123;',$title);
             $title = str_replace('}','&#125;',$title);
 
-            $HTTP_POST_VARS['title'] = addslashes ($title);
+            $_POST['title'] = addslashes ($title);
             $newcomment = $comment;
             if (!empty ($sig)) {
                 if (($postmode == 'html') || ($fakepostmode == 'html')) {
@@ -156,7 +156,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $newcomment .= LB . LB . '---' . LB . $sig;
                 }
             }
-            $HTTP_POST_VARS['comment'] = addslashes ($newcomment);
+            $_POST['comment'] = addslashes ($newcomment);
 
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 $start = new Template( $_CONF['path_layout'] . 'comment' );
@@ -164,11 +164,11 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_var( 'site_url', $_CONF['site_url'] );
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
 
-                if (empty ($HTTP_POST_VARS['username'])) {
-                    $HTTP_POST_VARS['username'] = DB_getItem ($_TABLES['users'],
+                if (empty ($_POST['username'])) {
+                    $_POST['username'] = DB_getItem ($_TABLES['users'],
                             'username', "uid = $uid");
                 }
-                $thecomments = COM_getComment ($HTTP_POST_VARS, 'flat', $type,
+                $thecomments = COM_getComment ($_POST, 'flat', $type,
                                                'ASC', false, true );
 
                 $start->set_var( 'comments', $thecomments );
@@ -253,7 +253,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 */
 function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG03;
     
     $retval = '';
 
@@ -358,19 +358,19 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                    . "WHERE sid = '$sid' AND rht >= $rht");
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$HTTP_SERVER_VARS['REMOTE_ADDR']}'");
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$_SERVER['REMOTE_ADDR']}'");
         } else {
             $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)');
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$HTTP_SERVER_VARS['REMOTE_ADDR']}'");
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }
         $cid = DB_insertId();
         DB_query('UNLOCK TABLES');
 
         if (isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
-            sendNotification ($title, $comment, $uid,
-                              $HTTP_SERVER_VARS['REMOTE_ADDR'], $type, $cid);
+            sendNotification ($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
+                              $type, $cid);
         }
 
         if ($type == 'poll') {
@@ -378,7 +378,8 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
                     . "/pollbooth.php?qid=$sid&aid=-1");
         } elseif ($type == 'article') {
             $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-            DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
+            DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+            COM_olderStuff (); // update comment count in Older Stories block
             $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
                     . "/article.php?story=$sid"));
         } else { // assume it's a comment handled by a plugin
@@ -466,7 +467,7 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 */
 function deletecomment ($cid, $sid, $type) 
 {
-    global $_CONF, $_TABLES, $_USER, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $_USER;
 
     $retval = '';
 
@@ -516,7 +517,7 @@ function deletecomment ($cid, $sid, $type)
                 }
             } else {
                 COM_errorLog ('User ' . $_USER['username'] . ' (IP: '
-                        . $HTTP_SERVER_VARS['REMOTE_ADDR']
+                        . $_SERVER['REMOTE_ADDR']
                         . ') tried to illegally delete comment '
                         . $cid . ' from ' . $type . ' ' . $sid);
                 $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -706,23 +707,22 @@ if (isset ($_REQUEST['reply'])) {
 switch ( $_REQUEST['mode'] ) {
 case $LANG03[14]: // Preview
     $display .= COM_siteHeader()
-        . commentform (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
-            strip_tags ($HTTP_POST_VARS['title']), $HTTP_POST_VARS['comment'],
-            COM_applyFilter ($HTTP_POST_VARS['sid']),
-            COM_applyFilter ($HTTP_POST_VARS['pid'], true),
-            COM_applyFilter ($HTTP_POST_VARS['type']),
-            COM_applyFilter ($HTTP_POST_VARS['mode']),
-            COM_applyFilter ($HTTP_POST_VARS['postmode']))
+        . commentform (COM_applyFilter ($_POST['uid'], true),
+            strip_tags ($_POST['title']), $_POST['comment'],
+            COM_applyFilter ($_POST['sid']),
+            COM_applyFilter ($_POST['pid'], true),
+            COM_applyFilter ($_POST['type']), COM_applyFilter ($_POST['mode']),
+            COM_applyFilter ($_POST['postmode']))
         . COM_siteFooter(); 
     break;
 
 case $LANG03[11]: // Submit Comment
-    $display .= savecomment (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
-            strip_tags ($HTTP_POST_VARS['title']), $HTTP_POST_VARS['comment'],
-            COM_applyFilter ($HTTP_POST_VARS['sid']),
-            COM_applyFilter ($HTTP_POST_VARS['pid'], true),
-            COM_applyFilter ($HTTP_POST_VARS['type']),
-            COM_applyFilter ($HTTP_POST_VARS['postmode']));
+    $display .= savecomment (COM_applyFilter ($_POST['uid'], true),
+            strip_tags ($_POST['title']), $_POST['comment'],
+            COM_applyFilter ($_POST['sid']),
+            COM_applyFilter ($_POST['pid'], true),
+            COM_applyFilter ($_POST['type']),
+            COM_applyFilter ($_POST['postmode']));
     break;
 
 case 'delete':
@@ -842,32 +842,24 @@ case 'display':
 
 case 'report':
     $display = COM_siteHeader ('menu')
-             . report_abusive_comment (COM_applyFilter ($HTTP_GET_VARS['cid'],
-                    true), COM_applyFilter ($HTTP_GET_VARS['type']))
+             . report_abusive_comment (COM_applyFilter ($_GET['cid'], true),
+                                       COM_applyFilter ($_GET['type']))
              . COM_siteFooter ();
     break;
 
 case 'sendreport':
-    $display = send_report (COM_applyFilter ($HTTP_POST_VARS['cid'], true),
-                            COM_applyFilter ($HTTP_POST_VARS['type']));
+    $display = send_report (COM_applyFilter ($_POST['cid'], true),
+                            COM_applyFilter ($_POST['type']));
     break;
 
 default:
-    if (isset ($HTTP_POST_VARS['sid'])) {
-        $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
-        $type = COM_applyFilter ($HTTP_POST_VARS['type']);
-        $title = strip_tags ($HTTP_POST_VARS['title']);
-        $pid = COM_applyFilter ($HTTP_POST_VARS['pid'], true);
-        $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
-        $postmode = COM_applyFilter ($HTTP_POST_VARS['postmode']);
-    } else {
-        $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
-        $type = COM_applyFilter ($HTTP_GET_VARS['type']);
-        $title = strip_tags ($HTTP_GET_VARS['title']);
-        $pid = COM_applyFilter ($HTTP_GET_VARS['pid'], true);
-        $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
-        $postmode = COM_applyFilter ($HTTP_GET_VARS['postmode']);
-    }
+    $sid = COM_applyFilter ($_REQUEST['sid']);
+    $type = COM_applyFilter ($_REQUEST['type']);
+    $title = strip_tags ($_REQUEST['title']);
+    $pid = COM_applyFilter ($_REQUEST['pid'], true);
+    $mode = COM_applyFilter ($_REQUEST['mode']);
+    $postmode = COM_applyFilter ($_REQUEST['postmode']);
+
     if (!empty ($sid)) {
         if (empty ($title)) {
             if ($type == 'article') {
@@ -889,19 +881,12 @@ default:
         }
     } else {
         // This could still be a plugin wanting comments
-        if (isset ($HTTP_POST_VARS['cid'])) {
-            $cid = COM_applyFilter ($HTTP_POST_VARS['cid']);
-            $format = COM_applyFilter ($HTTP_POST_VARS['format']);
-            $order = COM_applyFilter ($HTTP_POST_VARS['order']);
-            $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
-            $type = COM_applyFilter ($HTTP_POST_VARS['type']);
-        } else {
-            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
-            $format = COM_applyFilter ($HTTP_GET_VARS['format']);
-            $order = COM_applyFilter ($HTTP_GET_VARS['order']);
-            $reply = COM_applyFilter ($HTTP_GET_VARS['reply']);
-            $type = COM_applyFilter ($HTTP_GET_VARS['type']);
-        }
+        $cid = COM_applyFilter ($_REQUEST['cid'], true);
+        $format = COM_applyFilter ($_REQUEST['format']);
+        $order = COM_applyFilter ($_REQUEST['order']);
+        $reply = COM_applyFilter ($_REQUEST['reply']);
+        $type = COM_applyFilter ($_REQUEST['type']);
+
         if (!empty ($type) && !empty ($cid)) {
             $display .= PLG_callCommentForm ($type, $cid, $format, $order, $reply);
         } else {
