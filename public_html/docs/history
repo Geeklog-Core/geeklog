@@ -3,6 +3,10 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Added adminoption_off.thtml template file (for current entry in the Admin
+  menu) and topicoption.thtml and topicoption_off.thtml files (for entries in
+  the Topics/Sections menu).
+- Geeklog will not accept topic ids containing spaces any more.
 - Added new config option $_CONF['allow_account_delete'] to allow users to
   delete their account (from their Account Information page).
 - Posts (stories and comments) from deleted users will now be reassigned to
