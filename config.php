@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.89 2003/06/22 22:07:42 dhaun Exp $
+// $Id: config.php,v 1.90 2003/06/23 13:57:04 dhaun Exp $
 
 // When setting up Geeklog for the first time, you only need to make sure the
 // settings in the following 3 sections are correct:
@@ -47,7 +47,7 @@
 // +---------------------------------------------------------------------------+
 
 $_DB_host         = 'localhost';   // host name or IP address of your DB server
-$_DB_name         = 'geeklog';     // name of your databasei,
+$_DB_name         = 'geeklog';     // name of your database,
                                    // must exist before running the installer!
 $_DB_user         = 'username';    // MySQL user name
 $_DB_pass         = 'password';    // MySQL password
@@ -73,12 +73,6 @@ $_CONF['path']            = '/path/to/geeklog/'; // should end in a slash
 // $_CONF['path_html']      = '/path/to/your/public_html/';
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
-// Some hosting services have a preconfigured admin directory. In that case,
-// you need to rename Geeklog's admin directory to something like "myadmin"
-// and change the following URL as well. Leave as is until you experience any
-// problems accessing Geeklog's admin menu.
-$_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
-
 
 // +---------------------------------------------------------------------------+
 // | (3) Site Settings                                                         |
@@ -87,6 +81,12 @@ $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 // Make sure this is the correct URL to your site, i.e. to where Geeklog's
 // index.php file resides (no trailing slash).
 $_CONF['site_url']          = 'http://www.example.com';
+
+// Some hosting services have a preconfigured admin directory. In that case,
+// you need to rename Geeklog's admin directory to something like "myadmin"
+// and change the following URL as well. Leave as is until you experience any
+// problems accessing Geeklog's admin menu.
+$_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 
 // This is the return address for all email sent by Geeklog:
 $_CONF['site_mail']         = 'admin@example.com';
