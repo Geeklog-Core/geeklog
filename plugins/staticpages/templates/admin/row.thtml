@@ -7,5 +7,4 @@
                                     </td>
                                     <td>{username}</td>
                                     <td>{sp_date}</td>
-                                    <td>{page_display_url}</td>
                                 </tr>

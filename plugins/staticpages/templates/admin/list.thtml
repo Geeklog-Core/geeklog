@@ -13,10 +13,9 @@
                                         <th align="left">{lang_title}</th>
                                         <th>{lang_writtenby}</th>
                                         <th>{lang_lastupdated}</th>
-                                        <th>{lang_url}</th>
                                     </tr>
                                     {list_item} 
-                                    <tr><td>{lang_nopages_msg}</td></tr>
+                                    <tr><td colspan="4">{lang_nopages_msg}</td></tr>
                                 </table>
                                 {end_block}
-                                
+
