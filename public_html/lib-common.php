@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.221 2003/05/11 18:34:39 dhaun Exp $
+// $Id: lib-common.php,v 1.222 2003/05/14 08:13:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -4864,6 +4864,13 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
         $GROUPS = SEC_getUserGroups( $uid );
     }
 
+    if( empty( $_GROUPS ))
+    {
+        // this shouldn't really happen, but if it does, handle user
+        // like an anonymous user
+        $uid = 1;
+    }
+
     if( SEC_inGroup( 'Root', $uid ))
     {
         return '';
@@ -4875,14 +4882,8 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $sql .= "(({$table}owner_id = '{$uid}') AND ({$table}perm_owner >= $access)) OR ";
 
-        $groupList = '';
-        foreach( $GROUPS as $grp )
-        {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr( $groupList, 0, -1 );
-        $sql .= "(({$table}group_id IN ($groupList)) AND ({$table}perm_group >= $access)) OR ";
-
+        $sql .= "(({$table}group_id IN (" . implode (',', $_GROUPS)
+             . ")) AND ({$table}perm_group >= $access)) OR ";
         $sql .= "({$table}perm_members >= $access)";
     }
     else
