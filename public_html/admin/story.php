@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.73 2002/11/26 18:07:35 dhaun Exp $
+// $Id: story.php,v 1.74 2002/12/14 21:14:26 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -97,12 +97,12 @@ function storyeditor($sid = '', $mode = '')
             $display .= $LANG24[41];
             $display .= COM_endBlock();
             $display .= COM_article($A,n);
-            return;
+            return $display;
         } else if ($access == 0) {
             $display .= COM_startBlock($LANG24[40]);
             $display .= $LANG24[42];
             $display .= COM_endBlock();
-            return;
+            return $display;
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
@@ -429,7 +429,7 @@ function liststories($page = 1)
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $story_templates->set_var('story_id', $A['sid']);
             $story_templates->set_var('row_num', $scount);
-	    $A['title'] = str_replace('$', '&#36;', $A['title']);
+            $A['title'] = str_replace('$', '&#36;', $A['title']);
             $story_templates->set_var('story_title', stripslashes($A['title']));
             $story_templates->set_var('story_access', $access);
             if ($A['draft_flag'] == 1) {
