@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.110 2002/06/26 19:31:38 dhaun Exp $
+// $Id: lib-common.php,v 1.111 2002/06/27 18:43:42 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2277,7 +2277,7 @@ function COM_getpassword($loginname)
         $U = DB_fetchArray($result);
         return $U['passwd'];
     } else {
-        $tmp = $LANG01[32] . $loginname . '!';
+        $tmp = $LANG01[32] . ': ' . $loginname;
         COM_errorLog($tmp,1);
     }
 }
