@@ -4,10 +4,18 @@
 # russian.php
 # This is the russian language page for GeekLog!
 #
+# 01/10/2003 R.03-1
+# Thanks goes to Marina Prince & Frederick Ouano (RussianHouston.com)
+# for completing the project.
+# This version has been tested to work with Geeklog v.1.3.6
+#
 # Copyright (c) 2002 Konstantin Komash, Zoya Koneva
 # komash@profit.ru
+# 
+# Updated for version 1.3.8-1sr2 by Kuznetsov Denis
+# d_kuz@bk.ru
 #
-# Credits of english version:
+# Credits of English version:
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -29,7 +37,7 @@
 #
 ###############################################################################
 
-$LANG_CHARSET = 'iso-8859-1';
+$LANG_CHARSET = 'iso-8859-5';
 
 ###############################################################################
 # Array Format:
@@ -82,11 +90,11 @@ $LANG01 = array(
     34 => 'Ошибка',
     35 => 'Выход',
     36 => 'вкл',
-    37 => 'No user stories',
+    37 => 'Статей нет',
     38 => 'Content Syndication',
     39 => 'Обновить',
     40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
-    41 => 'Guest Users',
+    41 => 'Гости',
     42 => 'Автор:',
     43 => 'Ответить на это',
     44 => 'Предок',
@@ -150,10 +158,10 @@ $LANG01 = array(
     102 => 'События сайта',
     103 => 'Копии базы данных',
     104 => 'by',
-    105 => 'Mail Users',
-    106 => 'Views',
+    105 => 'Пользователи почты',
+    106 => 'Просмотры',
     107 => 'GL Version Test',
-    108 => 'Clear Cache'
+    108 => 'Очистить Cache'
 );
 
 ###############################################################################
@@ -174,37 +182,37 @@ $LANG02 = array(
     12 => 'Событие',
     13 => 'Начало',
     14 => 'Конец',
-    15 => 'Back to Calendar'
+    15 => 'Назад в Календарь'
 );
 
 ###############################################################################
 # comment.php
 
 $LANG03 = array(
-    1 => 'Post a Comment',
-    2 => 'Post Mode',
-    3 => 'Logout',
-    4 => 'Create Account',
-    5 => 'Username',
-    6 => 'This site requires you to be logged in to post a comment, please log in.  If you do not have an account you can use the form below to create one.',
-    7 => 'Your last comment was ',
-    8 => " seconds ago.  This site requires at least {$_CONF['commentspeedlimit']} seconds between comments",
-    9 => 'Comment',
+    1 => 'Послать комментарий',
+    2 => 'Режим публикации',
+    3 => 'Выйти',
+    4 => 'Создать учётную запись',
+    5 => 'Имя пользователя',
+    6 => 'Прежде чем посылать комментарии, вы должны войти в систему. Если вы ещё не зарегистрированы, то создайте новую учётную запись.',
+    7 => 'Ваш последный комментарий был ',
+    8 => " секунд тому назад.  Просим извинить, но необходимо, что бы между комментариями прошло хотя бы {$_CONF['commentspeedlimit']} секунд",
+    9 => 'Комментарий',
     10 => '',
-    11 => 'Submit Comment',
-    12 => 'Please fill in the Title and Comment fields, as they are necessary for your submission of a comment.',
-    13 => 'Your Information',
-    14 => 'Preview',
+    11 => 'Отправить комментарий',
+    12 => 'Пожалуйста, заполните поля: Имя, Почтовый адрес, Заголовок и Комментарий, т.к. они необходимы для публикации Вашего комментария.',
+    13 => 'Ваша информация',
+    14 => 'Предпросмотр',
     15 => '',
-    16 => 'Title',
-    17 => 'Error',
-    18 => 'Important Stuff',
-    19 => 'Please try to keep posts on topic.',
-    20 => 'Try to reply to other people comments instead of starting new threads.',
-    21 => 'Read other people\'s messages before posting your own to avoid simply duplicating what has already been said.',
-    22 => 'Use a clear subject that describes what your message is about.',
-    23 => 'Your email address will NOT be made public.',
-    24 => 'Anonymous User'
+    16 => 'Заголовок',
+    17 => 'Ошибка',
+    18 => 'Важный материал',
+    19 => 'Пожалуйста, придерживайтесь в сообщении темы.',
+    20 => 'Пытайтесь ответить на комментарии других людей вместо того, что бы начинать новую цепочку.',
+    21 => 'Прочтите сообщения других людей до отправки собственного сообщения, что бы избежать дублирования того, что уже сказано.',
+    22 => 'Используйте заголовок, который бы точно передавал смысл сообщения.',
+    23 => 'Ваш почтовый адрес НЕ будет опубликован.',
+    24 => 'Анонимный пользователь'
 );
 
 ###############################################################################
@@ -265,7 +273,7 @@ $LANG04 = array(
     52 => 'По умолчанию',
     53 => 'Получать статьи дня каждый вечер',
     54 => 'Отметьте темы и авторов, которых вы не хотите видеть.',
-    55 => 'Если Вы ничего не отметили, это означает, что Вы предпочли выбор по умолчанию. Если Вы отметили некоторые пункты, не забудьте выбрать всё, что Вы хотите, так как выбор по умолчанию будет проигнорирован. Выбор по умолчанию выделен жирным шрифтом.',
+    55 => 'Если Вы ничего не отметили, это означает, что Вы предпочли выбор по умолчанию. Если Вы отметили некоторые пункты, не забудьтевыбрать всё, что Вы хотите, так как выбор по умолчанию будет проигнорирован. Выбор по умолчанию выделен жирным шрифтом.',
     56 => 'Авторы',
     57 => 'Режим отображения',
     58 => 'Порядок сортировки',
@@ -284,38 +292,38 @@ $LANG04 = array(
     71 => "На нашем сайте Вы можете настроить содержание информации, которую Вы получите, а так же структуру расположения информации. Для этого Вы должны <a href=\"{$_CONF['site_url']}/users.php?mode=new\">зарегистрироваться</a> на {$_CONF['site_name']}.  Вы уже зарегистрировались? Используйте форму для входа в систему!",
     72 => 'Тема',
     73 => 'Язык',
-    74 => 'Change what this site looks like!',
-    75 => 'Emailed Topics for',
-    76 => 'If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!',
-    77 => 'Photo',
-    78 => 'Add a picture of yourself!',
-    79 => 'Check here to delete this picture',
-    80 => 'Login',
-    81 => 'Send Email',
-    82 => 'Last 10 stories for user',
-    83 => 'Posting statistics for user',
-    84 => 'Total number of articles:',
-    85 => 'Total number of comments:',
-    86 => 'Find all postings by',
-    87 => 'Your login name',
-    88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
-    89 => 'If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n',
-    90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
-    91 => 'Set New Password',
-    92 => 'Enter New Password',
-    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
-    94 => 'Delete Account "%s"',
-    95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    96 => 'delete account',
-    97 => 'Confirm Account Deletion',
-    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
-    99 => 'Privacy Options for',
-    100 => 'Email from Admin',
-    101 => 'Allow email from Site Admins',
-    102 => 'Email from Users',
-    103 => 'Allow email from other users',
-    104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    74 => 'Измените внешний вид сайта!',
+    75 => 'Отправлены темы для',
+    76 => 'Если Вы выберете тему из нижеприведенного списка, Вы сможете получать все новые сообщения опубликованные на эту тему в конце каждого дня.  Выбирайте только интересующие Вас темы!',
+    77 => 'Фотография',
+    78 => 'Добавьте Вашу фотографию!',
+    79 => 'Отметьте здесь, чтобы стереть изображение',
+    80 => 'Войти',
+    81 => 'Отправить письмо',
+    82 => 'Последние 10 статей для пользователя',
+    83 => 'Составляется статистика для пользователя',
+    84 => 'Всего статей:',
+    85 => 'Всего комментариев:',
+    86 => 'Найти все сообщения',
+    87 => 'Ваш логин',
+    88 => "Кто-то (возможно Вы) запросил новый пароль для Вашего аккаунта \"%s\" на {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nЕсли Вы действительно хотите произвести данное действие, пожалуйста, кликните на следующей ссылке:\n\n",
+    89 => "Если Вы не хотите выполнять данное действие, просто проигнорируйтеэто сообщение и запрос будет отменён (Ваш пароль останеттся неизменённым).\n\n",
+    90 => 'Вы можете отредактировать новый пароль для Вашего аккаунта ниже. Имейте ввиду, что Ваш старый пароль является валидным пока Вы не отправите это форму.',
+    91 => 'Установить новый пароль',
+    92 => 'ВВести новый пароль',
+    93 => 'Ваш последний запрос о новом пароле был %d секунд назад. Наш сайт требует как минимум %d секунд между запросами пароля.',
+    94 => 'Удалить аккаунт "%s"',
+    95 => 'Кликните кнопку "удалить аккаунт", которая находится ниже для удаления Вашего аккаунта из нашей базы данных. Имейте ввиду, что все статьи и комментарии, который Вы постили из под этого аккаунта <strong>не будут</strong> удалены, но убудт отображаться как будто их постил пользователь "Anonymous".',
+    96 => 'удалить аккаунт',
+    97 => 'Подтвердите удаление аккаунта',
+    98 => 'Вы уверены, что хотите удалить Ваш аккаунт? Сделав это, Вы не сможете войти в этот сайт снова (если не создадите новый аккаунт). Если вы уверены - кликните "удалить аккаунт" снова в форме ниже.',
+    99 => 'Установки Приватности для',
+    100 => 'Почта от Администратора',
+    101 => 'Разрешить почту от администриторов сайта',
+    102 => 'Почта от пользователей',
+    103 => 'Разрешить почту от других пользователей',
+    104 => 'Показывать онлайн-статус',
+    105 => 'Показывать в Who\'s Online блоке'
 );
 
 ###############################################################################
@@ -348,7 +356,7 @@ $LANG07 = array(
     3 => 'Голос',
     4 => 'Опросы в системе',
     5 => 'Голоса',
-    6 => 'View other poll questions'
+    6 => 'Посмотреть другие опросы'
 );
 
 ###############################################################################
@@ -385,11 +393,11 @@ $LANG08 = array(
     28 => "{$from} пишет: {$shortmsg}",
     29 => "Это дневной дайджест с {$_CONF['site_name']} для ",
     30 => ' Дневной новостной бюллетень для ',
-    31 => 'Title',
-    32 => 'Date',
-    33 => 'Read the full article at',
-    34 => 'End of Message',
-    35 => 'Sorry, this user prefers not to receive any emails.'
+    31 => 'Название',
+    32 => 'Дата',
+    33 => 'Читайте полную статью на',
+    34 => 'Конец сообщения',
+    35 => 'Извините, но установки данного пользователя не позволяют ему отправить сообщение.'
 );
 
 ###############################################################################
@@ -425,34 +433,34 @@ $LANG09 = array(
     27 => 'секунд',
     28 => 'Ни одной статьи или комментария, соответствующих Вашему запросу, не найдено',
     29 => 'Результаты по статьям и комментариям',
-    30 => 'No links matched your search',
+    30 => '\'Ссылки, соответствующие Вашему запросу, не найдены',
     31 => 'This plug-in returned no matches',
-    32 => 'Event',
+    32 => 'Событие',
     33 => 'URL',
-    34 => 'Location',
-    35 => 'All Day',
-    36 => 'No events matched your search',
-    37 => 'Event Results',
-    38 => 'Link Results',
-    39 => 'Links',
-    40 => 'Events',
-    41 => 'Your query string should have at least 3 characters.',
-    42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).',
-    43 => 'exact phrase',
-    44 => 'all of these words',
-    45 => 'any of these words',
-    46 => 'Next',
-    47 => 'Previous',
-    48 => 'Author',
-    49 => 'Date',
-    50 => 'Hits',
-    51 => 'Link',
-    52 => 'Location',
-    53 => 'Story Results',
-    54 => 'Comment Results',
-    55 => 'the phrase',
-    56 => 'AND',
-    57 => 'OR'
+    34 => 'Место',
+    35 => 'Весь день',
+    36 => 'События, соответствующие Вашему запросу, не найдены',
+    37 => 'Результаты поиска событий',
+    38 => 'Результаты поиска ссылок',
+    39 => 'Ссылки',
+    40 => 'События',
+    41 => 'Строка запорса должна содержать как минимум 3 символа.',
+    42 => 'Пожалуйста, используйте дату в следующем формате: ГГГГ-ММ-ДД (год-месяц-день).',
+    43 => 'точное совпадение',
+    44 => 'все слова',
+    45 => 'любое из слов',
+    46 => 'следующие',
+    47 => 'предыдущие',
+    48 => 'Автор',
+    49 => 'Дата',
+    50 => 'Хиты',
+    51 => 'Ссылка',
+    52 => 'Расположение',
+    53 => 'Данные статьи',
+    54 => 'Данные комментария',
+    55 => 'запрос',
+    56 => 'И',
+    57 => 'ИЛИ'
 );
 
 ###############################################################################
@@ -551,7 +559,7 @@ $LANG12 = array(
     50 => 'Изменить типы событий',
     51 => 'Местоположение',
     52 => 'Удалить',
-    53 => 'Create Account'
+    53 => 'Создать счет'
 );
 
 ###############################################################################
@@ -627,10 +635,10 @@ $LANG21 = array(
     50 => 'URL файла помощи',
     51 => 'включая http://',
     52 => 'Если Вы оставите это поле пустым значок помощи для блока не будетпоказан',
-    53 => 'Enabled',
-    54 => 'save',
-    55 => 'cancel',
-    56 => 'delete',
+    53 => 'Разрешено',
+    54 => 'сохранить',
+    55 => 'отменить',
+    56 => 'удалить',
     57 => 'Move Block Down',
     58 => 'Move Block Up',
     59 => 'Move block to the right side',
@@ -660,9 +668,9 @@ $LANG22 = array(
     17 => "Вы пытались получить доступ к событию, для которого у Вас нет прав. Эта попытка была запротоколирована. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/event.php\">вернитесь на станицу администрирования событий</a>.",
     18 => 'Новое событие',
     19 => 'Home администратора',
-    20 => 'save',
-    21 => 'cancel',
-    22 => 'delete'
+    20 => 'сохранить',
+    21 => 'отменить',
+    22 => 'удалить'
 );
 
 ###############################################################################
@@ -689,72 +697,72 @@ $LANG23 = array(
     18 => 'Новая ссылка',
     19 => 'Home администратора',
     20 => 'Другое:',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete'
+    21 => 'сохранить',
+    22 => 'отменить',
+    23 => 'удалить'
 );
 
 ###############################################################################
 # admin/story.php
 
 $LANG24 = array(
-    1 => 'Previous Stories',
-    2 => 'Next Stories',
-    3 => 'Mode',
-    4 => 'Post Mode',
-    5 => 'Story Editor',
-    6 => 'There are no stories in the system',
-    7 => 'Author',
-    8 => 'save',
-    9 => 'preview',
-    10 => 'cancel',
-    11 => 'delete',
+    1 => 'Предыдущие статьи',
+    2 => 'Следующие статьи',
+    3 => 'Режим',
+    4 => 'Режим публикации',
+    5 => 'Редактирование статьи',
+    6 => 'Статей нет',
+    7 => 'Автор',
+    8 => 'сохранить',
+    9 => 'предварительный просмотр',
+    10 => 'отменить',
+    11 => 'стереть',
     12 => '',
-    13 => 'Title',
-    14 => 'Topic',
-    15 => 'Date',
-    16 => 'Intro Text',
-    17 => 'Body Text',
-    18 => 'Hits',
-    19 => 'Comments',
+    13 => 'Заголовок',
+    14 => 'Тема',
+    15 => 'Дата',
+    16 => 'Преамбула',
+    17 => 'Текст статьи',
+    18 => 'Хиты',
+    19 => 'Комментарии',
     20 => '',
     21 => '',
-    22 => 'Story List',
-    23 => 'To modify or delete a story, click on that story\'s number below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
+    22 => 'Список статей',
+    23 => 'Для изменения или удаления статьи, выберите номер статьи ниже.  Для просмотра статьи нажмите на её заголовок. Для создания новой нажмите на кнопку Создать статью.',
     24 => '',
     25 => '',
-    26 => 'Story Preview',
+    26 => 'Предпросмотр статьи',
     27 => '',
     28 => '',
     29 => '',
     30 => 'File Upload Errors',
-    31 => 'Please fill in the Title and Intro Text fields',
-    32 => 'Featured',
-    33 => 'There can only be one featured story',
-    34 => 'Draft',
-    35 => 'Yes',
-    36 => 'No',
-    37 => 'More by',
-    38 => 'More from',
-    39 => 'Emails',
-    40 => 'Access Denied',
-    41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a> when you are done.",
-    42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a>.",
-    43 => 'New Story',
-    44 => 'Admin Home',
-    45 => 'Access',
-    46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RSS headline feed and it will be ignored by the search and statistics pages.',
-    47 => 'Images',
-    48 => 'image',
-    49 => 'right',
-    50 => 'left',
-    51 => 'To add one of the images you are attaching to this article you need to insert specially formatted text.  The specially formatted text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.<BR><P><B>PREVIEWING</B>: Previewing a story with images attached is best done by saving the article as a draft INSTEAD OF hitting the preview button.  Use the preview button only when images are not attached.',
-    52 => 'Delete',
-    53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
-    54 => 'Attached Images Not Used',
-    55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
-    56 => 'Show Topic Icon',
-    57 => 'View unscaled image'
+    31 => 'Пожалуйста, заполните поля Автор, Заголовок и Преамбула',
+    32 => 'Особая',
+    33 => 'Может существовать только одна Особая статья',
+    34 => 'Черновик',
+    35 => 'Да',
+    36 => 'Нет',
+    37 => 'Ещё от',
+    38 => 'Ещё от',
+    39 => 'Пересылки',
+    40 => 'Доступ закрыт',
+    41 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована.  You may view the article in read-only below. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/story.php\">вернитесь на станицу администрирования статей</a> когда закончите.",
+    42 => "Вы пытались получить доступ к статье, на которую у Вас нет прав. Эта попытка была запротоколирована. Пожалуйста, <a href=\"{$_CONF['site_admin_url']}/story.php\">вернитесь на станицу администрирования статей</a>.",
+    43 => 'Новая статья',
+    44 => 'Home администратора',
+    45 => 'Доступ',
+    46 => '<b>Замечание:</b> Если Вы измените эту дату на дату в будущем, эта статья не будет опубликована до указанной даты. Это также означает, что статья не будет указана в Вашем RDF файле заголовкови будет игнорироваться при поиске и на странице статистики.',
+    47 => 'Изображения',
+    48 => 'изображение',
+    49 => 'справа',
+    50 => 'слева',
+    51 => 'Чтобы добавить одно из изображений прилагаемых Вами к статье, Вам следует добавить текст, сформатированный таким образом:  [imageX], [imageX_right] или [imageX_left], где X - номер прилагаемого Вами изображения.  Замечание: Вы должны использовать все прилагаемые Вами изображения. В противном случае, Вам не удастся сохранить Вашу статью.<BR><P><B>PREVIEWING</B>: Предварительный просмотр статьи с прилагаемыми изображениями лучше всего осуществить сохранив статью как набросок, ВМЕСТО того, чтобы нажимать кнопку предварительного просмотра.  Нажимайте кнопку предварительного просмотра только тогда, когда Вы не прилагаете к статье изображений.',
+    52 => 'Стереть',
+    53 => 'не был использован.  Вы должны включить эту картинку в преамбулу или текст перед тем, как сохранить Ваши изменения',
+    54 => 'Добавленные изображения не использованы',
+    55 => 'Следующие ошибки произошли при сохранении Вашей статьи.  Пожалуйста, исправьте ошибки перед тем, как сохранить статью',
+    56 => 'Показать иконку темы',
+    57 => 'Показывать немасштибируемую картинку'
 );
 
 ###############################################################################
@@ -811,11 +819,11 @@ $LANG27 = array(
     16 => 'по-умолчанию',
     17 => 'Новая тема',
     18 => 'Home администратора',
-    19 => 'save',
-    20 => 'cancel',
-    21 => 'delete',
-    22 => 'Default',
-    23 => 'make this the default topic for new story submissions',
+    19 => 'сохранить',
+    20 => 'отменить',
+    21 => 'стереть',
+    22 => 'По умолчанию',
+    23 => 'Сделать эту тему темо по умолчанию при добаслении новой статьи',
     24 => '(*)'
 );
 
@@ -845,20 +853,20 @@ $LANG28 = array(
     20 => 'сохранить',
     21 => 'Такое имя пользователя уже существует.',
     22 => 'Ошибка',
-    23 => 'Batch Add',
-    24 => 'Batch Import of Users',
-    25 => 'You can import a batch of users into Geeklog.  The import file must be a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!',
-    26 => 'Search',
-    27 => 'Limit Results',
-    28 => 'Check here to delete this picture',
-    29 => 'Path',
-    30 => 'Import',
-    31 => 'New Users',
-    32 => 'Done processing. Imported $successes and encountered $failures failures',
-    33 => 'submit',
-    34 => 'Error: You must specify a file to upload.',
-    35 => 'Last Login',
-    36 => '(never)'
+    23 => 'Добавить группу',
+    24 => 'Импортировать группу пользователей',
+    25 => 'Вы можете импортировать группу пользователей.  Файл импорта должен быть tab-delimited текстовой файл и должен включать поля в следующем порядке: полное имя, ник, адрес почты.  Каждому импортированному пользователю будет выслан по почте пароль. В каждой линии файла может быть только один пользователь.  При несоблюдении этих инструкций, могут возникнуть проблемы, требующие ручного вмешательства, поэтому тщательно проверьте Ваш файл!',
+    26 => 'Поиск',
+    27 => 'Ограничить результаты',
+    28 => 'Отметьте здесь, чтобы стереть изображение',
+    29 => 'Путь',
+    30 => 'Импортировать',
+    31 => 'Новые пользователи',
+    32 => "Done processing. Imported {$successes} and encountered {$failures} failures",
+    33 => 'отправить',
+    34 => 'Ошибка: укажите файл, который Вы загружаете.',
+    35 => 'Последний вход',
+    36 => '(никогда)'
 );
 
 ###############################################################################
@@ -868,15 +876,15 @@ $LANG29 = array(
     1 => 'Одобрить',
     2 => 'Удалить',
     3 => 'Изменить',
-    4 => 'Profile',
-    10 => 'Title',
-    11 => 'Start Date',
+    4 => 'Профиль',
+    10 => 'Заголовок',
+    11 => 'Старт',
     12 => 'URL',
-    13 => 'Category',
-    14 => 'Date',
-    15 => 'Topic',
-    16 => 'User name',
-    17 => 'Full name',
+    13 => 'Категория',
+    14 => 'Датиа',
+    15 => 'Тема',
+    16 => 'Имя пользователя',
+    17 => 'Полное имя',
     18 => 'Email',
     34 => 'Команды управления',
     35 => 'Статии на одобрение',
@@ -884,7 +892,7 @@ $LANG29 = array(
     37 => 'События на одобрение',
     38 => 'Отправить',
     39 => 'В данный момент модерировать нечего',
-    40 => 'User Submissions'
+    40 => 'Отправлено пользователями'
 );
 
 ###############################################################################
@@ -929,9 +937,9 @@ $LANG30 = array(
     36 => 'Послать',
     37 => 'Извините, функция личного календаря на данном сайте не работает',
     38 => 'Персональный редактор событий',
-    39 => 'Day',
-    40 => 'Week',
-    41 => 'Month'
+    39 => 'День',
+    40 => 'Неделя',
+    41 => 'Месяц'
 );
 
 ###############################################################################
@@ -955,22 +963,22 @@ $LANG31 = array(
     15 => 'Ошибка при отправке на: ',
     16 => 'Сообщение успешно отправлено на: ',
     17 => "<a href={$_CONF['site_admin_url']}/mail.php>Послать ещё сообщение</a>",
-    18 => 'To',
+    18 => 'Кому',
     19 => 'NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.',
-    20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"{$_CONF['site_admin_url']}/mail.php\">Send another message</a> or you can <a href=\"{$_CONF['site_admin_url']}/moderation.php\">go back to the administration page</a>.",
-    21 => 'Failures',
-    22 => 'Successes',
-    23 => 'No failures',
-    24 => 'No successes',
-    25 => '-- Select Group --',
-    26 => 'Please fill in all the fields on the form and select a group of users from the drop down.'
+    20 => "Успешно отправлено <successcount> сообщений и не отправлено <failcount> сообщений.  К Вашему сведению, детали о попытках отправления каждого сообщения приведены ниже.  Вы можете также <a href=\"{$_CONF['site_admin_url']}/mail.php\">отправить новое сообщение</a> или <a href=\"{$_CONF['site_admin_url']}/moderation.php\">вернуться на страницу администрирования</a>.",
+    21 => 'Неудачи',
+    22 => 'Удачи',
+    23 => 'Неудач нет',
+    24 => 'Удач нет',
+    25 => '-- Выбрать группу --',
+    26 => 'Пожалуйста, заполните все поля формы и выберите группу пользователей из списка.'
 );
 
 ###############################################################################
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Установка плагина может повредить установленному у Вас Geeklog-у или даже Вашей системе.  Важно, что бы Вы устанавливали только плагины, скачанные с <a href="http://www.geeklog.net" target="_blank">Geeklog Homepage</a> т.к. мы тестируем все присланные нам плагины на различных операционных системах. Важно, что бы Вы понимали, что установка плагина требует исполнения некоторых системных команд, которые могут вызвать проблемы с безопастностью, особенно это касается плагинов, скачаных не с нашего сайта.  Даже после этого предупреждения мы не можем гарантировать успешность инсталяции и не несём ответственности за проблемы, вызванные установкой Geeklog-плагина. Иначе говоря, Вы устанавливаете плагин на свой собственный риск. Руководство по ручной установке плагина включено в каждый инсталляционный пакет.',
+    1 => 'Установка плагина может повредить установленному у Вас Geeklog-у или даже Вашей системе.  Важно, что бы Вы устанавливали только плагины, скачанные с <a href="http://WWW.geeklog.net" target="_blank">Geeklog Homepage</a> т.к. мы тестируем все присланные нам плагины на различных операционных системах. Важно, что бы Вы понимали, что установка плагина требует исполнения некоторых системных команд, которые могут вызвать проблемы с безопастностью, особенно это касается плагинов, скачаных не с нашего сайта.  Даже после этого предупреждения мы не можем гарантировать успешность инсталяции и не несём ответственности за проблемы, вызванные установкой Geeklog-плагина. Иначе говоря, Вы устанавливаете плагин на свой собственный риск. Руководство по ручной установке плагина включено в каждый инсталляционный пакет.',
     2 => 'Предупреждение о установке плагинов',
     3 => 'Форма установки плагина',
     4 => 'Файл плагина',
@@ -1097,16 +1105,16 @@ $MESSAGE = array(
     45 => 'Плагин успешно удалён.',
     46 => 'Извините, у Вас нет допуска к созданию резервных копий.  Просим учесть, что все попытки доступа к запрещённым функциям протоколируются.',
     47 => 'This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.',
-    48 => "Thank you for applying for a membership with {$_CONF['site_name']}. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.",
-    49 => 'Your group has been successfully saved.',
-    50 => 'The group has been successfully deleted.',
-    51 => 'This username is already in use. Please choose another one.',
-    52 => 'The email address provided does not appear to be a valid email address.',
-    53 => 'Your new password has been accepted. Please use your new password below to log in now.',
-    54 => 'Your request for a new password has expired. Please try again below.',
-    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
-    56 => 'The email address provided is already in use for another account.',
-    57 => 'Your account has been successfully deleted.',
+    48 => "Спасибо за подачу заявления на членство в ' . {$_CONF['site_name']} . '. Мы рассмотрим Ваше заявление. Как только Вы приняты, Ваш пароль будет выслан Вам на указанный Вами адрес.",
+    49 => 'Ваша группа успешно сохранена.',
+    50 => 'Ваша группа успешно стерта.',
+    51 => 'Это имя пользователя уже используется. Пожалуйста, выберите другое.',
+    52 => 'Почтовый адрес, который Вы указали, не соотвествует правилам для валидных почтовых адресов.',
+    53 => 'Ваш новый пароль принят. Пожалуйста, используйте Ваш новый пароль ниже для входа прямо сейчас.',
+    54 => 'Время Вашего запроса на новый пароль истекло. Пожалуйста, попробуйте ещё раз ниже.',
+    55 => 'Постовое сообщение было Вам отправлено и должно прийти моментально. Пожалуйста, следуйте указаниям в сообщении для указания нового пароля для Вашего аккаунта.',
+    56 => 'Почтоый адрес, который Вы указали, уже используется в другом аккаунте.',
+    57 => 'Ваш аккаунт был успешно удалён.',
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.'
 );
@@ -1115,7 +1123,7 @@ $MESSAGE = array(
 
 $LANG_ACCESS = array(
     'access' => 'Доступ',
-    'ownerroot' => 'Владелец/Корень',
+    'ownerroot' => 'Владелец/Root',
     'group' => 'Группа',
     'readonly' => 'Только чтение',
     'accessrights' => 'Права доступа',
@@ -1123,7 +1131,7 @@ $LANG_ACCESS = array(
     'grantgrouplabel' => 'Дать права на редактирование упомянутой группы',
     'permmsg' => 'Замечание: Пользователи - все вошедшие в систему зарегистрированные пользователи, анонимные пользователи - все посетители сайта, не вошедшие в систему.',
     'securitygroups' => 'Группы безопасности',
-    'editrootmsg' => "Даже если Вы Администратор Пользователей, Вы не можете изменить корневого пользователя если сами им не являетесь. Вы можете изменять любых пользователей, кроме корневого. Все попытки нелегально изменить корневых пользователей протоколируются. Пожалуйста, вернитесь на страницу <a href=\"{$_CONF['site_admin_url']}/user.php\">Администрирование Пользователей</a>.",
+    'editrootmsg' => "Даже если Вы Администратор Пользователей, Вы не можете изменить корневого пользователя если сами им не являетесь. Вы можете изменять любых пользователей, кроме корневого. Все попытки нелегально изменить корневых пользователей протоколируются. Пожалуйста, вернитесь на страницу <a href=\"{$_CONF['site_admin_url']}/users.php\">Администрирование Пользователей</a>.",
     'securitygroupsmsg' => 'Выберите группы, к которым должен принадлежать пользователь.',
     'groupeditor' => 'Редактор групп',
     'description' => 'Описание',
@@ -1157,11 +1165,11 @@ $LANG_ACCESS = array(
     'adminhome' => 'Home администратора',
     'save' => 'сохранить',
     'cancel' => 'отмена',
-    'delete' => 'delete',
+    'delete' => 'удалить',
     'canteditroot' => 'Вы пытаетесь редактировать Корневую группу, но при этом не являетесь её членом поэтому доступ к этой группе закрыт. Пожалуйста, обратитесь к системному администратору, если считаете это ошибкой.',
-    'listusers' => 'List Users',
-    'listthem' => 'list',
-    'usersingroup' => 'Users in group "%s"',
+    'listusers' => 'Список пользователей',
+    'listthem' => 'список',
+    'usersingroup' => 'Пользователей в группе %s',
     'usergroupadmin' => 'User Group Administration',
     'add' => 'Add',
     'remove' => 'Remove',
@@ -1179,14 +1187,14 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Резервное копирование базы данных успешно завершено.',
     'no_backups' => 'Бэкапов в системе не найдено',
     'db_explanation' => 'Для создания новой резервной копии Вашей системы Geeklog, нажмите кнопку ниже',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
-    'zero_size' => 'Backup Failed: Filesize was 0 bytes',
-    'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
-    'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
-    'backup_file' => 'Backup file',
-    'size' => 'Size',
-    'bytes' => 'Bytes',
-    'total_number' => 'Total number of backups: %d'
+    'not_found' => "Неправильный путь или утилита mysqldump не может выполняться.<br>Проверьте <strong>\$_DB_mysqldump_path</strong> определение в файле config.php.<br>Переменная в данный момент установлена в: <var>{$_DB_mysqldump_path}</var>",
+    'zero_size' => 'Неудачный бэкап: Размер файла 0 байт',
+    'path_not_found' => "{$_CONF['backup_path']} не существует или не является директорией",
+    'no_access' => "Ошибка: Директория {$_CONF['backup_path']} не доступна.",
+    'backup_file' => 'Бэкап-файл',
+    'size' => 'Размер',
+    'bytes' => 'Байт',
+    'total_number' => 'Общее количество бэкапов: %d'
 );
 
 ###############################################################################
@@ -1208,18 +1216,18 @@ $LANG_BUTTONS = array(
 # 404.php
 
 $LANG_404 = array(
-    1 => '404 Error',
-    2 => 'Gee, I\'ve looked everywhere but I can not find <b>%s</b>.',
-    3 => "<p>We're sorry, but the file you have requested does not exist. Please feel free to check the <a href=\"{$_CONF['site_url']}\">main page</a> or the <a href=\"{$_CONF['site_url']}/search.php\">search page</a> to see if you can find what you lost."
+    1 => '404 Ошибка',
+    2 => 'Хей, я посмотрел везде, но не смог найти <b>%s</b>.',
+    3 => "<p>Нам очень жаль, но файл, который Вы запросили, не существует. Пожайлуйста, не стесняйтесь посмотреть <a href=\"{$_CONF['site_url']}\">главную страницу</a> или <a href=\"{$_CONF['site_url']}/search.php\">страницу поиска</a> чтобы определить, сможете ли Вы найти то, что потеряли :)."
 );
 
 ###############################################################################
 
 $LANG_LOGIN = array(
-    1 => 'Login required',
-    2 => 'Sorry, to access this area you need to be logged in as a user.',
-    3 => 'Login',
-    4 => 'New User'
+    1 => 'Требуется вход',
+    2 => 'Извините, чтобы получить доступ к этой зоне вы должны зайти как зарегистрированный пользователь.',
+    3 => 'Вход',
+    4 => 'Новый пользователь'
 );
 
 ?>
