@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.3 2004/01/07 04:23:20 tony Exp $
+// $Id: getimage.php,v 1.4 2004/01/07 04:52:38 tony Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -77,9 +77,6 @@ switch ($mode) {
     case 'show':
     case 'articles':
         $downloader->setPath($_CONF['path_images'] . 'articles/');
-        break;
-    case 'topics':
-        $downloader->setPath($_CONF['path_images'] . 'topics/');
         break;
     case 'userphotos':
         $downloader->setPath($_CONF['path_images'] . 'userphotos/');
