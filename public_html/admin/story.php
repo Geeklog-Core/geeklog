@@ -45,11 +45,16 @@ function storyeditor($sid,$mode="") {
 	} elseif (!empty($sid) && $mode == "editsubmission") {
 		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM storysubmission WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
+		$A["commentcode"] = 0;
+		$A["featured"] = 0;
+		$A["statuscode"] = 0;
 	} elseif ($mode == "edit") {
 		$A["sid"] = makesid();
 		$A["uid"] = $USER["uid"];
 		$A["unixdate"] = time();
+		$A["commentcode"] = 0;
 		$A["statuscode"] = 0;
+		$A["featured"] = 0;
 	} else {
 		$A = $HTTP_POST_VARS;
 		if ($A["postmode"] == "html") {
