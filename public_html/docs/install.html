@@ -350,22 +350,41 @@ be on the save side, drop the database and create a  new, empty database
 before trying to run the install script again.</p>
 </td></tr></table>
 </div>
-                <a name="winzip"><br>
+                <a name="corrupted"><br>
                 <br></a>
 		<div align="center">
 			<table width="95%" border="0" cellspacing="0" cellpadding="4">
 				<tr>
-					<td bgcolor="#ffedf2"><b>During installation, I get the following errors:</b>
-						<p><code>"Parse error: parse error in ../../lib-common.php on line 2231 "</code></p>
-						<p><code>"Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 "</code></p>
+					<td bgcolor="#ffedf2"><b>During installation, I get one of the following errors:</b>
+<p><b>Case 1:</b></p>
+						<p><code>Parse error: parse error in ../../lib-common.php on line 2231 </code></p>
+						<p><code>Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 </code></p>
+
+<p><b>Case 2:</b></p>
+<p><code>Parse error: parse error in /path/to/geeklog/public_html/lib-common.php on line 3036</code></p>
+<p><code>Fatal error: Call to undefined function: plg_showcenterblock() in /path/to/geeklog/public_html/index.php on line 67</code></p>
+
+<p><b>Case 3:</b></p>
+<p><code>Parse error: parse error, unexpected T_CONSTANT_ENCAPSED_STRING in /path/to/geeklog/public_html/lib-common.php on line 3815</code></p>
+
+<p><code>Fatal error: Cannot instantiate non-existent class: template in /path/to/geeklog/public_html/lib-common.php on line 709</code></p>
 					</td>
 				</tr>
 				<tr>
 					<td>
 						<p><small>(line numbers may vary)</small></p>
 						<p><strong>Answer:</strong></p>
-						<p>You have most likely used WinZip to decompress the Geeklog files. As noted <a href="#ParseError">at the top of this document</a>, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system.</p>
-<p>Similar parse errors can occur when you use a "WYSIWYG" HTML editor, such as Dreamweaver, to edit the lib-common.php. In that case, please get a fresh copy of the lib-common.php file and make your changes again, using another editor.</p>
+
+<p>All of the above cases (and similar "parse error" messages you may get for lib-common.php, typically with a line number in the 3000 or 4000 range) indicate a <b>corrupted lib-common.php</b> file.</p>
+<p>As noted <a href="#ParseError">at the top of this document</a> this is usually caused by one of the following:</p>
+<ul>
+<li>Uncompressing the tarball with certain versions of <b>WinZip</b> (try using WinRar instead)</li>
+<li>Editing the lib-common.php with <b>Dreamweaver</b> or other so-called WYSIWYG HTML editors (use a simple text editor instead)</li>
+<li>Editing the lib-common.php with "on-site" text editors built into tools like <b>Cpanel</b> (again, use a simple text editor instead)</li>
+</ul>
+
+<p>You will need to unpack a fresh copy of the lib-common.php and edit it again, using a "normal" text editor. Windows users can find some recommendations for editors to use in <a href="http://www.geeklog.net/forum/viewtopic.php?forum=3&amp;showtopic=11866" title="Forum thread: Text editors?">this</a> and <a href="http://www.geeklog.net/forum/viewtopic.php?forum=3&amp;showtopic=15807" title="Forum thread: How to edit lib-common without Notepad on Windows?">this</a> thread in the forums on geeklog.net.</p>
+
 					</td>
 				</tr>
 			</table>
