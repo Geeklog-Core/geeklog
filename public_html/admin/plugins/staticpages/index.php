@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2002/04/16 21:12:28 tony_bibbs Exp $
+// $Id: index.php,v 1.2 2002/04/16 21:21:51 tony_bibbs Exp $
 
 include_once('../../../lib-common.php');
 include_once('../../auth.inc.php');
@@ -53,6 +53,7 @@ function form($A, $error=false)
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
         $sp_template->set_file('form','editor.thtml');
         $sp_template->set_var('site_url', $_CONF['site_url']);
+        $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC[staticpageeditor]));
         $sp_template->set_var('lang_save', $LANG_STATIC[save]);
         $sp_template->set_var('lang_preview', $LANG_STATIC[preview]);
@@ -155,6 +156,7 @@ function liststaticpages($page = 1)
     $sp_templates = new Template($_CONF['path'] . '/plugins/staticpages/templates/admin');
     $sp_templates->set_file(array('list'=>'list.thtml','row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
+    $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC[staticpagelist]));
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
@@ -188,10 +190,10 @@ function liststaticpages($page = 1)
 			$nextpage = $page + 1;
 			$num_pages = DB_count('staticpage') / 50;
 			if ($page > 1) {
-				$retval .= "<a href={$_CONF["site_url"]}/admin/plugins/staticpages/index.php?mode=list&page=$prevpage>{$LANG50[1]}</a>&nbsp;&nbsp";
+				$retval .= "<a href={$_CONF["site_admin_url"]}/plugins/staticpages/index.php?mode=list&page=$prevpage>{$LANG50[1]}</a>&nbsp;&nbsp";
 			}
 			if ($page < $num_pages) {
-				$retval .= "<a href={$_CONF["site_url"]}/admin/plugins/staticpages/index.php?mode=list&page=$nextpage>{$LANG50[2]}</a> ";
+				$retval .= "<a href={$_CONF["site_admin_url"]}/plugins/staticpages/index.php?mode=list&page=$nextpage>{$LANG50[2]}</a> ";
 			}
 		}
 		$retval .= "</td></tr>
