@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.19 2002/03/08 21:40:10 tony_bibbs Exp $
+// $Id: user.php,v 1.20 2002/03/08 22:53:58 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -197,7 +197,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
 		}
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
-            $sql = "INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate')";
+            $sql = "INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')";
         } else { 
             $sql = "UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage' WHERE uid = $uid"; 
         }
