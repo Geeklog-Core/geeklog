@@ -29,32 +29,97 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.9 2002/05/07 21:54:46 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.10 2002/05/07 22:00:41 tony_bibbs Exp $
 
 class upload
 {
-    // Private Properties
+    /**
+    * @access private
+    */
     var $_errors = array();               // Array
+    /**
+    * @access private
+    */
     var $_warnings = array();             // Array
+    /**
+    * @access private
+    */
     var $_debugMessages = array();        // Array
+    /**
+    * @access private
+    */
     var $_allowedMimeTypes = array();     // Array
+    /**
+    * @access private
+    */
     var $_availableMimeTypes = array();   // Array
+    /**
+    * @access private
+    */
     var $_filesToUpload = array();        // Array
+    /**
+    * @access private
+    */
     var $_currentFile = array();          // Array
+    /**
+    * @access private
+    */
     var $_allowedIPS = array();           // Array
+    /**
+    * @access private
+    */
     var $_uploadedFiles = array();        // Array
+    /**
+    * @access private
+    */
     var $_maxImageWidth = 300;            // Pixels
+    /**
+    * @access private
+    */
     var $_maxImageHeight = 300;           // Pixels
+    /**
+    * @access private
+    */
     var $_maxFileSize = 1048576;          // Long, in bytes
+    /**
+    * @access private
+    */
     var $_fileUploadDirectory = '';       // String
+    /**
+    * @access private
+    */
     var $_fileNames = '';                 // String
+    /**
+    * @access private
+    */
     var $_permissions = '';               // String
+    /**
+    * @access private
+    */
     var $_logFile = '';                   // String
+    /**
+    * @access private
+    */
     var $_doLogging = false;              // Boolean
+    /**
+    * @access private
+    */
     var $_continueOnError = false;        // Boolean
+    /**
+    * @access private
+    */
     var $_debug = false;                  // Boolean
+    /**
+    * @access private
+    */
     var $_limitByIP = false;              // Boolean
+    /**
+    * @access private
+    */
     var $_numSuccessfulUploads = 0;       // Integer
+    /**
+    * @access private
+    */
     var $_imageIndex = 0;                 // Integer
     
     /**
