@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.61 2002/08/27 00:06:20 tony_bibbs Exp $
+// $Id: story.php,v 1.62 2002/08/27 00:19:21 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -159,6 +159,7 @@ function storyeditor($sid = '', $mode = '')
         } else {
             $A["introtext"] = htmlspecialchars(COM_checkWords($A["introtext"]));
             $A["bodytext"] = htmlspecialchars(COM_checkWords($A["bodytext"]));
+            $A["title"] = htmlspecialchars(COM_checkWords($A["title"]));
         }
         $A['title'] = strip_tags($A['title']);
     }
@@ -267,6 +268,12 @@ function storyeditor($sid = '', $mode = '')
 
     $story_templates->set_var('story_unixstamp', $A['unixdate']); 
     $story_templates->set_var('lang_title', $LANG24[13]);
+    if ($A['postmode'] == 'plaintext') {
+        $A['title'] = str_replace('$','&#36;',$A['title']);
+    }
+    
+    $A['title'] = str_replace('{','&#123;',$A['title']);
+    $A['title'] = str_replace('}','&#125;',$A['title']);
     $story_templates->set_var('story_title', stripslashes($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
