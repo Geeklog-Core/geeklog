@@ -1,0 +1,48 @@
+Quick and Dirty Install
+-----------------------
+
+As of Geeklog 1.3 you now have option of installing Geeklog manually OR using the
+installation script.
+
+To Upgrade
+-----------
+Upgrading is no different than a fresh installation except your database already exists.  
+First, back-up any files with custom code in them.  Then remove your current geeklog directory.  
+After that just uncompress the new version and copy the resulting directory to the name of your
+older geeklog version.  This it's just a matter of following the steps below.
+
+Using the installation script (preferred)
+------------------------------------------
+1) BACK-UP your database and, if upgrading, your current Geeklog installation
+2) Unpack the tarball *within* your web tree
+3) For *nix installations do a chown -R <webuser>:<webuser> /path/to/geeklog
+4) For *nix installations cd into /path/to/geeklog and to the following:
+    - chmod -R 777 logs/
+    - chmod -R 777 public_html/backend/
+5) Create the database you want Geeklog to reside in
+6) Open a browser and navigate to http://<your_geeklog_url>/admin/install/install.php
+7) Follow the instructions in the script
+
+Manual installations
+--------------------
+1) First unpack the tarball within your web tree
+2) For *nix installations do a chown -R <webuser>:<webuser> /path/to/geeklog
+3) For *nix installations cd into /path/to/geeklog and to the following:
+    - chmod -R 777 logs/
+    - chmod -R 777 public_html/backend/
+4) Copy /path/to/geeklog/config.default to /path/to/geeklog/config.php
+5) Uncomment the line "$_CONF['path'] = '/path/to/geeklog/'"
+6) Edit config.php as needed
+7) Copy /path/to/geeklog/system/lib-database.sample to /path/to/geeklog/system/lib-database.php
+8) Edit lib-database.php with your database settings
+9) Copy /path/to/geeklog/public_html/lib-common.sample to /path/to/geeklog/public_html/lib-common.php
+10) edit lib-common.php and change the path to config.php to point to the right location
+11) Create the database you want Geeklog to reside in
+12a) For fresh installations:
+    - import table.sql in /path/to/geeklog/sql
+    - import data.sql in /path/to/geeklog/sql
+12b) For upgrades:
+    - cd into /path/to/geeklog/sql/updates
+    - import all necessary upgrade scripts (ignore any scripts ending in .php, those are used by
+      the installation script
+13) that's it!
