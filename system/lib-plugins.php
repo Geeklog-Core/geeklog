@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.38 2004/09/19 17:55:59 dhaun Exp $
+// $Id: lib-plugins.php,v 1.39 2004/09/21 09:43:30 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -880,7 +880,7 @@ function PLG_getHeaderCode()
 *
 */
 function PLG_replacetags($content) {
-    global $_TABLES, $_PLUGINS, $LANG32;
+    global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
     // Determine which Core Modules and Plugins support AutoLinks
     $autolinkModules = array('story' => 'story');
@@ -938,7 +938,9 @@ function PLG_replacetags($content) {
         foreach ($tags as $autotag) {
             $function = 'plugin_autotags_' . $autotag['module'];
             if ($autotag['module'] == 'story') {
-                $filelink = '<a href="'.$_CONF['site_url'].'/article.php?story='.$autotag['parm1'].'">'.$autotag['parm2'].'</a>';
+                $filelink = '<a href="' . COM_buildUrl ($_CONF['site_url']
+                          . '/article.php?story=' . $autotag['parm1']) . '">'
+                          . $autotag['parm2'] . '</a>';
                 $content = str_replace($autotag['tagstr'],$filelink,$content);
             } elseif (function_exists($function)) {
                 $content = $function('parse',$content,$autotag);
