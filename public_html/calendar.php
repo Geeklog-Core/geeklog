@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.14 2002/03/16 18:44:48 dhaun Exp $
+// $Id: calendar.php,v 1.15 2002/04/11 19:24:59 tony_bibbs Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -644,12 +644,15 @@ for ($i = 1; $i <= 6; $i++) {
                 //$calsql = "SELECT {$_TABLES["events"]}.* FROM {$_TABLES["events"]}, {$_TABLES["userevent"]} WHERE ({$_TABLES["events"]}.eid = {$_TABLES["userevent"]}.eid) AND ({$_TABLES["userevent"]}.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart";
                 $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart";
             } else {
+                if (strlen($month) == 1) {
+                    $month = '0' . $month;
+                }
                 $calsql = "SELECT * FROM {$_TABLES["events"]} WHERE (datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend) ORDER BY datestart";
             }
             
             $query2 = DB_query($calsql);
             $q2_numrows = DB_numRows($query2);
-
+            if ($curday->daynumber == '03') print "$curday->daynumber: $calsql, $q2_numrows<br>";
             if ($q2_numrows > 0) {
                 $entries = '';
                 for ($z = 1; $z <= $q2_numrows; $z++) {
