@@ -99,6 +99,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_rht(rht)";
 // make sure the older_stories block is of type "gldefault"
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'gldefault' WHERE name = 'older_stories'";
 
+// remove obsolete "layout" blocks from _very_ old databases ...
+$_SQL[] = "DELETE FROM {$_TABLES['blocks']} WHERE type = 'layout'";
+
 // add an index on the 'topic' field of the syndication table
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD INDEX syndication_topic(topic)";
 
