@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.14 2002/09/05 19:38:46 dhaun Exp $
+// $Id: lib-sessions.php,v 1.15 2003/02/20 18:48:42 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -109,7 +109,7 @@ function SESS_sessionCheck()
                     } else {
                         if ($userid) {
                             $user_logged_in = 1;
-                            $sess_id = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                            $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                             $userdata = SESS_getUserDataFromId($userid);
                             $_USER = $userdata;
@@ -168,7 +168,7 @@ function SESS_sessionCheck()
     }
 
     // Set cookie.
-    setcookie($_CONF['cookie_lastvisittemp'], $temptime ,$expiredate2, $_CONF['cookie_path'], $_CONF['site_url'], $_CONF['cookiesecure']);
+    setcookie($_CONF['cookie_lastvisittemp'], $temptime ,$expiredate2, $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
