@@ -336,7 +336,9 @@ $LANG08 = array(
 	25 => "You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system",
 	26 => "This form will allow you to send an email to the selected user.  All fields are required.",
 	27 => "Short message",
-	28 => "$from wrote: $shortmsg"
+	28 => "$from wrote: $shortmsg",
+    29 => "This is the daily digest from {$_CONF['site_name']} for ",
+    30 => " Daily Newsletter for "
 );
 
 ###############################################################################
@@ -969,6 +971,10 @@ $LANG_WORDS = array(
 
 $LANG_DB_BACKUP = array(
     last_ten_backups => 'Last 10 Back-ups',
+    do_backup => 'Do Backup',
+    backup_successful => 'Database back up was successful.',
+    no_backups => 'No backups in the system',
+    db_explanation => 'To create a new backup of your Geeklog system, hit the button below'
 );
 
 ?>
