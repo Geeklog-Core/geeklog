@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.27 2002/07/23 11:30:57 dreamscape Exp $
+// $Id: search.php,v 1.28 2002/07/23 18:00:19 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -171,7 +171,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
 
     if (($type == 'events') || (($type == 'all') && empty ($author))) {
 		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
-        $sql .= "title like '%$query%'  OR";
+        $sql .= "title like '%$query%'  OR ";
         $sql .= "location like '%$query%' ";
 		$sql .= "OR description like '%$query%' ";
         if (!empty($datestart) && !empty($dateend)) {
