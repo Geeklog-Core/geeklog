@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.34 2002/07/20 17:12:37 dhaun Exp $
+// $Id: users.php,v 1.35 2002/07/23 08:51:40 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -51,7 +51,7 @@ require_once('lib-common.php');
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 
-#debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Shows a profile for a user
@@ -85,6 +85,10 @@ function userprofile($user)
     $retval = '';
 	
     $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $nrows = DB_numRows($result);
+    if ($nrows == 0) { // no such user
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
     $A = DB_fetchArray($result);
 
     // format date/time to user preference
@@ -198,16 +202,19 @@ function emailpassword($username,$msg=0)
 {
     global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
 	
-    $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE username = '$username'");
+    $result = DB_query("SELECT email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
+        $A = DB_fetchArray($result);
+        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5(''))) {
+            return COM_refresh ("{$_CONF['site_url']}/index.php?msg=48");
+        }
         srand((double)microtime()*1000000);
         $passwd = rand();
         $passwd = md5($passwd);
         $passwd = substr($passwd,1,8);
         $passwd2 = md5($passwd);
         DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
-        $A = DB_fetchArray($result);
         $mailtext = "{$LANG04[15]}\n\n";
         $mailtext .= "{$LANG04[2]}: $username\n";
         $mailtext .= "{$LANG04[4]}: $passwd\n\n";
@@ -274,8 +281,15 @@ function createuser($username,$email)
             DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
-            emailpassword($username, 1);
-            return COM_refresh($_CONF['site_url'] . '/index.php?msg=1');
+            if ($_CONF['usersubmission'] == 1) {
+                $passwd = md5('');
+                $msg = 48;
+            } else {
+                emailpassword($username, 1);
+                $msg = 1;
+            }
+            DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
+            return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
             $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();
         }

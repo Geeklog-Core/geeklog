@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.123 2002/07/23 01:07:14 mlimburg Exp $
+// $Id: lib-common.php,v 1.124 2002/07/23 08:51:40 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1399,10 +1399,10 @@ function COM_adminMenu($help = '', $title = '')
             if (SEC_hasrights ('link.edit')) { 
                 $num += DB_count ($_TABLES['linksubmission'], 'lid', 0);
             }
-
-            $num = DB_count($_TABLES['storysubmission'],'uid',0) + 
-                    DB_count($_TABLES['eventsubmission'],'eid',0) + 
-                    DB_count($_TABLES['linksubmission'],'lid',0);
+            if (SEC_hasrights('user.edit') && SEC_hasrights('user.delete')) {
+                $emptypwd = md5 ('');
+                $num += DB_count ($_TABLES['users'], 'passwd', $emptypwd);
+            }
 
             //now handle submissions for plugins
             $num = $num + PLG_getSubmissionCount();

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.24 2002/06/06 07:20:19 dhaun Exp $
+// $Id: moderation.php,v 1.25 2002/07/23 08:51:40 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -40,7 +40,7 @@ require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Prints the command & control block at the top
@@ -48,7 +48,7 @@ require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 */
 function commandcontrol() 
 {
-    global $_CONF,$LANG01,$LANG29;
+    global $_CONF,$_TABLES,$LANG01,$LANG29;
 
     $retval = '';
 
@@ -144,6 +144,11 @@ function commandcontrol()
     }
     if (SEC_hasRights('event.moderate')) {
         $retval .= itemlist('event');
+    }
+    if ($_CONF['usersubmission'] == 1) {
+        if (SEC_hasRights ('user.edit') && SEC_hasRights ('user.delete')) {
+            $retval .= userlist ();
+        }
     }
 
     $retval .= PLG_showModerationList();
@@ -261,6 +266,59 @@ function itemlist($type)
 }
 
 /**
+* Displays new user submissions
+*
+* When enabled, this will list all the new users which have applied for a
+* site membership. When approving an application, an email containing the
+* password is sent out immediately.
+*
+*/
+function userlist () {
+    global $_TABLES, $_CONF, $LANG29;
+
+    $retval .= COM_startBlock ($LANG29[40]);
+    $emptypwd = md5('');
+    $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE passwd = '$emptypwd'");
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
+        $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
+                                       'itemrows'=>'itemlistrows.thtml'));
+        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
+        $mod_templates->set_var('item_type', 'user');
+        $mod_templates->set_var('num_rows', $nrows);
+        $mod_templates->set_var('heading_col1', $LANG29[16]);
+        $mod_templates->set_var('heading_col2', $LANG29[17]);
+        $mod_templates->set_var('heading_col3', $LANG29[18]);
+        $mod_templates->set_var('lang_approve', $LANG29[2]);
+        $mod_templates->set_var('lang_delete', $LANG29[1]);
+ 
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $mod_templates->set_var('edit_submission_url', $_CONF['site_url'] .
+                '/users.php?mode=profile&amp;uid=' . $A['uid']);
+            $mod_templates->set_var('lang_edit', $LANG29[4]);
+            $mod_templates->set_var('data_col1', stripslashes($A['username']));
+            $mod_templates->set_var('data_col2', stripslashes($A['fullname']));
+            $mod_templates->set_var('data_col3', stripslashes($A['email']));
+            $mod_templates->set_var('cur_row', $i);
+            $mod_templates->set_var('item_id', $A['uid']);
+            $mod_templates->parse('list_of_items','itemrows',true);
+        }
+        $mod_templates->set_var('lang_submit', $LANG29[38]);
+        $mod_templates->parse('output','itemlist');
+        $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+    } else {
+        if ($nrows <> -1) {
+            $retval .= $LANG29[39];
+        }
+    }
+    $retval .= COM_endBlock ();
+
+    return $retval;
+}
+
+/**
 * Moderates an item
 *
 * This will actually perform moderation (approve or delete) one or more items
@@ -289,7 +347,7 @@ function moderation($mid,$action,$type,$count)
         $submissiontable = $_TABLES['linksubmission'];
         $fields = 'lid,category,url,description,title';
         break;
-	case 'story':
+    case 'story':
         $id = 'sid';
         $table = $_TABLES['stories'];
         $submissiontable = $_TABLES['storysubmission'];
@@ -327,7 +385,72 @@ function moderation($mid,$action,$type,$count)
     }
 
     $retval .= commandcontrol();
-	
+
+    return $retval;
+}
+
+/**
+* Moderate user submissions
+*
+* Users from the user submission queue are either appoved (an email containing
+* the password is sent out) or deleted.
+*
+* Note: The code for sending the password is coped&pasted from users.php
+*
+*/
+function moderateusers ($uid, $action, $count) {
+    global $_TABLES, $_CONF, $LANG_CHARSET, $LANG04;
+
+    for ($i = 1; $i <= $count; $i++) {
+        switch ($action[$i]) {
+            case 'delete': // Ok, delete everything related to this user
+                // first, remove from all security groups
+                DB_delete($_TABLES['group_assignments'],'ug_uid',$uid[$i]);
+                DB_delete($_TABLES['userprefs'],'uid',$uid[$i]);
+                DB_delete($_TABLES['userindex'],'uid',$uid[$i]);
+                DB_delete($_TABLES['usercomment'],'uid',$uid[$i]);
+                DB_delete($_TABLES['userinfo'],'uid',$uid[$i]);
+
+                // now delete the user itself
+                DB_delete($_TABLES['users'],'uid',$uid[$i]);
+                break;
+            case 'approve':
+                $result = DB_query ("SELECT email,username FROM {$_TABLES['users']} WHERE uid = $uid[$i]");
+                $nrows = DB_numRows($result);
+                if ($nrows == 1) {
+                    $A = DB_fetchArray($result);
+                    srand((double)microtime()*1000000);
+                    $passwd = rand();
+                    $passwd = md5($passwd);
+                    $passwd = substr($passwd,1,8);
+                    $passwd2 = md5($passwd);
+                    DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$A['username']);
+
+                    $mailtext = "{$LANG04[15]}\n\n";
+                    $mailtext .= "{$LANG04[2]}: {$A['username']}\n";
+                    $mailtext .= "{$LANG04[4]}: $passwd\n\n";
+                    $mailtext .= "{$LANG04[14]}\n\n";
+                    $mailtext .= "{$_CONF["site_name"]}\n";
+                    $mailtext .= "{$_CONF['site_url']}\n";
+                    if (empty ($LANG_CHARSET)) {
+                        $charset = $_CONF['default_charset'];
+                        if (empty ($charset)) {
+                            $charset = "iso-8859-1";
+                        }
+                    }
+                    else {
+                        $charset = $LANG_CHARSET;
+                    }
+                    mail($A["email"], "{$_CONF["site_name"]}: {$LANG04[16]}",
+                        $mailtext,
+                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nContent-Type: text/plain; charset={$charset}\nX-Mailer: GeekLog $VERSION");
+                }
+                break;
+        }
+    }
+
+    $retval .= commandcontrol();
+
     return $retval;
 }
 
@@ -339,7 +462,11 @@ $display .= COM_siteHeader();
 
 switch ($mode) {
 case 'moderation':
-    $display .= moderation($id,$action,$type,$count);
+    if ($type == 'user') {
+        $display .= moderateusers($id,$action,$count);
+    } else {
+        $display .= moderation($id,$action,$type,$count);
+    }
     break;
 default:
     $display .= commandcontrol();

@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.42 2002/07/19 08:49:53 dhaun Exp $
+// $Id: config.php,v 1.43 2002/07/23 08:51:40 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -198,6 +198,14 @@ $_CONF['emailstories'] = 0;
 // 0 = send only title + link, 1 = send entire introtext,
 // any other number = max. number of characters per story
 $_CONF['emailstorieslength'] = 1;
+
+// Set to 1 if users need to be approved before they are granted access
+// to the site.
+$_CONF['usersubmission'] = 0;
+
+// When user submission is activated, allow users from these domains to
+// register without having to go through the submission queue.
+$_CONF['allow_domains] = ''; // NOT YET IMPLEMENTED
 
 // Following times are in seconds
 $_CONF['newstoriesinterval']  = 86400;

@@ -823,21 +823,26 @@ $LANG28 = array(
 # moderation.php
 
 $LANG29 = array(
-	1 => "Akzeptieren",
-	2 => "L&ouml;schen",
-	3 => "Editieren",
-  10 => "Titel",
-  11 => "Startdatum",
-  12 => "URL",
-  13 => "Kategorie",
-  14 => "Datum",
-  15 => "Kategorie",
-	34 => "Kommandozentrale",
-	35 => "Beitr&auml;ge: Artikel",
-	36 => "Beitr&auml;ge: Links",
-	37 => "Beitr&auml;ge: Termine",
-	38 => "Abschicken",
-	39 => "Derzeit gibt es keine Beitr&auml;ge zu moderieren."
+    1 => "Akzeptieren",
+    2 => "L&ouml;schen",
+    3 => "Editieren",
+    4 => 'Profil',
+    10 => "Titel",
+    11 => "Startdatum",
+    12 => "URL",
+    13 => "Kategorie",
+    14 => "Datum",
+    15 => "Kategorie",
+    16 => 'Username',
+    17 => 'Name',
+    18 => 'E-Mail',
+    34 => "Kommandozentrale",
+    35 => "Beitr&auml;ge: Artikel",
+    36 => "Beitr&auml;ge: Links",
+    37 => "Beitr&auml;ge: Termine",
+    38 => "Abschicken",
+    39 => "Derzeit gibt es keine Beitr&auml;ge zu moderieren.",
+    40 => 'Neue User'
 );
 
 ###############################################################################
@@ -968,7 +973,8 @@ $MESSAGE = array (
     44 => 'The plug-in was successfully installed!',
     45 => 'The plug-in was successfully deleted.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
-    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually."
+    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
+    48 => 'Danke, dass Du dich bei ' . $_CONF['site_name'] . ' angemeldet hast. Dein Aufnahmeantrag wird von unserem Team gepr&uuml;ft. Sobald er akzeptiert wird, wirst Du Dein Passwort per E-Mail erhalten.'
 );
 
 // for plugins.php

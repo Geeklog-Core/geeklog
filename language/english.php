@@ -817,21 +817,26 @@ $LANG28 = array(
 # moderation.php
 
 $LANG29 = array(
-	1 => "Approve",
-	2 => "Delete",
-	3 => "Edit",
-  10 => "Title",
-  11 => "Start Date",
-  12 => "URL",
-  13 => "Category",
-  14 => "Date",
-  15 => "Topic",
-	34 => "Command and Control",
-	35 => "Story Submissions",
-	36 => "Link Submissions",
-	37 => "Event Submissions",
-	38 => "Submit",
-	39 => "There are no submissions to moderate at this time"
+    1 => "Approve",
+    2 => "Delete",
+    3 => "Edit",
+    4 => 'Profile',
+    10 => "Title",
+    11 => "Start Date",
+    12 => "URL",
+    13 => "Category",
+    14 => "Date",
+    15 => "Topic",
+    16 => 'User name',
+    17 => 'Full name',
+    18 => 'Email',
+    34 => "Command and Control",
+    35 => "Story Submissions",
+    36 => "Link Submissions",
+    37 => "Event Submissions",
+    38 => "Submit",
+    39 => "There are no submissions to moderate at this time",
+    40 => "User Submissions"
 );
 
 ###############################################################################
@@ -962,7 +967,8 @@ $MESSAGE = array (
     44 => 'The plug-in was successfully installed!',
     45 => 'The plug-in was successfully deleted.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
-    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually."
+    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
+    48 => 'Thank you for applying for a membership with ' . $_CONF['site_name'] . '. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.'
 );
 
 // for plugins.php
