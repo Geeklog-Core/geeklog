@@ -324,10 +324,11 @@ in the error message).</p>
 <div align="center">
 <table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
 <td bgcolor="#ffedf2">
-<p><b>I get the following error:</b></p>
+<p><b>I get the following errors:</b></p>
 <p><code>Warning: main(some/path/to/system/databases/mysql.class.php): failed to open stream: No such file or directory in /path/to/your/system/lib-database.php on line 110</code></p>
+<p><code>Fatal error: main(): Failed opening required 'some/path/to/system/databases/mysql.class.php' (include_path='.:/some/other/path/') in /some/path/to/system/lib-database.php on line 110</code></p>
 </td></tr><tr><td>
-<p><small>(line number may vary)</small></p>
+<p><small>(line numbers may vary)</small></p>
 <p><strong>Answer:</strong></p>
 <p>The path that you've entered for the <b>$_CONF['path']</b> variable in config.php is not correct. Make sure you typed it correctly. Also make sure it uses
 an <em>absolute</em> path, i.e. one that starts at the root of your file
