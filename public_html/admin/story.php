@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.103 2003/09/04 08:13:18 dhaun Exp $
+// $Id: story.php,v 1.104 2003/09/05 17:18:15 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -850,10 +850,13 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 if ($_CONF['image_lib'] == 'imagemagick') {
                     // Using imagemagick
                     $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+                } elseif ($_CONF['image_lib'] == 'netpbm') {
+                    // using netPBM
+                    $upload->setNetPBM ($_CONF['path_to_netpbm']);
                 } else {
-                    // must be using netPBM
-                    $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];
-                }    
+                    // must be using the GD library
+                    $upload->setGDLib ();
+                }
                 $upload->setAutomaticResize(true);
                 if ($_CONF['keep_unscaled_image'] == 1) {
                     $upload->keepOriginalImage (true);

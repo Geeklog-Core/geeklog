@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.28 2003/06/16 10:05:05 dhaun Exp $
+// $Id: upload.class.php,v 1.29 2003/09/05 17:18:15 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -153,7 +153,13 @@ class upload
     * @access private
     */
     var $_imageIndex = 0;                 // Integer
-    
+
+    /**    
+    * @access private
+    */
+    var $_wasResized = false;             // Boolean
+
+
     /**
     * Constructor
     *
@@ -354,18 +360,18 @@ class upload
             }
 
             if ($imageInfo['height'] > $this->_maxImageHeight) {
-                $sizeOK= false;
+                $sizeOK = false;
                 if ($doResizeCheck) {
                     $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations (is: ' . $imageInfo['height'] . ', max: ' . $this->_maxImageHeight . ')');
                 }
             }
         }
-        
+
         if ($this->_debug) {
             $this->_addDebugMsg('File, ' . $this->_currentFile['name'] . ' has a width of '
                 . $imageInfo['width'] . ' and a height of ' . $imageInfo['height']);
         }
-        
+
         return $sizeOK;
     }
 	
@@ -451,7 +457,7 @@ class upload
             }
 
             if ($imageInfo['height'] > $this->_maxImageHeight) {
-                $sizeOK= false;
+                $sizeOK = false;
             }
         }
         $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
@@ -464,6 +470,9 @@ class upload
             }
             $newwidth = (int) ($imageInfo['width'] * $sizefactor);
             $newheight = (int) ($imageInfo['height'] * $sizefactor);
+            $this->_addDebugMsg ('Going to resize image to ' . $newwidth . 'x'
+                                 . $newheight . ' using ' . $this->_imageLib);
+
             if ($this->_imageLib == 'imagemagick') {
                 $newsize = $newwidth . 'x' . $newheight;
                 $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
@@ -483,8 +492,9 @@ class upload
                 }
 
                 exec($cmd, $mogrify_output, $retval);
-            } else {
-                // use netpm
+
+            } elseif ($this->_imageLib == 'netpbm') {
+
                 $cmd = $this->_pathToNetPBM;
                 $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                 $cmd_end = ' ' . $filename . ' | ' . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
@@ -531,24 +541,126 @@ class upload
                         exit;
                     }
                 }
+
+            } elseif ($this->_imageLib == 'gdlib') {
+
+                $filename = $this->_fileUploadDirectory . '/'
+                          . $this->_getDestinationName();
+
+                // Detect filetype
+                if ($this->_currentFile['type'] == 'image/gif') {
+                    if (!function_exists ('imagecreatefromgif')) {
+                        $this->_addError ('Sorry, this version of the GD library does not support GIF images.');
+                        $this->printErrors ();
+                        exit;
+                    }
+                    // If file is GIF do a quick PNG conversion first
+                    $this->_addDebugMsg ('converting GIF to PNG');
+                    $image_size = getimagesize ($filename);
+                    $image_source = imagecreatefromgif ($filename);
+                    $image_dest = imagecreatetruecolor ($image_size[0],
+                                                        $image_size[1]);
+                    imagecopy ($image_dest, $image_source, 0, 0, 0, 0,
+                               $image_size[0], $image_size[1]);
+                    $png_filename = $this->_fileUploadDirectory . '/'
+                                  . eregi_replace ("\.gif", ".png",
+                                    $this->_getDestinationName ());
+                    if (!imagepng ($image_dest, $png_filename)) {
+                        $this->_addError ('Error creating PNG from GIF: '
+                                          . $png_filename);
+                        $this->printErrors ();
+                        exit;
+                    } else {
+                        // GIF converted to PNG, delete original file
+                        $this->_addDebugMsg ('Deleting GIF: ' . $filename);
+                        if (!unlink ($filename)) {
+                            $this->_addError ('Unable to delete original GIF: '
+                                              . $filename);
+                            $this->printErrors ();
+                            exit;
+                        }
+                    }
+                    // change file type to PNG
+                    $this->_currentFile['type'] = 'image/png';
+
+                    // change file name to .png
+                    $filename = $this->_fileUploadDirectory . '/'
+                              . eregi_replace ("\.gif", ".png",
+                                $this->_getDestinationName ());
+                }
+
+                if (($this->_currentFile['type'] == 'image/png') OR
+                    ($this->_currentFile['type'] == 'image/x-png')) {
+                    if (!$image_source = imagecreatefrompng ($filename)) {
+                        $this->_addError ('Could not create image from PNG: '
+                                          . $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                } elseif (($this->_currentFile['type'] == 'image/jpeg') OR
+                          ($this->_currentFile['type'] == 'image/pjpeg')) {
+                    if (!$image_source = imagecreatefromjpeg ($filename)) {
+                        $this->_addError ('Could not create image from JPEG: '
+                                          . $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                } else {
+                    $this->_addError ('MIME type ' . $this->_currentFile['type']
+                                      . ' not supported.');
+                    $this->printErrors ();
+                    exit;
+                }
+
+                // do resize
+                if ($imageInfo['height'] > $imageInfo['width']) {
+                    $sizefactor = (double) ($this->_maxImageHeight / $imageInfo['height']);
+                } else {
+                    $sizefactor = (double) ($this->_maxImageWidth / $imageInfo['width']);
+                }
+                $this->_addDebugMsg ('Resizing image, factor=' . $sizefactor);
+                $newwidth = (int) ($imageInfo['width'] * $sizefactor);
+                $newheight = (int) ($imageInfo['height'] * $sizefactor);
+                $newsize = $newwidth . 'x' . $newheight;
+                $image_dest = ImageCreateTrueColor($newwidth, $newheight);
+                imagecopyresized ($image_dest, $image_source, 0, 0, 0, 0,
+                                  $newwidth, $newheight, $imageInfo['width'],
+                                  $imageInfo['height']);
+                if (($this->_currentFile['type'] == 'image/png') OR
+                    ($this->_currentFile['type'] == 'image/x-png')) {
+                    if (!imagepng ($image_dest, $filename)) {
+                        $this->_addError ('Could not create PNG: ' . $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                } elseif (($this->_currentFile['type'] == 'image/jpeg') OR
+                          ($this->_currentFile['type'] == 'image/pjpeg')) {
+                    if (!imagejpeg ($image_dest, $filename)) {
+                        $this->_addError ('Could not create JPEG: '. $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                }
             }
 
             if ($retval > 0) {
                 if ($this->_imageLib == 'imagemagick') {
-                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $mogrify_output[0]);
-                } else {
-                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $netpbm_output[0]);
+                    $this->_addError ('Image, ' . $this->_currentFile['name']
+                        . ' had trouble being resized: ' . $mogrify_output[0]);
+                } elseif ($this->_imageLib == 'netpbm') {
+                    $this->_addError ('Image, ' . $this->_currentFile['name']
+                        . ' had trouble being resized: ' . $netpbm_output[0]);
                 }
                 $this->printErrors();
                 exit;
             } else {
-                    $this->_addDebugMsg('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newsize);
+                $this->_addDebugMsg ('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newsize);
             }
         }
         $returnChmod = true;
         $perms = $this->_getPermissions();
         if (!empty($perms)) {
-            $returnChmod = chmod($this->_fileUploadDirectory . '/' . $this->_getDestinationName(), octdec($perms));
+            $returnChmod = chmod ($this->_fileUploadDirectory . '/' . eregi_replace ("\.gif", ".png", $this->_getDestinationName ()), octdec ($perms));
         }
         
         if ($returnMove AND $returnChmod) {
@@ -581,9 +693,9 @@ class upload
     }
 
     /**
-    * Sets the path to where the mogrify ImageMagic function is
+    * Sets the path to where the netpbm utilities are
     *
-    * @param     string    $path_to_mogrify    Absolute path to mogrify
+    * @param     string    $path_to_netpbm    Absolute path to netpbm dir
     * @return    boolean   True if set, false otherwise
     *
     */
@@ -591,6 +703,18 @@ class upload
     {
         $this->_imageLib = 'netpbm';
         $this->_pathToNetPBM = $path_to_netpbm;
+        return true;
+    }
+
+    /**
+    * Configure upload to use GD library
+    *
+    * @return    boolean   True if set, false otherwise
+    *
+    */
+    function setGDLib()
+    {
+        $this->_imageLib = 'gdlib';
         return true;
     }
 
@@ -1009,9 +1133,9 @@ class upload
 	*/
 	function uploadFiles()
 	{
-        // Before we do anything, let's see if we are limiting file uploads by IP
-        // address and, if so, verify the poster is originating from one of those
-        // places
+        // Before we do anything, let's see if we are limiting file uploads by
+        // IP address and, if so, verify the poster is originating from one of
+        // those places
         if ($this->_limitByIP) {
             if (!in_array($GLOBALS['REMOTE_ADDR'], $this->_allowedIPS)) {
                 $this->_addError('The IP, ' . $GLOBALS['REMOTE_ADDR'] . ' is not in the list of '

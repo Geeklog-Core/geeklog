@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.97 2003/09/04 09:50:15 dhaun Exp $
+// $Id: config.php,v 1.98 2003/09/05 17:18:15 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 5 sections are correct:
@@ -440,7 +440,7 @@ $_CONF['rdf_storytext']         = 0;
 // too big either by the image sizes below or by overriding them using the
 // upload object then the library you choose will attempt to resize the image.
 // Leaving this value empty disables this feature
-$_CONF['image_lib']             = ''; // can be netpbm, imagemagick
+$_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 
 // If you set image_lib to imagemagick give this path otherwise comment it out
 // NOTE: you will need a fairly recent version of ImageMagick for this to work.

@@ -1,5 +1,8 @@
 GeekLog History/Changes:
 
+- Image upload can now use the GD library (contributed by Rob).
+  If possible, GIF images will be converted to PNGs during upload. However,
+  some versions of the GD library may not allow to read GIF images at all.
 - Geeklog now uses PEAR::Mail to send all emails.
   In config.php, you can select whether emails should be sent via PHP's mail()
   function, sendmail, or SMTP.
