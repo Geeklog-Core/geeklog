@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.51 2004/10/25 18:34:40 dhaun Exp $
+// $Id: calendar.php,v 1.52 2004/10/26 10:26:54 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -461,7 +461,7 @@ case 'day':
         for ($i = 1; $i <= count ($alldaydata); $i++) {
             $A = current($alldaydata);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
-                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
             } else {
                 $cal_templates->set_var('delete_imagelink','');
             }
@@ -497,7 +497,7 @@ case 'day':
                 if (SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) > 0 AND $mode == 'personal') {
-                    $cal_templates->set_var ('delete_imagelink', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+                    $cal_templates->set_var ('delete_imagelink', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
                 } else {
                     $cal_templates->set_var('delete_imagelink','');
                 }
