@@ -464,7 +464,19 @@ $LANG21 = array(
 	23 => "Block Order",
 	24 => "Block Topic",
 	25 => "To modify or delete a block, click on that block below.  To create a new block click on new block above.",
-	26 => "Layout Block"
+	26 => "Layout Block",
+	27 => "PHP Block",
+        28 => "PHP Block Options",
+        29 => "Block Function",
+        30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in custom_code.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
+        31 => "Error in PHP Block.  Function, $function, does not exist.",
+        32 => "Error Missing Field(s)",
+        33 => "You must enter the URL to the .rdf file for portal blocks",
+        34 => "You must enter the title and the function for PHP blocks",
+        35 => "You must enter the title and the content for normal blocks",
+        36 => "You must enter the content for layout blocks",
+        37 => "Bad PHP block function name",
+        38 => "Functions for PHP Blocks must have the prefix 'phpblock_' (e.g. phpblock_getweather).  The 'phpblock_' prefix is required for security reasons to prevent the execution of arbitrary code."
 );
 
 ###############################################################################
