@@ -28,6 +28,7 @@ CREATE TABLE blocks (
   content text,
   rdfurl varchar(96) default NULL,
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',
+  help varchar(96) default NULL,
   onleft tinyint(3) unsigned NOT NULL default '1',
   phpblockfn varchar(64) default '',
   group_id mediumint(8) unsigned NOT NULL default '1',
