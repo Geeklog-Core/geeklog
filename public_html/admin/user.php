@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.25 2002/04/10 18:37:33 tony_bibbs Exp $Scripts cannot
+// $Id: user.php,v 1.26 2002/04/10 18:51:11 tony_bibbs Exp $Scripts cannot
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -309,7 +309,7 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
         $base_url = $_CONF['site_url'] . '/admin/user.php?query_limit=' . $query_limit;
     }
 
-    $user_templates->set_var('google_paging',COM_printPageNavigation2($base_url,$curpage,$num_pages));
+    $user_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
     $user_templates->parse('output', 'list');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
