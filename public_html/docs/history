@@ -3,6 +3,16 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Don't update a story's hit counter as long as the draft flag is set or the
+  publishing date is in the future (feature request #282) [Dirk]
+- Introduced new function COM_sanitizeID() to filter special characters out of
+  user-editable IDs as used for stories, polls, topics, and static pages (also
+  fixes bug #181) [Dirk]
+- The Upcoming Events block didn't use the help URL, even if it was set
+  (reported by Wolfgang M. Schmitt).
+- Geeklog now comes with Tom Willet's SpamX plugin pre-installed. The plugin
+  now stores the blacklists in the database and uses a new plugin API
+  function to filter comment posts [Tom Willet, Tony, Dirk]
 - Plugins can now offer their own tags to allow easy linking to their content.
   These tags take the form [name:id link text], where 'name' is a name
   associated with the plugin, 'id' is a unique id referring to one of the
