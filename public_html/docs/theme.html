@@ -54,7 +54,7 @@ change:
 <li>style.css
 </ul>
 
-<h3>How themes work</h3>
+<h3><a name="how-themes-work">How themes work</a></h3>
 
 <p>When rendering a theme, Geeklog starts with <tt>header.thtml</tt> which
 builds the site's header and then goes on to include the left column of blocks
@@ -91,7 +91,7 @@ from the <tt>users</tt> directory within the theme's layout directory.</p>
 <p>An <a href="themevars.html">incomplete list of variables</a> that can be
 used in templates files is also included.</p>
 
-<h3>Testing a theme and further information</h3>
+<h3><a name="testing">Testing a theme and further information</a></h3>
 
 <p>After you have edited your themes, you are now ready to test it out.
 Simply go to http://mygeeklogsite/users.php?mode=preferences - in the theme
@@ -113,7 +113,7 @@ story). If you have questions join our mailing list at <a
 href="http://lists.geeklog.net/listinfo/geeklog-users">http://lists.geeklog.net/listinfo/geeklog-users</a> 
 or check us out in IRC at irc.freenode.net in #geeklog.</p>
 
-<h3>Tips and tricks</h3>
+<h3><a name="tips">Tips and tricks</a></h3>
 
 <p><strong>Themes and WYSIWG editors:</strong>
 The template files used by Geeklog are not complete HTML files - they contain
@@ -149,9 +149,48 @@ answer.</p>
 <h2><a name="changes">Theme changes in Geeklog 1.3.9</a></h2>
 
 <ul>
-<li>The <tt>admin/syndication</tt> directory, containing <tt>feededitor.thtml</tt>, <tt>listfeeds.thtml</tt>, <tt>listitem.thtml</tt>, and <tt>selecttype.thtml</tt> has been added.</li>
-<li>Template files <tt>comment/comment.thtml</tt> and <tt>comment/thread.thtml</tt> have been added and <tt>comment/startcomment.thtml</tt> has been changed to implement template-driven comments.</li>
-<li>A <code>{link_edit}</code> variable has been added to <tt>links/linkdetails.thtml</tt> so that admins can edit links directly from the links section.</li>
+<li>In <tt>header.thtml</tt>, you can now use the new variable
+    <code>{allowed_menu_elements}</code> as an alternative to using
+    <code>{menu_elements}</code>. The new variable takes the
+    <code>$_CONF['<i>XXX</i>loginrequired']</code> settings into account, i.e.
+    it will only list those entries that the current user has access to.</tt></li>
+<li>The <tt>admin/syndication</tt> directory, containing
+    <tt>feededitor.thtml</tt>, <tt>listfeeds.thtml</tt>,
+    <tt>listitem.thtml</tt>, and <tt>selecttype.thtml</tt> has been added.</li>
+<li>Template files <tt>comment/comment.thtml</tt> and
+    <tt>comment/thread.thtml</tt> have been added and
+    <tt>comment/startcomment.thtml</tt> has been changed to implement
+    template-driven comments.</li>
+<li>A <code>{link_edit}</code> variable has been added to
+    <tt>links/linkdetails.thtml</tt> so that admins can edit links directly
+    from the links section.</li>
+<li>An "edit" icon has been added: <tt>images/edit.gif</tt>. The new variable
+    <code>{edit_icon}</code> can be used as an alternative to
+    <code>{edit_link}</code> in the story template files and in
+    <tt>links/linkdetails.thtml</tt>.</li>
+<li>In the <tt>calendar/calendar.thtml</tt> file, the "mode" parameter has been
+    added to the &lt;&lt; and &gt;&gt; buttons, so that users stay in their
+    personal calendar when browsing through months.</li>
+<li>A new file, <tt>admin/group/groupmembers.thtml</tt>, has been added and
+    <tt>admin/group/listitem.thtml</tt> has been changed for the new
+    alternative option to add users to groups.</li>
+<li>A new file, <tt>admin/block/listside.thtml</tt>, has been added and
+    <tt>admin/block/listitem.thtml</tt> and <tt>admin/block/listblocks.thtml</tt>
+    have been changed for the enhanced block list.</li>
+<li>A <code>{google_paging}</code> variable has been added to
+    <tt>admin/link/linklist.thtml</tt>. Also added a column number to
+    <tt>linklist.thtml</tt> and <tt>admin/link/listitem.thtml</tt>.</li>
+<li>All template files where the user can enter a URL are now using a new
+    variable, <code>{max_url_length}</code>, instead of a hard-coded number of
+    characters for the max. length of the URL. Files affected:
+    <tt>admin/block/blockeditor.thtml</tt>,
+    <tt>admin/event/eventeditor.thtml</tt>,
+    <tt>admin/link/linkeditor.thtml</tt>,
+    <tt>admin/topic/topiceditor.thtml</tt>,
+    <tt>submit/submitevent.thtml</tt>, <tt>submit/submitlink.thtml</tt>.</li>
+<li>An extra <code>table</code> has been removed from the
+    <tt>users/profile.thtml</tt> file of the XSilver theme so that the
+    username now lines up properly with the other entries.</li>
 </ul>
 
 <h2><a name="changes138">Theme changes in Geeklog 1.3.8</a></h2>
