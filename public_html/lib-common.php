@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.254 2003/09/06 21:53:42 dhaun Exp $
+// $Id: lib-common.php,v 1.255 2003/09/07 09:31:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -4113,6 +4113,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             for( $x = 1; $x <= $nrows; $x++ )
             {
                 $A = DB_fetchArray( $result );
+                $A['title'] = stripslashes( $A['title'] );
 
                 // Need to reparse the date from the link id
                 $myyear = substr( $A['lid'], 0, 4 );
