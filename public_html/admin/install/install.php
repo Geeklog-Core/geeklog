@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.72 2004/12/19 11:08:07 dhaun Exp $
+// $Id: install.php,v 1.73 2005/01/02 18:05:43 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -665,6 +665,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             install_spamx_plugin ();
 
             $current_gl_version = '1.3.10';
+            $_SQL = '';
             break;
 	case '1.3.10':
             require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.10_to_1.3.11.php');
@@ -674,6 +675,8 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             }
 
             $current_gl_version = '1.3.11';
+            $_SQL = '';
+            break;
         default:
             $done = true;
         }
