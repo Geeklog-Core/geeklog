@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.173 2002/10/23 20:11:13 dhaun Exp $
+// $Id: lib-common.php,v 1.174 2002/10/27 13:37:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -67,7 +67,7 @@ require_once( '/path/to/geeklog/config.php' );
 
 // Before we do anything else, check to ensure site is enabled
 
-if( !$_CONF['site_enabled'] )
+if( isset( $_CONF['site_enabled'] ) && !$_CONF['site_enabled'] )
 {
     if( empty( $_CONF['site_disabled_msg'] ))
     {
@@ -1682,7 +1682,8 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                 else
                 {
                     $width = $percent * $scale;
-                    $retval .= '<img src="' . $_CONF['layout_url'] . '/images/bar.gif" width="' . $width
+                    $retval .= '<img src="' . $_CONF['layout_url']
+                        . '/images/bar.gif" width="' . $width
                         . '" height="10" align="bottom" alt=""> '
                         . $A['votes'] . ' ' . sprintf( "(%.2f)", $percent * 100 ) . '%' . '</td>' . LB;
                 }
@@ -2120,11 +2121,15 @@ function COM_adminMenu( $help = '', $title = '' )
             $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
-        $adminmenu->set_var( 'option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION );
-        $adminmenu->set_var( 'option_label', $LANG01[107] );
-        $adminmenu->set_var( 'option_count', 'N/A' );
+        if( SEC_inGroup( 'Root' ))
+        {
+            $adminmenu->set_var( 'option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION );
+            $adminmenu->set_var( 'option_label', $LANG01[107] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
 
-        $retval .= $adminmenu->parse( 'item', 'option' );
+            $retval .= $adminmenu->parse( 'item', 'option' );
+        }
+
         $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
 
@@ -4457,7 +4462,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
 
 
 // Now include all plugin functions
-$result = DB_query( "SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1" );
+$result = DB_query( "SELECT pi_name FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1" );
 $nrows = DB_numRows( $result );
 
 for( $i = 1; $i <= $nrows; $i++ )
