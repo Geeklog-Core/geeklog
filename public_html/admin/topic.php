@@ -32,10 +32,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.49 2004/12/10 09:32:09 dhaun Exp $
+// $Id: topic.php,v 1.50 2004/12/16 19:47:35 dhaun Exp $
 
-require_once('../lib-common.php');
-require_once('auth.inc.php');
+require_once ('../lib-common.php');
+require_once ('auth.inc.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 if (!SEC_hasRights('topic.edit')) {
     $display = COM_siteHeader ('menu');
