@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.28 2004/05/16 19:14:15 dhaun Exp $
+// $Id: calendar_event.php,v 1.29 2004/05/17 17:50:47 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -585,6 +585,8 @@ default:
                 $cal_templates->set_var('event_location', stripslashes ($A['location']));
                 $cal_templates->set_var('lang_description', $LANG02[5]);
                 $cal_templates->set_var('event_description', stripslashes ($A['description']));
+                $cal_templates->set_var('lang_event_type', $LANG12[49]);
+                $cal_templates->set_var('event_type', $A['event_type']);
                 $cal_templates->parse('event_details', 'details', true); 
                 //$cal_templates->parse('output','events');
                 //$display .= $cal_templates->finish($cal_templates->get_var('output')); 

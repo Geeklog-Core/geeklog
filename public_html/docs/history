@@ -7,7 +7,8 @@ GeekLog History/Changes:
   {event_state_name} (full name of the state), {event_state_only} and
   {event_state_name_only} (abbreviated and full state name without the comma),
   {event_edit} (link to edit the event, if allowed for the current user),
-  {edit_icon} (same, but with the edit icon instead of a text link) [Dirk]
+  {edit_icon} (same, but with the edit icon instead of a text link),
+  {lang_event_type} and {event_type} for the event type [Dirk]
 - Registered users can now report abusive comments to the site admin (inspired
   by Feature Request #171, which actually requested this for the forums).
   Requires new text strings in the language files and a new template file,
@@ -18,7 +19,7 @@ GeekLog History/Changes:
   identical code in users.php, admin/user.php, and admin/moderation.php [Dirk]
 - Added {topic_image} variable (available in the topicoption.thtml and
   topicoption_off.thtml template files) so that you can use topic images in
-  the Sections block (feature request #152) [Dirk]
+  the Topics block (feature request #152) [Dirk]
 - COM_undoSpecialChars() now also handles &nbsp; (bug #192) [Dirk]
 - Fixed handling of HTML entities in [code] sections (bug #159) [Dirk]
 - It's now possible to change the author of a story (feature request #204) -
@@ -42,7 +43,7 @@ GeekLog History/Changes:
 - Fixed Bug #183: COM_extractLinks will now ignore anchor tags that do not
   contain "href". [Vinny]
 - The "Google paging" now has additional links to jump to the first and last
-  page (patch provided by Niels Leenheer).
+  page (patch provided by Niels Leenheer). [Dirk]
 - Introduced function COM_makeClickableLinks to turn URLs in text-only posts
   into clickable links (i.e. it's adding <a> tags around URLs). [Dirk]
 - Added check of "speed limit" when saving a comment (savecomment()). [Vinny]
