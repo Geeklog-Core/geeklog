@@ -1019,7 +1019,7 @@ $MESSAGE = array (
     54 => 'Your request for a new password has expired. Please try again below.',
     55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
     56 => 'The email address provided is already in use for another account.',
-    57 => 'You account has been successfully deleted.'
+    57 => 'Your account has been successfully deleted.'
 );
 
 // for plugins.php
