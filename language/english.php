@@ -743,7 +743,7 @@ $LANG24 = array(
 
 $LANG25 = array(
 	1 => "Mode",
-	2 => "",
+	2 => 'Please enter a question and at least one answer.',
 	3 => "Poll Created",
 	4 => "Poll $qid saved",
 	5 => "Edit Poll",
@@ -758,7 +758,7 @@ $LANG25 = array(
 	14 => "save",
 	15 => "cancel",
 	16 => "delete",
-	17 => "",
+	17 => 'Please enter a Poll ID',
 	18 => "Poll List",
 	19 => "To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.",
 	20 => "Voters",

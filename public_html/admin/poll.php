@@ -5,14 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | poll.php                                                                  |
+// |                                                                           |
 // | Geeklog poll administration page                                          |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,22 +32,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.30 2003/04/22 16:59:35 dhaun Exp $
+// $Id: poll.php,v 1.31 2003/06/20 17:36:20 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
 
-include("../lib-common.php");
-include('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 $display = '';
 
 if (!SEC_hasRights('poll.edit')) {
-    $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[36];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     $display .= COM_errorLog("User {$_USER['username']} tried to illegally access the poll administration screen",1);
     echo $display;
     exit;
@@ -55,7 +57,7 @@ if (!SEC_hasRights('poll.edit')) {
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Saves a poll
@@ -79,87 +81,108 @@ if (!SEC_hasRights('poll.edit')) {
 *
 */
 function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
-{ 
-    global $_TABLES, $LANG25, $_CONF, $MESSAGE, $_POLL_VERBOSE;
+{
+    global $_TABLES, $LANG21, $LANG25, $_CONF, $MESSAGE, $_POLL_VERBOSE;
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $question = COM_stripslashes ($question);
-    for ($i = 0; $i < sizeof($A); $i++) {
+    for ($i = 0; $i < sizeof ($A); $i++) {
         $A[$i] = COM_stripslashes ($A[$i]);
     }
 
-    if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Inside savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
-    }
+    if (!empty ($question) && (sizeof ($A) > 0) && !empty ($A[0])) {
 
-    $access = 0;
-    if (DB_count ($_TABLES['pollquestions'], 'qid', $qid) > 0) {
-        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$qid}'");
-        $P = DB_fetchArray ($result);
-        $access = SEC_hasAccess ($P['owner_id'], $P['group_id'],
-                $P['perm_owner'], $P['perm_group'], $P['perm_members'],
-                $P['perm_anon']);
-    } else {
-        $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
-                $perm_members, $perm_anon);
-    }
-    if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
-        $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
-        $display .= COM_siteFooter();
-        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit poll $pid",1);
-        echo $display;
-        exit;
-    }
-
-    if (empty($voters)) { 
-        $voters = '0'; 
-    }
-
-    if ($_POLL_VERBOSE) {
-        COM_errorLog('owner permissions: ' . $perm_owner, 1);
-        COM_errorLog('group permissions: ' . $perm_group, 1);
-        COM_errorLog('member permissions: ' . $perm_member, 1);
-        COM_errorLog('anonymous permissions: ' . $perm_anon, 1);
-    }
-
-    DB_delete($_TABLES['pollquestions'],'qid',$qid);
-    DB_delete($_TABLES['pollanswers'],'qid',$qid);
-
-    $question = addslashes ($question);
-    $sql = "'$qid','$question',$voters,'" . date("Y-m-d H:i:s");
-
-    if ($mainpage == 'on') { 
-        $sql .= "',1";
-    } else {
-        $sql .= "',0";
-    }
-
-    $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
-
-    // Save poll question
-    DB_save($_TABLES['pollquestions'],"qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql);
-
-    // Save poll answers
-    for ($i = 0; $i < sizeof($A); $i++) {
-        if (!empty($A[$i])) {
-            if (empty($V[$i])) { 
-                $V[$i] = "0"; 
-            }
-            $A[$i] = addslashes ($A[$i]);
-            DB_save($_TABLES['pollanswers'],'qid, aid, answer, votes',"'$qid', $i+1, '$A[$i]', $V[$i]");
+        if ($_POLL_VERBOSE) {
+            COM_errorLog ('**** Inside savepoll() in '
+                          . $_CONF['site_admin_url'] . '/poll.php ***');
         }
-    }
 
-    if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Leaving savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
-    }
+        $qid = str_replace (' ', '', $qid); // strip spaces from poll id
 
-    echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=19');
+        $access = 0;
+        if (DB_count ($_TABLES['pollquestions'], 'qid', $qid) > 0) {
+            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$qid}'");
+            $P = DB_fetchArray ($result);
+            $access = SEC_hasAccess ($P['owner_id'], $P['group_id'],
+                    $P['perm_owner'], $P['perm_group'], $P['perm_members'],
+                    $P['perm_anon']);
+        } else {
+            $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner,
+                                     $perm_group, $perm_members, $perm_anon);
+        }
+        if (($access < 3) || !SEC_inGroup ($group_id)) {
+            $display .= COM_siteHeader ('menu');
+            $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $display .= $MESSAGE[31];
+            $display .= COM_endBlock ();
+            $display .= COM_siteFooter (COM_getBlockTemplate ('_msg_block',
+                                                              'footer'));
+            COM_errorLog("User {$_USER['username']} tried to illegally submit or edit poll $pid",1);
+            echo $display;
+            exit;
+        }
+
+        if (empty($voters)) { 
+            $voters = '0'; 
+        }
+
+        if ($_POLL_VERBOSE) {
+            COM_errorLog('owner permissions: ' . $perm_owner, 1);
+            COM_errorLog('group permissions: ' . $perm_group, 1);
+            COM_errorLog('member permissions: ' . $perm_member, 1);
+            COM_errorLog('anonymous permissions: ' . $perm_anon, 1);
+        }
+
+        DB_delete($_TABLES['pollquestions'],'qid',$qid);
+        DB_delete($_TABLES['pollanswers'],'qid',$qid);
+
+        $question = addslashes ($question);
+        $sql = "'$qid','$question',$voters,'" . date("Y-m-d H:i:s");
+
+        if ($mainpage == 'on') { 
+            $sql .= "',1";
+        } else {
+            $sql .= "',0";
+        }
+
+        $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
+
+        // Save poll question
+        DB_save($_TABLES['pollquestions'],"qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql);
+
+        // Save poll answers
+        for ($i = 0; $i < sizeof($A); $i++) {
+            if (!empty($A[$i])) {
+                if (empty($V[$i])) { 
+                    $V[$i] = "0"; 
+                }
+                $A[$i] = addslashes ($A[$i]);
+                DB_save ($_TABLES['pollanswers'], 'qid, aid, answer, votes',
+                         "'$qid', $i+1, '$A[$i]', $V[$i]");
+            }
+        }
+
+        if ($_POLL_VERBOSE) {
+            COM_errorLog ('**** Leaving savepoll() in '
+                          . $_CONF['site_admin_url'] . '/poll.php ***');
+        }
+
+        return COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=19');
+
+    } else {
+        $retval .= COM_siteHeader ('menu');
+        $retval .= COM_startBlock ($LANG21[32], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= $LANG25[2];
+        $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= editpoll ($qid);
+        $retval .= COM_siteFooter ();
+
+        return $retval;
+    }
 }
 
 /**
@@ -170,7 +193,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 * @qid      string      ID of poll to edit
 *
 */
-function editpoll($qid='') 
+function editpoll($qid='')
 {
     global $_TABLES, $LANG25, $_CONF, $_USER, $LANG_ACCESS;
 
@@ -182,7 +205,7 @@ function editpoll($qid='')
     $poll_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $poll_templates->set_var('layout_url', $_CONF['layout_url']);
 
-    if (!empty($qid)) {
+    if (!empty ($qid)) {
         $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
         $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid' ORDER BY aid");
         $Q = DB_fetchArray($question);
@@ -193,20 +216,24 @@ function editpoll($qid='')
     
         if ($access == 0 OR $access == 2) {
             // User doesn't have access...bail
-            $retval .= COM_startBlock($LANG25[21]);
+            $retval .= COM_startBlock ($LANG25[21], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG25[22];
-            $retval .= COM_endBlock();
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval;
         }
     }
 
-    $retval .= COM_startBlock($LANG25[5]);
+    $retval .= COM_startBlock ($LANG25[5], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
-    if (!empty($qid) AND $access == 3) {
-        $poll_templates->set_var('delete_option', "<input type=\"submit\" name=\"mode\" value=\"$LANG25[16]\">");
+    if (!empty ($qid) AND ($access == 3) AND !empty ($Q['owner_id'])) {
+        $poll_templates->set_var('delete_option',
+            '<input type="submit" name="mode" value="' . $LANG25[16] . '">');
     } else {
         $Q['owner_id'] = $_USER['uid'];
-	    $Q['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Poll Admin'");
+        $Q['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                     "grp_name = 'Poll Admin'");
         $Q['perm_owner'] = 3;
         $Q['perm_group'] = 2;
         $Q['perm_members'] = 2;
@@ -276,7 +303,7 @@ function editpoll($qid='')
     $poll_templates->parse('output','editor');
     $retval .= $poll_templates->finish($poll_templates->get_var('output'));
 
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -291,7 +318,8 @@ function listpoll()
 
     $retval = '';
 
-    $retval .= COM_startBlock($LANG25[18]);
+    $retval .= COM_startBlock ($LANG25[18], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('list'=>'polllist.thtml','row'=>'listitem.thtml'));
@@ -335,7 +363,7 @@ function listpoll()
     }
     $poll_templates->parse('output', 'list');
     $retval .= $poll_templates->finish($poll_templates->get_var('output'));
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -345,16 +373,26 @@ function listpoll()
 $display = '';
 
 if ($mode == 'edit') {
-    $display .= COM_siteHeader('menu');
-    $display .= editpoll($qid);
-    $display .= COM_siteFooter();
+    $display .= COM_siteHeader ('menu');
+    $display .= editpoll ($qid);
+    $display .= COM_siteFooter ();
 } else if (($mode == $LANG25[14]) && !empty ($LANG25[14])) { // save
-    if (!empty($qid)) {
+    if (!empty ($qid)) {
         $voters = 0;
-        for ($i = 0; $i < sizeof($answer); $i++) {
+        for ($i = 0; $i < sizeof ($answer); $i++) {
             $voters = $voters + $votes[$i];
         }
-        savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+        $display .= savepoll ($qid, $mainpage, $question, $voters, $statuscode,
+                        $commentcode, $answer, $votes, $owner_id, $group_id,
+                        $perm_owner, $perm_group, $perm_members, $perm_anon);
+    } else {
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($LANG21[32], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $LANG25[17];
+        $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= editpoll ();
+        $display .= COM_siteFooter ();
     }
 } else if (($mode == $LANG25[16]) && !empty ($LANG25[16])) { // delete
     if (!isset ($qid) || empty ($qid)) {
