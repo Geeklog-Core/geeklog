@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.21 2003/07/16 14:44:31 dhaun Exp $
+// $Id: lib-plugins.php,v 1.22 2003/07/25 10:44:39 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -353,21 +353,18 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
     $search_results = array();
 
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
-    $cur_plugin = new Plugin();
 	$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
 	$nrows_plugins = 0;
 	$total_plugins = 0;
 	for ($i = 1; $i <= $nrows; $i++) {
 		$A = DB_fetchArray($result);
-		$cur_plugin->setExpandedSearchSupport(PLG_supportsExpandedSearch($A['pi_name']));
 		$function = 'plugin_dopluginsearch_' . $A['pi_name'];
 		if (function_exists($function)) {
-            $cur_plugin->reset();
-			$cur_plugin = $function($query, $datestart, $dateend, $topic, $type, $author);
-			$nrows_plugins = $nrows_plugins + $cur_plugin->num_searchresults;
-			$total_plugins = $total_plugins + $cur_plugin->num_itemssearched;
-            $search_results[$i] = $cur_plugin;
+			$plugin_result = $function($query, $datestart, $dateend, $topic, $type, $author);
+			$nrows_plugins = $nrows_plugins + $plugin_result->num_searchresults;
+			$total_plugins = $total_plugins + $plugin_result->num_itemssearched;
+            $search_results[$i] = $plugin_result;
 		} // no else because implementation of this API function not required
 	}
 	return array($nrows_plugins, $total_plugins, $search_results);
