@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.63 2002/11/26 19:49:35 dhaun Exp $
+// $Id: config.php,v 1.64 2002/11/27 16:35:50 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -66,7 +66,9 @@ $_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
 // +---------------------------------------------------------------------------+
 $_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
 
-// you only need to change this if you moved or renamed the public_html directory
+// You only need to change this if you moved or renamed the public_html
+// directory. In that case, you should specify the complete path to the
+// directory like this: $_CONF['path_html'] = '/path/to/your/public_html/';
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
 // you shouldn't need to edit the following
@@ -205,6 +207,12 @@ $_CONF['storysubmission'] = 1;
 $_CONF['linksubmission']  = 1;
 $_CONF['eventsubmission'] = 1;
 $_CONF['usersubmission']  = 0;
+
+// Send an email notification when a new submission has been made. The contents
+// of the array can be any combination of 'story', 'link', 'event', and 'user'.
+// Example: $_CONF['notification'] = array ('story', 'link', 'event');
+// The email will be sent to $_CONF['site_mail'] (see above).
+$_CONF['notification'] = array ();
 
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;         // in seconds

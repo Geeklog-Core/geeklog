@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.44 2002/11/23 21:56:35 dhaun Exp $
+// $Id: submit.php,v 1.45 2002/11/27 16:35:52 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -392,6 +392,120 @@ function submitstory()
 }
 
 /**
+* Send an email notification for a new submission.
+*
+* @table    string      Table where the new submission can be found
+* @id       string      Id of the new submission
+*
+*/
+function sendNotification ($table, $id)
+{
+    global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG02, $LANG06, $LANG08,
+           $LANG09, $LANG12, $LANG24, $LANG29, $LANG30;
+
+    switch ($table) {
+        case $_TABLES['storysubmission']:
+        case $_TABLES['stories']:
+            $result = DB_query ("SELECT uid,tid,title,introtext,postmode,date FROM {$table} WHERE sid = {$id}");
+            $A = DB_fetchArray ($result);
+            $title = COM_undoSpecialChars (stripslashes ($A['title']));
+            if ($A['postmode'] == 'html') {
+                $A['introtext'] = strip_tags ($A['introtext']);
+            }
+            $introtext = COM_undoSpecialChars (stripslashes ($A['introtext']));
+            $storyauthor = DB_getItem ($_TABLES['users'], 'username',
+                                       "uid = {$A['uid']}");
+            $topic = stripslashes (DB_getItem ($_TABLES['topics'], 'topic',
+                                               "tid = '{$A['tid']}'"));
+
+            $mailbody = "$LANG08[31]: {$title}\r\n"
+                      . "$LANG24[7]: {$storyauthor}\r\n"
+                      . "$LANG08[32]: " . strftime ($_CONF['date'],
+                        strtotime ($A['date'])) . "\r\n"
+                      . "$LANG24[14]: {$topic}\r\n\r\n";
+
+            if ($_CONF['emailstorieslength'] > 0) {
+                if ($_CONF['emailstorieslength'] > 1) {
+                    $introtext = substr ($introtext, 0,
+                            $_CONF['emailstorieslength']) . '...';
+                }
+                $mailbody .= $introtext . "\r\n\r\n";
+            }
+            if ($table == $_TABLES['storysubmission']) {
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+            } else {
+                $mailbody .= "$LANG08[33] <{$_CONF['site_url']}/article.php?story=$id>\r\n\r\n";
+            }
+            $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
+            break;
+
+        case $_TABLES['eventsubmission']:
+        case $_TABLES['events']:
+            $result = DB_query ("SELECT title,description,url,datestart,timestart,allday FROM {$table} WHERE eid = {$id}");
+            $A = DB_fetchArray ($result);
+            $title = stripslashes ($A['title']);
+            $description = stripslashes ($A['description']);
+
+            $mailbody = "$LANG09[16]: $title\r\n"
+                      . "$LANG09[17]: " . strftime ($_CONF['date'],
+                        strtotime ($A['datestart'] . ' ' . $A['timestart']));
+            if ($A['allday']) {
+                $mailbody .= ' (' . $LANG30[26] . ')';
+            }
+            $mailbody .= "\r\n";
+            if (!empty ($A['url']) && ($A['url'] != 'http://')) {
+                $mailbody .= "$LANG09[33]: <" . $A['url'] . ">\r\n";
+            }
+            $mailbody .= "\r\n" . $description . "\r\n\r\n";
+            if ($table == $_TABLES['eventsubmission']) {
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+            } else {
+                $mailbody .= "$LANG02[12] <{$_CONF['site_url']}/calendar_event.php?eid=$id>\r\n\r\n";
+            }
+            $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
+            break;
+
+        case $_TABLES['linksubmission']:
+        case $_TABLES['links']:
+            $result = DB_query ("SELECT title,description,url,category FROM {$table} WHERE lid = {$id}");
+            $A = DB_fetchArray ($result);
+            $title = stripslashes ($A['title']);
+            $description = stripslashes ($A['description']);
+
+            $mailbody = "$LANG12[10]: $title\r\n"
+                      . "$LANG12[11]: <{$A['url']}>\r\n"
+                      . "$LANG12[17]: {$A['category']}\r\n\r\n"
+                      . $description . "\r\n\r\n";
+            if ($table == $_TABLES['linksubmission']) {
+                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+            } else {
+                $mailbody .= "$LANG06[1] <{$_CONF['site_url']}/links.php?category=" . urlencode ($A['category']) . ">\r\n\r\n";
+            }
+            $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[36];
+            break;
+    }
+
+    $mailbody .= "\r\n------------------------------\r\n";
+    $mailbody .= "\r\n$LANG08[34]\r\n";
+    $mailbody .= "\r\n------------------------------\r\n";
+
+    if (empty ($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+        if (empty ($charset)) {
+            $charset = "iso-8859-1";
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+    $mailheaders = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
+                 . "Return-Path: {$_CONF['site_mail']}\r\n"
+                 . "Content-Type: text/plain; charset=$charset\r\n"
+                 . "X-Mailer: GeekLog " . VERSION;
+
+    @mail ($_CONF['site_mail'], $mailsubject, $mailbody, $mailheaders);
+}
+
+/**
 * This will save a submission
 *
 * @type     string      Type of submission we are dealing with
@@ -435,6 +549,9 @@ function savesubmission($type,$A)
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             if (($_CONF['linksubmission'] == 1) && !SEC_hasRights('link.submit')) {
                 $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
+                if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
+                    sendNotification ($_TABLES['linksubmission'], $A['lid']);
+                }
             } else { // add link directly
                 if (empty ($_USER['username'])) { // anonymous user
                     $owner_id = 1;
@@ -442,6 +559,9 @@ function savesubmission($type,$A)
                     $owner_id = $_USER['uid'];
                 }
                 $result = DB_save($_TABLES['links'],'lid,category,url,description,title,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',$owner_id", $_CONF['site_url'] . '/links.php');
+                if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
+                    sendNotification ($_TABLES['links'], $A['lid']);
+                }
             }
         } else {
             $retval .= COM_startBlock($LANG12[22])
@@ -513,6 +633,9 @@ function savesubmission($type,$A)
             if ($A['calendar_type'] == 'master') {
                 if (($_CONF['eventsubmission'] == 1) && !SEC_hasRights('event.submit')) {
                     $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
+                    if (isset ($_CONF['notification']) && in_array ('event', $_CONF['notification'])) {
+                        sendNotification ($_TABLES['eventsubmission'], $A['eid']);
+                    }
                 } else {
                     if (empty ($_USER['username'])) { // anonymous user
                         $owner_id = 1;
@@ -520,6 +643,9 @@ function savesubmission($type,$A)
                         $owner_id = $_USER['uid'];
                     }
                     $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id", $_CONF['site_url'] . '/calendar.php');
+                    if (isset ($_CONF['notification']) && in_array ('event', $_CONF['notification'])) {
+                        sendNotification ($_TABLES['events'], $A['eid']);
+                    }
                 }
             } else {
                 if (empty($A['uid'])) {
@@ -533,7 +659,7 @@ function savesubmission($type,$A)
                 . $LANG12[23]
                 . COM_endBlock()
                 . submissionform($type);
-				
+
                 return $retval;
         }
         break;
@@ -566,11 +692,17 @@ function savesubmission($type,$A)
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
                 DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
+                if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {
+                    sendNotification ($_TABLES['storysubmission'], $A['sid']);
+                }
             } else { // post this story directly
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
                 $T = DB_fetchArray ($result);
                 $related = addslashes (COM_whatsRelated ($introtext, $_USER['uid'], $A['tid']));
                 DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}','{$related}',NOW(),'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}", $_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+                if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {
+                    sendNotification ($_TABLES['stories'], $A['sid']);
+                }
             }
         } else {
             $retval .= COM_startBlock($LANG12[22])

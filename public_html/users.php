@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.45 2002/09/28 18:50:42 dhaun Exp $
+// $Id: users.php,v 1.46 2002/11/27 16:35:52 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -326,6 +326,52 @@ function emailpassword($username,$msg=0)
 }
 
 /**
+* Send an email notification for a new submission.
+*
+* @username string      User name of the new user
+* @queued   bool        true = user was added to user submission queue
+*
+*/
+function sendNotification ($username, $queued)
+{
+    global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG04, $LANG08, $LANG28,
+           $LANG29;
+
+    $result = DB_query ("SELECT uid,email,regdate FROM {$_TABLES['users']} WHERE username = '{$username}'");
+    $A = DB_fetchArray ($result);
+
+    $mailbody = "$LANG04[2]: $username\r\n"
+              . "$LANG04[5]: {$A['email']}\r\n"
+              . "$LANG28[14]: " . strftime ($_CONF['date'],
+                strtotime ($A['regdate'])) . "\r\n\r\n";
+    if ($queued) {
+        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+    } else {
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$A['uid']}>\r\n\r\n";
+    }
+    $mailbody .= "\r\n------------------------------\r\n";
+    $mailbody .= "\r\n$LANG08[34]\r\n";
+    $mailbody .= "\r\n------------------------------\r\n";
+
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
+
+    if (empty ($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+        if (empty ($charset)) {
+            $charset = "iso-8859-1";
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+    $mailheaders = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
+                 . "Return-Path: {$_CONF['site_mail']}\r\n"
+                 . "Content-Type: text/plain; charset=$charset\r\n"
+                 . "X-Mailer: GeekLog " . VERSION;
+
+    @mail ($_CONF['site_mail'], $mailsubject, $mailbody, $mailheaders);
+}
+
+/**
 * Creates a user
 *
 * Creates a user with the give username and email address
@@ -376,9 +422,11 @@ function createuser($username,$email)
                     emailpassword($username, 1);
                     $msg = 1;
                 }
+                sendNotification ($username, $queueUser);
             } else {
                 emailpassword($username, 1);
                 $msg = 1;
+                sendNotification ($username, false);
             }
             DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
             DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
