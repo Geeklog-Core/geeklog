@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.73 2003/09/07 17:41:39 dhaun Exp $
+// $Id: usersettings.php,v 1.74 2003/09/07 23:51:35 blaine Exp $
 
 include_once('lib-common.php');
 
@@ -514,8 +514,26 @@ function editpreferences()
         }
         $where .= "uid = '1'";
         $preferences->set_var ('lang_authors', $LANG04[56]);
-        $preferences->set_var ('exclude_author_checklist',
-            COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']));
+
+        $query = DB_query( "SELECT uid,username FROM {$_TABLES['users']} ORDER BY username" );
+        $nrows = DB_numRows($query );
+        $authors = explode(" ",$A['aids']);
+
+        for( $i = 0; $i < $nrows; $i++ ) {
+            $B = DB_fetchArray($query);
+            $selauthors .= '<option value="' . $B['uid'] . '"';
+            if(in_array(sprintf("%d", $B['uid']), $authors)) {
+               $selauthors .= ' selected';
+            }
+            $selauthors .= '>' . $B['username'] . '</option>' . LB;
+        }
+
+        if (DB_count($_TABLES['topics']) > 10) {
+            $Selboxsize = intval(DB_count($_TABLES['topics']) * 1.5);
+        } else {
+            $Selboxsize = 15;
+        }
+        $preferences->set_var ('exclude_author_checklist', '<select name="selauthors[]" multiple size='. $Selboxsize. '>' . $selauthors . '</select>');
     } else {
         $preferences->set_var ('lang_authors', '');
         $preferences->set_var ('exclude_author_checklist', '');
@@ -831,7 +849,7 @@ function savepreferences($A)
     unset($etids);
 
     $TIDS = @array_values($A[$_TABLES['topics']]);
-    $AIDS = @array_values($A[$_TABLES['users']]);
+    $AIDS = @array_values($A['selauthors']);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
     $ETIDS = @array_values($A['etids']);
 
