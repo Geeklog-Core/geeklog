@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.347 2004/07/31 03:30:35 blaine Exp $
+// $Id: lib-common.php,v 1.348 2004/08/01 09:27:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -561,26 +561,29 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 . '/images/mail.gif" alt="' . $LANG01[64]
                 . '" title="' . $LANG11[2] . '" border="0"></a>' );
         }
+        $printUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                  . $A['sid'] . '&amp;mode=print' );
         if( $_CONF['hideprintericon'] == 1 )
         {
             $article->set_var( 'print_icon', '' );
         }
         else
         {
-            $printUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                                      . $A['sid'] . '&amp;mode=print' );
             $article->set_var( 'print_icon', '<a href="' . $printUrl . '">'
                 . '<img border="0" src="' . $_CONF['layout_url']
                 . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
                 . $LANG11[3] . '"></a>' );
         }
-        if ($_CONF['pdf_enabled'] == 1) {
-            $article->set_var('pdf_icon',
-                sprintf('<a href="%s/pdfgenerator.php?pageType=2&pageData=%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s" /></a>',
-                    $_CONF['site_url'], urlencode("{$_CONF['site_url']}/article.php?story={$A['sid']}&mode=print"),
-                    $_CONF['layout_url'], $LANG01[111], $LANG11[5]));
-        } else {
-            $article->set_var('pdf_icon', '');
+        if( $_CONF['pdf_enabled'] == 1 )
+        {
+            $article->set_var( 'pdf_icon',
+                sprintf( '<a href="%s/pdfgenerator.php?pageType=2&amp;pageData=%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s"></a>',
+                    $_CONF['site_url'], urlencode( $printUrl ),
+                    $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
+        }
+        else
+        {
+            $article->set_var( 'pdf_icon', '' );
         }
     }
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
