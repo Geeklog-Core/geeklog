@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.6 2002/04/17 16:22:51 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.7 2002/04/19 21:40:48 tony_bibbs Exp $
 
 class upload
 {
@@ -352,6 +352,15 @@ class upload
 	}
 	
     // Public Methods
+    
+    function setMaxFileSize($size_in_bytes)
+    {
+        if (!is_numeric($size_in_bytes)) {
+            return false;
+        }
+        $this->_maxFileSize = $size_in_bytes;
+        return true;
+    }
     
     /**
     * Extra security option that forces all attempts to upload a file to be done
