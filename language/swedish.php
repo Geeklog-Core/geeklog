@@ -1124,7 +1124,7 @@ $LANG_ACCESS = array(
     editrootmsg => "Trots att du är en användaradministratör så kan du inte ändra root-kontot utan "
         . "att vara root själv.  Du kan ändra alla användare förutom root-användare.  Denna "
         . "incident har loggats.  Gå tillbaka till "
-        . "<a href=\"{$_CONF["site_admin_url"]}/users.php\">användaradministrationen</a>.",
+        . "<a href=\"{$_CONF["site_admin_url"]}/user.php\">användaradministrationen</a>.",
     securitygroupsmsg => "Kryssa i vilka grupper användare ska vara med i.",
     groupeditor => "Gruppeditor",
     description => "Beskrivning",

@@ -1020,7 +1020,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Grant Above Group Edit Rights",
 	permmsg => "NOTA: membri sono tutti gli utenti registrati nel sito e anonimi tutti i rimanenti visitatori non registrati.",
 	securitygroups => "Sicurezza Gruppi",
-	editrootmsg => "Ricorda! Anche se sei un Utente Amministratore, non puoi modificare l'utente root senza prima essere entrato con l'account di root.  Puoi modificare tutti gli gli altri utenti ad eccezzione dell'utente root. Prego nota che tutti i tentativi di modificare illegalmente l'utente root vengono registrati.  Ritorna a <a href=\"{$_CONF["site_admin_url"]}/users.php\">Pagina Amministrazione Utenti</a>.",
+	editrootmsg => "Ricorda! Anche se sei un Utente Amministratore, non puoi modificare l'utente root senza prima essere entrato con l'account di root.  Puoi modificare tutti gli gli altri utenti ad eccezzione dell'utente root. Prego nota che tutti i tentativi di modificare illegalmente l'utente root vengono registrati.  Ritorna a <a href=\"{$_CONF["site_admin_url"]}/user.php\">Pagina Amministrazione Utenti</a>.",
 	securitygroupsmsg => "Seleziona la casella per i gruppi nei quali vuoi inserire l'utente.",
 	groupeditor => "Editor Gruppi",
 	description => "Descrizione",

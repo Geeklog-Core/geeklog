@@ -1021,7 +1021,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Udziel Praw do Edycji Powy¿szej Grupie",
 	permmsg => "UWAGA: cz³onkowie to wszyscy zalogowani u¿ytkownicy na stronie a anonimowi to wszyscy u¿ytkownicy przegl±daj±cy zawarto¶æ strony bez zalogowania.",
 	securitygroups => "Grupy Zabezpieczeñ",
-	editrootmsg => "Pomimo tego, ¿e jeste¶ User Administrator, nie mo¿esz edytowaæ g³ównego u¿ytkownka. Najpierw sam musisz zostaæ u¿ytkownikiem g³ównym.  Mo¿esz edytowaæ pozosta³ych u¿ytkowników. Wszelkie nie autoryzowane próby edycji u¿ytkowników g³ównych s± logowane.  Powrót do strony Administracja U¿ytkownikami serwisu <a href=\"{$_CONF["site_admin_url"]}/users.php\"></a>.",
+	editrootmsg => "Pomimo tego, ¿e jeste¶ User Administrator, nie mo¿esz edytowaæ g³ównego u¿ytkownka. Najpierw sam musisz zostaæ u¿ytkownikiem g³ównym.  Mo¿esz edytowaæ pozosta³ych u¿ytkowników. Wszelkie nie autoryzowane próby edycji u¿ytkowników g³ównych s± logowane.  Powrót do strony Administracja U¿ytkownikami serwisu <a href=\"{$_CONF["site_admin_url"]}/user.php\"></a>.",
 	securitygroupsmsg => "Zaznacz grupy do których chcesz przypisaæ u¿ytkownika.",
 	groupeditor => "Edytor Grup",
 	description => "Opis",

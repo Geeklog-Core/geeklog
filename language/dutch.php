@@ -1022,7 +1022,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Grant Above Group Edit Rights",
 	permmsg => "NOTE: members is all logged in members of the site and anonymous is all users browsing the site that aren't logged in.",
 	securitygroups => "Security Groups",
-	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_url"]}/admin/users.php\">User Administration page</a>.",
+	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/user.php\">User Administration page</a>.",
 	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
 	groupeditor => "Group Editor",
 	description => "Description",

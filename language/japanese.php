@@ -1019,7 +1019,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "上記のグループに編集権限を与える",
 	permmsg => "参考: メンバーはログインしているメンバーすべて、匿名は、ログインせずにサイトをしているすべての人を意味します。",
 	securitygroups => "Security Groups（セキュリティグループ）",
-	editrootmsg => "管理権限を持っていても、rootユーザーにならずにrootユーザーを編集することは出来ません。それ以外のユーザーの編集は可能です。権限なしにrootユーザーを編集しようとした場合、記録に残ることに注意してください。<a href=\"{$_CONF["site_admin_url"]}/users.php\">ユーザー管理ページ</a>に戻る",
+	editrootmsg => "管理権限を持っていても、rootユーザーにならずにrootユーザーを編集することは出来ません。それ以外のユーザーの編集は可能です。権限なしにrootユーザーを編集しようとした場合、記録に残ることに注意してください。<a href=\"{$_CONF["site_admin_url"]}/user.php\">ユーザー管理ページ</a>に戻る",
 	securitygroupsmsg => "このユーザーが所属するグループにチェックしてください。",
 	groupeditor => "グループの編集",
 	description => "詳細",

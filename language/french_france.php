@@ -1019,7 +1019,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Autorisation au dela du groupe d'edition",
 	permmsg => "REMARQUE: les membres sont tous les utilisateurs identifiés et les anonymes sont tous les autres.",
 	securitygroups => "Groupe de sécurité",
-	editrootmsg => "Excepté si vous êtes administrateur, vous ne pouvez pas modifier un autre administrateur.  Vous pouvez modifier tous les utilisateurs exceptés les administrateur. Toutes tentatives de modifications d'un administrateur sont enregistrées.  Retournez sur la <a href=\"{$_CONF["site_admin_url"]}/users.php\">page d'administration</a>.",
+	editrootmsg => "Excepté si vous êtes administrateur, vous ne pouvez pas modifier un autre administrateur.  Vous pouvez modifier tous les utilisateurs exceptés les administrateur. Toutes tentatives de modifications d'un administrateur sont enregistrées.  Retournez sur la <a href=\"{$_CONF["site_admin_url"]}/user.php\">page d'administration</a>.",
 	securitygroupsmsg => "Sélectionner les cases des groupes pour lesquels l'utilisateur appartient",
 	groupeditor => "Editeur de groupe",
 	description => "Description",
