@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.120 2002/07/08 14:17:17 dhaun Exp $
+// $Id: lib-common.php,v 1.121 2002/07/18 16:02:01 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -426,7 +426,11 @@ function COM_siteHeader($what = 'menu')
         'leftblocks'=>'leftblocks.thtml'
         ));
         
-    $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
+	 if (empty ($_CONF['pagetitle'])) {
+        $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
+    } else {
+        $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['pagetitle']);
+    }
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
     $header->set_var('site_url', $_CONF['site_url']);
     $header->set_var('layout_url', $_CONF['layout_url']);

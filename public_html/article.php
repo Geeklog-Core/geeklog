@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.19 2002/05/14 21:16:31 tony_bibbs Exp $
+// $Id: article.php,v 1.20 2002/07/18 16:02:00 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -102,11 +102,11 @@ if ($A['count'] > 0) {
         }
 	} else {
 		// Set page title
-		
-		$_CONF['pagetitle'] = stripslashes($A['title']);
-		$display .= COM_siteHeader('menu');
+
 		$result = DB_query("SELECT *,unix_timestamp(date) AS day FROM {$_TABLES["stories"]} WHERE sid = '$story'");
 		$A = DB_fetchArray($result);
+		$_CONF['pagetitle'] = stripslashes($A['title']);
+		$display .= COM_siteHeader('menu');
 
         // Make sure user has access to this article
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
