@@ -36,9 +36,9 @@
 
 $CONF["db_name"]		= "geeklog";
 $CONF["db_host"]		= "localhost";
-$CONF["db_user"]		= "yourname";
-$CONF["db_pass"]		= "yourpass";
-$CONF["db_prefix"]		= "gl_";
+$CONF["db_user"]		= "username";
+$CONF["db_pass"]		= "password";
+$CONF["db_prefix"]		= ""; #e.g. "gl_"
 
 ##/ SERVER SETTINGS /##########################################################
 #
@@ -83,7 +83,7 @@ $CONF["sec_poll"] 		= 150;
 $CONF["sec_topic"] 		= 200;
 $CONF["sec_block"] 		= 200;
 $CONF["sec_user"] 		= 200;
-$CONF["sec_delstory"] 	= 200;	// deletion of comments
+$CONF["sec_delstory"] 		= 200;	// deletion of comments
 $CONF["sec_email"] 		= 200; 	// email other admins or all GL users
 
 # The value below needs to be equal to the lowest seclevel found in the ones 
@@ -101,10 +101,10 @@ $CONF["sec_lowest"]		= 150;
 #	session ID in the cookie.
 
 $CONF["cookie_ip"]		= 1;
-$CONF["cookie_timeout"]	= "7200";
-$CONF["cookie_session"]	= "gl_session";
-$CONF["cookie_name"]	= "geeklog";
-$CONF["cookie_path"]	= "/";
+$CONF["cookie_timeout"]		= "7200";
+$CONF["cookie_session"]		= "gl_session";
+$CONF["cookie_name"]		= "geeklog";
+$CONF["cookie_path"]		= "/";
 
 
 ##/ PLUGIN SETTINGS /##########################################################
@@ -116,15 +116,15 @@ $CONF["cookie_path"]	= "/";
 # 	you add the FilZip directory to your path OR fully qualify the path
 # 	here. Regardless of OS, make sure you leave a trailing space at the end.
 
-$CONF["unzipcommand"] = '/bin/tar -C ' . $CONF['path'] . 'plugins/ -xzf ';
-#$CONF["unzipcommand"] = 'filzip.exe -e -r ';
+$CONF["unzipcommand"] 		= '/bin/tar -C ' . $CONF['path'] . 'plugins/ -xzf ';
+#$CONF["unzipcommand"] 		= 'filzip.exe -e -r ';
 
 #	Command needed to remove a directory recursively and quietly
 #	First one is typical for *nix boxes and the second is for 
 #	windows machines.
 
-$CONF["rmcommand"] = '/bin/rm -Rf ';
-#$CONF["rmcommand"] = 'rmdir /S /Q ';
+$CONF["rmcommand"] 		= '/bin/rm -Rf ';
+#$CONF["rmcommand"] 		= 'rmdir /S /Q ';
 
 # This is really redundant but I am including this as a reminder that those
 # people writing Geeklog Plug-ins that are OS dependent should check either the
@@ -132,68 +132,69 @@ $CONF["rmcommand"] = '/bin/rm -Rf ';
 # OS specific your addon should check the system is using the right OS.  If not,
 # be sure to show a friendly message that says their GL distro isn't running the
 # right OS. Do not modify this value
-$CONF["ostype"] = PHP_OS;
+$CONF["ostype"] 		= PHP_OS;
 
 
 # Submission Settings
-$CONF["loginrequired"] = 0;
-$CONF["speedlimit"] = "300";
+$CONF["loginrequired"] 		= 0;
+$CONF["speedlimit"] 		= "300"; #in seconds
 
 # Topic Settings
 //determines how topics are sorted in Section block
-$CONF["sortmethod"] = "sortnum"; //can be sortnum or alpha
+$CONF["sortmethod"] 		= "sortnum"; #can be sortnum or alpha
 
 //show the number of stories in a topic in Section Block
-$CONF["showstorycount"] = 1;
+$CONF["showstorycount"] 	= 1;
 
 //show the number of story submissions for a topic in Section Block
-$CONF["showsubmissioncount"] = 1;
+$CONF["showsubmissioncount"] 	= 1;
 
 //show any new articles, comments and links
-$CONF["whatsnewbox"] = 1;
+$CONF["whatsnewbox"] 		= 1;
 
 //Let users get stories emailed to them
 //Requires cron and the use of php as a shell script
-$CONF["emailstories"] = 1;
+$CONF["emailstories"] 		= 1;
 
 //following times are in seconds
-$CONF["newstoriesinterval"] = 86400;
-$CONF["newcommentsinterval"] = 172800;
-$CONF["newlinksinterval"] = 1209600;
-//$CONF["neweventsinterval"] = 2592000;
+$CONF["newstoriesinterval"] 	= 86400;
+$CONF["newcommentsinterval"] 	= 172800;
+$CONF["newlinksinterval"] 	= 1209600;
+//$CONF["neweventsinterval"] 	= 2592000;
 
 # Calendar Setting
-$CONF["showupcomingevents"] = 1;
-$CONF["headingbgcolor"] = '#DDDDDD';
-$CONF["headingtextcolor"] = 'black';
+$CONF["personalcalendars"] 	= 0;
+$CONF["showupcomingevents"] 	= 1;
+$CONF["headingbgcolor"] 	= '#DDDDDD';
+$CONF["headingtextcolor"] 	= 'black';
 
 # Story Settings
 
-$CONF["pagetitle"] = "";
-$CONF["backend"] = "0";
-$CONF["limitnews"] = "10";
-$CONF["minnews"] = "1"; // minimum number of stories per page
-$CONF["olderstuff"] = 1;
-$CONF["olderstufforder"] = 2;
-$CONF["contributedbyline"] = 1; // if 1, show contributed by line
+$CONF["pagetitle"] 		= "";
+$CONF["backend"] 		= "1";
+$CONF["limitnews"] 		= "10";
+$CONF["minnews"] 		= "1"; # minimum number of stories per page
+$CONF["olderstuff"]		= 1;
+$CONF["olderstufforder"]	= 2;
+$CONF["contributedbyline"] 	= 1; # if 1, show contributed by line
 
 # Comment Settings
 
-$CONF["speedlimit2"] = "60";
-$CONF["loginrequired2"] = 0;
+$CONF["speedlimit2"] 		= "60";
+$CONF["loginrequired2"] 	= 0;
 
 # Poll Settings
 
-$CONF["maxanswers"] = "10";
-$CONF["pollcookietime"] = "86400";
-$CONF["polladdresstime"] = "604800";
-$CONF["pollorder"] = 1;
+$CONF["maxanswers"] 		= "10";
+$CONF["pollcookietime"] 	= "86400";
+$CONF["polladdresstime"] 	= "604800";
+$CONF["pollorder"] 		= 1;
 
 # Parameters for checking words and HTML tags
 
-$CONF["allowablehtml"] = "<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>";
-$CONF["censormode"] = 0;
-$CONF["censorreplace"] = "*censored*";
-$CONF["censorlist"] = array("fuck","cunt","fucker","fucking","pussy","cock","c0ck","cum","twat","clit","bitch","fuk","fuking","motherfucker");
+$CONF["allowablehtml"] 		= "<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>";
+$CONF["censormode"] 		= 0;
+$CONF["censorreplace"] 		= "*censored*";
+$CONF["censorlist"] 		= array("fuck","cunt","fucker","fucking","pussy","cock","c0ck","cum","twat","clit","bitch","fuk","fuking","motherfucker");
 
 ?>
