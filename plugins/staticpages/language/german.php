@@ -42,9 +42,8 @@ $LANG_STATIC= array(
     date => 'Letzte Änderung',
     title => 'Titel',
     content => 'Inhalt',
-    hits => 'Treffer',
+    hits => 'Abrufe',
     staticpagelist => 'Liste der Statischen Seiten',
-    usealtheader => 'Alt. Header verwenden',
     url => 'URL',
     edit => 'Ändern',
     lastupdated => 'Letzte Änderung',
@@ -80,7 +79,22 @@ $LANG_STATIC= array(
     stats_no_hits => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
     id => 'ID',
     duplicate_id => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wähle eine andere ID.',
-    instructions => 'Auf die Nummer klicken, um eine Statische Seite zu ändern oder zu löschen. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neue Seite (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das [C] klicken, um eine Kopie einer vorhandenen Seite zu erhalten.'
+    instructions => 'Auf die Nummer klicken, um eine Statische Seite zu ändern oder zu löschen. Um eine Statische Seite anzusehen, auf deren Titel klicken. Auf Neue Seite (s.o.) klicken, um einen neue Statische Seite anzulegen. Auf das [C] klicken, um eine Kopie einer vorhandenen Seite zu erhalten.',
+    centerblock => 'Centerblock: ',
+    centerblock_msg => 'Wenn angekreuzt wird diese Seite als Block auf der Index-Seite angezeigt.',
+    topic => 'Kategorie: ',
+    position => 'Position: ',
+    no_topic => 'keine',
+    position_top => 'Seitenanfang',
+    position_feat => 'Nach Hauptartikel',
+    position_bottom => 'Seitenende',
+    position_entire => 'Ganze Seite',
+    head_centerblock => 'Centerblock',
+    centerblock_no => 'Nein',
+    centerblock_top => 'oben',
+    centerblock_feat => 'Hauptartikel',
+    centerblock_bottom => 'unten',
+    centerblock_entire => 'Ganze Seite'
 );
 
 ?>

@@ -15,6 +15,7 @@
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net                |
 // |          Blaine Lang      - langmail@sympatico.ca                         |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.20 2003/05/22 21:08:31 dhaun Exp $
+// $Id: functions.inc,v 1.21 2003/05/30 12:24:31 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -355,25 +356,21 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 
     $retval = '';
 
-    if ($where > 1) {
-        return $retval;
-    } else if (($where == 0) && (($page > 1) || !empty ($topic))) {
-        return $retval;
+    if ($page > 1) {
+        return $retval; // we only support page 1 at the moment ...
     }
 
-    if (($where == 0) && ($page == 1) && empty ($topic)) {
-        $staticpage_label = 'nonews';
-    } else if (empty ($topic)) {
-        $staticpage_label = 'frontpage';
+    if (empty ($topic)) {
+        $moresql = "(sp_where = $where) AND (sp_tid = 'none')";
     } else {
-        $staticpage_label = 'topic:' . $topic;
+        $moresql = "(sp_where = $where) AND (sp_tid = '{$topic}')";
     }
 
     $perms = SP_getPerms ();
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_label = '{$staticpage_label}'" . $perms;
+    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms;
     $result = DB_query ($spsql);
 
     if (DB_numRows ($result) > 0) {
@@ -414,6 +411,9 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $retval .= COM_siteFooter ();
             }
         }
+
+        // increment hit counter for page
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$spresult['sp_id']}'");
     }
 
     return $retval;

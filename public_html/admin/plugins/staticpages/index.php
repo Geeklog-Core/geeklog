@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2003/04/24 15:08:28 dhaun Exp $
+// $Id: index.php,v 1.22 2003/05/30 12:24:32 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -135,6 +135,48 @@ function form ($A, $error = false)
         $sp_template->set_var ('example_url', COM_buildURL ($_CONF['site_url']
                                . '/staticpages/index.php?page=' . $A['sp_id']));
 
+        $sp_template->set_var ('lang_centerblock', $LANG_STATIC['centerblock']);
+        $sp_template->set_var ('lang_centerblock_msg', $LANG_STATIC['centerblock_msg']);
+        if ($A['sp_centerblock'] == 1) {
+            $sp_template->set_var('centerblock_checked', 'checked="checked"');
+        } else {
+            $sp_template->set_var('centerblock_checked', '');
+        }
+        $sp_template->set_var ('lang_topic', $LANG_STATIC['topic']);
+        $sp_template->set_var ('lang_position', $LANG_STATIC['position']);
+        $current_topic = $A['sp_tid'];
+        $topics = COM_topicList ('tid,topic', $current_topic);
+        $notopic = '<option value="none"';
+        if ($current_topic == 'none') {
+            $notopic .= ' selected="selected"';
+        }
+        $notopic .= '>' . $LANG_STATIC['no_topic'] . '</option>' . LB;
+        $sp_template->set_var ('topic_selection', '<select name="sp_tid">'
+                               . $topics . $notopic . '</select>');
+        $position = '<select name="sp_where">';
+        $position .= '<option value="1"';
+        if ($A['sp_where'] == 1) {
+            $position .= ' selected="selected"';
+        }
+        $position .= '>' . $LANG_STATIC['position_top'] . '</option>';
+        $position .= '<option value="2"';
+        if ($A['sp_where'] == 2) {
+            $position .= ' selected="selected"';
+        }
+        $position .= '>' . $LANG_STATIC['position_feat'] . '</option>';
+        $position .= '<option value="3"';
+        if ($A['sp_where'] == 3) {
+            $position .= ' selected="selected"';
+        }
+        $position .= '>' . $LANG_STATIC['position_bottom'] . '</option>';
+        $position .= '<option value="0"';
+        if ($A['sp_where'] == 0) {
+            $position .= ' selected="selected"';
+        }
+        $position .= '>' . $LANG_STATIC['position_entire'] . '</option>';
+        $position .= '</select>';
+        $sp_template->set_var ('pos_selection', $position);
+
         if (SEC_hasRights ('staticpages.PHP')) {
             if ($A['sp_php'] == 1) {
     	        $sp_template->set_var('php_checked','checked');
@@ -168,7 +210,7 @@ function form ($A, $error = false)
         $sp_template->set_var('sp_title', stripslashes($A['sp_title']));
         $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
         if ($A['sp_onmenu'] == 1) {
-            $sp_template->set_var('onmenu_checked', 'checked="CHECKED"');
+            $sp_template->set_var('onmenu_checked', 'checked="checked"');
         } else {
             $sp_template->set_var('onmenu_checked', '');
         }
@@ -288,6 +330,7 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
     $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
     $sp_templates->set_var('lang_url', $LANG_STATIC['url']);
+    $sp_templates->set_var('lang_centerblock', $LANG_STATIC['head_centerblock']);
 
     $perpage = 50;
     if ($page <= 0) {
@@ -327,8 +370,27 @@ function liststaticpages ($page = 1)
                     . '/plugins/staticpages/index.php?mode=clone&amp;sp_id='
                     . $A['sp_id']));
             $sp_templates->set_var ('sp_title', stripslashes ($A['sp_title']));
-            $sp_templates->set_var ('username', DB_getItem ($_TABLES['users'],
-                    'username', "uid = {$A["sp_uid"]}"));
+
+            $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
+            $N = DB_fetchArray ($nresult);
+            $sp_templates->set_var ('username', $N['username']);
+            if (empty ($N['fullname'])) {
+                $sp_templates->set_var ('fullname', $N['username']);
+            } else {
+                $sp_templates->set_var ('fullname', $N['fullname']);
+            }
+
+            if ($A['sp_centerblock']) {
+                switch ($A['sp_where']) {
+                    case '1': $where = $LANG_STATIC['centerblock_top']; break;
+                    case '2': $where = $LANG_STATIC['centerblock_feat']; break;
+                    case '3': $where = $LANG_STATIC['centerblock_bottom']; break;
+                    default:  $where = $LANG_STATIC['centerblock_entire']; break;
+                }
+                $sp_templates->set_var ('sp_centerblock', $where);
+            } else {
+                $sp_templates->set_var ('sp_centerblock', $LANG_STATIC['centerblock_no']);
+            }
             $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
             $sp_templates->set_var ('sp_date', $curtime[0]);
             $sp_templates->parse ('list_item', 'row', true);
@@ -357,26 +419,29 @@ function liststaticpages ($page = 1)
 /** 
 * Saves a Static Page to the database
 *
-* @sp_id        string      ID of static page
-* @sp_uid       string      ID of user that created page
-* @sp_title     string      title of page
-* @sp_content   string      page content
-* @unixdate     string      date page was last updated
-* @sp_hits      int         Number of page views
-* @sp_format    string      HTML or plain text
-* @sp_onmenu    int         Flag to place entry on menu
-* @sp_label     string      Menu Entry
-* @owner_id     int         Permission bits
-* @group_id     int
-* @perm_owner   int
-* @perm_members int
-* @perm_anon    int
-* @sp_php       int         Flag to indicate PHP usage
-* @sp_nf        int         Flag to indicate type of not found message
-* @sp_old_id    string      original ID of this static page
+* @param sp_id           string  ID of static page
+* @param sp_uid          string  ID of user that created page
+* @param sp_title        string  title of page
+* @param sp_content      string  page content
+* @param unixdate        string  date page was last updated
+* @param sp_hits         int     Number of page views
+* @param sp_format       string  HTML or plain text
+* @param sp_onmenu       int     Flag to place entry on menu
+* @param sp_label        string  Menu Entry
+* @param owner_id        int     Permission bits
+* @param group_id        int
+* @param perm_owner      int
+* @param perm_members    int
+* @param perm_anon       int
+* @param sp_php          int     Flag to indicate PHP usage
+* @param sp_nf           int     Flag to indicate type of not found message
+* @param sp_old_id       string  original ID of this static page
+* @param sp_centerblock  int     Flag to indicate display as a center block
+* @param sp_tid          string  topid id (for center block)
+* @param sp_where        int     position of center block
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id)
+function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where)
 {
     global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
@@ -415,6 +480,11 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         } else {
             $sp_onmenu = 0;
         }
+        if ($sp_centerblock== 'on') {
+            $sp_centerblock = 1;
+        } else {
+            $sp_centerblock = 0;
+        }
 
         // Clean up the text
         if ($_SP_CONF['censor'] == 1) {
@@ -436,7 +506,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
 	        $sp_php = 0;
         }
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf'");
+		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
@@ -478,7 +548,7 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
             $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,
             $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php,
-            $sp_nf, $sp_old_id);
+            $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where);
 } else {
     $display .= COM_siteHeader ('menu');
     $display .= liststaticpages ($page);

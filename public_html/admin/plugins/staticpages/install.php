@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.10 2003/03/11 17:00:57 dhaun Exp $
+// $Id: install.php,v 1.11 2003/05/30 12:24:32 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -83,12 +83,18 @@ function plugin_install_staticpages()
         . "perm_group tinyint(1) unsigned NOT NULL default '2',"
         . "perm_members tinyint(1) unsigned NOT NULL default '2',"
         . "perm_anon tinyint(1) unsigned NOT NULL default '2',"
+        . "sp_centerblock tinyint(1) unsigned NOT NULL default '0',"
+        . "sp_tid varchar(20) NOT NULL default 'none',"
+        . "sp_where tinyint(1) unsigned NOT NULL default '1',"
         . "sp_php tinyint(1) unsigned NOT NULL default '0',"
         . "sp_nf tinyint(1) unsigned default '0',"
         . "PRIMARY KEY (sp_id),"
         . "KEY staticpage_sp_uid (sp_uid),"
         . "KEY staticpage_sp_date (sp_date),"
-        . "KEY staticpage_sp_onmenu (sp_onmenu)"
+        . "KEY staticpage_sp_onmenu (sp_onmenu),"
+        . "KEY staticpage_sp_centerblock (sp_centerblock),"
+        . "KEY staticpage_sp_tid (sp_tid),"
+        . "KEY staticpage_sp_where (sp_where)"
         . ") TYPE=MyISAM";
 
     COM_errorLog("Attempting to create table staticpage for Static Page plugin", 1);

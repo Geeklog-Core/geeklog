@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.47 2003/03/24 17:42:17 dhaun Exp $
+// $Id: install.php,v 1.48 2003/05/30 12:24:32 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -413,7 +413,10 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     . "ADD COLUMN perm_members tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN perm_anon tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN sp_php tinyint(1) unsigned DEFAULT '0',"
-                    . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0'");
+                    . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0',"
+                    . "ADD COLUMN sp_centerblock tinyint(1) unsigned NOT NULL default '0',"
+                    . "ADD COLUMN sp_tid varchar(20) NOT NULL default 'none',"
+                    . "ADD COLUMN sp_where tinyint(1) unsigned NOT NULL default '1'");
                 DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) VALUES ('staticpages.PHP','Ability to use PHP in static pages')");
                 $php_id = DB_insertId ();
                 $group_id = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
@@ -422,7 +425,10 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 DB_query ("ALTER TABLE {$_TABLES['staticpage']} "
                     . "DROP COLUMN sp_pos,"
                     . "DROP COLUMN sp_search_keywords,"
-                    . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0'");
+                    . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0',"
+                    . "ADD COLUMN sp_centerblock tinyint(1) unsigned NOT NULL default '0',"
+                    . "ADD COLUMN sp_tid varchar(20) NOT NULL default 'none',"
+                    . "ADD COLUMN sp_where tinyint(1) unsigned NOT NULL default '1'");
             }
 
             if ($spversion > 0) {
@@ -441,6 +447,16 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     for ($i = 0; $i < $authors; $i++) {
                         $A = DB_fetchArray ($result);
                         DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = '{$A['sp_uid']}' WHERE sp_uid = '{$A['sp_uid']}'");
+                    }
+                }
+
+                $result = DB_query ("SELECT sp_label FROM {$_TABLES['staticpage']} WHERE sp_title = 'Frontpage'");
+                if (DB_numRows ($result) > 0) {
+                    $A = DB_fetchArray ($result);
+                    if ($A['sp_label'] == 'nonews') {
+                        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 1, sp_where = 0 WHERE sp_title = 'Frontpage'");
+                    } else {
+                        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 1 WHERE sp_title = 'Frontpage'");
                     }
                 }
             }

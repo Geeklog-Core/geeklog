@@ -44,7 +44,6 @@ $LANG_STATIC= array(
     content => "Obsah",
     hits => "Klicknutí",
     staticpagelist => "Výpis statických stránek",
-    usealtheader => "Alternativní hlavièka",
     url => "URL",
     edit => "Editovat",
     lastupdated => "Poslední aktualizace",
@@ -80,7 +79,22 @@ $LANG_STATIC= array(
     stats_no_hits => 'It appears that there are no static pages on this site or no one has ever viewed them.',
     id => 'ID',
     duplicate_id => 'The ID you chose for this static page is already in use. Please select another ID.',
-    instructions => "To modify or delete a static page, click on that page's number below. To view a static page, click on the title of the page you wish to view. To create a new static page click on new page above. Click on [C] to create a copy of an existing page."
+    instructions => "To modify or delete a static page, click on that page's number below. To view a static page, click on the title of the page you wish to view. To create a new static page click on new page above. Click on [C] to create a copy of an existing page.",
+    centerblock => 'Centerblock: ',
+    centerblock_msg => 'When checked, this Static Page will be displayed as a center block on the index page.',
+    topic => 'Topic: ',
+    position => 'Position: ',
+    no_topic => 'none',
+    position_top => 'Top Of Page',
+    position_feat => 'After Featured Story',
+    position_bottom => 'Bottom Of Page',
+    position_entire => 'Entire Page',
+    head_centerblock => 'Centerblock',
+    centerblock_no => 'No',
+    centerblock_top => 'Top',
+    centerblock_feat => 'Feat. Story',
+    centerblock_bottom => 'Bottom',
+    centerblock_entire => 'Entire Page'
 );
 
 ?>
