@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2002/04/11 18:06:40 tony_bibbs Exp $
+// $Id: index.php,v 1.20 2002/04/11 19:47:27 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -135,13 +135,11 @@ if ($nrows > 0) {
     }
     $display .= COM_printPageNavigation($base_url,$page, $num_pages);
 } else {
-    //if ($A['featured'] == 1) {
-        $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
-        if (!empty($topic)) {
-            $display .= $LANG05[3]; 
-        }
-        $display .= COM_endBlock();
-    //}
+    $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
+    if (!empty($topic)) {
+        $display .= $LANG05[3]; 
+    }
+    $display .= COM_endBlock();
 }
 
 // Display any blocks, polls, olderstuff configured for this page
