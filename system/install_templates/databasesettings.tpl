@@ -35,6 +35,10 @@
             <td align="right"><font color="#3333ff"><b>Table Prefix (optional):</b></font></td>
             <td><input type="text" size="30" name="prefix" value=""></td>
         </tr>   
+        <tr>
+            <td align="right"><font color="#3333ff"><b>Path to mysqldump (optional):</b></font></td>
+            <td><input type="text" size="50" name="dbmysqldump" value=""></td>
+        </tr>
         {UPGRADE_OPTIONS}
     </table>
     {DB_TABLE_OPTIONS}
