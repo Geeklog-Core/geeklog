@@ -1,6 +1,21 @@
 GeekLog History/Changes:
 
-- The "Home" link in the section block was not active on pages > 1.
+- In the admin menu, the count of available submissions is now displayed
+  according to the admin's access rights (e.g. don't count story submissions
+  for someone who's only a link admin).
+- Links in the What's New block are now counted when clicked (for the site
+  statistics).
+- The redirect after submitting a story always went to /index.php
+- Fixed a stray "(N/A)" that would show up in the admin menu for admins which
+  were not static pages admins.
+- HTML tags are now stripped out of search queries.
+- Fixed a wrong link from personal events in the upcoming events block.
+- Removed the logging of all search queries to error.log.
+- Added a test for register_globals=off in the install script (and display a
+  warning if it is off).
+- The "Home" link in the section block was not active on pages > 1. It was,
+  however, always active on the home page when the Geeklog site was not
+  located in the DocumentRoot.
 - You can now block anonymous users from accessing any part of a Geeklog site
   or you can block them from certain parts, e.g. block anonymous access to the
   calendar (via a new set of XXXloginrequired flags in config.php).
