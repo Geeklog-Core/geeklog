@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.53 2003/05/28 11:03:50 dhaun Exp $
+// $Id: submit.php,v 1.54 2003/06/25 08:39:02 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -63,15 +63,17 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
     $last = COM_checkSpeedlimit ('submit');
 
     if ($last > 0) {
-        $retval .= COM_startBlock($LANG12[26])
+        $retval .= COM_startBlock ($LANG12[26], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[30]
             . $last
             . $LANG12[31]
-            . COM_endBlock();
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         if (empty ($_USER['username']) &&
             (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
-            $retval .= COM_startBlock($LANG_LOGIN[1]);
+            $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $loginreq = new Template($_CONF['path_layout'] . 'submit');
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
             $loginreq->set_var('login_message', $LANG_LOGIN[2]);
@@ -80,13 +82,13 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
             $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
             $loginreq->parse('errormsg', 'loginreq');
             $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
-            $retval .= COM_endBlock();
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval;
         } else {
             $retval .= COM_startBlock($LANG12[19])
                 . $LANG12[9]
                 . COM_endBlock();
-				
+
             switch ($type) {
             case 'link':
                 $retval .= submitlink();
@@ -522,9 +524,10 @@ function savesubmission($type,$A)
             if ($A['categorydd'] != $LANG12[18] && !empty($A['categorydd'])) {
                 $A['category'] = $A['categorydd'];
             } else if ($A['categorydd'] != $LANG12[18]) {
-                $retval .= COM_startBlock($LANG12[20])
+                $retval .= COM_startBlock ($LANG12[20], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                     . $LANG12[21]
-                    . COM_endBlock()
+                    . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
                     . submissionform($type);
 					    
                     return $retval;
@@ -564,9 +567,10 @@ function savesubmission($type,$A)
                 }
             }
         } else {
-            $retval .= COM_startBlock($LANG12[22])
+            $retval .= COM_startBlock ($LANG12[22], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
-                . COM_endBlock()
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . submissionform($type);
 
             return $retval; 
@@ -655,9 +659,10 @@ function savesubmission($type,$A)
             }
                 
         } else {
-            $retval .= COM_startBlock($LANG12[22])
+            $retval .= COM_startBlock ($LANG12[22], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
-                . COM_endBlock()
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . submissionform($type);
 
                 return $retval;
@@ -712,9 +717,10 @@ function savesubmission($type,$A)
                 $retval = COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
             }
         } else {
-            $retval .= COM_startBlock($LANG12[22])
+            $retval .= COM_startBlock ($LANG12[22], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
-                . COM_endBlock()
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . submissionform($type);
 					
             return $retval;

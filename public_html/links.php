@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.25 2002/12/02 17:52:25 dhaun Exp $
+// $Id: links.php,v 1.26 2003/06/25 08:39:02 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -41,7 +41,8 @@ require_once('lib-common.php');
 $display .= COM_siteHeader();
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['linksloginrequired'] == 1))) {
-    $display .= COM_startBlock($LANG_LOGIN[1]);
+    $display .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -50,6 +51,7 @@ if (empty ($_USER['username']) &&
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
     $display .= $login->finish ($login->get_var('output'));
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
     $display .= COM_startBlock($LANG06[1]);
 
@@ -205,8 +207,9 @@ if (empty ($_USER['username']) &&
 
     $linklist->parse('output', 'linklist');
     $display .= $linklist->finish($linklist->get_var('output'));
+    $display .= COM_endBlock ();
 }
-$display .= COM_endBlock() . COM_siteFooter();
+$display .= COM_siteFooter();
 
 echo $display;
 

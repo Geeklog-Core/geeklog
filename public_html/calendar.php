@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.29 2003/06/16 09:36:24 dhaun Exp $
+// $Id: calendar.php,v 1.30 2003/06/25 08:39:02 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -39,7 +39,8 @@ include($_CONF['path_system'] . 'classes/calendar.class.php');
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['calendarloginrequired'] == 1))) {
     $display = COM_siteHeader('');
-    $display .= COM_startBlock($LANG_LOGIN[1]);
+    $display .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -48,7 +49,7 @@ if (empty ($_USER['username']) &&
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
     $display .= $login->finish ($login->get_var('output'));
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter();
     echo $display;
     exit;

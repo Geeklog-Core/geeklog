@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.19 2003/05/14 10:48:52 dhaun Exp $
+// $Id: pollbooth.php,v 1.20 2003/06/25 08:39:02 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -57,11 +57,12 @@ function pollsave()
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
     // This always does an insert so no need to provide key_field and key_value args
     DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'$REMOTE_ADDR'," . time() . ",'$qid'");
-    $retval .= COM_startBlock($LANG07[1])
+    $retval .= COM_startBlock ($LANG07[1], '',
+                       COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG07[2] . ' "'
         . DB_getItem ($_TABLES['pollquestions'], 'question', "qid = '{$qid}'")
         . '"'
-        . COM_endBlock()
+        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
         . COM_pollResults($qid);
 
     return $retval;
@@ -81,7 +82,8 @@ function polllist()
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['pollsloginrequired'] == 1))) {
-        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $retval = COM_startBlock ($LANG_LOGIN[1], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit'); 
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -90,6 +92,7 @@ function polllist()
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']}"
              . COM_getPermSQL ();
@@ -117,8 +120,8 @@ function polllist()
         } else {
             $retval .= $LANG10[17];
         }
+        $retval .= COM_endBlock();
     }
-    $retval .= COM_endBlock();
 
     return $retval;
 }

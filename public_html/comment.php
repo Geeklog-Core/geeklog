@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.43 2003/05/11 18:28:55 dhaun Exp $
+// $Id: comment.php,v 1.44 2003/06/25 08:39:02 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -84,7 +84,8 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
-        $retval .= COM_startBlock($LANG_LOGIN[1]);
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
         $loginreq = new Template($_CONF['path_layout'] . 'submit');
         $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
         $loginreq->set_var('login_message', $LANG_LOGIN[2]);
@@ -93,7 +94,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
         $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
         $loginreq->parse('errormsg', 'loginreq');
         $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         return $retval;
     } else {
         COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
@@ -101,11 +102,12 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
         $last = COM_checkSpeedlimit ('comment');
 
         if ($last > 0) {
-            $retval .= COM_startBlock($LANG12[26])
+            $retval .= COM_startBlock ($LANG12[26], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG03[7]
                 . $last
                 . $LANG03[8]
-                . COM_endBlock();
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         } else {
             if ($postmode == 'html') {
                 $commenttext = stripslashes($comment);
@@ -147,9 +149,10 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_var( 'comments', $thecomments );
                 $retval .= $start->finish( $start->parse( 'output', 'startcomment' ));
             } else if ($mode == $LANG03[14]) {
-                $retval .= COM_startBlock($LANG03[17])
+                $retval .= COM_startBlock ($LANG03[17], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                     . $LANG03[12]
-                    . COM_endBlock();
+                    . COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
                 $mode = 'error';
             }
 

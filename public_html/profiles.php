@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.23 2003/06/22 22:07:42 dhaun Exp $
+// $Id: profiles.php,v 1.24 2003/06/25 08:39:02 dhaun Exp $
 
 include('lib-common.php');
 
@@ -114,7 +114,8 @@ function contactform($uid, $subject='', $message='')
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailuserloginrequired'] == 1))) {
-        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $retval = COM_startBlock ($LANG_LOGIN[1], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -123,7 +124,7 @@ function contactform($uid, $subject='', $message='')
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
         $P = DB_fetchArray ($result);
@@ -240,7 +241,8 @@ function mailstoryform($sid)
 	
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
-        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $retval = COM_startBlock ($LANG_LOGIN[1], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -249,7 +251,7 @@ function mailstoryform($sid)
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 
         return $retval;
     }

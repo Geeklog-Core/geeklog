@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.65 2003/06/23 16:36:15 dhaun Exp $
+// $Id: usersettings.php,v 1.66 2003/06/25 08:39:02 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -200,9 +200,10 @@ function confirmAccountDelete ($account_id)
     $confirm->set_var ('account_id', $_USER['uid']);
 
     $retval .= COM_siteHeader ('menu');
-    $retval .= COM_startBlock ($LANG04[97]);
+    $retval .= COM_startBlock ($LANG04[97], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= $LANG04[98];
-    $retval .= COM_endBlock ();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= $confirm->finish ($confirm->parse ('output', 'deleteaccount'));
     $retval .= COM_siteFooter ();
 

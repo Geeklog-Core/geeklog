@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.65 2003/05/21 16:35:22 dhaun Exp $
+// $Id: users.php,v 1.66 2003/06/25 08:39:02 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -69,7 +69,8 @@ function userprofile($user)
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
-        $retval .= COM_startBlock($LANG_LOGIN[1]);
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -78,7 +79,7 @@ function userprofile($user)
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
  
         return $retval;
     }
@@ -585,9 +586,12 @@ function newuserform($msg = '')
 
     $retval = '';
     
-	if (!empty($msg)) {
-		$retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
-	}
+    if (!empty ($msg)) {
+        $retval .= COM_startBlock ($LANG04[21], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . $msg
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file('regform','registrationform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
@@ -600,6 +604,7 @@ function newuserform($msg = '')
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->parse('output', 'regform');
     $retval .= $user_templates->finish($user_templates->get_var('output')); 
+
     return $retval;
 }
 
@@ -645,7 +650,10 @@ function defaultform ($msg)
     $retval = '';
 
     if (!empty ($msg)) {
-        $retval .= COM_startBlock ($LANG04[21]) . $msg . COM_endBlock ();
+        $retval .= COM_startBlock ($LANG04[21], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . $msg
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
     $retval .= loginform (true);
@@ -709,9 +717,10 @@ case 'getpassword':
     COM_clearSpeedlimit ($_CONF['passwordspeedlimit'], 'password');
     $last = COM_checkSpeedlimit ('password');
     if ($last > 0) {
-        $display .= COM_startBlock ($LANG12[26])
+        $display .= COM_startBlock ($LANG12[26], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'))
                  . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
-                 . COM_endBlock ();
+                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         $display .= getpasswordform ();
     }
@@ -776,9 +785,10 @@ case 'emailpasswd':
     $last = COM_checkSpeedlimit ('password');
     if ($last > 0) {
         $display .= COM_siteHeader ('menu')
-                 . COM_startBlock ($LANG12[26])
+                 . COM_startBlock ($LANG12[26], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
                  . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
-                 . COM_endBlock ()
+                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
     } else {
         $username = $HTTP_POST_VARS['username'];

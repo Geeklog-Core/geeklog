@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.5 2003/06/24 15:17:46 dhaun Exp $
+// $Id: search.class.php,v 1.6 2003/06/25 08:39:02 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -759,7 +759,8 @@ class Search {
     {
         global $_CONF, $LANG_LOGIN;
 
-        $retval .= COM_startBlock($LANG_LOGIN[1]);
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login'=>'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -768,7 +769,7 @@ class Search {
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     
         return $retval;
     }

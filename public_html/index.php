@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.49 2003/05/30 12:23:49 dhaun Exp $
+// $Id: index.php,v 1.50 2003/06/25 08:39:02 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -198,12 +198,13 @@ if ($nrows > 0) {
     }
     $display .= COM_printPageNavigation($base_url,$page, $num_pages);
 } else { // no stories to display
-    $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
+    $display .= COM_startBlock ($LANG05[1], '',
+                    COM_getBlockTemplate ('_msg_block', 'header')) . $LANG05[2];
     if (!empty($topic)) {
         $topicname = DB_getItem ($_TABLES['topics'], 'topic', "tid='{$topic}'");
         $display .= sprintf ($LANG05[3], $topicname);
     }
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 
     $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 }
