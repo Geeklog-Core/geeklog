@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.166 2002/10/10 15:49:49 dhaun Exp $
+// $Id: lib-common.php,v 1.167 2002/10/12 20:36:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2506,6 +2506,16 @@ function COM_killJS( $Message )
     return( preg_replace( '/(\s)+[oO][nN](\w*) ?=/', '\1in\2=', $Message ));
 }
 
+function COM_handleCode( $str )
+{
+    $str = str_replace( '\\', '&#092;', $str );
+    $str = str_replace( '<', '&lt;', $str );
+    $str = str_replace( '>', '&gt;', $str );
+    $str = nl2br( $str );
+
+    return( $str );
+}
+
 /**
 * This function checks html tags.
 *
@@ -2530,26 +2540,35 @@ function COM_checkHTML( $str )
 
     // Replace any $ with &#36; (HTML equiv)
     $str = str_replace( '$', '&#36;', $str );
-    $start_pos = strpos( strtolower( $str ), '[code]' );
 
-    if( !( $start_pos === false ))
+    // handle [code] ... [/code]
+    do
     {
-        $end_pos = strpos( strtolower( $str ), '[/code]' );
-        $end_pos = $end_pos + 7;
+        $start_pos = strpos( strtolower( $str ), '[code]' );
+        if( $start_pos !== false )
+        {
+            $end_pos = strpos( strtolower( $str ), '[/code]' );
+            if( $end_pos !== false )
+            {
+                $encoded = COM_handleCode( substr( $str, $start_pos + 6,
+                        $end_pos - ( $start_pos + 6 )));
+                $encoded = '<pre><code>' . $encoded . '</code></pre>';
+                $str = substr( $str, 0, $start_pos ) . $encoded
+                     . substr( $str, $end_pos + 7 );
+            }
+            else // missing [/code]
+            {
+                // Treat the rest of the text as code (so as not to lose any
+                // special characters). However, the calling entity should
+                // better be checking for missing [/code] before calling this
+                // function ...
+                $encoded = COM_handleCode( substr( $str, $start_pos + 6 ));
+                $encoded = '<pre><code>' . $encoded . '</code></pre>';
+                $str = substr( $str, 0, $start_pos ) . $encoded;
+            }
+        }
     }
-    if( !( $start_pos === false ) AND !( $end_pos === false ))
-    {
-        $orig_pre_string = substr( $str, $start_pos, $end_pos - $start_pos );
-        $new_pre_string = str_replace( '\\', '&#092;', $orig_pre_string );
-        $new_pre_string = str_replace( '<', '&lt;', $new_pre_string );
-        $new_pre_string = str_replace( '>', '&gt;', $new_pre_string );
-        $new_pre_string = str_replace( '[code]', '', $new_pre_string );
-        $new_pre_string = str_replace( '[CODE]', '', $new_pre_string );
-        $new_pre_string = str_replace( '[/code]', '', $new_pre_string );
-        $new_pre_string = str_replace( '[/CODE]', '', $new_pre_string );
-        $new_pre_string = nl2br( $new_pre_string );
-        $str = str_replace( $orig_pre_string, '<pre><code>' . $new_pre_string . '</code></pre>', $str );
-    }
+    while( $start_pos !== false );
 
     // strip_tags() gets confused by HTML comments ...
     $str = preg_replace( '/<!--.+?-->/', '', $str );
@@ -2621,7 +2640,8 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $result = DB_query( "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}" );
+    $sql = "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (draft_flag = 0) AND (featured = 0) ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
     if( $nrows > 0 )
@@ -2814,21 +2834,29 @@ function COM_showBlocks( $side, $topic='', $name='all' )
                 if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
                 {
                     $function = $A['phpblockfn'];
-                    $retval .= COM_startBlock( $A['title'], $A['help'], COM_getBlockTemplate( $A['name'], 'header' ));
+                    $blkheader = COM_startBlock( $A['title'], $A['help'],
+                            COM_getBlockTemplate( $A['name'], 'header' ));
+                    $blkfooter = COM_endBlock( COM_getBlockTemplate( $A['name'],
+                            'footer' ));
 
                     if( function_exists( $function ))
                     {
-                        $retval .= $function();
+                        $fretval = $function();
+                        if (!empty ($fretval)) {
+                            $retval .= $blkheader;
+                            $retval .= $fretval;
+                            $retval .= $blkfooter;
+                        }
                     }
                     else
                     {
                         // show error message
                         $errmsg = $LANG21[31];
                         eval( "\$errmsg = \"$errmsg\";" );
+                        $retval .= $blkheader;
                         $retval .= $errmsg;
+                        $retval .= $blkfooter;
                     }
-
-                    $retval .= COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
                 }
             }
 
