@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.14 2002/11/21 18:22:56 dhaun Exp $
+// $Id: mail.php,v 1.15 2002/11/28 12:43:56 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -62,7 +62,7 @@ function display_form()
     global $_CONF, $_USER, $_LANG31, $PHP_SELF, $LANG31, $_TABLES;
     
     $retval = '';
-    
+
     $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
     $mail_templates->set_file(array('form'=>'mailform.thtml'));
     $mail_templates->set_var('site_url', $_CONF['site_url']);
@@ -81,7 +81,9 @@ function display_form()
     }
     $mail_templates->set_var('group_options', $group_options);
     $mail_templates->set_var('lang_from', $LANG31[2]);
+    $mail_templates->set_var('site_name', $_CONF['site_name']);
     $mail_templates->set_var('lang_replyto', $LANG31[3]);
+    $mail_templates->set_var('site_mail', $_CONF['site_mail']);
     $mail_templates->set_var('lang_subject', $LANG31[4]);
     $mail_templates->set_var('lang_body', $LANG31[5]);
     $mail_templates->set_var('lang_sendto', $LANG31[6]);
@@ -93,10 +95,10 @@ function display_form()
     $mail_templates->set_var('lang_ignoreusersettings', $LANG31[14]);
     $mail_templates->set_var('lang_send', $LANG31[12]);
     $mail_templates->set_var('end_block', COM_endBlock());
-    
+
     $mail_templates->parse('output','form');
     $retval = $mail_templates->finish($mail_templates->get_var('output'));
-    
+
     return $retval;
 }
 
@@ -119,16 +121,16 @@ function send_messages($vars)
 	}
 
 	// Header information
-	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\n";
-	$headers .= "X-Sender: <{$vars['fraepost']}>\n"; 
-	$headers .= "X-Mailer: GeekLog " . VERSION . "\n"; // mailer
+	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\r\n";
+	$headers .= "X-Sender: <{$vars['fraepost']}>\r\n";
+	$headers .= "X-Mailer: GeekLog " . VERSION . "\r\n"; // mailer
     
 	// Urgent message!
 	if (isset($vars['priority'])) {
- 		$headers .= "X-Priority: 1\n"; 
+ 		$headers .= "X-Priority: 1\r\n";
 	}
     
-	$headers .= "Return-Path: <{$vars['fraepost']}>\n";  // Return path for errors
+	$headers .= "Return-Path: <{$vars['fraepost']}>\r\n";  // Return path for errors
         if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
             if (empty ($charset)) {
@@ -140,12 +142,12 @@ function send_messages($vars)
         }
 	// If you want to send html mail
 	if (isset($vars['html'])) { 
- 		$headers .= "Content-Type: text/html; charset=$charset\n"; // Mime type 
+ 		$headers .= "Content-Type: text/html; charset=$charset\r\n"; // Mime type 
 	}
 	else {
-        $headers .= "Content-Type: text/plain; charset=$charset\n";
+        $headers .= "Content-Type: text/plain; charset=$charset\r\n";
 	}
-    
+
 	// and now mail it
 	if (!isset($vars['overstyr'])) {
  		$sql = "SELECT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";

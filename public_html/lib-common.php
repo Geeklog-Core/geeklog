@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.185 2002/11/27 18:11:26 dhaun Exp $
+// $Id: lib-common.php,v 1.186 2002/11/28 12:43:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3552,12 +3552,19 @@ function COM_emailUserTopics()
 
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
-        $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
 
-        if( !empty( $LANG_CHARSET ))
+        $charset = $LANG_CHARSET;
+        if( empty( $charset ))
         {
-            $mailfrom .= "\nContent-Type: text/plain; charset={$LANG_CHARSET}";
+            $charset = $_CONF['default_charset'];
+            if( empty( $charset ))
+            {
+                $charset = "iso-8859-1";
+            }
         }
+
+        $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n";
+        $mailfrom .= "Content-Type: text/plain; charset={$charset}";
 
         $subject = strip_tags( stripslashes( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() )));
 

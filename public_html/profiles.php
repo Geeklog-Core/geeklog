@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.18 2002/11/21 18:26:15 dhaun Exp $
+// $Id: profiles.php,v 1.19 2002/11/28 12:43:55 dhaun Exp $
 
 include('lib-common.php');
 
@@ -66,9 +66,9 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
             $RET = @mail($A['username'] . ' <' . $A['email'] . '>', $subject,
                 strip_tags(stripslashes($message)),
-                "From: $author <$authoremail>\n" .
-                "Return-Path: <$authoremail>\n" .
-                "Content-Type: text/plain; charset=$charset\n" .
+                "From: $author <$authoremail>\r\n" .
+                "Return-Path: <$authoremail>\r\n" .
+                "Content-Type: text/plain; charset=$charset\r\n" .
                 "X-Mailer: GeekLog " . VERSION);
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
