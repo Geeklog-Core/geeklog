@@ -35,8 +35,19 @@ if (!empty($loginname) && !empty($passwd)) {
 if (!empty($passwd) && $mypasswd == md5($passwd)) {
 	$userdata = get_userdata($loginname);
         $USER=$userdata;
-        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["sesscookietimeout"], $CONF["cookie_ip"]);
-        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["session_cookie_timeout"], $CONF["cookie_ip"]);
+        set_session_cookie($sessid, $CONF["session_cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+
+	#Now that we handled session cookies, handle longterm cookie
+        if (!isset($HTTP_COOKIE_VARS[$CONF["cookie_name"]])) {
+        	#either their cookie expired or they are new
+                $cooktime = getusercookietimeout();
+                if (!empty($cooktime)) {
+                	#they want their cookie to persist for some amount of time
+                        #so set it now
+                        setcookie($CONF["cookie_name"],$USER["uid"],time() + $cooktime,$CONF["cookie_path"]);
+                }
+        }
 
 	if (!hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
 		refresh($CONF['site_url'] . '/admin/moderation.php');
