@@ -1,7 +1,7 @@
 List of Known Bugs:
 
-1) You can't post an article with a future publish date as featured AND have a visible
-   featured article up until that time.
-2) the installation script does no form validation...should probably change ;-)
-3) seems as though plugins don't work under windows.  This isn't intentional and will be fixed
-4) documents need updating before stable 1.4 release
+1) You can't post an article with a future publish date as featured AND have a
+   visible featured article up until that time.
+
+For other bugs and known issues, please consult the Geeklog bug tracking system
+at http://sourceforge.net/tracker/?group_id=7371&atid=107371

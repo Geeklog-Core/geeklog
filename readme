@@ -1,7 +1,7 @@
 GeekLog Readme
-April 16, 2002
+August 11, 2002
 
-For the quick-and-dirty installation instructions see INSTALL
+For the installation instructions please see docs/install.html
 
 WELCOME
 -------
@@ -18,18 +18,18 @@ what we can do to make GeekLog better.
 
 GeekLog's feature are as follows:
 
-- Easy to install
+- Easy to install.
 - Full localization and locale aware.
-- Threaded comment system that support different modes.
+- Threaded comment system that supports different modes.
 - User-specified theming engine for custom look and feel.
 - User accounts and access controls.
 - HTML and key word checking in stories and comments.
 - RDF/RSS import and export ability.
 - Easy to use admin interface.
 - Admin interface has complete configurability for all functions of the site.
-- Ability to attach images to articles
-- All passwords are are stored encrypted.
-- Complete error loging on all forms and SQL calls.
+- Ability to attach images to articles.
+- All passwords are stored encrypted.
+- Complete error logging on all forms and SQL calls.
 - All admin access is logged.
 - All errors are logged.
 - Save story drafts until they are ready for publishing.
@@ -39,34 +39,35 @@ GeekLog's feature are as follows:
 - Robust *nix-like security model for all objects which can be extended for 
   use in plugins
 - Spam protection features and protection of user email addresses
-- Well organized codebase, use of PHP's Object-Oriented features
+- Well organized codebase, use of PHP's Object-Oriented features.
 - Thin database abstraction layer allowing Geeklog to be ported to DBMS's other 
-  than the default (MySQL)
+  than the default (MySQL).
 
 LICENSE
 -------
-GeekLog is licenses under the: GPL. There should be an included LICENSE file
-if it really intrests you (or you having trouble sleeping) go ahead a read it.
+GeekLog is licensed under the GPL. There should be an included LICENSE file - if
+it really interests you (or you having trouble sleeping) go ahead and read it.
 
 In a nice gesture you could provide a link back to us:
 
 http://geeklog.sourceforge.net
 
-There is also a button that is in the release that we would appreciate you use.
+There is also a button that is in the release that we would appreciate you use
+(in public_html/images/buttons).
 
 SUPPORT
 -------
 The best support channel is a mailing list located at:
 
-http://lists.sourceforge.net/mailman/listinfo/geeklog-devel. 
+http://lists.sourceforge.net/mailman/listinfo/geeklog-devel
 
 Additionally the GeekLog home page is a good source of information at:
 
 http://geeklog.sourceforge.net
 
 
-There is also a IRC channel, where we have live Geeklog chat.  Once you have an IRC client
-such as mIRC (www.mirc.co.uk), or BitchX the you can log on:
+There is also a IRC channel, where we have live Geeklog chat.  Once you have
+an IRC client such as mIRC (www.mirc.co.uk), or BitchX the you can log on:
 
 Server: irc.openprojects.net
 Channel: #Geeklog
@@ -81,7 +82,7 @@ https://sourceforge.net/bugs/?group_id=7371
 
 SYSTEM REQUIREMENTS AND INSTALLATION
 ------------------------------------
-See INSTALL
+See docs/install.html
 
 SECURITY ISSUES
 ---------------
