@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.7 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: pollbooth.php,v 1.8 2002/01/03 21:36:33 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -46,7 +46,6 @@ function pollsave()
 {
     global $_TABLES, $qid, $aid, $db, $REMOTE_ADDR, $LANG07;
 
-    DB_setDebug(true);	
     DB_change($_TABLES['pollquestions'],'voters',"voters + 1",'qid',$qid,'',true);
     $id[1] = 'qid';
     $value[1] = $qid;
