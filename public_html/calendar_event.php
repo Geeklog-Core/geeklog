@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.25 2003/06/16 09:11:22 dhaun Exp $
+// $Id: calendar_event.php,v 1.26 2003/08/30 16:39:13 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -59,6 +59,7 @@ function adduserevent($eid)
         $cal_template = new Template($_CONF['path_layout'] . 'calendar');
         $cal_template->set_file(array('addevent'=>'addevent.thtml'));
         $cal_template->set_var('site_url', $_CONF['site_url']);
+        $cal_template->set_var('layout_url', $_CONF['layout_url']);
         $cal_template->set_var('intro_msg', $LANG02[8]);
         $cal_template->set_var('lang_event', $LANG02[12]);
         $cal_template->set_var('event_title',stripslashes($A['title']));
@@ -152,6 +153,7 @@ function editpersonalevent($A)
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
     $cal_templates->set_file('form','editpersonalevent.thtml');
     $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('lang_title', $LANG12[10]);
     $cal_templates->set_var('event_title', stripslashes ($A['title']));
     $cal_templates->set_var('lang_eventtype', $LANG12[49]);
@@ -437,6 +439,7 @@ default:
         $cal_templates->set_var('event_year','');
         $cal_templates->set_var('event_details','');
         $cal_templates->set_var('site_url', $_CONF['site_url']);
+        $cal_templates->set_var('layout_url', $_CONF['layout_url']);
         $cal_templates->parse('output','events');
         $display .= $cal_templates->finish($cal_templates->get_var('output'));
         $display .= $LANG02[1];
@@ -456,6 +459,7 @@ default:
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
                 $cal_templates->set_var('site_url', $_CONF['site_url']);
+                $cal_templates->set_var('layout_url', $_CONF['layout_url']);
                 if (!empty($A['url'])) {
                     $cal_templates->set_var('event_begin_anchortag', '<a href="'.$A['url'].'">');
                     $cal_templates->set_var('event_title', stripslashes($A['title']));
