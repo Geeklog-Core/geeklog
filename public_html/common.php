@@ -26,7 +26,7 @@ $VERSION="1.3";
 #
 #	These settings must suit your server environment.
 
-include('D:/Archive/Mark/My Websites/cvs-geeklog/geeklog-1.3/config.php');
+include('/path/to/geeklog/config.php');
 
 include($CONF['path'].$CONF["languagefile"]);
 include($CONF['path_html'].'layout/'.$CONF["layout"].'/index.php');
@@ -689,26 +689,33 @@ function showtopics($topic="") {
 # This is the admin menu
 
 function usermenu() {
-	global $USER,$CONF,$LANG01, $VERSION;
+	global $USER,$CONF,$LANG01;
 
 	if ($USER["uid"] > 1) {
 		startblock($LANG01[47]);
-		print "<a href={$CONF["site_url"]}/calendar.php?mode=personal>{$LANG01[66]}</a><br>\n";
+		if ($CONF["personalcalendars"] == 1) {
+			print "<a href=\"{$CONF["site_url"]}/calendar.php?mode=personal\">{$LANG01[66]}</a><br>\n";
+		}
 		ShowPluginUserOptions();
-		print "<a href={$CONF["site_url"]}/usersettings.php?mode=edit>{$LANG01[48]}</a><br>\n";
-		print "<a href={$CONF["site_url"]}/usersettings.php?mode=preferences>{$LANG01[49]}</a><br>\n";
-		print "<a href={$CONF["site_url"]}/usersettings.php?mode=comments>{$LANG01[63]}</a><br>\n";
-		print "<a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG01[19]}</a>\n";
+		print "<a href=\"{$CONF["site_url"]}/usersettings.php?mode=edit\">{$LANG01[48]}</a><br>\n";
+		print "<a href=\"{$CONF["site_url"]}/usersettings.php?mode=preferences\">{$LANG01[49]}</a><br>\n";
+		print "<a href=\"{$CONF["site_url"]}/usersettings.php?mode=comments\">{$LANG01[63]}</a><br>\n";
+		print "<a href=\"{$CONF["site_url"]}/users.php?mode=logout\">{$LANG01[19]}</a>\n";
 		endblock();
 	} else {
 		startblock($LANG01[47]);
-		print "<form action={$CONF["site_url"]}/users.php method=post>\n";
-		print "<b>{$LANG01[21]}:</b><br>\n<input type=text size=10 name=loginname value=\"\"><br>\n";
-		print "<b>{$LANG01[57]}:</b><br>\n<input type=password size=10 name=passwd><br>\n";
-		print "<input type=submit value={$LANG01[58]}>\n";
+		print "<form action=\"{$CONF["site_url"]}/users.php\" method=\"post\">\n";
+		print "<b>{$LANG01[21]}:</b><br>\n<input type=\"text\" size=\"10\" name=\"loginname\" value=\"\"><br>\n";
+		print "<b>{$LANG01[57]}:</b><br>\n<input type=\"password\" size=\"10\" name=\"passwd\"><br>\n";
+		print "<input type=\"submit\" value=\"{$LANG01[58]}\">\n";
 		print "</form>{$LANG01[59]}\n";
 		endblock();
 	}
+
+}
+
+function adminmenu() {
+	global $USER,$CONF,$LANG01, $VERSION;
 
 	if ($USER["seclev"] >= $CONF["sec_lowest"]) {
 		startblock($LANG01[9]);
@@ -717,25 +724,25 @@ function usermenu() {
 			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
 			//now handle submissions for plugins
 			$num = $num + GetPluginSubmissionCounts();
-			print "<a href={$CONF["site_url"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
+			print "<a href=\"{$CONF["site_url"]}/admin/moderation.php\">{$LANG01[10]}</a> ($num)<br>\n";
 		}
 
-		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href={$CONF["site_url"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href={$CONF["site_url"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href={$CONF["site_url"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href={$CONF["site_url"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href={$CONF["site_url"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href={$CONF["site_url"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href={$CONF["site_url"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["site_url"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href=\"{$CONF["site_url"]}/admin/story.php\">{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href=\"{$CONF["site_url"]}/admin/block.php\">{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href=\"{$CONF["site_url"]}/admin/topic.php\">{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href=\"{$CONF["site_url"]}/admin/link.php\">{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href=\"{$CONF["site_url"]}/admin/event.php\">{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href=\"{$CONF["site_url"]}/admin/poll.php\">{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href=\"{$CONF["site_url"]}/admin/user.php\">{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href=\"{$CONF["site_url"]}/admin/plugins.php\">{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
 
 		// This function wil show the admin options for all installed plugins (if any)
 
 		ShowPluginAdminOptions();
 
-		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href={$CONF["site_url"]}/admin/mail.php>Mail</a><br>\n";
+		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href=\"{$CONF["site_url"]}/admin/mail.phpi\">Mail</a><br>\n";
 
-		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n";
+		print "<a href=\"http://geeklog.sourceforge.net/versionchecker.php?version=" . $VERSION . "\" target=\"_new\">GL Version Test</a><br>\n";
 		endblock();
 	}
 
@@ -1093,13 +1100,16 @@ function showblock($side,$topic="") {
 				case "User Block":
 					usermenu();
 					break;
+				case "Admin Block":
+					adminmenu();
+					break;
 				case "Section Block":
 					startblock("Sections");
 					showtopics($topic);
 					endblock();
 					break;
 				case "Events Block":
-					if (!$U["noboxes"]) printupcomingevents();
+					if (!$U["noboxes"] && $CONF["showupcomingevents"]) printupcomingevents();
 					break;
 				case "Poll Block":
                         		showpoll(60);
