@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.26 2002/03/07 17:47:00 tony_bibbs Exp $
+// $Id: story.php,v 1.27 2002/03/09 19:36:58 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -337,13 +337,13 @@ function liststories($page="1")
             $prevpage = $page - 1;
             $nextpage = $page + 1;
             if ($pagestart >= 50) {
-                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
+                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&amp;page='
                     . $prevpage . '">' . $LANG24[1] . '</a> ');
             } else {
 	        $story_templates->set_var('previouspage_link','');
             }
             if ($pagestart <= (DB_count($_TABLES['stories']) - 50)) {
-                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
+                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&amp;page='
                     . $nextpage . '">' . $LANG24[2] . '</a> ');
             } else {
 	        $story_templates->set_var('nextpage_link','');
@@ -486,10 +486,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $topic = DB_getItem($_TABLES['topics'],'topic',"tid = '$tid'");
 
         if ($_CONF["contributedbyline"] == 1) {
-            $related .= "<li><a href={$_CONF['site_url']}/search.php?mode=search&type=stories&author=$uid>{$LANG24[37]} $author</a>\n";
+            $related .= "<li><a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>\n";
         }
 
-        $related .= "<li><a href={$_CONF['site_url']}/search.php?mode=search&type=stories&topic=$tid>{$LANG24[38]} $topic</a>\n";
+        $related .= "<li><a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>\n";
         $related = addslashes(COM_checkHTML(COM_checkWords($related)));
 
         // Clean up the text

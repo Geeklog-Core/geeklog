@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.20 2002/01/12 04:19:14 tony_bibbs Exp $
+// $Id: users.php,v 1.21 2002/03/09 19:36:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -90,8 +90,8 @@ function userprofile($user)
             $C = DB_fetchArray($result);
             $user_templates->set_var('row_number', $i . '.');
             $user_templates->set_var('comment_begin_href', '<a href="' .$_CONF['site_url'] 
-                . '/comment.php?mode=display&sid=' . $C['sid'] . '&title=' . urlencode($C['title']) 
-                . '&pid=' . $C['pid'] . '">');
+                . '/comment.php?mode=display&amp;sid=' . $C['sid'] . '&amp;title=' . urlencode($C['title']) 
+                . '&amp;pid=' . $C['pid'] . '">');
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2002/03/07 17:14:57 tony_bibbs Exp $
+// $Id: index.php,v 1.17 2002/03/09 19:36:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -154,9 +154,9 @@ for ($i = 0; $i <= 1; $i++) {
 # Display any blocks, polls, olderstuff configured for this page
 # </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
 if ($U['noboxes'] != 1) {
-    $display .= '</td><td><img src="' . $_CONF['site_url'] . '/images/speck.gif" height="1" width="10"></td>' . LB
+    $display .= '</td><td><img src="' . $_CONF['site_url'] . '/images/speck.gif" height="1" width="10" alt=""></td>' . LB
         . '<td valign="top" width="180">' . LB . COM_showBlocks('right',$topic)
-        . '<br><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="180" height="1">' . LB;
+        . '<br><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="180" height="1" alt="">' . LB;
 }
 
 // Get footer

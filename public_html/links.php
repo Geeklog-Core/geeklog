@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.13 2001/12/18 22:51:53 tony_bibbs Exp $
+// $Id: links.php,v 1.14 2002/03/09 19:36:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -65,7 +65,7 @@ if ($nrows==0) {
                 $linklist->set_var('link_category',$currentcategory);
             }
             $linklist->set_var('link_url', $_CONF['site_url'] . '/portal.php?url=' . urlencode($A['url'])
-                    . '&what=link&item=' . $A['lid']);
+                    . '&amp;what=link&amp;item=' . $A['lid']);
             $linklist->set_var('link_name', stripslashes($A['title']));
             $linklist->set_var('link_hits', $A['hits']);
             $linklist->set_var('link_description', $A['description']);

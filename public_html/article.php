@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.16 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: article.php,v 1.17 2002/03/09 19:36:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -45,7 +45,7 @@ include_once('lib-common.php');
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
 if (PLG_supportsComments($type)) {
 	// Yes, this is a plugin wanting to be commented on...do it
-	echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&pid=$pid&type=$type");
+	echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
 }
 
 if ($type == 'poll') {
@@ -57,7 +57,7 @@ $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
     if ($reply == $LANG01[25]) {
-        echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&pid=$pid&type=$type");
+        echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
 	} else if ($mode == "print") {
 		$result = DB_query("SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
 		$A = DB_fetchArray($result);
@@ -126,8 +126,8 @@ if ($A['count'] > 0) {
 			. nl2br($A['related'])
 			. COM_endBlock()
 			. COM_startBlock($LANG11[4])
-			. '<li><a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $story . '&what=emailstory">' . $LANG11[2] . '</a></li>' . LB
-			. '<li><a href="' . $_CONF['site_url'] . '/article.php?story=' . $story . '&mode=print">' . $LANG11[3] . '</a></li>' . LB
+			. '<li><a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $story . '&amp;what=emailstory">' . $LANG11[2] . '</a></li>' . LB
+			. '<li><a href="' . $_CONF['site_url'] . '/article.php?story=' . $story . '&amp;mode=print">' . $LANG11[3] . '</a></li>' . LB
 			. COM_endBlock());
 
 		// if (DB_count($_TABLES['pollquestions'],'qid',$story) > 0) {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.41 2002/03/07 18:07:12 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.42 2002/03/09 19:36:57 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -164,7 +164,7 @@ function COM_article($A,$index='')
     if ($_CONF['contributedbyline'] == 1) {
         if ($A['uid'] > 1) {
             $article->set_var('lang_contributed_by',$LANG01[1]);
-            $article->set_var('start_contributedby_anchortag', '<a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&uid='.$A['uid'].'">');
+            $article->set_var('start_contributedby_anchortag', '<a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&amp;uid='.$A['uid'].'">');
             $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
             $article->set_var('end_contributedby_anchortag', '</a>');
         } else {
@@ -194,17 +194,17 @@ function COM_article($A,$index='')
             $C = DB_fetchArray($result);
             $recent_post_anchortag = '<span class="storybyline">'.$LANG01[27].': '.strftime($_CONF['daytime'],$C['day']). ' ' . $LANG01[104] . ' ' . $C['username'] . '</span>';
         } else if ($A['commentcode'] >= 0) {
-            $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>';
+            $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&amp;pid=0&amp;type=article">'.$LANG01[60].'</a>';
         }
-	$article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&what=emailstory">' 
+	$article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">' 
             . '<img src="' . $_CONF['layout_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>');
-	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
+	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&amp;mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
     }
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND SEC_hasrights('story.edit')) {
-	    $article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>');
+	    $article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&amp;sid='.$A['sid'].'">'.$LANG01[4].'</a>');
     }
 
     $article->set_var('recent_post_anchortag', $recent_post_anchortag);
@@ -432,7 +432,7 @@ function COM_siteFooter()
 
     $footer->set_var('site_url', $_CONF['site_url']);
     $footer->set_var('layout_url',$_CONF['layout_url']);
-    $footer->set_var('copyright_notice', '&nbsp;'.$LANG01[93].' &copy; 2001 '.$_CONF['site_name'].'<br>&nbsp;'.$LANG01[94]);
+    $footer->set_var('copyright_notice', '&nbsp;'.$LANG01[93].' &copy; 2002 '.$_CONF['site_name'].'<br>&nbsp;'.$LANG01[94]);
     $footer->set_var('geeklog_version', VERSION);
     $footer->set_var('execution_time', $_PAGE_TIMER->stopTimer());
 
@@ -513,7 +513,7 @@ function COM_adminEdit($type,$text='')
 	
     if (!HandlePluginAdminEdit($type)) {
         $retval .= '<table border="0" cellspacing="0" cellpadding=2 width="100%">'.LB
-            .'<tr><td rowspan="2"><img src="'.$_CONF['site_url'].'/images/icons/'.$type.'.gif"></td>'.LB
+            .'<tr><td rowspan="2"><img src="'.$_CONF['site_url'].'/images/icons/'.$type.'.gif" alt=""></td>'.LB
             .'<td>[ <a href="'.$_CONF['site_url'].'/admin/'.$type.'.php?mode=edit">'.$LANG01[52].' '.$type.'</a> | <a href="'.$_CONF['site_url'].'/admin">'.$LANG01[53].'</a> ]</td></tr>'.LB
             .'<tr><td>'.$text.'</td></tr>'.LB
             .'</table><br>';
@@ -845,11 +845,11 @@ function COM_pollVote($qid)
                 }
 
                 $retval .= '<input type="submit" value="' . $LANG01[56] . '">' . LB
-                    . '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&aid=-1">' . $LANG01[6] . '</a><br>'
-                    . '<span class="storybyline" align="right">' . $Q['voters'] . ' ' . $LANG01[8];
+                    . '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1">' . $LANG01[6] . '</a><br>'
+                    . '<span class="storybyline">' . $Q['voters'] . ' ' . $LANG01[8];
 
                 if ($Q['commentcode'] >= 0) {
-                    $retval .= ' | <a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&aid=-1#comments">'
+                    $retval .= ' | <a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments">'
                         . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
                 }
 				
@@ -966,7 +966,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 				} else {
 					$width = $percent * $scale;
 					$retval .= '<img src="' . $_CONF['layout_url'] . '/images/bar.gif" width="' . $width
-                        . '" height="10" align="bottom"> '
+                        . '" height="10" align="bottom" alt=""> '
 						. $A['votes'] . ' ' . sprintf("(%.2f)",$percent * 100) . '%' . '</td>' . LB;
 				}
 
@@ -976,7 +976,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
                 . $LANG01[8] . LB;
 
 			if ($Q['commentcode'] >= 0) {
-				$retval .= ' | <a href="' .$_CONF['site_url'] . '/pollbooth.php?qid=' . $qid.'&aid=-1#comments">'
+				$retval .= ' | <a href="' .$_CONF['site_url'] . '/pollbooth.php?qid=' . $qid.'&amp;aid=-1#comments">'
                     . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
 			}
 
@@ -1503,14 +1503,14 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 
     $A['title'] = stripslashes($A['title']);
     if ($mode == 'threaded' && $level > 0) {
-        $retval .= '<li><b><a href="' . $_CONF['site_url'] . '/comment.php?mode=display&sid=' . $A['sid']
-            . '&title=' . urlencode($A['title']) . '&type=' . $type . '&order=' . $order . '&pid=' . $A['pid'].'">'
+        $retval .= '<li><b><a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
+            . '&amp;title=' . urlencode($A['title']) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' . $A['pid'].'">'
             . $A['title'] . '</a></b> - ' . $LANG01[42] . ' ';
 
         if ($A['uid'] == 1) {
             $retval .= $LANG01[24];
         } else {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'] . '">'
+            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
                 . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'") . '</a>';
         }
 
@@ -1520,7 +1520,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
         if ($level > 0) {
             $retval .= '<tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB
                 . '<tr><td rowspan="3" width="' . $level . '"><img src="' . $_CONF['site_url'] 
-                . '/images/speck.gif" width="' . $level . '" height="100%"></td>' . LB;
+                . '/images/speck.gif" width="' . $level . '" height="100%" alt=""></td>' . LB;
         } else {
             $retval .= '<tr>';
         }
@@ -1531,7 +1531,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
         if ($A['uid'] == 1) {
             $retval .= $LANG01[24];
         } else {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'] . '">'
+            $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
                 . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'") .'</a>';
         }
 
@@ -1540,22 +1540,22 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
             . '<tr><td valign="top">' . nl2br(stripslashes($A['comment']));
 
         if ($mode == 0 && $ispreview == false) {
-            $retval .= '<p>[ <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&pid='
-                . $A['cid'] . '&title=' . rawurlencode($A['title']) . '&type=' . $type . '">' . $LANG01[43]
+            $retval .= '<p>[ <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&amp;pid='
+                . $A['cid'] . '&amp;title=' . rawurlencode($A['title']) . '&amp;type=' . $type . '">' . $LANG01[43]
             . '</a> ';
 			
             // Until I find a better way to parent, we're stuck with this...
             if ($mode == 'threaded' && $A['pid'] != 0) {
                 $result = DB_query("SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'");
                 $P = DB_fetchArray($result);
-                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=display&sid=' . $A['sid']
-                    . '&title=' . rawurlencode($P['title']) . '&type=' . $type . '&order=' . $order . '&pid=' 
+                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
+                    . '&amp;title=' . rawurlencode($P['title']) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
                     . $P['pid'] . '">' . $LANG01[44] . '</a> ';
             }
 			
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3) {
-                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=' . $LANG01[28] . '&cid=' 
-                    . $A['cid'] . '&sid=' . $A['sid'] . '&type=' . $type . '">'  . $LANG01[28] . '</a> ';
+                $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' 
+                    . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'  . $LANG01[28] . '</a> ';
             }
 			
             $retval .= ']<br>';
@@ -2218,7 +2218,7 @@ function COM_whatsNewBlock($help='',$title='')
                 if ($A['cmt_type'] == 'story') {
                     $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
                 } else {
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&aid=-1#comments">';
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments">';
                 }
 			
                 // Trim the length if over 20 characters
@@ -2315,7 +2315,7 @@ function COM_showMessage($msg)
     if ($msg > 0) {
         $timestamp = strftime("%c");
         $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
-            . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top">'
+            . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top" alt="">'
             . $MESSAGE[$msg] . '<BR><BR>' . COM_endBlock();
     }
 	
@@ -2344,7 +2344,7 @@ function COM_PrintPageNavigation ($page, $num_pages, $topic='')
     if ($page > 1) {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
         if (!empty($topic)) {
-            $retval .= '?topic=' . $topic . '&page=' . ($page-1) . '">' . $LANG05[6] . '</a> ';
+            $retval .= '?topic=' . $topic . '&amp;page=' . ($page-1) . '">' . $LANG05[6] . '</a> ';
         } else {
             $retval .= '?page=' . ($page-1) . '">' . $LANG05[6] . '</a> ';
         }   
@@ -2362,7 +2362,7 @@ function COM_PrintPageNavigation ($page, $num_pages, $topic='')
         } else {
             $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
             if (!empty($topic)) {
-                $retval .= '?topic=' . $topic . '&page=' . $pgcount . '">' . $pgcount . '</a> ';
+                $retval .= '?topic=' . $topic . '&amp;page=' . $pgcount . '">' . $pgcount . '</a> ';
             } else {
                 $retval .= '?page=' . $pgcount . '">' . $pgcount . '</a> ';
             }
@@ -2374,7 +2374,7 @@ function COM_PrintPageNavigation ($page, $num_pages, $topic='')
     } else {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
         if (!empty($topic)) {
-            $retval .= '?topic=' . $topic . '&page=' . ($page+1) . '>' . $LANG05[5] . '</a>';
+            $retval .= '?topic=' . $topic . '&amp;page=' . ($page+1) . '>' . $LANG05[5] . '</a>';
         } else {
             $retval .= '?page=' . ($page+1) . '>' . $LANG05[5] . '</a>';
         }
@@ -2471,7 +2471,7 @@ function phpblock_whosonline()
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'] . '">' . $A['username'] . '</a><br>';
+        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' . $A['username'] . '</a><br>';
     }
     $num_anon = DB_query("SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1");
     $num_anon = DB_numRows($num_anon);
