@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.305 2004/03/25 11:40:47 dhaun Exp $
+// $Id: lib-common.php,v 1.306 2004/03/29 03:44:37 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,8 +66,8 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-require_once( '/path/to/geeklog/config.php' );
-
+//require_once( '/path/to/geeklog/config.php' );
+require_once( '/home/vmf/cvs/geeklog-1.3/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -2868,12 +2868,18 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
-    if( !empty( $_USER['uid'] ) && empty( $order ) && empty( $mode ))
+    if( !empty( $_USER['uid'] ) )
     {
         $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
-        $order = $U['commentorder'];
-        $mode = $U['commentmode'];
+        if ( empty( $order ) ) 
+        {
+            $order = $U['commentorder'];
+        }
+        if ( empty( $mode ) ) 
+        {
+            $mode = $U['commentmode'];
+        }
         $limit = $U['commentlimit'];
     }
 
