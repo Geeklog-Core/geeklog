@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.300 2004/03/06 09:26:01 dhaun Exp $
+// $Id: lib-common.php,v 1.301 2004/03/13 11:54:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1697,7 +1697,8 @@ function COM_showPoll( $size, $qid='' )
 
     if( !empty( $qid ))
     {
-        $pcount = DB_count( $_TABLES['pollvoters'], 'ipaddress', $REMOTE_ADDR, 'qid', $qid );
+        $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
+                            array( $REMOTE_ADDR, $qid ));
 
         if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
         {
