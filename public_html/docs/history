@@ -2,6 +2,7 @@ GeekLog History/Changes:
 
 (1.3.8)
 -------
+- Fixed bug where blocks assigned to a topic disappeared when viewing articles
 - Add new Plugin API PLG_getHeaderCode, Used to return JS Functions or other
   Header Meta Tags required by the plugin. Added new variable {plg_headercode}
   to the template header.thtml files
