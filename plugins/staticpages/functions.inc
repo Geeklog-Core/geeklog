@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.26 2003/09/07 20:50:43 dhaun Exp $
+// $Id: functions.inc,v 1.27 2004/01/02 22:08:59 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -409,6 +409,11 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             // Check for type (ie html or php)
             if ($spresult['sp_php'] == 1) {
                 $retval .= eval (stripslashes ($spresult['sp_content']));
+            } else if ($spresult['sp_php'] == 2) {
+                ob_start ();
+                eval (stripslashes ($spresult['sp_content']));
+                $retval .= ob_get_contents ();
+                ob_end_clean ();
             } else {
                 $retval .= stripslashes ($spresult['sp_content']);
             }

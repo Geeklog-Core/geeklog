@@ -93,7 +93,10 @@ $LANG_STATIC= array(
     centerblock_top => 'Top',
     centerblock_feat => 'Feat. Story',
     centerblock_bottom => 'Bottom',
-    centerblock_entire => 'Entire Page'
+    centerblock_entire => 'Entire Page',
+    'select_php_none' => 'do not execute PHP',
+    'select_php_return' => 'execute PHP (return)',
+    'select_php_free' => 'execute PHP'
 );
 
 ?>

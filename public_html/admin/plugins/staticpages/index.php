@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.28 2003/12/29 13:44:43 dhaun Exp $
+// $Id: index.php,v 1.29 2004/01/02 22:10:03 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -189,21 +189,34 @@ function form ($A, $error = false)
         $sp_template->set_var ('pos_selection', $position);
 
         if (SEC_hasRights ('staticpages.PHP')) {
-            if ($A['sp_php'] == 1) {
-    	        $sp_template->set_var('php_checked','checked');
-    	        $sp_template->set_var('php_type','checkbox');
-            } else {
-                $sp_template->set_var('php_checked','');
+            $selection = '<select name="sp_php">' . LB;
+            $selection .= '<option value="0"';
+            if (($A['sp_php'] <= 0) || ($A['sp_php'] > 2)) {
+                $selection .= ' selected="selected"';
             }
-            $sp_template->set_var('php_type','checkbox');
-            $sp_template->set_var('php_warn',$LANG_STATIC['php_warn']);
-            $sp_template->set_var('php_msg',$LANG_STATIC['php_msg']);
+            $selection .= '>' . $LANG_STATIC['select_php_none'] . '</option>' . LB;
+            $selection .= '<option value="1"';
+            if ($A['sp_php'] == 1) {
+                $selection .= ' selected="selected"';
+            }
+            $selection .= '>' . $LANG_STATIC['select_php_return'] . '</option>' . LB;
+            $selection .= '<option value="2"';
+            if ($A['sp_php'] == 2) {
+                $selection .= ' selected="selected"';
+            }
+            $selection .= '>' . $LANG_STATIC['select_php_free'] . '</option>' . LB;
+            $selection .= '</select>';
+            $sp_template->set_var ('php_selector', $selection);
+            $sp_template->set_var ('php_warn', $LANG_STATIC['php_warn']);
+            $sp_template->set_var ('php_msg', $LANG_STATIC['php_msg']);
         } else {
-  	        $sp_template->set_var('php_type','hidden');
-            $sp_template->set_var('php_warn','');
-            $sp_template->set_var('php_msg','');
-            $sp_template->set_var('php_checked','');
+            $sp_template->set_var ('php_selector', '');
+            $sp_template->set_var ('php_warn', '');
+            $sp_template->set_var ('php_msg', '');
         }
+        // old variables (for the 1.3-type checkbox)
+        $sp_template->set_var ('php_checked', '');
+        $sp_template->set_var ('php_type', 'hidden');
 
         if ($A['sp_nf'] == 1) {
             $sp_template->set_var('exit_checked','checked');

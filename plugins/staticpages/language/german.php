@@ -69,7 +69,7 @@ $LANG_STATIC= array(
     'no_such_page_anon' => 'Bitte einloggen.',
     'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF["site_name"]}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF["site_name"]} to receive full membership access.",
     'php_msg' => 'PHP: ',
-    'php_warn' => 'Hinweis: Wenn dieser Schalter aktiviert ist, wird in der Seite enthaltener PHP-Code ausgeführt. <em>Bitte mit Bedacht verwenden!</em>',
+    'php_warn' => 'Hinweis: Wenn diese Option aktiviert ist, wird in der Seite enthaltener PHP-Code ausgeführt. <em>Bitte mit Bedacht verwenden!</em>',
     'exit_msg' => 'Hinweistext: ',
     'exit_info' => 'Art des Hinweistextes, wenn kein Zugriff auf die Seite erlaubt ist: Aktiviert = "Anmeldung erforderlich", nicht aktiviert = "Zugriff verweigert".',
     'deny_msg' => 'Zugriff auf diese Seite ist nicht möglich. Die Seite wurde entweder umbenannt oder gelöscht oder Du hast nicht die nötigen Zugriffsrechte.',
@@ -100,7 +100,10 @@ $LANG_STATIC= array(
     'inblock_info' => 'Seite in einen Block packen.',
     'title_edit' => 'Seite ändern',
     'title_copy' => 'Seite kopieren',
-    'title_display' => 'Seite anzeigen'
+    'title_display' => 'Seite anzeigen',
+    'select_php_none' => 'PHP nicht ausführen',
+    'select_php_return' => 'PHP ausführen (mit return)',
+    'select_php_free' => 'PHP ausführen'
 );
 
 ?>

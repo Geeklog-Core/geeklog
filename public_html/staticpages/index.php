@@ -5,13 +5,14 @@
 // | Static Page Geeklog Plugin 1.3                                            |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
-// | This is the main page for the Geeklog Static Page Plugin                  |
 // |                                                                           |
+// | This is the main page for the Geeklog Static Page Plugin                  |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net                |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2003/12/29 13:21:45 dhaun Exp $
+// $Id: index.php,v 1.14 2004/01/02 22:10:03 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -73,9 +74,14 @@ if (!($error)) {
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_startBlock (stripslashes ($A['sp_title']));
     }
-    //Check for type (ie html or php)
+    // Check for type (ie html or php)
     if ($A['sp_php'] == 1) {
         $retval .= eval (stripslashes ($A['sp_content']));
+    } else if ($A['sp_php'] == 2) {
+        ob_start ();
+        eval (stripslashes ($A['sp_content']));
+        $retval .= ob_get_contents ();
+        ob_end_clean ();
     } else {
         $retval .= stripslashes ($A['sp_content']);
     }

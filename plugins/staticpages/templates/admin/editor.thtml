@@ -66,7 +66,7 @@
           </tr>
           <tr>
               <td align="right" valign="top">{php_msg}</td>
-              <td valign="top"><input type="{php_type}" name="sp_php" value="1" {php_checked}>&nbsp;&nbsp;{php_warn}</td>
+              <td valign="top">{php_selector}&nbsp;&nbsp;{php_warn}</td>
           </tr>
           <tr>
               <td align="right" valign="top">{exit_msg}</td>

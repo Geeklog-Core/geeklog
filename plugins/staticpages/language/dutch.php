@@ -98,7 +98,10 @@ $LANG_STATIC= array(
     'inblock_info' => 'Wrap Static Page in a block.',
     'title_edit' => 'Edit page',
     'title_copy' => 'Make a copy of this page',
-    'title_display' => 'Display page'
+    'title_display' => 'Display page',
+    'select_php_none' => 'do not execute PHP',
+    'select_php_return' => 'execute PHP (return)',
+    'select_php_free' => 'execute PHP'
 );
 
 ?>
