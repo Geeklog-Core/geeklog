@@ -10,8 +10,8 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            | 	
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     | 
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.49 2002/04/11 16:53:14 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.50 2002/04/13 09:47:58 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -2110,8 +2110,8 @@ function COM_emailUserTopics()
         $nsrows = DB_numRows($stories);
 
         if ($nsrows == 0) {
-            // If no new stories where pulled then exit out
-            return;
+            // If no new stories where pulled for this user, continue with next
+            continue;
         }
 
         $mailtext = $LANG08[29] . date("Y-m-d",time()) . "\n";
@@ -2121,7 +2121,7 @@ function COM_emailUserTopics()
             $mailtext .= "\n------------------------------\n\n";
             $mailtext .= "$LANG08[31]: {$S['title']}\n";
             $mailtext .= "$LANG08[32]: " . strftime($_CONF['date'],strtotime($S['day'])) . "\n\n";
-            $mailtext .= nl2br(stripslashes(strip_tags($S['introtext']))) . "\n\n";
+            $mailtext .= stripslashes(strip_tags($S['introtext'])) . "\n\n";
             $mailtext .= "$LANG08[33] {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
         }
         $mailtext .= "\n------------------------------\n";
