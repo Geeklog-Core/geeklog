@@ -70,6 +70,16 @@
 										<td width="11"><spacer type="horizontal" size="15"></td>
 										<td><input type="text" name="rdf_file" value="{rdf_file}" size="70"></td>
 									</tr>
+                                    <tr>
+                                        <td align="left" valign="top" nowrap><font color="black">Allow MySQL backups</font></td>
+                                        <td width="11"><spacer type="horizontal" size="15"></td>
+                                        <td><input type="checkbox" name="allow_mysqldump" {allow_mysqldump_checked}></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="left" valign="top" nowrap><font color="black">Database Backup Directory</font></td>
+                                        <td width="11"><spacer type="horizontal" size="15"></td>
+                                        <td><input type="text" name="backup_path" value="{backup_path}" size="50"></td>
+                                    </tr>
 								</table>
 								<br>
 								** If you followed the instructions in the INSTALL document, the above settings do not need to be changed. Only change them if you're certain you know what you're doing.</td>
