@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.31 2004/08/15 12:06:11 dhaun Exp $
+// $Id: lib-sessions.php,v 1.32 2004/09/06 19:51:55 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -413,9 +413,6 @@ function SESS_endUserSession($userid)
     $sql = "DELETE FROM {$_TABLES['sessions']} WHERE (uid = $userid)";
     $result = DB_query($sql);
 
-    // Release PHP SESSION
-    HTTP_Session::destroy();
-    
     return 1;
 }
 
