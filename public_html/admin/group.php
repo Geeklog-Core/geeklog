@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.31 2003/09/20 16:36:05 dhaun Exp $
+// $Id: group.php,v 1.32 2003/11/17 01:40:31 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -444,6 +444,8 @@ function listgroups()
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('lang_coregroup', $LANG_ACCESS['coregroup']);
+    $group_templates->set_var('lang_action', $LANG_ACCESS['action']);
+    $group_templates->set_var('lang_edit', $LANG_ACCESS['edit']);
     $group_templates->set_var('lang_list_users', $LANG_ACCESS['listusers']);
 
     $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
@@ -584,6 +586,66 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     return $retval;
 }
 
+function grp_selectUsers($group_id = "0", $allusers=false) {
+    global $_USER,$_TABLES;
+    $retval = '';
+    if($allusers) {    // Show all site members - else users in selected group
+        $result = DB_query( "SELECT uid,username from {$_TABLES['users']} ORDER BY username" );
+        while(list($uid,$username) = DB_fetchArray($result)) {
+            if( DB_count($_TABLES['group_assignments'], array('ug_uid','ug_main_grp_id'), array($uid,$group_id)) == 0 ) {
+                $retval .= '<option value="' . $uid . '">'. $username . '</option>';
+            }
+        }
+    } else {
+        $groups = getGroupList ($group_id);
+        $groupList = implode (',', $groups);
+        $sql = "FROM {$_TABLES['users']},{$_TABLES['group_assignments']} 
+            WHERE {$_TABLES['users']}.uid > 1 AND {$_TABLES['users']}.uid = {$_TABLES['group_assignments']}.ug_uid AND ({$_TABLES['group_assignments']}.ug_main_grp_id IN ({$groupList}))";
+        $result = DB_query ("SELECT DISTINCT uid,username " . $sql . " ORDER BY username");
+        while(list($uid,$username) = DB_fetchArray($result)) {
+            $retval .= '<option value="' . $uid . '">'. $username . '</option>';
+        }
+    }
+    return $retval;
+}
+
+
+function editusers($group) {
+    global $_CONF, $LANG_ACCESS;
+
+    $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'] , '',
+                       COM_getBlockTemplate ('_admin_block', 'header'));
+    $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
+    $groupmembers->set_file (array ('groupmembers'=>'groupmembers.thtml'));
+    $groupmembers->set_var ('site_url',$_CONF['site_url']);
+    $groupmembers->set_var ('phpself',$PHP_SELF);
+    $groupmembers->set_var ('LANG_sitemembers',$LANG_ACCESS['availmembers']);
+    $groupmembers->set_var ('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
+    $groupmembers->set_var ('sitemembers', grp_selectUsers($group,true) );
+    $groupmembers->set_var ('group_list', grp_selectUsers($group) );
+    $groupmembers->set_var ('LANG_add',$LANG_ACCESS['add']);
+    $groupmembers->set_var ('LANG_remove',$LANG_ACCESS['remove']);
+    $groupmembers->set_var('lang_save', $LANG_ACCESS['save']);
+    $groupmembers->set_var('lang_cancel', $LANG_ACCESS['cancel']);
+    $groupmembers->set_var ('group_id',$group);
+    $groupmembers->parse ('output', 'groupmembers');
+    $retval .= $groupmembers->finish($groupmembers->get_var('output'));
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    Return $retval;
+
+}
+
+function savegroupusers($groupid,$groupmembers) {
+    global $_CONF, $_TABLES;
+
+    // Delete all the current buddy records for this user and add all the selected ones
+    DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id={$groupid} AND ug_uid != 'NULL' ");
+    $adduser = explode("|",$groupmembers);
+    for( $i = 0; $i < count($adduser); $i++ )    {
+        DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ('$groupid', '$adduser[$i]')");
+    }
+    echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
+}
 // MAIN
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
@@ -599,6 +661,8 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
 } else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
     $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,
             $HTTP_POST_VARS[$_TABLES['groups']]);
+} else if ($mode == "savegroupusers") {
+    $display .= savegroupusers($grp_id, $HTTP_POST_VARS['groupmembers']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= editgroup($grp_id);
@@ -607,8 +671,11 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     $display .= COM_siteHeader ('menu');
     $display .= listusers ($grp_id, $page);
     $display .= COM_siteFooter ();
-}
-else { // 'cancel' or no mode at all
+} else if ($mode == 'editusers') {
+    $display .= COM_siteHeader ('menu');
+    $display .= editusers ($grp_id, $page);
+    $display .= COM_siteFooter ();
+} else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     if (isset ($msg)) {
         $display .= COM_showMessage($msg);
