@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.281 2004/02/07 17:41:17 dhaun Exp $
+// $Id: lib-common.php,v 1.282 2004/02/14 13:07:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1101,9 +1101,11 @@ function COM_siteFooter( $rightblock = false )
     }
     
     // Global centerspan variable set in index.php
-    if(isset($GLOBALS['centerspan'])) {
+    if( isset( $GLOBALS['centerspan'] ))
+    {
         $footer->set_var( 'centerblockfooter-span', '</td></tr></table>' );
     }
+
     // Actually parse the template and make variable substitutions
     $footer->parse( 'index_footer', 'footer' );
 
@@ -4545,7 +4547,7 @@ function COM_getUserCookieTimeout()
 
     if( empty( $timeoutvalue ))
     {
-        $timeoutvalue = $_CONF['default_perm_cookie_timeout'];
+        $timeoutvalue = 0;
     }
 
     return $timeoutvalue;

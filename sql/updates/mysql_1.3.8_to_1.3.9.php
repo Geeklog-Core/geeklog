@@ -30,8 +30,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id varchar(40) N
 // change "remember me" option to 1 Month for those who had it at 1 Year
 $_SQL[] = "UPDATE {$_TABLES['users']} SET cookietimeout = 2678400 WHERE cookietimeout = 31536000";
 
-// remove '1 Year' option
+// remove '1 Year' option, add "(don't)" option, sort table
 $_SQL[] = "DELETE FROM {$_TABLES['cookiecodes']} WHERE cc_value = 31536000";
+$_SQL[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (0,'(don\'t)')";
+$_SQL[] = "ALTER TABLE {$_TABLES['cookiecodes']} ORDER BY cc_value";
 
 // extend max. length of all URL fields to 255 characters
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE rdfurl rdfurl varchar(255) default NULL";

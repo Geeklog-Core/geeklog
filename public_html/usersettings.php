@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.90 2004/02/02 19:04:47 dhaun Exp $
+// $Id: usersettings.php,v 1.91 2004/02/14 13:07:57 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -52,13 +52,10 @@ $_US_VERBOSE = false;
 */
 function edituser() 
 {
-    global $_TABLES, $_CONF, $LANG04, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG04;
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
-    $A = DB_fetchArray($result);
-    if ($A['cookietimeout'] == 0) {
-        $A['cookietimeout'] = $_CONF['default_perm_cookie_timeout'];
-    }
+    $A = DB_fetchArray ($result);
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile' => 'profile.thtml',
@@ -657,10 +654,23 @@ function saveuser($A)
         }
     }
 
+    $A['cooktime'] = COM_applyFilter ($A['cooktime'], true);
+    if ($A['cooktime'] < 0) {
+        $A['cooktime'] = 0;
+    }
+
     // no need to filter the password as it's md5 encoded anyway
     if (!empty ($A['passwd'])) {
         $passwd = md5 ($A['passwd']);
         DB_change($_TABLES['users'], 'passwd', "$passwd", "uid", $_USER['uid']);
+        if ($A['cooktime'] > 0) {
+            $cooktime = $A['cooktime'];
+        } else {
+            $cooktime = -1000;
+        }
+        setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
+                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                   $_CONF['cookiesecure']);
     }
 
     $A['email'] = COM_applyFilter ($A['email']);
@@ -683,9 +693,7 @@ function saveuser($A)
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }
 
-        $A['cooktime'] = COM_applyFilter ($A['cooktime']);
         if ($A['cooktime'] <= 0) {
-            $A['cooktime'] = 'NULL';
             $cooktime = 1000;
             setcookie ($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime,
                        $_CONF['cookie_path'], $_CONF['cookiedomain'],

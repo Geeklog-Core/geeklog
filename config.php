@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.105 2004/02/07 17:41:15 dhaun Exp $
+// $Id: config.php,v 1.106 2004/02/14 13:07:55 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -243,9 +243,9 @@ $_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
 // | session ID in the cookie.                                                 |
 // |                                                                           |
 // | default_perm_cookie_timeout is how long you want the permanent cookie     |
-// | to persist for.  This can be overridden by the user in their user prefs   |
-// | if they want.  If you don't want to allow permanent cookies set the       |
-// | value to an empty string ''.                                              |
+// | to persist for (in seconds).  This can be overridden by the user in       |
+// | their user prefs if they want.  If you set the default to 0, users will   |
+// | have to log in again once their session expired.                          |
 // |                                                                           |
 // | session_cookie_time is how long you want the session cookie to persist    |
 // | for.  Only really useful in scenarios where you don't want to allow       |
@@ -261,7 +261,7 @@ $_CONF['cookie_lastvisit']              = 'LastVisit';
 $_CONF['cookie_lastvisittemp']          = 'LastVisitTemp';
 
 $_CONF['cookie_ip']                     = 0;
-$_CONF['default_perm_cookie_timeout']   = 604800;
+$_CONF['default_perm_cookie_timeout']   = 28800;
 $_CONF['session_cookie_timeout']        = 7200;
 $_CONF['cookie_path']                   = '/';
 $_CONF['cookiedomain']                  = ''; // e.g. '.example.com'

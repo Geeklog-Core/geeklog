@@ -1,8 +1,10 @@
 GeekLog History/Changes:
 
-??? ??, 2004 (1.3.9rc1)
+Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Fixed a bug/typo introduced in 1.3.8-1sr4 that prevented you from deleting
+  story submissions from the Admin's story editor (reported by James Bothe).
 - Changed all url fields in the database to hold up to 255 characters per URL.
   Please note that the template files in most themes will limit the max.
   number of characters to 96 or 128 characters. See docs/theme.html for more
@@ -27,7 +29,8 @@ GeekLog History/Changes:
   includes those menu elements that the current user is allowed to use
   (i.e. honoring the $_CONF['XXXloginrequired'] settings).
 - COM_accessLog() now logs the user's uid and IP address automatically.
-- The option to stay logged in for 1 year has been removed.
+- The option to stay logged in for 1 year has been removed and an option to
+  not stay logged in (after the session has expired) has been added.
 - Fixed display of default blocks in the user preferences.
 - If the user chose not to see certain topics (by selecting them from the
   "Excluded Items" list in the preferences) then don't list those topics in

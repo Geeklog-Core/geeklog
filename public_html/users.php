@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.74 2004/01/31 19:50:41 dhaun Exp $
+// $Id: users.php,v 1.75 2004/02/14 13:07:57 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -439,23 +439,23 @@ function createuser($username,$email)
 
         if ($ucount == 0 AND $ecount == 0) {
             $regdate = strftime('%Y-%m-%d %H:%M:$S',time());
-            DB_save($_TABLES['users'],'username,email,regdate',"'$username','$email','$regdate'");
+            DB_save($_TABLES['users'],'username,email,regdate,cookietimeout',"'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'");
             $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
 
             // Add user to Logged-in group (i.e. members) and the All Users
             // group (which includes anonymous users
             $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
             $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
-            DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
-            DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
-            DB_query("INSERT INTO {$_TABLES["userprefs"]} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
+            DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
             if ($_CONF['emailstoriesperdefault'] == 1) {
-                DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
+                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
             } else {
-                DB_query("INSERT INTO {$_TABLES["userindex"]} (uid,etids) VALUES ($uid, '-')");
+                DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
             }
-            DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
-            DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
             if ($_CONF['usersubmission'] == 1) {
                 $queueUser = true;
                 if (!empty ($_CONF['allow_domains'])) {
@@ -837,7 +837,7 @@ default:
             if ($VERBOSE) {
                 COM_errorLog("Trying to set permanent cookie with time of $cooktime",1);
             }
-            if (!empty($cooktime)) {
+            if ($cooktime > 0) {
                 // They want their cookie to persist for some amount of time so set it now
                 if ($VERBOSE) {
                     COM_errorLog('Trying to set permanent cookie',1);
