@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.6 2005/01/28 04:49:10 vinny Exp $
+// $Id: lib-comment.php,v 1.7 2005/01/28 13:12:06 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -763,6 +763,10 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
         // FIXME: is 'plugin=spamx' needed here?
         echo COM_refresh($_CONF['site_url'] . '/index.php?msg='.$result.'&amp;plugin=spamx');
         exit;
+    }
+    // Let plugins have a chance to decide what to do before saving the comment, return errors.
+    if ($someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)) {
+        return $someError;
     }
 
     // Clean 'em up a bit!
