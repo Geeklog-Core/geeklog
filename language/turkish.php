@@ -1102,7 +1102,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "404 Hatasý",
-    2 => "Üff, her yere baktým ama <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b> bulamadým.",
+    2 => "Üff, her yere baktým ama <b>%s</b> bulamadým.",
     3 => "<p>Üzgünüz, belirttiðiniz dosya bulunamýyor. Lütfen <a href=\"{$_CONF['site_url']}\">ana sayfa</a>ya veya <a href=\"{$_CONF['site_url']}/search.php\">arama sayfasý</a>'na bakarak kaybettiðiniz dokümaný bulabilecekmisiniz bir bakýn."
 );
 

@@ -1092,7 +1092,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "B³±d 404",
-    2 => "Kurcze, wszêdzie szuka³em ale nie mogê znale¼æ <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    2 => "Kurcze, wszêdzie szuka³em ale nie mogê znale¼æ <b>%s</b>.",
     3 => "<p>Przykro nam ale dany plik nie istnieje. Sprawd¼ <a href=\"{$_CONF['site_url']}/search.php\">stronê z wyszukiwark±</a> aby sprawdziæ czy mo¿na znale¼æ co zgubi³e¶."
 );
 

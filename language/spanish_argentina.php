@@ -1113,9 +1113,8 @@ $LANG_BUTTONS = array(
 
 
 $LANG_404 = array(
-
     1 => "Error 404",
-    2 => "Buah, he mirado en todos los lados pero no puedo encontrar <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    2 => "Buah, he mirado en todos los lados pero no puedo encontrar <b>%s</b>.",
     3 => "<p>Lo sentimos, pero el archivo que pides no existe. Por favor, consulta la <a href=\"{$_CONF['site_url']}\">página principal</a> o la <a href=\"{$_CONF['site_url']}/search.php\">página de búsqueda</a> para ver si puedes encontrar lo que has perdido."
 );
 

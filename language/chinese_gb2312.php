@@ -1112,7 +1112,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "404 错误",
-    2 => "咦，我到处都看过了但找不到<b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    2 => "咦，我到处都看过了但找不到<b>%s</b>.",
     3 => "<p>很抱歉，但你要求的文件不存在。请检查<a href=\"{$_CONF["site_url"]}\">主页</a>或<a href=\"{$_CONF["site_url"]}/search.php\">搜索页</a>看看能发现什麽。"
 );
 

@@ -1100,7 +1100,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
      1 => "Errore 404",
-     2 => "Attenzione, Abbiamo cercato in tutto il sito ma la pagina http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]} non &egrave; stato trovata.",
+     2 => "Attenzione, Abbiamo cercato in tutto il sito ma la pagina %s non &egrave; stato trovata.",
      3 => "Siamo spiacenti, ma il file da te richiesto non esiste.  Prego controlla nella pagina principale o nella pagina di ricerca per vedere se puoi trovare quanto da te richiesto."  
 );
 

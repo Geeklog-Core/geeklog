@@ -1224,7 +1224,7 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => "404 Error",
     2 => "Jösses,  jag har letat överallt, men jag kan inte hitta "
-        . "<b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+        . "<b>%s</b>.",
     3 => "<p>Vi beklagar, men filen du söker existerar inte.  Leta gärna på vår "
         . "<a href=\"{$_CONF['site_url']}\">förstasida</a> eller använd "
         . "<a href=\"{$_CONF['site_url']}/search.php\">söksidan</a> för att försöka lokalisera "

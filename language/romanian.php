@@ -1100,7 +1100,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "Eroare 404",
-    2 => "Oh, nu! Ne-am uitat peste tot, dar n-am gasit <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    2 => "Oh, nu! Ne-am uitat peste tot, dar n-am gasit <b>%s</b>.",
     3 => "<p>Ne pare rau, dar pagina care o cautati nu exista. Va rugam, verificati <a href=\"{$_CONF['site_url']}\">pagina principala</a> sau <a href=\"{$_CONF['site_url']}/search.php\">pagina de cautare</a> sa vedeti daca gasiti ceea ce cautati."
 );
 

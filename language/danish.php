@@ -1100,7 +1100,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => "404 Fejl",
-    2 => "Hmmm, jeg har ledt såvel oppe som nede for at finde filen <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    2 => "Hmmm, jeg har ledt såvel oppe som nede for at finde filen <b>%s</b>.",
     3 => "<p>Desværre, men filen du efterspørger findes ikke. Du er velkommen til selv at lede via <a href=\"{$_CONF['site_url']}\">forsiden</a> eller <a href=\"{$_CONF['site_url']}/search.php\">søgesiden</a> for at se om du dér kan finde det du søger."
 );
 
