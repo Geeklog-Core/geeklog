@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.184 2002/11/25 21:10:43 dhaun Exp $
+// $Id: lib-common.php,v 1.185 2002/11/27 18:11:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1125,7 +1125,7 @@ function COM_topicList( $selection, $selected='', $sortcol=1 )
                 $retval .= ' selected';
             }
 
-            $retval .= '>' . $A[1] . '</option>' . LB;
+            $retval .= '>' . stripslashes( $A[1] ) . '</option>' . LB;
         }
     }
 

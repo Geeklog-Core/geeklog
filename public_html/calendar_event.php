@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.22 2002/10/22 09:51:38 dhaun Exp $
+// $Id: calendar_event.php,v 1.23 2002/11/27 18:11:26 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -85,14 +85,14 @@ function adduserevent($eid)
         }
 
         $cal_template->set_var('lang_where',$LANG02[4]);
-        $location = stripslashes($A['location']) . '<br />'
-		. $A['address1'] . '<br />'
-		. $A['address2'] . '<br />'
-		. $A['city'] . ', ' . $A['state'] . ' ' . $A['zipcode'];
+        $location = stripslashes($A['location']) . '<br>'
+		. stripslashes ($A['address1']) . '<br>'
+		. stripslashes ($A['address2']) . '<br>'
+		. stripslashes ($A['city']) . ', ' . $A['state'] . ' ' . $A['zipcode'];
         //$cal_template->set_var('event_location', $A['location']);
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG02[5]);
-        $cal_template->set_var('event_description', $A['description']);
+        $cal_template->set_var('event_description', stripslashes ($A['description']));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG02[9]);
         $cal_template->parse('output','addevent'); 	
@@ -153,7 +153,7 @@ function editpersonalevent($A)
     $cal_templates->set_file('form','editpersonalevent.thtml');
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('lang_title', $LANG12[10]);
-    $cal_templates->set_var('event_title',$A['title']);
+    $cal_templates->set_var('event_title', stripslashes ($A['title']));
     $cal_templates->set_var('lang_eventtype', $LANG12[49]);
     $etypes = explode(',',$_CONF['event_types']);
     $type_options = '';
@@ -180,7 +180,7 @@ function editpersonalevent($A)
         $month_options .= '>' . $i . '</option>';
     }
     $cal_templates->set_var('startmonth_options', $month_options);
-    
+
     $day_options = '';
     for ($i = 1; $i <= 31; $i++) {
         $day_options .= '<option value="' . $i . '"';
@@ -210,7 +210,7 @@ function editpersonalevent($A)
         $hour_options .= '>' . $i . '</option>';
     }
     $cal_templates->set_var('starthour_options', $hour_options);
-    
+
     $startmin = date('i',strtotime($A['startdate']));
     $cal_templates->set_var('start00_selected','');
     $cal_templates->set_var('start15_selected','');
@@ -238,7 +238,7 @@ function editpersonalevent($A)
         $month_options .= '>' . $i . '</option>';
     }
     $cal_templates->set_var('endmonth_options', $month_options);
-    
+
     $day_options = '';
     for ($i = 1; $i <= 31; $i++) {
         $day_options .= '<option value="' . $i . '"';
@@ -274,7 +274,7 @@ function editpersonalevent($A)
         } 
     }
     $cal_templates->set_var('endhour_options', $hour_options);
-    
+
     $endmin = date('i',strtotime($A['enddate']));
     $cal_templates->set_var('end00_selected','');
     $cal_templates->set_var('end15_selected','');
@@ -288,7 +288,7 @@ function editpersonalevent($A)
         $cal_templates->set_var('endam_selected', '');
         $cal_templates->set_var('endpm_selected', 'selected="SELECTED"');
     }
-  
+
     $cal_templates->set_var('lang_alldayevent',$LANG12[43]);
     if ($A['allday'] == 1) {
         $cal_templates->set_var('allday_checked', 'checked="CHECKED"');
@@ -297,15 +297,15 @@ function editpersonalevent($A)
     }
 
     $cal_templates->set_var('lang_location',$LANG12[14]);
-    $cal_templates->set_var('event_location', $A['location']);
-    
+    $cal_templates->set_var('event_location', stripslashes ($A['location']));
+
     $cal_templates->set_var('lang_addressline1', $LANG12[44]);
-    $cal_templates->set_var('event_address1', $A['address1']);
+    $cal_templates->set_var('event_address1', stripslashes ($A['address1']));
     $cal_templates->set_var('lang_addressline2', $LANG12[45]);
-    $cal_templates->set_var('event_address2', $A['address2']);
+    $cal_templates->set_var('event_address2', stripslashes ($A['address2']));
 
     $cal_templates->set_var('lang_city', $LANG12[46]);
-    $cal_templates->set_var('event_city',$A['city']);
+    $cal_templates->set_var('event_city', stripslashes ($A['city']));
 
     $state_options = '';
     reset($_STATES);
@@ -322,13 +322,13 @@ function editpersonalevent($A)
 
     $cal_templates->set_var('lang_zipcode', $LANG12[48]);
     $cal_templates->set_var('event_zipcode', $A['zipcode']);
-    
+
     $cal_templates->set_var('lang_link', $LANG12[11]);
     $cal_templates->set_var('event_url', $A['url']);
 
     $cal_templates->set_var('lang_description', $LANG12[15]);
-    $cal_templates->set_var('event_description', $A['description']);
-    
+    $cal_templates->set_var('event_description', stripslashes ($A['description']));
+
     $cal_templates->set_var('lang_htmlnotallowed', $LANG12[35]);
     $cal_templates->set_var('lang_submit', $LANG12[8]);
     $cal_templates->set_var('lang_delete', $LANG12[52]);
@@ -446,7 +446,7 @@ default:
                     $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
                     $cal_templates->set_var('lang_month', $str_month);
                     $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
-                    //$display .= '<br /><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
+                    //$display .= '<br><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
                     $currentmonth = strftime("%B",strtotime($A["start"]));
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
@@ -502,19 +502,15 @@ default:
                     $cal_templates->set_var('event_start', $thedatetime);
                     $cal_templates->set_var('event_end', $LANG30[26]);
                 }
-                #$thedatetime = COM_getUserDateTimeFormat($A['start']);
-                #$cal_templates->set_var('event_start', $thedatetime[0]);
-                #$thedatetime = COM_getUserDateTimeFormat($A['end']);
-                #$cal_templates->set_var('event_end', $thedatetime[0]);
                 $cal_templates->set_var('lang_where', $LANG02[4]);
                 if (!empty($A['address1'])) {
-                    $cal_templates->set_var('event_address1', $A['address1']); 
+                    $cal_templates->set_var('event_address1', stripslashes ($A['address1']));
                 } else {
                     $cal_templates->set_var('event_address1','');
                 }
                 if (!empty($A['address2'])) {
-                    $cal_templates->set_var('br1', '<br />');
-                    $cal_templates->set_var('event_address2', $A['address2']); 
+                    $cal_templates->set_var('br1', '<br>');
+                    $cal_templates->set_var('event_address2', stripslashes ($A['address2']));
                 } else {
                     $cal_templates->set_var('br1', '');
                     $cal_templates->set_var('event_address2','');
@@ -522,9 +518,9 @@ default:
                 if (empty($A['event_city']) && empty($A['event_state']) && empty($A['event_zip'])) {
                     $cal_templates->set_var('br2','');
                 } else {
-                    $cal_templates->set_var('br2','<br />');
+                    $cal_templates->set_var('br2','<br>');
                 }
-                $cal_templates->set_var('event_city', $A['city']);
+                $cal_templates->set_var('event_city', stripslashes($A['city']));
                 if (empty($A['state']) or ($A['state'] == '--')) 
                 {
                     $cal_templates->set_var('event_state', '');
@@ -534,23 +530,23 @@ default:
                     $cal_templates->set_var('event_state', ', ' . $A['state']);
                 }
                 $cal_templates->set_var('event_zip', $A['zipcode']);
-                $cal_templates->set_var('event_location', $A['location']);
+                $cal_templates->set_var('event_location', stripslashes ($A['location']));
                 $cal_templates->set_var('lang_description', $LANG02[5]);
-                $cal_templates->set_var('event_description', $A['description']);
+                $cal_templates->set_var('event_description', stripslashes ($A['description']));
                 $cal_templates->parse('event_details', 'details', true); 
                 //$cal_templates->parse('output','events');
                 //$display .= $cal_templates->finish($cal_templates->get_var('output')); 
             } else {
-                //$display .= '<br /><b>'.$LANG_ACCESS['accessdenied'].'</b>'
+                //$display .= '<br><b>'.$LANG_ACCESS['accessdenied'].'</b>'
                 //    .'<p>'.$LANG_ACCESS['eventdenialmsg'] . COM_endBlock() . COM_siteFooter();
             }
         } 
     }
-                $cal_templates->parse('output','events');
-                $display .= $cal_templates->finish($cal_templates->get_var('output')); 
-	
+    $cal_templates->parse('output','events');
+    $display .= $cal_templates->finish($cal_templates->get_var('output')); 
+
     $display .= COM_endBlock() . COM_siteFooter();
-		
+
 } // end switch
 
 echo $display

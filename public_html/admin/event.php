@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.31 2002/09/20 20:54:15 dhaun Exp $
+// $Id: event.php,v 1.32 2002/11/27 18:11:26 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -69,11 +69,11 @@ if (!SEC_hasRights('event.edit')) {
 function editevent($mode, $A) 
 {
 	global $_TABLES, $LANG30, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
-    
+
     $retval = '';
 
 	$retval .= COM_startBlock($LANG22[1]);
-    
+
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
@@ -110,7 +110,7 @@ function editevent($mode, $A)
 
     $event_templates->set_var('event_id', $A['eid']);
     $event_templates->set_var('lang_eventtitle', $LANG22[3]);
-    $event_templates->set_var('event_title', $A['title']);
+    $event_templates->set_var('event_title', stripslashes ($A['title']));
     $types  = explode(',',$_CONF['event_types']);
     for ($i = 1; $i <= count($types); $i++) {
         $catdd .= '<option value="' . current($types) . '" ';
@@ -317,13 +317,13 @@ function editevent($mode, $A)
         $event_templates->set_var('allday_checked', 'checked="CHECKED"');
     }
     $event_templates->set_var('lang_location',$LANG12[51]);
-    $event_templates->set_var('event_location', $A['location']);
+    $event_templates->set_var('event_location', stripslashes ($A['location']));
     $event_templates->set_var('lang_addressline1',$LANG12[44]);
-    $event_templates->set_var('event_address1', $A['address1']);
+    $event_templates->set_var('event_address1', stripslashes ($A['address1']));
     $event_templates->set_var('lang_addressline2',$LANG12[45]);
-    $event_templates->set_var('event_address2', $A['address2']);
+    $event_templates->set_var('event_address2', stripslashes ($A['address2']));
     $event_templates->set_var('lang_city',$LANG12[46]);
-    $event_templates->set_var('event_city', $A['city']);
+    $event_templates->set_var('event_city', stripslashes ($A['city']));
     $event_templates->set_var('lang_state',$LANG12[47]);
     $state_options = '';
     for ($i = 1; $i <= count($_STATES); $i++) {
@@ -338,18 +338,18 @@ function editevent($mode, $A)
     $event_templates->set_var('lang_zipcode',$LANG12[48]);
     $event_templates->set_var('event_zipcode', $A['zipcode']);
     $event_templates->set_var('lang_eventlocation', $LANG22[7]);
-    $event_templates->set_var('event_location', $A['location']);
+    $event_templates->set_var('event_location', stripslashes ($A['location']));
     $event_templates->set_var('lang_eventdescription', $LANG22[8]);
-    $event_templates->set_var('event_description', $A['description']); 
+    $event_templates->set_var('event_description', stripslashes ($A['description']));
     $event_templates->set_var('lang_save', $LANG22[20]);
     $event_templates->set_var('lang_cancel', $LANG22[21]);
 
 	// user access info
-    $event_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
-    $event_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $event_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
+    $event_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $event_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}"));
     $event_templates->set_var('owner_id', $A['owner_id']);
-    $event_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $event_templates->set_var('lang_group', $LANG_ACCESS['group']);
 
     $groupdd = '';
     $usergroups = SEC_getUserGroups();
@@ -370,8 +370,8 @@ function editevent($mode, $A)
 		$groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
 	}
     $event_templates->set_var('group_dropdown', $groupdd);
-    $event_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
-    $event_templates->set_var('lang_permissionskey', $LANG_ACCESS[permissionskey]);
+    $event_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    $event_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $event_templates->parse('output', 'editor');
     $retval .= $event_templates->finish($event_templates->get_var('output'));
@@ -481,7 +481,7 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 */
 function listevents() 
 {
-	global $_TABLES, $LANG22,$_CONF,$LANG_ACCESS;
+	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS;
 
     $retval = '';
 
@@ -495,7 +495,7 @@ function listevents()
     $event_templates->set_var('lang_adminhome', $LANG22[19]);
     $event_templates->set_var('lang_instructions', $LANG22[12]);
     $event_templates->set_var('lang_eventtitle', $LANG22[13]);
-    $event_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $event_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $event_templates->set_var('lang_startdate', $LANG22[14]);
     $event_templates->set_var('lang_enddate', $LANG22[15]);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
@@ -507,12 +507,12 @@ function listevents()
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {
             if ($access == 3) {
-                $access = $LANG_ACCESS[edit];
+                $access = $LANG_ACCESS['edit'];
             } else {
-                $access = $LANG_ACCESS[readonly];
+                $access = $LANG_ACCESS['readonly'];
             }
         } else {
-                $access = $LANG_ACCESS[none];
+                $access = $LANG_ACCESS['none'];
         }
         $event_templates->set_var('event_id', $A['eid']);
         $event_templates->set_var('event_title', $A['title']);
