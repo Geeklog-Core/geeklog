@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.134 2002/08/08 10:05:29 dhaun Exp $
+// $Id: lib-common.php,v 1.135 2002/08/09 16:05:08 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -539,7 +539,7 @@ function COM_siteHeader($what = 'menu')
     // Stats link 
     $header->set_var('menuitem_url', $_CONF['site_url'] . '/stats.php');
     $header->set_var('menuitem_text', $LANG01[76]);
-    $header->parse('menu_elements', 'menuitem', true);
+    $header->parse('menu_elements', 'menuitem_last', true);
    
     if ($what <> 'none') { 
         // Now show any blocks
@@ -2922,14 +2922,6 @@ function phpblock_whosonline()
     return $retval;
 }
 
-// Now include all plugin functions
-$result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
-$nrows = DB_numRows($result);
-for ($i = 1; $i <= $nrows; $i++) {
-	$A = DB_fetchArray($result);
-	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
-}
-
 /**
 * Gets the <option> values for calendar months
 *
@@ -3192,6 +3184,14 @@ function COM_getRate($occurrences, $timespan)
 		$singular = 'No events';
 	}
 	return $singular;
+}
+
+// Now include all plugin functions
+$result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
+$nrows = DB_numRows($result);
+for ($i = 1; $i <= $nrows; $i++) {
+	$A = DB_fetchArray($result);
+	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
 }
 
 ?>
