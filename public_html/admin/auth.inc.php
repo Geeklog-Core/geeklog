@@ -31,7 +31,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.17 2003/09/01 19:01:05 dhaun Exp $
+// $Id: auth.inc.php,v 1.18 2003/12/28 18:50:07 dhaun Exp $
+
+// this file can't be used on its own
+if (eregi ('auth.inc.php', $PHP_SELF))
+{
+    die ('This file can not be used on its own.');
+}
 
 // MAIN
 
