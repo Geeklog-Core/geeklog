@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.29 2002/04/19 21:38:00 tony_bibbs Exp $
+// $Id: config.php,v 1.30 2002/04/24 16:05:13 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -75,7 +75,7 @@ $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']         = 'admin@example.com';
 $_CONF['site_url']          = 'http://www.example.com';
 $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
-$_CONF['theme']             = 'Yahoo';  // default theme
+$_CONF['theme']             = 'XSilver';  // default theme
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
@@ -85,7 +85,6 @@ $_CONF['allow_user_photo'] = 1; // 1 = on, 0 = off...flag that allows users to u
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
 // +---------------------------------------------------------------------------+
-
 $_CONF['language']  = 'english';
 $_CONF['locale']    = 'en-gb';
 $_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
