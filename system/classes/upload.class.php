@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.5 2002/04/10 16:11:25 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.6 2002/04/17 16:22:51 tony_bibbs Exp $
 
 class upload
 {
@@ -644,6 +644,8 @@ class upload
             }
             next($this->_filesToUpload);
         }
+        reset($GLOBALS['HTTP_POST_FILES']);
+        
         return $fcount;
 	}
 	
