@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.29 2002/11/15 15:50:15 dhaun Exp $
+// $Id: article.php,v 1.30 2003/01/16 22:52:40 tony Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -129,6 +129,18 @@ if ($A['count'] > 0) {
         $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story' ";
         $result = DB_query($sql);
         $A = DB_fetchArray($result);
+
+		if($query)
+		{
+			$mywords = explode(" ",$query);
+            foreach ($mywords as $searchword)
+            {
+                    $A['introtext'] = preg_replace ("/($searchword)/i", "<span class=highlight>\\1</span>", $A['introtext']);
+                    $A['bodytext'] = preg_replace ("/($searchword)/i", "<span class=highlight>\\1</span>", $A['bodytext']);
+            }
+
+		}
+
 
         // Display whats related any polls configured for this page
 
