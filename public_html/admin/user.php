@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.51 2003/04/25 09:07:02 dhaun Exp $
+// $Id: user.php,v 1.52 2003/06/12 09:26:17 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -524,32 +524,45 @@ function display_form()
     return $retval;
 }
 
+function delete_user ($uid)
+{
+    global $_CONF, $_TABLES;
+
+    // Ok, delete everything related to this user
+
+    // first, remove from all security groups
+    DB_delete ($_TABLES['group_assignments'], 'ug_uid', $uid);
+
+    // remove user information and preferences
+    DB_delete ($_TABLES['userprefs'], 'uid', $uid);
+    DB_delete ($_TABLES['userindex'], 'uid', $uid);
+    DB_delete ($_TABLES['usercomment'], 'uid', $uid);
+    DB_delete ($_TABLES['userinfo'], 'uid', $uid);
+
+    // Call custom account profile delete function if enabled and exists
+    if ($_CONF['custom_registration'] AND function_exists (custom_userdelete)) {
+        custom_userdelete ($uid);
+    } 
+
+    // let plugins update their data for this user
+    PLG_deleteUser ($uid);
+
+    // avoid having orphand stories/comments by making them anonymous posts
+    DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
+    DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
+
+    // now delete the user itself
+    DB_delete ($_TABLES['users'], 'uid', $uid);
+}
+
 // MAIN
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     if (!isset ($uid) || empty ($uid) || ($uid == 0)) {
         COM_errorLog ('Attempted to delete user uid=' . $uid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     } else {
-        // Ok, delete everything related to this user
-
-        // first, remove from all security groups
-        DB_delete($_TABLES['group_assignments'],'ug_uid',$uid);
-        DB_delete($_TABLES['userprefs'],'uid',$uid);
-        DB_delete($_TABLES['userindex'],'uid',$uid);
-        DB_delete($_TABLES['usercomment'],'uid',$uid);
-        DB_delete($_TABLES['userinfo'],'uid',$uid);
-
-        // Call custom account profile delete function if enabled and exists
-	    if ($_CONF['custom_registration'] AND (function_exists(custom_userdelete))) {
-            custom_userdelete($uid);
-	    } 
-
-        PLG_deleteUser ($uid);
-		
-        // what to do with orphan stories/comments?
-
-        // now move delete the user itself
-        DB_delete($_TABLES['users'],'uid',$uid,$_CONF['site_admin_url'] . '/user.php?msg=22');
+        delete_user ($uid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=22');
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
     $display = saveusers ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['username'],
