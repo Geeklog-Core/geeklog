@@ -1553,12 +1553,12 @@ function whatsnewblock() {
 #
 ###############################################################################
 function showmessage($msg) {
-	global $MESSAGE;
+	global $MESSAGE, $CONF;
 
 	if ($msg > 0) {
 		$timestamp = strftime("%c");
 		startblock("{$MESSAGE[40]} - $timestamp");
-		print $MESSAGE[$msg] . "<BR><BR>";
+		print "<img src={$CONF["site_url"]}/images/sysmessage.gif border=0 align=top>" . $MESSAGE[$msg] . "<BR><BR>";
 		endblock();
 	}
 }
