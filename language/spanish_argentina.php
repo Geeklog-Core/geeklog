@@ -66,18 +66,18 @@ $LANG01 = array(
 	27 => "Envio más reciente",
 	28 => "Borrar",
 	29 => "No hay comentarios de usuarios.",
-	30 => "Historias anteriores",
+	30 => "Artículos anteriores",
 	31 => "Tags HTML permitidos:",
 	32 => "Error, usuario inválido",
 	33 => "Error, no fue posible escribir el log",
 	34 => "Error",
 	35 => "Salir",
 	36 => "sobre",
-	37 => "",
+	37 => "No hay noticias del usuario",
 	38 => "",
 	39 => "Actualizar",
 	40 => "",
-	41 => "",
+	41 => "Usuarios Inviados",
 	42 => "Escrito por:",
 	43 => "Responder a",
 	44 => "Retornar",
@@ -116,8 +116,8 @@ $LANG01 = array(
 	77 => "Plugins",
 	78 => "Próximos Eventos",
 	79 => "Novedades",
-	80 => "notas (80)",
-	81 => "nota (81)",
+	80 => "Notas",
+	81 => "Nota",
 	82 => "horas",
 	83 => "COMENTARIOS",
 	84 => "LINKS",
@@ -142,7 +142,9 @@ $LANG01 = array(
     103 => 'DB Backups',
     104 => 'por',
     105 => 'Envair Mails',
-    106 => 'Vistas'
+    106 => 'Vistas',
+    107 => 'Comprobación GL',
+    108 => 'Limpiar Caché'
 );
 
 ###############################################################################
@@ -155,7 +157,7 @@ $LANG02 = array(
 	4 => "Donde",
 	5 => "Descripción",
 	6 => "Agregar un Evento",
-	7 => "Próximos Events",
+	7 => "Próximos Eventos",
 	8 => 'Al agregar este evento en su calendario usted podrá ver rápidamente los eventos que le interesan. Para ello elija "Mi Calendario" en el área de Funciones del usuario.',
 	9 => "Agregar a Mi Calendario",
 	10 => "Sacar de Mi Calendario",
@@ -193,7 +195,7 @@ $LANG03 = array(
 	21 => 'Lea los comentarios enviados para evitar comentarios duplicados.',
 	22 => 'Use un título claro que describa el contenido del mensaje.',
 	23 => 'Su dirección de email NO será divulgada.',
-	24 => 'Usuario Anonimo'
+	24 => 'Usuario Anónimo'
 );
 
 ###############################################################################
@@ -208,11 +210,11 @@ $LANG04 = array(
 	6 => "Homepage",
 	7 => "Biografía",
 	8 => "Clave PGP",
-	9 => "Grabar la Información",
+	9 => "Guardar",
 	10 => "Ultimos 10 comentarios",
 	11 => "No hay comentarios",
 	12 => "Preferencias del Usuario para",
-	13 => "Enviar un resumen cada nohe por Email",
+	13 => "Enviar un resumen cada noche por Email",
 	14 => "Este password es generado al azar. Se recomienda que cambie el password cuanto antes. Para cambiar el password conectese al sitio con su usuario.",
 	15 => "Su cuenta en {$_CONF["site_name"]} fue creada exitosamente. Para poder usarla debe ingresar utilizando los datos dados más abajo. Guarde este mensaje para futuras referencias.",
 	16 => "Información de su cuenta",
@@ -225,8 +227,8 @@ $LANG04 = array(
 	23 => "Crear una cuenta le dará los beneficios de los usuarios de {$_CONF['site_name']} y le permitirá enviar notas, comentarios, etc. Si no tiene una cuenta sólo lo podrá hacer anónimamente. Queremos remarcar que su email <b><i>nunca</i></b> será publicado en este sitio.",
 	24 => "Su password será enviado a la dirección de email que ingrese.",
 	25 => "Olvidó su Password?",
-	26 => "Ingrese su nombre de usuario y elija 'Enviar el Password por email' y el su nuevo password será enviado por email a su dirección",
-	27 => "¡Registrate ahora!",
+	26 => "Ingrese su nombre de usuario y elija 'Enviar el Password por email' y su nuevo password será enviado por email a su dirección",
+	27 => "¡Regístrate ahora!",
 	28 => "Enviar el password por email",
 	29 => "desconectado de",
 	30 => "conectado a",
@@ -256,16 +258,16 @@ $LANG04 = array(
 	54 => "Seleccione las Secciones y Autores que no desea ver.",
 	55 => "Si no selecciona ninguna significa que desea la selección por defecto. De seleccionar, seleccione todas las de su interés ya que las opciones por defecto ya no serán tomadas en cuenta. Las opciones por defecto se muestran resaltadas.",
 	56 => "Autores",
-	57 => "Modo de visualización",
+	57 => "Modo de Presentación",
 	58 => "Orden",
 	59 => "Limite por Comentario",
 	60 => "¿Cómo desea ver los comentarios?",
-	61 => "¿Primero los más viejos o los más nuevos?",
+	61 => "¿Primero los más antiguos o los más recientes?",
 	62 => "El valor por defecto es 100",
-	63 => "Gracias por usar {$_CONF['site_name']}. Su password a sido enviado por email y estará llenado en unos instantes. Por favor siga las instrucciones en el mensaje.",
+	63 => "Gracias por usar {$_CONF['site_name']}. Su password a sido enviado por email y estará llegando en unos instantes. Por favor siga las instrucciones en el mensaje.",
 	64 => "Preferencias para los Comentarios de",
-	65 => "Intente reingresar con su usuario",
-	66 => "Los datos ingresados no son válidos. Intente volver conectarse aqui. ¿Es un <a href=\"{$_CONF['site_url']}/users.php?mode=new\">usuario nuevo</a>?",
+	65 => "Intente reconectarse otra vez",
+	66 => "Los datos ingresados no son válidos. Intente volver a conectarse aquí. ¿Es usted un <a href=\"{$_CONF['site_url']}/users.php?mode=new\">usuario nuevo</a>?",
 	67 => "Miembro desde",
 	68 => "Recuérdeme para",
 	69 => "¿Cuánto tiempo debemos mantenerlo activo luego que se conectó?",
@@ -274,8 +276,18 @@ $LANG04 = array(
 	72 => "Theme",
     	73 => "Idioma",
 	74 => "¡Cambie la apariencia de esta página!",
-	75 => "Secciones enviadas por mail a",
-	76 => "Si selecciona una o más Secciones de la lista de abajo, todas las Notas nuevas de esas Secciones le serán enviadas por mail al finalizar el día."
+	75 => "Secciones enviadas por email a",
+	76 => "Si selecciona una o más Secciones de la lista de abajo, todas las Notas nuevas de esas Secciones le serán enviadas por mail al finalizar el día.",
+        77 => "Foto",
+        78 => "Añadir una imagen tuya!",
+        79 => "Tildar el checkbox para borrar tu foto",
+        80 => "Identificación",
+        81 => "Enviar Email",
+        82 => 'Ultimas 10 noticias para el usuario',
+        83 => 'Estadísticas de noticias para el usuario',
+        84 => 'Número total de artículos:',
+        85 => 'Número total de comentarios:',
+        86 => 'Encontrar todas las noticias de'
 );
 
 ###############################################################################
@@ -286,8 +298,8 @@ $LANG05 = array(
 	2 => "No hay nuevas notas para mostrar. Puede que no haya novedades para esta Sección o que sus preferencias sean muy restrictivas.",
 	3 => "para la Sección $topic",
 	4 => "Nota del Día",
-	5 => "Próximo",
-	6 => "Previo"
+	5 => "Siguiente",
+	6 => "Anterior"
 );
 
 ###############################################################################
@@ -383,7 +395,20 @@ $LANG09 = array(
 	26 => "items en",
 	27 => "segundos",
     28 => 'No se encontraron coincidencias en Notas y Comentarios',
-    29 => 'Resultados para Notas y Comentarios'
+    29 => 'Resultados para Notas y Comentarios',
+    30 => 'Ningún link coincide con la búsqueda',
+    31 => 'Este plug-in no devolvió resultados',
+    32 => 'Evento',
+    33 => 'URL',
+    34 => 'Ubicación',
+    35 => 'Todo el dia',
+    36 => 'Ningún evento coincidió con la búsqueda',
+    37 => 'Resultados de Eventos',
+    38 => 'Resultados de Links',
+    39 => 'Links',
+    40 => 'Eventos',
+    41 => 'Tu búsqueda  debe tener al menos 3 letras.',
+    42 => 'Por favor utiliza un formato de fecha como este DD-MM-YYYY (día-mes-año).'
 );
 
 ###############################################################################
@@ -411,9 +436,9 @@ $LANG10 = array(
 	19 => "Links",
 	20 => "Visitas",
 	21 => "Parecería que en este sitio no hay Links o que nadie nuca los visita.",
-	22 => "Las 10 Notas más enviadas por mail",
+	22 => "Las 10 Notas más enviadas por email",
 	23 => "Emails",
-	24 => "Parecería que nadie mandó una nota por mail en este sitio."
+	24 => "Parecería que nadie mandó una nota por email en este sitio."
 );
 
 ###############################################################################
@@ -453,8 +478,8 @@ $LANG12 = array(
 	21 => "Por favor, cuando seleccione 'Otra' complete el nombre de la categoría",
 	22 => "Error: Faltan Campos",
 	23 => "Por favor complete todo los campos del formulario. Todos los campos son requeridos.",
-	24 => "Envio Grabado",
-	25 => "Sus envios fueron grabados con éxito.",
+	24 => "Envío Guardado",
+	25 => "Sus envíos fueron grabados con éxito.",
 	26 => "Límite de Velocidad",
 	27 => "Nombre del Usuario",
 	28 => "Sección",
@@ -468,7 +493,7 @@ $LANG12 = array(
 	36 => "Formato del texto",
 	37 => "Los Eventos enviados a {$_CONF["site_name"]} se agregan al Calendario Público, donde el resto de los usuarios pueden agregarlo a su Calendario Personal. Esta funcionalidad <b>NO</b> está pensada para que guarde sus eventos personales como cumpleaños, citas, etc.<br><br>Una vez enviado el evento será evaluado por los Administradores, de ser aprobado se mostrará en el Calendrio Público", 
   	38 => "Agregar un Evento a",
-  	39 => "Calendario Públicor",
+  	39 => "Calendario Público",
   	40 => "Calendario Personal",
   	41 => "Hora de Finalización",
   	42 => "Hora de Inicio",
@@ -481,7 +506,8 @@ $LANG12 = array(
   	49 => 'Tipo de Evento',
   	50 => 'Editar los Tipos de Eventos',
   	51 => 'Locación',
-  	52 => 'Borrar'
+  	52 => 'Borrar',
+        53 => 'Crear Cuenta'
 );
 
 
@@ -519,7 +545,7 @@ $LANG21 = array(
 	11 => "Bloque del Sistema",
 	12 => "Bloque Normal",
 	13 => "Opciones para el Bloque del Sistema",
-	14 => "RDF URL",
+	14 => "RDF(Resource Description Framework)URL",
 	15 => "ültima actualización RDF",
 	16 => "Opciones para el Bloque Normal",
 	17 => "Contenido del Bloque",
@@ -550,7 +576,7 @@ $LANG21 = array(
 	42 => "Deber ingresar el nro. de orden y el nivel de seguridad para los bloques default",
 	43 => "Sólo en la Página de Inicio",
 	44 => "Acceso Denegado",
-	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/block.php\">go back to the block administration screen</a>.",
+	45 => "Usted esta tratando de acceder a un bloque en el cual usted no tiene los permisos requeridos.  Este intento ha sido registrado. Por favor  <a href=\"{$_CONF["site_admin_url"]}/block.php\">vuelva a la pantalla de administración de bloques</a>.",
 	46 => 'Nuevo Bloque',
 	47 => 'Página de Inicio - Administrador',
   	48 => 'Nombre del Bloque',
@@ -558,7 +584,10 @@ $LANG21 = array(
   	50 => 'URL del archivo de ayuda',
   	51 => 'incluir http://',
   	52 => 'Si deja este campo en blanco no se mostrará el ícono de ayuda',
-	53 => 'Habilitado'
+	53 => 'Habilitado',
+        54 => 'grabar',
+        55 => 'cancelar',
+        56 => 'borrar'
 );
 
 ###############################################################################
@@ -583,7 +612,10 @@ $LANG22 = array(
 	16 => "Acceso Denegado",
 	17 => "No tiene permiso para acceder a este Evento. Todo intento de acceso será registrado. Por favor, vuelva a <a href=\"{$_CONF["site_admin_url"]}/event.php\">la página de Administración de Eventos</a>.",
 	18 => 'Nuevo Evento',
-	19 => 'Página de Inicio - Administrador'
+	19 => 'Página de Inicio - Administrador',
+        20 => 'grabar',
+        21 => 'cancelar',
+        22 => 'borrar'
 );
 
 ###############################################################################
@@ -609,7 +641,10 @@ $LANG23 = array(
 	17 => "No tiene permiso para acceder a este Link. Todo intento de acceso será registrado. Por favor, vuelva a <a href=\"{$_CONF["site_admin_url"]}/link.php\">la página de Administración de Links</a>.",
 	18 => 'Nuevo Link',
 	19 => 'Página de Inicio - Administrador',
-	20 => 'Si otra/o, especifique'
+	20 => 'Si otra/o, especifique',
+        21 => 'grabar',
+        22 => 'cancelar',
+        23 => 'borrar'
 );
 
 ###############################################################################
@@ -621,12 +656,12 @@ $LANG24 = array(
 	3 => "Modo",
 	4 => "Modo de envio",
 	5 => "Editor de Notas",
-	6 => "",
+        6 => "No hay Noticias en el sistema",
 	7 => "Autor",
-	8 => "",
-	9 => "",
-	10 => "",
-	11 => "",
+        8 => "grabar",
+        9 => "prever",
+        10 => "cancelar",
+        11 => "borrar",
 	12 => "",
 	13 => "Título",
 	14 => "Sección",
@@ -656,12 +691,12 @@ $LANG24 = array(
 	38 => "Más en",
 	39 => "Emails",
 	40 => "Acceso Denegado",
-	41 => "Esta intentando acceder a una Nota pra la cual no tiene derechos de acceso, por lo que podrá ver la Nota pero no editarla. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/story.php\">página de administración</a> cuando haya terminado.",
-	42 => "Esta intentando acceder a una Nota pra la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/story.php\">página de administración</a>.",
+	41 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso, por lo que podrá ver la Nota pero no editarla. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/story.php\">página de administración</a> cuando haya terminado.",
+	42 => "Esta intentando acceder a una Nota para la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/story.php\">página de administración</a>.",
 	43 => 'Nueva Nota',
 	44 => 'Página de Inicio - Administrador',
 	45 => 'Acceso',
-        46 => '<b>NOTA:</b> si modifica esta fecha por una futura, la Nota no será publicada hasta esa fecha. Esto también incluye el envió de titulares RDF, la búsqueda y las estadísticas del sitio.',
+        46 => '<b>NOTA:</b> si modifica esta fecha por una futura, la Nota no será publicada hasta esa fecha. Esto también incluye el envió de titulares RDF(Resource Description Framework), la búsqueda y las estadísticas del sitio.',
         47 => 'Imágenes',
         48 => 'imagen',
         49 => 'der',
@@ -670,7 +705,8 @@ $LANG24 = array(
         52 => 'Borrar',
         53 => 'no fue usada.  Debe incluir esta imagen en la Introducción o el Texto para poder grabar los cambios',
         54 => 'Imágenes no utilizadas',
-        55 => 'Los siguientes errores ocurriron al querer grabar su Nota. Por favor corrija los errores antes de grabar.'
+        55 => 'Los siguientes errores ocurriron al querer grabar su Nota. Por favor corrija los errores antes de grabar.',
+        56 => 'Mostrar Icono de Tema'
 );
 
 ###############################################################################
@@ -690,15 +726,15 @@ $LANG25 = array(
 	11 => "Hubo un error buscando los datos para las respuesta de la Encuesta $qid",
 	12 => "Hubo un error buscando los datos para la pregunta de la Encuesta $qid",
 	13 => "Crear Encuesta",
-	14 => "",
-	15 => "",
-	16 => "",
+        14 => "grabar",
+        15 => "cancelar",
+        16 => "borrar",
 	17 => "",
 	18 => "Listado de Encuestas",
 	19 => "Para modificar o borrar una Encuesta elíjala en la lista de abajo. Para crear una nueva selecione 'Nueva Encuesta' más arriba.",
 	20 => "Votantes",
 	21 => "Acceso Denegado",
-	22 => "Esta intentando acceder a una Encuesta pra la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/poll.php\">página de administración</a>.",
+	22 => "Esta intentando acceder a una Encuesta para la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/poll.php\">página de administración</a>.",
 	23 => 'Nueva Encuesta',
 	24 => 'Página de Inicio - Administrador',
 	25 => 'Sí',
@@ -709,7 +745,7 @@ $LANG25 = array(
 # topic.php
 
 $LANG27 = array(
-	1 => "Editor dse Secciones",
+	1 => "Editor de Secciones",
 	2 => "ID",
 	3 => "Nombre",
 	4 => "Imagen",
@@ -721,12 +757,15 @@ $LANG27 = array(
 	10=> "Nro. de Orden",
 	11 => "Notas/Página",
 	12 => "Acceso Denegado",
-	13 => "Esta intentando acceder a una Sección pra la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/topic.php\">página de administración</a>.",
+	13 => "Esta intentando acceder a una Sección para la cual no tiene derechos de acceso. Por favor vuelva a la <a href=\"{$_CONF["site_admin_url"]}/topic.php\">página de administración</a>.",
 	14 => "Ordenamiento",
 	15 => "alfabético",
 	16 => "por defecto es",
 	17 => "Nueva Sección",
-	18 => "Página de Inicio - Administrador"
+	18 => "Página de Inicio - Administrador",
+        19 => 'grabar',
+        20 => 'cancelar',
+        21 => 'borrar'
 );
 
 ###############################################################################
@@ -745,8 +784,8 @@ $LANG28 = array(
 	10 => "Por favor complete los campos Nombre de Usuario, Nombre Completo, Nivel de Seguridad y Dirección de Email",
 	11 => "Administrador de Usuarios",
 	12 => "Para modificar o borrar un Usuario elíjalo en la lista de abajo. Para crear uno nuevo selecione 'Nuevo Usuario' más arriba.",
-	13 => "SecLev",
-	14 => "Reg. Date",
+	13 => "Nivel de seguridad",
+	14 => "Fecha de Registro",
 	15 => 'Nuevo Usuario',
 	16 => 'Página de Inicio - Administrador',
 	17 => 'Cambiar-Password',
@@ -760,11 +799,17 @@ $LANG28 = array(
     22 => 'Error',
     23 => 'Importación Masiva',
     24 => 'Importación masiva de Usuarios',
-    25 => 'Puede importar una lista de Usuarios a '.$_CONF["site_name"].'. El archivo con la lista de usuarios debe tener un registro por línea y los campos separados por TAB. Los campos deben estar en el siguiente orden: Nombre Completo, Nombre de Usuario, Dirección de Mail. A cada usuario agragdo se le enviará por mail un password generado al azar, que podrán cambiar al ingresar al sitio. Por favor, chequee bien el archivo de importación ya que los errores encontrados pueden llegar a necesaitar arreglaos manuales.',
+    25 => 'Puede importar una lista de Usuarios a '.$_CONF["site_name"].'. El archivo con la lista de usuarios debe tener un registro por línea y los campos separados por TAB. Los campos deben estar en el siguiente orden: Nombre Completo, Nombre de Usuario, Dirección de Mail. A cada usuario agregado se le enviará por email un password generado al azar, que podrán cambiar al ingresar al sitio. Por favor, chequee bien el archivo de importación ya que los errores encontrados pueden llegar a necesaitar arreglos manuales.',
     26 => 'Buscar',
-    27 => 'Limitar los resultados'
+    27 => 'Limitar los resultados',
+    28 => 'Tildar el checkbox para borrar esta imagen',
+    29 => 'Ruta',
+    30 => 'Importar',
+    31 => 'Nuevos Usuarios',
+    32 => 'Proceso finalizado. Se importaron $successes y hubieron $failures fallos',
+    33 => 'enviar',
+    34 => 'Error: Debes especificar un archivo a enviar.'
 );
-
 
 ###############################################################################
 # moderation.php
@@ -773,12 +818,24 @@ $LANG29 = array(
 	1 => "Aprobar",
 	2 => "Borrar",
 	3 => "Editar",
+    4 => 'Perfil',
+    10 => "Título",
+    11 => "Fecha Inicio",
+    12 => "URL",
+    13 => "Categoría",
+    14 => "Fecha",
+    15 => "Tema",
+    16 => 'Nombre del usuario',
+    17 => 'Nombre completo',
+    18 => 'Email',
 	34 => "Página de administración",
 	35 => "Envios de Notas",
 	36 => "Envios de Links",
 	37 => "Envios de Eventos",
 	38 => "Enviar",
-	39 => "No hay envios para moderar en este momento"
+	39 => "No hay envios para moderar en este momento",
+   40 => "Envios del Usuario"
+
 );
 
 ###############################################################################
@@ -813,7 +870,7 @@ $LANG30 = array(
     26 => "Todo el día",
     27 => "Semana",
     28 => "Calendario Personal para",
-    29 => "Calendario Publico",
+    29 => "Calendario Público",
     30 => "borrar evento",
     31 => "Agregar",
     32 => "Evento",
@@ -822,13 +879,16 @@ $LANG30 = array(
     35 => "Agregado rápido",
     36 => "Enviar",
     37 => "Disculpe, la opción de calendario personal no se encuentra habilitada en este sitio",
-    38 => "Editor Personal de Eventos"
+    38 => "Editor Personal de Eventos",
+    39 => 'Día',
+    40 => 'Semana',
+    41 => 'Mes'
 );
 
 ###############################################################################
 # admin/mail.php
 $LANG31 = array(
- 	1 => "Mail",
+ 	1 => $_CONF['site_name'] . "  Mail Utility",
  	2 => "De",
  	3 => "Responder a",
  	4 => "Título",
@@ -851,9 +911,10 @@ $LANG31 = array(
         21 => 'Fallidos',
         22 => 'Exitosos',
         23 => 'No hubo envíos fallidos',
-        24 => 'No hubo envíos exitosos'	
+        24 => 'No hubo envíos exitosos'	,
+    25 => '-- Selecciona Grupo --',
+    26 => "Por favor, rellena todos los campos del formulario y selecciona un grupo de usuarios de la lista desplegable."
 );
-
 
 ###############################################################################
 # confirmation and error messages
@@ -871,8 +932,8 @@ $MESSAGE = array (
 	10 => "La Nota ha sido borrada con éxito.",
 	11 => "Su Bloque ha sido grabado con éxito.",
 	12 => "El Bloque ha sido borrado con éxito.",
-	13 => "Su Sección ha sido borrado con éxito.",
-	14 => "La Sección junto con todas sus Notas y Bloques ha sido borrado con éxito.",
+	13 => "Su Sección ha sido borrada con éxito.",
+	14 => "La Sección junto con todas sus Notas y Bloques han sido borrado con éxito.",
 	15 => "Su link fue grabado con éxito.",
 	16 => "El link fue borrado con éxito.",
 	17 => "Su Evento fue grabado con éxito.",
@@ -904,13 +965,21 @@ $MESSAGE = array (
 	43 => "La Palabra fue borrada con éxito.",
         44 => 'El Plug-In fue instalado con éxito.',
         45 => 'El Plug-In fue borrado con éxito.',
-        46 => "Disculpe, no tiene acceso a la herramienta de Backup de la base. Aclaramos que todo acceso sin autorización queda registrado en el servidor."
+        46 => "Disculpe, no tiene acceso a la herramienta de Backup de la base de datos. Aclaramos que todo acceso sin autorización queda registrado en el servidor.",
+    47 => "Esta función está disponible bajo *nix. Si estás usando *nix como tu sistema operativo, entonces tu caché ha sido limpiado con éxito. Si estás bajo Windows, necesitas buscar ficheros adodb_*.php y borrarlos manualmente.",
+
+   48 => 'Gracias por registrarte como miembro en ' . $_CONF['site_name'] . '. Nuestro equipo comprobará tu solicitud. Si es aprobada, te será enviado tu password a la dirección email que has indicado.',
+    49 => "Tu grupo ha sido grabado con éxito.",
+    50 => "El grupo ha sido borrado con éxito."
+
+
+
 );
 
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Instalar plugins puede dañar su instalación de Geeklog y, posiblemente, su sistema. Es importante que sólo instale plugins obtenidos de <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog</a> ya que han sido testeados en varios entornos. Es también importante que entienda que la instalación del plugin requiere la ejecución de comandos del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garabtizamos el éxito de la instalación del plugin ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instale el plugin a su propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada plugin.", 
+	1 => "Instalar plugins puede dañar su instalación de Geeklog y, posiblemente, su sistema. Es importante que sólo instale plugins obtenidos de <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog</a> ya que han sido testeados en varios entornos. Es también importante que entienda que la instalación del plugin requiere la ejecución de comandos del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garantizamos el éxito de la instalación del plugin ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instale el plugin a su propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada plugin.", 
 	2 => "Advertencia de la Instalación del Plug-in",
 	3 => "Formulario de instalación del Plug-in",
 	4 => "Archivo del Plug-in",
@@ -953,8 +1022,8 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Establecer los derechos del Grupo",
 	permmsg => "NOTA: miembros son todos los miembros conectados y los usuarios anónimos en el sitio.",
 	securitygroups => "Grupos de Seguridad",
-	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/user.php\">User Administration page</a>.",
-	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
+        editrootmsg => "Aunque usted sea un usuario con privilegios de administrator, usted no puede editar a un usuario <b>root</b> sin primeramente ser usted mismo un usuario <b>root</b>. Usted puede editar todo tipo de usuarios menos usuarios <b>root</b>. Note que todo inento ilegal de editar a un usuario <b>root</b> queda registrado por el server. Por favor vuelva atras a <a href=\"{$_CONF["site_admin_url"]}/user.php\">La pagina de Administración de Usuarios</a>.",
+	securitygroupsmsg => "Seleccione los checkboxes para los grupos que a usted quiere que el usuario pertenezca.",
 	groupeditor => "Editor de Grupo",
 	description => "Descripción",
 	name => "Nombre",
@@ -967,10 +1036,15 @@ $LANG_ACCESS = array(
 	coregroup => "Grupo del Sistema? ",
 	yes => "Sí",
 	no => "No",
+	
 	corerightsdescr => "Este grupo es un Grupo de Sistema de {$_CONF["site_name"]}, y por ende sus derechos no pueden ser editados. A continuación se muestra una lista no editable de los derechos de acceso de este grupo.",
+	
 	groupmsg => "Los Grupos de Seguridad en este sitio son jerárquicos. Al agregar este grupo a cualquiera de los de abajo le estará dando los mismos derechos que esos grupos posean. De ser posible, se recomienda utilizar los grupos ya creados para dar los derechos a un nuevo grupo. Si necesita modificar los derechos del grupo, puede seleccionarlos en la sección llamada 'Derechos'. Para agregar este grupo a cualquiera de los de abajo simplemente marque los grupos que quiera.",
+	
 	coregroupmsg => "Este grupo es un Grupo de Sistema de {$_CONF["site_name"]}, y por ende los grupos que pertenezcan a este grupo no podrán ser editados. A continuación se muestar una lista (no editable) de los grupos a los cuales este grupo pertenece.",
-	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.",
+	
+	rightsdescr => "El acceso de un grupo a ciertos privilegios puede ser dado directamente al grupo o a un grupo diferente al cual este grupo pertenezca. Los privilegios que usted vea debajo sin checkbox son los privilegios que fueron dados a este grupo porque ya pertenecia a otro grupo con ese privilegio. Los privilegios que veas debajo con checkbox son los derechos que pueden ser asignados directametne a este grupo.",
+
 	lock => "Bloqueo",
 	members => "Miembros",
 	anonymous => "Anónimo",
@@ -987,8 +1061,11 @@ $LANG_ACCESS = array(
 	adminhome => 'Página de Administración',
 	save => 'Grabar',
 	cancel => 'Cancelar',
+	delete => 'borrar',
 	canteditroot => 'Ha intentado editar el Grupo Root. Como no es miembro del grupo no tiene acceso al mismo. Si cree que esto ha sido un error por favor contacte al administrador del sistema.'
 );
+
+#################################################################################################################################3
 
 #admin/word.php
 $LANG_WORDS = array(
@@ -1006,7 +1083,52 @@ $LANG_DB_BACKUP = array(
     do_backup => 'Hacer un Backup',
     backup_successful => 'El back up de la base se ha realizado con éxito.',
     no_backups => 'No hay backups en el sistema',
-    db_explanation => 'Para crear un backup del sistema utilice el botón de abajo'
+    db_explanation => 'Para crear un backup del sistema utilice el botón de abajo',
+
+     not_found => "Ruta incorrecta o la utilidad mysqldump no se puede ejecutar.<br>Comprueba la definición de <strong>\$_DB_mysqldump_path</strong> en config.php.<br>La variable está definida actualmente como: <var>{$_DB_mysqldump_path}</var>",
+    zero_size => 'Fallo de Backup: El tamaño era de 0 bytes',
+    path_not_found => "{$_CONF['backup_path']} no existe o no es una carpeta",
+    no_access => "ERROR: La carpeta {$_CONF['backup_path']} no es accesible.",
+    backup_file => 'Archivo de backup',
+    size => 'Tamaño',
+    bytes => 'Bytes'
+
+
 );
+
+
+$LANG_BUTTONS = array(
+
+    1 => "Inicio",
+    2 => "Contacto",
+    3 => "Publícate",
+    4 => "Links",
+    5 => "Encuentas",
+    6 => "Calendario",
+    7 => "Estadísticas",
+    8 => "Personalizar",
+    9 => "Buscar",
+    10 => "búsqueda avanzada"
+);
+
+
+$LANG_404 = array(
+
+    1 => "Error 404",
+    2 => "Buah, he mirado en todos los lados pero no puedo encontrar <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    3 => "<p>Lo sentimos, pero el archivo que pides no existe. Por favor, consulta la <a href=\"{$_CONF['site_url']}\">página principal</a> o la <a href=\"{$_CONF['site_url']}/search.php\">página de búsqueda</a> para ver si puedes encontrar lo que has perdido."
+);
+
+
+
+$LANG_LOGIN = array (
+
+    1 => 'Se requiere ingresar',
+    2 => 'Lo siento, para acceder a esta área tienes que estar autentificado como usuario.',
+    3 => 'Ingresar',
+    4 => 'Nuevo Usuario'
+);
+
+
 
 ?>
