@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.34 2003/03/24 18:19:07 dhaun Exp $
+// $Id: topic.php,v 1.35 2003/06/19 08:59:35 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -172,8 +172,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 {
     global $_TABLES, $_CONF, $LANG27, $MESSAGE;
 
-    //Convert array values to numeric permission values
+    // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
+    $tid = str_replace (' ', '', $tid); // silently remove spaces from topic id
 
     $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
