@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.17 2004/01/01 19:50:46 blaine Exp $
+// $Id: search.class.php,v 1.18 2004/01/01 20:31:41 blaine Exp $
 
 if (eregi ('search.class.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -298,7 +298,7 @@ class Search {
                     $thetime = COM_getUserDateTimeFormat($A['day']);
                     $articleUrl = '/article.php?story=' . $A['sid'];
                     if (!empty ($urlQuery)) {
-                        $articleUrl .= '&amp;query=' . $urlQuery;
+                        $articleUrl .= '&amp;query=' . urlencode($urlQuery);
                     }
                     $row = array('<a href="' .$_CONF['site_url'] . $articleUrl . '">' . stripslashes($A['title']) . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
