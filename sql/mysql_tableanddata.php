@@ -52,6 +52,7 @@ CREATE TABLE {$_TABLES['commentmodes']} (
 $_SQL[5] = "
 CREATE TABLE {$_TABLES['comments']} (
   cid int(10) unsigned NOT NULL auto_increment,
+  type varchar(30) NOT NULL DEFAULT 'story',
   sid varchar(20) NOT NULL default '',
   date datetime default NULL,
   title varchar(128) default NULL,
