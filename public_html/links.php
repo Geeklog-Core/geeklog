@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.18 2002/08/13 21:35:47 dhaun Exp $
+// $Id: links.php,v 1.19 2002/08/14 18:10:39 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -66,7 +66,11 @@ if (empty ($_USER['username']) &&
                 $cat = addslashes ($C['category']);
                 $result1 = DB_query ("SELECT count(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'");
                 $D = DB_fetchArray($result1);
-                $linklist->set_var ('category_name', $C['category']);
+                if (empty ($C['category'])) {
+                    $linklist->set_var ('category_name', $LANG23[7]);
+                } else {
+                    $linklist->set_var ('category_name', $C['category']);
+                }
                 $linklist->set_var ('category_link', $_CONF['site_url'] .
                     '/links.php?category=' . urlencode ($C['category']));
                 $linklist->set_var ('category_count', $D['count']);
@@ -80,6 +84,9 @@ if (empty ($_USER['username']) &&
                     $linklist->parse ('category_row', 'catrow', true);
                     $linklist->set_var ('category_col', '');
                 }
+            }
+            if ($nrows % $_CONF['linkcols'] != 0) {
+                $linklist->parse ('category_row', 'catrow', true);
             }
             $linklist->parse ('category_navigation', 'catnav', true);
         } else {
