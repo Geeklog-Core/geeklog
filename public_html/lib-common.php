@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.128 2002/08/04 08:44:16 dhaun Exp $
+// $Id: lib-common.php,v 1.129 2002/08/04 17:31:33 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2344,9 +2344,9 @@ function COM_printUpcomingEvents($help='',$title='')
     }
     $retval .= COM_startBlock($title, '', COM_getBlockTemplate('events_block', 'header'));
 
-    $eventSql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['events']} WHERE dateend >= NOW() AND "
+    $eventSql = "SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
-    $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
+    $personaleventsql = "SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
 
     $allEvents = DB_query($eventSql);
@@ -2363,6 +2363,7 @@ function COM_printUpcomingEvents($help='',$title='')
         $iterations = 1;
     }
 
+    $output = 0;
     for ($z = 1; $z <= $iterations; $z++) {
         if ($z == 2) {
             $allEvents = DB_query($personaleventsql);
@@ -2372,14 +2373,9 @@ function COM_printUpcomingEvents($help='',$title='')
             $theRow    = 1;         // Start with today!
             $oldDate1  = 'no_day';  // Invalid Date!
             $oldDate2  = 'last_d';  // Invalid Date!
-            if ($numRows > 0) $retval .= '<p><b>' . $LANG01[101] . '</b><br>';
+            $headline = false;
         } else {
-             if ($totalrows > 0) $retval .= '<b>' . $LANG01[102] . '</b><br>';
-        }
-
-        if ($totalrows == 0 AND ($iterations == 1 OR ($iterations == 2 AND $z == 2))) {
-            // There aren't any upcoming events, show a nice message
-            $retval .= $LANG01[89];
+            $headline = false;
         }
 
         while ($theRow <= $numRows AND $numDays < 14) {
@@ -2387,55 +2383,75 @@ function COM_printUpcomingEvents($help='',$title='')
             // Retreive the next event, and format the start date.
             $theEvent   = DB_fetchArray($allEvents);
 
-            // Start Date strings...
-            $startDate  = $theEvent['datestart'];
-            $theTime1   = strtotime($startDate);
-            $dayName1   = strftime("%A", $theTime1);
-            $abbrDate1  = strftime("%d-%b", $theTime1);
+            if (SEC_hasAccess($theEvent['owner_id'],$theEvent['group_id'],$theEvent['perm_owner'],$theEvent['perm_group'],$theEvent['perm_members'],$theEvent['perm_anon']) > 0) {
+                $output++;
+                if (!$headline) {
+                    if ($z == 2) {
+                        if ($numRows > 0)
+                            $retval .= '<p><b>' . $LANG01[101] . '</b><br>';
+                    } else {
+                        if ($totalrows > 0)
+                            $retval .= '<b>' . $LANG01[102] . '</b><br>';
+                    }
+                    $headline = true;
+                }
 
-            // End Date strings...
-            $endDate    = $theEvent['dateend'];
-            $theTime2   = strtotime($endDate);
-            $dayName2   = strftime("%A", $theTime2);
-            $abbrDate2  = strftime("%d-%b", $theTime2);
+                // Start Date strings...
+                $startDate  = $theEvent['datestart'];
+                $theTime1   = strtotime($startDate);
+                $dayName1   = strftime("%A", $theTime1);
+                $abbrDate1  = strftime("%d-%b", $theTime1);
 
-            // If either of the dates [start/end] change, then display a new header.
-            if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
-                $oldDate1 = $abbrDate1;
-                $oldDate2 = $abbrDate2;
-                $numDays ++;
+                // End Date strings...
+                $endDate    = $theEvent['dateend'];
+                $theTime2   = strtotime($endDate);
+                $dayName2   = strftime("%A", $theTime2);
+                $abbrDate2  = strftime("%d-%b", $theTime2);
+
+                // If either of the dates [start/end] change, then display a new header.
+                if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
+                    $oldDate1 = $abbrDate1;
+                    $oldDate2 = $abbrDate2;
+                    $numDays ++;
+                    if ($numDays < 14) {
+                        if (!empty ($newevents)) {
+                             $retval .= COM_makeList ($newevents);
+                        }
+                        $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
+                        // If different start and end Dates, then display end date:
+                        if ($abbrDate1 != $abbrDate2) {
+                            $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+                        }
+                    }
+                    $newevents = array ();
+                }
+
+                // Now display this event record.
+
                 if ($numDays < 14) {
-                    if (!empty ($newevents)) {
-                         $retval .= COM_makeList ($newevents);
+                    // Display the url now!
+                    $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
+                    if ($z == 2) {
+                        $newevent .= 'mode=personal&amp;';
                     }
-                    $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
-                    // If different start and end Dates, then display end date:
-                    if ($abbrDate1 != $abbrDate2) {
-                        $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
-                    }
+                    $newevent .= 'eid=' . $theEvent['eid'] . '">'
+                              . stripslashes($theEvent['title']) . '</a>';
+                    $newevents[] = $newevent;
                 }
-                $newevents = array ();
-            }
 
-            // Now display this event record.
-
-            if ($numDays < 14) {
-                // Display the url now!
-                $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
-                if ($z == 2) {
-                    $newevent .= 'mode=personal&amp;';
+                if (!empty ($newevents)) {
+                    $retval .= COM_makeList ($newevents);
+                    $newevents = array ();
                 }
-                $newevent .= 'eid=' . $theEvent['eid'] . '">'
-                          . stripslashes($theEvent['title']) . '</a>';
-                $newevents[] = $newevent;
             }
             $theRow++;
         }
 
-        if (!empty ($newevents)) {
-            $retval .= COM_makeList ($newevents);
-            $newevents = array ();
+        if (($output == 0) OR ($totalrows == 0 AND ($iterations == 1 OR ($iterations == 2 AND $z == 2)))) {
+            // There aren't any upcoming events, show a nice message
+            $retval .= $LANG01[89];
         }
+
     } // end for z
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 
