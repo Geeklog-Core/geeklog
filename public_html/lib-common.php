@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.370 2004/08/29 03:44:03 blaine Exp $
+// $Id: lib-common.php,v 1.371 2004/09/04 19:45:24 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -912,15 +912,18 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
         }
     }
 
-    /* Check if an array has been passed that includes the name of a plugin function or custom function
-    *  This can be used to take control over what blocks are then displayed
-    */
-     if (is_array($what))
+    /* Check if an array has been passed that includes the name of a plugin
+     * function or custom function
+     * This can be used to take control over what blocks are then displayed
+     */
+    if( is_array( $what ))
     {
         $function = $what['0'];
-        if (function_exists($function)) {
-            $lblocks = $function($what['1'],'left');
-            if ($lblocks != '') {
+        if( function_exists( $function ))
+        {
+            $lblocks = $function( $what['1'], 'left' );
+            if( $lblocks != '' )
+            {
                 $header->set_var( 'geeklog_blocks', $lblocks);
                 $header->parse( 'left_blocks', 'leftblocks', true );
            }
@@ -971,7 +974,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 * @return   string  Formated HTML containing site footer and optionally right blocks
 *
 */
-function COM_siteFooter( $rightblock = false, $custom='')
+function COM_siteFooter( $rightblock = false, $custom = '' )
 {
     global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic;
 
@@ -1027,14 +1030,16 @@ function COM_siteFooter( $rightblock = false, $custom='')
     $footer->set_var( 'execution_time', $exectime );
     $footer->set_var( 'execution_textandtime', $exectext );
 
-    /* Check if an array has been passed that includes the name of a plugin function or custom function
-    *  This can be used to take control over what blocks are then displayed
-    */
-    if (is_array($custom)) 
+    /* Check if an array has been passed that includes the name of a plugin
+     * function or custom function
+     * This can be used to take control over what blocks are then displayed
+     */
+    if( is_array( $custom )) 
     {
         $function = $custom['0'];
-        if (function_exists($function)) {
-            $rblocks = $function($custom['1'],'right');
+        if( function_exists( $function ))
+        {
+            $rblocks = $function( $custom['1'], 'right' );
         }
     } 
     elseif( $rightblock )
@@ -4083,6 +4088,20 @@ function COM_printUpcomingEvents( $help='', $title='' )
                 $dayName2 = strftime( '%A', $theTime2 );
                 $abbrDate2 = strftime( $dateonly, $theTime2 );
 
+                $todaysEvent = false;
+                if( date( 'Ymd', $theTime1 ) == date( 'Ymd', time()))
+                {
+                    $todaysEvent = true;
+                    if( $z == 2 )
+                    {
+                        $todaysClassName = 'personal-event-today';
+                    }
+                    else
+                    {
+                        $todaysClassName = 'site-event-today';
+                    }
+                }
+
                 // If either of the dates [start/end] change, then display a new header.
                 if( $oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2 )
                 {
@@ -4105,6 +4124,11 @@ function COM_printUpcomingEvents( $help='', $title='' )
                         {
                             $retval .= '<br>';
                         }
+                        if( $todaysEvent )
+                        {
+                            $retval .= '<span class="' . $todaysClassName
+                                    . '">';
+                        }
                         $retval .= '<b>' . $dayName1 . '</b>&nbsp;<small>'
                                 . $abbrDate1 . '</small>';
 
@@ -4112,6 +4136,10 @@ function COM_printUpcomingEvents( $help='', $title='' )
                         if( $abbrDate1 != $abbrDate2 )
                         {
                             $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+                        }
+                        if( $todaysEvent )
+                        {
+                            $retval .= '</span>';
                         }
                     }
 
@@ -4122,14 +4150,21 @@ function COM_printUpcomingEvents( $help='', $title='' )
                 if( $numDays < $range )
                 {
                     // Display the url now!
-                    $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
+                    $newevent = '<a href="' . $_CONF['site_url']
+                              . '/calendar_event.php?';
 
                     if( $z == 2 )
                     {
                         $newevent .= 'mode=personal&amp;';
                     }
 
-                    $newevent .= 'eid=' . $theEvent['eid'] . '">' . stripslashes( $theEvent['title'] ) . '</a>';
+                    $newevent .= 'eid=' . $theEvent['eid'] . '"';
+                    if( $todaysEvent )
+                    {
+                        $newevent .= ' class="' . $todaysClassName . '"';
+                    }
+                    $newevent .= '>' . stripslashes( $theEvent['title'] )
+                              . '</a>';
                     $newevents[] = $newevent;
                 }
 
