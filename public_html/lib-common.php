@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.404 2004/12/16 20:49:42 dhaun Exp $
+// $Id: lib-common.php,v 1.405 2004/12/18 06:12:42 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2696,7 +2696,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         {
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
         }
-        else 
+        else /* This is likely a plugin (or a mistake) */
         {
             $hidden .= '<input type="hidden" name="cid" value="' . $sid . '">';
         }
@@ -2869,14 +2869,21 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         }
 
         // for threaded mode, add a link to comment parent
-        if( $mode == 'threaded' && $A['pid'] != 0 )
+        if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 )
         {
             $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
             $P = DB_fetchArray( $result );
-            $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
-                   . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
-                   . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
-                   . $P['pid'];
+            if ($P['pid'] != 0) {
+                $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
+                       . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+                       . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
+                       . $P['pid'];
+            } else {
+                $plink = $_CONF['site_url'] . '/comment.php?mode=view&amp;sid='
+                       . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+                       . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
+                       . $A['pid'] . '&amp;format=threaded';
+            }
             $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
         }
         else
