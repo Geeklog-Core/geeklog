@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.16 2002/11/27 19:33:44 dhaun Exp $
+// $Id: functions.inc,v 1.17 2002/11/30 20:42:42 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -304,6 +304,8 @@ function plugin_uninstall_staticpages($steps = '')
     COM_errorLog('...success',1);
 
     COM_errorLog('leaving plugin_uninstall_staticpages',1);
+
+    return true;
 }
 
 ?>
