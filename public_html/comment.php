@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.78 2004/10/03 18:39:31 blaine Exp $
+// $Id: comment.php,v 1.79 2004/10/23 10:03:36 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -353,11 +353,11 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$HTTP_SERVER_VARS['REMOTE_ADDR']}'");
         }
+        $cid = DB_insertId();
         DB_query('UNLOCK TABLES');
 
         if (isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
-            $cid = DB_insertId();
             sendNotification ($title, $comment, $uid,
                               $HTTP_SERVER_VARS['REMOTE_ADDR'], $type, $cid);
         }
