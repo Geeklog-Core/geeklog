@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.64 2003/06/23 16:25:35 dhaun Exp $
+// $Id: usersettings.php,v 1.65 2003/06/23 16:36:15 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -758,7 +758,7 @@ function saveuser($A)
         $A['pgpkey'] = addslashes ($A['pgpkey']);
 
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}',emailfromadmin='{$A['emailfromadmin']}',emailfromuser='{$A['emailfromuser']}',notonline='{$A['notonline']}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}',emailfromadmin='{$A['emailfromadmin']}',emailfromuser='{$A['emailfromuser']}',showonline='{$A['showonline']}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . $A["pgpkey"] . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
 
         if ($_US_VERBOSE) {
