@@ -1,5 +1,12 @@
 GeekLog History/Changes:
 
+- Changed the "getBent" block to test the real admin directory in case it has
+  been renamed (bug #762881).
+- Don't save the privacy options when saving the user profile - since they are
+  part of the user's preferences and would be set to "off" that way ...
+  (reported by Dwight Trumbower).
+- Check the topic permissions when displaying the new stories and comments in
+  the What's New block.
 - Need to use date_sub() in the SQL request for the display=new mode on the
   index page to ensure compatibility with old versions of MySQL (reported by
   Markus Guske).
