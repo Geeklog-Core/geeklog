@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: search.php,v 1.8 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -83,6 +83,7 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 	global $LANG09, $_CONF, $_TABLES;
 	
     $searchtimer = new timerobject();
+    $searchtimer->setPercision(4);
     $searchtimer->startTimer();
 	
 	if ($type == 'all' OR $type == 'stories') {
@@ -148,6 +149,7 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
     $nrows = $nrows_stories + $nrows_comments + $nrows_plugins;
 
     $searchtime = $searchtimer->stopTimer();
+    $searchtimer->setPercision(4);
 
 	$cur_plugin_recordset = 1;
 	$cur_plugin_index = 1;

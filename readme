@@ -1,5 +1,5 @@
 GeekLog Readme
-July 19, 2001
+November 05, 2001
 
 WELCOME
 -------
@@ -7,7 +7,8 @@ Geeklog is the source code and database that was originally used to run
 SecurityGeeks and NewsGeeks, and has now been released under the GNU General 
 Public License. It is a bona fide Open Source / Free Software project. Use 
 this site to get the GeekLog source, read the latest GeekLog news, and 
-participate in Geeklog discussions. 
+participate in Geeklog discussions.  The template code Geeklog uses is from 
+PHPLib, however, which is under the LGPL.
 
 GeekLog is run by Tony Bibbs, but like all good open source projects,
 depends on the community. Thanks for your continued support, and let us know
@@ -17,7 +18,7 @@ GeekLog's feature are as follows:
 
 - Full localization and locale aware.
 - Threaded comment system that support different modes.
-- HTML configurable for custome look and feel.
+- User-specified theming engine for custom look and feel.
 - User accounts and access controls.
 - HTML and key word checking in stories and comments.
 - RDF/RSS import and export ability.
@@ -31,6 +32,12 @@ GeekLog's feature are as follows:
 - Robust calendar feature with support for personalized calendars.
 - Plugin support with API for developers.
 - A fully configurable block system, with php-in-block support.
+- Robust *nix-like security model for all objects which can be extended to be
+  use within plugins
+- Spam protection features and protection of user email addresses
+- Well organized codebase, use of PHP's Object-Oriented features
+- Thin database abstraction layer allowing Geeklog to be ported to DBMS's other 
+  than the default (MySQL)
 
 LICENSE
 -------
@@ -95,6 +102,7 @@ PHPWebLog Project - Some of the functions in GeekLog came from them!
 PHPSlash Project - Some of the functions in GeekLog came from them!
 thatphpware Project - Some of the functions in GeekLog came from them!
 PHPBB Project - Some of the functions in Geeklog came from them!
+PHPLib Project - Thanks for the great template engine!
 
 And of course, all the members of the Geeklog mailing lists and IRC channel.
 

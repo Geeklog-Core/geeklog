@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.12 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: article.php,v 1.13 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -48,7 +48,11 @@ if (DoPluginCommentSupportCheck($type)) {
 	echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&pid=$pid&type=$type");
 }
 
-$result = DB_query("SELECT count(*) as count FROM {$_TABLES['stories']} WHERE sid = '$story'");
+if ($type == 'poll') {
+    $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pollquestions']} WHERE qid = '$story'");
+} else {
+    $result = DB_query("SELECT count(*) as count FROM {$_TABLES['stories']} WHERE sid = '$story'");
+}
 $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
@@ -133,7 +137,6 @@ if ($A['count'] > 0) {
         $story_template->set_var('formatted_article', COM_article($A,'n'));
         $story_template->parse('output', 'article');
         $display .= $story_template->finish($story_template->get_var('output'));
-
 		// Display the comments, if there are any ..
 		if ($A['commentcode'] >= 0) {
 				$display .= COM_userComments($story,$A['title'],'article',$order,$mode);

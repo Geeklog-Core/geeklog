@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.9 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: users.php,v 1.10 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -52,6 +52,8 @@ include_once('lib-common.php');
 function userprofile($user) 
 {
     global $_TABLES, $_CONF, $LANG04;
+
+    $retval .= '';
 	
     $result = DB_query("SELECT username,fullname,regdate,homepage FROM {$_TABLES["users"]} WHERE uid = $user");
     $A = DB_fetchArray($result);
@@ -62,41 +64,50 @@ function userprofile($user)
 
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = $user");
     $B = DB_fetchArray($result);
-	
-    $retval .= COM_startBlock($LANG04[1] . ' ' . $A['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[2] . ':</b></td><td>' . $A['username']
-        . ' (' .$A['fullname'] . ')</td></tr>' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[67] . ':</b></td><td>' . $A['regdate']
-        . '</td></tr>' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[5] . ':</b></td><td><a href="' . $_CONF['site_url']
-        . '/profiles.php?uid=' . $user . '">Send Email</a></td></tr>' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[6] . ':</b></td><td><a href="' . $A['homepage'] 
-        . '">' . $A['homepage'] . '</a></td></tr>' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[7] . ':</b></td><td>' . $B['about'] . '</td></tr>' . LB
-        . '<tr valign="top"><td align="right"><b>' . $LANG04[8] . ':</b></td><td>' . nl2br($B['pgpkey']) . '</td></tr>' . LB
-        . '</table>' . LB
-        . COM_endBlock();
 
-    $retval .= COM_startBlock($LANG04[10] . ' ' . $A['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB;
-
+    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml'));
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $A['username']));
+    $user_templates->set_var('end_block', COM_endBlock());
+    $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('username', $A['username']);
+    $user_templates->set_var('user_fullname', $A['fullname']);
+	$user_templates->set_var('lang_membersince', $LANG04[67]);
+    $user_templates->set_var('user_regdate', $A['regdate']);
+    $user_templates->set_var('lang_email', $LANG04[5]);
+    $user_templates->set_var('user_id', $user);
+    $user_templates->set_var('lang_sendemail', 'Send Email');
+    $user_templates->set_var('lang_homepage', $LANG04[6]);
+    $user_templates->set_var('user_homepage', $A['homepage']);
+    $user_templates->set_var('lang_bio', $LANG04[7]);
+    $user_templates->set_var('user_bio', $A['about']); 
+    $user_templates->set_var('lang_pgpkey', $LANG04[8]);
+    $user_templates->set_var('user_pgp', nl2br($B['pgpkey']));
+    $user_templates->set_var('start_block_last10comments', COM_startBlock($LANG04[10] . ' ' . $A['username']));
     $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
     $nrows = DB_numRows($result);
 
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
-            $retval .= '<tr><td>' . $i . '. <a href="' .$_CONF['site_url'] . '/comment.php?mode=display&sid=' 
-                . $C['sid'] . '&title=' . urlencode($C['title']) . '&pid=' . $C['pid'] . '"><b>' . $C['title']
-                . '</b></a></td><td>' . strftime($_CONF['date'],$C['unixdate']) . '</td></tr>' . LB;
+            $user_templates->set_var('row_number', $i . '.');
+            $user_templates->set_var('comment_begin_href', '<a href="' .$_CONF['site_url'] 
+                . '/comment.php?mode=display&sid=' . $C['sid'] . '&title=' . urlencode($C['title']) 
+                . '&pid=' . $C['pid'] . '">');
+            $user_templates->set_var('comment_title', $C['title']);
+            $user_templates->set_var('comment_end_href', '</a>');
+            $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
+            $user_templates->set_var('comment_date', $commenttime[0]); 
+            $user_templates->parse('comment_row','row',true);
         }
     } else {
-        $retval .= '<tr><td align="right">' . $LANG04[11] . '</td></tr>' . LB;
+        $user_templates->set_var('comment_row','<tr><td>No user comments</td></tr>');
     }
 
-    $retval .= '</table>' . LB . COM_endBlock();
-		
+	$user_templates->parse('output', 'profile');
+    $retval .= $user_templates->finish($user_templates->get_var('output'));	
+
     return $retval;
 }
 
@@ -141,7 +152,7 @@ function emailpassword($username,$msg=0)
             $retval .= COM_refresh("{$_CONF['site_url']}/index.php");
         }
     } else {
-        $retval .= site_header('Menu') . defaultform($LANG04[17]) . site_footer();
+        $retval .= COM_siteHeader('menu') . defaultform($LANG04[17]) . COM_siteFooter();
     }
 	
     return $retval;
@@ -175,12 +186,92 @@ function createuser($username,$email)
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
             emailpassword($username, 1);
         } else {
-            $retval .= site_header('Menu') . defaultform($LANG04[18]) . site_footer();
+            $retval .= COM_siteHeader('Menu') . defaultform($LANG04[18]) . COM_siteFooter();
         }
     } else {
-        $retval .= site_header('Menu') . defaultform($LANG04[19]) . site_footer();
+        $retval .= COM_siteHeader('Menu') . defaultform($LANG04[19]) . COM_siteFooter();
     }
 	
+    return $retval;
+}
+
+/**
+* Shows the user login form after failed attempts to either login or access a page
+* requiring login. 
+*
+*/
+function loginform()
+{
+    global $_CONF, $LANG04;
+
+    $retval = '';
+
+    $user_templates = new Template ($_CONF['path_layout'] . 'users');
+    $user_templates->set_file('login', 'loginform.thtml');
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
+    $user_templates->set_var('lang_message', $LANG04[66]);
+    $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('lang_password', $LANG04[4]);
+    $user_templates->set_var('lang_forgetpassword', $LANG04[25]);
+    $user_templates->set_var('lang_login', 'Login');
+    $user_templates->set_var('end_block', COM_endBlock());
+    $user_templates->parse('output', 'login');
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
+
+    return $retval;
+}
+
+/**
+* Shows the user registration form
+*
+* @msg          int         message number to show
+* @referrer     string      page to send user to after registration
+* 
+*/
+function newuserform()
+{
+    global $LANG04, $_CONF;
+
+    $retval = '';
+    
+    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates->set_file('regform','registrationform.thtml');
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('start_block', COM_startBlock($LANG04[22]));
+    $user_templates->set_var('lang_instructions', $LANG04[23]);
+    $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('lang_email', $LANG04[5]);
+    $user_templates->set_var('lang_warning', $LANG04[24]);
+    $user_templates->set_var('lang_register', $LANG04[27]);
+    $user_templates->set_var('end_block', COM_endBlock());
+    $user_templates->parse('output', 'regform');
+    $retval .= $user_templates->finish($user_templates->get_var('output')); 
+    return $retval;
+}
+
+/**
+* Shows the password retrieval form
+*
+*/
+function getpasswordform()
+{
+    global $_CONF, $LANG04;
+
+    $retval = '';
+
+    $user_templates = new Template($_CONF['path_layout'] . 'users');
+    $user_templates->set_file('form', 'getpasswordform.thtml');
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('start_block_forgetpassword', COM_startBlock($LANG04[25]));
+    $user_templates->set_var('lang_instructions', $LANG04[26]);
+    $user_templates->set_var('lang_username', $LANG04[2]);
+    $user_templates->set_var('lang_emailpassword', $LANG04[28]);
+    $user_templates->set_var('end_block', COM_endBlock());
+    $user_templates->parse('output', 'form');
+
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
+
     return $retval;
 }
 
@@ -251,13 +342,23 @@ case 'logout':
     $display .= COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 case 'profile':
-    $display .= site_header('menu') . userprofile($uid) . site_footer();
+    $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
     break;
 case 'create':
     $display .= createuser($username,$email);
     break;
+case 'getpassword':
+    $display .= COM_siteHeader('menu');
+    $display .= getpasswordform();
+    $display .= COM_siteFooter();
+    break;
 case 'emailpasswd':
     $display .= emailpassword($username, 1);
+    break;
+case 'new':
+    $display .= COM_siteHeader('menu');
+    $display .= newuserform($msg);
+    $display .= COM_siteFooter();
     break;
 default:
     if (!empty($loginname) && !empty($passwd)) {
@@ -287,11 +388,11 @@ default:
                     setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
             }
         } else {
+            $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
             if ($VERBOSE) {
                 COM_errorLog('NOT trying to set permanent cookie',1);
+                COM_errorLog('Got '.$userid.' from perm cookie in users.php',1);
             }
-            $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            COM_errorLog('Got '.$userid.' from perm cookie in users.php',1);
             if ($userid) {
                 $user_logged_in = 1;
                 // Create new session
@@ -311,11 +412,28 @@ default:
             $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         }
     } else {
-        $display .= site_header('menu');
+        $display .= COM_siteHeader('menu');
+
+        $display .= COM_showMessage($msg);
+
+        switch ($mode) {
+        case 'create':
+            // Got bad account info from registration process, show error message
+            // and display form again
+            $display .= newuserform();
+            break;
+        default:
+            // Show login form
+            $display .= loginform();
+            break;
+        }
+
         if ($mode != "new" && empty($msg)) {
             $msg = $LANG04[31];
         }
-        $display .= defaultform($msg) . site_footer();
+
+        //$display .= defaultform($msg) . COM_siteFooter();
+        $display .= COM_siteFooter();
     }
     break;
 }

@@ -59,11 +59,11 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $_USER;
 	
     if ($_CONF["loginrequired2"] == 1 && empty($_USER['username'])) {
-        $retval .= COM_refresh("{$_CONF['site_url']}/users.php?msg=" . urlencode($LANG03[6]));
+        $retval .= COM_refresh($_CONF['site_url'] . '/users.php?msg=' . urlencode($LANG03[6]));
     } else {
         DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF["speedlimit2"]}");
 
-        $id = DB_count($_TABLES['commentspeedlimit'],'ipaddress',$REMOTE_ADDR);
+        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', $REMOTE_ADDR);
 
         if ($id > 0) {
             $result = DB_query("SELECT date FROM {$_TABLES['commentspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
@@ -86,8 +86,8 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 $HTTP_POST_VARS['title'] = $title;
                 $HTTP_POST_VARS['comment'] = $comment;
 				
-                $retval .= startcomment($LANG03[14])
-                    . comment($HTTP_POST_VARS,1,$type)
+                $retval .= COM_startComment($LANG03[14])
+                    . COM_comment($HTTP_POST_VARS,1,$type)
                     . COM_endBlock();
             } else if ($mode == $LANG03[14]) {
                 $retval .= COM_startBlock($LANG03[17])
@@ -101,59 +101,54 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 if (!empty($U["sig"])) {
                     $comment = LB . LB . LB . '-----' . LB . $U[0];
                 }
-                $A['postmode'] = 'html';
             }
-			
-            $retval .= COM_startBlock($LANG03[1])
-                . '<form action="' . $_CONF['site_url'] . '/comment.php" method="POST">'
-                . '<table cellspacing="0" cellpadding="3" border="0" width="100%">' . LB
-                . '<tr>' . LB
-                . '<td align="right"><b>' . $LANG03[5] . ':</b></td>' . LB
-                . '<td><input type="hidden" name="sid" value="' . $sid . '">'
-                . '<input type="hidden" name="pid" value="' . $pid . '">'
-                . '<input type="hidden" name="type" value="' . $type . '">';
-				
+	    if (empty($postmode)) {
+	        $postmode = $_CONF['postmode'];
+	    }
+	       
+            $comment_template = new Template($_CONF['path_layout'] . 'comment');
+            $comment_template->set_file('form','commentform.thtml');
+            $comment_template->set_var('site_url', $_CONF['site_url']);
+            $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
+            $comment_template->set_var('lang_username', $LANG03[5]);
+            $comment_template->set_var('sid', $sid);
+            $comment_template->set_var('pid', $pid);
+            $comment_template->set_var('type', $type);
+	
             if (!empty($_USER['username'])) {
-                $retval .= '<input type="hidden" name="uid" value="' . $_USER['uid'] . '">' 
-                    . $_USER['username'] . ' [ <a href="' . $_CONF['site_url'] . '/users.php?mode=logout">'
-                    . $LANG03[03] . '</a> ]</td>' . LB
-                    . '</tr>' . LB;
+                $comment_template->set_var('uid', $_USER['uid']);
+                $comment_template->set_var('username', $_USER['username']);
+                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=logout');
+                $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[03]);
             } else {
-                $retval .= '<input type="hidden" name="uid" value="1"><a href="' . $_CONF['site_url'] 
-                    . '/users.php?mode=new">' . $LANG03[04] . '</a></td>' . LB
-                . '</tr>' . LB;
+                $comment_template->set_var('uid', 1);
+                $comment_template->set_var('username', $LANG03[24]);
+                $comment_template->set_var('action_url', $_CONF['site_url'] . '/users.php?mode=new'); 
+                $comment_template->set_var('lang_logoutorcreateaccount', $LANG03[04]);
             }
-			
-            $retval .= '<tr>' . LB
-                . '<td align="right"><b>' . $LANG03[16] . ':</b></td>' . LB
-                . '<td><input type="text" name="title" size="32" value="' . stripslashes($title)
-                . '" maxlength="96"></td>' . LB
-                . '</tr>' . LB
-                . '<tr>' . LB
-                . '<td align="right" valign="top"><b>' . $LANG03[9] . ':</b></td>' . LB
-                . '<td><textarea name="comment" wrap="physical" rows="10" cols="60">' . $comment . '</textarea></td>' . LB
-                . '</tr>' . LB
-                . '<tr valign="top">' . LB
-                . '<td align="right"><b>' . $LANG03[2] . ':</b></td>' . LB
-                . '<td><select name="postmode">'
-                . COM_optionList($_TABLES['postmodes'],'code,name',$postmode)
-                . '</select><br>' . COM_allowedHTML() . '</td>' . LB
-                . '</tr>' . LB
-                . '<tr>' . LB
-                . '<td colspan="2"><hr></td>' . LB
-                . '</tr>'.LB
-                . '<tr>'.LB
-                . '<td colspan="2">' . $LANG03[10] . '<br>'
-                . '<input type="submit" name="mode" value="' . $LANG03[14] . '">';
-
+		
+            $comment_template->set_var('lang_title', $LANG03[16]);
+            $comment_template->set_var('title', stripslashes($title));
+            $comment_template->set_var('lang_comment', $LANG03[9]);
+            $comment_template->set_var('comment', $comment);
+            $comment_template->set_var('lang_postmode', $LANG03[2]);
+            $comment_template->set_var('postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$postmode));
+            $comment_template->set_var('allowed_html', COM_allowedHTML());
+            $comment_template->set_var('lang_importantstuff', $LANG03[18]);
+            $comment_template->set_var('lang_instr_line1', $LANG03[19]);	
+            $comment_template->set_var('lang_instr_line2', $LANG03[20]);	
+            $comment_template->set_var('lang_instr_line3', $LANG03[21]);	
+            $comment_template->set_var('lang_instr_line4', $LANG03[22]);	
+            $comment_template->set_var('lang_instr_line5', $LANG03[23]);	
+            $comment_template->set_var('lang_preview', $LANG03[14]);
+            
             if ($mode == $LANG03[14]) {
-                $retval .= '<input type="submit" name="mode" value="' . $LANG03[11] . '">';
+                $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
-			
-            $retval .= '</td>' . LB
-                . '</tr>' . LB
-                . '</table></form>'
-                . COM_endBlock();
+
+		    $comment_template->set_var('end_block', COM_endBlock());	
+            $comment_template->parse('output', 'form');
+            $retval .= $comment_template->finish($comment_template->get_var('output'));
         }
     }
 	
@@ -209,10 +204,10 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
             $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
         }
     } else {
-        $retval .= site_header()
+        $retval .= COM_siteHeader()
             . COM_errorLog($LANG03[12],2)
             . commentform($sid,$poll)
-            . site_footer();
+            . COM_siteFooter();
     }
 	
 	return $retval;
@@ -256,9 +251,9 @@ function deletecomment($cid,$sid,$type)
 // MAIN
 switch ($mode) {
 case $LANG03[14]: //Preview
-    $display .= site_header()
+    $display .= COM_siteHeader()
         . commentform($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$mode,$postmode)
-        . site_footer(); 
+        . COM_siteFooter(); 
     break;
 case $LANG03[11]: //Submit Comment
     $display .= savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode);
@@ -267,15 +262,15 @@ case $LANG01[28]: //Delete
     $display .= deletecomment($cid,$sid,$type);
     break;
 case display:
-    $display .= site_header()
+    $display .= COM_siteHeader()
         . COM_userComments($sid,$title,$type,$order,'threaded',$pid)
-        . site_footer();
+        . COM_siteFooter();
     break;
 default:
     if (!empty($sid)) {
-        $display .= site_header()
+        $display .= COM_siteHeader()
             . commentform('','','',$title,'',$sid,$pid,$type,$mode,$postmode)
-            . site_footer();
+            . COM_siteFooter();
     } else {
         // This could still be a plugin wanting comments
         if (strlen($type) > 0) {

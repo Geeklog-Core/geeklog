@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.9 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: user.php,v 1.10 2001/11/05 21:24:51 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -200,9 +200,9 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		DB_save($_TABLES['usercomment'],'uid',$uid);
 		DB_save($_TABLES['userindex'],'uid',$uid);
 		DB_save($_TABLES['userinfo'],'uid',$uid);
-        $errors = DB_error();
+        	$errors = DB_error();
 		if (empty($errors)) { 
-			COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
+			return COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
 		} else {
 			$retval .= COM_siteHeader('menu');
             $retval .= COM_errorLog('Error in saveusers in admin/users.php');

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.3 2001/10/29 18:23:38 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.4 2001/11/05 21:24:51 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -156,13 +156,15 @@ function COM_article($A,$index='')
         } else if ($A['commentcode'] >= 0) {
             $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>';
         }
-        $recent_post_anchortag .= ' <a href="'.$_CONF['site_url'].'/profiles.php?sid='.$A['sid'].'&what=emailstory"><img src="'.$_CONF['site_url'].'/images/mail.gif" alt="'.$LANG01[64].'" border="0"></a>&nbsp;<a href="'.$_CONF['site_url'].'/article.php?story='.$A['sid'].'&mode=print"><img border="0" src="'.$_CONF['site_url'].'/images/print.gif" alt="'.$LANG01[65].'"></a>';
+	$article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&what=emailstory">' 
+            . '<img src="' . $_CONF['site_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>');
+	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&mode=print"><img border="0" src="' . $_CONF['site_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
     }
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND SEC_hasrights('story.edit')) {
-        $recent_post_anchortag .= '<br><a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>';
+	$article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>');
     }
 
     $article->set_var('recent_post_anchortag', $recent_post_anchortag);
@@ -275,7 +277,7 @@ function COM_siteHeader()
     $header->set_file(array('header'=>'header.thtml','menuitem'=>'menuitem.thtml'));
     $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
-    $header->set_var('site_url', $_CONF['site_url'].'/');
+    $header->set_var('site_url', $_CONF['site_url']);
     $header->set_var('layout_url', $_CONF['layout_url']);
     $header->set_var('site_email', $_CONF['site_mail']);
     $header->set_var('site_name', $_CONF['site_name']);
@@ -332,8 +334,8 @@ function COM_siteHeader()
     
     // Now show any blocks
     $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
-    $header->parse('index_header','header');
-
+    $tmp = $header->parse('index_header','header');
+    return eval("?>".$tmp); 
     return $header->finish($header->get_var('index_header'));
 }
 
@@ -578,7 +580,7 @@ function COM_debug($A)
 */
 function COM_exportRDF() 
 {
-    global $_TABLES,$_CONF;
+    global $_TABLES, $_CONF, $_COM_VERBOSE;
 
     if ($_CONF['backend']>0) {
         $outputfile = $_CONF['rdf_file'];
@@ -587,7 +589,7 @@ function COM_exportRDF()
         $rdlink	= $_CONF['site_url'];
         $rddescr = $_CONF['site_slogan'];
         $rdlang	= $_CONF['locale'];
-        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE uid > 1 ORDER BY date DESC limit 10");
+        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE uid > 1 AND draft_flag = 0 ORDER BY date DESC limit 10");
 
         if (!$file = @fopen($outputfile,w)) {
             COM_errorLog("{LANG01[54]} $outputfile",1);
@@ -846,7 +848,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 					$width = $percent * $scale;
 					$retval .= '<img src="' . $_CONF['site_url'] . '/images/bar.gif" width="' . $width
                         . '" height="10" align="bottom"> '
-						. $A['votes'] . ' ' . printf("(%.2f)",$percent * 100) . '%' . '</td>' . LB;
+						. $A['votes'] . ' ' . sprintf("(%.2f)",$percent * 100) . '%' . '</td>' . LB;
 				}
 
 				$retval .= '</tr>' . LB;
@@ -1463,7 +1465,7 @@ function COM_olderstuff()
 
     if ($_CONF['olderstuff'] == 1) {
         $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " 
-        . $_TABLES['stories'] . " ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
+        . $_TABLES['stories'] . " WHERE draft_flag = 1 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
         $nrows = DB_numRows($result);
 
         if ($nrows>0) {

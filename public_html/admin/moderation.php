@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.10 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: moderation.php,v 1.11 2001/11/05 21:24:51 tony_bibbs Exp $
 
-include("../lib-common.php");
+include('../lib-common.php');
 include('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -211,7 +211,6 @@ function itemlist($type)
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             if ($type == 'story') {
-//              $A[3] = DB_getItem($_TABLES['topics'],'topic',"tid = {$A[3]}");
                 $A[2] = strftime("%c",$A[2]);
             }
             if ($isplugin)  {
@@ -222,9 +221,9 @@ function itemlist($type)
                     . '.php?mode=editsubmission&id=' . $A['id']); 
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);
-            $mod_templates->set_var('data_col1', $A[1]);
-            $mod_templates->set_var('data_col2', $A[2]);
-            $mod_templates->set_var('data_col3', $A[3]);
+            $mod_templates->set_var('data_col1', stripslashes($A[1]));
+            $mod_templates->set_var('data_col2', stripslashes($A[2]));
+            $mod_templates->set_var('data_col3', stripslashes($A[3]));
             $mod_templates->set_var('cur_row', $i);
             $mod_templates->set_var('item_id', $A[0]);
             $mod_templates->parse('list_of_items','itemrows',true);
@@ -282,7 +281,6 @@ function moderation($mid,$action,$type,$count)
             return $retval;
         }
         list($id, $table, $fields) = GetPluginModerationValues($type);
-        // $display .= COM_errorLog('id = '.$id.' table = '.$table.' fields = '.$fields);
 	}
 
     for ($i = 1; $i <= $count; $i++) {
@@ -314,6 +312,8 @@ function moderation($mid,$action,$type,$count)
 }
 
 // MAIN
+
+$display = '';
 
 $display .= COM_siteHeader();
 

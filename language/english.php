@@ -172,14 +172,21 @@ $LANG03 = array(
 	7 => "Your last comment was ",
 	8 => " seconds ago.  This site requires at least {$CONF["speedlimit2"]} seconds between comments",
 	9 => "Comment",
-	10 => "<b>Important Stuff</b><li>Please try to keep posts on topic.<li>Try to reply to other people comments instead of starting new threads.<li>Read other people's messages before posting your own to avoid simply duplicating what has already been said.<li>Use a clear subject that describes what your message is about.<li>Your email address will NOT be made public.",
+	10 => '',
 	11 => "Submit Comment",
 	12 => "Please fill in the Name, Email, Title and Comment fields, as they are necessary for your submission of a comment.",
 	13 => "Your Information",
 	14 => "Preview",
 	15 => "",
 	16 => "Title",
-	17 => "Error"
+	17 => "Error",
+	18 => 'Important Stuff',
+	19 => 'Please try to keep posts on topic.',
+	20 => 'Try to reply to other people comments instead of starting new threads.',
+	21 => 'Read other people\'s messages before posting your own to avoid simply duplicating what has already been said.',
+	22 => 'Use a clear subject that describes what your message is about.',
+	23 => 'Your email address will NOT be made public.',
+	24 => 'Anonymous User'
 );
 
 ###############################################################################
@@ -207,12 +214,12 @@ $LANG04 = array(
 	19 => "The username or email address provided already exists",
 	20 => "The email address provided does not appear to be a valid email address",
 	21 => "Error",
-	22 => "Create a User Account",
-	23 => "Creating a user account will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post as Anonymous.",
+	22 => "Register with {$_CONF['site_name']}!",
+	23 => "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
 	24 => "Your password will be sent to the email address you enter.",
 	25 => "Did You Forget Your Password?",
 	26 => "Enter your username and click Email Password and a new password will be mailed to the email address on record.",
-	27 => "Create New User",
+	27 => "Register Now!",
 	28 => "Email Password",
 	29 => "logged out from",
 	30 => "logged in from",
@@ -251,10 +258,12 @@ $LANG04 = array(
 	63 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using " . $CONF["site_name"],
 	64 => "Comment Preferences for",
 	65 => "Try Logging in Again",
-	66 => "You may have mistyped your login credentials.  If so, you may try logging in again below. If you can't remember your password you can have a new one sent to by filling out the password form at the bottom of this page.",
+	66 => "You may have mistyped your login credentials.  Please try logging in again below. Are you a <a href=\"{$_CONF['site_url']}/users.php?mode=new\">new user</a>?",
 	67 => "Member Since",
 	68 => "Remember Me For",
-	69 => "How long should we remember you after logging in?"
+	69 => "How long should we remember you after logging in?",
+	70 => "Customize the layout and content of {$_CONF['site_name']}",
+	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these greate features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  The use the login form to the left to log in!"
 );
 
 ###############################################################################
@@ -814,7 +823,7 @@ $MESSAGE = array (
 	40 => "System Message",
     41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
     42 => "Your word has been successfully saved.",
-	43 => "The word has been successfully deleted."
+	43 => "The word has been successfully deleted.",
 );
 
 // for plugins.php

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.8 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: links.php,v 1.9 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -50,11 +50,10 @@ $nrows = DB_numRows($result);
 if ($nrows==0) {
     $display .= $LANG06[2].'<br>';
 } else {
-
     for($i = 0; $i < $nrows; $i++) {
-        $A	= DB_fetchArray($result);
+        $A = DB_fetchArray($result);
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-            if ($A['category']!=$currentcat) {
+            if ($A['category'] != $currentcat) {
                 if ($i > 0) {
                     $linklist->parse('category_links','catlinks',true);
                 }
@@ -70,7 +69,7 @@ if ($nrows==0) {
             $currentcat	= $A['category'];
         }
     } 
-    if ($nrows > 0) $linklist->parse('category_links','catlinks',true);
+    if ($nrows > 0 && !empty($_USER['username'])) $linklist->parse('category_links','catlinks',true);
 }
 
 $linklist->parse('output', 'linklist');

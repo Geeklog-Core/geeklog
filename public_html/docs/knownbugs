@@ -1,3 +1,3 @@
 List of Known Bugs:
+
 1) the emailgeeklogstories functionality isn't working.  This will be addressed in the next release
-2) the can be an issue with submitting stories with a large number of HTML links in them.  This has probably always existed but I ran into this when fixing a bug in checkhtml() in common.php.  The issue is that the admin/story.php page can timeout if you put enough links in a story

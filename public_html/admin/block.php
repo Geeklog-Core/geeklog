@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.16 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: block.php,v 1.17 2001/11/05 21:24:51 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -146,11 +146,11 @@ function editblock($bid='')
         $access = 3;
     }
 
-    $retval .= COM_startBlock($LANG21[3]);
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('start_block_editor', COM_startBlock($LANG21[3]));
 		
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.edit')) {
@@ -201,15 +201,16 @@ function editblock($bid='')
 
     $groupdd = '';
     if ($access == 3) {
-        $retval .= '<select name="group_id">';
+        $groupdd .= '<select name="group_id">' . LB;
         for ($i = 0; $i < count($usergroups); $i++) {
             $groupdd .= '<option value="'.$usergroups[key($usergroups)].'"';
             if ($A['group_id'] == $usergroups[key($usergroups)]) {
                 $groupdd .= ' selected="selected"';
             }
-            $groupdd .= '>'.key($usergroups).'</option>';
+            $groupdd .= '>'.key($usergroups).'</option>' . LB;
             next($usergroups);
         }
+	$groupdd .= '</select>' . LB;
     } else {
         // They can't set the group then
         $groupdd.= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = '{$A['group_id']}'")
@@ -228,12 +229,13 @@ function editblock($bid='')
     $block_templates->set_var('lang_rdfurl', $LANG21[14]);
     $block_templates->set_var('block_rdfurl', $A['rdfurl']);
     $block_templates->set_var('lang_lastrdfupdate', $LANG21[15]);
+    $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);
     $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
     $block_templates->set_var('lang_blockcontent', $LANG21[17]);
     $block_templates->set_var('block_content', $A['content']);
+    $block_templates->set_var('end_block', COM_endBlock());
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output')); 
-    $retval .= COM_endBlock();
 		
     return $retval;
 }

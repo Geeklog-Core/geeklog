@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.1 2001/10/17 23:20:47 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.2 2001/11/05 21:24:51 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -265,7 +265,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
         . "(md5_sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
     } else {
         $sql = "SELECT uid FROM {$_TABLES['sessions']} WHERE "
-        . "(sess_id = $sessid) AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+        . "(sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
     }
 
     if ($_SESS_VERBOSE) {

@@ -1,5 +1,19 @@
 GeekLog History/Changes:
 
+November XX, 2001
+-----------------
+- Added user-defined themes via PHPLib's template class library
+- Update the Geeklog security model from numeric Security Levels to a *nix-like model that
+  can be used by plugins
+- Added support for plugins. Plugins can be downloaded from http://geeklog.sourceforge.net and uploaded and installed remotely or manually
+- Updated most places where dates are used to use the user-defined format in their display preferences
+- Updated session management to use a long-term cookie that is fully configurable. If desired, users can specify how long their long-term cookie will persist for.
+- Update blocks so that admins can specify the side and order a block shows up on.
+- Seperated common.php into the following libraries: lib-database.php, lib-common.php, lib-sessions.php lib-security.php
+- Started moving Geeklog to use PHP's OO features with the addition of a timer class, a calendar class, a MySQL database class.
+- Fixed bug with output of Geeklog RDF file that allowed story drafts to be included.
+- Updated most of the codebase to use the Geeklog Coding Standard (a subset of the PEAR standard).
+
 August 21, 2001
 -----------------
 

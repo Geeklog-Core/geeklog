@@ -266,7 +266,7 @@ class Template {
         $str = preg_replace('/{([^ \t\r\n}]+)}/', "<!-- Template $handle: Variable \\1 undefined -->", $str);
       break;
     }
-    
+  
     return $str;
   }
 

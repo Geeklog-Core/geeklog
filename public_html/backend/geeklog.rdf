@@ -6,13 +6,18 @@
 
 <channel>
 <title>Geeklog Site</title>
- <link>http://cvs.localhost</link>
-<description>Another Nifty GeekLog Site</description>
+ <link>http://Superfly</link>
+<description>Another Nifty Geeklog Site</description>
 <language>en-gb</language>
 
 <item>
+<title>Second Articles</title>
+<link>http://Superfly/article.php?story=20011029162602450</link>
+</item>
+
+<item>
 <title>Welcome to Geeklog!</title>
-<link>http://cvs.localhost/article.php?story=20010719095630103</link>
+<link>http://Superfly/article.php?story=20010719095630103</link>
 </item>
 
 </channel>

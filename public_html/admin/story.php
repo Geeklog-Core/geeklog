@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.17 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: story.php,v 1.18 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -58,7 +58,6 @@ if (!SEC_hasRights('story.edit')) {
 // the data being passed in a POST operation
 // debug($HTTP_POST_VARS);
 
-# Displays the Story Editor
 /**
 * Shows story editor
 *
@@ -187,7 +186,7 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
     $story_templates->set_var('lang_draft', $LANG24[34]);
-    if ($A["draft_flag"] == 1) {
+    if ($A['draft_flag'] == 1) {
         $story_templates->set_var('is_checked', 'CHECKED');
     }
     $story_templates->set_var('lang_mode', $LANG24[3]);
@@ -253,6 +252,7 @@ function liststories($page="1")
     $limit = (50 * $page) - 50;
     $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_CONF['db_prefix']}stories ORDER BY date DESC LIMIT $limit,50");
     $nrows = DB_numRows($result);
+    COM_errorLog("NUMROWS: $nrows",1);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $scount = (50 * $page) - 50 + $i;
@@ -287,9 +287,6 @@ function liststories($page="1")
             }
             $story_templates->parse('storylist_item','row',true);
         }
-
-        // Clear out all previously appended stuff (to avoid having them show up twice)
-        $story_templates->set_var('storylist_item','');
 
         // Print prev/next page links if needed
 
@@ -350,10 +347,19 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $hits = 0;
         }
 
+        // Get draft flag value
         if ($draft_flag == "on") {
             $draft_flag = 1;
         } else {
             $draft_flag = 0;
+
+            // OK, if this story was already in the database and the user changed this from a draft
+            // to an actual story then update the date to be now
+            if (DB_count($_TABLES['stories'],'sid',$sid) == 1) {
+                if (DB_getItem($_TABLES['stories'],'draft_flag',"sid = '$sid'") == 1) {
+                    $unixdate = time();
+                }
+            }
         }
 
         // Convert array values to numeric permission values

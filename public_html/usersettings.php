@@ -148,7 +148,7 @@ function editpreferences()
 
 	$themes = COM_getThemes();
         if (empty($_USER['theme'])) {
-            $usertheme = $_CONF['path_layout'];
+            $usertheme = $_CONF['theme'];
         } else {
             $usertheme = $_USER['theme'];
         }
@@ -423,7 +423,15 @@ if (!empty($_USER['username']) && !empty($mode)) {
         break;
     }
 } else {
-    $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    if ($mode == 'preferences') {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($LANG04[70] . '!');
+        $display .= '<br>' . $LANG04[71] . '<br><br>';
+        $display .= COM_endBlock();
+	$display .= COM_siteFooter();
+    } else {
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
 }
 
 echo $display;

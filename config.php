@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.16 2001/10/29 18:23:12 tony_bibbs Exp $
+// $Id: config.php,v 1.17 2001/11/05 21:24:50 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -60,7 +60,7 @@ $_CONF['site_name']     = 'Geeklog Site';
 $_CONF['site_slogan']   = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']     = 'admin@example.com';
 $_CONF['site_url']      = 'http://www.example.com';
-$_CONF['theme']         = 'Classic';
+$_CONF['theme']         = 'Yahoo';
 $_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']   = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']   = $_CONF['path_themes'] . $_CONF['theme'] . '/';
@@ -146,6 +146,7 @@ $_CONF['ostype']    = PHP_OS;
 // Submission Settings
 
 $_CONF['loginrequired'] = 0; 
+$_CONF['postmode']   = 'plaintext'; // can be plaintext or html
 $_CONF['speedlimit']    = 300; // in seconds
 
 // Topic Settings
@@ -176,7 +177,7 @@ $_CONF['newcommentsinterval']   = 172800;
 $_CONF['newlinksinterval']      = 1209600;
 
 // Calendar Settings
-$_CONF['personalcalendars']     = 0;
+$_CONF['personalcalendars']     = 1;
 $_CONF['showupcomingevents']    = 1;
 
 // Story Settings

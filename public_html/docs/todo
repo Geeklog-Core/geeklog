@@ -1,12 +1,14 @@
 Next Version - To Do List
 -------------------------
-- Better Access Control (security)
-- Templating and themes
-- Addon Support
+- Allow topics, links etc to use a hierarchical category system that is generic
+  enough to be used by plugins if needed
+- Add a story and comment rating system
+- Email admin when a new story is submitted
+- Email Digest
+- User configurable Time Zones
 
 Future - To Do List
 -------------------
-- Writing of static pages
 - Archiving of pages
 - Open submission que
 - Flood protection and lamness filtering
@@ -14,15 +16,10 @@ Future - To Do List
     posting a comment
   - First posters
   - Additional Troll and flame checking
-- Comment moderation
-- Sub Topics and Sections
-- Text to URL matching for What's Releated function
-- User configurable Time Zones
-- Export most HTML to user customizable blocks
-- Email admin when a new story is submitted
 - Quote of the day
 - Post per day limit
-- Email Digest
+- Allow intro/teaser to be something other than the first part of the story
+- Genericise the comment engine and make it scalable for high traffic sites
 
 Possible Items to Implement Sometime
 (i.e. would you like to do this for us?)

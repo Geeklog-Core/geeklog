@@ -62,9 +62,9 @@ function submissionform($type='story')
 
     if ($id > 0) {
         $result = DB_query("SELECT date FROM {$_TABLES['submitspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
-        $A = DB_fetchRow($result);
+        $A = DB_fetchArray($result);
 
-        $last = time() - $A[0];
+        $last = time() - $A['date'];
         $retval .= COM_startBlock($LANG12[26])
             . $LANG12[30]
             . $last
@@ -184,7 +184,11 @@ function submitstory()
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
     }
-	
+
+    if (empty($A['postmode'])) {
+        $A['postmode'] = $_CONF['postmode'];
+    }
+
     if (!empty($A['title'])) {
         if ($A['postmode'] == 'html') {
             $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
@@ -283,7 +287,7 @@ function savesubmission($type,$A)
         if (!empty($A['title']) && !empty($A["description"])) {
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A["description"])));
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
-            $A["eid"] = makesid();
+            $A['eid'] = COM_makesid();
             $result = DB_save($_TABLES['eventsubmission'],'eid,title,url,datestart,dateend,location,description',"{$A["eid"]},'{$A['title']}','{$A["url"]}','{$A["datestart"]}','{$A["dateend"]}','{$A["location"]}','{$A["description"]}'","index.php?msg=4");
         } else {
             $retval .= COM_startBlock($LANG12[22])
@@ -335,14 +339,13 @@ function savesubmission($type,$A)
 
 $display = '';
 
-$display .= COM_siteHeader();
-	
 if ($mode == $LANG12[8]) { 
-    $display .= savesubmission($type,$HTTP_POST_VARS);
+    $page_content .= savesubmission($type,$HTTP_POST_VARS);
 } else { 
-    $display .= submissionform($type); 
+    $page_content .= submissionform($type); 
 }
-	
+$display .= COM_siteHeader();
+$display .= $page_content;	
 $display .= COM_siteFooter();	
 	
 echo $display;

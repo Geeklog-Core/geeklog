@@ -31,20 +31,31 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: calendar.php,v 1.8 2001/11/05 21:24:51 tony_bibbs Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
 
-function getSmallCalendar($m, $y)
+/**
+* Gets a small, text-only version of a calendar
+*
+* $m        int        Month to display
+* $y        int        Year to display
+*
+*/
+function getSmallCalendar($m, $y, $mode='')
 {
     $retval = '';
     $mycal = new Calendar();
 
     $mycal->setCalendarMatrix($m,$y);
 
+    if (!empty($mode)) {
+        $mode = '&mode=' . $mode;
+    }
+
     $retval .= '<font size=-2>' . LB . '<table>' . LB 
-        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&year=' . $y . '">' 
+        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&year=' . $y . $mode . '">' 
         . $mycal->getMonthName($m) . '<a></td></tr>'
         . '<tr><th>S</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>S</th></tr>'.LB;
 
@@ -125,7 +136,7 @@ $cal_templates->set_file(array('calendar'=>'calendar.thtml',
 				'personalcal'=>'personalcalendaroption.thtml',
 				'addevent'=>'addeventoption.thtml'));
 
-$cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear));
+$cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear, $mode));
 $cal_templates->set_var('next_months_cal',getSmallCalendar($nextmonth, $nextyear));
 $cal_templates->set_var('cal_prevmo_num', $prevmonth);
 $cal_templates->set_var('cal_prevyr_num', $prevyear);
