@@ -482,6 +482,7 @@ CREATE TABLE {$_TABLES['users']} (
   homepage varchar(96) default NULL,
   sig varchar(160) NOT NULL default '',
   regdate datetime NOT NULL default '0000-00-00 00:00:00',
+  photo varchar(128) DEFAULT NULL,
   cookietimeout int(8) unsigned default '0',
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
