@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.35 2002/08/17 14:56:13 dhaun Exp $
+// $Id: search.php,v 1.36 2002/09/01 21:19:53 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -220,6 +220,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
                     }
                 }
                 $thetime = COM_getUserDateTimeFormat($A['day']);
+                $A['title'] = str_replace('$','&#36;',$A['title']);
                 $row = array('<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '">' . $A['title'] . '</a>',
                             $fulldate,
                             $A['location']);
@@ -337,7 +338,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 			$sql .= "AND (UNIX_TIMESTAMP({$_TABLES['comments']}.date) BETWEEN '$startdate' AND '$enddate') ";
 		}
 		if (!empty($author)) {
-			$sql .= "AND (uid = '$author') ";
+			$sql .= "AND ({$_TABLES['comments']}.uid = '$author') ";
 		}
         $sql .= "AND ((" .  $stwhere . ") OR (" . $powhere . ")) ";
 		$sql .= "ORDER BY {$_TABLES['comments']}.date DESC";
@@ -402,6 +403,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
                 for ($i=1; $i <= $nrows; $i++) {
                     if ($A['day'] > $C['day']) {
                         // print row
+                        $A['title'] = str_replace('$','&#36;',$A['title']);
                         $searchresults->set_var('data', '<a href="article.php?story=' . $A['sid'] . '">' . stripslashes($A['title']) . '</a>');
                         $searchresults->parse('data_cols','resultcolumn',true);
 
@@ -420,6 +422,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 
                         $A = DB_fetchArray($result_stories);
                     } else if (strlen($C['day']) > 0) {
+                        $C['title'] = str_replace('$','&#36;',$C['title']);
                         if ($C['comment_type'] == 'article') {
                             $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
                         } else {
@@ -582,7 +585,8 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 function searchresults($A) 
 {
 	global $_CONF, $_TABLES;
-	
+
+    $A['title'] = str_replace('$','&#36;',$A['title']);
 	$retval .= '<tr align="center">'.LB
 		.'<td align="left"><a href="article.php?story='.$A['sid'].'">'.stripslashes($A['title']).'</a></td>'.LB
 		.'<td>'.strftime($_CONF['shortdate'],$A['day']).'</td>'.LB
