@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.18 2003/05/23 11:42:06 dhaun Exp $
+// $Id: lib-sessions.php,v 1.19 2003/05/26 10:33:30 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -108,7 +108,7 @@ function SESS_sessionCheck()
             // Session probably expired, now check permanent cookie
             if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
                 $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-                if (empty ($userid) || !is_int ($userid)) {
+                if (empty ($userid) || !is_numeric ($userid)) {
                     unset ($userid);
                 } else {
                     $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
@@ -142,7 +142,7 @@ function SESS_sessionCheck()
             }
 
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            if (!is_int ($userid)) {
+            if (!is_numeric ($userid)) {
                 unset ($userid);
             } else {
                 $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
