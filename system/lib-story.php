@@ -8,13 +8,13 @@
 // |                                                                           |
 // | Story-related functions needed in more than one place.                    |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
-// |          Vincent Furia     - vinny01@users.sourceforge.net                |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,9 +33,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.15 2004/12/31 10:31:35 dhaun Exp $
+// $Id: lib-story.php,v 1.16 2005/01/16 19:14:29 dhaun Exp $
 
-if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 
@@ -55,7 +55,8 @@ if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
 */
 function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $_THEME_URL, $mode;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG05, $LANG11, $LANG_TRB,
+           $_THEME_URL, $mode;
 
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
     $A['day'] = $curtime[0];
@@ -196,10 +197,24 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         else
         {
             $bodytext = stripslashes( $A['bodytext'] );
-            $bodytext = PLG_replacetags($bodytext);   // Replace any plugin autolink tags
+            // Replace any plugin autolink tags
+            $bodytext = PLG_replacetags( $bodytext );
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
+        }
+        $article->set_var( 'story_introtext_only', $introtext );
+        $article->set_var( 'story_bodytext_only', $bodytext );
+
+        if( $_CONF['trackback_enabled'] && SEC_inGroup( 'Root' ))
+        {
+            $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id='
+                 . $A['sid'];
+            $article->set_var( 'send_trackback_link', '<a href="' . $url . '">'
+                 . $LANG_TRB['send_trackback'] . '</a>' );
+            $article->set_var( 'send_trackback_url', $url );
+            $article->set_var( 'lang_send_trackback_text',
+                               $LANG_TRB['send_trackback'] );
         }
     }
     else

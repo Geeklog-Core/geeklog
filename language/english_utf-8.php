@@ -155,7 +155,10 @@ $LANG01 = array(
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
     112 => 'Registered Users',
-    113 => 'Documentation'
+    113 => 'Documentation',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback'
 );
 
 ###############################################################################
@@ -491,7 +494,9 @@ $LANG10 = array(
     21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
     22 => 'Top Ten Emailed Stories',
     23 => 'Emails',
-    24 => 'It appears that no one has emailed a story on this site'
+    24 => 'It appears that no one has emailed a story on this site',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.'
 );
 
 ###############################################################################
@@ -1133,7 +1138,10 @@ $MESSAGE = array(
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.',
     60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    61 => 'Plugin %s: Unknown message placeholder',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occured when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.'
 );
 
 ###############################################################################
@@ -1205,7 +1213,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
@@ -1256,17 +1264,48 @@ $LANG_PDF = array(
     1 => 'The PDF feature has been disabled',
     2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all. The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
     3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    4 => 'No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF\'s in an ad-hoc fashion.',
     5 => 'Loading your document.',
     6 => 'Please wait while your document is loaded.',
     7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem persists.",
+    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem persists.',
     9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    10 => 'This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site',
     11 => 'URL',
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'from',
+    'tracked_on' => 'Tracked on',
+    'read_more' => '[read more]',
+    'intro_text' => 'Here\'s what others have to say about \'%s\':',
+    'no_comments' => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments' => '%d trackback comments',
+    'send_trackback' => 'Send Trackback Comment',
+    'preview' => 'Preview',
+    'editor_title' => 'Send trackback comment',
+    'trackback_url' => 'Trackback URL',
+    'entry_url' => 'Entry URL',
+    'entry_title' => 'Entry Title',
+    'blog_name' => 'Site Name',
+    'excerpt' => 'Excerpt',
+    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
+    'button_send' => 'Send',
+    'button_preview' => 'Preview',
+    'send_error' => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing' => 'No Entry URL',
+    'url_required' => 'Please enter at least a URL for the entry.',
+    'target_missing' => 'No Trackback URL',
+    'target_required' => 'Please enter a trackback URL'
 );
 
 ?>

@@ -8,9 +8,9 @@
 // |                                                                           |
 // | Geeklog database library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
+// | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.33 2004/11/20 17:55:07 dhaun Exp $
+// $Id: lib-database.php,v 1.34 2005/01/16 19:14:29 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -78,6 +78,7 @@ $_TABLES['stories']             = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
 $_TABLES['syndication']         = $_DB_table_prefix . 'syndication';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
+$_TABLES['trackback']           = $_DB_table_prefix . 'trackback';
 $_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
 $_TABLES['userindex']           = $_DB_table_prefix . 'userindex';
@@ -103,7 +104,7 @@ $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-if (eregi ('lib-database.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('lib-database.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

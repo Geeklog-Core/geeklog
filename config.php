@@ -8,10 +8,10 @@
 // |                                                                           |
 // | Geeklog configuration file.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2004 by the following authors:                         |
+// | Copyright (C) 2001-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs - tony@tonybibbs.com                                  |
-// |          Dirk Haun  - dirk@haun-online.de                                 |
+// | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
+// |          Dirk Haun  - dirk AT haun-online DOT de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.148 2004/12/31 10:33:31 dhaun Exp $
+// $Id: config.php,v 1.149 2005/01/16 19:14:26 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -467,15 +467,20 @@ $_CONF['emailstoriesperdefault'] = 0;
 $_CONF['allow_domains'] = ''; // e.g. 'mycompany.com,myothercompany.com'
 
 // Following times are in seconds
-$_CONF['newstoriesinterval']  =   86400; // = 24 hours
-$_CONF['newcommentsinterval'] =  172800; // = 48 hours
-$_CONF['newlinksinterval']    = 1209600; // = 14 days
+$_CONF['newstoriesinterval']   =   86400; // = 24 hours
+$_CONF['newcommentsinterval']  =  172800; // = 48 hours
+$_CONF['newtrackbackinterval'] =  172800; // = 48 hours
+$_CONF['newlinksinterval']     = 1209600; // = 14 days
 
 // Set to 1 to hide a section from the What's New block:
-$_CONF['hidenewstories']  = 0;
-$_CONF['hidenewcomments'] = 0;
-$_CONF['hidenewlinks']    = 0;
-$_CONF['hidenewplugins']  = 0;
+$_CONF['hidenewstories']    = 0;
+$_CONF['hidenewcomments']   = 0;
+$_CONF['hidenewtrackbacks'] = 0;
+$_CONF['hidenewlinks']      = 0;
+$_CONF['hidenewplugins']    = 0;
+
+// Disable trackback comments by setting this to 'false'
+$_CONF['trackback_enabled'] = true;
 
 // Link to the documentation from the Admin block (0 = hide link, 1 = show)
 $_CONF['link_documentation'] = 1;
@@ -539,7 +544,7 @@ $_CONF['rdf_language']  = 'en-gb';
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.
-// $_CONF['copyrightyear'] = '2004';
+// $_CONF['copyrightyear'] = '2005';
 
 
 // Optional Image Settings
@@ -698,7 +703,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.11');
+    define('VERSION', '1.3.12cvs');
 }
 
 $_STATES = array(

@@ -8,11 +8,11 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Blaine Lang      - blaine@portalparts.com                        |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Blaine Lang      - blaine AT portalparts DOT com                 |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.52 2004/12/29 10:51:25 dhaun Exp $
+// $Id: lib-plugins.php,v 1.53 2005/01/16 19:14:29 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1242,6 +1242,30 @@ function PLG_checkforSpam($content, $action = -1)
         }
     }
     return false;
+}
+
+/**
+* Ask plugins to handle a trackback comment operation.
+*
+* Operations:
+* 'accept' - does the plugin accept a trackback comment for its entry $id,
+*            returns: true or false
+* 'delete' - does the user have permission to delete comments on entry $id,
+*            returns: true or false
+* 'info'   - plugin is asked to provide information on entry $id,
+*            returns: array (url, title, excerpt)
+*
+* @param    string  $type       plugin type
+* @param    string  $id         ID of an entry under the plugin's control
+* @param    string  $operation  operation to perform
+* @return   mixed               depends on the operation (see above)
+*
+*/
+function PLG_handleTrackbackComment ($type, $id, $operation)
+{
+    $function = 'plugin_handletrackbackcomment_' . $type;
+
+    return PLG_callFunctionForOnePlugin ($function, $id, $operation);
 }
 
 ?>

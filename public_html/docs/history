@@ -3,6 +3,15 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Added support for sending and receiving trackback comments (Feature Request
+  #34) [Dirk]
+  This feature can be disabled by setting $_CONF['trackback_enabled'] = false;
+- Added support for a custom_usercheck function. Custom registration code that
+  requires certain information can now abort the creation of a new account if
+  that information is missing. The function is called after Geeklog has checked
+  that the username and email address of the new user are okay (valid and not
+  in the database yet), but before the user has been added to the database
+  [Dirk]
 - Added a new script, directory.php, that implements a date-based listing of
   all the stories on a site [Dirk]
   Needs some more work and better integration with the rest ...
@@ -12,6 +21,8 @@ GeekLog History/Changes:
 - Save one SQL request for a story's printable view [Dirk]
 - The column headline for event search results was not displayed [Dirk]
 - Fixed / updated some texts in the German language files [Dirk]
+
+- Updated Italian language file, provided by Marcello Teodori
 
 
 Dec 31, 2004 (1.3.11)

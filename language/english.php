@@ -153,7 +153,10 @@ $LANG01 = array(
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
     112 => 'Registered Users',
-    113 => 'Documentation'
+    113 => 'Documentation',
+    114 => 'TRACKBACKS',
+    115 => 'No new trackback comments',
+    116 => 'Trackback'
 );
 
 ###############################################################################
@@ -329,7 +332,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'No News to Display',
     2 => 'There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive',
-    3 => " for topic %s",
+    3 => ' for topic %s',
     4 => 'Today\'s Featured Article',
     5 => 'Next',
     6 => 'Previous',
@@ -389,7 +392,7 @@ $LANG08 = array(
     25 => 'You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system',
     26 => 'This form will allow you to send an email to the selected user.  All fields are required.',
     27 => 'Short message',
-    28 => "%s wrote: ",
+    28 => '%s wrote: ',
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
     30 => ' Daily Newsletter for ',
     31 => 'Title',
@@ -489,7 +492,9 @@ $LANG10 = array(
     21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
     22 => 'Top Ten Emailed Stories',
     23 => 'Emails',
-    24 => 'It appears that no one has emailed a story on this site'
+    24 => 'It appears that no one has emailed a story on this site',
+    25 => 'Top Ten Trackback Commented Stories',
+    26 => 'No trackback comments found.'
 );
 
 ###############################################################################
@@ -507,7 +512,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "To submit a %s you are required to be logged in as a user.",
+    1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Login',
     3 => 'New User',
     4 => 'Submit an Event',
@@ -531,7 +536,7 @@ $LANG12 = array(
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
-    25 => "Your %s submission has been saved successfully.",
+    25 => 'Your %s submission has been saved successfully.',
     26 => 'Speed Limit',
     27 => 'Username',
     28 => 'Topic',
@@ -780,15 +785,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Poll Created',
-    4 => "Poll %s saved",
+    4 => 'Poll %s saved',
     5 => 'Edit Poll',
     6 => 'Poll ID',
     7 => '(do not use spaces)',
     8 => 'Appears on Homepage',
     9 => 'Question',
     10 => 'Answers / Votes',
-    11 => "There was an error getting poll answer data about the poll %s",
-    12 => "There was an error getting poll question data about the poll %s",
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
     13 => 'Create Poll',
     14 => 'save',
     15 => 'cancel',
@@ -1132,7 +1137,10 @@ $MESSAGE = array(
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.',
     60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    61 => 'Plugin %s: Unknown message placeholder',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occured when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.'
 );
 
 ###############################################################################
@@ -1262,6 +1270,37 @@ $LANG_PDF = array(
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
+###############################################################################
+# trackback
+
+$LANG_TRB = array (
+    'trackback'          => 'Trackback',
+    'from'               => 'from',
+    'tracked_on'         => 'Tracked on',
+    'read_more'          => '[read more]',
+    'intro_text'         => "Here's what others have to say about '%s':",
+    'no_comments'        => 'No trackback comments for this entry.',
+    'this_trackback_url' => 'Trackback URL for this entry:',
+    'num_comments'       => '%d trackback comments',
+    'send_trackback'     => 'Send Trackback Comment',
+    'preview'            => 'Preview',
+    'editor_title'       => 'Send trackback comment',
+    'trackback_url'      => 'Trackback URL',
+    'entry_url'          => 'Entry URL',
+    'entry_title'        => 'Entry Title',
+    'blog_name'          => 'Site Name',
+    'excerpt'            => 'Excerpt',
+    'truncate_warning'   => 'Note: The receiving site may truncate your excerpt',
+    'button_send'        => 'Send',
+    'button_preview'     => 'Preview',
+    'send_error'         => 'Error',
+    'send_error_details' => 'Error when sending trackback comment:',
+    'url_missing'        => 'No Entry URL',
+    'url_required'       => 'Please enter at least a URL for the entry.',
+    'target_missing'     => 'No Trackback URL',
+    'target_required'    => 'Please enter a trackback URL'
 );
 
 ?>

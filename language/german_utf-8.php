@@ -158,7 +158,10 @@ $LANG01 = array(
     110 => 'Site-Admin auf diesen Beitrag hinweisen',
     111 => 'Als PDF anzeigen',
     112 => 'Registrierte User',
-    113 => 'Dokumentation'
+    113 => 'Dokumentation',
+    114 => 'TRACKBACKS',
+    115 => 'Keine neuen Trackback-Kommentare',
+    116 => 'Trackback'
 );
 
 ###############################################################################
@@ -454,7 +457,7 @@ $LANG09 = array(
     44 => 'alle Wörter',
     45 => 'irgendeines der Wörter',
     46 => 'weiter',
-    47 => 'zurück'
+    47 => 'zurück',
     48 => 'Autor',
     49 => 'Datum',
     50 => 'Treffer',
@@ -494,7 +497,9 @@ $LANG10 = array(
     21 => 'Es gibt keine Links oder sie wurden von niemandem angeklickt.',
     22 => 'Top Ten der verschickten Artikel',
     23 => 'E-Mails',
-    24 => 'Es wurden keine Artikel per E-Mail verschickt.'
+    24 => 'Es wurden keine Artikel per E-Mail verschickt.',
+    25 => 'Top Ten der Artikel mit Trackback-Kommentaren',
+    26 => 'Keine Trackback-Kommentare gefunden.'
 );
 
 ###############################################################################
@@ -1136,7 +1141,10 @@ $MESSAGE = array(
     58 => 'Der Feed wurde gespeichert.',
     59 => 'Der Feed wurde gelöscht.',
     60 => 'Das Plugin wurde erfolgreich aktualisiert.',
-    61 => 'Plugin %s: Unbekannter Text-Platzhalter'
+    61 => 'Plugin %s: Unbekannter Text-Platzhalter',
+    62 => 'The trackback comment has been deleted.',
+    63 => 'An error occured when deleting the trackback comment.',
+    64 => 'Your trackback comment has been successfully sent.'
 );
 
 ###############################################################################
@@ -1208,7 +1216,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Backup der Datenbank war erfolgreich.',
     'no_backups' => 'Keine Backups im System',
     'db_explanation' => 'Um ein neues Backup Deines Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken',
-    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>{$_DB_mysqldump_path}</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>\$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup fehlgeschlagen: Datei ist 0 Bytes groß.',
     'path_not_found' => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
     'no_access' => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
@@ -1270,6 +1278,37 @@ $LANG_PDF = array(
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
     14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
+###############################################################################
+# trackback.php
+
+$LANG_TRB = array(
+    'trackback' => 'Trackback',
+    'from' => 'von',
+    'tracked_on' => 'Empfangen am',
+    'read_more' => '[mehr]',
+    'intro_text' => 'Andere haben folgendes über \'%s\' geschrieben:',
+    'no_comments' => 'Keine Trackback-Kommentare für diesen Eintrag.',
+    'this_trackback_url' => 'Trackback-URL für diesen Eintrag:',
+    'num_comments' => '%d Trackback-Kommentare',
+    'send_trackback' => 'Trackback-Kommentar senden',
+    'preview' => 'Vorschau',
+    'editor_title' => 'Trackback-Kommentar senden',
+    'trackback_url' => 'Trackback-URL',
+    'entry_url' => 'URL des Eintrags',
+    'entry_title' => 'Titel des Eintrags',
+    'blog_name' => 'Site-Name',
+    'excerpt' => 'Auszug',
+    'truncate_warning' => 'Hinweis: Die empfangende Site könnte den Auszug kürzen.',
+    'button_send' => 'Abschicken',
+    'button_preview' => 'Vorschau',
+    'send_error' => 'Fehler',
+    'send_error_details' => 'Fehler beim Senden des Trackback-Kommentars',
+    'url_missing' => 'Keine URL für den Eintrag',
+    'url_required' => 'Es muss mindestens die URL für den Eintrag angegeben werden.',
+    'target_missing' => 'Keine Trackback-URL',
+    'target_required' => 'Bitte gib die Trackback-URL ein.',
 );
 
 ?>

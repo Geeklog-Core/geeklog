@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog system statistics page.                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.32 2004/09/05 19:19:50 dhaun Exp $
+// $Id: stats.php,v 1.33 2005/01/16 19:14:28 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -62,10 +62,10 @@ if (empty ($_USER['username']) &&
 $display .= COM_siteHeader ('menu', $LANG10[1]) . COM_startBlock ($LANG10[1]);
 
 $stat_templates = new Template($_CONF['path_layout'] . 'stats');
-$stat_templates->set_file(array('stats'=>'stats.thtml',
-                            'sitestats'=>'sitestatistics.thtml',
-                            'itemstats'=>'itemstatistics.thtml',
-                            'statrow'=>'singlestat.thtml'));
+$stat_templates->set_file (array ('stats'     => 'stats.thtml',
+                                  'sitestats' => 'sitestatistics.thtml',
+                                  'itemstats' => 'itemstatistics.thtml',
+                                  'statrow'   => 'singlestat.thtml'));
 
 // Overall Site Statistics
 
@@ -73,9 +73,11 @@ $totalhits = DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'");
 $stat_templates->set_var('lang_totalhitstosystem',$LANG10[2]);
 $stat_templates->set_var('total_hits', $totalhits);
 
+$topicsql = COM_getTopicSql ('AND');
+
 $id = array('draft_flag','date');
 $values = array('0','NOW()');	
-$result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND'));
+$result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql);
 $A = DB_fetchArray($result);
 $total_stories = $A['count'];
 $comments = $A['ccount'];
@@ -110,7 +112,7 @@ $stat_templates->set_var('lang_polls_answers',$LANG10[4]);
 $stat_templates->set_var('total_polls',$total_polls);
 $stat_templates->set_var('total_answers', $total_answers);
 
-$result = DB_query ("SELECT count(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
+$result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_links = $A['count'];
 $total_clicks = $A['clicks'];
@@ -121,7 +123,7 @@ $stat_templates->set_var('lang_links_clicks',$LANG10[5]);
 $stat_templates->set_var('total_links',$total_links);
 $stat_templates->set_var('total_clicks',$total_clicks);
 
-$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
+$result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_events = $A['count'];
 $stat_templates->set_var('lang_events',$LANG10[6]);
@@ -138,7 +140,7 @@ $display .= COM_endBlock();
 
 // Detailed story statistics
 
-$result = DB_query("SELECT sid,title,hits FROM {$_TABLES["stories"]} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY Hits desc LIMIT 10");
+$result = DB_query("SELECT sid,title,hits FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY hits DESC LIMIT 10");
 $nrows  = DB_numRows($result);
 
 $display .= COM_startBlock($LANG10[7]);
@@ -158,13 +160,13 @@ if ($nrows > 0) {
 } else {
     $display .= $LANG10[10];
 }
-	
+
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
 
 // Top Ten Commented Stories
 
-$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . " ORDER BY comments desc LIMIT 10");
+$result = DB_query("SELECT sid,title,comments FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY comments DESC LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[11]);
 if ($nrows > 0) {
@@ -186,9 +188,34 @@ if ($nrows > 0) {
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
 
+// Top Ten Trackback Comments
+
+$result = DB_query ("SELECT {$_TABLES['stories']}.sid,{$_TABLES['stories']}.title,COUNT(*) AS count FROM {$_TABLES['stories']},{$_TABLES['trackback']} AS t WHERE (draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ({$_TABLES['stories']}.sid = t.sid) AND (t.type = 'article')" . COM_getPermSql ('AND') . $topicsql . " GROUP BY t.sid ORDER BY count DESC LIMIT 10");
+$nrows = DB_numRows ($result);
+$display .= COM_startBlock ($LANG10[25]);
+if ($nrows > 0) {
+    $stat_templates->set_var ('item_label', $LANG10[8]);
+    $stat_templates->set_var ('stat_name', $LANG10[12]);
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
+                                        . '/article.php?story=' . $A['sid']));
+        $stat_templates->set_var ('item_text',
+                stripslashes (str_replace ('$', '&#36;', $A['title'])));
+        $stat_templates->set_var ('item_stat', $A['count']);
+        $stat_templates->parse ('stat_row', 'statrow', true);
+    }
+    $stat_templates->parse ('output', 'itemstats');
+    $display .= $stat_templates->finish ($stat_templates->get_var ('output'));
+} else {
+    $display .= $LANG10[26];
+}
+$display .= COM_endBlock ();
+$stat_templates->set_var ('stat_row', '');
+
 // Top Ten Emailed Stories
 
-$result = DB_query("SELECT sid,title,numemails FROM {$_TABLES["stories"]} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . " ORDER BY numemails desc LIMIT 10");
+$result = DB_query("SELECT sid,title,numemails FROM {$_TABLES['stories']} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . $topicsql . " ORDER BY numemails DESC LIMIT 10");
 $nrows = DB_numRows($result);
 $display .= COM_startBlock($LANG10[22]);
 
@@ -213,7 +240,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Polls
 
-$result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters desc LIMIT 10");
+$result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters DESC LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[14]);
 if ($nrows>0) {
@@ -238,7 +265,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Links
 
-$result = DB_query("SELECT lid,url,title,hits from {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits desc LIMIT 10");
+$result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[18]);
 if ($nrows > 0) {

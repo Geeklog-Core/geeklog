@@ -8,11 +8,11 @@
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.57 2005/01/01 15:41:10 dhaun Exp $
+// $Id: article.php,v 1.58 2005/01/16 19:14:28 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -46,28 +46,31 @@
 */
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
+if ($_CONF['trackback_enabled']) {
+    require_once ($_CONF['path_system'] . 'lib-trackback.php');
+}
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 // MAIN
 
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $story = COM_applyFilter ($HTTP_POST_VARS['story']);
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
-    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
-    $query = COM_applyFilter ($HTTP_POST_VARS['query']);
-    $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
+if (isset ($_POST['mode'])) {
+    $story = COM_applyFilter ($_POST['story']);
+    $mode = COM_applyFilter ($_POST['mode']);
+    $order = COM_applyFilter ($_POST['order']);
+    $query = COM_applyFilter ($_POST['query']);
+    $reply = COM_applyFilter ($_POST['reply']);
 } else {
     COM_setArgNames (array ('story', 'mode'));
     $story = COM_applyFilter (COM_getArgument ('story'));
     $mode = COM_applyFilter (COM_getArgument ('mode'));
-    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
-    $query = COM_applyFilter ($HTTP_GET_VARS['query']);
-    $reply = COM_applyFilter ($HTTP_GET_VARS['reply']);
+    $order = COM_applyFilter ($_GET['order']);
+    $query = COM_applyFilter ($_GET['query']);
+    $reply = COM_applyFilter ($_GET['reply']);
 }
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -78,11 +81,7 @@ if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
 }
 
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
-if (isset ($HTTP_POST_VARS['type'])) {
-    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
-} else {
-    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
-}
+$type = COM_applyFilter ($_REQUEST['type']);
 if (!empty ($type) && PLG_supportsComments ($type)) {
     // Yes, this is a plugin wanting to be commented on...do it
     $display .= PLG_callCommentForm($type,$story,$mode,$order,$reply);
@@ -102,7 +101,7 @@ if ($A['count'] > 0) {
         echo COM_refresh ($_CONF['site_url']
                 . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
     } else {
-	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')");
@@ -155,9 +154,19 @@ if ($A['count'] > 0) {
             $display = $story_template->finish($story_template->get_var('output')); 
         } else {
             // Set page title
-            $_CONF['pagetitle'] = stripslashes (str_replace ('$', '&#36;',
-                                                $A['title']));
-            $display .= COM_siteHeader ('menu');
+            $pagetitle = stripslashes (str_replace ('$', '&#36;', $A['title']));
+
+            if ($_CONF['trackback_enabled']) {
+                $permalink = COM_buildUrl ($_CONF['site_url']
+                                           . '/article.php?story=' . $story);
+                $trackbackurl = TRB_makeTrackbackUrl ($story);
+                $rdf = '<!--' . LB
+                     . TRB_trackbackRdf ($permalink, $A['title'], $trackbackurl)
+                     . LB . '-->' . LB;
+            } else {
+                $rdf = '';
+            }
+            $display .= COM_siteHeader ('menu', $pagetitle, $rdf);
 
             DB_query ("UPDATE {$_TABLES['stories']} SET hits = hits + 1 WHERE (sid = '$story') AND (date <= NOW()) AND (draft_flag = 0)");
 
@@ -236,6 +245,25 @@ if ($A['count'] > 0) {
                 $story_template->set_var ('commentbar',
                         COM_userComments ($story, $A['title'], 'article',
                                           $order, $mode, 0, $page, false, $delete_option));
+            }
+            if ($_CONF['trackback_enabled']) {
+                if (SEC_inGroup ('Root')) {
+                    $url = $_CONF['site_admin_url']
+                         . '/trackback.php?mode=new&amp;id=' . $A['sid'];
+                    $story_template->set_var ('send_trackback_link', '<a href="'
+                         . $url . '">' . $LANG_TRB['send_trackback'] . '</a>');
+                    $story_template->set_var ('send_trackback_url', $url);
+                    $story_template->set_var ('lang_send_trackback_text',
+                                              $LANG_TRB['send_trackback']);
+                }
+
+                $permalink = COM_buildUrl ($_CONF['site_url']
+                                           . '/article.php?story=' . $story);
+                $story_template->set_var ('trackback',
+                        TRB_renderTrackbackComments ($story, 'article',
+                                                     $A['title'], $permalink));
+            } else {
+                $story_template->set_var ('trackback', '');
             }
             $display .= $story_template->finish ($story_template->parse ('output', 'article'));
             $display .= COM_siteFooter ();

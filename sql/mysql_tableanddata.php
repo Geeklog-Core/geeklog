@@ -565,6 +565,23 @@ CREATE TABLE {$_TABLES['article_images']} (
 ";
 
 $_SQL[40] = "
+CREATE TABLE {$_TABLES['trackback']} (
+  cid int(10) unsigned NOT NULL auto_increment,
+  sid varchar(40) NOT NULL,
+  url varchar(255) default NULL,
+  title varchar(128) default NULL,
+  blog varchar(80) default NULL,
+  excerpt text,
+  date datetime default NULL,
+  type varchar(30) NOT NULL default 'article',
+  ipaddress varchar(15) NOT NULL default '',
+  PRIMARY KEY (cid),
+  INDEX trackback_sid(sid),
+  INDEX trackback_type(type)
+) TYPE=MyISAM
+";
+
+$_SQL[41] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
@@ -597,7 +614,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
 ) TYPE=MyISAM
 ";
  
-$_SQL[41] = "
+$_SQL[42] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '',
@@ -906,6 +923,8 @@ $_INDEX[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_dat
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)";
 $_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)";
+
+$_INDEX[] = "ALTER TABLE {$_TABLES['trackback']} ADD INDEX trackback_date(date)";
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)";
 

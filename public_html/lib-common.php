@@ -8,13 +8,13 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
-// |          Vincent Furia     - vinny01@users.sourceforge.net                |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.408 2004/12/29 08:43:37 dhaun Exp $
+// $Id: lib-common.php,v 1.409 2005/01/16 19:14:28 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -94,7 +94,7 @@ if( isset( $_CONF['site_enabled'] ) && !$_CONF['site_enabled'] )
 }
 
 // this file can't be used on its own - redirect to index.php
-if( eregi( 'lib-common.php', $HTTP_SERVER_VARS['PHP_SELF'] ))
+if( eregi( 'lib-common.php', $_SERVER['PHP_SELF'] ))
 {
     echo COM_refresh( $_CONF['site_url'] . '/index.php' );
     exit;
@@ -242,20 +242,20 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 // way if user logged in and set theme and then logged out we would still know
 // which theme to show them.
 
-if( !empty( $HTTP_POST_VARS['usetheme'] ) && is_dir( $_CONF['path_themes']
-        . $HTTP_POST_VARS['usetheme'] ))
+if( !empty( $_POST['usetheme'] ) && is_dir( $_CONF['path_themes']
+        . $_POST['usetheme'] ))
 {
-    $_CONF['theme'] = $HTTP_POST_VARS['usetheme'];
+    $_CONF['theme'] = $_POST['usetheme'];
     $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';      
     $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];   
 }
 else if( $_CONF['allow_user_themes'] == 1 )
 {
-    if( isset( $HTTP_COOKIE_VARS[$_CONF['cookie_theme']]) && empty($_USER['theme'] ))
+    if( isset( $_COOKIE[$_CONF['cookie_theme']]) && empty($_USER['theme'] ))
     {
-        if( is_dir( $_CONF['path_themes'] . $HTTP_COOKIE_VARS[$_CONF['cookie_theme']] ))
+        if( is_dir( $_CONF['path_themes'] . $_COOKIE[$_CONF['cookie_theme']] ))
         {
-            $_USER['theme'] = $HTTP_COOKIE_VARS[$_CONF['cookie_theme']];
+            $_USER['theme'] = $_COOKIE[$_CONF['cookie_theme']];
         }
     }
 
@@ -287,12 +287,12 @@ if( file_exists( $_CONF['path_layout'] . 'functions.php' ))
 
 // Similarly set language
 
-if( isset( $HTTP_COOKIE_VARS[$_CONF['cookie_language']]) && empty( $_USER['language'] ))
+if( isset( $_COOKIE[$_CONF['cookie_language']]) && empty( $_USER['language'] ))
 {
-    if( is_file( $_CONF['path_language'] . $HTTP_COOKIE_VARS[$_CONF['cookie_language']] . '.php' ))
+    if( is_file( $_CONF['path_language'] . $_COOKIE[$_CONF['cookie_language']] . '.php' ))
     {
-        $_USER['language'] = $HTTP_COOKIE_VARS[$_CONF['cookie_language']];
-        $_CONF['language'] = $HTTP_COOKIE_VARS[$_CONF['cookie_language']];
+        $_USER['language'] = $_COOKIE[$_CONF['cookie_language']];
+        $_CONF['language'] = $_COOKIE[$_CONF['cookie_language']];
     }
 }
 else if( !empty( $_USER['language'] ))
@@ -307,7 +307,7 @@ else if( !empty( $_USER['language'] ))
 if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
 {
     // The following code handles anonymous users so they show up properly
-    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}' AND uid = 1" );
+    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$_SERVER['REMOTE_ADDR']}' AND uid = 1" );
 
     $tries = 0;
     do
@@ -318,7 +318,7 @@ if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
         $curtime = time();
 
         // Insert anonymous user session
-        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '{$HTTP_SERVER_VARS['REMOTE_ADDR']}', 1)", 1 );
+        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '{$_SERVER['REMOTE_ADDR']}', 1)", 1 );
         $tries++;
     }
     while(( $result === false) && ( $tries < 5 ));
@@ -358,13 +358,13 @@ $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
 
 $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 
-if( isset( $HTTP_GET_VARS['topic'] ))
+if( isset( $_GET['topic'] ))
 {
-    $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
+    $topic = COM_applyFilter( $_GET['topic'] );
 }
-else if( isset( $HTTP_POST_VARS['topic'] ))
+else if( isset( $_POST['topic'] ))
 {
-    $topic = COM_applyFilter( $HTTP_POST_VARS['topic'] );
+    $topic = COM_applyFilter( $_POST['topic'] );
 }
 else
 {
@@ -450,12 +450,13 @@ function COM_getBlockTemplate( $blockname, $which )
 /**
 * Gets all installed themes
 *
-* Gets all directory names in /path/to/geeklog/themes/ and returns all the
-* directories
+* Returns a list of all the directory names in $_CONF['path_themes'], i.e.
+* a list of all the theme names.
 *
-* @return   array   All installed themes
+* @param    bool    $all    if true, return all themes even if users aren't allowed to change their default themes
+* @return   array           All installed themes
+*
 */
-
 function COM_getThemes( $all = false )
 {
     global $_CONF;
@@ -754,10 +755,10 @@ function COM_renderMenu( &$header, $plugin_menu )
 *
 */
 
-function COM_siteHeader( $what = 'menu', $pagetitle = '' )
+function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_CHARSET,
-           $topic, $_COM_VERBOSE, $HTTP_POST_VARS, $HTTP_GET_VARS;
+           $topic, $_COM_VERBOSE;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -781,19 +782,19 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
         ));
 
     // get topic if not on home page
-    if( !isset( $HTTP_GET_VARS['topic'] ))
+    if( !isset( $_GET['topic'] ))
     {
-        if( isset( $HTTP_GET_VARS['story'] ))
+        if( isset( $_GET['story'] ))
         {
-            $sid = COM_applyFilter( $HTTP_GET_VARS['story'] );
+            $sid = COM_applyFilter( $_GET['story'] );
         }
-        elseif( isset( $HTTP_GET_VARS['sid'] ))
+        elseif( isset( $_GET['sid'] ))
         {
-            $sid = COM_applyFilter( $HTTP_GET_VARS['sid'] );
+            $sid = COM_applyFilter( $_GET['sid'] );
         }
-        elseif( isset( $HTTP_POST_VARS['story'] ))
+        elseif( isset( $_POST['story'] ))
         {
-            $sid = COM_applyFilter( $HTTP_POST_VARS['story'] );
+            $sid = COM_applyFilter( $_POST['story'] );
         }
         if( !empty( $sid ))
         {
@@ -802,7 +803,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
     }
     else
     {
-        $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
+        $topic = COM_applyFilter( $_GET['topic'] );
     }
 
     if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
@@ -957,7 +958,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 
     // Call any plugin that may want to include extra Meta tags
     // or Javascript functions
-    $header->set_var( 'plg_headercode', PLG_getHeaderCode() );
+    $header->set_var( 'plg_headercode', $headercode . PLG_getHeaderCode() );
 
     // Call to plugins to set template variables in the header
     PLG_templateSetVars( 'header', $header );
@@ -1563,7 +1564,7 @@ function COM_errorLog( $logentry, $actionid = '' )
 
 function COM_accessLog( $logentry )
 {
-    global $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS;
+    global $_CONF, $_USER, $LANG01;
 
     $retval = '';
 
@@ -1577,11 +1578,11 @@ function COM_accessLog( $logentry )
 
     if( isset( $_USER['uid'] ))
     {
-        $byuser = $_USER['uid'] . '@' . $HTTP_SERVER_VARS['REMOTE_ADDR'];
+        $byuser = $_USER['uid'] . '@' . $_SERVER['REMOTE_ADDR'];
     }
     else
     {
-        $byuser = 'anon@' . $HTTP_SERVER_VARS['REMOTE_ADDR'];
+        $byuser = 'anon@' . $_SERVER['REMOTE_ADDR'];
     }
 
     fputs( $file, "$timestamp ($byuser) - $logentry\n" );
@@ -1603,7 +1604,7 @@ function COM_accessLog( $logentry )
 
 function COM_pollVote( $qid )
 {
-    global $_CONF, $_TABLES, $LANG01, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $LANG01, $_COOKIE;
 
     $retval = '';
 
@@ -1617,10 +1618,10 @@ function COM_pollVote( $qid )
 
     $nquestion = DB_numRows( $question );
     $fields = array( 'ipaddress', 'qid' );
-    $values = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
+    $values = array( $_SERVER['REMOTE_ADDR'], $qid );
     $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
 
-    if( empty( $HTTP_COOKIE_VARS[$qid] ) && $id == 0 )
+    if( empty( $_COOKIE[$qid] ) && $id == 0 )
     {
         if( $nquestion == 1 )
         {
@@ -1704,7 +1705,7 @@ function COM_pollVote( $qid )
 
 function COM_showPoll( $size, $qid='' )
 {
-    global $_CONF, $_TABLES, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $_COOKIE;
 
     $retval = '';
 
@@ -1713,9 +1714,9 @@ function COM_showPoll( $size, $qid='' )
     if( !empty( $qid ))
     {
         $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                            array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid ));
+                            array( $_SERVER['REMOTE_ADDR'], $qid ));
 
-        if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
+        if( empty( $_COOKIE[$qid]) && $pcount == 0 )
         {
             $retval .= COM_pollVote( $qid );
         }
@@ -1736,10 +1737,10 @@ function COM_showPoll( $size, $qid='' )
                 $Q = DB_fetchArray( $result );
                 $qid = $Q['qid'];
                 $id = array( 'ipaddress', 'qid' );
-                $value = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
+                $value = array( $_SERVER['REMOTE_ADDR'], $qid );
                 $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
 
-                if( !isset( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
+                if( !isset( $_COOKIE[$qid]) && $pcount == 0 )
                 {
                     $retval .= COM_pollVote( $qid );
                 }
@@ -1896,7 +1897,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
-                                             $order, $mode, 0, 1, false, $delete_option ); 
+                                $order, $mode, 0, 1, false, $delete_option ); 
             }
         }
     }
@@ -1917,7 +1918,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
 function COM_showTopics( $topic='' )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $HTTP_SERVER_VARS,
+    global $_CONF, $_TABLES, $_USER, $LANG01,
            $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
@@ -2097,7 +2098,7 @@ function COM_showTopics( $topic='' )
 
 function COM_userMenu( $help='', $title='' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $HTTP_SERVER_VARS;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE;
 
     $retval = '';
 
@@ -2247,7 +2248,7 @@ function COM_userMenu( $help='', $title='' )
 
 function COM_adminMenu( $help = '', $title = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF, $HTTP_SERVER_VARS;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF;
 
     $retval = '';
 
@@ -2497,6 +2498,17 @@ function COM_adminMenu( $help = '', $title = '' )
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
 
+        if( $_CONF['trackback_enabled'] && SEC_inGroup( 'Root' ))
+        {
+            $url = $_CONF['site_admin_url'] . '/trackback.php';
+            $adminmenu->set_var( 'option_url', $url );
+            $adminmenu->set_var( 'option_label', $LANG01[116] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
+
+            $retval .= $adminmenu->parse( 'item',
+                    ( $thisUrl == $url ) ? 'current' : 'option' );
+        }
+
         if( SEC_hasrights( 'plugin.edit' ))
         {
             $url = $_CONF['site_admin_url'] . '/plugins.php';
@@ -2612,9 +2624,9 @@ function COM_refresh( $url )
 */
 function COM_commentBar( $sid, $title, $type, $order, $mode )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG01, $_REQUEST, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG01;
 
-    $page = array_pop( explode( '/', $HTTP_SERVER_VARS['PHP_SELF'] ));
+    $page = array_pop( explode( '/', $_SERVER['PHP_SELF'] ));
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );
@@ -3684,7 +3696,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
 
     $retval = '';
 
@@ -3767,8 +3779,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 */
 function COM_formatBlock( $A, $noboxes = false )
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $HTTP_SERVER_VARS,
-           $topic, $page, $newstories;
+    global $_CONF, $_TABLES, $_USER, $LANG21, $topic, $page, $newstories;
 
     $retval = '';
     if( $A['type'] == 'portal' )
@@ -4140,7 +4151,14 @@ function COM_getDisplayName( $uid = '' )
  
     if ($uid == '')
     {
-        $uid = $_USER['uid'];
+        if( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 ))
+        {
+            $uid = 1;
+        }
+        else
+        {
+            $uid = $_USER['uid'];
+        }
     }
 
      $query = DB_query( "SELECT username, fullname FROM {$_TABLES['users']} WHERE uid='$uid'" );
@@ -4539,17 +4557,17 @@ function COM_emailUserTopics()
 }
 
 /**
-* Shows any new information in block
+* Shows any new information in a block
 *
 * Return the HTML that shows any new stories, comments, etc
 *
-* @param        string      $help       Help file for block
-* @param        string      $title      Title used in block header
-* @return     string  Return the HTML that shows any new stories, comments, etc
+* @param    string  $help   Help file for block
+* @param    string  $title  Title used in block header
+* @return   string  Return the HTML that shows any new stories, comments, etc
 *
 */
 
-function COM_whatsNewBlock( $help='', $title='' )
+function COM_whatsNewBlock( $help = '', $title = '' )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $page, $newstories;
 
@@ -4557,24 +4575,11 @@ function COM_whatsNewBlock( $help='', $title='' )
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
     $topicsql = '';
-    if(( $_CONF['hidenewstories'] == 0 ) || ( $_CONF['hidenewcomments'] == 0 ))
+    if(( $_CONF['hidenewstories'] == 0 ) || ( $_CONF['hidenewcomments'] == 0 )
+            || ( $_CONF['trackback_enabled']
+            && ( $_CONF['hidenewtrackbacks'] == 0 )))
     {
-        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
-                             . COM_getPermSQL() );
-        $trows = DB_numRows( $tresult );
-        if( $trows > 0 )
-        {
-            $tids = array();
-            for( $i = 0; $i < $trows; $i++ )
-            {
-                $T = DB_fetchArray( $tresult );
-                $tids[] = $T['tid'];
-            }
-            if( sizeof( $tids ) > 0 )
-            {
-                $topicsql = " AND (tid IN ('" . implode( "','", $tids ) . "'))";
-            }
-        }
+        $topicsql = COM_getTopicSql ('AND', 0, $_TABLES['stories']);
     }
 
     if( $_CONF['hidenewstories'] == 0 )
@@ -4629,7 +4634,9 @@ function COM_whatsNewBlock( $help='', $title='' )
             $retval .= $LANG01[100] . '<br>';
         }
 
-        if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['hidenewlinks'] == 0 )
+        if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['trackback_enabled']
+                && ( $_CONF['hidenewtrackbacks'] == 0 )) 
+                || ( $_CONF['hidenewlinks'] == 0 )
                 || ( $_CONF['hidenewplugins'] == 0 ))
         {
             $retval .= '<br>';
@@ -4677,54 +4684,41 @@ function COM_whatsNewBlock( $help='', $title='' )
         {
             $newcomments = array();
 
-            for( $x = 1; $x <= $nrows; $x++ )
+            for( $x = 0; $x < $nrows; $x++ )
             {
                 $A = DB_fetchArray( $result );
 
                 if(( $A['type'] == 'article' ) || empty( $A['type'] ))
                 {
-                    $itemlen = strlen( $A['title'] );
                     $titletouse = stripslashes( $A['title'] );
+                    $itemlen = strlen( $titletouse );
                     $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
                 }
                 else if( $A['type'] == 'poll' )
                 {
-                    $itemlen = strlen( $A['question'] );
                     $titletouse = $A['question'];
+                    $itemlen = strlen( $titletouse );
                     $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
                 }
 
+                // Trim the length if over 20 characters
                 if( $itemlen > 20 )
                 {
                     $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
+                    $titletouse = substr( $titletouse, 0, 17 ) . '...';
                 }
                 else
                 {
                     $urlstart .= '>';
                 }
 
-                // Trim the length if over 20 characters
-                if( $itemlen > 20 )
-                {
-                    $titletouse = substr( $titletouse, 0, 17 );
-                    $acomment = str_replace( '$', '&#36;', $titletouse ) . '...';
-                    $acomment = str_replace( ' ', '&nbsp;', $acomment );
+                $acomment = str_replace( '$', '&#36;', $titletouse );
+                $acomment = str_replace( ' ', '&nbsp;', $acomment );
 
-                    if( $A['dups'] > 1 )
-                    {
-                        $acomment .= ' [+' . $A['dups'] . ']';
-                    }
-                }
-                else
+                if( $A['dups'] > 1 )
                 {
-                    $acomment = str_replace( '$', '&#36;', $titletouse );
-                    $acomment = str_replace( ' ', '&nbsp;', $acomment );
-
-                    if( $A['dups'] > 1 )
-                    {
-                        $acomment .= ' [+' . $A['dups'] . ']';
-                    }
+                    $acomment .= ' [+' . $A['dups'] . ']';
                 }
 
                 $newcomments[] = $urlstart . $acomment . '</a>';
@@ -4735,6 +4729,64 @@ function COM_whatsNewBlock( $help='', $title='' )
         else
         {
             $retval .= $LANG01[86] . '<br>' . LB;
+        }
+
+        if(( $_CONF['hidenewlinks'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 )
+                || ( $_CONF['trackback_enabled']
+                && ( $_CONF['hidenewtrackbacks'] == 0 )))
+        {
+            $retval .= '<br>';
+        }
+    }
+
+    if( $_CONF['trackback_enabled'] && ( $_CONF['hidenewtrackbacks'] == 0 ))
+    {
+        $retval .= '<b>' . $LANG01[114] . '</b> <small>' . $LANG01[85] . '</small><br>';
+
+        $sql = "SELECT DISTINCT COUNT(*) AS count,{$_TABLES['stories']}.title,t.sid FROM {$_TABLES['trackback']} AS t,{$_TABLES['stories']} WHERE (t.type = 'article') AND (t.sid = {$_TABLES['stories']}.sid) AND (t.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newtrackbackinterval']} SECOND)))" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . $topicsql . " GROUP BY t.sid ORDER BY t.date DESC LIMIT 15";
+        $result = DB_query( $sql );
+
+        $nrows = DB_numRows( $result );
+        if( $nrows > 0 )
+        {
+            $newcomments = array();
+
+            for( $i = 0; $i < $nrows; $i++ )
+            {
+                $A = DB_fetchArray( $result );
+
+                $titletouse = stripslashes( $A['title'] );
+                $itemlen = strlen( $titletouse );
+                $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] ) . '#trackback' . '"';
+
+                // Trim the length if over 20 characters
+                if( $itemlen > 20 )
+                {
+                    $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
+                    $titletouse = substr( $titletouse, 0, 17 ) . '...';
+                }
+                else
+                {
+                    $urlstart .= '>';
+                }
+
+                $acomment = str_replace( '$', '&#36;', $titletouse );
+                $acomment = str_replace( ' ', '&nbsp;', $acomment );
+
+                if( $A['count'] > 1 )
+                {
+                    $acomment .= ' [+' . $A['count'] . ']';
+                }
+
+                $newcomments[] = $urlstart . $acomment . '</a>';
+            }
+
+            $retval .= COM_makeList( $newcomments, 'list-new-trackbacks' );
+        }
+        else
+        {
+            $retval .= $LANG01[115] . '<br>' . LB;
         }
 
         if(( $_CONF['hidenewlinks'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 ))
@@ -5396,12 +5448,12 @@ function COM_makeList( $listofitems, $classname = '' )
 */
 function COM_checkSpeedlimit( $type = 'submit' )
 {
-    global $_TABLES, $HTTP_SERVER_VARS;
+    global $_TABLES;
 
     $last = 0;
 
     $date = DB_getItem( $_TABLES['speedlimit'], 'date',
-            "(type = '$type') AND (ipaddress = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}')" );
+            "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}')" );
     if( !empty( $date ))
     {
         $last = time() - $date;
@@ -5423,10 +5475,10 @@ function COM_checkSpeedlimit( $type = 'submit' )
 */
 function COM_updateSpeedlimit( $type = 'submit' )
 {
-    global $_TABLES, $HTTP_SERVER_VARS;
+    global $_TABLES;
 
     DB_save( $_TABLES['speedlimit'], 'ipaddress,date,type',
-             "'{$HTTP_SERVER_VARS['REMOTE_ADDR']}',unix_timestamp(),'$type'" );
+             "'{$_SERVER['REMOTE_ADDR']}',unix_timestamp(),'$type'" );
 }
 
 /**
@@ -5735,8 +5787,6 @@ function COM_stripslashes( $text )
 */
 function COM_applyFilter( $parameter, $isnumeric = false )
 {
-    global $HTTP_SERVER_VARS;
-
     $log_manipulation = false; // set to true to log when the filter applied
 
     $p = COM_stripslashes( $parameter );
@@ -5766,7 +5816,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
     {
         if( strcmp( $p, $parameter ) != 0 )
         {
-            COM_errorLog( "Filter applied: >> $parameter << filtered to $p [IP {$HTTP_SERVER_VARS['REMOTE_ADDR']}]", 1);
+            COM_errorLog( "Filter applied: >> $parameter << filtered to $p [IP {$_SERVER['REMOTE_ADDR']}]", 1);
         }
     }
 
@@ -5947,42 +5997,42 @@ function COM_dateDiff( $interval, $date1, $date2 )
 */
 function COM_getCurrentURL()
 {
-    global $_CONF, $HTTP_SERVER_VARS;
+    global $_CONF;
 
     $thisUrl = '';
 
-    if( empty( $HTTP_SERVER_VARS['SCRIPT_URI'] ))
+    if( empty( $_SERVER['SCRIPT_URI'] ))
     {
-        if( !empty( $HTTP_SERVER_VARS['DOCUMENT_URI'] ))
+        if( !empty( $_SERVER['DOCUMENT_URI'] ))
         {
-            $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
+            $thisUrl = $_SERVER['DOCUMENT_URI'];
         }
     }
     else
     {
-        $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
+        $thisUrl = $_SERVER['SCRIPT_URI'];
     }
-    if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+    if( !empty( $thisUrl ) && !empty( $_SERVER['QUERY_STRING'] ))
     {
-        $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
+        $thisUrl .= '?' . $_SERVER['QUERY_STRING'];
     }
     if( empty( $thisUrl ))
     {
-        $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
-        if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
+        $requestUri = $_SERVER['REQUEST_URI'];
+        if( empty( $_SERVER['REQUEST_URI'] ))
         {
             // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
-            if( empty( $HTTP_SERVER_VARS['PATH_INFO'] ))
+            if( empty( $_SERVER['PATH_INFO'] ))
             {
-                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+                $requestUri = $_SERVER['SCRIPT_NAME'];
             }
             else
             {
-                $requestUri = $HTTP_SERVER_VARS['PATH_INFO'];
+                $requestUri = $_SERVER['PATH_INFO'];
             }
-            if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+            if( !empty( $_SERVER['QUERY_STRING'] ))
             {
-                $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
+                $requestUri .= '?' . $_SERVER['QUERY_STRING'];     
             }
         }
 
@@ -6018,20 +6068,20 @@ function COM_getCurrentURL()
 */
 function COM_isFrontpage()
 {
-    global $_CONF, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+    global $_CONF, $topic, $page, $newstories;
 
     // Note: We can't use $PHP_SELF here since the site may not be in the
     // DocumentRoot
     $isFrontpage = false;
 
     // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
-    if( empty( $HTTP_SERVER_VARS['PATH_INFO'] ))
+    if( empty( $_SERVER['PATH_INFO'] ))
     {
-        $scriptName = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+        $scriptName = $_SERVER['SCRIPT_NAME'];
     }
     else
     {
-        $scriptName = $HTTP_SERVER_VARS['PATH_INFO'];
+        $scriptName = $_SERVER['PATH_INFO'];
     }
 
     preg_match( '/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly );

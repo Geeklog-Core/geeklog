@@ -1,0 +1,4 @@
+<h2><a name="trackback">{lang_trackback}</a></h2>
+<p>{lang_trackback_url} {trackback_url}</p>
+{lang_trackback_comments}
+{trackback_comments}

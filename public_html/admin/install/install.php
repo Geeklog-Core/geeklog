@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog installation script.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.73 2005/01/02 18:05:43 dhaun Exp $
+// $Id: install.php,v 1.74 2005/01/16 19:14:29 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -48,7 +48,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.11');
+    define('VERSION', '1.3.12');
 }
 
 
@@ -677,6 +677,17 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             $current_gl_version = '1.3.11';
             $_SQL = '';
             break;
+
+    case '1.3.11':
+            require_once ($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.11_to_1.3.12.php');
+            for ($i = 0; $i < count ($_SQL); $i++) {
+                DB_query (current ($_SQL));
+                next ($_SQL);
+            }
+            $current_gl_version = '1.3.12';
+            $_SQL = '';
+            break;
+
         default:
             $done = true;
         }
@@ -687,8 +698,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 // Main
 if (isset ($_POST['page'])) {
     $page = $_POST['page'];
-}
-else {
+} else {
     $page = 0;
 }
 
