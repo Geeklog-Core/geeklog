@@ -139,8 +139,8 @@ function editpreferences()
     // to 5 because, hey, this is a news site
     if (empty($A['maxstories'])) {
         $A['maxstories'] = 10;
-    } else if ($A['maxstories'] < 5) {
-        $A['maxstories'] = 5;
+    } else if ($A['maxstories'] < $_CONF['minnews']) {
+        $A['maxstories'] = $_CONF['minnews'];
     }
 	
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
@@ -392,12 +392,17 @@ function saveuser($A)
 */
 function savepreferences($A) 
 {
-    global $_TABLES, $_CONF,$_USER;
+    global $_TABLES, $_CONF, $_USER;
 
     if ($A['noicons'] == 'on') $A['noicons'] = 1;
     if ($A["willing"] == 'on') $A["willing"] = 1;
     if ($A['noboxes'] == 'on') $A['noboxes'] = 1;
-    if ($A['maxstories'] < 5) $A['maxstories'] = 5;
+    /*echo 'user max = ' . $A['maxstories'] . '<br>';
+    echo 'conf min = ' . $_CONF['minnews'] . '<br>';
+    exit;*/
+    if ($A['maxstories'] < $_CONF['minnews']) {
+        $A['maxstories'] = $_CONF['minnews'];
+    }
 
     unset($tids);
     unset($aids);
@@ -453,7 +458,7 @@ function savepreferences($A)
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}','{$A['maxstories']}','$etids'","usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'","usersettings.php?mode=preferences&msg=6");
 
 }
 
