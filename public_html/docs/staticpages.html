@@ -37,8 +37,7 @@
   <li>supports <a href="#php">use of PHP</a></li>
   <li>proper support for Geeklog permissions</li>
   <li><a href="#id">editable page ID</a> to make more readable URLs</li>
-  <li>Static Pages can be displayed on Geeklog's <a href="#frontpage">index page</a> and can even replace it entirely ("splash screen")</li>
-  <li>Static Pages can be displayed on Geeklog's <a href="#topic">topic pages</a></li>
+  <li>Static Pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
   <li>"<a href="#cloning">cloning</a>" of existing pages</li>
   <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
 </ul>
@@ -112,6 +111,9 @@
 
 <p><strong>Tip:</strong> You can combine these options with the permission settings. This will let you, for example, create a Welcome page that is only displayed to anonymous users.</p>
 
+<h3><a name="sort">Sorting</a></h3>
+
+<p>When you have more than one Static Page that would appear in the same section of the center area (e.g. two Static Pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the Static Pages' <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
