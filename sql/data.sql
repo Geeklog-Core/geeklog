@@ -41,3 +41,49 @@ INSERT INTO stories VALUES ('20010719095630103',2,'GeekLog','Welcome to Geeklog!
 INSERT INTO topics VALUES ('General','General News','',1,10,2,2,3,3,2,3);
 INSERT INTO topics VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,NULL,2,2,3,3,2,2);
 
+#
+# Dumping data for table 'users'
+#
+
+INSERT INTO users VALUES (3,'StoryAdmin','Story Admin','5f4dcc3b5aa765d61d8327deb882cf99','root','http://geeklog.sourceforge.net','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (5,'PollAdmin','Poll Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (6,'TopicAdmin','Topic Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (7,'BlockAdmin','Block Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (8,'LinkAdmin','Link Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (9,'EventAdmin','Event Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (10,'UserAdmin','User Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (11,'MailAdmin','Mail Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (12,'StoryAdmin2','2nd Story Admin so you can test','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (13,'GroupAdmin','Group Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','0000-00-00 00:00:00');
+
+#
+# Dumping data for table 'group_assignments'
+#
+
+INSERT INTO group_assignments VALUES (7,9,NULL);
+INSERT INTO group_assignments VALUES (8,5,NULL);
+INSERT INTO group_assignments VALUES (5,8,NULL);
+INSERT INTO group_assignments VALUES (6,6,NULL);
+INSERT INTO group_assignments VALUES (9,10,NULL);
+INSERT INTO group_assignments VALUES (12,11,NULL);
+INSERT INTO group_assignments VALUES (3,12,NULL);
+INSERT INTO group_assignments VALUES (3,3,NULL);
+INSERT INTO group_assignments VALUES (2,5,NULL);
+INSERT INTO group_assignments VALUES (2,6,NULL);
+INSERT INTO group_assignments VALUES (4,7,NULL);
+INSERT INTO group_assignments VALUES (2,8,NULL);
+INSERT INTO group_assignments VALUES (2,9,NULL);
+INSERT INTO group_assignments VALUES (2,10,NULL);
+INSERT INTO group_assignments VALUES (2,11,NULL);
+INSERT INTO group_assignments VALUES (2,12,NULL);
+INSERT INTO group_assignments VALUES (2,3,NULL);
+INSERT INTO group_assignments VALUES (2,7,NULL);
+INSERT INTO group_assignments VALUES (13,3,NULL);
+INSERT INTO group_assignments VALUES (13,5,NULL);
+INSERT INTO group_assignments VALUES (13,6,NULL);
+INSERT INTO group_assignments VALUES (13,7,NULL);
+INSERT INTO group_assignments VALUES (13,8,NULL);
+INSERT INTO group_assignments VALUES (13,9,NULL);
+INSERT INTO group_assignments VALUES (13,10,NULL);
+INSERT INTO group_assignments VALUES (13,11,NULL);
+INSERT INTO group_assignments VALUES (13,12,NULL);
