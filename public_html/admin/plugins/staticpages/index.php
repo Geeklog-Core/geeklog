@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.35 2004/08/02 18:38:52 dhaun Exp $
+// $Id: index.php,v 1.36 2004/08/08 08:55:58 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -85,8 +85,9 @@ function form ($A, $error = false)
     if ($error) {
         $retval .= $error . '<br><br>';
     } else {
-        $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
-        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
+        $template_path = staticpages_templatePath ('admin');
+        $sp_template = new Template ($template_path);
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($template_path . '/editor_advanced.thtml')) {
             $sp_template->set_file ('form', 'editor_advanced.thtml');
         } else {
             $sp_template->set_file ('form', 'editor.thtml');
@@ -349,7 +350,8 @@ function liststaticpages ($page = 1)
 
     $retval = '';
 
-    $sp_templates = new Template($_CONF['path'] . '/plugins/staticpages/templates/admin');
+    $template_path = staticpages_templatePath ('admin');
+    $sp_templates = new Template ($template_path);
     $sp_templates->set_file(array('list'=>'list.thtml','row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);

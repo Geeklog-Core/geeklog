@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2004/08/08 08:22:05 dhaun Exp $
+// $Id: index.php,v 1.22 2004/08/08 08:55:58 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -150,7 +150,8 @@ function print_page ($page, $A)
 {
     global $_CONF;
 
-    $print = new Template ($_CONF['path'] . 'plugins/staticpages/templates');
+    $template_path = staticpages_templatePath ();
+    $print = new Template ($template_path);
     $print->set_file (array ('print' => 'printable.thtml'));
     $print->set_var ('site_url', $_CONF['site_url']);
     $print->set_var ('site_name', $_CONF['site_name']);

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.37 2004/08/02 18:38:51 dhaun Exp $
+// $Id: functions.inc,v 1.38 2004/08/08 08:55:57 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -642,6 +642,35 @@ function plugin_uninstall_staticpages($steps = '')
     COM_errorLog('leaving plugin_uninstall_staticpages',1);
 
     return true;
+}
+
+/**
+* Get path for the template files.
+*
+* @param    string  $path   subdirectory within the base template path
+* @return   string          full path to template directory
+*
+*/
+function staticpages_templatePath ($path = '')
+{
+    global $_CONF;
+
+    if (empty ($path)) {
+        $layout_path = $_CONF['path_layout'] . staticpages;
+    } else {
+        $layout_path = $_CONF['path_layout'] . staticpages . '/' . $path;
+    }
+
+    if (is_dir ($layout_path)) {
+        $retval = $layout_path;
+    } else {
+        $retval = $_CONF['path'] . 'plugins/staticpages/templates';
+        if (!empty ($path)) {
+            $retval .= '/' . $path;
+        }
+    }
+
+    return $retval;
 }
 
 ?>
