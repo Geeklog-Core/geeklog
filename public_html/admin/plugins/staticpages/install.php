@@ -30,10 +30,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.3 2002/04/29 09:56:41 dhaun Exp $
+// $Id: install.php,v 1.4 2002/06/07 07:25:22 dhaun Exp $
 
 require_once('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php');
+$langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
+if (file_exists ($langfile)) {
+    require_once ($langfile);
+} else {
+    require_once ($_CONF['path'] . 'plugins/yabbforum/language/english.php');
+}
 require_once($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
 // Only let Root users access this page

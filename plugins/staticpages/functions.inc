@@ -31,9 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.7 2002/04/29 09:56:41 dhaun Exp $
+// $Id: functions.inc,v 1.8 2002/06/07 07:25:21 dhaun Exp $
 
-include($_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php');
+$langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
+if (file_exists ($langfile)) {
+    include ($langfile);
+} else {
+    include ($_CONF['path'] . 'plugins/yabbforum/language/english.php');
+}
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
 // +---------------------------------------------------------------------------+
