@@ -5,14 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | link.php                                                                  |
-// | Geeklog links administration page.                                        |
 // |                                                                           |
+// | Geeklog links administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.31 2003/02/02 19:46:47 dhaun Exp $
+// $Id: link.php,v 1.32 2003/03/11 22:08:24 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -251,7 +252,11 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
-		editlink($mode,$lid);
+        if (DB_count ($_TABLES['links'], 'lid', $lid) > 0) {
+		    $retval .= editlink ($mode, $lid);
+        } else {
+		    $retval .= editlink ($mode, '');
+        }
 		$retval .= COM_siteFooter();
         return $retval;
 	}
