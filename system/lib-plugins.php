@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.6 2002/05/07 19:37:20 tony_bibbs Exp $
+// $Id: lib-plugins.php,v 1.7 2002/05/13 20:19:24 tony_bibbs Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can implement
@@ -70,6 +70,7 @@ function PLG_callFunctionForAllPlugins($function_name)
 *
 * @param        string      $function       holds name of function to call
 * @param        array       $args           arguments to send to function
+* @return       mixed       returns result of function call, otherwise false
 *
 */
 function PLG_callFunctionForOnePlugin($function, $args='') 
@@ -108,6 +109,7 @@ function PLG_callFunctionForOnePlugin($function, $args='')
 * Tells a plugin to install itself. NOTE: not currently used anymore
 *
 * @param        string      $type       Plugin name
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_install($type)
@@ -119,6 +121,7 @@ function PLG_install($type)
 * Upgrades a plugin. Tells a plugin to upgrade itself. NOTE: not currenlty used
 *
 * @param        string      $type       Plugin name
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_upgrade($type)
@@ -130,6 +133,7 @@ function PLG_upgrade($type)
 * Tells a plugin to uninstall itself.
 *
 * @param        string      $type       Plugin to uninstall
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_uninstall($type)
@@ -150,6 +154,8 @@ function PLG_uninstall($type)
 *
 * Geeklog is asking if the user is a moderator for any installed plugins.
 *
+* @return   boolean     True if current user is moderator of plugin otherwise false
+*
 */
 function PLG_isModerator() 
 {
@@ -163,6 +169,8 @@ function PLG_isModerator()
 * database in the order they were installed and get their menu items.  If you want 
 * more flexibility in your menu then you should hard code the menu items in header.thtml for
 * the theme(s) you are using.
+*
+* @return   array   Returns menu options for plugin
 *
 */
 function PLG_getMenuItems() 
@@ -187,6 +195,7 @@ function PLG_getMenuItems()
 * Returns if a specific plugin supports user comments
 *
 * @param        string      $type       Plugin to check comment support for
+* @return       boolean     True if plugin uses comments otherwise false
 *
 */
 function PLG_supportsComments($type) 
@@ -199,7 +208,7 @@ function PLG_supportsComments($type)
 *
 * @param        string      $type       Plugin to have handle the comment
 * @param        string      $id         Comment ID maybe?!?
-*
+* 
 */
 function PLG_handlePluginComment($type, $id) 
 {
@@ -240,6 +249,8 @@ function PLG_getPluginStats($showsitestats)
 * the 'Type' drop down box on the search.php page so that their plugin
 * can be incorporated into searches.
 *
+* @return   array   String array of search types for plugin(s)
+*
 */
 function PLG_getSearchTypes() 
 {
@@ -270,8 +281,9 @@ function PLG_getSearchTypes()
 * @param        string      $query          What the user searched for
 * @param        date        $datestart      beginning of date range to search for
 * @param        date        $dateend        ending date range to search for
-* @topic        string      $topic          the topic the user searched within 
-* @author       int         $author         only return results for this person
+* @param        string      $topic          the topic the user searched within 
+* @param        int         $author         UID...only return results for this person
+* @return       array       Returns search results
 *
 */
 function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author) 
@@ -305,6 +317,8 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
 * Asks each plugin to report any submissions they may have in their
 * submission queue
 *
+* @return   int     Number of submissions in queue for plugins
+*
 */
 function PLG_getSubmissionCount() 
 {
@@ -324,10 +338,11 @@ function PLG_getSubmissionCount()
 }
 
 /**
-* This function will show any plugin adminstrative options in the
-* admin functions block on every page (assuming the user is an admin
-* and is logged in).  NOTE: the plugin is responsible for it's own
+* This function will show any plugin user options in the
+* user block on every page NOTE: the plugin is responsible for it's own
 * security.
+*
+* @return   array   Returns options to add to user menu
 *
 */
 function PLG_getUserOptions() 
@@ -358,6 +373,8 @@ function PLG_getUserOptions()
 * and is logged in).  NOTE: the plugin is responsible for it's own
 * security. 
 *
+* @return   array   Returns options to put in admin menu
+*
 */
 function PLG_getAdminOptions() 
 {
@@ -387,6 +404,7 @@ function PLG_getAdminOptions()
 *
 * @param        string      $type       Plugin name to do submission approval for
 * @param        string      $id         used to identify the record to approve
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_approveSubmission($type, $id) 
@@ -402,6 +420,7 @@ function PLG_approveSubmission($type, $id)
 *
 * @param        string      $type       Plugin to do submission deletion for
 * @param        string      $id         used to identify the record for which to delete
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_deleteSubmission($type, $id) 
@@ -416,6 +435,7 @@ function PLG_deleteSubmission($type, $id)
 *
 * @param        string      $type       Plugin to save submission for
 * @param        array       $A          holds plugin specific data to save
+* @return       boolean     Returns true on success otherwise false
 *
 */
 function PLG_saveSubmission($type, $A) 
@@ -427,6 +447,8 @@ function PLG_saveSubmission($type, $A)
 /**
 * This function shows the option for all plugins at the top of the 
 * command and control center.
+*
+* @return   array   Returns Command and Control options for moderation.php
 *
 */
 function PLG_getCCOptions() 
@@ -454,6 +476,8 @@ function PLG_getCCOptions()
 * This function starts the chain of calls needed to show any submissions
 * needing moderation for the plugins.
 *
+* @return   string      returns list of items needing moderation for plugins
+*
 */
 function PLG_showModerationList() 
 {
@@ -474,6 +498,7 @@ function PLG_showModerationList()
 * needed by moderation.php to approve stuff.
 *
 * @param        string      $type       Plugin to call function for
+* @return       string
 *
 */
 function PLG_getModerationValues($type) 
@@ -486,6 +511,7 @@ function PLG_getModerationValues($type)
 * that the submission form for the plugin is displayed.
 *
 * @param        string      $type       Plugin to show submission form for
+* @return       string      HTML for submti form for plugin
 *
 */
 function PLG_showSubmitForm($type) 
