@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.21 2002/04/14 20:16:08 dhaun Exp $
+// $Id: plugins.php,v 1.22 2002/05/03 12:01:10 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -106,6 +106,7 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('pi_version', $A['pi_version']);
     $plg_templates->set_var('lang_geeklogversion', $LANG32[29]);
     $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
+    $plg_templates->set_var('lang_enabled', $LANG32[19]);
 	if ($A['pi_enabled'] == 1) {
         $plg_templates->set_var('enabled_checked', 'checked="checked"');
 	} else {
