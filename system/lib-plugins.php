@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.36 2004/09/08 02:30:45 blaine Exp $
+// $Id: lib-plugins.php,v 1.37 2004/09/16 19:11:14 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -552,7 +552,7 @@ function PLG_getCCOptions()
                 if (!empty ($cur_plugin->adminlabel) &&
                     !empty ($cur_plugin->adminurl) &&
                     !empty ($cur_plugin->plugin_image)) {
-                    $plugins[$i] = $cur_plugin; 
+                    $plugins[] = $cur_plugin; 
                 }
             }
         }
