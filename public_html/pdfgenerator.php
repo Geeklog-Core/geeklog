@@ -4,7 +4,7 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | pdfgenerator.php                                                               |
+// | pdfgenerator.php                                                          |
 // |                                                                           |
 // | Geeklog PDF generator.                                                    |
 // +---------------------------------------------------------------------------+
@@ -30,13 +30,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.3 2004/06/07 15:21:51 tony Exp $
+// $Id: pdfgenerator.php,v 1.4 2004/06/07 16:04:42 tony Exp $
 
 require_once 'lib-common.php';
 
 // Need ot add error message here from language file
 if ($_CONF['pdf_enabled'] == 0) {
+    echo COM_siteHeader();
+    echo $LANG_PDF[1];
+    echo COM_siteFooter();
     exit;
+} else {
+    if (!is_file($_CONF['path_to_htmldoc']) OR !is_executable($_CONF['path_to_htmldoc'])) {
+        echo COM_siteHeader();
+        echo $LANG_PDF[8];
+        echo COM_siteFooter();
+        exit;
+    }
 }
 
 /**
@@ -76,7 +86,7 @@ function PDF_servePDF($pdfFileName)
 */
 function PDF_generatePDF()
 {
-    global $_CONF;
+    global $_CONF, $LANG_PDF;
     
     require_once $_CONF['path_system'] . 'classes/conversion.class.php';
     
@@ -138,52 +148,47 @@ function PDF_generatePDF()
         //exec("htmldoc -t pdf$params --fontsize 9 $logo--webpage '$target' > $path.pdf");
         //echo sprintf("%s -t pdf%s --fontsize %i %s--webpage '%s' > %s.pdf",
         //    $_CONF['path_to_htmldoc'], $params, $_CONF['pdf_font_size'], $_CONF['pdf_logo'], $target, $path);
-        //exit;   
-        exec(sprintf("%s -t pdf%s --fontsize %i %s--webpage '%s' > %s.pdf",
-            $_CONF['path_to_htmldoc'], $params, $_CONF['pdf_font_size'], $_CONF['pdf_logo'], $target, $path));
+        //exit;
+        $cmd = sprintf("%s -t pdf%s --fontsize %i %s--webpage '%s' > %s.pdf",
+            $_CONF['path_to_htmldoc'], $params, $_CONF['pdf_font_size'], $_CONF['pdf_logo'], $target, $path);
+        exec($cmd);
     
         // CHECK THE PDF FILE SIZE
         $checkSUM = @filesize("$path.pdf");
     
         // IF THE PDF IS LESS THAN 10 BYTES , WE ASSUME ERROR
         if ($checkSUM < 1) {
-            echo '<b class="heading">Error</b>';
-            echo '<BR/><BR/>';
-            echo 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written';
-            echo ' to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.';
-                echo '<BR/><BR/>';
-            echo 'The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.';
-                echo '<BR/><BR/>';
-            echo '<i>error nr1001 - '.@filesize("$path.html").'</i>';
-            echo '<BR/><BR/>';
-            echo '<BR/><BR/>';
-            echo '<A HREF="'.$clientURL.'" class="button">Back</A>';
-        } else {	
-            echo '<b class="heading">Loading your document.</b>';
-                echo '<BR/><BR/>';
-            echo 'Please wait while your document is loaded.';
-            echo '<BR/><BR/>';
-            echo 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.';
-            echo '<BR/><BR/>';
-            echo $pageText;
-            echo '<BR/><BR/>';
-            echo '<A CLASS="button" HREF="'.$urlpath.'.pdf">PDF</A>';
-            $foot2='<div style="font-size:6pt;width:750;padding:1px;background:url(\'images/working.gif\');border-bottom:2px solid //000000;border-right:2px solid //000000;border-left:2px solid //000000;text-align:center;font-family:arial,verdana,san-serif;color://ffffff;">Processing your request...</div>';
-    
+            echo $LANG_PDF[2];
+            COM_errorLog($LANG_PDF . ' COMMAND EXECUTED: ' . $cmd);
+        } else {
+            $pdf = new Template( $_CONF['path_layout'] );
+            $pdf->set_file( array(
+            'pdf'         => 'pdf.thtml'
+            ));
+
+            $pdf->set_var('layout_url', $_CONF['layout_url']);
+            $pdf->set_var('site_url', $_CONF['site_url']);
+            $pdf->set_var('lang_loading_document', $LANG_PDF[5]);
+            $pdf->set_var('lang_please_wait', $LANG_PDF[6]);
+            $pdf->set_var('lang_right_click', $LANG_PDF[7]);
+            $pdf->set_var('page_text', $pageText);
+            $pdf->set_var('pdf_url', $urlpath);
             if (!$_REQUEST['instant'] OR $_REQUEST['instant'] == 0) {
                 if ($waitTime > 30 OR $waitTime < 5 OR !$waitTime) {
                     $waitTime=10;
                 }
-                echo "<META HTTP-EQUIV=REFRESH CONTENT=\"$waitTime; URL='$urlpath\">";
+                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"$waitTime; URL='$urlpath\">");
             } else {
-                echo "<META HTTP-EQUIV=REFRESH CONTENT=\"0; URL='$urlpath\">";
+                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"0; URL='$urlpath\">");
             }
+            $pdf->parse('page', 'pdf' );
+            echo $pdf->finish($pdf->get_var('page'));
         }
     } else {
         if (!$_REQUEST['pageData']) {
-            echo 'No page data was given.  PDF generation cannot continue';
+            echo $LANG_PDF[4];
         } else {
-            echo 'Unknown error during PDF generation';
+            echo $LANG_PDF[3];
         }
     }
     
