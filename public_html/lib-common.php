@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.214 2003/04/13 17:16:09 dhaun Exp $
+// $Id: lib-common.php,v 1.215 2003/04/18 21:08:42 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -708,7 +708,7 @@ function COM_siteHeader( $what = 'menu' )
 
     if( function_exists( $function ))
     {
-        return $function();
+        return $function( $what );
     }
 
     // If we reach here then either we have the default theme OR
@@ -900,7 +900,7 @@ function COM_siteFooter( $rightblock = false )
 
     if( function_exists( $function ))
     {
-        return $function();
+        return $function( $rightblock );
     }
 
     // Set template directory
