@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.13 2002/07/06 14:35:20 dhaun Exp $
+// $Id: profiles.php,v 1.14 2002/07/06 21:56:44 dhaun Exp $
 
 include('lib-common.php');
 
@@ -98,28 +98,32 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 */
 function contactform($uid, $subject='', $message='') 
 {
-	global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08;
+    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER;
 
-    $retval = '';
-	
-	$result = DB_query("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
-	$A = DB_fetchArray($result);
-	
-	$retval .= COM_startBlock($LANG08[10].' '.$A['username'])
-    .'<form action="'.$_CONF['site_url'].'/profiles.php" method="POST" name="contact">'.LB
-		.'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
-		.'<tr><td colspan="2">'.$LANG08[26].'</td></tr>'.LB
-		.'<tr><td>'.$LANG08[11].'</td><td><input type="text" name="author" size="32" value="'.$_USER[0].'" maxlength="32"></td></tr>'.LB
-		.'<tr><td>'.$LANG08[12].'</td><td><input type="text" name="authoremail" size="32" value="'.$_USER[1].'" maxlength="96"></td></tr>'.LB
-		.'<tr><td>'.$LANG08[13].'</td><td><input type="text" name="subject" size="32" maxlength="96" value="'.$subject.'"></td></tr>'.LB
-		.'<tr><td>'.$LANG08[14].'</td><td><textarea name="message" wrap="physical" rows="10" cols="50">'.$message.'</textarea></td></tr>'.LB
-		.'<tr><td colspan="2" class="warning">'.$LANG08[15].'<br><input type="hidden" name="what" value="contact">'
-		.'<input type="hidden" name="uid" value="'.$uid.'"><input type="submit" value="'.$LANG08[16].'"></td></tr>'.LB
-		.'</table>'
-		.'</form>'
-		.COM_endBlock();
-	
-	return $retval;
+    $result = DB_query ("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
+    $A = DB_fetchArray ($result);
+
+    $retval = COM_startBlock ($LANG08[10] . ' ' . $A['username']);
+    $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
+    $mail_template->set_file ('form', 'contactuserform.thtml');	
+    $mail_template->set_var ('site_url', $_CONF['site_url']);
+    $mail_template->set_var ('lang_description', $LANG08[26]);
+    $mail_template->set_var ('lang_username', $LANG08[11]);
+    $mail_template->set_var ('username', $_USER['username']);
+    $mail_template->set_var ('lang_useremail', $LANG08[12]);
+    $mail_template->set_var ('useremail', $_USER['email']);
+    $mail_template->set_var ('lang_subject', $LANG08[13]);
+    $mail_template->set_var ('subject', $subject);
+    $mail_template->set_var ('lang_message', $LANG08[14]);
+    $mail_template->set_var ('message', $message);
+    $mail_template->set_var ('lang_nohtml', $LANG08[15]);
+    $mail_template->set_var ('lang_submit', $LANG08[16]);
+    $mail_template->set_var ('uid', $uid);
+    $mail_template->parse ('output', 'form');
+    $retval .= $mail_template->finish ($mail_template->get_var ('output'));
+    $retval .= COM_endBlock ();
+
+    return $retval;
 }
 
 ###############################################################################
