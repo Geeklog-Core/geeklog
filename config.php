@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.45 2002/07/30 21:32:28 dhaun Exp $
+// $Id: config.php,v 1.46 2002/08/02 14:51:51 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -225,7 +225,6 @@ $_CONF['maximagesperarticle']   = 5;
 $_CONF['backend']               = 1;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
-$_CONF['olderstuff']            = 1;
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 	
@@ -234,7 +233,7 @@ $_CONF['commentspeedlimit']     = 45;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
 $_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
 
-// Poll Settings                                            
+// Poll Settings
 $_CONF['maxanswers']        = 10;
 // 'submitorder' is order answers are saved in admin/poll.php
 // 'voteorder' will list answers in order of number of votes (highest->lowest);

@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php.sample,v 1.2 2002/06/06 07:20:19 dhaun Exp $
+// $Id: config.php.sample,v 1.3 2002/08/02 14:51:51 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -200,7 +200,6 @@ $_CONF['maximagesperarticle']   = 5;
 $_CONF['backend']               = 1;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
-$_CONF['olderstuff']            = 1;
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 	

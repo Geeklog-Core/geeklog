@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.124 2002/07/23 08:51:40 dhaun Exp $
+// $Id: lib-common.php,v 1.125 2002/08/02 14:51:51 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1953,47 +1953,44 @@ function COM_isemail($email)
 }
 
 /**
-* Returns older stuff block
+* Creates older stuff block
 *
 * Creates the olderstuff block for display.
 *
 */
-function COM_olderstuff() 
+function COM_olderStuff() 
 {
-    global $_TABLES, $_CONF, $LANG01;
+    global $_TABLES, $_CONF;
 
-    if ($_CONF['olderstuff'] == 1) {
-        $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " 
-        . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
-        $nrows = DB_numRows($result);
+    $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
+    $nrows = DB_numRows($result);
 
-        if ($nrows>0) {
-            $day = 'noday';
-            $string = '';
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $daycheck = strftime("%A",$A['day']);
-                if ($day != $daycheck) {
-                    if ($day != 'noday') {
-                        $daylist = COM_makeList ($oldnews);
-                        $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
-                        $string .= $daylist . '<br>';
-                    }
-                    $day2 = strftime("%m/%d",$A['day']);
-                    $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
-                    $oldnews = array ();
-                    $day = $daycheck;
+    if ($nrows>0) {
+        $day = 'noday';
+        $string = '';
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $daycheck = strftime("%A",$A['day']);
+            if ($day != $daycheck) {
+                if ($day != 'noday') {
+                    $daylist = COM_makeList ($oldnews);
+                    $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+                    $string .= $daylist . '<br>';
                 }
-                $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                    . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
+                $day2 = strftime("%m/%d",$A['day']);
+                $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
+                $oldnews = array ();
+                $day = $daycheck;
             }
-            $daylist = COM_makeList ($oldnews);
-            $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
-            $string .= $daylist;
-
-            $string = addslashes($string);
-            DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
+            $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
+                . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
         }
+        $daylist = COM_makeList ($oldnews);
+        $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+        $string .= $daylist;
+
+        $string = addslashes($string);
+        DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
     }
 }
 
