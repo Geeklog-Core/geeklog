@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.69 2004/11/06 17:16:56 blaine Exp $
+// $Id: index.php,v 1.70 2005/03/25 22:57:01 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -134,7 +134,7 @@ while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray (
             $archivetid = DB_getItem ($_TABLES['topics'], 'tid',
                                       "archive_flag='1'");
         }
-        if (!empty ($archivetid)) {
+        if (!empty ($archivetid) AND $expiretopic != $archivetid) {
             COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
             DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid', frontpage = '0', featured = '0' WHERE sid='{$sid}'");
         }
