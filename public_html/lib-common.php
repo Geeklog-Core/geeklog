@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.287 2004/02/19 14:48:43 vinny Exp $
+// $Id: lib-common.php,v 1.288 2004/02/20 11:15:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -196,7 +196,20 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 if( !$_CONF['have_pear'] )
 {
     $curPHPIncludePath = ini_get( 'include_path' );
-    if( ini_set( 'include_path', $_CONF['path_pear'] . PATH_SEPARATOR
+    if( defined( 'PATH_SEPARATOR' ))
+    {
+        $separator = PATH_SEPARATOR;
+    }
+    else
+    {
+        // prior to PHP 4.3.0, we have to guess the correct separator ...
+        $separator = ';';
+        if( strpos( $curPHPIncludePath, $separator ) === false )
+        {
+            $separator = ':';
+        }
+    }
+    if( ini_set( 'include_path', $_CONF['path_pear'] . $separator
                                  . $curPHPIncludePath ) === false )
     {
         COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
