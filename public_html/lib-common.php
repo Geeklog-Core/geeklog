@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.45 2002/03/23 22:33:24 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.46 2002/03/27 20:35:30 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1257,7 +1257,6 @@ function COM_adminMenu($help='',$title='')
             $retval .= $adminmenu->parse('item', 'option');
         }
 
-        $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
         if ($_CONF['allow_mysqldump'] == 1 AND SEC_inGroup('Root')) {
             $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/database.php');
             $adminmenu->set_var('option_label', $LANG01[103]);
@@ -1265,6 +1264,7 @@ function COM_adminMenu($help='',$title='')
             $retval .= $adminmenu->parse('item', 'option');
         }
 
+        $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
         $adminmenu->set_var('option_label', 'GL Version Test');
         $adminmenu->set_var('option_count', 'N/A');
         $retval .= $adminmenu->parse('item', 'option');
