@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.1 2002/07/07 11:18:03 dhaun Exp $
+// $Id: check.php,v 1.2 2002/07/07 18:05:24 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -71,6 +71,14 @@ if (!$errfile || !$accfile) {
         echo '<b>access.log</b> ';
     }
     echo 'for writing.</font><br>Please check that you have set the <b>logs</b> directory <em>and</em> the files <b>error.log</b> and <b>access.log</b> in that directory to <b>chmod 775</b>.' . LB;
+    $logPerms = sprintf ("%3o", fileperms ($_CONF['path_log']) & 0777);
+    $errPerms = sprintf ("%3o", fileperms ($_CONF['path_log'] . 'error.log') & 0777);
+    $accPerms = sprintf ("%3o", fileperms ($_CONF['path_log'] . 'access.log') & 0777);
+    echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
+    echo "<tr><td>Current permissions for <b>logs</b>:&nbsp;</td><td>$logPerms</td></tr>" . LB;
+    echo "<tr><td>Current permissions for <b>error.log</b>:&nbsp;</td><td>$errPerms</td></tr>" . LB;
+    echo "<tr><td>Current permissions for <b>access.log</b>:&nbsp;</td><td>$accPerms</td></tr>" . LB;
+    echo '</table>' . LB;
     $failed++;
 } else {
     echo '<b>logs</b> directory and the <b>error.log</b> and <b>access.log</b> files are okay.' . LB;
@@ -81,6 +89,13 @@ echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . '/backend/ .
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
         echo '<font color="#ff0000">Could not open the RDF file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rdf</b> file in that directory to <b>chmod 775</b>.' . LB;
+        $endPerms = sprintf ("%3o", fileperms ($_CONF['path_html'] . 'backend/') & 0777);
+        $rdfPerms = sprintf ("%3o", fileperms ($_CONF['rdf_file']) & 0777);
+        echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
+        echo "<tr><td>Current permissions for <b>backend</b>:&nbsp;</td><td>$endPerms</td></tr>" . LB;
+        echo "<tr><td>Current permissions for <b>geeklog.rdf</b>:&nbsp;</td><td>$rdfPerms</td></tr>" . LB;
+        echo '</table>' . LB;
+        $failed++;
     } else {
         fclose ($file);
         echo '<b>backend</b> directory and the <b>geeklog.rdf</b> file are okay.' . LB;
@@ -94,7 +109,8 @@ if ($_CONF['backend'] > 0) {
 if ($_CONF['allow_user_photo'] > 0) {
     echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_html'] . 'images/userphotos/ ...<br>' . LB;
     if (!$file = @fopen ($_CONF['path_html'] . 'images/userphotos/test.gif', 'w')) {
-        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", fileperms ($_CONF['path_html'] . 'images/userphotos/') & 0777);
         $failed++;
     } else {
         fclose ($file);
@@ -110,7 +126,8 @@ if ($_CONF['allow_user_photo'] > 0) {
 if ($_CONF['maximagesperarticle'] > 0) {
     echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_html'] . 'images/articles/ ...<br>' . LB;
     if (!$file = @fopen ($_CONF['path_html'] . 'images/articles/test.gif', 'w')) {
-        '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.' . LB; 
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", fileperms ($_CONF['path_html'] . 'images/articles/') & 0777);
         $failed++;
     } else {
         fclose ($file);
