@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.43 2002/11/09 12:49:45 dhaun Exp $
+// $Id: submit.php,v 1.44 2002/11/23 21:56:35 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -308,7 +308,11 @@ function submitstory()
         $A = $HTTP_POST_VARS;
     } else {
         $A['sid'] = COM_makeSid();
-        $A['uid'] = $_USER['uid'];
+        if (empty ($_USER['username'])) { 
+            $A['uid'] = 1;
+        } else {
+            $A['uid'] = $_USER['uid'];
+        }
         $A['unixdate'] = time();
     }
 
