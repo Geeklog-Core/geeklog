@@ -1,5 +1,17 @@
 GeekLog History/Changes:
 
+February 25, 2002
+-----------------
+- Admins can now manually edit the publish date of an article.  This include the ability
+  to set the date for a time in the future.  In that case the article is completely 
+  ignored by COM_exportRDF, stats.php, search.php and the email digest
+- Rudimentary support for database backups (one per day at most).  There is no restore
+  capability at this time.
+- Modified the display preference so we store the blocks a user doesn't want to see instead
+  of the ones they do want to see.  This will allow any new block to show up by default as
+  expected.
+- Removed hardcoded english from COM_emailUserTopics
+
 February 22, 2002
 -----------------
 - Removed some outdated themes (hence the 1.3.2-1 version number)
