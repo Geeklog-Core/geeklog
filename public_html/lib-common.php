@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.109 2002/06/23 17:32:33 dhaun Exp $
+// $Id: lib-common.php,v 1.110 2002/06/26 19:31:38 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1211,7 +1211,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 */
 function COM_showTopics($topic='') 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG01, $PHP_SELF;
+    global $_TABLES, $_CONF, $_USER, $LANG01, $PHP_SELF, $page;
 	
     if ($_CONF['sortmethod'] == 'alpha') {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC");
@@ -1223,7 +1223,7 @@ function COM_showTopics($topic='')
 
     // Give a link to the hompage here since a lot of people use this for navigating the site
 
-    if (($PHP_SELF <> "/index.php") OR !empty($topic)) {
+    if (($PHP_SELF <> "/index.php") OR !empty($topic) OR ($page > 1)) {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
     } else {
         $retval .= $LANG01[90] . '<br>';
@@ -2225,7 +2225,7 @@ function COM_rdfImport ($bid, $rdfurl) {
         $rdferror = true;
         COM_errorLog ("Can not reach $rdfurl", 1);
         $result = DB_change ($_TABLES['blocks'], 'content',
-              "GeekLog can not reach the suppiled RDF file at $update. "
+              "GeekLog can not reach the supplied RDF file at $update. "
             . "Please double check the URL provided.  Make sure your url is correctly entered and it begins with "
             . "http://. GeekLog will try in one hour to fetch the file again.",
             'bid', "$bid");
