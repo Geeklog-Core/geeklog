@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.66 2004/06/10 13:47:15 dhaun Exp $
+// $Id: comment.php,v 1.67 2004/06/17 11:12:45 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -73,6 +73,13 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
     global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG03, $LANG12, $LANG_LOGIN;
 
     $retval = '';
+
+    // never trust $uid ...
+    if (empty ($_USER['uid'])) {
+        $uid = 1;
+    } else {
+        $uid = $_USER['uid'];
+    }
 
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
@@ -153,7 +160,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
                 if (empty ($HTTP_POST_VARS['username'])) {
                     $HTTP_POST_VARS['username'] = DB_getItem ($_TABLES['users'],
-                            'username', "uid = {$HTTP_POST_VARS['uid']}");
+                            'username', "uid = $uid");
                 }
                 $thecomments = COM_getComment ($HTTP_POST_VARS, 'flat', $type,
                                                'ASC', false, true );
@@ -374,7 +381,7 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
         $comment = strip_tags ($comment);
     }
 
-    $author = DB_getItem ($_TABLES['users'], 'username', "uid = $uid");
+    $author = DB_getItem ($_TABLES['users'], 'username', "uid = '$uid'");
     if (($uid <= 1) && !empty ($ipaddress)) {
         // add IP address for anonymous posters
         $author .= ' (' . $ipaddress . ')';
