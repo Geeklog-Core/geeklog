@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.58 2003/07/01 17:07:30 dhaun Exp $
+// $Id: user.php,v 1.59 2003/08/04 19:42:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -214,13 +214,22 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
 	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
 
-    $ucount = DB_getItem($_TABLES['users'],'count(*)',"username = '$username' AND uid <> $uid");
-    if ($ucount > 0) {
-        // Admin just changed a user's username to one that already exists...bail
-        return edituser($uid, 21);
-    }
-
 	if (!empty($username) && !empty($email)) {
+
+        $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+                              "username = '$username' AND uid <> $uid");
+        if ($ucount > 0) {
+            // Admin just changed a user's username to one that already exists
+            return edituser ($uid, 21);
+        }
+
+        $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+                              "email = '$email' AND uid <> $uid");
+        if ($ucount > 0) {
+            // Admin just changed a user's email to one that already exists
+            return edituser ($uid, 21);
+        }
+
         $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
 		if (($uid == 1) or !empty($passwd)) { 
 			$passwd = md5($passwd);
