@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.216 2003/04/21 09:56:56 dhaun Exp $
+// $Id: lib-common.php,v 1.217 2003/04/21 16:49:33 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1657,9 +1657,9 @@ function COM_pollVote( $qid )
                     $poll->set_var( 'num_comments',
                             DB_count( $_TABLES['comments'], 'sid', $qid ));
                     $poll->set_var( 'lang_comments', $LANG01[3] );
-                    $poll->parse( 'poll_comments', 'comments', true );
                     $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
                         '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments');
+                    $poll->parse( 'poll_comments', 'comments', true );
                 }
                 else
                 {
@@ -1806,8 +1806,20 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
             {
                 $retval .= COM_startBlock( $title );
             }
-            $retval .= '<h2>' . $Q['question'] . '</h2>'
-                .'<table border="0" cellpadding="3" cellspacing="0" align="center">' . LB;
+
+            $poll = new Template( $_CONF['path_layout'] . '/pollbooth' );
+            $poll->set_file( array( 'result' => 'pollresult.thtml',
+                                    'comments' => 'pollcomments.thtml',
+                                    'votes_bar' => 'pollvotes_bar.thtml',
+                                    'votes_num' => 'pollvotes_num.thtml' ));
+            $poll->set_var( 'site_url', $_CONF['site_url'] );
+            $poll->set_var( 'layout_url', $_CONF['layout_url'] );
+
+            $poll->set_var( 'poll_question', $Q['question'] );
+            $poll->set_var( 'poll_id', $qid );
+            $poll->set_var( 'num_votes', $Q['voters'] );
+
+            $poll->set_var( 'lang_votes', $LANG01[8] );
 
             for( $i = 1; $i <= $nanswers; $i++ )
             {
@@ -1822,36 +1834,41 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $percent = $A['votes'] / $Q['voters'];
                 }
 
-                $retval .= '<tr>' . LB
-                    . '<td align="right"><b>' . $A['answer'] . '</b></td>' . LB
-                    . '<td>';
-
+                $poll->set_var( 'answer_text', $A['answer'] );
+                $poll->set_var( 'answer_counter', $i );
+                $poll->set_var( 'answer_odd', (( $i - 1 ) % 2 ));
+                $poll->set_var( 'answer_num', $A['votes'] );
+                $poll->set_var( 'answer_percent',
+                                sprintf( '%.2f', $percent * 100 ));
                 if( $scale < 120 )
                 {
-                    $retval .= sprintf( "%.2f", $percent * 100 ) . '% </td>' . LB;
+                    $poll->parse( 'poll_votes', 'votes_num', true );
                 }
                 else
                 {
                     $width = $percent * $scale;
-                    $retval .= '<img src="' . $_CONF['layout_url']
-                        . '/images/bar.gif" width="' . $width
-                        . '" height="10" align="bottom" alt=""> '
-                        . $A['votes'] . ' ' . sprintf( "(%.2f)", $percent * 100 ) . '%' . '</td>' . LB;
+                    $poll->set_var( 'bar_width', $width );
+                    $poll->parse( 'poll_votes', 'votes_bar', true );
                 }
-
-                $retval .= '</tr>' . LB;
             }
-
-            $retval .= '</table>' . LB . '<div class="storybyline" align="right">'
-                . $Q['voters'] . ' ' . $LANG01[8] . LB;
 
             if( $Q['commentcode'] >= 0 )
             {
-                $retval .= ' | <a href="' .$_CONF['site_url'] . '/pollbooth.php?qid=' . $qid.'&amp;aid=-1#comments">'
-                    . DB_count( $_TABLES['comments'], 'sid', $qid ) . ' ' . $LANG01[3] . '</a>';
+                $poll->set_var( 'num_comments',
+                        DB_count( $_TABLES['comments'], 'sid', $qid ));
+                $poll->set_var( 'lang_comments', $LANG01[3] );
+                $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
+                        '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments');
+                $poll->parse( 'poll_comments', 'comments', true );
+            }
+            else
+            {
+                $poll->set_var( 'poll_comments_url', '' );
+                $poll->set_var( 'poll_comments', '' );
             }
 
-            $retval .= '</div>'. LB;
+            $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
+
             if( $scale < 120)
             {
                 $retval .= COM_endBlock( COM_getBlockTemplate( 'poll_block',
