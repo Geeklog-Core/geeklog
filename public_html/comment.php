@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.83 2004/11/13 17:18:56 blaine Exp $
+// $Id: comment.php,v 1.84 2004/11/13 21:41:59 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -126,10 +126,16 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 
             $commenttext = htmlspecialchars (COM_stripslashes ($comment));
 
+            $fakepostmode = $postmode;
             if ($postmode == 'html') {
                 $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
             } else {
                 $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+                $newcomment = COM_makeClickableLinks ($comment);
+                if (strcmp ($comment, $newcomment) != 0) {
+                    $comment = nl2br ($newcomment);
+                    $fakepostmode = 'html';
+                }
             }
             // Replace $, {, and } with special HTML equivalents
             $commenttext = str_replace('$','&#36;',$commenttext);
@@ -144,7 +150,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $HTTP_POST_VARS['title'] = addslashes ($title);
             $newcomment = $comment;
             if (!empty ($sig)) {
-                if (!$postmode == 'html') {
+                if (($postmode == 'html') || ($fakepostmode == 'html')) {
                     $newcomment .= '<p>---<br>' . nl2br ($sig);
                 } else {
                     $newcomment .= LB . LB . '---' . LB . $sig;
@@ -309,6 +315,11 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
     } else {
         $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+        $newcomment = COM_makeClickableLinks ($comment);
+        if (strcmp ($comment, $newcomment) != 0) {
+            $comment = nl2br ($newcomment);
+            $postmode = 'html';
+        }
     }
 
     // Get signature
