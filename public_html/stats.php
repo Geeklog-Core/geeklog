@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.13 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: stats.php,v 1.14 2002/04/24 12:19:50 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -100,7 +100,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', $A['title']);
+        $stat_templates->set_var('item_text', stripslashes ($A['title']));
         $stat_templates->set_var('item_stat', $A['hits']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
@@ -124,7 +124,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);	
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', $A['title']);
+        $stat_templates->set_var('item_text', stripslashes ($A['title']));
         $stat_templates->set_var('item_stat', $A['comments']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
@@ -148,7 +148,7 @@ if ($nrows > 0) {
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
-        $stat_templates->set_var('item_text', $A['title']);
+        $stat_templates->set_var('item_text', stripslashes ($A['title']));
         $stat_templates->set_var('item_stat', $A['numemails']);
         $stat_templates->parse('stat_row','statrow',true); 
     }
