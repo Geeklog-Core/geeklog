@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.18 2002/03/07 20:39:27 tony_bibbs Exp $
+// $Id: plugins.php,v 1.19 2002/03/07 22:19:21 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -214,6 +214,11 @@ switch ($mode) {
 			$display .= COM_siteFooter();
 		}	
 		break;
+    case 'edit':
+        $display .= COM_siteHeader('menu');
+        $display .= plugineditor($pi_name);
+        $display .= COM_siteFooter();
+        break;
 	case $LANG32[23]: // Save
 		$display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
 		break;
