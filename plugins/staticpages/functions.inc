@@ -31,13 +31,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.8 2002/06/07 07:25:21 dhaun Exp $
+// $Id: functions.inc,v 1.9 2002/06/08 09:33:38 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 if (file_exists ($langfile)) {
     include ($langfile);
 } else {
-    include ($_CONF['path'] . 'plugins/yabbforum/language/english.php');
+    include ($_CONF['path'] . 'plugins/staticpages/language/english.php');
 }
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
