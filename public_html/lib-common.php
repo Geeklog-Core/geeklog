@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.72 2002/04/22 16:15:02 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.73 2002/04/22 16:49:56 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1356,7 +1356,7 @@ function COM_refresh($url)
 */
 function COM_commentBar($sid,$title,$type,$order,$mode) 
 {
-    global $_TABLES, $LANG01, $_USER, $_CONF;
+    global $_TABLES, $LANG01, $_USER, $_CONF, $HTTP_GET_VARS;
 	
     $nrows = DB_count($_TABLES['comments'],'sid',$sid);
     $retval .= '<a name="comments"></a>';
@@ -1376,11 +1376,9 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
 
     $retval .= '</td></tr>' . LB . '<tr><td align="center" class="commentbar2">';
 
-    if ($type == 1) {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php" method="POST">' . LB
-            . '<input type="hidden" name="scale" value="400">' . LB
-            . '<input type="hidden" name="qid" value="'.$sid.'">' . LB
-            . '<input type="hidden" name="aid" value="-1">' . LB;
+    if (!empty($HTTP_GET_VARS['qid'])) {
+        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&aid=-1" method="POST">' . LB
+            . '<input type="hidden" name="scale" value="400">' . LB;
     } else {
         $retval .= '<form action="' . $_CONF['site_url'] . '/article.php" method="POST">' . LB
             . '<input type="hidden" name="story" value="' . $sid . '">' . LB;
