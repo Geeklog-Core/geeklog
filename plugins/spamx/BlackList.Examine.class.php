@@ -15,6 +15,15 @@
 require_once($_CONF['path'] . 'plugins/spamx/' . 'BaseCommand.class.php');
 
 /**
+* html_entity_decode is only available as of PHP 4.3.0
+*/
+if (!function_exists ('html_entity_decode')) {
+    require_once ('PHP/Compat.php');
+
+    PHP_Compat::loadFunction ('html_entity_decode');
+}
+
+/**
  * Examines Comment according to Personal BLacklist
  * 
  * @author Tom Willett tomw AT pigstye DOT net 
@@ -41,7 +50,7 @@ class BlackList extends BaseCommand {
         for($i = 1;$i <= $nrows;$i++) {
             $A = DB_fetchArray($result);
             $val = $A['value'];
-            if (preg_match("#$val#", $comment)) {
+            if (preg_match("#$val#", html_entity_decode ($comment))) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
