@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: adodb.class.php,v 1.2 2002/05/21 15:39:26 tony_bibbs Exp $
+// $Id: adodb.class.php,v 1.3 2002/05/22 18:24:46 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -259,6 +259,7 @@ class database {
                 $this->_errorlog("\n***sql ran just fine***<BR>");
                 $this->_errorlog("\n*** Leaving database->dbQuery ***<BR>");
             }
+            
             return $rs_count;
         } else {
             // callee may want to supress printing of errors
@@ -283,20 +284,29 @@ class database {
     * @param    string      $values     Values to save to the database table
     *
     */
-    function dbSave($table,$key_field, $key_value, $fields, $values)
-    {
+    function dbSave($table, $fields, $values, $key_field='', $key_value='')
+    {        
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside database->dbSave ***<BR>");
         }
 
-        if (DB_count($table,$key_field, $key_value,0) > 0) {
+        if (!empty($key_field)) {
+            $count = DB_count($table, $key_field, $key_value,0);
+        } else {
+            $count = 0;
+        }
+        
+        if ($count > 0) {
             $farray = explode(',',$fields);
             $varray = explode(',',$values);
             $sql = "UPDATE $table SET ";
-            for ($i = 0; $i <= count($farray); $i++) {
-                $sql .= current($farray) . '=' . current($varray);
-                if ($i < count($farray)) {
-                    $sql .= ',';
+            for ($i = 1; $i <= count($farray); $i++) {
+                $tmp = current($farray);
+                if (!empty($tmp)) {
+                    $sql .= current($farray) . '=' . current($varray);
+                    if ($i <= (count($farray)-1)) {
+                        $sql .= ',';
+                    }
                 }
                 next($farray);
                 next($varray);
@@ -304,20 +314,21 @@ class database {
             $where_clause = '';
             if (is_array($key_field)) {
                 for ($i = 1; $i <= count($key_field); $i++) {
-                    $where_clause .= current($key_field) . '=' . current($key_value);
+                    $where_clause .= current($key_field) . "='" . current($key_value) . "'";
                     if ($i < count($key_field)) {
                         $where_clause .= ' AND ';
                     }
                     next($key_field);
                     next($key_value);
                 }
+            } else {
+                $where_clause .= $key_field . '=' . "'$key_value'";
             }
             $sql .= " WHERE $where_clause";
-        } else {
-            
+        } else {    
             $sql = "INSERT INTO $table ($fields) VALUES ($values)";
         }
-                
+        
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
@@ -487,19 +498,16 @@ class database {
                 $sql .= " WHERE $id = '$value'";
             }
         }
-
         if ($this->isVerbose()) {
             print "\n*** sql = $sql ***<br>";
         }
-
+        
         $result = $this->dbQuery($sql,0,$ttl);
         $row = $this->dbFetchArray($result);
-
+        
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Leaving database->dbCount ***<BR>");
         }
-
-        //return ($this->dbResult($result,0));
         return $row['count'];
 
     }    
@@ -614,6 +622,10 @@ class database {
     */
     function dbFetchArray($recordset)
     {
+        if (!is_numeric($recordset)) {
+            $this->_errorLog('Recieved improper recordset index...returning gracefully');
+            return;
+        }
         $rs = $this->_recordSets[$recordset];
         $dataarray = $rs->fields;
         $rs->MoveNext();
