@@ -1,17 +1,27 @@
 <?php 
 
-require_once('../../lib-common.php');
+require_once ('../../lib-common.php');
 
-$display = COM_siteHeader();
-$display .= "<h2>Installation of Geeklog $VERSION complete!</h2>";
-if (DB_count($_TABLES['users'],'username','NewAdmin') > 0) {
-    $display .= "Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b>. <a href=\"{$_CONF['site_url']}\">Click here</a> to see your new Geeklog site!";
-} else {
-    $display .= "<a href=\"{$_CONF['site_url']}\">Click here</a> to see your new Geeklog site!";
+$display = COM_siteHeader ();
+$display .= COM_startBlock ('Installation complete');
+$display .= '<h2>Installation of Geeklog ' . VERSION . ' complete!</h2>';
+
+$display .= '<p>Congratulations, you have successfully installed Geeklog. Please take a minute to read the information displayed below. Then see the first story on your new site to learn about the default login.</p>';
+$display .= '<p><a href="' . $_CONF['site_url'] . '">Click here</a> to go to your site\'s front page.</p>';
+
+$display .= '<h2>Check Permissions</h2>';
+$display .= '<p>Geeklog requires certain files and directories to be writable. To check if those are set up properly, please use <a href="check.php">this script</a>.</p>';
+
+$display .= '<h2>Security Warning</h2>';
+$display .= '<p>Once your site is up and running, don\'t forget to <strong>remove the install directory</strong>, <tt>' . $_CONF['path_html'] . 'admin/install</tt>, and <strong>change the passwords</strong> of <em>both</em> default accounts.</p>';
+
+// note for those upgrading from Geeklog 1.2.5-1 or older
+if (DB_count ($_TABLES['users'], 'username', 'NewAdmin') > 0) {
+    $display .= '<p><strong>Note:</strong> Because the security model has been changed, we have created a new account with the rights you need to administer your new site.  The username for this new account is <b>NewAdmin</b> and the password is <b>password</b></p>.';
 }
-$display .= "<p><b><font color=\"red\">IMPORTANT:</font></b> Once you have your site up and running without any errors, do not forget to remove the install directory <b>{$_CONF['path_html']}admin/install</b>. Otherwise, malicious users could seriously damage your site.";
-$display .= "<p><b>NOTE:</b> As of Geeklog 1.3.5, we include the Static Pages Plug-in for Geeklog by default.  If you just completed a fresh installation, you don't need to do anything to start using the Static Pages Plug-in.  If you just upgraded Geeklog, you can activate the Static Pages Plug-in by going <a href=\"{$_CONF['site_admin_url']}/plugins/staticpages/install.php\">here</a>. If you do not want to use this plugin you can disable it from the plugin administration page OR you can follow the directions in {$_CONF['path']}plugins/staticpages/README";
-$display .= COM_siteFooter();
+
+$display .= COM_endBlock ();
+$display .= COM_siteFooter ();
 
 echo $display;
 
