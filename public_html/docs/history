@@ -1,12 +1,12 @@
 GeekLog History/Changes:
 
-??? ??, 2004 (1.3.9rc2)
+Feb 29, 2004 (1.3.9rc2)
 ------------
 
-- The new Admin interface for handling blocks will renumber the block order in
-  steps of 10, which can lead to order numbers > 255 if you have many blocks.
-  Changed the 'blockorder' field in the "gl_blocks" table from TINYINT to
-  SMALLINT to compensate.
+- The new Admin interface for handling blocks (introduced in 1.3.9rc1) will
+  renumber the block order in steps of 10, which can lead to order numbers
+  > 255 if you have many blocks. Changed the 'blockorder' field in the
+  "gl_blocks" table from TINYINT to SMALLINT to compensate.
   If you are upgrading from 1.3.9rc1, you will need to run the following SQL
   request manually:
 
@@ -15,6 +15,10 @@ GeekLog History/Changes:
   Replacing "gl_blocks" with the proper table name, if you are using a table
   prefix other than 'gl_'. This step is not necessary when upgrading from 1.3.8
   or earlier versions.
+- The Group Admin restrictions introduced in 1.3.9rc1 didn't even let the
+  Admin assign unassigned features to groups (e.g. there was no way to add
+  the staticpages.PHP feature to the Static Page Admin group on a fresh
+  1.3.9rc1 install).
 - When normal users tried to submit an event, they were redirected to the
   story submission form (this bug was only introduced in 1.3.9rc1).
 - Cosmetic changes in the beautifying of language names (in the user's
@@ -32,12 +36,14 @@ GeekLog History/Changes:
   since 1.3.9rc1!
 - Don't rely on the Who's Online block being active when handling sessions
   for anonymous users.
-- Removed some unused code handling the obsolete "layout" blocks.
+- Removed some unused code that handled the obsolete "layout" blocks.
 - Try to guess the correct path separator when running on PHP < 4.3.0.
 - When upgrading from a pre-1.3.9 install, the install script choked on
   single quotes in the site name or site slogan.
 - More parameter filtering.
 
+- Included UTF-8 versions of the English, German, Finnish, and Chinese
+  (traditional and simplified) language files, provided by Samuel Stone.
 - Added new Croatian language file, provided by Roberto Bilic.
 - Added new Finnish language file, provided by Jussi Josefsson.
 - Added new Hebrew language file, provided by Tal Vizel.
