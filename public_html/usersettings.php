@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.88 2004/02/01 10:49:12 dhaun Exp $
+// $Id: usersettings.php,v 1.89 2004/02/01 17:34:25 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -566,7 +566,7 @@ function editpreferences()
     }
     $whereblock .= "((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
     $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
-            'bid,title,blockorder', $whereblock, $selectedblocks));
+            'bid,title,type', $whereblock, $selectedblocks));
     $preferences->parse ('boxes_block', 'boxes', true);
 
     // comment preferences block

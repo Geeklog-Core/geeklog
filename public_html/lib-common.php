@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.277 2004/02/01 11:04:31 dhaun Exp $
+// $Id: lib-common.php,v 1.278 2004/02/01 17:34:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1282,7 +1282,7 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
         $access = true;
         $A = DB_fetchArray( $result );
 
-        if( $table == 'topics' AND SEC_hasTopicAccess( $A['tid'] ) == 0 )
+        if( $table == $_TABLES['topics'] AND SEC_hasTopicAccess( $A['tid'] ) == 0 )
         {
             $access = false;
         }
@@ -1295,11 +1295,11 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
             {
                 if( $A[0] == $S[$x] )
                 {
-                    $retval .= ' checked="CHECKED"';
+                    $retval .= ' checked="checked"';
                 }
             }
 
-            if( isset( $A[2] ) && ( $A[2] < 10 && $A[2] > 0 ))
+            if(( $table == $_TABLES['blocks'] ) && isset( $A[2] ) && ( $A[2] == 'gldefault' ))
             {
                 $retval .= '><b>' . stripslashes( $A[1] ) . '</b><br>' . LB;
             }
