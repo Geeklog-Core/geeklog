@@ -31,9 +31,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.28 2004/08/06 08:55:36 dhaun Exp $
+// $Id: stats.php,v 1.29 2004/08/09 18:36:29 dhaun Exp $
 
 require_once('lib-common.php');
+
+$display = '';
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['statsloginrequired'] == 1))) {

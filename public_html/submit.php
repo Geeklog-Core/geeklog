@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.71 2004/08/07 15:21:18 dhaun Exp $
+// $Id: submit.php,v 1.72 2004/08/09 18:36:29 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -126,11 +126,11 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->set_var('explanation', $LANG12[37]);
     $eventform->set_var('site_url', $_CONF['site_url']);
     $eventform->set_var('lang_title', $LANG12[10]); 
-    $types = explode(',',$_CONF['event_types']);
-    reset($types);
-    for ($i = 1; $i <= count($types); $i++) {
-        $catdd .= '<option value="' . current($types) . '">' . current($types) . '</option>';
-        next($types);
+    $types = explode (',', $_CONF['event_types']);
+    $catdd = '';
+    foreach ($types as $event_type) {
+        $catdd .= '<option value="' . $event_type . '">' . $event_type
+               . '</option>';
     }
     $eventform->set_var('lang_eventtype', $LANG12[49]);
     $eventform->set_var('lang_editeventtypes', $LANG12[50]);
@@ -190,16 +190,11 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->set_var('lang_addressline1',$LANG12[44]);
     $eventform->set_var('lang_addressline2',$LANG12[45]);
     $eventform->set_var('lang_city',$LANG12[46]);
-    reset($_STATES);
     $eventform->set_var('lang_state',$LANG12[47]);
     $state_options = '';
-    for ($i = 1; $i <= count($_STATES); $i++) {
-        $state_options .= '<option value="' . key($_STATES) . '" ';
-        if (key($_STATES) == $cur_state) {
-            $state_options .= 'selected="selected"';
-        }
-        $state_options .= '>' . current($_STATES) . '</option>';
-        next($_STATES);
+    foreach ($_STATES as $statekey => $state) {
+        $state_options .= '<option value="' . $statekey . '">'
+                       . $state . '</option>';
     }
     $eventform->set_var('state_options',$state_options);
     $eventform->set_var('lang_zipcode',$LANG12[48]);
@@ -222,7 +217,7 @@ function submitlink()
 {
     global $_CONF, $_TABLES, $LANG12;
 
-    $retval .= COM_startBlock($LANG12[5],'submitlink.html');
+    $retval = COM_startBlock ($LANG12[5], 'submitlink.html');
 
     $linkform = new Template($_CONF['path_layout'] . 'submit');
     $linkform->set_file('linkform', 'submitlink.thtml');
@@ -252,6 +247,8 @@ function submitstory($topic = '')
 {
     global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG12;
 
+    $retval = '';
+
     if ($HTTP_POST_VARS['mode'] == $LANG12[32]) { // preview
         $A = $HTTP_POST_VARS;
     } else {
@@ -267,6 +264,9 @@ function submitstory($topic = '')
     if (empty($A['postmode'])) {
         $A['postmode'] = $_CONF['postmode'];
     }
+
+    $title = '';
+    $introtext = '';
 
     if (!empty($A['title'])) {
         $introtext = stripslashes ($A['introtext']);
@@ -303,7 +303,8 @@ function submitstory($topic = '')
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
 
     $storyform = new Template($_CONF['path_layout'] . 'submit');
-    if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) { 
+    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
+        file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) { 
         $storyform->set_file('storyform','submitstory_advanced.thtml');
     } else {
         $storyform->set_file('storyform','submitstory.thtml');

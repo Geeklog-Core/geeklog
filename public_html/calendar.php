@@ -31,14 +31,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.45 2004/08/07 15:32:12 dhaun Exp $
+// $Id: calendar.php,v 1.46 2004/08/09 18:36:29 dhaun Exp $
 
-include('lib-common.php');
-include($_CONF['path_system'] . 'classes/calendar.class.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
+
+$display = '';
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['calendarloginrequired'] == 1))) {
-    $display = COM_siteHeader('');
+    $display .= COM_siteHeader('');
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
     $login = new Template($_CONF['path_layout'] . 'submit');
@@ -308,8 +310,10 @@ if ($mode == 'personal' AND $_CONF['personalcalendars'] == 0) {
 
 if (isset ($HTTP_POST_VARS['msg'])) {
     $msg = COM_applyFilter ($HTTP_POST_VARS['msg'], true);
-} else {
+} else if (isset ($HTTP_GET_VARS['msg'])) {
     $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+} else {
+    $msg = 0;
 }
 if ($msg > 0) {
     $display .= COM_showMessage ($msg);
@@ -596,7 +600,7 @@ case 'week':
         $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ('%x', $thedate[1]) . '</a>');
         $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&amp;mode=$mode&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum" . '">' . $LANG30[8] . '</a>');
         if ($mode == 'personal') {
-            $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
+            $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         } else {
             $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         }
@@ -745,10 +749,11 @@ if ($mode == 'personal') {
                              $_CONF['site_name'] . ' ' . $LANG30[29]);
 }
 
+$yroptions = '';
 for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
-    $yroptions .= '<option value="' . $y . '" ';
+    $yroptions .= '<option value="' . $y . '"';
     if ($y == $year) {
-        $yroptions .= 'selected="selected"';
+        $yroptions .= ' selected="selected"';
     }
     $yroptions .= '>' . $y . '</option>'.LB;
 }
@@ -786,7 +791,7 @@ for ($i = 1; $i <= 6; $i++) {
                 if (strlen($month) == 1) {
                     $month = '0' . $month;
                 }
-                $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
+                $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER['uid']}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
             } else {
                 if (strlen($month) == 1) {
                     $month = '0' . $month;

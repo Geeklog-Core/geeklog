@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.82 2004/08/06 08:55:36 dhaun Exp $
+// $Id: users.php,v 1.83 2004/08/09 18:36:29 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -811,7 +811,7 @@ case 'new':
     if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
         $display .= custom_userform('new');
     } else {
-        $display .= newuserform($msg);
+        $display .= newuserform();
     }	
     $display .= COM_siteFooter();
     break;
@@ -897,7 +897,16 @@ default:
     } else {
         $display .= COM_siteHeader('menu');
 
-        $display .= COM_showMessage($msg);
+        if (isset ($HTTP_POST_VARS['msg'])) {
+            $msg = $HTTP_POST_VARS['msg'];
+        } else if (isset ($HTTP_GET_VARS['msg'])) {
+            $msg = $HTTP_GET_VARS['msg'];
+        } else {
+            $msg = 0;
+        }
+        if ($msg > 0) {
+            $display .= COM_showMessage($msg);
+        }
 
         switch ($mode) {
         case 'create':

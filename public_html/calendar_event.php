@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | calendar_event.php                                                        |
-// | Shows details of an event or events                                       |
 // |                                                                           |
+// | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.32 2004/08/06 08:55:35 dhaun Exp $
+// $Id: calendar_event.php,v 1.33 2004/08/09 18:36:29 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -379,8 +379,10 @@ $display = '';
 
 if (isset ($HTTP_POST_VARS['action'])) {
     $action = COM_applyFilter ($HTTP_POST_VARS['action']);
-} else {
+} else if (isset ($HTTP_GET_VARS['action'])) {
     $action = COM_applyFilter ($HTTP_GET_VARS['action']);
+} else {
+    $action = '';
 }
 
 switch ($action) {
@@ -488,6 +490,7 @@ default:
         $cal = new Calendar();
         setCalendarLanguage ($cal);
 
+        $currentmonth = '';
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {

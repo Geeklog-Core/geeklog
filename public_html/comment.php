@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.71 2004/08/06 08:55:35 dhaun Exp $
+// $Id: comment.php,v 1.72 2004/08/09 18:36:29 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -655,7 +655,9 @@ function send_report ($cid, $type)
 
 
 // MAIN
-if ( isset($_REQUEST['reply']) ) {
+$display = '';
+
+if (isset ($_REQUEST['reply'])) {
     $_REQUEST['mode'] = '';
 }
 

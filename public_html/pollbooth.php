@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.25 2004/08/06 08:55:36 dhaun Exp $
+// $Id: pollbooth.php,v 1.26 2004/08/09 18:36:29 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -141,8 +141,13 @@ function polllist()
 // an aid greater than 0 will save a vote for that answer on the selected poll
 // an aid of -1 will display the select poll
 
-if ($reply == $LANG01[25]) {
-    $display .= COM_refresh($_CONF['site_url'] . "/comment.php?sid=$qid&pid=$pid&type=$type");
+$display = '';
+
+if (isset ($HTTP_POST_VARS['reply'])
+        && ($HTTP_POST_VARS['reply'] == $LANG01[25])) {
+    $display .= COM_refresh ($_CONF['site_url'] . '/comment.php?sid='
+             . $HTTP_POST_VARS['qid'] . '&pid=' . $HTTP_POST_VARS['pid']
+             . '&type=' . $HTTP_POST_VARS['type']);
     echo $display;
     exit;			
 }

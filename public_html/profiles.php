@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.35 2004/08/08 19:59:45 dhaun Exp $
+// $Id: profiles.php,v 1.36 2004/08/09 18:36:29 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -333,11 +333,16 @@ function mailstoryform($sid)
 
 
 // MAIN
+$display = '';
+
 if (isset ($HTTP_POST_VARS['what'])) {
     $what = COM_applyFilter ($HTTP_POST_VARS['what']);
-} else {
+} else if (isset ($HTTP_GET_VARS['what'])) {
     $what = COM_applyFilter ($HTTP_GET_VARS['what']);
+} else {
+    $what = '';
 }
+
 switch ($what) {
     case 'contact':
         $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
@@ -376,7 +381,11 @@ switch ($what) {
         break;
 
     default:
-        $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+        if (isset ($HTTP_GET_VARS['uid'])) {
+            $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+        } else {
+            $uid = 0;
+        }
         if ($uid > 1) {
             $display .= COM_siteHeader ('menu', $LANG04[81])
                      . contactform ($uid)
