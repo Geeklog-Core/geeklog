@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.51 2003/03/24 17:42:17 dhaun Exp $
+// $Id: submit.php,v 1.52 2003/05/05 16:52:35 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -58,15 +58,11 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
 
     $retval = '';
 	
-    DB_query("DELETE FROM {$_TABLES['submitspeedlimit']} WHERE date < unix_timestamp() - {$_CONF["speedlimit"]}");
+    COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
 
-    $id = DB_count($_TABLES['submitspeedlimit'],'ipaddress',$REMOTE_ADDR);
+    $last = COM_checkSpeedlimit ('submit');
 
-    if ($id > 0) {
-        $result = DB_query("SELECT date FROM {$_TABLES['submitspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
-        $A = DB_fetchArray($result);
-
-        $last = time() - $A['date'];
+    if ($last > 0) {
         $retval .= COM_startBlock($LANG12[26])
             . $LANG12[30]
             . $last
@@ -550,7 +546,7 @@ function savesubmission($type,$A)
                 $A['url'] = addslashes ($A['url']);
             }
             $A['lid'] = COM_makeSid();
-            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
+            COM_updateSpeedlimit ('submit');
             if (($_CONF['linksubmission'] == 1) && !SEC_hasRights('link.submit')) {
                 $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title,date',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',NOW()",$_CONF['site_url']."/index.php?msg=3");
                 if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
@@ -608,7 +604,7 @@ function savesubmission($type,$A)
                 $A['eid'] = COM_makesid();
             }
 
-            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
+            COM_updateSpeedlimit ('submit');
 
             if ($A['allday'] == 'on') {
                 $A['allday'] = 1;
@@ -669,17 +665,21 @@ function savesubmission($type,$A)
         break;
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
-            // Update the submitspeedlimit for user - assuming Plugin approves submission record
-    		DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            // see if this is a submission that needs to be handled by a plugin and should include it's own redirect
-			if (!PLG_saveSubmission($type, $A)) {
-			    COM_errorLog("Could not save your submission.  Bad type: $type");
-			}	
-			// plugin and should include it's own redirect - but in case handle it here and redirect to the main page
-			$retval = COM_refresh ($_CONF['site_url'] . '/index.php');
+            // Update the submitspeedlimit for user - assuming Plugin approves
+            // submission record
+            COM_updateSpeedlimit ('submit');
+
+            // see if this is a submission that needs to be handled by a plugin
+            // and should include it's own redirect
+            if (!PLG_saveSubmission($type, $A)) {
+                COM_errorLog("Could not save your submission.  Bad type: $type");
+            }	
+            // plugin should include it's own redirect - but in case handle
+            // it here and redirect to the main page
+            $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
             return $retval;
-            
         }
+
         if (!empty($A['title']) && !empty($A['introtext'])) {
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['title'] = str_replace('$','&#36;',$A['title']);
@@ -693,7 +693,7 @@ function savesubmission($type,$A)
             if (empty($_USER['uid'])) { 
                 $_USER['uid'] = 1;
             }					
-            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
+            COM_updateSpeedlimit ('submit');
             if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
                 DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
                 if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {

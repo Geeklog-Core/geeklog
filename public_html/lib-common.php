@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.218 2003/04/28 08:15:33 dhaun Exp $
+// $Id: lib-common.php,v 1.219 2003/05/05 16:52:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -4547,6 +4547,64 @@ function COM_makeList( $listofitems )
     $list->parse( 'newlist', 'list', true );
 
     return $list->finish( $list->get_var( 'newlist' ));
+}
+
+/**
+* Check if speed limit applies for current IP address.
+*
+* @param type   string   type of speed limit to check, e.g. 'submit', 'comment'
+* @return       int      0 = does not apply, else: seconds since last post
+*/
+function COM_checkSpeedlimit ($type = 'submit')
+{
+    global $_TABLES, $REMOTE_ADDR;
+
+    $last = 0;
+
+    $date = DB_getItem ($_TABLES['speedlimit'], 'date',
+                        "(type = '$type') AND (ipaddress = '$REMOTE_ADDR')");
+    if (!empty ($date)) {
+        $last = time () - $date;
+        if ($last == 0) {
+            // just in case someone manages to submit something in < 1 sec.
+            $last = 1;
+        }
+    }
+
+    return $last;
+}
+
+/**
+* Store post info for current IP address.
+*
+* @param type   string   type of speed limit, e.g. 'submit', 'comment'
+*
+*/
+function COM_updateSpeedlimit ($type = 'submit')
+{
+    global $_TABLES, $REMOTE_ADDR;
+
+    DB_save ($_TABLES['speedlimit'], 'ipaddress,date,type',
+             "'$REMOTE_ADDR',unix_timestamp(),'$type'");
+}
+
+/**
+* Clear out expired speed limits, i.e. entries older than 'x' seconds
+*
+* @param speedlimit   int      number of seconds
+* @param type         string   type of speed limit, e.g. 'submit', 'comment'
+*
+*/
+function COM_clearSpeedlimit ($speedlimit = 60, $type = '')
+{
+    global $_TABLES;
+
+    $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE ";
+    if (!empty ($type)) {
+        $sql .= "(type = '$type') AND ";
+    }
+    $sql .= "(date < unix_timestamp() - $speedlimit)";
+    DB_query ($sql);
 }
 
 /**

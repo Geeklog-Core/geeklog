@@ -56,7 +56,6 @@ $_TABLES['blocks']              = $_DB_table_prefix . 'blocks';
 $_TABLES['commentcodes']        = $_DB_table_prefix . 'commentcodes';
 $_TABLES['commentmodes']        = $_DB_table_prefix . 'commentmodes';
 $_TABLES['comments']            = $_DB_table_prefix . 'comments';
-$_TABLES['commentspeedlimit']   = $_DB_table_prefix . 'commentspeedlimit';
 $_TABLES['cookiecodes']         = $_DB_table_prefix . 'cookiecodes';
 $_TABLES['dateformats']         = $_DB_table_prefix . 'dateformats';
 $_TABLES['events']              = $_DB_table_prefix . 'events';
@@ -77,10 +76,10 @@ $_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 $_TABLES['postmodes']           = $_DB_table_prefix . 'postmodes';
 $_TABLES['sessions']            = $_DB_table_prefix . 'sessions';
 $_TABLES['sortcodes']           = $_DB_table_prefix . 'sortcodes';
+$_TABLES['speedlimit']          = $_DB_table_prefix . 'speedlimit';
 $_TABLES['statuscodes']         = $_DB_table_prefix . 'statuscodes';
 $_TABLES['stories']             = $_DB_table_prefix . 'stories';
 $_TABLES['storysubmission']     = $_DB_table_prefix . 'storysubmission';
-$_TABLES['submitspeedlimit']    = $_DB_table_prefix . 'submitspeedlimit';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
@@ -93,8 +92,10 @@ $_TABLES['vars']                = $_DB_table_prefix . 'vars';
 // the static pages plugin has become an integral part of Geeklog anyway ...
 $_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
 
-// this table isn't used by Geeklog any more, but the table name is needed
+// these tables aren't used by Geeklog any more, but the table names are needed
 // when upgrading from old versions
+$_TABLES['commentspeedlimit']   = $_DB_table_prefix . 'commentspeedlimit';
+$_TABLES['submitspeedlimit']    = $_DB_table_prefix . 'submitspeedlimit';
 $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 
 
