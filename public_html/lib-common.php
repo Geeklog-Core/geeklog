@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.35 2002/02/26 14:26:11 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.36 2002/02/26 17:55:23 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -668,7 +668,7 @@ function COM_exportRDF()
         $rdlink	= $_CONF['site_url'];
         $rddescr = $_CONF['site_slogan'];
         $rdlang	= $_CONF['locale'];
-        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE uid > 1 AND draft_flag = 0 ORDER BY date DESC limit 10");
+        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10");
 
         if (!$file = @fopen($outputfile,w)) {
             COM_errorLog("{LANG01[54]} $outputfile",1);
@@ -681,7 +681,14 @@ function COM_exportRDF()
             fputs ( $file, "<link>$rdlink</link>\n");
             fputs ( $file, "<description>$rddescr</description>\n");
             fputs ( $file, "<language>$rdlang</language>\n\n");
-            while ($row = DB_fetchArray($result)) {
+            $sids = '';
+            $nrows = DB_numRows($result);
+            for ($i = 1; $i <= $nrows; $i++) {
+                $row = DB_fetchArray($result);
+                $sids .= $row['sid'];
+                if ($i <> $nrows) {
+                    $sids .= ',';
+                }
                 $title = 'title';
                 $link = 'sid';
                 $author = 'author';
@@ -693,10 +700,37 @@ function COM_exportRDF()
                 fputs ( $file,  $link );
                 fputs ( $file, "</item>\n\n" );
             }
+            DB_query("UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'");
         }
         fputs ( $file, "</channel>\n");
         fputs ( $file, "</rss>\n");
         fclose( $file );
+    }
+}
+
+/**
+* Checks to see if we need to update the RDF as a result
+* of an article with a future publish date reaching it's 
+* publish time
+*
+*/
+function COM_rdfUpToDateCheck() 
+{
+    global $_TABLES;
+
+    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10");
+    $nrows = DB_numRows($result);
+    $sids = '';
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $sids .= $A['sid'];
+        if ($i <> $nrows) {
+            $sids .= ',';
+        }
+    }
+    $last_rdf_sids = DB_getItem($_TABLES['vars'],'value',"name = 'rdf_sids'");
+    if ($sids <> $last_rdf_sids) {
+        COM_exportRDF();
     }
 }
 
@@ -993,13 +1027,17 @@ function COM_showTopics($topic='')
                 if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
                     $retval .= ' (';
                     if ($_CONF['showstorycount']) {
-                        $retval .= DB_count($_TABLES['stories'],'tid',$A['tid']);
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $T = DB_fetchArray($rcount);
+                        $retval .= $T['count'];
                     }
                     if ($_CONF['showstorycount']) {
                         if ($_CONF['showstorycount']) {
                             $retval .= '/';
                         }
-                        $retval .= DB_count($_TABLES['storysubmission'],'tid',$A['tid']);
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $T = DB_fetchArray($rcount);
+                        $retval .= $T['count'];
                     }
                     $retval .= ')';
                 }
@@ -1010,7 +1048,9 @@ function COM_showTopics($topic='')
                 if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
                     $retval .= '(';
                     if ($_CONF['showstorycount']) {
-                        $retval .= DB_count($_TABLES['stories'],'tid',$A['tid']);
+                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
+                        $T = DB_fetchArray($rcount);
+                        $retval .= $T['count'];
                     }
                     if ($_CONF['showsubmissioncount']) {
                         if ($_CONF['showstorycount']) {
@@ -2065,7 +2105,7 @@ function COM_emailUserTopics()
         $cur_day = strftime("%D",time());
         $result = DB_query("SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'");
         $L = DB_fetchArray($result);
-        $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE date >= '"
+        $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '"
             . $L['lastrun'] . "' AND (";
         $ETIDS = explode(' ',$U['etids']);
         // fputs(file, "got $ETIDS[$x] for a category\n");
@@ -2138,7 +2178,7 @@ function COM_whatsNewBlock($help='',$title='')
     $now = time();
     $desired = $now - $_CONF['newstoriesinterval'];
     $sql .= "UNIX_TIMESTAMP(date) > {$desired}"; // ORDER BY day DESC"
-    $sql .= " AND draft_flag = 0";
+    $sql .= " AND draft_flag = 0 AND date <= NOW()";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if (empty($title)) {
@@ -2457,4 +2497,96 @@ for ($i = 1; $i <= $nrows; $i++) {
 	include_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
 }
 
+function COM_getMonthFormOptions($selected = '') 
+{
+    $month_options = '';
+    for ($i = 1; $i <= 12; $i++) {
+        if ($i < 10) {
+            $mval = '0' . $i;
+        } else {
+            $mval = $i;
+        }
+        $month_options .= '<option value="' . $mval . '" ';
+        if ($i == $selected) {
+            $month_options .= 'selected="SELECTED"';
+        }
+        $month_options .= '>' . $mval . '</option>';
+    }
+    return $month_options;
+}
+
+function COM_getDayFormOptions($selected = '')
+{
+    $day_options = '';
+    for ($i = 1; $i <= 31; $i++) {
+        if ($i < 10) {
+            $dval = '0' . $i;
+        } else {
+            $dval = $i;
+        }
+        $day_options .= '<option value="' . $dval . '" ';
+        if ($i == $selected) {
+            $day_options .= 'selected="SELECTED"';
+        }
+        $day_options .= '>' . $dval . '</option>';
+    }
+    return $day_options;
+}
+
+function COM_getYearFormOptions($selected = '')
+{
+    $year_options = '';
+    $cur_year = date('Y',time());
+    for ($i = $cur_year; $i <= $cur_year + 5; $i++) {
+        $year_options .= '<option value="' . $i . '" ';
+        if ($i == $selected) {
+            $year_options .= 'selected="SELECTED"';
+        }
+        $year_options .= '>' . $i . '</option>';
+    }
+    return $year_options;
+}
+
+function COM_getHourFormOptions($selected = '')
+{
+    $hour_options = '';
+    for ($i = 1; $i <= 11; $i++) {
+        if ($i < 10) {
+            $hval = '0' . $i;
+        } else {
+            $hval = $i;
+        }
+        if ($i == 1 ) {
+            $hour_options .= '<option value="12" ';
+            if ($selected == 12) {
+                $hour_options .= 'selected="SELECTED"';
+            }
+            $hour_options .= '>12</option>';
+        }
+        $hour_options .= '<option value="' . $hval . '" ';
+        if ($selected == $i) {
+            $hour_options .= 'selected="SELECTED"';
+        }
+        $hour_options .= '>' . $i . '</option>';
+    }
+    return $hour_options;
+}
+
+function COM_getMinuteOptions($selected = '')
+{
+    $minute_options = '';
+    for ($i = 0; $i <= 59; $i++) {
+        if ($i < 10) {
+            $mval = '0' . $i;
+        } else {
+            $mval = $i;
+        }
+        $minute_options .= '<option value="' . $mval . '" ';
+        if ($selected == $i) {
+            $minute_options .= 'selected="SELECTED"';
+        }
+        $minute_options .= '>' . $mval . '</option>';
+    }
+    return $minute_options;
+}
 ?>
