@@ -620,7 +620,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 # Creates the list of topics and the number of stories in each topic
 
 function showtopics($topic="") {
-	global $CONF, $USER, $LANG01;
+	global $CONF, $USER, $LANG01, $PHP_SELF;
 	if ($CONF["sortmethod"] == 'alpha')
 		$result = dbquery("SELECT tid,topic FROM topics ORDER BY tid ASC");
 	else
@@ -629,7 +629,7 @@ function showtopics($topic="") {
 	$nrows = mysql_num_rows($result);
 	#Give a link to the hompage here since a lot of people use this
 	#for navigating the site
-	if (!empty($topic)) {
+	if (($PHP_SELF <> "/index.php") OR !empty($topic)) {
                 print "<a href={$CONF["site_url"]}/index.php><b>{$LANG01[90]}</b></a><br>";
         } else {
                 print "{$LANG01[90]}<br>";
@@ -1039,7 +1039,7 @@ function showblock($side,$topic="") {
 	}
 
 	if (!empty($topic)) {
-		$sql .= " AND (tid = '$topic'  OR (tid = 'all' AND type <> 'layout'))";
+		$sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
 	} else {
 		$sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type != 'layout'))";
 	}
