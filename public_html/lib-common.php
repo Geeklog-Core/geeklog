@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.74 2002/04/22 20:14:45 dhaun Exp $
+// $Id: lib-common.php,v 1.75 2002/04/22 21:58:27 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -177,7 +177,7 @@ function COM_article($A,$index='')
         }
     }
 	
-    if ($_USER['noicons'] != 1) {
+	if ($_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1) {
         $top = DB_getItem($_TABLES['topics'],'imageurl',"tid = '{$A['tid']}'");
         if (!empty($top)) { 
             $article->set_var('story_anchortag_and_image', '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_image_align'].'" src="'.$_CONF['site_url'].$top.'" alt="'.$A['tid'].'" border="0"></a>');
