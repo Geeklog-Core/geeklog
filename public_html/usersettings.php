@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.51 2003/01/18 18:07:12 dhaun Exp $
+// $Id: usersettings.php,v 1.52 2003/01/18 18:12:49 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -239,15 +239,15 @@ function editpreferences()
     $preferences->set_var ('end_block', COM_endBlock ());
 
     $preferences->set_var ('display_headline',
-                           $LANG04[45] . ' ' . $_USER['username'])
+                           $LANG04[45] . ' ' . $_USER['username']);
     $preferences->set_var ('exclude_headline',
-                           $LANG04[46] . ' ' . $_USER['username'])
+                           $LANG04[46] . ' ' . $_USER['username']);
     $preferences->set_var ('digest_headline',
-                           $LANG04[75] . ' ' . $_USER['username'])
+                           $LANG04[75] . ' ' . $_USER['username']);
     $preferences->set_var ('boxes_headline',
-                           $LANG04[47] . ' ' . $_USER['username'])
+                           $LANG04[47] . ' ' . $_USER['username']);
     $preferences->set_var ('comment_headline',
-                           $LANG04[64] . ' ' . $_USER['username'])
+                           $LANG04[64] . ' ' . $_USER['username']);
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
