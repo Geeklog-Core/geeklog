@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.10 2002/05/22 18:26:34 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.11 2002/05/28 13:42:58 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -429,29 +429,26 @@ class database {
         }
 
     }
-
+    
     /**
-    * Copies a record from one table to another (can be the same table)
+    * Returns the number of records for a query that meets the given criteria
     *
-    * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
-    * to another table.  They can be the same table.
+    * This will build a SELECT count(*) statement with the given criteria and
+    * return the result
     *
-    * @param    string          $table      Table to insert record into
-    * @param    string          $fields     Comma delmited list of fields to copy over
-    * @param    string          $values     Values to store in database fields
-    * @param    string          $tablefrom  Table to get record from
-    * @param    array|string    $id         field name(s) to use in where clause
-    * @param    array|string    $value      Value(s) to use in where clause
-    * @return   boolean     Returns true on success otherwise false
+    * @param    string          $table  Table to perform count on
+    * @param    array|string    $id     field name(s) of fields to use in where clause
+    * @param    array|string    $value  Value(s) to use in where clause
+    * @return   boolean     returns count on success otherwise false
     *
     */
-    function dbCopy($table,$fields,$values,$tablefrom,$id,$value)
+    function dbCount($table,$id='',$value='')
     {
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Inside database->dbCopy ***<BR>");
+            $this->_errorlog("\n*** Inside database->dbCount ***<br>");
         }
 
-        $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
+        $sql = "SELECT COUNT(*) FROM $table";
 
         if (is_array($id) || is_array($value)) {
             if (is_array($id) && is_array($value) && count($id) == count($value)) {
@@ -477,15 +474,20 @@ class database {
             }
         }
 
-        $this->dbQuery($sql);
-        $this->dbDelete($tablefrom,$id,$value);
-
         if ($this->isVerbose()) {
-            $this->_errorlog("\n*** Leaving database->dbCopy ***<BR>");
+            print "\n*** sql = $sql ***<br>";
         }
 
-    }
+        $result = $this->dbQuery($sql);
 
+        if ($this->isVerbose()) {
+            $this->_errorlog("\n*** Leaving database->dbCount ***<BR>");
+        }
+
+        return ($this->dbResult($result,0));
+
+    }
+    
     /**
     * Retrieves the number of rows in a recordset
     *
