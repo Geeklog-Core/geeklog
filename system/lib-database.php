@@ -92,10 +92,10 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // +---------------------------------------------------------------------------+
 
 // Constants used for TTL values below
-define(MINUTE,60);
-define(HOUR,MINUTE * 60);
-define(DAY, HOUR * 24);
-define(WEEK, DAY * 7);
+define('MINUTE',60);
+define('HOUR',MINUTE * 60);
+define('DAY', HOUR * 24);
+define('WEEK', DAY * 7);
 
 /**
 * Lib security is a bit DB intensive with it's recursive function calls to get usre
@@ -166,7 +166,7 @@ $_DB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'COM_errorLog');
 // +---------------------------------------------------------------------------+
 // | These are the library functions.  In all cases they turn around and make  |
 // | calls to the DBMS specific functions.  These ARE to be used directly in   |
-// | the code...do NOT use the $_DB methods directly
+// | the code...do NOT use the $_DB methods directly                           |
 // +---------------------------------------------------------------------------+
 
 /**
