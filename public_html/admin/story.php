@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.20 2001/12/06 22:32:33 tony_bibbs Exp $
+// $Id: story.php,v 1.21 2001/12/13 14:25:21 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -233,6 +233,7 @@ function liststories($page="1")
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     $story_templates->set_file(array('list'=>'liststories.thtml','row'=>'listitem.thtml'));
 
+    $story_templates->set_var('layout_url', $_CONF['layout_url']);
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('lang_newstory', $LANG24[43]);
     $story_templates->set_var('lang_adminhome', $LANG24[44]);
