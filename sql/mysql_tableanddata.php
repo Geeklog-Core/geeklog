@@ -425,6 +425,7 @@ CREATE TABLE {$_TABLES['topics']} (
   imageurl varchar(96) default NULL,
   sortnum tinyint(3) default NULL,
   limitnews tinyint(3) default NULL,
+  is_default tinyint(1) unsigned NOT NULL DEFAULT '0',
   group_id mediumint(8) unsigned NOT NULL default '1',
   owner_id mediumint(8) unsigned NOT NULL default '1',
   perm_owner tinyint(1) unsigned NOT NULL default '3',

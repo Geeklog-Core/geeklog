@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.209 2003/03/22 14:04:53 dhaun Exp $
+// $Id: lib-common.php,v 1.210 2003/03/24 17:42:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -785,7 +785,17 @@ function COM_siteHeader( $what = 'menu' )
     // Now add nested template for menu items
 
     // contribute link
-    $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/submit.php?type=story' );
+    if( empty( $topic ))
+    {
+        $contributelink = $_CONF['site_url'] . '/submit.php?type=story';
+        $header->set_var( 'current_topic', '' );
+    }
+    else
+    {
+        $contributelink = $_CONF['site_url'] . '/submit.php?type=story&amp;topic=' . $topic;
+        $header->set_var( 'current_topic', '&amp;topic=' . $topic );
+    }
+    $header->set_var( 'menuitem_url', $contributelink);
     $header->set_var( 'menuitem_text', $LANG01[71] );
     $header->parse( 'menu_elements', 'menuitem', true );
 

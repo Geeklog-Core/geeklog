@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.50 2003/03/19 16:05:35 dhaun Exp $
+// $Id: submit.php,v 1.51 2003/03/24 17:42:17 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -51,7 +51,7 @@ require_once('lib-common.php');
 * @type		string		Type of submission user is making
 *
 */
-function submissionform($type='story', $mode = '', $month='', $day='', $year='', $hour='') 
+function submissionform($type='story', $mode = '', $month='', $day='', $year='', $hour='', $topic = '')
 {
     global $_TABLES, $_CONF, $LANG12, $REMOTE_ADDR, $_USER, $HTTP_POST_VARS,
            $LANG_LOGIN;
@@ -103,7 +103,7 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
                     $retval .= PLG_showSubmitForm($type);
                     break;
                 } 
-                $retval .= submitstory();
+                $retval .= submitstory($topic);
                 break;
             }
         }
@@ -301,7 +301,7 @@ function submitlink()
 * Shows the story submission form
 *
 */
-function submitstory() 
+function submitstory($topic = '') 
 {
     global $_TABLES, $HTTP_POST_VARS, $_CONF, $LANG12, $_USER;
 
@@ -374,6 +374,12 @@ function submitstory()
     $storyform->set_var('lang_title', $LANG12[10]);
     $storyform->set_var('story_title', htmlspecialchars ($title));	
     $storyform->set_var('lang_topic', $LANG12[28]);
+    if (empty ($A['tid']) && !empty ($topic)) {
+        $A['tid'] = $topic;
+    }
+    if (empty ($A['tid'])) {
+        $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL ('AND'));
+    }
     $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
     $storyform->set_var('lang_story', $LANG12[29]);
     $storyform->set_var('story_introtext', $introtext);
@@ -759,7 +765,7 @@ if ($mode == $LANG12[8]) { // submit
             break;
     }
 
-    $display .= submissionform($type, $mode, $month, $day, $year, $hour); 
+    $display .= submissionform($type, $mode, $month, $day, $year, $hour, $topic); 
 
 }
 $display .= COM_siteFooter();		

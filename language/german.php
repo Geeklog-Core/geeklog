@@ -762,7 +762,7 @@ $LANG27 = array(
 	6 => "Löschen einer Kategorie löscht auch alle dazu gehörenden Artikel und Blöcke",
 	7 => "Bitte die Felder Kategorie-ID und Kategorie-Name ausfüllen",
 	8 => "Kategorie-Manager",
-	9 => "Auf eine Kategorie klicken, um sie zu ändern oder löschen. Auf Neue Kategorie (s.o.) klicken, um eine neue Kategorie anzulegen. Die nötige Zugriffsberechtigung wird in Klammern hinter der Kategorie angegeben.",
+	9 => "Auf eine Kategorie klicken, um sie zu ändern oder löschen. Auf Neue Kategorie (s.o.) klicken, um eine neue Kategorie anzulegen. Die nötige Zugriffsberechtigung wird in Klammern hinter der Kategorie angegeben. Das Sternchen(*) markiert die Default-Kategorie.",
 	10=> "Sortierreihenfolge",
 	11 => "Artikel/Seite",
 	12 => "Zugriff verweigert",
@@ -774,7 +774,10 @@ $LANG27 = array(
 	18 => "Admin Home",
     19 => 'Speichern',
     20 => 'Abbruch',
-    21 => 'Löschen'
+    21 => 'Löschen',
+    22 => 'Default',
+    23 => 'Zur Default-Kategorie für neue Artikel machen',
+    24 => '(*)'
 );
 
 ###############################################################################

@@ -767,7 +767,7 @@ $LANG27 = array(
 	6 => "Deleting a topic deletes all stories and blocks associated with it",
 	7 => "Please fill in the Topic ID and Topic Name fields",
 	8 => "Topic Manager",
-	9 => "To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left. You will find your access level for each topic in parenthesis",
+	9 => "To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.",
 	10=> "Sort Order",
 	11 => "Stories/Page",
 	12 => "Access Denied",
@@ -779,7 +779,10 @@ $LANG27 = array(
 	18 => "Admin Home",
     19 => 'save',
     20 => 'cancel',
-    21 => 'delete'
+    21 => 'delete',
+    22 => 'Default',
+    23 => 'make this the default topic for new story submissions',
+    24 => '(*)'
 );
 
 ###############################################################################

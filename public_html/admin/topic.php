@@ -8,11 +8,12 @@
 // | Geeklog topic administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.32 2003/02/02 19:46:47 dhaun Exp $
+// $Id: topic.php,v 1.33 2003/03/24 17:42:17 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -150,6 +151,15 @@ function edittopic($tid='')
     $topic_templates->set_var('lang_topicimage', $LANG27[4]);
     $topic_templates->set_var('image_url', $A['imageurl']); 
     $topic_templates->set_var('warning_msg', $LANG27[6]);
+
+    $topic_templates->set_var ('lang_defaulttopic', $LANG27[22]);
+    $topic_templates->set_var ('lang_defaulttext', $LANG27[23]);
+    if ($A['is_default'] == 1) {
+        $topic_templates->set_var ('default_checked', 'checked="checked"');
+    } else {
+        $topic_templates->set_var ('default_checked', '');
+    }
+
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
 	$retval .= COM_endBlock();
@@ -158,7 +168,7 @@ function edittopic($tid='')
 
 ###############################################################################
 # Saves $tid to the database
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
+function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_default)
 {
     global $_TABLES, $_CONF, $LANG27, $MESSAGE;
 
@@ -190,7 +200,15 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 			$imageurl = ''; 
 		}	
         $topic = addslashes ($topic);
-		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . "/topic.php?msg=13");
+
+        if ($is_default == 'on') {
+            $is_default = 1;
+            DB_query ("UPDATE {$_TABLES['topics']} SET is_default = 0 WHERE is_default = 1");
+        } else {
+            $is_default = 0;
+        }
+
+		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, is_default, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$is_default,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . "/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG27[7],2);
@@ -238,6 +256,11 @@ function listtopics() {
             $topic_templates->set_var('topic_id', $A['tid']);
             $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
             $topic_templates->set_var('topic_access', $access);
+            if ($A['is_default'] == 1) {
+                $topic_templates->set_var ('default_topic', '(*)');
+            } else {
+                $topic_templates->set_var ('default_topic', '');
+            }
 		    if (!empty($A["imageurl"])) {
                 if (isset ($_THEME_URL)) {
                     $imagebase = $_THEME_URL;
@@ -285,7 +308,7 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
     }
 } else if (($mode == $LANG27[19]) && !empty ($LANG27[19])) { // save
     savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,
-            $perm_owner,$perm_group,$perm_members,$perm_anon);
+            $perm_owner,$perm_group,$perm_members,$perm_anon,$is_default);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= edittopic($tid);

@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.46 2003/03/19 11:13:35 dhaun Exp $
+// $Id: install.php,v 1.47 2003/03/24 17:42:17 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -396,6 +396,12 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
         case '1.3.7':
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.7_to_1.3.8.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
+
             // upgrade Static Pages plugin
             $spversion = get_SP_ver ();
             if ($spversion == 1) { // original version

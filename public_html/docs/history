@@ -3,6 +3,13 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- You can now make one topic the default topic. The topic selection in the
+  story submission form will then default to this topic.
+- When clicking on the "contribute" link from the topic index page, the new
+  story will now default to the topic you just viewed.
+  This only works with themes that use the {menu_elements} variable in
+  header.thtml. Other themes can use the new variable {current_topic} which
+  holds '&topic=<topicid>' when a topic is selected (and is empty otherwise).
 - Integrated Vincent Furia's improvements for COM_exportRDF. You can now use
   $_CONF['rdf_limit'] to limit the number of stories in the RDF file by
   setting this to a number (e.g. 10) or a number of hours (e.g. 24h).

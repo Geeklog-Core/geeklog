@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.82 2003/03/19 17:14:52 dhaun Exp $
+// $Id: story.php,v 1.83 2003/03/24 17:42:17 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -292,7 +292,10 @@ function storyeditor($sid = '', $mode = '')
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $story_templates->set_var('story_title', stripslashes($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
-    $story_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
+    if (empty ($A['tid'])) {
+        $A['tid'] = DB_getItem ($_TABLES['topics'], 'tid', 'is_default = 1' . COM_getPermSQL ('AND'));
+    }
+    $story_templates->set_var ('topic_options', COM_topicList ('tid,topic', $A['tid']));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
     if ($A['show_topic_icon'] == 1) {
         $story_templates->set_var('show_topic_icon_checked', 'checked="CHECKED"');
