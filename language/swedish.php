@@ -84,22 +84,22 @@ $LANG01 = array(
     37 => 'Inga artiklar',
     38 => 'Content Syndication',
     39 => 'Uppdatera',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => 'Du har <tt>register_globals = Off</tt> i din <tt>php.ini</tt>. Geeklog kräver att <tt>register_globals</tt> är påslaget. Innan du fortsätter så måste du sätta det till <strong>on</strong> och starta om din webbserver.',
     41 => 'Gäster',
     42 => 'Skrivet av:',
     43 => 'Svara på detta',
     44 => 'Upp',
     45 => 'MySQL Error Number',
-    46 => 'MySQL Error Message',
+    46 => 'MySQL felmeddelande',
     47 => 'Användarfunktioner',
     48 => 'Kontoinformation',
     49 => 'Inställningar',
-    50 => 'Error with SQL statement',
+    50 => 'Fel i SQL-förfrågan',
     51 => 'hjälp',
     52 => 'Ny',
     53 => 'Administratörsmeny',
     54 => 'Kunde inte öppna filen.',
-    55 => 'Error at',
+    55 => 'Fel vid',
     56 => 'Rösta',
     57 => 'Lösenord',
     58 => 'Logga in',
@@ -209,9 +209,9 @@ $LANG03 = array(
     22 => 'Använd en tydlig ärenderad som beskriver vad ditt inlägg handlar om.',
     23 => 'Din epostadress kommer INTE att vara publik.',
     24 => 'Anonym användare',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => 'Är du säker på att du vill rapportera detta inlägg till sajtadministratören?',
+    26 => '%s har rapporterat följande inlägg:',
+    27 => 'Anmäl missbruk'
 );
 
 ###############################################################################
@@ -323,8 +323,8 @@ $LANG04 = array(
     103 => 'Tillåt epost från andra användare',
     104 => 'Visa online-status',
     105 => 'Jag vill synas i \'Vem är här\'-blocket',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    106 => 'Plats',
+    107 => 'Visas i din publika profil'
 );
 
 ###############################################################################
@@ -337,8 +337,8 @@ $LANG05 = array(
     4 => 'Dagens huvudartikel',
     5 => 'Nästa',
     6 => 'Föregående',
-    7 => 'First',
-    8 => 'Last'
+    7 => 'Första',
+    8 => 'Sista'
 );
 
 ###############################################################################
@@ -470,30 +470,30 @@ $LANG09 = array(
 # stats.php
 
 $LANG10 = array(
-    1 => 'Site Statistics',
-    2 => 'Total Hits to the System',
-    3 => 'Stories(Comments) in the System',
-    4 => 'Polls(Answers) in the System',
-    5 => 'Links(Clicks) in the System',
-    6 => 'Events in the System',
-    7 => 'Top Ten Viewed Stories',
-    8 => 'Story Title',
-    9 => 'Views',
-    10 => 'It appears that there are no stories on this site or no one has ever viewed them.',
-    11 => 'Top Ten Commented Stories',
-    12 => 'Comments',
-    13 => 'It appears that there are no stories on this site or no one has ever posted a comment on them.',
-    14 => 'Top Ten Polls',
-    15 => 'Poll Question',
-    16 => 'Votes',
-    17 => 'It appears that there are no polls on this site or no one has ever voted.',
-    18 => 'Top Ten Links',
-    19 => 'Links',
-    20 => 'Hits',
-    21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
-    22 => 'Top Ten Emailed Stories',
-    23 => 'Emails',
-    24 => 'It appears that no one has emailed a story on this site'
+    1 => 'Sajtstatistik',
+    2 => 'Totalt antal träffar på sajten',
+    3 => 'Artiklar(kommentarer) på sajten',
+    4 => 'Omröstningar(svar) på sajten',
+    5 => 'Länkar(träffar) på sajten',
+    6 => 'Aktiviteter i sajtkalendern',
+    7 => 'De tio mest lästa artiklarna',
+    8 => 'Artikeltitel',
+    9 => 'Visningar',
+    10 => 'Det verkar inte finnas några artiklar på den här sajten, eller så har ingen av dom blivit lästa.',
+    11 => 'De tio mest kommenterade artiklarna',
+    12 => 'Kommentarer',
+    13 => 'Det verkar inte finnas några artiklar på den här sajten, eller så har ingen av dom blivit kommenterade.',
+    14 => 'De tio största omröstningarna',
+    15 => 'Omröstningsfråga',
+    16 => 'Röster',
+    17 => 'Det verkar inte finnas några omröstningar på den här sajten, eller så har ingen röstat.',
+    18 => 'Tio populäraste länkarna',
+    19 => 'Länkar',
+    20 => 'Träffar',
+    21 => 'Det verkar inte finnas några länkar på sajten, eller så har ingen av dom blivit klickade.',
+    22 => 'De tio mest epostade artiklarna',
+    23 => 'gånger',
+    24 => 'Det verkar inte som om någon har epostat någon artikel från den här sajten'
 );
 
 ###############################################################################
@@ -504,7 +504,7 @@ $LANG11 = array(
     2 => 'Eposta artikel till någon',
     3 => 'Skriv ut artikel',
     4 => 'Artikelalternativ',
-    5 => 'PDF Story Format'
+    5 => 'Artikel i PDF-format'
 );
 
 ###############################################################################
@@ -574,12 +574,12 @@ $LANG12 = array(
 # admin/auth.inc.php
 
 $LANG20 = array(
-    1 => 'Authenticering krävs',
+    1 => 'Autentisering krävs',
     2 => 'Felaktig inloggningsinformation',
     3 => 'Felaktigt lösenord för användare',
     4 => 'Användarnamn:',
     5 => 'Lösenord:',
-    6 => 'All tillgång till administrativa delar av denna webbsajt loggas och kontrolleras.<BR>Denna sida är bara till för behörig personal.',
+    6 => 'All tillgång till administrativa delar av denna webbsajt loggas och kontrolleras.<br />Denna sida är bara till för behörig personal.',
     7 => 'logga in'
 );
 
@@ -643,10 +643,10 @@ $LANG21 = array(
     54 => 'spara',
     55 => 'ångra',
     56 => 'radera',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => 'Flytta block neråt',
+    58 => 'Flytta block uppåt',
+    59 => 'Flytta block till höger sida',
+    60 => 'Flytta block till vänster sida'
 );
 
 ###############################################################################
@@ -662,7 +662,7 @@ $LANG22 = array(
     7 => 'Plats',
     8 => 'Aktivitetsbeskrivning',
     9 => '(inkludera http://)',
-    10 => 'Du måste ange datum/tider, beskrivning och plats!',
+    10 => 'Du måste ange datum/tider, aktivitetstitel och beskrivning!',
     11 => 'Aktivitetsadministratör',
     12 => 'Klicka på en aktivitet för att förändra eller radera den.  Klicka på "Ny aktivitet" ovan för att skapa en ny aktivitet.  Klicka på [C] för att kopiera en aktivitet.',
     13 => 'Aktivitet',
@@ -675,9 +675,9 @@ $LANG22 = array(
     20 => 'spara',
     21 => 'ångra',
     22 => 'radera',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Felaktigt startdatum.',
+    24 => 'Felaktigt slutdatum.',
+    25 => 'Slutdatum är före startdatum, ju.'
 );
 
 ###############################################################################
@@ -770,11 +770,11 @@ $LANG24 = array(
     55 => 'Det blev fel när din artikel skulle sparas.  Rätta till dessa fel innan du sparar',
     56 => 'Visa ämnesikon',
     57 => 'Visa oskalad bild',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => 'Artikeladministration',
+    59 => 'Val',
+    60 => 'Aktiverat',
+    61 => 'Automatisk arkivering',
+    62 => 'Automatisk radering'
 );
 
 ###############################################################################
@@ -837,8 +837,8 @@ $LANG27 = array(
     22 => 'skönsvärde',
     23 => 'Gör detta ämne till standardvärde för nya artiklar',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'Arkivera ämne',
+    26 => 'gör detta ämne till skönsvärde för alla arkiverade artiklar.  Bara ett ämne tillåts.'
 );
 
 ###############################################################################
@@ -1002,7 +1002,7 @@ $LANG32 = array(
     8 => 'Kompatibilitetstest för insticksmodul misslyckades',
     9 => 'Denna insticksmodul kräver en nyare version av Geeklog.  Du måste antingen uppgradera din <a href="http://www.geeklog.net">Geeklog-installation</a> eller hämta en nyare version av insticksmodulen.',
     10 => '<br><b>Inga insticksmoduler är installerade.</b><br><br>',
-    11 => 'Klicka på insticksmodulens nummer för att modifiera eller radera den.  Klicka på namnet på en insticksmodul för att bli länkad till dess hemsida och få mer information.  Läs insticksmodulens manual om du vill ha information om hur man installerar eller uppgraderar den.',
+    11 => 'Klicka på insticksmodulens namn för att få information om den modulen, inklusive en länk till insticksmodulens webbsajt.  Både den installerade versionen och versionen som insticksmodulen själv rapporterar kommer att visas.  Detta hjälper dig att se om en insticksmodul behöver uppgraderas.  Läs insticksmodulens manual om du vill ha information om hur man installerar eller uppgraderar den.',
     12 => 'inget namn på insticksmodul skickades till plugineditor()',
     13 => 'Insticksmodulseditor',
     14 => 'Ny insticksmodul',
@@ -1019,56 +1019,56 @@ $LANG32 = array(
     25 => 'Radera',
     26 => 'Namn på insticksmodul',
     27 => 'Insticksmodulens hemsida',
-    28 => 'Version på insticksmodul',
+    28 => 'Installerad version',
     29 => 'Geeklog-version',
     30 => 'Radera insticksmodul?',
     31 => 'Är du säker på att du vill radera denna insticksmodu?  Om du gör det så kommer du att radera alla filer, data, och datastrukturer som denna insticksmodul använder.  Om du är säker, klicka "radera" igen nedan.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update'
+    32 => '<p><b>Error AutoLink märkord har inte korrekt format</b></p>',
+    33 => 'Kodversion',
+    34 => 'Uppdatera'
 );
 
 ###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
-    10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
+    1 => 'skapa kanal',
+    2 => 'spara',
+    3 => 'radera',
+    4 => 'avbryt',
+    10 => 'Innehållsprenumeration',
+    11 => 'Ny kanal',
+    12 => 'Administratörsmeny',
+    13 => 'För att ändra eller radera en kanal måste du klicka på dess länk nedan.  För att skapa en ny kanal så måste du klicka på "Ny kanal" ovan.',
+    14 => 'Titel',
+    15 => 'Typ',
+    16 => 'Filnamn',
     17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
-    21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
-    26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
-    34 => 'Entries',
-    35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links',
-    42 => 'Events'
+    18 => 'senast uppdaterad',
+    19 => 'Aktiverad',
+    20 => 'Ja',
+    21 => 'Nej',
+    22 => '<i>(inga kanaler)</i>',
+    23 => 'alla artiklar',
+    24 => 'Redigerar kanaler',
+    25 => 'Kanaltitel',
+    26 => 'Gräns',
+    27 => 'Storlek på inlägg',
+    28 => '(0 = ingen text, 1 = hela texten, annat = begränsat till angivet antal tecken.)',
+    29 => 'Beskrivning',
+    30 => 'Senaste uppdatering',
+    31 => 'Teckenuppsättning',
+    32 => 'Språk',
+    33 => 'Innehåll',
+    34 => 'Inlägg',
+    35 => 'Timmar',
+    36 => 'Kanaltyp',
+    37 => 'Du har åtminstone en insticksmodul som stöder innehållskanaler.  Nedan måste du välja om du vill skapa en Geeklog-kanal eller en kanal från en av insticksmodulerna.',
+    38 => 'Error: Fält saknas',
+    39 => 'Fyll i Kanaltitel, beskrivning och filnamn.',
+    40 => 'Fyll antingen i antal inlägg eller ett antal timmar.',
+    41 => 'Länkar',
+    42 => 'Aktiviteter'
 );
 
 ###############################################################################
@@ -1132,10 +1132,10 @@ $MESSAGE = array(
     55 => 'Ett meddelande har nu skickats till dig via epost och borde anlända inom kort.  Följ instruktionerna i det meddelandet för att sätta ett nytt lösenord på ditt konto.',
     56 => 'Epostadressen du angivit används redan av ett annat konto.',
     57 => 'Ditt konto har raderats.',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    58 => 'Din kanal har lagrats.',
+    59 => 'Kanalen har raderats.',
+    60 => 'Insticksmodulen har uppdaterats',
+    61 => 'Insticksmodul %s: Okänt meddelande'
 );
 
 ###############################################################################
@@ -1190,12 +1190,12 @@ $LANG_ACCESS = array(
     'listthem' => 'lista',
     'usersingroup' => 'Användare i grupp %s',
     'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'add' => 'Lägg till',
+    'remove' => 'Radera',
+    'availmembers' => 'Tillgängliga medlemmar',
+    'groupmembers' => 'Gruppmedlemmar',
+    'canteditgroup' => 'Du måste vara medlem i denna grupp för att få redigera den.  Kontakta din systemadministratör om du anser att detta meddelande är felaktigt.',
+    'cantlistgroup' => 'Du måste vara medlem i denna grupp för att få se dess medlemmar.  Kontakta din systemadministratör om du anser att detta meddelande är felaktigt.'
 );
 
 ###############################################################################
@@ -1255,20 +1255,20 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    1 => 'PDF-funktionen är avstängd',
+    2 => 'Dokumentet kunde inte renderas.  Dokumentet kunde hämtas, men kunde inte renderas.  Var noga med att bara skicka in html-formatterade dokument som är skrivna enligt xHTML.  Notera att komplexa dokument kanske inte kan renderas korrekt, eller över huvud taget.  Ditt renderade dokumentet var 0 byte stort och har raderats.  Om du är övertygad om att ditt dokument borde kunna renderas, så bör du skicka in det igen.',
+    3 => 'Okänt fel vid PDF-generering',
+    4 => "Inget siddata gavs, eller så vill du använda ad-hoc PDF-genereringsverktyget nedan.  Om du anser att du inte borde få detta felmeddelande så bör du kontakta systemadministratören.  Annars kan du prova att använda formuläret nedan för att generera PDF-filer med mer handpåläggning.",
+    5 => 'Laddar ditt dokument.',
+    6 => 'Vänta medan ditt dokument laddas.',
+    7 => 'Du kan högerklicka på knappen nedan och välja \'spara mål...\' eller \'spara länk...\' för att spara en kopia av ditt dokument.',
+    8 => "Den angivna sökvägen till HTMLDoc-binären är felaktig, eller så kan det här systemet inte exekvera den.  Kontakta systemadministratören om detta fel kvarstår.",
+    9 => 'PDF-generator',
+    10 => "Detta är Ad-hoc PDF-generering.  Verktyget kommer att försöka konvertera valfri URL till en PDF.  Tänk på att vissa sidor inte renderas ordentligt med den här funktionen, men detta är en begränsning av HTMLDoc PDF-genereringsverktyget, och dessa felmeddelanden bör inte rapporteras till systemadministratörerna på denna sajt",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => 'Generera PDF!',
+    13 => 'PHP-konfigurationen på den här servern tillåter inte öppning av URL:er med fopen()-kommandot.  Systemadministratören måste redigera php.ini-filen och aktivera allow_url_fopen',
+    14 => 'PDF-filen du begärde existerar inte, eller så försökte du hämta en fil som du inte har tillgång till.'
 );
 
 ?>
