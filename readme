@@ -1,12 +1,12 @@
 GeekLog Readme
 December 28, 2002
 
-For the installation instructions please see docs/install.html
+For the installation instructions please see public_html/docs/install.html
 
 WELCOME
 -------
 Geeklog is the source code and database that was originally used to run 
-SecurityGeeks and NewsGeeks, and has now been released under the GNU General 
+SecurityGeeks and NewsGeeks, and has since been released under the GNU General 
 Public License. It is a bona fide Open Source / Free Software project. Use 
 this site to get the GeekLog source, read the latest GeekLog news, and 
 participate in Geeklog discussions.  The template code Geeklog uses is from 
@@ -75,14 +75,14 @@ Channel: #Geeklog
 
 KNOWN ISSUES
 ------------
-All known issus are in docs/knownbugs. If you identify a bug please
+All known issues are tracked in our bug tracker. If you identify a bug please
 let us know by filling out a bug report at:
 
 http://project.geeklog.net/tracker/?group_id=6&atid=105
 
 SYSTEM REQUIREMENTS AND INSTALLATION
 ------------------------------------
-See docs/install.html
+See public_html/docs/install.html
 
 SECURITY ISSUES
 ---------------
@@ -113,4 +113,4 @@ And of course, all the members of the Geeklog mailing lists and IRC channel.
 
 ENJOY!
 ------
-Read the documents in the /docs directory for more information, etc...
+Read the documents in the public_html/docs directory for more information, etc.
