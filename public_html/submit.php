@@ -137,11 +137,17 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->set_var('type_options', $catdd);
     $eventform->set_var('lang_addeventto',$LANG12[38]);
     $eventform->set_var('lang_mastercalendar',$LANG12[39]);
-    $eventform->set_var('lang_personalcalendar',$LANG12[40]);
-    if ($mode == 'personal') {
-        $eventform->set_var('personal_checked', 'selected="SELECTED"');
+    if ($_CONF['personalcalendars'] == 1) {
+        $eventform->set_var('lang_personalcalendar',$LANG12[40]);
+        if ($mode == 'personal') {
+            $eventform->set_var('personal_option', '<option value="personal" selected="SELECTED">' . $LANG12[40] . '</option>');
+        } else {
+            $eventform->set_var('personal_option', '<option value="personal">' . $LANG12[40] . '</option>');
+            $eventform->set_var('master_checked', 'selected="SELECTED"');
+        }
     } else {
         $eventform->set_var('master_checked', 'selected="SELECTED"');
+        $eventform->set_var('personl_option', '');
     }
     $eventform->set_var('lang_link', $LANG12[11]);
     $eventform->set_var('lang_startdate', $LANG12[12]);
@@ -374,7 +380,6 @@ function savesubmission($type,$A)
 {
     global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR;
 	
-
     switch ($type) {
     case 'link':
         if (!empty($A['title']) && !empty($A['description']) && !empty($A['url'])) {
@@ -403,16 +408,24 @@ function savesubmission($type,$A)
         }
         break;
     case "event":
-        $A['datestart'] = $A['start_year'] . '-' . $A['start_month'] . '-' . $A['start_day'];
-        $A['dateend'] = $A['end_year'] . '-' . $A['end_month'] . '-' . $A['end_day'];
-        if (!empty($A['title']) && !empty($A["description"])) {
+        if (!empty($A['title']) && (!empty($A['start_month']) AND !empty($A['start_day']) AND !empty($A['start_year']))) {
+            $A['datestart'] = $A['start_year'] . '-' . $A['start_month'] . '-' . $A['start_day'];
+            if (empty($A['end_year'])) {
+                $A['dateend'] = $A['datestart'];
+            } else {
+                $A['dateend'] = $A['end_year'] . '-' . $A['end_month'] . '-' . $A['end_day'];
+            }
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A["description"])));
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['address1'] = addslashes(strip_tags(COM_checkWords($A['address1'])));
             $A['address2'] = addslashes(strip_tags(COM_checkWords($A['address2'])));
             $A['city'] = addslashes(strip_tags(COM_checkWords($A['city'])));
             $A['location'] = addslashes(strip_tags(COM_checkWords($A['location'])));
-            $A['eid'] = COM_makesid();
+
+            if (empty($A['eid'])) {
+                $A['eid'] = COM_makesid();
+            }
+
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
 
             if ($A['allday'] == 'on') {
@@ -432,13 +445,19 @@ function savesubmission($type,$A)
                     $A['end_hour'] = '00';
                 }
                 $A['timestart'] = $A['start_hour'] . ':' . $A['start_minute'] . ':00';
-                $A['timeend'] = $A['end_hour'] . ':' . $A['end_minute'] . ':00';
+                if (empty($A['end_hour'])) {
+                    $A['timeend'] = $A['start_hour'] + 1 . ':' . $A['start_minute'] . ':00';
+                } else {
+                    $A['timeend'] = $A['end_hour'] . ':' . $A['end_minute'] . ':00';
+                }
             }
 
             if ($A['calendar_type'] == 'master') {
                 $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'","index.php?msg=4");
             } else {
-                $A['uid'] = $_USER['uid'];
+                if (empty($A['uid'])) {
+                    $A['uid'] = $_USER['uid'];
+                }
                 $result = DB_save($_TABLES['personal_events'],'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'","calendar.php?mode=personal&msg=4");
             }
                 
@@ -495,13 +514,16 @@ function savesubmission($type,$A)
 $display = '';
 
 if ($mode == $LANG12[8]) { 
-    $page_content .= savesubmission($type,$HTTP_POST_VARS);
-} else { 
-    $page_content .= submissionform($type, $mode, $month, $day, $year, $hour); 
+    $display .= savesubmission($type,$HTTP_POST_VARS);
+} else if ($mode == $LANG12[52]) {
+    if (!empty($eid)) {
+        DB_delete($_TABLES['personal_events'], 'eid',$eid,'calendar.php?mode=personal');
+    }  
+} else {
+    $display .= COM_siteHeader();
+    $display .= submissionform($type, $mode, $month, $day, $year, $hour); 
+    $display .= COM_siteFooter();	
 }
-$display .= COM_siteHeader();
-$display .= $page_content;	
-$display .= COM_siteFooter();	
 	
 echo $display;
 
