@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.18 2002/05/04 14:54:23 dhaun Exp $
+// $Id: link.php,v 1.19 2002/05/10 12:42:41 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -291,7 +291,7 @@ function listlinks()
 // MAIN
 
 switch ($mode) {
-	case "$LANG23[22]":
+	case "$LANG23[23]":
 		DB_delete($_TABLES['links'],'lid',$lid,'admin/link.php?msg=16');
 		break;
 	case "$LANG23[21]":
