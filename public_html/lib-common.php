@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.262 2003/09/21 20:07:44 dhaun Exp $
+// $Id: lib-common.php,v 1.263 2003/10/03 13:00:24 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -5056,6 +5056,51 @@ function COM_stripslashes( $text )
     }
 
     return( $text );
+}
+
+/**
+* Filter parameters passed per GET (URL) or POST.
+*
+* @param    string    $parameter   the parameter to test
+* @param    boolean   $isnumeric   true if $parameter is supposed to be numeric
+* @return   string    the filtered parameter (may now be empty or 0)
+*
+*/
+function COM_applyFilter( $parameter, $isnumeric = false )
+{
+    global $HTTP_SERVER_VARS;
+
+    $log_manipulation = false; // set to true to log when the filter applied
+
+    $p = COM_stripslashes( $parameter );
+    $p = strip_tags( $p );
+    $p = COM_killJS( $p ); // doesn't help a lot right now, but still ...
+
+    if( $isnumeric )
+    {
+        // Note: PHP's is_numeric() accepts values like 4e4 as numeric
+        if( !is_numeric( $p ) || ( preg_match( '/^([0-9]+)$/', $p ) == 0 ))
+        {
+            $p = 0;
+        }
+    }
+    else
+    {
+        $pa = explode( "'", $p );
+        $pa = explode( '"', $pa[0] );
+        $pa = explode( '`', $pa[0] );
+        $p = $pa[0];
+    }
+
+    if( $log_manipulation )
+    {
+        if( strcmp( $p, $parameter ) != 0 )
+        {
+            COM_errorLog( "Filter applied: >> $parameter << filtered to $p [IP {$HTTP_SERVER_VARS['REMOTE_ADDR']}]", 1);
+        }
+    }
+
+    return $p;
 }
 
 
