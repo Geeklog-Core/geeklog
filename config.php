@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.141 2004/10/21 09:12:51 dhaun Exp $
+// $Id: config.php,v 1.142 2004/10/24 08:39:24 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -694,7 +694,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.10rc1');
+    define('VERSION', '1.3.10rc2');
 }
 
 $_STATES = array(
