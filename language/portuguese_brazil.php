@@ -138,7 +138,7 @@ $LANG01 = array(
     97 => "Lista de Palavras",
 	98 => "Plug-ins",
 	99 => "HISTÓRIAS",
-    100 => "Sem novas histórias"
+    100 => "Sem novas histórias",
     101 => 'Seus Eventos',
 	102 => 'Eventos do Site',
 	103 => 'DB Backups',
@@ -250,7 +250,7 @@ $LANG04 = array(
 	49 => "Sem ícones nas histórias",
 	50 => "Desmarque se não estiver interessado",
 	51 => "Somente as Notícias",
-	52 => "O padrão é 10",
+	52 => "O padrão é",
 	53 => "Receber as notícias via resumo diário",
 	54 => "Selecione os tópicos e autores que você não quer ver.",
 	55 => "Se você deixar todos desmarcados, subentende-se que você deseja a seleção padrão. Se você iniciar a seleção, lembre-se de selecionar todos os que você deseja, pois a seleção padrão será ignorada. Entradas padrão são exibidas em <b>negrito</b>.",
@@ -337,7 +337,7 @@ $LANG08 = array(
 	25 => "Você precisa efetuar o login para utilizar este recurso. Ao efetuar o login, você nos ajuda a prevenir o mal-uso do sistema",
 	26 => "Este formulário permite a você enviar um email para o usuário selecionado. Todos os campos são obrigatórios.",
 	27 => "Apresentação",
-	28 => "$from escreveu: $shortmsg"
+	28 => "$from escreveu: $shortmsg",
 	29 => "Este é o resumo diário do {$_CONF['site_name']} para ",
 	30 => " Resumo Diário "
 );
@@ -359,7 +359,7 @@ $LANG09 = array(
 	11 => "Resultados da Busca",
 	12 => "correspondências",
 	13 => "Resultado da Busca: nenhuma correspondência",
-	14 => "Não há correspondência para sua busca em"
+	14 => "Não há correspondência para sua busca em",
 	15 => "Por favor, tente novamente.",
 	16 => "Título",
 	17 => "Data",
@@ -545,7 +545,7 @@ $LANG21 = array(
 	46 => 'Novo Bloco',
 	47 => 'Administração',
     48 => 'Nome',
-    49 => ' (sem espaços e único)'
+    49 => ' (sem espaços e único)', 			
     50 => 'URL do Arquivo de Ajuda',
 	51 => 'inclua http://',
     52 => 'Se você deixar em branco, o ícone de ajuda para este bloco não será exibido'
@@ -650,7 +650,7 @@ $LANG24 = array(
 	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF["site_admin_url"]}/story.php\">go back to the story administration screen</a>.",
 	43 => 'Nova História',
 	44 => 'Administração',
-	45 => 'Acesso'
+	45 => 'Acesso',
 	46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RDF headline feed and it will be ignored by the search and statistics pages.'
 );
 
@@ -872,7 +872,7 @@ $MESSAGE = array (
     42 => "Your word has been successfully saved.",
 	43 => "A palavra foi excluída com sucesso.",
     44 => 'The plug-in was successfully installed!',
-    45 => 'O plug-in foi excluído com sucesso.'
+    45 => 'O plug-in foi excluído com sucesso.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged"
 );
 
