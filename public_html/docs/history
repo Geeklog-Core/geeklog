@@ -1,8 +1,13 @@
 GeekLog History/Changes:
 
-October ??, 2003 (1.3.9rc1)
-----------------
+??? ??, 200? (1.3.9rc1)
+------------
 
+- The Admin's link list now uses "google paging", 50 links per page (bug #104).
+- (Block)Admins can now change the order of blocks and enable / disable blocks
+  directly from the Admin's list of blocks (based on a concept by stratosfear).
+- An alternative interface to adding (multiple) users to a group is now
+  available from the Admin's list of groups. This feature requires JavaScript.
 - Fixed display of permissions in the "Access" column of the Admin's list of
   stories (didn't take Topic permissions into account).
 - Fixed handling of "0" as a poll answer (bug #73).
@@ -78,6 +83,23 @@ October ??, 2003 (1.3.9rc1)
   Includes new admin/syndication template directory.
 - Don't display the "delete" button in the Admin's Event editor when we're
   editing a new event (reported by Simon Lord).
+
+
+December 5, 2003 (1.3.8-1sr3)
+----------------
+
+This release addresses the following security-related issues:
+
+1. As "dr.wh0" pointed out, the category field for link submissions was not
+   filtered at all. Although you probably can't cause too much harm with
+   those 32 characters, this has now been fixed.
+2. Vincent Furia found that the restrictions for the form to email users
+   could be circumvented and could even be used to spam users.
+   In addition to fixing theses issues, there is now also a speed limit
+   on that form (defaults to the speed limit for story submissions).
+3. There was a way to post comments anonymously even when posting for
+   anonymous users had been disabled.
+4. It was possible to post comments under someone else's username.
 
 
 October 14, 2003 (1.3.8-1sr2)
@@ -453,6 +475,21 @@ Static Pages Plugin 1.3
   static pages editor.
 
 Please see docs/staticpages.html for details.
+
+
+December 5, 2003 (1.3.7sr4)
+----------------
+
+This release addresses the following security-related issues:
+
+1. As "dr.wh0" pointed out, the category field for link submissions was not
+   filtered at all. Although you probably can't cause too much harm with
+   those 32 characters, this has now been fixed. 
+2. Vincent Furia found that the restrictions for the form to email users
+   could be circumvented and could even be used to spam users.
+3. There was a way to post comments anonymously even when posting for
+   anonymous users had been disabled.
+4. It was possible to post comments under someone else's username.
 
 
 October 12, 2003 (1.3.7sr3)

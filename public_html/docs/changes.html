@@ -37,6 +37,9 @@ of files that have been changed since the last release.</p>
     This feature is extensible in that plugins can provide additional feeds.
     It is also possible to provide feeds in formats other than RSS 0.91 by
     providing additional feed classes.</li>
+<li>Admins can change the block order easily from the list of blocks now.</li>
+<li>There is an alternative interface to adding users to groups (requires
+    JavaScript).</li>
 <li>Image upload can now use the GD library to scale images.</li>
 <li>Comments now use templates.</li>
 <li>Admins can now edit links directly from the links section.</li>
@@ -54,6 +57,12 @@ complete list of theme changes.</p>
 <li>When batch-importing users, those users were all subscribed to the
     Daily Digest automatically (uses the $_CONF['emailstoriesperdefault']
     setting instead now).</li>
+<li>Fixed option to delete comments, which previously was only available to
+    users in the Root group (e.g. Admin). Now users that have story.edit
+    permissions for the actual story can delete comments.</li>
+<li>Deleting a group may have left orphaned entries in the group_assignments
+    table (this has been fixed now). When upgrading to 1.3.9, the install
+    script will remove any orphaned entries from the database.</li>
 </ul>
 
 <h2><a name="changes138-1">Geeklog 1.3.8-1</a></h2>
