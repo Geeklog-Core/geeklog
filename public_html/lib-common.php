@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.316 2004/04/28 03:21:39 vinny Exp $
+// $Id: lib-common.php,v 1.317 2004/04/30 23:36:12 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1905,7 +1905,7 @@ function COM_showTopics( $topic='' )
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
            $page, $newstories;
 
-    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']}";
+    $sql = "SELECT tid, topic FROM {$_TABLES['topics']}";
     if( $_USER['uid'] > 1 ) {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
@@ -1931,7 +1931,6 @@ function COM_showTopics( $topic='' )
         $sql .= " ORDER BY sortnum";
     }
     $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
 
     $retval = '';
     $sections = new Template( $_CONF['path_layout'] );
@@ -1967,24 +1966,44 @@ function COM_showTopics( $topic='' )
         }
     }
 
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $A = DB_fetchArray( $result );
+    if( $_CONF['showstorycount'] ) {
+        $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['stories']} "
+             . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
+             . COM_getPermSQL( 'AND' )
+             . ' GROUP BY tid';
+        $rcount = DB_query($sql);
+        while ( $C = DB_fetchArray($rcount) ) {
+            $storycount[$C['tid']] = $C['count'];
+        }
+    }
 
+    if( $_CONF['showsubmissioncount'] ) {
+        $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['storysubmission']} "
+             . ' GROUP BY tid';
+        $rcount = DB_query($sql);
+        while ( $C = DB_fetchArray($rcount) ) {
+            $submissioncount[$C['tid']] = $C['count'];
+        }
+    }
+
+    while ( $A = DB_fetchArray( $result ) )
+    {
         $sections->set_var( 'option_url', $_CONF['site_url']
                             . '/index.php?topic=' . $A['tid'] );
         $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
 
         $countstring = '';
-        if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+        if( $_CONF['showstorycount'] || $_CONF['showsubmissioncount'] )
         {
             $countstring .= '(';
 
             if( $_CONF['showstorycount'] )
             {
-                $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
-                $T = DB_fetchArray( $rcount );
-                $countstring .= $T['count'];
+                if ( empty( $storycount[$A['tid']] ) ) {
+                    $countstring .= 0;
+                } else {
+                    $countstring .= $storycount[$A['tid']];
+                }
             }
 
             if( $_CONF['showsubmissioncount'] )
@@ -1993,8 +2012,11 @@ function COM_showTopics( $topic='' )
                 {
                     $countstring .= '/';
                 }
-                $countstring .= DB_count( $_TABLES['storysubmission'],
-                                          'tid', $A['tid'] );
+                if ( empty( $submissioncount[$A['tid']] ) ) {
+                    $countstring .= 0;
+                } else {
+                    $countstring .= $submissioncount[$A['tid']];
+                }
             }
 
             $countstring .= ')';

@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Reduced DB queries in COM_showTopics to improve performance. [Vinny]
 - Cached enabled plugins to reduce db queries and improve performance. [Vinny]
 - Fixed SEC_inGroup not using $_GROUPS cache in several instances. [Vinny]
 - mysql.class.php now only runs mysql_connect once per page load.  [Vinny]
