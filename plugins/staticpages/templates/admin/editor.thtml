@@ -2,7 +2,10 @@
                                 <form action="{site_admin_url}/plugins/staticpages/index.php" method="post">
                                     <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                         <tr>
-                                            <td colspan="2">
+                                            <td>
+                                                <img src="{site_url}/staticpages/images/staticpages.gif">
+                                            </td>
+                                            <td>
                                                 <input type="submit" value="{lang_save}" name="mode"> 
                                                 {delete_option}
                                                 <input type="hidden" name="sp_id" value="{sp_id}">
