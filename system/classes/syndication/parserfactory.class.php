@@ -5,6 +5,8 @@
   /****************************************************************************/
   /* Copyright (c) 2004 Michael Jervis (mike@fuckingbrit.com)                 */
   /*                                                                          */
+  /* This software is licensed under the terms of the ZLIB License:           */
+  /*                                                                          */
   /* This software is provided 'as-is', without any express or implied        */
   /* warranty. In no event will the authors be held liable for any damages    */
   /* arising from the use of this software.                                   */
@@ -83,7 +85,7 @@
     {
       if( $fp = $this->_getFeed( $url ) )
       {
-        return $this->_findFeed( $fp );
+        return $this->_findFeed( $fp, $targetformat );
       } else {
         return false;
       }
