@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.3 2003/03/19 15:41:08 dhaun Exp $
+// $Id: check.php,v 1.4 2003/06/17 09:53:18 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -150,6 +150,7 @@ if ($failed > 0) {
 if ($failed > 0) {
     echo '<h2>Test failed!</h2>';
     echo '<p><font color="#ff0000"><strong>Warning!</strong> Your Geeklog site is not set up properly. Please fix the errors listed above!</font></p>';
+    echo '<p><strong>Note:</strong> If the above instructions tell you to chmod files and/or directories to 775 but they already are at 775, try <b>chmod 777</b> instead.</p>';
 } else {
     echo '<h2>Test passed</h2>';
     echo '<p><strong>Congratulations!</strong> Your Geeklog site is set up properly and ready to go.</p>';
