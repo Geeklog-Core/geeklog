@@ -197,25 +197,31 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 			eregi("<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>",$fulltext,$reg);
 
 			#this gets what is between <a href=...> and </a>
-			preg_match("/<a href=\"([^\]]+)\">([^\]]+)<\/a>/",stripslashes($reg[0]),$url_text);
+			preg_match("/<a href=([^\]]+)>([^\]]+)<\/a>/",stripslashes($reg[0]),$url_text);
 			if (empty($url_text[1])) {
-				preg_match("/<A HREF=\"([^\]]+)\">([^\]]+)<\/A>/",stripslashes($reg[0]),$url_text);
+				preg_match("/<A HREF=([^\]]+)>([^\]]+)<\/A>/",stripslashes($reg[0]),$url_text);
 			}
+			
+                        $orig = $reg[0]; 
+
 			#if links is too long, shorten it and add ... at the end
-			if (strlen($url_text[1]) > 26) {
-				$new_text = substr($url_text[1],0,26) . '...';
+			if (strlen($url_text[2]) > 26) {
+				$new_text = substr($url_text[2],0,26) . '...';
 				#note, this assumes there is no space between > and url_text[1]
-				$reg[0] = str_replace(">".$url_text[1],">".$new_text,$reg[0]);
+				$reg[0] = str_replace(">".$url_text[2],">".$new_text,$reg[0]);
 			}	
 			if(stristr($fulltext,"<img ")) {
 				#this is a linked images tag, ignore
 				$reg[0] = "";
 			}
 			if ($reg[0] != "") {
-				$fulltext = eregi_replace($reg[0],"",$fulltext);
+				$fulltext = str_replace($orig,"",$fulltext);
 			}
 			if ($check != $reg[0]) {
-				$related .= "<li>" . stripslashes($reg[0]);
+				#Only write if we are dealing with something other than an image 
+                                if(!(stristr($reg[0],"<img "))) { 
+					$related .= "<li>" . stripslashes($reg[0]);
+				}
 			}
 		}
 		$author = getitem("users","username","uid = $uid");
