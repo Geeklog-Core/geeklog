@@ -5,14 +5,14 @@
 <rss version="0.91">
 
 <channel>
-<title>Livestock World</title>
- <link>http://tbibbs</link>
-<description>Online Livestock Community</description>
-<language>en-us</language>
+<title>Geeklog Site</title>
+ <link>http://cvs.localhost</link>
+<description>Another Nifty GeekLog Site</description>
+<language>en-gb</language>
 
 <item>
 <title>Welcome to Geeklog!</title>
-<link>http://tbibbs/article.php?story=20010719095630103</link>
+<link>http://cvs.localhost/article.php?story=20010719095630103</link>
 </item>
 
 </channel>

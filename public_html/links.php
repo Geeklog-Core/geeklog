@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # links.php
 # This is the link resource script!
@@ -22,36 +21,42 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("common.php");
-include("custom_code.php");
-
+include('lib-common.php');
 ###############################################################################
 # MAIN
-
-site_header("menu");
-startblock($LANG06[1]);
-print "[ <a href={$CONF["site_url"]}/submit.php?type=link>{$LANG06[3]}</a> ]";
+$display .= site_header()
+	.startblock($LANG06[1])
+	.'[ <a href="'.$CONF['site_url'].'/submit.php?type=link">'.$LANG06[3].'</a> ]';
+	
 $result = dbquery("SELECT * from links ORDER BY category asc,title");
 $nrows = mysql_num_rows($result);
 if ($nrows==0) {
-	print "{$LANG06[2]}<br>";
+	$display .= $LANG06[2].'<br>';
 } else {
 	for($i=0;$i<$nrows;$i++) {
 		$A	= mysql_fetch_array($result);
-		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
-			if ($A["category"]!=$currentcat) {
-				printf("<h3>%s</h3>\n",$A["category"]);
+		if (hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+			if ($A['category']!=$currentcat) {
+				$display .= sprintf("<h3>%s</h3>\n<ul>",$A['category']);
 			}
+			$display .= '<li><b><a target="_new" '
+				.sprintf("href=\"{$CONF['site_url']}/portal.php?url=%s&what=link&item=%s\">%s</a></b> (%s)"
+				,urlencode($A['url']),$A['lid'],$A['title'],$A['hits'])
+				.'<br>'.stripslashes($A['description']).'</li>'.LB;
+				
+			$currentcat	= $A['category'];
+/*
 			print "<b><a target=_new ";
 			printf("href={$CONF["site_url"]}/portal.php?url=%s&what=link&item=%s>%s</a></b> (%s)",
 			urlencode($A["url"]),$A["lid"],$A["title"],$A["hits"]);
 			print "<br>" . stripslashes($A["description"]) . "<br><br>\n";
-			$currentcat	= $A["category"];
+*/
 		}
 	} 
+	$display .= '</ul>'.LB;
 }
-endblock();
-site_footer();
-
+$display .= '<br>'
+	.endblock()
+	.site_footer();
+echo $display;
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # block.php
 # This is the admin blocks interface!
@@ -22,18 +21,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("../common.php");
-include("../custom_code.php");
+include("../lib-common.php");
 include("auth.inc.php");
 
 if (!hasrights('block.edit')) {
-	site_header("menu");
-	startblock($MESSAGE[30]);
-       	print $MESSAGE[31];
-	endblock();
-	site_footer();
-	exit; 
+	$display .= site_header()
+		.startblock($MESSAGE[30])
+		.$MESSAGE[31]
+		.endblock()
+		.site_footer();
+	echo $display;
+	exit;
 }
 
 ###############################################################################
@@ -46,183 +44,293 @@ if (!hasrights('block.edit')) {
 function editdefaultblock($A,$access) {
 	global $USER,$LANG21,$CONF,$LANG_ACCESS;
 
-	startblock($LANG21[3]);
-        print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
-        print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
-        print "<tr><td colspan=2><input type=submit value=save name=mode> ";
-        print "<input type=submit value=cancel name=mode> ";	
-	print "<input type=hidden name=bid value={$A["bid"]}></td></tr>";
-	print "<tr><td align=right>{$LANG21[5]}</td><td>{$A["title"]}</td></tr>";
-	print "<input type=hidden name=title value=\"{$A["title"]}\"></td></tr>";
-	print "<tr><td align=right>{$LANG21[6]}</td><td>all</td></tr>";
-	print "<input type=hidden name=tid value=all></td></tr>";
-	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
-        print "<option value=1";
-	if ($A["onleft"] == 1) {
-		print " SELECTED";
+	$retval .= startblock($LANG21[3])
+		.'<form action="'.$CONF['site_url'].'/admin/block.php" method="post">'
+		.'<table border="0" cellspacing="0" cellpadding="3" width="100%">'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><input type="submit" value="save" name="mode"> '
+		.'<input type="submit" value="cancel" name="mode"> '
+		.'<input type="hidden" name="bid" value="'.$A['bid'].'></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[5].'</td>'.LB
+		.'<td>'.$A['title'].'</td>'.LB
+		.'</tr>'.LB
+		.'<input type="hidden" name="title" value="'.$A['title'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[6].'</td>'
+		.'<td>all<input type="hidden" name="tid" value="all"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[39].':</td>'.LB
+		.'<td><select name="onleft">'.LN
+		.'<option value="1"';
+	if ($A['onleft'] == 1) {
+		$retval .= ' selected="selected"';
 	}
-	print ">{$LANG21[40]}</option>";
-        print "<option value=0";
-	if ($A["onleft"] == 0) {
-		print " SELECTED";
+	$retval .= '>'.$LANG21[40].'</option>'.LB
+		.'<option value="0"';
+	if ($A['onleft'] == 0) {
+		$retval .= ' selected="selected"';
 	}
-	print ">{$LANG21[41]}</option>";
-        print "</SELECT>";
-	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";	
-	print "<tr><td align=right>{$LANG21[10]}:</td><td>gldefault</td></tr>";
-	print "<input type=hidden name=type value=gldefault>";
+	$retval .= '>'.$LANG21[41].'</option>'
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[9].':</td>'.LB
+		.'<td><input type="text" size="3" name="blockorder" value="'.$A['blockorder'].'"> 0 - 255</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[10].':</td>'.LB
+		.'<td>gldefault<input type="hidden" name="type" value="gldefault"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><hr></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG_ACCESS['accessrights'].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG_ACCESS['owner'].':</td>'.LB
+		.'<td>'.getitem('users','username',"uid = '{$A['owner_id']}'")
+		.'<input type="hidden" name="owner_id" value="'.$A['owner_id'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG_ACCESS['group'].':</td>'.LB
+		.'<td>';
+		
+	$usergroups = getusergroups();
+	if ($access == 3) {
+		$retval .= '<select name="group_id">';
+		for ($i=0;$i<count($usergroups);$i++) {
+			$retval .= '<option value="'.$usergroups[key($usergroups)];
+			if ($A['group_id'] == $usergroups[key($usergroups)]) {
+				$retval .= ' selected="selected"';
+			}
+			$retval .= '>'.key($usergroups).'</option>'.LB;
+			next($usergroups);
+		}
+		$retval .= '</select>'.LB;
+	} else {
+		// They can't set the group then
+		
+		$retval .= getitem('groups','grp_name',"grp_id = '{$A['group_id']}'")
+			.'<input type="hidden" name="group_id" value="'.$A['group_id'].'">';
+	}
 
-	print "<tr><td colspan=2><hr></td></tr>";
-        print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
-                print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
-        print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
-        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
-        $usergroups = getusergroups();
-        if ($access == 3) {
-                print "<SELECT name=group_id>";
-                for ($i=0;$i<count($usergroups);$i++) {
-                        print "<option value=" . $usergroups[key($usergroups)];
-                        if ($A["group_id"] == $usergroups[key($usergroups)]) {
-                                print " SELECTED";
-                        }
-                        print ">" . key($usergroups) . "</option>";
-                        next($usergroups);
-                }
-                print "</SELECT>";
-        } else {
-                #they can't set the group then
-                print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
-                print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
-        }
-        print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
-        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
-        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-        print $html;
-        print "</td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}<td></tr>";
+	$retval .= '</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG_ACCESS['permissions'].':</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.$LANG_ACCESS['permissionskey'].'</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.getpermissionshtml($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']).'</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.$LANG_ACCESS['permmsg'].'<td>'.LB
+		.'</tr>'.LB
+		.'</table></form>'
+		.endblock();
 	
-	print "</form></table>";
-        endblock();
+	return $retval;
 }
 
 ###############################################################################
 # Displays the edit block form
 
-function editblock($bid="") {
+function editblock($bid='') {
 	global $USER,$LANG21,$CONF,$LANG_ACCESS;
-	if (!empty($bid)) {
-		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks where bid ='$bid'");
-		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-                if ($access == 2 || $access == 0) {
-                        startblock($LANG21[44]);
-                        print $LANG21[45];
-                        endblock();
-                        return;
-                } 
 
-		if ($A["type"] == "gldefault") {
-			editdefaultblock($A,$access);
-			return;
+	if (!empty($bid)) {
+		$result = dbquery("SELECT * FROM {$CONF['db_prefix']}blocks where bid ='$bid'");
+		$A = mysql_fetch_array($result);
+		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+		if ($access == 2 || $access == 0) {
+			$retval .= startblock($LANG21[44])
+				.$LANG21[45]
+				.endblock();
+
+			return $retval;
+		} 
+		if ($A['type'] == 'gldefault') {
+			$retval .= editdefaultblock($A,$access);
+			return $retval;
 		}
 	} else {
-		$A["bid"] = 0;
-		$A["blockorder"] = 0;
-		$A["owner_id"] = $USER["uid"];
-		$A["perm_owner"] = 3;
-                $A["perm_group"] = 3;
-                $A["perm_members"] = 2;
-                $A["perm_anon"] = 2;
+		$A['bid'] = 0;
+		$A['blockorder'] = 0;
+		$A['owner_id'] = $USER['uid'];
+		$A['perm_owner'] = 3;
+		$A['perm_group'] = 3;
+		$A['perm_members'] = 2;
+		$A['perm_anon'] = 2;
 		$access = 3;
 	}
-	startblock($LANG21[3]);
-	print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
-	print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
-	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
-       	print "<input type=submit value=cancel name=mode> ";
-	if ($A["type"] != "layout") {
-        	if (!empty($bid) && hasrights('block.edit'))
-                	print "<input type=submit value=delete name=mode>";
-	}
-	print "<input type=hidden name=bid value={$A["bid"]}></td></tr>";
-	print "<tr><td align=right>{$LANG21[5]}:</td><td><input type=text size=48 name=title value=\"{$A["title"]}\"></td></tr>";
-	print "<tr><td align=right>{$LANG21[6]}:</td><td><select name=tid><option value=all>{$LANG21[7]}</option>";
-	print "<option value=homeonly";
-	if ($A["tid"] == "homeonly") {
-		print " SELECTED";
-	}
-	print ">$LANG21[43]</option>";
-	optionlist("topics","tid,topic",$A["tid"]);
-	print "</select></td></tr>";
-	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
-	print "<option value=1";
-	if ($A["onleft"] == 1) {
-		print " SELECTED";
-	}
-	print ">{$LANG21[40]}</option>";
-	print "<option value=0";
-	if ($A["onleft"] == 0) {
-		print " SELECTED";
-	}
-	print ">{$LANG21[41]}</option>";
-	print "</SELECT>";	
-	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";
-	print "<tr><td align=right>{$LANG21[10]}:</td><td><select name=type>";
-	print "<option value=portal";
-		if ($A["type"] == "portal") print " selected";
-	print ">{$LANG21[11]}</option>";
-	print "<option value=normal";
-		if ($A["type"] == "normal") print " selected";
-	print ">{$LANG21[12]}</option>";
-	print "<option value=layout";
-		if ($A["type"] == "layout") print " selected";
-	print ">{$LANG21[26]}</option>";
-	print "<option value=phpblock";
-                if ($A["type"] == "phpblock") print " selected";
-        print ">{$LANG21[27]}</option>";
-	print "</select></td></tr>";
 
-	print "<tr><td colspan=2><hr></td></tr>";
-	print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
-	        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
-        print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
-        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
-        $usergroups = getusergroups();
+	$retval .= startblock($LANG21[3])
+		.'<form action="'.$CONF['site_url'].'/admin/block.php" method="post">'
+		.'<table border="0" cellspacing="0" cellpadding="3" width="100%">'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><input type="submit" value=save name=mode> '
+		.'<input type="submit" value="cancel" name="mode"> ';
+		
+	if ($A['type'] != 'layout') {
+		if (!empty($bid) && hasrights('block.edit'))
+			$retval .= '<input type="submit" value="delete" name="mode">';
+	}
+	
+	$retval .= '<input type="hidden" name="bid" value="'.$A['bid'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[5].':</td>'.LB
+		.'<td><input type="text" size="48" name="title" value="'.$A['title'].'\"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[6].':</td>'.LB
+		.'<td><select name="tid">'.LB
+		.'<option value="all">'.$LANG21[7].'</option>'.LB
+		.'<option value="homeonly"';
+	if ($A['tid'] == 'homeonly') {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[43].'</option>'.LB
+		.optionlist('topics','tid,topic',$A['tid'])
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[39].':</td>'.LB
+		.'<td><select name="onleft">'.LB
+		.'<option value="1"';
+	if ($A['onleft'] == 1) {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[40].'</option>'.LB
+		.'<option value="0"';
+	if ($A['onleft'] == 0) {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[41].'</option>'.LB
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[9].':</td>'.LB
+		.'<td><input type="text" size="3" name="blockorder" value="'.$A['blockorder'].'"> 0 - 255</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[10].':</td>'.LB
+		.'<td><select name="type">'.LB
+		.'<option value="portal"';
+	if ($A['type'] == 'portal') {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[11].'</option>'.LB
+		.'<option value="normal"';
+	if ($A['type'] == 'normal') {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[12].'</option>'.LB
+		.'<option value="layout"';
+	if ($A['type'] == 'layout') {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[26].'</option>'.LB
+		.'<option value="phpblock"';
+	if ($A['type'] == 'phpblock') {
+		$retval .= ' selected="selected"';
+	}
+	$retval .= '>'.$LANG21[27].'</option>'.LB
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><hr></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG_ACCESS['accessrights'].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG_ACCESS['owner'].':</td>'.LB
+		.'<td>'.getitem('users','username',"uid = '{$A['owner_id']}'")
+		.'<input type="hidden" name="owner_id" value="'.$A['owner_id'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG_ACCESS['group'].':</td>'.LD
+		.'<td>';
+		
+	$usergroups = getusergroups();
+
 	if ($access == 3) {
-		print "<SELECT name=group_id>";
-        	for ($i=0;$i<count($usergroups);$i++) {
-                	print "<option value=" . $usergroups[key($usergroups)];
-                	if ($A["group_id"] == $usergroups[key($usergroups)]) {
-                        	print " SELECTED";
-                	}
-                	print ">" . key($usergroups) . "</option>";
-                	next($usergroups);
-        	}
-        	print "</SELECT>";
+		$retval .= '<select name="group_id">';
+		for ($i=0;$i<count($usergroups);$i++) {
+			$retval .= '<option value="'.$usergroups[key($usergroups)].'"';
+			if ($A['group_id'] == $usergroups[key($usergroups)]) {
+				$retval .= ' selected="selected"';
+			}
+			$retval .= '>'.key($usergroups).'</option>';
+			next($usergroups);
+		}
+		$retval .= '</select>'.LB;
 	} else {
-		#they can't set the group then
-                print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
-		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
+		// They can't set the group then
+		
+		$retval .= getitem('groups','grp_name',"grp_id = '{$A['group_id']}'")
+			.'<input type="hidden" name="group_id" value="'.$A['group_id'].'">';
 	}
-	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
-        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
-        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-        print $html;
-        print "</td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}<td></tr>";
-	print "<tr><td colspan=2><hr></td></tr>";
-
-	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
-        print "<tr><td align=right>{$LANG21[29]}:</td><td><input type=text size=50 maxlength=50 name=phpblockfn value=\"{$A["phpblockfn"]}\"></td></tr><tr><td colspan=2>{$LANG21[30]}</td></tr>";
-	print "<tr><td colspan=2><hr></td></tr>";
-	print "<tr><td colspan=2><b>{$LANG21[13]}</b></td></tr>";
-	print "<tr><td align=right>{$LANG21[14]}:</td><td><input type=text size=50 maxlength=96 name=rdfurl value=\"{$A["rdfurl"]}\"></td></tr>";
-	print "<tr><td align=right>{$LANG21[15]}:</td><td><input type=text size=19 name=rdfupdated value=\"{$A["rdfupdated"]}\"></td></tr>";
-	print "<tr><td colspan=2><hr></td></tr>";
-	print "<tr><td colspan=2><b>{$LANG21[16]}</b></td></tr>";
-	print "<tr><td align=right valign=top>{$LANG21[17]}:</td><td><textarea name=content cols=50 rows=8 wrap=virtual>{$A["content"]}</textarea></td></tr>";
-	print "</form></table>";
-	endblock();
+	
+	$retval .= '</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG_ACCESS['permissions'].':</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.$LANG_ACCESS['permissionskey'].'</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.getpermissionshtml($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']).'</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.$LANG_ACCESS['permmsg'].'<td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><hr></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG21[28].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[29].':</td>'.LB
+		.'<td><input type="text" size="50" maxlength="50" name="phpblockfn" value="'.$A['phpblockfn'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2">'.$LANG21[30].'</td>'.LB
+		.'</tr>'.LB
+		.'<tr><td colspan="2"><hr></td></tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG21[13].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[14].':</td>'.LB
+		.'<td><input type="text" size="50" maxlength="96" name="rdfurl" value="'.$A['rdfurl'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right">'.$LANG21[15].':</td>'.LB
+		.'<td><input type="text" size="19" name="rdfupdated" value="'.$A['rdfupdated'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr><td colspan="2"><hr></td></tr>'.LB
+		.'<tr>'.LB
+		.'<td colspan="2"><b>'.$LANG21[16].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td align="right" valign="top">'.$LANG21[17].':</td>'.LB
+		.'<td><textarea name="content" cols="50" rows="8" wrap="virtual">'.$A['content'].'</textarea></td>'.LB
+		.'</tr>'.LB
+		.'</table></form>'
+		.endblock();
+		
+	return $retval;
 }
 
 ###############################################################################
@@ -233,68 +341,71 @@ function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdat
 
 	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "gldefault" && (strlen($blockorder)>0)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
 		if ($type == "portal") {
-                        $content = "";
-                        $phpblockfn = "";
-                }
+			$content = "";
+			$phpblockfn = "";
+		}
 		if ($type == "gldefault") {
 			$content = "";
 			$rdfurl = "";
 			$rdfupdated = "";
 			$phpblockfn = "";
 		}
-                if ($type == "phpblock") {
-                        if (!(stristr($phpblockfn,'phpblock_'))) {
-                                #this is a BAD function name, must have phpblock_ prefix
-                                include('../layout/header.php');
-                                startblock($LANG21[37]);
-                                print $LANG21[38];
-                                endblock();
-                                editblock($bid);
-                                include('../layout/footer.php');
-                                return;
-                        }
-                        $content = "";
-                        $rdfurl = "";
-                        $rdfupdated = "";
-                }
-                if ($type == "normal") {
-                        $rdfurl = "";
-                        $rdfupdated = "";
-                        $phpblockfn = "";
-                }
-                if ($type == "layout") {
-                        $rdfurl = "";
-                        $rdfupdated = "";
-                        $phpblockfn = "";
-                }
-
-		#Convert array values to numeric permission values
-                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
+		if ($type == "phpblock") {
+			if (!(stristr($phpblockfn,'phpblock_'))) {
+				// This is a BAD function name, must have phpblock_ prefix
+				$retval .= site_header()
+					.startblock($LANG21[37])
+					.$LANG21[38]
+					.endblock()
+					.editblock($bid)
+					.site_footer();
+				return $retval;
+			}
+			$content = '';
+			$rdfurl = '';
+			$rdfupdated = '';
+		}
+		if ($type == 'normal') {
+			$rdfurl = '';
+			$rdfupdated = '';
+			$phpblockfn = '';
+		}
+		if ($type == 'layout') {
+			$rdfurl = '';
+			$rdfupdated = '';
+			$phpblockfn = '';
+		}
+		// Convert array values to numeric permission values
+		
+		list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-		dbsave("blocks","bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
+		dbsave('blocks','bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
+
 	} else {
-		site_header("menu");
-                startblock($LANG21[32]);
-                if ($type == "portal") {
-                        #portal block is missing fields
-                        print $LANG21[33];
-                } else if ($type == "phpblock") {
-                        #php block is missing field
-                        print $LANG21[34];
-                } else if ($type == "normal") {
-                        #normal block is missing field
-                        print $LANG21[35];
-                } else if ($type == "gldefault") {
-			#default geeklog field missing 
-			print $LANG21[42];
+		$retval .= site_header()
+			.startblock($LANG21[32]);
+		if ($type == 'portal') {
+			// Portal block is missing fields
+			$retval .= $LANG21[33];
+		} else if ($type == 'phpblock') {
+			// PHP Block is missing field
+			$retval .= $LANG21[34];
+		} else if ($type == 'normal') {
+			// Normal block is missing field
+			$retval .= $LANG21[35];
+		} else if ($type == 'gldefault') {
+			// Default geeklog field missing 
+			$retval .= $LANG21[42];
 		} else {
-                        #layout block missing content
-                        print $LANG21[36];
-                }
-                endblock();
-                editblock($bid);
-                site_footer();
+			// Layout block missing content
+			$retval .= $LANG21[36];
+		}
+		$retval .= endblock()
+			.editblock($bid)
+			.site_footer();
 	}
+	
+	return $retval;
 }
 
 ###############################################################################
@@ -302,65 +413,85 @@ function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdat
 
 function listblocks() {
 	global $LANG21,$CONF,$LANG_ACCESS;
-	startblock($LANG21[19]);
-	adminedit("block",$LANG21[25]);
-	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG_ACCESS[access]}</th><th>{$LANG21[22]}</th><th>{$LANG21[39]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
-	#$result = dbquery("SELECT bid,title,type,blockorder,tid,onleft FROM {$CONF["db_prefix"]}blocks ORDER BY type,title asc");
-	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks ORDER BY onleft DESC,blockorder");
+
+	$retval .= startblock($LANG21[19])
+		.adminedit('block',$LANG21[25])
+		.'<table border="0" cellspacing="0" cellpadding="2" width="100%">'.LB
+		.'<tr align="center">'.LB
+		.'<td align="left"><b>'.$LANG21[20].'</b></td>'.LB
+		.'<td><b>'.$LANG_ACCESS['access'].'</b></td>'.LB
+		.'<td><b>'.$LANG21[22].'</b></td>'.LB
+		.'<td><b>'.$LANG21[39].'</b></td>'.LB
+		.'<td><b>'.$LANG21[23].'</b></td>'.LB
+		.'<td><b>'.$LANG21[24].'</b></td>'.LB
+		.'</tr>'.LB;
+		
+	#$result = dbquery("SELECT bid,title,type,blockorder,tid,onleft FROM {$CONF['db_prefix']}blocks ORDER BY type,title asc");
+	$result = dbquery("SELECT * FROM {$CONF['db_prefix']}blocks ORDER BY onleft DESC,blockorder");
 	$nrows = mysql_num_rows($result);
+
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-                if ($access > 0) {
-                	if ($access == 3) {
-                        	$access = $LANG_ACCESS[edit];
-                        } else {
-                                $access = $LANG_ACCESS[readonly];
-                        }
-                } else {
-                	$access = $LANG_ACCESS[none];
-                }
-		if ($A["onleft"] == 1) {
+		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+		if ($access > 0) {
+			if ($access == 3) {
+				$access = $LANG_ACCESS[edit];
+			} else {
+				$access = $LANG_ACCESS[readonly];
+			}
+		} else {
+			$access = $LANG_ACCESS[none];
+		}
+		if ($A['onleft'] == 1) {
 			$side = $LANG21[40];
 		} else {
 			$side = $LANG21[41];
 		}
-		if ($A["type"] == "layout") {
-			$side = "-";
-			$A["blockorder"] = "-";
-			$A[4] = "-";
-			$A[5] = "-";
+		if ($A['type'] == 'layout') {
+			$side = '-';
+			$A['blockorder'] = '-';
+			$A[4] = '-';
+			$A[5] = '-';
 		}
-		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>$access</td><td>{$A["type"]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A["tid"]}</td></tr>";
+
+		$retval .= '<tr align="center">'.LB
+			.'<td align="left"><a href="'.$CONF['site_url'].'/admin/block.php?mode=edit&bid='.$A[0].'">'.$A[1].'</a></td>'.LB
+			.'<td>'.$access.'</td>'.LB
+			.'<td>'.$A['type'].'</td>'.LB
+			.'<td>'.$side.'</td>'.LB
+			.'<td>'.$A['blockorder'].'</td>'.LB
+			.'<td>'.$A['tid'].'</td>'.LB
+			.'</tr>'.LB;
 	}
-	print "</table>";
-	endblock();
+	$retval .= '</table>'
+		.endblock();
+		
+	return $retval;
 }
 
 ###############################################################################
 # MAIN
 
 switch ($mode) {
-	case "delete":
-		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
+	case 'delete':
+		$display .= dbdelete('blocks','bid',$bid,'/admin/block.php?msg=12');
 		break;
-	case "save":
-		saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+	case 'save':
+		$display .= saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
-	case "edit":
-		site_header("menu");
-		editblock($bid);
-		site_footer();
+	case 'edit':
+		$display .= site_header()
+			.editblock($bid)
+			.site_footer();
 		break;
-	case "cancel":
+	case 'cancel':
 	default:
-		site_header("menu");
-		showmessage($msg);
-		listblocks();
-		site_footer();
+		$display .= site_header()
+			.showmessage($msg)
+			.listblocks()
+			.site_footer();
 		break;
 }
 
+echo $display;
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # /admin/index.php
 # This is the admin index page that does nothing more that login you in.
@@ -22,21 +21,17 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("../common.php");
+include("../lib-common.php");
 include("../custom_code.php");
 include("auth.inc.php");
-
 ###############################################################################
 # MAIN
-
 if ($mode=="logout") {
 	$tmp = $HTTP_COOKIE_VARS["gl_loginname"] . " logged out.";
 	accesslog($tmp);
 	setcookie("gl_loginname","",0,"/","",0);
 	setcookie("gl_password","",0,"/","",0);
-	refresh("{$CONF["site_url"]}/index.php");
+	refresh("{$CONF['site_url']}/index.php");
 }
-refresh("{$CONF["site_url"]}/admin/moderation.php");
-
+refresh("{$CONF['site_url']}/admin/moderation.php");
 ?>

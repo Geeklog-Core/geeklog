@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # portal.php
 # This is the portal page that counts linksx
@@ -22,18 +21,14 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("common.php");
-include("custom_code.php");
-
+include('lib-common.php');
 ###############################################################################
 # MAIN
-
 if (!empty($url) && !empty($item)) {
 	dbchange("links","hits","hits + 1","lid",$item);
-	refresh($url);
+	$display .= refresh($url);
 } else {
-	refresh($CONF["site_url"]);
+	$display .= refresh($CONF['site_url']);
 }
-
+echo $display;
 ?>

@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # article.php
 # This is the article page that brings it to life!
@@ -23,8 +22,7 @@
 #
 ###############################################################################
 
-include("common.php");
-include("custom_code.php");
+include('lib-common.php');
 
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
@@ -35,101 +33,105 @@ include("custom_code.php");
 
 ###############################################################################
 # MAIN
-
 # First see if we have a plugin that may be trying to use the Geeklog comment engine
+
 if (DoPluginCommentSupportCheck($type)) {
-	# Yes, this is a plugin wanting to be commented on...do it
-	refresh("{$CONF["site_url"]}/comment.php?sid=$story&pid=$pid&type=$type");
+
+	// Yes, this is a plugin wanting to be commented on...do it
+
+	$display .= refresh("{$CONF['site_url']}/comment.php?sid=$story&pid=$pid&type=$type");
 }
 
-$result = dbquery("SELECT count(*) as count FROM {$CONF["db_prefix"]}stories WHERE sid = '$story'");
+$result = dbquery("SELECT count(*) as count FROM {$CONF['db_prefix']}stories WHERE sid = '$story'");
 $A = mysql_fetch_array($result);
-if ($A["count"] > 0) {
+
+if ($A['count'] > 0) {
 	if ($reply == $LANG01[25]) {
-		refresh("{$CONF["site_url"]}/comment.php?sid=$story&pid=$pid&type=$type");
+		refresh("{$CONF['site_url']}/comment.php?sid=$story&pid=$pid&type=$type");
 	} else if ($mode == "print") {
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 0) {	
-			site_header('menu');
-			startblock($LANG_ACCESS[accessdenied]);
-			print $LANG_ACCESS[storydenialmsg];
-			endblock();
-			site_footer();
+		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+		if (hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0) {	
+			$display .= site_header('menu')
+				.startblock($LANG_ACCESS[accessdenied])
+				.$LANG_ACCESS[storydenialmsg]
+				.endblock()
+				.site_footer();
 			return;
+			
+			// PLEASE NOTE
+			//
+			// THIS CODE WILL NEED TO BE ADDRESSED!  
+			// CANNOT RETURN VALUE!  NOWHERE TO RETURN TO!
+			
 		}
-		$CONF["pagetitle"] = stripslashes($A["title"]);
-		print "<html><title>{$CONF["site_name"]} : {$CONF["pagetitle"]}</title><body>\n";
-		print "<H1>" . stripslashes($A["title"]) . "</H1>\n";
-		print "<H3>" . strftime($CONF["date"],$A["day"]) . "</H3>";
-		if ($CONF["contributedbyline"] == 1) {
-			print "<BR><H3>$LANG01[1] " . getitem("users","username","uid = {$A["uid"]}") . "</H3>\n";
+		
+		$display .= '<html><title>'.$CONF['site_name'].' : '.stripslashes($A['title']).'</title><body>'.LB
+			.'<h1>'.stripslashes($A['title'])."</h1>'.LB
+			.'<h3>".strftime($CONF['date'],$A['day']).LB;
+		if ($CONF['contributedbyline'] == 1) {
+			print '<br>'.$LANG01[1].' '.getitem('users','username',"uid = '{$A['uid']}'");
 		}
-		print "<p>" . nl2br(stripslashes($A["introtext"]));
-		print "\n<p>" . nl2br(stripslashes($A["bodytext"]));
-		print "<p><a href={$CONF["site_url"]}/article.php?story=$story#comments>" . dbcount("comments","sid",$A["sid"]) . " $LANG01[3]</a>\n";
-		print "<br><br><hr>\n";
-		print "<p>{$CONF["site_name"]}<br>\n";
-		print "<a href={$CONF["site_url"]}/article.php?story=$story>{$CONF["site_url"]}/article.php?story=$story</a>\n";
-		print "</body></html>";
+		$display .= '</h3>'.LB
+			.'<p>'.nl2br(stripslashes($A['introtext'])).'</p>'.LB
+			.'<p>'.nl2br(stripslashes($A['bodytext'])).'</p>'.LB
+			.'<p><a href="'.$CONF['site_url'].'/article.php?story=$story#comments">'.dbcount('comments','sid',$A['sid']).' '.$LANG01[3].'</a>'.LB
+			.'<hr>'.LB
+			.'<p>'.$CONF['site_name'].'<br>'.LB
+			.'<a href="'.$CONF['site_url'].'/article.php?story=$story">'.$CONF['site_url'].'/article.php?story=$story</a></p>'.LB
+			.'</body>'.LB
+			.'</html>';
 	} else {
-
-		#Set page title
-		$CONF["pagetitle"] = stripslashes($A["title"]);
-
-		site_header("menu");
-
+		// Set page title
+		
+		$CONF["pagetitle"] = stripslashes($A['title']);
+		$display .= site_header('menu');
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-                if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 0) {
-                        startblock($LANG_ACCESS[accessdenied]);
-                        print $LANG_ACCESS[storydenialmsg];
-                        endblock();
-			site_footer();
-                        return;
-                }
-		dbchange("stories","hits","hits + 1","sid",$story);
-		$sql	= "SELECT *,unix_timestamp(date) AS day from {$CONF["db_prefix"]}stories WHERE sid = '$story' ";
+		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+        if (hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0) {
+			$display .= startblock($LANG_ACCESS[accessdenied])
+				.$LANG_ACCESS[storydenialmsg]
+				.endblock()
+				.site_footer();
+				return;
+		}
+		dbchange('stories','hits','hits + 1','sid',$story);
+		$sql = "SELECT *,unix_timestamp(date) AS day from {$CONF['db_prefix']}stories WHERE sid = '$story' ";
 		$result = dbquery($sql);
 		$A = mysql_fetch_array($result);
-
 		# Display whats related any polls configured for this page
 		
-		echo "<table border=\"0\" align=\"right\">\n"
-			."<tr>\n"
-			."<td><img src={$CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n"
-			."<td valign=\"top\">\n";
-			
-		startblock("$LANG11[1]");
-		print nl2br($A["related"]);
-		endblock();
-		
-		startblock("$LANG11[4]");
-		echo "<li><a href={$CONF["site_url"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>\n"
-			."<li><a href={$CONF["site_url"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
-		endblock();
-
+		$display .= '<table border="0" align="right">'.LB
+			.'<tr>'.LB
+			.'<td><img src="'.$CONF['site_url'].'/images/speck.gif" height="1" width="10"></td>'.LB
+			.'<td valign="top">'
+			.startblock($LANG11[1])
+			.nl2br($A['related'])
+			.endblock()
+			.startblock($LANG11[4])
+			.'<li><a href="'.$CONF['site_url'].'/profiles.php?sid='.$story.'&what=emailstory">'.$LANG11[2].'</a></li>'.LB
+			.'<li><a href="'.$CONF['site_url'].'/article.php?story='.$story.'&mode=print">'.$LANG11[3].'</a></li>'.LB
+			.endblock();
 		if (dbcount("pollquestions","qid",$story) > 0) {
-			showpoll(80,$story);
+			$display .= showpoll(80,$story);
 		}
 		
-		echo "<br><img src={$CONF["site_url"]}/images/speck.gif width=180 height=1></td>\n"
-			."</tr>\n"
-			."</table>\n";
-
-		article($A,"n");
-
-		# Display the comments
-		if ($A["commentcode"] >= 0) {
-			print "<br>\n";
-			usercomments($story,$A["title"],"article",$order,$mode);
+		$display .= '<br><img src="'.$CONF['site_url'].'/images/speck.gif" width="180" height="1"></td>'.LB
+			.'</tr>'.LB
+			.'</table>'.LB
+			.article($A,'n');
+		# Display the comments, if there are any ..
+		
+		if ($A['commentcode'] >= 0) {
+			$display .= '<br>'.LB
+				.usercomments($story,$A['title'],'article',$order,$mode);
 		}
-		site_footer();
+		$display .= site_footer();
 	}
 } else {
-	refresh("{$CONF["site_url"]}/index.php");
+	$display .= refresh($CONF['site_url'].'/index.php');
 }
-
+echo $display;
 ?>

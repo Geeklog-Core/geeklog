@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # group.php
 # This is the admin groups interface!
@@ -22,11 +21,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("../common.php");
+include("../lib-common.php");
 include("../custom_code.php");
 include("auth.inc.php");
-
 #Make sure user has rights to this feature
 if (!hasrights('group.edit')) {
         site_header("menu");
@@ -41,39 +38,35 @@ if (!hasrights('group.edit')) {
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see
 # the data being passed in a POST operation
-
 #debug($HTTP_POST_VARS);
-
 ###############################################################################
 # Displays the topic editor
-
 function editgroup($grp_id="") {
 	global $CONF,$USER,$LANG_ACCESS;
-
 	startblock($LANG_ACCESS[groupeditor]);
 	if (!empty($grp_id)) {
-		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}groups where grp_id ='$grp_id'");
+		$result = dbquery("SELECT * FROM {$CONF['db_prefix']}groups where grp_id ='$grp_id'");
 		$A = mysql_fetch_array($result);
 	} else {
-		$A["owner_id"] = $USER["uid"];
+		$A['owner_id'] = $USER['uid'];
 		#this is the one instance where we default the group
 		#most topics should belong to the normal user group 
-		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Normal User'");
+		$A['group_id'] = getitem('groups','grp_id',"grp_name = 'Normal User'");
 		$A["grp_gl_core"] == 0;
 	}
-	print "<form action={$CONF["site_url"]}/admin/group.php method=post>";
-	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
-	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
-	print "<input type=submit value=cancel name=mode> ";
+	print "<form action={$CONF['site_url']}/admin/group.php method=post>";
+	print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
+	print "<tr><td colspan="2"><input type="submit" value=save name=mode> ";
+	print "<input type="submit" value=cancel name=mode> ";
 	if (!empty($grp_id)) {
 		if ($A["grp_gl_core"] == 0) {
 			#Groups tied to Geeklogs functionality shouldn't be deleted
-			print "<input type=submit value=delete name=mode>";
+			print "<input type="submit" value=delete name=mode>";
 			print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"1\">";
 		} else {
 			print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"0\">";
 		}
-		print "<input type=hidden name=\"grp_id\" value=\"{$A["grp_id"]}\">";
+		print "<input type="hidden" name=\"grp_id\" value=\"{$A["grp_id"]}\">";
 	} else {
 		print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"0\">";
 	}
@@ -128,7 +121,6 @@ function editgroup($grp_id="") {
                	}
 		print "<tr><td colspan=\"2\">{$LANG_ACCESS[groupmsg]}</td></tr>";
 		print "<tr><td colspan=\"2\" width=\"100%\">";
-
 		#Only Root users can give rights to Root
 		if (ingroup('Root')) {
 			if (!empty($grp_id)) {
@@ -153,7 +145,6 @@ function editgroup($grp_id="") {
 	}
 	print "<tr><td colspan=\"2\" width=\"100%\">";
 	printrights($grp_id,$A["grp_gl_core"]);
-
 	print "</tr></tr>";
 	print "</table></form>";
 	endblock();
@@ -162,39 +153,31 @@ function editgroup($grp_id="") {
 
 function printrights($grp_id="",$core=0) {
 	global $VERBOSE,$USER,$LANG_ACCESS;
-
 	# this gets a bit complicated so bare with the comments
-
 	#first query for all available features
 	$features = dbquery("SELECT * FROM features ORDER BY ft_name");
 	$nfeatures = mysql_num_rows($features);
-
 	if (!empty($grp_id)) {
 		#now get all the feature this group gets directly
  		$directfeatures = dbquery("SELECT acc_ft_id,ft_name FROM access,features WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
-
 		#now in many cases the features will be give to this user indirectly via membership
 		#to another group.  These are not editable and must, instead, be removed from that group
 		# directly
 		$indirectfeatures = getuserpermissions($grp_id);
 		$indirectfeatures = explode(",",$indirectfeatures);
-
 		#Build an array of indirect features
 		for ($i=0;$i<sizeof($indirectfeatures);$i++) {		
 			$grpftarray[current($indirectfeatures)] = 'indirect'; 
 			next($indirectfeatures);
 		}
-
 		#Build an arrray of direct features	
 		$ndirect = mysql_num_rows($directfeatures);
 		for ($i=1;$i<=$ndirect;$i++) {
 			$A = mysql_fetch_array($directfeatures);
 			$grpftarray1[$A["ft_name"]] = 'direct'; 
 		}
-
 		#Now merge the two	
 		$grpftarray = array_merge($grpftarray,$grpftarray1);
-
 		if ($VERBOSE) {
 			#this is for debugging purposes
 			for ($i=1;$i<sizeof($grpftarray);$i++) {
@@ -202,9 +185,7 @@ function printrights($grp_id="",$core=0) {
 				next($grpftarray); 
 			}
 		}
-
 	} 
-
 	#OK, now loop through and print all the features giving edit rights to only the ones that
 	#are direct features
 	$ftcount = 0;
@@ -231,35 +212,30 @@ function printrights($grp_id="",$core=0) {
 	}
 	if ($ftcount == 0) {
 		#This group doesn't have rights to any features
-
 		print "\n<tr><td colspan=\"3\">{$LANG_ACCESS["grouphasnorights"]}</td>";
 	}
 	print "</tr>\n</table>";
 }
+
 ###############################################################################
 # Saves $grp_id to the database
-
 function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) {
 	global $CONF,$LANG_ACCESS;
-
 	if (!empty($grp_name) && !empty($grp_descr)) {
 		if (empty($grp_id)) {
 			dbquery("REPLACE INTO groups (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
 		} else {
 			dbquery("REPLACE INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
 		}
-
 		if (empty($grp_id)) {
 			$grp_id = getitem('groups','grp_id',"grp_name = '$grp_name'");
 		}
-
 		#now save the features
 		dbquery("DELETE FROM access WHERE acc_grp_id = $grp_id");
 		for ($i=1;$i<=sizeof($features);$i++) {
 			dbquery("INSERT INTO access (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
 			next($features);
 		}
-
 		if (is_array($groups)) {
                         if ($VERBOSE) errorlog("deleting all group_assignments for group $grp_id/$grp_name",1);
                         dbquery("DELETE FROM group_assignments WHERE ug_grp_id = $grp_id");
@@ -285,14 +261,13 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
 
 ###############################################################################
 # Displays a list of topics
-
 function listgroups() {
 	global $CONF,$LANG_ACCESS;
         startblock($LANG_ACCESS[groupmanager]);
         adminedit("group",$LANG_ACCESS[newgroupmsg]);
-        print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
-        print "<tr><th align=left>{$LANG_ACCESS[groupname]}</th><th>{$LANG_ACCESS[description]}</th><th>{$LANG_ACCESS[coregroup]}</th></tr>";
-        $result = dbquery("SELECT * FROM {$CONF["db_prefix"]}groups");
+        print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
+        print "<tr><th align="left">{$LANG_ACCESS[groupname]}</th><th>{$LANG_ACCESS[description]}</th><th>{$LANG_ACCESS[coregroup]}</th></tr>";
+        $result = dbquery("SELECT * FROM {$CONF['db_prefix']}groups");
         $nrows = mysql_num_rows($result);
         for ($i=0;$i<$nrows;$i++) {
                 $A = mysql_fetch_array($result);
@@ -301,17 +276,15 @@ function listgroups() {
 		} else {
 			$core = $LANG_ACCESS[no];
 		}
-                print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/group.php?mode=edit&grp_id={$A["grp_id"]}>" . stripslashes($A["grp_name"]) . "</a></td>";
+                print "<tr align="center"><td align="left"><a href={$CONF['site_url']}/admin/group.php?mode=edit&grp_id={$A["grp_id"]}>" . stripslashes($A["grp_name"]) . "</a></td>";
                 print "<td>" . stripslashes($A["grp_descr"]) . "</td><td>$core</td></tr>";
         }
         print "</table></form>";
         endblock();
-
 }
 
 ###############################################################################
 # MAIN
-
 switch ($mode) {
 	case "delete":
 		dbdelete("access","acc_grp_id",$grp_id);
@@ -333,5 +306,4 @@ switch ($mode) {
 		site_footer();
 		break;
 }
-
 ?>

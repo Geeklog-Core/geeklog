@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # moderation.php
 # This is the admins story moderation and editing file.
@@ -22,9 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("../common.php");
-include("../custom_code.php");
+include("../lib-common.php");
 include("auth.inc.php");
 
 ###############################################################################
@@ -39,50 +36,60 @@ include("auth.inc.php");
 
 function commandcontrol() {
 	global $CONF,$LANG01,$LANG29;
-	startblock($LANG29[34]);
-	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
-	print "<tr align=center valign=top>";
+
+	$retval .= startblock($LANG29[34])
+		.'<table border="0" cellspacing="0" cellpadding="2" width="100%">'.LB
+		.'<tr align="center" valign="top">'.LB;
+		
 	if (hasrights('story.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/icons/story.gif border=0><br>{$LANG01[11]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/story.php"><img src="'.$CONF['site_url'].'/images/icons/story.gif" border="0"><br>'.$LANG01[11].'</a></td>'.LB;
 	}
 	if (hasrights('block.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/icons/block.gif border=0><br>{$LANG01[12]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/block.php"><img src="'.$CONF['site_url'].'/images/icons/block.gif" border="0"><br>'.$LANG01[12].'</a></td>'.LB;
 	}
 	if (hasrights('topic.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/icons/topic.gif border=0><br>{$LANG01[13]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/topic.php"><img src="'.$CONF['site_url'].'/images/icons/topic.gif" border="0"><br>'.$LANG01[13].'</a></td>'.LB;
 	}
 	if (hasrights('link.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/icons/link.gif border=0><br>{$LANG01[14]}</a></td>";
+		$retval .= '.<td><a href="'.$CONF['site_url'].'/admin/link.php"><img src="'.$CONF['site_url'].'/images/icons/link.gif" border="0"><br>'.$LANG01[14].'</a></td>'.LB;
 	}
 	if (hasrights('event.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/icons/event.gif border=0><br>{$LANG01[15]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/event.php"><img src="'.$CONF['site_url'].'/images/icons/event.gif" border="0"><br>'.$LANG01[15].'</a></td>'.LB;
 	}
 	if (hasrights('poll.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/icons/poll.gif border=0><br>{$LANG01[16]}</a></td>";
+		$retval .= '.<td><a href="'.$CONF['site_url'].'/admin/poll.php"><img src="'.$CONF['site_url'].'/images/icons/poll.gif" border="0"><br>'.$LANG01[16].'</a></td>'.LB;
 	}
 	if (hasrights('user.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/icons/user.gif border=0><br>{$LANG01[17]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/user.php"><img src="'.$CONF['site_url'].'/images/icons/user.gif" border="0"><br>'.$LANG01[17].'</a></td>'.LB;
 	}
 	if (hasrights('group.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/group.php><img src={$CONF["site_url"]}/images/icons/group.gif border=0><br>{$LANG01[96]}</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/group.php"><img src="'.$CONF['site_url'].'/images/icons/group.gif" border="0"><br>'.$LANG01[96].'</a></td>'.LB;
 	}
 	if (hasrights('plugin.edit')) {
-		print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/icons/plugins.gif border=0><br>Plug-ins</a></td>";
+		$retval .= '<td><a href="'.$CONF['site_url'].'/admin/plugins.php"><img src="'.$CONF['site_url'].'/images/icons/plugins.gif" border="0"><br>Plug-ins</a></td>'.LB;
 	}
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/index.php?mode=logout><img src={$CONF["site_url"]}/images/icons/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
-	ShowPluginModerationOptions();
-	print "</tr></table>";
-	endblock();
+
+	$retval .= '<td><a href="'.$CONF['site_url'].'/admin/index.php?mode=logout"><img src="'.$CONF['site_url'].'/images/icons/logout.gif" border="0"><br>'.$LANG01[19].'</a></td>'.LB
+		.'</tr>'.LB
+#		.'<tr align="center" valign="top">'.LB
+#		.ShowPluginModerationOptions()
+#		.'</tr>'.LB
+		.'</table>'.LB
+		.endblock();
+		
 	if (hasrights('story.moderate')) {
-		itemlist("story");
+		$retval .= itemlist('story');
 	}
 	if (hasrights('link.moderate')) {
-		itemlist("link");
+		$retval .= itemlist('link');
 	}
 	if (hasrights('event.moderate')) {
-		itemlist("event");
+		$retval .= itemlist('event');
 	}
-	ShowPluginModerationLists();
+
+	$retval .= ShowPluginModerationLists();
+	
+	return $retval;
 }
 
 ###############################################################################
@@ -90,148 +97,178 @@ function commandcontrol() {
 
 function itemlist($type) {
 	global $LANG29,$CONF;
+
 	$isplugin = false;
+
 	switch ($type) {
-		case "event":
-			startblock($LANG29[37],"cceventsubmission.html");
-			$sql = "SELECT eid AS id,title,datestart,url FROM {$CONF["db_prefix"]}eventsubmission ORDER BY datestart ASC";
-			$H =  array("Title","Start Date","URL");
+		case 'event':
+			$retval .= startblock($LANG29[37],'cceventsubmission.html');
+			$sql = "SELECT eid AS id,title,datestart,url FROM {$CONF['db_prefix']}eventsubmission ORDER BY datestart ASC";
+			$H = array("Title","Start Date","URL");
 			break;
-		case "link":
-			startblock($LANG29[36],"cclinksubmission.html");
-			$sql = "SELECT lid AS id,title,category,url FROM {$CONF["db_prefix"]}linksubmission ORDER BY title ASC";
-			$H =  array("Title","Category","URL");
+		case 'link':
+			$retval .= startblock($LANG29[36],'cclinksubmission.html');
+			$sql = "SELECT lid AS id,title,category,url FROM {$CONF['db_prefix']}linksubmission ORDER BY title ASC";
+			$H = array("Title","Category","URL");
 			break;
 		default:
 			if ((strlen($type) > 0) && ($type <> 'story')) {
 				$function = 'plugin_itemlist_' . $type;
 				if (function_exists($function)) {
-					// great, we found the plugin, now call it's itemlist method
+					// Great, we found the plugin, now call it's itemlist method
+
 					list($sql, $H) = $function();
 					$isplugin = true;
 					break;
 				} else {
-					// function not found, error out
-					errorlog("Could not find plugin function: " . $function);
-					return;
+					// Function not found, error out
+
+					$retval .= errorlog("Could not find plugin function: " . $function);
+					return $retval;
 				}
 			} else {
-				startblock($LANG29[35],"ccstorysubmission.html");
-				$sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$CONF["db_prefix"]}storysubmission ORDER BY date ASC";
+				$retval .= startblock($LANG29[35],'ccstorysubmission.html');
+				$sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$CONF['db_prefix']}storysubmission ORDER BY date ASC";
 				$H =  array("Title","Date","Topic");
 				break;
 			}
 	}
+
 	$result = dbquery($sql,1);
+
 	if (mysql_errno()) {
-                #was more than likely a plugin that doesn't need moderation
-                $nrows = -1;
-        } else {
-                $nrows = mysql_num_rows($result);
-        }
+		#was more than likely a plugin that doesn't need moderation
+		$nrows = -1;
+	} else {
+		$nrows = mysql_num_rows($result);
+	}
+
 	if ($nrows > 0) {
-		print "<form action={$CONF["site_url"]}/admin/moderation.php method=POST>\n";
-		print "<input type=hidden name=type value=$type><input type=hidden name=count value=$nrows><input type=hidden name=mode value=moderation>\n";
-		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
-		print "<tr align=left><th>&nbsp;</th><th><b>{$H[0]}</b></th><th><b>{$H[1]}</b></th><th><b>{$H[2]}</b></th><th align=center><b>{$LANG29[2]}</b></th><th align=center>";
-		print "<b>{$LANG29[1]}</b>";
-		print "</th></tr>\n";
-		print "<tr style=\"background: black;\" align=left><td colspan=8><img src={$CONF["site_url"]}/images/speck.gif width=1 height=1</td></tr>\n";
+		$retval .= '<form action="'.$CONF['site_url'].'/admin/moderation.php" method="POST">'
+		.'<input type="hidden" name="type" value="'.$type.'>'
+		.'<input type="hidden" name="count" value="'.$nrows.'">'
+		.'<input type="hidden" name="mode" value="moderation">'
+		.'<table cellpadding="0" cellspacing="3" border="0" width="100%">'.LB
+		.'<tr>'.LB
+		.'<td>&nbsp;</td>'.LB
+		.'<td><b>'.$H[0].'</b></td>'.LB
+		.'<td><b>'.$H[1].'</b></td>'.LB
+		.'<td><b>'.$H[2].'</b></td>'.LB
+		.'<td align="center"><b>'.$LANG29[2].'</b></td>'.LB
+		.'<td align="center"><b>'.$LANG29[1].'</b></td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB;
+		
 		for ($i=1; $i<=$nrows; $i++) {
 			$A = mysql_fetch_array($result);
-			if ($type == "story") {
+			if ($type == 'story') {
 #				$A[3] = getitem("topics","topic","tid = {$A[3]}");
 				$A[2] = strftime("%c",$A[2]);
 			}
 			if ($isplugin)  {
-				print "<tr align=left><td><a href={$CONF["site_url"]}/admin/plugins/$type/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
+				$retval .= '<td><a href="'.$CONF['site_url'].'/admin/plugins/'.$type.'/'.$type.'.php?mode=editsubmission&id='.$A['id'].'">Edit</a></td>'.LB;
 			} else {
-				print "<tr align=left><td><a href={$CONF["site_url"]}/admin/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
+				$retval .= '<td><a href="'.$CONF['site_url'].'/admin/'.$type.'.php?mode=editsubmission&id='.$A['id'].'>Edit</a></td>'.LB;
 			}
-			print "<td>{$A[1]}</td><td>{$A[2]}</td><td>{$A[3]}</td>";
-			print "<td align=center><input type=radio name=action[$i] value=delete></td>";
-			print "<td align=center>";
-			print "<input type=radio name=action[$i] value=approve><input type=hidden name=id[$i] value={$A[0]}>";
-			print "</td></tr>\n";
+			$retval .= '<td>'.$A[1].'</td>'.LB
+				.'<td>'.$A[2].'</td>'.LB
+				.'<td>'.$A[3].'</td>'.LB
+				.'<td align="center"><input type="radio" name="action['.$i.']" value="delete"></td>'
+				.'<td align="center"><input type="radio" name="action['.$i.']" value="approve">'
+				.'<input type="hidden" name="id['.$i.']" value="'.$A[0].'"></td>'.LB
+				.'</tr>'.LB;
 		}
-		print "<tr><td colspan=8 align=center><input type=hidden name=count value=$nrows><input type=submit value={$LANG29[38]}></td></tr>";
-		print "</table></form>";
+		$retval .= '<tr>'.LB
+			.'<td colspan="8" align="center"><input type="hidden" name="count" value="'.$nrows.'"> '
+			.'<input type="submit" value="'.$LANG29[38].'"></td>'
+			.'</tr>'.LB
+			.'</table></form>';
 	} else {
-		if ($nrows <> -1) print $LANG29[39];
+		if ($nrows <> -1) {
+			$retval .= $LANG29[39];
+		}
 	}
-	endblock();
+	
+	$retval .= endblock();
+	
+	return $retval;
 }
 
 ###############################################################################
 # Acts on moderation directivs
 
 function moderation($mid,$action,$type,$count) {
+
 	switch ($type) {
-		case "event":
-			$id = "eid";
-			$table = "events";
-			$fields = "eid,title,description,location,datestart,dateend,url";
+		case 'event':
+			$id = 'eid';
+			$table = 'events';
+			$fields = 'eid,title,description,location,datestart,dateend,url';
 			break;
-		case "link":
-			$id = "lid";
-			$table = "links";
-			$fields = "lid,category,url,description,title";
+		case 'link':
+			$id = 'lid';
+			$table = 'links';
+			$fields = 'lid,category,url,description,title';
 			break;
-		case "story":
-			$id = "sid";
-			$table = "stories";
-			$fields = "sid,uid,tid,title,introtext,date";
+		case 'story':
+			$id = 'sid';
+			$table = 'stories';
+			$fields = 'sid,uid,tid,title,introtext,date';
 			break;
 		default:
 			if (strlen($type) <= 0) {
 				// something is terribly wrong, bail
-				errorlog("Unable to find type of $type in moderation() in moderation.php");
-				return;
+				
+				$retval .= errorlog("Unable to find type of $type in moderation() in moderation.php");
+				return $retval;
 			}
 			list($id, $table, $fields) = GetPluginModerationValues($type);
-			errorlog('id = '.$id.' table = '.$table.' fields = '.$fields);
+			$display .= errorlog('id = '.$id.' table = '.$table.' fields = '.$fields);
 	}
 	for ($i=1; $i<=$count; $i++) {
 		switch ($action[$i]) {
-			case "delete":
+			case 'delete':
 				if ((strlen($type) > 0) && ($type <> 'story')) {
-					//There may be some plugin specific processing that needs to 
-					//happen first.
-					DoPluginModerationDelete($type, $mid[$i]);
+					//There may be some plugin specific processing that needs to happen first.
+					$retval .= DoPluginModerationDelete($type, $mid[$i]);
 				}
 				if (empty($mid[$i])) {
-					errorlog("moderation.php just tried deleting everyting in table {$type}submission because it got an empty id.  Please report this immediately to your site administrator");
-					exit;
+					$retval .= errorlog("moderation.php just tried deleting everyting in table {$type}submission because it got an empty id.  Please report this immediately to your site administrator");
+					return $retval;
 				}
 				dbdelete("{$type}submission","$id",$mid[$i]);
 				break;
 			case "approve":
 				if ((strlen($type) > 0) && ($type <> 'story')) {
-					//There may be some plugin specific processing that needs to 
-					//happen first.
-					DoPluginModerationApprove($type,$mid[$i]);
+					//There may be some plugin specific processing that needs to happen first.
+					$retval .= DoPluginModerationApprove($type,$mid[$i]);
 				}
 				dbcopy("$table","$fields","$fields","{$type}submission","$id",$mid[$i]);
 				break;
 		}
 	}
-	commandcontrol();
+
+	$retval .= commandcontrol();
+	
+	return $retval;
 }
 
 ###############################################################################
 # MAIN
 
-site_header("menu");
+$display .= site_header();
 
 switch ($mode) {
-	case "moderation":
-		moderation($id,$action,$type,$count);
+	case 'moderation':
+		$display .= moderation($id,$action,$type,$count);
 		break;
 	default:
-		commandcontrol();
+		$display .= commandcontrol();
 		break;
 }
-site_footer();
 
+$display .= site_footer();
+
+echo $display;
 
 ?>

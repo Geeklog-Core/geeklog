@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # pollbooth.php
 # This is the pollbooth file.
@@ -22,47 +21,52 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("common.php");
-include("custom_code.php");
-
+include('lib-common.php');
 ###############################################################################
 # Saves the users vote, if allowed for the poll $qid
-
 function pollsave() {
 	global $qid,$aid,$db,$REMOTE_ADDR,$LANG07;
-	dbchange("pollquestions","voters","voters + 1","qid",$qid);
-	dbchange("pollanswers","votes","votes + 1","qid",$qid,"aid",$aid);
-	dbsave("pollvoters","ipaddress, date, qid","'$REMOTE_ADDR',unix_timestamp(),'$qid'");
-	startblock($LANG07[1]);
-	print "{$LANG07[2]} $qid";
-	endblock();
-	pollresults($qid);
+	
+	
+	dbchange('pollquestions','voters','voters + 1','qid',$qid);
+	dbchange('pollanswers','votes','votes + 1','qid',$qid,'aid',$aid);
+	dbsave('pollvoters','ipaddress, date, qid',"'$REMOTE_ADDR',unix_timestamp(),'$qid'");
+	$retval .= startblock($LANG07[1])
+		.$LANG07[2].' '.$qid
+		.endblock()
+		.pollresults($qid);
+	
+	return $retval;
 }
 
 ###############################################################################
 # List all the polls on the system if no $qid is provided
-
 function polllist() {
 	global $CONF,$LANG07;
-	$result = dbquery("SELECT qid FROM {$CONF["db_prefix"]}pollquestions");
+	
+	
+	$result = dbquery("SELECT qid FROM {$CONF['db_prefix']}pollquestions");
 	$nrows = mysql_num_rows($result);
 	$counter = 0;
-	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>\n";
-	print "<tr align=center valign=top>";
+	
+	$retval .= '<table border="0" cellspacing="0" cellpadding="2" width="100%">'.LB
+		.'<tr align="center" valign="top">'.LB;
+		
 	for ($i = 1; $i <= $nrows; $i++) {
 		if ($counter == 3) {
-			print "</tr><tr align=center valign=top>";
+			$retval .= '</tr><tr align="center" valign="top">';
 			$counter = 1;
 		} else {
 			$counter = $counter + 1;
 		}
-		print "<td>";
+		$retval .= '<td>';
 		$Q = mysql_fetch_array($result);
-		pollresults($Q["qid"],"119");
-		print "[ <a href={$CONF["site_url"]}/pollbooth.php?qid={$Q["qid"]}>{$LANG07[3]}</a> ]</td>\n";
+		$retval .= pollresults($Q['qid'],'119')
+			.'[ <a href="'.$CONF['site_url'].'/pollbooth.php?qid='.$Q['qid'].'">'.$LANG07[3].'</a> ]</td>'.LB
 	}
-	print "</table>\n";
+	$retval .= '</table>'.LB;
+	
+	return $retval;
 }
 
 ###############################################################################
@@ -72,29 +76,29 @@ function polllist() {
 # no aid will let you vote on the select poll
 # an aid greater than 0 will save a vote for that answer on the selected poll
 # an aid of -1 will display the select poll
-
 if ($reply == $LANG01[25]) {
-	refresh("{$CONF["site_url"]}/comment.php?sid=$qid&pid=$pid&type=$type");
+	$display .= refresh("{$CONF['site_url']}/comment.php?sid=$qid&pid=$pid&type=$type");
+	echo $display;
 	exit;			
 }
 if (empty($qid)) {
-	site_header("menu");
-	polllist();
+	$display .= site_header()
+		.polllist();
 } else if (empty($aid)) {
-	site_header("menu");
+	$display .= site_header();
 	if (empty($HTTP_COOKIE_VARS[$qid])) {
-		pollvote($qid);
+		$display .= pollvote($qid);
 	} else {
-		pollresults($qid,400,$order,$mode);
+		$display .= pollresults($qid,400,$order,$mode);
 	}
 } else if ($aid  > 0  and empty($HTTP_COOKIE_VARS[$qid])) {
-	setcookie($qid,$aid,time()+$CONF["pollcookietime"]);
-	site_header("menu");
-	pollsave();
+	setcookie($qid,$aid,time()+$CONF['pollcookietime']);
+	$display .= site_header()
+		.pollsave();
 } else {
-	site_header("menu");
-	pollresults($qid,400,$order,$mode);
+	$display .= site_header()
+		.pollresults($qid,400,$order,$mode);
 }
-site_footer();
-
+$display .= site_footer();
+echo $display;
 ?>

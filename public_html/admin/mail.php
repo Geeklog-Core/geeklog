@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # /admin/mail.php
 # This is the admin index page that does nothing more that login you in.
@@ -22,21 +21,18 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("../common.php");
+include("../lib-common.php");
 include("../custom_code.php");
 include("auth.inc.php");
-
 if (!hasrights('user.mail')) {
         site_header('menu');
         startblock($MESSAGE[30]);
         print $MESSAGE[39];
         endblock();
         site_footer();
-        errorlog("User {$USER["username"]} tried to illegally access the poll administration screen",1);
+        errorlog("User {$USER['username']} tried to illegally access the poll administration screen",1);
         exit;
 }
-
 
 //error_reporting(15);
 if (isset($mail)) {
@@ -44,32 +40,26 @@ if (isset($mail)) {
   		echo $LANG31[2];
   		exit;
 	}
-
 	/* Header information */
 	$headers = "From: $fra <$fraepost>\n";
 	$headers .= "X-Sender: <$fraepost>\n"; 
 	$headers .= "X-Mailer: PHP\n"; // mailer
-
 	// Urgent message!
 	if (isset($priority)) {
  		$headers .= "X-Priority: 1\n"; 
 	}
-
 	$headers .= "Return-Path: <$fraepost>\n";  // Return path for errors
-
 	/* If you want to send html mail */
 	if (isset($html)) { 
  		$headers .= "Content-Type: text/html; charset=iso-8859-1\n"; // Mime type 
 	}
-
 	/* and now mail it */
 	if (!isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email,emailstories  FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs WHERE users.uid > 1";
+ 		$sql = "SELECT username,fullname,email,emailstories  FROM {$CONF['db_prefix']}users,{$CONF['db_prefix']}userprefs WHERE users.uid > 1";
  		$sql .= " AND users.uid = userprefs.uid AND userprefs.emailstories = 1";
 	}
-
 	if (isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email  FROM {$CONF["db_prefix"]}users WHERE uid > 1";
+ 		$sql = "SELECT username,fullname,email  FROM {$CONF['db_prefix']}users WHERE uid > 1";
 	}
  
 	$sendttil = "";
@@ -84,7 +74,6 @@ if (isset($mail)) {
  		} else {
   			$til .= "{$A["fullname"]}";
  		}
-
  		$til .= "<";
  		$til .= $A["email"];
  		$til .= ">";
@@ -96,32 +85,29 @@ if (isset($mail)) {
  		}
 	}
 }
-
 global $CONF,$LANG31;
 site_header("menu");
-
 if (isset($sendttil)){
  	startblock($LANG31[16]);
     	echo $sendttil;
 	print "<br><br>" . $LANG31[17] . "<br>";
     	endblock();
 } else {
-
 echo "
 <form method=POST action=mail.php>
-<input type=hidden name=mail value=mail>";
+<input type="hidden" name=mail value=mail>";
  startblock("$LANG31[1]"); 
  echo "
-  <table border=0 cellpadding=0 cellspaceing=0>
+  <table border="0" cellpadding="0" cellspaceing=0>
     <tr>
       <td>
-        <table border=0 cellpadding=0 cellspaceing=0>
+        <table border="0" cellpadding="0" cellspaceing=0>
           <tr>
-	    <td align=right>$LANG31[2]:</td>
+	    <td align="right">$LANG31[2]:</td>
             <td><input type=text name=fra value=\"$CONF[sitename]\" size=20></td>
 	  </tr>
 	  <tr>
-             <td align=right>$LANG31[3]:</td>
+             <td align="right">$LANG31[3]:</td>
 	     <td><input type=text name=fraepost value=\"$CONF[sitemail]\" size=20></td>
           </tr>
           <tr>
@@ -134,10 +120,10 @@ echo "
           </tr>
         </table>
       </td>
-      <td width=42% valign=top ><BR><BR><BR><BR>
-        <table border=0 cellpadding=0 cellspaceing=0 bgcolor=lightgrey>
+      <td width=42% valign="top" ><BR><BR><BR><BR>
+        <table border="0" cellpadding="0" cellspaceing=0 bgcolor=lightgrey>
           <tr>
-            <th colspan=2>$LANG31[6]</td>
+            <th colspan="2">$LANG31[6]</td>
             </tr>
           <tr>
             <td >$LANG31[7]</td>
@@ -152,7 +138,7 @@ echo "
             <td >&nbsp;</td>
           </tr>
           <tr>
-            <th colspan=2>$LANG31[9]</td>
+            <th colspan="2">$LANG31[9]</td>
             </tr> 
           <tr>
             <td>$LANG31[10]</td>
@@ -172,8 +158,8 @@ echo "
     </tr>
     <tr>
       <td>
-        <p align=center><input type=submit value=$LANG31[12] ><input type=reset value=\"$LANG31[13]\"></td>
-      <td width=42% valign=top>&nbsp;</td>
+        <p align="center"><input type="submit" value=$LANG31[12] ><input type=reset value=\"$LANG31[13]\"></td>
+      <td width=42% valign="top">&nbsp;</td>
     </tr>
   </table>";
 endblock();

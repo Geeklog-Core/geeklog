@@ -1,5 +1,4 @@
 <?php
-
 ###############################################################################
 # usersettings.php
 # This is the user configuration module.
@@ -22,9 +21,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-include("common.php");
-include("custom_code.php");
+include('lib-common.php');
 
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
@@ -38,30 +35,71 @@ include("custom_code.php");
 
 function edituser() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs,{$CONF["db_prefix"]}userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
+
+	$result = dbquery("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey FROM {$CONF['db_prefix']}users,{$CONF['db_prefix']}userprefs,{$CONF['db_prefix']}userinfo WHERE users.uid = {$USER['uid']} && userprefs.uid = {$USER['uid']} && userinfo.uid = {$USER['uid']}");
 	$A = mysql_fetch_array($result);
-	startblock("{$LANG04[1]} {$USER["username"]}","");
-	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
-	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[3]}:</b><br><small>{$LANG04[34]}</small></td><td><input type=text name=fullname size=32 maxlength=80 value=\"{$A["fullname"]}\"></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[4]}:</b><br><small>{$LANG04[35]}</small></td><td><input type=password name=passwd size=16 maxlength=32 value=\"{$A["passwd"]}\"></td></tr>\n";
-	print "<tr valign=middle><td align=right><b>{$LANG04[68]}</b><br><small>{$LANG04[69]}:</small></td><td><SELECT name=cooktime>";
-	optionlist('cookiecodes','cc_value,cc_descr',$A["cookietimeout"],0);
-	print "</SELECT></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[5]}:</b><br><small>{$LANG04[33]}</small></td><td><input type=text name=email size=32 maxlength=96 value=\"{$A["email"]}\"></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[6]}:</b><br><small>{$LANG04[36]}</small></td><td><input type=text name=homepage size=32 maxlength=96 value=\"{$A["homepage"]}\"></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[32]}:</b><br><small>{$LANG04[37]}</small></td><td><textarea name=sig cols=45 rows=3 wrap=virtual>{$A["sig"]}</textarea></td></tr>\n";
-#	print "<tr valign=top><td align=right><b>{$LANG04[13]}:</b><br><small>{$LANG04[53]}</small></td><td><select name=emailstories>";
-#	optionlist("maillist","code,name",$A["emailstories"]);
-#	print "</select></td></tr>\n";
-	$result = dbquery("SELECT about,pgpkey FROM {$CONF["db_prefix"]}userinfo WHERE uid = {$USER["uid"]}");
+
+	$retval .= startblock($LANG04[1].' '.$USER['username'])
+		.'<form action="'.$CONF['site_url'].'/usersettings.php" method="post">'
+		.'<table border="0" cellspacing="0" cellpadding="3">'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[3].':</b><br><small>'.$LANG04[34].'</small></td>'.LB
+		.'<td><input type="text" name="fullname" size="60" maxlength="80" value="'.$A['fullname'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[4].':</b><br><small>'.$LANG04[35].'</small></td>'.LB
+		.'<td><input type="password" name="passwd" size="32" maxlength="32" value="'.$A["passwd"].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[68].'</b><br><small>'.$LANG04[69].':</small></td>'.LB
+		.'<td><select name="cooktime">'
+		.optionlist('cookiecodes','cc_value,cc_descr',$A['cookietimeout'],0)
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[5].':</b><br><small>'.$LANG04[33].'</small></td>'.LB
+		.'<td><input type="text" name="email" size="60" maxlength="96" value="'.$A['email'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[6].':</b><br><small>'.$LANG04[36].'</small></td>'.LB
+		.'<td><input type="text" name="homepage" size="60" maxlength="96" value="'.$A['homepage'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[32].':</b><br><small>'.$LANG04[37].'</small></td>'.LB
+		.'<td><textarea name="sig" cols="60" rows="4" wrap="virtual">'.$A['sig'].'</textarea></td>'.LB
+		.'</tr>'.LB;
+
+/* Currently Not Enabled
+		
+		$retval .= '<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[13].':</b><br><small>'.$LANG04[53].'</small></td>'.LB
+		.'<td><select name="emailstories">'
+		.optionlist('maillist','code,name',$A['emailstories'])
+		.'</select></td>'.LB
+		.'</tr>'.LB;
+*/
+
+	$result = dbquery("SELECT about,pgpkey FROM {$CONF['db_prefix']}userinfo WHERE uid = {$USER['uid']}");
 	$A = mysql_fetch_array($result);
-	print "<tr valign=top><td align=right><b>{$LANG04[7]}:</b><br><small>{$LANG04[38]}</small></td><td><textarea name=about cols=45 rows=6 wrap=virtual>{$A["about"]}</textarea></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[8]}:</b><br><small>{$LANG04[39]}</small></td><td><textarea name=pgpkey cols=45 rows=6 wrap=virtual>{$A["pgpkey"]}</textarea></td></tr>\n";
-	print "<tr valign=top><td align=center colspan=2><input type=hidden name=uid value=$user><input type=hidden name=mode value=saveuser>";
-	print "<input type=hidden name=username value=\"{$USER["username"]}\"><input type=submit value=\"{$LANG04[9]}\"></td></tr>\n";
-	print "</table></form>";
-	endblock();
+
+	$retval .= '<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[7].':</b><br><small>'.$LANG04[38].'</small></td>'
+		.'<td><textarea name="about" cols="60" rows="6" wrap="virtual">'.$A['about'].'</textarea></td>'
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[8].':</b><br><small>'.$LANG04[39].'</small></td>'.LB
+		.'<td><textarea name="pgpkey" cols="60" rows="6" wrap="virtual">'.$A['pgpkey'].'</textarea></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="center" colspan="2"><input type="hidden" name="uid" value="'.$user.'">'
+		.'<input type="hidden" name="mode" value="saveuser">'
+		.'<input type="hidden" name="username" value="'.$USER['username'].'">'
+		.'<input type="submit" value="'.$LANG04[9].'"></td>'.LB
+		.'</tr>'.LB
+		.'</table></form>'
+		.endblock();
+	
+	return $retval;
 }
 
 ###############################################################################
@@ -69,45 +107,75 @@ function edituser() {
 
 function editpreferences() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM {$CONF["db_prefix"]}userprefs,userindex WHERE userindex.uid = {$USER["uid"]} AND userprefs.uid = {$USER["uid"]}");
-	$A = mysql_fetch_array($result);
-	if ($A["maxstories"] < 5) $A["maxstories"] = 5;
-	startblock("{$LANG04[45]} {$USER["username"]}","");
-	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
-	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[40]}:</b><br><small>{$LANG04[49]}</small></td><td><input type=checkbox name=noicons";
-	if ($A["noicons"] == "1") {
-		print " checked";
-	}
-	print "></td></tr>\n";
-#	print "<tr valign=top><td align=right><b>{$LANG04[41]}:</b><br><small>{$LANG04[50]}</small></td><td><input type=checkbox name=willing";
-#	if ($A["willing"] == 1) {
-#		print " checked";
-#	}
-#	print "></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[44]}:</b><br><small>{$LANG04[51]}</small></td><td><input type=checkbox name=noboxes";
-	if ($A["noboxes"] == 1) {
-		print " checked";
-	}
-	print "></td></tr>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[43]}:</b><br><small>{$LANG04[52]}</small></td><td>";
-	print "<input type=text size=3 maxlength=3 name=maxstories value={$A["maxstories"]}></td></tr>\n";
 
-	print "<tr valign=top><td align=right><b>{$LANG04[42]}:</b></td><td><select name=dfid>";
-	optionlist("dateformats","dfid,description",$A["dfid"]);
-#	print "</select><select name=tzid>";
-#	optionlist("tzcodes","tz,description",$A["tzid"]);
-	print "</select></td></tr></table>\n";
-	endblock();
-	startblock("{$LANG04[46]} {$USER["username"]}","");
-	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	print "<tr><td colspan=3>{$LANG04[54]}</td></tr>";
-	print "<tr valign=top><td><b>{$LANG04[48]}</b><br>";
-	checklist("topics","tid,topic","",$A["tids"]);
-	print "</td><td><img src={$CONF["site_url"]}/images/speck.gif width=40 height=1></td>";
-	if ($CONF["contributedbyline"] == 1) {
-		print "<td><b>{$LANG04[56]}</b><br>";
-		$result = dbquery("SELECT DISTINCT uid FROM {$CONF["db_prefix"]}stories");
+	$result = dbquery("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM {$CONF['db_prefix']}userprefs,userindex WHERE userindex.uid = {$USER['uid']} AND userprefs.uid = {$USER['uid']}");
+	$A = mysql_fetch_array($result);
+
+	if ($A['maxstories'] < 5) {
+		$A['maxstories'] = 5;
+	}
+	
+	$retval .= startblock($LANG04[45].' '.$USER['username'])
+		.'<form action="'.$CONF['site_url'].'/usersettings.php" method="post">'
+		.'<table border="0" cellspacing="0" cellpadding="3">'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[40].':</b><br><small>'.$LANG04[49].'</small></td>'.LB
+		.'<td><input type="checkbox" name="noicons"';
+	if ($A['noicons'] == '1') {
+		$retval .= ' checked="checked"';
+	}
+	$retval .= '></td>'.LB
+		.'</tr>'.LB;
+
+	/* Option Disabled
+	
+	$retval .= '<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[41].':</b><br><small>'.$LANG04[50].'</small></td>'.LB
+		.'<td><input type="checkbox" name="willing"';
+	if ($A['willing'] == 1) {
+		$retval .= ' checked="checked"';
+	}
+	$retval .= '></td>'.LB
+		.'</tr>'.LB;
+	
+	*/
+
+	$retval .= '<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[44].':</b><br><small>'.$LANG04[51].'</small></td>'.LB
+		.'<td><input type="checkbox" name="noboxes"';
+	if ($A['noboxes'] == 1) {
+		$retval .= ' checked="checked"';
+	}
+	$retval .= '></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[43].':</b><br><small>'.$LANG04[52].'</small></td>'.LB
+		.'<td><input type="text" size="3" maxlength="3" name="maxstories" value="'.$A['maxstories'].'"></td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td align="right"><b>'.$LANG04[42].':</b></td>'.LB
+		.'<td><select name="dfid">'.LB
+		.optionlist('dateformats','dfid,description',"'{$A['dfid']}'")
+#		.'</select>'.LB
+#		.'<select name=tzid>'.LB
+#		.optionlist('tzcodes','tz,description',"'{$A['tzid']}'");
+		.'</select></td>'.LB
+		.'</tr>'.LB
+		.'</table>'
+		.endblock();
+	
+	$retval .= startblock($LANG04[46].' '.$USER['username'])
+		.'<table border="0" cellspacing="0" cellpadding="3">'.LB
+		.'<tr>'.LB
+		.'<td colspan="3">'.$LANG04[54].'</td>'.LB
+		.'</tr>'.LB
+		.'<tr valign="top">'.LB
+		.'<td><b>'.$LANG04[48].'</b><br>'.checklist('topics','tid,topic','',"'{$A['tids']}'").'</td>'.LB
+		.'<td><img src="'.$CONF['site_url'].'/images/speck.gif" width="40" height="1"></td>'.LB;
+		
+	if ($CONF['contributedbyline'] == 1) {
+		$retval .= '<td><b>'.$LANG04[56].'</b><br>';
+		$result = dbquery("SELECT DISTINCT uid FROM {$CONF['db_prefix']}stories");
 		$nrows = mysql_num_rows($result);
 		unset($where);
 		for ($i=0; $i<$nrows; $i++) {
@@ -115,21 +183,31 @@ function editpreferences() {
 			$where .= "uid = '$W[0]' OR ";
 		}
 		$where .= "uid = '1'";
-		checklist("users","uid,username",$where,$A["aids"]);
-		print "</td>";
+		$retval .= checklist('users','uid,username',$where,"'{$A['aids']}'").'</td>'.LB;
 	}
-	print "</tr></table>";
-	endblock();
-	startblock("{$LANG04[47]} {$USER["username"]}","");
-	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	print "<tr><td>{$LANG04[55]}</td></tr>";
-	print "<tr><td>";
-	checklist("blocks","bid,title,blockorder","(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND title in ('Whats New Block','Poll Block','Events Block')) ORDER BY onleft desc,blockorder,title",$A["boxes"]);
-	print "</td></tr></table>";
-	endblock();
-	print "<center><input type=hidden name=mode value=savepreferences>";
-	print "<input type=submit value=\"{$LANG04[9]}\"></center>\n";
-	print "</form>";
+	
+	$retval .= '</tr>'.LB
+		.'</table>'
+		.endblock();
+		
+	$retval .= startblock($LANG04[47].' '.$USER['username'])
+		.'<table border="0" cellspacing="0" cellpadding="3">'.LB
+		.'<tr>'.LB
+		.'<td>'.$LANG04[55].'</td>'.LB
+		.'</tr>'.LB
+		.'<tr>'.LB
+		.'<td>'
+		.checklist('blocks','bid,title,blockorder',"(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND title in ('Whats New Block','Poll Block','Events Block')) ORDER BY onleft desc,blockorder,title",$A["boxes"])
+		.'</td>'.LB
+		.'</tr>'.LB
+		.'</table>'
+		.endblock();
+		
+	$retval .= '<div align="center">'
+		.'<input type="hidden" name="mode" value="savepreferences"> '
+		.'<input type="submit" value="'.{$LANG04[9].'"></div></form>';
+		
+	return $retval;
 }
 
 ###############################################################################
@@ -137,62 +215,64 @@ function editpreferences() {
 
 function editcommentprefs() {
 	global $CONF,$LANG04,$USER;
-	$result = dbquery("SELECT commentmode,commentorder,commentlimit FROM {$CONF["db_prefix"]}usercomment WHERE uid = {$USER["uid"]}");
+
+	$result = dbquery("SELECT commentmode,commentorder,commentlimit FROM {$CONF['db_prefix']}usercomment WHERE uid = {$USER['uid']}");
 	$A = mysql_fetch_array($result);
-	if (empty($A["commentmode"])) $A["commentmode"] = "threaded";
+
+	if (empty($A["commentmode"])) {
+		$A["commentmode"] = $CONF['comment_mode'];
+	}		
 	if (empty($A["commentorder"])) $A["commentorder"] = 0;
 	if (empty($A["commentlimit"])) $A["commentlimit"] = 100;
-	startblock("{$LANG04[64]} {$USER["username"]}","");
-	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
-	print "<table border=0 cellspacing=0 cellpadding=3>\n";
-	print "<tr valign=top><td align=right><b>{$LANG04[57]}:</b><br><small>{$LANG04[60]}</small></td><td><select name=commentmode>";
+	startblock("{$LANG04[64]} {$USER['username']}","");
+	print "<form action={$CONF['site_url']}/usersettings.php method=post>\n";
+	print "<table border="0" cellspacing="0" cellpadding=3>\n";
+	print "<tr valign="top"><td align="right"><b>{$LANG04[57]}:</b><br><small>{$LANG04[60]}</small></td><td><select name=commentmode>";
 	optionlist("commentmodes","mode,name",$A["commentmode"]);
 	print "</select></td></tr>";
-	print "<tr valign=top><td align=right><b>{$LANG04[58]}:</b><br><small>{$LANG04[61]}</small></td><td><select name=commentorder>";
+	print "<tr valign="top"><td align="right"><b>{$LANG04[58]}:</b><br><small>{$LANG04[61]}</small></td><td><select name=commentorder>";
 	optionlist("sortcodes","code,name",$A["commentorder"]);
 	print "</select></td></tr>";
-	print "<tr valign=top><td align=right><b>{$LANG04[59]}:</b><br><small>{$LANG04[62]}</small></td><td>";
+	print "<tr valign="top"><td align="right"><b>{$LANG04[59]}:</b><br><small>{$LANG04[62]}</small></td><td>";
 	print "<input type=text size=5 maxlength=5 name=commentlimit value={$A["commentlimit"]}></td></tr>\n";
-	print "<tr><td align=right colspan=2><input type=hidden name=mode value=savecomments>";
-	print "<input type=submit value=\"{$LANG04[9]}\"></td></tr>\n";
+	print "<tr><td align="right" colspan="2"><input type="hidden" name=mode value=savecomments>";
+	print "<input type="submit" value=\"{$LANG04[9]}\"></td></tr>\n";
 	print "</table></form>";
 	endblock();
 }
 
 ###############################################################################
 # saves stuff
-
 function saveuser($A) {
 	global $CONF,$USER;
 	if (!empty($A["passwd"])) {
 		$passwd = md5($A["passwd"]);
-		dbchange("users","passwd","'$passwd'","uid",$USER["uid"]);
+		dbchange("users","passwd","'$passwd'","uid",$USER['uid']);
 	}
 	if (isemail($A["email"])) {
 		errorlog("cooktime = " . $A["cooktime"],1);
 		if ($A["cooktime"] <= 0) {
 			$A["cooktime"] = "NULL";
 			$cooktime = 1000;
-			setcookie($CONF["cookie_name"],$USER["uid"],time() - $cooktime,$CONF["cookie_path"]);	
+			setcookie($CONF["cookie_name"],$USER['uid'],time() - $cooktime,$CONF["cookie_path"]);	
 		} else {
-			setcookie($CONF["cookie_name"],$USER["uid"],time() + $A["cooktime"],$CONF["cookie_path"]);	
+			setcookie($CONF["cookie_name"],$USER['uid'],time() + $A["cooktime"],$CONF["cookie_path"]);	
 		}
-		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]} WHERE uid={$USER["uid"]}");
-		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER["uid"]}");
-		dbquery("UPDATE userinfo SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$USER["uid"]}");
-		refresh("{$CONF["site_url"]}/usersettings.php?mode=edit&msg=5");
+		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]} WHERE uid={$USER['uid']}");
+		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER['uid']}");
+		dbquery("UPDATE userinfo SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$USER['uid']}");
+		refresh("{$CONF['site_url']}/usersettings.php?mode=edit&msg=5");
 	}
 }
 
 ###############################################################################
 # saves stuff
-
 function savepreferences($A) {
 	global $CONF,$USER;
-	if ($A["noicons"] == "on") $A["noicons"] = 1;
+	if ($A['noicons'] == "on") $A['noicons'] = 1;
 	if ($A["willing"] == "on") $A["willing"] = 1;
-	if ($A["noboxes"] == "on") $A["noboxes"] = 1;
-	if ($A["maxstories"] < 5) $A["maxstories"] = 5;
+	if ($A['noboxes'] == "on") $A['noboxes'] = 1;
+	if ($A['maxstories'] < 5) $A['maxstories'] = 5;
 	unset($tids);
 	unset($aids);
 	unset($boxes);
@@ -214,14 +294,13 @@ function savepreferences($A) {
 		$boxes .= $BOXES[$i] . " ";
 		}
 	}
-	dbquery("UPDATE userprefs SET noicons='{$A["noicons"]}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$USER["uid"]}'");
-	dbsave("userindex","uid,tids,aids,boxes,noboxes,maxstories","'{$USER["uid"]}','$tids','$aids','$boxes','{$A["noboxes"]}','{$A["maxstories"]}'","usersettings.php?mode=preferences&msg=6");
+	dbquery("UPDATE userprefs SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$USER['uid']}'");
+	dbsave("userindex","uid,tids,aids,boxes,noboxes,maxstories","'{$USER['uid']}','$tids','$aids','$boxes','{$A['noboxes']}','{$A['maxstories']}'","usersettings.php?mode=preferences&msg=6");
 }
 
 ###############################################################################
 # MAIN
-
-if (!empty($USER["username"]) && !empty($mode)) {
+if (!empty($USER['username']) && !empty($mode)) {
 	switch ($mode) {
 		case "preferences":
 			site_header("menu");
@@ -248,11 +327,10 @@ if (!empty($USER["username"]) && !empty($mode)) {
 			savepreferences($HTTP_POST_VARS);
 			break;
 		case "savecomments":
-			dbsave("usercomment","uid,commentmode,commentorder,commentlimit","'{$USER["uid"]}','$commentmode','$commentorder','$commentlimit'","usersettings.php?mode=comments&msg=7");
+			dbsave("usercomment","uid,commentmode,commentorder,commentlimit","'{$USER['uid']}','$commentmode','$commentorder','$commentlimit'","usersettings.php?mode=comments&msg=7");
 			break;
 	}
 } else {
-	refresh("{$CONF["site_url"]}/index.php");
+	refresh("{$CONF['site_url']}/index.php");
 }
-
 ?>
