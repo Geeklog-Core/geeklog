@@ -30,10 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.2 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: install.php,v 1.3 2002/04/29 09:56:41 dhaun Exp $
 
 require_once('../../../lib-common.php');
-require_once($_CONF['path'] . 'plugins/staticpages/lang.php');
+require_once($_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php');
 require_once($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
 // Only let Root users access this page

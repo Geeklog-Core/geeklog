@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.6 2002/04/28 13:42:50 dhaun Exp $
+// $Id: functions.inc,v 1.7 2002/04/29 09:56:41 dhaun Exp $
 
-include($_CONF['path'] . 'plugins/staticpages/lang.php');
+include($_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
 // +---------------------------------------------------------------------------+
