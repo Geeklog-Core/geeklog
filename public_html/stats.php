@@ -5,14 +5,14 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | stats.php                                                                 |
+// |                                                                           |
 // | Geeklog system statistics page.                                           |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.25 2004/03/21 20:53:30 dhaun Exp $
+// $Id: stats.php,v 1.26 2004/07/26 10:12:32 dhaun Exp $
 
 require_once('lib-common.php');
 
