@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.81 2004/10/26 02:03:13 vinny Exp $
+// $Id: comment.php,v 1.82 2004/10/31 03:04:39 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -880,14 +880,16 @@ default:
         // This could still be a plugin wanting comments
         if (isset ($HTTP_POST_VARS['cid'])) {
             $cid = COM_applyFilter ($HTTP_POST_VARS['cid']);
-            $format = COM_applyFilter ($HTTP_POST_VARS['cid']);
-            $order = COM_applyFilter ($HTTP_POST_VARS['cid']);
-            $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
-        } else {
-            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
             $format = COM_applyFilter ($HTTP_POST_VARS['format']);
             $order = COM_applyFilter ($HTTP_POST_VARS['order']);
             $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
+            $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+        } else {
+            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
+            $format = COM_applyFilter ($HTTP_GET_VARS['format']);
+            $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+            $reply = COM_applyFilter ($HTTP_GET_VARS['reply']);
+            $type = COM_applyFilter ($HTTP_GET_VARS['type']);
         }
         if (!empty ($type) && !empty ($cid)) {
             $display .= PLG_callCommentForm ($type, $cid, $format, $order, $reply);
