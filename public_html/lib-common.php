@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.88 2002/05/03 08:17:42 dhaun Exp $
+// $Id: lib-common.php,v 1.89 2002/05/03 21:46:47 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1892,13 +1892,13 @@ function COM_olderstuff()
                 $A = DB_fetchArray($result);
                 $daycheck = strftime("%A",$A['day']);
                 if ($day != $daycheck) {
-                    $day2 = strftime("%m/%d",$A['day']);
-                    $string .= '<br><b>' . $daycheck . '</b> <small>' . $day2 . '</small><br>' . LB;
                     if ($day != 'noday') {
                         $daylist = COM_makeList ($oldnews);
                         $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
-                        $string .= $daylist;
+                        $string .= $daylist . '<br>';
                     }
+                    $day2 = strftime("%m/%d",$A['day']);
+                    $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
                     $oldnews = array ();
                     $day = $daycheck;
                 }
