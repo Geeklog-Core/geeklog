@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.24 2002/04/16 14:58:51 tony_bibbs Exp $
+// $Id: install.php,v 1.25 2002/04/17 19:57:24 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -168,7 +168,7 @@ function INST_createDatabaseStructures() {
 }
 
 function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
-    global $_CONF, $_DB_dbms;
+    global $_TABLES, $_CONF, $_DB_dbms;
 
     // Because the upgrade sql syntax can vary from dbms-to-dbms we are
     // leaving that up to each Geeklog database driver
