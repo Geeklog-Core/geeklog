@@ -101,7 +101,8 @@ $LANG_SX00 = array (
     'import_failure' => '<p><strong>Error:</strong> No entries found.',
     'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
     'documentation' => 'SpamX Plugin Documentation',
-    'emailmsg' => "A new spam comment has been posted at \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
+    'emailmsg' => "A new spam post has been submitted at \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
+    'emailsubject' => 'Spam post at %s',
     'plugin_name' => 'SpamX'
 );
 

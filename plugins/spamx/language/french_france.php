@@ -102,6 +102,7 @@ $LANG_SX00 = array (
     'allow_url_fopen' => '<p>Désolé, la configuration de votre serveur web ne permet pas la lecture de fichiers distants (<code>allow_url_fopen</code> est désactivé). Veuillez télécharger la liste noire de l\'adresse suivante et placez-la dans le répertoire "data" de Geeklog, <tt>%s</tt>, avant un nouvel essai:',
     'documentation' => 'Documentation du Plugin SpamX',
     'emailmsg' => "Un nouveau commentaire indésirable a été envoyé à \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
+    'emailsubject' => 'Spam post at %s',
     'plugin_name' => 'SpamX'
 );
 
