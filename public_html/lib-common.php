@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.95 2002/05/14 18:25:27 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.96 2002/05/15 01:12:38 mlimburg Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -418,7 +418,15 @@ function COM_siteHeader($what = 'menu')
     // If we reach here then either we have the default theme OR
     // the current theme only needs the default variable substitutions 
     $header = new Template($_CONF['path_layout']);
-    $header->set_file(array('header'=>'header.thtml','menuitem'=>'menuitem.thtml','leftblocks'=>'leftblocks.thtml'));
+
+    $header->set_file(array(
+        'header'=>'header.thtml',
+        'menuitem'=>'menuitem.thtml',
+        'menuitem_last'=>'menuitem_last.thtml',
+        'menuitem_none'=>'menuitem_none.thtml',
+        'leftblocks'=>'leftblocks.thtml'
+        ));
+        
     $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
     $header->set_var('site_url', $_CONF['site_url']);
@@ -487,13 +495,29 @@ function COM_siteHeader($what = 'menu')
         COM_errorLog('num plugin menu items in header = ' . count($plugin_menu),1);
     }
 
-    for ($i = 1; $i <= count($plugin_menu); $i++) {
-        $header->set_var('menuitem_url', current($plugin_menu));
-        $header->set_var('menuitem_text', key($plugin_menu));
-        $header->parse('plg_menu_elements', 'menuitem', true);
-        next($plugin_menu);
+    if( count($plugin_menu) == 0 )
+    {
+        $header->parse( 'plg_menu_elements', 'menuitem_none', true );
+    } 
+    else
+    {
+        for( $i = 1; $i <= count($plugin_menu); $i++ )
+        {
+            $header->set_var( 'menuitem_url', current($plugin_menu) );
+            $header->set_var( 'menuitem_text', key($plugin_menu) );
+
+            if( $i == count($plugin_menu) )
+            {
+                $header->parse( 'plg_menu_elements', 'menuitem_last', true );
+            }
+            else
+            {
+                $header->parse( 'plg_menu_elements', 'menuitem', true );
+            }
+
+            next( $plugin_menu );
+        }
     }
-    if (count($plugin_menu) == 0) $header->set_var('plg_menu_elements', '&nbsp;');
 
     // Search link 
     $header->set_var('menuitem_url', $_CONF['site_url'] . '/search.php');
