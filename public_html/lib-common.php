@@ -31,14 +31,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.135 2002/08/09 16:05:08 dhaun Exp $
+// $Id: lib-common.php,v 1.136 2002/08/14 09:40:32 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
 * functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
 * can be found in this file.  This file provides all configuration variables
-* needed by Geeklog with a series of includes (see futher down).  You only need
-* to modify one line in this file.
+* needed by Geeklog with a series of includes (see futher down).
+*
+* --- You only need to modify one line in this file! ---
+*
 * WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
 * modified frequently by the Geeklog development team.  If you put your hacks in
 * lib-custom.php you will find upgrading much easier.
@@ -46,14 +48,14 @@
 */
 
 // Prevent PHP from reporting uninitialized variables
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
 
 /**
-* Configuration Include: You should only have to modify this line. Leave rest of
-* this file in tact
+* Configuration Include: You should ONLY have to modify this line.
+* Leave the rest of this file intact!
 *
 */
 require_once('/path/to/geeklog/config.php');
@@ -243,6 +245,7 @@ function COM_article($A,$index='')
     $article->set_var('story_date',$A['day']);
     $article->set_var('lang_views', $LANG01[106]);
     $article->set_var('story_hits', $A['hits']);
+    $article->set_var('story_id', $A['sid']);
 
     if ($_CONF['contributedbyline'] == 1) {
         $article->set_var('lang_contributed_by',$LANG01[1]);
@@ -642,11 +645,11 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
         if (!stristr($helpfile,'http://')) {
             $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
                 . '" target="_blank"><img src="' . $_CONF['layout_url'] 
-                . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+                . '/images/button_help.gif" border="0" alt="?"></a>';
         } else {
             $help = '<a class="blocktitle" href="' . $helpfile 
                 . '" target="_blank"><img src="' . $_CONF['layout_url'] 
-                . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+                . '/images/button_help.gif" border="0" alt="?"></a>';
         }
         $block->set_var('block_help',$help); 
     }
