@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.9 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: event.php,v 1.10 2002/01/03 21:44:53 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -486,6 +486,7 @@ function listevents()
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
     $event_templates->set_var('site_url', $_CONF['site_url']);
+    $event_templates->set_var('layout_url', $_CONF['layout_url']);
     $event_templates->set_var('lang_newevent', $LANG22[18]);
     $event_templates->set_var('lang_adminhome', $LANG22[19]);
     $event_templates->set_var('lang_instructions', $LANG22[12]);
