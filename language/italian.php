@@ -571,7 +571,7 @@ $LANG21 = array(
 	42 => "Devi inserire un ordine e un livello di sicurezza per i blocchi di definizione per Geeklog",
 	43 => "Solo in Homepage",
 	44 => "Accesso negato",
-	45 => "Stai cercando di accedere a un blocco del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_adminurl"]}/block.php\">ritorna alla pagina amministrazione blocchi</a>.",
+	45 => "Stai cercando di accedere a un blocco del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_admin_url"]}/block.php\">ritorna alla pagina amministrazione blocchi</a>.",
 	46 => 'Nuovo Blocco',
 	47 => 'Home Amministrazione',
     48 => 'Nome Blocco',
@@ -1020,17 +1020,6 @@ $LANG_ACCESS = array(
 	canteditroot => 'Hai provato a editare il Gruppo Root ma non fai parte del gruppo stesso e quindi la tua modifica non è consentita. Prego contatta l\'Amministratore se ritieni questo messaggio un errore'	
 );
 
-#admin/word.php
-$LANG_WORDS = array(
-    editor => "Editor Sostituzione Parole",
-    wordid => "ID Parola",
-    intro => "Per modificare o cancellare una parola, clicca sulla parola selezionata. Per creare una nuova regola di sostituzione clicca sul bottone nuova parola a sinistra.",
-    wordmanager => "Manager Parole",
-    word => "Parola",
-    replacmentword => "Sostituisci Parola",
-    newword => "Nuova Parola"
-);
-
 $LANG_DB_BACKUP = array(
     not_found => "Errore: {$_DB_mysqldump_path} non trovato.",
     last_ten_backups => 'Ultimi 10 Back-ups',
@@ -1057,6 +1046,13 @@ $LANG_404 = array(
      1 => "Errore 404",
      2 => "Attenzione, Abbiamo cercato in tutto il sito ma la pagina http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]} non è stato trovata.",
      3 => "Siamo spiacenti, ma il file da te richiesto non esiste.  Prego controlla nella pagina principale o nella pagina di ricerca per vedere se puoi trovare quanto da te richiesto."  
+);
+
+$LANG_LOGIN = array (
+    1 => 'Login richiesto',
+    2 => 'Spiacenti, per accedere a questa area devi essere registrato come utente.',
+    3 => 'Entra',
+    4 => 'Nuovo Utente'
 );
 
 ?>
