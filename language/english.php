@@ -330,7 +330,8 @@ $LANG07 = array(
 	2 => "Your vote was saved for the poll",
 	3 => "Vote",
 	4 => "Polls in System",
-	5 => "Votes"
+	5 => "Votes",
+	6 => "View other poll questions"
 );
 
 ###############################################################################

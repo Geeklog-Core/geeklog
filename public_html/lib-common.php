@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.224 2003/05/30 16:36:21 dhaun Exp $
+// $Id: lib-common.php,v 1.225 2003/06/08 18:20:06 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1766,7 +1766,7 @@ function COM_showPoll( $size, $qid='' )
 */
 function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 {
-    global $_TABLES, $LANG01, $_CONF, $_COM_VERBOSE;
+    global $_TABLES, $LANG01, $LANG07, $_CONF, $_COM_VERBOSE;
 
     $retval = '';
 
@@ -1871,6 +1871,8 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                 $poll->set_var( 'poll_comments_url', '' );
                 $poll->set_var( 'poll_comments', '' );
             }
+
+            $poll->set_var('lang_pollquestions', "TESTING");
 
             $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
 
