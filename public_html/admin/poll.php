@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.31 2003/06/20 17:36:20 dhaun Exp $
+// $Id: poll.php,v 1.32 2003/06/28 08:31:46 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -258,11 +258,11 @@ function editpoll($qid='')
     }
 
     // user access info 
-    $poll_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
-    $poll_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $poll_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
+    $poll_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $poll_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$Q['owner_id']}"));
     $poll_templates->set_var('owner_id', $Q['owner_id']);
-    $poll_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $poll_templates->set_var('lang_group', $LANG_ACCESS['group']);
    
     $groupdd = ''; 
     $usergroups = SEC_getUserGroups();
@@ -283,10 +283,10 @@ function editpoll($qid='')
         $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
     }
     $poll_templates->set_var('group_dropdown', $groupdd);
-    $poll_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
-    $poll_templates->set_var('lang_permissoinskey', $LANG_ACCESS[permissionskey]);
+    $poll_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    $poll_templates->set_var('lang_permissionskey', $LANG_ACCESS['permissionskey']);
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']));
-    $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS[permmsg]);
+    $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $poll_templates->set_var('lang_answersvotes', $LANG25[10]);   
     $poll_templates->set_var('lang_save', $LANG25[14]);   
     $poll_templates->set_var('lang_cancel', $LANG25[15]);   
@@ -330,7 +330,7 @@ function listpoll()
     $poll_templates->set_var('lang_adminhome', $LANG25[24]);
     $poll_templates->set_var('lang_instructions', $LANG25[19]);
     $poll_templates->set_var('lang_question', $LANG25[9]);
-    $poll_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $poll_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $poll_templates->set_var('lang_voters',  $LANG25[20]);
     $poll_templates->set_var('lang_pollcreated', $LANG25[3]);
     $poll_templates->set_var('lang_appearsonhomepage', $LANG25[8]);
