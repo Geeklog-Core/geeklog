@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.43 2002/10/30 18:02:01 dhaun Exp $
+// $Id: usersettings.php,v 1.44 2002/11/11 22:39:37 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -318,7 +318,7 @@ function editpreferences()
             }
         }
     }
-    $whereblock = "(" . $permissions . ") AND ((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block'))) ORDER BY onleft desc,blockorder,title";
+    $whereblock = "(" . $permissions . ") AND ((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
     $retval .= COM_startBlock($LANG04[47] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
         . '<tr>' . LB
