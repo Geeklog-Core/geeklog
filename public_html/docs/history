@@ -1,11 +1,23 @@
 GeekLog History/Changes:
 
+- Fixed image resizing when using ImageMagick.
+- Added the actual and max. image dimensions in the error message that is
+  displayed when an image exceeds the max. image dimensions and no imagelib
+  is configured.
+- The Admin menu will now be displayed for users which have Admin access to
+  a plugin but not to a core Geeklog Admin feature.
+- The redirect in index.php (when a site is called up with a URL other than
+  the one configured in $_CONF['site_url']) now checks for the existence of
+  $HTTP_SERVER_VARS['HTTP_HOST']. Also, the server name comparison is done
+  case-insensitive now.
 - New config option $_CONF['emailstoriesperdefault']: Set to 1 if new users
   should be subscribed to the daily digest automatically. Defaults to 0 (no
   automatic subscribtion), thus restoring the behaviour of Geeklog prior to
   1.3.7.
+- Removed some unused / outdated files (include and etc directories)
 - Updated URLs to point to www.geeklog.net and lists.geeklog.net instead of the
   now outdated places on Sourceforge.
+- Updated Dutch language file, provided by R.F. van der Veen
 - New Danish language files (for Geeklog and for the Static Pages plugin),
   provided by Steen Broelling
 
