@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.28 2002/08/27 00:26:01 tony_bibbs Exp $
+// $Id: comment.php,v 1.29 2002/08/27 00:27:26 tony_bibbs Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -104,7 +104,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                     $title = stripslashes(htmlspecialchars(COM_checkWords($title)));
                     $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
                     $commenttext = str_replace('$','&#36;',$comment);
-                    $commenttext = str_replace('$','&#36;',$title);
+                    $title = str_replace('$','&#36;',$title);
                 }
                 // Replace { and } with special HTML equivalents
                 $commenttext = str_replace('{','&#123;',$commenttext);
