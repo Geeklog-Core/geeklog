@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.16 2001/12/14 16:26:05 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.17 2001/12/14 19:54:16 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -212,6 +212,7 @@ function COM_article($A,$index='')
 function COM_getBlockTemplate($blockname,$which)
 {
     global $_BLOCK_TEMPLATE, $_COM_VERBOSE;
+
 
     if ($_COM_VERBOSE) {
         COM_errorLog("_BLOCK_TEMPLATE[$blockname] = " . $_BLOCK_TEMPLATE[$blockname], 1);
@@ -1719,13 +1720,10 @@ function COM_showBlocks($side, $topic='', $name='all')
     }
     
     $sql .= ' ORDER BY blockorder,title asc';
-    COM_errorLog('sql = ' . $sql,1);
     $result	= DB_query($sql);
     $nrows = DB_numRows($result);	
-    COM_errorLog("nrows = $nrows",1);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        COM_errorLog("name = " . $A['name'],1);
         if ($A['type'] == 'portal') {
             COM_rdfCheck($A['bid'],$A['rdfurl'],$A['date']);
         }
@@ -1749,8 +1747,8 @@ function COM_showBlocks($side, $topic='', $name='all')
                 $retval .= COM_endBlock();
             }
             if (!empty($A['content']) && !$U['noboxes']) {
-                $retval .= COM_startBlock($A['title']) . nl2br(stripslashes($A['content'])) . '<br>' . LB
-                    . COM_endBlock();
+                $retval .= COM_startBlock($A['title'],'',COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . '<br>' . LB
+                    . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
             }
         }
     }
