@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.7 2004/08/27 12:36:49 dhaun Exp $
+// $Id: lib-story.php,v 1.8 2004/09/04 19:29:18 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -177,8 +177,10 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         }
         else
         {
+            $bodytext = stripslashes( $A['bodytext'] );
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
-                               . stripslashes( $A['bodytext'] ));
+                               . $bodytext );
+            $article->set_var( 'story_text_no_br', $introtext . $bodytext );
         }
     }
     else
