@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.194 2002/12/28 14:19:21 dhaun Exp $
+// $Id: lib-common.php,v 1.195 2002/12/31 11:45:24 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1985,7 +1985,17 @@ function COM_adminMenu( $help = '', $title = '' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
-    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ))
+    $retval = '';
+
+    if( empty( $_USER['username'] ))
+    {
+        return $retval;
+    }
+
+    $plugin_options = PLG_getAdminOptions();
+    $nrows = count( $plugin_options );
+
+    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
     {
         $adminmenu = new Template( $_CONF['path_layout'] );
         $adminmenu->set_file( 'option', 'adminoption.thtml' );
@@ -2123,10 +2133,7 @@ function COM_adminMenu( $help = '', $title = '' )
             $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
-        // This function will show the admin options for all installed plugins (if any)
-
-        $plugin_options = PLG_getAdminOptions();
-        $nrows = count( $plugin_options );
+        // This will show the admin options for all installed plugins (if any)
 
         for( $i = 1; $i <= $nrows; $i++ )
         {

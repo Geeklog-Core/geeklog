@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.14 2002/09/18 17:35:28 dhaun Exp $
+// $Id: auth.inc.php,v 1.15 2002/12/31 11:45:24 dhaun Exp $
 
 // MAIN
 
@@ -68,7 +68,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
+} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR') && (count (PLG_getAdminOptions()) == 0)) {
     $display .= COM_siteHeader();
 
     $display .= COM_startBlock($LANG20[01]);
