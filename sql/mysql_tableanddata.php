@@ -727,8 +727,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, 
 
 $_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20011018120556538',2,'GeekLog','Test','Test','2001-10-18 12:05:56','html') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','',1,10,2,2,3,3,2,3) ";
-$_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,0,2,2,3,3,2,3) ";
+$_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','',1,10,2,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,0,2,2,3,3,2,2) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('ndt',-9000,'Newfoundland Daylight') ";
 $_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES ('adt',-10800,'Atlantic Daylight') ";
