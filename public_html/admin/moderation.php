@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.13 2001/11/18 21:51:44 tony_bibbs Exp $
+// $Id: moderation.php,v 1.14 2001/11/19 22:39:30 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -127,6 +127,11 @@ function commandcontrol()
         $admin_templates->parse('plugin_options','ccitem',true);
 	next($plugins);
     }
+
+    if (count($plugins) == 0) {
+        $admin_templates->set_var('plugin_options','');
+    }
+
     $retval .= $admin_templates->parse('output','cc');
 
     $retval .= COM_endBlock();
