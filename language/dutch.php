@@ -104,7 +104,7 @@ $LANG01 = array(
     56 => 'Stem',
     57 => 'Wachtwoord',
     58 => 'Inloggen',
-    59 => "Heeft u nog geen account? <br> Meld u dan <strong>nu</strong> aan als <a href=\'{$_CONF['site_url']}/users.php?mode=new\'>nieuwe gebruiker</a>",
+    59 => "Heeft u nog geen account? <br> Meld u dan <strong>nu</strong> aan als <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nieuwe gebruiker</a>",
     60 => 'Geef commentaar',
     61 => 'Aanmelden nieuw account',
     62 => 'woorden',
