@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.274 2004/01/13 20:00:40 dhaun Exp $
+// $Id: lib-common.php,v 1.275 2004/01/18 14:43:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2204,7 +2204,7 @@ function COM_adminMenu( $help = '', $title = '' )
             }
         }
 
-        if( SEC_isModerator() )
+        if( SEC_isModerator()  || (( $_CONF['usersubmission'] == 1 ) && SEC_hasRights( 'user.edit,user.delete' )))
         {
             $num = 0;
 
@@ -2244,7 +2244,7 @@ function COM_adminMenu( $help = '', $title = '' )
                 $num += DB_count( $_TABLES['linksubmission'] );
             }
 
-            if( $_CONF['usersubmission'] == 1)
+            if( $_CONF['usersubmission'] == 1 )
             {
                 if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
                 {
@@ -5086,7 +5086,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $sql .= "(({$table}owner_id = '{$uid}') AND ({$table}perm_owner >= $access)) OR ";
 
-        $sql .= "(({$table}group_id IN (" . implode (',', $_GROUPS)
+        $sql .= "(({$table}group_id IN (" . implode( ',', $_GROUPS )
              . ")) AND ({$table}perm_group >= $access)) OR ";
         $sql .= "({$table}perm_members >= $access)";
     }
