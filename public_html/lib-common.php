@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.357 2004/08/11 18:34:34 dhaun Exp $
+// $Id: lib-common.php,v 1.358 2004/08/13 08:54:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2674,7 +2674,8 @@ function COM_adminMenu( $help = '', $title = '' )
         }
 
         // Add PDF Generator Link if the feature is enabled
-        if (($_CONF['pdf_enabled'] == 1) AND (SEC_inGroup('Root'))) {
+        if(( $_CONF['pdf_enabled'] == 1 ) AND ( SEC_inGroup( 'Root' )))
+        {
             $url = $_CONF['site_url'] . '/pdfgenerator.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG_PDF[9] );
@@ -2683,7 +2684,15 @@ function COM_adminMenu( $help = '', $title = '' )
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
-        
+
+        if( $_CONF['link_documentation'] == 1 )
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/docs/' );
+            $adminmenu->set_var( 'option_label', $LANG01[113] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
+            $retval .= $adminmenu->parse( 'item', 'option' );
+        }
+
         if( SEC_inGroup( 'Root' ))
         {
             $adminmenu->set_var( 'option_url',

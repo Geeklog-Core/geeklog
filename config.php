@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.128 2004/08/11 18:14:42 dhaun Exp $
+// $Id: config.php,v 1.129 2004/08/13 08:54:49 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -508,6 +508,9 @@ $_CONF['hidenewstories']  = 0;
 $_CONF['hidenewcomments'] = 0;
 $_CONF['hidenewlinks']    = 0;
 $_CONF['hidenewplugins']  = 0;
+
+// Link to the documentation from the Admin block (0 = hide link, 1 = show)
+$_CONF['link_documentation'] = 1;
 
 // Calendar Settings
 $_CONF['personalcalendars']     = 1;

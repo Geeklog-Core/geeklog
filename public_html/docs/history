@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Moved the docs directory to public_html/docs and added a link to it from the
+  Admin's block (can be switched off in config.php by setting the new option
+  $_CONF['link_documentation'] = 0) [Dirk]
 - Replaced 'ppmtojpeg' with 'pnmtojpeg' when using NetPBM for scaling
   uploaded JPEG images (bug #257) [Dirk]
 - Added a check (and a warning message) for PHP 4.1.0 to the install script,
