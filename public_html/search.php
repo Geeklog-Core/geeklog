@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.37 2002/09/16 17:34:42 dhaun Exp $
+// $Id: search.php,v 1.38 2002/09/29 13:21:21 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -71,7 +71,7 @@ function searchform()
     }
     $searchform->set_var('plugin_types', $pluginoptions);
 
-	if ($_CONF['contributedbyline'] == 1) {
+    if ($_CONF['contributedbyline'] == 1) {
         $searchform->set_var('lang_authors', $LANG09[8]);
         $searchusers = array();
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['comments']}");
@@ -91,24 +91,28 @@ function searchform()
             }
             next($searchusers);
         }
-        $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist) ORDER by username");
-        $useroptions = '';
-        for ($i = 1; $i <= DB_numRows($result); $i++) {
-            $A = DB_fetchArray($result);
-            $useroptions .= '<option value="' . $A['uid'] . '">' . $A['username'] . '</option>';
+        if (!empty ($inlist)) {
+            $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist) ORDER by username");
+            $useroptions = '';
+            for ($i = 1; $i <= DB_numRows($result); $i++) {
+                $A = DB_fetchArray($result);
+                $useroptions .= '<option value="' . $A['uid'] . '">' . $A['username'] . '</option>';
+            }
+            $searchform->set_var('author_option_list', $useroptions);
+            $searchform->parse('author_form_element', 'authors', true);
+        } else {
+            $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
         }
-        $searchform->set_var('author_option_list', $useroptions);
-        $searchform->parse('author_form_element', 'authors', true);
-	} else {
-		$searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
-	}
+    } else {
+        $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
+    }
     $searchform->set_var('lang_search', $LANG09[10]);	
     $searchform->parse('output', 'searchform');
 
     $retval .= $searchform->finish($searchform->get_var('output'));
     $retval .= COM_endBlock();
 
-	return $retval;
+    return $retval;
 }
 
 function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
