@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.3 2005/01/21 12:04:21 dhaun Exp $
+// $Id: lib-trackback.php,v 1.4 2005/01/28 08:38:41 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -183,6 +183,47 @@ function TRB_allowDelete ($sid, $type)
     }
 
     return $allowed;
+}
+
+/**
+* Save a trackback (or pingback) comment.
+*
+* @param    string  $sid        entry id
+* @param    string  $type       type of entry ('article' = story, etc.)
+* @param    string  $url        URL of the trackback comment
+* @param    string  $title      title of the comment (set to $url if empty)
+* @param    string  $blog       name of the blog that sent the comment
+* @param    string  $excerpt    excerpt from the comment
+* @return   void
+*
+*/
+function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $excerpt = '')
+{
+    global $_TABLES;
+
+    // MT does that, so follow its example ...
+    if (strlen ($excerpt) > 255) {
+        $excerpt = substr ($excerpt, 0, 252) . '...';
+    }
+
+    $title   = str_replace (array ('$',     '{',      '}'),
+                            array ('&#36;', '&#123;', '&#126;'), $title);
+    $excerpt = str_replace (array ('$',     '{',      '}'),
+                            array ('&#36;', '&#123;', '&#126;'), $excerpt);
+    $blog    = str_replace (array ('$',     '{',      '}'),
+                            array ('&#36;', '&#123;', '&#126;'), $blog);
+
+    $url     = addslashes ($url);
+    $title   = addslashes ($title);
+    $blog    = addslashes ($blog);
+    $excerpt = addslashes ($excerpt);
+
+    // delete any earlier trackbacks from the same URL
+    DB_delete ($_TABLES['trackback'], array ('url', 'sid', 'type'),
+               array ($url, $sid, $type));
+
+    DB_save ($_TABLES['trackback'], 'sid,url,title,blog,excerpt,date,type,ipaddress',
+             "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type','{$_SERVER['REMOTE_ADDR']}'");
 }
 
 /**
@@ -347,25 +388,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
             return false;
         }
 
-        // MT does that, so follow its example ...
-        if (strlen ($excerpt) > 255) {
-            $excerpt = substr ($excerpt, 0, 252) . '...';
-        }
-
-        $title   = str_replace (array ('$',     '{',      '}'),
-                                array ('&#36;', '&#123;', '&#126;'), $title);
-        $excerpt = str_replace (array ('$',     '{',      '}'),
-                                array ('&#36;', '&#123;', '&#126;'), $excerpt);
-        $blog    = str_replace (array ('$',     '{',      '}'),
-                                array ('&#36;', '&#123;', '&#126;'), $blog);
-
-        $url     = addslashes ($url);
-        $title   = addslashes ($title);
-        $blog    = addslashes ($blog);
-        $excerpt = addslashes ($excerpt);
-
-        DB_save ($_TABLES['trackback'], 'sid,url,title,blog,excerpt,date,type,ipaddress',
-                 "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type','{$_SERVER['REMOTE_ADDR']}'");
+        TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog, $excerpt);
 
         COM_updateSpeedlimit ('trackback');
 
