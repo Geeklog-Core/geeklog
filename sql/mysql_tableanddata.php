@@ -510,6 +510,7 @@ CREATE TABLE {$_TABLES['users']} (
   cookietimeout int(8) unsigned default '0',
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
+  pwrequestid varchar(16) default NULL,
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username)
 ) TYPE=MyISAM

@@ -298,6 +298,12 @@ $LANG04 = array(
     84 => 'Gesamtanzahl Artikel:',
     85 => 'Gesamtanzahl Kommentare',
     86 => 'Alle Artikel und Kommentare von'
+    87 => 'Dein Username',
+    88 => 'Jemand (möglicherweise Du selbst) hat ein neues Passwort für Deinen Account "%s" auf ' . $_CONF['site_name'] . ', <' . $_CONF['site_url'] . "> angefordert.\n\nWenn Du tatsächlich ein neues Passwort benötigst, klicke bitte auf den folgenden Link:\n\n",
+    89 => "Möchtest Du Dein Passwort nicht ändern, so kannst Du diese E-Mail einfach ignorieren (Dein bisheriges Passwort bleibt unverändert gültig).\n\n",
+    90 => 'Du kannst hier jetzt ein neues Passwort für Deinen Account eingeben. Dein altes Passwort bleibt noch solange gültig, bis Du dieses Formular abschickst.',
+    91 => 'Neues Passwort',
+    92 => 'Neues Passwort eingeben'
 );
 
 ###############################################################################
@@ -984,6 +990,10 @@ $MESSAGE = array (
     48 => 'Danke, dass Du dich bei ' . $_CONF['site_name'] . ' angemeldet hast. Dein Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, wirst Du Dein Passwort per E-Mail erhalten.',
     49 => "Deine Gruppe wurde gespeichert.",
     50 => "Die Gruppe wurde gelöscht."
+    51 => 'Dieser Username ist schon vergeben. Bitte wähle einen anderen.',
+    52 => 'Die angegebene E-Mail-Adresse scheint nicht gültig zu sein.',
+    53 => 'Dein neues Passwort wurde gespeichert. Bitte melde Dich nun mit dem neuen Passwort an.',
+    54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.'
 );
 
 // for plugins.php

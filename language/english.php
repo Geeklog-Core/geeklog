@@ -292,7 +292,12 @@ $LANG04 = array(
     84 => 'Total number of articles:',
     85 => 'Total number of comments:',
     86 => 'Find all postings by',
-    87 => 'Your login name'
+    87 => 'Your login name',
+    88 => 'Someone (possibly you) has requested a new password for your account "%s" on ' . $_CONF['site_name'] . ', <' . $_CONF['site_url'] . ">.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
+    89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
+    90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
+    91 => 'Set New Password',
+    92 => 'Enter New Password'
 );
 
 ###############################################################################
@@ -990,7 +995,9 @@ $MESSAGE = array (
     49 => "Your group has been successfully saved.",
     50 => "The group has been successfully deleted.",
     51 => 'This username is already in use. Please choose another one.',
-    52 => 'The email address provided does not appear to be a valid email address'
+    52 => 'The email address provided does not appear to be a valid email address',
+    53 => 'Your new password has been accepted. Please use your new password below to log in now.',
+    54 => 'Your request for a new password has expired. Please try again below.'
 );
 
 // for plugins.php

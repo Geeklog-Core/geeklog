@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.57 2003/05/03 18:28:21 blaine Exp $
+// $Id: users.php,v 1.58 2003/05/05 09:33:38 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -286,7 +286,7 @@ function userprofile($user)
 function emailpassword($username,$msg=0) 
 {
     global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
-	
+
     $result = DB_query("SELECT email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
@@ -300,6 +300,7 @@ function emailpassword($username,$msg=0)
         $passwd = substr($passwd,1,8);
         $passwd2 = md5($passwd);
         DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
+        DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$username);
         $mailtext = "{$LANG04[15]}\r\n\r\n";
         $mailtext .= "{$LANG04[2]}: $username\r\n";
         $mailtext .= "{$LANG04[4]}: $passwd\r\n\r\n";
@@ -318,7 +319,7 @@ function emailpassword($username,$msg=0)
         mail($A["email"]
             ,"{$_CONF["site_name"]}: {$LANG04[16]}"
             ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nContent-Type: text/plain; charset={$charset}\r\nX-Mailer: GeekLog $VERSION"
+            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
             );
 
         if ($msg) {
@@ -334,12 +335,102 @@ function emailpassword($username,$msg=0)
 }
 
 /**
+* User request for a new password - send email with a link and request id
+*
+* @param username string   name of user who requested the new password
+* @param msg      int      index of message to display (if any)
+* @return         string   form or meta redirect
+*
+*/
+function requestpassword ($username, $msg = 0)
+{
+    global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
+
+    $result = DB_query ("SELECT uid,email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
+    $nrows = DB_numRows ($result);
+    if ($nrows == 1) {
+        $A = DB_fetchArray ($result);
+        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5 (''))) {
+            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+        }
+        $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
+        DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
+                   'username', $username);
+
+        $mailtext = sprintf ($LANG04[88], $username);
+        $mailtext .= $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";
+        $mailtext .= $LANG04[89];
+        $mailtext .= "{$_CONF["site_name"]}\n";
+        $mailtext .= "{$_CONF['site_url']}\n";
+
+        if (empty ($LANG_CHARSET)) {
+            $charset = $_CONF['default_charset'];
+            if (empty ($charset)) {
+                $charset = "iso-8859-1";
+            }
+        } else {
+            $charset = $LANG_CHARSET;
+        }
+        mail ($A['email'],
+              "{$_CONF['site_name']}: {$LANG04[16]}",
+              $mailtext,
+              "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\nReturn-Path: <{$_CONF['site_mail']}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
+             );
+
+        if ($msg) {
+            $retval .= COM_refresh ($_CONF['site_url'] . "/index.php?msg=$msg");
+        } else {
+            $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
+    } else {
+        $retval .= COM_siteHeader ('menu')
+                . defaultform ($LANG04[17]) . COM_siteFooter ();
+    }
+
+    return $retval;
+}
+
+/**
+* Display a form where the user can enter a new password.
+*
+* @param uid       int      user id
+* @param requestid string   request id for password change
+* @return          string   new password form
+*
+*/
+function newpasswordform ($uid, $requestid)
+{
+    global $_CONF, $_TABLES, $LANG04;
+
+    $pwform = new Template ($_CONF['path_layout'] . 'users');
+    $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
+    $pwform->set_var ('site_url', $_CONF['site_url']);
+    $pwform->set_var ('layout_url', $_CONF['layout_url']);
+
+    $pwform->set_var ('user_id', $uid);
+    $pwform->set_var ('user_name', DB_getItem ($_TABLES['users'], 'username',
+                                               "uid = '{$uid}'"));
+    $pwform->set_var ('request_id', $requestid);
+
+    $pwform->set_var ('lang_explain', $LANG04[90]);
+    $pwform->set_var ('lang_username', $LANG04[2]);
+    $pwform->set_var ('lang_newpassword', $LANG04[4]);
+    $pwform->set_var ('lang_setnewpwd', $LANG04[91]);
+
+    $retval = COM_startBlock ($LANG04[92]);
+    $retval .= $pwform->finish ($pwform->parse ('output', 'newpw'));
+    $retval .= COM_endBlock ();
+
+    return $retval;
+}
+
+/**
 * Send an email notification when a new user registers with the site.
 *
-* @username string      User name of the new user
-* @email    string      Email address of the new user
-* @uid      int         User id of the new user
-* @queued   bool        true = user was added to user submission queue
+* @param username string      User name of the new user
+* @param email    string      Email address of the new user
+* @param uid      int         User id of the new user
+* @param queued   bool        true = user was added to user submission queue
 *
 */
 function sendNotification ($username, $email, $uid, $queued = false)
@@ -371,8 +462,8 @@ function sendNotification ($username, $email, $uid, $queued = false)
     }
     $mailheaders = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
                  . "Return-Path: {$_CONF['site_mail']}\r\n"
-                 . "Content-Type: text/plain; charset=$charset\r\n"
-                 . "X-Mailer: GeekLog " . VERSION;
+                 . "X-Mailer: GeekLog " . VERSION . "\r\n"
+                 . "Content-Type: text/plain; charset=$charset";
 
     @mail ($_CONF['site_mail'], $mailsubject, $mailbody, $mailheaders);
 }
@@ -450,23 +541,24 @@ function createuser($username,$email)
             // if enabled and exists
   	        if ($_CONF['custom_registration'] AND (function_exists(custom_usercreate))) {
                 custom_usercreate($uid);
-			}
+            }
 
             PLG_createUser ($uid);
 
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
-		    $retval .= COM_siteHeader('menu');
-	        if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
-		        $retval .= custom_userform('new','',$LANG04[19]);
-	        } else {
-		        $retval .= newuserform($LANG04[19]);
-	        }
+            $retval .= COM_siteHeader ('Menu');
+            if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+                $retval .= custom_userform ('new', '', $LANG04[19]);
+            } else {
+                $retval .= newuserform ($LANG04[19])
+            }
+            $retval .= COM_siteFooter ();
         }
     } else {
         $retval .= COM_siteHeader ('Menu')
                 . newuserform ($LANG04[18])
-                . COM_siteFooter ();
+                . COM_siteFooter();
     }
 
     return $retval;
@@ -636,12 +728,16 @@ case 'logout':
 case 'profile':
     $uid = strip_tags ($HTTP_GET_VARS['uid']);
     if (is_numeric ($uid)) {
-	    // Call custom registration and account record create function if enabled and exists
-        if ($_CONF['custom_registration'] AND (function_exists(custom_userform)) AND SEC_hasRights("user.edit")) {
-            $display .= COM_siteHeader('menu') . custom_userform('moderate',$uid) . COM_siteFooter();
-	    } else {
-		    $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
+        $display .= COM_siteHeader('menu');
+        // Call custom registration and account record create function if
+        // enabled and exists
+        if ($_CONF['custom_registration'] AND (function_exists(custom_userform))
+                 AND SEC_hasRights("user.edit")) {
+            $display .= custom_userform ('moderate', $uid);
+        } else {
+            $display .= userprofile ($uid);
         }
+        $display .= COM_siteFooter ();
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
@@ -654,17 +750,69 @@ case 'getpassword':
     $display .= getpasswordform();
     $display .= COM_siteFooter();
     break;
+case 'newpwd':
+    $uid = $HTTP_GET_VARS['uid'];
+    $reqid = $HTTP_GET_VARS['rid'];
+    if (!empty ($uid) && is_numeric ($uid) && !empty ($reqid)) {
+        $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'), array ($uid, $reqid));
+        if ($valid == 1) {
+            $display .= COM_siteHeader ('menu');
+            $display .= newpasswordform ($uid, $reqid);
+            $display .= COM_siteFooter ();
+        } else { // request invalid or expired
+            $display .= COM_siteHeader ('menu');
+            $display .= COM_showMessage (54);
+            $display .= getpasswordform ();
+            $display .= COM_siteFooter ();
+        }
+    } else {
+        // this request doesn't make sense - ignore it
+        $display = COM_refresh ($_CONF['site_url']);
+    }
+    break;
+case 'setnewpwd':
+    if (empty ($HTTP_POST_VARS['passwd'])) {
+        $display = COM_refresh ($_CONF['site_url']
+                 . '/users.php?mode=newpwd&uid=' . $HTTP_POST_VARS['uid']
+                 . '&rid=' . $HTTP_POST_VARS['rid']);
+    } else {
+        $uid = $HTTP_POST_VARS['uid'];
+        $reqid = $HTTP_POST_VARS['rid'];
+        if (!empty ($uid) && is_numeric ($uid) && !empty ($reqid)) {
+            $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
+                               array ($uid, $reqid));
+            if ($valid == 1) {
+                $passwd = md5 ($HTTP_POST_VARS['passwd']);
+                DB_change ($_TABLES['users'], 'passwd', "$passwd",
+                           "uid", $uid);
+                DB_delete ($_TABLES['sessions'], 'uid', $uid);
+                DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
+                           'username', $username);
+                $display = COM_refresh ($_CONF['site_url'] . '/users.php?msg=53');
+            } else { // request invalid or expired
+                $display .= COM_siteHeader ('menu');
+                $display .= COM_showMessage (54);
+                $display .= getpasswordform ();
+                $display .= COM_siteFooter ();
+            }
+        } else {
+            // this request doesn't make sense - ignore it
+            $display = COM_refresh ($_CONF['site_url']);
+        }
+    }
+    break;
 case 'emailpasswd':
-    $display .= emailpassword($HTTP_POST_VARS['username'], 1);
+    $display .= requestpassword ($HTTP_POST_VARS['username'], 1);
     break;
 case 'new':
-	// Call custom registration and account record create function if enabled and exists
     $display .= COM_siteHeader('menu');
-	if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+    // Call custom registration and account record create function
+    // if enabled and exists
+    if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
         $display .= custom_userform('new');
-	} else {
-	    $display .= newuserform($msg);
-	}		
+    } else {
+        $display .= newuserform($msg);
+    }	
     $display .= COM_siteFooter();
     break;
 default:
@@ -681,6 +829,7 @@ default:
         $mypasswd = rand();
     }
     if (!empty($passwd) && $mypasswd == md5($passwd)) {
+        DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
         $userdata = SESS_getUserData($loginname);
         $_USER=$userdata;
         $sessid = SESS_newSession($_USER['uid'], $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
@@ -722,12 +871,12 @@ default:
             }
         }
 
-        // Now that we have users data see if their theme cookie is set.  If not set it
-        setcookie($_CONF['cookie_theme'],$_USER['theme'],time() + 31536000,$_CONF['cookie_path']);
-	
-        // Increment the numlogins counter for this user
-        // DB_change("users","numlogins","numlogins + 1","username","$loginname");
-        if (($HTTP_REFERER) && ($HTTP_REFERER <> ($_CONF['site_url']."/users.php"))) {
+        // Now that we have users data see if their theme cookie is set.
+        // If not set it
+        setcookie ($_CONF['cookie_theme'], $_USER['theme'], time() + 31536000,
+                   $_CONF['cookie_path']);
+
+        if (($HTTP_REFERER) && (strstr ($HTTP_REFERER, '/users.php') === false)) {
             $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
             if (substr ($HTTP_REFERER, 0, strlen ($indexMsg)) == $indexMsg) {
                 $display .= COM_refresh($_CONF['site_url'] . '/index.php');
@@ -744,8 +893,8 @@ default:
 
         switch ($mode) {
         case 'create':
-            // Got bad account info from registration process, show error message
-            // and display form again
+            // Got bad account info from registration process, show error
+            // message and display form again
             $display .= newuserform();
             break;
         default:
@@ -758,7 +907,6 @@ default:
             $msg = $LANG04[31];
         }
 
-        //$display .= defaultform($msg) . COM_siteFooter();
         $display .= COM_siteFooter();
     }
     break;
