@@ -2,7 +2,11 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
-
+- Added new CSS declarations as recommened CSS for plugins   [Blaine]
+- Added a basic scheduler Plugin API plugin_runScheduledJob  [Blaine]
+  Interval is set in config.php - $_CONF['cron_schedule_interval']
+- Enhanced the Group Admin interface display [Blaine]
+- Enhanced the User Admin display and made the headings sortable [Blaine]
 - Geeklog will now properly handle html special characters (such as quotes and
   ampersands) in comment titles (bug #174) [Vinny]
 - COM_applyFilter will now accept negative numbers if the isnumeric parameter
