@@ -35,11 +35,13 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.64 2004/04/02 04:42:16 vinny Exp $
+// $Id: install.php,v 1.65 2004/05/09 09:13:24 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
-@ini_set ("display_errors", "1");
+if (function_exists ('ini_set')) {
+    ini_set ('display_errors', '1');
+}
 error_reporting (E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
 
 if (!defined ("LB")) {
