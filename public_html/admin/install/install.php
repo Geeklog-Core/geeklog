@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.48 2003/05/30 12:24:32 dhaun Exp $
+// $Id: install.php,v 1.49 2003/06/27 09:27:04 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -433,7 +433,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 
             if ($spversion > 0) {
                 // update plugin version number
-                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.3' WHERE pi_name = 'staticpages'");
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.3', pi_gl_version = '1.3.8' WHERE pi_name = 'staticpages'");
 
                 // remove Static Pages 'lock' flag
                 DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'staticpages'");
@@ -455,6 +455,8 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     $A = DB_fetchArray ($result);
                     if ($A['sp_label'] == 'nonews') {
                         DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 1, sp_where = 0 WHERE sp_title = 'Frontpage'");
+                    } else if (!empty ($A['sp_label'])) {
+                        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 1, sp_title = '{$A['sp_label']}' WHERE sp_title = 'Frontpage'");
                     } else {
                         DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 1 WHERE sp_title = 'Frontpage'");
                     }
