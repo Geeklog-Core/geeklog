@@ -70,7 +70,7 @@ Function: ShowPluginAdminOptions
 Description: Loops through all enabled plugins and calls their plugin_showadminoption_<plugin name> so that the plugin shows any option(s) they need under the Admin block.
 
 Function: ShowPluginUserOptions
-Description: Loops through all enabled plugins and calls their plugin_showuseroptions_<plugin name> so that the plugin shows any option(s) users need in their User Functions block
+Description: Loops through all enabled plugins and calls their plugin_getuseroption_<plugin name> so that the plugin shows any option(s) users need in their User Functions block
 
 Function: HandlePluginAdminEdit
 Description: calls the plugin_adminedit_<plugin name> method so that the "new <plugin name> | Admin Home" links show up at the top of admin/plugins/<plugin name>.php.  This is implemented strictly for consistency of the UI
