@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.186 2002/11/28 12:43:55 dhaun Exp $
+// $Id: lib-common.php,v 1.187 2002/11/29 10:47:16 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3457,8 +3457,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
 * This will email new stories in the topics that the user is interested in
 *
 * In account information the user can specify which topics for which they
-* will receive any new article for in a daily digest. As of 10/15/2001 this
-* isn't working entirely (usersettings.php needs to be modified)
+* will receive any new article for in a daily digest.
 *
 * @return   void
 */
@@ -3468,38 +3467,79 @@ function COM_emailUserTopics()
     global $_TABLES, $LANG08, $LANG24, $_CONF, $LANG_CHARSET;
 
     // Get users who want stories emailed to them
-    $usersql = 'SELECT username,email, etids '
+    $usersql = "SELECT username,email,etids,{$_TABLES['users']}.uid AS uuid "
         . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
-        . "WHERE {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
+        . "WHERE {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND (etids <> '-')";
 
     $users = DB_query( $usersql );
     $nrows = DB_numRows( $users );
+
+    $lastrun = DB_getItem ($_TABLES['vars'], 'value', "name = 'lastemailedstories'");
 
     // For each user, pull the stories they want and email it to them
     for( $x = 1; $x <= $nrows; $x++ )
     {
         $U = DB_fetchArray( $users );
+
         $cur_day = strftime( "%D", time() );
-        $result = DB_query( "SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'" );
-        $L = DB_fetchArray($result);
 
-        $storysql = 'SELECT sid,uid,date AS day,title,introtext,bodytext '
-            . "FROM {$_TABLES['stories']} "
-            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '" . $L['lastrun'] . "' AND (";
-
-        $ETIDS = explode( ' ', $U['etids'] );
-
-        for( $i = 0; $i < sizeof( $ETIDS ); $i++ )
+        $groups = SEC_getUserGroups( $U['uuid'] );
+        $groupList = '';
+        foreach( $groups as $grp )
         {
-            if( $i == (sizeof( $ETIDS ) - 1 ))
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr( $groupList, 0, -1 );
+
+        $storysql = "SELECT sid,uid,date AS day,title,introtext,bodytext "
+            . "FROM {$_TABLES['stories']} "
+            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
+
+        if( !empty( $U['etids'] ))
+        {
+            $storysql .= " AND (";
+            $ETIDS = explode( ' ', $U['etids'] );
+
+            for( $i = 0; $i < sizeof( $ETIDS ); $i++ )
             {
-                $storysql .= "tid = '$ETIDS[$i]')";
-            }
-            else
-            {
-                $storysql .= "tid = '$ETIDS[$i]' OR ";
+                if( $i == (sizeof( $ETIDS ) - 1 ))
+                {
+                    $storysql .= "tid = '$ETIDS[$i]')";
+                }
+                else
+                {
+                    $storysql .= "tid = '$ETIDS[$i]' OR ";
+                }
             }
         }
+        else // get all topics this user has access to
+        {
+            $topicsql = "SELECT tid FROM {$_TABLES['topics']} WHERE "
+                      . "(owner_id = {$U['uuid']} AND perm_owner >= 2) OR "
+                      . "(group_id IN ($groupList) AND perm_group >= 2) OR "
+                      . "(perm_members >= 2) OR "
+                      . "(perm_anon >= 2)";
+            $tresult = DB_query( $topicsql );
+            $trows = DB_numRows( $tresult );
+            if( $trows > 0 )
+            {
+                $storysql .= " AND (";
+                for( $i = 1; $i <= $trows; $i++ )
+                {
+                    $T = DB_fetchArray ($tresult);
+                    if ($i > 1)
+                    {
+                        $storysql .= " OR ";
+                    }
+                    $storysql .= "tid = '{$T['tid']}'";
+                }
+                $storysql .= ")";
+            }
+        }
+
+        $storysql .= " AND ((owner_id = {$U['uuid']} AND perm_owner >= 2) OR "
+                  . "(group_id IN ($groupList) AND perm_group >= 2) OR "
+                  . "(perm_members >= 2) OR (perm_anon >= 2))";
 
         $stories = DB_query( $storysql );
         $nsrows = DB_numRows( $stories );
@@ -3563,8 +3603,10 @@ function COM_emailUserTopics()
             }
         }
 
-        $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n";
-        $mailfrom .= "Content-Type: text/plain; charset={$charset}";
+        $mailfrom = "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
+                  . "Return-Path: <{$_CONF['site_mail']}>\r\n"
+                  . "Content-Type: text/plain; charset={$charset}\r\n"
+                  . "X-Mailer: GeekLog " . VERSION;
 
         $subject = strip_tags( stripslashes( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() )));
 

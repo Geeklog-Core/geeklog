@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.46 2002/11/28 20:22:39 dhaun Exp $
+// $Id: usersettings.php,v 1.47 2002/11/29 10:47:16 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -134,6 +134,33 @@ function edituser()
         . COM_endBlock();
     
     return $retval;
+}
+
+/**
+* Build a list of all topics the current user has access to
+*
+* @return   string   List of topic IDs, separated by spaces
+*
+*/
+function buildTopicList ()
+{
+    global $_TABLES;
+
+    $topics = '';
+
+    $result = DB_query ("SELECT tid FROM {$_TABLES['topics']}");
+    $numrows = DB_numRows ($result);
+    for ($i = 1; $i <= $numrows; $i++) {
+        $A = DB_fetchArray ($result);
+        if (SEC_hasTopicAccess ($A['tid'])) {
+            if ($i > 1) {
+                $topics .= ' ';
+            }
+            $topics .= $A['tid'];
+        }
+    }
+
+    return $topics;
 }
 
 /**
@@ -304,9 +331,15 @@ function editpreferences()
 
     if ($_CONF['emailstories'] == 1) {
         $user_etids = DB_getItem($_TABLES['userindex'],'etids',"uid = {$_USER['uid']}");
+        if (empty ($user_etids)) { // an empty string now means "all topics"
+            $user_etids = buildTopicList ();
+        } elseif ($user_etids == '-') { // this means "no topics"
+            $user_etids = '';
+        }
+
         $retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
         $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
-        $retval .= "<tr valign=\"top\"><td>$LANG04[76]<br>";
+        $retval .= '<tr valign="top"><td>' . $LANG04[76] . '<br>';
         $tmp .= COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$user_etids);
         $retval .= str_replace($_TABLES['topics'],'etids',$tmp);
         $retval .= '</td></tr></table>';
@@ -593,6 +626,9 @@ function savepreferences($A)
     
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
+    if (empty ($etids)) {
+        $etids = '-';
+    }
     DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",$_CONF['site_url'] . "/usersettings.php?mode=preferences&msg=6");
 
 }
