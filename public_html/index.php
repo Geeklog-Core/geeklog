@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.54 2004/02/02 19:09:21 dhaun Exp $
+// $Id: index.php,v 1.55 2004/02/10 19:18:57 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -89,8 +89,6 @@ if (!empty ($displayBlock)) {
             $display .= $topspan->finish ($topspan->get_var('output'));
             $GLOBALS['centerspan'] = true;
     }
-} else {
-    $display .= $displayBlock;
 }
 
 $maxstories = 0;
