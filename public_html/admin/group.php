@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.24 2003/03/21 17:15:21 dhaun Exp $
+// $Id: group.php,v 1.25 2003/06/08 19:14:00 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -265,7 +265,8 @@ function getIndirectFeatures ($grp_id)
 function printrights($grp_id='', $core=0) 
 {
 	global $_TABLES, $VERBOSE, $_USER, $LANG_ACCESS;
-$VERBOSE = true;
+
+	// $VERBOSE = true;
 	// this gets a bit complicated so bear with the comments
 	// first query for all available features
 	$features = DB_query("SELECT * FROM {$_TABLES['features']} ORDER BY ft_name");
