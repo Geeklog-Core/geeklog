@@ -51,5 +51,4 @@ if ($nrows==0) {
 }
 endblock();
 site_footer();
-
 ?>
