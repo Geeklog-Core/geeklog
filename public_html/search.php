@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.19 2002/05/17 01:14:39 mlimburg Exp $
+// $Id: search.php,v 1.20 2002/05/23 20:06:21 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -67,6 +67,7 @@ function searchform()
     // Generally I don't like to hardcode HTML but this seems easiest
     for ($i = 1; $i <= count($plugintypes); $i++) {
         $pluginoptions .= '<option value="' . key($plugintypes) . '">' . current($plugintypes) . '</option>' . LB; 
+        next($plugintypes);
     }
     $searchform->set_var('plugin_types', $pluginoptions);
 
