@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.30 2003/06/25 08:39:02 dhaun Exp $
+// $Id: calendar.php,v 1.31 2003/08/02 17:04:50 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -45,6 +45,7 @@ if (empty ($_USER['username']) &&
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);   
+    $login->set_var ('layout_url', $_CONF['layout_url']);   
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
@@ -355,6 +356,7 @@ case 'day':
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar/dayview');
     $cal_templates->set_file(array('column'=>'column.thtml','event'=>'singleevent.thtml','dayview'=>'dayview.thtml','quickadd'=>'quickaddform.thtml'));
     $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_day', $LANG30[39]);
     $cal_templates->set_var('lang_week', $LANG30[40]);
@@ -475,6 +477,7 @@ case 'week':
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
     $cal_templates->set_file(array('week'=>'weekview/weekview.thtml','events'=>'weekview/events.thtml','quickadd'=>'dayview/quickaddform.thtml'));
     $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_week', $LANG30[27]);
     if ($mode == 'personal') {
@@ -605,6 +608,7 @@ $cal_templates->set_file(array('calendar'=>'calendar.thtml',
 				'addevent'=>'addeventoption.thtml'));
 
 $cal_templates->set_var('site_url', $_CONF['site_url']);
+$cal_templates->set_var ('layout_url', $_CONF['layout_url']);
 $cal_templates->set_var('mode', $mode);
 $cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear, $mode));
 $cal_templates->set_var('next_months_cal',getSmallCalendar($nextmonth, $nextyear, $mode));
