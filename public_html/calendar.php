@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.9 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: calendar.php,v 1.10 2001/12/11 19:02:15 tony_bibbs Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -61,7 +61,7 @@ function getDayViewData($result, $cur_time = '')
             $alldaydata[$i] = $A;
         } else {
             // This is an event with start/end times
-            if ($A['datestart'] < date('Y-m-d', $cur_time)) {
+            if ($A['datestart'] < date('Y-m-d', $cur_time) AND $A['dateend'] >= date('Y-m-d', $cur_time)) {
                 $starthour = '00';
             } else {
                 $starthour = date('G', strtotime($A['datestart'] . ' ' . $A['timestart']));
@@ -70,7 +70,6 @@ function getDayViewData($result, $cur_time = '')
             if (date('i', strtotime($A['dateend'] . ' ' . $A['timeend'])) == '00') {
                 $endhour = $endhour - 1; 
             }
-            
             $hourcols[$starthour] = $hourcols[$starthour] + 1;
             if ($hourcols[$starthour] > $max) {
                 $max = $hourcols[$starthour];
@@ -128,28 +127,142 @@ function getSmallCalendar($m, $y, $mode='')
     
     return $retval;
 }
-		
+
+/**
+* Builds Quick Add form
+*
+*/
+function getQuickAdd($tpl, $month, $day, $year)
+{
+    global $LANG30;
+
+    for ($z = 1; $z <= 12; $z++) {
+        if ($z < 10) {
+           $mval = '0' . $z;
+        } else {
+           $mval = $z;
+        }
+        $month_options .= '<option value="' . $mval . '" ';
+        if ($z == $month) {
+            $month_options .= 'selected="SELECTED"';
+        }
+        $month_options .= '>' . $mval . '</option>';
+    }
+    $tpl->set_var('month_options', $month_options);
+
+    $day_options = '';
+    for ($z = 1; $z <= 31; $z++) {
+        $day_options .= '<option value="' . $z . '" ';
+        if ($z == $day) {
+            $day_options .= 'selected="SELECTED"';
+        }
+        $day_options .= '>' . $z. '</option>';
+    }
+    $tpl->set_var('day_options', $day_options);
+
+    $cur_year = date('Y',time());
+    for ($z = $cur_year; $z <= $cur_year + 5; $z++) {
+        $year_options .= '<option value="' . $z . '" ';
+        if ($z == $year) {
+            $year_options .= 'selected="SELECTED"';
+        }
+        $year_options .= '>' . $z . '</option>';
+    }
+    $tpl->set_var('year_options', $year_options);
+
+    $cur_hour = date('H',time());
+    if ($cur_hour >= 12) {
+        $tpl->set_var('pm_selected','selected="SELECTED"');
+    } else {
+        $tpl->set_var('am_selected','selected="SELECTED"');
+    }
+    if ($cur_hour > 12) $cur_hour = $cur_hour-12;
+    for ($z = 1; $z <= 11; $z++) {
+        if ($z < 10) {
+            $hval = '0' . $z;
+        } else {
+            $hval = $z;
+        }
+        if ($z == 1 ) {
+            $hour_options .= '<option value="12" ';
+            if ($cur_hour == 12) {
+                $hour_options .= 'selected="SELECTED"';
+            }
+            $hour_options .= '>12</option>';
+        }
+        $hour_options .= '<option value="' . $hval . '" ';
+        if ($cur_hour == $z) {
+            $hour_options .= 'selected="SELECTED"';
+        }
+        $hour_options .= '>' . $z . '</option>';
+    }
+    $tpl->set_var('hour_options', $hour_options);
+    $tpl->set_var('lang_event', $LANG30[32]);
+    $tpl->set_var('lang_date', $LANG30[33]);
+    $tpl->set_var('lang_time', $LANG30[34]);
+    $tpl->set_var('lang_add', $LANG30[31]);
+    $tpl->set_var('lang_quickadd', $LANG30[35]);
+    $tpl->set_var('lang_submit', $LANG30[36]);
+    $tpl->parse('quickadd_form','quickadd',true);
+
+    return $tpl;
+} 
+
+/** 
+* Returns timestamp for the prior sunday of a given day
+*
+*/
+function getPriorSunday($month, $day, $year) 
+{
+    $thestamp = mktime(0, 0, 0, $month, $day, $year);
+    $newday = $day - date('w', $thestamp);
+    $newstamp = mktime(0,0,0,$month,$newday,$year);
+    $newday = date('j',$newstamp);
+    $newmonth = date('n', $newstamp);
+    $newyear = date('Y',$newstamp);
+
+    return array($newmonth, $newday, $newyear);
+}
+
 $display .= COM_siteHeader('');
+
+// Set mode back to master if user refreshes screen after their session expires
+if (empty($_USER) AND $mode == 'personal') {
+    $mode = '';
+}
+
+if ($mode == 'personal' AND $_CONF['personalcalendars'] == 0) {
+    // User is trying to use the personal calendar feature even though it isn't
+    // turned on.
+    $display .= $LANG30[37];
+    $display .= COM_siteFooter();
+    echo $display;
+    exit;
+}
 
 // Create new calendar object
 $cal = new Calendar();
 
-// Get current month
-$currentmonth = date('m', time());
-if (empty($month)) {
-    $month = $currentmonth;
-}
+if ($view == 'week' AND (empty($month) AND empty($day) AND empty($year))) {
+    list($month, $day, $year) = getPriorSunday(date('m', time()), date("j", time()), date('Y', time()));
+} else {
+    // Get current month
+    $currentmonth = date('m', time());
+    if (empty($month)) {
+        $month = $currentmonth;
+    }
 
-// Get current year
-$currentyear = date('Y', time());
-if (empty($year)) {
-    $year = $currentyear;
-}
+    // Get current year
+    $currentyear = date('Y', time());
+    if (empty($year)) {
+        $year = $currentyear;
+    }
 
-// Get current day
-$currentday =  date("j", time());
-if (empty($day)) {
-    $day = $currentday;
+    // Get current day
+    $currentday =  date("j", time());
+    if (empty($day)) {
+        $day = $currentday;
+    }
 }
 
 // Get previous month and year
@@ -198,20 +311,36 @@ $cal->setCalendarMatrix($month,$year);
 switch ($view) {
 case 'day':
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar/dayview');
-    $cal_templates->set_file(array('column'=>'column.thtml','event'=>'singleevent.thtml','dayview'=>'dayview.thtml'));
+    $cal_templates->set_file(array('column'=>'column.thtml','event'=>'singleevent.thtml','dayview'=>'dayview.thtml','quickadd'=>'quickaddform.thtml'));
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_week', $LANG30[27]);
+    list($wmonth, $wday, $wyear) = getPriorSunday($month, $day, $year);
+    $cal_templates->set_var('wmonth', $wmonth);
+    $cal_templates->set_var('wday', $wday);
+    $cal_templates->set_var('wyear', $wyear);
     $cal_templates->set_var('month',$month);
     $cal_templates->set_var('day', $day);
     $cal_templates->set_var('year',$year);
+    $prevstamp = mktime(0, 0, 0,$month, $day - 1, $year);
+    $nextstamp = mktime(0, 0, 0,$month, $day + 1, $year);
+    $cal_templates->set_var('prevmonth', strftime('%m',$prevstamp));
+    $cal_templates->set_var('prevday', strftime('%d',$prevstamp));
+    $cal_templates->set_var('prevyear', strftime('%Y',$prevstamp));
+    $cal_templates->set_var('nextmonth', strftime('%m',$nextstamp));
+    $cal_templates->set_var('nextday', strftime('%d',$nextstamp));
+    $cal_templates->set_var('nextyear', strftime('%Y',$nextstamp));
+
+    $cal_templates->set_var('currentday', strftime('%A %B %e, %Y',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&view=day&month=$month&day=$day&year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&view=day&month=$month&day=$day&year=$year\">" . $LANG30[12] . '</a>]');
     }
     $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$month,$day,$year));
-    $cal_templates->set_var('week_num',strftime('%U',$thedate[1]));
+    $cal_templates->set_var('week_num',strftime('%V',$thedate[1]));
     if ($mode == 'personal') {
         $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart";
     } else {
@@ -220,22 +349,25 @@ case 'day':
     $result = DB_query($calsql);
     $nrows = DB_numRows($result);
     list($hourcols, $thedata, $max, $alldaydata) = getDayViewData($result);
-/*
-    for ($i = 0; $i <= 23; $i++) {
-        print "hourcols[$i] = {$hourcols[$i]} \n";
-    }
-    print "nrows = $nrows \n";
-    exit;
-*/
 
     // Get all day events
     if (count($alldaydata) > 0) {
         for ($i = 1; $i <= count($alldaydata); $i++) {
             $A = current($alldaydata);
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+            } else {
+                $cal_templates->set_var('delete_imagelink','');
+            }
             $cal_templates->set_var('event_time', $LANG30[26]);
             $cal_templates->set_var('eid', $A['eid']);
             $cal_templates->set_var('event_title',stripslashes($A['title']));
-            $cal_templates->parse('allday_event','event', true); 
+            if ($i < count($alldaydata)) {
+                $cal_templates->set_var('br', '<br>');
+            } else {
+                $cal_templates->set_var('br', '');
+            }
+            $cal_templates->parse('allday_events','event', true); 
             next($alldaydata);
         }
     } else {
@@ -254,14 +386,19 @@ case 'day':
         if ($nrows > 0) {
             $numevents = current($hourcols);
         }
+
         //$colsleft = $maxcols;
         $cal_templates->set_var('layout_url', $_CONF['layout_url']);
         for ($j = 1; $j <= $numevents; $j++) {
             $A = current($thedata);
             $cal_templates->set_var('event_time', date('g:ia',strtotime($A['datestart'].' '.$A['timestart'])) . '-'. date('g:ia',strtotime($A['dateend'].' '.$A['timeend'])));
-            $cal_templates->set_var('lang_deleteevent', $LANG30[30]);
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar.php?action=deleteevent&eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
+            } else {
+                $cal_templates->set_var('delete_imagelink','');
+            }
             $cal_templates->set_var('eid', $A['eid']);
-                $cal_templates->set_var('event_title', stripslashes($A['title']));
+            $cal_templates->set_var('event_title', stripslashes($A['title']));
             if ($j < $numevents) {
                 $cal_templates->set_var('br', '<br>');
             } else {
@@ -276,21 +413,59 @@ case 'day':
             next($hourcols);
         } 
     }
+
+    if ($mode == 'personal') {
+        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year);
+    } else {
+        $cal_templates->set_var('quickadd_form','');
+    }
     $display .= $cal_templates->parse('output', 'dayview');
     $display .= COM_siteFooter();
 
     break;
 case 'week':
-    $cal_templates = new Template($_CONF['path_layout'] . 'calendar/weekview');
-    $cal_templates->set_file(array('week'=>'weekview.thtml','events'=>'events.thtml'));
+    $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+    $cal_templates->set_file(array('week'=>'weekview/weekview.thtml','events'=>'weekview/events.thtml','quickadd'=>'dayview/quickaddform.thtml'));
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('mode', $mode);
     $cal_templates->set_var('lang_week', $LANG30[27]);
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&view=week&month=$month&day=$day&year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
+        $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&view=week&month=$month&day=$day&year=$year\">" . $LANG30[12] . '</a>]');
     }
+    if ($mode == 'personal') {
+        $cal_templates = getQuickAdd($cal_templates, $month, $day, $year);
+    } else {
+        $cal_templates->set_var('quickadd_form','');
+    }
+    // Get data for previous week
+    $prevstamp = mktime(0,0,0,$month,$day-7,$year);
+    $nextstamp = mktime(0,0,0,$month,$day+7,$year);
+    $cal_templates->set_var('prevmonth',strftime('%m',$prevstamp));
+    $cal_templates->set_var('prevday',date('j',$prevstamp));
+    $cal_templates->set_var('prevyear',strftime('%Y',$prevstamp));
+    $cal_templates->set_var('nextmonth',strftime('%m',$nextstamp));
+    $cal_templates->set_var('nextday',date('j',$nextstamp));
+    $cal_templates->set_var('nextyear',strftime('%Y',$nextstamp));
+    $start_mname = strftime('%B', mktime(0,0,0,$month,$day,$year));
+    $eday = strftime('%e', mktime(0,0,0,$month,$day+6,$year));
+    $end_mname = strftime('%B', mktime(0,0,0,$month,$day+6,$year));
+    $end_ynum = strftime('%Y', mktime (0,0,0,$month,$day+6,$year));
+    $date_range = $start_mname . ' ' . $day;
+    if ($year <> $end_ynum) {
+        $date_range .= ', ' . $year . ' - ';
+    } else {
+        $date_range .= ' - ';
+    }
+    if ($start_mname <> $end_mname) {
+        $date_range .= $end_mname . ' ' . $eday . ', ' . $end_ynum;
+    } else {
+        $date_range .= $eday . ', ' . $end_ynum;
+    }
+    $cal_templates->set_var('date_range', $date_range);
     $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$month,$day,$year));
     $cal_templates->set_var('week_num',$thedate[1]);
     for ($i = 1; $i <= 7; $i++) {
@@ -339,7 +514,12 @@ case 'week':
                 $cal_templates->set_var('event_endtime', ' - ' . $endtime);
             }
             $cal_templates->set_var('event_title_and_link', '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&eid=' . $A['eid'] . '">' . stripslashes($A['title']) . '</a>');
-            $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" border="0" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif"></a>');
+            // Provide delete event link if user has access
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND $mode == 'personal') {
+                $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&eid=' . $A['eid'] . '"><img alt="' . $LANG30[30] . '" border="0" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif"></a>');
+            } else {
+                $cal_templates->set_var('delete_imagelink','');
+            }
             $cal_templates->parse('events_day'.$i,'events',true);
             
         }
@@ -353,6 +533,8 @@ case 'week':
         // Go to next day
         $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$monthnum, $daynum + 1, $yearnum));
     }
+
+
     $display .= $cal_templates->parse('output','week');
     $display .= COM_siteFooter();
     break;
@@ -507,9 +689,10 @@ for ($i = 1; $i <= 6; $i++) {
         }
         $cal_templates->parse('cal_days','day',true);
     }
-    $cal_templates->set_var('wmonth', $month);
+    list($wmonth, $wday, $wyear) = getPriorSunday($month, $curday->daynumber, $year);
+    $cal_templates->set_var('wmonth', $wmonth);
     $cal_templates->set_var('wday', $wday);
-    $cal_templates->set_var('wyear', $year);
+    $cal_templates->set_var('wyear', $wyear);
     $cal_templates->parse('cal_week', 'week',true);
     $cal_templates->set_var('cal_days','');
 }
@@ -518,7 +701,7 @@ if ($mode == 'personal') {
     $cal_templates->set_var('lang_mastercal', $LANG30[25] . $LANG30[11]);
     $cal_templates->parse('master_calendar_option','mastercal',true); 
 } else {
-    if ($_USER['uid'] > 1) {
+    if ($_USER['uid'] > 1 AND $_CONF['personalcalendars'] == 1) {
         $cal_templates->set_var('lang_mycalendar', $LANG30[12]);
         $cal_templates->parse('personal_calendar_option','personalcal',true); 
     } else {
