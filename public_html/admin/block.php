@@ -105,6 +105,11 @@ function editblock($bid="") {
 	print "<input type=hidden name=bid value={$A["bid"]}></td></tr>";
 	print "<tr><td align=right>{$LANG21[5]}:</td><td><input type=text size=48 name=title value=\"{$A["title"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG21[6]}:</td><td><select name=tid><option value=all>{$LANG21[7]}</option>";
+	print "<option value=homeonly";
+	if ($A["tid"] == "homeonly") {
+		print " SELECTED";
+	}
+	print ">$LANG21[43]</option>";
 	optionlist("topics","tid,topic",$A["tid"]);
 	print "</select></td></tr>";
 	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
