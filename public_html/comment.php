@@ -6,9 +6,9 @@
 // +---------------------------------------------------------------------------+
 // | comment.php                                                               |
 // |                                                                           |
-// | Let user comment on a story.                                              |
+// | Let user comment on a story, poll, or plugin.                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.50 2004/01/18 14:46:17 dhaun Exp $
+// $Id: comment.php,v 1.51 2004/01/21 20:23:33 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -110,24 +110,30 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $sig = DB_getItem ($_TABLES['users'], 'sig', "uid = '$uid'");
             }
 
-            if ($postmode == 'html') {
-                $commenttext = stripslashes($comment);
-                $commenttext = str_replace('$','&#36;',$commenttext);
+            // Note:
+            // $comment / $newcomment is what goes into the preview / is
+            // actually stored in the database -> strip HTML
+            // $commenttext is what the user entered and goes back into the
+            // <textarea> -> don't strip HTML
 
-                $comment = COM_checkHTML(COM_checkWords($comment));
-                $title = COM_checkHTML(htmlspecialchars(COM_checkWords($title)));
+            $commenttext = htmlspecialchars (COM_stripslashes ($comment));
+
+            if ($postmode == 'html') {
+                $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
             } else {
-                $title = stripslashes(htmlspecialchars(COM_checkWords($title)));
-                $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
-                $commenttext = str_replace('$','&#36;',$comment);
-                $title = str_replace('$','&#36;',$title);
+                $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
             }
-            // Replace { and } with special HTML equivalents
+            // Replace $, {, and } with special HTML equivalents
+            $commenttext = str_replace('$','&#36;',$commenttext);
             $commenttext = str_replace('{','&#123;',$commenttext);
             $commenttext = str_replace('}','&#125;',$commenttext);
 
-            $title = strip_tags(COM_checkWords($title));
-            $HTTP_POST_VARS['title'] = $title;
+            $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
+            // $title = str_replace('$','&#36;',$title); done in COM_getComment
+            $title = str_replace('{','&#123;',$title);
+            $title = str_replace('}','&#125;',$title);
+
+            $HTTP_POST_VARS['title'] = addslashes ($title);
             $newcomment = $comment;
             if (!empty ($sig)) {
                 if (!$postmode == 'html') {
@@ -244,6 +250,13 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         return $retval;
     }
 
+    // Clean 'em up a bit!
+    if ($postmode == 'html') {
+        $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
+    } else {
+        $comment = $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+    }
+
     // Get signature
     $sig = '';
     if ($uid > 1) {
@@ -257,23 +270,17 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         }
     }
 
-    // Clean 'em up a bit!
-    if ($postmode == 'html') {
-        $comment = addslashes(COM_checkHTML(COM_checkWords($comment)));
-    } else {
-        $comment = addslashes(htmlspecialchars(COM_checkWords($comment)));
-    } 
-
     // check again for non-int pid's
     // this should just create a top level comment that is a reply to the original item
     if (!is_numeric($pid)) {
         $pid = 0;
     }
 
-    $title = addslashes(strip_tags(COM_checkWords($title)));
+    $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
 
     if (!empty ($title) && !empty ($comment)) {
         COM_updateSpeedlimit ('comment');
+        $comment = addslashes ($comment);
         DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,type',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
 
@@ -438,22 +445,19 @@ default:
     if (isset ($HTTP_POST_VARS['sid'])) {
         $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
         $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+        $title = COM_applyFilter ($HTTP_POST_VARS['title']);
+        $pid = COM_applyFilter ($HTTP_POST_VARS['pid'], true);
+        $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+        $postmode = COM_applyFilter ($HTTP_POST_VARS['postmode']);
     } else {
         $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
         $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+        $title = COM_applyFilter ($HTTP_GET_VARS['title']);
+        $pid = COM_applyFilter ($HTTP_GET_VARS['pid'], true);
+        $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+        $postmode = COM_applyFilter ($HTTP_GET_VARS['postmode']);
     }
     if (!empty ($sid)) {
-        if (isset ($HTTP_POST_VARS['title'])) {
-            $title = COM_applyFilter ($HTTP_POST_VARS['title']);
-            $pid = COM_applyFilter ($HTTP_POST_VARS['pid'], true);
-            $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
-            $postmode = COM_applyFilter ($HTTP_POST_VARS['postmode']);
-        } else {
-            $title = COM_applyFilter ($HTTP_GET_VARS['title']);
-            $pid = COM_applyFilter ($HTTP_GET_VARS['pid'], true);
-            $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
-            $postmode = COM_applyFilter ($HTTP_GET_VARS['postmode']);
-        }
         if (empty ($title)) {
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
