@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.13 2005/02/14 05:17:08 blaine Exp $
+// $Id: lib-custom.php,v 1.14 2005/02/15 10:02:17 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -268,7 +268,7 @@ function custom_userform ($msg = '')
     $user_templates->set_var('message', $message);
     $user_templates->set_var('USERNAME', "Username");
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
-    $user_templates->set_var('username', '']);
+    $user_templates->set_var('username', '');
     $user_templates->set_var('EMAIL', "Email Address");
     $user_templates->set_var('EMAIL_HELP', "");
     $user_templates->set_var('email', '');
