@@ -1,5 +1,27 @@
 GeekLog History/Changes:
 
+- The database backup is more verbose now, especially when there are problems
+  (changes provided by Blaine Lang).
+- Fixed a bug where the admin's user photo overwrote a user's photo when the
+  admin was editing the user's account information.
+- Group editor:
+  + Could not create new groups when using a non-english language file.
+  + Once you've added one group to another (by checking off an option from
+    the "Security Groups" list), there was no way to uncheck it again.
+  + The message after saving/deleting a group said that the topic(!) had been
+    saved/deleted ...
+- Changes in search:
+  + Should be faster now.
+  + Search by date did not work (mostly because the date format recommended to
+    be used in a search is really YYYY-MM-DD and not MM-DD-YYYY).
+  + List of authors is now sorted by username.
+  + Search results for links are now routed via portal.php, too, so that the
+    links are counted when clicked.
+- The static pages plugin uses the table prefix now (databases created with
+  Geeklog 1.3.5 or older need to be upgraded).
+- A user submission queue has been added. When activated in config.php
+  ($_CONF['usersubmission'] = 1;), new users will not get their password
+  emailed until they are approved by an admin.
 - Fixed problems with quotes in poll question and answers.
 - The default value for the number of stories per page for a new user is now
   taken from $_CONF['limitnews'] (was hard-coded to 10).
@@ -47,7 +69,6 @@ GeekLog History/Changes:
   only) to mark portions of the text as containing code of any form (HTML, PHP,
   any other programming language). Geeklog will then reproduce this section
   verbatim, i.e. not interpreting any special characters in that section.
-- An error message is displayed now if mysqldump can not be found.
 - Fixed type pulldown menu in search when more than one plugin was used.
 - Signatures in comments are working again.
 - The daily digest uses $_CONF['shortdate'] now
