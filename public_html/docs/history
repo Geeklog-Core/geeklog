@@ -1,8 +1,10 @@
 GeekLog History/Changes:
 
-XXX XX, 2004 (1.3.10)
+Oct 17, 2004 (1.3.10rc1)
 ------------
 
+- When a plugin had its icon only in the admin directoy, the plugin editor
+  did not find it and displayed a generic icon instead [Dirk]
 - In admin/mail.php, apply htmlspecialchars() on the email addresses before
   displaying them, as the '<foo@example.com>' part will be interpreted as
   HTML by some browsers (pointed out by LWC) [Dirk]
