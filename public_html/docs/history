@@ -1,5 +1,20 @@
 GeekLog History/Changes:
 
+July 6, 2003 (1.3.8rc2)
+------------
+
+- When failing to delete an image for a story (from the Admin's story editor),
+  only log this problem in the error.log but don't abort the script (reported
+  by Rob).
+- When editing a story that used double quotes in the title, the title was cut
+  off after the first quote sign.
+- Story Admins could edit stories in a topic they didn't have access to, if
+  they somehow found out the story id.
+- When $_CONF['listdraftstories'] was enabled, moderation.php listed all stories
+  that had the "draft" flag set without checking for topic permissions (this
+  option was only introduced in 1.3.8rc1).
+- For Story Admins, the Admin menu may have listed a greater number of stories
+  than the user actually had access to (didn't check for topic permissions).
 - Fixed "Google paging" on the Admin's list of stories when the current user
   didn't have access to all the topics (paging was only introduced in 1.3.8rc1).
 - Try to prevent "illegal access" messages in error.log, caused by the plugin
@@ -11,9 +26,8 @@ GeekLog History/Changes:
   jose on IRC).
 - Changed the "getBent" block to test the real admin directory in case it has
   been renamed (bug #762881).
-- Don't save the privacy options when saving the user profile - since they are
-  part of the user's preferences and would be set to "off" that way ...
-  (reported by Dwight Trumbower).
+- Saving the user profile also saved the privacy options, setting them all to
+  "off" (reported by Dwight Trumbower).
 - Check the topic permissions when doing a search on stories and comments.
 - Check the topic permissions when displaying the new stories and comments in
   the What's New block.
