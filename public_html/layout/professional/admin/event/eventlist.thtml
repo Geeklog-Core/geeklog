@@ -1,0 +1,23 @@
+                            <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                <tr>
+                                    <td rowspan="2">
+                                        <img src="{layout_url}/images/icons/event.gif" alt="">
+                                    </td>
+                                    <td>[ <a href="{site_admin_url}/event.php?mode=edit">{lang_newevent}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_instructions}</td>
+                                </tr>
+                            </table>
+                            <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                <tr>
+                                    <th>#</th>
+                                    <th>&nbsp;</th>
+                                    <th align="left">{lang_eventtitle}</th>
+                                    <th>{lang_access}</th>
+                                    <th>{lang_startdate}</th>
+                                    <th>{lang_enddate}</th>
+                                </tr>
+                                {event_row}
+                                <tr><td colspan="6">{google_paging}</td></tr>
+                            </table>

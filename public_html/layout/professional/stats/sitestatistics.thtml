@@ -1,0 +1,22 @@
+                            <table cellpadding="0" cellspacing="1" border="0" width="99%">
+                                <tr>
+                                    <td>{lang_totalhitstosystem}</td>
+                                    <td align="right">{total_hits}</td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_stories_comments}</td>
+                                    <td align="right">{total_stories} ({total_comments})</td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_polls_answers}</td>
+                                    <td align="right">{total_polls} ({total_answers})</td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_links_clicks}</td>
+                                    <td align="right">{total_links} ({total_clicks})</td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_events}</td>
+                                    <td align="right">{total_events}</td>
+                                </tr>
+                            </table>

@@ -1,0 +1,126 @@
+                                {start_block_editor}
+                                <form action="{site_admin_url}/block.php" method="post">
+		                            <table border="0" cellspacing="0" cellpadding="3" width="100%">
+		                                <tr>
+		                                    <td align="right">{lang_blocktitle}:</td>
+		                                    <td><input type="text" size="48" name="title" value="{block_title}"></td>
+		                                </tr>
+		                                <tr>
+                                            <td align="right">{lang_enabled}:</td>
+                                            <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">{lang_blockhelpurl}:</td>
+                                            <td><input type="text" name="help" value="{block_help}" size="48"> {lang_includehttp}<br>{lang_explanation}</td>
+                                        </tr>
+		                                <tr>
+		                                    <td align="right" valign="top">{lang_blockname}:</td>
+		                                    <td><input type="text" size="48" name="name" value="{block_name}"><br>{lang_nospaces}</td>
+		                                </tr>
+		                                <tr>
+		                                    <td align="right">{lang_topic}:</td>
+		                                    <td>
+                                                <select name="tid">
+		                                            <option value="all" {all_selected}>{lang_all}</option>
+		                                            <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
+                                                    {topic_options}
+		                                        </select>
+                                            </td>
+		                                </tr>
+		                                <tr>
+		                                    <td align="right">{lang_side}:</td>
+		                                    <td>
+                                                <select name="onleft">
+		                                            <option value="1" {left_selected}>{lang_left}</option>
+                                                    <option value="0" {right_selected}>{lang_right}</option>
+		                                        </select>
+                                           </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_blockorder}:</td>
+                                            <td><input type="text" size="3" name="blockorder" value="{block_order}"> 0 - 255</td>
+		                                </tr>
+                                        <tr>
+                                            <td align="right">{lang_blocktype}:</td>
+		                                    <td>
+                                                <select name="type">
+		                                            <option value="normal" {normal_selected}>{lang_normalblock}</option>
+		                                            <option value="phpblock" {php_selected}>{lang_phpblock}</option>
+                                                    <option value="portal" {portal_selected}>{lang_portalblock}</option>
+		                                        </select>
+                                            </td>
+		                                </tr>
+                                        <tr>
+                                            <td colspan="2"><hr></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_phpblockoptions}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_blockfunction}:</td>
+                                            <td><input type="text" size="50" maxlength="50" name="phpblockfn" value="{block_phpblockfn}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{lang_phpblockwarning}</td>
+                                        </tr>
+                                        <tr><td colspan="2"><hr></td></tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_portalblockoptions}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_rdfurl}:</td>
+                                            <td><input type="text" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_lastrdfupdate}:</td>
+                                            <td><input type="text" size="19" name="rdfupdated" value="{block_rdfupdated}"></td>
+                                        </tr>
+                                        <tr><td colspan="2"><hr></td></tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_normalblockoptions}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">{lang_blockcontent}:</td>
+                                            <td><textarea name="content" cols="50" rows="12">{block_content}</textarea></td>
+                                        </tr>
+		                                <tr>
+                                            <td colspan="2"><hr></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_accessrights}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_owner}:</td>
+                                            <td>{owner_username} <input type="hidden" name="owner_id" value="{owner_id}">
+                                            </td>
+		                                </tr>
+                                        <tr>
+                                            <td align="right">{lang_group}:</td>
+                                            <td>
+                                                {group_dropdown}
+	                                        </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_permissions}:</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{lang_perm_key}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{permissions_editor}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{lang_permissions_msg}<td>
+                                        </tr>
+		                                <tr><td>&nbsp;</td></tr>
+		                                <tr>
+		                                    <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode">
+		                                        <input type="submit" value="{lang_cancel}" name="mode">
+                                            {delete_option}
+                                            <input type="hidden" name="bid" value="{block_bid}">
+                                        </td>
+		                                </tr>
+                                    </table>
+                                </form>
+                                {end_block}

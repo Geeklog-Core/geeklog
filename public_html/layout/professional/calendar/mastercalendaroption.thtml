@@ -1,0 +1,3 @@
+                                            <form method="post" action="calendar.php">
+                                                <input type="submit" name="action" value="{lang_mastercal}">
+                                            </form>

@@ -1,0 +1,3 @@
+<ul {list_class}>
+{list_items}
+</ul>

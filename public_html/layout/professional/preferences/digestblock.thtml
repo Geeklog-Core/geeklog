@@ -1,0 +1,8 @@
+{start_block_digest}
+<table border="0" cellspacing="0" cellpadding="3">
+  <tr align="top">
+    <td>{lang_emailedtopics}<br>
+      {email_topic_checklist}</td>
+  </tr>
+</table>
+{end_block}

@@ -1,0 +1,10 @@
+           <b>{lang_loading_document}</b>
+		   <br /><br />
+           {lang_please_wait}
+           <br /><br />
+           {lang_right_click}
+           <br /><br />
+           {page_text}
+           <br /><br />
+           <a href="{pdf_url}">PDF</a>
+           {meta_tag}

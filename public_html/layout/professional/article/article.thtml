@@ -1,0 +1,6 @@
+        {formatted_article}
+        <table border="0" width="100%">
+            <tr><td valign="top">{whats_related}</td>
+                <td valign="top">{story_options}</td></tr>
+        </table>
+        {commentbar}

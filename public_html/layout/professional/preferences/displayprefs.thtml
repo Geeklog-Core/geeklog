@@ -1,0 +1,13 @@
+<form action="{site_url}/usersettings.php" method="POST">
+  {display_block}
+  {comment_block}
+  {privacy_block}
+  {exclude_block}
+  {digest_block}
+  {boxes_block}
+
+  <div align="center">
+    <input type="submit" value="{lang_submit}">
+    <input type="hidden" name="mode" value="savepreferences">
+  </div>
+</form>

@@ -1,0 +1,10 @@
+<tr align="center">
+  <td align="left">
+    <a href="{site_admin_url}/syndication.php?mode=edit&amp;fid={feed_id}">{feed_title}</a>
+  </td>
+  <td align="center">{feed_type}</td>
+  <td>{feed_format}</td>
+  <td>{feed_filename_and_link}</td>
+  <td>{feed_updated}</td>
+  <td>{feed_enabled}</td>
+</tr>

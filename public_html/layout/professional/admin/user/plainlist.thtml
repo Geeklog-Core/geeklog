@@ -1,0 +1,9 @@
+                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <tr>
+                                    <th align="left">{lang_username}</th>
+                                    <th>{lang_fullname}</th>
+                                    <th>{lang_emailaddress}</th>
+                                </tr>
+                                {user_row}
+                            </table>
+                            <p align="center">{google_paging}</p>

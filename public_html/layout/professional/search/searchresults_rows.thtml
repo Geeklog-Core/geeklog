@@ -1,0 +1,3 @@
+                                <tr align="center">
+                                    {results_columns}
+                                </tr>

@@ -1,0 +1,30 @@
+                            <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                <tr>
+                                    <FORM ACTION="{site_admin_url}/story.php" METHOD="POST">
+                                    <td rowspan="2"><img src="{layout_url}/images/icons/story.gif" alt=""></td>
+                                    <td>[ <a href="{site_admin_url}/story.php?mode=edit">{lang_newstory}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
+                                    <td align="center" valign="middle">{lang_topic}:&nbsp;</td>
+                                    <td align="left" valign="middle">{topic_selection}&nbsp;</td>
+                                </td>
+                                </tr>
+                                </FORM>
+                                <tr>
+                                    <td colspan="3">{lang_instructions}</td>
+                                </tr>
+                            </table>
+                                <table cellpadding="0" cellspacing="3" border="0" width="100%">
+                                <tr>
+                                    <th align="left">#</th>
+                                    <th align="left">{lang_title}</th>
+                                    <th>{lang_access}</th>
+                                    <th>{lang_draft}</th>
+                                    <th>{lang_author}</th>
+                                    <th>{lang_date}</th>
+                                    <th>{lang_topic}</th>
+                                    <th>{lang_featured}</th>
+                                </tr>
+                                {storylist_item}
+                                <tr>
+                                    <td colspan="8">{google_paging}</td>
+                                </tr>
+                            </table>

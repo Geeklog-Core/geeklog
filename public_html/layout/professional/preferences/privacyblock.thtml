@@ -1,0 +1,19 @@
+{start_block_privacy}
+<table border="0" cellspacing="0" cellpadding="3">
+  <tr valign="top">
+    <td align="right"><b>{lang_emailfromuser}:</b><br>
+      <small>{lang_emailfromuser_text}</small></td>
+    <td><input type="checkbox" name="emailfromuser" {emailfromuser_checked}></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_emailfromadmin}:</b><br>
+      <small>{lang_emailfromadmin_text}</small></td>
+    <td><input type="checkbox" name="emailfromadmin" {emailfromadmin_checked}></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_showonline}:</b><br>
+      <small>{lang_showonline_text}</small></td>
+    <td><input type="checkbox" name="showonline" {showonline_checked}></td>
+  </tr>
+</table>
+{end_block}

@@ -1,0 +1,1 @@
+  <input type="radio" name="aid" value="{answer_id}">{answer_text}<br>

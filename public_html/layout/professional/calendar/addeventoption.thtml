@@ -1,0 +1,6 @@
+                                            <form method="post" action="{site_url}/submit.php?type=event">
+                                                <input type="submit" name="action" value="{lang_addevent}">
+                                                <input type="hidden" name="month" value="{cal_curmo_num}">
+                                                <input type="hidden" name="year" value="{cal_curyr_num}">
+                                                <input type="hidden" name="mode" value="{mode}">
+                                            </form>

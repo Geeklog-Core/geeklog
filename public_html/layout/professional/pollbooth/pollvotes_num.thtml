@@ -1,0 +1,4 @@
+<tr>
+  <td align="right"><b>{answer_text}</b></td>
+  <td>{answer_percent}% </td>
+</tr>

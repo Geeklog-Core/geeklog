@@ -1,0 +1,10 @@
+{start_block_boxes}
+<table border="0" cellspacing="0" cellpadding="3">
+  <tr>
+    <td>{lang_boxes}</td>
+  </tr>
+  <tr>
+    <td>{boxes_checklist}</td>
+  </tr>
+</table>
+{end_block}

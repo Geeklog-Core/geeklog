@@ -1,0 +1,29 @@
+<form action="{site_url}/profiles.php" method="POST" name="contact">
+  <table cellspacing="0" cellpadding="0" border="0" width="100%">
+    <tr>
+      <td colspan="2">{lang_description}</td>
+    </tr>
+    <tr>
+      <td>{lang_username}</td>
+      <td><input type="text" name="author" size="32" value="{username}" maxlength="32"></td>
+    </tr>
+    <tr>
+      <td>{lang_useremail}</td>
+      <td><input type="text" name="authoremail" size="32" value="{useremail}" maxlength="96"></td>
+    </tr>
+    <tr>
+      <td>{lang_subject}</td>
+      <td><input type="text" name="subject" size="32" maxlength="96" value="{subject}"></td>
+    </tr>
+    <tr>
+      <td valign="top">{lang_message}</td>
+      <td><textarea name="message" wrap="physical" rows="10" cols="50">{message}</textarea></td>
+    </tr>
+    <tr>
+      <td colspan="2" class="warning" align="center">{lang_nohtml}<br>
+        <input type="hidden" name="what" value="contact">
+        <input type="hidden" name="uid" value="{uid}">
+        <input type="submit" value="{lang_submit}"></td>
+    </tr>
+  </table>
+</form>

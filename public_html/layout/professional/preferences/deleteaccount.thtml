@@ -1,0 +1,8 @@
+{start_block_delete_account}
+<form action="{site_url}/usersettings.php" method="POST">
+<p>{delete_text}</p>
+<p align="center"><input type="submit" value="{lang_button_delete}">
+  <input type="hidden" name="mode" value="{delete_mode}">
+  <input type="hidden" name="account_id" value="{account_id}"></p>
+</form>
+{end_block_delete_account}

@@ -1,0 +1,4 @@
+{category_navigation}
+<p>[ <a href="{site_url}/submit.php?type=link">{lang_addalink}</a> ]</p>
+{category_links}
+{page_navigation}

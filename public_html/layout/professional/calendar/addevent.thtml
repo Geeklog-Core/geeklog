@@ -1,0 +1,41 @@
+                            <table cellpadding="2" cellspacing="2" border="0">
+                                <tr>
+                                    <td>{intro_msg}</td>
+                                </tr>
+				                <tr>
+                                    <td>
+                            	        <table cellpadding="2" cellspacing="2" border="0">
+                                            <tr>
+                                                <td align="right"><b>{lang_event}:</b></td>
+                                                <td>{event_begin_anchortag}{event_title}{event_end_anchortag}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><b>{lang_starts}:</b></td>
+                                                <td>{event_start}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><b>{lang_ends}:</b></td>
+                                                <td>{event_end}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right" valign="top"><b>{lang_where}:</b></td>
+                                                <td>{event_location}</td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right"><b>{lang_description}:</b></td>
+                                                <td>{event_description}</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                            		                <form name="userevent" method="post" action="{site_url}/calendar_event.php">
+                                                        <input type="hidden" name="action" value="saveuserevent">
+                                                        <input type="hidden" name="eid" value="{event_id}">
+                                                        <input type="submit" value="{lang_addtomycalendar}">
+                            		                </form>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+

@@ -1,0 +1,54 @@
+                            <form action="{site_admin_url}/user.php" name="storyeditor" method="post">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <tr>
+                                        <td align="right">{lang_userid}:</td>
+                                        <td>{user_id}<input type="hidden" name="uid" value="{user_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_regdate}:</td>
+                                        <td>
+                                            <input type="hidden" name="regdate" value="{regdate_timestamp}">{user_regdate}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_lastlogin}:</td>
+                                        <td>{user_lastlogin}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top">{lang_username}:</td>
+                                        <td>
+                                            <input type="text" size="16" name="username" value="{username}"> {do_not_use_spaces}<br>
+                                            {user_photo}<br>
+                                            {lang_delete_photo} {delete_photo_option}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_fullname}:</td>
+                                        <td><input type="text" size="48" maxlength="80" name="fullname" value="{user_fullname}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_password}:</td>
+                                        <td><input type="password" size="16" name="passwd" value=""></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_emailaddress}:</td>
+                                        <td><input type="text" size="48" maxlength="255" name="email" value="{user_email}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_homepage}:</td>
+                                        <td><input type="text" size="48" maxlength="255" name="homepage" value="{user_homepage}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr></td>
+                                    </tr>
+                                    {group_edit}
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode"> 
+                                            {change_password_option}
+                                            {delete_option}
+                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

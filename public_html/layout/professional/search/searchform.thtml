@@ -1,0 +1,49 @@
+                            {search_intro}
+                            <form action="{site_url}/search.php" method="get">
+                                <table border="0" cellspacing="0" cellpadding="3">
+                                    <tr>
+                                        <td align="right">{lang_keywords}:</td>
+                                        <td><input type="text" name="query" size="35" maxlength="35">
+                                        <select name="keyType">
+                                            <option value="phrase">{lang_exact_phrase}</option>
+                                            <option value="all">{lang_all_words}</option>
+                                            <option value="any">{lang_any_word}</option>
+                                        </select></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_date}:</td>
+                                        <td>
+                                            <input type="text" name="datestart" size="10" maxlength="10"> {lang_to} <input type="text" name="dateend" size="10" maxlength="10"> {date_format} 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_topic}:</td>
+                                        <td>
+                                            <select name="topic">
+                                                <option selected="selected" value="0">{lang_all}</option>
+                                                {topic_option_list}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_type}:</td>
+                                        <td>
+                                            <select name="type">
+                                                <option selected="selected" value="all">{lang_all}</option>
+                                                <option value="stories">{lang_stories}</option>
+                                                <option value="comments">{lang_comments}</option>
+                                                <option value="links">{lang_links}</option>
+                                                <option value="events">{lang_events}</option>
+						                        {plugin_types}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    {author_form_element}
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_search}">
+                                            <input type="hidden" name="mode" value="search">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

@@ -1,0 +1,46 @@
+                                {start_block_postacomment}
+                                            <form action="{site_url}/comment.php" method="post">
+                                                <table cellspacing="0" cellpadding="3" border="0" width="100%">
+                                                    <tr>
+                                                        <td align="right"><b>{lang_username}:</b></td>
+                                                        <td>
+                                                            <input type="hidden" name="sid" value="{sid}">
+                                                            <input type="hidden" name="pid" value="{pid}">
+                                                            <input type="hidden" name="type" value="{type}">
+                                                            <input type="hidden" name="uid" value="{uid}">{username} [ <a href="{action_url}">{lang_logoutorcreateaccount}</a> ]
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right"><b>{lang_title}:</b></td>
+                                                        <td><input type="text" name="title" size="32" value="{title}" maxlength="96"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" valign="top"><b>{lang_comment}:</b></td>
+                                                        <td><textarea name="comment" wrap="physical" rows="10" cols="60">{comment}</textarea></td>
+                                                    </tr>
+                                                    <tr valign="top">
+                                                        <td align="right"><b>{lang_postmode}:</b></td>
+                                                        <td>
+                                                            <select name="postmode">
+                                                                {postmode_options}
+                                                            </select><br>
+                                                            <span class="warningsmall">{allowed_html}</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><hr></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2"><b>{lang_importantstuff}</b><ul>
+                                                            <li>{lang_instr_line1}</li>
+                                                            <li>{lang_instr_line2}</li>
+                                                            <li>{lang_instr_line3}</li>
+                                                            <li>{lang_instr_line4}</li>
+                                                            <li>{lang_instr_line5}</li></ul>
+                                                            <input type="submit" name="mode" value="{lang_preview}">
+                                                            {save_option}
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </form>
+                                {end_block}

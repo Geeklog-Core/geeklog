@@ -1,0 +1,8 @@
+                                    <tr>
+                                        <td colspan="2"><b>{lang_securitygroups}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><P>{lang_groupinstructions}</P>
+                                            {group_options}
+                                        </td>
+                                    </tr>

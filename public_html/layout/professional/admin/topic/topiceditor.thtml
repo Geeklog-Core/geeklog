@@ -1,0 +1,76 @@
+                            <form action="{site_admin_url}/topic.php" method="post">
+                                <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                    <tr>
+                                        <td align="right">{lang_topicid}:</td>
+                                        <td><input type="text" size="20" name="tid" value="{topic_id}"> {lang_donotusespaces}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_sortorder}:</td>
+                                        <td>{sort_order}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_storiesperpage}:</td>
+                                        <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"> ({lang_defaultis} 10)</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_topicname}:</td>
+                                        <td><input type="text" size="48" name="topic" value="{topic_name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_topicimage}:</td>
+                                        <td><input type="text" size="48" maxlength="{max_url_length}" name="imageurl" value="{image_url}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_defaulttopic}:</td>
+                                        <td><input type="checkbox" name="is_default" {default_checked}> ({lang_defaulttext})</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_archivetopic}:</td>
+                                        <td><input type="checkbox" name="is_archive" value="1" {archive_checked} {archive_disabled}> ({lang_archivetext})</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr><td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_accessrights}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_owner}:</td>
+                                        <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_group}:</td>
+                                        <td>
+                                            {group_dropdown}
+                                        </td>
+                                    <tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{lang_permissions_key}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            {permissions_editor}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr><td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" class="warning">{warning_msg}</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode"> 
+                                            <input type="submit" value="{lang_cancel}" name="mode">
+                                            {delete_option}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form> 

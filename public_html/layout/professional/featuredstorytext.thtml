@@ -1,0 +1,23 @@
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+      <td width="100%" class="story-title-featured"><img src="{site_url}/images/speck.gif" width="1" height="0" alt=""><h1><a href="{article_url}" class="non-ul">{story_title}</a></h1></td>
+      <td class="story-title-featured" width="5%" align="right" nowrap>&nbsp;{email_icon}&nbsp;{print_icon}&nbsp;{pdf_icon}</td>
+    </tr>
+    <tr>
+      <td class="story-box" colspan="2"><table border="0" cellpadding="3" cellspacing="0" width="100%"><tr><td class="story-information" width="100%">{story_date}<br>{lang_contributed_by} {start_contributedby_anchortag}{contributedby_user}{end_contributedby_anchortag}<br>{lang_views}: {story_hits}</td></tr>
+                            
+                                <tr>
+                                    <td>
+                                        <p>{story_anchortag_and_image}{story_introtext}</p>
+                                    </td></tr></table>
+                                	<table border="0" cellpadding="3" cellspacing="0" width="100%">
+
+						
+							<tr><td align="center">{edit_link}<br>
+							  {readmore_link} <a href="{comments_url}">{comments_text}</a><br>
+{recent_post_anchortag}<br></td></tr>
+							
+							</table></td>
+    </tr>
+  </table>
+<table cellspacing="0" cellpadding="0" align="center" width="100%" class="block-divider"><tr><td><img src="{site_url}/images/speck.gif" width="1" height="2" alt=""></td></tr></table> 

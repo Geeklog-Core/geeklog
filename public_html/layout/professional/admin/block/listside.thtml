@@ -1,0 +1,8 @@
+                                <tr class="blocktitle" align="center">
+                                    <td colspan="2" align="center">{side}</td>
+                                    <td align="left">{lang_blocktitle}</td>
+                                    <td>{lang_access}</td>
+                                    <td>{lang_blocktype}</td>
+                                    <td>{lang_blocktopic}</td>
+                                    <td>{lang_enabled}</td>
+                                </tr>

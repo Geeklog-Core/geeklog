@@ -1,0 +1,5 @@
+  <tr valign="top">
+    <td align="right"><b>{lang_userphoto}</b><br>
+      <small>{lang_userphoto_text}</small></td>
+    <td><input type="file" name="photo">{display_photo}</td>
+  </tr>

@@ -1,0 +1,9 @@
+                                {start_block_results}
+                                <br><br>
+                                <table cellpadding="0" cellspacing="1" border="0" width="99%">
+                                    <tr>
+                                        {headings}
+                                    </tr>
+                                    {results}
+                                </table><BR>
+                                {end_block}

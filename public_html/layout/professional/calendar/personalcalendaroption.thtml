@@ -1,0 +1,3 @@
+                                            <form method="post" action="calendar.php?mode=personal">
+                                                <input type="submit" name="action" value="{lang_mycalendar}">
+                                            </form>

@@ -1,0 +1,32 @@
+                                            {start_block_loginagain}
+                                            <table border="0" cellpadding="3" cellspacing="0">
+                                                <tr>
+                                                    <td>
+                                                        <form action="{site_url}/users.php" method="post">
+                                                            <table border="0" cellspacing="0" cellpadding="3">
+                                                                <tr>
+                                                                    <td colspan="2">{lang_message}</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right"><b>{lang_username}:</b></td>
+                                                                    <td><input type="text" size="16" name="loginname"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right"><b>{lang_password}:</b></td>
+                                                                    <td><input type="password" name="passwd" size="16">
+									&nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td align="right">&nbsp;</td>
+                                                                    <td align="left">
+                                                                        <input type="submit" value="{lang_login}">
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </form>                               
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            {end_block}
+

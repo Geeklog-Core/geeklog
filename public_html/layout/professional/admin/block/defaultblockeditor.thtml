@@ -1,0 +1,80 @@
+                            <form action="{site_admin_url}/block.php" method="post">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <tr>
+                                        <td align="right">{lang_blocktitle}:</td>
+                                        <td><input type="text" name="title" value="{block_title}" size="48"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_enabled}:</td>
+                                        <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top">{lang_blockhelpurl}:</td>
+                                        <td><input type="text" name="help" value="{block_help}" size="48"> {lang_includehttp}<br>{lang_explanation}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_blockname}:</td>
+                                        <td>{block_name}<input type="hidden" name="name" value="{block_name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_topic}:</td>
+                                        <td>{lang_all}<input type="hidden" name="tid" value="all"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_side}:</td>
+                                        <td>
+                                            <select name="onleft">
+                                                <option value="1" {left_selected}>{lang_left}</option>
+                                                <option value="0" {right_selected}>{lang_right}</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_blockorder}:</td>
+                                        <td><input type="text" size="3" name="blockorder" value="{block_order}"> 0 - 255</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_blocktype}:</td>
+                                        <td>gldefault<input type="hidden" name="type" value="gldefault"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_accessrights}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_owner}:</td>
+                                        <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_group}:</td>
+                                        <td>{group_name}<input type="hidden" name="group_id" value="{group_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{lang_perm_key}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            {permissions_editor}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{permissions_msg}</td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+		                                    <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode">
+                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            <input type="hidden" name="bid" value="{block_id}">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

@@ -1,0 +1,53 @@
+<form action="{php_self}" method="POST">
+<input type="hidden" name="mail" value="mail">
+{startblock_email}
+    <p>{lang_note}</p>
+    <table border="0" cellpadding="2" cellspacing="0">
+        <tr>
+            <td align="right">{lang_to}:</td>
+            <td>
+                <select name="to_group">
+                    <option value="">{lang_selectgroup}</option>
+                    {group_options}
+                </select>
+            </td>            
+        </tr>
+        <tr>
+            <td align="right">{lang_from}:</td>
+            <td><input type="text" name="fra" value="{site_name}" size="40"></td>
+        </tr>
+        <tr>
+            <td align="right">{lang_replyto}:</td>
+            <td><input type="text" name="fraepost" value="{site_mail}" size="40"></td>
+        </tr>
+        <tr>
+            <td align="right">{lang_subject}:</td>
+            <td><input type="text" name="subject" size="40"></td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">{lang_body}:</td>
+            <td><textarea rows="12" name="message" cols="44"></textarea></td>
+        </tr>
+        <tr>
+            <td colspan="2" align="left"><b>{lang_options}</b></td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" name="html"> {lang_HTML}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" name="priority"> {lang_urgent}</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="checkbox" name="overstyr"> {lang_ignoreusersettings}</td>
+        </tr>
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="{lang_send}">
+            </td>
+        </tr>
+    </table>
+    {end_block}
+</form>

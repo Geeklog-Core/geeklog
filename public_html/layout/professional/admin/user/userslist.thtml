@@ -1,0 +1,39 @@
+                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <tr>
+                                    <td rowspan="2">
+                                        <img src="{layout_url}/images/icons/user.gif" alt="">
+                                    </td>
+                                    <td>[ <a href="{site_admin_url}/user.php?mode=edit">{lang_newuser}</a> | <a href="{site_admin_url}/user.php?mode=importform">{lang_batchadd}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_instructions}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" align="center">
+                                        <form action="{site_admin_url}/user.php" method="post">
+                                            {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
+                                            &nbsp;&nbsp;{lang_limit_results}:
+                                                <select name="query_limit">
+                                                    <option value="10" {10_selected}>10</option>
+                                                    <option value="20" {20_selected}>20</option>
+                                                    <option value="50" {50_selected}>50</option>
+                                                    <option value="75" {75_selected}>75</option>
+                                                    <option value="100" {100_selected}>100</option>
+                                                    <option value="200" {200_selected}>200</option>
+                                                    <option value="500" {500_selected}>500</option>
+                                                </select>
+                                            <input type="submit" value="{lang_submit}">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <tr>
+                                    <th align="left">{lang_username}</th>
+                                    <th>{lang_fullname}</th>
+                                    <th>{lang_emailaddress}</th>
+                                </tr>
+                                {user_row}
+                            </table>
+                            {google_paging}

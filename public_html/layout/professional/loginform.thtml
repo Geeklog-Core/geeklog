@@ -1,0 +1,8 @@
+<form action="{site_url}/users.php" method="POST">
+  <b>{lang_username}:</b><br>
+  <input type="text" size="10" name="loginname" value=""><br>
+  <b>{lang_password}:</b><br>
+  <input type="password" size="10" name="passwd"><br>
+  <input type="submit" value="{lang_login}">
+</form>
+{lang_signup}
