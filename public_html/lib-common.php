@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.258 2003/09/12 09:31:34 dhaun Exp $
+// $Id: lib-common.php,v 1.259 2003/09/13 15:34:59 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3330,10 +3330,8 @@ function COM_showBlocks( $side, $topic='', $name='all' )
                     else
                     {
                         // show error message
-                        $errmsg = $LANG21[31];
-                        eval( "\$errmsg = \"$errmsg\";" );
                         $retval .= $blkheader;
-                        $retval .= $errmsg;
+                        $retval .= sprintf( $LANG21[31], $function );
                         $retval .= $blkfooter;
                     }
                 }
@@ -3463,7 +3461,8 @@ function COM_rdfCharacterData ($parser, $data)
 
 function COM_rdfImport( $bid, $rdfurl )
 {
-    global $_TABLES, $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
+    global $_TABLES, $LANG21,
+           $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
     $RDFinsideitem = false;
     $RDFtag = '';
@@ -3471,14 +3470,16 @@ function COM_rdfImport( $bid, $rdfurl )
     $RDFlink = '';
     $RDFheadlines = array();
 
-    $update = date( "Y-m-d H:i:s" );
+    $update = date( 'Y-m-d H:i:s' );
 
-    $result = DB_change( $_TABLES['blocks'], 'rdfupdated', "$update", 'bid', $bid );
+    $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
+                         'bid', $bid );
     clearstatcache();
 
     $rdferror = false;
     $xml_parser = xml_parser_create();
-    xml_set_element_handler($xml_parser, 'COM_rdfStartElement', 'COM_rdfEndElement');
+    xml_set_element_handler( $xml_parser, 'COM_rdfStartElement',
+                             'COM_rdfEndElement');
     xml_set_character_data_handler( $xml_parser, 'COM_rdfCharacterData' );
 
     if( $fp = @fopen( $rdfurl, 'r' ))
@@ -3489,6 +3490,10 @@ function COM_rdfImport( $bid, $rdfurl )
             if( $startoffeed )
             {
                 $data = ltrim( $data );
+                if( empty( $data ))
+                {
+                    break;
+                }
                 $startoffeed = false;
             }
             if( !xml_parse( $xml_parser, $data, feof( $fp )))
@@ -3502,9 +3507,19 @@ function COM_rdfImport( $bid, $rdfurl )
 
                 COM_errorLog( $errmsg, 1 );
                 $rdferror = true;
-                $result = DB_change( $_TABLES['blocks'], 'content', addslashes ($errmsg), 'bid', "$bid" );
+                $result = DB_change( $_TABLES['blocks'], 'content',
+                                     addslashes( $LANG21[4] ), 'bid', $bid );
                 break;
             }
+        }
+        if( $startoffeed && empty( $data ))
+        {
+            $errmsg = sprintf( 'The feed at %s exists but is currently empty.',
+                               $rdfurl );
+            COM_errorLog( $errmsg, 1 );
+            $rdferror = true;
+            $result = DB_change( $_TABLES['blocks'], 'content',
+                                 addslashes( $LANG21[4] ), 'bid', $bid );
         }
 
         fclose( $fp );
@@ -3514,24 +3529,20 @@ function COM_rdfImport( $bid, $rdfurl )
         {
             $blockcontent = COM_makeList( $RDFheadlines );
             $RDFheadlines = array();
-            $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $blockcontent );
-            $result = DB_change( $_TABLES['blocks'], 'content', "$blockcontent", 'bid', $bid);
+            $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", '',
+                                          $blockcontent );
+            $result = DB_change( $_TABLES['blocks'], 'content', $blockcontent,
+                                 'bid', $bid);
         }
     }
     else
     {
+        $errmsg = sprintf( 'Geeklog can not reach the feed at %s.', $rdfurl );
+        COM_errorLog( $errmsg, 1 );
         $rdferror = true;
-        COM_errorLog( "Can not reach $rdfurl", 1 );
 
-        $result = DB_change(
-            $_TABLES['blocks'],
-            'content',
-            "GeekLog can not reach the supplied RDF file at $update. "
-            . "Please double check the URL provided.  Make sure your url is correctly entered and it begins with "
-            . "http://. GeekLog will try in one hour to fetch the file again.",
-            'bid',
-            "$bid"
-            );
+        $result = DB_change( $_TABLES['blocks'], 'content',
+                             addslashes( $LANG21[4] ), 'bid', $bid );
     }
 }
 

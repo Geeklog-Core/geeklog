@@ -3,6 +3,17 @@ GeekLog History/Changes:
 September ??, 2003 (1.3.9rc1)
 ------------------
 
+- Display a generic (and localised) error message when there is a problem
+  importing an (RSS) feed - details will be available in error.log. Also checks
+  for empty (but existing) feeds now.
+_ When the user submission queue is activated, you now have an "edit" link
+  that takes you to the Admin's user editor (the profile link is now on the
+  username).
+- COM_siteHeader() now uses output buffering for the eval(), preventing the
+  header from being output directly.
+- The install script will set the 'date' field for links to sensible values
+  now (reconstructed from the date that's encoded in the link id).
+- The autor exclusion list in the preferences is now a (multi-select) listbox.
 - Static pages are not wrapped in a block when the page format is set to "blank
   page" (bug #60).
 - A proper error message is now displayed if the Admin creates a new user or
