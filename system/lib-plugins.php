@@ -8,10 +8,11 @@
 // |                                                                           |
 // | This file implements plugin support in Geeklog.                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Dirk Haun        - dirk@haun-online.de
+// |          Blaine Lang      - blaine@portalparts.com                        |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.26 2003/12/28 18:48:05 dhaun Exp $
+// $Id: lib-plugins.php,v 1.27 2004/02/14 19:19:13 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -937,6 +938,44 @@ function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
     }
 
     return $is_current;
+}
+
+/**
+* Ask plugins if they want to add something to Geeklog's What's New block.
+*
+* @return   array   array($headlines[], $bylines[], $content[$entries[]])
+*
+*/
+function PLG_getWhatsNew ()
+{
+    global $_TABLES;
+
+    $newheadlines = array ();
+    $newbylines   = array ();
+    $newcontent   = array ();
+
+	$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $numPlg = DB_numRows ($result);
+    for ($i = 0; $i < $numPlg; $i++) {
+        $A = DB_fetchArray ($result);
+        $fn_head = 'plugin_whatsnewsupported_' . $A['pi_name'];
+        if (function_exists ($fn_head)) {
+            $supported = $fn_head ();
+            if (is_array ($supported)) {
+                list ($headline, $byline) = $supported;
+
+                $fn_new = 'plugin_getwhatsnew_' . $A['pi_name'];
+                if (function_exists ($fn_new)) {
+                    $whatsnew = $fn_new ();
+                    $newcontent[] = $whatsnew;
+                    $newheadlines[] = $headline;
+                    $newbylines[] = $byline;
+                }
+            }
+        }
+    }
+
+    return array ($newheadlines, $newbylines, $newcontent);
 }
 
 ?>

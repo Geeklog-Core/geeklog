@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.284 2004/02/14 13:51:01 dhaun Exp $
+// $Id: lib-common.php,v 1.285 2004/02/14 19:19:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4349,6 +4349,29 @@ function COM_whatsNewBlock( $help='', $title='' )
         else
         {
             $retval .= COM_makeList( $newlinks );
+        }
+    }
+
+    if( $_CONF['hidenewplugins'] == 0 )
+    {
+        list( $headlines, $bylines, $content ) = PLG_getWhatsNew();
+        $plugins = sizeof( $headlines );
+        if( $plugins > 0 )
+        {
+            for( $i = 0; $i < $plugins; $i++ )
+            {
+                $retval .= '<br>';
+                $retval .= '<b>' . $headlines[$i] . '</b> <small>'
+                        . $bylines[$i] . '</small><br>';
+                if( is_array( $content[$i] ))
+                {
+                    $retval .= COM_makeList( $content[$i] );
+                }
+                else
+                {
+                    $retval .= $content[$i] . '<br>' . LB;
+                }
+            }
         }
     }
 

@@ -3,6 +3,10 @@ GeekLog History/Changes:
 Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Plugins can now add their new entries to the What's New block by implementing
+  the new plugin_whatsnewsupported and plugin_getwhatsnew API functions.
+  This section can be enabled/disabled with the new $_CONF['hidenewplugins']
+  config variable.
 - When a user is deleted, make sure we assign any objects that require Admin
   access (blocks, topics, ...) to a user from the Root group.
 - Slightly revamped the install script and made it catch (or silently ignore)
