@@ -1,0 +1,22 @@
+                                {start_block_list}
+                                <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                    <tr>
+                                        <td>
+                                            <img src="{site_url}/staticpages/images/staticpage.gif">
+                                        </td>
+                                        <td>[ <a href="{site_url}/admin/plugins/staticpages/index.php?mode=edit">{lang_newpage}</a> | <a href="{site_url}/admin">{lang_adminhome}</a> ]</td>
+                                    </tr>
+                                </table>
+                                <table cellpadding="0" cellspacing="3" border="0" width="100%">
+                                    <tr>
+                                        <th align="left">#</th>
+                                        <th align="left">{lang_title}</th>
+                                        <th>{lang_writtenby}</th>
+                                        <th>{lang_lastupdated}</th>
+                                        <th>{lang_url}</th>
+                                    </tr>
+                                    {list_item} 
+                                    <tr><td>{lang_nopages_msg}</td></tr>
+                                </table>
+                                {end_block}
+                                

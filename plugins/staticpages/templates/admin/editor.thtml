@@ -1,0 +1,54 @@
+                                {start_block_editor}
+                                <form action="{site_url}/admin/plugins/staticpages/index.php" method="post">
+                                    <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="submit" value="{lang_save}" name="mode"> 
+                                                {delete_option}
+                                                <input type="hidden" name="sp_id" value="{sp_id}">
+                                            </td>
+                                        <tr>
+                                        <tr>
+                                            <td align="right">{lang_writtenby}:</td>
+                                            <td>{username}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_lastupdated}:</td>
+                                            <td>{sp_formateddate}<input type="hidden" name="unixdate" value="{sp_date}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_title}:</td>
+                                            <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_addtomenu}:</td>
+                                            <td>
+                                                <input type="checkbox" name="sp_onmenu" {onmenu_checked}>&nbsp;&nbsp;{lang_label}:
+                                                <input type="text" name="sp_label" size="48" maxlength="64" value="{sp_label}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_pageformat}:</td>
+                                            <td>
+                                                <select name="sp_format">
+                                                    <option value="blankpage" {blankpage_selected}>{lang_blankpage}</option>
+                                                    <option value="noblocks" {noblock_selected}>{lang_noblocks}</option>
+                                                    <option value="leftblocks" {leftblocks_selected}>{lang_leftblocks}</option>
+                                                    <option value="allblocks" {allblocks_selected}>{lang_leftrightblocks}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" align="right">{lang_content}:</td>
+                                            <td>
+                                                <textarea name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
+                                                <br><span class="warningsmall">{lang_allowedhtml}</span><br><br>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_hits}:</td>
+                                            <td><input type="hidden" name="sp_hits" value="{sp_hits}">{sp_hits}</td>
+                                        </tr>
+                                    </table>
+                                </form>
+                                {end_block}
