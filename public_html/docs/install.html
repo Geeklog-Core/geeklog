@@ -138,7 +138,7 @@ in the URL.</p>
 		<ol>
 			<li>Unpack the tarball *within* your web tree by running the following in your shell (this assumes you have ssh access and that you are working with the tarball <i>on the designated server </i>- this can be locally or hosted elsewhere):<br>
 				<br>
-				<code>tar -zxvf geeklog-1.3.8rc2.tar.gz</code><br>
+				<code>tar -zxvf geeklog-1.3.8.tar.gz</code><br>
 				<br>
 				<b>FTP, Windows Users:</b> unpack the tarball on your <i>local computer</i> and upload the result to your designated server. Everything uploads as ASCII except the images.<br>
 				<br>
@@ -231,9 +231,7 @@ Windows users, you should be able to use the Unix '/' in your paths without any 
 </tr>
 <tr>
 	<td valign="top" bgcolor="#f5ffc7">
-		<ol>
-			<li>Upgrading is no different than a fresh installation except your database already exists and needs to be upgraded.
-		</ol>
+		<p>Upgrading is no different than a fresh installation except your database already exists and needs to be upgraded.</p>
 		<ol>
 			<li>Back up any files with custom code in them and back up your database. <br>
 				<br>
@@ -241,7 +239,7 @@ Windows users, you should be able to use the Unix '/' in your paths without any 
 				<tr>
 					<td bgcolor="white">
 						<p><font color="#FF0000">SPECIAL NOTE:</font></p>
-						<p>Please pay special attention to the older config.php and lib-common.php files, these files contain database and path information you entered the last time you installed Geeklog and they MUST be copied over to the NEW config.php and lib-common.php files.<br>
+						<p>Please pay special attention to the older config.php and lib-common.php files, as these files contain database and path information you entered the last time you installed Geeklog and this information MUST be copied over to the NEW config.php and lib-common.php files.<br>
 						</p>
 					</td>
 				</tr>
@@ -251,15 +249,16 @@ Windows users, you should be able to use the Unix '/' in your paths without any 
 				<br>
 			<li>Uncompress the new version and copy the result to the same path that your old installation had. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.<br>
 				<br>
-			<li>The next step depends on which version of Geeklog you are upgrading from.<br>
+                        <li>As with a fresh install, edit your <strong>config.php</strong> and <strong>lib-common.php</strong>, basically just copying over the information from your old copies of these files.<br>
 				<br>
-				If you are upgrading from Geeklog 1.2 or earlier, change to <code>/path/to/geeklog/sql/updates</code> and apply all needed database updates. For example, if you are upgrading from Geeklog 1.1, you will need to apply 1.1_to_1.2.sql and 1.2_to_1.2.2.sql which will upgrade your database to Geeklog 1.2.5-1. I say 1.2.5-1 because there were no database changes from 1.2.2 to 1.2.5-1 (e.g. a 1.2.2 database is the same as a 1.2.5-1 database). If you are uncomfortable using the MySQL command line to do this, you can do it via phpMyAdmin as well.<br>
+			<li><em>If</em> you are upgrading <strong>from Geeklog 1.2 or earlier</strong>, change to <code>/path/to/geeklog/sql/updates</code> and apply all needed database updates. For example, if you are upgrading from Geeklog 1.1, you will need to apply 1.1_to_1.2.sql and 1.2_to_1.2.2.sql which will upgrade your database to Geeklog 1.2.5-1. I say 1.2.5-1 because there were no database changes from 1.2.2 to 1.2.5-1 (e.g. a 1.2.2 database is the same as a 1.2.5-1 database). If you are uncomfortable using the MySQL command line to do this, you can do it via phpMyAdmin as well.<br><br>
+			If you are upgrading from Geeklog 1.3 or later, you can skip this step.<br>
 				<br>
-				If you are upgrading from 1.2.5-1 or a more recent version, the second step of the installation script should have an option to convert your database to the current version.<br>
+			<li>Open your browser and navigate to <strong>http://yourgeeklogsite/admin/install/install.php</strong>. Enter your path to Geeklog and make sure you select <strong>Upgrade Database</strong> as the installation type, before you click on the "Next" button. The second step of the installation script should have an option to convert your database to the current version.<br>
 				<br>
-Please note that only "basic" version number are listed, because, for example, Geeklog 1.3.7 and 1.3.7sr2 use the same database. So if you're upgrading from Geeklog 1.3.7sr2, just select "1.3.7" (the same applies to 1.3.5 / 1.3.5sr1 / 1.3.5sr2).<br>
+Please note that only "basic" version numbers are listed, because, for example, Geeklog 1.3.7 and 1.3.7sr2 use the same database. So if you're upgrading from Geeklog 1.3.7sr2, just select "1.3.7" (the same applies to 1.3.5 / 1.3.5sr1 / 1.3.5sr2).<br>
 				<br>
-			<li>The rest of the upgrade process is identical to the install process. Once you successfully run the install script, you should be ready to go after restoring any files with custom code.
+			<li>Once you see the success message, your upgrade is complete. <b>You can now delete the admin/install directory</b> (and all files within it).<br><br>
 		</ol>
 	</td>
 </tr>
@@ -369,8 +368,6 @@ before trying to run the install script again.</p>
 					</td>
 				</tr>
 			</table>
-			<br>
-			<br>
 		</div>
                 <a name="template-error"><br>
                 <br></a>
@@ -385,6 +382,32 @@ Halted.</code></p>
 <p>This is a path problem again. Check the setting for <b>$_CONF['path_html']</b>. If you did not change or rename Geeklog's <tt>public_html</tt> directory, then there's no need to change that setting at all (restore the line to its
 original content). Otherwise, please read the comments above that line in
 config.php again carefully to understand how to change that line properly.</p>
+</td></tr></table>
+</div>
+                <a name="access-denied"><br>
+                <br></a>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
+<td bgcolor="#ffedf2">
+<p><b>I get the following error:</b></p>
+<p><code>Warning: mysql_connect(): Access denied for user: 'username@localhost' (Using password: YES) in<br>
+/path/to/geeklog/system/databases/mysql.class.php on line 104<br>
+Cannnot connect to DB server</code></p>
+</td></tr><tr><td>
+<p><small>(line number may vary)</small></p>
+<p><strong>Answer:</strong></p>
+<p>First of all, make sure the database settings in <tt>config.php</tt> are correct, specifically the name and password of your MySQL user, the name of your database, and the name of your MySQL server.</p>
+<p>If you're running your own server, you may need to give your MySQL user
+proper permissions. Log in to MySQL as the MySQL root user and issue these
+commands:</p>
+<code>GRANT ALL PRIVILEGES ON <em>database_name</em> TO <em>user@host</em> IDENTIFIED BY '<em>password</em>';<br>
+FLUSH PRIVILEGES;</code>
+<p>Replacing the lower-case strings with the actual values, of course.</p>
+<p>If you want (or need) to be more restrictive with database permissions:
+You will need to at least grant the ALTER, CREATE, DELETE, INSERT, SELECT, and
+UPDATE permissions to your database user. ALTER and CREATE permissions are only
+needed for installing and upgrading Geeklog, as well as for installing plugins
+and other add-ons.</p>
 </td></tr></table>
 </div>
 	</td>
