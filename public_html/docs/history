@@ -8,8 +8,6 @@ October ??, 2003 (1.3.9rc1)
 - Fixed handling of "0" as a poll answer (bug #73).
 - Added a check and warning message in admin/moderation.php if register_globals
   is "off".
-- When trying to guess the value of $_CONF['cookiedomain'], we need to remove
-  the port number from the URL, if there is one (bug #75).
 - Changed function COM_isEmail() to use PEAR::Mail/RFC822 to check for valid
   email addresses.
 - Added an edit icon to each theme (images/edit.gif). Variable {edit_icon} can
@@ -68,7 +66,6 @@ October ??, 2003 (1.3.9rc1)
   individual items, thus stripping out HTML from the template file (bug #52).
 - Words from a search query are now properly highlighted in comments when the
   words occured only in the comments (but not in the story).
-- Fixed parse errors in the french_canada.php language file (bug #53).
 - Integrated Vincent Furia's new comment code to use templates for comments
   (instead of hard-coded HTML).
   New template files: comment/comment.thtml, comment/thread.thtml.
@@ -81,6 +78,54 @@ October ??, 2003 (1.3.9rc1)
   Includes new admin/syndication template directory.
 - Don't display the "delete" button in the Admin's Event editor when we're
   editing a new event (reported by Simon Lord).
+
+
+October 14, 2003 (1.3.8-1sr2)
+----------------
+
+Jouko Pynnonen found a way to trick the new "forgot password" feature,
+introduced in 1.3.8, into letting an attacker change the password for _any_
+account. This release addresses this issue - there were no other changes.
+
+The only thing you need to do is to replace the file users.php on your site
+with the file that comes with this tarball. It's suggested that you change
+the version number in your config.php to '1.3.8-1sr2' afterwards.
+
+Please note that only Geeklog 1.3.8, 1.3.8-1, and 1.3.8-1sr1 are affected,
+as this feature did not exist in earlier versions.
+
+
+October 12, 2003 (1.3.8-1sr1)
+----------------
+
+This release is intended to address some of the security issues reported in
+September and early October 2003.
+
+1. Includes Ulf Harnhammar's kses HTML filter to address possible Javascript
+   injections and CSS defacements.
+
+   When upgrading from an earlier version, please make sure to copy over the
+   $_CONF['user_html'] and $_CONF['admin_html'] arrays from the included
+   config.php to your own copy of that file.
+
+2. While almost all of the alleged SQL injection issues could not be
+   reproduced, this release includes an update to the MySQL class to not
+   report SQL errors in the browser any more (but only in Geeklog's error.log).
+   This will avoid disclosing any sensitive information as part of the error
+   message.
+
+   Please note that at the moment we do NOT recommend to use Geeklog with
+   MySQL 4.1 (which, at the time of this writing, is in alpha state and should
+   not be used on production sites anyway).
+
+   An upcoming release of Geeklog will address the remaining SQL issues,
+   including any problems with MySQL 4.1.
+
+Other fixes (not security-related):
+- When trying to guess the value of $_CONF['cookiedomain'], we need to remove
+  the port number from the URL, if there is one (bug #75).
+- The full 1.3.8-1sr1 tarball also includes updated French (Canada) and
+  Turkish language files.
 
 
 August 9, 2003 (1.3.8-1)
@@ -408,6 +453,34 @@ Static Pages Plugin 1.3
   static pages editor.
 
 Please see docs/staticpages.html for details.
+
+
+October 12, 2003 (1.3.7sr3)
+----------------
+
+This release is intended to address some of the security issues reported in
+September and early October 2003.
+
+1. Includes Ulf Harnhammar's kses HTML filter to address possible Javascript
+   injections and CSS defacements.
+
+   When upgrading from an earlier version, please make sure to copy over the
+   $_CONF['user_html'] and $_CONF['admin_html'] arrays from the included
+   config.php to your own copy of that file.
+
+2. While almost all of the alleged SQL injection issues could not be
+   reproduced, this release includes an update to the MySQL class to not
+   report SQL errors in the browser any more (but only in Geeklog's error.log).
+   This will avoid disclosing any sensitive information as part of the error
+   message.
+
+   Please note that at the moment we do NOT recommend to use Geeklog with
+   MySQL 4.1 (which, at the time of this writing, is in alpha state and should
+   not be used on production sites anyway).
+
+   An upcoming release of Geeklog will address the remaining SQL issues,
+   including any problems with MySQL 4.1.
+
 
 May 26, 2003 (1.3.7sr2)
 ------------
