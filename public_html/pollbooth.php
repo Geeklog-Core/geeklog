@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.14 2002/06/24 19:24:38 dhaun Exp $
+// $Id: pollbooth.php,v 1.15 2002/08/21 19:54:07 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -75,7 +75,7 @@ function pollsave()
 */
 function polllist() 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG07, $LANG_LOGIN;
+    global $_TABLES, $_CONF, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['pollsloginrequired'] == 1))) {
@@ -89,29 +89,48 @@ function polllist()
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
     } else {
-        $result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']}");
+        $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']} WHERE ";
+        if (!empty ($_USER['uid'])) {
+            $groupList = '';
+            if (!empty ($_USER['uid'])) {
+                foreach ($_GROUPS as $grp) {
+                    $groupList .= $grp . ',';
+                }
+                $groupList = substr ($groupList, 0, -1);
+            }
+            $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+            $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+            $sql .= "(perm_members >= 2) OR ";
+        }
+        $sql .= "(perm_anon >= 2)";
+
+        $result = DB_query($sql);
         $nrows = DB_numRows($result);
         $retval = COM_startBlock($LANG07[4]);
-        $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
-        $pollitem->set_file('pollitem', 'polllist.thtml');
-        for ($i = 1; $i <= $nrows; $i++) {
-            $Q = DB_fetchArray($result);
-            $pollitem->set_var('item_num', $i);
-            $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
-            $pollitem->set_var('poll_question', stripslashes($Q['question']));
-            $pollitem->set_var('poll_votes', $Q['voters']);
-            $pollitem->set_var('lang_votes', $LANG07[5]);
-            if ($i == $nrows) {
-                $pollitem->set_var('ending_br', '<br><br>');
-            } else {
-                $pollitem->set_var('ending_br', '');
+        if ($nrows > 0) {
+            $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
+            $pollitem->set_file('pollitem', 'polllist.thtml');
+            for ($i = 1; $i <= $nrows; $i++) {
+                $Q = DB_fetchArray($result);
+                $pollitem->set_var('item_num', $i);
+                $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
+                $pollitem->set_var('poll_question', stripslashes($Q['question']));
+                $pollitem->set_var('poll_votes', $Q['voters']);
+                $pollitem->set_var('lang_votes', $LANG07[5]);
+                if ($i == $nrows) {
+                    $pollitem->set_var('ending_br', '<br><br>');
+                } else {
+                    $pollitem->set_var('ending_br', '');
+                }
+                $pollitem->parse('output', 'pollitem');
+                $retval .= $pollitem->finish($pollitem->get_var('output'));
             }
-            $pollitem->parse('output', 'pollitem');
-            $retval .= $pollitem->finish($pollitem->get_var('output'));
+        } else {
+            $retval .= $LANG10[17];
         }
     }
     $retval .= COM_endBlock();
-	
+
     return $retval;
 }
 
