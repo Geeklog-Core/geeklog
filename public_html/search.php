@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.39 2002/10/12 17:54:22 dhaun Exp $
+// $Id: search.php,v 1.40 2002/10/21 16:46:59 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -607,25 +607,29 @@ function searchresults($A)
 
 // MAIN
 $display .= COM_siteHeader();
-if ($mode == 'search') {
+if (empty ($_USER['username']) &&
+    (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] == 1))) {
+    $display .= COM_startBlock($LANG_LOGIN[1]);
+    $login = new Template($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var('output'));
+    $display .= COM_endBlock();
+} else if ($mode == 'search') {
     $query = strip_tags ($query);
-    $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
-} else {
-    if (empty ($_USER['username']) &&
-        (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] == 1))) {  
-        $display .= COM_startBlock($LANG_LOGIN[1]);
-        $login = new Template($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
-        $login->set_var ('login_message', $LANG_LOGIN[2]);
-        $login->set_var ('site_url', $_CONF['site_url']);
-        $login->set_var ('lang_login', $LANG_LOGIN[3]);
-        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
-        $login->parse ('output', 'login');
-        $display .= $login->finish ($login->get_var('output'));
-        $display .= COM_endBlock();
+    if ((strlen ($query) < 3) && (empty ($topic) || ($topic == '0')) &&
+            (empty ($datestart) && empty ($dateend)) && (empty ($type) || ($type == 'all')) && (empty ($author) || ($author == '0'))) {
+        $display .= COM_showMessage (50);
+        $display .= searchform ();
     } else {
-        $display .= searchform();
+        $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
     }
+} else {
+    $display .= searchform();
 }
 $display .= COM_siteFooter();
 echo $display;
