@@ -50,7 +50,8 @@ if ($A["count"] > 0) {
 	} else if ($mode == "print") {
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
-		print "<html><title>{$CONF["sitename"]} : {$A["title"]}</title><body>\n";
+		$CONF["pagetitle"] = stripslashes($A["title"]);
+		print "<html><title>{$CONF["sitename"]} : {$CONF["pagetitle"]}</title><body>\n";
 		print "<H1>" . stripslashes($A["title"]) . "</H1>\n";
 		print "<H3>" . strftime($CONF["date"],$A["day"]) . "</H3>";
 		if ($CONF["contributedbyline"] == 1) {
@@ -64,6 +65,11 @@ if ($A["count"] > 0) {
 		print "<a href={$CONF["base"]}/article.php?story=$story>{$CONF["base"]}/article.php?story=$story</a>\n";
 		print "</body></html>";
 	} else {
+		#Set page title
+                $result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
+                $A = mysql_fetch_array($result);
+                $CONF["pagetitle"] = stripslashes($A["title"]);
+
 		include("layout/header.php");
 		dbchange("stories","hits","hits + 1","sid",$story);
 		$sql	= "SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story' ";
