@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.14 2003/08/31 17:20:33 blaine Exp $
+// $Id: search.class.php,v 1.15 2003/08/31 17:26:55 blaine Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -292,11 +292,11 @@ class Search {
                     // get rows    
                     $A['title'] = str_replace('$','&#36;',$A['title']);
                     $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $articleUrl = 'article.php?story=' . $A['sid'];
+                    $articleUrl = '/article.php?story=' . $A['sid'];
                     if (!empty ($urlQuery)) {
                         $articleUrl .= '&amp;query=' . $urlQuery;
                     }
-                    $row = array('<a href="' .$_CONF['site_url'] .'/'. $articleUrl . '">' . stripslashes($A['title']) . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
+                    $row = array('<a href="' .$_CONF['site_url'] . $articleUrl . '">' . stripslashes($A['title']) . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
                     $story_results->num_searchresults++;
                 } else {
@@ -396,9 +396,9 @@ class Search {
                     $querystring = '';
                 }
                 if ($A['comment_type'] == 'article') {
-                    $A['title'] = '<a href="article.php?story=' . $A['sid'] . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
+                    $A['title'] = '<a href="' .$_CONF['site_url'] .'/article.php?story=' . $A['sid'] . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
                 } else {
-                    $A['title'] = '<a href="pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1' . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
+                    $A['title'] = '<a href="' .$_CONF['site_url'] .'/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1' . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
                 }
                 
                 $thetime = COM_getUserDateTimeFormat($A['day']);
