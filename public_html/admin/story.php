@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.67 2002/09/19 21:28:39 dhaun Exp $
+// $Id: story.php,v 1.68 2002/09/28 18:29:40 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -172,17 +172,26 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $story_templates->set_var('layout_url', $_CONF['layout_url']);
+
     if (empty($A['unixdate'])) {
-        if ($A['ampm'] == 'pm') {
-            $A['publish_hour'] = $A['publish_hour'] + 12;
+        $publish_hour = $A['publish_hour'];
+        if ($publish_hour == 12) {
+            if ($A['ampm'] == 'am') {
+                $publish_hour = 0;
+            }
+        } else if ($A['ampm'] == 'pm') {
+            $publish_hour += 12;
         }
         $A['unixdate'] = strtotime($A['publish_year'] . '-' . $A['publish_month'] . '-' . $A['publish_day']
-            . ' ' . $A['publish_hour'] . ':' . $A['publish_minute'] . ':00');
+            . ' ' . $publish_hour . ':' . $A['publish_minute'] . ':00');
     }
     
     if (!empty($A['title'])) {
         $display .= COM_startBlock($LANG24[26]);
         $A['day'] = $A['unixdate'];
+        if (empty ($A['hits'])) {
+            $A['hits'] = 0;
+        }
         $display .= COM_article($A,"n");
         $display .= COM_endBlock();
     }
@@ -824,9 +833,11 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 // MAIN
 
 $display = '';
-switch ($mode) {
-case "$LANG24[11]":
-    if ($type == 'submission') {
+if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
+    if (!isset ($sid) || empty ($sid) || ($sid == 0)) {
+        COM_errorLog ('Attempted to delete story sid=' . $sid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/story.php');
+    } else if ($type == 'submission') {
         DB_delete($_TABLES['storysubmission'],'sid',$sid,$_CONF['site_admin_url'] . "/moderation.php");
     } else {
         $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
@@ -843,26 +854,22 @@ case "$LANG24[11]":
         DB_delete($_TABLES['comments'],'sid',$sid);
         DB_delete($_TABLES['stories'],'sid',$sid,$_CONF['site_admin_url'] . "/story.php?msg=10");
     }
-    break;
-case "$LANG24[9]":
+} else if (($mode == $LANG24[9]) && !empty ($LANG24[9])) { // preview
     $display .= COM_siteHeader('menu');
     $display .= storyeditor($sid,$mode);
     $display .= COM_siteFooter();
     echo $display;
-    break;
-case 'edit':
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= storyeditor($sid,$mode);
     $display .= COM_siteFooter();
     echo $display;
-    break;
-case 'editsubmission':
+} else if ($mode == 'editsubmission') {
     $display .= COM_siteHeader('menu');
     $display .= storyeditor($id,$mode);
     $display .= COM_siteFooter();
     echo $display;
-    break;
-case "$LANG24[8]":
+} else if (($mode == $LANG24[8]) && !empty ($LANG24[8])) { // save
     if ($publish_ampm == 'pm') {
         if ($publish_hour < 12) {
             $publish_hour = $publish_hour + 12;
@@ -873,15 +880,12 @@ case "$LANG24[8]":
     }
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon);
-    break;
-case "$LANG24[10]":
-default:
+} else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
     $display .= liststories($page);
     $display .= COM_siteFooter();
     echo $display;
-	break;
 }
 
 ?>
