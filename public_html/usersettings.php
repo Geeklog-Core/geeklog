@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.42 2002/10/16 18:50:24 dhaun Exp $
+// $Id: usersettings.php,v 1.43 2002/10/30 18:02:01 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -398,6 +398,13 @@ function saveuser($A)
         DB_change($_TABLES['users'],'passwd',"$passwd","uid",$_USER['uid']);
     }
 
+    $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
+    $A['email'] = strip_tags (COM_stripslashes ($A['email']));
+    $A['homepage'] = strip_tags (COM_stripslashes ($A['homepage']));
+    $A['sig'] = strip_tags (COM_stripslashes ($A['sig']));
+    $A['about'] = strip_tags (COM_stripslashes ($A['about']));
+    $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
+
     if (COM_isEmail($A['email'])) {
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
@@ -463,7 +470,7 @@ function saveuser($A)
                 $filename = $curphoto;
             }
         }
-        $A['homepage'] = strip_tags ($A['homepage']);
+
         if (!empty ($A['homepage'])) {
             $pos = strpos ($A['homepage'], ':');
             if ($pos === false) {
@@ -477,13 +484,20 @@ function saveuser($A)
             }
             $A['homepage'] = addslashes ($A['homepage']); 
         }
+
+        $A['fullname'] = addslashes ($A['fullname']);
+        $A['email'] = addslashes ($A['email']);
+        $A['sig'] = addslashes ($A['sig']);
+        $A['about'] = addslashes ($A['about']);
+        $A['pgpkey'] = addslashes ($A['pgpkey']);
+
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . $A["pgpkey"] . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
 
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
-        } 
+        }
 
         return COM_refresh("{$_CONF['site_url']}/usersettings.php?mode=edit&msg=5");
     }
