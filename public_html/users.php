@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.43 2002/09/01 20:15:46 dhaun Exp $
+// $Id: users.php,v 1.44 2002/09/06 14:00:39 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -545,7 +545,7 @@ case 'logout':
     }
     setcookie($_CONF['cookie_session'],'',time() - 10000,$_CONF['cookie_path']);
     setcookie($_CONF['cookie_name'],'',time() - 10000,$_CONF['cookie_path']);
-    $display .= COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
+    $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 case 'profile':
     $display .= COM_siteHeader('menu') . userprofile($HTTP_GET_VARS['uid']) . COM_siteFooter();
@@ -602,17 +602,21 @@ default:
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            if ($VERBOSE) {
-                COM_errorLog('NOW trying to set permanent cookie',1);
-                COM_errorLog('Got '.$userid.' from perm cookie in users.php',1);
-            }
-            if ($userid) {
-                $user_logged_in = 1;
-                // Create new session
-                $userdata = SESS_getUserDataFromId($userid);
-                $_USER = $userdata;
+            if (empty ($userid) || ($userid == 'deleted')) {
+                unset ($userid);
+            } else {
                 if ($VERBOSE) {
-                    COM_errorLog('Got '.$_USER['username'].' for the username in user.php',1);
+                    COM_errorLog('NOW trying to set permanent cookie',1);
+                    COM_errorLog('Got '.$userid.' from perm cookie in users.php',1);
+                }
+                if ($userid) {
+                    $user_logged_in = 1;
+                    // Create new session
+                    $userdata = SESS_getUserDataFromId($userid);
+                    $_USER = $userdata;
+                    if ($VERBOSE) {
+                        COM_errorLog('Got '.$_USER['username'].' for the username in user.php',1);
+                    }
                 }
             }
         }
