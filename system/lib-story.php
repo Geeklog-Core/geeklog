@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.18 2005/01/29 17:52:55 dhaun Exp $
+// $Id: lib-story.php,v 1.19 2005/01/29 18:03:13 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -509,6 +509,14 @@ function STORY_deleteImages ($sid)
 }
 
 /**
+* Return information for a story
+*
+* This is the story equivalent of PLG_getItemInfo. See lib-plugins.php for
+* details.
+*
+* @param    string  $sid    story ID
+* @param    string  $what   comma-separated list of story properties
+* @return   mixed           string or array of strings with the information
 *
 */
 function STORY_getItemInfo ($sid, $what)
@@ -548,10 +556,11 @@ function STORY_getItemInfo ($sid, $what)
     foreach ($properties as $p) {
         switch ($p) {
             case 'description':
-                $retval[] = trim ($A['introtext'] . ' ' . $A['bodytext']);
+                $retval[] = trim (stripslashes ($A['introtext']) . ' '
+                                  . stripslashes ($A['bodytext']));
                 break;
             case 'excerpt':
-                $retval[] = trim ($A['introtext']);
+                $retval[] = trim (stripslashes ($A['introtext']));
                 break;
             case 'title':
                 $retval[] = stripslashes ($A['title']);
