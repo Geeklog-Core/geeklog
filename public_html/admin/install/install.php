@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2001/12/06 21:56:49 tony_bibbs Exp $
+// $Id: install.php,v 1.2 2001/12/11 20:11:53 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -130,6 +130,11 @@ function INST_getServerSettings($gl_path,$upgrade)
     $server_template = new Template($gl_path . '/system/install_templates');
     $server_template->set_file('server', 'serversettings.tpl');
     $server_template->set_var('path', $gl_path);
+    if ($upgrade == 'on') {
+        $upgrade = 1;
+    } else {
+        $upgrade = 0;
+    }
     $server_template->set_var('upgrade', $upgrade);
     $server_template->set_var('path_system', $_CONF['path_system']);
     $server_template->set_var('path_html', $_CONF['path_html']);
