@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.77 2003/12/21 10:53:06 dhaun Exp $
+// $Id: usersettings.php,v 1.78 2004/01/02 20:58:26 blaine Exp $
 
 include_once('lib-common.php');
 
@@ -52,11 +52,6 @@ $_US_VERBOSE = false;
 function edituser() 
 {
     global $_TABLES, $_CONF, $LANG04, $_USER;
-
-    // Call custom account form and edit function if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
-        return custom_userform('edit',$_USER['uid']);
-    } 
 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
@@ -164,6 +159,11 @@ function edituser()
     } else {
         $preferences->set_var ('delete_account_option', '');
     }
+
+    // Call custom account form and edit function if enabled and exists
+    if ($_CONF['custom_registration'] AND (function_exists(custom_edituser))) {
+        $preferences->set_var ('customfields', custom_edituser($_USER['uid']) );
+    } 
 
     PLG_profileVariablesEdit ($_USER['uid'], $preferences);
 
@@ -684,12 +684,6 @@ function saveuser($A)
                        $_CONF['cookiedomain'], $_CONF['cookiesecure']);   
         }
 
-     	// Call custom account registration and save function if enabled and exists
-	    if ($_CONF['custom_registration'] AND (function_exists(custom_usersave))) {
-		    custom_usersave($_USER['uid']);
-	        return COM_refresh("{$_CONF['site_url']}/usersettings.php?mode=edit&msg=5");
-		}
-			
         if ($_CONF['allow_user_photo'] == 1) {
             include_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
@@ -783,6 +777,11 @@ function saveuser($A)
 
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . $A["pgpkey"] . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
+
+        // Call custom registration save function if enabled and exists
+        if ($_CONF['custom_registration'] AND (function_exists(custom_saveuser))) {
+            custom_saveuser($_USER['uid']);
+        }
 
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);

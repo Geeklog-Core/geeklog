@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.63 2003/09/07 18:51:41 dhaun Exp $
+// $Id: user.php,v 1.64 2004/01/02 20:58:26 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -150,6 +150,10 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     $user_templates->set_var('user_homepage', $A['homepage']);
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
+
+    if ($_CONF['custom_registration'] AND (function_exists('custom_edituser'))) {
+        $user_templates->set_var('customfields', custom_edituser($uid) );
+    }
 
 	if (SEC_inGroup('Group Admin')) {
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
@@ -273,6 +277,9 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 $curphoto = '';
             }
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto' WHERE uid = $uid");
+            if ($_CONF['custom_registration'] AND (function_exists('custom_saveuser'))) {
+                custom_saveuser($uid);
+            }
         }
 		
 		// if groups is -1 then this user isn't allowed to change any groups so ignore

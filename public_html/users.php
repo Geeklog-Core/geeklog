@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.71 2004/01/02 03:17:46 blaine Exp $
+// $Id: users.php,v 1.72 2004/01/02 20:58:26 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -237,6 +237,10 @@ function userprofile($user)
     $user_templates->set_var('number_comments', $N['count']);
     $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
 
+    // Call custom registration function if enabled and exists
+    if ($_CONF['custom_registration'] AND (function_exists(custom_displayuser)) ) {
+        $user_templates->set_var ('customfields', custom_displayuser($user) );
+    }
     PLG_profileVariablesDisplay ($user, $user_templates);
 
     $user_templates->parse('output', 'profile');
@@ -489,7 +493,7 @@ function createuser($username,$email)
         } else {
             $retval .= COM_siteHeader ('Menu');
             if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
-                $retval .= custom_userform ('new', '', $LANG04[19]);
+                $retval .= custom_userform ($LANG04[19]);
             } else {
                 $retval .= newuserform ($LANG04[19]);
             }
@@ -503,7 +507,7 @@ function createuser($username,$email)
         }
         $retval .= COM_siteHeader ('menu');
         if ($_CONF['custom_registration'] && function_exists(custom_userform)) {
-            $retval .= custom_userform ('new', '', $msg);
+            $retval .= custom_userform ($msg);
         } else {
             $retval .= newuserform ($msg);
         }
@@ -667,14 +671,7 @@ case 'profile':
     $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
         $display .= COM_siteHeader('menu');
-        // Call custom registration and account record create function if
-        // enabled and exists
-        if ($_CONF['custom_registration'] AND (function_exists(custom_userform))
-                 AND SEC_hasRights('user.edit')) {
-            $display .= custom_userform ('moderate', $uid);
-        } else {
-            $display .= userprofile ($uid);
-        }
+        $display .= userprofile ($uid);
         $display .= COM_siteFooter ();
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
