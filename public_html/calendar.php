@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.44 2004/08/07 10:20:01 dhaun Exp $
+// $Id: calendar.php,v 1.45 2004/08/07 15:32:12 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -468,10 +468,10 @@ case 'day':
             for ($j = 1; $j <= $numevents; $j++) {
                 $A = current ($thedata);
                 $cal_templates->set_var ('event_time',
-                    date ('g:ia', strtotime ($A['datestart'] . ' '
-                                             . $A['timestart'])) . '-'
-                    . date ('g:ia', strtotime ($A['dateend'] . ' '
-                                               . $A['timeend'])));
+                    strftime ($_CONF['timeonly'], strtotime ($A['datestart']
+                            . ' ' . $A['timestart'])) . '-'
+                    . strftime ($_CONF['timeonly'], strtotime ($A['dateend']
+                            . ' ' . $A['timeend'])));
                 if (SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                         $A['perm_anon']) > 0 AND $mode == 'personal') {
