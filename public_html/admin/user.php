@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.21 2002/03/23 21:44:56 tony_bibbs Exp $
+// $Id: user.php,v 1.22 2002/03/23 21:50:11 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -291,6 +291,10 @@ case $LANG28[19]:
 		
     #first, remove from all security groups
     DB_delete($_TABLES['group_assignments'],'ug_uid',$uid);
+    DB_delete($_TABLES['userprefs'],'uid',$uid);
+    DB_delete($_TABLES['userindex'],'uid',$uid);
+    DB_delete($_TABLES['usercomment'],'uid',$uid);
+    DB_delete($_TABLES['userinfo'],'uid',$uid);
 	
     // what to do with orphan stories/comments?
 	
