@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.136 2004/09/29 17:43:43 dhaun Exp $
+// $Id: story.php,v 1.137 2004/11/14 14:06:13 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -145,6 +145,10 @@ function storyeditor($sid = '', $mode = '')
             return $display;
         }
         $A['old_sid'] = $A['sid'];
+        if ($A['postmode'] == 'plaintext') {
+            $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
+            $A['bodytext'] = COM_undoClickableLinks ($A['bodytext']);
+        }
     } elseif (!empty($sid) && $mode == 'editsubmission') {
         $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, "
@@ -161,6 +165,10 @@ function storyeditor($sid = '', $mode = '')
             $access = 3;
             $A['title'] = htmlspecialchars ($A['title']);
             $A['old_sid'] = $A['sid'];
+            if ($A['postmode'] == 'plaintext') {
+                $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
+                $A['bodytext'] = COM_undoClickableLinks ($A['bodytext']);
+            }
         } else {
             // that submission doesn't seem to be there any more (may have been
             // handled by another Admin) - take us back to the moderation page
@@ -215,8 +223,8 @@ function storyeditor($sid = '', $mode = '')
             $A['bodytext'] = COM_checkHTML(COM_checkWords($A['bodytext']));
             $A['title'] = COM_checkHTML(htmlspecialchars(COM_checkWords($A['title'])));
         } else {
-            $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
-            $A['bodytext'] = htmlspecialchars(COM_checkWords($A['bodytext']));
+            $A['introtext'] = COM_undoClickableLinks (htmlspecialchars(COM_checkWords($A['introtext'])));
+            $A['bodytext'] = COM_undoClickableLinks (htmlspecialchars(COM_checkWords($A['bodytext'])));
             $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
         }
         $A['title'] = strip_tags($A['title']);
@@ -242,8 +250,9 @@ function storyeditor($sid = '', $mode = '')
         } else if ($A['ampm'] == 'pm') {
             $publish_hour += 12;
         }
-        $A['unixdate'] = strtotime($A['publish_year'] . '-' . $A['publish_month'] . '-' . $A['publish_day']
-            . ' ' . $publish_hour . ':' . $A['publish_minute'] . ':00');
+        $A['unixdate'] = strtotime ($A['publish_year'] . '-'
+            . $A['publish_month'] . '-' . $A['publish_day'] . ' '
+            . $publish_hour . ':' . $A['publish_minute'] . ':00');
     }
 
     if (!empty($A['title'])) {
@@ -253,7 +262,14 @@ function storyeditor($sid = '', $mode = '')
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
         }
-        $display .= STORY_renderArticle ($A, 'n');
+        if ($A['postmode'] == 'plaintext') {
+            $B = $A;
+            $B['introtext'] = COM_makeClickableLinks ($B['introtext']);
+            $B['bodytext'] = COM_makeClickableLinks ($B['bodytext']);
+            $display .= STORY_renderArticle ($B, 'n');
+        } else {
+            $display .= STORY_renderArticle ($A, 'n');
+        }
         $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     }
 
@@ -347,7 +363,7 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('publish_date_explanation', $LANG24[46]);
 
     $story_templates->set_var('story_unixstamp', $A['unixdate']); 
-    /* Auto Story Arhive or Delete Feature */
+    /* Auto Story Archive or Delete Feature */
     if ($A['expiredate'] == 0 or date('Y', $A['expiredate']) < 2000) {
         $A['expiredate'] = time();
     }
@@ -428,7 +444,12 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
     $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
     list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
-    
+
+    if ($A['postmode'] == 'plaintext') {
+        $newintro = COM_undoClickableLinks ($newintro);
+        $newbody = COM_undoClickableLinks ($newbody);
+    }
+
     $story_templates->set_var('lang_introtext', $LANG24[16]);
     if ($A['postmode'] == 'plaintext') {
         $newintro = str_replace('$','&#36;',$newintro);
@@ -1078,6 +1099,11 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
                 next($filenames);
             }
+        }
+
+        if ($postmode == 'plaintext') {
+            $introtext = COM_makeClickableLinks ($introtext);
+            $bodytext = COM_makeClickableLinks ($bodytext);
         }
 
         if ($_CONF['maximagesperarticle'] > 0) {

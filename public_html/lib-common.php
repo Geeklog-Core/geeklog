@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.398 2004/11/13 21:41:59 dhaun Exp $
+// $Id: lib-common.php,v 1.399 2004/11/14 14:06:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5725,6 +5725,21 @@ function COM_makeClickableLinks( $text )
 {
     $text = preg_replace( '/([^"]?)((((ht|f)tps?):(\/\/)|www\.)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '\\1<a href="\\2">\\2</a>', $text );
     $text = str_replace( '<a href="www', '<a href="http://www', $text );
+
+    return $text;
+}
+
+/**
+* Undo the conversion of URLs to clickable links (in plain text posts),
+* e.g. so that we can present the user with the post as they entered them.
+*
+* @param    string  $txt    story text
+* @param    string          story text without links
+*
+*/
+function COM_undoClickableLinks( $text )
+{
+    $text = preg_replace( '/<a href="[^"]*">([^<]*)<\/a>/', '\1', $text );
 
     return $text;
 }

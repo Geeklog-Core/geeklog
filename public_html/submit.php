@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.76 2004/10/30 17:13:23 dhaun Exp $
+// $Id: submit.php,v 1.77 2004/11/14 14:06:13 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -213,7 +213,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
     $retval .= COM_endBlock();
-		
+
     return $retval;
 }
 
@@ -230,7 +230,7 @@ function submitlink()
     $linkform = new Template($_CONF['path_layout'] . 'submit');
     $linkform->set_file('linkform', 'submitlink.thtml');
     $linkform->set_var('site_url', $_CONF['site_url']);
-    $linkform->set_var('lang_title', $LANG12[10]);	
+    $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG12[11]);
     $linkform->set_var('lang_category', $LANG12[17]);
     $linkform->set_var('link_category_options',  COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
@@ -299,13 +299,16 @@ function submitstory($topic = '')
 
         $A['show_topic_icon'] = 1;
         $A['hits'] = 0;
-	$res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
-	$A += DB_fetchArray($res);
-	$res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-	$A += DB_fetchArray($res);
+        $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+        $A += DB_fetchArray($res);
+        $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+        $A += DB_fetchArray($res);
+        if ($A['postmode'] == 'plaintext') {
+            $A['introtext'] = COM_makeClickableLinks ($A['introtext']);
+        }
         $retval .= COM_startBlock($LANG12[32])
-            . STORY_renderArticle ($A, 'n')
-            . COM_endBlock();
+                . STORY_renderArticle ($A, 'n')
+                . COM_endBlock();
     }
 
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
@@ -332,7 +335,7 @@ function submitstory($topic = '')
     }
 
     $storyform->set_var('lang_title', $LANG12[10]);
-    $storyform->set_var('story_title', htmlspecialchars ($title));	
+    $storyform->set_var('story_title', htmlspecialchars ($title));
     $storyform->set_var('lang_topic', $LANG12[28]);
     if (empty ($A['tid']) && !empty ($topic)) {
         $A['tid'] = $topic;
@@ -661,7 +664,7 @@ function savesubmission($type,$A)
             // and should include its own redirect
             if (!PLG_saveSubmission($type, $A)) {
                 COM_errorLog("Could not save your submission.  Bad type: $type");
-            }	
+            }
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
             return COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -674,14 +677,14 @@ function savesubmission($type,$A)
             if ($A['postmode'] == 'html') {
                 $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
             } else {
-                $A['introtext'] = addslashes(htmlspecialchars(COM_checkWords($A['introtext'])));
+                $A['introtext'] = addslashes (COM_makeClickableLinks (htmlspecialchars (COM_checkWords ($A['introtext']))));
             }
             $A['sid'] = COM_makeSid();
             if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
                 $A['uid'] = $_USER['uid'];
             } else {
                 $A['uid'] = 1;
-            }					
+            }
             COM_updateSpeedlimit ('submit');
             if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
                 DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A['sid']},'{$A['tid']}',{$A['uid']},'{$A['title']}','{$A['introtext']}',NOW(),'{$A['postmode']}'",$_CONF['site_url'].'/index.php?msg=2');

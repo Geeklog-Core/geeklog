@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.10 2004/09/08 02:30:45 blaine Exp $
+// $Id: lib-story.php,v 1.11 2004/11/14 14:06:12 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -63,8 +63,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     // If plain text then replace newlines with <br> tags
     if( $A['postmode'] == 'plaintext' )
     {
-        $A['introtext'] = nl2br( COM_makeClickableLinks( $A['introtext'] ));
-        $A['bodytext'] = nl2br( COM_makeClickableLinks( $A['bodytext'] ));
+        $A['introtext'] = nl2br( $A['introtext'] );
+        $A['bodytext'] = nl2br( $A['bodytext'] );
     }
 
     $A['introtext'] = str_replace( '{', '&#123;', $A['introtext'] );
