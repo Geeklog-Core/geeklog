@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.237 2003/07/05 10:09:36 dhaun Exp $
+// $Id: lib-common.php,v 1.238 2003/07/06 09:37:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2268,6 +2268,27 @@ function COM_adminMenu( $help = '', $title = '' )
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'admin_block', 'header' ));
 
+        $topicsql = '';
+        if( SEC_isModerator() || SEC_hasrights( 'story.edit' ))
+        {
+            $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+                                 . COM_getPermSQL() );
+            $trows = DB_numRows( $tresult );
+            if( $trows > 0 )
+            {
+                $tids = array();
+                for( $i = 0; $i < $trows; $i++ )
+                {
+                    $T = DB_fetchArray( $tresult );
+                    $tids[] = $T['tid'];
+                }
+                if( sizeof( $tids ) > 0 )
+                {
+                    $topicsql = " (tid IN ('" . implode( "','", $tids ) . "'))";
+                }
+            }
+        }
+
         if( SEC_isModerator() )
         {
             $num = 0;
@@ -2278,7 +2299,12 @@ function COM_adminMenu( $help = '', $title = '' )
 
                 if( $_CONF['listdraftstories'] == 1 )
                 {
-                    $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getPermSQL( 'AND', 0, 3 ));
+                    $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 1)";
+                    if( !empty( $topicsql ))
+                    {
+                        $sql .= ' AND' . $topicsql;
+                    }
+                    $result = DB_query( $sql . COM_getPermSQL( 'AND', 0, 3 ));
                     $A = DB_fetchArray( $result );
                     $num += $A['count'];
                 }
@@ -2321,7 +2347,17 @@ function COM_adminMenu( $help = '', $title = '' )
             $url = $_CONF['site_admin_url'] . '/story.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[11] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['stories'] ));
+            if( empty( $topicsql ))
+            {
+                $numstories = DB_count( $_TABLES['stories'] );
+            }
+            else
+            {
+                $nresult = DB_query( "SELECT COUNT(*) AS count from {$_TABLES['stories']} WHERE" . $topicsql );
+                $N = DB_fetchArray( $nresult );
+                $numstories = $N['count'];
+            }
+            $adminmenu->set_var( 'option_count', $numstories );
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
