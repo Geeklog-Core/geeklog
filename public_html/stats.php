@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.21 2002/12/02 17:52:25 dhaun Exp $
+// $Id: stats.php,v 1.22 2003/01/19 17:22:26 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -175,7 +175,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Commented Stories
 
-$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (uid > 1) AND (comments > 0) AND ({$permsql}) ORDER BY comments desc LIMIT 10");
+$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0) AND ({$permsql}) ORDER BY comments desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[11]);
 if ($nrows > 0) {
