@@ -6,5 +6,6 @@ CREATE TABLE plugins(
 	pi_homepage varchar(128) DEFAULT '' NOT NULL,
 	PRIMARY KEY(pi_name)
 );
-
 ALTER TABLE blocks add phpblockfn varchar(64) DEFAULT '';
+ALTER TABLE blocks add onleft tinyint(3) unsigned DEFAULT '1' NOT NULL;
+
