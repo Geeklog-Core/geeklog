@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.320 2004/05/10 07:53:06 dhaun Exp $
+// $Id: lib-common.php,v 1.321 2004/05/11 17:12:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2818,7 +2818,17 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . $type . '">' . $LANG01[28] . '</a> ';
             if( !empty( $A['ipaddress'] ))
             {
-                $deloption .= '| ' . $A['ipaddress'] . ' ';
+                if( empty( $_CONF['ip_lookup'] ))
+                {
+                    $deloption .= '| ' . $A['ipaddress'] . ' ';
+                }
+                else
+                {
+                    $iplookup = str_replace( '*', $A['ipaddress'],
+                                             $_CONF['ip_lookup'] );
+                    $deloption .= '| <a href="' . $iplookup . '">'
+                               . $A['ipaddress'] . '</a> ';
+                }
             }
             $template->set_var( 'delete_option', $deloption );
         }

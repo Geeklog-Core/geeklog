@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.112 2004/05/09 11:27:06 dhaun Exp $
+// $Id: config.php,v 1.113 2004/05/11 17:12:56 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -580,9 +580,23 @@ $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
 
+
+// IP lookup support
+//
+// Remove the comment markers from ONE of the lines below to enable IP lookup
+// support (lets you click on IP addresses so that you can find out where a
+// visitor came from).
+// The '*' in the URL will be replaced with the IP address to look up.
+//
+// ***** Please do not abuse these free services! *****
+// $_CONF['ip_lookup'] = 'http://www.dnsstuff.com/tools/whois.ch?ip=*';
+// $_CONF['ip_lookup'] = 'http://drwhois.com/cgi-bin/scripts/whois.cgi?domain=*';
+// $_CONF['ip_lookup'] = 'http://www.whois.sc/*';
+
+
 // EXPERIMENTAL!
 // This feature when fully implemented, will make your site crawler friendly.
-// Only works with staticpages right now.
+// Only works with staticpages and stories right now.
 //
 // Note: Works with Apache (Linux and Windows successfully tested).
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
