@@ -181,8 +181,10 @@ switch ($mode) {
 	case "logout":
 		if ($user_logged_in) {
                         end_user_session($userdata[uid], $db);
-			accesslog("{$HTTP_COOKIE_VARS["gl_loginname"]} {$LANG04[29]} $REMOTE_ADDR.");
+			accesslog("userid = {$HTTP_COOKIE_VARS[$CONF["cookie_session"]]} {$LANG04[29]} $REMOTE_ADDR.");
                 }
+		setcookie($CONF["cookie_session"],"",time() - 10000,$CONF["cookie_path"]);
+		setcookie($CONF["cookie_name"],"",time() - 10000,$CONF["cookie_path"]);
                 refresh("{$CONF["site_url"]}/index.php?msg=8");
                 break;
 	case "profile":
@@ -206,8 +208,33 @@ switch ($mode) {
                 if (!empty($passwd) && $mypasswd == md5($passwd)) {
                         $userdata = get_userdata($loginname);
                         $USER=$userdata;
-                        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["cookie_timeout"], $CONF["cookie_ip"]);
-                        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+                        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["session_cookie_timeout"], $CONF["cookie_ip"]);
+                        set_session_cookie($sessid, $CONF["session_cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+
+			#Now that we handled session cookies, handle longterm cookie
+			if (!isset($HTTP_COOKIE_VARS[$CONF["cookie_name"]])) {
+				#either their cookie expired or they are new
+				$cooktime = getusercookietimeout();
+				if ($VERBOSE) errorlog("trying to set permanent cookie with time of $cooktime",1);
+				if (!empty($cooktime)) {
+					#they want their cookie to persist for some amount of time
+					#so set it now
+					if ($VERBOSE) errorlog("trying to set permanent cookie",1);
+					setcookie($CONF["cookie_name"],$USER["uid"],time() + $cooktime,$CONF["cookie_path"]);
+				}
+			} else {
+				if ($VERBOSE) errorlog("NOT trying to set permanent cookie",1);
+				$userid = $HTTP_COOKIE_VARS[$CONF["cookie_name"]];
+				errorlog("got $userid from perm cookie in users.php",1);
+                		if ($userid) {
+                        		$user_logged_in = 1;
+                        		#create new session
+                        		$userdata = get_userdata_from_id($userid);
+                        		$USER = $userdata;
+					if ($VERBOSE) errorlog("got {$USER["username"]} for the username in user.php",1);
+                		}
+			}
+	
                         // increment the numlogins counter for this user
                         //dbchange("users","numlogins","numlogins + 1","username","$loginname");
 
