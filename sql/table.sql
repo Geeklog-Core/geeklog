@@ -422,7 +422,7 @@ CREATE TABLE stories (
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   postmode varchar(10) NOT NULL default 'html',
-  frontpage tinyint(3) unsigned default '0',
+  frontpage tinyint(3) unsigned default '1',
   owner_id mediumint(8) NOT NULL default '1',
   group_id mediumint(8) NOT NULL default '2',
   perm_owner tinyint(1) unsigned NOT NULL default '3',
