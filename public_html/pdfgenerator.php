@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.5 2004/06/07 19:04:45 tony Exp $
+// $Id: pdfgenerator.php,v 1.6 2004/06/07 20:47:28 tony Exp $
 
 require_once 'lib-common.php';
 
@@ -130,9 +130,21 @@ function PDF_generatePDF()
             if ($_REQUEST['pageType'] == 2) {
                 // Some sort of server side page, go get it
                 // NOTE this should check php.ini to make sure external URL grabbing is allowed
-                $file = implode('', file($_REQUEST['pageData']));
-                $handle = fopen("$path.html", 'w');
-                fwrite($handle, stripslashes($file));
+                // Optionally, use HTML tidy
+                if (!extension_loaded('tidy')) {
+                    $_CONF['use_html_tidy'] = 0;
+                    COM_errorLog('WARNING: PDF generator settings in config.php indicate we should use HTML Tidy but the
+                        tidy extension is not loaded into PHP so we are skipping calls to tidy');
+                }
+                if ($_CONF['use_html_tidy'] == 1) {
+                    $tidy  = tidy_parse_file($_REQUEST['pageData'], $_CONF['tidy_options']);
+                    $tidy->cleanRepair();
+                    fwrite($handle(stripslashes(tidy_get_output($tidy))));
+                } else {
+                    $file = implode('', file($_REQUEST['pageData']));
+                    $handle = fopen("$path.html", 'w');
+                    fwrite($handle, stripslashes($file));
+                }
                 fclose($handle);
         
                 // Now set the target HTML path
@@ -153,11 +165,7 @@ function PDF_generatePDF()
     
         PDF_garbageCollector();
         
-        // GENERATE THE PDF
-        //exec("htmldoc -t pdf$params --fontsize 9 $logo--webpage '$target' > $path.pdf");
-        //echo sprintf("%s -t pdf%s --fontsize %i %s--webpage '%s' > %s.pdf",
-        //    $_CONF['path_to_htmldoc'], $params, $_CONF['pdf_font_size'], $_CONF['pdf_logo'], $target, $path);
-        //exit;
+        // Generate call to HTMLDoc
         $cmd = sprintf("%s -t pdf%s --fontsize %i %s--webpage '%s' > %s.pdf",
             $_CONF['path_to_htmldoc'], $params, $_CONF['pdf_font_size'], $_CONF['pdf_logo'], $target, $path);
         exec($cmd);
