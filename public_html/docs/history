@@ -3,6 +3,20 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Plugins can now offer their own tags to allow easy linking to their content.
+  These tags take the form [name:id link text], where 'name' is a name
+  associated with the plugin, 'id' is a unique id referring to one of the
+  objects under the plugin's control, and 'link text' is text used in the <a>
+  tag that Geeklog creates from these tags.
+  Built-in tags are [story:] to link to a story and [event:] to link to an
+  event [Blaine, Dirk]
+  Example: [story:email-bug About the email bug] would be translated into
+  <a href="http://example.com/article.php/email-bug">About the email bug</a>
+- portal.php now sends a 301 HTTP status code for the links instead of a 302.
+  While a 302 status code would actually make more sense, Google does have a
+  tendency to list search results with the URL of the portal script but with
+  the content of the linked site, thus giving the impression that the content
+  is actually located on another site. Sending a 301 avoids this problem [Dirk]
 - Group Admins should not even see the groups of which they are not a member
   (bug #280) [Dirk]
 - Prevent Group Admins from listing the members of a group unless they are a
