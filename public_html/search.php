@@ -54,10 +54,14 @@ function searchform() {
 	GetPluginSearchTypes();
 	print "<option value=comments>{$LANG09[7]}</option>";
 	print "</select></td></tr>";
-	print "<tr><td align=right>{$LANG09[8]}:</td><td><select name=author>\n";
-	print "<option selected value=0>{$LANG09[9]}</option>";
-	optionlist("users","uid,username");
-	print "</select></td></tr>";
+	if ($CONF["contributedbyline"] == 1) {
+		print "<tr><td align=right>{$LANG09[8]}:</td><td><select name=author>\n";
+		print "<option selected value=0>{$LANG09[9]}</option>";
+		optionlist("users","uid,username");
+		print "</select></td></tr>";
+	} else {
+		print "<input type=hidden name=author value=0>\n";
+	}
 	print "<tr><td colspan=2>\n<input type=submit value=\"{$LANG09[10]}\">\n";
 	print "<input type=hidden name=mode value=search></td></tr>\n";
 	print "</table></form>\n";
@@ -129,10 +133,10 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 	$cur_plugin_index = 1;
 	if ($nrows > 0) {
 		startblock("$for " . $LANG09[11] . ": $nrows " . $LANG09[12]);
-		print "Found <b>$nrows</b> matches for <b>$total</b> items"; 
+		print "Found <b>$nrows</b> matches for <b>$total</b> items";
 		print "<table cellpadding=0 cellspacing=1 border=0 width=\"99%\">\n";
 		print "<tr><th align=left>{$LANG09[16]}</th><th>{$LANG09[17]}</th><th>{$LANG09[18]}</th><th>{$LANG09[23]}</th>";
-		for ($i=1; $i <= $nrows; $i++) { 
+		for ($i=1; $i <= $nrows; $i++) {
 			if ($A["day"] > $C["day"]) {
 				searchresults($A);
 				$A = mysql_fetch_array($result_stories);
@@ -165,7 +169,7 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 function searchresults($A) {
 	global $CONF;
 	print "<tr align=center>\n";
-	print "<td align=left><a href=article.php?story={$A["sid"]}>{$A["title"]}</a></td>";
+	print "<td align=left><a href=article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
 	print "<td>" . strftime($CONF["shortdate"],$A["day"]) . "</td><td>" . getitem("users","username","uid = '{$A["uid"]}'") . "</td><td>{$A["hits"]}</td></tr>\n";
 }
 

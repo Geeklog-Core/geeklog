@@ -52,8 +52,10 @@ if ($A["count"] > 0) {
 		$A = mysql_fetch_array($result);
 		print "<html><title>{$CONF["sitename"]} : {$A["title"]}</title><body>\n";
 		print "<H1>{$A["title"]}</H1>\n";
-		print "<H3>" . strftime($CONF["date"],$A["day"]);
-		print "<BR>$LANG01[1] " . getitem("users","username","uid = {$A["uid"]}") . "</H3>\n";
+		print "<H3>" . strftime($CONF["date"],$A["day"]) . "</H3>";
+		if ($CONF["contributedbyline"] == 1) {
+			print "<BR><H3>$LANG01[1] " . getitem("users","username","uid = {$A["uid"]}") . "</H3>\n";
+		}
 		print "<p>" . nl2br(stripslashes($A["introtext"]));
 		print "\n<p>" . nl2br(stripslashes($A["bodytext"]));
 		print "<p><a href={$CONF["base"]}/article.php?story=$story#comments>" . dbcount("comments","sid",$A["sid"]) . " $LANG01[3]</a>\n";
@@ -68,8 +70,8 @@ if ($A["count"] > 0) {
 		$result = dbquery($sql);
 		$A = mysql_fetch_array($result);
 		article($A,"n");
-		
-		# Display whats related any polls configured for this page		
+
+		# Display whats related any polls configured for this page
 		print "</td><td><img src={$CONF["base"]}/images/speck.gif heigth=1 width=10></td>\n";
 		print "<td valign=top width=180>\n";
 		startblock("$LANG11[1]");
@@ -79,7 +81,7 @@ if ($A["count"] > 0) {
 		print "<li><a href={$CONF["base"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>";
 		print "<li><a href={$CONF["base"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
 		endblock();
-		if (dbcount("pollquestions","qid",$story) > 0) 
+		if (dbcount("pollquestions","qid",$story) > 0)
 			showpoll(80,$story);
 		print "<br><img src={$CONF["base"]}/images/speck.gif width=180 height=1></td></tr>\n";
 

@@ -73,17 +73,17 @@ function editpreferences() {
 	print "<form action={$CONF["base"]}/usersettings.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[40]}:</b><br><small>{$LANG04[49]}</small></td><td><input type=checkbox name=noicons";
-	if ($A["noicons"] == "1") { 
+	if ($A["noicons"] == "1") {
 		print " checked";
 	}
 	print "></td></tr>\n";
 #	print "<tr valign=top><td align=right><b>{$LANG04[41]}:</b><br><small>{$LANG04[50]}</small></td><td><input type=checkbox name=willing";
-#	if ($A["willing"] == 1) { 
+#	if ($A["willing"] == 1) {
 #		print " checked";
 #	}
 #	print "></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[44]}:</b><br><small>{$LANG04[51]}</small></td><td><input type=checkbox name=noboxes";
-	if ($A["noboxes"] == 1) { 
+	if ($A["noboxes"] == 1) {
 		print " checked";
 	}
 	print "></td></tr>\n";
@@ -101,18 +101,21 @@ function editpreferences() {
 	print "<tr><td colspan=3>{$LANG04[54]}</td></tr>";
 	print "<tr valign=top><td><b>{$LANG04[48]}</b><br>";
 	checklist("topics","tid,topic","",$A["tids"]);
-	print "</td><td><img src={$CONF["base"]}/images/speck.gif width=40 height=1>";
-	print "</td><td><b>{$LANG04[56]}</b><br>";
-	$result = dbquery("SELECT DISTINCT uid FROM stories");
-	$nrows = mysql_num_rows($result);
-	unset($where);
-	for ($i=0; $i<$nrows; $i++) {
-		$W = mysql_fetch_row($result);
-		$where .= "uid = '$W[0]' OR ";
+	print "</td><td><img src={$CONF["base"]}/images/speck.gif width=40 height=1></td>";
+	if ($CONF["contributedbyline"] == 1) {
+		print "<td><b>{$LANG04[56]}</b><br>";
+		$result = dbquery("SELECT DISTINCT uid FROM stories");
+		$nrows = mysql_num_rows($result);
+		unset($where);
+		for ($i=0; $i<$nrows; $i++) {
+			$W = mysql_fetch_row($result);
+			$where .= "uid = '$W[0]' OR ";
+		}
+		$where .= "uid = '1'";
+		checklist("users","uid,username",$where,$A["aids"]);
+		print "</td>";
 	}
-	$where .= "uid = '1'";
-	checklist("users","uid,username",$where,$A["aids"]);
-	print "</td></tr></table>";
+	print "</tr></table>";
 	endblock();
 	startblock("{$LANG04[47]} {$USER["username"]}","");
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
@@ -168,7 +171,7 @@ function saveuser($A) {
 		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userinfo SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$USER["uid"]}");
 		refresh("{$CONF["base"]}/usersettings.php?mode=edit&msg=5");
-	} 		
+	}
 }
 
 ###############################################################################
@@ -211,22 +214,22 @@ function savepreferences($A) {
 if (!empty($USER["username"]) && !empty($mode)) {
 	switch ($mode) {
 		case "preferences":
-			include("layout/header.php");		
+			include("layout/header.php");
 			showmessage($msg);
 			editpreferences();
-			include("layout/footer.php");	
+			include("layout/footer.php");
 			break;
 		case "comments":
-			include("layout/header.php");		
+			include("layout/header.php");
 			showmessage($msg);
 			editcommentprefs();
-			include("layout/footer.php");	
+			include("layout/footer.php");
 			break;
 		case "edit":
-			include("layout/header.php");	
+			include("layout/header.php");
 			showmessage($msg);
 			edituser();
-			include("layout/footer.php");	
+			include("layout/footer.php");
 			break;
 		case "saveuser":
 			saveuser($HTTP_POST_VARS);

@@ -25,7 +25,7 @@
 
 include("common.php");
 include("custom_code.php");
-			
+
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see
@@ -62,13 +62,13 @@ function userprofile($user) {
 		}
 	} else {
 		print "<tr><td align=right>{$LANG04[11]}</td></tr>\n";
-	}	
+	}
 	print "</table>";
 	endblock();
 }
 
 ###############################################################################
-# 
+#
 
 function emailpassword($username,$msg=0) {
 	global $CONF,$LANG04;
@@ -86,8 +86,9 @@ function emailpassword($username,$msg=0) {
 		$mailtext .= "{$LANG04[2]}: $username\n";
 		$mailtext .= "{$LANG04[4]}: $passwd\n\n";
 		$mailtext .= "{$LANG04[14]}\n\n";
-		$mailtext .= "{$CONF["base"]}/users.php?mode=edit\n\n";
+		# $mailtext .= "{$CONF["base"]}/users.php?mode=edit\n\n";
 		$mailtext .= "{$CONF["sitename"]}\n";
+		$mailtext .= "{$CONF["base"]}\n";
                 mail($A["email"],"{$CONF["sitename"]}: {$LANG04[16]}",$mailtext,
 		"From: {$CONF["sitename"]} <{$CONF["sitemail"]}>\nReturn-Path: <{$CONF["sitemail"]}>\nX-Mailer: GeekLog $VERSION");
 		if ($msg)
@@ -120,7 +121,7 @@ function createuser($username,$email) {
 			include("layout/header.php");
 			defaultform($LANG04[18]);
 			include("layout/footer.php");
-		} 		
+		}
 	} else {
 		include("layout/header.php");
 		defaultform($LANG04[19]);
@@ -181,9 +182,9 @@ switch ($mode) {
                 refresh("{$CONF["base"]}/index.php?msg=8");
                 break;
 	case "profile":
-		include("layout/header.php");	
+		include("layout/header.php");
 		userprofile($uid);
-		include("layout/footer.php");	
+		include("layout/footer.php");
 		break;
 	case "create":
 		createuser($username,$email);
