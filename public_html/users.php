@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.21 2002/03/09 19:36:57 dhaun Exp $
+// $Id: users.php,v 1.22 2002/04/11 14:57:58 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -171,7 +171,7 @@ function createuser($username,$email)
     $ucount = DB_count($_TABLES['users'],'username',$username);
     $ecount = DB_count($_TABLES['users'],'email',$email);
 	
-    if ($ucount == 0 && ecount == 0) {
+    if ($ucount == 0 AND $ecount == 0) {
         if (COM_isEmail($email)) {
             $regdate = strftime('%Y-%m-%d %H:%M:$S',time());
             DB_save($_TABLES['users'],'username,email,regdate',"'$username','$email','$regdate'");
