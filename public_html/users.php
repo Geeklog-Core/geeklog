@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.86 2004/08/23 12:38:50 dhaun Exp $
+// $Id: users.php,v 1.87 2004/09/04 19:37:35 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -891,15 +891,15 @@ default:
                    $_CONF['cookie_path'], $_CONF['cookiedomain'],
                    $_CONF['cookiesecure']);
 
-        if (($HTTP_REFERER) && (strstr ($HTTP_REFERER, '/users.php') === false)) {
+        if (!empty ($HTTP_SERVER_VARS['HTTP_REFERER']) && (strstr ($HTTP_SERVER_VARS['HTTP_REFERER'], '/users.php') === false)) {
             $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
-            if (substr ($HTTP_REFERER, 0, strlen ($indexMsg)) == $indexMsg) {
-                $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+            if (substr ($HTTP_SERVER_VARS['HTTP_REFERER'], 0, strlen ($indexMsg)) == $indexMsg) {
+                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             } else {
-                $display .= COM_refresh($HTTP_REFERER);
+                $display .= COM_refresh ($HTTP_SERVER_VARS['HTTP_REFERER']);
             }
         } else {
-            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
     } else {
         $display .= COM_siteHeader('menu');
