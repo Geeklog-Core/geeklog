@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.25 2002/04/15 21:06:50 tony_bibbs Exp $
+// $Id: config.php,v 1.26 2002/04/16 14:40:09 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -46,7 +46,7 @@ $_DB_name           = 'geeklog';            // Yes, your DB must exists before r
 $_DB_user           = 'username';
 $_DB_pass           = 'password';
 $_DB_table_prefix   = 'gl_';                // e.g. 'gl_'
-$_DB_mysqldump_path = '/path/to/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
+$_DB_mysqldump_path = '/usr/bin/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
 $_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
 
 // +---------------------------------------------------------------------------+
