@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.47 2002/11/29 10:47:16 dhaun Exp $
+// $Id: usersettings.php,v 1.48 2003/01/01 18:54:46 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -463,7 +463,7 @@ function saveuser($A)
             if (!empty($_CONF['image_lib'])) {
                 if ($_CONF['image_lib'] == 'imagemagick') {
                     // Using imagemagick
-                    $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+                    $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
                 } else {
                     // must be using netPBM
                     $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];

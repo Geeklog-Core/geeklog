@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.76 2002/12/15 13:34:44 dhaun Exp $
+// $Id: story.php,v 1.77 2003/01/01 18:54:46 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -727,7 +727,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             if (!empty($_CONF['image_lib'])) {
                 if ($_CONF['image_lib'] == 'imagemagick') {
                     // Using imagemagick
-                    $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+                    $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
                 } else {
                     // must be using netPBM
                     $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];
