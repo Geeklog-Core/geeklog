@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.30 2003/10/11 12:56:32 dhaun Exp $
+// $Id: links.php,v 1.31 2003/12/11 09:47:05 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -104,7 +104,7 @@ if (empty ($_USER['username']) &&
     $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('lang_addalink', $LANG06[3]);
 
-    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']}";
+    $sql = "SELECT lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']}";
     if ($_CONF['linkcols'] > 0) {
         if (!empty ($category)) {
             $sql .= " WHERE category = '$category'";
@@ -122,7 +122,7 @@ if (empty ($_USER['username']) &&
         $page = 0;
         $end = 10;
 
-        $result = DB_query("SELECT lid,url,title,description,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+        $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var('link_details','');
@@ -135,13 +135,20 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
                         stripslashes ($A['description']));
-                if (SEC_hasRights ('link.edit')) {
-                    $linklist->set_var ('link_edit', '<a href="'
-                            . $_CONF['site_admin_url']
-                            . '/link.php?mode=edit&amp;lid=' . $A['lid'] . '">'
-                            . $LANG01[4] . '</a>');
+                if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
+                    $editurl = $_CONF['site_admin_url']
+                             . '/link.php?mode=edit&amp;lid=' . $A['lid'];
+                    $linklist->set_var ('link_edit', '<a href="' . $editurl
+                            . '">' . $LANG01[4] . '</a>');
+                    $linklist->set_var ('edit_icon', '<a href="' . $editurl
+                            . '"><img src="' . $_CONF['layout_url']
+                            . '/images/edit.gif" alt="' . $LANG01[4]
+                            . '" title="' . $LANG01[4] . '" border="0"></a>');
                 } else {
                     $linklist->set_var ('link_edit', '');
+                    $linklist->set_var ('edit_icon', '');
                 }
                 $linklist->parse('link_details', 'link', true);
             }
@@ -184,13 +191,20 @@ if (empty ($_USER['username']) &&
                 $linklist->set_var('link_hits', $A['hits']);
                 $linklist->set_var('link_description',
                         stripslashes ($A['description']));
-                if (SEC_hasRights ('link.edit')) {
-                    $linklist->set_var ('link_edit', '<a href="'
-                            . $_CONF['site_admin_url']
-                            . '/link.php?mode=edit&amp;lid=' . $A['lid'] . '">'
-                            . $LANG01[4] . '</a>');
+                if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon']) == 3) && SEC_hasRights ('link.edit')) {
+                    $editurl = $_CONF['site_admin_url']
+                             . '/link.php?mode=edit&amp;lid=' . $A['lid'];
+                    $linklist->set_var ('link_edit', '<a href="' . $editurl
+                            . '">' . $LANG01[4] . '</a>');
+                    $linklist->set_var ('edit_icon', '<a href="' . $editurl
+                            . '"><img src="' . $_CONF['layout_url']
+                            . '/images/edit.gif" alt="' . $LANG01[4]
+                            . '" title="' . $LANG01[4] . '" border="0"></a>');
                 } else {
                     $linklist->set_var ('link_edit', '');
+                    $linklist->set_var ('edit_icon', '');
                 }
                 $linklist->parse('link_details', 'link', true);
             }
