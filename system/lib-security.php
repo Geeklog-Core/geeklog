@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.2 2001/11/07 23:34:16 tony_bibbs Exp $
+// $Id: lib-security.php,v 1.3 2002/01/04 16:16:18 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
@@ -56,7 +56,11 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
     }
 
     if (empty($uid)) {
-        $uid = $_USER['uid'];
+        if (empty($_USER['uid'])) {
+            $uid = 1;
+        } else {
+            $uid = $_USER['uid'];
+        }
     }
 
     if (empty($cur_grp_id)) {
@@ -111,7 +115,7 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
 */
 function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE;
+    global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
     if (empty($uid)) {
         if (empty($_USER['uid'])) {
@@ -121,43 +125,23 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
         }
     }
 
+    if (empty($_GROUPS)) {
+        $_GROUPS = SEC_getUserGroups($_USER['uid']);
+    }
+
     if (is_numeric($grp_to_verify)) {
-        $result = DB_query("SELECT grp_name FROM {$_TABLES["groups"]} WHERE grp_id = $grp_to_verify",1);
-        if ($result < 0) return false;
-        $A = DB_fetchArray($result);
-        $grp_to_verify = $A['grp_name'];
-    } else {
-        if (DB_count($_TABLES['groups'],'grp_name',$grp_to_verify) == 0) {
-            return false;
+        if (in_array($grp_to_verify, $_GROUPS)) {
+           return true;
+        } else {
+           return false;
         }
-    }
-
-    if (empty($cur_grp_id)) {
-        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
     } else {
-        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id",1);
-    }
-
-    if ($result == -1) {
-        return false;
-    }
-
-    $nrows = DB_numRows($result);
-
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        if ($A['grp_name'] == $grp_to_verify) {
+        if (!empty($_GROUPS[$grp_to_verify])) {
             return true;
         } else {
-            if (SEC_inGroup($grp_to_verify,$uid,$A['ug_main_grp_id'])) {
-                return true;
-            }
+            return false;
         }
-    }
-
-    return false;
+   }
 }
 
 /**
