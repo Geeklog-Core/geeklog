@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.22 2002/06/27 18:34:03 dhaun Exp $
+// $Id: search.php,v 1.23 2002/06/29 15:07:23 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -497,6 +497,7 @@ function searchresults($A)
 // MAIN
 $display .= COM_siteHeader();
 if ($mode == 'search') {
+    $query = strip_tags ($query);
     $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
 } else {
     if (empty ($_USER['username']) &&
