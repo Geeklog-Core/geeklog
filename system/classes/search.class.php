@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.20 2004/02/07 12:59:23 dhaun Exp $
+// $Id: search.class.php,v 1.21 2004/02/14 13:36:19 dhaun Exp $
 
 if (eregi ('search.class.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -295,9 +295,9 @@ class Search {
             $story_results->num_searchresults = 0;
             $story_results->num_itemssearched = $B[0];
     
-            // NOTE if any of your data items need to be links then add them here! 
-            // make sure data elements are in an array and in the same order as your
-            // headings above!
+            // NOTE if any of your data items need to be links then add them
+            // here! Make sure data elements are in an array and in the same
+            // order as your headings above!
             while ($A = DB_fetchArray($result_stories)) {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     // get rows    
@@ -503,9 +503,11 @@ class Search {
             while ($A = DB_fetchArray($result_links)) {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $row = array($A['title'], '<a href="' . $_CONF['site_url']
-                            . '/portal.php?what=link&amp;item=' . $A['lid'] . '">'
-                            . $A['url'] . '</a>', $A['hits']);
+                    $row = array (stripslashes ($A['title']),
+                                  '<a href="' . $_CONF['site_url']
+                                  . '/portal.php?what=link&amp;item='
+                                  . $A['lid'] . '">' . $A['url'] . '</a>',
+                                  $A['hits']);
                     $link_results->addSearchResult($row);
                     $link_results->num_searchresults++;
                 } else {

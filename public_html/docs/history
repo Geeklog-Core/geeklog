@@ -3,6 +3,7 @@ GeekLog History/Changes:
 Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Added a missing stripslashes() call for link titles returned from a search.
 - Fixed bug when highlighting search queries that contained a '*' (reported
   by wlparks).
 - Fixed a bug/typo introduced in 1.3.8-1sr4 that prevented you from deleting
