@@ -3,6 +3,11 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Complete overhaul of the Plugin Comment API to reduce the likelyhood of 
+  plugins introducing security problems.  Older plugins that use the comment
+  API will no longer work. [Vinny]
+- Refactored Comment code out of lib-common.php and into lib-comment.php, also
+  some changes to comment.php [Vinny]
 - Added a missing stripslashes call to remove backslashes when a topic's name
   was displayed in the index page's title (bug #369) [Dirk]
 - Added two new SpamX modules to filter posts based on the IP address of the
