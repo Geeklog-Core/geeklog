@@ -3,6 +3,14 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- In the site's page title, replace the site slogan with more meaningful
+  information, where possible, e.g. "Submit a Story" on the story submission
+  form, "Search Results", etc. (feature request #95) [Dirk]
+- Fixed deleting events from the personal calendar (bug #199) [Dirk]
+- Carry over the date and time from the calendar when Admins add a new event
+  (bug #132) [Dirk]
+- Don't display "Site Events" headline in the Upcoming Events block when
+  personal calendars are off (feature request #151) [Dirk]
 - Removed hard-coded am/pm formatted hours from the calendar's day view
   (calendar/dayview/dayview.thtml) and replaced them with {xx_hour} variables,
   where 'xx' is 0-23, which will be replaced with the hours formatted
@@ -13,7 +21,7 @@ XXX XX, 2004 (1.3.10)
   .smallcal-day-even, .smallcal-day-odd, and .smallcal-day-empty [Dirk]
 - Improvements to the Story Archive Feature, UI tweaks, Language Extraction,
   Added new field to the topics table. Admin now sets the archive topic in 
-  the Topic Editor. Only one topic can be used - logic enforced. [blaine]
+  the Topic Editor. Only one topic can be used - logic enforced. [Blaine]
 - Don't emit the <br><br> in article.php when the story's body text is empty
   (based on patch #147, provided by Andy Maloney) [Dirk]
 - Set {article_url} variable when displaying the story in article.php [Dirk]
