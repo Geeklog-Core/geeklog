@@ -136,7 +136,7 @@ function enablearchive(obj) {
                                     </tr>
                                     <tr>
                                         <td valign="top" align="right">{lang_sid}:</td>
-                                        <td><input type="text" size="20" maxlength="20" name="sid" value="{story_id}"></td>
+                                        <td><input type="text" size="40" maxlength="40" name="sid" value="{story_id}"></td>
                                     </tr>
                                     <tr>
                                         <td valign="top" align="right">{lang_introtext}:</td>

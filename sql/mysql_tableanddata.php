@@ -371,7 +371,7 @@ CREATE TABLE {$_TABLES['statuscodes']} (
 
 $_SQL[28] = "
 CREATE TABLE {$_TABLES['stories']} (
-  sid varchar(20) NOT NULL default '',
+  sid varchar(40) NOT NULL default '',
   uid mediumint(8) NOT NULL default '1',
   draft_flag tinyint(3) unsigned default '0',
   tid varchar(20) NOT NULL default 'General',
@@ -556,7 +556,7 @@ CREATE TABLE {$_TABLES['vars']} (
 
 $_SQL[39] = "
 CREATE TABLE {$_TABLES['article_images']} (
-  ai_sid varchar(20) NOT NULL,
+  ai_sid varchar(40) NOT NULL,
   ai_img_num tinyint(2) unsigned NOT NULL,
   ai_filename varchar(128) NOT NULL,
   PRIMARY KEY (ai_sid,ai_img_num)

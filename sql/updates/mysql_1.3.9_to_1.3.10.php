@@ -159,6 +159,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_expire(expire)";
 // (fresh installs of 1.3.9 were still using 20 characters)
 $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id varchar(40) NOT NULL";
 
+// allow up to 40 characters for the story IDs, as they are editable now
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} CHANGE sid sid varchar(40) NOT NULL";
+$_SQL[] = "ALTER TABLE {$_TABLES['article_images']} CHANGE ai_sid ai_sid varchar(40) NOT NULL";
+
 /**
 * Install SpamX plugin (also handled updates from version 1.0)
 *
