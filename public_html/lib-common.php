@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.17 2001/12/14 19:54:16 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.18 2001/12/14 20:06:50 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -440,6 +440,7 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
 
     $block = new Template($_CONF['path_layout']);
     $block->set_file('block', $template);
+    $block->set_var('site_url',$_CONF['site_url']); // not used but some custom theme may want it
     $block->set_var('layout_url', $_CONF['layout_url']);
     $block->set_var('block_title',$title);
     if (!empty($helpfile)) {
@@ -455,9 +456,7 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
 }
 
 /**
-* Closes out startcomment and COM_startBlock
-*
-* THIS IS GOING AWAY SOON - WILL BE REPLACED BY NEW BLOCK/TEMPLATE FUNCTIONS
+* Closes out COM_startBlock
 *
 */
 function COM_endBlock($template='blockfooter.thtml') 
@@ -466,6 +465,7 @@ function COM_endBlock($template='blockfooter.thtml')
 
     $block = new Template($_CONF['path_layout']);
     $block->set_file('block', $template);
+    $block->set_var('site_url', $_CONF['site_url']);
     $block->parse("endHTML",'block');                               
 
     return $block->finish($block->get_var('endHTML'));
