@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.19 2002/10/21 16:51:53 dhaun Exp $
+// $Id: upload.class.php,v 1.20 2002/11/26 19:40:47 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -481,7 +481,7 @@ class upload
                     }  else {
                         if (eregi('\.gif', $filename)) {
                             $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
-	  	            $cmd .= $this->_pathToNetPBM . 'giftopnm ' . $cmd_end . 'ppmtogif > ' . $tmpfile;
+	  	            $cmd .= $this->_pathToNetPBM . 'giftopnm ' . $cmd_end . 'ppmquant 256 | ' . $this->_pathToNetPBM . 'ppmtogif > ' . $tmpfile;
                         }
                     }
 	        }
