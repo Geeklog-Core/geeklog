@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.388 2004/10/19 10:51:19 dhaun Exp $
+// $Id: lib-common.php,v 1.389 2004/10/21 09:12:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -491,7 +491,8 @@ function COM_renderMenu( &$header, $plugin_menu )
     if( empty( $_CONF['menu_elements'] ))
     {
         $_CONF['menu_elements'] = array( // default set of links
-                'contribute', 'links', 'polls', 'calendar', 'search', 'stats' );
+                'contribute', 'links', 'polls', 'calendar', 'search', 'stats',
+                'plugins' );
     }
 
     $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;

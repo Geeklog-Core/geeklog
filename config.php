@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.140 2004/10/16 18:22:39 blaine Exp $
+// $Id: config.php,v 1.141 2004/10/21 09:12:51 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -204,9 +204,9 @@ $_CONF['menu_elements'] = array
     'polls',        // link to past polls
     'calendar',     // link to the site calendar
     'search',       // link to advanced search
-    'stats'         // link to site stats
+    'stats',        // link to site stats
     // 'prefs',     // link to user's preferences
-    // 'plugins'    // links added by plugins, like {plg_menu_elements}
+    'plugins'       // links added by plugins, like {plg_menu_elements}
     // 'custom'     // for custom links (see lib-custom.php)
 );
 
