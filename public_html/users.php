@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.15 2002/01/09 17:37:06 tony_bibbs Exp $
+// $Id: users.php,v 1.16 2002/01/09 18:19:07 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -393,7 +393,7 @@ default:
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
                 setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
-                setcookie($_CONF['password'],md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
+                setcookie('password',md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
