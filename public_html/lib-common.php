@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.143 2002/08/27 00:18:28 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.144 2002/08/27 00:41:29 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -60,7 +60,7 @@ $_COM_VERBOSE = false;
 * Configuration Include: You should ONLY have to modify this line.
 * Leave the rest of this file intact!
 */
-require_once('/path/to/geeklog/config.php');
+require_once('/var/www/geeklog-1.3/config.php');
 
 // Before we do anything else, check to ensure site is enabled
 if (!$_CONF['site_enabled']) {
@@ -293,12 +293,11 @@ function COM_article($A,$index='')
         }
     }
 
+    $A['title'] = str_replace('$','&#36;',$A['title']);
+    $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
+    $A['bodytext'] = str_replace('$','&#36;',$A['bodytext']);
+
     if ($index == 'n') {
-        if ($A['postmode'] == 'plaintext') {
-            $A['title'] = str_replace('$','&#36;',$A['title']);
-            $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
-            $A['bodytext'] = str_replace('$','&#36;',$A['bodytext']);
-        }
         $article->set_var('story_title',stripslashes($A['title']));
         $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.stripslashes($A['bodytext']));
     } else {
