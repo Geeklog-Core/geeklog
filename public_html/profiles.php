@@ -110,6 +110,12 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg) {
  	$subject = strip_tags(stripslashes("Re: {$A["title"]}"));
  	@mail($toemail,$subject,$mailtext,$mailfrom);
  	refresh("{$CONF["site_url"]}/article.php?story=$sid");
+
+	# Increment numemails counter for story
+	$result = dbquery("SELECT numemails FROM stories WHERE sid = '$sid'");
+	$A = mysql_fetch_array($result);
+	$numemails = $A["numemails"] + 1;
+	dbchange("stories","numemails",$numemails,"sid",$sid);
 }
 
 ###############################################################################
