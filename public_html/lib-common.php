@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.98 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: lib-common.php,v 1.99 2002/05/20 16:33:20 tony_bibbs Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -725,11 +725,11 @@ function COM_optionList($table,$selection,$selected='',$sortcol=1)
 
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $retval .= '<option value="' . $A[0] . '"';
-        if ($A[0] == $selected) { 
+        $retval .= '<option value="' . $A[DB_fieldName($result,0)] . '"';
+        if ($A[DB_fieldName($result,0)] == $selected) { 
             $retval .= ' selected'; 
         }
-        $retval .= '>' . $A[1] . '</option>' . LB;
+        $retval .= '>' . $A[DB_fieldName($result,1)] . '</option>' . LB;
     }
 	
     return $retval;
@@ -780,16 +780,16 @@ function COM_checkList($table,$selection,$where='',$selected='')
         }
 
         if ($access) {
-            $retval .= '<input type="checkbox" name="'.$table.'[]" value="'.$A[0].'"';
+            $retval .= '<input type="checkbox" name="'.$table.'[]" value="'.$A[DB_fieldName($result,0)].'"';
             for ($x = 0; $x < sizeof($S); $x++) {
-                if ($A[0] == $S[$x]) {
+                if ($A[DB_fieldName($result,0)] == $S[$x]) {
                     $retval .= ' checked="CHECKED"';
                 }
             }
-            if ($A[2] < 10 && $A[2] > 0) {
-                $retval .= '><b>' . $A[1] . '</b><br>' . LB;
+            if ($A[DB_fieldName($result,2)] < 10 AND $A[DB_fieldName($result,2)] > 0) {
+                $retval .= '><b>' . $A[DB_fieldName($result,1)] . '</b><br>' . LB;
             } else {
-                $retval .= '>' . $A[1] . '<br>' . LB;
+                $retval .= '>' . $A[DB_fieldName($result,1)] . '<br>' . LB;
             }
         }
     }
