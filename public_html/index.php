@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2002/04/19 03:25:24 mlimburg Exp $
+// $Id: index.php,v 1.23 2002/04/22 16:36:45 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -121,8 +121,6 @@ if ($nrows > 0) {
         $A	= DB_fetchArray($result);
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['featured'] == 1) {
-                $display .= '<b>'.$LANG05[4].':</b>';
-                $A['title'] = '<big>'.$A['title'].'</big>';
                 $feature = 'true';
             }
             $display .= COM_article($A,'y');
