@@ -44,7 +44,7 @@ function edittopic($tid="") {
 		$result = dbquery("SELECT * FROM topics where tid ='$tid'");
 		$A = mysql_fetch_array($result);
 	}	 
-	print "<form action={$CONF["base"]}/admin/topic.php method=post>";
+	print "<form action={$CONF["site_url"]}/admin/topic.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	print "<input type=submit value=cancel name=mode> ";
@@ -95,9 +95,9 @@ function listtopics() {
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
 		if (!empty($A["imageurl"])) {
-			print "<td><a href={$CONF["base"]}/admin/topic.php?mode=edit&tid={$A["tid"]}><img src={$CONF["base"]}{$A["imageurl"]} border=0><br>{$A["topic"]}</a></td>";
+			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}><img src={$CONF["site_url"]}{$A["imageurl"]} border=0><br>{$A["topic"]}</a></td>";
 		} else {
-			print "<td><a href={$CONF["base"]}/admin/topic.php?mode=edit&tid={$A["tid"]}>{$A["topic"]}</a></td>";
+			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}>{$A["topic"]}</a></td>";
 		}
 		if ($counter == 5) {
 			$counter = 1;

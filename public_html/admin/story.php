@@ -72,7 +72,7 @@ function storyeditor($sid,$mode="") {
 		endblock();
 	}
 	startblock($LANG24[5]);
-	print "<form action={$CONF["base"]}/admin/story.php method=post>";
+	print "<form action={$CONF["site_url"]}/admin/story.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	print "<input type=submit value=preview name=mode> ";
@@ -134,8 +134,8 @@ function liststories($page="1") {
  		for ($i=1; $i<=$nrows; $i++) {
 			$scount = (50 * $page) - 50 + $i;
 			$A = mysql_fetch_array($result);
-			print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
-			print "<td align=left><a href={$CONF["base"]}/article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
+			print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
+			print "<td align=left><a href={$CONF["site_url"]}/article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
 			if ($A["draft_flag"] == 1)
 				print "<td>{$LANG24[35]}</td>";
 			else
@@ -154,10 +154,10 @@ function liststories($page="1") {
 			$prevpage = $page - 1;
 			$nextpage = $page + 1;
 			if ($pagestart >= 50) {
-				print "<a href={$CONF["base"]}/admin/story.php?mode=list&page=$prevpage>{$LANG24[1]}</a> ";
+				print "<a href={$CONF["site_url"]}/admin/story.php?mode=list&page=$prevpage>{$LANG24[1]}</a> ";
 			}
 			if ($pagestart <= (dbcount("stories") - 50)) {
-				print "<a href={$CONF["base"]}/admin/story.php?mode=list&page=$nextpage>{$LANG24[2]}</a> ";
+				print "<a href={$CONF["site_url"]}/admin/story.php?mode=list&page=$nextpage>{$LANG24[2]}</a> ";
 			}
 		}
 		print "</td></tr></table>\n";
@@ -227,9 +227,9 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		$author = getitem("users","username","uid = $uid");
 		$topic = getitem("topics","topic","tid = '$tid'");
 		if ($CONF["contributedbyline"] == 1) {
-			$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&author=$uid>{$LANG24[37]} $author</a>\n";
+			$related .= "<li><a href={$CONF["site_url"]}/search.php?mode=search&type=stories&author=$uid>{$LANG24[37]} $author</a>\n";
 		}
-		$related .= "<li><a href={$CONF["base"]}/search.php?mode=search&type=stories&topic=$tid>{$LANG24[38]} $topic</a>\n";
+		$related .= "<li><a href={$CONF["site_url"]}/search.php?mode=search&type=stories&topic=$tid>{$LANG24[38]} $topic</a>\n";
 		$related = addslashes(checkhtml(checkwords($related)));
 
 		# Clean up the text

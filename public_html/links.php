@@ -31,7 +31,7 @@ include("custom_code.php");
 
 include("layout/header.php");
 startblock($LANG06[1]);
-print "[ <a href={$CONF["base"]}/submit.php?type=link>{$LANG06[3]}</a> ]";
+print "[ <a href={$CONF["site_url"]}/submit.php?type=link>{$LANG06[3]}</a> ]";
 $result = dbquery("SELECT * from links ORDER BY category asc,title");
 $nrows = mysql_num_rows($result);
 if ($nrows==0) {
@@ -43,7 +43,7 @@ if ($nrows==0) {
 			printf("<h3>%s</h3>\n",$A["category"]);
 		}
 		print "<b><a target=_new ";
-		printf("href={$CONF["base"]}/portal.php?url=%s&what=link&item=%s>%s</a></b> (%s)",
+		printf("href={$CONF["site_url"]}/portal.php?url=%s&what=link&item=%s>%s</a></b> (%s)",
 			urlencode($A["url"]),$A["lid"],$A["title"],$A["hits"]);
 		print "<br>" . stripslashes($A["description"]) . "<br><br>\n";
 		$currentcat	= $A["category"];

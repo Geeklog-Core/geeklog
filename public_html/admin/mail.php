@@ -95,7 +95,7 @@ if (isset($mail)) {
 global $CONF,$LANG31;
 include("../layout/header.php");
 
-if ($USER["seclev"] >= $CONF["emailadmin"]) {
+if ($USER["seclev"] >= $CONF["sec_email"]) {
  	$disabled = "";
 } else {
  	$disabled = "DISABLED";

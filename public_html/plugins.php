@@ -128,9 +128,9 @@ function AddPluginLeftColumns($type) {
 	}
 	print "\n<td class=featureblock valign=top width=150 rowspan=2>";
 	CallFunctionForOnePlugin('plugin_leftcol_' . $type);
-	print "\n<IMG SRC={$CONF["base"]}/images/speck.gif width=150 height=1></td>";
+	print "\n<IMG SRC={$CONF["site_url"]}/images/speck.gif width=150 height=1></td>";
 	print "\n<!-- spacer block -->";
-	print "\n<td width=1><IMG SRC={$CONF["base"]}/images/speck.gif width=1 height=1></td>"; 
+	print "\n<td width=1><IMG SRC={$CONF["site_url"]}/images/speck.gif width=1 height=1></td>"; 
 	return;
 }
 

@@ -46,12 +46,12 @@ function adduserevent($eid) {
 		showmessage(23);
 	  	return;
 	}	
-	#print "<table><td align=right> Set reminder for: </td><td align=left><form name=userevent methood=post action={$CONF["base"]}/calendar_event.php>\n";
+	#print "<table><td align=right> Set reminder for: </td><td align=left><form name=userevent methood=post action={$CONF["site_url"]}/calendar_event.php>\n";
 	#print "<select name=remind><option>1 day</option><option>3 days</option><option>1 week</option></select>";
 	#print "</td><td> prior to event</td></tr><tr><td align=right>Email reminder:</td><td align=left>";
 	#print "<input type=checkbox name=emailreminder><input type=hidden name=eid value={$eid}><input type=hidden name=mode value=saveuserevent></td></tr>";
 	#print "<tr><td colspan=3 align=left><input type=submit value=\"{$LANG02[9]}\"></td></tr></form></table>";
-	print "<form name=userevent method=post action={$CONF["base"]}/calendar_event.php><input type=hidden name=mode value=saveuserevent><input type=hidden name=eid value={$eid}><input type=submit value=\"{$LANG02[9]}\"><br>&nbsp;</td></tr></form></table>";
+	print "<form name=userevent method=post action={$CONF["site_url"]}/calendar_event.php><input type=hidden name=mode value=saveuserevent><input type=hidden name=eid value={$eid}><input type=submit value=\"{$LANG02[9]}\"><br>&nbsp;</td></tr></form></table>";
 }
 
 function saveuserevent($eid, $reminder, $emailreminder) {
@@ -65,7 +65,7 @@ function saveuserevent($eid, $reminder, $emailreminder) {
 	$savesql = "Insert into userevent (uid, eid) values ('{$USER["uid"]}', '{$eid}')";
 	//print "<br>sql = " . $savesql . "</br><br>";
 	dbquery($savesql);
-	refresh("{$CONF["base"]}/calendar.php?msg=24");
+	refresh("{$CONF["site_url"]}/calendar.php?msg=24");
 }
 
 ###############################################################################
@@ -89,7 +89,7 @@ switch ($mode) {
 		break;
 	case "deleteevent":
 		dbquery("delete from userevent where uid={$USER["uid"]} and eid='$eid'");
-		refresh($CONF["base"] . "/calendar.php?msg=26");
+		refresh($CONF["site_url"] . "/calendar.php?msg=26");
 		break;
 	default:
 		include("layout/header.php");
@@ -102,7 +102,7 @@ switch ($mode) {
 			$datesql = "SELECT *,datestart AS start,dateend AS end FROM events WHERE \"$thedate\" BETWEEN datestart and dateend ORDER BY datestart asc,title";
 
 		}
-		print "[ <a href={$CONF["base"]}/submit.php?type=event>{$LANG02[6]}</a> ][ <a href={$CONF["base"]}/calendar.php>Back to Calendar</a> ]<br>";
+		print "[ <a href={$CONF["site_url"]}/submit.php?type=event>{$LANG02[6]}</a> ][ <a href={$CONF["site_url"]}/calendar.php>Back to Calendar</a> ]<br>";
 		//dbquery("delete FROM events WHERE dateend < CURDATE()");
 		$result = dbquery($datesql);
 
@@ -122,9 +122,9 @@ switch ($mode) {
 					$tmpresult = dbquery("select * from userevent where eid='{$A["eid"]}' and uid={$USER["uid"]}");
 					$tmpnrows = mysql_num_rows($tmpresult);
 					if ($tmpnrows > 0) {
-						print "<font size=-2>[<a href={$CONF["base"]}/calendar_event.php?eid={$A["eid"]}&mode=deleteevent>{$LANG02[10]}</a>]</font></h2></td></tr>\n";
+						print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=deleteevent>{$LANG02[10]}</a>]</font></h2></td></tr>\n";
 					} else {
-						print "<font size=-2>[<a href={$CONF["base"]}/calendar_event.php?eid={$A["eid"]}&mode=addevent>{$LANG02[9]}</a>]</font></h2></td></tr>\n";
+						print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=addevent>{$LANG02[9]}</a>]</font></h2></td></tr>\n";
 					}
 				}
 				print "<tr><td align=right><b>{$LANG02[3]}</b></td><td width=\"100%\">" . strftime("%A %e",strtotime($A["start"])) . " - " . strftime("%A %d",strtotime($A["end"])) . "</td></tr>\n";

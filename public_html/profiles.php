@@ -40,7 +40,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message) {
 			strip_tags(stripslashes($subject)),
 			strip_tags(stripslashes($message)),
 			"From: $author <$authoremail>\nReturn-Path: <$authoremail>\nX-Mailer: GeekLog $VERSION");
-			refresh($CONF["base"] . "/index.php?msg=27");
+			refresh($CONF["site_url"] . "/index.php?msg=27");
 		} else {
 			include("layout/header.php");
 			errorlog($LANG08[3],2);
@@ -62,7 +62,7 @@ function contactform($uid,$subject="",$message="") {
 	global $HTTP_COOKIE_VARS,$CONF,$LANG08;
 	$result = dbquery("SELECT username FROM users WHERE uid = $uid");
 	$A = mysql_fetch_array($result);
-	print "<form action={$CONF["base"]}/profiles.php method=POST name=contact>";
+	print "<form action={$CONF["site_url"]}/profiles.php method=POST name=contact>";
 	startblock("{$LANG08[10]} {$A["username"]}");
 	print "<table cellspacing=0 cellpadding=0 border=0 width=\"100%\">";
 	print "<tr><td colspan=2>{$LANG08[26]}<p></td></tr>";
@@ -104,12 +104,12 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg) {
 	$mailtext .= (stripslashes(strip_tags($A["introtext"]))) . "\n";
  	$mailtext .= (stripslashes(strip_tags($A["bodytext"])));
  	$mailtext .= "\n\n------------------------------------------------------------\n";
- 	$mailtext .= "{$LANG08[24]} {$CONF["base"]}/article.php?story=$sid#comments";
+ 	$mailtext .= "{$LANG08[24]} {$CONF["site_url"]}/article.php?story=$sid#comments";
  	$mailto = "{$to} <{$toemail}>";
  	$mailfrom = "From: {$from} <{$fromemail}>";
  	$subject = strip_tags(stripslashes("Re: {$A["title"]}"));
  	@mail($toemail,$subject,$mailtext,$mailfrom);
- 	refresh("{$CONF["base"]}/article.php?story=$sid");
+ 	refresh("{$CONF["site_url"]}/article.php?story=$sid");
 }
 
 ###############################################################################
@@ -135,7 +135,7 @@ function mailstoryform($sid) {
   		$fromemail = $A["email"];
  	}
   	print "<table>\n";
-  	print "<form action={$CONF["base"]}/profiles.php method=POST name=contact>";
+  	print "<form action={$CONF["site_url"]}/profiles.php method=POST name=contact>";
   	print "<table cellspacing=0 cellpadding=3 border=0 width=\"100%\">";
   
  	if (!empty($USER["name"])) {
@@ -179,7 +179,7 @@ switch ($what) {
 			contactform($uid);
 			include("layout/footer.php");
 		} else {
-			refresh($CONF["base"]);
+			refresh($CONF["site_url"]);
 		}
 }
 

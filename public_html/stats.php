@@ -134,7 +134,7 @@ endblock();
 			$A      = mysql_fetch_array($result);
 			print "<tr align=center>\n";
 			print "\t<td align=left><a "; 
-			printf("href={$CONF["base"]}/portal.php?url=%s&what=link&item=%s>%s</a> </td>\n",
+			printf("href={$CONF["site_url"]}/portal.php?url=%s&what=link&item=%s>%s</a> </td>\n",
 			urlencode($A["url"]),$A["lid"],$A["title"]);
 			print "\t<td>" . $A["hits"] . "</td>\n";
 			print "</tr>\n";

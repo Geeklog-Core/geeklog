@@ -146,7 +146,7 @@ September 8, 2000
 -----------------
 
 - Fixed a few more issues surronding the 
-  $CONF["base"] placement. Thanks to Hidekazu SHIOZAWA.
+  $CONF["site_url"] placement. Thanks to Hidekazu SHIOZAWA.
 - Added sig to user accounts.
 - Added a system hit counter
 - Fixed a poll comment bug.
@@ -157,7 +157,7 @@ September 7, 2000
 -----------------
 
 - Fixed the // uri issue.
-- Fixed a few issues surronding the $CONF["base"]
+- Fixed a few issues surronding the $CONF["site_url"]
   placement in links.
 - Began work on new user customization system!
 	- Index Configuration

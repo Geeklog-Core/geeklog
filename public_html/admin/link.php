@@ -44,7 +44,7 @@ function editlink($lid="") {
 		$result = dbquery("SELECT * FROM links where lid ='$lid'");
 		$A = mysql_fetch_array($result);
 	} 
-	print "<form action={$CONF["base"]}/admin/link.php method=post>";
+	print "<form action={$CONF["site_url"]}/admin/link.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	if ($A["lid"] == "") { 
@@ -97,7 +97,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits) {
 		if ($categorydd!="Other" && !empty($categorydd)) {
 			$category = $categorydd;
 		} else if ($categorydd!="Other") {
-			refresh("{$CONF["base"]}/admin/link.php");
+			refresh("{$CONF["site_url"]}/admin/link.php");
 		}
 		dbsave("links","lid,category,url,description,title,hits","$lid,'$category','$url','$description','$title','$hits'","admin/link.php?msg=15");
 	} else {
@@ -121,7 +121,7 @@ function listlinks() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		print "<tr align=center><td align=left><a href={$CONF["base"]}../admin/link.php?mode=edit&lid={$A["lid"]}>" . stripslashes($A["title"]) . "</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}../admin/link.php?mode=edit&lid={$A["lid"]}>" . stripslashes($A["title"]) . "</a></td>";
 		print "<td>{$A["category"]}</td><td>{$A["url"]}</td></tr>";
 	}
 	print "</table></form>";

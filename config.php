@@ -25,74 +25,102 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-
-###############################################################################
+#
 # See the INSTALL.HTML file for more information on configuration information
+#
 ###############################################################################
 
-# Database Settings
-$CONF["dbname"] = "geeklog";
-$CONF["dbhost"] = "localhost";
-$CONF["dbuser"] = "";
-$CONF["dbpass"] = "";
+##/ DATABASE SETTINGS /########################################################
+#
+#	These settings must suit your server environment.
 
-# Site Settings
-$CONF["sitename"] = "Geeklog Site";
-$CONF["siteslogan"] = "Another Nifty GeekLog Site";
-$CONF["sitemail"] = "admin@yourdomain.com";
+$CONF["db_name"]		= "geeklog";
+$CONF["db_host"]		= "localhost";
+$CONF["db_user"]		= "yourname";
+$CONF["db_pass"]		= "yourpass";
 
-# The base url for this geeklog installation
-$CONF["base"] = "http://www.yourdomain.com";
+##/ SERVER SETTINGS /##########################################################
+#
+#	All paths must have a trailing slash ('/').
+#	The 'path' value signifies where the config.php file resides.
 
-# Location of your geeklog installation.  Should point to
-# where you have config.php located, must have trailing '/'
-$CONF["path"] = "/path/to/geeklog/";
+$CONF["path"] 			= "/path/to/geeklog/";
+$CONF["path_log"]		= $CONF["path"]."/logs";
+$CONF["path_html"]		= $CONF["path"]."public_html/";
+$CONF["path_rdf"]		= $CONF["path_html"]."backend/geeklog.rdf";
 
-# Directory where web pages are stored, must have trailing '/'
-$CONF["html"] = $CONF["path"] . "public_html/";
+##/ SITE SETTINGS /############################################################
+#
+#	These settings help define your Geeklog site.
 
-# You can have only one of the following two lines uncommented. The
-# first one is for *nix users and assumes you are using tar.
-# The second entry is for windows users and this is configured to work with
-# FilZip.  You can get FilZip from http://www.filzip.com.  Make sure
-# you add the FilZip directory to your path OR fully qualify the path
-# here. Regardless of OS, make sure you leave a trailing space at the end.
+$CONF["site_name"]		= "Geeklog Site";
+$CONF["site_slogan"]	= "Another Nifty GeekLog Site";
+$CONF["site_mail"]		= "admin@yourdomain.com";
+$CONF["site_url"]		= "http://www.yourdomain.com";
+
+##/ LOCALE SETTINGS /##########################################################
+
+$CONF["languagefile"]	="english.php";
+$CONF["locale"]			= "en-gb";
+$CONF["date"]			= "%A, %B %d %Y @ %I:%M %p %Z";
+$CONF["daytime"]		= "%m/%d %I:%M%p";
+$CONF["shortdate"]		= "%x";
+
+##/ SECURITY SETTINGS /########################################################
+#
+#	These settings assign the security levels for specific administration
+#	duties/pages.  
+
+$CONF["sec_mod"] 		= 100;
+$CONF["sec_story"] 		= 150;
+$CONF["sec_links"] 		= 150;
+$CONF["sec_event"] 		= 150;
+$CONF["sec_poll"] 		= 150;
+$CONF["sec_topic"] 		= 200;
+$CONF["sec_block"] 		= 200;
+$CONF["sec_user"] 		= 200;
+$CONF["sec_delstory"] 	= 200;	// deletion of comments
+$CONF["sec_email"] 		= 200; 	// email other admins or all GL users
+
+# The value below needs to be equal to the lowest seclevel found in the ones 
+# above.  This is temporary until I find a better fix
+
+$CONF["sec_lowest"]		= 150;
+
+##/ SESSION SETTINGS /#########################################################
+#
+# 	cookie_timeout is the same for admin and non-admins (Note: 3600 = 1 hour)
+# 	cookie_ip will store md5(remoteip + randomnum) as the session ID in the 
+#	cookie. This is more secure but will more than likely require dialed up 
+#	users to login each and every time.  If	ipbasedsessid is turned off 
+#	(which it is by default) it will just store	a random number as the 
+#	session ID in the cookie.
+
+$CONF["cookie_ip"]		= 1;
+$CONF["cookie_timeout"]	= "7200";
+$CONF["cookie_session"]	= "gl_session";
+$CONF["cookie_name"]	= "geeklog";
+$CONF["cookie_path"]	= "/";
+
+
+##/ PLUGIN SETTINGS /##########################################################
+#
+# 	You can have only one of the following two lines uncommented. The
+# 	first one is for *nix users and assumes you are using tar.
+# 	The second entry is for windows users and this is configured to work with
+# 	FilZip.  You can get FilZip from http://www.filzip.com.  Make sure
+# 	you add the FilZip directory to your path OR fully qualify the path
+# 	here. Regardless of OS, make sure you leave a trailing space at the end.
+
 $CONF["unzipcommand"] = '/bin/tar -C ' . $CONF['path'] . 'plugins/ -xzf ';
 #$CONF["unzipcommand"] = 'filzip.exe -e -r ';
 
-#Command needed to remove a directory recursively and quietly
-#First one is typical for *nix boxes and the second is for 
-#windows machines.
+#	Command needed to remove a directory recursively and quietly
+#	First one is typical for *nix boxes and the second is for 
+#	windows machines.
+
 $CONF["rmcommand"] = '/bin/rm -Rf ';
 #$CONF["rmcommand"] = 'rmdir /S /Q ';
-
-# Location of Geeklog log files (not apache)
-$CONF["logpath"] = $CONF["path"] . "/logs";
-
-# Path to the headline RDF feed.  You can change the filename to be
-# something more relevant to your site
-$CONF["rdfpath"] = $CONF["path"] . "/public_html/backend/geeklog.rdf";
-
-# Locale Settings
-$CONF["languagefile"] ="english.php";
-$CONF["locale"] = "en-gb";
-$CONF["date"] = "%A, %B %d %Y @ %I:%M %p %Z";
-$CONF["daytime"] = "%m/%d %I:%M%p";
-$CONF["shortdate"] = "%x";
-
-# User Account Access Control Settings
-
-# Short term session cookie timeout is the same for admin and non-admins
-# note: 3600 = 1 hour.  ipbasedsessid will store md5(remoteip + randomnum)
-# as the session ID in the cookie. This is more secure but will more than
-# likely require dialed up users to login each and every time.  If
-# ipbasedsessid is turned off (which it is by default) it will just store
-# a random number as the session ID in the cookie.
-$CONF["ipbasedsessid"] = 1;
-$CONF["sesscookietimeout"] = "7200";
-$CONF["sesscookiename"] = "gl_session";
-$CONF["cookiename"] = "geeklog";
-$CONF["cookiepath"] = "/";
 
 # This is really redundant but I am including this as a reminder that those
 # people writing Geeklog Plug-ins that are OS dependent should check either the
@@ -102,23 +130,6 @@ $CONF["cookiepath"] = "/";
 # right OS. Do not modify this value
 $CONF["ostype"] = PHP_OS;
 
-# Security Settings, DO NOT change these if
-# you aren't sure what you are doing
-$CONF["storyadmin"] = 150;
-$CONF["moderator"] = 150;
-$CONF["blockadmin"] = 150;
-$CONF["topicadmin"] = 200;
-$CONF["linkadmin"] = 150;
-$CONF["eventadmin"] = 150;
-$CONF["polladmin"] = 200;
-$CONF["useradmin"] = 200;
-$CONF["commentadmin"] = 200; //deletion of comments
-$CONF["emailadmin"] = 200; //allows admin to email other admins or all GL users
-
-# The value below needs to be equal to the
-# lowest seclevel found in the ones above
-# This is temporary until I find a better fix
-$CONF["lowestadmin"] = 150;
 
 # Submission Settings
 $CONF["loginrequired"] = 0;
@@ -176,6 +187,7 @@ $CONF["polladdresstime"] = "604800";
 $CONF["pollorder"] = 1;
 
 # Parameters for checking words and HTML tags
+
 $CONF["allowablehtml"] = "<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>";
 $CONF["censormode"] = 0;
 $CONF["censorreplace"] = "*censored*";

@@ -40,7 +40,7 @@ function searchform() {
 	global $LANG09,$CONF;
 	startblock($LANG09[1],"advancedsearch.html");
 	print $LANG09[19];
-	print "<form action={$CONF["base"]}/search.php method=get>\n";
+	print "<form action={$CONF["site_url"]}/search.php method=get>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right>{$LANG09[2]}:</td><td><input type=text name=query size=35 maxlength=35></td></tr>\n";
 	print "<tr><td align=right>{$LANG09[20]}:</td><td><input type=text name=datestart size=10 maxlength=10> {$LANG09[21]} <input type=text name=dateend size=10 maxlength=10> {$LANG09[22]}</td></tr>\n";

@@ -44,7 +44,7 @@ function editevent($eid="") {
 		$result = dbquery("SELECT * FROM events where eid ='$eid'");
 		$A = mysql_fetch_array($result);
 	} 
-	print "<form action={$CONF["base"]}/admin/event.php name=events method=post>";
+	print "<form action={$CONF["site_url"]}/admin/event.php name=events method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	print "<input type=submit value=cancel name=mode> ";
@@ -98,7 +98,7 @@ function listevents() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/event.php?mode=edit&eid={$A["eid"]}>" . stripslashes($A["title"]) . "</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/event.php?mode=edit&eid={$A["eid"]}>" . stripslashes($A["title"]) . "</a></td>";
 		print "<td>{$A["datestart"]}</td><td>{$A["dateend"]}</td></tr>";
 	}
 	print "</table></form>";

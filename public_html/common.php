@@ -47,12 +47,12 @@ $userdata = Array();
 // If the cookie exists, build an array of the users info and setup the theme.
 
 // new code for the session ID cookie..
-if(isset($HTTP_COOKIE_VARS[$CONF["sesscookiename"]])) {
-        $sessid = $HTTP_COOKIE_VARS[$CONF["sesscookiename"]];
-        $userid = get_userid_from_session($sessid, $CONF["sesscookietimeout"], $REMOTE_ADDR, $CONF["ipbasedsessid"]);
+if(isset($HTTP_COOKIE_VARS[$CONF["cookie_session"]])) {
+        $sessid = $HTTP_COOKIE_VARS[$CONF["cookie_session"]];
+        $userid = get_userid_from_session($sessid, $CONF["cookie_timeout"], $REMOTE_ADDR, $CONF["cookie_ip"]);
         if ($userid) {
            $user_logged_in = 1;
-           update_session_time($sessid, $CONF["ipbasedsessid"]);
+           update_session_time($sessid, $CONF["cookie_ip"]);
            $userdata = get_userdata_from_id($userid);
            $USER = $userdata;
         }
@@ -64,7 +64,7 @@ $expiredate1 = time() + 3600 * 24 * 365;
 $expiredate2 = time() + 600;
 
 // update LastVisit cookie. This cookie is updated each time auth.php runs
-setcookie("LastVisit", time(), $expiredate1,  $CONF["cookiepath"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+setcookie("LastVisit", time(), $expiredate1,  $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
 // set LastVisitTemp cookie, which only gets the time from the LastVisit
 // cookie if it does not exist yet
 // otherwise, it gets the time from the LastVisitTemp cookie
@@ -76,7 +76,7 @@ else {
 }
 
 // set cookie.
-setcookie("LastVisitTemp", $temptime ,$expiredate2, $CONF["cookiepath"], $CONF["base"], $CONF["cookiesecure"]);
+setcookie("LastVisitTemp", $temptime ,$expiredate2, $CONF["cookie_path"], $CONF["site_url"], $CONF["cookiesecure"]);
 
 ###############################################################################
 # BLOCK LOADER - Load all definable HTML blocks in to memory
@@ -100,8 +100,8 @@ for ($i = 1; $i <= $nrows; $i++) {
 function dbquery($sql,$ignore_errors=0) {
 	global $CONF,$LANG01;
 
-	$db = mysql_connect($CONF["dbhost"],$CONF["dbuser"],$CONF["dbpass"]);
-	@mysql_select_db($CONF["dbname"]) or die();
+	$db = mysql_connect($CONF["db_host"],$CONF["db_user"],$CONF["db_pass"]);
+	@mysql_select_db($CONF["db_name"]) or die();
 
 	$result = @mysql_query($sql,$db);
 	if (mysql_errno() == 0 && !empty($result)) {
@@ -131,7 +131,7 @@ function dbdelete($table,$id,$value,$return="") {
 		olderstuff();
 	}
 	if (!empty($return)) {
-		refresh("{$CONF["base"]}/$return");
+		refresh("{$CONF["site_url"]}/$return");
 	}
 }
 
@@ -147,7 +147,7 @@ function dbsave($table,$fields,$values,$return="") {
 		olderstuff();
 	}
 	if (!empty($return)) {
-		refresh("{$CONF["base"]}/$return");
+		refresh("{$CONF["site_url"]}/$return");
 	}
 }
 
@@ -169,7 +169,7 @@ function dbchange($table,$id,$value,$id2="",$value2="",$id3="",$value3="",$retur
 		olderstuff();
 	}
 	if (!empty($return)) {
-		refresh("{$CONF["base"]}/$return");
+		refresh("{$CONF["site_url"]}/$return");
 	}
 }
 
@@ -206,7 +206,7 @@ function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 		olderstuff();
 	}
 	if (!empty($return)) {
-		refresh("{$CONF["base"]}/$return");
+		refresh("{$CONF["site_url"]}/$return");
 	}
 }
 
@@ -224,11 +224,11 @@ function article($A,$index="") {
 	}
 	print "<table border=0 cellpadding=0 cellspacing=0 width=100%>\n";
 	print "<tr><td class=storytitle>" . stripslashes($A["title"]) . "</TD></TR>\n";
-	print "<tr><td height=1 class=storyunderline><IMG SRC={$CONF["base"]}/images/speck.gif width=1 height=1></td></tr>\n";
+	print "<tr><td height=1 class=storyunderline><IMG SRC={$CONF["site_url"]}/images/speck.gif width=1 height=1></td></tr>\n";
 	print "<tr><td class=storybyline>" . strftime($CONF["date"],$A["day"]);
 	if ($CONF["contributedbyline"] == 1) {
 		if ($A["uid"] > 1) {
-			print "<br>{$LANG01[1]} <a class=storybyline href={$CONF["base"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a></td></tr>\n";
+			print "<br>{$LANG01[1]} <a class=storybyline href={$CONF["site_url"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a></td></tr>\n";
 		} else {
 			print "<br>{$LANG01[1]} " . getitem("users","username","uid = '{$A["uid"]}'") . "</td></tr>\n";
 		}
@@ -237,7 +237,7 @@ function article($A,$index="") {
 	if ($USER["noicons"] != 1) {
 		$top	= getitem("topics","imageurl","tid = '{$A["tid"]}'");
 		if (!empty($top)) {
-			print "<a href={$CONF["base"]}/index.php?topic={$A["tid"]}><img align=right src={$CONF["base"]}$top alt={$A["tid"]} border=0></a>";
+			print "<a href={$CONF["site_url"]}/index.php?topic={$A["tid"]}><img align=right src={$CONF["site_url"]}$top alt={$A["tid"]} border=0></a>";
 		}
 	}
 	print nl2br(stripslashes($A["introtext"]));
@@ -247,20 +247,20 @@ function article($A,$index="") {
 	} else {
 		print "\n</td></tr><tr><td>\n<div align=right>\n";
 		if (!empty($A["bodytext"])) {
-			print "<a href={$CONF["base"]}/article.php?story={$A["sid"]}>{$LANG01[2]}</a> (" . sizeof(explode(" ",$A["bodytext"])) . " {$LANG01[62]}) \n";
+			print "<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}>{$LANG01[2]}</a> (" . sizeof(explode(" ",$A["bodytext"])) . " {$LANG01[62]}) \n";
 		}
 		if ($A["commentcode"] >= 0 && $A["comments"] > 0) {
-			print "<a href={$CONF["base"]}/article.php?story={$A["sid"]}#comments> {$A["comments"]} {$LANG01[3]}</a>\n";
+			print "<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments> {$A["comments"]} {$LANG01[3]}</a>\n";
 			$result = dbquery("SELECT UNIX_TIMESTAMP(date) AS day FROM comments WHERE sid = '{$A["sid"]}' ORDER BY date desc LIMIT 1");
 			$C = mysql_fetch_array($result);
 			print "<br><span class=storybyline>{$LANG01[27]}: " . strftime($CONF["daytime"],$C["day"]) . "</span>\n";
 		} else if ($A["commentcode"] >= 0) {
-			print " <a href={$CONF["base"]}/comment.php?sid={$A["sid"]}&pid=0&type=article>{$LANG01[60]}</a>\n";
+			print " <a href={$CONF["site_url"]}/comment.php?sid={$A["sid"]}&pid=0&type=article>{$LANG01[60]}</a>\n";
 		}
-		print "<a href={$CONF["base"]}/profiles.php?sid={$A["sid"]}&what=emailstory><img src={$CONF["base"]}/images/mail.gif alt=\"{$LANG01[64]}\" border=0></a>&nbsp;<a href={$CONF["base"]}/article.php?story={$A["sid"]}&mode=print><img border=0 src={$CONF["base"]}/images/print.gif alt=\"{$LANG01[65]}\"></a>";
+		print "<a href={$CONF["site_url"]}/profiles.php?sid={$A["sid"]}&what=emailstory><img src={$CONF["site_url"]}/images/mail.gif alt=\"{$LANG01[64]}\" border=0></a>&nbsp;<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}&mode=print><img border=0 src={$CONF["site_url"]}/images/print.gif alt=\"{$LANG01[65]}\"></a>";
 	}
-	if ($USER["seclev"] >= $CONF["storyadmin"]) {
-		print "<br><a href={$CONF["base"]}/admin/story.php?mode=edit&sid={$A["sid"]}>{$LANG01[4]}</a>";
+	if ($USER["seclev"] >= $CONF["sec_story"]) {
+		print "<br><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>{$LANG01[4]}</a>";
 	}
 	print "</div></td>\n</tr>\n";
 	print "</table><br>\n";
@@ -278,7 +278,7 @@ function startblock($title="",$helpfile="") {
 	global $BLOCK,$LANG01,$CONF;
 	$block = $BLOCK["blockheader"];
 	if (!empty($helpfile)) {
-		$help = "<a class=blocktitle href={$CONF["base"]}/help/$helpfile target=_blank><img src={$CONF["base"]}/images/button_help.gif border=0 height=15 width=15 alt=\"?\"></a>";
+		$help = "<a class=blocktitle href={$CONF["site_url"]}/help/$helpfile target=_blank><img src={$CONF["site_url"]}/images/button_help.gif border=0 height=15 width=15 alt=\"?\"></a>";
 	} else {
 		$help = "&nbsp;";
 	}
@@ -300,8 +300,8 @@ function adminedit($type,$text="") {
 		return;
 	} else {
 		print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-		print "<tr><td rowspan=2><img src={$CONF["base"]}/images/admin/$type.gif></td>";
-		print "<td>[ <a href={$CONF["base"]}/admin/$type.php?mode=edit>{$LANG01[52]} $type</a> | <a href={$CONF["base"]}/admin>{$LANG01[53]}</a> ]</td></tr>";
+		print "<tr><td rowspan=2><img src={$CONF["site_url"]}/images/admin/$type.gif></td>";
+		print "<td>[ <a href={$CONF["site_url"]}/admin/$type.php?mode=edit>{$LANG01[52]} $type</a> | <a href={$CONF["site_url"]}/admin>{$LANG01[53]}</a> ]</td></tr>";
 		print "<tr><td>$text</td></tr>";
 		print "</table><p>";
 	}
@@ -400,11 +400,11 @@ function debug($A) {
 function export_rdf() {
 	global $CONF;
 	if ($CONF["backend"]>0) {
-		$outputfile = $CONF["rdfpath"];
+		$outputfile = $CONF["path_rdf"];
 		$rdencoding = "UTF-8";
-		$rdtitle = $CONF["sitename"];
-		$rdlink	= $CONF["base"];
-		$rddescr = $CONF["siteslogan"];
+		$rdtitle = $CONF["site_name"];
+		$rdlink	= $CONF["site_url"];
+		$rddescr = $CONF["site_slogan"];
 		$rdlang	= $CONF["locale"];
 
 		$result = dbquery("SELECT * FROM stories WHERE uid > 1 ORDER BY date DESC limit 10");
@@ -427,7 +427,7 @@ function export_rdf() {
 				fputs ( $file, "<item>\n" );
 				$title = "<title>" . htmlspecialchars(stripslashes($row[$title])) . "</title>\n";
 				$author = "<author>" . htmlspecialchars(stripslashes($row[$author])) . "</author>\n";
-				$link  = "<link>{$CONF["base"]}/article.php?story={$row[$link]}</link>\n";
+				$link  = "<link>{$CONF["site_url"]}/article.php?story={$row[$link]}</link>\n";
 				fputs ( $file,  $title );
 				fputs ( $file,  $link );
 				fputs ( $file, "</item>\n\n" );
@@ -449,7 +449,7 @@ function errorlog($logentry,$actionid="") {
 		$timestamp = strftime("%c");
 		switch ($actionid) {
 			case 1:
-				$logfile = $CONF["logpath"] . "/error.log";
+				$logfile = $CONF["path_log"] . "/error.log";
      				if (!$file=fopen($logfile,a)) {
 					print "{$LANG01[33]} $logfile ($timestamp)<br>\n";
 				}
@@ -461,7 +461,7 @@ function errorlog($logentry,$actionid="") {
 				endblock();
 				break;
 			default:
-				$logfile = $CONF["logpath"] . "/error.log";
+				$logfile = $CONF["path_log"] . "/error.log";
      				if (!$file=fopen($logfile,a)) {
 					print "{$LANG01[33]} $logfile ($timestamp)<br>\n";
 				}
@@ -480,7 +480,7 @@ function errorlog($logentry,$actionid="") {
 function accesslog($logentry) {
 	global $CONF,$LANG01;
 	$timestamp = strftime("%c");
-	$logfile = $CONF["logpath"] . "/access.log";
+	$logfile = $CONF["path_log"] . "/access.log";
 	if (!$file=fopen($logfile,a)) {
 		print $LANG01[33] . "$logfile ($timestamp)<br>\n";
 	}
@@ -502,7 +502,7 @@ function pollvote($qid) {
 			$nanswers	= mysql_num_rows($answers);
 			if ($nanswers > 0) {
 				$Q = mysql_fetch_array($question);
-				print "<form action={$CONF["base"]}/pollbooth.php name=Vote method=GET>\n";
+				print "<form action={$CONF["site_url"]}/pollbooth.php name=Vote method=GET>\n";
 				startblock($LANG01[5]);
 				print "<input type=hidden name=qid value=$qid>\n";
 				print "<h2>{$Q["question"]}</h2>\n";
@@ -511,9 +511,9 @@ function pollvote($qid) {
 					print "<input type=radio name=aid value=" . $A["aid"] . "> " . $A["answer"] . "<br>\n";
 				}
 				print "<input type=submit value={$LANG01[56]}>\n";
-				print " <a href={$CONF["base"]}/pollbooth.php?qid=$qid&aid=-1>{$LANG01[6]}</a><br>";
+				print " <a href={$CONF["site_url"]}/pollbooth.php?qid=$qid&aid=-1>{$LANG01[6]}</a><br>";
 				print "<span class=storybyline align=right>{$Q["voters"]} {$LANG01[8]}";
-				if ($Q["commentcode"] >= 0) print " | <a href={$CONF["base"]}/pollbooth.php?qid=$qid&aid=-1#comments>" . dbcount("comments","sid",$qid) . " {$LANG01[3]}</a>";
+				if ($Q["commentcode"] >= 0) print " | <a href={$CONF["site_url"]}/pollbooth.php?qid=$qid&aid=-1#comments>" . dbcount("comments","sid",$qid) . " {$LANG01[3]}</a>";
 				print "</span>";
 				endblock();
 				print "</form>\n";
@@ -585,7 +585,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 					print "%";
 				} else {
 					$width = $percent * $scale;
-					print "<img src={$CONF["base"]}/images/bar.gif width=$width height=10 align=bottom> {$A["votes"]} ";
+					print "<img src={$CONF["site_url"]}/images/bar.gif width=$width height=10 align=bottom> {$A["votes"]} ";
 					printf("(%.2f)", $percent * 100);
 					print "%";
 				}
@@ -593,7 +593,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 			}
 			print "</table>\n<span class=storybyline align=right><br>{$Q["voters"]} {$LANG01[8]}\n";
 			if ($Q["commentcode"] >= 0) {
-				print " | <a href={$CONF["base"]}/pollbooth.php?qid=$qid&aid=-1#comments>" . dbcount("comments","sid",$qid) . " {$LANG01[3]}</a>";
+				print " | <a href={$CONF["site_url"]}/pollbooth.php?qid=$qid&aid=-1#comments>" . dbcount("comments","sid",$qid) . " {$LANG01[3]}</a>";
 			}
 			print "</span>\n";
 			endblock();
@@ -618,7 +618,7 @@ function showtopics($topic="") {
 	#Give a link to the hompage here since a lot of people use this
 	#for navigating the site
 	if (!empty($topic)) {
-                print "<a href={$CONF["base"]}/index.php><b>{$LANG01[90]}</b></a><br>";
+                print "<a href={$CONF["site_url"]}/index.php><b>{$LANG01[90]}</b></a><br>";
         } else {
                 print "{$LANG01[90]}<br>";
         }
@@ -641,7 +641,7 @@ function showtopics($topic="") {
 			}
 			print "<br>\n";
 		} else {
-			print "<a href={$CONF["base"]}/index.php?topic={$A["tid"]}><b>{$A["topic"]}</b></a> ";
+			print "<a href={$CONF["site_url"]}/index.php?topic={$A["tid"]}><b>{$A["topic"]}</b></a> ";
 			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
 				print "(";
 				if ($CONF["showstorycount"])
@@ -663,27 +663,27 @@ function showtopics($topic="") {
 
 function usermenu() {
 	global $USER,$CONF,$LANG01, $VERSION;
-	if ($USER["seclev"] >= $CONF["lowestadmin"]) {
+	if ($USER["seclev"] >= $CONF["sec_lowest"]) {
 		startblock($LANG01[9]);
-		if ($USER["seclev"] >= $CONF["moderator"]) {
+		if ($USER["seclev"] >= $CONF["sec_mod"]) {
 			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
 			//now handle submissions for plugins
 			$num = $num + GetPluginSubmissionCounts();
-			print "<a href={$CONF["base"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
+			print "<a href={$CONF["site_url"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
 		}
-		if ($USER["seclev"] >= $CONF["storyadmin"]) print "<a href={$CONF["base"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["blockadmin"]) print "<a href={$CONF["base"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["topicadmin"]) print "<a href={$CONF["base"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["linkadmin"]) print "<a href={$CONF["base"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["eventadmin"]) print "<a href={$CONF["base"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["polladmin"]) print "<a href={$CONF["base"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["useradmin"]) print "<a href={$CONF["base"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["base"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href={$CONF["site_url"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href={$CONF["site_url"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href={$CONF["site_url"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href={$CONF["site_url"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href={$CONF["site_url"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href={$CONF["site_url"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href={$CONF["site_url"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["site_url"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
 
 		// This function wil show the admin options
 		// for all installed plugins (if any)
 		ShowPluginAdminOptions();
-		if ($USER["seclev"] >= $CONF["emailadmin"]) print "<a href={$CONF["base"]}/admin/mail.php>Mail</a><br>\n";
+		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href={$CONF["site_url"]}/admin/mail.php>Mail</a><br>\n";
 
 		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n";
 		endblock();
@@ -691,16 +691,16 @@ function usermenu() {
 
 	if ($USER["uid"] > 1) {
 		startblock($LANG01[47]);
-		print "<a href={$CONF["base"]}/calendar.php?mode=personal>{$LANG01[66]}</a><br>\n";
+		print "<a href={$CONF["site_url"]}/calendar.php?mode=personal>{$LANG01[66]}</a><br>\n";
 		ShowPluginUserOptions();
-		print "<a href={$CONF["base"]}/usersettings.php?mode=edit>{$LANG01[48]}</a><br>\n";
-		print "<a href={$CONF["base"]}/usersettings.php?mode=preferences>{$LANG01[49]}</a><br>\n";
-		print "<a href={$CONF["base"]}/usersettings.php?mode=comments>{$LANG01[63]}</a><br>\n";
-		print "<a href={$CONF["base"]}/users.php?mode=logout>{$LANG01[19]}</a><p>\n";
+		print "<a href={$CONF["site_url"]}/usersettings.php?mode=edit>{$LANG01[48]}</a><br>\n";
+		print "<a href={$CONF["site_url"]}/usersettings.php?mode=preferences>{$LANG01[49]}</a><br>\n";
+		print "<a href={$CONF["site_url"]}/usersettings.php?mode=comments>{$LANG01[63]}</a><br>\n";
+		print "<a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG01[19]}</a><p>\n";
 		endblock();
 	} else {
 		startblock($LANG01[47]);
-		print "<form action={$CONF["base"]}/users.php method=post>\n";
+		print "<form action={$CONF["site_url"]}/users.php method=post>\n";
 		print "<b>{$LANG01[21]}:</b><br>\n<input type=text size=10 name=loginname value=\"\"><br>\n";
 		print "<b>{$LANG01[57]}:</b><br>\n<input type=password size=10 name=passwd><br>\n";
 		print "<input type=submit value={$LANG01[58]}>\n";
@@ -729,17 +729,17 @@ function commentbar($sid,$title,$type,$order,$mode) {
 	print "<table cellspacing=0 cellpadding=0 border=0 width=\"100%\">\n";
 	print "<tr><td align=center class=commentbar1> " . stripslashes($title) . " | $nrows {$LANG01[3]} | ";
 	if (!empty($USER["username"])) {
-		print "{$USER["username"]} <a href={$CONF["base"]}/users.php?mode=logout class=commentbar1>{$LANG01[35]}</a>";
+		print "{$USER["username"]} <a href={$CONF["site_url"]}/users.php?mode=logout class=commentbar1>{$LANG01[35]}</a>";
 	} else {
-		print "<a href={$CONF["base"]}/users.php?mode=new class=commentbar1>{$LANG01[61]}</a>";
+		print "<a href={$CONF["site_url"]}/users.php?mode=new class=commentbar1>{$LANG01[61]}</a>";
 	}
 	print "</td></tr>\n";
 	print "<tr><td align=center class=commentbar2>";
 	if ($type == 1) {
-		print "<form action={$CONF["base"]}/pollbooth.php method=POST>\n<input type=hidden name=scale value=400>\n";
+		print "<form action={$CONF["site_url"]}/pollbooth.php method=POST>\n<input type=hidden name=scale value=400>\n";
 		print "<input type=hidden name=qid value=$sid>\n<input type=hidden name=aid value=-1>\n";
 	} else {
-		print "<form action={$CONF["base"]}/article.php method=POST>\n<input type=hidden name=story value=$sid>\n";
+		print "<form action={$CONF["site_url"]}/article.php method=POST>\n<input type=hidden name=story value=$sid>\n";
 	}
 	# Order
 	print "<select name=order>";
@@ -863,18 +863,18 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 	if (empty($A["nice_date"])) { $A["nice_date"] = time(); }
 
 	if ($mode == "threaded" && $level > 0) {
-		print "<LI><B><a href={$CONF["base"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . urlencode($A["title"]) . "&type=$type&order=$order&pid={$A["pid"]}>{$A["title"]}</a></B> - {$LANG01[42]} ";
+		print "<LI><B><a href={$CONF["site_url"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . urlencode($A["title"]) . "&type=$type&order=$order&pid={$A["pid"]}>{$A["title"]}</a></B> - {$LANG01[42]} ";
 		if ($A["uid"] == 1) {
 			print $LANG01[24];
 		} else {
-			print "<a href={$CONF["base"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a>";
+			print "<a href={$CONF["site_url"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a>";
 		}
 		$A["nice_date"] = strftime($CONF["date"],$A["nice_date"]);
 		print " {$LANG01[36]} {$A["nice_date"]}\n";
 	} else {
 		if ($level > 0) {
 			print "<tr><td><table border=0 cellpadding=0 cellspacing=0 width=\"100%\">\n";
-			print "<tr><td rowspan=3 width=$level><img src={$CONF["base"]}/images/speck.gif width=$level height=100%></td>\n";
+			print "<tr><td rowspan=3 width=$level><img src={$CONF["site_url"]}/images/speck.gif width=$level height=100%></td>\n";
 		} else {
 			print "<tr>";
 		}
@@ -883,25 +883,25 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 		if ($A["uid"] == 1) {
 			print $LANG01[24];
 		} else {
-			print "<a href={$CONF["base"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a>";
+			print "<a href={$CONF["site_url"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a>";
 		}
 		$A["nice_date"] = strftime($CONF["date"],$A["nice_date"]);
 		print " on {$A["nice_date"]}</td></tr>\n";
 		print "<tr><td valign=top>";
 		echo nl2br(stripslashes($A["comment"]));
 		if ($mode == 0) {
-			print "<p>[ <a href={$CONF["base"]}/comment.php?sid={$A["sid"]}&pid={$A["cid"]}&title=" . rawurlencode($A["title"]) . "&type=$type>{$LANG01[43]}</a> ";
+			print "<p>[ <a href={$CONF["site_url"]}/comment.php?sid={$A["sid"]}&pid={$A["cid"]}&title=" . rawurlencode($A["title"]) . "&type=$type>{$LANG01[43]}</a> ";
 
 			# Until I find a better way to parent, we're stuck with this...
 
 			if ($mode == "threaded" && $A["pid"] != 0) {
 				$result = dbquery("SELECT title,pid from comments where cid = {$A["pid"]}");
 				$P = mysql_fetch_array($result);
-				print "| <a href={$CONF["base"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . rawurlencode($P["title"]) . "&type=$type&order=$order&pid={$P["pid"]}>{$LANG01[44]}</a> ";
+				print "| <a href={$CONF["site_url"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . rawurlencode($P["title"]) . "&type=$type&order=$order&pid={$P["pid"]}>{$LANG01[44]}</a> ";
 			}
 
-			if ($USER["seclev"] >= $CONF["commentadmin"]) {
-				print "| <a href={$CONF["base"]}/comment.php?mode={$LANG01[28]}&cid={$A["cid"]}&sid={$A["sid"]}&type=$type>{$LANG01[28]}</a> ";
+			if ($USER["seclev"] >= $CONF["sec_delstory"]) {
+				print "| <a href={$CONF["site_url"]}/comment.php?mode={$LANG01[28]}&cid={$A["cid"]}&sid={$A["sid"]}&type=$type>{$LANG01[28]}</a> ";
 			}
 			print "]<p>";
 		}
@@ -999,7 +999,7 @@ function olderstuff() {
                                         $day = $daycheck;
                                         $string .= "<br><b>$day</b> <small>$day2</small><br>";
                                 }
-				$string .= "<li><a href={$CONF["base"]}/article.php?story={$A["sid"]}>{$A["title"]}</a> ({$A["comments"]})\n";
+				$string .= "<li><a href={$CONF["site_url"]}/article.php?story={$A["sid"]}>{$A["title"]}</a> ({$A["comments"]})\n";
 			}
 		$string = addslashes($string);
 		dbdelete("blocks","title","{$LANG01[30]}");
@@ -1201,7 +1201,7 @@ function PrintUpcomingEvents() {
     if ($numDays < 14) {
       // Display the url now!
       print "<li><a
-href={$CONF["base"]}/calendar_event.php?eid={$theEvent["eid"]}>{$theEvent
+href={$CONF["site_url"]}/calendar_event.php?eid={$theEvent["eid"]}>{$theEvent
 ["title"]}</a><br></li>";
      }
      $theRow ++ ;  // Increment to next event in table!
@@ -1256,7 +1256,7 @@ function emailusertopics() {
 			$mailtext .= "Title: {$S["title"]}\n";
                         $mailtext .= "Date: " . strftime($CONF["date"],strtotime($S["day"])) . "\n\n";
                         $mailtext .= nl2br(stripslashes(strip_tags($S["introtext"]))) . "\n\n";
-                        $mailtext .= "Read the full article at {$CONF["base"]}/article.php?story={$S["sid"]}\n";
+                        $mailtext .= "Read the full article at {$CONF["site_url"]}/article.php?story={$S["sid"]}\n";
                 }
                         $mailtext .= "\n------------------------------\n";
                         $mailtext .= "\nEnd of Message\n";
@@ -1316,11 +1316,11 @@ function whatsnewblock() {
 			$itemlen = strlen($A["title"]);
 			#trim the length if over 26 characters
 			if ($itemlen > 26) {
-				print "<font class=storyclose>&#149; <a href={$CONF["base"]}/article.php?story={$A["sid"]}#comments>" . substr($A["title"],0,26) . "... ";
+				print "<font class=storyclose>&#149; <a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments>" . substr($A["title"],0,26) . "... ";
 				if ($A["dups"] > 1) print "[+{$A["dups"]}]";
 				print "</a></font><br>\n";
 			} else {
-				print "<font class=storyclose>&#149; <a href={$CONF["base"]}/article.php?story={$A["sid"]}#comments>{$A["title"]} ";
+				print "<font class=storyclose>&#149; <a href={$CONF["site_url"]}/article.php?story={$A["sid"]}#comments>{$A["title"]} ";
 				if ($A["dups"] > 1) print "[+{$A["dups"]}]";
 				print "</a></font><br>\n";
 			}
@@ -1474,7 +1474,7 @@ function PrintPageNavigation ($page, $num_pages, $topic="") {
 	if ($num_pages == 1) return;
 
         if ($page > 1) {
-                print "<a href={$CONF["base"]}/index.php";
+                print "<a href={$CONF["site_url"]}/index.php";
                 if (!empty($topic))
                         print "?topic=$topic&page=" . ($page-1) . ">$LANG05[6]</a> ";
                 else
@@ -1487,7 +1487,7 @@ function PrintPageNavigation ($page, $num_pages, $topic="") {
                 if ($pgcount == $page)
                         print "<b>" . $pgcount . "</b> ";
                 else {
-                        print "<a href={$CONF["base"]}/index.php";
+                        print "<a href={$CONF["site_url"]}/index.php";
                         if (!empty($topic))
                                 print "?topic=$topic&page=$pgcount>$pgcount</a> ";
                         else
@@ -1497,7 +1497,7 @@ function PrintPageNavigation ($page, $num_pages, $topic="") {
         if ($page == $num_pages)
                 print $LANG05[5];
         else {
-                print "<a href={$CONF["base"]}/index.php";
+                print "<a href={$CONF["site_url"]}/index.php";
                 if (!empty($topic))
                         print "?topic=$topic&page=" . ($page+1) . ">$LANG05[5]</a>";
                 else

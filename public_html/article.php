@@ -39,19 +39,19 @@ include("custom_code.php");
 # First see if we have a plugin that may be trying to use the Geeklog comment engine
 if (DoPluginCommentSupportCheck($type)) {
 	# Yes, this is a plugin wanting to be commented on...do it
-	refresh("{$CONF["base"]}/comment.php?sid=$story&pid=$pid&type=$type");
+	refresh("{$CONF["site_url"]}/comment.php?sid=$story&pid=$pid&type=$type");
 }
 
 $result = dbquery("SELECT count(*) as count FROM stories WHERE sid = '$story'");
 $A = mysql_fetch_array($result);
 if ($A["count"] > 0) {
 	if ($reply == $LANG01[25]) {
-		refresh("{$CONF["base"]}/comment.php?sid=$story&pid=$pid&type=$type");
+		refresh("{$CONF["site_url"]}/comment.php?sid=$story&pid=$pid&type=$type");
 	} else if ($mode == "print") {
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
 		$CONF["pagetitle"] = stripslashes($A["title"]);
-		print "<html><title>{$CONF["sitename"]} : {$CONF["pagetitle"]}</title><body>\n";
+		print "<html><title>{$CONF["site_name"]} : {$CONF["pagetitle"]}</title><body>\n";
 		print "<H1>" . stripslashes($A["title"]) . "</H1>\n";
 		print "<H3>" . strftime($CONF["date"],$A["day"]) . "</H3>";
 		if ($CONF["contributedbyline"] == 1) {
@@ -59,10 +59,10 @@ if ($A["count"] > 0) {
 		}
 		print "<p>" . nl2br(stripslashes($A["introtext"]));
 		print "\n<p>" . nl2br(stripslashes($A["bodytext"]));
-		print "<p><a href={$CONF["base"]}/article.php?story=$story#comments>" . dbcount("comments","sid",$A["sid"]) . " $LANG01[3]</a>\n";
+		print "<p><a href={$CONF["site_url"]}/article.php?story=$story#comments>" . dbcount("comments","sid",$A["sid"]) . " $LANG01[3]</a>\n";
 		print "<br><br><hr>\n";
-		print "<p>{$CONF["sitename"]}<br>\n";
-		print "<a href={$CONF["base"]}/article.php?story=$story>{$CONF["base"]}/article.php?story=$story</a>\n";
+		print "<p>{$CONF["site_name"]}<br>\n";
+		print "<a href={$CONF["site_url"]}/article.php?story=$story>{$CONF["site_url"]}/article.php?story=$story</a>\n";
 		print "</body></html>";
 	} else {
 		#Set page title
@@ -78,18 +78,18 @@ if ($A["count"] > 0) {
 		article($A,"n");
 
 		# Display whats related any polls configured for this page
-		print "</td><td><img src={$CONF["base"]}/images/speck.gif height=1 width=10></td>\n";
+		print "</td><td><img src={$CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
 		print "<td valign=top width=180>\n";
 		startblock("$LANG11[1]");
 		print nl2br($A["related"]);
 		endblock();
 		startblock("$LANG11[4]");
-		print "<li><a href={$CONF["base"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>";
-		print "<li><a href={$CONF["base"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
+		print "<li><a href={$CONF["site_url"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>";
+		print "<li><a href={$CONF["site_url"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
 		endblock();
 		if (dbcount("pollquestions","qid",$story) > 0)
 			showpoll(80,$story);
-		print "<br><img src={$CONF["base"]}/images/speck.gif width=180 height=1></td></tr>\n";
+		print "<br><img src={$CONF["site_url"]}/images/speck.gif width=180 height=1></td></tr>\n";
 
 		# Display the comments
 		if ($A["commentcode"] >= 0) {
@@ -99,7 +99,7 @@ if ($A["count"] > 0) {
 		include("layout/footer.php");
 	}
 } else {
-	refresh("{$CONF["base"]}/index.php");
+	refresh("{$CONF["site_url"]}/index.php");
 }
 
 ?>

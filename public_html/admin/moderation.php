@@ -42,15 +42,15 @@ function commandcontrol() {
 	startblock($LANG29[34]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr align=center valign=top>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/story.php><img src={$CONF["base"]}/images/admin/story.gif border=0><br>{$LANG01[11]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/block.php><img src={$CONF["base"]}/images/admin/block.gif border=0><br>{$LANG01[12]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/topic.php><img src={$CONF["base"]}/images/admin/topic.gif border=0><br>{$LANG01[13]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/link.php><img src={$CONF["base"]}/images/admin/link.gif border=0><br>{$LANG01[14]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/event.php><img src={$CONF["base"]}/images/admin/event.gif border=0><br>{$LANG01[15]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/poll.php><img src={$CONF["base"]}/images/admin/poll.gif border=0><br>{$LANG01[16]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/user.php><img src={$CONF["base"]}/images/admin/user.gif border=0><br>{$LANG01[17]}</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/plugins.php><img src={$CONF["base"]}/images/admin/plugins.gif border=0><br>Plug-ins</a></td>";
-	print "<td width=11%><a href={$CONF["base"]}/admin/index.php?mode=logout><img src={$CONF["base"]}/images/admin/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/admin/story.gif border=0><br>{$LANG01[11]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/admin/block.gif border=0><br>{$LANG01[12]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/admin/topic.gif border=0><br>{$LANG01[13]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/admin/link.gif border=0><br>{$LANG01[14]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/admin/event.gif border=0><br>{$LANG01[15]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/admin/poll.gif border=0><br>{$LANG01[16]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/admin/user.gif border=0><br>{$LANG01[17]}</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/admin/plugins.gif border=0><br>Plug-ins</a></td>";
+	print "<td width=11%><a href={$CONF["site_url"]}/admin/index.php?mode=logout><img src={$CONF["site_url"]}/images/admin/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
 	ShowPluginModerationOptions();
 	print "</tr></table>";
 	endblock();
@@ -105,13 +105,13 @@ function itemlist($type) {
                 $nrows = mysql_num_rows($result);
         }
 	if ($nrows > 0) {
-		print "<form action={$CONF["base"]}/admin/moderation.php method=POST>\n";
+		print "<form action={$CONF["site_url"]}/admin/moderation.php method=POST>\n";
 		print "<input type=hidden name=type value=$type><input type=hidden name=count value=$nrows><input type=hidden name=mode value=moderation>\n";
 		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
 		print "<tr align=left><th>&nbsp;</th><th><b>{$H[0]}</b></th><th><b>{$H[1]}</b></th><th><b>{$H[2]}</b></th><th align=center><b>{$LANG29[2]}</b></th><th align=center>";
 		print "<b>{$LANG29[1]}</b>";
 		print "</th></tr>\n";
-		print "<tr style=\"background: black;\" align=left><td colspan=8><img src={$CONF["base"]}/images/speck.gif width=1 height=1</td></tr>\n";
+		print "<tr style=\"background: black;\" align=left><td colspan=8><img src={$CONF["site_url"]}/images/speck.gif width=1 height=1</td></tr>\n";
 		for ($i=1; $i<=$nrows; $i++) {
 			$A = mysql_fetch_array($result);
 			if ($type == "story") {
@@ -119,9 +119,9 @@ function itemlist($type) {
 				$A[2] = strftime("%c",$A[2]);
 			}
 			if ($isplugin)  {
-				print "<tr align=left><td><a href={$CONF["base"]}/admin/plugins/$type/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
+				print "<tr align=left><td><a href={$CONF["site_url"]}/admin/plugins/$type/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
 			} else {
-				print "<tr align=left><td><a href={$CONF["base"]}/admin/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
+				print "<tr align=left><td><a href={$CONF["site_url"]}/admin/$type.php?mode=editsubmission&id={$A["id"]}>Edit</a></td>";
 			}
 			print "<td>{$A[1]}</td><td>{$A[2]}</td><td>{$A[3]}</td>";
 			print "<td align=center><input type=radio name=action[$i] value=delete></td>";

@@ -53,10 +53,10 @@ function editblock($bid="") {
 	} else {
 		$A["bid"] = 0;
 		$A["blockorder"] = 0;
-		$A["seclev"] = $CONF["blockadmin"];
+		$A["seclev"] = $CONF["sec_block"];
 	}
 	startblock($LANG21[3]);
-	print "<form action={$CONF["base"]}/admin/block.php method=post>";
+	print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
        	print "<input type=submit value=cancel name=mode> ";
@@ -126,7 +126,7 @@ function listblocks() {
 			$A[4] = "-";
 			$A[5] = "-";
 		}
-		print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
 		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td><td>{$A[5]}</td></tr>";
 	}
 	print "</table>";

@@ -39,7 +39,7 @@ include("custom_code.php");
 function commentform($uid,$save,$anon,$title,$comment,$sid,$pid="0",$type,$mode,$postmode) {
 	global $HTTP_POST_VARS,$REMOTE_ADDR,$CONF,$LANG03,$USER;
 	if ($CONF["loginrequired2"] == 1 && empty($USER["username"])) {
-		refresh("{$CONF["base"]}/users.php?msg=" . urlencode($LANG03[6]));
+		refresh("{$CONF["site_url"]}/users.php?msg=" . urlencode($LANG03[6]));
 	} else {
 		dbquery("DELETE FROM commentspeedlimit WHERE date < unix_timestamp() - {$CONF["speedlimit2"]}");
 		$id = dbcount("commentspeedlimit","ipaddress",$REMOTE_ADDR);
@@ -76,16 +76,16 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid="0",$type,$mode,
 				$A["postmode"] = "html";
 			}
 			startblock($LANG03[1]);
-			print "<form action={$CONF["base"]}/comment.php method=POST>\n";
+			print "<form action={$CONF["site_url"]}/comment.php method=POST>\n";
 			print "<table cellspacing=0 cellpadding=3 border=0 width=\"100%\">\n";
 			print "<input type=hidden name=sid value=\"$sid\">\n";
 			print "<input type=hidden name=pid value=\"$pid\">\n";
 			print "<input type=hidden name=type value=\"$type\">\n";
 			print "<tr><td align=right><b>{$LANG03[5]}:</b></td><td>";
 			if (!empty($USER["username"])) {
-				print "<input type=hidden name=uid value={$USER["uid"]}>{$USER["username"]} [ <a href={$CONF["base"]}/users.php?mode=logout>{$LANG03[03]}</a> ]</td></tr>\n";
+				print "<input type=hidden name=uid value={$USER["uid"]}>{$USER["username"]} [ <a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG03[03]}</a> ]</td></tr>\n";
 			} else {
-				print "<input type=hidden name=uid value=1><a href={$CONF["base"]}/users.php?mode=new>{$LANG03[04]}</a></td></tr>\n";
+				print "<input type=hidden name=uid value=1><a href={$CONF["site_url"]}/users.php?mode=new>{$LANG03[04]}</a></td></tr>\n";
 			}
 			print "<tr><td align=right><b>{$LANG03[16]}:</b></td><td><input type=text name=title size=32 value=\"" . stripslashes($title) . "\" maxlength=96></td></tr>\n";
 			print "<tr><td align=right valign=top><b>{$LANG03[9]}:</b></td><td><textarea name=comment wrap=physical rows=10 cols=45>$comment</textarea></td></tr>\n";
@@ -136,11 +136,11 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 				$comments = dbcount("comments","sid",$sid);
 				dbchange("stories","comments",$comments,"sid",$sid);
 			}			
-			refresh("{$CONF["base"]}/pollbooth.php?qid=$sid");
+			refresh("{$CONF["site_url"]}/pollbooth.php?qid=$sid");
 		} else {
 			$comments = dbcount("comments","sid",$sid);
 			dbchange("stories","comments",$comments,"sid",$sid);
-			refresh("{$CONF["base"]}/article.php?story=$sid");
+			refresh("{$CONF["site_url"]}/article.php?story=$sid");
 		}
 	} else {
 		include("layout/header.php");
@@ -166,11 +166,11 @@ function deletecomment($cid,$sid,$type) {
 				$comments = dbcount("comments","sid",$sid);
 				dbchange("stories","comments",$comments,"sid",$sid);
 			}			
-			refresh("{$CONF["base"]}/pollbooth.php?qid=$sid");
+			refresh("{$CONF["site_url"]}/pollbooth.php?qid=$sid");
 		} else {
 			$comments = dbcount("comments","sid",$sid);
 			dbchange("stories","comments",$comments,"sid",$sid);
-			refresh("{$CONF["base"]}/article.php?story=$sid");	 
+			refresh("{$CONF["site_url"]}/article.php?story=$sid");	 
 		}
 	}
 }
@@ -209,7 +209,7 @@ switch ($mode) {
 				}
 			} else {
 				// must be a mistake at this point
-				refresh("{$CONF["base"]}/index.php");
+				refresh("{$CONF["site_url"]}/index.php");
 			}
 		}
 }

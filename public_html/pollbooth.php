@@ -60,7 +60,7 @@ function polllist() {
 		print "<td>";
 		$Q = mysql_fetch_array($result);
 		pollresults($Q["qid"],"119");
-		print "[ <a href={$CONF["base"]}/pollbooth.php?qid={$Q["qid"]}>{$LANG07[3]}</a> ]</td>\n";
+		print "[ <a href={$CONF["site_url"]}/pollbooth.php?qid={$Q["qid"]}>{$LANG07[3]}</a> ]</td>\n";
 	}
 	print "</table>\n";
 }
@@ -74,7 +74,7 @@ function polllist() {
 # an aid of -1 will display the select poll
 
 if ($reply == $LANG01[25]) {
-	refresh("{$CONF["base"]}/comment.php?sid=$qid&pid=$pid&type=$type");
+	refresh("{$CONF["site_url"]}/comment.php?sid=$qid&pid=$pid&type=$type");
 	exit;			
 }
 if (empty($qid)) {

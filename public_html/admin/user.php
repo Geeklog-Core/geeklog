@@ -42,7 +42,7 @@ function edituser($uid="") {
                 $T = mysql_fetch_array($tmp);
                 $A["uid"] = $T["max"] + 1;
         }
-	print "<form action={$CONF["base"]}/admin/user.php name=storyeditor method=post>";
+	print "<form action={$CONF["site_url"]}/admin/user.php name=storyeditor method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	if ($A["uid"] > 1) { print "<input type=submit value=changepw name=mode> "; }
@@ -98,7 +98,7 @@ function saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$homepage) {
 		dbsave("userinfo","uid",$uid);
 		$tmp = mysql_errno();
 		if ($tmp == 0) { 
-			refresh("{$CONF["base"]}/admin/user.php?msg=21");
+			refresh("{$CONF["site_url"]}/admin/user.php?msg=21");
 		} else {
 			include("../layout/header.php");
 			$tmp = "SAVEUSERS ERROR <BR>" . $sql . " <BR> " . mysql_error();
@@ -126,7 +126,7 @@ function listusers() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/user.php?mode=edit&uid={$A["uid"]}>{$A["username"]}</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/user.php?mode=edit&uid={$A["uid"]}>{$A["username"]}</a></td>";
 		print "<td>{$A["fullname"]}</td><td>{$A["seclev"]}</td><td>{$A["email"]}</td></tr>";
 	}
 	print "</table></form>";

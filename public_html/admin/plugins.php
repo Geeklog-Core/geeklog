@@ -47,7 +47,7 @@ function plugineditor($pi_name,$confirmed=0) {
 	$result = dbquery("SELECT * FROM plugins WHERE pi_name = '$pi_name'");
 	$A = mysql_fetch_array($result);
 	startblock("Plugin Editor");
-	print "<form action={$CONF["base"]}/admin/plugins.php method=post>";
+	print "<form action={$CONF["site_url"]}/admin/plugins.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3>";
 	print "<tr><td colspan=2 align=left><input type=submit value=save name=mode> ";
 	print "<input type=submit value=cancel name=mode> ";
@@ -90,7 +90,7 @@ function listplugins($page="1") {
  		for ($i=1; $i<=$nrows; $i++) {
 			$scount = (50 * $page) - 50 + $i;
 			$A = mysql_fetch_array($result);
-			print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/plugins.php?mode=edit&pi_name={$A["pi_name"]}>$scount</a></td>";
+			print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/plugins.php?mode=edit&pi_name={$A["pi_name"]}>$scount</a></td>";
 			print "<td align=left><a href={$A["pi_homepage"]} target=_new>{$A["pi_name"]}</a></td>";
 			print "<td>{$A["pi_version"]}</td><td>{$A["pi_gl_version"]}</td>";
 			if ($A["pi_enabled"] == 1)
@@ -103,10 +103,10 @@ function listplugins($page="1") {
 			$prevpage = $page - 1; 
 			$nextpage = $page + 1; 
 			if ($pagestart >= 50) {
-				print "<a href={$CONF["base"]}/admin/plugins.php?mode=list&page=$prevpage>Prev</a> ";
+				print "<a href={$CONF["site_url"]}/admin/plugins.php?mode=list&page=$prevpage>Prev</a> ";
 			}
 			if ($pagestart <= (dbcount("plugins") - 50)) {
-				print "<a href={$CONF["base"]}/admin/plugins.php?mode=list&page=$nextpage>Next</a> ";
+				print "<a href={$CONF["site_url"]}/admin/plugins.php?mode=list&page=$nextpage>Next</a> ";
 			}
 		}
 		print "</td></tr></table>\n";
@@ -150,7 +150,7 @@ function installpluginform() {
         /* new stuff */
         require_once($CONF["path"] . "/include/upload.class.php");
         $upload = new Upload();
-        $upload->printFormStart($CONF["base"] . "/admin/plugins.php");
+        $upload->printFormStart($CONF["site_url"] . "/admin/plugins.php");
         print "<table border=0 cellspacing=0 cellpadding=3>";
         print "<tr><td><b>{$LANG32[4]}:</b><td>";
         $upload->printFormField("plugin_file");

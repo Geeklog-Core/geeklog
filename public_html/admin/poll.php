@@ -56,7 +56,7 @@ function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V
 			dbsave("pollanswers","qid, aid, answer, votes","'$qid', $i+1, '$A[$i]', $V[$i]");
 		}
 	}
-	refresh($CONF["base"] . "/admin/poll.php?msg=19");
+	refresh($CONF["site_url"] . "/admin/poll.php?msg=19");
 	//startblock($LANG25[3]);
 	//print $LANG25[4];
 	//endblock();
@@ -71,7 +71,7 @@ function editpoll($qid="") {
 	$answers = dbquery("select answer,aid,votes from pollanswers WHERE qid='$qid'");
 	$Q = mysql_fetch_array($question);
 	startblock($LANG25[5]);
-	print "<FORM ACTION={$CONF["base"]}/admin/poll.php METHOD=post>\n";
+	print "<FORM ACTION={$CONF["site_url"]}/admin/poll.php METHOD=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><INPUT TYPE=SUBMIT NAME=mode VALUE=save> ";
 	print "<input type=submit name=mode value=cancel> ";
@@ -116,7 +116,7 @@ function listpoll() {
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
 		if ($A[4] == 1) $A[4] = "Y";
-		print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/poll.php?mode=edit&qid={$A[0]}>{$A[1]}</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/poll.php?mode=edit&qid={$A[0]}>{$A[1]}</a></td>";
 		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td></tr>";
 	}
 	print "</table>";

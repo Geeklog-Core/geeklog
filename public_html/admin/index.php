@@ -35,8 +35,8 @@ if ($mode=="logout") {
 	accesslog($tmp);
 	setcookie("gl_loginname","",0,"/","",0);
 	setcookie("gl_password","",0,"/","",0);
-	refresh("{$CONF["base"]}/index.php");
+	refresh("{$CONF["site_url"]}/index.php");
 }
-refresh("{$CONF["base"]}/admin/moderation.php");
+refresh("{$CONF["site_url"]}/admin/moderation.php");
 
 ?>

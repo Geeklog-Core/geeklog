@@ -41,7 +41,7 @@ function edituser() {
 	$result = dbquery("SELECT fullname,email,homepage,sig,emailstories,about,pgpkey FROM users,userprefs,userinfo WHERE users.uid = {$USER["uid"]} && userprefs.uid = {$USER["uid"]} && userinfo.uid = {$USER["uid"]}");
 	$A = mysql_fetch_array($result);
 	startblock("{$LANG04[1]} {$USER["username"]}","");
-	print "<form action={$CONF["base"]}/usersettings.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[3]}:</b><br><small>{$LANG04[34]}</small></td><td><input type=text name=fullname size=32 maxlength=80 value=\"{$A["fullname"]}\"></td></tr>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[4]}:</b><br><small>{$LANG04[35]}</small></td><td><input type=password name=passwd size=16 maxlength=32 value=\"{$A["passwd"]}\"></td></tr>\n";
@@ -70,7 +70,7 @@ function editpreferences() {
 	$A = mysql_fetch_array($result);
 	if ($A["maxstories"] < 5) $A["maxstories"] = 5;
 	startblock("{$LANG04[45]} {$USER["username"]}","");
-	print "<form action={$CONF["base"]}/usersettings.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[40]}:</b><br><small>{$LANG04[49]}</small></td><td><input type=checkbox name=noicons";
 	if ($A["noicons"] == "1") {
@@ -101,7 +101,7 @@ function editpreferences() {
 	print "<tr><td colspan=3>{$LANG04[54]}</td></tr>";
 	print "<tr valign=top><td><b>{$LANG04[48]}</b><br>";
 	checklist("topics","tid,topic","",$A["tids"]);
-	print "</td><td><img src={$CONF["base"]}/images/speck.gif width=40 height=1></td>";
+	print "</td><td><img src={$CONF["site_url"]}/images/speck.gif width=40 height=1></td>";
 	if ($CONF["contributedbyline"] == 1) {
 		print "<td><b>{$LANG04[56]}</b><br>";
 		$result = dbquery("SELECT DISTINCT uid FROM stories");
@@ -140,7 +140,7 @@ function editcommentprefs() {
 	if (empty($A["commentorder"])) $A["commentorder"] = 0;
 	if (empty($A["commentlimit"])) $A["commentlimit"] = 100;
 	startblock("{$LANG04[64]} {$USER["username"]}","");
-	print "<form action={$CONF["base"]}/usersettings.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/usersettings.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr valign=top><td align=right><b>{$LANG04[57]}:</b><br><small>{$LANG04[60]}</small></td><td><select name=commentmode>";
 	optionlist("commentmodes","mode,name",$A["commentmode"]);
@@ -170,7 +170,7 @@ function saveuser($A) {
 		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}' WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userinfo SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$USER["uid"]}");
-		refresh("{$CONF["base"]}/usersettings.php?mode=edit&msg=5");
+		refresh("{$CONF["site_url"]}/usersettings.php?mode=edit&msg=5");
 	}
 }
 
@@ -242,7 +242,7 @@ if (!empty($USER["username"]) && !empty($mode)) {
 			break;
 	}
 } else {
-	refresh("{$CONF["base"]}/index.php");
+	refresh("{$CONF["site_url"]}/index.php");
 }
 
 ?>

@@ -33,7 +33,7 @@ if (!empty($url) && !empty($item)) {
 	dbchange("links","hits","hits + 1","lid",$item);
 	refresh($url);
 } else {
-	refresh($CONF["base"]);
+	refresh($CONF["site_url"]);
 }
 
 ?>

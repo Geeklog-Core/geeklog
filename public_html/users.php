@@ -43,7 +43,7 @@ function userprofile($user) {
 	startblock("{$LANG04[1]} {$A["username"]}");
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td>{$A["username"]} ({$A["fullname"]})</td></tr>\n";
-	print "<tr><td align=right><b>{$LANG04[5]}:</b></td><td><a href={$CONF["base"]}/profiles.php?uid=$user>Send Email</a></td></tr>\n";
+	print "<tr><td align=right><b>{$LANG04[5]}:</b></td><td><a href={$CONF["site_url"]}/profiles.php?uid=$user>Send Email</a></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG04[6]}:</b></td><td><a href={$A["homepage"]}>{$A["homepage"]}</a></td></tr>\n";
 	$result = dbquery("SELECT about,pgpkey FROM userinfo WHERE uid = $user");
 	$B = mysql_fetch_array($result);
@@ -58,7 +58,7 @@ function userprofile($user) {
 	if ($nrows > 0) {
 		for ($i=1; $i <= $nrows; $i++) {
 			$C = mysql_fetch_array($result);
-			print "<tr align=left><td>$i. <a href={$CONF["base"]}/comment.php?mode=display&sid={$C["sid"]}&title=" . urlencode($C["title"]) . "&pid={$C["pid"]}><b>{$C["title"]}</b></a></td><td>" . strftime($CONF["date"],$C["unixdate"]) . "</td></tr>\n";
+			print "<tr align=left><td>$i. <a href={$CONF["site_url"]}/comment.php?mode=display&sid={$C["sid"]}&title=" . urlencode($C["title"]) . "&pid={$C["pid"]}><b>{$C["title"]}</b></a></td><td>" . strftime($CONF["date"],$C["unixdate"]) . "</td></tr>\n";
 		}
 	} else {
 		print "<tr><td align=right>{$LANG04[11]}</td></tr>\n";
@@ -86,15 +86,15 @@ function emailpassword($username,$msg=0) {
 		$mailtext .= "{$LANG04[2]}: $username\n";
 		$mailtext .= "{$LANG04[4]}: $passwd\n\n";
 		$mailtext .= "{$LANG04[14]}\n\n";
-		# $mailtext .= "{$CONF["base"]}/users.php?mode=edit\n\n";
-		$mailtext .= "{$CONF["sitename"]}\n";
-		$mailtext .= "{$CONF["base"]}\n";
-                mail($A["email"],"{$CONF["sitename"]}: {$LANG04[16]}",$mailtext,
-		"From: {$CONF["sitename"]} <{$CONF["sitemail"]}>\nReturn-Path: <{$CONF["sitemail"]}>\nX-Mailer: GeekLog $VERSION");
+		# $mailtext .= "{$CONF["site_url"]}/users.php?mode=edit\n\n";
+		$mailtext .= "{$CONF["site_name"]}\n";
+		$mailtext .= "{$CONF["site_url"]}\n";
+                mail($A["email"],"{$CONF["site_name"]}: {$LANG04[16]}",$mailtext,
+		"From: {$CONF["site_name"]} <{$CONF["site_mail"]}>\nReturn-Path: <{$CONF["site_mail"]}>\nX-Mailer: GeekLog $VERSION");
 		if ($msg)
-			refresh("{$CONF["base"]}/index.php?msg=$msg");
+			refresh("{$CONF["site_url"]}/index.php?msg=$msg");
 		else
-			refresh("{$CONF["base"]}/index.php");
+			refresh("{$CONF["site_url"]}/index.php");
 	} else {
 		include("layout/header.php");
 		defaultform($LANG04[17]);
@@ -141,7 +141,7 @@ function defaultform($msg, $referrer="") {
 		endblock();
 	}
 	startblock($LANG04[65]);
-	print "<form action={$CONF["base"]}/users.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/users.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td colspan=2>{$LANG04[66]}</td></tr>";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td><input type=text size=16 name=loginname></td></tr>";
@@ -149,7 +149,7 @@ function defaultform($msg, $referrer="") {
 	print "<tr><td align=center colspan=2><input type=submit value=Login></td></tr></table></form>";
 	endblock();
 	startblock($LANG04[22]);
-	print "<form action={$CONF["base"]}/users.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/users.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td colspan=2>{$LANG04[23]}</td></tr>";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td><input type=text size=16 maxlength=16 name=username></td></tr>\n";
@@ -159,7 +159,7 @@ function defaultform($msg, $referrer="") {
 	print "</table></form>";
 	endblock();
 	startblock($LANG04[25]);
-	print "<form action={$CONF["base"]}/users.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/users.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td colspan=2>{$LANG04[26]}</td></tr>";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td><input type=text size=16 maxlength=16 name=username></td></tr>\n";
@@ -176,10 +176,10 @@ switch ($mode) {
 		if ($user_logged_in) {
                         end_user_session($userdata[uid], $db);
                 }
-		if ($USER["seclev"] >= $CONF["lowestadmin"]) {
+		if ($USER["seclev"] >= $CONF["sec_lowest"]) {
 			accesslog("{$HTTP_COOKIE_VARS["gl_loginname"]} {$LANG04[29]} $REMOTE_ADDR.");
 		}
-                refresh("{$CONF["base"]}/index.php?msg=8");
+                refresh("{$CONF["site_url"]}/index.php?msg=8");
                 break;
 	case "profile":
 		include("layout/header.php");
@@ -202,15 +202,15 @@ switch ($mode) {
                 if (!empty($passwd) && $mypasswd == md5($passwd)) {
                         $userdata = get_userdata($loginname);
                         $USER=$userdata;
-                        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["sesscookietimeout"], $CONF["ipbasedsessid"]);
-                        set_session_cookie($sessid, $CONF["sesscookietimeout"], $CONF["sesscookiename"], $CONF["cookiepath"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
+                        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["cookie_timeout"], $CONF["cookie_ip"]);
+                        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cookiesecure"]);
                         // increment the numlogins counter for this user
                         //dbchange("users","numlogins","numlogins + 1","username","$loginname");
 
-                        if (($HTTP_REFERER) && ($HTTP_REFERER <> ($CONF["base"] . "/users.php"))) {
+                        if (($HTTP_REFERER) && ($HTTP_REFERER <> ($CONF["site_url"] . "/users.php"))) {
                                 refresh("$HTTP_REFERER");
                         } else {
-                                refresh("{$CONF["base"]}/index.php");
+                                refresh("{$CONF["site_url"]}/index.php");
                         }
                 } else {
                         include("layout/header.php");

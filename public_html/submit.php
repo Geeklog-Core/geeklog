@@ -53,7 +53,7 @@ function submissionform($type="story") {
 		if ($CONF["loginrequired"] == 1 && empty($USER["username"])) {
 			startblock($LANG12[7]);
 			print "{$LANG12[1]}<br><br>\n";
-			print "[ <a href={$CONF["base"]}>{$LANG12[2]}</a> | <a href={$CONF["base"]}/users.php>{$LANG12[3]}</a> ]\n";
+			print "[ <a href={$CONF["site_url"]}>{$LANG12[2]}</a> | <a href={$CONF["site_url"]}/users.php>{$LANG12[3]}</a> ]\n";
 		} else {
 			startblock($LANG12[19]);
 			print "{$LANG12[9]}\n";
@@ -85,7 +85,7 @@ function submitevent() {
 	global $CONF,$LANG12;
 	startblock($LANG12[4],"submitevent.html");
   	print $LANG12[37];	
-	print "<form action={$CONF["base"]}/submit.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/submit.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right><b>{$LANG12[10]}:</b></td><td><input type=text size=36 maxlength=96 name=title></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG12[11]}:</b></td><td><input type=text size=36 maxlength=96 name=url value=\"http://\"></td></tr>\n";
@@ -102,7 +102,7 @@ function submitevent() {
 function submitlink() {
 	global $CONF,$LANG12;
 	startblock($LANG12[5],"submitlink.html");
-	print "<form action={$CONF["base"]}/submit.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/submit.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right><b>{$LANG12[10]}:</b></td><td><input type=text size=36 maxlength=96 name=title></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG12[11]}:</b></td><td><input type=text size=36 maxlength=96 name=url value=\"http://\"></td></tr>\n";
@@ -145,12 +145,12 @@ function submitstory() {
 		endblock();
 	}
 	startblock($LANG12[6],"submitstory.html");
-	print "<form action={$CONF["base"]}/submit.php method=post>\n";
+	print "<form action={$CONF["site_url"]}/submit.php method=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	if (!empty($USER["username"])) {
-		print "<tr><td align=right><b>{$LANG12[27]}:</b></td><td>{$USER["username"]} [ <a href={$CONF["base"]}/users.php?mode=logout>{$LANG12[34]}</a> ]</td></tr>\n";
+		print "<tr><td align=right><b>{$LANG12[27]}:</b></td><td>{$USER["username"]} [ <a href={$CONF["site_url"]}/users.php?mode=logout>{$LANG12[34]}</a> ]</td></tr>\n";
 	} else {
-		print "<tr><td align=right><b>{$LANG12[27]}:</b></td><td>[ <a href={$CONF["base"]}/users.php>Log In</a> | <a href={$CONF["base"]}/users.php?mode=new>Create Account</a> ]</td></tr>\n";		
+		print "<tr><td align=right><b>{$LANG12[27]}:</b></td><td>[ <a href={$CONF["site_url"]}/users.php>Log In</a> | <a href={$CONF["site_url"]}/users.php?mode=new>Create Account</a> ]</td></tr>\n";		
 	}
 	print "<tr><td align=right><b>{$LANG12[10]}:</b></td><td><input type=text size=36 maxlength=96 name=title value=\"{$A["title"]}\"></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG12[28]}:</b></td><td><select name=tid>";

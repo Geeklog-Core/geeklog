@@ -35,10 +35,10 @@ if (!empty($loginname) && !empty($passwd)) {
 if (!empty($passwd) && $mypasswd == md5($passwd)) {
 	$userdata = get_userdata($loginname);
         $USER=$userdata;
-        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["s esscookietimeout"], $CONF["ipbasedsessid"]);
-        set_session_cookie($sessid, $CONF["sesscookietimeout"], $CONF["sesscookiename"], $CONF["cookiepath"], $CONF["cookiedomain"], $CONF["cook iesecure"]);
+        $sessid = new_session($USER[uid], $REMOTE_ADDR, $CONF["s esscookietimeout"], $CONF["cookie_ip"]);
+        set_session_cookie($sessid, $CONF["cookie_timeout"], $CONF["cookie_session"], $CONF["cookie_path"], $CONF["cookiedomain"], $CONF["cook iesecure"]);
 
-	refresh("{$CONF["base"]}/admin/moderation.php");
+	refresh("{$CONF["site_url"]}/admin/moderation.php");
 } else if ($USER["seclev"] < 100) {
 	include("../layout/alt_header.php");
 	#print "<br>Input: " . md5($passwd) . "<br>Database: $mypasswd<br>"; 
