@@ -374,6 +374,17 @@
 											</i></font></td>
 									</tr>
 									<tr>
+										<td align="right" valign="top" nowrap>Show Who's Online Block:</td>
+										<td align="left" valign="top"><input type="checkbox" name="whosonline" {whosonline_checked}> <font color="#666699" size="2"><i>If checked, users will see a &quot;Who's Online&quot; box, displaying a list of logged in users and the number of guest (anonymous) users.<br>
+											<br>
+											</i></font></td>
+									</tr>
+                                    <tr>
+                                        <td align="right" valign="top" nowrap>Who's Online Threshold:</td>
+                                        <td align="left" valign="top"><input type="text" size="5" name="whosonline_threshold" value="{whosonline_threshold}"><br><font color="#666699" size="2"><i>This is how man seconds guest (anonymous) sessions are good for.  For example a value of 300 would show all guest users who visited a page on your site within the last 5 minutes.  This only pertains to guest (anonymous) accounts.<br>
+                                            <br></i></font></td>
+                                    </tr>
+									<tr>
 										<td align="right" valign="top" nowrap>New Stories Interval:</td>
 										<td align="left" valign="top"><select name="newstoriesinterval" size="1">
 												{newstoriesinterval_options} 
