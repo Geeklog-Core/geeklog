@@ -13,6 +13,7 @@
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,9 +32,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.27 2004/08/11 13:04:25 dhaun Exp $
+// $Id: pollbooth.php,v 1.28 2004/08/11 13:33:34 dhaun Exp $
 
-require_once('lib-common.php');
+require_once ('lib-common.php');
+
+// number of polls to list per page
+define ('POLLS_PER_PAGE', 50);
 
 /**
 * Saves a user's vote
@@ -81,12 +85,17 @@ function pollsave($qid = '', $aid = 0)
 *
 * List all the polls on the system if no $qid is provided
 *
-* @return   string  HTML for poll listing
+* @param    int     $page   page to display
+* @return   string          HTML for poll listing
 *
 */
-function polllist() 
+function polllist ($page = 1) 
 {
-    global $_TABLES, $_CONF, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
+
+    if ($page < 1) {
+        $page = 1;
+    }
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['pollsloginrequired'] == 1))) {
@@ -102,17 +111,19 @@ function polllist()
         $retval .= $login->finish ($login->get_var('output'));
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
+        $limit = (POLLS_PER_PAGE * $page) - POLLS_PER_PAGE;
         $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']}"
-             . COM_getPermSQL () . ' ORDER BY date DESC';
+             . COM_getPermSQL () . " ORDER BY date DESC LIMIT $limit," . POLLS_PER_PAGE;
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         $retval = COM_startBlock($LANG07[4]);
         if ($nrows > 0) {
             $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
             $pollitem->set_file('pollitem', 'polllist.thtml');
-            for ($i = 1; $i <= $nrows; $i++) {
+            for ($i = 0; $i < $nrows; $i++) {
                 $Q = DB_fetchArray($result);
-                $pollitem->set_var('item_num', $i);
+                $pcount = (POLLS_PER_PAGE * ($page - 1)) + $i + 1;
+                $pollitem->set_var('item_num', $pcount);
                 $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
                 $pollitem->set_var('poll_question', stripslashes($Q['question']));
                 $pollitem->set_var('poll_votes', $Q['voters']);
@@ -124,6 +135,15 @@ function polllist()
                 }
                 $pollitem->parse('output', 'pollitem');
                 $retval .= $pollitem->finish($pollitem->get_var('output'));
+            }
+
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+            $A = DB_fetchArray ($result);
+            $numpolls = $A['count'];
+            if ($numpolls > POLLS_PER_PAGE) {
+                $baseurl = $_CONF['site_url'] . '/pollbooth.php';
+                $numpages = ceil ($numpolls / POLLS_PER_PAGE);
+                $retval .= COM_printPageNavigation ($baseurl, $page, $numpages);
             }
         } else {
             $retval .= $LANG10[17];
@@ -174,7 +194,12 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 }
 
 if (empty($qid)) {
-    $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ();
+    if (isset ($HTTP_GET_VARS['page'])) {
+        $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+    } else {
+        $page = 1;
+    }
+    $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ($page);
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
     if (empty($HTTP_COOKIE_VARS[$qid])) {
