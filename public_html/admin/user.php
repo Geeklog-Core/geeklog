@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.74 2004/05/15 13:02:21 dhaun Exp $
+// $Id: user.php,v 1.75 2004/06/07 01:24:24 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -217,8 +217,10 @@ function changepw($uid,$passwd)
         $result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,$_CONF['site_admin_url'] . '/user.php?mode=none');    
     } else {
         $retval .= COM_siteHeader('menu');
-        COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
+        $retval .= COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
         $retval .= COM_siteFooter();
+        echo $retval;
+        exit;
     }
 }
 
