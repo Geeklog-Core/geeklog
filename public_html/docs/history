@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- The Professional theme, kindly provided by Victor B. Gonzalez, is our new
+  default theme now.
 - In the calendar's day and week view, event permissions weren't checked
   properly, so that some events were displayed to user who shouldn't have
   been able to see them (reported by Willem Jan) [Dirk]

@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.132 2004/09/13 19:02:54 dhaun Exp $
+// $Id: config.php,v 1.133 2004/09/26 10:04:10 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -185,7 +185,7 @@ $_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
 // |                                                                           |
 // | These settings help define your Geeklog site.                             |
 // +---------------------------------------------------------------------------+
-$_CONF['theme']             = 'XSilver';  // default theme
+$_CONF['theme']             = 'professional';  // default theme
 
 // List of entries that you want to see in the site's menu bar (if you're using
 // a theme that uses the {menu_elements} variable in its header.thtml).
