@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.91 2003/06/28 16:33:40 dhaun Exp $
+// $Id: config.php,v 1.92 2003/07/06 15:20:11 dhaun Exp $
 
 // When setting up Geeklog for the first time, you only need to make sure the
 // settings in the following 3 sections are correct:
@@ -234,8 +234,7 @@ $_CONF['ostype']    = PHP_OS;
 // +---------------------------------------------------------------------------+
 // | SEARCH SETTINGS                                                           |
 // |                                                                           |
-// | These are other various Geeklog settings.  The defaults should work OK    |
-// | for most situations.                                                      |
+// | These aren't really used at the moment - leave as is ...                  |
 // +---------------------------------------------------------------------------+
 
 // Indicates if we should expand search results or not.
@@ -479,7 +478,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.8rc1');
+    define('VERSION', '1.3.8rc2');
 }
 
 $_STATES = array(
