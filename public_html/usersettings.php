@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.41 2002/08/20 13:08:59 dhaun Exp $
+// $Id: usersettings.php,v 1.42 2002/10/16 18:50:24 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -414,7 +414,17 @@ function saveuser($A)
         if ($_CONF['allow_user_photo'] == 1) {
             include_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
-            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
+            if (!empty($_CONF['image_lib'])) {
+                if ($_CONF['image_lib'] == 'imagemagick') {
+                    // Using imagemagick
+                    $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+                } else {
+                    // must be using netPBM
+                    $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];
+                }
+                $upload->setAutomaticResize(true);
+            }
+            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png','image/png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {
                 print 'File Upload Errors:<BR>' . $upload->printErrors();
                 exit;
@@ -427,7 +437,9 @@ function saveuser($A)
                     $filename = $_USER['username'] . '.' . $fextension;
                     $upload->setFileNames($filename);
                     $upload->setPerms('0644');
-                    $upload->setMaxFileSize(20480); //20KB
+                    $upload->setMaxDimensions($_CONF['max_image_width'],
+                            $_CONF['max_image_height']);
+                    $upload->setMaxFileSize($_CONF['max_image_size']);
                     reset($HTTP_POST_FILES);
                     $upload->uploadFiles();
                     if ($upload->areErrors()) {
