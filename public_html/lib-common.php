@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.304 2004/03/23 19:57:12 dhaun Exp $
+// $Id: lib-common.php,v 1.305 2004/03/25 11:40:47 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1905,14 +1905,22 @@ function COM_showTopics( $topic='' )
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
            $page, $newstories;
 
-    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']}" . COM_getPermSQL();
+    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']}";
     if( $_USER['uid'] > 1 ) {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
         if (!empty ($tids)) {
-            $sql .= " AND (tid NOT IN ('" . str_replace( ' ', "','", $tids )
-                 . "'))";
+            $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
+                 . "'))" . COM_getPermSQL( 'AND ');
         }
+        else
+        {
+            $sql .= COM_getPermSQL();
+        }
+    }
+    else
+    {
+        $sql .= COM_getPermSQL();
     }
     if( $_CONF['sortmethod'] == 'alpha' )
     {
