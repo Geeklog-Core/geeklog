@@ -39,7 +39,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.default,v 1.12 2002/04/06 03:54:58 tony_bibbs Exp $
+// $Id: config.default,v 1.13 2002/04/09 18:15:35 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -205,6 +205,7 @@ $_CONF['showupcomingevents']    = 1;
 $_CONF['event_types'] = 'Anniversary,Appointment,Birthday,Business,Education,Holiday,Meeting,Miscellaneous,Personal,Phone Call,Special Occasion,Travel,Vacation';
 
 // Story Settings
+$_CONF['maximagesperarticle']   = 5;
 $_CONF['pagetitle']             = '';
 $_CONF['backend']               = 1;
 $_CONF['limitnews']             = 10;
