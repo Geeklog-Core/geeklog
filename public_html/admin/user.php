@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.46 2002/12/30 13:28:53 dhaun Exp $
+// $Id: user.php,v 1.47 2003/02/07 15:51:49 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -534,6 +534,11 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         DB_delete($_TABLES['usercomment'],'uid',$uid);
         DB_delete($_TABLES['userinfo'],'uid',$uid);
 
+        // Call custom account profile delete function if enabled and exists
+	    if ($_CONF['custom_registration'] AND (function_exists(custom_userdelete))) {
+            custom_userdelete($uid);
+	    } 
+		
         // what to do with orphan stories/comments?
 
         // now move delete the user itself
