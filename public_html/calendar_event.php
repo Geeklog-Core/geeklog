@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.14 2002/03/30 20:23:52 dhaun Exp $
+// $Id: calendar_event.php,v 1.15 2002/03/31 20:31:29 dhaun Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -394,7 +394,7 @@ default:
                                     ,'details'=>'eventdetails.thtml'
                                     ,'addremove'=>'addremoveevent.thtml'));
     $cal_templates->set_var('lang_addevent', $LANG02[6]);
-    $cal_templates->set_var('lang_backtocalendar', 'Back to Calendar');
+    $cal_templates->set_var('lang_backtocalendar', $LANG02[15]);
 
     $result = DB_query($datesql);
     $nrows = DB_numRows($result);
