@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.159 2002/09/14 17:31:09 dhaun Exp $
+// $Id: lib-common.php,v 1.160 2002/09/15 21:40:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3235,7 +3235,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
 
 function COM_emailUserTopics() 
 {
-    global $_TABLES, $LANG08, $_CONF, $LANG_CHARSET;
+    global $_TABLES, $LANG08, $LANG24, $_CONF, $LANG_CHARSET;
 
     // Get users who want stories emailed to them
     $usersql = 'SELECT username,email, etids '
@@ -3253,9 +3253,9 @@ function COM_emailUserTopics()
         $result = DB_query( "SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'" );
         $L = DB_fetchArray($result);
         
-        $storysql = 'SELECT sid,date AS day,title,introtext,bodytext '
+        $storysql = 'SELECT sid,uid,date AS day,title,introtext,bodytext '
             . "FROM {$_TABLES['stories']} "
-            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= " . $L['lastrun'] . "' AND (";
+            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '" . $L['lastrun'] . "' AND (";
 
         $ETIDS = explode( ' ', $U['etids'] );
 
@@ -3289,6 +3289,12 @@ function COM_emailUserTopics()
             
             $mailtext .= "\n------------------------------\n\n";
             $mailtext .= "$LANG08[31]: {$S['title']}\n";
+            if( $_CONF['contributedbyline'] == 1 )
+            {
+                $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
+                $mailtext .= "$LANG24[7]: " . $storyauthor . "\n";
+            }
+
             $mailtext .= "$LANG08[32]: " . strftime( $_CONF['date'], strtotime( $S['day' ])) . "\n\n";
 
             if( $_CONF['emailstorieslength'] > 0 )
