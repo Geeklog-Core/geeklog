@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Introduced new plugin API functions plugin_user_changed_xxx and
+  plugin_group_changed_xxx to inform plugins when a user's information
+  (profile or settings) or a group (new, edit, delete) has been changed [Dirk]
 - COM_checkHTML and COM_allowedHTML now accept an additional parameter in form
   of a comma-separated list of permissions. If the current user has at least
   one of those permissions, they are assumed to be an "Admin" and the functions
@@ -27,7 +30,7 @@ XXX XX, 2004 (1.3.10)
   user-editable IDs as used for stories, polls, topics, and static pages (also
   fixes bug #181) [Dirk]
 - The Upcoming Events block didn't use the help URL, even if it was set
-  (reported by Wolfgang M. Schmitt).
+  (reported by Wolfgang M. Schmitt) [Dirk]
 - Geeklog now comes with Tom Willet's SpamX plugin pre-installed. The plugin
   now stores the blacklists in the database and uses a new plugin API
   function to filter comment posts [Tom Willet, Tony, Dirk]

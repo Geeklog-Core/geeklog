@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.44 2004/09/29 08:04:43 dhaun Exp $
+// $Id: lib-plugins.php,v 1.45 2004/09/29 10:36:28 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -65,7 +65,7 @@ while ($A = DB_fetchArray($result)) {
 */
 function PLG_callFunctionForAllPlugins($function_name) 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = $function_name . $pi_name;
@@ -202,7 +202,7 @@ function PLG_isModerator()
 */
 function PLG_getMenuItems() 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $menu = array();
     foreach ($_PLUGINS as $pi_name) {
@@ -315,7 +315,7 @@ function PLG_callCommentForm($type,$id,$mode="",$order="",$reply="")
 */
 function PLG_getPluginStats($showsitestats) 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $retval = '';
 
@@ -340,7 +340,7 @@ function PLG_getPluginStats($showsitestats)
 */
 function PLG_getSearchTypes() 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $types = array();
     $cur_types = array();
@@ -396,7 +396,7 @@ function PLG_supportsExpandedSearch($type)
 */
 function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all') 
 {
-    global $_TABLES, $_CONF, $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     $search_results = array();
 
@@ -424,7 +424,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $key
 */
 function PLG_getSubmissionCount() 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $num = 0;
     foreach ($_PLUGINS as $pi_name) {
@@ -446,7 +446,7 @@ function PLG_getSubmissionCount()
 */
 function PLG_getUserOptions() 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $plgresults = array ();
 
@@ -478,7 +478,7 @@ function PLG_getUserOptions()
 */
 function PLG_getAdminOptions() 
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
@@ -551,7 +551,7 @@ function PLG_saveSubmission($type, $A)
 */
 function PLG_getCCOptions() 
 {
-    global $_TABLES, $_CONF, $_PLUGINS;
+    global $_CONF, $_PLUGINS;
 
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugins = array();
@@ -582,7 +582,7 @@ function PLG_getCCOptions()
 */
 function PLG_showModerationList() 
 {
-    global $_TABLES, $_CONF, $_PLUGINS;
+    global $_PLUGINS;
 
     $retval = '';
 
@@ -632,7 +632,7 @@ function PLG_showSubmitForm($type)
 */
 function PLG_showCenterblock($where = 1, $page = 1, $topic = '') 
 {
-    global $_TABLES, $PLG_bufferCenterAPI, $PLG_buffered, $_PLUGINS;
+    global $PLG_bufferCenterAPI, $PLG_buffered, $_PLUGINS;
 
     $retval = '';
 
@@ -667,7 +667,7 @@ function PLG_showCenterblock($where = 1, $page = 1, $topic = '')
 */
 function PLG_createUser ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_create_' . $pi_name;
@@ -685,7 +685,7 @@ function PLG_createUser ($uid)
 */
 function PLG_deleteUser ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_delete_' . $pi_name;
@@ -707,7 +707,7 @@ function PLG_deleteUser ($uid)
 */
 function PLG_loginUser ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_login_' . $pi_name;
@@ -727,12 +727,51 @@ function PLG_loginUser ($uid)
 */
 function PLG_logoutUser ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_user_logout_' . $pi_name;
         if (function_exists ($function)) {
             $function ($uid);
+        }
+    }
+}
+
+/**
+* This functions is called to inform plugins when a user's information
+* (profile or preferences) has changed.
+*
+* @param    int     $uid    User ID
+*
+*/
+function PLG_userInfoChanged ($uid)
+{
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_user_changed_' . $pi_name;
+        if (function_exists ($function)) {
+            $function ($uid);
+        }
+    }
+}
+
+/**
+* This functions is called to inform plugins when a group's information has
+* changed or a new group has been created.
+*
+* @param    int     $grp_id     Group ID
+* @param    string  $mode       type of change: 'new', 'edit', or 'delete'
+*
+*/
+function PLG_groupChanged ($grp_id, $mode)
+{
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_group_changed_' . $pi_name;
+        if (function_exists ($function)) {
+            $function ($grp_id, $mode);
         }
     }
 }
@@ -747,7 +786,7 @@ function PLG_logoutUser ($uid)
 */
 function PLG_profileVariablesEdit ($uid, &$template)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_profilevariablesedit_' . $pi_name;
@@ -767,7 +806,7 @@ function PLG_profileVariablesEdit ($uid, &$template)
 */
 function PLG_profileBlocksEdit ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $retval = '';
 
@@ -791,7 +830,7 @@ function PLG_profileBlocksEdit ($uid)
 */
 function PLG_profileVariablesDisplay ($uid, &$template)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_profilevariablesdisplay_' . $pi_name;
@@ -811,7 +850,7 @@ function PLG_profileVariablesDisplay ($uid, &$template)
 */
 function PLG_profileBlocksDisplay ($uid)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $retval = '';
 
@@ -855,7 +894,7 @@ function PLG_profileExtrasSave ($plugin = '')
 */
 function PLG_templateSetVars ($templatename, &$template)
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
@@ -873,7 +912,7 @@ function PLG_templateSetVars ($templatename, &$template)
 */
 function PLG_getHeaderCode()
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $headercode = '';
 
@@ -933,7 +972,7 @@ function PLG_collectTags ()
 */
 function PLG_replaceTags ($content)
 {
-    global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
+    global $_CONF, $_PLUGINS, $LANG32;
 
     $autolinkModules = PLG_collectTags ();
 
@@ -1020,7 +1059,7 @@ function PLG_replaceTags ($content)
 */
 function PLG_supportingFeeds ()
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $plugins = array ();
 
@@ -1048,11 +1087,11 @@ function PLG_supportingFeeds ()
 */
 function PLG_getFeedNames ($plugin)
 {
-    global $_TABLES;
+    global $_PLUGINS;
 
     $feeds = array ();
 
-    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+    if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_getfeednames_' . $plugin;
         if (function_exists ($function)) {
             $feeds = $function ();
@@ -1078,11 +1117,11 @@ function PLG_getFeedNames ($plugin)
 */
 function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
 {
-    global $_TABLES;
+    global $_PLUGINS;
 
     $content = array ();
 
-    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+    if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_getfeedcontent_' . $plugin;
         if (function_exists ($function)) {
             $content = $function ($feed, $link, $update_data);
@@ -1106,11 +1145,11 @@ function PLG_getFeedContent ($plugin, $feed, &$link, &$update_data)
 */
 function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
 {
-    global $_TABLES;
+    global $_PLUGINS;
 
     $is_current = true;
 
-    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$plugin'") == 1) {
+    if (in_array ($plugin, $_PLUGINS)) {
         $function = 'plugin_feedupdatecheck_' . $plugin;
         if (function_exists ($function)) {
             $is_current = $function ($feed, $topic, $update_data, $limit);
@@ -1128,7 +1167,7 @@ function PLG_feedUpdateCheck ($plugin, $feed, $topic, $update_data, $limit)
 */
 function PLG_getWhatsNew ()
 {
-    global $_TABLES, $_PLUGINS;
+    global $_PLUGINS;
 
     $newheadlines = array ();
     $newbylines   = array ();

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.103 2004/09/28 08:28:49 dhaun Exp $
+// $Id: usersettings.php,v 1.104 2004/09/29 10:36:29 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -889,6 +889,8 @@ function saveuser($A)
             custom_usersave($_USER['uid']);
         }
 
+        PLG_userInfoChanged ($_USER['uid']);
+
         if ($_US_VERBOSE) {
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
@@ -1040,6 +1042,8 @@ function savepreferences($A)
     }
 
     DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$A['commentmode']}','{$A['commentorder']}','{$A['commentlimit']}'");
+
+    PLG_userInfoChanged ($_USER['uid']);
 }
 
 // MAIN

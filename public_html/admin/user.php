@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.83 2004/09/24 10:27:06 dhaun Exp $
+// $Id: user.php,v 1.84 2004/09/29 10:36:29 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -332,6 +332,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
             }
+            PLG_userInfoChanged ($uid);
         }
         
         // if groups is -1 then this user isn't allowed to change any groups so ignore
