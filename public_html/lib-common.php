@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.231 2003/06/22 22:07:42 dhaun Exp $
+// $Id: lib-common.php,v 1.232 2003/06/27 18:29:29 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1973,69 +1973,42 @@ function COM_showTopics( $topic='' )
     {
         $A = DB_fetchArray( $result );
 
-        if( $A['tid'] == $topic )
+        $sections->set_var( 'option_url', $_CONF['site_url']
+                            . '/index.php?topic=' . $A['tid'] );
+        $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
+
+        $countstring = '';
+        if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
         {
-            $sections->set_var( 'option_url', '' );
-            $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
+            $countstring .= '(';
 
-            $countstring = '';
-            if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+            if( $_CONF['showstorycount'] )
             {
-                $countstring .= '(';
+                $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
+                $T = DB_fetchArray( $rcount );
+                $countstring .= $T['count'];
+            }
 
+            if( $_CONF['showsubmissioncount'] )
+            {
                 if( $_CONF['showstorycount'] )
                 {
-                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
-                    $T = DB_fetchArray( $rcount );
-                    $countstring .= $T['count'];
+                    $countstring .= '/';
                 }
-
-                if( $_CONF['showsubmissioncount'] )
-                {
-                    if( $_CONF['showstorycount'] )
-                    {
-                        $countstring .= '/';
-                    }
-                    $countstring .= DB_count( $_TABLES['storysubmission'],
-                                              'tid', $A['tid'] );
-                }
-
-                $countstring .= ')';
+                $countstring .= DB_count( $_TABLES['storysubmission'],
+                                          'tid', $A['tid'] );
             }
-            $sections->set_var( 'option_count', $countstring );
+
+            $countstring .= ')';
+        }
+        $sections->set_var( 'option_count', $countstring );
+
+        if(( $A['tid'] == $topic ) && ( $page == 1 ))
+        {
             $retval .= $sections->parse( 'item', 'inactive' );
         }
         else
         {
-            $sections->set_var( 'option_url', $_CONF['site_url']
-                                . '/index.php?topic=' . $A['tid'] );
-            $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
-
-            $countstring = '';
-            if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
-            {
-                $countstring .= '(';
-
-                if( $_CONF['showstorycount'] )
-                {
-                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
-                    $T = DB_fetchArray( $rcount );
-                    $countstring .= $T['count'];
-                }
-
-                if( $_CONF['showsubmissioncount'] )
-                {
-                    if( $_CONF['showstorycount'] )
-                    {
-                        $countstring .= '/';
-                    }
-                    $countstring .= DB_count( $_TABLES['storysubmission'],
-                                              'tid', $A['tid'] );
-                }
-
-                $countstring .= ')';
-            }
-            $sections->set_var( 'option_count', $countstring );
             $retval .= $sections->parse( 'item', 'option' );
         }
     }
@@ -2107,20 +2080,19 @@ function COM_userMenu( $help='', $title='' )
             $url = $_CONF['site_url'] . '/calendar.php?mode=personal';
             $usermenu->set_var( 'option_label', $LANG01[66] );
             $usermenu->set_var( 'option_count', '' );
+            $usermenu->set_var( 'option_url', $url );
             if( $thisUrl == $url )
             {
-                $usermenu->set_var( 'option_url', '' );
                 $retval .= $usermenu->parse( 'item', 'current' );
             }
             else
             {
-                $usermenu->set_var( 'option_url', $url );
                 $retval .= $usermenu->parse( 'item', 'option' );
             }
-
         }
 
-        // This function will show the user options for all installed plugins (if any)
+        // This function will show the user options for all installed plugins
+        // (if any)
 
         $plugin_options = PLG_getUserOptions();
         $nrows = count( $plugin_options );
@@ -2139,14 +2111,13 @@ function COM_userMenu( $help='', $title='' )
                 $usermenu->set_var( 'option_count', '' );
             }
 
+            $usermenu->set_var( 'option_url', $plg->adminurl );
             if( $thisUrl == $plg->adminurl )
             {
-                $usermenu->set_var( 'option_url', '' );
                 $retval .= $usermenu->parse( 'item', 'current' );
             }
             else
             {
-                $usermenu->set_var( 'option_url', $plg->adminurl );
                 $retval .= $usermenu->parse( 'item', 'option' );
             }
             next( $plugin_options );
@@ -2155,28 +2126,26 @@ function COM_userMenu( $help='', $title='' )
         $url = $_CONF['site_url'] . '/usersettings.php?mode=edit';
         $usermenu->set_var( 'option_label', $LANG01[48] );
         $usermenu->set_var( 'option_count', '' );
+        $usermenu->set_var( 'option_url', $url );
         if( $thisUrl == $url )
         {
-            $usermenu->set_var( 'option_url', '' );
             $retval .= $usermenu->parse( 'item', 'current' );
         }
         else
         {
-            $usermenu->set_var( 'option_url', $url );
             $retval .= $usermenu->parse( 'item', 'option' );
         }
 
         $url = $_CONF['site_url'] . '/usersettings.php?mode=preferences';
         $usermenu->set_var( 'option_label', $LANG01[49] );
         $usermenu->set_var( 'option_count', '' );
+        $usermenu->set_var( 'option_url', $url );
         if( $thisUrl == $url )
         {
-            $usermenu->set_var( 'option_url', '' );
             $retval .= $usermenu->parse( 'item', 'current' );
         }
         else
         {
-            $usermenu->set_var( 'option_url', $url );
             $retval .= $usermenu->parse( 'item', 'option' );
         }
 
