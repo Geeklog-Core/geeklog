@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.108 2004/11/14 20:55:14 dhaun Exp $
+// $Id: usersettings.php,v 1.109 2004/12/15 15:08:21 dhaun Exp $
 
-require_once('lib-common.php');
-require_once($_CONF['path_system'] . 'lib-user.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-user.php');
 
 // Set this to true to have this script generate various debug messages in
 // error.log
@@ -44,7 +44,7 @@ $_US_VERBOSE = false;
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 /**
 * Shows the user's current settings
@@ -649,7 +649,7 @@ function emailAddressExists ($email, $uid)
 */
 function handlePhotoUpload ($delete_photo = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $_USER, $LANG24;
 
     require_once ($_CONF['path_system'] . 'classes/upload.class.php');
 
@@ -704,7 +704,7 @@ function handlePhotoUpload ($delete_photo = '')
     }
 
     // see if user wants to upload a (new) photo
-    $newphoto = $HTTP_POST_FILES['photo'];
+    $newphoto = $_FILES['photo'];
     if (!empty ($newphoto['name'])) {
         $pos = strrpos ($newphoto['name'], '.') + 1;
         $fextension = substr ($newphoto['name'], $pos);
@@ -776,7 +776,7 @@ function handlePhotoUpload ($delete_photo = '')
 */
 function saveuser($A) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $_US_VERBOSE, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $_US_VERBOSE;
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
@@ -1072,47 +1072,40 @@ function savepreferences($A)
 
 // MAIN
 $mode = '';
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+if (isset ($_POST['mode'])) {
+    $mode = COM_applyFilter ($_POST['mode']);
 }
-else if (isset ($HTTP_GET_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+else if (isset ($_GET['mode'])) {
+    $mode = COM_applyFilter ($_GET['mode']);
 }
 $display = '';
 
-if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
+if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     switch ($mode) {
-    case 'preferences':
-    case 'comments':
-        $display .= COM_siteHeader ('menu', $LANG01[49]);
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
-        if ($msg > 0) {
-            $display .= COM_showMessage ($msg);
-        }
-        $display .= editpreferences();
-        $display .= COM_siteFooter();
-        break;
     case 'edit':
         $display .= COM_siteHeader ('menu', $LANG04[16]);
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        $msg = COM_applyFilter ($_GET['msg'], true);
         if ($msg > 0) {
             $display .= COM_showMessage ($msg);
         }
         $display .= edituser();
         $display .= COM_siteFooter();
         break;
+
     case 'saveuser':
-        $display .= saveuser($HTTP_POST_VARS);
+        $display .= saveuser($_POST);
         PLG_profileExtrasSave ();
         break;
+
     case 'savepreferences':
-        savepreferences ($HTTP_POST_VARS);
+        savepreferences ($_POST);
         $display .= COM_refresh ($_CONF['site_url']
                                  . '/usersettings.php?mode=preferences&msg=6');
         break;
+
     case 'confirmdelete':
         if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-            $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
+            $accountId = COM_applyFilter ($_POST['account_id']);
             if (!empty ($accountId)) {
                 $display .= confirmAccountDelete ($accountId);
             } else {
@@ -1122,9 +1115,10 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
         break;
+
     case 'deleteconfirmed':
         if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
-            $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
+            $accountId = COM_applyFilter ($_POST['account_id']);
             if (!empty ($accountId)) {
                 $display .= deleteUserAccount ($accountId);
             } else {
@@ -1134,25 +1128,29 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
         break;
+
     case 'plugin':
-        PLG_profileExtrasSave ($HTTP_POST_VARS['plugin']);
+        PLG_profileExtrasSave ($_POST['plugin']);
         $display = COM_refresh ($_CONF['site_url']
                                 . '/usersettings.php?mode=edit&msg=5');
         break;
-    default:
-        $display = COM_refresh($_CONF['site_url'] . '/index.php');
+
+    default: // also if $mode == 'preferences' or 'comments'
+        $display .= COM_siteHeader ('menu', $LANG01[49]);
+        $msg = COM_applyFilter ($_GET['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage ($msg);
+        }
+        $display .= editpreferences();
+        $display .= COM_siteFooter();
         break;
     }
 } else {
-    if ($mode == 'preferences') {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($LANG04[70] . '!');
-        $display .= '<br>' . $LANG04[71] . '<br><br>';
-        $display .= COM_endBlock();
-        $display .= COM_siteFooter();
-    } else {
-        $display = COM_refresh($_CONF['site_url'] . '/index.php');
-    }
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($LANG04[70] . '!');
+    $display .= '<br>' . $LANG04[71] . '<br><br>';
+    $display .= COM_endBlock ();
+    $display .= COM_siteFooter ();
 }
 
 echo $display;
