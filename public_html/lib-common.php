@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.102 2002/05/20 20:10:40 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.103 2002/05/20 20:13:32 tony_bibbs Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1378,7 +1378,7 @@ function COM_userMenu($help='',$title='')
 */
 function COM_adminMenu($help = '', $title = '') 
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_DB_dbms;
 
     if (SEC_isModerator() OR SEC_hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
         $adminmenu = new Template($_CONF['path_layout']);
@@ -1478,10 +1478,12 @@ function COM_adminMenu($help = '', $title = '')
         }
              
         if (SEC_inGroup('Root')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/clearsqlcache.php');
-            $adminmenu->set_var('option_label', $LANG01[108]);
-            $adminmenu->set_var('option_count', 'N/A');
-            $retval .= $adminmenu->parse('item', 'option');
+            if ($_DB_dbms == 'adodb') {
+                $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/clearsqlcache.php');
+                $adminmenu->set_var('option_label', $LANG01[108]);
+                $adminmenu->set_var('option_count', 'N/A');
+                $retval .= $adminmenu->parse('item', 'option');
+            }
             
             if ($_CONF['allow_mysqldump']) {
                 $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/database.php');
