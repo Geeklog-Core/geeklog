@@ -413,7 +413,6 @@ INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (1
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (3,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (0,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (4,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (5,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (8,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (6,'threaded','ASC',100);
@@ -422,11 +421,6 @@ INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (9
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (10,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (11,'threaded','ASC',100);
 INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (12,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (13,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (14,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (15,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (16,'threaded','ASC',100);
-INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (17,'threaded','ASC',100);
 
 #
 # Dumping data for table 'userindex'
@@ -437,18 +431,12 @@ INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (2,''
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (3,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (5,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (0,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (4,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (8,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (7,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (9,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (10,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (11,'','','',0,NULL);
 INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (12,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (13,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (14,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (15,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (16,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (17,'','','',0,NULL);
 
 #
 # Dumping data for table 'userinfo'
@@ -459,7 +447,6 @@ INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, last
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (3,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (5,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (0,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (4,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (8,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (6,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (7,NULL,NULL,'',0,0,0);
@@ -467,11 +454,6 @@ INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, last
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (10,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (11,NULL,NULL,'',0,0,0);
 INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (12,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (13,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (14,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (15,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (16,NULL,NULL,'',0,0,0);
-INSERT INTO userinfo (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (17,NULL,NULL,'',0,0,0);
 
 #
 # Dumping data for table 'userprefs'
@@ -482,7 +464,6 @@ INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (3,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (5,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (0,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (4,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (8,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (6,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (7,0,1,0,'edt',1);
@@ -490,11 +471,6 @@ INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (10,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (11,0,1,0,'edt',1);
 INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (12,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (13,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (14,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (15,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (16,0,1,0,'edt',1);
-INSERT INTO userprefs (uid, noicons, willing, dfid, tzid, emailstories) VALUES (17,0,1,0,'edt',1);
 
 #
 # Dumping data for table 'users'
