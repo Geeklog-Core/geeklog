@@ -872,7 +872,10 @@ $LANG30 = array(
     35 => "Quick Add",
     36 => "Submit",
     37 => "Sorry, the personal calendar feature is not enabled on this site",
-    38 => "Pers&ouml;nlicher Termin-Editor"
+    38 => "Pers&ouml;nlicher Termin-Editor",
+    39 => 'Tag',
+    40 => 'Woche',
+    41 => 'Monat'
 );
 
 ###############################################################################

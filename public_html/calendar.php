@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.16 2002/04/11 19:45:57 tony_bibbs Exp $
+// $Id: calendar.php,v 1.17 2002/05/05 17:55:02 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -316,7 +316,9 @@ case 'day':
     $cal_templates->set_file(array('column'=>'column.thtml','event'=>'singleevent.thtml','dayview'=>'dayview.thtml','quickadd'=>'quickaddform.thtml'));
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('mode', $mode);
-    $cal_templates->set_var('lang_week', $LANG30[27]);
+    $cal_templates->set_var('lang_day', $LANG30[39]);
+    $cal_templates->set_var('lang_week', $LANG30[40]);
+    $cal_templates->set_var('lang_month', $LANG30[41]);
     list($wmonth, $wday, $wyear) = getPriorSunday($month, $day, $year);
     $cal_templates->set_var('wmonth', $wmonth);
     $cal_templates->set_var('wday', $wday);
@@ -333,7 +335,7 @@ case 'day':
     $cal_templates->set_var('nextday', strftime('%d',$nextstamp));
     $cal_templates->set_var('nextyear', strftime('%Y',$nextstamp));
 
-    $cal_templates->set_var('currentday', strftime('%A %B %e, %Y',mktime(0, 0, 0,$month, $day, $year)));
+    $cal_templates->set_var('currentday', strftime('%A, %x',mktime(0, 0, 0,$month, $day, $year)));
     if ($mode == 'personal') {
         $cal_templates->set_var('calendar_title', $LANG30[28] . ' ' . $_USER['username']);
         $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
@@ -460,6 +462,9 @@ case 'week':
     $cal_templates->set_var('nextmonth',strftime('%m',$nextstamp));
     $cal_templates->set_var('nextday',date('j',$nextstamp));
     $cal_templates->set_var('nextyear',strftime('%Y',$nextstamp));
+    $cal_templates->set_var ('lang_day', $LANG30[39]);
+    $cal_templates->set_var ('lang_week', $LANG30[40]);
+    $cal_templates->set_var ('lang_month', $LANG30[41]);
     $start_mname = strftime('%B', mktime(0,0,0,$month,$day,$year));
     $eday = strftime('%e', mktime(0,0,0,$month,$day+6,$year));
     $end_mname = strftime('%B', mktime(0,0,0,$month,$day+6,$year));
@@ -489,7 +494,7 @@ case 'week':
             $cal_templates->set_var('class'.$i,'weekview_offday');
         }
         $monthname = $cal->getMonthName($monthnum);
-        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . $monthname . ' ' . $daynum . ', ' . $yearnum . '</a>');
+        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ("%x", $thedate[1]) . '</a>');
         $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&amp;mode=$mode&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum" . '">' . $LANG30[8] . '</a>');
         if ($mode == 'personal') {
             $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart";
@@ -601,6 +606,10 @@ $cal_templates->set_var('lang_november', $LANG30[23]);
 if ($month == 11) $cal_templates->set_var('selected_nov','SELECTED');
 $cal_templates->set_var('lang_december', $LANG30[24]);
 if ($month == 12) $cal_templates->set_var('selected_dec','SELECTED');
+
+$cal_templates->set_var('lang_day', $LANG30[39]);
+$cal_templates->set_var('lang_week', $LANG30[40]);
+$cal_templates->set_var('lang_month', $LANG30[41]);
 
 for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
     $yroptions .= '<option value="' . $y . '" ';
