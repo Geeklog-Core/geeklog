@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.15 2002/04/16 15:40:28 tony_bibbs Exp $
+// $Id: search.php,v 1.16 2002/04/22 20:45:20 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -60,6 +60,8 @@ function searchform()
     $searchform->set_var('lang_type', $LANG09[5]);
     $searchform->set_var('lang_stories', $LANG09[6]);
     $searchform->set_var('lang_comments', $LANG09[7]);
+    $searchform->set_var('lang_links', $LANG09[39]);
+    $searchform->set_var('lang_events', $LANG09[40]);
     $plugintypes = PLG_getSearchTypes();
     $pluginoptions = '';
     // Generally I don't like to hardcode HTML but this seems easiest
@@ -84,7 +86,119 @@ function searchform()
 	return $retval;
 }
 
-function searchstories($query,$topic,$datestart,$dateend, $author,$type) 
+function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
+{
+    global $LANG09, $_CONF, $_TABLES;
+    
+    if (empty($type)) {
+        $type = 'all';
+    }
+    
+    if ($type == 'all' OR $type == 'links') {
+        $sql = "SELECT lid,title,url,hits,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
+		$sql .= "((title like '%$query%' OR title like '$query%' OR title like '%$query') ";
+		$sql .= "OR (description like '%$query%' OR description like '$query%' OR description like '%$query')) ";
+        if (!empty($datestart) && !empty($dateend)) {
+			$delim = substr($datestart, 4, 1);
+			$DS = explode($delim,$datestart);
+			$DE = explode($delim,$dateend);
+			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+			$enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
+		}
+        $sql .= "ORDER BY date desc";
+		$result_links = DB_query($sql);
+		$nrows_links = DB_numRows($result_links);
+        include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+        $link_results = new Plugin();
+        $link_results->searchlabel = $LANG09[38];
+        $link_results->addSearchHeading($LANG09[16]);
+        $link_results->addSearchHeading($LANG09[33]);
+        $link_results->addSearchHeading($LANG09[23]);
+        $link_results->num_searchresults = DB_numRows($result_links);
+        $link_results->num_itemssearched = DB_count($_TABLES['links']);
+        
+        // NOTE if any of your data items need to be links then add them here! 
+        // make sure data elements are in an array and in the same order as your
+        // headings above!
+        for ($i = 1; $i <= $link_results->num_searchresults; $i++) {
+            $A = DB_fetchArray($result_links);
+            $thetime = COM_getUserDateTimeFormat($A['day']);
+            $row = array($A['title'],
+                        '<a href="' . $A['url'] . '">' . $A['url'] . '</a>',
+                        $A['hits']);
+            $link_results->addSearchResult($row);
+        }
+        return $link_results;
+    } else {
+        $link_results = new Plugin();
+        $link_results->searchlabel = $LANG09[38];
+    }
+    return $link_results;
+}
+
+function searchevents($query, $topic, $datestart, $dateend, $author, $type='all')
+{
+    global $LANG09, $_CONF, $_TABLES;
+    
+    if (empty($type)) {
+        $type = 'all';
+    }
+    
+    if ($type == 'all' OR $type == 'events') {
+		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
+        $sql .= "((title like '%$query%' OR title like '$query%' OR title like '%$query') OR";
+        $sql .= "(location like '%$query%' OR location like '$query%' OR location like '%$query') ";
+		$sql .= "OR (description like '%$query%' OR description like '$query%' OR description like '%$query')) ";
+        if (!empty($datestart) && !empty($dateend)) {
+			$delim = substr($datestart, 4, 1);
+			$DS = explode($delim,$datestart);
+			$DE = explode($delim,$dateend);
+			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
+			$enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
+		}
+        $sql .= "ORDER BY datestart desc";
+		$result_events = DB_query($sql);
+		$nrows_events = DB_numRows($result_events);
+        include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+        $event_results = new Plugin();
+        $event_results->searchresults = array();
+        $event_results->searchlabel = $LANG09[37];
+        $event_results->addSearchHeading($LANG09[16]);
+        $event_results->addSearchHeading($LANG09[17]);
+        $event_results->addSearchHeading($LANG09[34]);
+        $event_results->num_searchresults = DB_numRows($result_events);
+        $event_results->num_itemssearched = DB_count($_TABLES['events']);
+        
+        // NOTE if any of your data items need to be links then add them here! 
+        // make sure data elements are in an array and in the same order as your
+        // headings above!
+        for ($i = 1; $i <= $event_results->num_searchresults; $i++) {
+            $A = DB_fetchArray($result_events);
+            if ($A['allday'] == 0) {
+                $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - ' . $A['dateend'] . ' ' . $A['timeend'];
+            } else {
+                if ($A['datestart'] <> $A['dateend']) {
+                    $fulldate = $A['datestart'] . ' - ' . $A['dateend'] . ' ' . $LANG09[35];
+                } else {
+                    $fulldate = $A['datestart'] . ' ' . $LANG09[35];
+                }
+            }
+            $thetime = COM_getUserDateTimeFormat($A['day']);
+            $row = array('<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '">' . $A['title'] . '</a>',
+                        $fulldate,
+                        $A['location']);
+            $event_results->addSearchResult($row);
+        }
+    } else {
+        $event_results = new Plugin();
+        $event_results->searchlabel = $LANG09[37];
+    }
+    return $event_results;
+}
+
+function searchstories($query,$topic,$datestart,$dateend, $author, $type='all') 
 {
     global $LANG09, $_CONF, $_TABLES;
 
@@ -146,10 +260,14 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
 
     // Have plugins do their searches
     list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author);
-
+    
+    // Search Links
+    $link_results = searchlinks($query, $topic, $datestart, $dateend, $author, $type);
+    $event_results = searchevents($query, $topic, $datestart, $dateend, $author, $type);
+    
     // OK, we now have the header items and results needed to 
-    $total = $total_stories + $total_comments + $total_plugins;
-    $nrows = $nrows_stories + $nrows_comments + $nrows_plugins;
+    $total = $total_stories + $total_comments + $total_plugins + $link_results->num_itemssearched + $event_results->num_itemssearched;
+    $nrows = $nrows_stories + $nrows_comments + $nrows_plugins + $link_results->num_searchresults + $event_results->num_searchresults;
 
     $searchtime = $searchtimer->stopTimer();
     $searchtimer->setPercision(4);
@@ -236,8 +354,58 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
         $searchresults->set_var('end_block', COM_endBlock());
         $searchresults->parse('search_blocks','searchblock',true);
 
+        // Print link results
+        $searchresults->set_var('data_cols','');
+        $searchresults->set_var('start_block_results', COM_startBlock($link_results->searchlabel));
+        $searchresults->set_var('headings','');
+        for ($j = 1; $j <= $link_results->num_searchheadings; $j++) {
+            $searchresults->set_var('label', $link_results->searchheading[$j]);
+            $searchresults->parse('headings','headingcolumn',true);
+        }
+        $searchresults->set_var('results','');
+        $columns = current($link_results->searchresults);
+        if (is_array($columns)) {
+            for ($x = 1; $x <= count($columns); $x++) {
+                $searchresults->set_var('data', current($columns));
+                $searchresults->parse('data_cols','resultcolumn',true);
+                next($columns);
+            }
+        } else {
+            $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[30] . '</td></tr>');
+        }
+        $searchresults->parse('results','resultrow',true);
+        $searchresults->set_var('end_block', COM_endBlock());
+        $searchresults->parse('search_blocks','searchblock',true);
+        
+        // Print event results
+        $searchresults->set_var('data_cols','');
+        $searchresults->set_var('start_block_results', COM_startBlock($event_results->searchlabel));
+        $searchresults->set_var('headings','');
+        for ($j = 1; $j <= $event_results->num_searchheadings; $j++) {
+            $searchresults->set_var('label', $event_results->searchheading[$j]);
+            $searchresults->parse('headings','headingcolumn',true);
+        }
+        $searchresults->set_var('results','');
+        $columns = current($event_results->searchresults);
+        if (is_array($columns)) {
+            for ($x = 1; $x <= count($columns); $x++) {
+                $searchresults->set_var('data', current($columns));
+                $searchresults->parse('data_cols','resultcolumn',true);
+                next($columns);
+            }
+        } else {
+            $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[36] . '</td></tr>');
+        }
+        $searchresults->parse('results','resultrow',true);
+        $searchresults->set_var('end_block', COM_endBlock());
+        $searchresults->parse('search_blocks','searchblock',true);
+
+        //Print plugins search results
         reset($result_plugins);
         $cur_plugin = new Plugin();
+        $searchresults->set_var('data_cols','');
+        //$searchresults->set_var('start_block_results', COM_startBlock($cur_plugin->searchlabel));
+        $searchresults->set_var('headings','');
         for ($i = 1; $i <= count($result_plugins); $i++) {
             // Clear out data columns from previous result block
             $searchresults->set_var('data_cols','');
@@ -250,7 +418,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
             }
             $searchresults->set_var('results','');
             for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
-                $columns = current($cur_plugin->searchresults);//[$j];
+                $columns = current($cur_plugin->searchresults);
                 for ($x = 1; $x <= count($columns); $x++) {
                     COM_errorLog('column val = ' . current($columns),1);
                     $searchresults->set_var('data', current($columns));
@@ -260,6 +428,9 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
                 $searchresults->parse('results','resultrow',true);
                 $searchresults->set_var('data_cols','');
                 next($cur_plugin->searchresults);
+            }
+            if ($cur_plugin->num_searchresults == 0) {
+                $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[31] . '</td></tr>');
             }
             $searchresults->set_var('end_block', COM_endBlock());
             $searchresults->parse('search_blocks','searchblock',true);
@@ -298,8 +469,7 @@ function searchresults($A)
 	return $retval;
 }
 
-###############################################################################
-# MAIN
+// MAIN
 $display .= COM_siteHeader();
 if ($mode == 'search') {
 	$display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
