@@ -88,7 +88,7 @@
 				<tr>
 					<td bgcolor="white">
 						<div align="left">
-							<p><font color="#FF0000">SPECIAL NOTE ABOUT PARSE ERRORS: </font></p>
+							<p><a name="ParseError"><font color="#FF0000">SPECIAL NOTE ABOUT PARSE ERRORS: </font></a></p>
 							<p>Some users have reported that WinZip corrupts certain files in the Geeklog tarball during decompression which will cause errors during the installation process. You are strongly urged not to use WinZip. Try WinRAR if you must decompress the file locally, or better yet, unpack the file from your server (requires telnet/SSH access).</p>
 							<p>Parse errors can also be caused by using a WYSIWYG editor on lib-common.php, e.g. Dreamweaver - you should use a "plain text editor".</p>
 						</div>
@@ -163,6 +163,7 @@ in the URL.</p>
 					<td bgcolor="white">
 						<p><font color="#FF0000">SPECIAL NOTE: </font></p>
 						<p><b>Not following step #3 correctly is the #1 reason why people receive errors when they first try to use Geeklog</b>. Take your time and get it right. Also, some users have reported problems if the above permissions are not set to 777. Try 775 first and only be more permissive if you receive an error message.</p>
+<p>There is also a script at <b>http://yourgeeklogsite/admin/install/check.php</b> that can test the permissions for you.</p>
 					</td>
 				</tr>
 			</table>
@@ -185,7 +186,7 @@ Please read the comments in config.php carefully.<br>
 			<br>
 			<li>Edit <b>lib-common.php</b> and change the require_once() at the top to point to the location of your <b>config.php</b> file.<br>
 				<br>
-			<li>Open your browser and navigate to <b>http://yourgeeklogdomain/admin/install/install.php</b> and follow the directions!<br>
+			<li>Open your browser and navigate to <b>http://yourgeeklogsite/admin/install/install.php</b> and follow the directions!<br>
 				<br>
 			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
 				<tr>
@@ -321,7 +322,7 @@ Please read the comments in config.php carefully.<br>
 				</tr>
 				<tr>
 					<td>
-						<p>Answer:</p>
+						<p><strong>Answer:</strong></p>
 						<p>This error is caused by having a slightly out of date version of MySQL. There are two easy ways to fix the problem:</p>
 						<p>Solution #1 = Get your ISP to upgrade MySQL or do it yourself.<br>
 							Solution #2 = Edit the file sql/mysql_tableanddata.php and remove lines 176 and 375. They read:</p>
@@ -338,21 +339,6 @@ Please read the comments in config.php carefully.<br>
 		<div align="center">
 			<table width="95%" border="0" cellspacing="0" cellpadding="4">
 				<tr>
-					<td bgcolor="#ffedf2"><b>I can't get past the first page of the install script. It keeps reloading itself after I click the button.</b></td>
-				</tr>
-				<tr>
-					<td>
-						<p>Answer:</p>
-						<p>Geeklog needs the register_globals variable turned on in order to work. Since PHP 4.2.0, the default for register_globals is "off". To fix it, simply add the following line to your php.ini file:</p>
-						<p><code>register_globals=on</code></p>
-						<p>If you cannot find your php.ini file, ask your sysadmin.</p>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<br>
-			<table width="95%" border="0" cellspacing="0" cellpadding="4">
-				<tr>
 					<td bgcolor="#ffedf2"><b>During installation, I get the following errors:</b>
 						<p><code>"Parse error: parse error in ../../lib-common.php on line 2231 "</code></p>
 						<p><code>"Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 "</code></p>
@@ -360,8 +346,9 @@ Please read the comments in config.php carefully.<br>
 				</tr>
 				<tr>
 					<td>
-						<p>Answer:</p>
-						<p>You have most likely used WinZip to decompress the Geeklog files. As noted at the top of this document, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system</p>
+						<p><small>(line numbers may vary)</small></p>
+						<p><strong>Answer:</strong></p>
+						<p>You have most likely used WinZip to decompress the Geeklog files. As noted <a href="#ParseError">at the top of this document</a>, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system</p>
 					</td>
 				</tr>
 			</table>
@@ -387,16 +374,17 @@ Please read the comments in config.php carefully.<br>
 				<tr>
 					<td bgcolor="#ffedf2">
 						<p><b>Whenever I try to do anything on my site, I get a whole list of errors like:</b></p>
-						<p><code>Warning: fopen()...<br>
-							</code><code>Warning: fputs()...<br>
-							</code><code>Warning: fputs()...<br>
-							</code><code>Warning: fputs()...<br>
-							</code><code>Warning: fclose()...</code></p>
+<p><code>
+Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1318<br>
+<br>
+Warning: Supplied argument is not a valid File-Handle resource in /some/path/public_html/lib-common.php on line 1323
+</code></p>
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<p>Answer:</p>
+<p><small>(line numbers may vary)</small></p>
+						<p><strong>Answer:</strong></p>
 						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions.</p>
 
 <p><strong>Tip:</strong> Use the script that is located at <b>http://yourgeeklogsite/admin/install/check.php</b> to test if all the permissions have been set up correctly.</p>
@@ -414,7 +402,7 @@ Please read the comments in config.php carefully.<br>
 				</tr>
 				<tr>
 					<td>
-						<p>Answer:</p>
+						<p><strong>Answer:</strong></p>
 						<p>Make sure that your config.php file does not contain any "whitespace" after the closing <b>?&gt;</b> at the end of the file. I.e. there should not be anything (not even blanks or empty lines) after those two characters.</p>
 					</td>
 				</tr>
@@ -427,7 +415,7 @@ Please read the comments in config.php carefully.<br>
 					<td>
 						<div align="left">
 							<p>If you still have problems, please do one or more of the following:</p>
-							<p>1) Go to <a href="http://geeklog.sourceforge.net">http://geeklog.sourceforge.net</a> and check out the Support section. The Support section includes a <a href="http://geeklog.sourceforge.net/staticpages/index.php?page=20011218115325696">FAQ</a> and a <a href="http://geeklog.sourceforge.net/search.php">search system</a>.</p>
+							<p>1) Go to <a href="http://geeklog.sourceforge.net">http://geeklog.sourceforge.net</a> and check out the Support section. The Support section includes a <a href="http://geeklog.sourceforge.net/staticpages/index.php?page=20011218115325696">FAQ</a> and a <a href="http://geeklog.sourceforge.net/search.php">search system</a> (try searching for the error message, if you get one).</p>
 							<p>2) Visit the mailing list archives at <a href="http://sourceforge.net/mail/?group_id=7371">http://sourceforge.net/mail/?group_id=7371</a>. You can also <a href="http://lists.sourceforge.net/lists/listinfo/geeklog-devel">subscribe to the mailing list</a> and post your question to the Geeklog community</p>
 							<p>3) Try the chat room at <b>irc.freenode.net, channel #geeklog</b>. Please have all your path information in config.php and lib-common.php readily available.</p>
 							<p>4) Try entering the text of the error message on Google. Chances are you will find someone else who had the same problem and fixed it.  And sometimes searching for a specific error will cause Google to bring up broken pages that have the same error.</p>

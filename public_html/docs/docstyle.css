@@ -73,5 +73,5 @@ a:hover   { color: #333366; background: #AAAADD; }
 a:active  { color: #FF2222; background: transparent; }
 
 /* this is to prevent Mozilla from applying :hover on <a name="..."> */
-a[name]   { color: black; background: white; }
+a[name]   { color: black; background: transparent; }
 
