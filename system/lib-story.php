@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.6 2004/08/27 10:08:39 dhaun Exp $
+// $Id: lib-story.php,v 1.7 2004/08/27 12:36:49 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -203,16 +203,16 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
 
         if( $A['commentcode'] >= 0 )
         {
+            $commentsUrl = COM_buildUrl( $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] ) . '#comments';
+            $article->set_var( 'comments_url', $commentsUrl );
+            $article->set_var( 'comments_text', $A['comments'] . ' '
+                                                . $LANG01[3] );
+            $article->set_var( 'comments_count', $A['comments'] );
+            $article->set_var( 'lang_comments', $LANG01[3] );
+
             if( $A['comments'] > 0 )
             {
-                $commentsUrl = COM_buildUrl( $_CONF['site_url']
-                        . '/article.php?story=' . $A['sid'] ) . '#comments';
-                $article->set_var( 'comments_url', $commentsUrl );
-                $article->set_var( 'comments_text', $A['comments'] . ' '
-                        . $LANG01[3] );
-                $article->set_var( 'comments_count', $A['comments'] );
-                $article->set_var( 'lang_comments', $LANG01[3] );
-
                 $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
                 $C = DB_fetchArray( $result );
 
@@ -230,9 +230,14 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                         . '/comment.php?sid=' . $A['sid']
                         . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
             }
+            $postCommentUrl = $_CONF['site_url'] . '/comment.php?sid='
+                            . $A['sid'] . '&amp;pid=0&amp;type=article';
             $article->set_var( 'post_comment_link',' <a href="'
-                    . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
-                    . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>' );
+                    . $postCommentUrl . '">' . $LANG01[60] . '</a>' );
+            $article->set_var( 'lang_post_comment', $LANG01[60] );
+            $article->set_var( 'start_post_comment_anchortag',
+                               ' <a href="' . $postCommentUrl . '">' );
+            $article->set_var( 'end_post_comment_anchortag', '</a>' );
         }
 
         if( $_CONF['hideemailicon'] == 1 )
@@ -249,6 +254,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 . '" title="' . $LANG11[2] . '" border="0"></a>' );
             $article->set_var( 'email_story_url', $emailUrl );
             $article->set_var( 'lang_email_story', $LANG11[2] );
+            $article->set_var( 'lang_email_story_alt', $LANG01[64] );
         }
         $printUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                   . $A['sid'] . '&amp;mode=print' );
@@ -264,6 +270,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 . $LANG11[3] . '"></a>' );
             $article->set_var( 'print_story_url', $printUrl );
             $article->set_var( 'lang_print_story', $LANG11[3] );
+            $article->set_var( 'lang_print_story_alt', $LANG01[65] );
         }
         if( $_CONF['pdf_enabled'] == 1 )
         {
@@ -273,6 +280,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 sprintf( '<a href="%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s"></a>', $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
             $article->set_var( 'pdf_story_url', $pdfUrl );
             $article->set_var( 'lang_pdf_story', $LANG11[5] );
+            $article->set_var( 'lang_pdf_story_alt', $LANG01[111] );
         }
         else
         {
