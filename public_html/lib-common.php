@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.65 2002/04/16 20:25:26 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.66 2002/04/16 20:42:28 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -96,7 +96,7 @@ if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
 }
 
 // Handle Who's online hack if desired
-if ($_CONF['whosonline'] == 1) {
+if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'") == 1) {
     if (empty($_USER['uid']) OR $_USER['uid'] == 1) {
         // The following code handles anonymous users so they show up properly
         DB_query("DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1");
@@ -1826,7 +1826,7 @@ function COM_showBlocks($side, $topic='', $name='all')
 
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['type'] == 'phpblock' && !$U['noboxes']) {
-                if (!($A['name'] == 'whosonline_block' && $_CONF['whosonline'] == 0)) {
+                if (!($A['name'] == 'whosonline_block' AND DB_getItem($_TABLES['blocks'],'is_enabled',"name='whosonline_block'") == 0)) {
                     $function = $A['phpblockfn'];
                     $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header'));
 
@@ -2170,11 +2170,6 @@ function COM_whatsNewBlock($help='',$title='')
 {
     global $_TABLES, $_CONF, $LANG01;
 	
-    if ($_CONF['whatsnewbox'] == 0) {
-        // Site is configured not to display this, so return empty.
-        return $retval;
-    }
-
     // Find the newest stories
     // Change 86400 to your desired interval in seconds
 	
