@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.79 2002/04/24 14:15:52 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.80 2002/04/27 21:41:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -458,8 +458,12 @@ function COM_siteFooter($rightblock = false)
     $footer->set_var('site_url', $_CONF['site_url']);
     $footer->set_var('layout_url',$_CONF['layout_url']);
     $footer->set_var('copyright_notice', '&nbsp;'.$LANG01[93].' &copy; 2002 '.$_CONF['site_name'].'<br>&nbsp;'.$LANG01[94]);
+    $footer->set_var('powered_by', $LANG01[95]);
     $footer->set_var('geeklog_version', VERSION);
-    $footer->set_var('execution_time', $_PAGE_TIMER->stopTimer());
+    $exectime = $_PAGE_TIMER->stopTimer();
+    $footer->set_var('execution_time', $exectime);
+    $exectext = $LANG01[91] . ' ' . $exectime . ' ' . $LANG01[92];
+    $footer->set_var ('execution_textandtime', $exectext);
 
     if ($rightblock) { 
         // Now show any blocks
@@ -1319,7 +1323,7 @@ function COM_adminMenu($help = '', $title = '')
         }
 
         $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
-        $adminmenu->set_var('option_label', 'GL Version Test');
+        $adminmenu->set_var('option_label', $LANG01[107]);
         $adminmenu->set_var('option_count', 'N/A');
         $retval .= $adminmenu->parse('item', 'option');
         $retval .= COM_endBlock();
