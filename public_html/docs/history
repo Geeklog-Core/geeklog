@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- It's now possible to change the author of a story (feature request #204) -
+  requires a change in the admin/story/storyeditor.thtml template file. [Dirk]
 - Added an option to look up IP addresses (new variable $_CONF['ip_lookup'] in
   config.php, pointing to a service that does IP address lookups) [Dirk]
 - In a user's profile, don't display story or comment titles if the user

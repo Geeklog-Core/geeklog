@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.114 2004/05/01 17:57:05 vinny Exp $
+// $Id: story.php,v 1.115 2004/05/11 18:00:38 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -74,13 +74,40 @@ if (!SEC_hasRights('story.edit')) {
 // the data being passed in a POST operation
 // debug($HTTP_POST_VARS);
 
+
+/**
+* Returns a list of all users and their user ids, wrapped in <option> tags.
+*
+* @param    int     uid     current user (to be displayed as selected)
+* @return   string          string with <option> tags, to be wrapped in <select>
+*
+*/
+function userlist ($uid = 0)
+{
+    global $_TABLES;
+
+    $retval = '';
+
+    $result = DB_query ("SELECT uid,username FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY username");
+
+    while ($A = DB_fetchArray ($result)) {
+        $retval .= '<option value="' . $A['uid'] . '"';
+        if ($uid == $A['uid']) {
+            $retval .= ' selected="selected"';
+        }
+        $retval .= '>' . $A['username'] . '</option>' . LB;
+    }
+
+    return $retval;
+}
+
 /**
 * Shows story editor
 *
 * Displays the story entry form
 *
 * @param    string      $sid    ID of story to edit
-* @param    string      $mode   ??
+* @param    string      $mode   mode: preview, 'edit', 'editsubmission'
 * @return   string      HTML for story editor
 *
 */
@@ -170,7 +197,7 @@ function storyeditor($sid = '', $mode = '')
         } else {
             $A['show_topic_icon'] = 0;
         }
-        
+
         // Convert array values to numeric permission values
         list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($A['postmode'] == 'html') {
@@ -235,6 +262,7 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var ('story_author', DB_getItem ($_TABLES['users'],
                                'username', "uid = {$A['uid']}"));
     $story_templates->set_var('story_uid', $A['uid']);
+    $story_templates->set_var ('user_list', userlist ($A['uid']));
 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
@@ -1102,6 +1130,9 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         $publish_hour = '00';
     }
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
+    if (isset ($HTTP_POST_VARS['author_from_list'])) {
+        $uid = $HTTP_POST_VARS['author_from_list'];
+    }
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon);
 } else { // 'cancel' or no mode at all
     if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
