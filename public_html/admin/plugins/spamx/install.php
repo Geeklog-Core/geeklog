@@ -239,17 +239,17 @@ $display = COM_siteHeader();
 $T = new Template($_CONF['path'] . 'plugins/spamx/templates');
 $T->set_file('install', 'install.thtml');
 $T->set_var('install_header', $LANG_SX00['install_header']);
-$T->set_var('img',$_CONF['site_url'] . '/spamx/images/spamx.gif');
+$T->set_var('img',$_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
 $T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/spamx/install.php');
 $T->set_var('admin_url', $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
 
-if ($action == 'install') {
+if ($HTTP_POST_VARS['action'] == 'install') {
     if (plugin_install_spamx()) {
         $T->set_var('installmsg1',$LANG_SX00['install_success']);
     } else {
         $T->set_var('installmsg1',$LANG_SX00['install_failed']);
     }
-} else if ($action == "uninstall") {
+} else if ($HTTP_POST_VARS['action'] == "uninstall") {
    plugin_uninstall_spamx('installed');
    $T->set_var('installmsg1',$LANG_SX00['uninstall_msg']);
 }
