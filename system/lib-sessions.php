@@ -30,7 +30,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.8 2002/04/05 22:55:02 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.9 2002/05/07 19:51:36 tony_bibbs Exp $
+
+/**
+* This is the session management library for Geeklog.  Some of this code was
+* borrowed by phpBB 1.4.x which is also GPL'd
+*
+*/
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -39,10 +45,6 @@ $_SESS_VERBOSE = false;
 // it's suppose to be a global variable.  I tried setting $_USER from within
 // SESS_sessionCheck() and it doesn't work.
 $_USER = SESS_sessionCheck();
-
-// +---------------------------------------------------------------------------+
-// | SESSION LIBRARY FUNCTIONS                                                 | 
-// +---------------------------------------------------------------------------+
 
 /**
 * This gets the state for the user
@@ -175,10 +177,10 @@ function SESS_sessionCheck()
 * Adds a new session to the database for the given userid and returns a new session ID.
 * Also deletes all expired sessions from the database, based on the given session lifespan.
 *
-* @userid       int     User ID to create session for
-* @remote_ip    string  IP address user is connected from
-* @lifespan     string  How long (seconds) this cookie should persist
-* @md5_based    int     If 1 session will be MD5 hash of ip address
+* @param        int         $userid         User ID to create session for
+* @param        string      $remote_ip      IP address user is connected from
+* @param        string      $lifespan       How long (seconds) this cookie should persist
+* @param        string      $md5_based      If 1 session will be MD5 hash of ip address
 *
 */
 function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0) 
@@ -248,12 +250,12 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
 * This saves the session ID to the session cookie on client's machine for
 * later use
 *
-* @sessid       string      Session ID to save to cookie
-* @cookietime   string      Cookie timeout value
-* @cookiename   string      Name of cookie to save sessiond ID to
-* @cookiepath   string      Path in which cookie should be sent to server for
-* @cookiedomain string      Domain in which cookie should be sent to server for
-* @cookiesecure string      Not sure but don't use it anyway
+* @param        string      $sessid         Session ID to save to cookie
+* @param        string      $cookietime     Cookie timeout value
+* @param        string      $cookiename     Name of cookie to save sessiond ID to
+* @param        string      $cookiepath     Path in which cookie should be sent to server for
+* @param        string      $cookiedomain   Domain in which cookie should be sent to server for
+* @param        string      $cookiesecure   Not sure but don't use it anyway
 *
 */
 function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $cookiedomain, $cookiesecure)
@@ -266,15 +268,14 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 /**
 * Gets the user id from Session ID
 *
-*
 * Returns the userID associated with the given session, based on
 * the given session lifespan $cookietime and the given remote IP
 * address. If no match found, returns 0.
 *
-* @sessid       string      Session ID to get user ID from
-* @cookietime   string      Used to query DB for valid sessions
-* @remote_ip    string      Used to pull session we need
-* @md5_based    string      Let's us now if we need to take MD5 hash into consideration
+* @param        string      $sessid         Session ID to get user ID from
+* @param        string      $cookietime     Used to query DB for valid sessions
+* @param        string      $remote_ip      Used to pull session we need
+* @param        int         $md5_based      Let's us now if we need to take MD5 hash into consideration
 *
 */
 function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0) 
@@ -323,8 +324,8 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
 * Refresh the start_time of the given session in the database.
 * This is called whenever a page is hit by a user with a valid session.
 *
-* @sessid       string      Session ID to update time for
-* @md5_based    string      Indicates if sessid is MD5 hash
+* @param        string      $sessid     Session ID to update time for
+* @param        int         $md5_based  Indicates if sessid is MD5 hash
 *
 */
 function SESS_updateSessionTime($sessid, $md5_based=0) 
@@ -349,7 +350,7 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
 *
 * Delete the given session from the database. Used by the logout page.
 *
-* @userid       int     User ID to end session of
+* @param        int     $userid     User ID to end session of
 * 
 */
 function SESS_endUserSession($userid) 
@@ -367,7 +368,7 @@ function SESS_endUserSession($userid)
 *
 * Gets user's data based on their username
 *
-* @username     string      Username of user to get data for
+* @param        string     $username        Username of user to get data for
 *
 */
 function SESS_getUserData($username) 
@@ -394,7 +395,7 @@ function SESS_getUserData($username)
 *
 * Gets user's data based on their user id
 *
-* @userid       int     User ID of user to get data for
+* @param        int     $userid     User ID of user to get data for
 *
 */
 function SESS_getUserDataFromId($userid) 
