@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.42 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: story.php,v 1.43 2002/04/23 12:21:43 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -267,7 +267,7 @@ function storyeditor($sid = '', $mode = '')
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
                 $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '" target="_blank">' . $I['ai_filename'] . '</a>';
-                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><BR>';
+                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
             }
         }
         
@@ -429,9 +429,9 @@ function replace_images($sid, $intro, $body)
         } else {
             $sizeattributes = '';
         }
-        $norm = '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
-        $left = '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
-        $right = '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $norm = '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
+        $left = '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
+        $right = '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">';
         $fulltext = $intro . ' ' . $body;
         $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         $intro = str_replace($norm, '[' . $LANG24[48] . $i . ']', $intro);
@@ -480,12 +480,12 @@ function insert_images($sid, $intro, $body)
         } else {
             // Only parse if we haven't encountered any error to this point
             if (count($errors) == 0) {
-                $intro = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
-                $intro = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
-                $intro = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
+                $body = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
+                $intro = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
+                $body = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
+                $intro = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $intro);
+                $body = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '" alt="">', $body);
             }
         }
     }
@@ -661,7 +661,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $upload = new upload();
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {
-                print 'File Upload Errors:<BR>' . $upload->printErrors();
+                print 'File Upload Errors:<br>' . $upload->printErrors();
                 exit;
             }
             // Set file permissions on file after it gets uploaded (number is in octet)
