@@ -17,6 +17,7 @@ CREATE TABLE blocks (
   rdfurl varchar(96),
   rdfupdated datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
   content text,
+  phpblockfn varchar(64) DEFAULT '',
   PRIMARY KEY (bid)
 );
 
