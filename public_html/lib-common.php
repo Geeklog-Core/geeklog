@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.59 2002/04/11 20:43:41 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.60 2002/04/12 15:43:29 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -207,7 +207,7 @@ function COM_article($A,$index='')
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND SEC_hasrights('story.edit')) {
-	    $article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&amp;sid='.$A['sid'].'">'.$LANG01[4].'</a>');
+	    $article->set_var('edit_link', '<a href="'.$_CONF['site_admin_url'].'/story.php?mode=edit&amp;sid='.$A['sid'].'">'.$LANG01[4].'</a>');
     }
 
     $article->set_var('recent_post_anchortag', $recent_post_anchortag);
@@ -518,7 +518,7 @@ function COM_adminEdit($type,$text='')
     if (!HandlePluginAdminEdit($type)) {
         $retval .= '<table border="0" cellspacing="0" cellpadding=2 width="100%">'.LB
             .'<tr><td rowspan="2"><img src="'.$_CONF['site_url'].'/images/icons/'.$type.'.gif" alt=""></td>'.LB
-            .'<td>[ <a href="'.$_CONF['site_url'].'/admin/'.$type.'.php?mode=edit">'.$LANG01[52].' '.$type.'</a> | <a href="'.$_CONF['site_url'].'/admin">'.$LANG01[53].'</a> ]</td></tr>'.LB
+            .'<td>[ <a href="'.$_CONF['site_admin_url'].'/'.$type.'.php?mode=edit">'.$LANG01[52].' '.$type.'</a> | <a href="'.$_CONF['site_admin_url'].'">'.$LANG01[53].'</a> ]</td></tr>'.LB
             .'<tr><td>'.$text.'</td></tr>'.LB
             .'</table><br>';
     }
@@ -941,7 +941,11 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 	$nquestion = DB_numRows($question);
 
 	if ($nquestion == 1) {
-		$answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC");
+        if ($_CONF['answerorder'] == 'voteorder') {
+            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC");
+        } else {
+            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid'");
+        }
 		$nanswers = DB_numRows($answers);
         if ($_COM_VERBOSE) {
             COM_errorLog("got $answers answers in COM_pollResults",1);
@@ -1157,7 +1161,7 @@ function COM_userMenu($help='',$title='')
 * sufficient rights to
 *
 */
-function COM_adminMenu($help='',$title='') 
+function COM_adminMenu($help = '', $title = '') 
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
@@ -1176,67 +1180,67 @@ function COM_adminMenu($help='',$title='')
 
             //now handle submissions for plugins
             $num = $num + PLG_getSubmissionCount();
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/moderation.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/moderation.php');
             $adminmenu->set_var('option_label', $LANG01[10]);
             $adminmenu->set_var('option_count', $num);
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('story.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/story.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/story.php');
             $adminmenu->set_var('option_label', $LANG01[11]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['stories']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('block.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/block.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/block.php');
             $adminmenu->set_var('option_label', $LANG01[12]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['blocks']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('topic.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/topic.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/topic.php');
             $adminmenu->set_var('option_label', $LANG01[13]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['topics']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('link.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/link.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/link.php');
             $adminmenu->set_var('option_label', $LANG01[14]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['links']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('event.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/event.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/event.php');
             $adminmenu->set_var('option_label', $LANG01[15]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['events']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('poll.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/poll.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/poll.php');
             $adminmenu->set_var('option_label', $LANG01[16]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['pollquestions']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('user.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/user.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/user.php');
             $adminmenu->set_var('option_label', $LANG01[17]);
             $adminmenu->set_var('option_count', (DB_count($_TABLES['users'])-1));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('group.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/group.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/group.php');
             $adminmenu->set_var('option_label', $LANG01[96]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['groups']));
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('user.mail')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/mail.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/mail.php');
             $adminmenu->set_var('option_label', $LANG01[105]);
             $adminmenu->set_var('option_count', 'N/A');
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('plugin.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/plugins.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/plugins.php');
             $adminmenu->set_var('option_label', $LANG01[77]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['plugins']));
             $retval .= $adminmenu->parse('item', 'option');
@@ -1259,7 +1263,7 @@ function COM_adminMenu($help='',$title='')
         }
              
         if ($_CONF['allow_mysqldump'] == 1 AND SEC_inGroup('Root')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/database.php');
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/database.php');
             $adminmenu->set_var('option_label', $LANG01[103]);
             $adminmenu->set_var('option_count', 'N/A');
             $retval .= $adminmenu->parse('item', 'option');
@@ -2189,12 +2193,12 @@ function COM_whatsNewBlock($help='',$title='')
 	
     $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
 	
-    $sql = "SELECT DISTINCT *, count(*) AS dups, {$_TABLES["comments"]}.cid,{$_TABLES["comments"]}.sid,"
-        . "{$_TABLES["stories"]}.sid,{$_TABLES["stories"]}.title,max(UNIX_TIMESTAMP({$_TABLES["comments"]}.date)) "
-        . "AS day,'story' as cmt_type FROM {$_TABLES["comments"]},{$_TABLES["stories"]} WHERE ";
+	$sql = "SELECT DISTINCT *, count(*) AS dups,type,question,gl_stories.title "
+        . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON {$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid "
+        . "LEFT JOIN {$_TABLES['pollquestions']} ON qid = {$_TABLES['comments']}.sid WHERE ";
     $now = time();
-    $desired = $now - $_CONF['newcommentsinterval'];
-    $sql .= "UNIX_TIMESTAMP({$_TABLES["comments"]}.date) > {$desired} and ({$_TABLES["stories"]}.sid={$_TABLES["comments"]}.sid) GROUP BY {$_TABLES["comments"]}.sid";
+    $desired = $now - $_CONF['newcommentsinterval'];    
+    $sql .= "UNIX_TIMESTAMP({$_TABLES["comments"]}.date) > {$desired} GROUP BY {$_TABLES["comments"]}.sid";
     $result = DB_query($sql);
 
     $nrows = DB_numRows($result);
@@ -2207,22 +2211,26 @@ function COM_whatsNewBlock($help='',$title='')
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                 $robtime = strftime("%D %T",$A['day']);
                 $itemlen = strlen($A['title']);
-                if ($A['cmt_type'] == 'story') {
+                if ($A['type'] == 'article') {
+                    $titletouse = $A['title'];
                     $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
                 } else {
+                    $titletouse = $A['question'];
                     $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments">';
                 }
 			
                 // Trim the length if over 20 characters
 			
                 if ($itemlen > 20) {
-                    $retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
+                    //$retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
+                    $retval .= '<li class="storyclose">' . $urlstart . substr($titletouse,0,26) . '... ';
                     if ($A['dups'] > 1) {
                         $retval .= '[+' . $A['dups'] . ']';
                     }
                     $retval .= '</a></li>' . LB;  
                 } else {
-                    $retval .= '<li class="storyclose">' . $urlstart . $A['title'];
+                    //$retval .= '<li class="storyclose">' . $urlstart . $A['title'];
+                    $retval .= '<li class="storyclose">' . $urlstart . $titletouse;
                     if ($A['dups'] > 1) {
                         $retval .= '[+' . $A['dups'] . ']';
                     }
