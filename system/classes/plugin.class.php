@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.3 2001/12/06 21:52:05 tony_bibbs Exp $
+// $Id: plugin.class.php,v 1.4 2002/04/16 15:42:39 tony_bibbs Exp $
 
 class Plugin {
 
@@ -78,7 +78,7 @@ class Plugin {
     {
         $adminlabel = '';
         $aadminurl = '';
-	$plugin_image = '';
+        $plugin_image = '';
         $numsubmissions = '';
         $plugin_name = '';
         $searchlabel = '';
@@ -114,7 +114,7 @@ class Plugin {
     */
     function addSearchResult($result_string)
     {
-        $this->searchresults[$this->num_searchresults] = $result_string;
+        $this->searchresults[] = $result_string;
     }     
 
     function addSubmissionHeading($heading)
