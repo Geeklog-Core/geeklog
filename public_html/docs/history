@@ -2,6 +2,8 @@ GeekLog History/Changes:
 
 ??? ??, 2002 (1.3.6)
 ------------
+- Problems with using the dollar sign in stories, comments, and their titles
+  have been fixed.
 - Fresh installations now have a "Are you secure?" block pre-installed
   that only the Admin can see and which does some (very simple) tests whether
   the site is secure or not.
