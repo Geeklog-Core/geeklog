@@ -660,7 +660,16 @@ $LANG24 = array(
 	43 => 'New Story',
 	44 => 'Admin Home',
 	45 => 'Access',
-    46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RDF headline feed and it will be ignored by the search and statistics pages.'
+    46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RDF headline feed and it will be ignored by the search and statistics pages.',
+    47 => 'Images',
+    48 => 'image',
+    49 => 'right',
+    50 => 'left',
+    51 => 'To add one of the images you are attaching to this article you need to insert specially formated text.  The specially formated text is [imageX], [imageX_right] or [imageX_left] where X is the number of the image you have attached.  NOTE: You must use the images you attach.  If you do not you will be unable to save your story.',
+    52 => 'Delete',
+    53 => 'was not used.  You must include this image in the intro or body before you can save your changes',
+    54 => 'Attached Images Not Used',
+    55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving'
 );
 
 ###############################################################################
