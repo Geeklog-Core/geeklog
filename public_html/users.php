@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.91 2004/10/09 20:18:34 blaine Exp $
+// $Id: users.php,v 1.92 2004/10/10 19:01:07 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -67,7 +67,7 @@ $VERBOSE = false;
 * @return   string          HTML for user profile page
 *
 */
-function userprofile ($user, $msg) 
+function userprofile ($user, $msg = 0)
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG04, $LANG_LOGIN;
 
@@ -666,6 +666,21 @@ case 'profile':
     if (is_numeric ($uid) && ($uid > 0)) {
         $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
         $display .= userprofile ($uid, $msg);
+    } else {
+        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+    break;
+
+case 'user':
+    $username = COM_applyFilter ($HTTP_GET_VARS['username']);
+    if (!empty ($username)) {
+        $username = addslashes ($username);
+        $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username'");
+        if ($uid > 1) {
+            $display .= userprofile ($uid);
+        } else {
+            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
