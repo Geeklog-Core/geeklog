@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.36 2003/09/12 11:53:41 dhaun Exp $
+// $Id: link.php,v 1.37 2003/11/30 19:45:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -255,7 +255,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 		DB_save($_TABLES['links'],'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         COM_rdfUpToDateCheck ();
 
-        return $_CONF['site_admin_url'] . '/link.php?msg=15';
+        return COM_refresh ($_CONF['site_admin_url'] . '/link.php?msg=15');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
@@ -273,11 +273,15 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 * Lists all the links in the database
 *
 */
-function listlinks() 
+function listlinks($page = 1) 
 {
     global $_CONF, $_TABLES, $LANG23, $LANG_ACCESS;
 
     $retval = '';
+
+    if ($page <= 0) {
+        $page = 1;
+    }
 
     $retval .= COM_startBlock ($LANG23[11], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -295,9 +299,11 @@ function listlinks()
     $link_templates->set_var('lang_linkcategory', $LANG23[14]);
     $link_templates->set_var('lang_linkurl', $LANG23[15]); 
 
-	$result = DB_query("SELECT * FROM {$_TABLES['links']} ORDER BY category ASC,title");
+    $limit = (50 * $page) - 50;
+	$result = DB_query("SELECT * FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category ASC,title LIMIT $limit,50");
 	$nrows = DB_numRows($result);
 	for ($i = 0; $i < $nrows; $i++) {
+        $lcount = (50 * $page) - 50 + ($i + 1);
 		$A = DB_fetchArray($result);
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {
@@ -311,9 +317,21 @@ function listlinks()
             $link_templates->set_var('link_access', $access);
             $link_templates->set_var('link_category', $A['category']);
             $link_templates->set_var('link_url', $A['url']);
+            $link_templates->set_var('row_num', $lcount);
             $link_templates->parse('link_row', 'row', true);
         }
 	}
+    $nresult = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']}" . COM_getPermSQL ());
+    $N = DB_fetchArray ($nresult);
+    $numlinks = $N['count'];
+    if ($numlinks > 50) {
+        $baseurl = $_CONF['site_admin_url'] . '/link.php';
+        $numpages = ceil ($numlinks / 50);
+        $link_templates->set_var ('google_paging',
+                COM_printPageNavigation ($baseurl, $page, $numpages));
+    } else {
+        $link_templates->set_var ('google_paging', '');
+    }
     $link_templates->parse('output','list');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
@@ -348,7 +366,7 @@ if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
     if (isset ($msg)) {
         $display .= COM_showMessage($msg);
     }
-    $display .= listlinks();
+    $display .= listlinks(COM_applyFilter($HTTP_GET_VARS['page'], true));
     $display .= COM_siteFooter();
 }
 
