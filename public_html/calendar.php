@@ -1,18 +1,51 @@
 <?php
-	
-	include('lib-common.php');
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | lib-common.php                                                            |
+// | Geeklog common library.                                                   |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: calendar.php,v 1.6 2001/10/17 23:35:47 tony_bibbs Exp $
+
+include('lib-common.php');
 		
-	$display .= site_header('');
+$display .= site_header('');
 	
-	if ($mode == 'personal' && ($CONF['personalcalendars'] == 0)) {
-		$display .= showmessage(29)
+	if ($mode == 'personal' && ($_CONF['personalcalendars'] == 0)) {
+		$display .= COM_showMessage(29)
 			.site_footer();
 		echo $display;
 		exit;
 	}
 	
-	if (($mode == 'personal') && (empty($USER['uid']))) { 
-		$display .= showmessage(25);
+	if (($mode == 'personal') && (empty($_USER['uid']))) { 
+		$display .= COM_showMessage(25);
 		$mode = '';
 	}
 	$currentday = date("j", time());
@@ -33,7 +66,7 @@
 	}
 	//mysql_select_db($mysql_database, $database);
 	if ($msg > 0) {
-		$display .= showmessage($msg);
+		$display .= COM_showMessage($msg);
 	}
 	
 	$firstday = date('w',mktime(0,0,0,$month,1,$year));
@@ -113,16 +146,16 @@
 			$display .= '<a href="calendar_event.php?day='.$thisday.'&month='.$month.'&year='.$year.'" class="cal_date">'.$thisday.'</a><hr>';
 			
 			if ($mode == 'personal') {
-				$calsql = "SELECT {$CONF["db_prefix"]}events.* FROM {$CONF["db_prefix"]}events, {$CONF["db_prefix"]}userevent WHERE ({$CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend)) ORDER BY datestart";
+				$calsql = "SELECT {$_CONF["db_prefix"]}events.* FROM {$_CONF["db_prefix"]}events, {$_CONF["db_prefix"]}userevent WHERE ({$_CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend)) ORDER BY datestart";
 			} else {
-				$calsql = "SELECT * FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend) ORDER BY datestart";
+				$calsql = "SELECT * FROM {$_CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend) ORDER BY datestart";
 			}
 			
-			$query2 = mysql_query($calsql);
+			$query2 = DB_query($calsql);
 			
-			for ($j = 0; $j<mysql_num_rows($query2); $j++) {
-				$results = mysql_fetch_array($query2);
-				if (hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+			for ($j = 0; $j<DB_numRows($query2); $j++) {
+				$results = DB_fetchArray($query2);
+				if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
 					if ($results['title']) {
 						$display .= '<a href="calendar_event.php?&eid='.$results[eid].'" class="cal_event">'.$results[title].'</a><hr>';
 					}
@@ -130,8 +163,8 @@
 					$display .= '<br>';
 				}
 			}
-			if (mysql_num_rows($query2) < 4) {
-				for ($j=0; $j<(4-mysql_num_rows($query2)); $j++) {
+			if (DB_numRows($query2) < 4) {
+				for ($j=0; $j<(4-DB_numRows($query2)); $j++) {
 					$display .= '<br>';
 				}
 			}
@@ -161,14 +194,14 @@
 				
 				$display .= '<a href="calendar_event.php?day='.$nextday.'&month='.$month.'&year='.$year.'" class="cal_date">'.$nextday.'</a><hr>';
 				if ($mode == 'personal') {
-					$query3 = mysql_query("SELECT {$CONF["db_prefix"]}events.* FROM {$CONF["db_prefix"]}events,userevent WHERE ({$CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend)) ORDER BY datestart");
+					$query3 = DB_query("SELECT {$_CONF["db_prefix"]}events.* FROM {$_CONF["db_prefix"]}events,userevent WHERE ({$_CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend)) ORDER BY datestart");
 				} else {
-					$query3 = mysql_query("SELECT * FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend) ORDER BY datestart");
+					$query3 = DB_query("SELECT * FROM {$_CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend) ORDER BY datestart");
 				}
 				
-				for ($i = 0; $i<mysql_num_rows($query3)+4; $i++) {
-					$results2 = mysql_fetch_array($query3);
-					if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+				for ($i = 0; $i<DB_numRows($query3)+4; $i++) {
+					$results2 = DB_fetchArray($query3);
+					if (SEC_hasAccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
 						if ($results2["title"]) {
 							$display .= '<a href="calendar_event.php?eid='.$results2[eid].'" class="cal_event">'.$results2[title].'</a><hr>';
 						} else if ($i < 4) {
@@ -200,7 +233,7 @@
 			.'<input type="hidden" name="month" value="'.$month.'">'
 			.'<input type="hidden" name="year" value="'.$year.'"></form></td>'.LB;
 			
-		if (!empty($USER["uid"]) && ($CONF["personalcalendars"] == 1)) {
+		if (!empty($_USER["uid"]) && ($_CONF["personalcalendars"] == 1)) {
 			$display .= '<td><form method="post" action="calendar.php?mode=personal">'
 				.'<input type="submit" name="action" value="'.$LANG30[12].'"></form></td>'.LB;
 		}
