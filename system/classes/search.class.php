@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -30,9 +30,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.29 2005/01/01 15:44:19 dhaun Exp $
+// $Id: search.class.php,v 1.30 2005/01/05 13:01:25 dhaun Exp $
 
-if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
+if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 
@@ -51,49 +51,49 @@ class Search {
     * @var string
     */
     var $_query = '';
-    
+
     /**
     * @access private
     * @var string
     */
     var $_topic = '';
-    
+
     /**
     * @access private
     * @var string
     */
     var $_dateStart = null;
-    
+
     /**
     * @access private
     * @var string
     */
     var $_dateEnd = null;
-    
+
     /**
     * @access private
     * @var integer
     */
     var $_author = null;
-    
+
     /**
     * @access private
     * @var string
     */
     var $_type = '';
-    
+
     /**
     * @access private
     * @var string
     */
     var $_keyType = '';
-    
+
     /**
     * @access private
     * @var integer
     */
     var $_page = null;
-    
+
     /**
     * Constructor
     *
@@ -105,36 +105,24 @@ class Search {
     */
     function Search()
     {
-        global $HTTP_POST_VARS, $HTTP_GET_VARS;
-        
-        // This page is register_globals friendly.  Because I
-        // can't guarantee a version of PHP > 4.1 I can't simply
-        // reference $_REQUEST so $input_vars simulates this.
-        $input_vars = array();
-        if (count($HTTP_POST_VARS) == 0) {
-            $input_vars = $HTTP_GET_VARS;
-        } else {
-            $input_vars = $HTTP_POST_VARS;
-        }
-        
         // Set search criteria
-        $this->_query = strip_tags (COM_stripslashes ($input_vars['query']));
-        $this->_topic = COM_applyFilter ($input_vars['topic']);
-        $this->_dateStart = COM_applyFilter ($input_vars['datestart']);
-        $this->_dateEnd = COM_applyFilter ($input_vars['dateend']);
-        $this->_author = COM_applyFilter ($input_vars['author']);
-        $this->_type = COM_applyFilter ($input_vars['type']);
+        $this->_query = strip_tags (COM_stripslashes ($_REQUEST['query']));
+        $this->_topic = COM_applyFilter ($_REQUEST['topic']);
+        $this->_dateStart = COM_applyFilter ($_REQUEST['datestart']);
+        $this->_dateEnd = COM_applyFilter ($_REQUEST['dateend']);
+        $this->_author = COM_applyFilter ($_REQUEST['author']);
+        $this->_type = COM_applyFilter ($_REQUEST['type']);
         if (empty ($this->_type)) {
             $this->_type = 'all';
         }
-        $this->_keyType = COM_applyFilter ($input_vars['keyType']);
-        $this->_page = COM_applyFilter ($input_vars['page']);
-        
+        $this->_keyType = COM_applyFilter ($_REQUEST['keyType']);
+        $this->_page = COM_applyFilter ($_REQUEST['page']);
+
         // In case we got a username instead of uid, convert it.  This should
         // make custom themes for search page easier.
         $this->_convertAuthor();
     }
-    
+
     /**
     * Converts a username to a uid
     *
@@ -158,33 +146,25 @@ class Search {
     }
 
     /**
-    * Create SQL to check the topic permissions of the current user.
+    * Return the user's username or full name for display, depending
+    * on the $_CONF['show_fullname'] config.php setting
     *
-    * @author Dirk Haun <dirk AT haun-online DOT de>
+    * @author Dirk Haun <dirk AT haun-online DOT de
     * @access private
     *
     */
-    function _checkTopicPermissions ()
+    function _displayName ($username, $fullname)
     {
-        global $_TABLES;
+        global $_CONF;
 
-        $topicsql = '';
+        $retval = $username;
 
-        $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
-                             . COM_getPermSQL ());
-        $trows = DB_numRows ($tresult);
-        if ($trows > 0) {
-            $tids = array ();
-            for ($i = 0; $i < $trows; $i++) {
-                $T = DB_fetchArray ($tresult);
-                $tids[] = $T['tid'];
-            }
-            if (sizeof ($tids) > 0) {
-                $topicsql = "AND (tid IN ('" . implode ("','", $tids) . "')) ";
-            }
+        if (isset ($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1)
+                && !empty ($fullname)) {
+            $retval = $fullname;
         }
 
-        return $topicsql;
+        return $retval;
     }
 
     /**
@@ -207,28 +187,20 @@ class Search {
 
         $resultPage = 1;
 
-        if($this->_page > 1) {
+        if ($this->_page > 1) {
             $resultPage = $this->_page;
         }
 
-        $groupList = '';
-        if (!empty ($_USER['uid'])) {
-            foreach ($_GROUPS AS $grp) {
-                $groupList .= $grp . ',';
-            }
-            $groupList = substr($groupList, 0, -1);
-        }
-
         if ($this->_type == 'all' OR $this->_type == 'stories') {
-            $sql = "SELECT sid,title,introtext,bodytext,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $this->_checkTopicPermissions ();
+            $sql = "SELECT u.username,u.fullname,s.uid,sid,title,introtext,bodytext,hits,UNIX_TIMESTAMP(date) AS day,'story' AS type FROM {$_TABLES['stories']} AS s,{$_TABLES['users']} AS u WHERE (draft_flag = 0) AND (date <= NOW()) AND (u.uid = s.uid) ";
             if (!empty ($this->_query)) {
                 if($this->_keyType == 'phrase') {
                     // do an exact phrase search (default)
                     $mywords[] = $this->_query;
                     $mysearchterm = addslashes ($this->_query);
-                    $sql .= "AND (introtext like '%$mysearchterm%'  ";
-                    $sql .= "OR bodytext like '%$mysearchterm%' ";
-                    $sql .= "OR title like '%$mysearchterm%')  ";
+                    $sql .= "AND (introtext LIKE '%$mysearchterm%'  ";
+                    $sql .= "OR bodytext LIKE '%$mysearchterm%' ";
+                    $sql .= "OR title LIKE '%$mysearchterm%')  ";
                 } elseif($this->_keyType == 'all') {
                     // must contain ALL of the keywords
                     $mywords = explode(' ', $this->_query);
@@ -236,9 +208,9 @@ class Search {
                     $tmp = '';
                     foreach ($mywords AS $mysearchterm) {
                         $mysearchterm = addslashes (trim ($mysearchterm));
-                        $tmp .= "(introtext like '%$mysearchterm%' OR ";
-                        $tmp .= "bodytext like '%$mysearchterm%' OR ";
-                        $tmp .= "title like '%$mysearchterm%') AND ";
+                        $tmp .= "(introtext LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "bodytext LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "title LIKE '%$mysearchterm%') AND ";
                     }
                     $tmp = substr($tmp, 0, strlen($tmp) - 4);
                     $sql .= $tmp;
@@ -250,18 +222,18 @@ class Search {
                     $tmp = '';
                     foreach ($mywords AS $mysearchterm) {
                         $mysearchterm = addslashes (trim ($mysearchterm));
-                        $tmp .= "(introtext like '%$mysearchterm%' OR ";
-                        $tmp .= "bodytext like '%$mysearchterm%' OR ";
-                        $tmp .= "title like '%$mysearchterm%') OR ";
+                        $tmp .= "(introtext LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "bodytext LIKE '%$mysearchterm%' OR ";
+                        $tmp .= "title LIKE '%$mysearchterm%') OR ";
                     }
                     $tmp = substr($tmp, 0, strlen($tmp) - 3);
                     $sql .= "($tmp)";
                 } else {
                     $mywords[] = $this->_query;
                     $mysearchterm = addslashes ($this->_query);
-                    $sql .= "AND (introtext like '%$mysearchterm%'  ";
-                    $sql .= "OR bodytext like '%$mysearchterm%' ";
-                    $sql .= "OR title like '%$mysearchterm%')  ";
+                    $sql .= "AND (introtext LIKE '%$mysearchterm%'  ";
+                    $sql .= "OR bodytext LIKE '%$mysearchterm%' ";
+                    $sql .= "OR title LIKE '%$mysearchterm%')  ";
                 }
             }
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -278,10 +250,10 @@ class Search {
             if (!empty($this->_author) && ($this->_author > 0)) {
                 $sql .= "AND (uid = '$this->_author') ";
             }
-            $permsql = COM_getPermSQL ('AND');
+            $permsql = COM_getPermSQL ('AND') . COM_getTopicSQL ('AND');
             $sql .= $permsql;
             $sql .= "ORDER BY date desc";
-    
+
             $result_stories = DB_query($sql);
             $nrows_stories = DB_numRows($result_stories);
             $result_count = DB_query("SELECT COUNT(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . $permsql);
@@ -299,27 +271,29 @@ class Search {
             // here! Make sure data elements are in an array and in the same
             // order as your headings above!
             while ($A = DB_fetchArray($result_stories)) {
-                if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                    // get rows    
-                    $A['title'] = str_replace('$','&#36;',$A['title']);
-                    $thetime = COM_getUserDateTimeFormat($A['day']);
-                    if (empty ($urlQuery)) {
-                        $articleUrl = COM_buildUrl ($_CONF['site_url']
-                                        . '/article.php?story=' . $A['sid']);
-                    } else {
-                        $articleUrl = $_CONF['site_url'] . '/article.php?story='
-                            . $A['sid'] . '&amp;query=' . urlencode ($urlQuery);
-                    }
-                    $row = array ('<a href="' . $articleUrl . '">'
-                            . stripslashes ($A['title']) . '</a>', $thetime[0],
-                            DB_getItem ($_TABLES['users'], 'username',
-                            "uid = '{$A['uid']}'"), $A['hits']);
-                    $story_results->addSearchResult($row);
-                    $story_results->num_searchresults++;
+                // get rows    
+                $A['title'] = str_replace ('$', '&#36;', $A['title']);
+                $thetime = COM_getUserDateTimeFormat ($A['day']);
+                if (empty ($urlQuery)) {
+                    $articleUrl = COM_buildUrl ($_CONF['site_url']
+                                    . '/article.php?story=' . $A['sid']);
                 } else {
-                    // user is not allowed to see this item so don't count it either
-                    $story_results->num_itemssearched--;
+                    $articleUrl = $_CONF['site_url'] . '/article.php?story='
+                        . $A['sid'] . '&amp;query=' . urlencode ($urlQuery);
                 }
+                $author = $this->_displayName ($A['username'], $A['fullname']);
+                if ($A['uid'] == 1) {
+                    $profile = $author;
+                } else {
+                    $profile = '<a href="' . $_CONF['site_url']
+                             . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                             . '">' . $author . '</a>';
+                }
+                $row = array ('<a href="' . $articleUrl . '">'
+                              . stripslashes ($A['title']) . '</a>',
+                              $thetime[0], $profile, $A['hits']);
+                $story_results->addSearchResult ($row);
+                $story_results->num_searchresults++;
             }
         } else {
             $story_results = new Plugin();
@@ -328,7 +302,7 @@ class Search {
         }
         return $story_results;
     }
-    
+
     /**
     * Performs search on all comments
     *
@@ -344,33 +318,28 @@ class Search {
         if ($this->_type == 'all' OR $this->_type == 'comments') {
 
             $stsql = COM_getPermSQL ('AND', 0, 2, $_TABLES['stories']);
-            $stsql .= $this->_checkTopicPermissions ();
+            $stsql .= COM_getTopicSQL ('AND');
 
             $stwhere = '';
 
-            $groupList = '';
-            if (!empty ($_USER['uid'])) {
-                foreach ($_GROUPS as $grp) {
-                    $groupList .= $grp . ',';
-                }
-                $groupList = substr($groupList, 0, -1);
-            }
-            if (!empty ($_USER['uid'])) {
+            if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+                $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
+            } else {
                 $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
                 $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
                 $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
             }
-            $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
-    
+
             $posql = COM_getPermSQL ('AND', 0, 2, $_TABLES['pollquestions']);
             $powhere = '';
-            if (!empty ($_USER['uid'])) {
+            if (empty ($_USER['uid']) || ($_USER['uid'] == 1)) {
+                $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
+            } else {
                 $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
             }
-            $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-    
+
             $mysearchterm = addslashes ($this->_query);
             $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,cid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
@@ -403,23 +372,36 @@ class Search {
             $comment_results->addSearchHeading($LANG09[18]);
             $comment_results->num_searchresults = 0;
             $comment_results->num_itemssearched = $B[0];
-    
+
+            if (!empty ($this->_query)) {
+                $querystring = '&amp;query=' . $this->_query;
+            } else {
+                $querystring = '';
+            }
+
             // NOTE if any of your data items need to be links then add them here! 
             // make sure data elements are in an array and in the same order as
             // your headings above!
+            $names = array ();
             while ($A = DB_fetchArray($result_comments)) {
                 $A['title'] = str_replace('$','&#36;',$A['title']);
-                if (!empty ($this->_query)) {
-                    $querystring = '&amp;query=' . $this->_query;
-                } else {
-                    $querystring = '';
-                }
                 $A['title'] = '<a href="' . $_CONF['site_url']
                             . '/comment.php?mode=view&amp;cid=' . $A['cid']
-                            . '">' . stripslashes ($A['title']) . '</a>';
-
+                            . $querystring . '">' . stripslashes ($A['title'])
+                            . '</a>';
                 $thetime = COM_getUserDateTimeFormat ($A['day']);
-                $row = array ($A['title'], $thetime[0], DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['uid']}'"));
+                if (empty ($names[$A['uid']])) {
+                    $names[$A['uid']] = COM_getDisplayName ($A['uid']);
+                }
+                $author = $names[$A['uid']];
+                if ($A['uid'] == 1) {
+                    $profile = $author;
+                } else {
+                    $profile = '<a href="' . $_CONF['site_url']
+                             . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                             . '">' . $author . '</a>';
+                }
+                $row = array ($A['title'], $thetime[0], $profile);
                 $comment_results->addSearchResult($row);
                 $comment_results->num_searchresults++;
             }
@@ -428,6 +410,7 @@ class Search {
             $comment_results->searchlabel = $LANG09[54];
             $comment_results->num_itemssearched = 0;
         }
+
         return $comment_results;        
     }
     
@@ -445,22 +428,22 @@ class Search {
 
         // Build SQL
         if ( $this->_query != "" AND (($this->_type == 'links') OR ($this->_type == 'all')) ) {
-            $sql = "SELECT lid,title,description,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE ";
+            $sql = "SELECT lid,title,description,url,hits FROM {$_TABLES['links']} WHERE ";
     
             if ($this->_keyType == 'phrase') {
                 // do an exact phrase search (default)
                 $mywords[] = $this->_query;
                 $mysearchterm = addslashes ($this->_query);
-                $sql .= "(description like '%$mysearchterm%' ";
-                $sql .= "OR title like '%$mysearchterm%')  ";
-            } else if ($this->_keyType == 'all')  { 
+                $sql .= "(description LIKE '%$mysearchterm%' ";
+                $sql .= "OR title LIKE '%$mysearchterm%')  ";
+            } else if ($this->_keyType == 'all') {
                 // must contain ALL of the keywords
                 $mywords = explode(' ', $this->_query);
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
                     $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(description like '%$mysearchterm%' OR ";
-                    $tmp .= "title like '%$mysearchterm%') AND ";
+                    $tmp .= "(description LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "title LIKE '%$mysearchterm%') AND ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 4);
                 $sql .= $tmp;
@@ -470,16 +453,16 @@ class Search {
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
                     $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(description like '%$mysearchterm%' OR ";
-                    $tmp .= "title like '%$mysearchterm%') OR ";
+                    $tmp .= "(description LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "title LIKE '%$mysearchterm%') OR ";
                 }
                 $tmp = substr($tmp,0,strlen($tmp)-3);
                 $sql .= "($tmp)";
             } else {
                 $mywords[] = $this->_query;
                 $mysearchterm = addslashes ($this->_query);
-                $sql .= "(description like '%$mysearchterm%' ";
-                $sql .= "OR title like '%$mysearchterm%')  ";
+                $sql .= "(description LIKE '%$mysearchterm%' ";
+                $sql .= "OR title LIKE '%$mysearchterm%') ";
             }
     
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -490,7 +473,8 @@ class Search {
                 $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
                 $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
             }
-            $sql .= "ORDER BY title ASC";
+            $sql .= COM_getPermSQL ('AND');
+            $sql .= " ORDER BY title ASC";
             $result_links = DB_query($sql);
             $nrows_links = DB_numRows($result_links);
             $link_results = new Plugin();
@@ -505,19 +489,13 @@ class Search {
             // make sure data elements are in an array and in the same order as
             // your headings above!
             while ($A = DB_fetchArray($result_links)) {
-                if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                    $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $row = array (stripslashes ($A['title']),
-                                  '<a href="' . COM_buildUrl ($_CONF['site_url']
-                                  . '/portal.php?what=link&amp;item='
-                                  . $A['lid']) . '">' . $A['url'] . '</a>',
-                                  $A['hits']);
-                    $link_results->addSearchResult($row);
-                    $link_results->num_searchresults++;
-                } else {
-                    // user is not allowed to see this item so don't count it either
-                    $link_results->num_itemssearched--;
-                }
+                $thetime = COM_getUserDateTimeFormat($A['day']);
+                $row = array (stripslashes ($A['title']),
+                              '<a href="' . COM_buildUrl ($_CONF['site_url']
+                              . '/portal.php?what=link&amp;item=' . $A['lid'])
+                              . '">' . $A['url'] . '</a>', $A['hits']);
+                $link_results->addSearchResult($row);
+                $link_results->num_searchresults++;
             }
         } else {
             $link_results = new Plugin();
@@ -538,18 +516,18 @@ class Search {
     function _searchEvents()
     {
         global $_CONF, $_TABLES, $LANG09, $LANG12;
-    
+
         if (($this->_type == 'events') OR
             (($this->_type == 'all') AND empty($this->_author))) {
-            $sql = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
-    
+            $sql = "SELECT eid,title,description,location,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) AS day FROM {$_TABLES['events']} WHERE ";
+
             if($this->_keyType == 'phrase') {
                 // do an exact phrase search (default)
                 $mywords[] = $this->_query;
                 $mysearchterm = addslashes ($this->_query);
-                $sql .= "(location like '%$mysearchterm%'  ";
-                $sql .= "OR description like '%$mysearchterm%' ";
-                $sql .= "OR title like '%$mysearchterm%') ";
+                $sql .= "(location LIKE '%$mysearchterm%'  ";
+                $sql .= "OR description LIKE '%$mysearchterm%' ";
+                $sql .= "OR title LIKE '%$mysearchterm%') ";
             } 
             elseif($this->_keyType == 'all') {
                 //must contain ALL of the keywords
@@ -557,9 +535,9 @@ class Search {
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
                     $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(location like '%$mysearchterm%' OR ";
-                    $tmp .= "description like '%$mysearchterm%' OR ";
-                    $tmp .= "title like '%$mysearchterm%') AND ";
+                    $tmp .= "(location LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "description LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "title LIKE '%$mysearchterm%') AND ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 4);
                 $sql .= $tmp;
@@ -569,9 +547,9 @@ class Search {
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
                     $mysearchterm = addslashes (trim ($mysearchterm));
-                    $tmp .= "(location like '%$mysearchterm%' OR ";
-                    $tmp .= "description like '%$mysearchterm%' OR ";
-                    $tmp .= "title like '%$mysearchterm%') OR ";
+                    $tmp .= "(location LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "description LIKE '%$mysearchterm%' OR ";
+                    $tmp .= "title LIKE '%$mysearchterm%') OR ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 3);
                 $sql .= "($tmp)";
@@ -580,9 +558,9 @@ class Search {
             {
                 $mywords[] = $this->_query;
                 $mysearchterm = addslashes ($this->_query);
-                $sql .= "(location like '%$mysearchterm%'  ";
-                $sql .= "OR description like '%$mysearchterm%' ";
-                $sql .= "OR title like '%$mysearchterm%')  ";
+                $sql .= "(location LIKE '%$mysearchterm%'  ";
+                $sql .= "OR description LIKE '%$mysearchterm%' ";
+                $sql .= "OR title LIKE '%$mysearchterm%')  ";
             }
 
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -593,6 +571,7 @@ class Search {
                 $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
                 $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
             }
+            $sql .= COM_getPermSQL ('AND');
             $sql .= "ORDER BY datestart desc";
             $result_events = DB_query($sql);
             $nrows_events = DB_numRows($result_events);
@@ -610,27 +589,25 @@ class Search {
             // make sure data elements are in an array and in the same order as your
             // headings above!
             while ($A = DB_fetchArray($result_events)) {
-                if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                    if ($A['allday'] == 0) {
-                        $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - ' . $A['dateend'] . ' ' . $A['timeend'];
-                    } else {
-                        if ($A['datestart'] <> $A['dateend']) {
-                            $fulldate = $A['datestart'] . ' - ' . $A['dateend'] . ' ' . $LANG09[35];
-                        } else {
-                            $fulldate = $A['datestart'] . ' ' . $LANG09[35];
-                        }
-                    }
-                    $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $A['title'] = str_replace('$','&#36;',$A['title']);
-                    $row = array('<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '">' . $A['title'] . '</a>',
-                                $fulldate,
-                                $A['location'],$A['description']);
-                    $event_results->addSearchResult($row);
-                    $event_results->num_searchresults++;
+                if ($A['allday'] == 0) {
+                    $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - '
+                              . $A['dateend'] . ' ' . $A['timeend'];
                 } else {
-                    // user is not allowed to see this item so don't count it either
-                    $event_results->num_itemssearched--;
+                    if ($A['datestart'] <> $A['dateend']) {
+                        $fulldate = $A['datestart'] . ' - ' . $A['dateend']
+                                  . ' ' . $LANG09[35];
+                    } else {
+                        $fulldate = $A['datestart'] . ' ' . $LANG09[35];
+                    }
                 }
+                $thetime = COM_getUserDateTimeFormat ($A['day']);
+                $A['title'] = str_replace ('$', '&#36;', $A['title']);
+                $row = array ('<a href="' . $_CONF['site_url']
+                              . '/calendar_event.php?eid=' . $A['eid'] . '">'
+                              . $A['title'] . '</a>',
+                              $fulldate, $A['location'], $A['description']);
+                $event_results->addSearchResult($row);
+                $event_results->num_searchresults++;
             }
         } else {
             $event_results = new Plugin();
@@ -1022,10 +999,23 @@ class Search {
             $inlist = implode(',', $searchusers);
             
             if (!empty ($inlist)) {
-                $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist) ORDER by username");
+                $sql = "SELECT uid,username,fullname FROM {$_TABLES['users']} WHERE uid IN ($inlist)";
+                if (isset ($_CONF['show_fullname']) &&
+                        ($_CONF['show_fullname'] == 1)) {
+                    /* Caveat: This will group all users with an emtpy fullname
+                     *         together, so it's not exactly sorted by their
+                     *         full name ...
+                     */
+                    $sql .= ' ORDER BY fullname,username';
+                } else {
+                    $sql .= ' ORDER BY username';
+                }
+                $result = DB_query ($sql);
                 $useroptions = '';
                 while ($A = DB_fetchArray($result)) {
-                    $useroptions .= '<option value="' . $A['uid'] . '">' . $A['username'] . '</option>';
+                    $useroptions .= '<option value="' . $A['uid'] . '">'
+                        . $this->_displayName ($A['username'], $A['fullname'])
+                        . '</option>';
                 }
                 $searchform->set_var('author_option_list', $useroptions);
                 $searchform->parse('author_form_element', 'authors', true);
@@ -1043,7 +1033,7 @@ class Search {
     
         return $retval;
     }
-    
+
     /**
     * Kicks off the appropriate search(es)
     *
@@ -1071,30 +1061,30 @@ class Search {
 
         // Have plugins do their searches
         list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author, $this->_keyType);
-        
+
         // Add the core GL object search results to plugin results
         $nrows_plugins = $nrows_plugins + $this->story_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->comment_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->link_results->num_searchresults;
         $nrows_plugins = $nrows_plugins + $this->event_results->num_searchresults;
-        
+
         $total_plugins = $total_plugins + $this->story_results->num_itemssearched;
         $total_plugins = $total_plugins + $this->comment_results->num_itemssearched;
         $total_plugins = $total_plugins + $this->link_results->num_itemssearched;
         $total_plugins = $total_plugins + $this->event_results->num_itemssearched;
-        
+
         // Move GL core objects to front of array
         array_unshift($result_plugins, $this->story_results, $this->comment_results, $this->link_results, $this->event_results);
-        
+
         // Searches are done, stop timer
         $searchtime = $searchtimer->stopTimer();
-      
+
         // Format results
         $retval = $this->_formatResults($nrows_plugins, $total_plugins, $result_plugins, $searchtime);
-        
+
         return $retval;
     }
-    
+
 }
 
 ?>
