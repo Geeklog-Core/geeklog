@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.133 2002/08/08 08:09:37 dhaun Exp $
+// $Id: lib-common.php,v 1.134 2002/08/08 10:05:29 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2404,7 +2404,7 @@ function COM_printUpcomingEvents($help='',$title='')
         $iterations = 1;
     }
 
-    $output = 0;
+    $eventsFound = 0;
     for ($z = 1; $z <= $iterations; $z++) {
         if ($z == 2) {
             $allEvents = DB_query($personaleventsql);
@@ -2425,7 +2425,7 @@ function COM_printUpcomingEvents($help='',$title='')
             $theEvent   = DB_fetchArray($allEvents);
 
             if (SEC_hasAccess($theEvent['owner_id'],$theEvent['group_id'],$theEvent['perm_owner'],$theEvent['perm_group'],$theEvent['perm_members'],$theEvent['perm_anon']) > 0) {
-                $output++;
+                $eventsFound++;
                 if (!$headline) {
                     if ($z == 2) {
                         if ($numRows > 0)
@@ -2488,12 +2488,12 @@ function COM_printUpcomingEvents($help='',$title='')
             $theRow++;
         }
 
-        if (($output == 0) OR ($totalrows == 0 AND ($iterations == 1 OR ($iterations == 2 AND $z == 2)))) {
-            // There aren't any upcoming events, show a nice message
-            $retval .= $LANG01[89];
-        }
 
     } // end for z
+    if ($eventsFound == 0) {
+        // There aren't any upcoming events, show a nice message
+        $retval .= $LANG01[89];
+    }
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 
     return $retval;
