@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.295 2004/02/28 21:36:08 vinny Exp $
+// $Id: lib-common.php,v 1.296 2004/02/29 03:53:18 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -67,6 +67,7 @@ $_COM_VERBOSE = false;
 */
 
 require_once( '/path/to/geeklog/config.php' );
+
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -5095,7 +5096,7 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
 {
     $rel = array();
 
-    preg_match_all( "/(<a.*?href=\"(.*?)\".*?>)(.*?)(<\/a>)/", $fulltext, $matches );
+    preg_match_all( "/(<a.*?href=\"(.*?)\".*?>)(.*?)(<\/a>)/i", $fulltext, $matches );
     for ( $i=0; $i< count( $matches[0] ); $i++ )
     {
         $matches[3][$i] = strip_tags( $matches[3][$i] );
