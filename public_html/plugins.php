@@ -49,7 +49,7 @@
 * -----         ----            -----------
 ***********************************************************************/
 function CallFunctionForAllPlugins($function_name) {
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
         $nrows = mysql_num_rows($result);
         for ($i = 1; $i <= $nrows; $i++) {
                 $A = mysql_fetch_array($result);
@@ -178,7 +178,7 @@ function HandlePluginComment($type, $id) {
 * -----         ----            -----------
 ***********************************************************************/
 function ShowPluginStats($showsitestats) {
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
 	$nrows = mysql_num_rows($result);
 	for ($i = 1; $i <= $nrows; $i++) {
 		$A = mysql_fetch_array($result);
@@ -222,7 +222,7 @@ function ShowPluginStats($showsitestats) {
 * -----         ----            -----------
 ***********************************************************************/
 function DoPluginSearches($query, $datestart, $dateend, $topic, $author) {
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
 	$nrows = mysql_num_rows($result);
 	$nrows_plugins = 0;
 	$total_plugins = 0;
@@ -292,7 +292,7 @@ function GetPluginSearchTypes() {
 * -----         ----            -----------
 ***********************************************************************/
 function GetPluginSubmissionCounts() {
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
         $nrows = mysql_num_rows($result);
 	$num = 0;
         for ($i = 1; $i <= $nrows; $i++) {
@@ -511,7 +511,7 @@ function SavePluginSubmission($type, $A) {
 ***********************************************************************/
 function ShowPluginModerationOptions() {
 	global $CONF;
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
 	$nrows = mysql_num_rows($result);
 	for ($i = 1; $i <= $nrows; $i++) {
 		$A = mysql_fetch_array($result);
@@ -549,7 +549,7 @@ function ShowPluginModerationOptions() {
 ***********************************************************************/
 function ShowPluginModerationLists() {
 	global $CONF;
-	$result = dbquery('SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1');
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}plugins WHERE pi_enabled = 1");
 	$nrows = mysql_num_rows($result);
 	for ($i = 1; $i <=$nrows; $i++) {
 		$A = mysql_fetch_array($result);
