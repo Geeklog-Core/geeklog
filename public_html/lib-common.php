@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.396 2004/11/06 17:13:48 blaine Exp $
+// $Id: lib-common.php,v 1.397 2004/11/13 17:44:14 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2910,6 +2910,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         $A['title'] = stripslashes( $A['title'] );
         $A['title'] = str_replace( '$', '&#36;', $A['title'] );
+        $A['title'] = htmlentities($A['title']);
 
         // and finally: format the actual text of the comment
         $A['comment'] = stripslashes( $A['comment'] );
