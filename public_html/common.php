@@ -1135,7 +1135,6 @@ function hit() {
 function PrintUpcomingEvents() {
   global $LANG01,$CONF;
 
-  startblock($LANG01[78]);
 
   $eventSql = "select eid, title, url, datestart, dateend from events
   where dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14)
@@ -1143,6 +1142,11 @@ function PrintUpcomingEvents() {
 
   $allEvents = dbquery($eventSql);
   $numRows   = mysql_num_rows($allEvents);
+
+  #bail if there aren't any events
+  if ($numRows == 0) return;
+
+  startblock($LANG01[78]);
 
   $numDays   = 0;         // Without limits, I'll force them.
   $theRow    = 1;         // Start with today!
