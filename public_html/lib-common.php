@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.38 2002/02/27 16:02:17 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.39 2002/03/01 16:32:25 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2082,11 +2082,15 @@ function COM_emailUserTopics()
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
         . "{$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
+    COM_errorLog('usersql = ' . $usersql);
     $users = DB_query($usersql);
     $nrows = DB_numRows($users);
+    // $file = @fopen('testemail.txt',w);
+    // fputs($file, "got $nrows users who want stories emailed to them\n");
 
     // For each user, pull the stories they want and email it to them
-    for ($x = 1; $x <= $nrows; $x++) {
+    for ($x = 0; $x < $nrows; $x++) {
+        //fputs($file, "inside for loop\n");
         $U = DB_fetchArray($users);
         $cur_day = strftime("%D",time());
         $result = DB_query("SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'");
@@ -2094,6 +2098,7 @@ function COM_emailUserTopics()
         $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '"
             . $L['lastrun'] . "' AND (";
         $ETIDS = explode(' ',$U['etids']);
+        // fputs(file, "got $ETIDS[$x] for a category\n");
 
         for ($i = 0; $i < sizeof($ETIDS); $i++) {
             if ($i == (sizeof($ETIDS) - 1)) {
@@ -2103,15 +2108,18 @@ function COM_emailUserTopics()
             }
         }
 
+        //fputs($file, $storysql . "\n");
+        COM_errorLog('storysql = ' . $storysql);
         $stories = DB_query($storysql);
         $nsrows = DB_numRows($stories);
+        // fputs($file, "got $nsrows stories that need to be emailed to user: {$U['username']}\n");
 
         if ($nsrows == 0) {
             // If no new stories where pulled then exit out
             return;
         }
 
-        $mailtext = $LANG08[29] . date("Y-m-d",time());  . "\n";
+        $mailtext = "{$LANG08[27]}\n";
         for ($y=0; $y<$nsrows; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
@@ -2127,12 +2135,15 @@ function COM_emailUserTopics()
         $mailtext .= "\n------------------------------\n";
         $toemail = $U['email'];
                 $mailto = "{$U['username']} <{$toemail}>";
-        $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
-        $subject = strip_tags(stripslashes($_CONF['site_name'] . $LANG08[30] . strftime('%m/%d/%Y',time())));
+        $mailfrom = "FROM: Iowa Outdoors <noreply@iowaoutdoors.org>";                        $subject = strip_tags(stripslashes("Iowa Outdoors Daily Newsletter for " . strftime('%m/%d/%Y',time())));
+        // fputs($file,"to: $toemail, from: $mailfrom, sub: $subject\ntext: $mailtext");
+        if ($U['username'] == 'Tony') {
         @mail($toemail,$subject,$mailtext,$mailfrom);
+        }
     }
     $tmpdate = date("Y-m-d H:i:s",time());
     DB_query("UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'");
+    // fclose($file);
 }
 
 /**
@@ -2202,28 +2213,30 @@ function COM_whatsNewBlock($help='',$title='')
     if ($nrows > 0) {
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-            $robtime = strftime("%D %T",$A['day']);
-            $itemlen = strlen($A['title']);
-            if ($A['cmt_type'] == 'story') {
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
-            } else {
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&aid=-1#comments">';
-            }
-			
-            // Trim the length if over 20 characters
-			
-            if ($itemlen > 20) {
-                $retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
-                if ($A['dups'] > 1) {
-                    $retval .= '[+' . $A['dups'] . ']';
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                $robtime = strftime("%D %T",$A['day']);
+                $itemlen = strlen($A['title']);
+                if ($A['cmt_type'] == 'story') {
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
+                } else {
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&aid=-1#comments">';
                 }
-                $retval .= '</a></li>' . LB;  
-            } else {
-                $retval .= '<li class="storyclose">' . $urlstart . $A['title'];
-                if ($A['dups'] > 1) {
-                    $retval .= '[+' . $A['dups'] . ']';
+			
+                // Trim the length if over 20 characters
+			
+                if ($itemlen > 20) {
+                    $retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
+                    if ($A['dups'] > 1) {
+                        $retval .= '[+' . $A['dups'] . ']';
+                    }
+                    $retval .= '</a></li>' . LB;  
+                } else {
+                    $retval .= '<li class="storyclose">' . $urlstart . $A['title'];
+                    if ($A['dups'] > 1) {
+                        $retval .= '[+' . $A['dups'] . ']';
+                    }
+                    $retval .= '</a></li>' . LB;
                 }
-                $retval .= '</a></li>' . LB;
             }
         }
     } else {
@@ -2248,29 +2261,30 @@ function COM_whatsNewBlock($help='',$title='')
     if ($nrows > 0) {
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-			
-            // Need to reparse the date from the link id
-            $myyear  = substr($A['lid'],0,4);
-            $mymonth = substr($A['lid'],4,2);
-            $myday   = substr($A['lid'],6,2);
-            $myhour  = substr($A['lid'],8,2);
-            $mymin   = substr($A['lid'],10,2);
-            $mysec   = substr($A['lid'],12,2);
-            $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-            $convtime = strtotime($newtime);
+		    if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {	
+                // Need to reparse the date from the link id
+                $myyear  = substr($A['lid'],0,4);
+                $mymonth = substr($A['lid'],4,2);
+                $myday   = substr($A['lid'],6,2);
+                $myhour  = substr($A['lid'],8,2);
+                $mymin   = substr($A['lid'],10,2);
+                $mysec   = substr($A['lid'],12,2);
+                $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
+                $convtime = strtotime($newtime);
 
-            if ($convtime > $desired) {
-                $itemlen = strlen($A['title']);
+                if ($convtime > $desired) {
+                    $itemlen = strlen($A['title']);
 
-                // Trim the length if over 16 characters, and strip the 'http://'
-                $foundone = 1;
+                    // Trim the length if over 16 characters, and strip the 'http://'
+                    $foundone = 1;
 
-                if ($itemlen > 16) {
-                    $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">' 
-                        . substr($A['title'],0,16) . '...</a></li>' . LB;
-                } else {
-                    $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">'
-                        . substr($A['title'],0,$itemlen) . '</a></li>' . LB;
+                    if ($itemlen > 16) {
+                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">' 
+                            . substr($A['title'],0,16) . '...</a></li>' . LB;
+                    } else {
+                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">'
+                            . substr($A['title'],0,$itemlen) . '</a></li>' . LB;
+                    }
                 }
             }
         }
