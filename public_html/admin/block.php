@@ -88,12 +88,12 @@ function editdefaultblock($A) {
                 next($usergroups);
         }
         print "</SELECT></td></tr>";
-        print "<tr><td align=center colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 0) {
+        print "<tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
+        if ($A["private_flag"] == 1) {
                 print "CHECKED";
         }
         print "></td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 	print "</form></table>";
         endblock();
 }
@@ -192,12 +192,12 @@ function editblock($bid="") {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
 	}
-        print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 0) {
+        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
+        if ($A["private_flag"] == 1) {
                 print "CHECKED";
         }
         print "></td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 	print "<tr><td colspan=2><hr></td></tr>";
 
 	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
@@ -257,9 +257,9 @@ function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdat
                 }
 	
 		if ($private_flag == "on") {
-                        $private_flag = 0;
-                } else {
                         $private_flag = 1;
+                } else {
+                        $private_flag = 0;
 		}
 		dbsave("blocks","bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,private_flag","$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$private_flag","admin/block.php?msg=11");
 	} else {

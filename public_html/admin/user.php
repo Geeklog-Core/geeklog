@@ -86,14 +86,12 @@ function edituser($uid="") {
 		print "<tr><td colspan=2><hr></td></tr>";
 		print "<tr><td colspan=2><b>{$LANG_ACCESS[securitygroups]}</b></td></tr><tr><td colspan=2>";
 		print "<P>$LANG_ACCESS[securitygroupsmsg]</P>";
-		errorlog("GOT this for uid = $uid",1);
 		$usergroups = getusergroups($uid);
 		if (is_array($usergroups) && !empty($uid)) {
 			$selected = implode(' ',$usergroups);
 		} else {
 			$selected = '';
 		}
-		errorlog("GOT this for groups for user = " . $selected,1);
 		checklist('groups','grp_id,grp_name','',$selected);
 	} else {
 		#user doesn't have the rights to edit a user's groups so set to -1 so we know not to

@@ -127,14 +127,16 @@ function storyeditor($sid,$mode="") {
 		#they can't set the group then
 		print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
 	}
-	print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
-	if ($A["private_flag"] == 0) {
+	print "</td></tr><tr><td align=right>{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
+	if ($A["private_flag"] == 1) {
 		print "CHECKED";
 	}
 	print "></td></tr>";
-	print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+	print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 	print "<tr><td colspan=2><hr><td></tr>";
-	print "<tr><td align=right>{$LANG24[15]}:</td><td>". strftime($CONF["date"],$A["unixdate"]) . "<input type=hidden name=unixdate value={$A["unixdate"]}></td></tr>";
+	$curtime = getuserdatetimeformat($A["unixdate"]);
+	print "<tr><td align=right>{$LANG24[15]}:</td><td>". $curtime[0] . "<input type=hidden name=unixdate value={$A["unixdate"]}></td></tr>";
+	#print "<tr><td align=right>{$LANG24[15]}:</td><td>". strftime($CONF["date"],$A["unixdate"]) . "<input type=hidden name=unixdate value={$A["unixdate"]}></td></tr>";
 	print "<tr><td align=right>{$LANG24[13]}:</td><td><input type=text size=48 maxlength=255 name=title value=\"" . stripslashes($A["title"]) . "\"></td></tr>";
 	print "<tr><td align=right>{$LANG24[14]}:</td><td><select name=tid>";
 	optionlist("topics","tid,topic",$A["tid"]);
@@ -196,6 +198,7 @@ function liststories($page="1") {
 			} else {
 				$access = $LANG_ACCESS[readonly];
 			}
+			$curtime = getuserdatetimeformat($A["unixdate"]);
 			print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
 			print "<td align=left><a href={$CONF["site_url"]}/article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
 			print "<td align=center>$access</td>";
@@ -204,7 +207,8 @@ function liststories($page="1") {
 			else
 				print "<td>{$LANG24[36]}</td>";
 			print "<td>" . getitem("users","username","uid = {$A["uid"]}") . "</td>";
-			print "<td>" . strftime("%x %X",$A["unixdate"]) . "</td>";
+			#print "<td>" . strftime("%x %X",$A["unixdate"]) . "</td>";
+			print "<td>" . $curtime[0] . "</td>";
 			print "<td>{$A["tid"]}</td><td>";
 			if ($A["featured"] == 1) {
 				print "{$LANG24[35]}</td></tr>";
@@ -242,9 +246,9 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 			$draft_flag = 0;
 
 		if ($private_flag == "on")
-			$private_flag = 0;
-		else
 			$private_flag = 1;
+		else
+			$private_flag = 0;
 
 		if ($featured == "1") {
 			#there can only be one non-draft featured story
