@@ -3,11 +3,19 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Introduced $_CONF['left_blocks_in_footer'] config option that makes the
+  {left_blocks} variable available in footer.thtml (disabling it in header.thtml
+  at the same time). This is really only useful for two-column layouts where
+  you want the side blocks in the right column [Dirk]
+- Polls linked from the stats page now display the result of the poll instead
+  of letting the user vote on them (feature request #267) [Dirk]
+- In the Admin's list of events and stories, don't list items for which the
+  Admin doesn't have read access (bug #269). [Dirk]
 - Story IDs are now editable (just like the IDs of static pages). [Dirk]
   Important: Update the story editor template (admin/story/storyeditor.thtml)!
 - Fixed a bug that reset every user's password request as soon as some user
   changed their account information (bug #265) [Dirk]
-- Added support for the URL rewriting to portal.php [Dirk]
+- Added support for URL rewriting to portal.php [Dirk]
 - The links for the What's Related block are stored in the 'related' field in
   the gl_stories table again. Parsing the story for links every time it is
   rendered uses too much CPU power (with apologies to groklaw.net) [Dirk]

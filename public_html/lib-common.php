@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.373 2004/09/08 09:41:15 dhaun Exp $
+// $Id: lib-common.php,v 1.374 2004/09/13 19:02:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -444,7 +444,7 @@ function COM_getBlockTemplate( $blockname, $which )
 * @return   array   All installed themes
 */
 
-function COM_getThemes($all = false)
+function COM_getThemes( $all = false )
 {
     global $_CONF;
 
@@ -510,7 +510,7 @@ function COM_renderMenu( &$header, $plugin_menu )
         $custom_entries = array();
         if( function_exists( 'CUSTOM_menuEntries' ))
         {
-            $custom_entries = CUSTOM_menuEntries ();
+            $custom_entries = CUSTOM_menuEntries();
         }
         if( sizeof( $custom_entries ) == 0 )
         {
@@ -903,44 +903,56 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
         }
     }
 
-    /* Check if an array has been passed that includes the name of a plugin
-     * function or custom function
-     * This can be used to take control over what blocks are then displayed
-     */
-    if( is_array( $what ))
-    {
-        $function = $what['0'];
-        if( function_exists( $function ))
-        {
-            $lblocks = $function( $what['1'], 'left' );
-            if( $lblocks != '' )
-            {
-                $header->set_var( 'geeklog_blocks', $lblocks);
-                $header->parse( 'left_blocks', 'leftblocks', true );
-           }
-        }
-    }
-    elseif( $what <> 'none' )
-    {
-        // Now show any blocks -- need to get the topic if not on home page
-        $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
-        $header->parse( 'left_blocks', 'leftblocks', true );
-    }
-    else
+    if( $_CONF['left_blocks_in_footer'] == 1 )
     {
         $header->set_var( 'geeklog_blocks', '' );
         $header->set_var( 'left_blocks', '' );
     }
+    else
+    {
+        $lblocks = '';
 
-    // Call any plugin that may want to include Extra Metatags or Javascript functions
-    $header->set_var( 'plg_headercode', PLG_getHeaderCode());
+        /* Check if an array has been passed that includes the name of a plugin
+         * function or custom function
+         * This can be used to take control over what blocks are then displayed
+         */
+        if( is_array( $what ))
+        {
+            $function = $what[0];
+            if( function_exists( $function ))
+            {
+                $lblocks = $function( $what[1], 'left' );
+            }
+        }
+        else if( $what <> 'none' )
+        {
+            // Now show any blocks -- need to get the topic if not on home page
+            $lblocks = COM_showBlocks( 'left', $topic );
+        }
+
+        if( empty( $lblocks ))
+        {
+            $header->set_var( 'geeklog_blocks', '' );
+            $header->set_var( 'left_blocks', '' );
+        }
+        else
+        {
+            $header->set_var( 'geeklog_blocks', $lblocks );
+            $header->parse( 'left_blocks', 'leftblocks', true );
+        }
+    }
+
+    // Call any plugin that may want to include extra Meta tags
+    // or Javascript functions
+    $header->set_var( 'plg_headercode', PLG_getHeaderCode() );
 
     // Call to plugins to set template variables in the header
-    PLG_templateSetVars ('header', $header);
+    PLG_templateSetVars( 'header', $header );
 
-    // The following line allows users to embed PHP in their templates.  This
+    // The following lines allow users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
-    // prove useful at times...don't use PHP in templates if you can live without it
+    // prove useful at times ...
+    // Don't use PHP in templates if you can live without it!
 
     $tmp = $header->parse( 'index_header', 'header' );
 
@@ -967,7 +979,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 */
 function COM_siteFooter( $rightblock = false, $custom = '' )
 {
-    global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic;
+    global $_CONF, $_TABLES, $LANG01, $_PAGE_TIMER, $topic;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -982,7 +994,11 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
     $footer = new Template( $_CONF['path_layout'] );
 
     // Set template file
-    $footer->set_file( array( 'footer'=>'footer.thtml', 'rightblocks'=>'rightblocks.thtml' ));
+    $footer->set_file( array(
+            'footer'      => 'footer.thtml',
+            'rightblocks' => 'rightblocks.thtml',
+            'leftblocks'  => 'leftblocks.thtml'
+            ));
 
     // Do variable assignments
     DB_change( $_TABLES['vars'], 'value', 'value + 1', 'name', 'totalhits', '', true );
@@ -1016,7 +1032,7 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
     $footer->set_var( 'geeklog_version', VERSION );
 
     /* Check if an array has been passed that includes the name of a plugin
-     * function or custom function
+     * function or custom function.
      * This can be used to take control over what blocks are then displayed
      */
     if( is_array( $custom )) 
@@ -1034,14 +1050,47 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
     if( $rightblock && !empty( $rblocks ))
     {
         $footer->set_var( 'geeklog_blocks', $rblocks );
-        $footer->parse( 'right_blocks', 'rightblocks', true);
+        $footer->parse( 'right_blocks', 'rightblocks', true );
     }
     else
     {
         $footer->set_var( 'geeklog_blocks', '' );
         $footer->set_var( 'right_blocks', '' );
     }
-    
+
+    if( $_CONF['left_blocks_in_footer'] == 1 )
+    {
+        $lblocks = '';
+
+        /* Check if an array has been passed that includes the name of a plugin
+         * function or custom function
+         * This can be used to take control over what blocks are then displayed
+         */
+        if( is_array( $custom ))
+        {
+            $function = $custom[0];
+            if( function_exists( $function ))
+            {
+                $lblocks = $function( $custom[1], 'left' );
+            }
+        }
+        else
+        {
+            $lblocks = COM_showBlocks( 'left', $topic );
+        }
+
+        if( empty( $lblocks ))
+        {
+            $footer->set_var( 'geeklog_blocks', '' );
+            $footer->set_var( 'left_blocks', '' );
+        }
+        else
+        {
+            $footer->set_var( 'geeklog_blocks', $lblocks );
+            $footer->parse( 'left_blocks', 'leftblocks', true );
+        }
+    }
+
     // Global centerspan variable set in index.php
     if( isset( $GLOBALS['centerspan'] ))
     {
@@ -1415,7 +1464,7 @@ function COM_featuredCheck()
 *
 */
 
-function COM_errorLog($logentry, $actionid = '')
+function COM_errorLog( $logentry, $actionid = '' )
 {
     global $_CONF, $LANG01;
 
@@ -1840,10 +1889,12 @@ function COM_showTopics( $topic='' )
            $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
-    if( $_USER['uid'] > 1 ) {
+    if( $_USER['uid'] > 1 )
+    {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
-        if (!empty ($tids)) {
+        if( !empty( $tids ))
+        {
             $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
                  . "'))" . COM_getPermSQL( 'AND' );
         }
@@ -1868,11 +1919,14 @@ function COM_showTopics( $topic='' )
 
     $retval = '';
     $sections = new Template( $_CONF['path_layout'] );
-    if (isset($_BLOCK_TEMPLATE['topicoption']))  {
+    if( isset( $_BLOCK_TEMPLATE['topicoption'] ))
+    {
         $templates = explode( ',', $_BLOCK_TEMPLATE['topicoption'] );
         $sections->set_file( array( 'option' => $templates[0],
                                      'current' => $templates[1] ));
-    } else {
+    }
+    else
+    {
         $sections->set_file( array( 'option' => 'topicoption.thtml',
                                     'inactive' => 'topicoption_off.thtml' ));
     }
@@ -1909,7 +1963,7 @@ function COM_showTopics( $topic='' )
              . COM_getPermSQL( 'AND' )
              . ' GROUP BY tid';
         $rcount = DB_query( $sql );
-        while ( $C = DB_fetchArray( $rcount ))
+        while( $C = DB_fetchArray( $rcount ))
         {
             $storycount[$C['tid']] = $C['count'];
         }
@@ -1920,13 +1974,13 @@ function COM_showTopics( $topic='' )
         $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['storysubmission']} "
              . ' GROUP BY tid';
         $rcount = DB_query( $sql );
-        while ( $C = DB_fetchArray( $rcount ))
+        while( $C = DB_fetchArray( $rcount ))
         {
             $submissioncount[$C['tid']] = $C['count'];
         }
     }
 
-    while ( $A = DB_fetchArray( $result ) )
+    while( $A = DB_fetchArray( $result ) )
     {
         $topicname = stripslashes( $A['topic'] );
         $sections->set_var( 'option_url', $_CONF['site_url']
@@ -1940,9 +1994,12 @@ function COM_showTopics( $topic='' )
 
             if( $_CONF['showstorycount'] )
             {
-                if ( empty( $storycount[$A['tid']] ) ) {
+                if( empty( $storycount[$A['tid']] ))
+                {
                     $countstring .= 0;
-                } else {
+                }
+                else
+                {
                     $countstring .= $storycount[$A['tid']];
                 }
             }
@@ -1953,7 +2010,7 @@ function COM_showTopics( $topic='' )
                 {
                     $countstring .= '/';
                 }
-                if ( empty( $submissioncount[$A['tid']] ) ) {
+                if( empty( $submissioncount[$A['tid']] ) ) {
                     $countstring .= 0;
                 } else {
                     $countstring .= $submissioncount[$A['tid']];
@@ -2013,11 +2070,14 @@ function COM_userMenu( $help='', $title='' )
     if( $_USER['uid'] > 1 )
     {
         $usermenu = new Template( $_CONF['path_layout'] );
-        if (isset($_BLOCK_TEMPLATE['useroption']))  {
+        if( isset( $_BLOCK_TEMPLATE['useroption'] ))
+        {
             $templates = explode( ',', $_BLOCK_TEMPLATE['useroption'] );
             $usermenu->set_file( array( 'option' => $templates[0],
                                         'current' => $templates[1] ));
-        } else {
+        }
+        else
+        {
            $usermenu->set_file( array( 'option' => 'useroption.thtml',
                                        'current' => 'useroption_off.thtml' ));
         }
@@ -2171,11 +2231,14 @@ function COM_adminMenu( $help = '', $title = '' )
         $thisUrl = COM_getCurrentURL();
 
         $adminmenu = new Template( $_CONF['path_layout'] );
-        if (isset($_BLOCK_TEMPLATE['adminoption']))  {
+        if( isset( $_BLOCK_TEMPLATE['adminoption'] ))
+        {
             $templates = explode( ',', $_BLOCK_TEMPLATE['adminoption'] );
             $adminmenu->set_file( array( 'option' => $templates[0],
                                          'current' => $templates[1] ));
-        } else {
+        }
+        else
+        {
             $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
                                          'current' => 'adminoption_off.thtml' ));
         }
@@ -2529,7 +2592,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'num_comments', $nrows );
     $commentbar->set_var( 'comment_type', $type );
 
-    if ( $type == 'poll' )
+    if( $type == 'poll' )
     {
         $commentbar->set_var( 'story_link', $_CONF['site_url']
                 . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
@@ -2575,16 +2638,18 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'lang_login_logout', $LANG01[61] );
     }
 
-    if ( $page == 'comment.php' ) 
+    if( $page == 'comment.php' ) 
     {
         $commentbar->set_var( 'parent_url', 
                               $_CONF['site_url'] . '/comment.php' );
         $hidden = '';
-        if ( $_REQUEST['mode'] == 'view' ) {
+        if( $_REQUEST['mode'] == 'view' )
+        {
             $hidden .= '<input type="hidden" name="cid" value="' . $_REQUEST['cid'] . '">';
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['cid'] . '">';
         }
-        else if ( $_REQUEST['mode'] == 'display' ) {
+        else if( $_REQUEST['mode'] == 'display' )
+        {
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
         }
         $commentbar->set_var( 'hidden_field', $hidden . 
@@ -2614,7 +2679,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'order_selector', $selector);
 
     // Mode
-    if ( $page == 'comment.php' ) 
+    if( $page == 'comment.php' ) 
     {
         $selector = '<select name="format">';
     }
@@ -2672,7 +2737,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $_CONF['comment_indent'] = 25;
     }
 
-    if ( $preview )
+    if( $preview )
     {
         $A = $comments;   
         $mode = 'flat';
@@ -2682,7 +2747,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A = DB_fetchArray($comments);
     }
 
-    if ( empty( $A ) )
+    if( empty( $A ) )
     {
         return '';
     }
@@ -2690,7 +2755,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     do
     {
         // determines indentation for current comment
-        if ( $mode == 'threaded' || $mode == 'nested' )
+        if( $mode == 'threaded' || $mode == 'nested' )
         {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
@@ -2845,7 +2910,8 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'pid', $A['cid'] );
             $retval .= $template->parse( 'output', 'comment' ); 
         }
-    } while ($A = DB_fetchArray($comments));
+    }
+    while( $A = DB_fetchArray( $comments ));
 
     return $retval;
 }
@@ -2877,11 +2943,11 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
     {
         $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
-        if ( empty( $order ) ) 
+        if( empty( $order ) ) 
         {
             $order = $U['commentorder'];
         }
-        if ( empty( $mode ) ) 
+        if( empty( $mode ) ) 
         {
             $mode = $U['commentmode'];
         }
@@ -2908,7 +2974,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $page = 1;
     }
 
-    $start = $limit * ($page - 1);
+    $start = $limit * ( $page - 1 );
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'commentarea' => 'startcomment.thtml' ));
@@ -2917,20 +2983,23 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'commentbar',
                         COM_commentBar( $sid, $title, $type, $order, $mode));
     
-    if ( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' )
+    if( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' )
     {
         // build query
         switch( $mode )
         {
             case 'flat':
-                if ( $cid ) {
+                if( $cid )
+                {
                     $count = 1;
 
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
                          . "unix_timestamp(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid";
-                } else {
+                }
+                else
+                {
                     $count = DB_count( $_TABLES['comments'], 'sid', $sid );
             
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
@@ -2953,16 +3022,17 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $cOrder = 'c.lft ASC'; 
                 }                            
 
-                // We can simplify the query, and hence increase performance when pid=0
-                // (when fetching all the comments for a given sid)
-                if ( $cid ) {
+                // We can simplify the query, and hence increase performance
+                // when pid = 0 (when fetching all the comments for a given sid)
+                if ( $cid )
+                {
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
                         . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
                         . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                         . "AND c2.cid = $pid";
-                    $result = DB_query($q2);
-                    list($count) = DB_fetchArray($result);
+                    $result = DB_query( $q2 );
+                    list( $count ) = DB_fetchArray( $result );
 
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent as pindent, " 
                          . "unix_timestamp(c.date) AS nice_date "
@@ -2971,8 +3041,11 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                          . "AND c2.cid = $pid AND c.uid = u.uid "
                        . "ORDER BY $cOrder LIMIT $start, $limit";
-                } else {
-                    if ( $pid == 0 ) {
+                }
+                else
+                {
+                    if( $pid == 0 )
+                    {
                         // count the total number of applicable comments
                         $count = DB_count( $_TABLES['comments'], 'sid', $sid );
 
@@ -2981,7 +3054,9 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                            . "WHERE c.sid = '$sid' AND c.uid = u.uid "
                            . "ORDER BY $cOrder LIMIT $start, $limit";
-                    } else {
+                    }
+                    else
+                    {
                         // count the total number of applicable comments
                         $q2 = "SELECT COUNT(*) "
                             . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
@@ -3068,7 +3143,7 @@ function COM_checkWords( $Message )
         }
     }
 
-    return ($EditedMessage);
+    return $EditedMessage;
 }
 
 /**
@@ -3176,7 +3251,7 @@ function COM_checkHTML( $str )
         $filter->Protocols( array( 'http:', 'https:', 'ftp:' ));
     }
 
-    if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['admin_html'] ))       
+    if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['admin_html'] ))       
     {
         $html = $_CONF['user_html'];
     }
@@ -3453,10 +3528,12 @@ function COM_showBlock( $name, $help='', $title='' )
 
     $retval = '';
 
-    if ( isset( $_USER['noboxes'] ) ) {
-        if( !empty( $_USER['uid'] ) )
+    if( isset( $_USER['noboxes'] ))
+    {
+        if( !empty( $_USER['uid'] ))
         {
-            $_USER['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+            $_USER['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes',
+                                            "uid = {$_USER['uid']}" );
         }
         else
         {
@@ -3528,8 +3605,9 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $retval = '';
 
     // Get user preferences on blocks
-    if ( isset( $_USER['noboxes'] ) || isset( $_USER['boxes'] ) ) {
-        if( !empty( $_USER['uid'] ) )
+    if( isset( $_USER['noboxes'] ) || isset( $_USER['boxes'] ))
+    {
+        if( !empty( $_USER['uid'] ))
         {
             $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
             list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray( $result );
@@ -3603,8 +3681,10 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 * @return       string    HTML Formated block
 *
 */
-function COM_formatBlock($A, $noboxes=false) {
-    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+function COM_formatBlock( $A, $noboxes = false )
+{
+    global $_CONF, $_TABLES, $_USER, $LANG21, $HTTP_SERVER_VARS,
+           $topic, $page, $newstories;
 
     $retval = '';
     if( $A['type'] == 'portal' )
@@ -3634,7 +3714,8 @@ function COM_formatBlock($A, $noboxes=false) {
             if( function_exists( $function ))
             {
                 $fretval = $function();
-                if (!empty ($fretval)) {
+                if( !empty( $fretval ))
+                {
                     $retval .= $blkheader;
                     $retval .= $fretval;
                     $retval .= $blkfooter;
@@ -3712,7 +3793,7 @@ $RDFinsideitem = false;
 $RDFtag = '';
 $RDFtitle = '';
 $RDFlink = '';
-$RDFheadlines = array ();
+$RDFheadlines = array();
 
 function COM_rdfStartElement( $parser, $name, $attrs )
 {
@@ -3742,7 +3823,7 @@ function COM_rdfEndElement( $parser, $name )
     }
 }
 
-function COM_rdfCharacterData ($parser, $data)
+function COM_rdfCharacterData( $parser, $data )
 {
     global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink;
 
@@ -4376,7 +4457,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             if( $nrows == 1 )
             {
                 $newmsg = '1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82];
-                if ($newstories && ($page < 2))
+                if( $newstories && ( $page < 2 ))
                 {
                     $retval .= $newmsg . '<br>';
                 }
@@ -4390,7 +4471,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             {
                 $newmsg = $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' '
                     . $LANG01[82];
-                if ($newstories && ($page < 2))  
+                if( $newstories && ( $page < 2 ))  
                 {
                     $retval .= $newmsg . '<br>';
                 }
@@ -4605,11 +4686,14 @@ function COM_showMessage( $msg, $plugin='' )
     if( $msg > 0 )
     {
         $timestamp = strftime( $_CONF['daytime'] );
-        if ($plugin != '') {
+        if( !empty( $plugin ))
+        {
             $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
             $message = $$var;
-        } else {
+        }
+        else
+        {
             $message = $MESSAGE[$msg];
         }
         $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
@@ -5144,17 +5228,19 @@ function COM_makeList( $listofitems, $classname = '' )
 * @param type   string   type of speed limit to check, e.g. 'submit', 'comment'
 * @return       int      0 = does not apply, else: seconds since last post
 */
-function COM_checkSpeedlimit ($type = 'submit')
+function COM_checkSpeedlimit( $type = 'submit' )
 {
     global $_TABLES, $HTTP_SERVER_VARS;
 
     $last = 0;
 
-    $date = DB_getItem ($_TABLES['speedlimit'], 'date',
-                        "(type = '$type') AND (ipaddress = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}')");
-    if (!empty ($date)) {
-        $last = time () - $date;
-        if ($last == 0) {
+    $date = DB_getItem( $_TABLES['speedlimit'], 'date',
+            "(type = '$type') AND (ipaddress = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}')" );
+    if( !empty( $date ))
+    {
+        $last = time() - $date;
+        if( $last == 0 )
+        {
             // just in case someone manages to submit something in < 1 sec.
             $last = 1;
         }
@@ -5169,12 +5255,12 @@ function COM_checkSpeedlimit ($type = 'submit')
 * @param type   string   type of speed limit, e.g. 'submit', 'comment'
 *
 */
-function COM_updateSpeedlimit ($type = 'submit')
+function COM_updateSpeedlimit( $type = 'submit' )
 {
     global $_TABLES, $HTTP_SERVER_VARS;
 
-    DB_save ($_TABLES['speedlimit'], 'ipaddress,date,type',
-             "'{$HTTP_SERVER_VARS['REMOTE_ADDR']}',unix_timestamp(),'$type'");
+    DB_save( $_TABLES['speedlimit'], 'ipaddress,date,type',
+             "'{$HTTP_SERVER_VARS['REMOTE_ADDR']}',unix_timestamp(),'$type'" );
 }
 
 /**
@@ -5184,16 +5270,17 @@ function COM_updateSpeedlimit ($type = 'submit')
 * @param type         string   type of speed limit, e.g. 'submit', 'comment'
 *
 */
-function COM_clearSpeedlimit ($speedlimit = 60, $type = '')
+function COM_clearSpeedlimit( $speedlimit = 60, $type = '' )
 {
     global $_TABLES;
 
     $sql = "DELETE FROM {$_TABLES['speedlimit']} WHERE ";
-    if (!empty ($type)) {
+    if( !empty( $type ))
+    {
         $sql .= "(type = '$type') AND ";
     }
     $sql .= "(date < unix_timestamp() - $speedlimit)";
-    DB_query ($sql);
+    DB_query( $sql );
 }
 
 /**
@@ -5330,7 +5417,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $table .= '.';
     }
-    if( ($u_id <= 0) || ($u_id == $_USER['uid']) )
+    if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
     {
         $uid = $_USER['uid'];    
         $GROUPS = $_GROUPS;
@@ -5570,25 +5657,31 @@ function COM_highlightQuery( $text, $query )
 * @return int Difference of the two dates in the unit of time indicated by the interval
 *
 */
-function COM_dateDiff($interval, $date1, $date2)
+function COM_dateDiff( $interval, $date1, $date2 )
 {
     // Convert dates to timestamps, if needed.
-    if (!is_numeric($date1)) {
-        $date1 = strtotime($date1);
+    if( !is_numeric( $date1 ))
+    {
+        $date1 = strtotime( $date1 );
     }
-    
-    if (!is_numeric($date2)) {
-        $date2 = strtotime($date2);
+
+    if( !is_numeric( $date2 ))
+    {
+        $date2 = strtotime( $date2 );
     }
-    
+
     // Function roughly equivalent to the ASP "DateDiff" function
-    if ($date2 > $date1) {
+    if( $date2 > $date1 )
+    {
         $seconds = $date2 - $date1;
-    } else {
+    }
+    else
+    {
         $seconds = $date1 - $date2;
     }
-                                                                                                                                                                                         
-    switch($interval) {
+
+    switch( $interval )
+    {
         case "y":
             list($year1, $month1, $day1) = split('-', date('Y-m-d', $date1));
             list($year2, $month2, $day2) = split('-', date('Y-m-d', $date2));
@@ -5638,6 +5731,7 @@ function COM_dateDiff($interval, $date1, $date2)
             $diff = $seconds;
             break;
     }
+
     return $diff;
 }
 

@@ -117,7 +117,7 @@ or check us out in IRC at irc.freenode.net in #geeklog.</p>
 
 <h3><a name="tips">Tips and tricks</a></h3>
 
-<p><strong>Themes and WYSIWG editors:</strong>
+<p><strong><a name="wysiwyg">Themes and WYSIWYG editors:</a></strong>
 The template files used by Geeklog are not complete HTML files - they contain
 only parts of the HTML that Geeklog puts together to build a proper HTML
 document. This, however, seems to confuse some WYSIWYG HTML editors and some of
@@ -125,16 +125,16 @@ them tend to add the HTML which they think is missing from the file, thus
 making it unusable for Geeklog.<br>
 We suggest you use a simple text editor to edit your themes.</p>
 
-<p><strong>PHP in themes:</strong>
+<p><strong><a name="php">PHP in themes:</a></strong>
 You can use PHP in the <em>header</em> of a theme, i.e. in the
 <tt>header.thtml</tt> file. If you want to use custom PHP functions, you can
 put them in the file <tt>functions.php</tt> within your themes directory.</p>
 
-<p><strong>Different look for left and right blocks:</strong>
+<p><strong><a name="different-look">Different look for left and right blocks:</a></strong>
 You can give the blocks on the left and right a different look. See 
 <a href="http://www.geeklog.net/forum/viewtopic.php?forum=10&amp;showtopic=21070">this story on the Geeklog homepage</a> for details.</p>
 
-<p><strong>Polls:</strong>
+<p><strong><a name="polls">Polls:</a></strong>
 To use multi-colored bars in the graphical display of poll results, you can use
 the <code>{answer_counter}</code> and <code>{answer_odd}</code> variables in
 the <tt>pollbooth/pollvotes_bar.thtml</tt> template file.
@@ -146,6 +146,26 @@ color would give you a different color for each answer.<br>
 <code>bar{answer_odd}.gif</code> will result in <tt>bar0.gif</tt> for the first,
 third, fifth, etc. answer and <tt>bar1.gif</tt> for the second, fourth, etc.
 answer.</p>
+
+<p><strong><a name="left-blocks">Left blocks in the right column:</a></strong>
+<code>$_CONF['left_blocks_in_footer']</code> (in <tt>config.php</tt>) is a
+rather curious option. It makes the <code>{left_blocks}</code> variable
+available in the site's footer (i.e. <tt>footer.thtml</tt>) while at the same
+time disabling it in the header (<tt>header.thtml</tt>).<br>
+The idea is that this can be used for two-column layouts (one column for the
+blocks and one column for the content) but when you want to have the blocks
+on the right side. Simply moving all blocks to the right will not work as
+expected, as you'd end up with <em>no blocks</em> at all on those pages that
+normally only display the left blocks (e.g. <tt>article.php</tt> or the
+admin pages). Setting <code>$_CONF['left_blocks_in_footer'] = 1</code> will
+fix this, so that the blocks, while internally still treated as <em>left</em>
+blocks, will actually be displayed on the <em>right</em>.<br>
+The theme's <tt>header.thtml</tt>, <tt>footer.thtml</tt>, and
+<tt>leftblocks.thtml</tt> will probably need some adjustments. It is also
+recommended to leave the <code>$_CONF</code> variable unchanged in
+<tt>config.php</tt> and overwrite it in the theme's <tt>functions.php</tt>
+instead. That way, you can even leave your users a choice between, for example,
+a "normal" theme and one with the blocks on the right.</p>
 
 <h2><a name="changes">Theme changes in Geeklog 1.3.10</a></h2>
 

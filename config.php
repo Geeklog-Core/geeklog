@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.131 2004/08/25 08:41:31 dhaun Exp $
+// $Id: config.php,v 1.132 2004/09/13 19:02:54 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -529,9 +529,20 @@ $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 
+
+// Advanced theme settings
+// It is recommended to leave these unchanged and overwrite them in the theme's
+// functions.php instead.
+
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.
 $_CONF['showfirstasfeatured']   = 0;
+
+// When set to 1, this will make the {left_blocks} variable available in
+// footer.thtml (and disable it in header.thtml). This is really only useful
+// for two-column layouts where you want the left column contain the stories
+// and the right column contain the standard blocks.
+$_CONF['left_blocks_in_footer'] = 0;
 
 // +---------------------------------------------------------------------------+
 // | RSS feed settings                                                         |
