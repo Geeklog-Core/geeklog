@@ -1,14 +1,20 @@
 GeekLog History/Changes:
 
-July 1?, 2003 (1.3.8)
+July 17, 2003 (1.3.8)
 -------------
 
+- Added Blaine's sample code for the custom registration to lib-custom.php
+  (there's also an accompanying sample template file, memberdetail.thtml).
+- "No new links" wasn't displayed in the What's New block when you didn't
+  have any links in the database or when the current user didn't have access
+  to any of them (reported by krove).
 - Applied a patch by Tatsumi Imai to fix problems with Japanese characters
   when editing polls (bug #17).
 - Hide those story submissions from moderators that don't have access to the
   topic.
 - Use $HTTP_SERVER_VARS['PATH_INFO'] instead of $PATH_INFO for the url_rewrite
-  feature, since the latter doesn't seem to work on some setups.
+  feature, since the latter doesn't seem to work on some setups (reported by
+  Peter Sieradzki).
 
 - Updated Slovenian language file, provided by gape.
 - Updated Polish language file for the Static Pages plugin, provided by
