@@ -8,7 +8,7 @@
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
 <tr align=right valign=middle><td height=18 colspan=2><a href=<?php echo $CONF["base"]; ?>><?php print $LANG01[68];?></a>
- / <a href=<?php echo "{$CONF["base"]}/users.php?mode=profile&uid=1"; ?>><?php print $LANG01[69];?></a>&nbsp;</td></tr>
+ / <a href=mailto:<?php echo $CONF["sitemail"]; ?>><?php print $LANG01[69];?></a>&nbsp;</td></tr>
 <tr valign=bottom><td>&nbsp;<a href=<?php echo $CONF["base"]; ?>><img src=<?php echo $CONF["base"]; ?>/images/logo.gif width=350 height=84 border=0 alt=<?php echo $CONF["sitename"] ?>></a></td>
 <td align=right><form action="<?php echo $CONF["base"]; ?>/search.php" method=get><?php print $LANG01[70]?><input type=text size=15 name="query">&nbsp;<input type=hidden name=type value=all><input type=hidden name=mode value=search></form></td></tr>
 <tr><td bgcolor=000000 colspan=2><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=1></td></tr>
