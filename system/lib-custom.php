@@ -38,7 +38,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.1 2001/10/17 23:20:47 tony_bibbs Exp $
+// $Id: lib-custom.php,v 1.2 2001/10/29 23:37:56 tony_bibbs Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -59,13 +59,11 @@ function phpblock_showrights() {
         COM_errorLog('**** Inside phpblock_showrights in lib-custom.php ****', 1);
     }
 	
-    $retval .= COM_startBlock('User Rights');
-	
+    $retval .= '&nbsp;';
+
     for ($i = 0; $i < count($_RIGHTS); $i++) {
         $retval .=  '<li>' . $_RIGHTS[$i] . '</li>' . LB;
     }
-	
-    $retval .= COM_endBlock();
 	
     if ($_CST_VERBOSE) {
         COM_errorLog('**** Leaving phpblock_showrights in lib-custom.php ****', 1);
