@@ -31,8 +31,7 @@
 //
 
 // NOTE: as of Geeklog 1.3.5 you should not have to manually edit this file
-// EXCEPT to change this path:
-include_once('/path/to/geeklog/config.php');
+
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
 // | database schema.  If you don't like the tables names, change them PRIOR   |
