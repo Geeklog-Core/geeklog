@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.26 2004/08/09 18:36:29 dhaun Exp $
+// $Id: pollbooth.php,v 1.27 2004/08/11 13:04:25 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -103,7 +103,7 @@ function polllist()
         $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     } else {
         $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']}"
-             . COM_getPermSQL ();
+             . COM_getPermSQL () . ' ORDER BY date DESC';
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         $retval = COM_startBlock($LANG07[4]);
