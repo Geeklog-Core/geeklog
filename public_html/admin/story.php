@@ -31,9 +31,23 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.47 2002/05/05 19:35:05 dhaun Exp $
+// $Id: story.php,v 1.48 2002/05/14 17:55:04 tony_bibbs Exp $
 
+/**
+* This is the Geeklog story administration page.
+*
+* @author   Jason Whittenburg
+* @author   Tony Bibbs <tony@tonybibbs.com>
+*
+*/
+
+/**
+* Geeklog commong function library
+*/
 include('../lib-common.php');
+/**
+* Security check to ensure user even belongs on this page
+*/
 include('auth.inc.php');
 
 // Set this to true if you want to have this code output debug messages to 
@@ -63,8 +77,10 @@ if (!SEC_hasRights('story.edit')) {
 *
 * Displays the story entry form
 *
-* @sid		string		ID of story to edit
-* @mode		string		??
+* @param    string      $sid    ID of story to edit
+* @param    string      $mode   ??
+* @return   string      HTML for story editor
+*
 */
 function storyeditor($sid = '', $mode = '') 
 {
@@ -252,9 +268,16 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
     $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
     list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
+    
     $story_templates->set_var('lang_introtext', $LANG24[16]);
     if ($A['postmode'] == 'plaintext') {
         $newintro = str_replace('$','&#36;',$newintro);
+    } else {
+        // Insert [code] and [/code] if needed
+        $newintro = str_replace('<code><pre>','[code]',$newintro);
+        $newbody = str_replace('<code><pre>','[code]',$newbody);
+        $newintro = str_replace('</pre></code>','[/code]',$newintro);
+        $newbody = str_replace('</pre></code>','[/code]',$newbody);
     }
     $story_templates->set_var('story_introtext', $newintro);
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
@@ -313,10 +336,11 @@ function storyeditor($sid = '', $mode = '')
 *
 * This lists all the stories in the database
 *
-* @page     int     Page to show user
+* @param    int     $page   Page to show user
+* @return   string  HTML for story listing
 *
 */
-function liststories($page="1") 
+function liststories($page = 1) 
 {
     global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS;
 
@@ -422,9 +446,10 @@ function liststories($page="1")
 * This replaces all article image HTML in intro and body with
 * GL special syntax
 *
-* @sid      string      ID for story to parse
-* @intro    string      Intro text
-* @body     string      Body text
+* @param    string      $sid    ID for story to parse
+* @param    string      $intro  Intro text
+* @param    string      $body   Body text
+* @return   string      processed text
 *
 */
 function replace_images($sid, $intro, $body)
@@ -460,9 +485,10 @@ function replace_images($sid, $intro, $body)
 * Replaces simple image syntax with actual HTML in the intro and body.  If errors occur
 * it will return all errors in $error
 *
-* @sid      string      ID for story to parse
-* @intro    string      Intro text
-* @body     string      Body text
+* @param    string      $sid    ID for story to parse
+* @param    string      $intro  Intro text
+* @param    string      $body   Body text
+* @return   string      Processed text
 *
 */
 function insert_images($sid, $intro, $body)
@@ -508,30 +534,30 @@ function insert_images($sid, $intro, $body)
 /** 
 * Saves story to database
 *
-* @type         string      ??
-* @sid          string      ID of story to save
-* @uid          string      ID of user that wrote the story
-* @tid          string      Topic ID story belongs to
-* @title        string      Title of story
-* @introtext    string      Introduction text
-* @bodytext     string      Text of body
-* @hits         int         Number of times story has been viewed
-* @unixdate     string      Date story was originally saved
-* @comments     int         Number of user comments made to this story
-* @featured     int         Flag on whether or not this is a featured article
-* @commentcode  string      Indicates if comments are allowed to be made to article
-* @statuscode   string      Status of the story
-* @postmode     string      Is this HTML or plain text?
-* @frontpage    string      Flag indicates if story will appear on front page and topic or just topic
-* @draft_flag   string      Flag indicates if story is a draft or not
-* @numemails    int         Number of times this story has been emailed to someone
-* @owner_id     int         ID of owner (not necessarily the author)
-* @group_id     int         ID of group story belongs to
-* @perm_owner   int         Permissions the owner has on story
-* @perm_group   int         Permissions the group has on story
-* @perm_member  int         Permissions members have on story
-* @perm_anon    int         Permissions anonymous users have on story
-* @delete       array       String array of attached images to delete from article
+* @param    string      $type           ??
+* @param    string      $sid            ID of story to save
+* @param    int         $uid            ID of user that wrote the story
+* @param    string      $tid            Topic ID story belongs to
+* @param    string      $title          Title of story
+* @param    string      $introtext      Introduction text
+* @param    string      $bodytext       Text of body
+* @param    int         $hits           Number of times story has been viewed
+* @param    string      $unixdate       Date story was originally saved
+* @param    int         $comments       Number of user comments made to this story
+* @param    int         $featured       Flag on whether or not this is a featured article
+* @param    string      $commentcode    Indicates if comments are allowed to be made to article
+* @param    string      $statuscode     Status of the story
+* @param    string      $postmode       Is this HTML or plain text?
+* @param    string      $frontpage      Flag indicates if story will appear on front page and topic or just topic
+* @param    int         $draft_flag     Flag indicates if story is a draft or not
+* @param    int         $numemails      Number of times this story has been emailed to someone
+* @param    int         $owner_id       ID of owner (not necessarily the author)
+* @param    int         $group_id       ID of group story belongs to
+* @param    int         $perm_owner     Permissions the owner has on story
+* @param    int         $perm_group     Permissions the group has on story
+* @param    int         $perm_member    Permissions members have on story
+* @param    int         $perm_anon      Permissions anonymous users have on story
+* @param    int         $delete         String array of attached images to delete from article
 *
 */
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
