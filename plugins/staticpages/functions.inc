@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.42 2004/09/28 15:26:18 dhaun Exp $
+// $Id: functions.inc,v 1.43 2004/10/05 19:56:30 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -372,10 +372,6 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
         $uid = $u_id;
         $GROUPS = SEC_getUserGroups ($uid);
 	}
-
-    if (SEC_inGroup ('Root', $uid)) {
-        return '';
-    }
 
     $sql = '(';
 
