@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.6 2005/01/30 20:01:23 dhaun Exp $
+// $Id: trackback.php,v 1.7 2005/01/30 20:23:17 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -527,8 +527,8 @@ if ($mode == 'delete') {
             $pingresult = sendPings ($type, $id);
             $ping_sent = true;
         } else if (isset ($what[2])) {  // Trackback
-            $url = $_CONF['site_admin_url'] . '/trackback?mode=pretrackback&id='
-                 . $id;
+            $url = $_CONF['site_admin_url']
+                 . '/trackback.php?mode=pretrackback&id=' . $id;
             if ($type != 'article') {
                 $url .= '&type=' . $type;
             }
