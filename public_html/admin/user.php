@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.59 2003/08/04 19:42:06 dhaun Exp $
+// $Id: user.php,v 1.60 2003/08/21 09:29:10 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -467,7 +467,11 @@ function importusers($file)
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
                 DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+                if ($_CONF['emailstoriesperdefault'] == 1) {
+                    DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+                } else {
+                    DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
+                }
                 DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
                 DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
                 $retval .= emailpassword($u_name, 1);
