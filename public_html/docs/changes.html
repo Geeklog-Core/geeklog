@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Changes</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Changes</td>
+</tr>
+</table>
+
+<h1>Changes</h1>
+
+<p>This document is intended to give a quick overview over the most import
+and / or obvious changes. For a detailed list of changes, please consult the
+<a href="history">ChangeLog</a>.</p>
+
+<h2>Geeklog 1.3.6</h2>
+
+<h3>New Features</h3>
+
+<ul>
+  <li>User submission queue: When activated (in <tt>config.php</tt>), new
+    users will need to be approved by an admin before they receive their
+    password.</li>
+  <li>The submission queues can be switched off separately.</li>
+  <li>When posting source code (e.g. PHP, HTML, ...), you can now use the
+    [code] ... [/code] pseudo tags to enclose those portions of your posting
+    that should be reproduced verbatim.</li>
+  <li>The links section now uses a categorized and paged display (can be
+    switched off separately and even back to the pre-1.3.6 style listing).</li>
+  <li>Anonymous users can now be blocked from almost every part of the site
+    (e.g. links section, site stats, ...), if needed.</li>
+  <li>A Geeklog site can now be disabled easily (e.g. for maintenance) by
+    setting a flag in <tt>config.php</tt>.</li>
+  <li>Theme changes: Please consult the <a href="theme.html#changes">themes 
+    documentation</a> for a list of changes.</li>
+</ul>
+
+<h3>Bugfixes</h3>
+
+<ul>
+  <li>Several fixes have been made to ensure that permissions are taken into
+    account properly (e.g. not revealing story titles of stories that the
+    user has no access to).</li>
+  <li>Several fixes have been made to make sure that Geeklog can now be
+    properly localized (provided you have a language file that is up to date
+    and have chosen the proper <a href="config.html#locale">locale settings</a>
+    for your country and language).</li>
+  <li>The variable $_CONF['site_admin_url'] is now used properly so that you
+    can rename Geeklog's <tt>admin</tt> directory if needed.</li>
+  <li>New RDF parser will now import most (if not all) RDF news feeds
+    properly</li>
+</ul>
+
+<h3>Notes</h3>
+
+<ul>
+  <li>Since there are a lot of new variables in <tt>config.php</tt>, it is
+    recommended you start with a fresh copy of that file instead of copying
+    over your old <tt>config.php</tt> from your previous installation.</li>
+  <li>Please note that currently only the English, German, Italian, Polish,
+    and Japanese language files are up to date. Using one of the other
+    language files may result in your Geeklog site not working properly.</li>
+</ul>
+
+<p><strong>Contributors:</strong> Gene Wood, Blaine Lang, Tom Willet, and
+Roger Webster have contributed to this release. Thank you!</p>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
