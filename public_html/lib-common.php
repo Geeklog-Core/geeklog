@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.171 2002/10/22 09:51:38 dhaun Exp $
+// $Id: lib-common.php,v 1.172 2002/10/22 15:25:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -341,30 +341,26 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     if( $_CONF['contributedbyline'] == 1 )
     {
         $article->set_var( 'lang_contributed_by', $LANG01[1] );
+        $article->set_var( 'contributedby_uid', $A['uid'] );
+        $username = DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" );
+        $article->set_var( 'contributedby_user', $username );
+
+        $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
+        if( empty( $fullname ))
+        {
+            $article->set_var( 'contributedby_fullname', $username );
+        }
+        else
+        {
+            $article->set_var( 'contributedby_fullname', $fullname );
+        }
 
         if( $A['uid'] > 1 )
         {
             $article->set_var( 'start_contributedby_anchortag', '<a class="storybyline" href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
-
-            $username = DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" );
-            $article->set_var( 'contributedby_user', $username );
-
-            $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
-            if( empty( $fullname ))
-            {
-                $article->set_var( 'contributedby_fullname', $username );
-            }
-            else
-            {
-                $article->set_var( 'contributedby_fullname', $fullname );
-            }
-
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
-        }
-        else
-        {
-            $article->set_var( 'contributedby_user', DB_getItem( $_TABLES['users'], 'username',"uid = 1" ));
-            $article->set_var( 'contributedby_fullname', DB_getItem( $_TABLES['users'], 'fullname',"uid = 1" ));
+            $article->set_var( 'contributedby_url', $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
         }
     }
 
@@ -373,6 +369,8 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         $result = DB_query( "SELECT imageurl,topic FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'" );
         $T = DB_fetchArray( $result );
 
+        $topicname = htmlspecialchars( $T['topic'] );
+        $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
         if( !empty( $T['imageurl'] ))
         {
             if( isset( $_THEME_URL ))
@@ -383,9 +381,16 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             {
                 $imagebase = $_CONF['site_url'];
             }
-            $topicname = htmlspecialchars( $T['topic'] );
-            $article->set_var( 'story_anchortag_and_image', '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><img align="' . $_CONF['article_image_align'] . '" src="' . $imagebase . $T['imageurl'] . '" alt="' . $topicname . '" title="' . $topicname . '" border="0"></a>' );
+            $topicimage = '<img align="' . $_CONF['article_image_align']
+                    . '" src="' . $imagebase . $T['imageurl'] . '" alt="'
+                    . $topicname . '" title="' . $topicname . '" border="0">';
+            $article->set_var( 'story_anchortag_and_image', '<a href="'
+                    . $topicurl . '">' . $topicimage . '</a>' );
+            $article->set_var( 'story_topic_image', $topicimage );
         }
+        $article->set_var( 'story_topic_id', $A['tid'] );
+        $article->set_var( 'story_topic_name', $topicname );
+        $article->set_var( 'story_topic_url', $topicurl );
     }
 
     $A['title'] = str_replace( '$', '&#36;', $A['title'] );
@@ -395,7 +400,8 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     if( $index == 'n' )
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
-        $article->set_var( 'story_introtext', stripslashes( $A['introtext'] ) . '<br><br>' . stripslashes( $A['bodytext'] ));
+        $article->set_var( 'story_introtext', stripslashes( $A['introtext'] )
+                . '<br><br>' . stripslashes( $A['bodytext'] ));
     }
     else
     {
@@ -404,23 +410,49 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 
         if( !empty( $A['bodytext'] ))
         {
-            $article->set_var( 'readmore_link', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof( explode( ' ', $A['bodytext'] )) . ' ' . $LANG01[62] . ') ' );
+            $article->set_var( 'lang_readmore', $LANG01[2] );
+            $article->set_var( 'lang_readmore_words', $LANG01[62] );
+            $numwords = sizeof( explode( ' ', $A['bodytext'] ));
+            $article->set_var( 'readmore_words', $numwords );
+
+            $article->set_var( 'readmore_link', '<a href="' . $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2]
+                    . '</a> (' . $numwords . ' ' . $LANG01[62] . ') ' );
+            $article->set_var( 'start_readmore_anchortag', '<a href="'
+                    . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
+                    . '">' );
+            $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
         if( $A['commentcode'] >= 0 && $A['comments'] > 0 )
         {
-            $article->set_var( 'comments_url', $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments' );
-            $article->set_var( 'comments_text', $A['comments'] . ' ' . $LANG01[3]);
+            $article->set_var( 'comments_url', $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] . '#comments' );
+            $article->set_var( 'comments_text', $A['comments'] . ' '
+                    . $LANG01[3] );
+            $article->set_var( 'comments_count', $A['comments'] );
+            $article->set_var( 'lang_comments', $LANG01[3] );
 
             $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
             $C = DB_fetchArray( $result );
-            $recent_post_anchortag = '<span class="storybyline">' . $LANG01[27] . ': '. strftime( $_CONF['daytime'], $C['day'] ) . ' ' . $LANG01[104] . ' ' . $C['username'] . '</span>';
 
+            $recent_post_anchortag = '<span class="storybyline">' . $LANG01[27]
+                    . ': '. strftime( $_CONF['daytime'], $C['day'] ) . ' '
+                    . $LANG01[104] . ' ' . $C['username'] . '</span>';
+            $article->set_var( 'start_comments_anchortag', '<a href="'
+                    . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
+                    . '#comments">' );
+            $article->set_var( 'end_comments_anchortag', '</a>' );
         }
         elseif( $A['commentcode'] >= 0 )
         {
-            $recent_post_anchortag = ' <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
+            $recent_post_anchortag = ' <a href="' . $_CONF['site_url']
+                    . '/comment.php?sid=' . $A['sid']
+                    . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
         }
+        $article->set_var( 'post_comment_link',' <a href="' . $_CONF['site_url']
+                . '/comment.php?sid=' . $A['sid']
+                . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>' );
 
         if( $_CONF['hideemailicon'] == 1 )
         {
@@ -447,15 +479,17 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 . $LANG01[65] . '"></a>' );
         }
     }
-
-    $access = SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] );
+    $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
     if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ))
     {
-        $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '">' . $LANG01[4] . '</a>' );
+        $article->set_var( 'edit_link', '<a href="' . $_CONF['site_admin_url']
+                . '/story.php?mode=edit&amp;sid=' . $A['sid'] . '">'
+                . $LANG01[4] . '</a>' );
+        $article->set_var( 'edit_url', $_CONF['site_admin_url']
+                . '/story.php?mode=edit&amp;sid=' . $A['sid'] );
+        $article->set_var( 'lang_edit_text',  $LANG01[4] );
     }
-
-    $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
     if( $A['featured'] == 1 )
     {
