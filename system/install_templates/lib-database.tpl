@@ -37,6 +37,7 @@ $_DB_name           = '{dbname}';
 $_DB_user           = '{dbuser}';
 $_DB_pass           = '{dbpass}';
 $_DB_table_prefix   = '{dbprefix}'; // e.g. 'gl_'
+$_DB_mysqldump_path = '{dbmysqldump}'; // e.g. /usr/sbin/mysqldump
 
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
