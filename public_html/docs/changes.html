@@ -43,14 +43,18 @@ of files that have been changed since the last release.</p>
 <li>Image upload can now use the GD library to scale images.</li>
 <li>Comments now use templates.</li>
 <li>Admins can now edit links directly from the links section.</li>
-<li>To accomodate strict webhosts who don't allow file uploads to the standard image
-    directory, you can now set a new configuration variable, $_CONF['path_images'] to
-    point to a directory outside of your webtree where article images and user profile
-    pictures will be saved.</li>
+<li>To accomodate strict webhosts who don't allow file uploads to the standard
+    image directory, you can now set a new configuration variable,
+    <code>$_CONF['path_images']</code> to point to a directory outside of your
+    webtree where article images and user profile pictures will be saved.</li>
 </ul>
 
 <p>Please see the <a href="theme.html#changes">themes documentation</a> for a
 complete list of theme changes.</p>
+
+<p>Also included is the <a href="staticpages.html">Static Pages plugin 1.4</a>,
+which now has, among other improvements, a second option to include PHP in
+static pages without having to use the PHP <code>return</code> statement.</p>
 
 
 <h3>Bugfixes</h3>
