@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.23 2004/08/09 07:56:22 dhaun Exp $
+// $Id: mail.php,v 1.24 2004/10/07 08:27:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -170,7 +170,7 @@ function send_messages ($vars)
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
         $to = '';
-        if (!isset ($A['fullname'])) {
+        if (empty ($A['fullname'])) {
             $to .= $A['username'];
         } else {
             $to .= $A['fullname'];
