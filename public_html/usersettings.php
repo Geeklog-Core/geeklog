@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.92 2004/02/21 19:15:56 blaine Exp $
+// $Id: usersettings.php,v 1.93 2004/02/28 09:29:51 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -404,8 +404,18 @@ function editpreferences()
                     $lngname = ucfirst ($file);
                 } else {
                     $lngname = ucfirst (substr ($file, 0, $uscore));
-                    $lngadd = ucfirst (substr ($file, $uscore + 1));
-                    $lngname .= ' (' . $lngadd . ')';
+                    $lngadd = substr ($file, $uscore + 1);
+                    $lngadd = str_replace ('_', ', ', $lngadd);
+                    $word = explode (' ', $lngadd);
+                    $lngadd = '';
+                    foreach ($word as $w) {
+                        if (preg_match ('/[0-9]+/', $w)) {
+                            $lngadd .= strtoupper ($w) . ' ';
+                        } else {
+                            $lngadd .= ucfirst ($w) . ' ';
+                        }
+                    }
+                    $lngname .= ' (' . trim ($lngadd) . ')';
                 }
                 $language[$file] = $lngname;
             }
