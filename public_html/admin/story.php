@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.45 2002/04/30 20:59:34 tony_bibbs Exp $
+// $Id: story.php,v 1.46 2002/05/04 12:55:12 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -155,7 +155,7 @@ function storyeditor($sid = '', $mode = '')
     $display .= COM_startBlock($LANG24[5]);
 
     if ($access == 3) {
-        $story_templates->set_var('delete_option', '<input type="submit" value="delete" name="mode">');
+        $story_templates->set_var('delete_option', "<input type=\"submit\" value=\"$LANG24[11]\" name=\"mode\">");
     }
     if ($A['type'] == 'editsubmission' || $mode == 'editsubmission') {
         $story_templates->set_var('submission_option', '<input type="hidden" name="type" value="submission">');
@@ -297,6 +297,10 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('lang_emails', $LANG24[39]); 
     $story_templates->set_var('story_emails', $A['numemails']);
     $story_templates->set_var('story_id', $A['sid']);
+    $story_templates->set_var('lang_save', $LANG24[8]); 
+    $story_templates->set_var('lang_preview', $LANG24[9]); 
+    $story_templates->set_var('lang_cancel', $LANG24[10]); 
+    $story_templates->set_var('lang_delete', $LANG24[11]); 
     $story_templates->parse('output','editor');
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock();
@@ -745,7 +749,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 $display = '';
 
 switch ($mode) {
-case 'delete':
+case "$LANG24[11]":
     if ($type == 'submission') {
         DB_delete($_TABLES['storysubmission'],'sid',$sid,"admin/moderation.php");
     } else {
@@ -764,7 +768,7 @@ case 'delete':
         DB_delete($_TABLES['stories'],'sid',$sid,"admin/story.php?msg=10");
     }
     break;
-case 'preview':
+case "$LANG24[9]":
     $display .= COM_siteHeader('menu');
     $display .= storyeditor($sid,$mode);
     $display .= COM_siteFooter();
@@ -782,7 +786,7 @@ case 'editsubmission':
     $display .= COM_siteFooter();
     echo $display;
     break;
-case 'save':
+case "$LANG24[8]":
     if ($publish_ampm == 'pm') {
         $publish_hour = $publish_hour + 12;
     }
@@ -792,7 +796,7 @@ case 'save':
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon);
     break;
-case 'cancel':
+case "$LANG24[10]":
 default:
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
