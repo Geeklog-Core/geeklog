@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.47 2004/10/02 03:32:53 blaine Exp $
+// $Id: lib-plugins.php,v 1.48 2004/10/07 08:24:57 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -209,7 +209,9 @@ function PLG_getMenuItems()
         $function = 'plugin_getmenuitems_' . $pi_name;
         if (function_exists($function)) {
             $menuitems = $function();
-            $menu = array_merge($menu,$menuitems);
+            if (is_array ($menuitems)) {
+                $menu = array_merge ($menu, $menuitems);
+            }
         }
     }
     return $menu;
