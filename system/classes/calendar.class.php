@@ -32,16 +32,34 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.3 2002/05/05 17:20:11 dhaun Exp $
+// $Id: calendar.class.php,v 1.4 2002/05/13 19:18:27 tony_bibbs Exp $
 
+/**
+* This file contains the two classes used to help support the calendar pages.  Please
+* note that our calendar code is in shambles and is hard to understand.  Not so much this file
+* as calendar.php and calendar_event.php.  Those files along with these class need
+* to be reworked to be easier to maintain and support rich calendaring features
+*
+* @auther   Tony Bibbs  <tony@tonybibbs.com>
+*/
+
+/**
+* This class represents the logical structure of a calendar day and is used by the greater
+* calendar class
+*
+*/
 class CalendarDay {
-    var $daynumber;
-    var $year;
+    var $daynumber = 0;
+    var $year = 0;
 
-    var $weekendflag; 
-    var $holidayflag;
-    var $selectedflag;
+    var $weekendflag = false; 
+    var $holidayflag = false;
+    var $selectedflag = false;
 
+    /**
+    * Constructur
+    *
+    */
     function CalendarDay()
     {
         $this->weekendflag = false; 
@@ -49,16 +67,34 @@ class CalendarDay {
         $this->selectedflag = false;
     }
 
+    /**
+    * Returns if this day is on a weekend
+    *
+    * @return   boolean     true if is on weekend otherwise false
+    *
+    */
     function isWeekend()
     {
         return $this->weekendflag; 
     }
    
+    /**
+    * Returns if this day is a holiday
+    *
+    * @return   boolean     true if day is a holiday otherwise false
+    *
+    */
     function isHoliday()
     {
         return $this->holdiayflag;
     }
 
+    /**
+    * Returns if this day is selected
+    *
+    * @return   boolean     true if day is selected otherwise false
+    *
+    */
     function isSelected()
     {
         return $this->selectedflag;
@@ -70,18 +106,42 @@ class Calendar {
 
     // PRIVATE PROPERTIES
 
+    /**
+    * @access private
+    */
     var $_rollingmode;
+    /**
+    * @access private
+    */
     var $_lang_days;
+    /**
+    * @access private
+    */
     var $_lang_months;
+    /**
+    * @access private
+    */
     var $_default_year;
+    /**
+    * @access private
+    */
     var $_selected_days;
+    /**
+    * @access private
+    */
     var $_holidays;
+    /**
+    * @access private
+    */
     var $_matrix;
      
     // PRIVATE METHODS
 
     /**
     * Returns if calendar is in rolling mode
+    *
+    * @return   boolean     returns true if in rolling mode otherwise false
+    * @access   private
     *
     */
     function _isRollingMode()
@@ -100,15 +160,16 @@ class Calendar {
         $this->setRollingMode(false);
         $dateArray = getdate(time());
         $this->_default_year = $dateArray['year'];
-	$this->setLanguage();
+        $this->setLanguage();
     }
 
     /**
     * Returns the day of the week (1-7) for given date
     *
-    * @day      int         Number of day in month (1-31)
-    * @month    int         Number of the month (1-12)
-    * @year     int         Four digit year
+    * @param    int     $day        Number of day in month (1-31)
+    * @param    int     $month      Number of the month (1-12)
+    * @param    int     $year       Four digit year
+    * @return   int     Returns integer for day of week 1 = Sunday through 7 = Saturday
     *
     */
     function getDayOfWeek($day = 1, $month = 1, $year = '')
@@ -124,9 +185,10 @@ class Calendar {
     /**
     * Returns the week of the month (1-5) for a given date
     *
-    * @day      int         Number of day in month (1-31)
-    * @month    int         Number of the month (1-12)
-    * @year     int         Four digit year
+    * @param    int     $day        Number of day in month (1-31)
+    * @param    int     $month      Number of the month (1-12)
+    * @param    int     $year       Four digit year
+    * @return   int     Week of the month, 1 - 5
     *
     */
     function getWeekOfMonth($day = 1, $month = 1, $year = '')
@@ -146,7 +208,8 @@ class Calendar {
     /**
     * Determines if given year is a leap year or not
     *
-    * @year     int     Four digit year
+    * @param    int     $year   Four digit year
+    * @return   boolean     returns true if year is a leap year otherwise false
     *
     */
     function isLeapYear($year = '')
@@ -165,8 +228,11 @@ class Calendar {
     /** 
     * Returns the number of days in a given month/year
     *
-    * @month        int         Month (1-12)
-    * @year         int         Four digit year
+    * If no year is given, the default year is used
+    *
+    * @param    int     $month      Month (1-12)
+    * @param    int     $year       Four digit year
+    * @return   int     Returns the number of days in the month
     *
     */
     function getDaysInMonth($month = 1, $year = '')
@@ -225,7 +291,10 @@ class Calendar {
     /**
     * Returns the name of the day of the week
     *
-    * @day          int         Numeric day of week (1-7)
+    * This aims to help with multilingual support
+    *
+    * @param    int     $day    Numeric day of week (1-7)
+    * @return   string  Returns the text for the given day of the week
     *
     */
     function getDayName($day = 1) {
@@ -260,7 +329,10 @@ class Calendar {
     /** 
     * Returns the name of the given month (can handle different languages)
     *
-    * @month        int     Month (1-12) to get name of 
+    * This aims to help with multi-lingual support
+    *
+    * @param    int     $month      Month (1-12) to get name of 
+    * @return   string  returns text for current month name
     *
     */
     function getMonthName($month = 1)
@@ -317,7 +389,7 @@ class Calendar {
     * Will put calendar in normal mode or in rolling mode.  Rolling
     * mode
     * 
-    * @flag     boolean     True of False
+    * @param    boolean     $flag   True of False
     *
     */
     function setRollingMode($flag)
@@ -332,8 +404,8 @@ class Calendar {
     * Day array format is _lang_days['<daynameinenglish>'] = '<translation>'
     * Mondy array format is _lang_months['<monthnameinenglish'] = '<translation>'
     *
-    * @lang_days        array       Array of strings holding day language
-    * @lang_months      array       Array of string holding month language
+    * @param    array       $lang_days      Array of strings holding day language
+    * @param    array       $lang_months    Array of string holding month language
     *
     */
     function setLanguage($lang_days='', $lang_months='') 
@@ -368,6 +440,14 @@ class Calendar {
         }
     }
     
+    /**
+    * Builds logical model of the month in memory
+    *
+    * @param    int     $month          Month to build matrix for
+    * @param    int     $year           Year to build matrix for
+    * @param    string  $selecteddays   Comma seperated list of days to select
+    *
+    */
     function setCalendarMatrix($month, $year, $selecteddays='')
     {
         $firstday = 1 + $this->getDayOfWeek(1,$month,$year);
@@ -400,20 +480,7 @@ class Calendar {
                         }
                         $aw = 7;
                     }
-                }
-       /* 
-                // Bail if we just printed last day
-                if ($nextday < $this->getDaysInMonth($month,$year)) {
-                    $nextday++;
-                } else {
-                    $aw++;
-                    while ($aw <= 6) {
-                        $week[$aw] = '';
-                        $aw++;
-                    }
-                    $aw = 7;
-                }
-	*/
+                }      
             }
         }
 
@@ -421,6 +488,14 @@ class Calendar {
 
     }   
 
+    /**
+    * Gets data for a given day
+    *
+    * @param    int     $week       week of day to get data for
+    * @param    int     $daynum     Number of day to get data for
+    * @return   object  Returns calendarDay object
+    *
+    */
     function getDayData($week,$daynum) {
         return $this->_matrix[$week][$daynum];
     }
