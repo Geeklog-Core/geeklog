@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.7 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: group.php,v 1.8 2001/12/07 15:49:39 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -304,6 +304,7 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
             DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
             next($features);
         }
+        COM_errorLog('groups = ' . $groups);
         if (is_array($groups)) {
             if ($VERBOSE) COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
             DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
@@ -377,8 +378,8 @@ switch ($mode) {
 		DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
 		DB_delete($_TABLES['groups'],'grp_id',$grp_id,'/admin/group.php?msg=14');
 		break;
-	case "save":
-		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups);
+	case 'save':
+		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);
 		break;
 	case "edit":
 		$display .= COM_siteHeader('menu');
