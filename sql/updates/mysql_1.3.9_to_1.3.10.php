@@ -163,6 +163,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id varchar(40) N
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} CHANGE sid sid varchar(40) NOT NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['article_images']} CHANGE ai_sid ai_sid varchar(40) NOT NULL";
 
+// Add new location fields to the userinfo table 
+$_SQL[] = "ALTER TABLE {$_TABLES['userinfo']} ADD location VARCHAR(96) NOT NULL AFTER about";
+
 /**
 * Install SpamX plugin (also handled updates from version 1.0)
 *

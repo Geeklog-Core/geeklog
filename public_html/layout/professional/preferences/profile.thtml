@@ -32,6 +32,12 @@
       value="{homepage_value}"></td>
   </tr>
   <tr valign="top">
+    <td align="right"><b>{lang_location}</b><br>
+      <small>{lang_location_text}</small></td>
+    <td><input type="text" name="location" size="60" maxlength="96"
+      value="{location_value}"></td>
+  </tr>
+  <tr valign="top">
     <td align="right"><b>{lang_signature}</b><br>
       <small>{lang_signature_text}</small></td>
     <td><textarea name="sig" cols="60" rows="4">{signature_value}</textarea></td>

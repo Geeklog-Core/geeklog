@@ -501,6 +501,7 @@ $_SQL[35] = "
 CREATE TABLE {$_TABLES['userinfo']} (
   uid mediumint(8) NOT NULL default '1',
   about text,
+  location varchar(96) NOT NULL default '',
   pgpkey text,
   userspace varchar(255) NOT NULL default '',
   tokens tinyint(3) unsigned NOT NULL default '0',
