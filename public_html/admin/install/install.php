@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.35 2002/07/23 10:12:35 dhaun Exp $
+// $Id: install.php,v 1.36 2002/07/23 13:00:43 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -173,7 +173,7 @@ function INST_createDatabaseStructures() {
 
     return true;
     // Done with installation...redirect to success page
-    echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';    
+    echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';    
 }
 
 function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
@@ -352,12 +352,12 @@ case 2:
         if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
-            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
+            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
         }
     } else {
         if (INST_createDatabaseStructures()) {
             // Done with installation...redirect to success page
-            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
+            echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
             // Great, installation is complete
         }
     }
