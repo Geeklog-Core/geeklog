@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.46 2004/08/09 18:36:29 dhaun Exp $
+// $Id: calendar.php,v 1.47 2004/08/29 14:16:06 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -667,9 +667,9 @@ $cal_templates->set_file(array('calendar'=>'calendar.thtml',
 				'personalcal'=>'personalcalendaroption.thtml',
 				'addevent'=>'addeventoption.thtml'));
 
-$cal_templates->set_var('site_url', $_CONF['site_url']);
+$cal_templates->set_var ('site_url', $_CONF['site_url']);
 $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
-$cal_templates->set_var('mode', $mode);
+$cal_templates->set_var ('mode', $mode);
 if ($mode == 'personal') {
     $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[12]));
     $cal_templates->set_var ('end_block', COM_endBlock ());
@@ -785,7 +785,7 @@ for ($i = 1; $i <= 6; $i++) {
             }
 
             $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&amp;mode=' . $mode . '&amp;day=' . $curday->daynumber. '&amp;month=' . $month
-                . '&amp;year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
+                . '&amp;year=' . $year . '" class="cal-date">' . $curday->daynumber. '</a><hr>');
 
             if ($mode == 'personal') {
                 if (strlen($month) == 1) {
@@ -798,10 +798,10 @@ for ($i = 1; $i <= 6; $i++) {
                 }
                 $calsql = "SELECT * FROM {$_TABLES['events']} WHERE (datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend) ORDER BY datestart,timestart";
             }
-            
+
             $query2 = DB_query($calsql);
             $q2_numrows = DB_numRows($query2);
-            
+
             if ($q2_numrows > 0) {
                 $entries = '';
                 for ($z = 1; $z <= $q2_numrows; $z++) {
@@ -809,8 +809,7 @@ for ($i = 1; $i <= 6; $i++) {
                     if (SEC_hasAccess($results['owner_id'],$results['group_id'],$results['perm_owner'],$results['perm_group'],$results['perm_members'],$results['perm_anon']) > 0) {
                         if ($results['title']) {
                             $cal_templates->set_var('cal_day_entries','');
-                            $entries .= '<a href="calendar_event.php?mode=' . $mode . '&amp;eid=' . $results['eid'] . '" class="cal_event">' 
-                                . stripslashes($results['title']) . '</a><hr>';
+                            $entries .= '<a href="' . $_CONF['site_url'] . '/calendar_event.php?mode=' . $mode . '&amp;eid=' . $results['eid'] . '" class="cal-event">' . stripslashes ($results['title']) . '</a><hr>';
                         }
                     } 
                 }
@@ -879,8 +878,12 @@ if ($mode == 'personal') {
     }
 }
 $cal_templates->set_var('lang_addevent', $LANG30[8]);
+$cal_templates->set_var('lang_cal_curmo', $LANG30[12 + $currentmonth]);
 $cal_templates->set_var('cal_curmo_num', $currentmonth);
 $cal_templates->set_var('cal_curyr_num', $currentyear);
+$cal_templates->set_var('lang_cal_displaymo', $LANG30[12 + $month]);
+$cal_templates->set_var('cal_displaymo_num', $month);
+$cal_templates->set_var('cal_displayyr_num', $year);
 $cal_templates->parse('add_event_option','addevent',true);
 
 $cal_templates->parse('output','calendar');
