@@ -12,7 +12,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['speedlimit']} (
   PRIMARY KEY (id)
 ) TYPE = MyISAM";
 
-$_SQL[] = "DROP TABLES {$_TABLES['commentspeedlimit']}";
-$_SQL[] = "DROP TABLES {$_TABLES['submitspeedlimit']}";
+$_SQL[] = "DROP TABLE {$_TABLES['commentspeedlimit']}";
+$_SQL[] = "DROP TABLE {$_TABLES['submitspeedlimit']}";
 
 ?>
