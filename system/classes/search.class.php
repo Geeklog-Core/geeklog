@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.7 2003/07/02 18:10:57 dhaun Exp $
+// $Id: search.class.php,v 1.8 2003/07/20 16:03:19 blaine Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -116,8 +116,8 @@ class Search {
         // Set search criteria
         $this->_query = strip_tags($input_vars['query']);
         $this->_topic = $input_vars['topic'];
-        $this->_datestart = $input_vars['datestart'];
-        $this->_dateend = $input_vars['dateend'];
+        $this->_dateStart = $input_vars['datestart'];
+        $this->_dateEnd = $input_vars['dateend'];
         $this->_author = $input_vars['author'];
         if (empty($input_vars['type'])) {
             $this->_type = 'all';
@@ -452,7 +452,7 @@ class Search {
                 $sql .= "OR title like '%$this->_query%')  ";
             }
     
-            if (!empty($this->dateStart) AND !empty($this->_dateEnd)) {
+            if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
                 $DS = explode($delim, $$this->_dateStart);
                 $DE = explode($delim, $$this->_dateEnd);
@@ -550,9 +550,9 @@ class Search {
             }
      
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
-                $delim = substr($datestart, 4, 1);
-                $DS = explode($delim, $datestart);
-                $DE = explode($delim, $dateend);
+                $delim = substr($this->_dateStart, 4, 1);
+                $DS = explode($delim, $this->_dateStart);
+                $DE = explode($delim, $this->_dateEnd);
                 $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
                 $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
                 $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
@@ -1004,7 +1004,7 @@ class Search {
         
         // Searches are done, stop timer
         $searchtime = $searchtimer->stopTimer();
-        
+      
         // Format results
         $retval = $this->_formatResults($nrows_plugins, $total_plugins, $result_plugins, $searchtime);
         
