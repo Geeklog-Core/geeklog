@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.29 2004/05/17 17:50:47 dhaun Exp $
+// $Id: calendar_event.php,v 1.30 2004/06/09 07:53:55 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -93,7 +93,8 @@ function adduserevent($eid)
         //$cal_template->set_var('event_location', $A['location']);
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG02[5]);
-        $cal_template->set_var('event_description', stripslashes ($A['description']));
+        $cal_template->set_var('event_description',
+                               nl2br (stripslashes ($A['description'])));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG02[9]);
         $cal_template->parse('output','addevent'); 	
@@ -334,7 +335,8 @@ function editpersonalevent($A)
     $cal_templates->set_var('event_url', $A['url']);
 
     $cal_templates->set_var('lang_description', $LANG12[15]);
-    $cal_templates->set_var('event_description', stripslashes ($A['description']));
+    $cal_templates->set_var('event_description',
+                            nl2br (stripslashes ($A['description'])));
 
     $cal_templates->set_var('lang_htmlnotallowed', $LANG12[35]);
     $cal_templates->set_var('lang_submit', $LANG12[8]);
@@ -584,7 +586,8 @@ default:
                 }
                 $cal_templates->set_var('event_location', stripslashes ($A['location']));
                 $cal_templates->set_var('lang_description', $LANG02[5]);
-                $cal_templates->set_var('event_description', stripslashes ($A['description']));
+                $cal_templates->set_var('event_description',
+                        nl2br (stripslashes ($A['description'])));
                 $cal_templates->set_var('lang_event_type', $LANG12[49]);
                 $cal_templates->set_var('event_type', $A['event_type']);
                 $cal_templates->parse('event_details', 'details', true); 
