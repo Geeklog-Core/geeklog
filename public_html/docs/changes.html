@@ -22,6 +22,40 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
+<h2><a name="changes139">Geeklog 1.3.9</a></h2>
+
+<h3>New Features</h3>
+
+<ul>
+<li>Geeklog now uses PEAR::Mail to send all emails. This gives you the option
+    to send emails via PHP's built-in mail() function (as before), via
+    sendmail or via SMTP.</li>
+<li>There is a new admin option called Content Syndication that lets you
+    create and configure (RSS) feeds. In addition to the standard feed
+    containing all the new stories, you can now create feeds per topic, for
+    upcoming events, and for links.<br>
+    This feature is extensible in that plugins can provide additional feeds.
+    It is also possible to provide feeds in formats other than RSS 0.91 by
+    providing additional feed classes.</li>
+<li>Image upload can now use the GD library to scale images.</li>
+<li>Comments now use templates.</li>
+<li>Admins can now edit links directly from the links section.</li>
+</ul>
+
+<p>Please see the <a href="theme.html#changes">themes documentation</a> for a
+complete list of theme changes.</p>
+
+
+<h3>Bugfixes</h3>
+
+<ul>
+<li>Words from a search query are now properly highlighted in comments.</li>
+<li>Fixed a bug that let users register with an empty username.</li>
+<li>When batch-importing users, those users were all subscribed to the
+    Daily Digest automatically (uses the $_CONF['emailstoriesperdefault']
+    setting instead now).</li>
+</ul>
+
 <h2><a name="changes138-1">Geeklog 1.3.8-1</a></h2>
 
 <p>Geeklog 1.3.8-1 is a bugfix release over Geeklog 1.3.8. It contains a
@@ -84,7 +118,7 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
   <li>There have been quite a few theme changes in order to move most larger
     portions of hard-coded HTML to template files and to give theme designers
     more control over the layout. Please consult the <a
-    href="theme.html#changes">themes documentation</a> for a list of changes.</li>
+    href="theme.html#changes138">themes documentation</a> for a list of changes.</li>
 </ul>
 
 <h3>Bugfixes</h3>
@@ -193,7 +227,7 @@ All users are strongly recommended to upgrade to this version.</p>
     hidenewcomments, hidenewlinks, max_photo_width, max_photo_height,
     max_photo_size).  Please see the <a 
     href="config.html">config documentation</a> for details.</li>
-  <li>Theme changes: Please consult the <a href="theme.html#changes">themes 
+  <li>Theme changes: Please consult the <a href="theme.html#changes137">themes 
     documentation</a> for a list of changes.</li>
 </ul>
 
@@ -271,7 +305,7 @@ already has the new index fields.</p>
     needed.</li>
   <li>A Geeklog site can now be disabled easily (e.g. for maintenance) by
     setting a flag in <tt><a href="config.html#site">config.php</a></tt>.</li>
-  <li>Theme changes: Please consult the <a href="theme.html#changes">themes 
+  <li>Theme changes: Please consult the <a href="theme.html#changes136">themes 
     documentation</a> for a list of changes.</li>
 </ul>
 
