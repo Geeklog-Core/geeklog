@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.38 2004/08/08 08:55:57 dhaun Exp $
+// $Id: functions.inc,v 1.39 2004/08/08 10:14:49 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -466,9 +466,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
             }
 
-            if (($spresult['sp_inblock'] == 1) &&
-                    ($spresult['sp_format'] != 'blankpage') &&
-                    !empty ($spresult['sp_title'])) {
+            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
+                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
                 $retval .= COM_startBlock ($spresult['sp_title'], '',
                     COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
@@ -494,9 +493,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 }
             }
 
-            if (($spresult['sp_inblock'] == 1) &&
-                    ($spresult['sp_format'] != 'blankpage') &&
-                    !empty ($spresult['sp_title'])) {
+            if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
+                && (($where != 0) || ($spresult['sp_format'] != 'blankpage'))) {
                 $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_centerblock', 'footer'));
             }
 
