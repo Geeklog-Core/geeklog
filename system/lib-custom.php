@@ -17,9 +17,11 @@
 // | follows then that you should not include lib-common.php in this file      |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Blaine Lang      - geeklog@langfamily.ca                         |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -38,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.7 2004/02/21 19:15:56 blaine Exp $
+// $Id: lib-custom.php,v 1.8 2004/03/06 09:26:48 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -263,5 +265,51 @@ function custom_userform($uid="",$msg="") {
 
     return $retval;
 }
+
+
+/**
+* This is an example of a custom email function. When this function is NOT
+* commented out, Geeklog would send all emails through this function
+* instead of sending them through COM_mail in lib-common.php.
+*
+* This is basically a re-implementation of the way emails were sent
+* prior to Geeklog 1.3.9 (Geeklog uses PEAR::Mail as of version 1.3.9).
+*
+*/
+/*
+function CUSTOM_mail($to, $subject, $message, $from = '', $html = false, $priority = 0)
+{
+    global $_CONF, $LANG_CHARSET;
+
+    if (empty ($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+        if (empty ($charset)) {
+            $charset = 'iso-8859-1';
+        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+
+    if (empty ($from)) {
+        $from = $_CONF['site_name'] . ' <' . $_CONF['site_mail'] . '>';
+    }
+
+    $headers  = 'From: ' . $from . "\r\n"
+              . 'X-Mailer: Geeklog ' . VERSION . "\r\n";
+
+    if ($priority > 0) {
+        $headers .= 'X-Priority: ' . $priority . "\r\n";
+    }
+
+    if ($html) {
+        $headers .= "Content-Type: text/html; charset={$charset}\r\n"
+                 .  'Content-Transfer-Encoding: 8bit';
+    } else {
+        $headers .= "Content-Type: text/plain; charset={$charset}";
+    }
+
+    return mail ($to, $subject, $message, $headers);
+}
+*/
 
 ?>
