@@ -149,7 +149,8 @@ $LANG01 = array(
     100 => "Keine neuen Artikel",
     101 => 'Meine Events',
     102 => 'Site-Events',
-    103 => 'DB Backups'
+    103 => 'DB Backups',
+    104 => 'von'
 );
 
 ###############################################################################
