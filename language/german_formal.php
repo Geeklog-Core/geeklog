@@ -87,7 +87,7 @@ $LANG01 = array(
 	37 => "Keine Artikel.",
 	38 => 'Content Syndication',
 	39 => "Neuladen",
-	40 => "",
+	40 => 'Sie haben <tt>register_globals = Off</tt> in Ihrer <tt>php.ini</tt>. Für Geeklog muss <tt>register_globals</tt> jedoch auf <strong>on</strong> stehen. Bitte ändern Sie dies auf <strong>on</strong> und starten Sie Ihren Webserver neu.',
 	41 => "Gäste",
 	42 => "Autor:",
 	43 => "Antwort schreiben",

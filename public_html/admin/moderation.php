@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.45 2003/09/13 08:07:05 dhaun Exp $
+// $Id: moderation.php,v 1.46 2003/09/27 18:31:48 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -639,6 +639,24 @@ function moderateusers ($uid, $action, $count)
     return $retval;
 }
 
+function register_globals_warning ()
+{
+    global $_CONF, $LANG01, $MESSAGE;
+
+    $retval = '';
+
+    if (!ini_get ('register_globals')) {
+        $retval .= COM_startBlock ($MESSAGE[40], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= '<p><img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.gif" border="0" align="left" alt="">';
+        $retval .= $LANG01[40] . '</p>';
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    return $retval;
+}
+
 
 // MAIN
 
@@ -658,6 +676,7 @@ if (isset ($HTTP_POST_VARS['mode']) && ($HTTP_POST_VARS['mode'] == 'moderation')
                 $HTTP_POST_VARS['count']);
     }
 } else {
+    $display .= register_globals_warning ();
     $display .= commandcontrol();
 }
 

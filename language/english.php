@@ -80,7 +80,7 @@ $LANG01 = array(
 	37 => "No user stories",
 	38 => 'Content Syndication',
 	39 => "Refresh",
-	40 => "",
+	40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
 	41 => "Guest Users",
 	42 => "Authored by:",
 	43 => "Reply to This",

@@ -1,8 +1,12 @@
 GeekLog History/Changes:
 
-September ??, 2003 (1.3.9rc1)
-------------------
+October ??, 2003 (1.3.9rc1)
+----------------
 
+- Added a check and warning message in admin/moderation.php if register_globals
+  is "off".
+- When trying to guess the value of $_CONF['cookiedomain'], we need to remove
+  the port number from the URL, if there is one (bug #75).
 - Changed function COM_isEmail() to use PEAR::Mail/RFC822 to check for valid
   email addresses.
 - Added an edit icon to each theme (images/edit.gif). Variable {edit_icon} can
