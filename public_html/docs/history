@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.9rc2)
 ------------
 
+- Fixed COM_extractLinks to work with links that follow [IMAGE] tags and more
+  generally handle the extration of links better and more efficiently.
 - If a function CUSTOM_mail() exists, it will be called instead of COM_mail(),
   to allow users to implement their own function to send emails, if necessary.
 - The Static Pages plugin now supports the "exact phrase", "all of these words",

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.293 2004/02/28 16:57:48 dhaun Exp $
+// $Id: lib-common.php,v 1.294 2004/02/28 20:22:36 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5095,50 +5095,21 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
 {
     $rel = array();
 
-    $check = " ";
-    while( $check != $reg[0])
+    preg_match_all( "/(<a.*?href=\"(.*?)\".*?>)(.*?)(<\/a>)/", $fulltext, $matches );
+    for ( $i=0; $i< count( $matches[0] ); $i++ )
     {
-        $check = $reg[0];
-
-        // this gets any links from the article
-        eregi( "<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>", $fulltext, $reg );
-
-        // this gets what is between <a href=...> and </a>
-        preg_match( "/<a href=([^\]]+)>([^\]]+)<\/a>/", $reg[0], $url_text);
-        if( empty( $url_text[1] ))
-        {
-            preg_match( "/<A HREF=([^\]]+)>([^\]]+)<\/A>/", $reg[0], $url_text );
+        $matches[3][$i] = strip_tags( $matches[3][$i] );
+        if ( !strlen( trim( $matches[3][$i] ) ) ) {
+            $matches[3][$i] = strip_tags( $matches[2][$i] );
         }
-
-        $orig = $reg[0];
 
         // if link is too long, shorten it and add ... at the end
-        if(( $maxlength > 0 ) && ( strlen( $url_text[2] ) > $maxlength ))
+        if ( ( $maxlength > 0 ) && ( strlen( $matches[3][$i] ) > $maxlength ) )
         {
-            $new_text = substr( $url_text[2], 0, $maxlength - 3 ) . '...';
-            // NOTE, this assumes there is no space between > and url_text[1]
-            $reg[0] = str_replace( ">".$url_text[2], ">".$new_text, $reg[0] );
+            $matches[3][$i] = substr( $matches[3][$i], 0, $maxlength - 3 ) . '...';
         }
 
-        if( stristr( $url_text[2], "<img " ))
-        {
-            // this is a linked images tag, ignore
-            $reg[0] = '';
-        }
-
-        if( $reg[0] != '' )
-        {
-            $fulltext = str_replace( $orig, '', $fulltext );
-        }
-
-        if( !empty( $reg[0] ) && $check != $reg[0] )
-        {
-            // Only write if we are dealing with something other than an image
-            if( !( stristr( $reg[0], "<img " )))
-            {
-                $rel[] = COM_checkHTML( $reg[0] );
-            }
-        }
+        $rel[] = $matches[1][$i] . $matches[3][$i] . $matches[4][$i];
     }
 
     return( $rel );
