@@ -4,15 +4,16 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-common.php                                                            |
-// | Geeklog common library.                                                   |
+// | comment.php                                                               |
 // |                                                                           |
+// | Let user comment on a story.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.39 2003/01/29 17:08:52 dhaun Exp $
+// $Id: comment.php,v 1.40 2003/03/27 09:37:35 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -134,9 +135,16 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $HTTP_POST_VARS['comment'] = addslashes ($newcomment);
 
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
-                $retval .= COM_startComment($LANG03[14])
-                    . COM_comment($HTTP_POST_VARS,1,$type,0,'flat',true)
-                    . '</td></tr></table></td></tr></table>';
+                $start = new Template( $_CONF['path_layout'] . 'comment' );
+                $start->set_file( array( 'startcomment' => 'startcomment.thtml' ));
+                $start->set_var( 'site_url', $_CONF['site_url'] );
+                $start->set_var( 'layout_url', $_CONF['layout_url'] );
+
+                $thecomments = COM_comment ($HTTP_POST_VARS, 1, $type, 0,
+                                            'flat', true);
+
+                $start->set_var( 'comments', $thecomments );
+                $retval .= $start->finish( $start->parse( 'output', 'startcomment' ));
             } else if ($mode == $LANG03[14]) {
                 $retval .= COM_startBlock($LANG03[17])
                     . $LANG03[12]

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.210 2003/03/24 17:42:17 dhaun Exp $
+// $Id: lib-common.php,v 1.211 2003/03/27 09:37:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -973,9 +973,9 @@ function COM_siteFooter( $rightblock = false )
 * Prints out standard block header but pulling header HTML formatting from
 * the database.
 *
-* Programming Note:  The two functions COM_startBlock and COM_endBlock are used to sandwich your
-* block content or use COM_startComment and COM_endBlock for comments.  These functions are not
-* used only for blocks but anything that uses that format, e.g. Stats page.  They are used like
+* Programming Note:  The two functions COM_startBlock and COM_endBlock are used
+* to sandwich your block content.  These functions are not used only for blocks
+* but anything that uses that format, e.g. Stats page.  They are used like
 * COM_siteHeader and COM_siteFooter but for internal page elements.
 *
 *
@@ -1042,51 +1042,6 @@ function COM_endBlock( $template='blockfooter.thtml' )
     $block->parse( 'endHTML','block' );
 
     return $block->finish( $block->get_var( 'endHTML' ));
-}
-
-/**
-* Prints Admin option on moderation.php  DO NOT USE THIS FUNCTION.
-*
-* This prints an image/label pair on moderation.php  This should not be
-* used by any of our pages anymore but we need to test that out before
-* removing permanently.
-*
-* @param    string      $type       Type of adminedit we are creating
-* @param    string      $text       Text label
-* @return   string      Formated HTML
-*/
-
-function COM_adminEdit( $type, $text='' )
-{
-    global $LANG01, $_CONF;
-
-    if( !HandlePluginAdminEdit( $type ))
-    {
-        $retval .= '<table border="0" cellspacing="0" cellpadding=2 width="100%">'.LB
-            .'<tr><td rowspan="2"><img src="'.$_CONF['site_url'].'/images/icons/'.$type.'.gif" alt=""></td>'.LB
-            .'<td>[ <a href="'.$_CONF['site_admin_url'].'/'.$type.'.php?mode=edit">'.$LANG01[52].' '.$type.'</a> | <a href="'.$_CONF['site_admin_url'].'">'.$LANG01[53].'</a> ]</td></tr>'.LB
-            .'<tr><td>'.$text.'</td></tr>'.LB
-            .'</table><br>';
-    }
-
-    return $retval;
-}
-
-/**
-* Same as COM_startBlock, but set up for the comments
-*
-* Use COM_endBlock to end comment
-*
-* @return   string  Formated HTML Starting Comment block
-* @see  COM_startBlock
-*
-*/
-function COM_startComment()
-{
-    $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">'.LB
-        .'<tr><td><table width="100%" border="0" cellspacing="0" cellpadding=3>'.LB;
-
-    return $retval;
 }
 
 
@@ -2472,87 +2427,90 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $limit = $_CONF['comment_limit'];
     }
 
-    switch( $mode )
+    if( $mode == 'nocomments' )
     {
-        case 'nocomments':
-            $retval .= COM_commentBar( $sid, $title, $type, $order, $mode);
+        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+    }
+    else
+    {
+        $comment = new Template( $_CONF['path_layout'] . 'comment' );
+        $comment->set_file( array( 'startcomment' => 'startcomment.thtml' ));
+        $comment->set_var( 'site_url', $_CONF['site_url'] );
+        $comment->set_var( 'layout_url', $_CONF['layout_url'] );
+
+        $thecomments = '';
+        switch( $mode )
+        {
+            case 'nested':
+            {
+                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 AND type = '$type' ORDER BY date $order LIMIT $limit" );
+                $nrows = DB_numRows( $result );
+                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+
+                if( $nrows > 0 )
+                {
+                    for( $i = 0; $i < $nrows; $i++ )
+                    {
+                        $A = DB_fetchArray( $result );
+                        $thecomments .= COM_comment( $A, 0, $type, 0, $mode );
+                        $thecomments .= COM_commentChildren( $sid, $A['cid'], $order, $mode, $type );
+                    }
+                }
+                else
+                {
+                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
+                }
+            }
             break;
 
-    case 'nested':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 AND type = '$type' ORDER BY date $order LIMIT $limit" );
-        $nrows = DB_numRows( $result );
-        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode);
-
-        if( $nrows > 0 )
-        {
-            $retval .= COM_startComment();
-
-            for( $i = 0; $i < $nrows; $i++ )
+            case 'flat':
             {
-                $A = DB_fetchArray( $result );
-                $retval .= COM_comment( $A, 0, $type, 0, $mode );
-                $retval .= COM_commentChildren( $sid, $A['cid'], $order, $mode, $type );
+                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = '$type' ORDER BY date $order LIMIT $limit" );
+                $nrows = DB_numRows( $result );
+                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+
+                if( $nrows > 0 )
+                {
+                    for( $i =0; $i < $nrows; $i++ )
+                    {
+                        $A = DB_fetchArray( $result );
+                        $thecomments .= COM_comment( $A, 0 ,$type, 0, $mode );
+                    }
+                }
+                else
+                {
+                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
+                }
             }
+            break;
 
-            $retval .= '</table></td></tr></table>';
-        }
-        else
-        {
-            $retval .= COM_startComment()
-                . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
-        }
-
-        break;
-    case 'flat':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = '$type' ORDER BY date $order LIMIT $limit" );
-        $nrows = DB_numRows( $result );
-        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
-
-        if( $nrows > 0 )
-        {
-            $retval .= COM_startComment();
-
-            for( $i =0; $i < $nrows; $i++ )
+            case 'threaded':
             {
-                $A = DB_fetchArray( $result );
-                $retval .= COM_comment( $A, 0 ,$type, 0, $mode );
+                $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid AND type = '$type' ORDER BY date $order LIMIT $limit" );
+                $nrows = DB_numRows( $result );
+                $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+
+                if( $nrows > 0 )
+                {
+                    for( $i = 0; $i < $nrows; $i++ )
+                    {
+                        $A = DB_fetchArray( $result );
+                        $thecomments .= COM_comment( $A, 0, $type, 0, $mode)
+                            . '<tr><td>'
+                            . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type )
+                            . '</td></tr>';
+                    }
+                }
+                else
+                {
+                    $thecomments .= '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr>';
+                }
             }
-
-            $retval .= '</table></td></tr></table>';
-        }
-        else
-        {
-            $retval .= COM_startComment()
-                . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
-        }
-        break;
-
-    case 'threaded':
-        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid AND type = '$type' ORDER BY date $order LIMIT $limit" );
-        $nrows = DB_numRows( $result );
-        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
-
-        if( $nrows > 0 )
-        {
-            $retval .= COM_startComment();
-            for( $i = 0; $i < $nrows; $i++ )
-            {
-                $A = DB_fetchArray( $result );
-                $retval .= COM_comment( $A, 0, $type, 0, $mode)
-                    . '<tr><td>'
-                    . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type )
-                    . '</td></tr>';
-            }
-
-            $retval .= '</table></td></tr></table>';
-        }
-        else
-        {
-            $retval .= COM_startComment()
-            . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
+            break;
         }
 
-        break;
+        $comment->set_var( 'comments', $thecomments );
+        $retval .= $comment->finish( $comment->parse( 'output', 'startcomment' ));
     }
 
     return $retval;
