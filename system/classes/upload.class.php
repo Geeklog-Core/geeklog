@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.16 2002/09/19 21:34:41 dhaun Exp $
+// $Id: upload.class.php,v 1.17 2002/09/20 02:24:27 tony_bibbs Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -439,6 +439,7 @@ class upload
             $this->_addError('Specified upload directory, ' . $this->_fileUploadDirectory . ' exists but is not writable');
             return false;
         }
+        $sizeOK = false;
         if (!($this->_imageSizeOK(false)) AND $this->_autoResize) { 
             $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
             $sizeOK = true;
@@ -493,6 +494,13 @@ class upload
                     $this->_addError("Couldn't copy $tmpfile to $filename.  You'll need remove both files");
                     $this->printErrorMsgs();
                     exit;
+                } else {
+                    // resize with netpbm worked, now remove tmpfile
+                    if (!unlink($tmpfile)) {
+                        $this->_addError("Couldn't delete $tmpfile.  You'll need to remove it manually");
+                        $this->printErrorMsgs();
+                        exit;
+                    }
                 }
             }
 
