@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.8 2001/12/07 15:49:39 tony_bibbs Exp $
+// $Id: group.php,v 1.9 2001/12/18 21:31:42 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -137,7 +137,8 @@ function editgroup($grp_id = '')
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[coregroupmsg]);
 
 		if (!empty($selected)) {
-			$result= DB_query("SELECT grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($selected) ORDER BY grp_name");
+            $inclause = str_replace(' ',',',$selected);
+			$result= DB_query("SELECT grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause) ORDER BY grp_name");
 		    $nrows = DB_numRows($result);
 		} else {
 			$nrows = 0;
@@ -162,7 +163,6 @@ function editgroup($grp_id = '')
             $selected = '';
         }
 */
-
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[groupmsg]);
         COM_errorLog("SELECTED: $selected");
 		// Only Root users can give rights to Root
@@ -317,6 +317,11 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
                 }
             }
         }
+        // Make sure Root group belongs to any new group
+        if (DB_getItem($_TABLES['group_assignments'], 'count(*)',"ug_main_grp_id = $grp_id AND ug_grp_id = 1") == 0) {
+            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($grp_id, 1)");
+        }
+
 		echo COM_refresh($_CONF['site_url'] . '/admin/group.php?msg=13');
 	} else {
 		$retval .= COM_siteHeader('menu');
