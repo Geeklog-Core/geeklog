@@ -757,7 +757,10 @@ $LANG27 = array(
 	15 => "alphabetisch",
 	16 => "Default:",
 	17 => "Neue Kategorie",
-	18 => "Admin Home"
+	18 => "Admin Home",
+    19 => 'Speichern',
+    20 => 'Abbruch',
+    21 => 'Loeschen'
 );
 
 ###############################################################################

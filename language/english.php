@@ -751,7 +751,10 @@ $LANG27 = array(
 	15 => "alphabetical",
 	16 => "default is",
 	17 => "New Topic",
-	18 => "Admin Home"
+	18 => "Admin Home",
+    19 => 'save',
+    20 => 'cancel',
+    21 => 'delete'
 );
 
 ###############################################################################
