@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.69 2003/07/25 08:29:55 dhaun Exp $
+// $Id: usersettings.php,v 1.70 2003/08/04 12:11:52 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -59,6 +59,9 @@ function edituser()
 	} 
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
+    if ($A['cookietimeout'] == 0) {
+        $A['cookietimeout'] = $_CONF['default_perm_cookie_timeout'];
+    }
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile' => 'profile.thtml',
