@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.105 2003/09/07 17:41:40 dhaun Exp $
+// $Id: story.php,v 1.106 2003/09/11 19:06:30 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -581,9 +581,9 @@ function liststories($page = 1)
 */
 function replace_images($sid, $intro, $body)
 {
-    global $_TABLES, $_CONF, $LANG24;
-    
-    $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    global $_CONF, $_TABLES, $LANG24;
+
+    $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
@@ -622,12 +622,13 @@ function replace_images($sid, $intro, $body)
         $intro = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $intro);
         $body = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $body);
     }
+
     return array($intro, $body);
 }
-    
+
 /**
-* Replaces simple image syntax with actual HTML in the intro and body.  If errors occur
-* it will return all errors in $error
+* Replaces simple image syntax with actual HTML in the intro and body.
+* If errors occur it will return all errors in $error
 *
 * @param    string      $sid    ID for story to parse
 * @param    string      $intro  Intro text
@@ -637,12 +638,12 @@ function replace_images($sid, $intro, $body)
 */
 function insert_images($sid, $intro, $body)
 {
-    global $_TABLES, $_CONF, $LANG24;
-    
-    $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    global $_CONF, $_TABLES, $LANG24;
+
+    $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
     $nrows = DB_numRows($result);
     $errors = array();
-    
+
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
         $dimensions = GetImageSize($_CONF['path_html'] . 'images/articles/' . $A['ai_filename']);
