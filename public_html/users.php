@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.37 2002/08/10 14:33:36 dhaun Exp $
+// $Id: users.php,v 1.38 2002/08/10 18:11:53 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -161,6 +161,7 @@ function userprofile($user)
     }
 
     // list of last 10 comments by this user
+    // first, get a list of all stories the current visitor has access to
     $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (";
     if (!empty ($_USER['uid'])) {
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
@@ -177,18 +178,46 @@ function userprofile($user)
             $sidList .= ',';
         }
     }
-    $sql = "SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList)) ORDER BY unixdate DESC LIMIT 10";
+    // add all polls the current visitor has access to
+    $sql = "SELECT qid FROM {$_TABLES['pollquestions']} WHERE ";
+    if (!empty ($_USER['uid'])) {
+        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    }
+    $sql .= "(perm_anon >= 2)";
+    $result = DB_query($sql);
+    $numqids = DB_numRows($result);
+    if (($numqids > 0) && !empty ($sidList)) {
+        $sidList .= ',';
+    }
+    for ($i = 1; $i <= $numqids; $i++) {
+        $Q = DB_fetchArray ($result);
+        $sidList .= "'" . $Q['qid'] . "'";
+        if ($i != $numqids) {
+            $sidList .= ',';
+        }
+    }
+    // then, find all comments by the user in those stories and polls
+    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList)) ORDER BY unixdate DESC LIMIT 10";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
             $user_templates->set_var('row_number', $i . '.');
-            $user_templates->set_var('comment_begin_href',
-                '<a href="' . $_CONF['site_url'] .
-                '/comment.php?mode=display&amp;sid=' . $C['sid'] .
-                '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
-                $C['pid'] . '">');
+            if ($C['type'] == 'article') {
+                $user_templates->set_var('comment_begin_href',
+                    '<a href="' . $_CONF['site_url'] .
+                    '/comment.php?mode=display&amp;sid=' . $C['sid'] .
+                    '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
+                    $C['pid'] . '">');
+            } else {
+                $user_templates->set_var('comment_begin_href',
+                    '<a href="' . $_CONF['site_url'] .
+                    '/comment.php?mode=display&amp;sid=' . $C['sid'] .
+                    '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
+                    $C['pid'] . '&amp;qid=' . $C['sid'] . '">');
+            }
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
