@@ -89,7 +89,7 @@ $LANG01 = array(
 	46 => "Numer Komunikatu B³êdu MySQL",
 	47 => "Menu U¿ytkownika",
 	48 => "Konto - Info",
-	49 => "Wygl±d - Preferencje",
+	49 => "Preferencje",
 	50 => "B³êdna sk³adnia SQL",
 	51 => "pomoc",
 	52 => "Nowy",
@@ -231,7 +231,7 @@ $LANG04 = array(
 	23 => "Konto w serwisie {$_CONF['site_name']} pozwoli ci zamieszczaæ komentarze i inne pozycje w twoim imieniu. Brak konta umo¿liwia tylko zamieszczanie jako anonim. Twój adres email <b><i>nigdy</i></b> nie bêdzie widoczny publicznie.",
 	24 => "Twoje has³o zostanie wys³ane pod podany adres email.",
 	25 => "Zapomnia³e¶/a¶ has³o?",
-	26 => "Wpisz swój login i kliknij Prze¶lij Has³o a przes³ane zostanie nowe has³o.",
+	26 => "Wpisz <em>albo</em> swój login <em>albo</em> adres email podany podczas rejestracji i kliknij Prze¶lij Has³o. Instrukcje jak ustawiæ nowe has³o zostan± wys³ane do Ciebie mailem.",
 	27 => "Zarejestruj Siê!",
 	28 => "Prze¶lij Has³o",
 	29 => "wylogowany z adresu",
@@ -291,7 +291,26 @@ $LANG04 = array(
 	83 => 'Statystyka zamieszczonych materia³ów u¿ytkownika',
 	84 => 'Wszystkich artyku³ów:',
 	85 => 'Wszystkich komentarzy:',
-	86 => 'Znajd¼ wszystkie materia³y zamieszczone przez'
+	86 => 'Znajd¼ wszystkie materia³y zamieszczone przez',
+        87 => 'Twój login',
+        88 => 'Kto¶ (prawdopodobnie Ty) chce uzyskaæ nowe has³o do tego konta "%s" w ' . $_CONF['site_name'] . ', <' . $_CONF['site_url'] . ">.\n\nJe¶li chcesz kontynuowaæ proszê kliknij ten link:\n\n",
+        89 => "Je¶li nie chcesz kontynuowaæ, zignoruj t± wiadomo¶æ (Twoje has³o pozostanie niezmienione).\n\n",
+        90 => 'Poni¿ej mo¿esz wprowadziæ nowe has³o. Pamiêtaj, ¿e stare has³o jest aktywne do czasu przes³ania tego zg³oszenia.',
+        91 => 'Ustaw Nowe Has³o',
+        92 => 'Wpisz Nowe Has³o',
+        93 => 'Twoja ostatnia pro¶ba o zmianê has³a by³a wys³ana %d sekund temu. Wymagana jest przerwa co najmniej %d sekundowa pomiêdzy takimi zg³oszeniami.',
+        94 => 'Kasuj Konto "%s"',
+        95 => 'Kliknij poni¿szy przycisk "kasuj konto" aby usun±æ swoje konto z bazy danych. Proszê mieæ na uwadze, ¿e wszelkie artyku³y i komentarze, zamieszczone przez Ciebie <strong>nie</strong> zostan± usuniête ale autor zmieni siê na "Gall Anonim".',
+        96 => 'kasuj konto',
+        97 => 'Potwierd¼ Usuniêcie Konta',
+        98 => 'Czy aby napewno chcesz usun±æ swoje konto? Po skasowaniu konta nie bêdzie mo¿na siê ponownie zalogowaæ na tej stronie (chyba, ¿e za³o¿ysz nowe konto). Je¶li tego chcesz kliknij ponownie "kasuj konto" w poni¿szym formularzu.',
+        99 => 'Ochrona Prywatno¶ci dla',
+       100 => 'Email od Admina',
+       101 => 'TAK na emaile od Admina',
+       102 => 'Email od U¿ytkowników',
+       103 => 'TAK na emaile od innych u¿ytkowników',
+       104 => 'Poka¿ Status Online',
+       105 => 'Poka¿ w bloku Who\'s Online'
 			
 );
 
@@ -305,6 +324,7 @@ $LANG05 = array(
 	4 => "Dzisiejszy Artyku³ Dnia",
 	5 => "Nastêpny",
 	6 => "Poprzedni"
+
 );
 
 ###############################################################################
@@ -314,6 +334,7 @@ $LANG06 = array(
 	1 => "Linki",
 	2 => "Brak linków.",
 	3 => "Dodaj Link"
+
 );
 
 ###############################################################################
@@ -324,7 +345,9 @@ $LANG07 = array(
 	2 => "Zapisano Twój g³os oddany w sondzie ",
 	3 => "G³osuj",
 	4 => "Sondy w Systemie",
-	5 => "G³osów"
+	5 => "G³osów",
+        6 => "Zobacz inne sondy"
+
 );
 
 ###############################################################################
@@ -364,7 +387,9 @@ $LANG08 = array(
 	31 => "Tytu³",
 	32 => "Data",
 	33 => "Ca³y artyku³ przeczytany ",
-	34 => "Koniec Wiadomo¶ci"
+	34 => "Koniec Wiadomo¶ci",
+        35 => 'Sorry, ale ten u¿ytkownik nie ¿yczy sobie otrzymywania ¿adnych emaili.'
+
 );
 
 ###############################################################################
@@ -393,10 +418,10 @@ $LANG09 = array(
 	20 => "Data",
 	21 => "do",
 	22 => "(Format Daty RRRR-MM-DD)",
-	23 => "Trafieñ",
-	24 => "Znaleziono",
-	25 => "trafieñ w¶ród",
-	26 => "pozycji w ci±gu",
+        23 => "Ods³on",
+        24 => "Znaleziono %d pozycji",
+        25 => "Szukano",
+        26 => "pozycji ",
 	27 => "sekund",
         28 => 'Brak artyku³ów lub komentarzy których szukasz',
         29 => 'Artyku³y i Komentarze - Wyniki',
@@ -412,7 +437,22 @@ $LANG09 = array(
 	39 => "Linki",
 	40 => "Wydarzenia",
 	41 => 'Twoje zapytanie powinno zawieraæ co najmniej 3 znaki.',
-	42 => 'Proszê u¿ywaæ nastêpuj±cego formatu daty: RRRR-MM-DD (rok-miesi±c-dzieñ).'
+	42 => 'Proszê u¿ywaæ nastêpuj±cego formatu daty: RRRR-MM-DD (rok-miesi±c-dzieñ).',
+        43 => 'z wyra¿eniem',
+        44 => 'ze wszystkimi s³owami',
+        45 => 'z którymkolwiek ze s³ów',
+        46 => 'Nastêpne',
+        47 => 'Poprzednie',
+        48 => 'Autor',
+        49 => 'Data',
+        50 => 'Ods³on',
+        51 => 'Link',
+        52 => 'Lokalizacja',
+        53 => 'Artyku³y - Wyniki',
+        54 => 'Komentarze - Wyniki',
+        55 => 'fraza',
+        56 => 'AND',
+        57 => 'OR'
 
 );
 
@@ -584,15 +624,15 @@ $LANG21 = array(
 	45 => "Próbujesz wyedytowaæ blok, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/block.php\">wróciæ do ekranu administrowania blokami</a>.",
 	46 => 'Nowy Blok',
 	47 => 'Admin Home',
-    48 => 'Nazwa Bloku',
-    49 => ' (nazwa unikalna i bez spacji)',
-    50 => 'URL Pliku Pomocy',
-    51 => 'uwzglêdnij http://',
-    52 => 'Je¶li zostawisz puste, ikona pomocy dla tego bloku siê nie pojawi',
-    53 => 'Aktywne',
-    54 => 'zapisz',
-    55 => 'anuluj',
-    56 => 'kasuj'
+        48 => 'Nazwa Bloku',
+        49 => ' (nazwa unikalna i bez spacji)',
+        50 => 'URL Pliku Pomocy',
+        51 => 'uwzglêdnij http://',
+        52 => 'Je¶li zostawisz puste, ikona pomocy dla tego bloku siê nie pojawi',
+        53 => 'Aktywne',
+        54 => 'zapisz',
+        55 => 'anuluj',
+        56 => 'kasuj'
 );
 
 ###############################################################################
@@ -610,7 +650,7 @@ $LANG22 = array(
 	9 => "(uwzglêdnij http://)",
 	10 => "Nale¿y wype³niæ wszystkie pola w tym formularzu!",
 	11 => "Menad¿er Wydarzeñ",
-	12 => "Aby zmodyfikowaæ lub wykasowaæ wydarzenie kliknij na dane wydarzenie poni¿ej.  Aby wpisaæ nowe wydarzenie kliknij na Nowe Wydarzenie powy¿ej.",
+	12 => "Aby zmodyfikowaæ lub wykasowaæ wydarzenie kliknij na dane wydarzenie poni¿ej.  Aby wpisaæ nowe wydarzenie kliknij na Nowe Wydarzenie powy¿ej. Kliknij [C] aby wykonaæ kopiê istniej±cego wydarzenia.",
 	13 => "Tytu³ Wydarzenia",
 	14 => "Data Poczkowa",
 	15 => "Data Koñcowa",
@@ -685,8 +725,8 @@ $LANG24 = array(
 	27 => "",
 	28 => "",
 	29 => "",
-	30 => "",
-	31 => "Proszê wpisaæ Autora, Tytu³ i Wstêp",
+        30 => 'B³±d Uploadu Pliku',
+	31 => "Proszê wpisaæ Tytu³ i Wstêp",
 	32 => "Artyku³ Dnia",
 	33 => "Artyku³ Dnia mo¿e byæ tylko jeden",
 	34 => "Wersja Robocza",
@@ -711,7 +751,9 @@ $LANG24 = array(
 	53 => 'nie zosta³ u¿yty.  Musisz umie¶ciæ ten obrazek we wstêpie lub w g³ównej czê¶ci zanim zapiszsz zmiany',
 	54 => 'Za³±czonych Obrazów Nie U¿yto',
 	55 => 'Pojawi³y siê nastêpuj±ce b³êdy podczas próby zapisu tego artyku³u.  Proszê je poprawiæ przed ponownym zapisem',
-	56 => 'Poka¿ Ikonê Artyku³u'
+	56 => 'Poka¿ Ikonê Artyku³u',
+        57 => 'Poka¿ nieskalowalne zdjêcie'
+
 );
 
 ###############################################################################
@@ -719,7 +761,7 @@ $LANG24 = array(
 
 $LANG25 = array(
 	1 => "Tryb",
-	2 => "",
+        2 => 'Proszê wpisaæ pytanie i co najmniej jedn± odpowied¼.',
 	3 => "Sonda Stworzona",
 	4 => "Sonda $qid zapisana",
 	5 => "Edycja Sondy",
@@ -734,7 +776,7 @@ $LANG25 = array(
 	14 => "zapisz",
 	15 => "anuluj",
 	16 => "kasuj",
-	17 => "",
+        17 => 'Proszê wpisaæ ID Sondy',
 	18 => "Lista Sond",
 	19 => "Aby zmodyfikowaæ lub wykasowaæ sondê, kliknij na dan± sondê.  Aby stworzyæ now± sondê kliknij Nowa Sonda powy¿ej.",
 	20 => "G³osuj±cych",
@@ -758,7 +800,7 @@ $LANG27 = array(
 	6 => "Wykasowanie sekcji wykasuje wszystkie artyku³y i bloki z ni± powi±zane",
 	7 => "Proszê wpisaæ ID Sekcji i Nazwê Sekcji",
 	8 => "Menad¿er Sekcji",
-	9 => "Aby zmodyfikowaæ lub wykasowaæ sekcjê, kliknij na dan± sekcjê.  Aby stworzyæ now± sekcjê kliknij na Nowa Sekcja powy¿ej. W nawiasie znajduje siê twój poziom dostêpu do ka¿dej sekcji",
+	9 => "Aby zmodyfikowaæ lub wykasowaæ sekcjê, kliknij na dan± sekcjê.  Aby stworzyæ now± sekcjê kliknij na Nowa Sekcja powy¿ej. W nawiasie znajduje siê twój poziom dostêpu do ka¿dej sekcji. Gwiazdka (*) oznacza domy¶ln± sekcjê.",
 	10=> "Sortowanie",
 	11 => "Artyku³ów/Stronê",
 	12 => "Odmowa Dostêpu",
@@ -770,7 +812,10 @@ $LANG27 = array(
 	18 => "Admin Home",
 	19 => 'zapisz',
         20 => 'anuluj',
-        21 => 'kasuj'
+        21 => 'kasuj',
+        22 => 'Domy¶lnie',
+        23 => 'zrób z tego domy¶ln± sekcjê dla przesy³anych artyku³ów',
+        24 => '(*)'
 );
 
 ###############################################################################
@@ -786,17 +831,14 @@ $LANG28 = array(
 	7 => "Adres Email",
 	8 => "Strona Domowa",
 	9 => "(bez spacji)",
-	10 => "Proszê wpisaæ Login, Pe³n± nazwê, Poziom Zabezpieczeñ i Adres Email",
+	10 => "Proszê wpisaæ Login i Adres Email",
 	11 => "Menad¿er U¿ytkowników",
-	12 => "Aby zmodyfikowaæ lub usun±æ u¿ytkownika, kliknij na odpowiedni login poni¿ej.  Aby za³o¿yæ nowego u¿ytkownika kliknij nowy u¿ytkownik po lewej.",
+	12 => "Aby zmodyfikowaæ lub usun±æ u¿ytkownika, kliknij na odpowiedni login poni¿ej.  Aby za³o¿yæ nowego u¿ytkownika kliknij nowy u¿ytkownik po lewej. Mo¿esz przeszukaæ bazê wpisuj±c czê¶æ loginu, adresu email lub pe³nej nazwy (np. *son* lub *.edu) w poni¿szym formularzu.",
 	13 => "PozZab",
 	14 => "Data Rej.",
 	15 => 'Nowy U¿ytkownik',
 	16 => 'Admin Home',
 	17 => 'zmieñ has³o',
-	18 => 'anuluj',
-	19 => 'kasuj',
-	20 => 'zapisz',
 	18 => 'anuluj',
 	19 => 'kasuj',
 	20 => 'zapisz',
@@ -813,7 +855,10 @@ $LANG28 = array(
         31 => 'Nowi U¿ytkownicy',
         32 => 'Przetwarzanie zakoñczone. Zaimportowano $successes i napotkano $failures b³êdów',
         33 => 'prze¶lij',
-        34 => 'B³±d: Musisz podaæ plik do za³adowania.'
+        34 => 'B³±d: Musisz podaæ plik do za³adowania.',
+        35 => 'Ostatni Login',
+        36 => '(nigdy)'
+
 );
 
 
@@ -855,7 +900,7 @@ $LANG30 = array(
 	6 => "Pi±tek",
 	7 => "Sobota",
 	8 => "Dodaj Wydarzenie",
-	9 => "Geeklog Event",
+        9 => '%s Wydarzenie',
 	10 => "Wydarzenia",
 	11 => "G³ówny Kalendarz",
 	12 => "Mój Kalendarz",
@@ -975,7 +1020,14 @@ $MESSAGE = array (
 	47 => "Ta opcja dzia³a tylko pod systemem *nix. Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie.",
 	48 => 'Dziekujemy za zainteresowanie cz³onkowstwem w ' .$_CONF['site_name'] . '. Zweryfikujemy twoje zg³oszenie i po zatwierdzeniu zostanie wys³ane has³o pod podany adres e-mail.',
 	49 => "Twoja grupa zosta³a zapisana.",
-        50 => "Grupa zosta³a wykasowana."
+        50 => "Grupa zosta³a wykasowana.",
+        51 => 'Ten login juz istnieje. Prosze wybrac inny.',
+        52 => 'Podany adres email nie wyglada na prawidlowy.',
+        53 => 'Twoje nowe has³o zosta³o przyjête. Proszê zalogowac sie ponizej wpisuj±c nowe has³o.',
+        54 => 'Twoja pro¶ba o nowe has³o wygas³a. Proszê spróbowac ponownie poni¿ej.',
+        55 => 'Wkrótce powinien dotrzeæ do Ciebie email. Postêpuj zgodnie ze wskazówkami aby ustawiæ nowe has³o dla Twojego konta.',
+        56 => 'Podany adres email jest ju¿ u¿ywany.',
+        57 => 'Twoje konto zosta³o pomy¶lnie usuniête.'
 );
 
 // for plugins.php
@@ -1059,7 +1111,10 @@ $LANG_ACCESS = array(
 	save => 'zapisz',
 	cancel => 'anuluj',
 	delete => 'kasuj',	
-	canteditroot => 'Wyst±pi³a próba edycji grupy G³ównej. Niestety nie nale¿ysz do ¿adnej z grup G³ównych dlatego nie masz dostêpu do tej grupy.  Skontaktuj siê z administratorem systemu je¶li uwa¿asz, ¿e to pomy³ka'
+	canteditroot => 'Wyst±pi³a próba edycji grupy G³ównej. Niestety nie nale¿ysz do ¿adnej z grup G³ównych dlatego nie masz dostêpu do tej grupy.  Skontaktuj siê z administratorem systemu je¶li uwa¿asz, ¿e to pomy³ka',
+        listusers => 'Listuj U¿ytkowników',
+        listthem => 'listuj',
+        usersingroup => 'U¿ytkownicy w grupie %s'
 );
 
 $LANG_DB_BACKUP = array(
@@ -1074,7 +1129,8 @@ $LANG_DB_BACKUP = array(
     no_access => "B£¡D: Katalog {$_CONF['backup_path']} jest niedostêpny.",
     backup_file => 'Plik kopii',
     size => 'Rozmiar',
-    bytes => 'Bajtów'
+    bytes => 'Bajtów',
+    total_number => 'Wszystkich kopii bezpieczeñstwa: %d'
 );
 
 $LANG_BUTTONS = array(
