@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.23 2003/01/01 18:56:21 dhaun Exp $
+// $Id: upload.class.php,v 1.24 2003/02/02 21:14:07 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -644,9 +644,9 @@ class upload
     function setContinueOnError($switch)
     {
         if ($switch) {
-            $this->_continueOnError = $true;
+            $this->_continueOnError = true;
         } else {
-            $this->_continueOnError = $false;
+            $this->_continueOnError = false;
         }
     }
     
