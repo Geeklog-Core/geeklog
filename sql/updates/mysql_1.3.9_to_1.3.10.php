@@ -155,6 +155,9 @@ $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_statuscode(statuscode)";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_expire(expire)";
 
+// extend max. length of static page IDs to 40 characters (again)
+// (fresh installs of 1.3.9 were still using 20 characters)
+$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id varchar(40) NOT NULL";
 
 /**
 * Install SpamX plugin (also handled updates from version 1.0)

@@ -565,7 +565,7 @@ CREATE TABLE {$_TABLES['article_images']} (
 
 $_SQL[40] = "
 CREATE TABLE {$_TABLES['staticpage']} (
-  sp_id varchar(20) NOT NULL default '',
+  sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
   sp_title varchar(128) NOT NULL default '',
   sp_content text NOT NULL,
