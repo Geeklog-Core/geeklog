@@ -72,7 +72,8 @@ $LANG_STATIC= array(
     uninstall_failed_msg => 'The uninstall of the Static Pages plugin failed.  Please see your Geeklog error.log file for diagnostic information',
     all_html_allowed => 'All HTML is allowed',
     results => 'Static Pages Results',
-    author => 'Author'
+    author => 'Author',
+    no_title_or_content => 'You must at least fill in the <b>Title</b> and <b>Content</b> fields.'
 );
 
 ?>

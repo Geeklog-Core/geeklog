@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2002/10/31 18:05:40 dhaun Exp $
+// $Id: index.php,v 1.13 2002/11/10 14:15:26 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -148,7 +148,7 @@ function form($A, $error=false)
 */
 function staticpageeditor($sp_id, $mode = '') 
 {
-	global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES, $LANG50;
+	global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
 
 	if (!empty($sp_id) && $mode == 'edit') {
 		$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'");
@@ -245,9 +245,9 @@ function liststaticpages($page = 1)
 * @sp_format    string      HTML or plain text
 *
 */
-function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label) 
+function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label)
 {
-	global $_CONF, $LANG12, $LANG50, $_SP_CONF, $_TABLES;
+	global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
 	if (!empty($sp_title) && !empty($sp_content)) {
 		$date = date("Y-m-d H:i:s",$unixdate);
@@ -279,14 +279,14 @@ function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hit
 		//$sp_title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_title))));
 		//$sp_label = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_label))));
 
-		DB_save($_TABLES['staticpage'],'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"$sp_id,$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+		DB_save($_TABLES['staticpage'],'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
 
 	} else {
         $retval .= COM_siteHeader();
-		$retval .= COM_errorLog($LANG50[31],2);
+		$retval .= COM_errorLog($LANG_STATIC['no_title_or_content'],2);
 		$retval .= staticpageeditor($sp_id);
         $retval .= COM_siteFooter();
-        return $retval;
+        echo $retval;
 	}
 }
 

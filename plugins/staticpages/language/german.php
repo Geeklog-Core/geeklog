@@ -74,7 +74,8 @@ $LANG_STATIC= array(
     uninstall_failed_msg => 'Die Deinstallation des Statische-Seiten-Plugins ist fehlgeschlagen. Die Geeklog-Datei error.log sollte weitere Informationen zu dem Problem enthalten',
     all_html_allowed => 'Alle HTML-Tags sind erlaubt',
     results => 'Gefundene Statische Seiten',
-    author => 'Autor'
+    author => 'Autor',
+    no_title_or_content => 'Bitte mindestens die Felder <b>Titel</b> und <b>Inhalt</b> ausf&uuml;llen.'
 );
 
 ?>
