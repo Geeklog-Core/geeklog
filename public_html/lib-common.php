@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.64 2002/04/16 16:42:56 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.65 2002/04/16 20:25:26 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -737,6 +737,23 @@ function COM_rdfUpToDateCheck()
     $last_rdf_sids = DB_getItem($_TABLES['vars'],'value',"name = 'rdf_sids'");
     if ($sids <> $last_rdf_sids) {
         COM_exportRDF();
+    }
+}
+
+/**
+* Checks to see if any articles that were published for the future have been published and, if
+* so, will see if they are featured.  If they are featured, this will set old featured article (if
+* if there is one) to normal
+*
+*/
+function COM_featuredCheck()
+{
+    global $_TABLES;
+    $curdate = date("Y-m-d H:i:s",time());
+    if (DB_getItem($_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'") > 1) {
+        // OK, we have two featured stories, fix that
+        $sid = DB_getItem($_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1");
+        DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'");
     }
 }
 
