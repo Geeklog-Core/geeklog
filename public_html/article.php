@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.53 2004/08/27 10:08:40 dhaun Exp $
+// $Id: article.php,v 1.54 2004/09/04 19:31:02 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -179,6 +179,7 @@ if ($A['count'] > 0) {
                                  . '</a>';
                 $story_template->set_var ('email_story_url', $emailUrl);
                 $story_template->set_var ('lang_email_story', $LANG11[2]);
+                $story_template->set_var ('lang_email_story_alt', $LANG01[64]);
             }
             $printUrl = COM_buildUrl ($_CONF['site_url']
                     . '/article.php?story=' . $story .  '&amp;mode=print');
@@ -187,6 +188,7 @@ if ($A['count'] > 0) {
                                  . '</a>';
                 $story_template->set_var ('print_story_url', $printUrl);
                 $story_template->set_var ('lang_print_story', $LANG11[3]);
+                $story_template->set_var ('lang_print_story_alt', $LANG01[65]);
             }
             if ($_CONF['pdf_enabled'] == 1) {
                 $pdfUrl = $_CONF['site_url']
