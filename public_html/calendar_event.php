@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.16 2002/04/23 04:22:02 mlimburg Exp $
+// $Id: calendar_event.php,v 1.17 2002/05/12 17:04:12 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -338,6 +338,32 @@ function editpersonalevent($A)
     return $cal_templates->parse('output','form'); 
 }
 
+function setCalendarLanguage (&$aCalendar) {
+    global $LANG30;
+
+    $lang_days = array('sunday'=>$LANG30[1],
+                        'monday'=>$LANG30[2],
+                        'tuesday'=>$LANG30[3],
+                        'wednesday'=>$LANG30[4],
+                        'thursday'=>$LANG30[5],
+                        'friday'=>$LANG30[6],
+                        'saturday'=>$LANG30[7]);
+    $lang_months = array('january'=>$LANG30[13],
+                         'february'=>$LANG30[14],
+                         'march'=>$LANG30[15],
+                         'april'=>$LANG30[16],
+                         'may'=>$LANG30[17],
+                         'june'=>$LANG30[18],
+                         'july'=>$LANG30[19],
+                         'august'=>$LANG30[20],
+                         'september'=>$LANG30[21],
+                         'october'=>$LANG30[22],
+                         'november'=>$LANG30[23],
+                         'december'=>$LANG30[24]);
+    $aCalendar->setLanguage($lang_days, $lang_months);
+}   
+
+
 // MAIN
 
 $display = '';
@@ -407,6 +433,7 @@ default:
         $display .= $LANG02[1];
     } else {
         $cal = new Calendar();
+        setCalendarLanguage ($cal);
 
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
@@ -431,7 +458,7 @@ default:
                 }
 
 
-                if (!empty($_USER['uid'])) {
+                if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
                     $tmpresult = DB_query("SELECT * FROM {$_TABLES["personal_events"]} WHERE eid='{$A["eid"]}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
