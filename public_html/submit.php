@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.61 2004/02/02 19:14:07 dhaun Exp $
+// $Id: submit.php,v 1.62 2004/02/02 19:45:02 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -733,14 +733,16 @@ function savesubmission($type,$A)
 $display = '';
 $display .= COM_siteHeader();
 
-if (isset ($HTTP_POST_VARS['mode']) || isset ($HTTP_POST_VARS['type'])) {
+// 'type' always comes in as a GET variable
+$type = COM_applyFilter ($HTTP_GET_VARS['type']);
+
+if (isset ($HTTP_POST_VARS['mode'])) {
     $http_vars = $HTTP_POST_VARS;
 } else {
     $http_vars = $HTTP_GET_VARS;
 }
 
 $mode = COM_applyFilter ($http_vars['mode']);
-$type = COM_applyFilter ($http_vars['type']);
 
 if ($mode == $LANG12[8]) { // submit
     $display .= savesubmission ($type, $HTTP_POST_VARS);
