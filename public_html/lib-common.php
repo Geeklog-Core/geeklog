@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.193 2002/12/16 09:22:23 dhaun Exp $
+// $Id: lib-common.php,v 1.194 2002/12/28 14:19:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -900,6 +900,7 @@ function COM_siteFooter( $rightblock = false )
     $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; 2002 ' . $_CONF['site_name'] );
     $footer->set_var( 'trademark_msg', $LANG01[94] );
     $footer->set_var( 'powered_by', $LANG01[95] );
+    $footer->set_var( 'geeklog_url', 'http://www.geeklog.net/' );
     $footer->set_var( 'geeklog_version', VERSION );
 
     $exectime = $_PAGE_TIMER->stopTimer();
@@ -2159,7 +2160,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_inGroup( 'Root' ))
         {
-            $adminmenu->set_var( 'option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION );
+            $adminmenu->set_var( 'option_url', 'http://www.geeklog.net/versionchecker.php?version=' . VERSION );
             $adminmenu->set_var( 'option_label', $LANG01[107] );
             $adminmenu->set_var( 'option_count', 'N/A' );
 
