@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.60 2002/04/12 15:43:29 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.61 2002/04/12 18:39:09 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -2193,7 +2193,7 @@ function COM_whatsNewBlock($help='',$title='')
 	
     $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
 	
-	$sql = "SELECT DISTINCT *, count(*) AS dups,type,question,gl_stories.title "
+	$sql = "SELECT DISTINCT *, count(*) AS dups,type,question,{$_TABLES['stories']}.title "
         . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON {$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid "
         . "LEFT JOIN {$_TABLES['pollquestions']} ON qid = {$_TABLES['comments']}.sid WHERE ";
     $now = time();
