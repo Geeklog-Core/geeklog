@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2003/06/27 13:44:49 dhaun Exp $
+// $Id: index.php,v 1.25 2003/08/02 17:19:35 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -310,9 +310,9 @@ function staticpageeditor ($sp_id, $mode = '')
     } else {
         $A = $HTTP_POST_VARS;
         $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
-        $A['sp_title'] = strip_tags ($A['sp_title']);
         $A['sp_old_id'] = $HTTP_POST_VARS['sp_old_id'];
     }
+    $A['sp_title'] = strip_tags ($A['sp_title']);
 
     return form ($A);
 }
@@ -499,20 +499,20 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         if ($_SP_CONF['censor'] == 1) {
             $sp_content = COM_checkWords ($sp_content); 
             $sp_title = COM_checkWords ($sp_title);
-            $sp_label = COM_checkWords ($sp_label);
         }
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_content = COM_checkHTML ($sp_content);
-            $sp_title = COM_checkHTML ($sp_title);
-            $sp_label = COM_checkHTML ($sp_label);
         }
+        $sp_title = strip_tags ($sp_title);
+        $sp_label = strip_tags ($sp_label);
+
         $sp_content = addslashes ($sp_content);
         $sp_title = addslashes ($sp_title);
         $sp_label = addslashes ($sp_label);
 
         // If user does not have php edit perms, then set php flag to 0.
         if (!SEC_hasRights ('staticpages.PHP')) {
-	        $sp_php = 0;
+            $sp_php = 0;
         }
 
         // make sure there's only one "entire page" static page per topic
