@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.5 2001/12/13 17:40:15 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.6 2001/12/14 15:00:10 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -39,7 +39,7 @@ $_COM_VERBOSE = false;
 // +---------------------------------------------------------------------------+
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
-include_once('{config_path}config.php');
+include_once('{config_path}/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
@@ -1052,6 +1052,7 @@ function COM_userMenu($title='')
         $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=comments');
         $adminmenu->set_var('option_label', $LANG01[63]);
         $adminmenu->set_var('option_count', '');
+        $retval .= $adminmenu->parse('item', 'option');
 
         $adminmenu->set_var('option_url', $_CONF['site_url'] . '/users.php?mode=logout');
         $adminmenu->set_var('option_label', $LANG01[19]);
