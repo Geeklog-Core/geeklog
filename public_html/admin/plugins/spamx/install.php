@@ -138,7 +138,7 @@ function plugin_install_spamx()
         DB_query($sql,1);
         if (DB_error()) {
             COM_errorLog("Error Creating $table table",1);
-            plugin_uninstall_{plugin}();
+            plugin_uninstall_spamx();
             return false;
             exit;
         }
@@ -153,7 +153,7 @@ function plugin_install_spamx()
         DB_query($sql,1);
         if (DB_error()) {
             COM_errorLog("Error inserting default data into $table table",1);
-            plugin_uninstall_{plugin}();
+            plugin_uninstall_spamx();
             return false;
             exit;
         }
