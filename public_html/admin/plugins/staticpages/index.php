@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2003/05/30 12:24:32 dhaun Exp $
+// $Id: index.php,v 1.23 2003/06/27 08:51:26 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -65,7 +65,7 @@ function form ($A, $error = false)
     	$A['owner_id'] = $_USER['uid'];
 		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Static Page Admin'");
 		$A['perm_owner'] = 3;
-		$A['perm_group'] = 3;
+		$A['perm_group'] = 2;
 		$A['perm_members'] = 2;
 		$A['perm_anon'] = 2;
 		$access = 3;
@@ -145,6 +145,9 @@ function form ($A, $error = false)
         $sp_template->set_var ('lang_topic', $LANG_STATIC['topic']);
         $sp_template->set_var ('lang_position', $LANG_STATIC['position']);
         $current_topic = $A['sp_tid'];
+        if (empty ($current_topic)) {
+            $current_topic = 'none';
+        }
         $topics = COM_topicList ('tid,topic', $current_topic);
         $notopic = '<option value="none"';
         if ($current_topic == 'none') {
@@ -286,6 +289,7 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['sp_uid'] = $_USER['uid'];
         $A['unixdate'] = time ();
         $A['sp_old_id'] = '';
+        $A['sp_where'] = 1; // default new pages to "top of page"
     } elseif (!empty ($sp_id) && $mode == 'clone') {
         $perms = SP_getPerms ('', '3');
         if (!empty ($perms)) {
@@ -505,6 +509,12 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         if (!SEC_hasRights ('staticpages.PHP')) {
 	        $sp_php = 0;
         }
+
+        // make sure there's only one "entire page" static page per topic
+        if (($sp_centerblock == 1) && ($sp_where == 0)) {
+            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_centerblock = 0 WHERE sp_centerblock = 1 AND sp_where = 0 AND sp_tid = '$sp_tid'");
+        }
+
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where");
         if ($delete_old_page && !empty ($sp_old_id)) {
