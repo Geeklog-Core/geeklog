@@ -292,7 +292,6 @@ function article($A,$index="") {
 		print "<a href={$CONF["site_url"]}/profiles.php?sid={$A["sid"]}&what=emailstory><img src={$CONF["site_url"]}/images/mail.gif alt=\"{$LANG01[64]}\" border=0></a>&nbsp;<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}&mode=print><img border=0 src={$CONF["site_url"]}/images/print.gif alt=\"{$LANG01[65]}\"></a>";
 	}
 	$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
-	print "\n\naccess = $access";
 	if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 3 AND hasrights('story.edit')) {
 		print "<br><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>{$LANG01[4]}</a>";
 	}
