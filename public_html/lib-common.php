@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.270 2004/01/02 02:51:18 blaine Exp $
+// $Id: lib-common.php,v 1.271 2004/01/02 22:06:22 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -194,7 +194,13 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 if( !$_CONF['have_pear'] )
 {
     $curPHPIncludePath = ini_get( 'include_path' );
-    ini_set( 'include_path', $curPHPIncludePath . ':' . $_CONF['path_pear'] );  
+    $separator = ';';
+    if( strpos( $curPHPIncludePath, ';' ) === false )
+    {
+        $separator = ':';
+    }
+    ini_set( 'include_path',
+             $curPHPIncludePath . $separator . $_CONF['path_pear'] );  
 }
 
 // Set theme
@@ -1966,7 +1972,12 @@ function COM_userMenu( $help='', $title='' )
             }
 
             $firstslash = strpos( $_CONF['site_url'], '/' );
-            if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
+            if( $firstslash === false )
+            {
+                // special case - assume it's okay
+                $thisUrl = $_CONF['site_url'] . $requestUri;
+            }
+            else if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
             {
                 // site is in the document root
                 $thisUrl = $_CONF['site_url'] . $requestUri;
@@ -2136,7 +2147,12 @@ function COM_adminMenu( $help = '', $title = '' )
             }
 
             $firstslash = strpos( $_CONF['site_url'], '/' );
-            if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
+            if( $firstslash === false )
+            {
+                // special case - assume it's okay
+                $thisUrl = $_CONF['site_url'] . $requestUri;
+            }
+            else if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
             {
                 // site is in the document root
                 $thisUrl = $_CONF['site_url'] . $requestUri;
@@ -2985,10 +3001,10 @@ function COM_undoSpecialChars( $string )
 /**
 * Makes an ID based on current date/time
 *
-* This function COM_creates a 17 digit sid for stories based on the 14 digit date
+* This function creates a 17 digit sid for stories based on the 14 digit date
 * and a 3 digit random number that was seeded with the number of microseconds
-* (.000001th of a second) since the last full second. NOTE: this is now used for more than
-* just stories!
+* (.000001th of a second) since the last full second.
+* NOTE: this is now used for more than just stories!
 *
 * @return   string  $sid  Story ID
 *
