@@ -53,19 +53,19 @@ created when you use an undefined variable.</p>
     <th width="29%">Example</th>
     <th width="63%">Description</th></tr>
 <tr><td><code>site_url</code></td>
-    <td><tt>http://www.yoursite.com</tt></td>
+    <td><tt>http://www.example.com</tt></td>
     <td>The URL of your Geeklog site (the exact same URL you specified in
         <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
         file).</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.yoursite.com/layout/XSilver</tt></td>
+    <td><tt>http://www.example.com/layout/XSilver</tt></td>
     <td>The URL of the layout folder of the user's current theme.</td></tr>
 <tr><td><code>page_title</code></td>
     <td>Geeklog Site - Another Nifty Geeklog Site</td>
     <td>Holds either the site's name and slogan or the site name and the title
         of the current story.</td></tr>
 <tr><td><code>background_image</code></td>
-    <td><tt>http://www.yoursite.com/layout/<br>XSilver/images/bg.gif</tt></td>
+    <td><tt>http://www.example.com/layout/<br>XSilver/images/bg.gif</tt></td>
     <td>Points to a file named <tt>bg.gif</tt> in the <tt>images</tt> folder of
         the current theme, intended to be used as a background image.</td></tr>
 <tr><td><code>site_mail</code></td>
@@ -91,12 +91,12 @@ created when you use an undefined variable.</p>
     <td>The current date and time, formatted according to
         <code>$_CONF['date']</code>.</td></tr>
 <tr><td><code>site_logo</code></td>
-    <td><tt>http://www.yoursite.com/layout/<br>XSilver/images/logo.gif</tt></td>
+    <td><tt>http://www.example.com/layout/<br>XSilver/images/logo.gif</tt></td>
     <td>Points to a file named <tt>logo.gif</tt> in the <tt>images</tt>
         directory of the current theme, intended to be used as the site's
         logo.</td></tr>
 <tr><td><code>css_url</code></td>
-    <td><tt>http://www.yoursite.com/layout/<br>XSilver/style.css</tt></td>
+    <td><tt>http://www.example.com/layout/<br>XSilver/style.css</tt></td>
     <td>Points to the style sheet of the current theme.</td></tr>
 <tr><td><code>theme</code></td>
     <td>XSilver</td>
@@ -104,6 +104,16 @@ created when you use an undefined variable.</p>
 <tr><td><code>charset</code></td>
     <td>iso-8859-1</td>
     <td>The character set for the current language file.</td></tr>
+<tr><td><code>rss_url</code></td>
+    <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
+    <td>The URL of your site's RSS feed (identical to <code>{rdf_file}</code>.
+        This variable is also available in the site's
+        <tt>footer.thtml</tt>.</td></tr>
+<tr><td><code>rdf_file</code></td>
+    <td><tt>http://www.example.com/backend/geeklog.rdf</tt></td>
+    <td>The URL of your site's RSS feed (identical to <code>{rss_url}</code>.
+        This variable is also available in the site's
+        <tt>footer.thtml</tt>.</td></tr>
 </table>
 
 
@@ -121,12 +131,12 @@ file (which is used to display a story on its own page).</p>
     <th width="29%">Example</th>
     <th width="63%">Description</th></tr>
 <tr><td><code>site_url</code></td>
-    <td><tt>http://www.yoursite.com</tt></td>
+    <td><tt>http://www.example.com</tt></td>
     <td>The URL of your Geeklog site (the exact same URL you specified in
         <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
         file).</td></tr>
 <tr><td><code>layout_url</code></td>
-    <td><tt>http://www.yoursite.com/layout/XSilver</tt></td>
+    <td><tt>http://www.example.com/layout/XSilver</tt></td>
     <td>The URL of the layout folder of the user's current theme.</td></tr>
 <tr><td><code>story_date</code></td>
     <td>Tuesday, October 22 2002 @ 11:50 PM PDT</td>
@@ -207,7 +217,7 @@ enabled and when comments have been made to the story already:</p>
     <th width="29%">Example</th>
     <th width="63%">Description</th></tr>
 <tr><td><code>comments_url</code></td>
-    <td><tt>http://www.yoursite.com/article.php<br>?story=20021022234959146#comments</tt></td>
+    <td><tt>http://www.example.com/article.php<br>?story=20021022234959146#comments</tt></td>
     <td>URL of the comments section (when a story is displayed on a separate
         page).</td></tr>
 <tr><td><code>comments_text</code></td>
@@ -254,7 +264,7 @@ when you allow the name of the story's author to be displayed:</p>
     <td>The full name of the story's author. If the user hasn't filled in
         his/her full name, the user name is used instead.</td></tr>
 <tr><td><code>start_contributedby_anchortag</code></td>
-    <td><code>&lt;a class="storybyline" href="http://www.yoursite.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
+    <td><code>&lt;a class="storybyline" href="http://www.example.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
     <td>Opening tag for a link to the story author's profile (empty for
         anonymous authors).</td></tr>
 <tr><td><code>end_contributedby_anchortag</code></td>
@@ -262,7 +272,7 @@ when you allow the name of the story's author to be displayed:</p>
     <td>Closing tag for a link to the story author's profile (empty for
         anonymous authors).</td></tr>
 <tr><td><code>contributedby_url</code></td>
-    <td><tt>http://www.yoursite.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
+    <td><tt>http://www.example.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
     <td>Link to the story author's profile (empty for anonymous authors).</td></tr>
 <tr><td><code>contributedby_photo</code></td>
     <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
@@ -278,11 +288,11 @@ display preferences:</p>
     <th width="29%">Example</th>
     <th width="63%">Description</th></tr>
 <tr><td><code>story_anchortag_and_image</code></td>
-    <td><code>&lt;a href="http://www.yoursite.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
     <td>Topic icon for the story's topic, enclosed in a link to the site's 
         index page, sorted by topic.</td></tr>
 <tr><td><code>story_topic_image</code></td>
-    <td><code>&lt;img align="right" src="http://www.yoursite.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
+    <td><code>&lt;img align="right" src="http://www.example.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</code></td>
     <td>Topic icon for the story.</td></tr>
 <tr><td><code>story_topic_id</code></td>
     <td>General</td>
@@ -291,7 +301,7 @@ display preferences:</p>
     <td>General News</td>
     <td>Topic name (as seen on the Sections block).</td></tr>
 <tr><td><code>story_topic_url</code></td>
-    <td><code>&lt;a href="http://www.yoursite.com/<br>index.php?topic=General"&gt;</code></td>
+    <td><code>&lt;a href="http://www.example.com/<br>index.php?topic=General"&gt;</code></td>
     <td>URL to your site's index page, so that only stories with the story's
         topic are displayed.</td></tr>
 </table>
@@ -307,7 +317,7 @@ permissions to edit a story:</p>
     <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
     <td>Link to open the story in the admin's story editor.</td></tr>
 <tr><td><code>edit_url</code></td>
-    <td><tt>http://www.yoursite.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
+    <td><tt>http://www.example.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
     <td>URL to open the story in the admin's story editor</td></tr>
 <tr><td><code>lang_edit_text</code></td>
     <td>edit</td>
