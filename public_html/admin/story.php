@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.64 2002/09/06 13:53:01 dhaun Exp $
+// $Id: story.php,v 1.65 2002/09/10 04:22:13 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -730,11 +730,23 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if (count($HTTP_POST_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
             require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
+
+            $upload->setDebug(true);
+            if ($_CONF['path_to_mogrify']) {
+                $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+                $upload->setAutomaticResize(true);
+            }
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {
                 print 'File Upload Errors:<br>' . $upload->printErrors();
                 exit;
             }
+            // NOTE: if $_CONF['path_to_mogrify'] is set, the call below will force any images bigger than
+            // the passed dimensions to be resized.  If mogrify is not set, any images larger than these
+            // dimensions will get validation errors
+            $upload->setMaxDimensions($_CONF['max_image_width'], $_CONF['max_image_height']);
+            $upload->setMaxFileSize($_CONF['max_image_size']); // size in bytes, 1048576 = 1MB
+
             // Set file permissions on file after it gets uploaded (number is in octet)
             $upload->setPerms('0644');
             $filenames = array();
@@ -769,7 +781,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 next($filenames);
             }
         }
-    
+
         if ($_CONF['maximagesperarticle'] > 0) {
             list($errors, $introtext, $bodytext) = insert_images($sid, $introtext, $bodytext);
             if (count($errors) > 0) {
