@@ -132,7 +132,7 @@ print "</td>\n\n";
 # Display any blocks, polls, olderstuff configured for this page
 # </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
 
-print "<td><img src={$CONF["base"]}/images/speck.gif heigth=1 width=10></td>\n";
+print "<td><img src={$CONF["base"]}/images/speck.gif height=1 width=10></td>\n";
 if ($U["noboxes"] != 1) {
 	print "<td valign=top width=180>\n";
 	showblock($topic);

@@ -78,7 +78,7 @@ if ($A["count"] > 0) {
 		article($A,"n");
 
 		# Display whats related any polls configured for this page
-		print "</td><td><img src={$CONF["base"]}/images/speck.gif heigth=1 width=10></td>\n";
+		print "</td><td><img src={$CONF["base"]}/images/speck.gif height=1 width=10></td>\n";
 		print "<td valign=top width=180>\n";
 		startblock("$LANG11[1]");
 		print nl2br($A["related"]);
