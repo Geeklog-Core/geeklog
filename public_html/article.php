@@ -50,6 +50,15 @@ if ($A["count"] > 0) {
 	} else if ($mode == "print") {
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 0) {	
+			site_header('menu');
+			startblock($LANG_ACCESS[accessdenied]);
+			print $LANG_ACCESS[storydenialmsg];
+			endblock();
+			site_footer();
+			return;
+		}
 		$CONF["pagetitle"] = stripslashes($A["title"]);
 		print "<html><title>{$CONF["site_name"]} : {$CONF["pagetitle"]}</title><body>\n";
 		print "<H1>" . stripslashes($A["title"]) . "</H1>\n";
@@ -67,11 +76,20 @@ if ($A["count"] > 0) {
 	} else {
 
 		#Set page title
-		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
-		$A = mysql_fetch_array($result);
 		$CONF["pagetitle"] = stripslashes($A["title"]);
 
 		site_header("menu");
+
+		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
+		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 0) {
+                        startblock($LANG_ACCESS[accessdenied]);
+                        print $LANG_ACCESS[storydenialmsg];
+                        endblock();
+			site_footer();
+                        return;
+                }
 		dbchange("stories","hits","hits + 1","sid",$story);
 		$sql	= "SELECT *,unix_timestamp(date) AS day from {$CONF["db_prefix"]}stories WHERE sid = '$story' ";
 		$result = dbquery($sql);

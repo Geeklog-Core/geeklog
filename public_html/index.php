@@ -108,15 +108,17 @@ for ($i=0;$i<=1;$i++) {
 	if ($nrows > 0) {
 		for ($x=1;$x<=$nrows;$x++) {
 			$A	= mysql_fetch_array($result);
-			if ($i == 0) {
-				print "<b>{$LANG05[4]}:</b>";
-				$A["title"] = "<BIG>{$A["title"]}</BIG>";
-				$feature = "true";
+			if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+				if ($i == 0) {
+					print "<b>{$LANG05[4]}:</b>";
+					$A["title"] = "<BIG>{$A["title"]}</BIG>";
+					$feature = "true";
+				}
+				article($A,"y");
 			}
-			article($A,"y");
 		}
 
-		// Print Google-like paging navigation
+		# Print Google-like paging navigation
 		if ($i==1) PrintPageNavigation($page, $num_pages, $topic);
 
 	} else if ($i == 1 && $feature != "true") {

@@ -39,16 +39,19 @@ if ($nrows==0) {
 } else {
 	for($i=0;$i<$nrows;$i++) {
 		$A	= mysql_fetch_array($result);
-		if ($A["category"]!=$currentcat) {
-			printf("<h3>%s</h3>\n",$A["category"]);
-		}
-		print "<b><a target=_new ";
-		printf("href={$CONF["site_url"]}/portal.php?url=%s&what=link&item=%s>%s</a></b> (%s)",
+		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+			if ($A["category"]!=$currentcat) {
+				printf("<h3>%s</h3>\n",$A["category"]);
+			}
+			print "<b><a target=_new ";
+			printf("href={$CONF["site_url"]}/portal.php?url=%s&what=link&item=%s>%s</a></b> (%s)",
 			urlencode($A["url"]),$A["lid"],$A["title"],$A["hits"]);
-		print "<br>" . stripslashes($A["description"]) . "<br><br>\n";
-		$currentcat	= $A["category"];
+			print "<br>" . stripslashes($A["description"]) . "<br><br>\n";
+			$currentcat	= $A["category"];
+		}
 	} 
 }
 endblock();
 site_footer();
+
 ?>

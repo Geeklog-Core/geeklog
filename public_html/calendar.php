@@ -124,17 +124,20 @@
 				<font size=2>";
 			//if ($thisday < 10) $thisday = "0" . $thisday;
 			if ($mode == "personal") {
-				$calsql = "SELECT events.title,userevent.eid FROM {$CONF["db_prefix"]}events, {$CONF["db_prefix"]}userevent WHERE (events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend)) ORDER BY datestart";
+				$calsql = "SELECT {$CONF["db_prefix"]}events.* FROM {$CONF["db_prefix"]}events, {$CONF["db_prefix"]}userevent WHERE ({$CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend)) ORDER BY datestart";
 			} else {
-				$calsql = "SELECT title,eid FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend) ORDER BY datestart";
+				$calsql = "SELECT * FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend) ORDER BY datestart";
 			}
 			$query2 = mysql_query($calsql);
 			for ($j = 0; $j<mysql_num_rows($query2); $j++)
 			{
 				$results = mysql_fetch_array($query2);
-				if ($results["title"])
-				{
-					echo "<a href=calendar_event.php?&eid=$results[eid]>$results[title]</a><br><hr>";
+				if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+					if ($results["title"]) {
+						echo "<a href=calendar_event.php?&eid=$results[eid]>$results[title]</a><br><hr>";
+					}
+				} else {
+					print "<br>";
 				}
 			}
 			if (mysql_num_rows($query2) < 4)
@@ -176,20 +179,22 @@
 				echo "<a href=calendar_event.php?day=$nextday&month=$month&year=$year>$nextday</a><br><hr>
 					<font size=2>";
 				if ($mode == "personal") {
-					$query3 = mysql_query("SELECT events.title,userevent.eid FROM {$CONF["db_prefix"]}events,userevent WHERE (events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend)) ORDER BY datestart");
+					$query3 = mysql_query("SELECT {$CONF["db_prefix"]}events.* FROM {$CONF["db_prefix"]}events,userevent WHERE ({$CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$USER["uid"]}) AND ((datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend)) ORDER BY datestart");
 				} else {
-					$query3 = mysql_query("SELECT title,eid FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend) ORDER BY datestart");
+					$query3 = mysql_query("SELECT * FROM {$CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend) ORDER BY datestart");
 				}
 				for ($i = 0; $i<mysql_num_rows($query3)+4; $i++)
 				{
 					$results2 = mysql_fetch_array($query3);
-					if ($results2["title"])
-					{
-						echo "<a href=calendar_event.php?eid=$results2[eid]>$results2[title]</a><br><hr>";
-					}
-					else if ($i < 4)
-					{
-						echo "<br>";
+					if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+	
+						if ($results2["title"]) {
+							echo "<a href=calendar_event.php?eid=$results2[eid]>$results2[title]</a><br><hr>";
+						} else if ($i < 4) {
+							echo "<br>";
+						}
+					} else {
+						print "<br>";
 					}
 				}
 				echo "</td>";

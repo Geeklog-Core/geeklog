@@ -46,11 +46,6 @@ function adduserevent($eid) {
 		showmessage(23);
 	  	return;
 	}	
-	#print "<table><td align=right> Set reminder for: </td><td align=left><form name=userevent methood=post action={$CONF["site_url"]}/calendar_event.php>\n";
-	#print "<select name=remind><option>1 day</option><option>3 days</option><option>1 week</option></select>";
-	#print "</td><td> prior to event</td></tr><tr><td align=right>Email reminder:</td><td align=left>";
-	#print "<input type=checkbox name=emailreminder><input type=hidden name=eid value={$eid}><input type=hidden name=mode value=saveuserevent></td></tr>";
-	#print "<tr><td colspan=3 align=left><input type=submit value=\"{$LANG02[9]}\"></td></tr></form></table>";
 	print "<form name=userevent method=post action={$CONF["site_url"]}/calendar_event.php><input type=hidden name=mode value=saveuserevent><input type=hidden name=eid value={$eid}><input type=submit value=\"{$LANG02[9]}\"><br>&nbsp;</td></tr></form></table>";
 }
 
@@ -103,7 +98,6 @@ switch ($mode) {
 
 		}
 		print "[ <a href={$CONF["site_url"]}/submit.php?type=event>{$LANG02[6]}</a> ][ <a href={$CONF["site_url"]}/calendar.php>Back to Calendar</a> ]<br>";
-		//dbquery("delete FROM {$CONF["db_prefix"]}events WHERE dateend < CURDATE()");
 		$result = dbquery($datesql);
 
 		$nrows = mysql_num_rows($result);
@@ -112,25 +106,31 @@ switch ($mode) {
 		} else {
 			for($i=0;$i<$nrows;$i++) {
 				$A = mysql_fetch_array($result);
-				if (strftime("%B",strtotime($A["start"])) != $currentmonth) {
-					print "<br><h1>" . strftime("%B %Y",strtotime($A["start"])) . "</h1>\n";
-					$currentmonth = strftime("%B",strtotime($A["start"]));
-				}
-				print "<table cellspacing=0 cellpadding=3 border=0 width=\"100%\">\n";
-				print "<tr><td colspan=2><h2><a href={$A["url"]}>{$A["title"]}</a>&nbsp;";
-				if (!empty($USER["uid"])) {
-					$tmpresult = dbquery("select * from userevent where eid='{$A["eid"]}' and uid={$USER["uid"]}");
-					$tmpnrows = mysql_num_rows($tmpresult);
-					if ($tmpnrows > 0) {
-						print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=deleteevent>{$LANG02[10]}</a>]</font></h2></td></tr>\n";
-					} else {
-						print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=addevent>{$LANG02[9]}</a>]</font></h2></td></tr>\n";
+				if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+					if (strftime("%B",strtotime($A["start"])) != $currentmonth) {
+						print "<br><h1>" . strftime("%B %Y",strtotime($A["start"])) . "</h1>\n";
+						$currentmonth = strftime("%B",strtotime($A["start"]));
 					}
+					print "<table cellspacing=0 cellpadding=3 border=0 width=\"100%\">\n";
+					print "<tr><td colspan=2><h2><a href={$A["url"]}>{$A["title"]}</a>&nbsp;";
+					if (!empty($USER["uid"])) {
+						$tmpresult = dbquery("select * from userevent where eid='{$A["eid"]}' and uid={$USER["uid"]}");
+						$tmpnrows = mysql_num_rows($tmpresult);
+						if ($tmpnrows > 0) {
+							print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=deleteevent>{$LANG02[10]}</a>]</font></h2></td></tr>\n";
+						} else {
+							print "<font size=-2>[<a href={$CONF["site_url"]}/calendar_event.php?eid={$A["eid"]}&mode=addevent>{$LANG02[9]}</a>]</font></h2></td></tr>\n";
+						}
+					}
+					print "<tr><td align=right><b>{$LANG02[3]}</b></td><td width=\"100%\">" . strftime("%A %e",strtotime($A["start"])) . " - " . strftime("%A %d",strtotime($A["end"])) . "</td></tr>\n";
+					print "<tr><td align=right><b>{$LANG02[4]}</b></td><td width=\"100%\">{$A["location"]}</span></td></tr>\n";
+					print "<tr><td align=right valign=top><b>{$LANG02[5]}</b></td><td width=\"100%\">{$A["description"]}</span></td></tr>\n";
+					print "</table>";
+				} else {
+					print "<br><b>".$LANG_ACCESS["accessdenied"]."</b>";
+					print '<P>'.$LANG_ACCESS[eventdenialmsg];
+					#endblock();
 				}
-				print "<tr><td align=right><b>{$LANG02[3]}</b></td><td width=\"100%\">" . strftime("%A %e",strtotime($A["start"])) . " - " . strftime("%A %d",strtotime($A["end"])) . "</td></tr>\n";
-				print "<tr><td align=right><b>{$LANG02[4]}</b></td><td width=\"100%\">{$A["location"]}</span></td></tr>\n";
-				print "<tr><td align=right valign=top><b>{$LANG02[5]}</b></td><td width=\"100%\">{$A["description"]}</span></td></tr>\n";
-				print "</table>";
 			} 
 		}
 	
