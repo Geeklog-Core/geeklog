@@ -1,3 +1,9 @@
+<?php
+     $mtime = microtime();
+     $mtime = explode(" ",$mtime);
+     $mtime = $mtime[1] + $mtime[0];
+     $starttime = $mtime;
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
