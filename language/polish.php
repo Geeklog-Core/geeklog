@@ -2,7 +2,7 @@
 
 ###############################################################################
 # polish.php
-# This is the english language page for GeekLog!
+# This is the Polish language page for GeekLog!
 # Special thanks to Robert Stadnik for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -146,7 +146,8 @@ $LANG01 = array(
     104 => 'przez',
     105 => 'U¿ytkownicy Mailowi',
     106 => 'Ods³oniêæ',
-    107 => 'Wersja GL - Test'
+    107 => 'Wersja GL - Test',
+    108 => 'Opró¿nij Cache'
 );
 
 ###############################################################################
@@ -570,7 +571,7 @@ $LANG21 = array(
 	42 => "Musisz wpisaæ porz±dek bloku i poziom zabezpieczeñ dla domy¶lnych bloków Geekloga",
 	43 => "Tylko Strona G³ówna",
 	44 => "Odmowa Dostêpu",
-	45 => "Próbujesz wyedytowaæ blok, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/block.php\">wróciæ do ekranu administrowania blokami</a>.",
+	45 => "Próbujesz wyedytowaæ blok, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/block.php\">wróciæ do ekranu administrowania blokami</a>.",
 	46 => 'Nowy Blok',
 	47 => 'Admin Home',
     48 => 'Nazwa Bloku',
@@ -604,7 +605,7 @@ $LANG22 = array(
 	14 => "Data Poczkowa",
 	15 => "Data Koñcowa",
 	16 => "Odmowa Dostêpu",
-	17 => "Próbujesz wyedytowaæ wydarzenie, do którego nie masz dostêpu.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/event.php\">wróciæ do ekranu administrowania wydarzeniami</a>.",
+	17 => "Próbujesz wyedytowaæ wydarzenie, do którego nie masz dostêpu.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/event.php\">wróciæ do ekranu administrowania wydarzeniami</a>.",
 	18 => 'Nowe Wydarzenie',
 	19 => 'Admin Home',
 	20 => 'zapisz',
@@ -632,7 +633,7 @@ $LANG23 = array(
 	14 => "Kategoria Linka",
 	15 => "URL Linka",
 	16 => "Odmowa Dostêpu",
-	17 => "Próbujesz wyedytowaæ link, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/link.php\">wróciæ do ekranu administrowania linkami</a>.",
+	17 => "Próbujesz wyedytowaæ link, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/link.php\">wróciæ do ekranu administrowania linkami</a>.",
 	18 => 'Nowy Link',
 	19 => 'Admin Home',
 	20 => 'Je¶li inny, podaj jaki',
@@ -685,8 +686,8 @@ $LANG24 = array(
 	38 => "Wiêcej z sekcji",
 	39 => "Emaile",
 	40 => "Odmowa Dostêpu",
-	41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF["site_url"]}/admin/story.php\">wróciæ do strony administruj±cej artyku³ami.",
-	42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF["site_url"]}/admin/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
+	41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF["site_admin_url"]}/story.php\">wróciæ do strony administruj±cej artyku³ami.",
+	42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF["site_admin_url"]}/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
 	43 => 'Nowy Artyku³',
 	44 => 'Admin Home',
 	45 => 'Dostêp',
@@ -728,7 +729,7 @@ $LANG25 = array(
 	19 => "Aby zmodyfikowaæ lub wykasowaæ sondê, kliknij na dan± sondê.  Aby stworzyæ now± sondê kliknij Nowa Sonda powy¿ej.",
 	20 => "G³osuj±cych",
 	21 => "Odmowa Dostêpu",
-	22 => "Próbujesz wyedytowaæ sondê do której nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/poll.php\">wróciæ do strony administruj±cej sondami</a>.",
+	22 => "Próbujesz wyedytowaæ sondê do której nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/poll.php\">wróciæ do strony administruj±cej sondami</a>.",
 	23 => 'Nowa Sonda',
 	24 => 'Admin Home',
 	25 => 'Tak',
@@ -751,7 +752,7 @@ $LANG27 = array(
 	10=> "Sortowanie",
 	11 => "Artyku³ów/Stronê",
 	12 => "Odmowa Dostêpu",
-	13 => "Próbujesz wyedytowaæ sekcjê do której nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/topic.php\">wróciæ do ekranu administruj±cego sekcjami</a>.",
+	13 => "Próbujesz wyedytowaæ sekcjê do której nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_admin_url"]}/topic.php\">wróciæ do ekranu administruj±cego sekcjami</a>.",
 	14 => "Sortuj Wg",
 	15 => "alfabetycznie",
 	16 => "domy¶lnie jest",
@@ -893,10 +894,10 @@ $LANG31 = array(
  	14 => "Ignoruj ustawienia u¿ytkownika",
  	15 => "B³±d podczas wysy³ania do: ",
 	16 => "Wiadomo¶æ wys³ana do: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Wy¶lij nastêpn± wiadomo¶æ</a>",
+	17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Wy¶lij nastêpn± wiadomo¶æ</a>",
 	18 => "Do",
         19 => "UWAGA: je¶li chcesz wys³aæ wiadomo¶æ do wszystkich u¿ytkowników, wybierz Logged-in Users z listy rozwijanej.",
-        20 => "Wys³anych <successcount> wiadomo¶ci oraz <failcount> niewys³anych wiadomo¶ci.  Poni¿ej szczegó³y dotycz±ce próby wys³ania ka¿dej wiadomo¶ci.  Mo¿esz równie¿ <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Wys³aæ wiadomo¶æ</a> lub mo¿esz <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">wróciæ do strony administracyjnej</a>.",
+        20 => "Wys³anych <successcount> wiadomo¶ci oraz <failcount> niewys³anych wiadomo¶ci.  Poni¿ej szczegó³y dotycz±ce próby wys³ania ka¿dej wiadomo¶ci.  Mo¿esz równie¿ <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">Wys³aæ wiadomo¶æ</a> lub mo¿esz <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">wróciæ do strony administracyjnej</a>.",
         21 => 'B³±d',
         22 => 'Sukces',
         23 => 'Brak b³êdów',
@@ -954,7 +955,8 @@ $MESSAGE = array (
 	43 => "S³owo zosta³o wykasowane.",
         44 => 'Plugin zosta³ zainstalowany!',
         45 => 'Plugin zosta³ wykasowany.',
-	46 => "Sorry, nie masz dostêpu do opcji archiwizowania bazy danych.  Pamiêtaj, ¿e Wszelkie nieautoryzowane próby wej¶cia s± logowane"
+	46 => "Sorry, nie masz dostêpu do opcji archiwizowania bazy danych.  Pamiêtaj, ¿e Wszelkie nieautoryzowane próby wej¶cia s± logowane",
+	47 => "Ta opcja dzia³a tylko pod *nix.  Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie."
 );
 
 // for plugins.php
@@ -1003,7 +1005,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Udziel Praw do Edycji Powy¿szej Grupie",
 	permmsg => "UWAGA: cz³onkowie to wszyscy zalogowani u¿ytkownicy na stronie a anonimowi to wszyscy u¿ytkownicy przegl±daj±cy zawarto¶æ strony bez zalogowania.",
 	securitygroups => "Grupy Zabezpieczeñ",
-	editrootmsg => "Pomimo tego, ¿e jeste¶ User Administrator, nie mo¿esz edytowaæ g³ównego u¿ytkownka. Najpierw sam musisz zostaæ u¿ytkownikiem g³ównym.  Mo¿esz edytowaæ pozosta³ych u¿ytkowników. Wszelkie nie autoryzowane próby edycji u¿ytkowników g³ównych s± logowane.  Powrót do strony Administracja U¿ytkownikami serwisu <a href=\"{$_CONF["site_url"]}/admin/users.php\"></a>.",
+	editrootmsg => "Pomimo tego, ¿e jeste¶ User Administrator, nie mo¿esz edytowaæ g³ównego u¿ytkownka. Najpierw sam musisz zostaæ u¿ytkownikiem g³ównym.  Mo¿esz edytowaæ pozosta³ych u¿ytkowników. Wszelkie nie autoryzowane próby edycji u¿ytkowników g³ównych s± logowane.  Powrót do strony Administracja U¿ytkownikami serwisu <a href=\"{$_CONF["site_admin_url"]}/users.php\"></a>.",
 	securitygroupsmsg => "Zaznacz grupy do których chcesz przypisaæ u¿ytkownika.",
 	groupeditor => "Edytor Grup",
 	description => "Opis",
@@ -1056,9 +1058,10 @@ $LANG_DB_BACKUP = array(
     do_backup => 'Wykonaj Backup',
     backup_successful => 'Backup bazy wykonany pomy¶lnie.',
     no_backups => 'Brak backupów w systemie',
-    db_explanation => 'Aby wykonaæ nowy backup twojego systemu, kliknij poni¿szy przycisk'
+    db_explanation => 'Aby wykonaæ nowy backup twojego systemu, kliknij poni¿szy przycisk',
+    not_found => "B³±d: nie mo¿na odnale¼æ {$_DB_mysqldump_path}."
 );
-		    
+
 $LANG_BUTTONS = array(
     1 => "G³ówna",
     2 => "Kontakt",
@@ -1075,7 +1078,8 @@ $LANG_BUTTONS = array(
 $LANG_404 = array(
     1 => "B³±d 404",
     2 => "Kurcze, wszêdzie szuka³em ale nie mogê znale¼æ <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
-    3 => "<p>Przykro nam ale dany plik nie istnieje. Sprawd¼ <a href=\"{$_CONF['site_url']}/search.phpi\">stronê z wyszukiwark±</a> aby sprawdziæ czy mo¿na znale¼æ co zgubi³e¶."
+    3 => "<p>Przykro nam ale dany plik nie istnieje. Sprawd¼ <a href=\"{$_CONF['site_url']}/search.php\">stronê z wyszukiwark±</a> aby sprawdziæ czy mo¿na znale¼æ co zgubi³e¶."
 );
-							    
+
 ?>
+
