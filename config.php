@@ -50,7 +50,7 @@ $CONF["path"] 			= "/path/to/geeklog/";
 $CONF["path_log"]		= $CONF["path"]."logs";
 $CONF["path_html"]		= $CONF["path"]."public_html/";
 $CONF["path_rdf"]		= $CONF["path_html"]."backend/geeklog.rdf";
-
+$CONF["path_language"]	= $CONF["path"]."language/";
 ##/ SITE SETTINGS /############################################################
 #
 #	These settings help define your Geeklog site.
@@ -65,7 +65,7 @@ $CONF["layout_url"]		= $CONF["site_url"].'/layout/'.$CONF["layout"];
 
 ##/ LOCALE SETTINGS /##########################################################
 
-$CONF["languagefile"]	="english.php";
+$CONF["languagefile"]	= $CONF["path_language"] . "english.php";
 $CONF["locale"]			= "en-gb";
 $CONF["date"]			= "%A, %B %d %Y @ %I:%M %p %Z";
 $CONF["daytime"]		= "%m/%d %I:%M%p";
