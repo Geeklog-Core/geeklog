@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.75 2004/02/14 13:07:57 dhaun Exp $
+// $Id: users.php,v 1.76 2004/02/19 12:36:14 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -813,6 +813,8 @@ case 'new':
 default:
     if (isset ($HTTP_POST_VARS['loginname'])) {
         $loginname = COM_applyFilter ($HTTP_POST_VARS['loginname']);
+    } else {
+        $loginname = COM_applyFilter ($HTTP_GET_VARS['loginname']);
     }
     if (isset ($HTTP_POST_VARS['passwd'])) {
         $passwd = COM_applyFilter ($HTTP_POST_VARS['passwd']);
