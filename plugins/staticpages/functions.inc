@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.15 2002/10/31 18:05:37 dhaun Exp $
+// $Id: functions.inc,v 1.16 2002/11/27 19:33:44 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -217,6 +217,93 @@ function plugin_getadminoption_staticpages()
     if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
         return array($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', DB_count($_TABLES['staticpage']));
     }	
+}
+
+/**
+* Removes the datastructures for this plugin from the Geeklog database
+*
+* This may get called by the install routine to undo anything done to this
+* point.  To do that, $steps will have a list of steps to undo
+*
+* @steps   Array    Holds all the steps that have been completed by the install
+*
+*/  
+function plugin_uninstall_staticpages($steps = '')
+{
+    global $_TABLES;
+
+    // Uninstalls the static pages plugin
+
+    if (empty($steps) OR $steps['createtable'] == 1) {
+        // Remove the staticpage table 
+        COM_errorLog('Dropping staticpage table',1);
+        DB_query("DROP TABLE {$_TABLES['staticpage']}");
+        COM_errorLog('...success',1);
+    }
+
+    // Remove security for this plugin
+
+    // Remove the static page admin group
+    $grp_id = DB_getItem($_TABLES['vars'], 'value', "name = 'sp_group_id'");
+
+    if (empty($steps) OR $steps['insertgroup'] == 1) {
+        COM_errorLog('Attempting to remove the Static Page Admin Group', 1);
+        DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+        COM_errorLog('...success',1);
+    }
+
+    // Remove related features
+    $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'staticpages.edit'");
+    $delete_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'staticpages.delete'");
+
+    if (empty($steps) OR $steps['addededittogroup'] == 1) {
+        // Remove access to those features 
+        COM_errorLog('Attempting to remove rights to staticpage.edit from all groups',1);
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['addeddeletetogroup'] == 1) {
+        // Remove access to those features 
+        COM_errorLog('Attempting to remove rights to staticpage.delete from all groups',1);
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $delete_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
+        // Remove root users from the group
+        COM_errorLog('Attempting to remove root users from admin of static pages');
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
+        COM_errorLog('Attempting to remove the staticpage.edit feature',1);
+        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['insertedfeaturedelete'] == 1) {
+        COM_errorLog('Attempting to remove the staticpage.delete feature',1);
+        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $delete_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['savedgroupid']) {
+        COM_errorLog('Attempting to remove the group id from the vars table',1);
+        DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = 'sp_group_id'");
+        COM_errorLog('success',1);
+    }
+
+    // Unregister the plugin with Geeklog
+    // Always attempt to remove these entries or lib-common.php would still
+    // try and read our functions.inc file ...
+    COM_errorLog('Attempting to unregister the plugin from Geeklog',1);
+    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'staticpages'");
+    DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = 'staticpages'");
+    COM_errorLog('...success',1);
+
+    COM_errorLog('leaving plugin_uninstall_staticpages',1);
 }
 
 ?>
