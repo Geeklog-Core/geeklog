@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.100 2003/08/12 21:10:05 dhaun Exp $
+// $Id: story.php,v 1.101 2003/08/31 18:58:54 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -412,7 +412,7 @@ function storyeditor($sid = '', $mode = '')
 */
 function liststories($page = 1) 
 {
-    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $_USER, $_GROUPS;
+    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $_USER, $_GROUPS,$HTTP_POST_VARS,$HTTP_GET_VARS;
 
     $display = '';
 
@@ -436,24 +436,52 @@ function liststories($page = 1)
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('lang_featured', $LANG24[32]); 
 
+    $current_topic = $topic;
+    if (!empty ($HTTP_GET_VARS['tid'])) {
+        $current_topic = $HTTP_GET_VARS['tid'];
+    } elseif (!empty ($HTTP_POST_VARS['tid'])) {
+        $current_topic = $HTTP_POST_VARS['tid'];
+    } else {
+        $current_topic = 'all';
+    }
     if (empty($page)) {
         $page = 1;
     }
 
-    $excludetopics = '';
-    $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
-    $tresult = DB_query ($topicsql);
-    $trows = DB_numRows ($tresult);     
-    if ($trows > 0) {
-        $tids = array ();
-        for ($i = 0; $i < $trows; $i++) {
-            $T = DB_fetchArray ($tresult);
-            $tids[] = $T['tid'];
-        }
-        if (sizeof ($tids) > 0) {
-            $excludetopics = " WHERE (tid IN ('" . implode ("','", $tids) . "'))";
-        }
+    if ($current_topic == 'all') {
+        $excludetopics = '';
+        $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
+        $tresult = DB_query( $topicsql );
+        $trows = DB_numRows( $tresult );     
+        if( $trows > 0 )
+        {
+            $excludetopics .= " WHERE (";
+            for( $i = 1; $i <= $trows; $i++ )  {
+                $T = DB_fetchArray ($tresult);
+                if ($i > 1)  {
+                    $excludetopics .= " OR ";
+                }
+                $excludetopics .= "tid = '{$T['tid']}'";
+                $seltopics .= '<option value="' .$T['tid']. '"';
+                if ($current_topic == "{$T['tid']}") {
+                    $seltopics .= ' selected="selected"';
+                }
+                $seltopics .= '>' . $T['tid'] . '</option>' . LB;
+            }
+            $excludetopics .= ") ";
+        } 
+
+    } else {
+        $excludetopics = " WHERE tid = '$current_topic' ";
+        $seltopics = COM_topicList ('tid,topic', $current_topic);
     }
+
+    $alltopics = '<option value="all"';
+    if ($current_topic == 'all') {
+        $alltopics .= ' selected="selected"';
+    }
+    $alltopics .= '>' . "All" . '</option>' . LB;
+    $story_templates->set_var ('topic_selection', '<select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>');
 
     $limit = (50 * $page) - 50;
     $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} " . $excludetopics . "ORDER BY date DESC LIMIT $limit,50");
@@ -484,7 +512,7 @@ function liststories($page = 1)
                 $story_templates->set_var('story_draft', $LANG24[36]);
             }
             $story_templates->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}"));
-            $story_templates->set_var('story_date', $curtime[0]);
+            $story_templates->set_var('story_date', strftime($_CONF['shortdate'], $curtime[1]));
             $story_templates->set_var('story_topic', $A['tid']);
             if ($A['featured'] == 1) {
                 $story_templates->set_var('story_feature', $LANG24[35]);
@@ -518,7 +546,7 @@ function liststories($page = 1)
             } else {
 	        $story_templates->set_var('nextpage_link','');
             }
-            $baseurl = $_CONF['site_admin_url'] . '/story.php?mode=list';
+            $baseurl = $_CONF['site_admin_url'] . '/story.php?mode=list&tid=' .$current_topic;
             $numpages = ceil ($numstories / 50);
             $story_templates->set_var ('google_paging',
                     COM_printPageNavigation ($baseurl, $page, $numpages));
