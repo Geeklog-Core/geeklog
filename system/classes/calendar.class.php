@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.2 2001/12/11 19:03:20 tony_bibbs Exp $
+// $Id: calendar.class.php,v 1.3 2002/05/05 17:20:11 dhaun Exp $
 
 class CalendarDay {
     var $daynumber;
@@ -266,7 +266,7 @@ class Calendar {
     function getMonthName($month = 1)
     {
 	$month = $month - 1;
-	if (empty($this->_lang->months)) $this->setLanguage();
+	if (empty($this->_lang_months)) $this->setLanguage();
 
         switch ($month) {
         case 0:
