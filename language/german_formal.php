@@ -378,7 +378,7 @@ $LANG08 = array(
 	20 => "Von (Name)",
 	21 => "Von (E-Mail)",
 	22 => "Alle Felder müssen ausgefüllt werden.",
-	23 => "Diese Nachricht wurde Ihnen von $from <$fromemail> geschickt, da er/sie der Meinung war, Sie würden sich vielleicht für diesen Artikel auf {$_CONF["site_url"]} interessieren. Dies ist kein SPAM und die beteiligten E-Mail-Adressen (Ihre und die des Absenders) werden nicht gespeichert oder wiederverwendet.\n",
+	23 => "Diese Nachricht wurde Ihnen von $from <$fromemail> geschickt, da er/sie der Meinung war, Sie würden sich vielleicht für diesen Artikel auf {$_CONF["site_url"]} interessieren. Dies ist kein SPAM und die beteiligten E-Mail-Adressen (Ihre und die des Absenders) werden nicht gespeichert oder wiederverwendet.",
 	24 => "Schreiben Sie einen Kommentar zu diesem Artikel:\n",
 	25 => "Sie müssen sich anmelden, um diese Funktion benutzen zu können. Dies ist leider nötig, um den Missbrauch des Systems zu verhindern",
 	26 => "Mit diesem Formular können Sie eine E-Mail an diesen User schicken. Alle Felder müssen ausgefüllt werden.",
@@ -390,7 +390,7 @@ $LANG08 = array(
     32 => "Datum",
     33 => "Kompletter Artikel unter",
     34 => "Ende dieser Nachricht",
-	35 => 'Sorry, dieser User möchte keine E-Mails bekommen.'
+    35 => 'Sorry, dieser User möchte keine E-Mails bekommen.'
 );
 
 ###############################################################################
@@ -972,7 +972,7 @@ $LANG31 = array(
 # confirmation and error messages
 
 $MESSAGE = array (
-	1 => "Ihr Passwort sollte in Kürze per E-Mail bei Ihhnen eintreffen. Bitte beachten Sie die Hinweise in der E-Mail. Danke, dass Sie sich bei " . $_CONF["site_name"] . " angemeldet haben.",
+	1 => "Ihr Passwort sollte in Kürze per E-Mail bei Ihnen eintreffen. Bitte beachten Sie die Hinweise in der E-Mail. Danke, dass Sie sich bei " . $_CONF["site_name"] . " angemeldet haben.",
 	2 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website für alle Besucher zu lesen sein.",
 	3 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF["site_url"]}/links.php\">Links</a> aufgelistet werden.",
 	4 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF["site_url"]}/calendar.php\">Kalender</a> erscheinen.",
@@ -985,7 +985,7 @@ $MESSAGE = array (
 	11 => "Ihr Block wurde gespeichert.",
 	12 => "Der Block wurde gelöscht.",
 	13 => "Ihre Kategorie wurde gespeichert.",
-	14 => "The topic and all it's stories an blocks have been successfully deleted.",
+	14 => "The topic and all its stories and blocks have been successfully deleted.",
 	15 => "Ihr Link wurde gespeichert.",
 	16 => "Der Link wurde gelöscht.",
 	17 => "Ihr Termin wurde gespeichert.",
@@ -1110,77 +1110,66 @@ $LANG33 = array (
 );
 
 $LANG_ACCESS = array(
-    access => "Zugriff",
-    ownerroot => "Eigent./Root",
-    group => "Gruppe",
-    readonly => "Nur Lesen",
-    accessrights => "Zugriffsrechte",
-    owner => "Eigent.",
-    grantgrouplabel => "Grant Above Group Edit Rights",
-    permmsg => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.",
-    securitygroups => "Security-Gruppen",
-    editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
-    securitygroupsmsg => "Mit den Checkboxen können Sie festlegen, zu welchen Gruppen dieser User gehört.",
-    groupeditor => "Gruppen-Editor",
-    description => "Beschreibung",
-    name => "Name",
-     rights => "Rechte",
-    missingfields => "Fehlende Angaben",
-    missingfieldsmsg => " Sie müssen den Namen und eine Beschreibung für die Gruppe angeben.",
-    groupmanager => "Gruppen-Manager",
-    newgroupmsg => "Um eine Gruppe zu ändern oder löschen, einfach auf den Namen der Gruppe klicken. Neue Gruppe (s.o.) legt eine neue Gruppe an. Hinweis: Core-Gruppen können nicht gelöscht werden, da sie vom System benötigt werden.",
-    groupname => "Gruppen-Name",
-    coregroup => "Core-Gruppe",
-    yes => "Ja",
-    no => "Nein",
-    corerightsdescr => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
-    groupmsg => "Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Sie diese Gruppe zu einer der folgenden Gruppen hinzufügen, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, können Sie die gewünschte(n) Gruppe(n) einfach anklicken.",
-    coregroupmsg => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
-    rightsdescr => "Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.",
-    lock => "Lock",
-    members => "Mitglieder",
-    anonymous => "Anonymous",
-    permissions => "Rechte",
-    permissionskey => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
-    edit => "Edit",
-    none => "None",
-    accessdenied => "Zugriff verweigert",
-    storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-    eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-    nogroupsforcoregroup => "Diese Gruppe gehört zu keiner anderen Gruppe.",
-    grouphasnorights => "Diese Gruppe hat keine Rechte für die Administration der Website",
-    newgroup => 'Neue Gruppe',
-    adminhome => 'Admin Home',
-    save => 'Speichern',
-    cancel => 'Abbruch',
-    delete => 'Löschen',
-    canteditroot => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'	
-);
-
-#admin/word.php
-$LANG_WORDS = array(
-    editor => "Word Replacment editor",
-    wordid => "Word ID",
-    intro => "To modify or delete a word, click on that word.  To create a new word replacement click the new word button to the left.",
-    wordmanager => "Word Manager",
-    word => "Word",
-    replacmentword => "Replacment Word",
-    newword => "New Word"
+    'access' => "Zugriff",
+    'ownerroot' => "Eigent./Root",
+    'group' => "Gruppe",
+    'readonly' => "Nur Lesen",
+    'accessrights' => "Zugriffsrechte",
+    'owner' => "Eigent.",
+    'grantgrouplabel' => "Grant Above Group Edit Rights",
+    'permmsg' => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.",
+    'securitygroups' => "Security-Gruppen",
+    'editrootmsg' => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
+    'securitygroupsmsg' => "Mit den Checkboxen können Sie festlegen, zu welchen Gruppen dieser User gehört.",
+    'groupeditor' => "Gruppen-Editor",
+    'description' => "Beschreibung",
+    'name' => "Name",
+    'rights' => "Rechte",
+    'missingfields' => "Fehlende Angaben",
+    'missingfieldsmsg' => " Sie müssen den Namen und eine Beschreibung für die Gruppe angeben.",
+    'groupmanager' => "Gruppen-Manager",
+    'newgroupmsg' => "Um eine Gruppe zu ändern oder löschen, einfach auf den Namen der Gruppe klicken. Neue Gruppe (s.o.) legt eine neue Gruppe an. Hinweis: Core-Gruppen können nicht gelöscht werden, da sie vom System benötigt werden.",
+    'groupname' => "Gruppen-Name",
+    'coregroup' => "Core-Gruppe",
+    'yes' => "Ja",
+    'no' => "Nein",
+    'corerightsdescr' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
+    'groupmsg' => "Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Sie diese Gruppe zu einer der folgenden Gruppen hinzufügen, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, können Sie die gewünschte(n) Gruppe(n) einfach anklicken.",
+    'coregroupmsg' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
+    'rightsdescr' => "Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.",
+    'lock' => "Lock",
+    'members' => "Mitglieder",
+    'anonymous' => "Anonymous",
+    'permissions' => "Rechte",
+    'permissionskey' => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
+    'edit' => "Edit",
+    'none' => "None",
+    'accessdenied' => "Zugriff verweigert",
+    'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    'eventdenialmsg' => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    'nogroupsforcoregroup' => "Diese Gruppe gehört zu keiner anderen Gruppe.",
+    'grouphasnorights' => "Diese Gruppe hat keine Rechte für die Administration der Website",
+    'newgroup' => 'Neue Gruppe',
+    'adminhome' => 'Admin Home',
+    'save' => 'Speichern',
+    'cancel' => 'Abbruch',
+    'delete' => 'Löschen',
+    'canteditroot' => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'	
 );
 
 $LANG_DB_BACKUP = array(
-    last_ten_backups => 'Die 10 letzten Backups',
-    do_backup => 'Backup anlegen',
-    backup_successful => 'Backup der Datenbank war erfolgreich.',
-    no_backups => 'Keine Backups im System',
-    db_explanation => 'Um ein neues Backup Ihres Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken',
-    not_found => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>\$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
-    zero_size => 'Backup fehlgeschlagen: Datei ist 0 Bytes groß.',
-    path_not_found => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
-    no_access => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
-    backup_file => 'Backup-Datei',
-    size => 'Größe',
-    bytes => 'Bytes'
+    'last_ten_backups' => 'Die 10 letzten Backups',
+    'do_backup' => 'Backup anlegen',
+    'backup_successful' => 'Backup der Datenbank war erfolgreich.',
+    'no_backups' => 'Keine Backups im System',
+    'db_explanation' => 'Um ein neues Backup Ihres Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken',
+    'not_found' => "Falscher Pfad oder mysqldump ist nicht ausführbar.<br>Bitte überprüfe die Variable <strong>\$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
+    'zero_size' => 'Backup fehlgeschlagen: Datei ist 0 Bytes groß.',
+    'path_not_found' => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
+    'no_access' => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
+    'backup_file' => 'Backup-Datei',
+    'size' => 'Größe',
+    'bytes' => 'Bytes'
 );
 
 $LANG_BUTTONS = array(
@@ -1198,7 +1187,7 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array (
     1 => 'Fehler 404',
-    2 => "Hmm, ich habe alles versucht, aber <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b> war nicht aufzufinden.",
+    2 => "Hmm, ich habe alles versucht, aber <b>%s</b> war nicht aufzufinden.",
     3 => "<p>Sorry, diese Seite oder Datei existiert nicht. Sie können es auf der <a href=\"{$_CONF['site_url']}\">Startseite</a> oder mit der <a href=\"{$_CONF['site_url']}/search.php\">Suchfunktion</a> probieren, vielleicht werden Sie ja fündig ..."
 ); 
 
