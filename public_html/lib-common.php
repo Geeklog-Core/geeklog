@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.57 2002/04/11 16:51:57 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.58 2002/04/11 17:05:07 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -2512,7 +2512,13 @@ function COM_getYearFormOptions($selected = '')
 {
     $year_options = '';
     $cur_year = date('Y',time());
-    for ($i = $cur_year; $i <= $cur_year + 5; $i++) {
+    $start_year = $cur_year;
+    if (!empty($selected)) {
+        if ($selected < $cur_year) {
+            $start_year = $selected;
+        }
+    }
+    for ($i = $start_year; $i <= $cur_year + 5; $i++) {
         $year_options .= '<option value="' . $i . '" ';
         if ($i == $selected) {
             $year_options .= 'selected="SELECTED"';
