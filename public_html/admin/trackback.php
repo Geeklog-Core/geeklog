@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.9 2005/02/03 19:57:40 dhaun Exp $
+// $Id: trackback.php,v 1.10 2005/02/05 18:48:39 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -407,9 +407,9 @@ function prepareAutodetect ($type, $id, $text)
 function getItemInfo ($type, $id, $what)
 {
     if ($type == 'article') {
-        return STORY_getItemInfo ($id, 'title');
+        return STORY_getItemInfo ($id, $what);
     } else {
-        return PLG_getItemInfo ($type, $id, 'title');
+        return PLG_getItemInfo ($type, $id, $what);
     }
 }
 

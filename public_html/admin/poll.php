@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.42 2004/12/10 09:56:34 dhaun Exp $
+// $Id: poll.php,v 1.43 2005/02/05 18:48:39 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -60,7 +60,7 @@ if (!SEC_hasRights ('poll.edit')) {
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 /**
 * Saves a poll
@@ -151,6 +151,10 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
             $sql .= "',1";
         } else {
             $sql .= "',0";
+        }
+
+        if ($commentcode != -1) {
+            $commentcode = 0;
         }
 
         $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
@@ -435,34 +439,28 @@ function deletePoll ($qid)
 
 $display = '';
 
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
-} else {
-    $mode = $HTTP_GET_VARS['mode'];
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
 }
 
 if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu');
-    $display .= editpoll (COM_applyFilter ($HTTP_GET_VARS['qid']));
+    $display .= editpoll (COM_applyFilter ($_GET['qid']));
     $display .= COM_siteFooter ();
 } else if (($mode == $LANG25[14]) && !empty ($LANG25[14])) { // save
-    $qid = COM_applyFilter ($HTTP_POST_VARS['qid']);
+    $qid = COM_applyFilter ($_POST['qid']);
     if (!empty ($qid)) {
         $voters = 0;
-        for ($i = 0; $i < sizeof ($HTTP_POST_VARS['answer']); $i++) {
-            $voters = $voters + $HTTP_POST_VARS['votes'][$i];
+        for ($i = 0; $i < sizeof ($_POST['answer']); $i++) {
+            $voters = $voters + $_POST['votes'][$i];
         }
-        $display .= savepoll ($qid, $HTTP_POST_VARS['mainpage'],
-                        $HTTP_POST_VARS['question'], $voters,
-                        COM_applyFilter ($HTTP_POST_VARS['statuscode'], true),
-                        COM_applyFilter ($HTTP_POST_VARS['commentcode'], true),
-                        $HTTP_POST_VARS['answer'], $HTTP_POST_VARS['votes'],
-                        $HTTP_POST_VARS['owner_id'],
-                        $HTTP_POST_VARS['group_id'],
-                        $HTTP_POST_VARS['perm_owner'],
-                        $HTTP_POST_VARS['perm_group'],
-                        $HTTP_POST_VARS['perm_members'],
-                        $HTTP_POST_VARS['perm_anon']);
+        $display .= savepoll ($qid, $_POST['mainpage'], $_POST['question'],
+                        $voters, COM_applyFilter ($_POST['statuscode'], true),
+                        $_POST['commentcode'] $_POST['answer'], $_POST['votes'],
+                        $_POST['owner_id'], $_POST['group_id'],
+                        $_POST['perm_owner'], $_POST['perm_group'],
+                        $_POST['perm_members'], $_POST['perm_anon']);
     } else {
         $display .= COM_siteHeader ('menu');
         $display .= COM_startBlock ($LANG21[32], '',
@@ -473,27 +471,25 @@ if ($mode == 'edit') {
         $display .= COM_siteFooter ();
     }
 } else if (($mode == $LANG25[16]) && !empty ($LANG25[16])) { // delete
-    $qid = COM_applyFilter ($HTTP_POST_VARS['qid']);
+    $qid = COM_applyFilter ($_POST['qid']);
     if (!isset ($qid) || empty ($qid)) {
-        COM_errorLog ('Attempted to delete poll qid=' . $HTTP_POST_VARS['qid']);
+        COM_errorLog ('Attempted to delete poll qid=' . $_POST['qid']);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/poll.php');
     } else {
         $display .= deletePoll ($qid);
     }
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
-    if (isset ($HTTP_POST_VARS['msg'])) {
-        $msg = COM_applyFilter ($HTTP_POST_VARS['msg'], true);
-    } else {
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+    $msg = 0;
+    if (isset ($_REQUEST['msg'])) {
+        $msg = COM_applyFilter ($_REQUEST['msg'], true);
     }
-    if (isset ($msg) && ($msg > 0)) {
+    if ($msg > 0) {
         $display .= COM_showMessage ($msg);
     }
-    if (isset ($HTTP_POST_VARS['page'])) {
-        $page = $HTTP_POST_VARS['page'];
-    } else {
-        $page = $HTTP_GET_VARS['page'];
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = $_REQUEST['page'];
     }
     $display .= listpolls ($page);
     $display .= COM_siteFooter ();
