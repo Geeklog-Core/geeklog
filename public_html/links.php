@@ -32,13 +32,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.27 2003/08/18 09:53:37 dhaun Exp $
+// $Id: links.php,v 1.28 2003/09/07 09:32:14 dhaun Exp $
 
 require_once('lib-common.php');
 
 // MAIN
 
-$display .= COM_siteHeader();
+$display = COM_siteHeader();
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['linksloginrequired'] == 1))) {
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
@@ -90,7 +90,7 @@ if (empty ($_USER['username']) &&
                     '/links.php?category=' . urlencode ($C['category']));
                 $linklist->set_var ('category_count', $D['count']);
                 $linklist->set_var ('width', floor (100 / $_CONF['linkcols']));
-                if (stripslashes ($category) == $C['category']) {
+                if (isset ($category) && (stripslashes ($category) == $C['category'])) {
                     $linklist->parse ('category_col', 'actcol', true);
                 } else {
                     $linklist->parse ('category_col', 'catcol', true);
@@ -116,7 +116,11 @@ if (empty ($_USER['username']) &&
 
     $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} WHERE ";
     if ($_CONF['linkcols'] > 0) {
-        $sql .= "category = '$category' AND ";
+        if (isset ($category)) {
+            $sql .= "category = '$category' AND ";
+        } else {
+            $sql .= "category = '' AND ";
+        }
     }
     $sql .= "{$permsql} ";
     $sql .= "ORDER BY category asc,title";
@@ -209,7 +213,7 @@ if (empty ($_USER['username']) &&
         }
     }
     if ($pages > 0) {
-        if ($_CONF['linkcols'] > 0) {
+        if (($_CONF['linkcols'] > 0) && isset ($currentcategory)) {
             $catlink = '?category=' . urlencode ($currentcategory);
         } else {
             $catlink = '';
