@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.34 2002/05/10 15:08:05 dhaun Exp $
+// $Id: config.php,v 1.35 2002/05/13 15:37:53 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -171,6 +171,11 @@ $_CONF['whosonline_threshold'] = 300; // in seconds
 // Let users get stories emailed to them
 // Requires cron and the use of php as a shell script
 $_CONF['emailstories'] = 0;
+
+// Specify length of stories in those emails:
+// 0 = send only title + link, 1 = send entire introtext,
+// any other number = max. number of characters per story
+$_CONF['emailstorieslength'] = 1;
 
 // Following times are in seconds
 $_CONF['newstoriesinterval']  = 86400;

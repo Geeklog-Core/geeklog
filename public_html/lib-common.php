@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.92 2002/05/11 18:09:07 dhaun Exp $
+// $Id: lib-common.php,v 1.93 2002/05/13 15:37:53 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2363,7 +2363,15 @@ function COM_emailUserTopics()
             $mailtext .= "\n------------------------------\n\n";
             $mailtext .= "$LANG08[31]: {$S['title']}\n";
             $mailtext .= "$LANG08[32]: " . strftime($_CONF['date'],strtotime($S['day'])) . "\n\n";
-            $mailtext .= stripslashes(strip_tags($S['introtext'])) . "\n\n";
+            if ($_CONF['emailstorieslength'] > 0) {
+                $storytext = stripslashes(strip_tags($S['introtext']));
+                if ($_CONF['emailstorieslength'] > 1) {
+                   if (strlen ($storytext) > $_CONF['emailstorieslength']) {
+                       $storytext = substr ($storytext, 0, $_CONF['emailstorieslength']) . '...';
+                   }
+                }
+                $mailtext .= $storytext . "\n\n";
+            }
             $mailtext .= "$LANG08[33] {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
         }
         $mailtext .= "\n------------------------------\n";

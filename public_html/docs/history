@@ -1,5 +1,14 @@
 GeekLog History/Changes:
 
+- New configuration variable $_CONF['emailstorieslength'] to specify the length
+  of stories sent in the daily digest: 0 = only the title and a link to the
+  story are included, 1 = entire introtext is included (default), any other
+  number = cut off text after that amount of characters.
+- Added updated Polish language file, provided by Robert Stadnik.
+- The selection of the user theme is now hidden from the user's preferences
+  when 'allow_user_themes' is turned off in config.php
+- The links "Add To My Calendar" are now hidden when personal calendars are
+  turned off in config.php
 - Fixed a bug where the number of submissions was displayed in the sections
   block even when that was turned off.
 - New variable $_CONF['adminhtml'] allows (Story)Admin to use a wider variety
