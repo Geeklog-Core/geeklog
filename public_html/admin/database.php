@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.1 2002/02/25 23:21:33 tony_bibbs Exp $
+// $Id: database.php,v 1.2 2002/02/27 16:03:27 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -56,16 +56,15 @@ if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
 }
 
 // Perform the backup if asked
-if ($mode == 'Do Backup') {
+if ($mode == $LANG_DB_BACKUP['do_backup']) {
     $curdatetime = date("m_d_Y");
     if (!empty($_DB_pass)) {
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user -p$_DB_pass $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
     } else {
         $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
     }
-    $display .= "command = $command <br>";
     exec($command);
-    $display .= '<font color="red">Database back up was successful</font><br>';
+    $display .= '<font color="red">' . $LANG_DB_BACKUP['backup_successful'] . '</font><br>';
 }
 
 // Show last ten backups
@@ -89,14 +88,14 @@ if (is_array($backups) AND $index > 0) {
         next($backups);
     }
 } else {
-   $display .= "No backups in the system";
+   $display .= $LANG_DB_BAACKUP['no_backups'];
 }
 $display .= COM_endBlock();
 
 // Show backup form
-$display .= "To create a new backup of your Geeklog system, hit the button below";
+$display .= $LANG_DB_BACKUP['db_explanation'];
 $display .= '<form name="dobackup" method="post" action="' . $PHP_SELF . '">';
-$display .= '<input type="submit" name="mode" value="Do Backup"></form>';
+$display .= '<input type="submit" name="mode" value="' . $LANG_DB_BACKUP['do_backup'] . '"></form>';
 $display .= COM_siteFooter();
 
 echo $display; 
