@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.39 2002/08/13 20:11:08 dhaun Exp $
+// $Id: users.php,v 1.40 2002/08/14 11:42:37 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -346,9 +346,23 @@ function createuser($username,$email)
             DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
             if ($_CONF['usersubmission'] == 1) {
-                $passwd = md5('');
-                DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
-                $msg = 48;
+                $queueUser = true;
+                if (!empty ($_CONF['allow_domains'])) {
+                    $allowed = explode (',', $_CONF['allow_domains']);
+                    // Note: We already made sure $email is a valid address
+                    $domain = substr ($email, strpos ($email, '@') + 1);
+                    if (in_array ($domain, $allowed)) {
+                        $queueUser = false;
+                    }
+                }
+                if ($queueUser) {
+                    $passwd = md5('');
+                    DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
+                    $msg = 48;
+                } else {
+                    emailpassword($username, 1);
+                    $msg = 1;
+                }
             } else {
                 emailpassword($username, 1);
                 $msg = 1;

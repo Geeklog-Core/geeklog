@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.50 2002/08/13 21:35:46 dhaun Exp $
+// $Id: config.php,v 1.51 2002/08/14 11:42:37 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -228,7 +228,7 @@ $_CONF['emailstorieslength'] = 1;
 
 // When user submission is activated, allow users from these domains to
 // register without having to go through the submission queue.
-$_CONF['allow_domains'] = ''; // NOT YET IMPLEMENTED
+$_CONF['allow_domains'] = ''; // e.g. 'mycompany.com,myothercompany.com'
 
 // Following times are in seconds
 $_CONF['newstoriesinterval']  = 86400;
