@@ -8,11 +8,12 @@
 // | Geeklog common library.                                                   |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.199 2003/01/29 17:08:02 dhaun Exp $
+// $Id: lib-common.php,v 1.200 2003/02/13 17:46:05 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2039,10 +2040,13 @@ function COM_adminMenu( $help = '', $title = '' )
                 $num += DB_count( $_TABLES['linksubmission'], 'lid', 0 );
             }
 
-            if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
+            if( $_CONF['usersubmission'] == 1)
             {
-                $emptypwd = md5( '' );
-                $num += DB_count( $_TABLES['users'], 'passwd', $emptypwd );
+                if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
+                {
+                    $emptypwd = md5( '' );
+                    $num += DB_count( $_TABLES['users'], 'passwd', $emptypwd );
+                }
             }
 
             //now handle submissions for plugins
@@ -3698,7 +3702,7 @@ function COM_whatsNewBlock( $help='', $title='' )
         }
 
         $nesql .= "(perm_anon >= 2)";
-        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
+        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
         $result = DB_query( $sql );
         $A = DB_fetchArray( $result );
         $nrows = $A['count'];
@@ -3790,7 +3794,7 @@ function COM_whatsNewBlock( $help='', $title='' )
         $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
             . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
             . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
-        $sql .= "{$_TABLES['comments']}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
+        $sql .= "{$_TABLES['comments']}.date >= (DATE_SUB( NOW(),INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
         $sql .= " GROUP BY {$_TABLES['comments']}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
 
         $result = DB_query( $sql );
