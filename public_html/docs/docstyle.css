@@ -1,18 +1,73 @@
-<style type="text/css">
-<!--
-.usual 		{  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt}
-.menu			{  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11pt}
-.sectiontitle 	{  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12pt}
-.chaptertitle 	{  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14pt}
-.comment		{  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt}
+body {
+  margin-left: 4%;
+  margin-right: 4%;
+  background-color: white;
+  color: black;
+}
 
-.codeheader		{  font-family: Courier, sans-serif; font-size: 12pt}
-.code			{  font-family: Courier, sans-serif; font-size: 8pt}
+h1 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 195%;
+}
 
-A:link 		{ color: #FF2222; }
-A:active 		{ color: #FF2222; }
-A:visited 		{ color: #FF2222; }
-A:hover 		{ color: #333366; background-color: #AAAADD; }
+h2 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 156%;
+}
 
--->
-</style>
+h3 {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 125%;
+}
+
+code, kbd, var {
+  font-family: Courier, "Courier New", monospace;
+}
+
+th {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  background-color: black;
+  color: white;
+}
+
+tr, td {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+dt {
+  font-weight: bold;
+}
+
+
+.usual {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 100%;
+}
+
+.menu {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 90%;
+  background-color: #dddddd;
+  color: black;
+}
+
+.footer {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 90%;
+  background-color: #dddddd;
+  color: black;
+}
+
+
+.comment {
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 80%;
+}
+
+.codeheader		{  font-family: Courier, "Courier New", monospace; }
+
+
+a:link    { color: #FF2222; }
+a:visited { color: #FF2222; }
+a:hover   { color: #333366; background-color: #AAAADD; }
+a:active  { color: #FF2222; }

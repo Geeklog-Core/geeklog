@@ -1,0 +1,562 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Configuration</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Configuration</td>
+</tr>
+</table>
+
+<h1>GeekLog Configuration Guide</h1>
+
+<h2>Setting up config.php</h2>
+
+<p>GeekLog's server settings are configured in a text file called config.php. 
+It is necessary to edit this file to get your system running as well as 
+configuring it to your preferences. This file contains a set of variables 
+that are defined below:
+
+
+<h3>Database Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td>_DB_dbms</td>
+    <td>mysql</td>
+    <td><strong>Do not change!</strong> This tells Geeklog that it's 
+      dealing with a MySQL database - and currently, that is the only type of 
+      database that is supported.</td></tr>
+<tr><td>_DB_host</td>
+    <td>localhost</td>
+    <td>Database Server (to be entered in the form: <i>hostname:port:unixsocket</i>). In most cases you won't need to change the default value.</td></tr>
+<tr><td>_DB_name</td>
+    <td>geeklog</td>
+    <td>Database Name</td></tr>
+<tr><td>_DB_user</td>
+    <td>root</td>
+    <td>Database User Account</td></tr>
+<tr><td>_DB_pass</td>
+    <td>null</td>
+    <td>Database User Password</td></tr>
+<tr><td>_DB_table_prefix</td>
+    <td>gl_</td>
+    <td>Allows you to change the default table names for Geeklog</td></tr>
+<tr><td>_DB_mysqldump_path</td>
+    <td>/usr/bin/mysqldump</td>
+    <td>Complete path to the mysqldump utility (part of MySQL) for making 
+      backups of your Geeklog database</td></tr>
+<tr><td>allow_mysqldump</td>
+    <td>1</td>
+    <td>Enable or disable the backup functionality (1 = on, 0 = off)</td></tr>
+</table>
+
+
+<h3>Server Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td>path</td>
+    <td>/path/to/geeklog/</td>
+    <td>Base file system path for your site (trailing slash necessary)</td></tr>
+<tr><td>path_system</td>
+    <td>/path/to/geeklog/system/</td>
+    <td>Path to your system directory for your site (trailing slash necessary).  This directory holds the code libraries used throughout Geeklog</td></tr>
+<tr><td>path_html</td>
+    <td>/path/to/geeklog/public_html/</td>
+    <td>Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
+<tr><td>path_log</td>
+    <td>/path/to/geeklog/logs/</td>
+    <td>File system path for the log files</td></tr>
+<tr><td>path_language</td>
+    <td>/path/to/geeklog/language/</td>
+    <td>location of the Geeklog language files</td></tr>
+<tr><td>rdf_file</td>
+    <td>HTML path with "/backend/geeklog.rdf" suffix</td>
+    <td>File system path for the RDF file. This file allows you to share your site's headlines with others</td></tr>
+<tr><td>backup_path</td>
+    <td>Base path with "/backups/" suffix</td>
+    <td>location where mysqldump (see above) will store database backups</td></tr>
+</table>
+
+
+<h3>Site Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>site_name</td>
+  <td>GeekLog Site</td>
+  <td>Name of your site</td></tr>
+<tr>
+  <td>site_slogan</td>
+  <td>Another Nifty GeekLog Site</td>
+  <td>Slogan for your site. This is added to the HTML title field.</td></tr>
+<tr>
+  <td>site_mail</td>
+  <td>admin@example.com</td>
+  <td>E-mail address for all admin mail</td></tr>
+<tr>
+  <td>site_url</td>
+  <td>http://www.yourdomain.com</td>
+  <td>Base URL for your site (no trailing slash)</td></tr>
+<tr>
+  <td>theme</td>
+  <td>XSilver</td>
+  <td>Default theme to use on the site</td></tr>
+<tr>
+  <td>layout_url</td>
+  <td>Site URL path, with layout dir and default layout</td>
+  <td>Location of the default layout</td></tr>
+<tr>
+  <td>path_themes</td>
+  <td>/path/to/geeklog/public_html/layout/</td>
+  <td>Directory where all themes reside</td></tr>
+<tr>
+  <td>path_layout</td>
+  <td>/path/to/geeklog/public_html/layout/XSilver/</td>
+  <td>Path to current theme directory</td></tr>
+<tr>
+  <td>allow_user_themes</td>
+  <td>Can be 1 or 0</td>
+  <td>If set to 1, users can set their own theme that the site uses</td></tr>
+<tr>
+  <td>allow_user_language</td>
+  <td>Can be 1 or 0</td>
+  <td>If set to 1, users can select the language for the site navigation</td></tr>
+<tr>
+  <td>allow_user_photo</td>
+  <td>Can be 1 or 0</td>
+  <td>If set to 1, users can upload a photo to their profile</td></tr>
+</table>
+
+
+<h3>Locale Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>language</td>
+  <td>english</td>
+  <td>Name of your language file. Additional language files may be 
+    available for download at <a href="http://geeklog.sourceforge.net/">http://geeklog.sourceforge.net</a>. 
+    If you translate a language file, please send it to us. Also see <a 
+    href="#Localization">Localization</a> below.</td></tr>
+<tr>
+  <td>locale</td>
+  <td>en-gb</td>
+  <td>Locale for the system</td></tr>
+<tr>
+  <td>date</td>
+  <td>%A, %B %d %Y @ %I:%M %p %Z</td>
+  <td>Date format used for most of the site, including story displays. See <a 
+    href="#date_formats">date formats</a> below.</td></tr>
+<tr>
+  <td>daytime</td>
+  <td>%m/%d %I:%M%p</td>
+  <td>Date format used when a shorter date is needed. See <a 
+    href="#date_formats">date formats</a> below.</td></tr>
+<tr>
+  <td>shortdate</td>
+  <td>%x</td>
+  <td>Date format this is the shortest date. See <a href="#date_formats">date 
+    formats</a> below.</td></tr>
+<tr>
+  <td>default_charset</td>
+  <td>iso-8859-1</td>
+  <td>Character encoding used by Geeklog when serving HTML pages or 
+    sending email. Only used if the language file did not already set 
+    another character encoding.</td></tr>
+</table>
+
+
+<h3>Session Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>cookie_ip</td>
+  <td>1</td>
+  <td>Session ID to contain IP address of user as well as random number. This is more secure but will more than likely require dialed up users to login each and every time. (0=no, 1=yes)</td></tr>
+<tr>
+  <td>default_perm_cookie_timeout</td>
+  <td>604800</td>
+  <td>Permanent cookie timeout in seconds (604800 = 1 week).</td></tr>
+<tr>
+  <td>session_cookie_timeout</td>
+  <td>7200</td>
+  <td>Session cookie timeout (in seconds).</td></tr>
+<tr>
+  <td>cookie_session</td>
+  <td>gl_session</td>
+  <td>What the session ID is stored as in the cookie.</td></tr>
+<tr>
+  <td>cookie_name</td>
+  <td>geeklog</td>
+  <td>The name of the cookie.</td></tr>
+<tr>
+  <td>cookie_path</td>
+  <td>/</td>
+  <td>Cookie path.</td></tr>
+</table>
+
+
+<h3>Login settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td>loginrequired</td>
+    <td>0</td>
+    <td>Login is required to access <em>any</em> part of the site. When 
+      set to 1, this overrides the following settings. When you only want to 
+      block access to certain parts of the site, set this to 0 and select 
+      from the following settings.</td></tr>
+<tr><td>submitloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can submit stories, links, and 
+      events</td></tr>
+<tr><td>commentsloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can submit comments</td></tr>
+<tr><td>linksloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can access the links area</td></tr>
+<tr><td>pollsloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can access the list of recent 
+      polls</td></tr>
+<tr><td>calendarloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can access the calendar</td></tr>
+<tr><td>statsloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can access the site stats</td></tr>
+<tr><td>searchloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can use the search</td></tr>
+<tr><td>profileloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can view another user's profile</td></tr>
+<tr><td>emailuserloginrequired</td>
+    <td>0</td>
+    <td>When set to 1, only registered users can use the email submission 
+      form to send an email to another user</td></tr>
+</table>
+
+
+<h3>Submission Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>storysubmission</td>
+  <td>1</td>
+  <td>Enable (1) or disable (0) the story submission queue</td></tr>
+<tr>
+  <td>linksubmission</td>
+  <td>1</td>
+  <td>Enable (1) or disable (0) the link submission queue</td></tr>
+<tr>
+  <td>eventsubmission</td>
+  <td>1</td>
+  <td>Enable (1) or disable (0) the event submission queue</td></tr>
+<tr>
+  <td>usersubmission</td>
+  <td>1</td>
+  <td>Enable (1) or disable (0) the user submission queue</td></tr>
+<tr>
+  <td>postmode</td>
+  <td>plaintext</td>
+  <td>Sets the default submission mode to 'html' or 'plaintext'</td></tr>
+<tr>
+  <td>speedlimit</td>
+  <td>45</td>
+  <td>Minimum delay between submissions in seconds. This helps prevent Denial of Service (DOS) attacks</td></tr>
+</table>
+
+
+<h3>Topic, What's New &amp; E-mail Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>sortmethod</td>
+  <td>sortnum</td>
+  <td>alpha = Sort topics in topic list alphabetically<br>sortnum = Sort topics in topic list by sort number</td></tr>
+<tr>
+  <td>showstorycount</td>
+  <td>1</td>
+  <td>Show the number of stories in a topic in the Section block (0=no, 1=yes)</td></tr>
+<tr>
+  <td>showsubmissioncount</td>
+  <td>1</td>
+  <td>Show the number of story submissions for a topic in the Section block (0=no, 1=yes)</td></tr>
+<tr>
+  <td>showemptysearchresults</td>
+  <td>0</td>
+  <td>Show empty result blocks even when search returned no hits for 
+    stories, events, links, etc. (0=no, 1=yes)</td></tr>
+<tr>
+  <td>whosonline_threshold</td>
+  <td>300</td>
+  <td>How long, in seconds, users can be idle before removing them from the whosonline block</td></tr>
+<tr>
+  <td>emailstories</td>
+  <td>0</td>
+  <td>Let users get stories e-mailed to them (0=no, 1=yes). Please note that 
+    this requires cron and the use of PHP as a shell script.</td></tr>
+<tr>
+  <td>emailstorieslength</td>
+  <td>1</td>
+  <td>When emailstories (above) is enabled, send only the title and the 
+    link to the new stories (0), or send the entire introtext (1) or send 
+    the first n characters from the introtext (where n = any other number)</td></tr>
+<tr>
+  <td>newstoriesinterval</td>
+  <td>86400</td>
+  <td>Stories are "new" if they are this many seconds old.</td></tr>
+<tr>
+  <td>newcommentsinterval</td>
+  <td>172800</td>
+  <td>Comments are "new" if they are this many seconds old.</td></tr>
+<tr>
+  <td>newlinksinterval</td>
+  <td>1209600</td>
+  <td>Links are "new" if they are this many seconds old.</td></tr>
+</table>
+
+
+<h3>Calendar Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top">personalcalendars</td>
+  <td valign="top">0</td>
+  <td valign="top">Allow account holders to have a personal calendar</td></tr>
+<tr>
+  <td>showupcomingevents</td>
+  <td>1</td>
+  <td>Show up-coming events (0=no, 1=yes)</td></tr>
+<tr>
+  <td>event_types</td>
+  <td>Anniversary, Appointment, Birthday, Business, Education, Holiday, Meeting, Miscellaneous, Personal, Phone Call, Special Occasion, Travel, Vacation</td>
+  <td>The set of event types that are used both on the public calendar and the user's personal calendars</td></tr>
+</table>
+
+
+<h3>Story Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+<tr>
+  <td>maximagesperarticle</td>
+  <td>5</td>
+  <td>max. number of images you can have in a story</td></tr>
+<tr>
+  <td>backend</td>
+  <td>1</td>
+  <td>Create an RSS/RDF file for the stories in rdfpath (0=no, 1=yes)</td></tr>
+<tr>
+  <td>limitnews</td>
+  <td>10</td>
+  <td>Number of stories to limit the index page to, this same number will appear in the older stuff block</td></tr>
+<tr>
+  <td valign="top">minnews</td>
+  <td valign="top">1</td>
+  <td valign="top">Minimum numbers of stories than can appear on a topic page</td></tr>
+<tr>
+  <td>contributedbyline</td>
+  <td>1</td>
+  <td>Show author username to public, and enable search by username (0=no, 1=yes)</td></tr>
+<tr>
+  <td>article_image_align</td>
+  <td>right</td>
+  <td>Which side of article the topic image should be shown (right or left)</td></tr>
+</table>
+
+
+<h3>Comment Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>commentspeedlimit</td>
+  <td>45</td>
+  <td>Number of seconds between posting a comment for the user</td></tr>
+<tr>
+  <td>comment_limit</td>
+  <td>100</td>
+  <td>Most number of comments to show at any one time</td></tr>
+<tr>
+  <td>comment_mode</td>
+  <td>threaded</td>
+  <td>How to display comments (threaded, nested, flat or nocomments)</td></tr>
+<tr>
+  <td>comment_code</td>
+  <td>0</td>
+  <td>Default value for new stories: Comments enabled (0) or disabled (-1)</td></tr>
+</table>
+
+
+<h3>Poll Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>maxanswers</td>
+  <td>10</td>
+  <td>Maximum number of possible answers for the poll editor</td></tr>
+<tr>
+  <td>answerorder</td>
+  <td>submitorder</td>
+  <td>Sort answers by the number of results ('voteorder') or keep the order 
+    in which they were entered ('submitorder')</td></tr>
+<tr>
+  <td>pollcookietime</td>
+  <td>86400</td>
+  <td>Number of seconds to set a poll answer cookie to time out on</td></tr>
+<tr>
+  <td>polladdresstime</td>
+  <td>604800</td>
+  <td>Number of seconds to set a poll answer IP address to time out on</td></tr>
+</table>
+
+
+<h3>Content Control Settings</h3>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td>allowablehtml</td>
+  <td>&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;li&gt;,&lt;ol&gt;,<br>
+      &lt;div&gt;,&lt;ul&gt;</td>
+  <td>Allowed HTML in stories submissions and comments.</td></tr>
+<tr>
+  <td>adminhtml</td>
+  <td>the values from allowablehtml (above) plus HTML tags for tables</td>
+  <td>Allowed HTML that only admin users can use</td></tr>
+<tr>
+  <td>censormode</td>
+  <td>1</td>
+  <td>Censor submissions and comments (0=no, 1=yes)</td></tr>
+<tr>
+  <td>censorreplace</td>
+  <td>*censored*</td>
+  <td>Text to replace a censored word with</td></tr>
+<tr>
+  <td>censorlist</td>
+  <td>array("fuck","cunt","fucker","fucking","pussy","cock",<br>
+                  "c0ck","cum","twat","clit","bitch","fuk","fuking", <br>
+                  "motherfucker")</td>
+  <td>An array of censored words</td></tr>
+</table>
+
+
+<h2><a name="Localization"></a>Localization</h2>
+
+<p>Localizing GeekLog is now fairly easy. All strings are contained in a 
+language file, the default file that ships with the tarball is english.php. 
+People interested in translating Geeklog to other languages are encouraged 
+to join the <a 
+href="http://lists.sourceforge.net/lists/listinfo/geeklog-translations">geeklog-translations</a> 
+mailing list. All important information concerning translating Geeklog will 
+be posted there.
+
+<h3><a name="#date_formats"></a>Locale and Date Formats</h3>
+
+<p>You can set the locale and date format in the config.php file. To set the 
+locale, set the variable to the proper string or if you leave it blank it 
+will pull the default locale from the operating system. The date formats 
+are handled by your locale. Isn't that smart? Locale names are OS 
+dependent. On most UNIX hosts, you can find locale codes in the 
+<i>/usr/share/locale/locale.alias</i> file and on some systems the command 
+<i>locale -a</i> will display all available locales on a system. If a 
+locale doesn't exist you can create it using the <i>localedef</i> command.
+
+<p>More info on locale: <a 
+href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a><br>
+More info on localdef: <a 
+href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
+
+<h3>Date Format Syntax</h3>
+
+<ul>
+  <li><tt>%a - abbreviated weekday name according to the current locale</tt></li>
+  <li><tt>%A - full weekday name according to the current locale</tt></li>
+  <li><tt>%b - abbreviated month name according to the current locale</tt></li>
+  <li><tt>%B - full month name according to the current locale</tt></li>
+  <li><tt>%c - preferred date and time representation for the current locale</tt></li>
+  <li><tt>%C - century number (the year divided by 100 and truncated to           an integer, range 00 to 99)</tt></li>
+  <li><tt>%d - day of the month as a decimal number (range 00 to 31)</tt></li>
+  <li><tt>%D - same as %m/%d/%y</tt></li>
+  <li><tt>%e - day of the month as a decimal number, a single digit is preceded by a space (range ' 1' to '31')</tt></li>
+  <li><tt>%h - same as %b</tt></li>
+  <li><tt>%H - hour as a decimal number using a 24-hour clock (range 00 to 23)</tt></li>
+  <li><tt>%I - hour as a decimal number using a 12-hour clock (range 01 to 12)</tt></li>
+  <li><tt>%j - day of the year as a decimal number (range 001 to 366)</tt></li>
+  <li><tt>%m - month as a decimal number (range 1 to 12)</tt></li>
+  <li><tt>%M - minute as a decimal number</tt></li>
+  <li><tt>%n - newline character</tt></li>
+  <li><tt>%p - either `am' or `pm' according to the given time value, or the corresponding strings for the current locale</tt></li>
+  <li><tt>%r - time in a.m. and p.m. notation</tt></li>
+  <li><tt>%R - time in 24 hour notation</tt></li>
+  <li><tt>%S - second as a decimal number</tt></li>
+  <li><tt>%t - tab character</tt></li>
+  <li><tt>%T - current time, equal to %H:%M:%S</tt></li>
+  <li><tt>%u - weekday as a decimal number [1,7], with 1 representing Monday</tt></li>
+  <li><tt>%U - week number of the current year as a decimal number, starting with the first Sunday as the first day of the first week</tt></li>
+  <li><tt>%V - The ISO 8601:1988 week number of the current year as a decimal number, range 01 to 53, where week 1 is the first week that has at least 4 days in the current year, and with Monday as the first day of the week.</tt></li>
+  <li><tt>%W - week number of the current year as a decimal number, starting with the first Monday as the first day of the first week</tt></li>
+  <li><tt>%w - day of the week as a decimal, Sunday being 0</tt></li>
+  <li><tt>%x - preferred date representation for the current locale without the time</tt></li>
+  <li><tt>%X - preferred time representation for the current locale without the date</tt></li>
+  <li><tt>%y - year as a decimal number without a century (range 00 to 99)</tt></li>
+  <li><tt>%Y - year as a decimal number including the century</tt></li>
+  <li><tt>%Z - time zone or name or abbreviation</tt></li>
+  <li><tt>%% - a literal `%' character</tt></li>
+</ul>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>

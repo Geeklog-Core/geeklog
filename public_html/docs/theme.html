@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Theme How-To</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Theme How-To</td>
+</tr>
+</table>
+
+<h1>Creating a Theme for Geeklog</h1>
+
+<p>Creating a theme for Geeklog is easy and quite fast. If you can
+manipulate HTML files then you can create a theme! There's no need to learn
+PHP.
+
+<p>First, let me preface this by saying the theme support, though usable,
+isn't complete yet. We plan to make it so that Geeklog admins can upload
+themes via a Geeklog web administration page. This will be available in a
+later beta release.
+
+<p>Until then people will have to learn how to install themes manually
+(covered at the bottom of this document).
+
+<h2>Creating a theme</h2>
+
+<p>First, copy an existing theme that is most similar to what you want to
+implement (if one exists). If what you will do is radically different (and
+we hope so!) then copying any one will do. Copy the existing theme to the
+name you want your theme to have (please, <em>no</em> spaces in the theme name):
+
+<p><kbd>cp -R /path/to/geeklog/public_html/layout/Yahoo /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd>
+
+<p>Change into your new theme directory:
+
+<p><kbd>cd /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces</kbd>
+
+<p>Now edit the templates to suit your needs. Keep in mind that templates,
+generally are partial HTML files. The directory you just created holds ALL
+templates Geeklog needs but you will only need to modify a small few to
+make a huge impact on the look.
+
+<p>In particular these are the templates you will undoubtedly want to
+change:
+
+<ul>
+<li>header.thtml
+<li>footer.thtml
+<li>blockheader.thtml
+<li>blockfooter.thtml
+<li>menuitem.thtml
+<li>storybody.thtml
+<li>storybodytext.thtml
+<li>featuredstorybody.thtml
+<li>featuredstorybodytext.thtml
+<li>style.css
+</ul>
+
+<p>When rendering a theme, Geeklog starts with <tt>header.thtml</tt> which builds 
+the site's header and then goes on to include the left column of blocks (look 
+for the variable {left_blocks} and the <tt>leftblocks.thtml</tt> file). The 
+middle part of a site is built of the stories (<tt>storytext.thtml</tt> 
+and <tt>storybodytext.thtml</tt>). The <tt>footer.thtml</tt> file then builds 
+the right column of blocks (variable {right_blocks}, file 
+<tt>right_blocks.thtml</tt>) and the site's footer. Blocks themselves consist 
+of the <tt>blockheader.thtml</tt> and <tt>blockfooter.thtml</tt> files.
+
+<p>After you have edited your themes, you are now ready to test it out.
+Simply go to http://mygeeklogsite/users.php?mode=peferences in the theme
+drop-down select your newly created theme (note the name of your theme is
+the <em>same</em> name as the directory for your theme).
+
+<p>Finally, you may want to update the logo and other images in your
+theme's images directory.
+
+<p>For the template system we are using PHPLib's template class (<a 
+href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>). 
+Read their documentation and, optionally, look at 
+/path/to/geeklog/system/classes/template.class.php to see how it is 
+implemented. Even with this knowledge it may not be clear which templates 
+are used in conjunction with one another (i.e. storybody.thtml and 
+storybodytext.thtml together make up the complete format of a 
+<em>single</em>
+story). If you have questions join our mailing list at our SourceForge site 
+at <a 
+href="http://sourceforge.net/projects/geeklog">http://sourceforge.net/projects/geeklog</a> 
+or check us out in IRC at irc.openprojects.net in #geeklog.</p>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,431 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Installation Instructions</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Installation Instructions</td>
+</tr>
+</table>
+
+<h1>Installing Geeklog</h1>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="4">
+<tr>
+	<td valign="top">
+		<blockquote>
+			<table width="100%" border="0" cellspacing="2" cellpadding="4">
+				<tr>
+					<td align="left" valign="top" bgcolor="#aec7e8" width="33%"><b>New Installation</b></td>
+					<td align="left" valign="top" bgcolor="#ffe7af" width="33%"><b>Upgrading To New Version</b></td>
+					<td align="left" valign="top" bgcolor="#ffa6a6" width="33%"><b>Common Problems</b></td>
+				</tr>
+				<tr>
+					<td align="left" valign="top" bgcolor="#cdeeff" width="33%">
+						<ul>
+							<li type="disc"><a href="#preinstall">Pre-Installation Checklist</a>
+							<li type="disc"><a href="#install">Installation Instructions</a>
+						</ul>
+						<ul>
+							
+						</ul>
+					</td>
+					<td align="left" valign="top" bgcolor="#f5ffc7" width="33%">
+						<ul>
+							<li type="disc"><a href="#preupgrade">Pre-Upgrade Checklist</a>
+							<li type="disc"><a href="#upgrade">Upgrade Instructions</a>
+						</ul>
+					</td>
+					<td align="left" valign="top" bgcolor="#ffdbd5" width="33%">
+						<ul>
+							<li type="disc"><a href="#installprob">Installation</a>
+							<li type="disc"><a href="#postinstall">Post-Installation</a>
+						</ul>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" align="left" valign="top">Glossary
+						<ul>
+							<li type="disc">path: A physical location on a server that describes 
+                  where files and directories are. On Windows paths begin with 
+                  the drive letter (<code>c:/inetpub/wwwroot/</code>), on 
+                  *nix paths start at root (<code>/</code>) like (<code>/var/www/</code>)
+							<li type="disc">url: Uniform Resource Locator, the address of a specific 
+                  piece of information on the web (<code>http://www.foo.com/</code>)
+						</ul>
+					</td>
+				</tr>
+			</table>
+		</blockquote>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#aec7e8"><a name="preinstall"></a><b>PRE-INSTALLATION CHECKLIST (new installation)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#cdeeff">
+		<p>Before installing Geeklog for the first time, please make sure you have or know the following:</p>
+		<ol>
+			<li>A web server running PHP 4.04 or higher 
+			<li>A web server running MySQL, with access to a database or the ability to create a database 
+			<li>The ability to create a new database in MySQL or access to an existing one 
+			<li>A telnet or SSH connection to your web server (although FTP will work). This document will be written assuming you have command line access to your server, but we will note the major differences for FTP users. 
+			<li>The ability to unpack a tarball (file ending in tar.gz) 
+			<li>You know the difference between a path and a URL 
+			<li>You know how to determine your system paths<br>
+				<br>
+			
+			
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<div align="left">
+							<p><font color="#FF0000">SPECIAL NOTE ABOUT PARSE ERRORS: </font></p>
+							<p>Some users have reported that WinZip corrupts certain files in the Geeklog tarball during decompression which will cause errors during the installation process. You are strongly urged not to use WinZip. Try WinRAR if you must decompress the file locally, or better yet, unpack the file from your server (requires telnet/SSH access).</p>
+							<p>Parse errors can also be caused by using a WYSIWYG editor on lib-common.php, e.g. Dreamweaver - you should use a "plain text editor".</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<br>
+		</ol>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+		<br>
+		<br>
+		<br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#aec7e8"><b><a name="install"></a> INSTALLATION INSTRUCTIONS (new installation)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#cdeeff">
+		<p>Please read this section <b>COMPLETELY</b> before beginning.</p>
+		<ol>
+			<li>Unpack the tarball *within* your web tree by running the following in your shell (this assumes you have ssh access and that you are working with the tarball <i>on the designated server </i>- this can be locally or hosted elsewhere):<br>
+				<br>
+				<code>tar -zxvf geeklog-1.3.6.tar.gz</code><br>
+				<br>
+				<b>FTP, Windows Users:</b> unpack the tarball on your <i>local computer</i> and upload the result to your designated server. Everything uploads as ASCII except the images.<br>
+				<br>
+			<li>For *nix installations the following may be required: <br>
+				<br>
+				<code>chown -R <i>webuser</i>:<i>webuser</i> /path/to/geeklog</code><br>
+				<br>This guarantees that everything in that path belongs to you, typical settings are www:www or nobody:nobody and more often than not doesn't matter.<br>
+				<br>
+			<li>For *nix installations cd into /path/to/geeklog and do the following:<br>
+				<br>
+				<code>chmod -R 775 logs/<br>
+					chmod -R 775 public_html/backend/<br>
+					chmod -R 775 public_html/images/articles<br>
+					chmod -R 775 public_html/images/userphotos</code><br>
+				<br>
+				<b>FTP Users:</b> If you're doing the chmod via a FTP client, you must also apply the chmod to the files in logs/ and public_html/backend as well as the directories themselves. Most, if not all, ftp clients do not perform this command recursively.  That means you need to set each file within each of these directories manually.<br>
+				<br>
+			
+			
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<p><font color="#FF0000">SPECIAL NOTE: </font></p>
+						<p><b>Not following step #3 correctly is the #1 reason why people receive errors when they first try to use Geeklog</b>. Take your time and get it right. Also, some users have reported problems if the above permissions are not set to 777. Try 775 first and only be more permissive if you receive an error message.</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<li>Create the database you want Geeklog to reside in. If you are not familiar with using MySQL, you are urged to get <a href="http://www.phpmyadmin.org/" target="_blank">phpMyAdmin</a> and use it to create a new database. If you have no idea what the previous two sentences mean, contact your sysadmin for help.<br>
+				<br>
+			<li>Edit config.php with the appropriate settings for your server. For installation, this basically means "set your paths," as all other variables can be changed after a successful installation. The config.php file contains comments to help you out. Windows users, you should be able to use the Unix '/' in your paths without any problems. Otherwise, you will need to use the doubled Windows slashes '\\'.<br>
+				<br>
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<div align="left">
+							<p><font color="#FF0000">NOTE FOR RETURNING USERS OF GEEKLOG:</font></p>
+							<p>Please note that the database settings are back in <b>config.php</b>. This is to make it so that you do not have to edit lib-database.php</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<li>Edit <b>lib-common.php</b> and change the require_once() at the top to point to the location of your <b>config.php</b> file.<br>
+				<br>
+			<li>Open your browser and navigate to <b>http://yourgeeklogdomain/admin/install/install.php</b> and follow the directions!<br>
+				<br>
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<p><font color="#FF0000">SPECIAL NOTE:</font></p>
+						<p>Some users may get the following error message during install:</p>
+						<p><code>"1121: Column 'ug_grp_id' is used with UNIQUE or INDEX but is not defined as NOT NULL" </code></p>
+						<p>This error is caused by having a slightly out of date version of MySQL. There are two easy ways to fix the problem: </p>
+						<p>Solution #1 = Get your ISP to upgrade MySQL or do it yourself.</p>
+						<p>Solution #2 = Edit the file sql/mysql_tableanddata.php and remove lines 176 and 375. They read:</p>
+						<p><code>INDEX group_assignments_ug_grp_id(ug_grp_id), </code></p>
+						<p>and </p>
+						<p><code>INDEX stories_tid(tid), </code></p>
+						<p>Make sure you remove the entire line, including the comma. Once those lines are removed, you need to drop all the tables that were created by the installation script and re-run the installation script.</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<li>Once you see the success message, you are ready to go. <b>You can now 
+			  delete the admin/install directory</b> (and all files within 
+			  it).<br><br>
+      <li>Read the first story on your Geeklog site to learn how to log in 
+        as the administrator. Please remember to change the default passwords on all administrator accounts right away.<br>
+				<br>
+			
+			
+		</ol>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+		<br>
+		<br>
+		<br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffe7af"><a name="preupgrade"></a><b> PRE-UPGRADE CHECKLIST (upgrade)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#f5ffc7">
+		<div align="center">
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<div align="left">
+							<p><font color="#FF0000">WARNING:</font></p>
+							<p>Take extreme care to back up any files from your current Geeklog installation that have any custom code in them, especially lib-custom.php (where all custom code should reside). Be sure to back up any modified themes, images, and static pages from your current installation.</p>
+							<p>Also, please be sure to back up your database. We can't stress the importance of backing up your files and database enough. </p>
+							<p><b>YOU HAVE BEEN WARNED.</b></p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<br>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+		<br>
+		<br>
+		<br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffe7af"><b><a name="upgrade"></a>UPGRADE INSTRUCTIONS (upgrade)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#f5ffc7">
+		<ol>
+			<li>Upgrading is no different than a fresh installation except your database already exists and needs to be upgraded.
+		</ol>
+		<ol>
+			<li>Back up any files with custom code in them and back up your database. <br>
+				<br>
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<p><font color="#FF0000">SPECIAL NOTE:</font></p>
+						<p>Please pay special attention to the older config.php and lib-common.php files, these files contain database and path information you entered the last time you installed Geeklog and they MUST be copied over to the NEW config.php and lib-common.php files.<br>
+						</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<li>You can choose to either rename or remove your current Geeklog directory.  Although in the end you will be deleting the older install it's probably safer to keep the old copy around for a few days *just* in-case you forgot to transfer some files.<br>
+				<br>
+			<li>Uncompress the new version and copy the result to the same path that your old installation had. For instance, if your old Geeklog was in <code>/usr/home/www/geeklog/</code>, then your new installation should also be in <code>/usr/home/www/geeklog/</code>.<br>
+				<br>
+			<li>The next step depends on which version of Geeklog you are upgrading from.<br>
+				<br>
+				If you are upgrading from Geeklog 1.2 or earlier, change to <code>/path/to/geeklog/sql/updates</code> and apply all needed database updates. For example, if you are upgrading from Geeklog 1.1, you will need to apply 1.1_to_1.2.sql and 1.2_to_1.2.2.sql which will upgrade your database to Geeklog 1.2.5-1. I say 1.2.5-1 because there were no database changes from 1.2.2 to 1.2.5-1 (e.g. a 1.2.2 database is the same as a 1.2.5-1 database). If you are uncomfortable using the MySQL command line to do this, you can do it via phpMyAdmin as well.<br>
+				<br>
+				If you are upgrading from 1.2.5-1 or a more recent version, the second step of the installation script should have an option to convert your database to the current version.<br>
+				<br>
+        Please note that there were no database changes between versions 1.3.5, 1.3.5sr1, and 1.3.5sr2, so when upgrading from any of those versions, simply select "1.3.5" as your current version.<br>
+				<br>
+			<li>The rest of the upgrade process is identical to the install process. Once you successfully run the install script, you should be ready to go after restoring any files with custom code.
+		</ol>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+		<br>
+		<br>
+		<br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffa6a6"><b><a name="installprob"></a>INSTALLATION PROBLEMS (common problems)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffdbd5">
+		<div align="center">
+			<table width="95%" border="0" cellspacing="2" cellpadding="4" bgcolor="black">
+				<tr>
+					<td bgcolor="white">
+						<p><font color="#FF0000">SPECIAL NOTE:</font></p>
+						<p>Before you go any further, please open config.php <b>AND DOUBLE CHECK YOUR PATHS</b>. Bad paths, or typos in the paths will cause all sorts of errors in Geeklog.</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div align="center">
+			<br>
+			<br>
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td bgcolor="#ffedf2"><b>I get the following error message after step two of the install script:</b>
+						<p><code>"1121: Column 'ug_grp_id' is used with UNIQUE or INDEX but is not defined as NOT NULL"</code></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>Answer:</p>
+						<p>This error is caused by having a slightly out of date version of MySQL. There are two easy ways to fix the problem:</p>
+						<p>Solution #1 = Get your ISP to upgrade MySQL or do it yourself.<br>
+							Solution #2 = Edit the file sql/mysql_tableanddata.php and remove lines 176 and 375. They read:</p>
+						<p><code>INDEX group_assignments_ug_grp_id(ug_grp_id),</code></p>
+						<p>and</p>
+						<p><code>INDEX stories_tid(tid),</code></p>
+						<p>Make sure you remove the entire line, including the comma. Once those lines are removed, you need to drop all the tables that were created by the installation script and re-run the installation script.</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+		</div>
+		<div align="center">
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td bgcolor="#ffedf2"><b>I can't get past the first page of the install script. It keeps reloading itself after I click the button.</b></td>
+				</tr>
+				<tr>
+					<td>
+						<p>Answer:</p>
+						<p>Geeklog needs the register_globals variable turned on in order to work. Since PHP 4.2.0, the default for register_globals is "off". To fix it, simply add the following line to your php.ini file:</p>
+						<p><code>register_globals=on</code></p>
+						<p>If you cannot find your php.ini file, ask your sysadmin.</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td bgcolor="#ffedf2"><b>During installation, I get the following errors:</b>
+						<p><code>"Parse error: parse error in ../../lib-common.php on line 2231 "</code></p>
+						<p><code>"Fatal error: Cannot instantiate non-existent class: template in ../../lib-common.php on line 335 "</code></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>Answer:</p>
+						<p>You have most likely used WinZip to decompress the Geeklog files. As noted at the top of this document, WinZip sometimes corrupts stuff and these errors are the results. You need to find a different way to decompress the tarball and get the files loaded onto your system</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+		</div>
+	</td>
+</tr>
+<tr>
+	<td valign="top"><br>
+		<br>
+		<br>
+		<br>
+	</td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffa6a6"><b><a name="postinstall"></a>POST-INSTALL PROBLEMS (common problems)</b></td>
+</tr>
+<tr>
+	<td valign="top" bgcolor="#ffdbd5">
+		<div align="center">
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td bgcolor="#ffedf2">
+						<p><b>Whenever I try to do anything on my site, I get a whole list of errors like:</b></p>
+						<p><code>Warning: fopen()...<br>
+							</code><code>Warning: fputs()...<br>
+							</code><code>Warning: fputs()...<br>
+							</code><code>Warning: fputs()...<br>
+							</code><code>Warning: fclose()...</code></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>Answer:</p>
+						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td bgcolor="#ffedf2">
+						<p><b>Whenever someone tries to log in or out, the following error is produced:</b></p>
+						<p><code>Cannot add header information - headers already sent by (output started at /usr###/home/&lt;userid&gt;/public_html/geeklog/config.php:589) in /usr###/home/&lt;userid&gt;/public_html/geeklog/system/lib-sessions.php on line 133</code></p>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<p>Answer:</p>
+						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions.</p>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			<hr noshade width="95%">
+			<table width="95%" border="0" cellspacing="0" cellpadding="4">
+				<tr>
+					<td>
+						<div align="left">
+							<p>If you still have problems, please do one or more of the following:</p>
+							<p>1) Go to <a href="http://geeklog.sourceforge.net">http://geeklog.sourceforge.net</a> and check out the Support section. The Support section includes a <a href="http://geeklog.sourceforge.net/staticpages/index.php?page=20011218115325696">FAQ</a> and a search system.</p>
+							<p>2) Visit the mailing list archives at <a href="http://sourceforge.net/mail/?group_id=7371">http://sourceforge.net/mail/?group_id=7371</a> . You can also <a href="http://lists.sourceforge.net/lists/listinfo/geeklog-devel">subscribe to the mailing list</a> and post your question to the Geeklog community</p>
+							<p>3) Try the chat room at <b>irc.openprojects.net, channel #geeklog</b>. Please have all your path information in config.php and lib-common.php readily available.</p>
+							<p>4) Try entering the text of the error message on Google. Chances are you will find someone else who had the same problem and fixed it.  And sometimes searching for a specific error will cause Google to bring up broken pages that have the same error.</p>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<br>
+			<br>
+			Extended version of this document created by Jason C. Levine, <br>
+			layout by Simon Lord, reviewed by Dirk Haun and Jeffrey Schoolcraft.</div>
+	</td>
+</tr>
+</table>
+ 
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+ 
+</body>
+</html>

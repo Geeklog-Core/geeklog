@@ -1,131 +1,93 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head class="usual">
-  <title>Geeklog Developers Documentation</title>
-                                                                        
-                                                         
+<head>
+  <title>Geeklog Documentation</title>
   <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
-              <base class="usual">
 </head>
-  <body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
- 
+
+<body>
+
+<body>
 <table cellpadding="2" cellspacing="2" border="0" width="100%">
-   <tbody>
-     <tr>
-       <td valign="Top" background="images/bg.gif"><img src="images/logo.gif" alt="Geeklog Documentation" width="350" height="84" border="0">
-       <br>
-       </td>
-     </tr>
-     <tr>
-       <td valign="Top" class="menu">Developer Documentation<br>
-       </td>
-     </tr>
-   
-  </tbody> 
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu">Geeklog Documentation</td>
+</tr>
 </table>
- <br>
- 
-<table cellpadding="5" cellspacing="2" border="0" width="100%">
-   <tbody>
-     <tr>
-       <td valign="Top" class="usual"><font class="sectiontitle">Thank You!</font><br>
-       <br>
-              First of all, a big Thank You for downloading Geeklog. &nbsp;We 
-  have   spent  a long time working on making this the best weblog software 
-  we can,   and I  am sure you will find it very easy to use, and very powerful.<br>
-       <br>
-              The documents have been created to make Geeklog even easier 
-for   you!   &nbsp;Apart   from the usual stuff like how to install Geeklog, 
-we   also have  provided the  full Developer API documentation, so you can 
-develop   your own  themes and plugins and make it even better.<br>
-       <br>
-       
-      <ul>
-         <li>Introduction</li>
-         <li><a href="#features">Features of Geeklog</a>
-           <br>
-         </li>
-         <li><a href="INSTALL.HTML">How to install Geeklog</a>
-        </li>
-        <li><a href="CONFIG.HTML">Geeklog Configuration File</a>
-          <br>
-         </li>
-         <li>Geeklog's API<br>
-         </li>
-         
-        <ul>
-           <li>Geeklog Function List<br>
-           </li>
-         
-        </ul>
-         
-        <ul>
-           <li><a href="plugin.html">Plugin Development</a>
-           </li>
-         
-        </ul>
-         
-        <ul>
-           <li>Theme Development</li>
-           <li>Writing Custom Functions</li>
-         
-        </ul>
-         <li>Upgrading Geeklog</li>
-         <li><a href="support.html">Support</a>
-         </li>
-       
-      </ul>
-       
-      <hr width="100%" size="2"><font class="chaptertitle"><a name="features">
-         Features of Geeklog</a>
-       </font><br>
-       <br>
-          Geeklog is a weblog powered by PHP and MySQL. &nbsp;It allows you 
- within    minuites to set up a fully functioning Dynamic website, and has 
- many features    to get you started. &nbsp;As of Geeklog 1.3, these features 
- are:<br>
-       <br>
-       
-      <ul>
-         <li>User-system, allowing members of the public to register for
- your   site and submit stories.</li>
-         <li>Comment system, allowing users to comment on posts made to 
-your    site.</li>
-         <li>Block system, allowing you to put information anywhere on your 
-    site.</li>
-         <li>Plugin system that allows you to extend Geeklog, without having
-     to code any new PHP.</li>
-         <li>Theme system that allows users to select what layout they want 
-    to view.</li>
-         <li>Excellent security model that allows you to give users control
-     over certain aspects of the site with no need to worry.</li>
-         <li>Site Statistics that show you the most popular areas of your
- site.</li>
-         <li>Link system that allows users to add links to the site.</li>
-         <li>Calendar System that lets you and your user add up-and-coming
-     events.</li>
-         <li>Allow users to email stories to their friends.<br>
-         </li>
-       
-      </ul>
-       </td>
-     </tr>
-   
-  </tbody> 
-</table>
- 
-<table border="0" width="100%">
-   <tbody>
-     <tr valign="Top" bgcolor="#dddddd">
-       <td height="20" colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><a href="http://geeklog.sf.net">
-    The Geeklog Documentation Project</a>
-       <br>
-            All trademarks and copyrights on this page are owned by their 
-respective         owners. GeekLog is copyleft.</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
-  &nbsp;</font></td>
-     </tr>
-   
-  </tbody> 
+
+<h1>Thank You!</h1>
+
+<p>First of all, a big Thank You for downloading Geeklog. We have spent a long 
+time working on making this the best weblog software we can, and I  am sure 
+you will find it very easy to use, and very powerful.
+
+<p>These documents have been created to make Geeklog even easier for you! 
+Apart from the usual stuff like how to install Geeklog, we also have  
+provided the full Developer API documentation, so you can develop your own 
+themes and plugins and make it even better.
+
+<ul>
+  <li><a href="#features">Features of Geeklog</a></li>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="install.html">How to install Geeklog</a> (includes updating 
+    instructions)</li>
+  <li><a href="config.html">Geeklog Configuration File</a></li>
+  <li>Geeklog's API<br>
+    <ul>
+      <!-- <li>Geeklog Function List</li> -->
+      <li><a href="plugin.html">Plugin Development</a></li>
+      <li><a href="theme.html">Theme Development</a></li>
+      <!-- <li>Writing Custom Functions</li> -->
+    </ul></li>
+  <!-- <li>Upgrading Geeklog</li> -->
+  <li><a href="support.html">Support</a></li>
+</ul>
+
+<h2><a name="features"></a>Features of Geeklog</h2>
+
+<p>Geeklog is a weblog powered by PHP and MySQL. It allows you within minutes 
+to set up a fully functioning dynamic website, and has many features to get 
+you started. As of Geeklog 1.3, these features are:
+
+<ul>
+  <li>User-system, allowing members of the public to register for your site and submit stories.</li>
+  <li>Comment system, allowing users to comment on posts made to your site.</li>
+  <li>Block system, allowing you to put information anywhere on your site.</li>
+  <li>Plugin system that allows you to extend Geeklog, without having to code any new PHP.</li>
+  <li>Theme system that allows users to select what layout they want to view.</li>
+  <li>Excellent security model that allows you to give users control over certain aspects of the site with no need to worry.</li>
+  <li>Site Statistics that show you the most popular areas of your site.</li>
+  <li>Link system that allows users to add links to the site.</li>
+  <li>Calendar System that lets you and your user add up-and-coming events.</li>
+  <li>Allow users to email stories to their friends.</li>
+</ul>
+
+<h2><a name="introduction"></a>Introduction</h2>
+
+<p>GeekLog was originally developed for the Security Geeks web site and was 
+originally authored by Jason Whittenburg.  In early 2001, Jason decided it 
+was time to devote his time to other things and the project has since been 
+maintained by Tony Bibbs who uses Geeklog to run <a 
+href="http://www.iowaoutdoors.org/">Iowa Outdoors</a>. Geeklog is bonafied 
+open-source software and has been released under the <a href="license" 
+title="GNU General Public License">GNU GPL</a> for use by others. 
+Configuring GeekLog is meant to be an easy process though it will require 
+you to have access to several components of your system.</p>
+
+<p>This document is still evolving, so there may be unintended omissions or 
+various steps may be over or under explained. It's assumed  that you have 
+some working experience with some form of <a 
+href="http://httpd.apache.org/">Apache</a> (or IIS), SQL databases (such as 
+<a href="http://www.mysql.com/">MySQL</a>), and <a 
+href="http://www.php.net/">PHP</a>.</p>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
 </table>
  
 </body>
