@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.25 2002/01/24 19:07:53 dreamscape Exp $
+// $Id: block.php,v 1.26 2002/04/09 19:59:46 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -76,6 +76,12 @@ function editdefaultblock($A,$access)
     $block_templates->set_var('block_id', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('lang_enabled', $LANG21[53]);
+    if ($A['is_enabled'] == 1) {
+        $block_templates->set_var('is_enabled', 'checked="CHECKED"');
+    } else {
+        $block_templates->set_var('is_enabled', '');
+    }
     $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
     $block_templates->set_var('block_help', $A['help']);
     $block_templates->set_var('lang_includehttp', $LANG21[51]);
@@ -149,6 +155,7 @@ function editblock($bid='')
         $A['perm_group'] = 3;
         $A['perm_members'] = 2;
         $A['perm_anon'] = 2;
+        $A['is_enabled'] = 1;
         $access = 3;
     }
 
@@ -166,7 +173,13 @@ function editblock($bid='')
 
     $block_templates->set_var('block_bid', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
-    $block_templates->set_var('block_title', $A['title']);	
+    $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('lang_enabled', $LANG21[53]);
+    if ($A['is_enabled'] == 1) {
+        $block_templates->set_var('is_enabled', 'checked="CHECKED"');
+    } else {
+        $block_templates->set_var('is_enabled', '');
+    }
     $block_templates->set_var('block_help', $A['help']);
     $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
     $block_templates->set_var('lang_includehttp', $LANG21[51]);
@@ -272,13 +285,20 @@ function editblock($bid='')
 * @perm_group   array       Permissions the group has on the object
 * @perm_members array       Permissions the logged in members have
 * @perm_anon    array       Permissinos anonymous users have
+* @is_enabled   int         Flag, indicates if block is enabled or not
 *
 */
-function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled) 
 {
 	global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
     if (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
+        if ($is_enabled == 'on') {
+            $is_enabled = 1;
+        } else {
+            $is_enabled = 0;
+        }
+        
         if ($type == 'portal') {
             $content = '';
             $phpblockfn = '';
@@ -321,7 +341,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
+        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled","admin/block.php?msg=11");
 
 
     } else {
@@ -425,7 +445,7 @@ case 'delete':
     $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'admin/block.php?msg=12');
         break;
 case 'save':
-	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled);
     break;
 case 'edit':
     $display .= COM_siteHeader()
