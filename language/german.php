@@ -3,9 +3,9 @@
 ###############################################################################
 # german.php
 #
-# This is an *incomplete* german language file for GeekLog.
-# Please contact Dirk Haun <dirk@haun-online.de> if you want to help
-# in making it complete ...
+# This is an almost complete german language file for GeekLog.
+# Please contact Dirk Haun <dirk@haun-online.de> if you think anything
+# important is missing ...
 #
 # Credits from the original english.php file:
 #
@@ -1016,51 +1016,51 @@ $LANG32 = array (
 );
 
 $LANG_ACCESS = array(
-	access => "Zugriff",
+    access => "Zugriff",
     ownerroot => "Eigent./Root",
     group => "Gruppe",
     readonly => "Nur Lesen",
-	accessrights => "Zugriffsrechte",
-	owner => "Eigent.",
-	grantgrouplabel => "Grant Above Group Edit Rights",
-	permmsg => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht f&uuml;r alle nicht eingeloggten Besucher.",
-	securitygroups => "Security-Gruppen",
-	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
-	securitygroupsmsg => "Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User geh&ouml;rt.",
-	groupeditor => "Gruppen-Editor",
-	description => "Beschreibung",
-	name => "Name",
- 	rights => "Rechte",
-	missingfields => "Missing Fields",
-	missingfieldsmsg => "You must supply the name and a description for a group",
-	groupmanager => "Gruppen-Manager",
-	newgroupmsg => "To modify or delete a group, click on that group below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.",
-	groupname => "Gruppen-Name",
-	coregroup => "Core-Gruppe",
-	yes => "Ja",
-	no => "Nein",
-	corerightsdescr => "This group is a core {$_CONF["site_name"]} Group.  Therefore the rights for this group cannot be edited.  Below is a read-only list of the rights this group has access to.",
-	groupmsg => "Security Groups on this site are hierarchical.  By adding this group to any of the groups below you will giving this group the same rights that those groups have.  Where possible it is encouraged you use the groups below to give rights to a group.  If you need this group to have custom rights then you can select the rights to various site features in the section below called 'Rights'.  To add this group to any of the ones below simply check the box next to the group(s) that you want.",
-	coregroupmsg => "This group is a core {$_CONF["site_name"]} Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
-	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.",
-	lock => "Lock",
-	members => "Mitglieder",
-	anonymous => "Anonymous",
-	permissions => "Rechte",
-	permissionskey => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
-	edit => "Edit",
-	none => "None",
-	accessdenied => "Zugriff verweigert",
-	storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-	eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-	nogroupsforcoregroup => "This group doesn't belong to any of the other groups",
-	grouphasnorights => "This group doesn't have access to any of the administrative features of this site",
-	newgroup => 'Neue Gruppe',
-	adminhome => 'Admin Home',
-	save => 'Speichern',
-	cancel => 'Abbruch',
-	delete => 'Loeschen',
-	canteditroot => 'You have tried to edit the Root group but you are not in the Root group yourself therefore your access to this group is denied.  Please contact the system administrator if you feel this is an error'	
+    accessrights => "Zugriffsrechte",
+    owner => "Eigent.",
+    grantgrouplabel => "Grant Above Group Edit Rights",
+    permmsg => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht f&uuml;r alle nicht eingeloggten Besucher.",
+    securitygroups => "Security-Gruppen",
+    editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
+    securitygroupsmsg => "Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User geh&ouml;rt.",
+    groupeditor => "Gruppen-Editor",
+    description => "Beschreibung",
+    name => "Name",
+     rights => "Rechte",
+    missingfields => "Fehlende Angaben",
+    missingfieldsmsg => "Du musst den Namen und eine Beschreibung f&uuml;r die Gruppe angeben.",
+    groupmanager => "Gruppen-Manager",
+    newgroupmsg => "Um eine Gruppe zu &auml;ndern oder l&ouml;schen, einfach auf den Namen der Gruppe klicken. Neue Gruppe (s.o.) legt eine neue Gruppe an. Hinweis: Core-Gruppen k&ouml;nnen nicht gel&ouml;scht werden, da sie vom System ben&ouml;tigt werden.",
+    groupname => "Gruppen-Name",
+    coregroup => "Core-Gruppe",
+    yes => "Ja",
+    no => "Nein",
+    corerightsdescr => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe k&ouml;nnen daher nicht ge&auml;ndert werden. Das Folgende ist eine (nicht ver&auml;nderbare) Liste der Rechte dieser Gruppe.",
+    groupmsg => "Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Du diese Gruppe zu einer der folgenden Gruppen hinzuf&uuml;gst, bekommt diese Gruppe die gleichen Rechte wie die unten ausgew&auml;hlte(n). Wenn m&ouml;glich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte ben&ouml;tigt, k&ouml;nnen diese auch aus der Liste der Rechte weiter unten ausgew&auml;hlt werden. Um diese Gruppe zu einer der folgenden hinzuzuf&uuml;gen, kannst Du die gew&uuml;nschte(n) Gruppe(n) einfach anklicken.",
+    coregroupmsg => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe k&ouml;nnen daher nicht ge&auml;ndert werden. Das Folgende ist eine (nicht ver&auml;nderbare) Liste der Gruppen, zu der diese Gruppe geh&ouml;rt.",
+    rightsdescr => "Die folgenden Rechte k&ouml;nnen an eine Gruppe entweder direkt (durch Ausw&auml;hlen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe geh&ouml;rt, die diese Rechte hat). Die im Folgenden aufgef&uuml;hrten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe geh&ouml;rt. Alle anderen Rechte k&ouml;nnen hier direkt vergeben werden.",
+    lock => "Lock",
+    members => "Mitglieder",
+    anonymous => "Anonymous",
+    permissions => "Rechte",
+    permissionskey => "R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus",
+    edit => "Edit",
+    none => "None",
+    accessdenied => "Zugriff verweigert",
+    storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    nogroupsforcoregroup => "Diese Gruppe geh&ouml;rt zu keiner anderen Gruppe.",
+    grouphasnorights => "Diese Gruppe hat keine Rechte f&uuml;r die Administration der Website",
+    newgroup => 'Neue Gruppe',
+    adminhome => 'Admin Home',
+    save => 'Speichern',
+    cancel => 'Abbruch',
+    delete => 'Loeschen',
+    canteditroot => 'Du hast versucht die Gruppe Root zu &auml;ndern, obwohl Du selbst nicht Mitglied dieser Gruppe bist. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler w&auml;re.'	
 );
 
 #admin/word.php
