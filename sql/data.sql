@@ -8,7 +8,7 @@
 # Dumping data for table 'blocks'
 #
 
-INSERT INTO blocks VALUES (8,'GeekLog 1.3','all',200,0,'normal','','0000-00-00 00:00:00','Welcome to GeekLog 1.3!  There have been many improvments to GeekLog since 1.2.2, namely the addition of plug-in support.  Please read the release notes in the /docs directory and go over the install guide.',0,'');
+INSERT INTO blocks VALUES (9,'GeekLog 1.3','all',200,0,'normal','','0000-00-00 00:00:00','Welcome to GeekLog 1.3!  There have been many improvments to GeekLog since 1.2.2, namely the addition of plug-in support.  Please read the release notes in the /docs directory and go over the install guide.',0,'');
 
 #
 # Dumping data for table 'commentcodes'
