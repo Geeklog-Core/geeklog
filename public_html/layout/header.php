@@ -50,7 +50,6 @@ if (!empty($CONF["pagetitle"])) {
 <?php
 
 startblock("Sections");
-print "<b><a href={$CONF["base"]}>Home</a></b><br>\n";
 showtopics($topic);
 endblock();
 
