@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.83 2002/05/01 13:10:53 dhaun Exp $
+// $Id: lib-common.php,v 1.84 2002/05/02 16:16:50 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -52,6 +52,10 @@ require_once('/path/to/geeklog/config.php');
 require_once($_CONF['path_system'] . 'classes/timer.class.php');
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
+
+// Instantiate new URL object
+require_once($_CONF['path_system'] . 'classes/url.class.php');
+$_URL = new url($_CONF['url_rewrite']);
 
 require_once($_CONF['path_system'] . 'classes/template.class.php');
 require_once($_CONF['path_system'] . 'lib-database.php');
@@ -2692,6 +2696,46 @@ function COM_makeList ($listofitems) {
     $list->parse ('newlist', 'list', true);
 
     return $list->finish($list->get_var('newlist'));
+}
+
+/**
+* Wrapper function for URL class so as to not confuse people as this will eventually get
+* used all over the place
+*
+* This function returns a crawler friendly URL (if possible)
+*
+*/
+function COM_buildURL($url)
+{
+    global $_URL;
+    
+    return $_URL->buildURL($url);
+}
+
+/**
+* Wrapper function for URL class so as to not confuse people
+*
+* This function sets the name of the arguments found in url
+*
+*/
+function COM_setArgNames($names)
+{
+    global $_URL;
+    
+    return $_URL->setArgNames($names);
+}
+
+/**
+* Wrapper function for URL class
+*
+* returns value for specified argument
+*
+*/
+function COM_getArgument($name)
+{
+    global $_URL;
+    
+    return $_URL->getArgument($name);
 }
 
 ?>
