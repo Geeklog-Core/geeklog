@@ -3,6 +3,7 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Fixed "late" update of portal blocks (bug #681855).
 - You can now "clone" static pages, i.e. make a copy of an existing page.
 - You can now edit the ID of a static page to create more readable URLs like
   http://yoursite/staticpages/index.php?page=about

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.204 2003/03/01 16:40:25 dhaun Exp $
+// $Id: lib-common.php,v 1.205 2003/03/11 09:37:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3049,7 +3049,11 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         {
             if( $A['type'] == 'portal' )
             {
-                COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] );
+                if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] ))
+                {
+                    $A['content'] = DB_getItem( $_TABLES['blocks'], 'content',
+                                                "bid = '{$A['bid']}'");
+                }
             }
 
             if( $A['type'] == 'gldefault' )
@@ -3119,17 +3123,21 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 * @param        string      $rdfurl     URL to get headlines from
 * @param        string      $date       Last time the headlines were imported
 * @see function COM_rdfImport
-* @return   void
+* @return       bool        "true" if the block was updated, "false" if not
 */
 
 function COM_rdfCheck( $bid, $rdfurl, $date )
 {
+    $retval = false;
     $nextupdate = $date + 3600;
 
     if( $nextupdate < time() )
     {
         COM_rdfImport( $bid, $rdfurl );
+        $retval = true;
     }
+
+    return $retval;
 }
 
 /**
