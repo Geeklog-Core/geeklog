@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | database.php                                                              |
-// | Geeklog database administration page.                                     |
 // |                                                                           |
+// | Geeklog database backup administration page.                              |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -30,10 +30,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.10 2003/05/21 15:49:04 dhaun Exp $
+// $Id: database.php,v 1.11 2003/06/17 09:40:15 dhaun Exp $
 
-include('../lib-common.php');
-include('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 /*
 This page allows all Root admins to create a database backup.  This will not
@@ -45,7 +45,7 @@ geeklog_db_backup_YYYY_MM_DD.sql  That's it.
 $display = '';
 $display .= COM_siteHeader();
 
-// If user isn't a root user or if the backup feature is disable, bail.
+// If user isn't a root user or if the backup feature is disabled, bail.
 if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
     $display .= COM_startBlock($MESSAGE[30]);
     $display .= $MESSAGE[46];
@@ -78,8 +78,13 @@ if ($mode == $LANG_DB_BACKUP['do_backup']) {
         }
 		if ($canExec) {
 			exec($command);
-			if(file_exists($backupfile) && filesize($backupfile) > 0) {
-				$display .= '<font color="red">' . $LANG_DB_BACKUP['backup_successful'] . '</font><br>';
+			if (file_exists ($backupfile) && filesize ($backupfile) > 0) {
+                $timestamp = strftime ($_CONF['daytime']);
+                $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp)
+                         . '<img src="' . $_CONF['layout_url']
+                         . '/images/sysmessage.gif" border="0" align="top" '
+                         . 'alt="">' . $LANG_DB_BACKUP['backup_successful']
+                         . '<br><br>' . COM_endBlock ();
 			} else {
 				$display .= COM_startBlock($LANG08[06]);
 				$display .= $LANG_DB_BACKUP['zero_size'];
@@ -111,7 +116,8 @@ if(is_writable($_CONF['backup_path'])) {
     $fd = opendir($_CONF['backup_path']);
     $index = 0;
     while ((false !== ($file = @readdir ($fd)))) {
-        if ($file <> '.' && $file <> '..' && $file <> 'CVS') {
+        if ($file <> '.' && $file <> '..' && $file <> 'CVS' &&
+                preg_match ('/\.sql$/i', $file)) {
             $index++;
             clearstatcache();
             $backups[] = $file;
