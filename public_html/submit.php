@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.30 2002/08/06 19:08:10 dhaun Exp $
+// $Id: submit.php,v 1.31 2002/08/27 00:53:31 tony_bibbs Exp $
 
 require_once('lib-common.php');
 
@@ -525,6 +525,8 @@ function savesubmission($type,$A)
         if (!empty($A['title']) && !empty($A['introtext'])) {
             if ($A['postmode'] == 'html') {
                 $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
+		$A['title'] = str_replace('$','&#36;',$A['title']);
+		$A['introtext'] = str_replace('$','&#36;',$A['introtext']);
             } else {
                 $A['introtext'] = addslashes(htmlspecialchars(COM_checkWords($A['introtext'])));
             }
