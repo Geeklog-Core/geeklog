@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.27 2002/04/11 22:14:01 tony_bibbs Exp $Scripts cannot
+// $Id: user.php,v 1.28 2002/04/12 16:00:17 tony_bibbs Exp $Scripts cannot
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -228,12 +228,20 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 			$retval .= COM_siteHeader('menu');
             $retval .= COM_errorLog('Error in saveusers in admin/users.php');
 			$retval .= COM_siteFooter();
+            echo $retval;
+            exit;
 		}
 	} else {
-		$retval .= COM_siteHeader('menu');
+		$retval = COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG28[10]);
-		$retval .= edituser($uid);
+        if (DB_count($_TABLES['users'],'uid',$uid) > 0) {
+            $retval .= edituser($uid);
+        } else {
+            $retval .= edituser();
+        }
 		$retval .= COM_siteFooter();
+        echo $retval;
+        exit;
 	}
 
 	if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);	
