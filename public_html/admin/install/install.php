@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.57 2003/10/25 16:40:50 dhaun Exp $
+// $Id: install.php,v 1.58 2003/12/11 20:49:32 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -99,10 +99,11 @@ function INST_welcomePage()
     $retval .= '<h3>Upgrading</h3>' . LB;
     $retval .= '<p>This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systems in a variety of environments we have opted to revert that portion of the installation back to config.php.';
     $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).<p>Please note this script will not upgrade any beta or release candidate versions of Geeklog. ';
-    $retval .= '<h3>Installation Options</h3>' . LB;
     if (!ini_get ('register_globals')) {
-        $retval .= '<p><font color="red"><strong>Warning:</strong> You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
+        $retval .= '<h2>Important!</h2>' . LB;
+        $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
     }
+    $retval .= '<h3>Installation Options</h3>' . LB;
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
     $retval .= '<form action="install.php" method="post">' . LB;
@@ -589,8 +590,9 @@ case 1:
     $display .= INST_getDatabaseSettings($HTTP_POST_VARS['install_type'], $HTTP_POST_VARS['geeklog_path']); 
     break;
 case 2:
-    if (!empty($version)) {
-        if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
+    if (!empty($HTTP_POST_VARS['version'])) {
+        if (INST_doDatabaseUpgrades ($HTTP_POST_VARS['version'],
+                                     $HTTP_POST_VARS['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
