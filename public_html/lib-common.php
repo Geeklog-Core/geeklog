@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.152 2002/09/11 14:37:48 dhaun Exp $
+// $Id: lib-common.php,v 1.153 2002/09/12 12:15:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1494,7 +1494,7 @@ function COM_userMenu($help='',$title='')
 
         $retval .=  COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
     } else {
-        $retval .= COM_startBlock($LANG01[47])
+        $retval .= COM_startBlock($LANG01[47],$help,COM_getBlockTemplate('user_block', 'header'))
             . '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
             . '<b>' . $LANG01[21] . ':</b><br>' . LB
             . '<input type="text" size="10" name="loginname" value=""><br>' . LB
