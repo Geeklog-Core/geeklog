@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.24 2004/10/07 08:27:27 dhaun Exp $
+// $Id: mail.php,v 1.25 2004/10/08 12:36:46 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -178,7 +178,7 @@ function send_messages ($vars)
         $to .= ' <' . $A['email'] . '>';
 
         if (!COM_mail ($to, $subject, $message, $from, $html, $priority)) {
-            $failures[] .= $to;
+            $failures[] = $to;
         } else {
             $successes[] = $to;
         }
