@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.202 2003/02/23 22:28:02 dhaun Exp $
+// $Id: lib-common.php,v 1.203 2003/02/24 15:40:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2038,17 +2038,17 @@ function COM_adminMenu( $help = '', $title = '' )
 
             if( SEC_hasrights( 'story.edit' ))
             {
-                $num += DB_count( $_TABLES['storysubmission'], 'uid', 0 );
+                $num += DB_count( $_TABLES['storysubmission'] );
             }
 
             if( SEC_hasrights( 'event.edit' ))
             {
-                $num += DB_count ($_TABLES['eventsubmission'], 'eid', 0);
+                $num += DB_count ($_TABLES['eventsubmission'] );
             }
 
             if( SEC_hasrights( 'link.edit' ))
             {
-                $num += DB_count( $_TABLES['linksubmission'], 'lid', 0 );
+                $num += DB_count( $_TABLES['linksubmission'] );
             }
 
             if( $_CONF['usersubmission'] == 1)
