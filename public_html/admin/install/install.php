@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.65 2004/05/09 09:13:24 dhaun Exp $
+// $Id: install.php,v 1.66 2004/08/05 07:36:13 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -286,7 +286,7 @@ function get_SP_Ver()
         $retval = 1; // assume v1.1 for now ...
 
         for ($i = 0; $i < $numrows; $i++) {
-            $A = DB_fetchArray ($result);
+            $A = DB_fetchArray ($result, true);
             if ($A[0] == 'sp_nf') {
                 $retval = 3; // v1.3
             } elseif ($A[0] == 'sp_pos') {
@@ -599,6 +599,13 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
                 next($_SQL);
             }
             commentsToPreorderTree();
+
+            $spversion = get_SP_ver ();
+            if ($spversion > 0) {
+                // no database changes this time, but set new version number
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.1' WHERE pi_name = 'staticpages'");
+            }
+
             $current_gl_version = '1.3.10';
             break;
         default:
