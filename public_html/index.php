@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.30 2002/08/08 15:12:50 dhaun Exp $
+// $Id: index.php,v 1.31 2002/08/08 18:00:28 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -86,7 +86,7 @@ COM_rdfUpToDateCheck();
 // one as featured solely
 COM_featuredCheck();
 
-$sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
+$sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
 
 // if a topic was provided only select those stories.
 if (!empty($topic)) {
@@ -94,6 +94,18 @@ if (!empty($topic)) {
 } else {
     $sql .= " AND frontpage = 1 ";
 }
+
+$sql .= " AND (";
+if (!empty ($_USER['uid'])) {
+    $groupList = '';
+    foreach ($_GROUPS as $grp) {
+        $groupList .= $grp . ',';
+    }
+    $groupList = substr ($groupList, 0, -1);
+    $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+    $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+}
+$sql .= "(perm_anon >= 2))";
 
 if (!empty($U['aids'])) {
     $AIDS = explode(' ',$U['aids']);
@@ -110,7 +122,7 @@ if (!empty($U['tids'])) {
 }
 
 $offset = ($page - 1) * $limit;
-$sql .= "ORDER BY featured DESC, date DESC"; // LIMIT $offset, $limit";
+$sql .= "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
 $result = DB_query($sql);
 $nrows = DB_numRows($result);
@@ -121,33 +133,29 @@ if (!empty($topic)) {
 } else {
     $countsql = $countsql . ' AND frontpage = 1';
 }
+
+$countsql .= " AND (";
+if (!empty ($_USER['uid'])) {
+    // Note: $groupList re-used from above
+    $countsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+    $countsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+}
+$countsql .= "(perm_anon >= 2))";
+
 $data = DB_query($countsql);
 $D = DB_fetchArray($data);
-$counter = $D['count'];
-$num_pages = 1;
+$num_pages = ceil($D['count'] / $limit);
 
 if ($nrows > 0) {
-    $displayed = 0;
     for ($x = 1; $x <= $nrows; $x++) {
         $A = DB_fetchArray($result);
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['featured'] == 1) {
                 $feature = 'true';
             }
-            if ($offset == 0) {
-                $display .= COM_article($A,'y');
-                $displayed++;
-                if ($displayed == $limit) {
-                    break;
-                }
-            } else {
-                $offset--;
-            }
-        } else {
-            $counter--;
+            $display .= COM_article($A,'y');
         }
     }
-    $num_pages = ceil($counter / $limit);
     
     // Print Google-like paging navigation
     if (empty($topic)) {
@@ -159,7 +167,12 @@ if ($nrows > 0) {
 } else {
     $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
     if (!empty($topic)) {
-        $display .= $LANG05[3]; 
+        $result = DB_query ("SELECT topic FROM {$_TABLES['topics']} WHERE tid='$topic'");
+        $A = DB_fetchArray ($result);
+        if (!empty ($A['topic'])) {
+            $topic = $A['topic'];
+        }
+        $display .= $LANG05[3];
     }
     $display .= COM_endBlock();
 }
