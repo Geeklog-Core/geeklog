@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.1 2005/01/28 10:04:14 dhaun Exp $
+// $Id: lib-pingback.php,v 1.2 2005/01/29 11:25:06 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -62,7 +62,7 @@ function PNB_getHead ($targeturl)
         return false;
     }
 
-    fputs ($sock, 'HEAD ' . $target['path'] . " HTTP/1.1\n");
+    fputs ($sock, 'HEAD ' . $target['path'] . $target['query'] . " HTTP/1.1\n");
     fputs ($sock, 'Host: ' . $target['host'] . "\n");
     fputs ($sock, "Connection: close\n\n");
 
