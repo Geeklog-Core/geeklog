@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.374 2004/09/13 19:02:54 dhaun Exp $
+// $Id: lib-common.php,v 1.375 2004/09/18 15:43:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2426,10 +2426,15 @@ function COM_adminMenu( $help = '', $title = '' )
 
         if( SEC_hasrights( 'group.edit' ))
         {
+            $thisUsersGroups = SEC_getUserGroups();
+            $grp_list = implode( ',', $thisUsersGroups );
+            $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['groups']} WHERE grp_id IN ($grp_list)" );
+            $A = DB_fetchArray( $result );
+
             $url = $_CONF['site_admin_url'] . '/group.php';
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[96] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['groups'] ));
+            $adminmenu->set_var( 'option_count', $A['count'] );
 
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );

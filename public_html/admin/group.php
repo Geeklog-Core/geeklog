@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.39 2004/09/18 14:55:45 dhaun Exp $
+// $Id: group.php,v 1.40 2004/09/18 15:43:04 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -506,21 +506,25 @@ function listgroups()
     $group_templates->set_var('lang_edit', $LANG_ACCESS['edit']);
     $group_templates->set_var('lang_list_users', $LANG_ACCESS['listusers']);
 
+    $thisUsersGroups = SEC_getUserGroups ();
+
     $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
     $nrows = DB_numRows($result);
     for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        if ($A['grp_gl_core'] == 1) {
-            $core = $LANG_ACCESS['yes'];
-        } else {
-            $core = $LANG_ACCESS['no'];
+        $A = DB_fetchArray ($result);
+        if (in_array ($A['grp_id'], $thisUsersGroups)) {
+            if ($A['grp_gl_core'] == 1) {
+                $core = $LANG_ACCESS['yes'];
+            } else {
+                $core = $LANG_ACCESS['no'];
+            }
+            $group_templates->set_var ('group_id', $A['grp_id']);
+            $group_templates->set_var ('group_name', $A['grp_name']);
+            $group_templates->set_var ('group_description', $A['grp_descr']);
+            $group_templates->set_var ('group_core', $core);
+            $group_templates->set_var ('lang_list', $LANG_ACCESS['listthem']);
+            $group_templates->parse ('group_row', 'row', true);
         }
-        $group_templates->set_var('group_id', $A['grp_id']);
-        $group_templates->set_var('group_name', $A['grp_name']);
-        $group_templates->set_var('group_description', $A['grp_descr']);
-        $group_templates->set_var('group_core', $core);
-        $group_templates->set_var('lang_list', $LANG_ACCESS['listthem']);
-        $group_templates->parse('group_row', 'row', true);
     }
     $group_templates->parse('output', 'list');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
