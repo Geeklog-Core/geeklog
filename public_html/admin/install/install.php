@@ -34,7 +34,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.39 2002/09/12 15:05:40 dhaun Exp $
+// $Id: install.php,v 1.40 2002/11/25 17:01:08 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -45,7 +45,7 @@ if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.6');
+    define('VERSION', '1.3.7');
 }
 
 // Turn this on to have the install process print debug messages.  NOTE: these
@@ -138,7 +138,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         for ($j = 1; $j <= count($old_versions); $j++) {
            $versiondd .= '<option>' . current($old_versions) . '</option>';
@@ -324,6 +324,19 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             }
 
             $current_gl_version = '1.3.6';
+            $_SQL = '';
+            break;
+        case '1.3.6':
+            // fix wrong permissions value
+            DB_query ("UPDATE {$_TABLES['topics']} SET perm_anon = 2 WHERE perm_anon = 3");
+
+            // check for existence of 'date' field in gl_links table
+            DB_query ("SELECT date FROM {$_TABLES['links']}", 1);
+            $dterr = DB_error ();
+            if (strpos ($dterr, 'date') > 0) {
+                DB_query ("ALTER TABLE {$_TABLES['links']} ADD date datetime default NULL");
+            }
+            $current_gl_version = '1.3.7';
             $_SQL = '';
             break;
         default:
