@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.331 2004/05/31 18:22:50 vinny Exp $
+// $Id: lib-common.php,v 1.332 2004/06/04 21:47:28 tony Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5733,6 +5733,98 @@ function COM_highlightQuery( $text, $query )
     }
 
     return $text;
+}
+
+/**
+* Determines the difference between to dates.
+*
+* This will takes either unixtimestamps or English dates as input and will
+* automatically do the date diff on the more recent of the two dates (e.g. the
+* order of the two dates given doesn't matter).
+* 
+* @author Tony Bibbs <tony.bibbs@iowa.gov
+* @access public
+* @param string $interval Can be:
+* y = year
+* m = month
+* w = week
+* h = hours
+* i = minutes
+* s = seconds
+* @param string|int $date1 English date (e.g. 10 Dec 2004) or unixtimestamp
+* @param string|int $date2 English date (e.g. 10 Dec 2004) or unixtimestamp
+* @return int Difference of the two dates in the unit of time indicated by the interval
+*
+*/
+function COM_dateDiff($interval, $date1, $date2)
+{
+    // Convert dates to timestamps, if needed.
+    if (!is_numeric($date1)) {
+        $date1 = strtotime($date1);
+    }
+    
+    if (!is_numeric($date2)) {
+        $date2 = strtotime($date2);
+    }
+    
+    // Function roughly equivalent to the ASP "DateDiff" function
+    if ($date2 > $date1) {
+        $seconds = $date2 - $date1;
+    } else {
+        $seconds = $date1 - $date2;
+    }
+                                                                                                                                                                                         
+    switch($interval) {
+        case "y":
+            list($year1, $month1, $day1) = split('-', date('Y-m-d', $date1));
+            list($year2, $month2, $day2) = split('-', date('Y-m-d', $date2));
+            $time1 = (date('H',$date1)*3600) + (date('i',$date1)*60) + (date('s',$date1));
+            $time2 = (date('H',$date2)*3600) + (date('i',$date2)*60) + (date('s',$date2));
+            $diff = $year2 - $year1;
+            if($month1 > $month2) {
+                $diff -= 1;
+            } elseif($month1 == $month2) {
+                if($day1 > $day2) {
+                    $diff -= 1;
+                } elseif($day1 == $day2) {
+                    if($time1 > $time2) {
+                        $diff -= 1;
+                    }
+                }
+            }
+            break;
+        case "m":
+            list($year1, $month1, $day1) = split('-', date('Y-m-d', $date1));
+            list($year2, $month2, $day2) = split('-', date('Y-m-d', $date2));
+            $time1 = (date('H',$date1)*3600) + (date('i',$date1)*60) + (date('s',$date1));
+            $time2 = (date('H',$date2)*3600) + (date('i',$date2)*60) + (date('s',$date2));
+            $diff = ($year2 * 12 + $month2) - ($year1 * 12 + $month1);
+            if($day1 > $day2) {
+                $diff -= 1;
+            } elseif($day1 == $day2) {
+                if($time1 > $time2) {
+                    $diff -= 1;
+                }
+            }
+            break;
+        case "w":
+            // Only simple seconds calculation needed from here on
+            $diff = floor($seconds / 604800);
+            break;
+         case "d":
+            $diff = floor($seconds / 86400);
+            break;
+        case "h":
+            $diff = floor($seconds / 3600);
+            break;
+        case "i":
+            $diff = floor($seconds / 60);
+            break;
+        case "s":
+            $diff = $seconds;
+            break;
+    }
+    return $diff;
 }
 
 
