@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.10 2002/09/01 20:34:30 dhaun Exp $
+// $Id: lib-plugins.php,v 1.11 2002/10/16 17:18:57 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -50,7 +50,7 @@ function PLG_callFunctionForAllPlugins($function_name)
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
@@ -178,7 +178,7 @@ function PLG_getMenuItems()
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $menu = array();
     for ($i = 1; $i <= $nrows; $i++) {
@@ -235,7 +235,7 @@ function PLG_getPluginStats($showsitestats)
 
     $retval = '';
 
-	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+	$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
 	for ($i = 1; $i <= $nrows; $i++) {
 		$A = DB_fetchArray($result);
@@ -264,7 +264,7 @@ function PLG_getSearchTypes()
     $types = array();
     $cur_types = array();
  
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
@@ -300,7 +300,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $cur_plugin = new Plugin();
 
-	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+	$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
 	$nrows_plugins = 0;
 	$total_plugins = 0;
@@ -329,7 +329,7 @@ function PLG_getSubmissionCount()
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $num = 0;
     for ($i = 1; $i <= $nrows; $i++) {
@@ -354,7 +354,7 @@ function PLG_getUserOptions()
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $plugin = new Plugin();
     $counter = 0;
@@ -387,7 +387,7 @@ function PLG_getAdminOptions()
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $plugin = new Plugin();
     $counter = 0;
@@ -463,8 +463,8 @@ function PLG_saveSubmission($type, $A)
 function PLG_getCCOptions() 
 {
     global $_TABLES, $_CONF;
-	
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $cur_plugin = new Plugin();
@@ -474,8 +474,15 @@ function PLG_getCCOptions()
         $function = 'plugin_cclabel_' . $A['pi_name'];
         if (function_exists($function)) {
             $cur_plugin->reset();
-	    list($cur_plugin->adminlabel, $cur_plugin->adminurl, $cur_plugin->plugin_image) = $function();
-	    $plugins[$i] = $cur_plugin; 
+            $cclabel = $function ();
+            if ($cclabel !== false) {
+	        list($cur_plugin->adminlabel, $cur_plugin->adminurl, $cur_plugin->plugin_image) = $cclabel;
+                if (!empty ($cur_plugin->adminlabel) &&
+                    !empty ($cur_plugin->adminurl) &&
+                    !empty ($cur_plugin->plugin_image)) {
+	            $plugins[$i] = $cur_plugin; 
+                }
+            }
         }
     }
     return $plugins;
@@ -492,7 +499,7 @@ function PLG_showModerationList()
 {
 	global $_TABLES, $_CONF;
 	
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     for ($i = 1; $i <=$nrows; $i++) {
         $A = DB_fetchArray($result);
