@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.19 2001/11/16 18:39:07 tony_bibbs Exp $
+// $Id: config.php,v 1.20 2001/11/19 23:20:34 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -64,6 +64,9 @@ $_CONF['theme']         = 'Yahoo';
 $_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']   = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']   = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+// Set this to 0 if you don't want users to be able to specify which theme
+// they use
+$_CONF['allow_user_themes'] = 1; 
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
@@ -111,6 +114,12 @@ $_CONF['cookie_path']                   = '/';
 // | FilZip.  You can get FilZip from http://www.filzip.com.  Make sure        |
 // | you add the FilZip directory to your path OR fully qualify the path       |
 // | here. Regardless of OS, make sure you leave a trailing space at the end.  |
+// |									       |
+// | If you know what you are doing you can also modify these lines to fit     |
+// | your servers needs (such as if you have a different compression package)  |
+// | *nix user be sure that the tar binary is in the /bin directory...if not   |
+// | change change accordingly. 					       |
+// | 									       |
 // +---------------------------------------------------------------------------+
 
 $_CONF['unzipcommand']      = '/bin/tar -C ' . $_CONF['path'] . 'plugins/ -xzf ';
