@@ -84,13 +84,11 @@ $_TABLES['submitspeedlimit']    = $_DB_table_prefix . 'submitspeedlimit';
 $_TABLES['topics']              = $_DB_table_prefix . 'topics';
 $_TABLES['tzcodes']             = $_DB_table_prefix . 'tzcodes';
 $_TABLES['usercomment']         = $_DB_table_prefix . 'usercomment';
-$_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 $_TABLES['userindex']           = $_DB_table_prefix . 'userindex';
 $_TABLES['userinfo']            = $_DB_table_prefix . 'userinfo';
 $_TABLES['userprefs']           = $_DB_table_prefix . 'userprefs';
 $_TABLES['users']               = $_DB_table_prefix . 'users';
 $_TABLES['vars']                = $_DB_table_prefix . 'vars';
-$_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 
 // +---------------------------------------------------------------------------+
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
