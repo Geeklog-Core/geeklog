@@ -166,7 +166,7 @@ $LANG02 = array(
 	11 => "Dodawanie Wydarzenia do Kalendarza {$_USER['username']}",
 	12 => "Wydarzenie",
 	13 => "Rozpoczêcie",
-	14 => "Zakoñczenie"
+	14 => "Zakoñczenie",
 	15 => "Powrót do Kalendarza"
 );
 
@@ -276,7 +276,7 @@ $LANG04 = array(
 	70 => "Dostosuj wygl±d i zawarto¶æ serwisu {$_CONF['site_name']}",
 	71 => "Jedn± z extra mo¿liwo¶ci serwisu {$_CONF['site_name']} jest mo¿liwo¶æ dopasowania zawarto¶ci i wygl±du strony.  Aby skorzystaæ z tych udogodnieñ nale¿y siê najpierw <a href=\"{$_CONF['site_url']}/users.php?mode=new\">zarejestrowaæ</a> w serwisie {$_CONF['site_name']}.  Jeste¶ ju¿ cz³onkiem?  Zaloguj siê!",
         72 => "Motyw",
-        73 => "Jêzyk"
+        73 => "Jêzyk",
 	74 => "Zmieñ wygl±d strony!",
 	75 => "Artyku³y Wysy³ane Mailem do",
 	76 => "Je¿eli zaznaczysz jak±¶ sekcjê z poni¿szej listy bêdziesz, pod koniec ka¿dego dnia, otrzymywa³ nowe artyku³y zamieszczone w tej sekcji. Zaznacz sekcje, które ciê interesuj±!",
@@ -350,7 +350,7 @@ $LANG08 = array(
 	25 => "Przed u¿yciem tej opcji musisz siê zalogowaæ.  Pozwoli nam to zabezpieczyæ system przed niew³a¶ciwym wykorzystaniem",
 	26 => "Ten formularz umo¿liwia wys³anie maila do wybranego u¿ytkownika.  Wymagane jest wype³nienie wszystkich pól.",
 	27 => "Krótka Wiadomo¶æ",
-	28 => "$from napisa³: $shortmsg"
+	28 => "$from napisa³: $shortmsg",
 	29 => "Dzienne zestawienie artyku³ów w Serwisie {$_CONF['site_name']} dla ",
 	30 => "Codzienny Newsletter dla ",
 	31 => "Tytu³",
