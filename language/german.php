@@ -517,13 +517,13 @@ $LANG12 = array(
 # auth.inc.php
 
 $LANG20 = array(
-	1 => "Authentication Required",
-	2 => "Denied! Incorrect Login Information",
-	3 => "Invalid password for user",
+	1 => "Bitte authentifizieren!",
+	2 => "Zugriff verweigert! Login-Information ung&uuml;ltig",
+	3 => "Ung&uuml;ltiges Passwort f&uuml;r User",
 	4 => "Username:",
 	5 => "Passwort:",
-	6 => "All access to administrative portions of this web site are logged and reviewed.<br>This page is for the use of authorized personnel only.",
-	7 => "login"
+	6 => "Zugriffe auf die Administrationsseiten dieser Website werden aufgezeichnet und kontrolliert.<br>Diese Seiten sind nur f&uuml;r befugte Personen zug&auml;nglich.",
+	7 => "einloggen"
 );
 
 ###############################################################################
@@ -607,7 +607,10 @@ $LANG22 = array(
 	16 => "Zugriff verweigert",
 	17 => "Du hast keine Zugriffsrechte f&uuml;r diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_url"]}/admin/event.php\">Zur&uuml;ck zum Administrator-Men&uuml;</a>.",
 	18 => 'Neuer Termin',
-	19 => 'Admin Home'
+	19 => 'Admin Home',
+    20 => 'Speichern',
+    21 => 'Abbruch',
+    22 => 'Loeschen'
 );
 
 ###############################################################################

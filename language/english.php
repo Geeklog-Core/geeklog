@@ -601,7 +601,10 @@ $LANG22 = array(
 	16 => "Access Denied",
 	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>.",
 	18 => 'New Event',
-	19 => 'Admin Home'
+	19 => 'Admin Home',
+    20 => 'save',
+    21 => 'cancel',
+    22 => 'delete'
 );
 
 ###############################################################################
