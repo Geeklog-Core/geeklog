@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.10 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: links.php,v 1.11 2001/12/13 22:14:11 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -50,26 +50,27 @@ $nrows = DB_numRows($result);
 if ($nrows==0) {
     $display .= $LANG06[2].'<br>';
 } else {
-    for($i = 0; $i < $nrows; $i++) {
+    $currentcategory = '';
+    for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-            if ($A['category'] != $currentcat) {
-                if ($i > 0 AND !empty($_USER['uid'])) {
-                    $linklist->parse('category_links','catlinks',true);
-	            $linklist->set_var('link_details','');
-                }
-                $linklist->set_var('link_category',$A['category']);
+            if (($A['category'] <> $currentcategory) AND ($i > 1)) {
+                // print the category and link
+                $linklist->parse('category_links','catlinks',true);
+                $linklist->set_var('link_details','');
+                $currentcategory = $A['category'];
+            } else if ($A['category'] <> $currentcategory) {
+                $currentcategory = $A['category'];
+                $linklist->set_var('link_category',$currentcategory);
             }
             $linklist->set_var('link_url', $_CONF['site_url'] . '/portal.php?url=' . urlencode($A['url'])
-                . '&what=link&item=' . $A['lid']);
+                    . '&what=link&item=' . $A['lid']);
             $linklist->set_var('link_name', $A['title']);
             $linklist->set_var('link_hits', $A['hits']);
             $linklist->set_var('link_description', $A['description']);
             $linklist->parse('link_details', 'link', true);
-				
-            $currentcat	= $A['category'];
         }
-    } 
+    }
     $linklist->parse('category_links','catlinks',true);
 }
 
