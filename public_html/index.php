@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.70 2005/03/25 22:57:01 blaine Exp $
+// $Id: index.php,v 1.71 2005/04/03 00:50:08 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -123,18 +123,17 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
-$archivetid = ' '; // this would be invalid as a topic id
+// Retrieve the archive topic - currently only one supported
+$archivetid = DB_getItem ($_TABLES['topics'], 'tid', "archive_flag='1'");
 
 // Scan for any stories that have expired and should be archived or deleted
-$expiresql = DB_query ("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} WHERE (expire <= NOW()) AND (statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " OR statuscode = " . STORY_DELETE_ON_EXPIRE . ")");
+$asql = "SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} ";
+$asql .= "WHERE (expire <= NOW()) AND (statuscode = " . STORY_ARCHIVE_ON_EXPIRE;
+$asql .= " OR statuscode = " . STORY_DELETE_ON_EXPIRE . ") AND tid != '$archivetid'";
+$expiresql = DB_query ($asql);
 while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
     if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
-        if ($archivetid == ' ') {
-            // Retrieve the archive topic - currently only one supported
-            $archivetid = DB_getItem ($_TABLES['topics'], 'tid',
-                                      "archive_flag='1'");
-        }
-        if (!empty ($archivetid) AND $expiretopic != $archivetid) {
+        if (!empty ($archivetid) ) {
             COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
             DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid', frontpage = '0', featured = '0' WHERE sid='{$sid}'");
         }
