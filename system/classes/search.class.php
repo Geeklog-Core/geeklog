@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | search.php                                                                |
-// | Geeklog search class.                                                     |
 // |                                                                           |
+// | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -30,9 +30,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.15 2003/08/31 17:26:55 blaine Exp $
+// $Id: search.class.php,v 1.16 2003/12/30 15:51:31 dhaun Exp $
 
-require_once($_CONF['path_system'] . 'classes/plugin.class.php');
+if (eregi ('search.class.php', $PHP_SELF)) {
+    die ('This file can not be used on its own.');
+}
+
+require_once ($_CONF['path_system'] . 'classes/plugin.class.php');
 
 /**
 * Geeklog Search Class
@@ -127,7 +131,7 @@ class Search {
         $this->_keyType = $input_vars['keyType'];
         $this->_page = $input_vars['page'];
         
-        // In case we got a username instead of uid, converit.  This should
+        // In case we got a username instead of uid, convert it.  This should
         // make custom themes for search page easier.
         $this->_convertAuthor();
     }
@@ -358,6 +362,7 @@ class Search {
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
+            $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ";
             $sql .= " (comment like '%$this->_query%' ";
             $sql .= "OR {$_TABLES['comments']}.title like '%$this->_query%') ";
             if (!empty($this->_dateStart) && !empty($this->_dateEnd)) {
