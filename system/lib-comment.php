@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.4 2005/01/27 09:14:08 dhaun Exp $
+// $Id: lib-comment.php,v 1.5 2005/01/27 09:22:28 dhaun Exp $
 
 /**
 * This function displays the comment control bar
@@ -208,6 +208,10 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     if( $preview )
     {
         $A = $comments;   
+        if( empty( $A['nice_date'] ))
+        {
+            $A['nice_date'] = time();
+        }
         $mode = 'flat';
     }
     else
