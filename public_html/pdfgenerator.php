@@ -30,20 +30,29 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.4 2004/06/07 16:04:42 tony Exp $
+// $Id: pdfgenerator.php,v 1.5 2004/06/07 19:04:45 tony Exp $
 
 require_once 'lib-common.php';
 
-// Need ot add error message here from language file
-if ($_CONF['pdf_enabled'] == 0) {
+// Ensure the PDF feature is even enabled
+if ($_CONF['pdf_enabled'] == 0 OR
+    (($_CONF['pdf_enabled'] == 1) AND ($_CONF['pdf_adhoc_enabled'] == 0) AND (!SEC_inGroup('Root')))) {
     echo COM_siteHeader();
     echo $LANG_PDF[1];
     echo COM_siteFooter();
     exit;
 } else {
+    // Ensure we got a handle to a valid HTMLDoc binary
     if (!is_file($_CONF['path_to_htmldoc']) OR !is_executable($_CONF['path_to_htmldoc'])) {
         echo COM_siteHeader();
         echo $LANG_PDF[8];
+        echo COM_siteFooter();
+        exit;
+    }
+    // Ensure we can open URL's using fopen
+    if (!ini_get('allow_url_fopen')) {
+        echo COM_siteHeader();
+        echo $LANG_PDF[13];
         echo COM_siteFooter();
         exit;
     }
@@ -161,7 +170,7 @@ function PDF_generatePDF()
             echo $LANG_PDF[2];
             COM_errorLog($LANG_PDF . ' COMMAND EXECUTED: ' . $cmd);
         } else {
-            $pdf = new Template( $_CONF['path_layout'] );
+            $pdf = new Template( $_CONF['path_layout'] . 'pdfgenerator/');
             $pdf->set_file( array(
             'pdf'         => 'pdf.thtml'
             ));
@@ -186,7 +195,22 @@ function PDF_generatePDF()
         }
     } else {
         if (!$_REQUEST['pageData']) {
-            echo $LANG_PDF[4];
+            $pdf = new Template( $_CONF['path_layout'] . 'pdfgenerator/');
+            $pdf->set_file( array(
+            'pdf'         => 'pdf_form.thtml'
+            ));
+
+            $pdf->set_var('layout_url', $_CONF['layout_url']);
+            $pdf->set_var('site_url', $_CONF['site_url']);
+            $pdf->set_var('lang_error_msg', $LANG_PDF[4]);
+            $pdf->set_var('lang_pdf_generator', $LANG_PDF[9]);
+            $pdf->set_var('lang_instructions', $LANG_PDF[10]);
+            $pdf->set_var('lang_URL', $LANG_PDF[11]);
+            $pdf->set_var('lang_generate_pdf', $LANG_PDF[12]);
+            $pdf->parse('page', 'pdf' );
+            echo $pdf->finish($pdf->get_var('page'));
+            echo ;
+            
         } else {
             echo $LANG_PDF[3];
         }
