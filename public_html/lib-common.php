@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.394 2004/10/26 02:03:13 vinny Exp $
+// $Id: lib-common.php,v 1.395 2004/10/30 14:57:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3993,6 +3993,12 @@ function COM_rdfImport( $bid, $rdfurl )
     else
     {
         $errmsg = sprintf( 'Geeklog can not reach the feed at %s.', $rdfurl );
+
+        if( !@ini_get( 'allow_url_fopen' ))
+        {
+            $errmsg = 'Sorry, your webserver configuration does not allow reading of remote files (allow_url_fopen = off).';
+        }
+
         COM_errorLog( $errmsg, 1 );
         $rdferror = true;
 
@@ -5676,7 +5682,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 * Detect links in a plain-ascii text and turn them into clickable links.
 * Will detect links starting with "http:", "https:", "ftp:", and "www.".
 *
-* Derived from a newgroup posting by Andreas Schwarz in
+* Derived from a newsgroup posting by Andreas Schwarz in
 * news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
 *
 * @param    string    $text     the (plain-ascii) text string
