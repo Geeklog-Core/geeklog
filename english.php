@@ -480,7 +480,8 @@ $LANG21 = array(
 	39 => "Side",
 	40 => "Left",
 	41 => "Right",
-	42 => "You must enter the blockorder and security level for Geeklog default blocks"
+	42 => "You must enter the blockorder and security level for Geeklog default blocks",
+	43 => "Homepage Only"
 );
 
 ###############################################################################
