@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.170 2002/10/20 13:04:20 dhaun Exp $
+// $Id: lib-common.php,v 1.171 2002/10/22 09:51:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2682,6 +2682,12 @@ function COM_olderStuff()
 
     if( $nrows > 0 )
     {
+        $dateonly = $_CONF['dateonly'];
+        if( empty( $dateonly ))
+        {
+            $dateonly = '%d-%b'; // fallback: day - abbrev. month name
+        }
+
         $day = 'noday';
         $string = '';
 
@@ -2699,14 +2705,15 @@ function COM_olderStuff()
                     $string .= $daylist . '<br>';
                 }
 
-                $day2 = strftime( "%m/%d", $A['day'] );
+                $day2 = strftime( $dateonly, $A['day'] );
                 $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
                 $oldnews = array();
                 $day = $daycheck;
             }
 
-            $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
+            $oldnews[] = '<a href="' . $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] . '">' . $A['title']
+                    . '</a> (' . $A['comments'] . ')';
         }
 
         $daylist = COM_makeList( $oldnews );
@@ -3173,7 +3180,12 @@ function COM_printUpcomingEvents( $help='', $title='' )
     $range = $_CONF['upcomingeventsrange'];
     if( $range == 0 )
     {
-        $range = 14;
+        $range = 14; // fallback: 14 days
+    }
+    $dateonly = $_CONF['dateonly'];
+    if( empty( $dateonly ))
+    {
+        $dateonly = '%d-%b'; // fallback: day - abbrev. month name
     }
 
     if( empty( $title ))
@@ -3265,13 +3277,13 @@ function COM_printUpcomingEvents( $help='', $title='' )
                 $startDate = $theEvent['datestart'];
                 $theTime1 = strtotime( $startDate );
                 $dayName1 = strftime( "%A", $theTime1 );
-                $abbrDate1 = strftime( "%d-%b", $theTime1 );
+                $abbrDate1 = strftime( $dateonly, $theTime1 );
 
                 // End Date strings...
                 $endDate = $theEvent['dateend'];
                 $theTime2 = strtotime( $endDate );
                 $dayName2 = strftime( "%A", $theTime2 );
-                $abbrDate2 = strftime( "%d-%b", $theTime2 );
+                $abbrDate2 = strftime( $dateonly, $theTime2 );
 
                 // If either of the dates [start/end] change, then display a new header.
                 if( $oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2 )

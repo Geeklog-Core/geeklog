@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.21 2002/08/08 10:03:08 dhaun Exp $
+// $Id: calendar_event.php,v 1.22 2002/10/22 09:51:38 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -483,9 +483,9 @@ default:
                     $thedatetime = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
                     $cal_templates->set_var('event_start', $thedatetime[0]);
 
-                    if( date('d m Y',$A['start']) == date('d m Y',$A['end']) )
+                    if( $A['start'] == $A['end'] )
                     {
-                        $thedatetime[0] = date( 'h:i A', strtotime($A['dateend'].' '.$A['timeend']) );
+                        $thedatetime[0] = strftime( $_CONF['timeonly'], strtotime($A['dateend'].' '.$A['timeend']) );
                     }
                     else
                     {

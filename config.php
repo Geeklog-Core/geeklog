@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.58 2002/10/20 13:04:20 dhaun Exp $
+// $Id: config.php,v 1.59 2002/10/22 09:51:38 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -118,6 +118,8 @@ $_CONF['locale']    = 'en-gb';
 $_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']   = '%m/%d %I:%M%p';
 $_CONF['shortdate'] = '%x';
+$_CONF['dateonly']  = '%d-%b';
+$_CONF['timeonly']  = '%I:%M %p %Z';
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // ----------------------------------------------------------------------------+
