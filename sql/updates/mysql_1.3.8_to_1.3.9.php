@@ -23,4 +23,6 @@ $_SQL[] = "CREATE TABLE {$_TABLES['syndication']} (
 
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
 
+$_SQL[] = "ALTER TABLE {$_TABLES['staticpage']} CHANGE sp_id sp_id VARCHAR(40) NOT NULL";
+
 ?>

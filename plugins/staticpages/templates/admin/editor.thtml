@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <td align="right">{lang_id}:</td>
-            <td><input type="text" name="sp_id" size="20" maxlength="20" value="{sp_id}"></td>
+            <td><input type="text" name="sp_id" size="40" maxlength="40" value="{sp_id}"></td>
           </tr>
           <tr>
             <td align="right">{lang_url}:</td>
