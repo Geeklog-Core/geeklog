@@ -2,10 +2,12 @@
 
 ###############################################################################
 # dutch.php
-# This is the english language page for the Geeklog Static Page Plug-in!
+# This is the Dutch language page for the Geeklog Static Page Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
+#
+# Ported to level 1.3.10 by: Ko de Pree <ko@depree.nl>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -39,7 +41,7 @@ $LANG_STATIC= array(
     writtenby => 'Geschreven door',
     date => 'Laatst bijgewerkt',
     title => 'Titel',
-    content => 'Content',
+    content => 'Inhoud',
     hits => 'Treffers',
     staticpagelist => 'Static Page Lijst',
     url => 'URL',
@@ -58,19 +60,19 @@ $LANG_STATIC= array(
     delete => 'verwijderen',
     cancel => 'annuleren',
     access_denied => 'Geen toegang',
-    access_denied_msg => 'U heeft ongeauthoriseerd geprobeerd een van de Static Pages op te roepen. Deze poging is vastgelegd.',
+    access_denied_msg => 'U heeft ongeautoriseerd geprobeerd een van de Static Pages op te roepen. Deze poging is vastgelegd.',
     all_html_allowed => 'HTML is toegestaan',
     results => 'Static Pages Resultaten',
     author => 'Auteur',
     no_title_or_content => 'Gelieve de <b>Titel</b> en <b>Content</b> op te geven.',
     no_such_page_logged_in => 'Helaas. '.$_USER['username'].'..',
     no_such_page_anon => 'Gelieve eerst in te loggen...',
-    no_page_access_msg => "Dit kan optreden omdat u niet ingelogd bent, of geen lid bent van {$_CONF["site_name"]}. <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Meldt u aann</a> op {$_CONF["site_name"]} om alle facilteiten te verkrijgen",
+    no_page_access_msg => "Dit kan optreden omdat u niet ingelogd bent, of geen lid bent van {$_CONF["site_name"]}. <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Meldt u aann</a> op {$_CONF["site_name"]} om alle faciliteiten te verkrijgen",
     php_msg => 'PHP: ',
     php_warn => 'Pas op !!  PHP code in uw pagina wordt uitgevoerd indien de optie geactiveerd is. Wees hiermee voorzichtig !!',
     exit_msg => 'Exit Type: ',
     exit_info => 'Activeer het Portaal bericht "Login Required". Niet aanvinken voor normale beveiligingsfunkties en berichtgevingen.',
-    deny_msg => 'De toegang naar deze pagina is geweigerd. De pagina is verwijderd of verplaatst, of u bent hiervoor niet geauthoriseerd.',
+    deny_msg => 'De toegang naar deze pagina is geweigerd. De pagina is verwijderd of verplaatst, of u bent hiervoor niet geautoriseerd.',
     stats_headline => 'Top Tien Static Pages',
     stats_page_title => 'Pagina Titel',
     stats_hits => 'Treffers',
@@ -94,16 +96,16 @@ $LANG_STATIC= array(
     centerblock_feat => 'HoofdArtikel',
     centerblock_bottom => 'Onderaan',
     centerblock_entire => 'Gehele pagina',
-    'inblock_msg' => 'In a block: ',
-    'inblock_info' => 'Wrap Static Page in a block.',
-    'title_edit' => 'Edit page',
-    'title_copy' => 'Make a copy of this page',
-    'title_display' => 'Display page',
-    'select_php_none' => 'do not execute PHP',
-    'select_php_return' => 'execute PHP (return)',
-    'select_php_free' => 'execute PHP',
-    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentation</a> for details.',
-    'printable_format' => 'Printable Format'
+    'inblock_msg' => 'In een blok: ',
+    'inblock_info' => 'Geef de Static Page weer als een blok.',
+    'title_edit' => 'Wijzig pagina',
+    'title_copy' => 'Maak een copy van deze pagina',
+    'title_display' => 'Laat de pagina zien',
+    'select_php_none' => 'maak het uitvoeren van PHP onmogelijk',
+    'select_php_return' => 'uitvoeren van PHP (return)',
+    'select_php_free' => 'voer PHP uit',
+    'php_not_activated' => 'Het gebruik van PHP in Static Pages is niet geactiveerd. Bekijk de <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentatie</a> voor meer bijzonderheden.',
+    'printable_format' => 'Printbare versie'
 );
 
 ?>
