@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.15 2002/07/19 08:49:54 dhaun Exp $
+// $Id: profiles.php,v 1.16 2002/09/06 15:33:47 dhaun Exp $
 
 include('lib-common.php');
 
@@ -48,31 +48,29 @@ include('lib-common.php');
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
-	global $_TABLES, $_CONF, $LANG08, $LANG_CHARSET;
-	
-	if (!empty($author) && !empty($subject) && !empty($message)) {
-		if (COM_isemail($authoremail)) {
-			$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
-			$A = DB_fetchArray($result);
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty ($charset)) {
-                $charset = "iso-8859-1";
+    global $_TABLES, $_CONF, $LANG08, $LANG_CHARSET;
+
+    if (!empty($author) && !empty($subject) && !empty($message)) {
+        if (COM_isemail($authoremail)) {
+            $result = DB_query("SELECT username,email FROM {$_TABLES['users']} WHERE uid = $uid");
+            $A = DB_fetchArray($result);
+            if (empty ($LANG_CHARSET)) {
+                $charset = $_CONF['default_charset'];
+                if (empty ($charset)) {
+                    $charset = "iso-8859-1";
+                }
+            } else {
+                $charset = $LANG_CHARSET;
             }
-        }
-        else {
-            $charset = $LANG_CHARSET;
-        }
-        $subject = strip_tags (stripslashes ($subject));
-        $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-			$RET = @mail($A['username'].' <'.$A['email'].'>'
-				,$subject
-				,strip_tags(stripslashes($message))
-				,"From: $author <$authoremail>\n"
-				."Return-Path: <$authoremail>\n"
-        ."Content-Type: text/plain; charset=$charset\n"
-				. "X-Mailer: GeekLog " . VERSION);
-			$retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
+            $subject = strip_tags (stripslashes ($subject));
+            $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
+            $RET = @mail($A['username'] . ' <' . $A['email'] . '>', $subject,
+                strip_tags(stripslashes($message)),
+                "From: $author <$authoremail>\n" .
+                "Return-Path: <$authoremail>\n" .
+                "Content-Type: text/plain; charset=$charset\n" .
+                "X-Mailer: GeekLog " . VERSION);
+            $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
 			$retval .= COM_siteHeader("menu")
 				.COM_errorLog($LANG08[3],2)
@@ -160,7 +158,7 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
 {
  	global $_TABLES, $_CONF, $LANG01, $LANG08, $A;
 	
- 	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid' ";
+ 	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid' ";
  	$result = DB_query($sql);
  	$A = DB_fetchArray($result);
     $shortmsg = stripslashes($shortmsg);
@@ -168,15 +166,21 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
 	if (strlen($shortmsg) > 0) {
 		$mailtext .= $LANG08[28].LB;
 	}
-	
+    if ($_CONF['contributedbyline'] == 1) {
+        $author = DB_getItem ($_TABLES['users'], 'username', "uid={$A['uid']}");
+    }
+
 	$mailtext .= '------------------------------------------------------------'.LB.LB
 		.$A['title'].LB
-		.strftime($_CONF['date'],$A['day']).LB
-		.$LANG01[1].' '.$A['author'].LB.LB
+		.strftime($_CONF['date'],$A['day']).LB;
+    if ($_CONF['contributedbyline'] == 1) {
+		$mailtext .= $LANG01[1] . ' ' . $author . LB;
+    }
+    $mailtext .= LB
 		.stripslashes(strip_tags($A['introtext'])).LB.LB
 		.stripslashes(strip_tags($A['bodytext'])).LB.LB
 		.'------------------------------------------------------------'.LB
-		.$LANG08[24].' '.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
+		.$LANG08[24].LB.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
 	
  	$mailto = $to.' <'.$toemail.'>';
  	$mailfrom = 'From: '.$from.' <'.$fromemail.'>';
