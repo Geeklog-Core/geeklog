@@ -639,7 +639,7 @@ $LANG23 = array(
 	17 => "Du hast keine Zugriffsrechte f&uuml;r diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_url"]}/admin/link.php\">Zur&uuml;ck zum Administrator-Men&uuml;</a>.",
 	18 => 'Neuer Link',
 	19 => 'Admin Home',
-	20 => 'Andere bitte eingeben:',
+	20 => 'Andere bitte eingeben',
     21 => 'Speichern',
     22 => 'Abbruch',
     23 => 'Loeschen'
@@ -654,7 +654,7 @@ $LANG24 = array(
 	3 => "Modus",
 	4 => "Modus",
 	5 => "Artikel-Editor",
-	6 => "",
+	6 => "Es sind keine Artikel vorhanden.",
 	7 => "Autor",
 	8 => "Speichern",
 	9 => "Vorschau",

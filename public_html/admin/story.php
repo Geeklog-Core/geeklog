@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.46 2002/05/04 12:55:12 dhaun Exp $
+// $Id: story.php,v 1.47 2002/05/05 19:35:05 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -407,7 +407,7 @@ function liststories($page="1")
 
     } else {
         // There are no news items
-        $story_templates->set_var('storylist_item','<tr><td colspan="7">There are no stories in the system</td></tr>');
+        $story_templates->set_var('storylist_item','<tr><td colspan="7">' . $LANG24[6] . '</td></tr>');
         $story_templates->set_var('previouspage_link','');
         $story_templates->set_var('nextpage_link','');
 	
