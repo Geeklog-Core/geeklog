@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.17 2002/05/05 17:55:02 dhaun Exp $
+// $Id: calendar.php,v 1.18 2002/05/11 15:07:31 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -341,7 +341,7 @@ case 'day':
         $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
-	if (!empty($_USER['uid'])) {
+	if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
 	    $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=day&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
 	} else {
 	    $cal_templates->set_var('calendar_toggle', '');
@@ -442,7 +442,7 @@ case 'week':
         $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[11] . '</a>]');
     } else {
         $cal_templates->set_var('calendar_title', $_CONF['site_name'] . ' ' . $LANG30[29]);
-	if (!empty($_USER['uid'])) {
+	if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
             $cal_templates->set_var('calendar_toggle', '[<a href="' . $_CONF['site_url'] . "/calendar.php?mode=personal&amp;view=week&amp;month=$month&amp;day=$day&amp;year=$year\">" . $LANG30[12] . '</a>]');
 	} else {
             $cal_templates->set_var('calendar_toggle', '');
