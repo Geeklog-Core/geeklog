@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.22 2002/04/11 22:16:30 tony_bibbs Exp $
+// $Id: config.php,v 1.23 2002/04/12 13:44:53 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -60,7 +60,7 @@ $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']         = 'admin@example.com';
 $_CONF['site_url']          = 'http://www.example.com';
-$_CONF['site_admin_url']    = $_CONF['site_url'] . '/tmpadmin';
+$_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 $_CONF['theme']             = 'Yahoo';
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/Yahoo';
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
