@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.16 2002/05/13 20:53:07 tony_bibbs Exp $
+// $Id: group.php,v 1.17 2002/05/17 01:14:38 mlimburg Exp $
 
 /**
 * This file is the Geeklog Group administration page

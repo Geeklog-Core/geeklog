@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.18 2002/05/02 20:00:47 tony_bibbs Exp $
+// $Id: search.php,v 1.19 2002/05/17 01:14:39 mlimburg Exp $
 
 require_once('lib-common.php');
 

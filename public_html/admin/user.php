@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.33 2002/05/05 12:26:21 dhaun Exp $
+// $Id: user.php,v 1.34 2002/05/17 01:14:38 mlimburg Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;

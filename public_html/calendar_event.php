@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.18 2002/05/16 14:39:33 mlimburg Exp $
+// $Id: calendar_event.php,v 1.19 2002/05/17 01:14:38 mlimburg Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -85,9 +85,9 @@ function adduserevent($eid)
         }
 
         $cal_template->set_var('lang_where',$LANG02[4]);
-        $location = stripslashes($A['location']) . '<br>'
-		. $A['address1'] . '<br>'
-		. $A['address2'] . '<br>'
+        $location = stripslashes($A['location']) . '<br />'
+		. $A['address1'] . '<br />'
+		. $A['address2'] . '<br />'
 		. $A['city'] . ', ' . $A['state'] . ' ' . $A['zipcode'];
         //$cal_template->set_var('event_location', $A['location']);
         $cal_template->set_var('event_location', $location);
@@ -445,7 +445,7 @@ default:
                     $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
                     $cal_templates->set_var('lang_month', $str_month);
                     $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
-                    //$display .= '<br><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
+                    //$display .= '<br /><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
                     $currentmonth = strftime("%B",strtotime($A["start"]));
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
@@ -512,7 +512,7 @@ default:
                     $cal_templates->set_var('event_address1','');
                 }
                 if (!empty($A['address2'])) {
-                    $cal_templates->set_var('br1', '<BR>');
+                    $cal_templates->set_var('br1', '<br />');
                     $cal_templates->set_var('event_address2', $A['address2']); 
                 } else {
                     $cal_templates->set_var('br1', '');
@@ -521,10 +521,15 @@ default:
                 if (empty($A['event_city']) && empty($A['event_state']) && empty($A['event_zip'])) {
                     $cal_templates->set_var('br2','');
                 } else {
-                    $cal_templates->set_var('br2','<br>');
+                    $cal_templates->set_var('br2','<br />');
                 }
                 $cal_templates->set_var('event_city', $A['city']);
-                if (!empty($A['state'])) {
+                if (empty($A['state']) or ($A['state'] == '--')) 
+                {
+                    $cal_templates->set_var('event_state', '');
+                }
+                else
+                {
                     $cal_templates->set_var('event_state', ', ' . $A['state']);
                 }
                 $cal_templates->set_var('event_zip', $A['zipcode']);
@@ -535,7 +540,7 @@ default:
                 //$cal_templates->parse('output','events');
                 //$display .= $cal_templates->finish($cal_templates->get_var('output')); 
             } else {
-                //$display .= '<br><b>'.$LANG_ACCESS['accessdenied'].'</b>'
+                //$display .= '<br /><b>'.$LANG_ACCESS['accessdenied'].'</b>'
                 //    .'<p>'.$LANG_ACCESS['eventdenialmsg'] . COM_endBlock() . COM_siteFooter();
             }
         } 
