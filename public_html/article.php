@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.61 2005/01/28 04:49:09 vinny Exp $
+// $Id: article.php,v 1.62 2005/01/28 10:04:14 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -152,6 +152,9 @@ if ($A['count'] > 0) {
                  . LB . '-->' . LB;
         } else {
             $rdf = '';
+        }
+        if ($_CONF['pingback_enabled']) {
+            header ('X-Pingback: ' . $_CONF['site_url'] . '/pingback.php');
         }
         $display .= COM_siteHeader ('menu', $pagetitle, $rdf);
 

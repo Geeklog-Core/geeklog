@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.54 2005/01/28 04:49:10 vinny Exp $
+// $Id: lib-plugins.php,v 1.55 2005/01/28 10:04:14 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -232,7 +232,8 @@ function PLG_getMenuItems()
  * @param   string  $id     Item id to which $cid belongs
  * @return  mixed   false for failure, HTML string (redirect?) for success
  */
-function PLG_commentDelete($type, $cid, $id) {
+function PLG_commentDelete($type, $cid, $id)
+{
     $args[1] = $cid;
     $args[2] = $id;
 
@@ -251,7 +252,8 @@ function PLG_commentDelete($type, $cid, $id) {
  * @param   string  $postmode 'html' or 'text'
  * @return  mixed   false for failure, HTML string (redirect?) for success
  */
-function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode) {
+function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode)
+{
     $args[1] = $title;
     $args[2] = $comment;
     $args[3] = $id;
@@ -275,7 +277,8 @@ function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode) {
  * @param   boolean $view   True to view comment (by cid), false to display (by $pid)
  * @return  mixed   results of calling the plugin_displaycomment_ function
  */
-function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $view) {
+function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $view)
+{
     $args[1] = $id;
     $args[2] = $cid;
     $args[3] = $title;
@@ -528,6 +531,7 @@ function PLG_getAdminOptions()
 function PLG_approveSubmission($type, $id) 
 {
     $args[1] = $id;
+
     return PLG_callFunctionForOnePlugin('plugin_moderationapprove_' . $type, $args);
 }
 
@@ -544,6 +548,7 @@ function PLG_approveSubmission($type, $id)
 function PLG_deleteSubmission($type, $id) 
 {
     $args[1] = $id;
+
     return PLG_callFunctionForOnePlugin('plugin_moderationdelete_' . $type, $args);
 }
 
@@ -559,6 +564,7 @@ function PLG_deleteSubmission($type, $id)
 function PLG_saveSubmission($type, $A) 
 {
     $args[1] = $A;
+
     return PLG_callFunctionForOnePlugin('plugin_savesubmission_' . $type, $args);
 }
 
@@ -1282,9 +1288,38 @@ function PLG_checkforSpam($content, $action = -1)
 */
 function PLG_handleTrackbackComment ($type, $id, $operation)
 {
+    $args[1] = $id;
+    $args[2] = $operation;
+
     $function = 'plugin_handletrackbackcomment_' . $type;
 
-    return PLG_callFunctionForOnePlugin ($function, $id, $operation);
+    return PLG_callFunctionForOnePlugin ($function, $args);
+}
+
+/**
+* Ask plugin if it accepts a pingback for the item at URL $targetURI
+*
+* Pingback only sends the URL of the item it's pinging. Geeklog has determined
+* that the URL belongs to a plugin and is now asking that plugin if it will
+* accept pingbacks for it. The plugin is expected to return a unique ID for
+* the entry if it accepts the ping or an empty string to reject it.
+*
+* Note: This API function is subject to change ...
+*
+* @param    string  $type       plugin type
+* @param    string  $sourceURI  URL the ping came from (FYI only)
+* @param    string  $targetURI  URL being pinged
+* @return   string              ID of the pinged item or empty string = rejected
+*
+*/
+function PLG_acceptPingback ($type, $sourceURI, $targetURI)
+{
+    $args[1] = $sourceURI;
+    $args[2] = $targetURI;
+
+    $function = 'plugin_acceptpingback_' . $type;
+
+    return PLG_callFunctionForOnePlugin ($function, $args);
 }
 
 ?>
