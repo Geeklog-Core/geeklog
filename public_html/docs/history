@@ -3,6 +3,7 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added missing closing </a> tag in story search results (bug #260) [Dirk]
 - Added a second parameter to function COM_makeList that is used as a CSS
   class name in the list it returns (use {list_class_name} to get the actual
   class name, and {list_class} to get class="classname"). Changed the existing

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.25 2004/08/11 09:23:34 dhaun Exp $
+// $Id: search.class.php,v 1.26 2004/08/13 16:53:47 dhaun Exp $
 
 if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -307,7 +307,11 @@ class Search {
                     if (!empty ($urlQuery)) {
                         $articleUrl .= '&amp;query=' . urlencode($urlQuery);
                     }
-                    $row = array('<a href="' .$_CONF['site_url'] . $articleUrl . '">' . stripslashes($A['title']), $thetime[0], DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"), $A['hits']);
+                    $row = array ('<a href="' . $_CONF['site_url']
+                            . $articleUrl . '">' . stripslashes ($A['title'])
+                            . '</a>', $thetime[0],
+                            DB_getItem ($_TABLES['users'], 'username',
+                            "uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
                     $story_results->num_searchresults++;
                 } else {
