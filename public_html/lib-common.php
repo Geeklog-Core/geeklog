@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.406 2004/12/18 14:15:36 dhaun Exp $
+// $Id: lib-common.php,v 1.407 2004/12/22 16:10:28 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -6045,6 +6045,31 @@ function COM_sanitizeID( $id, $new_id = true )
     return $id;
 }
 
+/** Convert a text based date YYYY-MM-DD to a unix timestamp integer value 
+*
+* @param    string $date     Date in the format YYYY-MM-DD
+* @param    string $time     Option time in the format HH:MM::SS
+* @return   int          UNIX Timestamp
+*/
+function COM_convertDate2Timestamp($date,$time='') {
+        // Breakup the string using either a space, fwd slash, bkwd slash or colon as a delimiter
+        $atok = strtok($date," /-\\:");
+        while ($atok !== FALSE) {
+            $atoks[] = $atok;
+            $atok = strtok(" /-\\:");  // get the next token
+        }
+        if ($time == '') {
+            $timestamp = mktime(0,0,0,$atoks[1],$atoks[2],$atoks[0]);
+        } else {
+            $btok = strtok($time," /-\\:");
+            while ($btok !== FALSE) {
+                $btoks[] = $btok;
+                $btok = strtok(" /-\\:");
+            }
+            $timestamp = mktime($btoks[0],$btoks[1],$btoks[2],$atoks[1],$atoks[2],$atoks[0]);
+        }
+        return $timestamp;
+}
 // Now include all plugin functions
 foreach( $_PLUGINS as $pi_name )
 {
