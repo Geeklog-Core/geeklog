@@ -8,10 +8,11 @@
 // | Geeklog security library.                                                 |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
+// |          Vincent Furia    - vmf@abtech.org                                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.11 2002/10/26 18:28:09 dhaun Exp $
+// $Id: lib-security.php,v 1.12 2003/03/05 14:34:44 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -75,22 +76,18 @@ $_SEC_VERBOSE = false;
 * @return array Array of group ID's user belongs to
 *
 * @param        int     $uid            User ID to get information for. If empty current user.
-* @param        string  $usergroups     DO NOT USE (for recursion) comma delimited string of groups user belongs to
-* @param        int     $cur_grp_id     DO NOT USE (for recursion) Current group the function is working with in tree
 * @return	array	Associative Array grp_name -> ug_main_grp_id
 *
 */
-function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
+function SEC_getUserGroups($uid='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE;
 
-    if (empty($usergroups)) {
-        $usergroups = array();
-    }
-    
     if ($_SEC_VERBOSE) {
         COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
     }
+    
+    $groups = array();
 
     if (empty($uid)) {
         if (empty($_USER['uid'])) {
@@ -100,16 +97,11 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
         }
     }
 
-    if (empty($cur_grp_id)) {
-        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+    $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
             . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
-    } else {
-        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id",1);
-    }
 
     if ($result == -1) {
-        return $usergroups;
+        return $groups;
     }
 
     $nrows = DB_numRows($result);
@@ -118,25 +110,34 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
         COM_errorLog("got $nrows rows",1);
     }
 
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
+    while ($nrows > 0) {
+        $cgroups = array();
 
-	if ($_SEC_VERBOSE) {
-            COM_errorLog('user is in group ' . $A['grp_name'],1);
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+    
+            if ($_SEC_VERBOSE) {
+                COM_errorLog('user is in group ' . $A['grp_name'],1);
+            }
+            if (!in_array($A['ug_main_grp_id'], $groups)) {
+                array_push($cgroups, $A['ug_main_grp_id']);
+            }
+            $groups[$A['grp_name']] = $A['ug_main_grp_id'];
         }
-        $usergroups[$A['grp_name']] = $A['ug_main_grp_id'];
-        $usergroups = SEC_getUserGroups($uid,$usergroups,$A['ug_main_grp_id']);
+        
+        $glist = join(',', $cgroups);
+        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
+        $nrows = DB_numRows($result);
     }
 
-    if (is_array($usergroups)) {
-        ksort($usergroups);
-    }
+    ksort($groups);
 
     if ($_SEC_VERBOSE) {
         COM_errorLog("****************leaving getusergroups(uid=$uid)***************",1);
     }
 
-    return $usergroups;
+    return $groups;
 }
 
 /**
@@ -435,6 +436,10 @@ function SEC_getUserPermissions($grp_id='',$uid='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE;
 
+    if ($_SEC_VERBOSE) {
+        COM_errorLog("**********inside SEC_getUserPermissions(grp_id=$grp_id)**********",1);
+    }
+
     // Get user ID if we don't already have it
     if (empty($uid)) {
         if (empty($_USER['uid'])) {
@@ -444,65 +449,28 @@ function SEC_getUserPermissions($grp_id='',$uid='')
         }
     }
 
-    if ($_SEC_VERBOSE) {
-        COM_errorLog("**********inside SEC_getUserPermissions(grp_id=$grp_id)**********",1);
-    }
-
-    if (empty($grp_id)) {
-        // Okay, this was the first time this function SEC_was called.
-        // Let's get all the groups this user belongs to and get the permissions for each group.
-        // NOTE: permissions are given to groups and NOT individuals
-
-	// print "<BR>uid = " . $_USER[uid];
-
-        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_uid = $uid",1);
-        if ($result <> -1) {
-            $nrows = DB_numRows($result);
-            if ($_SEC_VERBOSE) {
-                COM_errorLog("got $nrows row(s) in SEC_getUserPermissions",1);
-            }
-            for ($i = 1; $i <= $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $retval .= SEC_getUserPermissions($A['ug_main_grp_id'],$uid);
-            }
+    if ($uid == $_USER['uid']) {
+        if (!isset($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($uid);
         }
+        $groups = $_GROUPS;
     } else {
-        // In this case we are going up the group tree for this user building a list of rights
-        // along the way.  First, get the rights for this group.
+        $groups = SEC_getUserGroups($uid);
+    }
 
-        $result = DB_query("SELECT ft_name FROM {$_TABLES["access"]},{$_TABLES["features"]} WHERE "
-            . "ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
-        $nrows = DB_numRows($result);
+    $glist = join(',', $groups);
+    $result = DB_query("SELECT DISTINCT ft_name FROM {$_TABLES["access"]},{$_TABLES["features"]} "
+                     . "WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
 
-        if ($_SEC_VERBOSE) COM_errorLog("got $nrows rights for group $grp_id in SEC_getUserPermissions",1);
-
-        for ($j = 1; $j <= $nrows; $j++) {
-            $A = DB_fetchArray($result);
-            if ($_SEC_VERBOSE) {
-                COM_errorLog('Adding right ' . $A['ft_name'] . ' in SEC_getUserPermissions',1);
-            }
-            $retval .= $A['ft_name'] . ',';
-        }
-
-        // Now see if there are any groups tied to this one further up the tree.  If so
-        // see if they have additional rights
-
-        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_grp_id = $grp_id",1);
-        $nrows = DB_numRows($result);
+    $nrows = DB_numrows($result);
+    for ($j = 1; $j <= $nrows; $j++) {
+        $A = DB_fetchArray($result);
         if ($_SEC_VERBOSE) {
-            COM_errorLog("got $nrows groups tied to group $grp_id in SEC_getUserPermissions",1);
+            COM_errorLog('Adding right ' . $A['ft_name'] . ' in SEC_getUserPermissions',1);
         }
-        for ($i = 1; $i <= $nrows; $i++) {
-            // Now for each group, see if there are any rights assigned to it. If so, add to our
-            // comma delimited string
-
-            $A = DB_fetchArray($result);
-            $retval .= SEC_getUserPermissions($A['ug_main_grp_id'],$uid);
-        }
+        $retval .= $A['ft_name'] . ',';
     }
-    if ($_SEC_VERBOSE) {
-        COM_errorLog("**********leaving SEC_getUserPermissions(grp_id=$grp_id)**********",1);
-    }
+    
     return $retval;
 }
 
