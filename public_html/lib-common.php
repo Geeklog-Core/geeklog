@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.118 2002/07/07 12:51:33 dreamscape Exp $
+// $Id: lib-common.php,v 1.119 2002/07/07 12:58:27 dreamscape Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1910,7 +1910,7 @@ function COM_checkHTML($str)
         $str = strip_tags($str,$_CONF['adminhtml']);
     }
 
-    return $str;
+    return COM_killJS($str);
 }
 
 /**
