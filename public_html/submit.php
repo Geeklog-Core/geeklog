@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.31 2002/08/27 00:53:31 tony_bibbs Exp $
+// $Id: submit.php,v 1.32 2002/08/27 01:18:47 tony_bibbs Exp $
 
 require_once('lib-common.php');
 
@@ -317,14 +317,16 @@ function submitstory()
     }
 
     if (!empty($A['title'])) {
+        $A['title'] = stripslashes($A['title']);
         if ($A['postmode'] == 'html') {
             $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
             $A['title'] = addslashes(COM_checkHTML(COM_checkWords($A['title'])));
         } else {
             $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
             $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
+	    $A['title'] = str_replace('$','&#36;',$A['title']);
+            $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
         }
-        $A['title'] = stripslashes($A['title']);
         $retval .= COM_startBlock($LANG12[32])
             . COM_article($A,'n')
             . COM_endBlock();
@@ -523,14 +525,14 @@ function savesubmission($type,$A)
             }
         }			
         if (!empty($A['title']) && !empty($A['introtext'])) {
+            $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
+            $A['title'] = str_replace('$','&#36;',$A['title']);
             if ($A['postmode'] == 'html') {
                 $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
-		$A['title'] = str_replace('$','&#36;',$A['title']);
 		$A['introtext'] = str_replace('$','&#36;',$A['introtext']);
             } else {
                 $A['introtext'] = addslashes(htmlspecialchars(COM_checkWords($A['introtext'])));
             }
-            $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['sid'] = COM_makeSid();
             if (empty($_USER['uid'])) { 
                 $_USER['uid'] = 1;
