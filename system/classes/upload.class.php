@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.12 2002/05/09 18:52:35 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.13 2002/09/10 04:23:48 tony_bibbs Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -89,8 +89,16 @@ class upload
     * @access private
     */
     var $_maxFileSize = 1048576;          // Long, in bytes
+    /** 
+    * @access private
+    */
+    var $_pathToMogrify = '';             // String
     /**
-    *
+    * @access private
+    */
+    var $_autoResize = false;             // boolean
+    /**
+    * @access private
     */
     var $_maxFileUploadsPerForm = 5;
     /**
@@ -228,30 +236,30 @@ class upload
     */
     function _setAvailableMimeTypes($mimeTypes = array())
     {
-		if (sizeof($mimeTypes) == 0) {
-			$this->_availableMimeTypes = 
-				array(
-					'application/x-gzip-compressed' 	=> '.tar.gz, .tgz',
-					'application/x-zip-compressed' 		=> '.zip',
-					'application/x-tar'					=> '.tar',
-					'text/plain'						=> '.php, .txt, .inc (etc)',
-					'text/html'							=> '.html, .htm (etc)',
-					'image/bmp' 						=> '.bmp, .ico',
-					'image/gif' 						=> '.gif',
-					'image/pjpeg'						=> '.jpg, .jpeg',
-					'image/jpeg'						=> '.jpg, .jpeg',
-					'image/x-png'						=> '.png',
-					'audio/mpeg'						=> '.mp3 etc',
-					'audio/wav'							=> '.wav',
-					'application/pdf'					=> '.pdf',
-					'application/x-shockwave-flash' 	=> '.swf',
-					'application/msword'				=> '.doc',
-					'application/vnd.ms-excel'			=> '.xls',
-					'application/octet-stream'			=> '.exe, .fla, .psd (etc)'
-				);
-		} else {
-			$this->_availableMimeTypes = $mimeTypes;
-		}
+        if (sizeof($mimeTypes) == 0) {
+            $this->_availableMimeTypes = 
+            array(
+                'application/x-gzip-compressed' 	=> '.tar.gz, .tgz',
+                'application/x-zip-compressed' 		=> '.zip',
+                'application/x-tar'					=> '.tar',
+                'text/plain'						=> '.php, .txt, .inc (etc)',
+                'text/html'							=> '.html, .htm (etc)',
+                'image/bmp' 						=> '.bmp, .ico',
+                'image/gif' 						=> '.gif',
+                'image/pjpeg'						=> '.jpg, .jpeg',
+                'image/jpeg'						=> '.jpg, .jpeg',
+                'image/x-png'						=> '.png',
+                'audio/mpeg'						=> '.mp3 etc',
+                'audio/wav'							=> '.wav',
+                'application/pdf'					=> '.pdf',
+                'application/x-shockwave-flash' 	=> '.swf',
+                'application/msword'				=> '.doc',
+                'application/vnd.ms-excel'			=> '.xls',
+                'application/octet-stream'			=> '.exe, .fla, .psd (etc)'
+            );
+        } else {
+            $this->_availableMimeTypes = $mimeTypes;
+        }
     }
     
     /**
@@ -282,23 +290,23 @@ class upload
     }
     
     /**
-	* Verifies the file size meets specified size limitations
-	*
-	* @access private
-	* @return boolean   returns true of file size is within our limits otherwise false
-	*/
-	function _fileSizeOk()
-	{
+    * Verifies the file size meets specified size limitations
+    *
+    * @access private
+    * @return boolean   returns true of file size is within our limits otherwise false
+    */
+    function _fileSizeOk()
+    {
         if ($this->_debug) {
             $this->_addDebugMsg('File size for ' . $this->_currentFile['name'] . ' is ' . $this->_currentFile['size'] . ' bytes');
         }
         
         if ($this->_currentFile['size'] > $this->_maxFileSize) {
-			return false;
-		} else {
-			return true;
-		}
-	}
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
     * Checks to see if file is an image and, if so, whether or not
@@ -308,38 +316,45 @@ class upload
     * @return   boolean     returns true if image height/width meet our limitations otherwise false
     *
     */
-	function _imageSizeOK()
-	{
+    function _imageSizeOK($doResizeCheck=true)
+    {
         if (!$this->_isImage()) {
             return true;
         }
         
         $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
 		   
-		$sizeOK = true;
+        $sizeOK = true;
 		
-		if ($this->_debug) {
+        if ($this->_debug) {
             $this->_addDebugMsg('Max allowed width = ' . $this->_maxImageWidth . ', Image width = ' . $imageInfo['width']);
             $this->_addDebugMsg('Max allowed height = ' . $this->_maxImageHeight . ', Image height = ' . $imageInfo['height']);
-		}
-                        
-		if ($imageInfo['width'] > $this->_maxImageWidth) {
-			$sizeOK = false;
-			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations');
-		}
+        }
+       
+        // If user set _autoResize then ignore these settings and try to resize on upload 
+        if (($doResizeCheck AND !($this->_autoResize)) OR (!($doResizeCheck))) {
+            if ($imageInfo['width'] > $this->_maxImageWidth) {
+                $sizeOK = false;
+                if ($doResizeCheck) {
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations');
+                }
+            }
 
-		if ($imageInfo['height'] > $this->_maxImageHeight) {
-			$sizeOK= false;
-			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations');
-		}
+            if ($imageInfo['height'] > $this->_maxImageHeight) {
+                $sizeOK= false;
+                if ($doResizeCheck) {
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations');
+                }
+            }
+        }
         
         if ($this->_debug) {
             $this->_addDebugMsg('File, ' . $this->_currentFile['name'] . ' has a width of '
                 . $imageInfo['width'] . ' and a height of ' . $imageInfo['height']);
-		}
+        }
         
-		return $sizeOK;
-	}
+        return $sizeOK;
+    }
 	
 	/**
 	* Gets the width and height of an image
@@ -414,8 +429,39 @@ class upload
             // have told them the upload directory was not writable.  Error out now
             $this->_addError('Specified upload directory, ' . $this->_fileUploadDirectory . ' exists but is not writable');
             return false;
-        }        
+        }
+        if (!($this->_imageSizeOK(false)) AND $this->_autoResize) { 
+            $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
+            $sizeOK = true;
+            if ($imageInfo['width'] > $this->_maxImageWidth) {
+                $sizeOK = false;
+            }
+
+            if ($imageInfo['height'] > $this->_maxImageHeight) {
+                $sizeOK= false;
+            }
+        }
         $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        if (!($sizeOK)) {
+            // OK, resize
+            if ($imageInfo['height'] > $imageInfo['width']) { 
+                $sizefactor = (double) ($this->_maxImageheight / $imageInfo['height']);
+            } else {
+                $sizefactor = (double) ($this->_maxImageWidth / $imageInfo['width']);
+            }
+            $newwidth = (int) ($imageInfo['width'] * $sizefactor);
+            $newheight = (int) ($imageInfo['height'] * $sizefactor);
+            $newsize = $newwidth . 'x' . $newheight;
+            $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
+            $this->_addDebugMsg('Attempting to resize with this command: ' . $cmd);
+            exec($cmd, $mogrify_output, $retval);
+                
+            if ($retval > 0) {
+                $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $mogrify_output[0]);
+            } else {
+                    $this->_addDebugMsg('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newsize);
+            }
+        }
         $returnChmod = true;
         $perms = $this->_getPermissions();
         if (!empty($perms)) {
@@ -436,7 +482,32 @@ class upload
             return false;
         }
 	}
-	
+
+    /**
+    * Sets the path to where the mogrify ImageMagic function is
+    *
+    * @param     string    $path_to_mogrify    Absolute path to mogrify
+    * @return    boolean   True if set, false otherwise
+    *
+    */
+    function setMogrifyPath($path_to_mogrify)
+    {
+        $this->_pathToMogrify = $path_to_mogrify;
+        return true;
+    }
+
+    /**
+    * Sets mode to autmatically resize images that are either too wide or 
+    * too tall
+    *
+    * @param    boolean    $switch  True to turn on, false to turn off
+    * 
+    */
+    function setAutomaticResize($switch)
+    {
+        $this->_autoResize = $switch;
+    }
+
     /**
     * Allows you to override default max file size
     *
@@ -450,6 +521,26 @@ class upload
             return false;
         }
         $this->_maxFileSize = $size_in_bytes;
+        return true;
+    }
+
+    /**
+    * Allows you to override default max. image dimensions
+    *
+    * @param    int    $width_pixels    Max. width allowed
+    * @param    int    $height_pixels   Max. height allowed
+    * @return   boolean true if we set values OK, otherwise false
+    *
+    */
+    function setMaxDimensions($width_pixels, $height_pixels)
+    {
+        if (!is_numeric($width_pixels) AND !is_numeric($height_pixels)) {
+            return false;
+        }
+
+        $this->_maxImageWidth = $width_pixels;
+        $this->_maxImageHeight = $height_pixels;
+
         return true;
     }
     
@@ -810,8 +901,8 @@ class upload
         if (!$this->_allowedMimeTypes) {
             $this->_addError('No allowed mime types specified, use setAllowedMimeTypes() method');
         }
-        
-		for ($i = 1; $i <= $numFiles; $i++) {
+      
+        for ($i = 1; $i <= $numFiles; $i++) {
 		
             $this->_currentFile = current($GLOBALS['HTTP_POST_FILES']);
             
@@ -841,7 +932,7 @@ class upload
                 $this->_addWarning('File #' . $i . ' on the HTML form was empty...ignoring it and continuing');
             }
             next($GLOBALS['HTTP_POST_FILES']);
-		}
+        }
 		
 		// This function returns false if any errors were encountered
         if ($this->areErrors()) {
