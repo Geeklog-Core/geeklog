@@ -33,9 +33,18 @@ class DeleteComment extends BaseCommand {
 
     function execute($comment)
     {
-        global $result, $_CONF, $LANG_SX00;
+        global $result, $_CONF, $_TABLES, $LANG_SX00;
         $result = 128;
+
+        // update count of deleted spam posts
+        // Yes, there is the possibility of a race condition here. But it's
+        // only for statistical purposes anyway, nothing important ...
+        $counter = DB_getItem ($_TABLES['vars'], 'value', "name = 'spamx.counter'");
+        $counter++;
+        DB_query ("UPDATE {$_TABLES['vars']} SET value = $counter WHERE name = 'spamx.counter'");
+
         SPAMX_log($LANG_SX00['spamdeleted']);
+
         return 1;
     } 
 } 

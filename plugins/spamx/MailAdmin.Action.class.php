@@ -43,7 +43,10 @@ class MailAdmin extends BaseCommand {
         $msg = sprintf ($LANG_SX00['emailmsg'],
                         $_CONF['site_name'], $uid, $comment);
 
-        $msg .= "\n\nRequest headers:\n";
+        // Add headers of the spam post to help track down the source.
+        // Function 'getallheaders' is not available when PHP is running as
+        // CGI. Print the HTTP_... headers from $_SERVER array instead then.
+        $msg .= "\n\n" . $LANG_SX00['headers'] . "\n";
         if (function_exists ('getallheaders')) {
             $headers = getallheaders ();
             foreach ($headers as $key => $content) {

@@ -89,11 +89,11 @@ $LANG_SX00 = array (
 	'numtocheck' => 'Number of Comments to check',
 	'note1'		=> '<p>Note: Mass Delete is intended to help you when you are hit by',
 	'note2'		=> ' comment spam and SpamX does not catch it.  <ul><li>First find the link(s) or other ',
-	'note3'		=> 'identifiers of this Spam comment and add it to you personal blacklist.</li><li>Then ',
+	'note3'		=> 'identifiers of this Spam comment and add it to your personal blacklist.</li><li>Then ',
 	'note4'		=> 'come back here and have SpamX check the latest comments for spam.</li></ul>Comments ',
 	'note5'		=> 'are checked from newest comment to oldest -- checking more comments ',
-	'note6'		=> 'requires more time for the check</p>',
-	'masshead'	=> '<hr><center><h1>Mass Delete Spam Comments</h1></center>',
+	'note6'		=> 'requires more time for the check.</p>',
+	'masshead'	=> '<hr><h1 align="center">Mass Delete Spam Comments</h1>',
 	'comdel'	=> ' comments deleted.',
     'initial_Pimport' => '<p>Personal Blacklist Import"',
     'initial_import' => 'Initial MT-Blacklist Import',
@@ -101,15 +101,28 @@ $LANG_SX00 = array (
     'import_failure' => '<p><strong>Error:</strong> No entries found.',
     'allow_url_fopen' => '<p>Sorry, your webserver configuration does not allow reading of remote files (<code>allow_url_fopen</code> is off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
     'documentation' => 'SpamX Plugin Documentation',
-    'emailmsg' => "A new spam post has been submitted at \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
+    'emailmsg' => "A new spam post has been submitted at \"%s\"\nUser UID: \"%s\"\n\nContent:\"%s\"",
     'emailsubject' => 'Spam post at %s',
-    'plugin_name' => 'SpamX'
+    'plugin_name' => 'SpamX',
+    'headers' => 'Request headers:',
+
+    'stats_headline' => 'SpamX Statistics',
+    'stats_page_title' => 'Blacklist',
+    'stats_entries' => 'Entries',
+    'stats_mtblacklist' => 'MT-Blacklist',
+    'stats_pblacklist' => 'Personal Blacklist',
+    'stats_ip' => 'Blocked IPs',
+    'stats_ipofurl' => 'Blocked by IP of URL',
+    'stats_deleted' => 'Posts deleted as spam'
 );
 
 
-/* Define Messages that are shown when SPAMX module action is taken */
-$PLG_spamx_MESSAGE128 = 'SPAM detected and Comment or Message was deleted.';
-$PLG_spamx_MESSAGE8   = 'SPAM detected. Email sent to admin.';
+/* Define Messages that are shown when SpamX module action is taken */
+$PLG_spamx_MESSAGE128 = 'Spam detected and Comment or Message was deleted.';
+$PLG_spamx_MESSAGE8   = 'Spam detected. Email sent to admin.';
 
+// Messages for the plugin upgrade
+$PLG_spamx_MESSAGE3001 = 'SpamX plugin upgraded successfully.';
+$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the SpamX plugin.';
 
 ?>

@@ -3,8 +3,9 @@
  * File: functions.inc
  * This is the functions.inc for the Geeklog SpamX Plug-in!
  * 
- * Copyright (C) 2004 by the following authors:
- * Author		Tom Willett		tomw@pigstye.net
+ * Copyright (C) 2004-2005 by the following authors:
+ * Authors      Tom Willett     tomw AT pigstye DOT net
+ *              Dirk Haun       dirk AT haun-online DOT de
  * 
  * Licensed under GNU General Public License
  */
@@ -24,23 +25,10 @@ if (file_exists ($langfile)) {
 * Include spamx config files
 */
 require_once ($_CONF['path'] . 'plugins/spamx/config.php');
+
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
 // +---------------------------------------------------------------------------+
-/**
- * Returns the items for this plugin that should appear on the main menu
- * 
- * NOTE: this MUST return the url/value pairs in the following format
- * $<arrayname>[<label>] = <url>
- * 
- * Universal Plugin:  Uncomment and fill in variables;
- * 
- * @return array Associative array of menu items to be added to menu
- */
-function plugin_getmenuitems_spamx()
-{
-    return array();
-} 
 
 /**
  * Check to see if this Plugin uses comments
@@ -70,9 +58,58 @@ function plugin_commentsupport_spamx()
  */
 function plugin_showstats_spamx($showsitestats)
 {
+    global $_CONF, $_TABLES, $LANG_SX00;
+
     $retval = '';
+
+    if ($showsitestats == 1) {
+        // overall stats: number of deleted posts
+        $counter = DB_getItem ($_TABLES['vars'], 'value',
+                                                 "name = 'spamx.counter'");
+        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
+        $retval .= '<tr><td>' . $LANG_SX00['stats_deleted'] . '</td>';
+        $retval .= '<td align="right">' . $counter . '&nbsp;&nbsp;</td></tr></table>';
+    } else if (SEC_hasRights('spamx.admin')) {
+        // detailed stats are only visible to SpamX admins
+        $retval .= COM_startBlock ($LANG_SX00['stats_headline']);
+
+        $templates = new Template ($_CONF['path_layout'] . 'stats');
+        $templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                     'statrow'   => 'singlestat.thtml'));
+        $templates->set_var ('item_label', $LANG_SX00['stats_page_title']);
+        $templates->set_var ('stat_name', $LANG_SX00['stats_entries']);
+
+        // we need a URL - link to the plugin's admin page
+        $templates->set_var ('item_url',
+                $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
+
+        $templates->set_var ('item_text', $LANG_SX00['stats_mtblacklist']);
+        $templates->set_var ('item_stat',
+                DB_count ($_TABLES['spamx'], 'name', 'MTBlacklist'));
+        $templates->parse ('stat_row', 'statrow', true);
+
+        $templates->set_var ('item_text', $LANG_SX00['stats_pblacklist']);
+        $templates->set_var ('item_stat',
+                DB_count ($_TABLES['spamx'], 'name', 'Personal'));
+        $templates->parse ('stat_row', 'statrow', true);
+
+        $templates->set_var ('item_text', $LANG_SX00['stats_ip']);
+        $templates->set_var ('item_stat',
+                DB_count ($_TABLES['spamx'], 'name', 'IP'));
+        $templates->parse ('stat_row', 'statrow', true);
+
+        $templates->set_var ('item_text', $LANG_SX00['stats_ipofurl']);
+        $templates->set_var ('item_stat',
+                DB_count ($_TABLES['spamx'], 'name', 'IPofUrl'));
+        $templates->parse ('stat_row', 'statrow', true);
+
+        $templates->parse ('output', 'itemstats');
+        $retval .= $templates->finish ($templates->get_var ('output'));
+        $retval .= COM_endBlock ();
+    }
+
     return $retval;
-} 
+}
 
 /**
  * This will put an option for the plugin in the command and control block on moderation.php
@@ -119,9 +156,45 @@ function plugin_getadminoption_spamx()
  * 
  * @return string    plugin version
  */
-function plugin_chkVersion_spamx() {
-    global $_SPX_CONF; 
+function plugin_chkVersion_spamx ()
+{
+    global $_SPX_CONF;
+
     return $_SPX_CONF['version'];
+}
+
+/**
+* Update the SpamX plugin
+*
+* @return   int     Number of message to display
+*
+*/
+function plugin_upgrade_spamx ()
+{
+    global $_TABLES, $_SPX_CONF;
+
+    $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
+
+    if ($v != $_SPX_CONF['version']) {
+        switch ($v) {
+            case '1.0.1':
+                // Add the counter
+                DB_query ("INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')");
+                break;
+        }
+
+        // update version number
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '{$_SPX_CONF['version']}' WHERE pi_name = 'spamx'");
+
+        // check if version number was updated successfully
+        $v = DB_getItem ($_TABLES['plugins'], 'pi_version', "pi_name = 'spamx'");
+    }
+
+    if ($v == $_SPX_CONF['version']) {
+        return 3001;
+    }
+
+    return 3002;
 }
 
 /**

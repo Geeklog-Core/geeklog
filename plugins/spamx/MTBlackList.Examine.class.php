@@ -39,7 +39,7 @@ class MTBlackList extends BaseCommand {
     /**
      * Here we do the work
      */
-    function execute($comment)
+    function execute ($comment)
     {
         global $_CONF, $_USER, $_TABLES, $LANG_SX00;
 
@@ -52,16 +52,16 @@ class MTBlackList extends BaseCommand {
         /**
          * Include Blacklist Data
          */
-        $result = DB_Query("SELECT * FROM {$_TABLES['spamx']} WHERE name='MTBlacklist'", 1);
-        $nrows = DB_numRows($result);
+        $result = DB_Query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'", 1);
+        $nrows = DB_numRows ($result);
 
-        $ans = 0; //Found Flag
-        for ($i = 1;$i <= $nrows;$i++) {
-            $A = DB_fetchArray($result);
-            $val = $A['value'];
-            if (@preg_match("#$val#", html_entity_decode ($comment))) {
+        $ans = 0; // Found Flag
+        for ($i = 1; $i <= $nrows; $i++) {
+            list ($val) = DB_fetchArray ($result);
+            if (@preg_match ("#$val#i", html_entity_decode ($comment))) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] . $uid . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log ($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] .
+                           $uid . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
                 break;
             } 
         } 

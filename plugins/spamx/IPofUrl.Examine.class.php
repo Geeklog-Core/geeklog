@@ -40,6 +40,12 @@ class IPofUrl extends BaseCommand {
     {
         global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
+
         /**
          * Check for IP of url in blacklist
          */
@@ -47,20 +53,21 @@ class IPofUrl extends BaseCommand {
         * regex to find urls $2 = fqd
         */
         $regx = '(ftp|http|file)://([^/\\s]+)';
-        $num = preg_match_all("#{$regx}#",html_entity_decode($comment),$urls);
+        $num = preg_match_all ("#{$regx}#", html_entity_decode ($comment), $urls);
 
-        $result = DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
-        $nrows = DB_numRows($result);
+        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='IPofUrl'", 1);
+        $nrows = DB_numRows ($result);
 
         $ans = 0;
-        for($j = 1;$j <= $nrows;$j++) {
-            $A = DB_fetchArray($result);
-            $val = $A['value'];
-            for ($i=0;$i<$num;$i++) {
-              $ip = gethostbyname($urls[2][$i]);
+        for ($j = 1; $j <= $nrows; $j++) {
+            list ($val) = DB_fetchArray ($result);
+            for ($i = 0; $i < $num; $i++) {
+              $ip = gethostbyname ($urls[2][$i]);
               if ($val == $ip) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['foundspam'] . $urls[2][$i] . $LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log ($LANG_SX00['foundspam'] . $urls[2][$i] .
+                           $LANG_SX00['foundspam2'] . $uid .
+                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
               }
             }

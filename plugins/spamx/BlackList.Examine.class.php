@@ -36,9 +36,9 @@ class BlackList extends BaseCommand {
     /**
      * Here we do the work
      */
-    function execute($comment)
+    function execute ($comment)
     {
-        global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
+        global $_CONF, $_TABLES, $_USER, $LANG_SX00;
 
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $uid = $_USER['uid'];
@@ -49,21 +49,22 @@ class BlackList extends BaseCommand {
         /**
          * Include Blacklist Data
          */
-        $result = DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='Personal'", 1);
-        $nrows = DB_numRows($result);
+        $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='Personal'", 1);
+        $nrows = DB_numRows ($result);
 
         $ans = 0;
-        for($i = 1;$i <= $nrows;$i++) {
-            $A = DB_fetchArray($result);
-            $val = $A['value'];
-            if (preg_match("#$val#", html_entity_decode ($comment))) {
+        for ($i = 1; $i <= $nrows; $i++) {
+            list ($val) = DB_fetchArray ($result);
+            if (preg_match ("#$val#i", html_entity_decode ($comment))) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $uid . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log ($LANG_SX00['foundspam'] . $val .
+                           $LANG_SX00['foundspam2'] . $uid .
+                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
-            } 
-        } 
+            }
+        }
         return $ans;
-    } 
-} 
+    }
+}
 
 ?>

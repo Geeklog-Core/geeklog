@@ -93,7 +93,7 @@ $LANG_SX00 = array (
 	'note4'		=> 'revenez ici et exécutez SpamX pour vérifier les derniers commentaires.</li></ul>Les commentaires ',
 	'note5'		=> 'sont vérifiés à partir des plus récents -- vérifier plus de commentaires ',
 	'note6'		=> 'nécessite plus de temps pour la vérification</p>',
-	'masshead'	=> '<hr><center><h1>Suppression de commentaires en lot</h1></center>',
+	'masshead'	=> '<hr><h1 align="center">Suppression de commentaires en lot</h1>',
 	'comdel'	=> ' commentaires supprimés.',
     'initial_Pimport' => '<p>Importer Liste Noire Personnelle"',
     'initial_import' => 'Importer Liste Noire Principale Originale',
@@ -103,13 +103,26 @@ $LANG_SX00 = array (
     'documentation' => 'Documentation du Plugin SpamX',
     'emailmsg' => "Un nouveau commentaire indésirable a été envoyé à \"%s\"\nUser UID:\"%s\"\n\nContent:\"%s\"",
     'emailsubject' => 'Spam post at %s',
-    'plugin_name' => 'SpamX'
+    'plugin_name' => 'SpamX',
+    'headers' => 'Request headers:',
+
+    'stats_headline' => 'SpamX Statistics',
+    'stats_page_title' => 'Blacklist',
+    'stats_entries' => 'Entries',
+    'stats_mtblacklist' => 'MT-Blacklist',
+    'stats_pblacklist' => 'Personal Blacklist',
+    'stats_ip' => 'Blocked IPs',
+    'stats_ipofurl' => 'Blocked by IP of URL',
+    'stats_deleted' => 'Posts deleted as spam'
 );
 
 
-/* Define Messages that are shown when SPAMX module action is taken */
+/* Define Messages that are shown when SpamX module action is taken */
 $PLG_spamx_MESSAGE128 = 'Commentaire indésirable détecté et Commentaire ou Message supprimé.';
 $PLG_spamx_MESSAGE8   = 'Commentaire indésirable détecté et Commentaire supprimé. Courriel envoyé à l\Administrateur.';
 
+// Messages for the plugin upgrade
+$PLG_spamx_MESSAGE3001 = 'SpamX plugin upgraded successfully.';
+$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the SpamX plugin.';
 
 ?>

@@ -60,9 +60,9 @@ require_once($_CONF['path'] . 'plugins/spamx/functions.inc');
 // Change these to match your plugin
 //
 
-$pi_name = 'spamx';             // Plugin name  Must be 15 chars or less
-$pi_version = '1.0.1';          // Plugin Version
-$gl_version = '1.3.10';         // GL Version plugin for
+$pi_name = 'spamx';                   // Plugin name  Must be 15 chars or less
+$pi_version = $_SPX_CONF['version'];  // Plugin Version
+$gl_version = '1.3.10';               // min. GL Version the plugin is for
 $pi_url = 'http://www.pigstye.net/gplugs/staticpages/index.php/spamx';      // Plugin Homepage
 
 //
@@ -89,7 +89,8 @@ $DEFVALUES = array();
 $DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
 $DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
 $DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
-$DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
+
+$DEFVALUES[] = "INSERT INTO {$_TABLES['vars']} VALUES ('spamx.counter', '0')";
  
 //
 // Security Feature to add
@@ -101,12 +102,12 @@ $DEFVALUES[]="INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 //
 
 $NEWFEATURE = array();
-$NEWFEATURE['spamx.admin']="spamx Admin";
+$NEWFEATURE['spamx.admin']='spamx Admin';
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the spamx install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$HTTP_SERVER_VARS['REMOTE_ADDR']}",1);
+    COM_errorLog("Someone has tried to illegally access the spamx install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$_SERVER['REMOTE_ADDR']}",1);
     $display = COM_siteHeader();
     $display .= COM_startBlock($LANG_SX00['access_denied']);
     $display .= $LANG_SX00['access_denied_msg'];
@@ -244,13 +245,13 @@ $T->set_var('cgiurl', $_CONF['site_admin_url'] . '/plugins/spamx/install.php');
 $T->set_var('admin_url', $_CONF['site_admin_url'] . '/plugins/spamx/index.php');
 $T->set_var('plugin_name', $LANG_SX00['plugin_name']);
 
-if ($HTTP_POST_VARS['action'] == 'install') {
+if ($_POST['action'] == 'install') {
     if (plugin_install_spamx()) {
         $T->set_var('installmsg1',$LANG_SX00['install_success']);
     } else {
         $T->set_var('installmsg1',$LANG_SX00['install_failed']);
     }
-} else if ($HTTP_POST_VARS['action'] == "uninstall") {
+} else if ($_POST['action'] == "uninstall") {
    plugin_uninstall_spamx('installed');
    $T->set_var('installmsg1',$LANG_SX00['uninstall_msg']);
 }

@@ -94,7 +94,7 @@ $LANG_SX00 = array (
 	'note4'		=> 'torna qui a fai controllare a SpamX se gli ultimi commenti sono spam.</li></ul>I commenti ',
 	'note5'		=> 'vengono controllati dal pi&ugrave; recente al meno recente -- controllare pi&ugrave; commenti ',
 	'note6'		=> 'richiede pi&ugrave; tempo per il controllo</p>',
-	'masshead'	=> '<hr><center><h1>Eliminazione in Blocco Commenti Spam</h1></center>',
+	'masshead'	=> '<hr><h1 align="center">Eliminazione in Blocco Commenti Spam</h1>',
 	'comdel'	=> ' commenti eliminati.',
     'initial_Pimport' => '<p>Importazione Blacklist Personale"',
     'initial_import' => 'Importazione Iniziale MT-Blacklist',
@@ -104,13 +104,26 @@ $LANG_SX00 = array (
     'documentation' => 'Documentazione Plugin SpamX',
     'emailmsg' => "Un nuovo commento spam &egrave; stato inviato su \"%s\"\nUID utente:\"%s\"\n\nContenuto:\"%s\"",
     'emailsubject' => 'Spam post at %s',
-    'plugin_name' => 'SpamX'
+    'plugin_name' => 'SpamX',
+    'headers' => 'Request headers:',
+
+    'stats_headline' => 'SpamX Statistics',
+    'stats_page_title' => 'Blacklist',
+    'stats_entries' => 'Entries',
+    'stats_mtblacklist' => 'MT-Blacklist',
+    'stats_pblacklist' => 'Personal Blacklist',
+    'stats_ip' => 'Blocked IPs',
+    'stats_ipofurl' => 'Blocked by IP of URL',
+    'stats_deleted' => 'Posts deleted as spam'
 );
 
 
-/* Define Messages that are shown when SPAMX module action is taken */
-$PLG_spamx_MESSAGE128 = 'SPAM identificato ed il Commento o Messaggio &egrave; stato eliminato.';
-$PLG_spamx_MESSAGE8   = 'SPAM identificato. E-mail inviata all\'amministratore.';
+/* Define Messages that are shown when SpamX module action is taken */
+$PLG_spamx_MESSAGE128 = 'Spam identificato ed il Commento o Messaggio &egrave; stato eliminato.';
+$PLG_spamx_MESSAGE8   = 'Spam identificato. E-mail inviata all\'amministratore.';
 
+// Messages for the plugin upgrade
+$PLG_spamx_MESSAGE3001 = 'SpamX plugin upgraded successfully.';
+$PLG_spamx_MESSAGE3002 = 'Failed to upgrade the SpamX plugin.';
 
 ?>

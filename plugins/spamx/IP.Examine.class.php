@@ -31,19 +31,26 @@ class IP extends BaseCommand {
     {
         global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
+
         /**
          * Include Blacklist Data
          */
-        $result = DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='IP'", 1);
+        $result = DB_query("SELECT value FROM {$_TABLES['spamx']} WHERE name='IP'", 1);
         $nrows = DB_numRows($result);
 
         $ans = 0;
-        for($i = 1;$i <= $nrows;$i++) {
-            $A = DB_fetchArray($result);
-            $val = $A['value'];
+        for ($i = 1; $i <= $nrows; $i++) {
+            list ($val) = DB_fetchArray ($result);
             if ($val = $_SERVER['REMOTE_ADDR']) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log ($LANG_SX00['foundspam'] . $val .
+                           $LANG_SX00['foundspam2'] . $uid . 
+                           $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
             }
         }
