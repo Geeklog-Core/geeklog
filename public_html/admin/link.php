@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.13 2002/01/25 18:28:03 tony_bibbs Exp $
+// $Id: link.php,v 1.14 2002/04/11 22:14:01 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -72,6 +72,7 @@ function editlink($mode, $lid = '')
     $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
     $link_templates->set_file('editor','linkeditor.thtml');
     $link_templates->set_var('site_url', $_CONF['site_url']);
+    $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
 	if ($mode <> 'editsubmission' AND !empty($lid)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
 		$A = DB_fetchArray($result);
@@ -212,7 +213,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 		if ($categorydd != $LANG23[7] && !empty($categorydd)) {
 			$category = $categorydd;
 		} else if ($categorydd != $LANG23[7]) {
-			echo COM_refresh($_CONF['site_url'] . '/admin/link.php');
+			echo COM_refresh($_CONF['site_admin_url'] . '/link.php');
 		}
 
 		// Convert array values to numeric permission values
@@ -244,6 +245,7 @@ function listlinks()
     $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
     $link_templates->set_file(array('list'=>'linklist.thtml', 'row'=>'listitem.thtml'));
     $link_templates->set_var('site_url', $_CONF['site_url']);
+    $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $link_templates->set_var('layout_url', $_CONF['layout_url']);
     $link_templates->set_var('lang_newlink', $LANG23[18]);
     $link_templates->set_var('lang_adminhome', $LANG23[19]);

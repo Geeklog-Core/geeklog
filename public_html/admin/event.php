@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.16 2002/04/11 18:01:29 tony_bibbs Exp $
+// $Id: event.php,v 1.17 2002/04/11 22:14:00 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -80,6 +80,7 @@ function editevent($mode, $A)
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
+    $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
 
 	if ($mode <> 'editsubmission' AND !empty($eid)) {
 		//$result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
@@ -510,6 +511,7 @@ function listevents()
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
     $event_templates->set_var('site_url', $_CONF['site_url']);
+    $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $event_templates->set_var('lang_newevent', $LANG22[18]);
     $event_templates->set_var('lang_adminhome', $LANG22[19]);
     $event_templates->set_var('lang_instructions', $LANG22[12]);
@@ -549,7 +551,8 @@ function listevents()
 # MAIN
 switch ($mode) {
 	case 'delete':
-		DB_delete($_TABLES['events'],'eid',$eid,'/admin/event.php?msg=18');
+		DB_delete($_TABLES['events'],'eid',$eid);
+        echo COM_refresh($_CONF['site_admin_url'] . '/event.php?msg=18');
 		break;
 	case 'save':
 		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode);

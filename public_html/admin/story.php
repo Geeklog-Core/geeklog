@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.31 2002/04/10 20:32:24 tony_bibbs Exp $
+// $Id: story.php,v 1.32 2002/04/11 22:14:01 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -134,6 +134,7 @@ function storyeditor($sid, $mode = '')
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
     $story_templates->set_var('site_url', $_CONF['site_url']);
+    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     if (empty($A['unixdate'])) {
         if ($A['ampm'] == 'pm') {
             $A['publish_hour'] = $A['publish_hour'] + 12;
@@ -305,6 +306,7 @@ function liststories($page="1")
 
     $story_templates->set_var('layout_url', $_CONF['layout_url']);
     $story_templates->set_var('site_url', $_CONF['site_url']);
+    $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $story_templates->set_var('lang_newstory', $LANG24[43]);
     $story_templates->set_var('lang_adminhome', $LANG24[44]);
     $story_templates->set_var('lang_instructions', $LANG24[23]);
@@ -364,13 +366,13 @@ function liststories($page="1")
             $prevpage = $page - 1;
             $nextpage = $page + 1;
             if ($pagestart >= 50) {
-                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&amp;page='
+                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_admin_url'] . '/story.php?mode=list&amp;page='
                     . $prevpage . '">' . $LANG24[1] . '</a> ');
             } else {
 	        $story_templates->set_var('previouspage_link','');
             }
             if ($pagestart <= (DB_count($_TABLES['stories']) - 50)) {
-                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&amp;page='
+                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_admin_url'] . '/story.php?mode=list&amp;page='
                     . $nextpage . '">' . $LANG24[2] . '</a> ');
             } else {
 	        $story_templates->set_var('nextpage_link','');

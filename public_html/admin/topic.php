@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.13 2002/03/16 13:27:27 dhaun Exp $
+// $Id: topic.php,v 1.14 2002/04/11 22:14:01 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -88,6 +88,7 @@ function edittopic($tid='')
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file('editor','topiceditor.thtml');
     $topic_templates->set_var('site_url', $_CONF['site_url']);
+    $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     if (!empty($tid)) {
         $topic_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
     }
@@ -183,6 +184,7 @@ function listtopics() {
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
     $topic_templates->set_var('site_url', $_CONF['site_url']);
+    $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     $topic_templates->set_var('lang_newtopic', $LANG27[17]);
     $topic_templates->set_var('lang_adminhome', $LANG27[18]);

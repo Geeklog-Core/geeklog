@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.26 2002/04/10 18:51:11 tony_bibbs Exp $Scripts cannot
+// $Id: user.php,v 1.27 2002/04/11 22:14:01 tony_bibbs Exp $Scripts cannot
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -96,6 +96,7 @@ function edituser($uid = '', $msg = '')
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file(array('form'=>'edituser.thtml','groupedit'=>'groupedit.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
 	if ($A['uid'] > 1) { 
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
@@ -222,7 +223,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 		}
         $errors = DB_error();
 		if (empty($errors)) { 
-			echo COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
+			echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
 		} else {
 			$retval .= COM_siteHeader('menu');
             $retval .= COM_errorLog('Error in saveusers in admin/users.php');
@@ -255,6 +256,7 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file(array('list'=>'userslist.thtml','row'=>'listitem.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_newuser', $LANG28[15]);
     $user_templates->set_var('lang_batchadd',$LANG28[23]);
@@ -304,9 +306,9 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
 	}
     if (!empty($query)) {
         $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_url'] . '/admin/user.php?q=' . urlencode($query) . '&amp;query_limit=' . $query_limit;
+        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . '&amp;query_limit=' . $query_limit;
     } else {
-        $base_url = $_CONF['site_url'] . '/admin/user.php?query_limit=' . $query_limit;
+        $base_url = $_CONF['site_admin_url'] . '/user.php?query_limit=' . $query_limit;
     }
 
     $user_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
@@ -454,7 +456,7 @@ function emailpassword($username)
 
 function display_form()
 {
-	$retval .="<FORM action=".$_CONF['site_url']."/admin/user.php method=post enctype=multipart/form-data>
+	$retval .="<FORM action=".$_CONF['site_admin_url']."/user.php method=post enctype=multipart/form-data>
 			Path:<INPUT type=file name=importfile size=40>
 			<INPUT type=hidden name=mode value=import>
 			<INPUT type=submit name=submit value=Import></FORM>";

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.26 2002/04/09 19:59:46 tony_bibbs Exp $
+// $Id: block.php,v 1.27 2002/04/11 22:14:00 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -73,6 +73,7 @@ function editdefaultblock($A,$access)
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','defaultblockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('block_id', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);
@@ -163,6 +164,7 @@ function editblock($bid='')
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('start_block_editor', COM_startBlock($LANG21[3]));
 		
     if ($A['type'] != 'layout') {
@@ -386,6 +388,7 @@ function listblocks()
 
     $retval .= COM_startBlock($LANG21[19]);
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('lang_newblock', $LANG21[46]);
     $block_templates->set_var('lang_adminhome', $LANG21[47]);

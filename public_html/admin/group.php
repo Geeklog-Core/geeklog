@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.12 2002/03/05 19:38:54 tony_bibbs Exp $
+// $Id: group.php,v 1.13 2002/04/11 22:14:00 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -71,6 +71,7 @@ function editgroup($grp_id = '')
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor','groupeditor.thtml');
     $group_templates->set_var('site_url', $_CONF['site_url']);
+    $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('lang_save', $LANG_ACCESS[save]);
     $group_templates->set_var('lang_cancel', $LANG_ACCESS[cancel]);
 
@@ -326,7 +327,7 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
             DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($grp_id, 1)");
         }
 
-		echo COM_refresh($_CONF['site_url'] . '/admin/group.php?msg=13');
+		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=13');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_startBlock($LANG_ACCESS[missingfields]);
@@ -351,6 +352,7 @@ function listgroups()
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file(array('list'=>'grouplist.thtml','row'=>'listitem.thtml'));
     $group_templates->set_var('site_url', $_CONF['site_url']);
+    $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $group_templates->set_var('layout_url', $_CONF['layout_url']);
     $group_templates->set_var('lang_newgroup', $LANG_ACCESS[newgroup]);
     $group_templates->set_var('lang_adminhome', $LANG_ACCESS[adminhome]);
@@ -386,7 +388,8 @@ function listgroups()
 switch ($mode) {
 	case "delete":
 		DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
-		DB_delete($_TABLES['groups'],'grp_id',$grp_id,'/admin/group.php?msg=14');
+		DB_delete($_TABLES['groups'],'grp_id',$grp_id);
+        echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=14');
 		break;
 	case 'save':
 		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);

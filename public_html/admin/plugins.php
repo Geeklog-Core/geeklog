@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.19 2002/03/07 22:19:21 tony_bibbs Exp $
+// $Id: plugins.php,v 1.20 2002/04/11 22:14:01 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -84,6 +84,7 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file('editor', 'editor.thtml');
     $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13]));
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
@@ -130,6 +131,7 @@ function listplugins($page = 1)
     $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
     $plg_templates->set_file(array('list'=>'pluginlist.thtml','row'=>'listitem.thtml'));
     $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $plg_templates->set_var('layout_url', $_CONF['layout_url']);
     $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5]));
     $plg_templates->set_var('lang_newplugin', $LANG32[14]);

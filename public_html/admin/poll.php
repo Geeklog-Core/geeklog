@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.11 2002/04/11 17:26:37 tony_bibbs Exp $
+// $Id: poll.php,v 1.12 2002/04/11 22:14:01 tony_bibbs Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -132,7 +132,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
         COM_errorLog('**** Leaving savepoll() in admin/poll.php ***');
     }
 
-    echo COM_refresh($_CONF['site_url'] . '/admin/poll.php?msg=19');
+    echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=19');
 }
 
 /**
@@ -154,6 +154,7 @@ function editpoll($qid='')
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('editor'=>'polleditor.thtml','answer'=>'pollansweroption.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
+    $poll_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
 
     if (!empty($qid)) {
         $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
@@ -263,6 +264,7 @@ function listpoll()
     $poll_templates = new Template($_CONF['path_layout'] . 'admin/poll');
     $poll_templates->set_file(array('list'=>'polllist.thtml','row'=>'listitem.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
+    $poll_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $poll_templates->set_var('layout_url', $_CONF['layout_url']);
     $poll_templates->set_var('lang_newpoll', $LANG25[23]);
     $poll_templates->set_var('lang_adminhome', $LANG25[24]);
@@ -331,7 +333,8 @@ case 'save':
 case 'delete':
     if (!empty($qid)) {
         DB_delete($_TABLES['pollquestions'],'qid',$qid);
-        DB_delete($_TABLES['pollanswers'],'qid',$qid,'/admin/poll.php?msg=20');
+        DB_delete($_TABLES['pollanswers'],'qid',$qid);
+        echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
     }
 case cancel:
 default:

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.10 2001/12/13 20:47:17 tony_bibbs Exp $
+// $Id: auth.inc.php,v 1.11 2002/04/11 22:14:00 tony_bibbs Exp $
 
 // MAIN
 
@@ -64,7 +64,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
         }
     }
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
-        $display .= COM_refresh($_CONF['site_url'] . '/admin/moderation.php');
+        $display .= COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.17 2002/04/11 17:21:15 tony_bibbs Exp $
+// $Id: moderation.php,v 1.18 2002/04/11 22:14:01 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -59,55 +59,55 @@ function commandcontrol()
     $retval .= COM_startBlock($LANG29[34]);
 
     if (SEC_hasRights('story.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/story.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/story.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/story.gif');
         $admin_templates->set_var('option_label', $LANG01[11]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('block.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/block.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/block.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/block.gif');
         $admin_templates->set_var('option_label',$LANG01[12]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('topic.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/topic.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/topic.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/topic.gif');
         $admin_templates->set_var('option_label', $LANG01[13]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('link.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/link.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/link.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/link.gif');
         $admin_templates->set_var('option_label', $LANG01[14]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('event.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/event.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/event.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/event.gif');
         $admin_templates->set_var('option_label', $LANG01[15]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('poll.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/poll.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/poll.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/poll.gif');
         $admin_templates->set_var('option_label', $LANG01[16]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('user.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/user.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/user.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/user.gif');
         $admin_templates->set_var('option_label', $LANG01[17]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('group.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/group.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/group.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/group.gif');
         $admin_templates->set_var('option_label', $LANG01[96]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('plugin.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/plugins.php');
+        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/plugins.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/plugins.gif');
         $admin_templates->set_var('option_label', $LANG01[98]);
         $admin_templates->parse('cc_main_options','ccitem',true);
@@ -217,7 +217,7 @@ function itemlist($type)
         $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
         $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
                                                'itemrows'=>'itemlistrows.thtml'));
-        $mod_templates->set_var('form_action', $_CONF['site_url'] . '/admin/moderation.php');
+        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
         $mod_templates->set_var('item_type', $type);
         $mod_templates->set_var('num_rows', $nrows);
         $mod_templates->set_var('heading_col1', $H[0]);
@@ -232,10 +232,10 @@ function itemlist($type)
                 $A[2] = strftime("%c",$A[2]);
             }
             if ($isplugin)  {
-                $mod_templates->set_var('edit_submission_url', $_CONF['site_url'] . '/admin/plugins/' . $type . '/' 
+                $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/plugins/' . $type . '/' 
                     . $type . '.php?mode=editsubmission&id=' . $A['id']);
             } else {
-                $mod_templates->set_var('edit_submission_url', $_CONF['site_url'] . '/admin/' .  $type
+                $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/' .  $type
                     . '.php?mode=editsubmission&id=' . $A['id']); 
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);

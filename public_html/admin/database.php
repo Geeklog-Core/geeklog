@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.3 2002/02/27 16:34:33 tony_bibbs Exp $
+// $Id: database.php,v 1.4 2002/04/11 22:14:00 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');

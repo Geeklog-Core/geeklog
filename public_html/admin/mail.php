@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.6 2002/04/03 20:49:47 tony_bibbs Exp $
+// $Id: mail.php,v 1.7 2002/04/11 22:14:01 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -66,6 +66,7 @@ function display_form()
     $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
     $mail_templates->set_file(array('form'=>'mailform.thtml'));
     $mail_templates->set_var('site_url', $_CONF['site_url']);
+    $mail_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $mail_templates->set_var('startblock_email',COM_startBlock($LANG31[1]));
     $mail_templates->set_var('php_self', $PHP_SELF);
     $mail_templates->set_var('lang_note', $LANG31[19]);
