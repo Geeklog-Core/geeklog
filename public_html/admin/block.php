@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.49 2003/03/28 15:42:43 dhaun Exp $
+// $Id: block.php,v 1.50 2003/06/07 15:19:27 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -177,6 +177,8 @@ function editblock($bid='')
         $A['bid'] = 0;
         $A['blockorder'] = 0;
         $A['owner_id'] = $_USER['uid'];
+        $A['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                     "grp_name = 'Block Admin'");
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;
