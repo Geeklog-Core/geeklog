@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.11 2001/12/13 22:41:14 tony_bibbs Exp $
+// $Id: link.php,v 1.12 2002/01/03 21:45:47 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -244,6 +244,7 @@ function listlinks()
     $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
     $link_templates->set_file(array('list'=>'linklist.thtml', 'row'=>'listitem.thtml'));
     $link_templates->set_var('site_url', $_CONF['site_url']);
+    $link_templates->set_var('layout_url', $_CONF['layout_url']);
     $link_templates->set_var('lang_newlink', $LANG23[18]);
     $link_templates->set_var('lang_adminhome', $LANG23[19]);
     $link_templates->set_var('lang_instructions', $LANG23[12]);
