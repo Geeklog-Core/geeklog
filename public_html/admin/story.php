@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.38 2002/04/22 15:23:46 tony_bibbs Exp $
+// $Id: story.php,v 1.39 2002/04/22 17:06:44 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -90,8 +90,6 @@ function storyeditor($sid = '', $mode = '')
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
-        print 'here';
-        exit;
         $A = DB_fetchArray($result);
         $A["commentcode"] = 0;
         $A["featured"] = 0;
