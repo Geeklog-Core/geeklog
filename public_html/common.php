@@ -1011,39 +1011,74 @@ function olderstuff() {
 ###############################################################################
 # Shows blocks based on order and topic
 
-function showblock($topic="") {
+function showblock($side,$topic="") {
 	global $CONF,$USER,$LANG21;
+
+	#Get user preferences on blocks
 	if (!empty($USER["uid"])) {
 		$result = dbquery("SELECT boxes FROM userindex WHERE uid = '{$USER["uid"]}'");
 		$U = mysql_fetch_array($result);
 	}
-	$sql	= "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date from blocks";
-	if (!empty($topic)) {
-		$sql .= " where tid = '$topic' OR (tid = 'All' AND type = 'normal')";
+
+	if ($side == "left") {
+		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM blocks WHERE onleft = 1";
 	} else {
-		$sql .= " where tid = 'All' AND type != 'layout'";
+		$sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM blocks WHERE onleft = 0";
 	}
+
+	if (!empty($topic)) {
+		$sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
+	} else {
+		$sql .= " AND tid = 'all' AND type != 'layout'";
+	}
+
 	if (!empty($U["boxes"])) {
 		$BOXES = explode(" ",$U["boxes"]);
 		$sql .= " AND (";
 		for ($i=0; $i<sizeof($BOXES); $i++) {
 			$sql .= "bid = '$BOXES[$i]' OR ";
 		}
-		$sql .= "bid = '-1') ";
+		$result = dbquery("SELECT bid FROM blocks WHERE title = 'User Block' OR title = 'Section Block'");
+		$nrows = mysql_num_rows($result);
+		for ($i=1;$i<=$nrows;$i++) {
+			$A = mysql_fetch_array($result);
+			$sql .= "bid = '" . $A["bid"] . "' OR ";
+		}
+		$sql .= "bid = '-1')";
 	} else {
-		$sql .= "AND blockorder < 10";
+		$sql .= " AND blockorder < 10";
 	}
-	$sql .= " ORDER BY blockorder asc";
+	$sql .= " ORDER BY blockorder,title asc";
 	$result	= dbquery($sql);
-	$nrows	= mysql_num_rows($result);
-	for ($i=0;$i<$nrows;$i++) {
+	$nrows = mysql_num_rows($result);	
+	for ($i=1;$i<=$nrows;$i++) {
 		$A = mysql_fetch_array($result);
 		if ($A["type"] == "portal") {
 			rdfcheck($A["bid"],$A["rdfurl"],$A["date"]);
 		}
-		if (($A["blockorder"] > $CONF["pollorder"]) && (empty($pollshown))) {
-			showpoll(60);
-			$pollshown = 1;
+		if ($A["type"] == "gldefault") {
+			switch ($A["title"]) {
+				case "User Block":
+					usermenu();
+					break;
+				case "Section Block":
+					startblock("Sections");
+					showtopics($topic);
+					endblock();
+					break;
+				case "Events Block":
+					printupcomingevents();
+					break;
+				case "Poll Block":
+					if (($A["blockorder"] > $CONF["pollorder"]) && (empty($pollshown))) {
+                        			showpoll(60);
+                        			$pollshown = 1;
+					}
+					break;
+				case "Whats New Block":
+					whatsnewblock();
+					break;
+			}
 		}
 		if ($A["type"] == "phpblock") {
                         $function = $A["phpblockfn"];
@@ -1064,9 +1099,9 @@ function showblock($topic="") {
 			endblock();
 		}
 	}
-	if ($pollshown != 1) {
-		showpoll(60);
-	}
+	#if ($pollshown != 1) {
+	#	showpoll(60);
+	#}
 }
 
 ###############################################################################
