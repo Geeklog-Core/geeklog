@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.70 2002/10/08 15:13:24 dhaun Exp $
+// $Id: story.php,v 1.71 2002/10/10 10:48:09 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -285,7 +285,8 @@ function storyeditor($sid = '', $mode = '')
     
     $A['title'] = str_replace('{','&#123;',$A['title']);
     $A['title'] = str_replace('}','&#125;',$A['title']);
-    $story_templates->set_var('story_title', stripslashes($A['title']));
+    $story_templates->set_var('story_title',
+            htmlspecialchars (stripslashes($A['title'])));
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
