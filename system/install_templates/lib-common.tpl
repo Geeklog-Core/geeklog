@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.30 2002/02/26 23:07:04 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.31 2002/03/01 16:35:21 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2213,28 +2213,30 @@ function COM_whatsNewBlock($help='',$title='')
     if ($nrows > 0) {
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-            $robtime = strftime("%D %T",$A['day']);
-            $itemlen = strlen($A['title']);
-            if ($A['cmt_type'] == 'story') {
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
-            } else {
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&aid=-1#comments">';
-            }
-			
-            // Trim the length if over 20 characters
-			
-            if ($itemlen > 20) {
-                $retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
-                if ($A['dups'] > 1) {
-                    $retval .= '[+' . $A['dups'] . ']';
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                $robtime = strftime("%D %T",$A['day']);
+                $itemlen = strlen($A['title']);
+                if ($A['cmt_type'] == 'story') {
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
+                } else {
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&aid=-1#comments">';
                 }
-                $retval .= '</a></li>' . LB;  
-            } else {
-                $retval .= '<li class="storyclose">' . $urlstart . $A['title'];
-                if ($A['dups'] > 1) {
-                    $retval .= '[+' . $A['dups'] . ']';
+			
+                // Trim the length if over 20 characters
+			
+                if ($itemlen > 20) {
+                    $retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
+                    if ($A['dups'] > 1) {
+                        $retval .= '[+' . $A['dups'] . ']';
+                    }
+                    $retval .= '</a></li>' . LB;  
+                } else {
+                    $retval .= '<li class="storyclose">' . $urlstart . $A['title'];
+                    if ($A['dups'] > 1) {
+                        $retval .= '[+' . $A['dups'] . ']';
+                    }
+                    $retval .= '</a></li>' . LB;
                 }
-                $retval .= '</a></li>' . LB;
             }
         }
     } else {
@@ -2259,29 +2261,30 @@ function COM_whatsNewBlock($help='',$title='')
     if ($nrows > 0) {
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-			
-            // Need to reparse the date from the link id
-            $myyear  = substr($A['lid'],0,4);
-            $mymonth = substr($A['lid'],4,2);
-            $myday   = substr($A['lid'],6,2);
-            $myhour  = substr($A['lid'],8,2);
-            $mymin   = substr($A['lid'],10,2);
-            $mysec   = substr($A['lid'],12,2);
-            $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-            $convtime = strtotime($newtime);
+		    if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {	
+                // Need to reparse the date from the link id
+                $myyear  = substr($A['lid'],0,4);
+                $mymonth = substr($A['lid'],4,2);
+                $myday   = substr($A['lid'],6,2);
+                $myhour  = substr($A['lid'],8,2);
+                $mymin   = substr($A['lid'],10,2);
+                $mysec   = substr($A['lid'],12,2);
+                $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
+                $convtime = strtotime($newtime);
 
-            if ($convtime > $desired) {
-                $itemlen = strlen($A['title']);
+                if ($convtime > $desired) {
+                    $itemlen = strlen($A['title']);
 
-                // Trim the length if over 16 characters, and strip the 'http://'
-                $foundone = 1;
+                    // Trim the length if over 16 characters, and strip the 'http://'
+                    $foundone = 1;
 
-                if ($itemlen > 16) {
-                    $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">' 
-                        . substr($A['title'],0,16) . '...</a></li>' . LB;
-                } else {
-                    $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">'
-                        . substr($A['title'],0,$itemlen) . '</a></li>' . LB;
+                    if ($itemlen > 16) {
+                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">' 
+                            . substr($A['title'],0,16) . '...</a></li>' . LB;
+                    } else {
+                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">'
+                            . substr($A['title'],0,$itemlen) . '</a></li>' . LB;
+                    }
                 }
             }
         }
