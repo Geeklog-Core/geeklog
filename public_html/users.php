@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.17 2002/01/09 22:22:52 tony_bibbs Exp $
+// $Id: users.php,v 1.18 2002/01/11 17:59:52 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -176,7 +176,8 @@ function createuser($username,$email)
 	
     if ($ucount == 0 && ecount == 0) {
         if (COM_isEmail($email)) {
-            DB_save($_TABLES['users'],'username,email',"'$username','$email'");
+            $regdate = strftime('%Y-%m-%d %H:%M:$S',time());
+            DB_save($_TABLES['users'],'username,email,regdate',"'$username','$email','$regdate'");
             $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
 
             // Add user to Logged-in group (i.e. members) and the All Users group (which includes
