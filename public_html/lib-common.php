@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.358 2004/08/13 08:54:49 dhaun Exp $
+// $Id: lib-common.php,v 1.359 2004/08/13 15:41:58 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3621,7 +3621,7 @@ function COM_olderStuff()
                 {
                     if( $day != 'noday' )
                     {
-                        $daylist = COM_makeList( $oldnews );
+                        $daylist = COM_makeList( $oldnews, 'list-older-stories' );
                         $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
                                                  '', $daylist );
                         $string .= $daylist . '<br>';
@@ -3642,7 +3642,7 @@ function COM_olderStuff()
 
         if( !empty( $oldnews ))
         {
-            $daylist = COM_makeList( $oldnews );
+            $daylist = COM_makeList( $oldnews, 'list-older-stories' );
             $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
             $string .= $daylist;
             $string = addslashes( $string );
@@ -4035,7 +4035,7 @@ function COM_rdfImport( $bid, $rdfurl )
 
         if( !$rdferror )
         {
-            $blockcontent = COM_makeList( $RDFheadlines );
+            $blockcontent = COM_makeList( $RDFheadlines, 'list-feed' );
             $RDFheadlines = array();
             $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", '',
                                           $blockcontent );
@@ -4220,10 +4220,12 @@ function COM_printUpcomingEvents( $help='', $title='' )
             $theRow = 1;           // Start with today!
             $oldDate1 = 'no_day';  // Invalid Date!
             $oldDate2 = 'last_d';  // Invalid Date!
+            $classname = 'list-personal-events';
             $headline = false;
         }
         else
         {
+            $classname = 'list-site-events';
             $headline = false;
         }
         if( $_CONF['personalcalendars'] == 0 )
@@ -4283,7 +4285,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
                     {
                         if( !empty( $newevents ))
                         {
-                             $retval .= COM_makeList( $newevents );
+                             $retval .= COM_makeList( $newevents, $classname );
                         }
 
                         $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
@@ -4315,7 +4317,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
 
                 if( !empty( $newevents ))
                 {
-                    $retval .= COM_makeList( $newevents );
+                    $retval .= COM_makeList( $newevents, $classname );
                     $newevents = array();
                 }
             }
@@ -4657,7 +4659,7 @@ function COM_whatsNewBlock( $help='', $title='' )
                 $newcomments[] = $urlstart . $acomment . '</a>';
             }
 
-            $retval .= COM_makeList( $newcomments );
+            $retval .= COM_makeList( $newcomments, 'list-new-comments' );
         }
         else
         {
@@ -4729,7 +4731,7 @@ function COM_whatsNewBlock( $help='', $title='' )
         }
         else
         {
-            $retval .= COM_makeList( $newlinks );
+            $retval .= COM_makeList( $newlinks, 'list-new-links' );
         }
     }
 
@@ -4746,7 +4748,7 @@ function COM_whatsNewBlock( $help='', $title='' )
                         . $bylines[$i] . '</small><br>';
                 if( is_array( $content[$i] ))
                 {
-                    $retval .= COM_makeList( $content[$i] );
+                    $retval .= COM_makeList( $content[$i], 'list-new-plugins' );
                 }
                 else
                 {
@@ -5283,15 +5285,25 @@ function COM_getMinuteOptions( $selected = '' )
 * @return   string  HTML unordered list of array items
 */
 
-function COM_makeList( $listofitems )
+function COM_makeList( $listofitems, $classname = '' )
 {
     global $_CONF;
 
     $list = new Template( $_CONF['path_layout'] );
     $list->set_file( array( 'list'     => 'list.thtml',
                             'listitem' => 'listitem.thtml' ));
-    $list->set_var( 'layout_url', $_CONF['layout_url'] );
     $list->set_var( 'site_url', $_CONF['site_url'] );
+    $list->set_var( 'layout_url', $_CONF['layout_url'] );
+    if( empty( $classname ))
+    {
+        $list->set_var( 'list_class', '' );
+        $list->set_var( 'list_class_name', '' );
+    }
+    else
+    {
+        $list->set_var( 'list_class', 'class="' . $classname . '"' );
+        $list->set_var( 'list_class_name', $classname );
+    }
 
     foreach( $listofitems as $oneitem )
     {
@@ -5547,7 +5559,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
     $related = '';
     if( sizeof( $rel ) > 0 )
     {
-        $related = COM_checkWords( COM_makeList( $rel ));
+        $related = COM_checkWords( COM_makeList( $rel, 'list-whats-related' ));
     }
 
     return( $related );

@@ -3,6 +3,14 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added a second parameter to function COM_makeList that is used as a CSS
+  class name in the list it returns (use {list_class_name} to get the actual
+  class name, and {list_class} to get class="classname"). Changed the existing
+  calls to COM_makeList to include class names, so that you can now use the
+  following class names in your stylesheet to style lists: list-feed,
+  list-new-comments, list-new-links, list-new-plugins, list-older-stories,
+  list-personal-events, list-site-events, list-story-options, list-whats-related
+  (the names should be self-explanatory) [Dirk]
 - Moved the docs directory to public_html/docs and added a link to it from the
   Admin's block (can be switched off in config.php by setting the new option
   $_CONF['link_documentation'] = 0) [Dirk]

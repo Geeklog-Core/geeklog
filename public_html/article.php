@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.49 2004/07/18 11:53:35 dhaun Exp $
+// $Id: article.php,v 1.50 2004/08/13 15:41:58 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -199,7 +199,7 @@ if ($A['count'] > 0) {
             if (count ($story_options) > 0) {
                 $optionsblock = COM_startBlock ($LANG11[4], '',
                         COM_getBlockTemplate ('story_options_block', 'header'))
-                    . COM_makeList ($story_options)
+                    . COM_makeList ($story_options, 'list-story-options')
                     . COM_endBlock (COM_getBlockTemplate ('story_options_block',
                         'footer'));
             } else {
