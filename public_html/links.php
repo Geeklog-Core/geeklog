@@ -5,15 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | links.php                                                                 |
+// |                                                                           |
 // | This is the links page                                                    |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001,2002 by the following authors:                    |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
-// |          Tom Willett      - tomw@pigstye.net                              |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Tom Willett       - tomw@pigstye.net                             |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.28 2003/09/07 09:32:14 dhaun Exp $
+// $Id: links.php,v 1.29 2003/10/11 12:38:42 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -58,28 +58,15 @@ if (empty ($_USER['username']) &&
     $linklist = new Template($_CONF['path_layout'] . 'links');
     $linklist->set_file(array('linklist'=>'links.thtml','catlinks'=>'categorylinks.thtml','link'=>'linkdetails.thtml','catnav'=>'categorynavigation.thtml','catrow'=>'categoryrow.thtml','catcol'=>'categorycol.thtml','actcol'=>'categoryactivecol.thtml','pagenav'=>'pagenavigation.thtml'));
 
-    $permsql = "(";
-    if (!empty ($_USER['uid'])) {
-        $groupList = '';
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-        $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $permsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $permsql .= "(perm_members >= 2) OR ";
-    }
-    $permsql .= "(perm_anon >= 2))";
-
     if ($_CONF['linkcols'] > 0) {
-        $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} WHERE {$permsql} ORDER BY category");
+        $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var ('lang_categories', $LANG23[14]);
             for ($i = 1; $i <= $nrows; $i++) {
                 $C = DB_fetchArray($result);
                 $cat = addslashes ($C['category']);
-                $result1 = DB_query ("SELECT count(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}' AND {$permsql}");
+                $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'" . COM_getPermSQL ('AND'));
                 $D = DB_fetchArray($result1);
                 if (empty ($C['category'])) {
                     $linklist->set_var ('category_name', $LANG23[7]);
@@ -114,23 +101,25 @@ if (empty ($_USER['username']) &&
     $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('lang_addalink', $LANG06[3]);
 
-    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} WHERE ";
+    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']}";
     if ($_CONF['linkcols'] > 0) {
         if (isset ($category)) {
-            $sql .= "category = '$category' AND ";
+            $sql .= " WHERE category = '$category'";
         } else {
-            $sql .= "category = '' AND ";
+            $sql .= " WHERE category = ''";
         }
+        $sql .= COM_getPermSQL ('AND');
+    } else {
+        $sql .= COM_getPermSQL ();
     }
-    $sql .= "{$permsql} ";
-    $sql .= "ORDER BY category asc,title";
+    $sql .= " ORDER BY category asc,title";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows == 0) {
         $page = 0;
         $end = 10;
 
-        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE (hits > 0) AND ({$permsql}) ORDER BY hits DESC LIMIT 10");
+        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var('link_details','');
