@@ -116,7 +116,7 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
 */
 function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='') 
 {
-    global $_CONF,$LANG12, $_STATES;
+    global $_CONF,$LANG12, $_STATES, $_USER;
 
     $retval = '';
 
@@ -137,7 +137,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->set_var('type_options', $catdd);
     $eventform->set_var('lang_addeventto',$LANG12[38]);
     $eventform->set_var('lang_mastercalendar',$LANG12[39]);
-    if ($_CONF['personalcalendars'] == 1) {
+    if ($_CONF['personalcalendars'] == 1 AND $_USER['uid'] > 1) {
         $eventform->set_var('lang_personalcalendar',$LANG12[40]);
         if ($mode == 'personal') {
             $eventform->set_var('personal_option', '<option value="personal" selected="SELECTED">' . $LANG12[40] . '</option>');
