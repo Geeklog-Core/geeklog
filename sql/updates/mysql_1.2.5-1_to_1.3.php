@@ -219,7 +219,6 @@ $_SQL[109] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_ui
 $_SQL[110] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (12,NULL,1) ";
 $_SQL[111] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,NULL,11) ";
 $_SQL[112] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (2,NULL,11) ";
-$_SQL[137] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (1,NULL,14) ";
 $_SQL[138] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (10,LAST_INSERT_ID(),NULL) ";
 $_SQL[139] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (9,LAST_INSERT_ID(),NULL) ";
 $_SQL[140] = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid, ug_grp_id) VALUES (8,LAST_INSERT_ID(),NULL) ";
