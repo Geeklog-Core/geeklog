@@ -626,14 +626,13 @@ function showtopics($topic="") {
 		if ($A["tid"]==$topic) {
 			print $A["topic"];
 			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
-				print "(";
-				if ($CONF["showstorycount"] && ($USER["seclev"] >= $CONF["storyadmin"] )) {
+				print " (";
+				if ($CONF["showstorycount"]) {
 					print dbcount("stories","tid",$A["tid"]);
-                }
+                		}
 
-             if ($CONF["showstorycount"] && ($USER["seclev"] >= $CONF["storyadmin"] )) {
-					if ($CONF["showstorycount"])
-						print "/";
+             			if ($CONF["showstorycount"]) {
+					if ($CONF["showstorycount"]) print "/";
 					print dbcount("storysubmission","tid",$A["tid"]);
 				}
 				print ")";
