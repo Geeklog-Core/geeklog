@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Let users submit stories, links, and events.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.80 2004/12/19 10:08:57 dhaun Exp $
+// $Id: submit.php,v 1.81 2005/01/22 18:14:41 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -488,6 +488,16 @@ function savestory ($A)
     $A['title'] = COM_stripslashes ($A['title']);
     $A['introtext'] = COM_stripslashes ($A['introtext']);
 
+    // pseudo-formatted story text for the spam check
+    $spamcheck = '<h1>' . $A['title'] . '</h1><p>' . $A['introtext'] . '</p>';
+    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+                               . '&amp;plugin=spamx');
+
+        return $retval;
+    }
+
     $A['title'] = strip_tags (COM_checkWords ($A['title']));
     $A['title'] = addslashes (str_replace ('$', '&#36;', $A['title']));
 
@@ -574,8 +584,20 @@ function savelink ($A)
 
         return $retval;
     }
-    $A['category'] = addslashes ($A['category']);
 
+    // pseudo-formatted link description for the spam check
+    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a> ('
+               . $A['category'] . ', ' . $A['categorydd'] . ')<br>'
+               . $A['description'] . '</p>';
+    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+                               . '&amp;plugin=spamx');
+
+        return $retval;
+    }
+
+    $A['category'] = addslashes ($A['category']);
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
     $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
 
@@ -667,6 +689,19 @@ function saveevent ($A)
     } else {
         $A['dateend'] = sprintf ('%4d-%02d-%02d',
                             $A['end_year'], $A['end_month'], $A['end_day']);
+    }
+
+    // pseudo-formatted event description for the spam check
+    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a><br>'
+               . $A['location'] . '<br>' . $A['address1'] . '<br>'
+               . $A['address2'] . '<br>' . $A['city'] . ', ' . $A['zipcode']
+               . '<br>' . $A['description'] . '</p>';
+    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
+    if ($result > 0) {
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+                               . '&amp;plugin=spamx');
+
+        return $retval;
     }
 
     $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
