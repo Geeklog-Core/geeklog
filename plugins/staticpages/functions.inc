@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.21 2003/05/30 12:24:31 dhaun Exp $
+// $Id: functions.inc,v 1.22 2003/06/26 04:09:04 blaine Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -370,7 +370,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms;
+    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY sp_date DESC";
     $result = DB_query ($spsql);
 
     if (DB_numRows ($result) > 0) {
