@@ -287,7 +287,7 @@ $LANG04 = array(
     65 => 'Poizkusite se ponovno prijaviti',
     66 => "Morda ste se zmotili pri vnosu svojega uporabniškega imena ali gesla? Poizkusite se ponovno prijaviti. Ste morda še neregistriran uporabnik - v tem primeru se <a href=\"{$_CONF['site_url']}/users.php?mode=new\">registrirajte</a>.",
     67 => 'Uporabnik od',
-    68 => 'Spomni me na',
+    68 => 'Zapomni se me za',
     69 => 'Kako dolgo naj si te zapomnim po zadnji prijavi?',
     70 => "Priredi izgled spletne strani {$_CONF['site_name']}",
     71 => "Ena od posebnosti spletne strani{$_CONF['site_name']} je popolna možnost prilagajanja izgleda posameznemu uporabniku.  Èe želite uporabiti to možnost se morate najprej <a href=\"{$_CONF['site_url']}/users.php?mode=new\">prijaviti</a> na {$_CONF['site_name']}.  Ali ste že postali registrirani uporabnik?  Prijavite se!",
