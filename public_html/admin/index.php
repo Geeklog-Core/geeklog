@@ -36,5 +36,5 @@ if ($mode == 'logout') {
 	COM_refresh("{$CONF['site_url']}/index.php");
 */
 }
-COM_refresh($_CONF['site_url'] . '/admin/moderation.php');
+print COM_refresh($_CONF['site_url'] . '/admin/moderation.php');
 ?>
