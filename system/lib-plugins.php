@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.29 2004/07/11 18:18:05 dhaun Exp $
+// $Id: lib-plugins.php,v 1.30 2004/07/18 10:14:41 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -404,9 +404,9 @@ function PLG_getUserOptions()
 
     $plgresults = array ();
 
-    $plugin = new Plugin();
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
+        $plugin = new Plugin();
         $function = 'plugin_getuseroption_' . $pi_name;
         if (function_exists($function)) {
             // I know this uses the adminlabel, adminurl but who cares?
@@ -415,7 +415,6 @@ function PLG_getUserOptions()
                 $counter++;
                 $plgresults[$counter] = $plugin;
             }
-            $plugin->reset();
         }
     }
 
@@ -435,9 +434,9 @@ function PLG_getAdminOptions()
 {
     global $_TABLES, $_PLUGINS;
 
-    $plugin = new Plugin();
     $counter = 0;
     foreach ($_PLUGINS as $pi_name) {
+        $plugin = new Plugin();
         $function = 'plugin_getadminoption_' . $pi_name;
         if (function_exists($function)) {
             list($plugin->adminlabel, $plugin->adminurl, $plugin->numsubmissions) = $function();
@@ -445,7 +444,6 @@ function PLG_getAdminOptions()
                 $counter++;
                 $plgresults[$counter] = $plugin;
             }
-            $plugin->reset();
         }
     }
     return $plgresults;
@@ -510,12 +508,11 @@ function PLG_getCCOptions()
     global $_TABLES, $_CONF, $_PLUGINS;
 
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
-    $cur_plugin = new Plugin();
     $plugins = array();
     foreach ($_PLUGINS as $pi_name) {
+        $cur_plugin = new Plugin();
         $function = 'plugin_cclabel_' . $pi_name;
         if (function_exists($function)) {
-            $cur_plugin->reset();
             $cclabel = $function ();
             if ($cclabel !== false) {
                 list($cur_plugin->adminlabel, $cur_plugin->adminurl, $cur_plugin->plugin_image) = $cclabel;
