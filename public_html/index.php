@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.65 2004/09/23 14:20:59 dhaun Exp $
+// $Id: index.php,v 1.66 2004/09/28 08:28:49 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -88,31 +88,29 @@ if (!empty ($displayBlock)) {
     }
 }
 
-$maxstories = 0;
-
 if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-    $result = DB_query("SELECT noboxes,maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
+    $result = DB_query("SELECT maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
     $U = DB_fetchArray($result);
-    if ($U['maxstories'] >= $_CONF['minnews']) {
-        $maxstories = $U['maxstories'];
-    }
-    if ((!empty($topic)) && ($maxstories == 0)) {
-        $tmp = DB_query("SELECT limitnews FROM {$_TABLES['topics']} WHERE tid = '{$topic}'");
-        $T = DB_fetchArray($tmp);
-        if ($T['limitnews'] >= $_CONF['minnews']) {
-            $maxstories = $T['limitnews'];
-        }
-    }
-    if ($maxstories == 0) {
-        $maxstories = $_CONF['limitnews'];
-    }
-    $U['maxstories'] = $maxstories;
 } else {
-    $U['maxstories'] = $_CONF['limitnews'];
-    /* HELPME: should we check for topic "limitnews" value? */
+    $U['maxstories'] = 0;
 }
 
-$limit = $U['maxstories'];
+$maxstories = 0;
+if ($U['maxstories'] >= $_CONF['minnews']) {
+    $maxstories = $U['maxstories'];
+}
+if ((!empty ($topic)) && ($maxstories == 0)) {
+    $topiclimit = DB_getItem ($_TABLES['topics'], 'limitnews',
+                              "tid = '{$topic}'");
+    if ($topiclimit >= $_CONF['minnews']) {
+        $maxstories = $topiclimit;
+    }
+}
+if ($maxstories == 0) {
+    $maxstories = $_CONF['limitnews'];
+}
+
+$limit = $maxstories;
 
 // Geeklog now allows for articles to be published in the future.  Because of
 // this, we need to check to see if we need to rebuild the RDF file in the case

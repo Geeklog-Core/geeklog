@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.102 2004/08/28 15:55:33 dhaun Exp $
+// $Id: usersettings.php,v 1.103 2004/09/28 08:28:49 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -299,12 +299,14 @@ function editpreferences()
 
     $A = DB_fetchArray($result);
 
-    // if 'maxstories' is empty (for a new user account) set it to the
-    // default value from config.php
-    if (empty($A['maxstories'])) {
-        $A['maxstories'] = $_CONF['limitnews'];
-    } else if ($A['maxstories'] < $_CONF['minnews']) {
-        $A['maxstories'] = $_CONF['minnews'];
+    // 'maxstories' may be 0, in which case it will pick up the default
+    // setting for the current topic or $_CONF['limitnews'] (see index.php)
+    if (empty ($A['maxstories'])) {
+        $A['maxstories'] = 0;
+    } else if ($A['maxstories'] > 0) {
+        if ($A['maxstories'] < $_CONF['minnews']) {
+            $A['maxstories'] = $_CONF['minnews'];
+        }
     }
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
@@ -938,8 +940,12 @@ function savepreferences($A)
     }
 
     $A['maxstories'] = COM_applyFilter ($A['maxstories'], true);
-    if ($A['maxstories'] < $_CONF['minnews']) {
-        $A['maxstories'] = $_CONF['minnews'];
+    if (empty ($A['maxstories'])) {
+        $A['maxstories'] = 0;
+    } else if ($A['maxstories'] > 0) {
+        if ($A['maxstories'] < $_CONF['minnews']) {
+            $A['maxstories'] = $_CONF['minnews'];
+        }
     }
 
     $TIDS  = @array_values($A[$_TABLES['topics']]);

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.45 2004/09/25 18:38:17 dhaun Exp $
+// $Id: topic.php,v 1.46 2004/09/28 08:28:49 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -150,6 +150,7 @@ function edittopic ($tid = '')
     }
     $topic_templates->set_var('lang_storiesperpage', $LANG27[11]);
     $topic_templates->set_var('story_limit', $A['limitnews']);
+    $topic_templates->set_var('default_limit', $_CONF['limitnews']);
     $topic_templates->set_var('lang_defaultis', $LANG27[16]);
     $topic_templates->set_var('lang_topicname', $LANG27[3]);
     $topic_templates->set_var('topic_name', stripslashes ($A['topic']));

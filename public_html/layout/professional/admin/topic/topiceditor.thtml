@@ -10,7 +10,7 @@
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_storiesperpage}:</td>
-                                        <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"> ({lang_defaultis} 10)</td>
+                                        <td><input type="text" size="3" maxlength="3" name="limitnews" value="{story_limit}"> ({lang_defaultis} {default_limit})</td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_topicname}:</td>
