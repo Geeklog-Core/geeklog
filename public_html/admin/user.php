@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.30 2002/04/19 21:41:22 tony_bibbs Exp $
+// $Id: user.php,v 1.31 2002/04/20 08:29:29 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -115,7 +115,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
     if ($_CONF['allow_user_photo'] == 1 AND !empty($A['photo'])) {
-        $user_templates->set_var('user_photo', '<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">');
+        $user_templates->set_var('user_photo', '<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
         $user_templates->set_var('lang_delete_photo', $LANG28[28]);
         $user_templates->set_var('delete_photo_option', '<input type="checkbox" name="delete_photo">');
     } else {

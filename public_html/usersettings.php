@@ -96,7 +96,7 @@ function edituser()
             . '<td align="right"><b>' . $LANG04[77] . ':</b><br><small>' . $LANG04[78] . '</small></td>' . LB
             . '<td><input type="file" name="photo">' . LB;
         if (!empty($A['photo'])) {
-            $retval .= '<br><img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">' . LB
+            $retval .= '<br><img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">' . LB
                 . '<br>' . $LANG04[79] . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
         }
         $retval .= '</td>' . LB

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.23 2002/04/19 21:40:13 tony_bibbs Exp $
+// $Id: users.php,v 1.24 2002/04/20 08:29:29 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -70,7 +70,7 @@ function userprofile($user)
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
     if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
-        $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">');
+        $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
     } else {
         $user_templates->set_var('user_photo','');
     }
