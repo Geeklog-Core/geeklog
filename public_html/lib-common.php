@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.353 2004/08/06 08:55:35 dhaun Exp $
+// $Id: lib-common.php,v 1.354 2004/08/07 09:13:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1009,7 +1009,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 *
 * @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @param    string  $pagetitle  optional content for the page's <title>
-* @return   string              Formated HTML containing the site header
+* @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
 *
 */
@@ -1025,7 +1025,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 
     if( function_exists( $function ))
     {
-        return $function( $what );
+        return $function( $what, $pagetitle );
     }
 
     // If we reach here then either we have the default theme OR
