@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.3 2002/01/04 16:16:18 tony_bibbs Exp $
+// $Id: lib-security.php,v 1.4 2002/04/11 17:54:26 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
@@ -51,6 +51,10 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE;
 
+    if (empty($usergroups)) {
+        $usergroups = array();
+    }
+    
     if ($_SEC_VERBOSE) {
         COM_errorLog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
     }
