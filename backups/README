@@ -1,0 +1,11 @@
+This is the directory where Geeklog will store database backups from the
+"DB Backups" menu entry. Please note that Geeklog only lists the last 10
+backups - the directory may contain more files (old backups are NOT deleted).
+
+To restore a backup, either use phpMyAdmin or type
+
+    mysql -u{user_name} -p -D {database_name} < {backup_file}
+
+on the command line, replacing {user_name}, {database_name}, and {backup_file}
+with the correct values (do not include the curly brackets).
+
