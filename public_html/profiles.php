@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.27 2003/12/04 21:02:28 dhaun Exp $
+// $Id: profiles.php,v 1.28 2004/01/02 16:32:18 dhaun Exp $
 
 include('lib-common.php');
 
@@ -202,7 +202,7 @@ function contactform($uid, $subject='', $message='')
 #				this code
 #
 
-function mailstory ($sid, $to, $toemail, $from, $fromemail, $sid, $shortmsg) 
+function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg) 
 {
  	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
@@ -319,35 +319,47 @@ function mailstoryform($sid)
 ###############################################################################
 # MAIN
 switch ($what) {
-	case 'contact':
-        $uid = strip_tags ($HTTP_POST_VARS['uid']);
-        if (is_numeric ($uid)) {
-		    $display .= contactemail ($uid, $HTTP_POST_VARS['author'],
+    case 'contact':
+        $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+        if ($uid > 1) {
+            $display .= contactemail ($uid, $HTTP_POST_VARS['author'],
                     $HTTP_POST_VARS['authoremail'], $HTTP_POST_VARS['subject'],
                     $HTTP_POST_VARS['message']);
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
-		break;
-	case 'emailstory':
-        if ($_CONF['hideemailicon'] == 1) {
-            $display = COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+        break;
+    case 'emailstory':
+        $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
+        if (empty ($sid)) {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        } else if ($_CONF['hideemailicon'] == 1) {
+            $display = COM_refresh ($_CONF['site_url']
+                                    . '/article.php?story=' . $sid);
         } else {
-		    $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
+            $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
         }
-		break;
-	case 'sendstory':
-		$display .= mailstory($sid,$to,$toemail,$from,$fromemail,$sid,$shortmsg);
-		break;
-	default:
-        $uid = strip_tags ($uid);
-		if (!empty($uid) && is_numeric ($uid)) {
-			$display .= COM_siteHeader()
-				.contactform($uid)
-				.COM_siteFooter();
-		} else {
-			$display .= COM_refresh($_CONF['site_url']);
-		}
+        break;
+    case 'sendstory':
+        $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
+        if (empty ($sid)) {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        } else {
+            $display .= mailstory ($sid, $HTTP_POST_VARS['to'],
+                    $HTTP_POST_VARS['toemail'], $HTTP_POST_VARS['from'],
+                    $HTTP_POST_VARS['fromemail'], $HTTP_POST_VARS['shortmsg']);
+        }
+        break;
+    default:
+        $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+        if ($uid > 1) {
+            $display .= COM_siteHeader ()
+                     . contactform ($uid)
+                     . COM_siteFooter ();
+        } else {
+            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
+        break;
 }
 
 echo $display;
