@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.3 2003/06/23 16:55:27 tony Exp $
+// $Id: search.class.php,v 1.4 2003/06/23 17:45:17 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -656,7 +656,7 @@ class Search {
                 $searchQuery = str_replace(' ', "</b>' AND '<b>",$this->_query);
                 $searchQuery = "<b>'$searchQuery'</b>";
             } else {
-                $searchQuery = "the phrase '<b>$this->_query</b>'";
+                $searchQuery = $LANG09[55] . " '<b>$this->_query</b>'";
             }
         }
         $searchmain->set_var('lang_matchesfor', $LANG09[25] . " $searchQuery.");

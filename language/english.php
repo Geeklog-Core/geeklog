@@ -444,7 +444,8 @@ $LANG09 = array(
     51 => 'Link',
     52 => 'Location',
     53 => 'Story Results',
-    54 => 'Comment Results'
+    54 => 'Comment Results',
+    55 => 'the phrase'
 );
 
 ###############################################################################
