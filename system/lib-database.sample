@@ -37,6 +37,7 @@ $_DB_name           = 'geeklog';
 $_DB_user           = 'username';
 $_DB_pass           = 'password';
 $_DB_table_prefix   = ''; // e.g. 'gl_'
+$_DB_mysqldump_path = '/usr/sbin/mysqldump';
 
 // +---------------------------------------------------------------------------+
 // | Table definitions, these are used by the install program to create the    |
