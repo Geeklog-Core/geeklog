@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.391 2004/10/23 18:23:12 vinny Exp $
+// $Id: lib-common.php,v 1.392 2004/10/23 19:12:46 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1962,6 +1962,7 @@ function COM_showTopics( $topic='' )
                                 $_CONF['site_url'] . '/index.php' );
             $sections->set_var( 'option_label', $LANG01[90] );
             $sections->set_var( 'option_count', '' );
+            $sections->set_var( 'topic_image', '' );
             $retval .= $sections->parse( 'item', 'option' );
         }
         else
@@ -1969,6 +1970,7 @@ function COM_showTopics( $topic='' )
             $sections->set_var( 'option_url', '' );
             $sections->set_var( 'option_label', $LANG01[90] );
             $sections->set_var( 'option_count', '' );
+            $sections->set_var( 'topic_image', '' );
             $retval .= $sections->parse( 'item', 'inactive' );
         }
     }
@@ -3917,6 +3919,8 @@ function COM_rdfImport( $bid, $rdfurl )
 
     $rdferror = false;
     $xml_parser = xml_parser_create();
+    @xml_parser_set_option( $xml_parser, XML_OPTION_TARGET_ENCODING,
+                            $_CONF['default_charset'] );
     xml_set_element_handler( $xml_parser, 'COM_rdfStartElement',
                              'COM_rdfEndElement');
     xml_set_character_data_handler( $xml_parser, 'COM_rdfCharacterData' );
