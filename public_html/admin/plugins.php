@@ -253,7 +253,7 @@ function installplugin() {
 			#do upgrade stuff
 			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/updates/update_' . $A["pi_version"] . '.sql')) {	
 			#great, found and upgrade script for this plugin, run it  
-			exec('mysql -u' . $CONF['dbuser'] . ' -p'. $CONF['dbpass'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['base'] . 'plugins/updates/update_' . $plugin_version . '.sql');
+			exec('mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/updates/update_' . $plugin_version . '.sql');
 			errorlog("just ran update sql",1);
 			}
 
@@ -262,10 +262,10 @@ function installplugin() {
 			#load table structures, if any
 			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/table.sql')) {
 				#found table.sql, run it
-				if (strlen($CONF['dbpass']) == 0) {
-					$command = 'mysql -u' . $CONF['dbuser'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
+				if (strlen($CONF['db_pass']) == 0) {
+					$command = 'mysql -u' . $CONF['db_user'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
 				} else {
-					$command = 'mysql -u' . $CONF['dbuser'] . ' -p'. $CONF['dbpass'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
+					$command = 'mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
 				}
 				errorlog('command = ' . $command,1);
 				exec($command);
@@ -277,10 +277,10 @@ function installplugin() {
 			#load data
 			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/data.sql')) {
 				#found data.sql, import it
-				if (strlen($CONF['dbpass']) == 0) {
-					$command = 'mysql -u' . $CONF['dbuser'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
+				if (strlen($CONF['db_pass']) == 0) {
+					$command = 'mysql -u' . $CONF['db_user'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
 				} else {
-					$command = 'mysql -u' . $CONF['dbuser'] . ' -p'. $CONF['dbpass'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
+					$command = 'mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
 				}
 				errorlog('command = ' . $command,1);
 				exec($command);
@@ -295,7 +295,7 @@ function installplugin() {
 			$command = $CONF["rmcommand"] . $CONF["path"] . "plugins/" . $filename;
 			errorlog('command = ' . $command,1);
 			exec($command);
-			refresh($CONF['base'] . '/admin/plugins.php');
+			refresh($CONF['sit_url'] . '/admin/plugins.php');
 		}
 
        	} else {
@@ -362,7 +362,7 @@ function removeplugin($plugin_name) {
 	exec($command);
 
 	#sweet, uninstall complete
-	refresh($CONF['base'] . '/index.php?msg=29');			
+	refresh($CONF['site_url'] . '/index.php?msg=29');			
 }
 
 ###############################################################################
