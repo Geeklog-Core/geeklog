@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.31 2004/06/10 13:34:41 dhaun Exp $
+// $Id: profiles.php,v 1.32 2004/07/27 07:31:54 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -328,8 +328,13 @@ function mailstoryform($sid)
     return $retval;
 }
 
-###############################################################################
-# MAIN
+
+// MAIN
+if (isset ($HTTP_POST_VARS['what'])) {
+    $what = COM_applyFilter ($HTTP_POST_VARS['what']);
+} else {
+    $what = COM_applyFilter ($HTTP_GET_VARS['what']);
+}
 switch ($what) {
     case 'contact':
         $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
@@ -341,6 +346,7 @@ switch ($what) {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
         break;
+
     case 'emailstory':
         $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
         if (empty ($sid)) {
@@ -352,6 +358,7 @@ switch ($what) {
             $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
         }
         break;
+
     case 'sendstory':
         $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
         if (empty ($sid)) {
@@ -362,6 +369,7 @@ switch ($what) {
                     $HTTP_POST_VARS['fromemail'], $HTTP_POST_VARS['shortmsg']);
         }
         break;
+
     default:
         $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
         if ($uid > 1) {
