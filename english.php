@@ -128,7 +128,9 @@ $LANG01 = array(
 	87 => "last 2 wks",
 	88 => "No recent new links",
 	89 => "There are no upcoming events",
-	90 => "Home"
+	90 => "Home",
+	91 => "Created this page in",
+	92 => "seconds"
 );
 
 ###############################################################################
