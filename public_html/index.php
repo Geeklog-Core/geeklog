@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.43 2003/03/11 17:00:56 dhaun Exp $
+// $Id: index.php,v 1.44 2003/03/12 19:02:01 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -75,70 +75,74 @@ $display = '';
 
 $shownews = true;
 
-if (empty ($topic)) {
+// check if static pages plugin is installed and enabled
+if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
 
-    // check if static pages plugin is installed and enabled
-    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
+    if (empty ($topic)) {
+        $staticpage_title = 'frontpage';
+    } else {
+        $staticpage_title = 'topic:' . $topic;
+    }
 
-        $perms = SP_getPerms ();
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'" . $perms;
-        $result = DB_query ($spsql);
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+    $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = '{$staticpage_title}'" . $perms;
+    $result = DB_query ($spsql);
 
-        if (DB_numRows ($result) > 0) {
-            $spresult = DB_fetchArray ($result);
+    if (DB_numRows ($result) > 0) {
+        $spresult = DB_fetchArray ($result);
 
-            if ($spresult['sp_label'] == 'nonews') { // replace news entirely
-                $shownews = false;
-                switch ($spresult['sp_format']) {
-                    case 'noblocks':
-                        $display .= COM_siteHeader ('none');
-                        break;
-                    case 'allblocks':
-                    case 'leftblocks':
-                        $display .= COM_siteHeader ('menu');
-                        break;
-                }
-
-                // Check for type (ie html or php)
-                if ($spresult['sp_php'] == 1) {
-                    $display .= eval (stripslashes ($spresult['sp_content']));
-                } else {
-                    $display .= stripslashes ($spresult['sp_content']);
-                }
-
-                if ($spresult['sp_format'] == 'allblocks') {
-                    $display .= COM_siteFooter (true);
-                } else if ($spresult['sp_format'] != 'blankpage') {
-                    $display .= COM_siteFooter ();
-                }
-            } else { // display static page content before the news
-                $display .= COM_siteHeader ();
-                if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                    $display .= COM_startBlock ($spresult['sp_label']);
-                }
-
-                // Check for type (ie html or php)
-                if ($spresult['sp_php'] == 1) {
-                    $display .= eval (stripslashes ($spresult['sp_content']));
-                } else {
-                    $display .= stripslashes ($spresult['sp_content']);
-                }
-
-                if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                    $display .= COM_endBlock ();
-                }
+        if ($spresult['sp_label'] == 'nonews') { // replace news entirely
+            $shownews = false;
+            switch ($spresult['sp_format']) {
+                case 'noblocks':
+                    $display .= COM_siteHeader ('none')
+                             . COM_showMessage ($HTTP_GET_VARS['msg']);
+                    break;
+                case 'allblocks':
+                case 'leftblocks':
+                    $display .= COM_siteHeader ('menu')
+                             . COM_showMessage ($HTTP_GET_VARS['msg']);
+                    break;
             }
-        } else {
-            $display .= COM_siteHeader();
+
+            // Check for type (ie html or php)
+            if ($spresult['sp_php'] == 1) {
+                $display .= eval (stripslashes ($spresult['sp_content']));
+            } else {
+                $display .= stripslashes ($spresult['sp_content']);
+            }
+
+            if ($spresult['sp_format'] == 'allblocks') {
+                $display .= COM_siteFooter (true);
+            } else if ($spresult['sp_format'] != 'blankpage') {
+                $display .= COM_siteFooter ();
+            }
+        } else { // display static page content before the news
+            $display .= COM_siteHeader ()
+                     . COM_showMessage ($HTTP_GET_VARS['msg']);
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                $display .= COM_startBlock ($spresult['sp_label']);
+            }
+
+            // Check for type (ie html or php)
+            if ($spresult['sp_php'] == 1) {
+                $display .= eval (stripslashes ($spresult['sp_content']));
+            } else {
+                $display .= stripslashes ($spresult['sp_content']);
+            }
+
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                $display .= COM_endBlock ();
+            }
         }
     } else {
-        $display .= COM_siteHeader();
+        $display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
     }
 } else {
-    $display .= COM_siteHeader();
+    $display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
 }
 
 // Show any Plugin formatted blocks
@@ -180,8 +184,6 @@ if (!empty($_USER['uid'])) {
 }
 
 $limit = $U['maxstories'];
-
-$display .= COM_showMessage($HTTP_GET_VARS['msg']);
 
 // Geeklog now allows for articles to be published in the future.  Because of
 // this, we need to check to see if we need to rebuild the RDF file in the case
@@ -305,8 +307,6 @@ if ($nrows > 0) {
 
 $display .= COM_siteFooter(true); // The true value enables right hand blocks.
 
-} else {
-    $display = COM_showMessage ($HTTP_GET_VARS['msg']) . $display;
 }
 
 // Output page 
