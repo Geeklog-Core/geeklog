@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2004/08/08 08:55:58 dhaun Exp $
+// $Id: index.php,v 1.37 2004/08/08 10:18:42 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -295,7 +295,7 @@ function form ($A, $error = false)
             $sp_template->set_var('sp_hits', $A['sp_hits']);
         }
         $sp_template->set_var('end_block',
-                COM_endBlock (COM_getBlockTemplate ('_admin_block', 'header')));
+                COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
         $retval .= $sp_template->parse('output','form');
 	}
 
