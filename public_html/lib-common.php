@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.167 2002/10/12 20:36:57 dhaun Exp $
+// $Id: lib-common.php,v 1.168 2002/10/15 03:39:25 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -304,7 +304,7 @@ for( $i = 1; $i <= $nrows; $i++ )
 *
 */
 
-function COM_article( $A, $index='' )
+function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 {
     global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05, $_THEME_URL;
 
@@ -325,7 +325,7 @@ function COM_article( $A, $index='' )
 
     $article = new Template( $_CONF['path_layout'] );
     $article->set_file(array(
-        'article'=>'storytext.thtml',
+        'article'=>$storytpl,
         'bodytext'=>'storybodytext.thtml',
         'featuredarticle'=>'featuredstorytext.thtml',
         'featuredbodytext'=>'featuredstorybodytext.thtml'
