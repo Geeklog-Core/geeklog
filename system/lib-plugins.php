@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.48 2004/10/07 08:24:57 dhaun Exp $
+// $Id: lib-plugins.php,v 1.49 2004/10/23 17:58:44 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1001,7 +1001,7 @@ function PLG_replaceTags ($content)
                         'tagstr'    => $tag,
                         'startpos'  => $start_pos,
                         'length'    => $taglength,
-                        'parm1'     => $parms['1'],
+                        'parm1'     => str_replace (']', '', $parms[1]),
                         'parm2'     => $label
                     );
                     $tags[] = $newtag;
