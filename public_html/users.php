@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.31 2002/05/22 13:21:42 tony_bibbs Exp $
+// $Id: users.php,v 1.32 2002/07/12 12:12:27 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -464,7 +464,12 @@ default:
         // Increment the numlogins counter for this user
         // DB_change("users","numlogins","numlogins + 1","username","$loginname");
         if (($HTTP_REFERER) && ($HTTP_REFERER <> ($_CONF['site_url']."/users.php"))) {
-            $display .= COM_refresh($HTTP_REFERER);
+            $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
+            if (substr ($HTTP_REFERER, 0, strlen ($indexMsg)) == $indexMsg) {
+                $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+            } else {
+                $display .= COM_refresh($HTTP_REFERER);
+            }
         } else {
             $display .= COM_refresh($_CONF['site_url'] . '/index.php');
         }
