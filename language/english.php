@@ -291,7 +291,8 @@ $LANG04 = array(
     83 => 'Posting statistics for user',
     84 => 'Total number of articles:',
     85 => 'Total number of comments:',
-    86 => 'Find all postings by'
+    86 => 'Find all postings by',
+    87 => 'Your login name'
 );
 
 ###############################################################################
@@ -983,7 +984,9 @@ $MESSAGE = array (
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
     48 => 'Thank you for applying for a membership with ' . $_CONF['site_name'] . '. Our team will review your application. If approved, your password will be emailed to you at the email address you just entered.',
     49 => "Your group has been successfully saved.",
-    50 => "The group has been successfully deleted."
+    50 => "The group has been successfully deleted.",
+    51 => 'This username is already in use. Please choose another one.',
+    52 => 'The email address provided does not appear to be a valid email address'
 );
 
 // for plugins.php

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.53 2003/01/18 22:43:11 dhaun Exp $
+// $Id: usersettings.php,v 1.54 2003/01/19 10:39:34 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -58,12 +58,15 @@ function edituser()
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile' => 'profile.thtml',
-                                   'photo' => 'userphoto.thtml'));
+                                   'photo' => 'userphoto.thtml',
+                                   'username' => 'username.thtml'));
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
     $preferences->set_var ('lang_fullname', $LANG04[3]);
     $preferences->set_var ('lang_fullname_text', $LANG04[34]);
+    $preferences->set_var ('lang_username', $LANG04[2]);
+    $preferences->set_var ('lang_username_text', $LANG04[87]);
     $preferences->set_var ('lang_password', $LANG04[4]);
     $preferences->set_var ('lang_password_text', $LANG04[35]);
     $preferences->set_var ('lang_cooktime', $LANG04[68]);
@@ -95,7 +98,13 @@ function edituser()
         $preferences->set_var ('enctype', '');
     }
     $preferences->set_var ('fullname_value', $A['fullname']);
+    $preferences->set_var ('new_username_value', $_USER['username']);
     $preferences->set_var ('password_value', $A['passwd']);
+    if ($_CONF['allow_username_change'] == 1) {
+        $preferences->parse ('username_option', 'username', true);
+    } else {
+        $preferences->set_var ('username_option', '');
+    }
 
     $selection = '<select name="cooktime">' . LB;
     $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr',
@@ -451,6 +460,21 @@ function saveuser($A)
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
     } 
 
+    if ($_CONF['allow_username_change'] == 1) {
+        $A['new_username'] = strip_tags (COM_stripslashes ($A['new_username']));
+        if (!empty ($A['new_username']) &&
+                ($A['new_username'] != $_USER['username'])) {
+            $A['new_username'] = addslashes ($A['new_username']);
+            if (DB_count ($_TABLES['users'], 'username', $A['new_username']) == 0) {
+                DB_change ($_TABLES['users'], 'username', $A['new_username'],
+                           "uid", $_USER['uid']);
+            } else {
+                return COM_refresh ($_CONF['site_url']
+                        . '/usersettings.php?mode=edit&msg=51');
+            }
+        }
+    }
+
     if (!empty($A["passwd"])) {
         $passwd = md5($A["passwd"]);
         DB_change($_TABLES['users'],'passwd',"$passwd","uid",$_USER['uid']);
@@ -463,7 +487,7 @@ function saveuser($A)
     $A['about'] = strip_tags (COM_stripslashes ($A['about']));
     $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
 
-    if (COM_isEmail($A['email'])) {
+    if (COM_isEmail ($A['email'])) {
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }
@@ -567,7 +591,11 @@ function saveuser($A)
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
 
-        return COM_refresh("{$_CONF['site_url']}/usersettings.php?mode=edit&msg=5");
+        return COM_refresh ($_CONF['site_url']
+                . '/usersettings.php?mode=edit&msg=5');
+    } else {
+        return COM_refresh ($_CONF['site_url']
+                . '/usersettings.php?mode=edit&msg=52');
     }
 }
 

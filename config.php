@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.70 2003/01/16 22:51:53 tony Exp $
+// $Id: config.php,v 1.71 2003/01/19 10:39:33 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -239,6 +239,10 @@ $_CONF['notification'] = array ();
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;         // in seconds
 $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and stories without previewing
+
+// Allow users to change their username (if set to 1).
+$_CONF['allow_username_change'] = 0;
+
 
 // Topic Settings
 
