@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.7 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: auth.inc.php,v 1.8 2001/11/13 15:51:43 tony_bibbs Exp $
 
 // MAIN
 
@@ -69,9 +69,9 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
 } else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
-    $display .= site_header();
+    $display .= COM_siteHeader();
 
-    $display .= startblock($LANG20[01]);
+    $display .= COM_startBlock($LANG20[01]);
 
     if (!empty($warn)) {
         $display .= $LANG20[02]
@@ -94,7 +94,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
         .'</tr>'.LB
         .'</table></form>'
         .COM_endBlock()
-        .site_footer();
+        .COM_siteFooter();
 }
 
 echo $display;
