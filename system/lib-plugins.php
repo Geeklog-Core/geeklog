@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.45 2004/09/29 10:36:28 dhaun Exp $
+// $Id: lib-plugins.php,v 1.46 2004/09/29 11:43:29 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -396,11 +396,10 @@ function PLG_supportsExpandedSearch($type)
 */
 function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author, $keyType = 'all') 
 {
-    global $_CONF, $_PLUGINS;
+    global $_PLUGINS;
 
     $search_results = array();
 
-    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $nrows_plugins = 0;
     $total_plugins = 0;
     foreach ($_PLUGINS as $pi_name) {
@@ -551,9 +550,8 @@ function PLG_saveSubmission($type, $A)
 */
 function PLG_getCCOptions() 
 {
-    global $_CONF, $_PLUGINS;
+    global $_PLUGINS;
 
-    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugins = array();
     foreach ($_PLUGINS as $pi_name) {
         $cur_plugin = new Plugin();
