@@ -12,7 +12,7 @@ if (!empty($CONF["pagetitle"])) {
 <title><?php echo $window_title ?></title>
 <?php include("{$CONF["html"]}layout/smartstyle.css"); ?>
 </head>
-<body background="<?php echo $CONF["base"]; ?>/images/bg.gif" link=444444 vlink=444444 alink=444444 leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
+<body background="<?php echo $CONF["base"]; ?>/images/bg.gif" link="#333366" vlink="#333366" alink="#333366">
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
 <tr align=right valign=middle><td height=18 colspan=2><a href=<?php echo $CONF["base"]; ?>><?php print $LANG01[68];?></a>
