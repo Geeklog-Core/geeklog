@@ -221,7 +221,7 @@ $_CONF['censorlist']    = array({cfg_censorlist});
 
 // Define a few useful things for GL
 define('LB',"\n");
-define('VERSION', '1.3.3');
+define('VERSION', '1.3.4');
 
 //$_CONF['default_state_cde'] = 'IA'; // NOT IMPLEMENTED
 $_STATES = array(
