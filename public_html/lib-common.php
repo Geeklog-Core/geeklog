@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.81 2002/04/29 19:29:12 dhaun Exp $
+// $Id: lib-common.php,v 1.82 2002/04/30 21:02:06 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -151,12 +151,14 @@ function COM_article($A,$index='')
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
 
+    
+    
     // If plain text then replace newlines with <br> tags
     if ($A['postmode'] == 'plaintext') {
         $A['introtext'] = nl2br($A['introtext']);
         $A['bodytext'] = nl2br($A['bodytext']);
     }
-
+    
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml','featuredarticle'=>'featuredstorytext.thtml','featuredbodytext'=>'featuredstorybodytext.thtml'));
     $article->set_var('layout_url',$_CONF['layout_url']);
@@ -185,9 +187,15 @@ function COM_article($A,$index='')
     }
    
     if ($index == 'n') {
+        if ($A['postmode'] == 'plaintext') {
+            $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
+            $A['bodytext'] = str_replace('$','&#36;',$A['bodytext']);
+        }
         $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.stripslashes($A['bodytext']));
     } else {
-        $article->set_var('story_introtext', stripslashes($A['introtext'])); 
+        $article->set_var('story_introtext', stripslashes($A['introtext']));
+        
+    
         if (!empty($A['bodytext'])) {
             $article->set_var('readmore_link', '<a href="' .  $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof(explode(' ',$A['bodytext'])) . ' ' . $LANG01[62] . ') ');
         }
@@ -1685,6 +1693,10 @@ function COM_checkHTML($str)
     // Get rid of any newline characters
 	
     $str = preg_replace("/\n/","",$str);
+    
+    // Replace any $ with &#36; (HTML equiv)
+    $str = str_replace('$','&#36;',$str);
+    
     $str = strip_tags($str,$_CONF['allowablehtml']);
 
     return $str;
