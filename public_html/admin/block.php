@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.20 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: block.php,v 1.21 2002/01/03 21:44:35 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -357,6 +357,7 @@ function listblocks()
 
     $retval .= COM_startBlock($LANG21[19]);
     $block_templates->set_var('site_url', $_CONF['site_url']);
+    $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('lang_newblock', $LANG21[46]);
     $block_templates->set_var('lang_adminhome', $LANG21[47]);
     $block_templates->set_var('lang_instructions', $LANG21[25]);
