@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.79 2004/10/23 10:03:36 dhaun Exp $
+// $Id: comment.php,v 1.80 2004/10/23 10:25:51 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -714,9 +714,10 @@ case $LANG03[11]: // Submit Comment
             COM_applyFilter ($HTTP_POST_VARS['postmode']));
     break;
 
-case $LANG01[28]: // Delete
-    $display .= deletecomment (COM_applyFilter ($cid, true),
-                               COM_applyFilter ($sid), COM_applyFilter ($type));
+case 'delete':
+    $display .= deletecomment (COM_applyFilter ($_REQUEST['cid'], true),
+                               COM_applyFilter ($_REQUEST['sid']),
+                               COM_applyFilter ($_REQUEST['type']));
     break;
 
 case 'view':

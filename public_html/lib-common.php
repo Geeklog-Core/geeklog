@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.389 2004/10/21 09:12:51 dhaun Exp $
+// $Id: lib-common.php,v 1.390 2004/10/23 10:25:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2866,7 +2866,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         if( $delete_option )
         {
             $deloption = '| <a href="' . $_CONF['site_url']
-                       . '/comment.php?mode=' . $LANG01[28] . '&amp;cid='
+                       . '/comment.php?mode=delete&amp;cid='
                        . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
                        . $type . '">' . $LANG01[28] . '</a> ';
             if( !empty( $A['ipaddress'] ))
