@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.35 2002/04/15 20:41:16 tony_bibbs Exp $
+// $Id: story.php,v 1.36 2002/04/16 20:21:45 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -66,13 +66,13 @@ if (!SEC_hasRights('story.edit')) {
 * @sid		string		ID of story to edit
 * @mode		string		??
 */
-function storyeditor($sid, $mode = '') 
+function storyeditor($sid = '', $mode = '') 
 {
     global $_TABLES, $HTTP_POST_VARS, $_USER, $_CONF, $LANG24, $LANG_ACCESS;
 
     $display = '';
 
-    if (!empty($sid) && $mode == "edit") {
+    if (!empty($sid) && $mode == 'edit') {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE sid = '$sid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -90,6 +90,8 @@ function storyeditor($sid, $mode = '')
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
+        print 'here';
+        exit;
         $A = DB_fetchArray($result);
         $A["commentcode"] = 0;
         $A["featured"] = 0;
@@ -102,12 +104,12 @@ function storyeditor($sid, $mode = '')
         $A['perm_anon'] = 2;
         $access = 3;
     } elseif ($mode == "edit") {
-        $A["sid"] = COM_makesid();
+        $A['sid'] = COM_makesid();
         $A['uid'] = $_USER['uid'];
-        $A["unixdate"] = time();
-        $A["commentcode"] = 0;
-        $A["statuscode"] = 0;
-        $A["featured"] = 0;
+        $A['unixdate'] = time();
+        $A['commentcode'] = 0;
+        $A['statuscode'] = 0;
+        $A['featured'] = 0;
         $A['owner_id'] = $_USER['uid'];
         $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Story Admin'");
         $A['perm_owner'] = 3;
@@ -506,12 +508,14 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     global $_TABLES, $_CONF, $LANG24, $HTTP_POST_FILES;
     
     if (!empty($title) && !empty($introtext)) {
+        $date = date("Y-m-d H:i:s",$unixdate);
+        
         if (empty($hits)) {
             $hits = 0;
         }
 
         // Get draft flag value
-        if ($draft_flag == "on") {
+        if ($draft_flag == 'on') {
             $draft_flag = 1;
         } else {
             $draft_flag = 0;
@@ -528,9 +532,9 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         // Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-        if ($featured == "1") {
+        if ($featured == '1') {
             // there can only be one non-draft featured story
-            if ($draft_flag == 0) {
+            if ($draft_flag == 0 AND $unixdate <= time()) {
                 $id[1] = 'featured';
                 $values[1] = 1;
                 $id[2] = 'draft_flag';
@@ -545,9 +549,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if (empty($numemails)) {
             $numemails = 0;
         }
-
-        $date = date("Y-m-d H:i:s",$unixdate);
-
+        
         // Get the related URLs
         $fulltext = "$introtext $bodytext";
         $check = " ";
