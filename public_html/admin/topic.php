@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.23 2002/07/30 13:52:31 dhaun Exp $
+// $Id: topic.php,v 1.24 2002/08/08 12:11:58 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -49,7 +49,7 @@ if (!SEC_hasRights('topic.edit')) {
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Show topic administration form
@@ -164,8 +164,9 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 		if ($imageurl == '/images/topics/') { 
 			$imageurl = ''; 
 		}	
+        $topic = addslashes ($topic);
 		//Convert array values to numeric permission values
-                list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . "/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');

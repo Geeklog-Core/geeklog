@@ -31,12 +31,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.35 2002/06/21 08:53:27 dhaun Exp $
+// $Id: block.php,v 1.36 2002/08/08 12:11:58 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// COM_debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -339,6 +339,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
             $rdfurl = '';
             $rdfupdated = '';
             $phpblockfn = '';
+            $content = addslashes ($content);
         }
         if ($type == 'layout') {
             $rdfurl = '';

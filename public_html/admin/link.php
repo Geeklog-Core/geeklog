@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.24 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: link.php,v 1.25 2002/08/08 12:11:58 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -39,7 +39,7 @@ include('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 $display = '';
 
@@ -191,11 +191,11 @@ function editlink($mode, $lid = '')
 function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
 	global $_TABLES, $_CONF, $LANG23, $_USER; 
-    
 
 	// clean 'em up 
 	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
 	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
+    $category = addslashes ($category);
 
 	if (!empty($title) && !empty($description) && !empty($url)) {
 		if (!empty($lid)) {
@@ -215,7 +215,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 		}
 
 		if ($categorydd != $LANG23[7] && !empty($categorydd)) {
-			$category = $categorydd;
+			$category = addslashes ($categorydd);
 		} else if ($categorydd != $LANG23[7]) {
 			echo COM_refresh($_CONF['site_admin_url'] . '/link.php');
 		}
