@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.69 2003/01/13 13:21:29 dhaun Exp $
+// $Id: config.php,v 1.70 2003/01/16 22:51:53 tony Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -181,6 +181,27 @@ $_CONF['cookiesecure']                  = 0;
 
 $_CONF['ostype']    = PHP_OS;
 
+// +---------------------------------------------------------------------------+
+// | SEARCH SETTINGS                                                           |
+// |                                                                           |
+// | These are other various Geeklog settings.  The defaults should work OK    |
+// | for most situations.                                                      |
+// +---------------------------------------------------------------------------+
+
+// Indicates if we should expand search results or not.
+//     true = show title with summary
+//     false = title date author hits on one line
+$_CONF['expandedSearchResults']  =  true;
+    
+// 0: use users max stories per page
+// 1: Show all
+// any other number is the # of resuilts per page
+$_CONF['maxSearchResults']  =  1;
+    
+// maximum length for the summary text for search results should be    
+$_CONF['summaryLength']  =  250;
+    
+    
 // +---------------------------------------------------------------------------+
 // | MISCELLANEOUS SETTINGS                                                    |
 // |                                                                           |
