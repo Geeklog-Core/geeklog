@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: index.php,v 1.4 2002/05/02 16:17:54 tony_bibbs Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -158,6 +158,7 @@ function liststaticpages($page = 1)
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC[staticpagelist]));
+    $sp_templates->set_var('new_page_url', COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit'));
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
     $sp_templates->set_var('lang_title', $LANG_STATIC[title]);
@@ -175,7 +176,9 @@ function liststaticpages($page = 1)
 			//$scount = (50 * $page) - 50 + $i;
 			$A = DB_fetchArray($result);
             $sp_templates->set_var('sp_id', $A['sp_id']);
+            $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&sp_id=' . $A['sp_id']));
             $sp_templates->set_var('row_number', $i);
+            $sp_templates->set_var('page_display_url',COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
             $sp_templates->set_var('sp_title', $A['sp_title']);
             $sp_templates->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
 			$curtime = COM_getUserDateTimeFormat($A['unixdate']);
@@ -267,6 +270,13 @@ function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hit
 }
 
 // MAIN
+
+
+if (empty($mode) OR empty($sp_id)) {
+    COM_setArgNames(array('mode','sp_id'));    
+    $mode = COM_getArgument('mode');
+    $sp_id = COM_getArgument('sp_id');
+}
 
 switch ($mode) {
 case $LANG_STATIC[delete]:

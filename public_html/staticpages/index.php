@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.3 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: index.php,v 1.4 2002/05/02 16:17:18 tony_bibbs Exp $
 
 require_once('../lib-common.php');
 
@@ -39,6 +39,9 @@ if (!empty($USER["uid"])) {
         $result = DB_query("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$USER["uid"]}'");
         $U = DB_fetchArray($result);
 }
+
+COM_setArgNames(array('page'));
+$page = COM_getArgument('page');
 
 if (empty($page)) {
 	$error = 1;
@@ -66,7 +69,7 @@ if (!($error)) {
 	    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
 	    $retval .= '<br><br><center>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0] . '<br>'; 
 	    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-		    $retval .= "<a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&sp_id=$page>";
+		    $retval .= '<a href="' . COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&sp_id=' . $page) .'">';
 		    $retval .= $LANG_STATIC[edit] . "</a></center>";
 	    }
 	    $retval .= "<td><img src={$_CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
