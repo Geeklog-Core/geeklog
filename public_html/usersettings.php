@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.63 2003/06/22 22:07:42 dhaun Exp $
+// $Id: usersettings.php,v 1.64 2003/06/23 16:25:35 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -363,10 +363,9 @@ function editpreferences()
             COM_startBlock ($LANG04[47] . ' ' . $_USER['username']));
     $preferences->set_var ('start_block_comment',
             COM_startBlock ($LANG04[64] . ' ' . $_USER['username']));
-    $preferences->set_var ('end_block_comment', COM_endBlock ());
     $preferences->set_var ('start_block_privacy',
             COM_startBlock ($LANG04[99] . ' ' . $_USER['username']));
-    $preferences->set_var ('end_block_privacy', COM_endBlock ());
+    $preferences->set_var ('end_block', COM_endBlock ());
 
     $preferences->set_var ('display_headline',
                            $LANG04[45] . ' ' . $_USER['username']);
