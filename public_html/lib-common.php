@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.141 2002/08/22 14:43:44 dhaun Exp $
+// $Id: lib-common.php,v 1.142 2002/08/23 09:09:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -243,8 +243,8 @@ for ($i = 1; $i <= $nrows; $i++) {
 /**
 * Returns the array (created from db record) passed to it as formated HTML
 *
-* Formats the given article data into HTML.  Called by index.php and
-* admin/story.php (when previewing)
+* Formats the given article data into HTML.  Called by index.php, article.php,
+* and admin/story.php (when previewing)
 *
 * @param	array       $A      Data to display as an article (associative array from record from gl_stories
 * @param	string		$index  whether or not this is the index page if 'n' then compact display for index page else display full article
@@ -254,7 +254,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 function COM_article($A,$index='') 
 {
     global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05;
-	
+
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
 
@@ -263,7 +263,7 @@ function COM_article($A,$index='')
         $A['introtext'] = nl2br($A['introtext']);
         $A['bodytext'] = nl2br($A['bodytext']);
     }
-    
+
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml','featuredarticle'=>'featuredstorytext.thtml','featuredbodytext'=>'featuredstorybodytext.thtml'));
     $article->set_var('layout_url',$_CONF['layout_url']);
@@ -284,14 +284,16 @@ function COM_article($A,$index='')
             $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = 1"));
         }
     }
-	
-	if ($_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1) {
-        $top = DB_getItem($_TABLES['topics'],'imageurl',"tid = '{$A['tid']}'");
-        if (!empty($top)) { 
-            $article->set_var('story_anchortag_and_image', '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_image_align'].'" src="'.$_CONF['site_url'].$top.'" alt="'.$A['tid'].'" border="0"></a>');
+
+    if ($_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1) {
+        $result = DB_query ("SELECT imageurl,topic FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+        $T = DB_fetchArray ($result);
+        if (!empty($T['imageurl'])) {
+            $topicname = htmlspecialchars ($T['topic']);
+            $article->set_var('story_anchortag_and_image', '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_image_align'].'" src="'.$_CONF['site_url'].$T['imageurl'].'" alt="'.$topicname.'" title="'.$topicname.'" border="0"></a>');
         }
     }
-   
+
     if ($index == 'n') {
         if ($A['postmode'] == 'plaintext') {
             $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
@@ -300,8 +302,7 @@ function COM_article($A,$index='')
         $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.stripslashes($A['bodytext']));
     } else {
         $article->set_var('story_introtext', stripslashes($A['introtext']));
-        
-    
+
         if (!empty($A['bodytext'])) {
             $article->set_var('readmore_link', '<a href="' .  $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof(explode(' ',$A['bodytext'])) . ' ' . $LANG01[62] . ') ');
         }
