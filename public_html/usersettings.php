@@ -173,7 +173,7 @@ function editpreferences()
     $retval .= $language_options;
     $retval .= '</select></td></tr>'
 	. '<tr valign="top">' . LB
-	. '<td align=right><b>Theme: </b><br><small>Change what this site looks like!</small></td>' . LB
+	. "<td align=right><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
 	. '<td><select name="theme">'.LB;
 
     if (empty($_USER['theme'])) {
@@ -266,11 +266,11 @@ function editpreferences()
 
     if ($_CONF['emailstories'] == 1) {
         $user_etids = DB_getItem($_TABLES['userindex'],'etids',"uid = {$_USER['uid']}");
-    	$retval .= COM_startBlock("Emailed Topics for  {$_USER['username']}");
+    	$retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
     	$retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
-    	$retval .= "<tr valign=\"top\"><td>If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!<br>";
+    	$retval .= "<tr valign=\"top\"><td>$LANG04[76]<br>";
     	$tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
-        $retval .= str_replace('topics','etids',$tmp);
+        $retval .= str_replace($_TABLES['topics'],'etids',$tmp);
     	$retval .= '</td></tr></table>';
    	    $retval .= COM_endBlock();	
     }
