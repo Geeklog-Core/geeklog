@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2003/03/11 17:00:57 dhaun Exp $
+// $Id: index.php,v 1.12 2003/09/07 20:50:13 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -70,7 +70,7 @@ if (!($error)) {
             $retval .= COM_siteHeader ('none');
         }
     }
-    if ($_SP_CONF['in_block'] == 1) {
+    if (($_SP_CONF['in_block'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_startBlock (stripslashes ($A['sp_title']));
     }
     //Check for type (ie html or php)
@@ -91,7 +91,7 @@ if (!($error)) {
         }
         $retval .= '</p>';
     }
-    if ($_SP_CONF['in_block'] == 1) {
+    if (($_SP_CONF['in_block'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_endBlock ();
     }
 
