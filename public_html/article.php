@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.33 2003/06/24 19:08:58 dhaun Exp $
+// $Id: article.php,v 1.34 2003/07/01 15:03:44 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -101,8 +101,17 @@ if ($A['count'] > 0) {
                 $story_template->set_var('lang_contributedby', $LANG01[1]);
                 $story_template->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
             }
-            $story_template->set_var('story_introtext',nl2br(stripslashes($A['introtext'])));
-            $story_template->set_var('story_bodytext', nl2br(stripslashes($A['bodytext'])));
+            if ($A['postmode'] == 'html') {
+                $story_template->set_var ('story_introtext',
+                        stripslashes ($A['introtext']));
+                $story_template->set_var ('story_bodytext',
+                        stripslashes ($A['bodytext']));
+            } else {
+                $story_template->set_var ('story_introtext',
+                        nl2br (stripslashes ($A['introtext'])));
+                $story_template->set_var ('story_bodytext',
+                        nl2br (stripslashes ($A['bodytext'])));
+            }
             $story_template->set_var('site_url',$_CONF['site_url']);
             $story_template->set_var('layout_url',$_CONF['layout_url']);
             $story_template->set_var('story_id', $A['sid']);
