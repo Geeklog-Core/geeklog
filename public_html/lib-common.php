@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.114 2002/06/29 22:44:21 dhaun Exp $
+// $Id: lib-common.php,v 1.115 2002/06/30 10:27:04 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1384,6 +1384,17 @@ function COM_adminMenu($help = '', $title = '')
         }
 	    $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('admin_block', 'header'));
         if (SEC_isModerator()) {
+            $num = 0;
+            if (SEC_hasrights ('story.edit')) {
+                $num += DB_count ($_TABLES['storysubmission'], 'uid', 0);
+            }
+            if (SEC_hasrights ('event.edit')) { 
+                $num += DB_count ($_TABLES['eventsubmission'], 'eid', 0);
+            }
+            if (SEC_hasrights ('link.edit')) { 
+                $num += DB_count ($_TABLES['linksubmission'], 'lid', 0);
+            }
+
             $num = DB_count($_TABLES['storysubmission'],'uid',0) + 
                     DB_count($_TABLES['eventsubmission'],'eid',0) + 
                     DB_count($_TABLES['linksubmission'],'lid',0);
