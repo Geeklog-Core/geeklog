@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.63 2005/01/30 13:51:09 dhaun Exp $
+// $Id: article.php,v 1.64 2005/02/27 17:47:23 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -172,6 +172,7 @@ if ($A['count'] > 0) {
 
         $story_template->set_var('site_url', $_CONF['site_url']);
         $story_template->set_var('layout_url', $_CONF['layout_url']);
+        $story_template->set_var('story_id', $story);
         $story_options = array ();
         if ($_CONF['hideemailicon'] == 0) {
             $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story
