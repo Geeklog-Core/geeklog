@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.5 2005/01/30 13:51:10 dhaun Exp $
+// $Id: trackback.php,v 1.6 2005/01/30 20:01:23 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -205,20 +205,24 @@ function showTrackbackMessage ($title, $message)
 }
 
 /**
-* Send a Pingback to all the links in $text, advertising our post at $url
+* Send a Pingback to all the links in our entry
 *
-* @param    string  $url    URL of a post on our site
-* @param    string  $text   text of a story etc., will be searched for links
+* @param    string  $type   type of entry we're advertising ('article' = story)
+* @param    string  $id     ID of that entry
 * @return   string          pingback results
 *
 */
-function sendPingbacks ($url, $text)
+function sendPingbacks ($type, $id)
 {
     global $_CONF, $LANG_TRB;
 
     $retval = '';
 
-    $retval .= '<p>Pingback results:</p>';
+    if ($type == 'article') {
+        list ($url, $text) = STORY_getItemInfo ($id, 'url,description');
+    } else {
+        list ($url, $text) = PLG_getItemInfo ($type, $id, 'url,description');
+    }
 
     // extract all links from the text
     preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
@@ -238,7 +242,9 @@ function sendPingbacks ($url, $text)
         $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
         $template->set_var ('layout_url', $_CONF['layout_url']);
         $template->set_var ('lang_resend', $LANG_TRB['resend']);
+        $template->set_var ('lang_results', $LANG_TRB['pingback_results']);
 
+        $counter = 1;
         foreach ($links as $key => $URLtoPing) {
             $result = PNB_sendPingback ($url, $URLtoPing);
             $resend = '';
@@ -255,7 +261,10 @@ function sendPingbacks ($url, $text)
             $template->set_var ('host_name', $parts['host']);
             $template->set_var ('pingback_result', $result);
             $template->set_var ('resend', $resend);
+            $template->set_var ('alternate_row',
+                    ($counter % 2) == 0 ? 'row-even' : 'row-odd');
             $template->parse ('pingback_results', 'item', true);
+            $counter++;
         }
         $template->parse ('output', 'list');
         $retval .= $template->finish ($template->get_var ('output'));
@@ -263,6 +272,69 @@ function sendPingbacks ($url, $text)
     } else {
         $retval = $LANG_TRB['no_links_pingback'];
     }
+
+    return $retval;
+}
+
+/**
+* Ping weblog directory services
+*
+* @param    string  $type   type of entry we're advertising ('article' = story)
+* @param    string  $id     ID of that entry
+* @return   string          result of the pings
+*
+*/
+function sendPings ($type, $id)
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+
+    if ($type == 'article') {
+        list ($itemurl,$feedurl) = STORY_getItemInfo ($id, 'url,feed');
+    } else {
+        list ($itemurl,$feedurl) = PLG_getItemInfo ($type, $id, 'url,feed');
+    }
+
+    $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
+    $template->set_file (array ('list' => 'pinglist.thtml',
+                                'item' => 'pingitem.thtml'));
+    $template->set_var ('site_url', $_CONF['site_url']);
+    $template->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $template->set_var ('layout_url', $_CONF['layout_url']);
+    $template->set_var ('lang_resend', $LANG_TRB['resend']);
+    $template->set_var ('lang_results', $LANG_TRB['ping_results']);
+
+    $counter = 1;
+    foreach ($_CONF['ping_sites'] as $site) {
+        $resend = '';
+        if ($site['method'] == 'weblogUpdates.ping') {
+            $result = PNB_sendPing ($site['ping_url'], $_CONF['site_name'],
+                                    $_CONF['site_url'], $itemurl);
+        } else if ($site['method'] == 'weblogUpdates.extendedPing') {
+            $result = PNB_sendExtendedPing ($site['ping_url'],
+                $_CONF['site_name'], $_CONF['site_url'], $itemurl, $feedurl);
+        } else {
+            $result = $LANG_TRB['unknown_method'] . ': ' . $site['method'];
+        }
+        if (empty ($result)) {
+            $result = '<b>' . $LANG_TRB['ping_success'] . '</b>';
+        } else {
+            $result = '<span class="warningsmall">' . $result . '</span>';
+        }
+
+        $template->set_var ('service_name', $site['name']);
+        $template->set_var ('service_url', $site['site_url']);
+        $template->set_var ('service_ping_url', $site['ping_url']);
+        $template->set_var ('ping_result', $result);
+        $template->set_var ('resend', $resend);
+        $template->set_var ('alternate_row',
+                ($counter % 2) == 0 ? 'row-even' : 'row-odd');
+        $template->parse ('ping_results', 'item', true);
+        $counter++;
+    }
+    $template->parse ('output', 'list');
+    $retval .= $template->finish ($template->get_var ('output'));
 
     return $retval;
 }
@@ -315,6 +387,8 @@ function prepareAutodetect ($type, $id, $text)
             $template->set_var ('autodetect_link', $link);
             $template->set_var ('link_text', $matches[2][$i]);
             $template->set_var ('link_url', $matches[1][$i]);
+            $template->set_var ('alternate_row',
+                    (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
             $template->parse ('autodetect_items', 'item', true);
         }
         $template->parse ('output', 'list');
@@ -420,15 +494,9 @@ if ($mode == 'delete') {
     }
     $id = COM_applyFilter ($_REQUEST['id']);
     if (!empty ($id)) {
-        if ($type == 'article') {
-            list ($url, $fulltext) = STORY_getItemInfo ($id, 'url,description');
-        } else {
-            list ($url, $fulltext) = PLG_getItemInfo ($type, $id,
-                                                      'url,description');
-        }
         $display .= COM_siteHeader ('menu', $LANG_TRB['pingback'])
                   . COM_startBlock ($LANG_TRB['pingback_results'])
-                  . sendPingbacks ($url, $fulltext)
+                  . sendPingbacks ($type, $id)
                   . COM_endBlock ()
                   . COM_siteFooter ();
     } else {
@@ -445,34 +513,19 @@ if ($mode == 'delete') {
         $type = 'article';
     }
 
-    $pingback_sent = false;
-    $ping_sent = false;
-    $trackback_sent = false;
-    if (isset ($_REQUEST['pingback_sent'])) {
-        $pingback_sent = true;
-    }
-    if (isset ($_REQUEST['ping_sent'])) {
-        $ping_sent = true;
-    }
-    if (isset ($_REQUEST['trackback_sent'])) {
-        $trackback_sent = true;
-    }
+    $pingback_sent  = isset ($_REQUEST['pingback_sent']);
+    $ping_sent      = isset ($_REQUEST['ping_sent']);
+    $trackback_sent = isset ($_REQUEST['trackback_sent']);
 
     $pingresult = '';
     if (isset ($_POST['what']) && is_array ($_POST['what'])) {
         $what = $_POST['what'];
         if (isset ($what[0])) {         // Pingback
-            if ($type == 'article') {
-                list ($url, $fulltext) = STORY_getItemInfo ($id,
-                                                            'url,description');
-            } else {
-                list ($url, $fulltext) = PLG_getItemInfo ($type, $id,
-                                                          'url,description');
-            }
-            $pingresult = sendPingbacks ($url, $fulltext);
+            $pingresult = sendPingbacks ($type, $id);
             $pingback_sent = true;
         } else if (isset ($what[1])) {  // Ping
-            // TBD
+            $pingresult = sendPings ($type, $id);
+            $ping_sent = true;
         } else if (isset ($what[2])) {  // Trackback
             $url = $_CONF['site_admin_url'] . '/trackback?mode=pretrackback&id='
                  . $id;

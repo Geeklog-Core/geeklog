@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.3 2005/01/30 13:51:09 dhaun Exp $
+// $Id: lib-pingback.php,v 1.4 2005/01/30 20:01:22 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -141,6 +141,88 @@ function PNB_sendPingback ($sourceURI, $targetURI)
     $msg = new XML_RPC_Message ('pingback.ping',
             array (new XML_RPC_Value ($sourceURI, 'string'),
                    new XML_RPC_Value ($targetURI, 'string')));
+
+    $response = $client->send ($msg, 0, $parts['scheme']);
+    if ($response == 0) {
+        $retval = $client->errstring;
+    } else if ($response->faultCode () != 0) {
+        $retval = $response->faultString ();
+    }
+
+    return $retval;
+}
+
+/**
+* Send a standard ping to a weblog directory service
+*
+* The "classic" ping, originally invented for weblogs.com
+*
+* @param    string  $url            URL to ping
+* @param    string  $blogname       name of our site
+* @param    string  $blogurl        URL of our site
+* @param    string  $changedurl     URL of the changed / new entry
+* @return   string                  empty string on success of error message
+*
+*/
+function PNB_sendPing ($url, $blogname, $blogurl, $changedurl)
+{
+    $parts = parse_url ($url);
+    if (empty ($parts['port'])) {
+        if (strcasecmp ($parts['scheme'], 'https') == 0) {
+            $parts['port'] = 443;
+        } else {
+            $parts['port'] = 80;
+        }
+    }
+    $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
+    //$client->setDebug (1);
+
+    $msg = new XML_RPC_Message ('weblogUpdates.ping',
+            array (new XML_RPC_Value ($blogname, 'string'),
+                   new XML_RPC_Value ($blogurl, 'string'),
+                   new XML_RPC_Value ($changedurl, 'string')));
+
+    $response = $client->send ($msg, 0, $parts['scheme']);
+    if ($response == 0) {
+        $retval = $client->errstring;
+    } else if ($response->faultCode () != 0) {
+        $retval = $response->faultString ();
+    }
+
+    return $retval;
+}
+
+/**
+* Send an extended ping to a weblog directory service
+*
+* Supported e.g. by blo.gs
+*
+* @param    string  $url            URL to ping
+* @param    string  $blogname       name of our site
+* @param    string  $blogurl        URL of our site
+* @param    string  $changedurl     URL of the changed / new entry
+* @param    string  $feedurl        URL of a feed for our site
+* @return   string                  empty string on success of error message
+*
+*/
+function PNB_sendExtendedPing ($url, $blogname, $blogurl, $changedurl, $feedurl)
+{
+    $parts = parse_url ($url);
+    if (empty ($parts['port'])) {
+        if (strcasecmp ($parts['scheme'], 'https') == 0) {
+            $parts['port'] = 443;
+        } else {
+            $parts['port'] = 80;
+        }
+    }
+    $client = new XML_RPC_Client ($parts['path'], $parts['host'], $parts['port']);
+    //$client->setDebug (1);
+
+    $msg = new XML_RPC_Message ('weblogUpdates.extendedPing',
+            array (new XML_RPC_Value ($blogname, 'string'),
+                   new XML_RPC_Value ($blogurl, 'string'),
+                   new XML_RPC_Value ($changedurl, 'string'),
+                   new XML_RPC_Value ($feedurl, 'string')));
 
     $response = $client->send ($msg, 0, $parts['scheme']);
     if ($response == 0) {

@@ -1329,17 +1329,20 @@ $LANG_TRB = array(
     'pingback_success'   => 'Pingback sent.',
     'no_pingback_url'    => 'No pingback URL found.',
     'resend'             => 'Resend',
-    'ping_all_explain'   => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging services like blo.gs, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
+    'ping_all_explain'   => 'You can now notify the sites you linked to (<a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>), advertise that your site has been updated by pinging weblog directory services, or send a <a href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> comment in case you wrote about a post on someone else\'s site.',
     'pingback_button'    => 'Send Pingback',
     'pingback_short'     => 'Send Pingbacks to all sites linked from this entry.',
     'pingback_disabled'  => '(Pingback disabled)',
     'ping_button'        => 'Send Ping',
-    'ping_short'         => 'Ping services like blo.gs',
+    'ping_short'         => 'Ping weblog directory services.',
     'ping_disabled'      => '(Ping disabled)',
     'trackback_button'   => 'Send Trackback',
     'trackback_short'    => 'Send a Trackback comment.',
     'trackback_disabled' => '(Trackback disabled)',
-    'may_take_a_while'   => 'Please note that sending Pingbacks and Pings may take a while.'
+    'may_take_a_while'   => 'Please note that sending Pingbacks and Pings may take a while.',
+    'ping_results'       => 'Ping-Ergebnisse',
+    'unknown_method'     => 'Unbekannte Ping-Methode',
+    'ping_success'       => 'Ping gesendet.'
 );
 
 ###############################################################################

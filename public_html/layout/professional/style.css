@@ -449,6 +449,12 @@ th {
 .pagenav {
   text-align: center;
 }
+.row-even {
+  background-color: #E7E7E7;
+}
+.row-odd {
+  background-color: #FFFFFF;
+}
 .searchauth {
   background:transparent;
   color:#000000;

@@ -1,4 +1,4 @@
-    <tr>
+    <tr class="{alternate_row}">
         <td><a href="{url_to_ping}">{link_text}</a> ({host_name})</td>
         <td>{pingback_result}</td>
         <td>{resend}</td>

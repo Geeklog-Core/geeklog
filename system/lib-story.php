@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.20 2005/01/30 13:51:09 dhaun Exp $
+// $Id: lib-story.php,v 1.21 2005/01/30 20:01:22 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -535,6 +535,9 @@ function STORY_getItemInfo ($sid, $what)
             case 'excerpt':
                 $fields[] = 'introtext';
                 break;
+            case 'feed':
+                $fields[] = 'tid';
+                break;
             case 'title':
                 $fields[] = 'title';
                 break;
@@ -562,6 +565,24 @@ function STORY_getItemInfo ($sid, $what)
                 break;
             case 'excerpt':
                 $retval[] = trim (stripslashes ($A['introtext']));
+                break;
+            case 'feed':
+                $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
+                                        "topic = '::all'");
+                if (empty ($feedfile)) {
+                    $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
+                                            "topic = '{$A['tid']}'");
+                }
+                if (empty ($feedfile)) {
+                    $retval[] = '';
+                } else {
+                    $feedpath = $_CONF['rdf_file'];
+                    $pos = strrpos ($feedpath, '/');
+                    $feed = substr ($feedpath, 0, $pos + 1);
+                    $url = substr_replace ($feed, $_CONF['site_url'], 0,
+                            strlen ($_CONF['path_html']) - 1);
+                    $retval[] = $url . $feedfile;
+                }
                 break;
             case 'title':
                 $retval[] = stripslashes ($A['title']);

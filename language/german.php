@@ -1327,17 +1327,20 @@ $LANG_TRB = array(
     'pingback_success'   => 'Pingback gesendet.',
     'no_pingback_url'    => 'Keine Pingback-URL gefunden.',
     'resend'             => 'Nochmal senden',
-    'ping_all_explain'   => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Dienste wie blo.gs senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du über einen Beitrag in einem anderen Weblog geschrieben hast.',
+    'ping_all_explain'   => 'Du kannst jetzt einen <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> zu den verlinkten Sites senden, einen Ping an Weblog-Verzeichnisse senden, oder einen <a href="http://de.wikipedia.org/wiki/Trackback">Trackback</a>-Kommentar verschicken, wenn Du über einen Beitrag in einem anderen Weblog geschrieben hast.',
     'pingback_button'    => 'Pingback senden',
     'pingback_short'     => 'Einen Pingback an alle in diesem Beitrag verlinkten Sites senden.',
     'pingback_disabled'  => '(Pingback deaktiviert)',
     'ping_button'        => 'Ping senden',
-    'ping_short'         => 'Dienste wie blo.gs "anpingen".',
+    'ping_short'         => 'Weblog-Verzeichnisse "anpingen".',
     'ping_disabled'      => '(Ping deaktiviert)',
     'trackback_button'   => 'Trackback senden',
     'trackback_short'    => 'Einen Trackback-Kommentar senden.',
     'trackback_disabled' => '(Trackback deaktiviert)',
-    'may_take_a_while'   => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.'
+    'may_take_a_while'   => 'Hinweis: Das Senden von Pingbacks und Pings kann eine Weile dauern.',
+    'ping_results'       => 'Ping-Ergebnisse',
+    'unknown_method'     => 'Unbekannte Ping-Methode',
+    'ping_success'       => 'Ping gesendet.'
 );
 
 ###############################################################################
