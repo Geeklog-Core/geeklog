@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.29 2002/08/04 20:20:13 dhaun Exp $
+// $Id: submit.php,v 1.30 2002/08/06 19:08:10 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -570,18 +570,19 @@ if ($mode == $LANG12[8]) {
         case 'link':
             if (SEC_hasRights('link.edit')) {
                 echo COM_refresh($_CONF['site_admin_url'] . '/link.php?mode=edit');
+                exit;
             }
             break;
         case 'event':
             if (SEC_hasRights('event.edit')) {
                 echo COM_refresh($_CONF['site_admin_url'] . '/event.php?mode=edit');
+                exit;
             }
             break;
         default:
-            if (empty($type)) {
-                if (SEC_hasRights('story.edit')) {
-                    echo COM_refresh($_CONF['site_admin_url'] . '/story.php?mode=edit');
-                }
+            if (SEC_hasRights('story.edit')) {
+                echo COM_refresh($_CONF['site_admin_url'] . '/story.php?mode=edit');
+                exit;
             }
             break;
     }
