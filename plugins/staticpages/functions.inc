@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.13 2002/08/12 10:47:56 dhaun Exp $
+// $Id: functions.inc,v 1.14 2002/10/16 17:21:21 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -198,7 +198,11 @@ function plugin_cclabel_staticpages()
 {
     global $LANG_STATIC, $_CONF;
 
-    return array($LANG_STATIC['staticpages'],$_CONF['site_admin_url'] . '/plugins/staticpages/index.php',$_CONF['site_url'] . '/staticpages/images/staticpages.gif');
+    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
+        return array($LANG_STATIC['staticpages'],$_CONF['site_admin_url'] . '/plugins/staticpages/index.php',$_CONF['site_url'] . '/staticpages/images/staticpages.gif');
+    }
+
+    return (false);
 }
 
 /**
