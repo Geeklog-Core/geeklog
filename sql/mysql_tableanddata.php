@@ -401,6 +401,8 @@ CREATE TABLE {$_TABLES['stories']} (
   INDEX stories_uid(uid),
   INDEX stories_featured(featured),
   INDEX stories_hits(hits),
+  INDEX stories_statuscode(statuscode),
+  INDEX stories_expire(expire),
   PRIMARY KEY  (sid)
 ) TYPE=MyISAM
 ";

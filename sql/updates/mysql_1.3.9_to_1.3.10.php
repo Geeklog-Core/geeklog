@@ -151,6 +151,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_name(name)";
 // (this is obsolete since 1.3.9 but was still present in fresh 1.3.9 installs)
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
 
+// add index on the 'statuscode' and 'expire' fields of the stories table
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_statuscode(statuscode)";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_expire(expire)";
+
 
 /**
 * Install SpamX plugin (also handled updates from version 1.0)
