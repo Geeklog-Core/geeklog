@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.40 2002/04/22 21:30:46 tony_bibbs Exp $
+// $Id: story.php,v 1.41 2002/04/22 21:51:11 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -91,6 +91,7 @@ function storyeditor($sid = '', $mode = '')
     } elseif (!empty($sid) && $mode == "editsubmission") {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
         $A = DB_fetchArray($result);
+        $A['show_topic_icon'] = 1;
         $A["commentcode"] = 0;
         $A["featured"] = 0;
         $A["statuscode"] = 0;
@@ -103,6 +104,7 @@ function storyeditor($sid = '', $mode = '')
         $access = 3;
     } elseif ($mode == "edit") {
         $A['sid'] = COM_makesid();
+        $A['show_topic_icon'] = 1;
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
         $A['commentcode'] = 0;
@@ -232,6 +234,12 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('story_title', stripslashes($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
+    $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
+    if ($A['show_topic_icon'] == 1) {
+        $story_templates->set_var('show_topic_icon_checked', 'checked="CHECKED"');
+    } else {
+        $story_templates->set_var('show_topic_icon_checked', '');
+    }
     $story_templates->set_var('lang_draft', $LANG24[34]);
     if ($A['draft_flag'] == 1) {
         $story_templates->set_var('is_checked', 'CHECKED');
@@ -514,7 +522,7 @@ function insert_images($sid, $intro, $body)
 * @delete       array       String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete) 
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
     global $_TABLES, $_CONF, $LANG24, $HTTP_POST_FILES;
     
@@ -559,6 +567,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
         if (empty($numemails)) {
             $numemails = 0;
+        }
+        
+        if ($show_topic_icon == 'on') {
+            $show_topic_icon = 1;
+        } else {
+            $show_topic_icon = 0;
         }
         
         // Get the related URLs
@@ -703,7 +717,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
         }
         
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", 'admin/story.php?msg=9');
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", 'admin/story.php?msg=9');
         
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
@@ -769,7 +783,7 @@ case 'save':
         $publish_hour = '00';
     }
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
-    submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete);
+    submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon);
     break;
 case 'cancel':
 default:
