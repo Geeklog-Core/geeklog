@@ -25,7 +25,8 @@ if (!empty($CONF["pagetitle"])) {
 </table>
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
-<tr align=center valign=middle bgcolor=DDDDDD><td height=20><a href=<?php echo $CONF["base"]; ?>/submit.php?type=story><?php print $LANG01[71];?></a>
+<tr align=center valign=middle bgcolor=DDDDDD><td height=20>
+<a href=<?php echo $CONF["base"]; ?>/submit.php?type=story><?php print $LANG01[71];?></a>
 &#149; <a href=<?php echo $CONF["base"]; ?>/links.php><?php print $LANG01[72];?></a>
 &#149; <a href=<?php echo $CONF["base"]; ?>/pollbooth.php><?php print $LANG01[73];?></a>
 &#149; <a href=<?php echo $CONF["base"]; ?>/calendar.php><?php print $LANG01[74];?></a>
