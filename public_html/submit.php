@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.52 2003/05/05 16:52:35 dhaun Exp $
+// $Id: submit.php,v 1.53 2003/05/28 11:03:50 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -146,7 +146,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
         }
     } else {
         $eventform->set_var('master_checked', 'selected="SELECTED"');
-        $eventform->set_var('personl_option', '');
+        $eventform->set_var('personal_option', '');
     }
     $eventform->set_var('lang_link', $LANG12[11]);
     $eventform->set_var('lang_startdate', $LANG12[12]);
