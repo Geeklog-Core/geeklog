@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.220 2003/05/06 13:56:20 dhaun Exp $
+// $Id: lib-common.php,v 1.221 2003/05/11 18:34:39 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -317,7 +317,7 @@ for( $i = 1; $i <= $nrows; $i++ )
 
 function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 {
-    global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05, $_THEME_URL;
+    global $_TABLES, $mode, $_CONF, $_USER, $LANG01, $LANG05, $LANG11, $_THEME_URL;
 
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
     $A['day'] = $curtime[0];
@@ -501,7 +501,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">'
                 . '<img src="' . $_CONF['layout_url']
                 . '/images/mail.gif" alt="' . $LANG01[64]
-                . '" border="0"></a>' );
+                . '" title="' . $LANG11[2] . '" border="0"></a>' );
         }
         if( $_CONF['hideprintericon'] == 1 )
         {
@@ -513,7 +513,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 . '/article.php?story=' . $A['sid']
                 . '&amp;mode=print"><img border="0" src="'
                 . $_CONF['layout_url'] . '/images/print.gif" alt="'
-                . $LANG01[65] . '"></a>' );
+                . $LANG01[65] . '" title="' . $LANG11[3] . '"></a>' );
         }
     }
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
