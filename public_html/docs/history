@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Fixed incorrect author names in Daily Digest (bug #207) [Dirk]
 - Fixed problems with the database backup when there were spaces in the path to
   the backups directory (bug #185).
 - Added email notification for new comments (feature request #155) [Dirk]

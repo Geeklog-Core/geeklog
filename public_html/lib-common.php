@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.319 2004/05/09 09:54:03 dhaun Exp $
+// $Id: lib-common.php,v 1.320 2004/05/10 07:53:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4192,6 +4192,10 @@ function COM_emailUserTopics()
                 {
                     $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
                     $authors[$S['uid']] = $storyauthor;
+                }
+                else
+                {
+                    $storyauthor = $authors[$S['uid']];
                 }
                 $mailtext .= "$LANG24[7]: " . $storyauthor . "\n";
             }
