@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.26 2002/08/03 14:33:59 dhaun Exp $
+// $Id: moderation.php,v 1.27 2002/08/14 21:43:11 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -208,9 +208,10 @@ function itemlist($type)
     }
 
     // run SQL but this time ignore any errors
-    $result = DB_query($sql,1);
-
-    if (DB_error()) {
+    if (!empty ($sql)) {
+        $result = DB_query($sql,1);
+    }
+    if (empty ($sql) || DB_error()) {
         // was more than likely a plugin that doesn't need moderation
         //$nrows = -1;
         return;
