@@ -1,0 +1,75 @@
+                                <form action="{site_admin_url}/poll.php" method="post">
+                                    <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                        <tr>
+                                            <td align="right">{lang_pollid}:</td>
+                                            <td><input type="text" name="qid" value="{poll_id}" size="20"> {lang_donotusespaces}</td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_question}:</td>
+                                            <td><input type="text" name="question" value="{poll_question}" size="50" maxlength="255"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_mode}:</td>
+                                            <td>
+                                                <select name="commentcode">
+                                                    {comment_options}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_appearsonhomepage}:</td>
+                                            <td><input type="checkbox" name="mainpage" {poll_display}></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><hr><td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right" valign="top">{lang_answersvotes}:</td>
+                                            <td>
+                                                {answer_option}
+                                                <input type="text" name="answer[]" value="{answer_text}" size="30" maxlength="255"> / <input type="text" name="votes[]" value="{answer_votes}" size="5"><BR>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><hr><td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_accessrights}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_owner}:</td>
+                                            <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_group}:</td>
+                                            <td>
+                                                {group_dropdown}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2"></td>
+                                        <tr>
+                                        <tr>
+                                            <td colspan="2">{lang_permissionskey}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                {permissions_editor}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">{lang_permissions_msg}</td>
+                                        </tr>
+                                        <tr><td>&nbsp;</td></tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <input type="submit" name="mode" value="{lang_save}">
+                                                <input type="submit" name="mode" value="{lang_cancel}"> 
+                                                {delete_option}
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>

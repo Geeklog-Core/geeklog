@@ -1,0 +1,3 @@
+                                <tr>
+                                    {data_cols}
+                                </tr>

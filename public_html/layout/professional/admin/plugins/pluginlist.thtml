@@ -1,0 +1,27 @@
+                                {start_block_pluginlist}
+                                <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                    <tr>
+                                        <td rowspan="2">
+                                            <img src="{layout_url}/images/admin/plugins.gif" alt="">
+                                        </td>
+                                        <td>[ <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{lang_instructions}</td>
+                                    </tr>
+                                </table><p>
+                                <table cellpadding="0" cellspacing="3" border="0" width="100%">
+                                    <tr>
+                                        <th align="left">#</th>
+                                        <th align="left">{lang_pluginname}</th>
+                                        <th>{lang_pluginversion}</th>
+                                        <th>{lang_geeklogversion}</th>
+                                        <th>{lang_enabled}</th>
+                                    </tr>
+                                    {plugin_list}
+                                    <tr>
+                                        <td colspan="6">{lang_nopluginsinstalled}</td>
+                                    </tr>
+                                </table>
+                                {google_paging}
+                                {end_block}

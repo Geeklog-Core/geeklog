@@ -1,0 +1,4 @@
+                                            <tr>
+                                                <td>{row_number} {story_begin_href}<b>{story_title}</b>{story_end_href}</td>
+                                                <td>{story_date}</td>
+                                            </tr>

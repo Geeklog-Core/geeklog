@@ -1,0 +1,61 @@
+{start_block_profile}
+<form action="{site_url}/usersettings.php" method="POST" {enctype}>
+<table border="0" cellspacing="0" cellpadding="3">
+  {username_option}
+  <tr valign="top">
+    <td align="right"><b>{lang_fullname}</b><br>
+      <small>{lang_fullname_text}</small></td>
+    <td><input type="text" name="fullname" size="60" maxlength="80"
+      value="{fullname_value}"></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_password}</b><br>
+      <small>{lang_password_text}</small></td>
+    <td><input type="password" name="passwd" size="32" maxlength="32"
+      value="{password_value}"></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_cooktime}</b><br>
+      <small>{lang_cooktime_text}</small></td>
+    <td>{cooktime_selector}</td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_email}</b><br>
+      <small>{lang_email_text}</small></td>
+    <td><input type="text" name="email" size="60" maxlength="96"
+      value="{email_value}"></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_homepage}</b><br>
+      <small>{lang_homepage_text}</small></td>
+    <td><input type="text" name="homepage" size="60" maxlength="96"
+      value="{homepage_value}"></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_signature}</b><br>
+      <small>{lang_signature_text}</small></td>
+    <td><textarea name="sig" cols="60" rows="4">{signature_value}</textarea></td>
+  </tr>
+  {userphoto_option}
+  <tr valign="top">
+    <td align="right"><b>{lang_about}</b><br>
+      <small>{lang_about_text}</small></td>
+    <td><textarea name="about" cols="60" rows="6">{about_value}</textarea></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_pgpkey}</b><br>
+      <small>{lang_pgpkey_text}</small></td>
+    <td><textarea name="pgpkey" cols="60" rows="6">{pgpkey_value}</textarea></td>
+  </tr>
+  <tr valign="top">
+    <td align="center" colspan="2">
+      <input type="hidden" name="uid" value="{uid_value}">
+      <input type="hidden" name="mode" value="saveuser">
+      <input type="hidden" name="username" value="{username_value}">
+      <input type="submit" value="{lang_submit}">
+    </td>
+  </tr>
+</table>
+</form>
+{end_block}
+{delete_account_option}

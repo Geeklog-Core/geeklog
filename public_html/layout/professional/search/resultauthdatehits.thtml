@@ -1,0 +1,5 @@
+<tr>
+<td class=searchAuth>{data}</td>
+<td class=searchDate>{data2}</td>
+<td class=searchHits width=100>{data3}</td>
+</tr>

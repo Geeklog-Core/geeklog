@@ -1,0 +1,21 @@
+<tr>
+<td class="globalCellText" align="center">{block_order}</td>
+<td width="45" class="globalCellText" align="left">
+    <img src="{layout_url}/images/admin/{blockcontrol_image}" width="45" height="20" border="0" usemap="#arrow{block_id}" alt="">
+        <map name="arrow{block_id}">
+            <area coords="0,0,12,20"  title="{upTitleMsg}" href="{site_admin_url}/block.php?mode=move&amp;bid={block_id}&amp;where=up" alt="{upTitleMsg}">
+            <area coords="13,0,29,20" title="{moveTitleMsg}"  href="{site_admin_url}/block.php?mode=move&amp;bid={block_id}&amp;where={switchside}" alt="{moveTitleMsg}">
+            <area coords="30,0,43,20" title="{dnTitleMsg}"  href="{site_admin_url}/block.php?mode=move&amp;bid={block_id}&amp;where=dn" alt="{dnTitleMsg}">
+        </map>
+    </td>
+<td class="globalCellText" align="left">
+    <a href="{site_admin_url}/block.php?mode=edit&amp;bid={block_id}">{block_title}</a>
+</td>
+<td class="globalCellText" align="center">{block_access}</td>
+<td class="globalCellText" align="center">{block_type}</td>
+<td class="globalCellText" align="center">{block_topic}</td>
+<td class="globalCellText" align="center">
+<form action="{site_admin_url}/block.php" method="post">
+  <input type="checkbox" name="blkenable" onclick="submit()" value="{block_id}" {enabled}><input type="hidden" name="blkChange" value="{block_id}">
+ </td></form>
+</tr>

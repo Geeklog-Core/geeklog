@@ -1,0 +1,52 @@
+                            <form action="{site_admin_url}/group.php" method="post">
+                                <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                    <tr>
+                                        <td align="right">{lang_groupname}:</td>
+                                        <td>{groupname_static}<input type="{groupname_inputtype}" size="20" maxlength="50" name="grp_name" value="{group_name}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_description}:</td>
+                                        <td><input type="text" size="40" maxlength="255" name="grp_descr" value="{group_description}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_securitygroups}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{lang_securitygroupmsg}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" width="100%">
+                                            {group_options}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_rights}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{lang_rightsmsg}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" width="100%">
+                                            <table border="0" width="100%" cellpadding="0" cellspacing="0">
+                                                {rights_options}
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr><td>&nbsp;</td></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode"> 
+                                            {delete_option}
+                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            <input type="hidden" name="grp_gl_core" value="{group_core}">
+                                            <input type="hidden" name="grp_id" value="{group_id}">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>

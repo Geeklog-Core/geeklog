@@ -1,0 +1,5 @@
+                                <tr align="center">
+                                    <td align="left"><a href="{site_url}/users.php?mode=profile&amp;uid={user_id}"><img src="{layout_url}/images/person.gif" border="0" alt=""></a>&nbsp;<a href="{site_admin_url}/user.php?mode=edit&amp;uid={user_id}">{username}</a></td>
+                                    <td>{user_fullname}</td>
+                                    <td>{user_email}</td>
+                                </tr>

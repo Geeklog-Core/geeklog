@@ -1,0 +1,237 @@
+<script>
+function enablearchive(obj) {
+    var f = obj.form;           // all elements have their parent form in "form"
+    var disable = obj.checked;  // Disable when checked
+    if (f.elements["archiveflag"].checked==true && f.elements["storycode11"].checked==false) {
+        f.elements["storycode10"].checked=true;
+    }
+    f.elements["storycode10"].disabled=!disable;
+    f.elements["storycode11"].disabled=!disable;
+    f.elements["expire_month"].disabled=!disable;
+    f.elements["expire_day"].disabled=!disable;
+    f.elements["expire_year"].disabled=!disable;
+    f.elements["expire_hour"].disabled=!disable;
+    f.elements["expire_minute"].disabled=!disable;
+    f.elements["expire_ampm"].disabled=!disable;
+}
+</script>
+                            <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <tr>
+                                        <td align="right">{lang_author}:</td>
+                                        <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right" valign="top">{lang_date}:</td>
+                                        <td>
+                                            <select name="publish_month">
+                                                {publish_month_options}
+                                            </select>
+                                            /
+                                            <select name="publish_day">
+                                                {publish_day_options}
+                                            </select>
+                                            /
+                                            <select name="publish_year">
+                                                {publish_year_options}
+                                            </select>&nbsp;&nbsp;
+                                            <select name="publish_hour">
+                                                {publish_hour_options}
+                                            </select>
+                                            :
+                                            <select name="publish_minute">
+                                                {publish_minute_options}
+                                            </select>
+                                            <select name="publish_ampm">
+                                                <option value="am" {publisham_selected}>am</option>
+                                                <option value="pm" {publishpm_selected}>pm</option>
+                                            </select><br>
+                                            <input type="hidden" name="publish_second" value="{publish_second}">
+                                            {publish_date_explanation}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_title}:</td>
+                                        <td><input type="text" size="48" maxlength="255" name="title" value="{story_title}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_topic}:</td>
+                                        <td>
+                                            <select name="tid">
+                                                {topic_options}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_show_topic_icon}:</td>
+                                        <td>
+                                            <input type="checkbox" name="show_topic_icon" {show_topic_icon_checked}>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_draft}:</td>
+                                        <td><input type="checkbox" name="draft_flag" {is_checked}></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <table border="0" cellspacing="0" cellpadding="3" width="100%" style="border-style:solid;">
+                                                <tr>
+                                                    <td colspan="3" style="padding-left:20px;">{lang_archivetitle}</td>
+                                                <tr>
+                                                    <td width="20%" style="text-align:right;padding-right:5px;">{lang_option}:</td>
+                                                    <td width="20%">{lang_enabled}:<input type="checkbox" name="archiveflag" value="1" {is_checked2} onclick="enablearchive(this);"></td>
+                                                    <td style="text-align:left;">
+                                                        <label for="storycode10"> 
+                                                            <input type="radio" name="statuscode" id="storycode10" value="10" {is_checked3} {archivedisabled}>{lang_optionarchive}
+                                                        </label>&nbsp; 
+                                                    <label for="storycode11"> 
+                                                        <input type="radio" name="statuscode" id="storycode11" value="11" {is_checked4} {archivedisabled}>{lang_optiondelete}
+                                                    </label>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align:right;vertical-align:top;padding-right:5px;">{lang_date}:</td>
+                                                    <td colspan="2">
+                                                        <select id="expire_month" name="expire_month" {archivedisabled}>
+                                                            {expire_month_options}
+                                                        </select>
+                                                        /
+                                                        <select name="expire_day" {archivedisabled}>
+                                                            {expire_day_options}
+                                                        </select>
+                                                        /
+                                                        <select name="expire_year" {archivedisabled}>
+                                                            {expire_year_options}
+                                                        </select>&nbsp;&nbsp;
+                                                        <select name="expire_hour" {archivedisabled}>
+                                                            {expire_hour_options}
+                                                        </select>
+                                                        :
+                                                        <select name="expire_minute" {archivedisabled}>
+                                                            {expire_minute_options}
+                                                        </select>
+                                                        <select name="expire_ampm" {archivedisabled}>
+                                                            <option value="am" {expiream_selected}>am</option>
+                                                            <option value="pm" {expirepm_selected}>pm</option>
+                                                        </select><br>
+                                                        <input type="hidden" name="expire_second" value="{expire_second}">
+                                                        <p />
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_mode}:</td>
+                                        <td>
+                                            <select name="commentcode">
+                                                {comment_options}
+                                            </select> 
+                                            <select name="featured">
+                                                {featured_options}
+                                            </select> 
+                                            <select name="frontpage">
+                                                {frontpage_options}
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right">{lang_sid}:</td>
+                                        <td><input type="text" size="20" maxlength="20" name="sid" value="{story_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right">{lang_introtext}:</td>
+                                        <td><textarea name="introtext" cols="50" rows="12">{story_introtext}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right">{lang_bodytext}:</td>
+                                        <td><textarea name="bodytext" cols="50" rows="15">{story_bodytext}</textarea></td>
+                                    </tr>
+                                    <tr valign="top">
+                                        <td align="right"><b>{lang_postmode}:</b></td>
+                                        <td>
+                                            <select name="postmode">
+                                                {post_options}
+                                            </select>
+                                            <br>
+                                            {lang_allowed_html}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right"><b>{lang_images}:</b></td>
+                                        <td>
+                                            {saved_images}
+                                            {image_form_elements}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_hits}:</td>
+                                        <td><input type="hidden" name="hits" value="{story_hits}">{story_hits}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_comments}:</td>
+                                        <td><input type="hidden" name="comments" value="{story_comments}">{story_comments}</td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_emails}:</td>
+                                        <td><input type="hidden" name="numemails" value="{story_emails}">{story_emails} 
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><hr></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_accessrights}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_owner}:</td>
+                                        <td>{owner_username}<input type="hidden" name="owner_id" value="{owner_id}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td align="right">{lang_group}:</td>
+                                        <td>
+                                            {group_dropdown}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">&nbsp;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><b>{lang_permissions}</b>:</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{lang_perm_key}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            {permissions_editor}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">{permissions_msg}</td>
+                                    </tr>
+                                    <tr><td colspan="2">&nbsp;</td></tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <input type="submit" value="{lang_save}" name="mode">
+                                            <input type="submit" value="{lang_preview}" name="mode"> 
+                                            <input type="submit" value="{lang_cancel}" name="mode"> 
+                                            {delete_option}
+                                            {submission_option}
+                                            <input type="hidden" name="old_sid" value="{old_story_id}">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </form>
+<script>
+<!-- This code will only be executed by a browser that suppports Javascript -->
+var jstest = {showarchivedisabled}
+if (jstest) {
+    document.frmstory.expire_month.disabled=true;
+    document.frmstory.expire_day.disabled=true;
+    document.frmstory.expire_year.disabled=true;
+    document.frmstory.expire_hour.disabled=true;
+    document.frmstory.expire_minute.disabled=true;
+    document.frmstory.storycode10.disabled=true;
+    document.frmstory.storycode11.disabled=true;
+}
+</script>

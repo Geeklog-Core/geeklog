@@ -1,0 +1,12 @@
+                                <tr align="center">
+                                    <td>{row_num}</td>
+                                    <td>
+                                        [<a href="{site_admin_url}/event.php?mode=clone&amp;eid={event_id}">C</a>]
+                                    </td>
+                                    <td align="left">
+                                        <a href="{site_admin_url}/event.php?mode=edit&amp;eid={event_id}">{event_title}</a>
+                                    </td>
+                                    <td>{event_access}</td>
+                                    <td>{event_startdate}</td>
+                                    <td>{event_enddate}</td>
+                                </tr>

@@ -1,0 +1,5 @@
+  <tr valign="top">
+    <td align="right"><b>{lang_theme}:</b><br>
+      <small>{lang_theme_text}</small></td>
+    <td>{theme_selector}</td>
+  </tr>

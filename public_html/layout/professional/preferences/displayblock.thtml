@@ -1,0 +1,26 @@
+{start_block_display}
+<table border="0" cellspacing="0" cellpadding="3">
+  {language_selection}
+  {theme_selection}
+  <tr valign="top">
+    <td align="right"><b>{lang_noicons}:</b><br>
+      <small>{lang_noicons_text}</small></td>
+    <td><input type="checkbox" name="noicons" {noicons_checked}></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_noboxes}:</b><br>
+      <small>{lang_noboxes_text}</small></td>
+    <td><input type="checkbox" name="noboxes" {noboxes_checked}</td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_maxstories}</b><br>
+      <small>{lang_maxstories_text}</small></td>
+    <td><input type="text" size="3" maxlength="3" name="maxstories"
+      value="{maxstories_value}"></td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_dateformat}:</b></td>
+    <td>{dateformat_selector}</td>
+  </tr>
+</table>
+{end_block}

@@ -1,0 +1,10 @@
+<div class="comment" style="padding-left: {indent}px">
+    <div class="commenttitle">{title}</div>
+    <div>{lang_authoredby}
+{start_author_anchortag}{author}{end_author_anchortag} {lang_on}
+{date}</div>
+    <div style="verticle-align: top">{comments}</div>
+    <div><span {hide_if_preview}>[ <a
+href="{site_url}/comment.php?sid={sid}&amp;pid={pid}&amp;title={title}&amp;type={type}">{lang_replytothis}</a>
+{parent_link} {delete_option}]</span></div>
+</div>

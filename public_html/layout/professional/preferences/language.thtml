@@ -1,0 +1,4 @@
+  <tr valign="top">
+    <td align="right"><b>{lang_language}:</b></td>
+    <td>{language_selector}</td>
+  </tr>

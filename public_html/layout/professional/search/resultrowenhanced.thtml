@@ -1,0 +1,12 @@
+                                <tr>
+                                	<td>
+                                		<table width = 100%>
+                                    		{data_cols}
+                                    	</table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                	<td>
+                                		&nbsp;
+                                    </td>
+                                </tr>

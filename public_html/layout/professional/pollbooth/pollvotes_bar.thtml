@@ -1,0 +1,4 @@
+<tr>
+  <td align="right"><b>{answer_text}</b></td>
+  <td><img src="{layout_url}/images/bar.gif" width="{bar_width}" height="10" align="bottom" alt=""> {answer_num} ({answer_percent}%)</td>
+</tr>

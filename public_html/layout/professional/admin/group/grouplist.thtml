@@ -1,0 +1,21 @@
+                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                                <tr>
+                                    <td rowspan="2">
+                                        <img src="{layout_url}/images/icons/group.gif" alt="">
+                                    </td>
+                                    <td>[ <a href="{site_admin_url}/group.php?mode=edit">{lang_newgroup}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>{lang_instructions}</td>
+                                </tr>
+                            </table>
+                            <table border="0" cellspacing="0" cellpadding=2 width="100%">
+                                <tr>
+                                    <th align="left">{lang_groupname}</th>
+                                    <th align="left">{lang_description}</th>
+                                    <th>{lang_coregroup}</th>
+                                    <th>{lang_list_users}</th>
+                                </tr>
+                                {group_row}
+                            </table>

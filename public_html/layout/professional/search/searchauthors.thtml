@@ -1,0 +1,9 @@
+                                    <tr>
+                                        <td align="right">{lang_authors}:</td>
+                                        <td>
+                                            <select name="author">
+                                                <option selected="selected" value="0">{lang_all}</option>
+                                                {author_option_list}
+                                            </select>
+                                        </td>
+                                    </tr>

@@ -1,0 +1,64 @@
+{start_feed_editor}
+<form action="{site_admin_url}/syndication.php" method="post">
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
+<tr>
+  <td align="right">{lang_feedtitle}:</td>
+  <td><input type="text" size="48" name="title" value="{feed_title}"></td>
+</tr>
+<tr>
+  <td align="right">{lang_enabled}:</td>
+  <td><input type="checkbox" name="is_enabled" {is_enabled}></td>
+</tr>
+<tr>
+  <td align="right">{lang_type}:</td>
+  <td>{feed_type_display}
+    <input type="hidden" name="type" value="{feed_type}"></td>
+</tr>
+<tr>
+  <td align="right">{lang_topic}:</td>
+  <td>{feed_topic}</td>
+</tr>
+<tr>
+  <td align="right">{lang_format}:</td>
+  <td>{feed_format}</td>
+</tr>
+<tr>
+  <td align="right">{lang_limits}:</td>
+  <td><input type="text" size="4" name="limits" value="{feed_limits}"> {feed_limits_what}</td>
+</tr>
+<tr>
+  <td align="right">{lang_content_length}:</td>
+  <td><input type="text" size="4" name="content_length" value="{feed_content_length}"> <small>{lang_clen_explain}</small></td>
+</tr>
+<tr>
+  <td align="right" valign="top">{lang_description}:</td>
+  <td><textarea name="description" cols="50" rows="8">{feed_description}</textarea></td>
+</tr>
+<tr>
+  <td align="right">{lang_filename}:</td>
+  <td><input type="text" size="40" name="filename" value="{feed_filename}"></td>
+</tr>
+<tr>
+  <td align="right">{lang_charset}:</td>
+  <td><input type="text" size="20" name="charset" value="{feed_charset}"></td>
+</tr>
+<tr>
+  <td align="right">{lang_language}:</td>
+  <td><input type="text" size="20" name="language" value="{feed_language}"></td>
+</tr>
+<tr>
+  <td align="right">{lang_updated}:</td>
+  <td>{feed_updated}</td>
+</tr>
+<tr><td colspan="2">&nbsp;</td></tr>
+<tr>
+  <td colspan="2">
+    <input type="submit" value="{lang_save}" name="mode">
+    <input type="submit" value="{lang_cancel}" name="mode">
+    {delete_option}
+    <input type="hidden" name="fid" value="{feed_id}">
+  </td>
+</tr>
+</table>
+</form>
+{end_block}

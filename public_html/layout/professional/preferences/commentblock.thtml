@@ -1,0 +1,20 @@
+{start_block_comment}
+<table border="0" cellspacing="0" cellpadding="3">
+  <tr valign="top">
+    <td align="right"><b>{lang_displaymode}</b><br>
+      <small>{lang_displaymode_text}</small></td>
+    <td>{displaymode_selector}</td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_sortorder}</b><br>
+      <small>{lang_sortorder_text}</small></td>
+    <td>{sortorder_selector}</td>
+  </tr>
+  <tr valign="top">
+    <td align="right"><b>{lang_commentlimit}</b><br>
+      <small>{lang_commentlimit_text}</small></td>
+    <td><input type="text" size="5" maxlength="5" name="commentlimit"
+      value="{commentlimit_value}"></td>
+  </tr>
+</table>
+{end_block}

@@ -1,0 +1,5 @@
+                            {begin_row} 
+                            <td>
+                                <a href="{site_admin_url}/topic.php?mode=edit&amp;tid={topic_id}">{image_tag}{topic_name}</a>{default_topic} ({topic_access})
+                            </td>
+                            {end_row}

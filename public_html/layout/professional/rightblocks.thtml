@@ -1,0 +1,9 @@
+<td class="block-outerborder-right"><img src="{site_url}/images/speck.gif" width="1" height="1" alt=""></td>
+<td class="block-featured-right" valign="top">
+<table width="100%" class="blocksbg-right"><tr><td valign="top">
+  {geeklog_blocks}
+<img src="{site_url}/images/speck.gif" width="180" height="1" alt="">
+</td></tr></table>
+</td>
+<!--</td></tr></table>-->
+<!--If you want the splash, uncomment the last line. If you want no splash, make sure it is commented out.-->
