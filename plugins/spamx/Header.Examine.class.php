@@ -11,7 +11,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: Header.Examine.class.php,v 1.1 2005/04/02 13:29:03 dhaun Exp $
+* $Id: Header.Examine.class.php,v 1.2 2005/04/05 18:07:18 dhaun Exp $
 */
 
 /**
@@ -76,6 +76,7 @@ class Header extends BaseCommand {
                                    $LANG_SX00['foundspam2'] . $uid . 
                                    $LANG_SX00['foundspam3'] .
                                    $_SERVER['REMOTE_ADDR']);
+                        break;
                     }
                 }
             }
