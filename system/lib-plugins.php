@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.43 2004/09/25 03:03:12 blaine Exp $
+// $Id: lib-plugins.php,v 1.44 2004/09/29 08:04:43 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -697,6 +697,10 @@ function PLG_deleteUser ($uid)
 
 /**
 * This function will inform all plugins when a user logs in
+*
+* Note: This function is NOT called when users are re-authenticated by their
+* long-term cookie. The global variable $_USER['auto_login'] will be set to
+* 'true' in that case, however.
 *
 * @param     int     $uid     user id
 *

@@ -30,11 +30,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.32 2004/09/06 19:51:55 dhaun Exp $
+// $Id: lib-sessions.php,v 1.33 2004/09/29 08:04:43 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
-* borrowed by phpBB 1.4.x which is also GPL'd
+* borrowed from phpBB 1.4.x which is also GPL'd
 *
 */
 
@@ -63,7 +63,7 @@ if (empty ($_CONF['cookiedomain'])) {
 }
 
 // LOAD USER DATA. NOTE: I'm not sure why I have to set $_USER like this because
-// it's suppose to be a global variable.  I tried setting $_USER from within
+// it's supposed to be a global variable.  I tried setting $_USER from within
 // SESS_sessionCheck() and it doesn't work.
 $_USER = SESS_sessionCheck();
 
@@ -116,6 +116,7 @@ function SESS_sessionCheck()
                 // COM_debug($userdata);
             }
             $_USER = $userdata;
+            $_USER['auto_login'] = false;
         } else {
             // Session probably expired, now check permanent cookie
             if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
@@ -134,6 +135,7 @@ function SESS_sessionCheck()
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                             $userdata = SESS_getUserDataFromId($userid);
                             $_USER = $userdata;
+                            $_USER['auto_login'] = true;
                         }
                     }
                 }
@@ -170,6 +172,7 @@ function SESS_sessionCheck()
                         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                         $userdata = SESS_getUserDataFromId($userid);
                         $_USER = $userdata;
+                        $_USER['auto_login'] = true;
                     }
                 }
             }
