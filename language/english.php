@@ -140,7 +140,8 @@ $LANG01 = array(
 	99 => "STORIES",
     100 => "No new stories",
     101 => 'Your Events',
-    102 => 'Site Events'
+    102 => 'Site Events',
+    103 => 'DB Backups'
 );
 
 ###############################################################################
@@ -966,7 +967,7 @@ $LANG_WORDS = array(
 );
 
 $LANG_DB_BACKUP = array(
-    last_ten_backups => 'Last 10 Back-ups'
+    last_ten_backups => 'Last 10 Back-ups',
 );
 
 ?>
