@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.32 2002/05/01 13:10:54 dhaun Exp $
+// $Id: user.php,v 1.33 2002/05/05 12:26:21 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -290,6 +290,7 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_adminhome', $LANG28[16]);
     $user_templates->set_var('lang_instructions', $LANG28[12]);
     $user_templates->set_var('lang_search', $LANG28[26]);
+    $user_templates->set_var('lang_submit', $LANG28[33]);
     $user_templates->set_var('last_query', $query);
     $user_templates->set_var('lang_limit_results', $LANG28[27]);
     $user_templates->set_var('lang_username', $LANG28[3]);
@@ -356,12 +357,12 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
 */
 function importusers($file)
 {
-    global $_TABLES, $LANG04, $_CONF, $HTTP_POST_FILES;
+    global $_TABLES, $LANG04, $LANG28, $_CONF, $HTTP_POST_FILES;
 
     // Setting this to true will cause import to print processing status to webpage.
     // and to the error.log file
     $verbose_import = false;    
-    
+
     // First, upload the file
     require_once($_CONF['path_system'] . "classes/upload.class.php");
 
@@ -382,7 +383,10 @@ function importusers($file)
 
     $retval = '';
 
-    $handle = fopen($filename,'r');
+    $handle = @fopen($filename,'r');
+    if (empty ($handle)) {
+        return $LANG28[34];
+    }
     
     // Following variables track import processing statistics
     $successes = 0;
@@ -445,7 +449,10 @@ function importusers($file)
     fclose($handle);
     unlink($filename);
 
-    $retval .= "<P>Done processing. Imported $successes and encountered $failures failures";
+    $report = $LANG28[32];
+    eval ("\$report = \"$report\";");
+
+    $retval .= '<p>' . $report;
     
     return $retval;
 
@@ -492,11 +499,13 @@ function emailpassword($username)
 
 function display_form()
 {
-	$retval .="<FORM action=".$_CONF['site_admin_url']."/user.php method=post enctype=multipart/form-data>
-			Path:<INPUT type=file name=importfile size=40>
-			<INPUT type=hidden name=mode value=import>
-			<INPUT type=submit name=submit value=Import></FORM>";
-	return $retval;
+    global $_CONF, $LANG28;
+
+    $retval .= '<form action="' . $_CONF['site_admin_url'] . '/user.php" method="post" enctype="multipart/form-data">'
+            . $LANG28[29] . ': <input type="file" name="importfile" size="40">'
+            . '<input type="hidden" name="mode" value="import">'
+            . '<input type="submit" name="submit" value="' . $LANG28[30] . '"></form>';
+    return $retval;
 }
 
 // MAIN
@@ -535,7 +544,7 @@ case 'edit':
     break;
 case 'import':
     $display .= COM_siteHeader('menu');
-	$display .= COM_startBlock("New Users");
+	$display .= COM_startBlock($LANG28[31]);
 	$display .= importusers($file);
 	$display .= COM_endBlock();
 	$display .= COM_siteFooter();  

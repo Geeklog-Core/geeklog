@@ -722,7 +722,7 @@ $LANG25 = array(
 	9 => "Frage",
 	10 => "Antworten / Stimmen",
 	11 => "Beim Abrufen der Stimmen von Umfrage $qid trat ein Fehler auf.",
-	11 => "Beim Abrufen der Fragen von Umfrage $qid trat ein Fehler auf.",
+	12 => "Beim Abrufen der Fragen von Umfrage $qid trat ein Fehler auf.",
 	13 => "Umfrage anlegen",
 	14 => "Speichern",
 	15 => "Abbruch",
@@ -800,7 +800,13 @@ $LANG28 = array(
     25 => 'Hier k&ouml;nnen Userdaten aus einer Datei in Geeklog importiert werden. Die Import-Datei muss ein Textfile sein, bei dem die Datens&auml;tze durch Tabs getrennt sind. Zudem m&uuml;ssen die Felder in der Reihenfolge Richtiger Name - Username - E-Mail-Adresse vorliegen. Jeder so importierte User bekommt eine E-Mail mit einem Zufallspasswort zugeschickt. Pro Zeile darf nur ein User stehen. Wenn sich die Importdatei nicht an dieses Format h&auml;lt, kann es zu Problemen kommen, die nur in m&uuml;hseliger Handarbeit behoben werden k&ouml;nnen. Also die Eintr&auml;ge lieber zweimal &uuml;berpr&uuml;fen ...',
     26 => 'Suche',
     27 => 'Anzahl Treffer',
-    28 => "Ankreuzen, um dieses Bild zu l&ouml;schen:"
+    28 => "Ankreuzen, um dieses Bild zu l&ouml;schen:",
+    29 => 'Pfad',
+    30 => 'Importieren',
+    31 => 'Neue User',
+    32 => 'Datei bearbeitet. $successes User wurden importiert, dabei traten $failures Fehler auf.',
+    33 => 'Abschicken',
+    34 => 'Fehler: Keine Datei zum Upload angegeben.'
 );
 
 
@@ -999,7 +1005,7 @@ $LANG_ACCESS = array(
 	permmsg => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht f&uuml;r alle nicht eingeloggten Besucher.",
 	securitygroups => "Security-Gruppen",
 	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_url"]}/admin/users.php\">User Administration page</a>.",
-	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
+	securitygroupsmsg => "Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User geh&ouml;rt.",
 	groupeditor => "Gruppen-Editor",
 	description => "Beschreibung",
 	name => "Name",

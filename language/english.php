@@ -794,7 +794,13 @@ $LANG28 = array(
     25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!',
     26 => 'Search',
     27 => 'Limit Results',
-    28 => 'Check here to delete this picture'
+    28 => 'Check here to delete this picture',
+    29 => 'Path',
+    30 => 'Import',
+    31 => 'New Users',
+    32 => 'Done processing. Imported $successes and encountered $failures failures',
+    33 => 'submit',
+    34 => 'Error: You must specify a file to upload.'
 );
 
 
