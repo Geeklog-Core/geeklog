@@ -410,7 +410,8 @@ $LANG09 = array(
     38 => 'Link Results',
     39 => 'Links',
     40 => 'Events',
-    41 => 'Your query string should have at least 3 characters.'
+    41 => 'Your query string should have at least 3 characters.',
+    42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).'
 );
 
 ###############################################################################

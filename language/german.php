@@ -416,7 +416,8 @@ $LANG09 = array(
     38 => 'Ergebnisse: Links',
     39 => 'Links',
     40 => 'Termine',
-    41 => 'Dein Suchbegriff sollte mindestens 3 Zeichen lang sein.'
+    41 => 'Dein Suchbegriff sollte mindestens 3 Zeichen lang sein.',
+    42 => 'Das Datum muss im Format JJJJ-MM-TT (Jahr-Monat-Tag) eingegeben werden.'
 );
 
 ###############################################################################

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.42 2002/10/30 21:59:35 dhaun Exp $
+// $Id: search.php,v 1.43 2002/11/01 20:37:33 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -567,7 +567,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
                 }
                 $searchresults->set_var('end_block', COM_endBlock());
                 $searchresults->parse('search_blocks','searchblock',true);
-				}
+            }
             next($result_plugins);
         }
 
@@ -576,10 +576,12 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
         $retval .= COM_startBlock($LANG09[13])
                     . $LANG09[14] . ' <b>' . $query . '</b>. ' . $LANG09[15]
 			        . COM_endBlock();
-        $retval .= searchform ();
-	}
+        if (advsearchAllowed ()) {
+            $retval .= searchform ();
+        }
+    }
 
-	return $retval;
+    return $retval;
 }
 
 /**
@@ -605,11 +607,43 @@ function searchresults($A)
 	return $retval;
 }
 
-// MAIN
-$display .= COM_siteHeader();
-if (empty ($_USER['username']) &&
-    (($_CONF['loginrequired'] == 1) || ($_CONF['searchloginrequired'] == 1))) {
-    $display .= COM_startBlock($LANG_LOGIN[1]);
+/**
+* Does a rudimentary check of the date format (should be YYYY-MM-DD).
+* No, it does not check for leap years or the correct number of days in a month.
+*
+* @param  string  $date  date string to check
+* @return bool    true if correct, false if not
+*/
+function simpleDateCheck ($date)
+{
+    $ok = true;
+
+    if (!empty ($date)) {
+        $ok = false;
+        if (strlen ($date) == 10) {
+            $delim1 = substr ($date, 4, 1);
+            $delim2 = substr ($date, 7, 1);
+            if (($delim1 == $delim2) && ($delim1 == '-')) {
+                $dt = explode ($delim1, $date);
+                if (($dt[0] >= 1970) && (($dt[1] >= 1) && ($dt[1] <= 12)) &&
+                        (($dt[2] >= 1) && ($dt[2] <= 31))) {
+                    $ok = true; // that should do ...
+                }
+            }
+        }
+    }
+
+    return $ok;
+}
+
+/*
+* display "login required" message
+*/
+function loginRequired ()
+{
+    global $_CONF, $LANG_LOGIN;
+
+    $retval .= COM_startBlock($LANG_LOGIN[1]);
     $login = new Template($_CONF['path_layout'] . 'submit');
     $login->set_file (array ('login'=>'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -617,22 +651,81 @@ if (empty ($_USER['username']) &&
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
-    $display .= $login->finish ($login->get_var('output'));
-    $display .= COM_endBlock();
-} else if ($mode == 'search') {
-    $query = strip_tags ($query);
-    if ((strlen ($query) < 3) && (empty ($topic) || ($topic == '0')) &&
-            (empty ($datestart) && empty ($dateend)) && (empty ($type) || ($type == 'all')) && (empty ($author) || ($author == '0'))) {
-        $display .= COM_startBlock ($LANG09[13])
-                 . $LANG09[41] . ' ' . $LANG09[15]
-                 . COM_endBlock();
+    $retval .= $login->finish ($login->get_var('output'));
+    $retval .= COM_endBlock();
+
+    return $retval;
+}
+
+/*
+* check if advanced search is allowed for the current user
+*/
+function advsearchAllowed ()
+{
+    global $_CONF, $_USER;
+
+    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+            ($_CONF['searchloginrequired'] >= 1))) {
+        return false;
+    }
+
+    return true;
+}
+
+// MAIN
+$display .= COM_siteHeader();
+
+if ($mode == 'search') // search query
+{
+    if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+            ($_CONF['searchloginrequired'] == 2))) {
+        $display .= loginRequired ();
+    } else {
+        $query = strip_tags ($query);
+
+        if (!advsearchAllowed ($query)) {
+            // if advanced search is not allowed for the current user
+            // then just ignore the advanced options
+            $type = 'all';
+            unset ($datestart);
+            unset ($dateend);
+            unset ($author);
+            unset ($topic);
+        }
+
+        // check for minimal length of the query
+        if ((strlen ($query) < 3) && (empty ($topic) || ($topic == '0')) &&
+                (empty ($datestart) && empty ($dateend)) && (empty ($type) ||
+                ($type == 'all')) && (empty ($author) || ($author == '0'))) {
+            $display .= COM_startBlock ($LANG09[13])
+                     . $LANG09[41] . ' ' . $LANG09[15]
+                     . COM_endBlock();
+            if (advsearchAllowed ()) {
+                $display .= searchform ();
+            }
+        } else if (!simpleDateCheck($datestart) || !simpleDateCheck($dateend)) {
+            // invalid date format
+            $display .= COM_startBlock ($LANG09[13])
+                     . $LANG09[42] . ' ' . $LANG09[15]
+                     . COM_endBlock();
+            if (advsearchAllowed ()) {
+                $display .= searchform ();
+            }
+        } else {
+            $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
+        }
+    }
+}
+else // display advanced search form
+{
+    if (advsearchAllowed ()) {
         $display .= searchform ();
     } else {
-        $display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
+        $display .= loginRequired ();
     }
-} else {
-    $display .= searchform();
 }
+
 $display .= COM_siteFooter();
 echo $display;
+
 ?>

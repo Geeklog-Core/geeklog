@@ -1,5 +1,8 @@
 GeekLog History/Changes:
 
+- When $_CONF['searchloginrequired'] = 2, the search is completely blocked
+  for anonymous users (1 will only block the advanced search).
+- Added a simple check to test for a valid date format when searching by date.
 - Added $_CONF['skip_preview'] to allow submission of comments and stories
   without previewing (defaults to off).
 - Search queries with less than 3 characters are now rejected to reduce server
