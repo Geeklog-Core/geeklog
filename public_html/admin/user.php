@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.65 2004/01/13 19:15:52 dhaun Exp $
+// $Id: user.php,v 1.66 2004/01/18 14:40:26 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -87,7 +87,7 @@ function edituser($uid = '', $msg = '')
 	        $retval .= COM_startBlock ($LANG28[1], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
 			$retval .= $LANG_ACCESS['editrootmsg'];
-			COM_accessLog("User {$_USER['username']} tried to edit a root account with insufficient privileges.");
+            COM_accessLog("User {$_USER['username']} tried to edit a Root account with insufficient privileges.");
 			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 			return $retval;
 		}
@@ -158,7 +158,7 @@ function edituser($uid = '', $msg = '')
 	if (SEC_inGroup('Group Admin')) {
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
-        
+
         if (!empty($uid)) { 
 		    $usergroups = SEC_getUserGroups($uid);
 		    if (is_array($usergroups) && !empty($uid)) {
@@ -170,7 +170,13 @@ function edituser($uid = '', $msg = '')
             $selected = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'") . ' ';
             $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
         }
-		$user_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name','',$selected));
+        $where = '';
+        if (!SEC_inGroup ('Root')) {
+            $where = "grp_name <> 'Root'";
+        }
+		$user_templates->set_var ('group_options',
+                COM_checkList ($_TABLES['groups'], 'grp_id,grp_name',
+                               $where, $selected));
         $user_templates->parse('group_edit', 'groupedit', true);
 	} else {
 		// user doesn't have the rights to edit a user's groups so set to -1 so we know not to
@@ -283,7 +289,16 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
         }
 		
 		// if groups is -1 then this user isn't allowed to change any groups so ignore
-		if (is_array($groups)) {
+        if (is_array ($groups) && SEC_inGroup ('Group Admin')) {
+            if (!SEC_inGroup ('Root')) {
+                $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                       "grp_name = 'Root'");
+                if (in_array ($rootgrp, $groups)) {
+                    COM_accessLog ("User {$_USER['username']} just tried to give Root permissions to user $username.");
+                    echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+                    exit;
+                }
+            }
 			if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
 			DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_uid = $uid");
 			if (!empty($groups)) {
@@ -564,9 +579,20 @@ function display_form()
     return $retval;
 }
 
-function delete_user ($uid)
+/**
+* Delete a user
+*
+*/
+function deleteUser ($uid)
 {
     global $_CONF, $_TABLES;
+
+    if (!SEC_inGroup ('Root')) {
+        if (SEC_inGroup ('Root', $uid)) {
+            COM_accessLog ("User {$_USER['username']} just tried to delete Root user $uid.");
+            return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+        }
+    }
 
     // Ok, delete everything related to this user
 
@@ -593,6 +619,8 @@ function delete_user ($uid)
 
     // now delete the user itself
     DB_delete ($_TABLES['users'], 'uid', $uid);
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=22');
 }
 
 // MAIN
@@ -601,8 +629,7 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         COM_errorLog ('Attempted to delete user uid=' . $uid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     } else {
-        delete_user ($uid);
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=22');
+        $display .= deleteUser ($uid);
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
     $display = saveusers ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['username'],
