@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.24 2002/10/07 20:41:30 dhaun Exp $
+// $Id: article.php,v 1.25 2002/10/07 22:22:07 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -139,11 +139,16 @@ if ($A['count'] > 0) {
             $LANG11[2] . '</a>',
             '<a href="' . $_CONF['site_url'] .  '/article.php?story=' . $story .
             '&amp;mode=print">' . $LANG11[3] . '</a>');
-        $story_template->set_var ('whats_related_story_options',
-            COM_startBlock ($LANG11[1], '',
+        $related = $A['related'];
+        if (!empty ($related)) {
+            $related = COM_startBlock ($LANG11[1], '',
                 COM_getBlockTemplate ('whats_related_block', 'header'))
-            . $A['related']
-            . COM_endBlock(COM_getBlockTemplate('whats_related_block','footer'))
+                . $A['related']
+                . COM_endBlock (COM_getBlockTemplate ('whats_related_block',
+                    'footer'));
+        }
+        $story_template->set_var ('whats_related_story_options',
+            $related
             . COM_startBlock ($LANG11[4], '',
                 COM_getBlockTemplate ('story_options_block', 'header'))
             . COM_makeList ($story_options)
