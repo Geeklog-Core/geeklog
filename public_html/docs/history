@@ -1,5 +1,29 @@
 GeekLog History/Changes:
 
+??? ??, 2004 (1.3.9rc2)
+------------
+
+- If a function CUSTOM_mail() exists, it will be called instead of COM_mail(),
+  to allow users to implement their own function to send emails, if necessary.
+- The Static Pages plugin now supports the "exact phrase", "all of these words",
+  and "any of these words" search options.
+- Included a simplified custom registration example and made the naming
+  convention for the custom registration functions more consistent.
+- Fixed display problems with comments in nested and threaded mode.
+- Don't rely on the Who's Online block being active when handling sessions
+  for anonymous users.
+- Removed some unused code handling the obsolete "layout" blocks.
+- Try to guess the correct path separator when running on PHP < 4.3.0.
+- When upgrading from a pre-1.3.9 install, the install script choked on
+  single quotes in the site name or site slogan.
+- Always filter the username in users.php.
+
+- Added new Croatian language file, provided by Roberto Bilic.
+- Added new Finnish language file, provided by Jussi Josefsson.
+- Added new Hebrew language file, provided by Tal Vizel.
+- Updated Dutch language file, provided by Wim Niemans.
+
+
 Feb 16, 2004 (1.3.9rc1)
 ------------
 
