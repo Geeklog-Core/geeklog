@@ -142,7 +142,7 @@ this shouldn't be too much of a hassle ...</p>
     <tt>menuitem_none.thtml</tt> have been added to give theme authors better
     control over the items in menu bars ({menu_elements} and {plg_menu_elements}
     variables in <tt>header.thtml</tt>). The template file
-    <tt>menuitem.thtml</tt> is now used to render the first and any followind
+    <tt>menuitem.thtml</tt> is now used to render the first and any following
     menu items - with the exception of the last menu item, which is rendered
     using <tt>menuitem_last.thtml</tt>. If there are no menu elements for a
     menu bar, <tt>menuitem_none.thtml</tt> is used.</li>
@@ -158,7 +158,9 @@ this shouldn't be too much of a hassle ...</p>
     changes or just copy that file over from one of the themes that ship with
     Geeklog.</li>
   <li>The Classic theme has been updated to have an "Edit" link (for
-    StoryAdmins) in every story now.</li>
+    StoryAdmins) in every story now.<br>
+    Files changed: <tt>storybodytext.thtml</tt>,
+    <tt>featuredstorybodytext.thtml</tt></li>
   <li>In the Classic and Digital Monochrome themes the "contact" link now
     points to the form to send an email to the admin user instead of using a
     <code>mailto:</code> link with the site's email address from
@@ -169,7 +171,17 @@ this shouldn't be too much of a hassle ...</p>
 
 <p>Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
 <b>cal-futureday</b>, <b>cal-nullday</b>, <b>weekview-curday</b>,
-<b>weekview-offday</b></p>.
+<b>weekview-offday</b></p>
+
+<p><strong>Note:</strong> Theme authors are encouraged to specify a character
+set in the <tt>header.thtml</tt> of their themes like this:</p>
+<blockquote><code>
+&lt;meta http-equiv="Content-Type" content="text/html; charset={charset}"&gt;
+</code></blockquote>
+<p>Geeklog will replace the <code>{charset}</code> variable with the proper
+character set based on the currently used language file. Also make sure that
+you put the above line <em>before</em> the <code>&lt;title&gt;</code> tag in
+the <code>&lt;head&gt;</code> section of your <tt>header.thtml</tt> file.</p>
 
 <table border="0" width="100%" class="footer">
 <tr valign="top">

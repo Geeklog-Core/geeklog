@@ -157,7 +157,7 @@ GeekLog History/Changes:
   english texts to the language files.
   This affects most of the files in the admin and calendar directories within
   the themes directories.
-- The static pages plugin will now picks the language automatically, based on
+- The static pages plugin will now pick the language automatically, based on
   the user / default setting for the language. Currently, only English and
   German language files are included.
 - New variables that can be used in footer.thtml: {execution_textandtime},
