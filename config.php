@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.135 2004/09/30 08:50:38 dhaun Exp $
+// $Id: config.php,v 1.136 2004/09/30 18:10:57 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -698,7 +698,7 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 // The '*' in the URL will be replaced with the IP address to look up.
 //
 // uncomment this line if you have Tom Willet's Nettools installed
-// $_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';
+// $_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/whois.php?domain=*';
 
 
 // This feature, when activated, makes some of Geeklog's URLs more crawler
