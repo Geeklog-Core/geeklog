@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.35 2004/10/30 17:13:23 dhaun Exp $
+// $Id: calendar_event.php,v 1.36 2004/12/10 09:24:15 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -106,7 +106,6 @@ function adduserevent ($eid)
     }    
     
     return $retval;
-
 }
 
 /**
@@ -131,7 +130,7 @@ function saveuserevent ($eid)
         $result = DB_query ("SELECT eid FROM {$_TABLES['events']} WHERE (eid = '$eid')" . COM_getPermSql ('AND'));
         if (DB_numRows ($result) == 1) {
 
-            $savesql = "INSERT INTO {$_TABLES['personal_events']} (eid,uid,title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," . $_USER['uid'] . ",title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'";
+            $savesql = "INSERT INTO {$_TABLES['personal_events']} (eid,uid,title,event_type,datestart,dateend,timestart,timeend,allday,location,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," . $_USER['uid'] . ",title,event_type,datestart,dateend,timestart,timeend,allday,location,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'";
 
             DB_query ($savesql);
 
