@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.44 2002/12/02 12:17:36 dhaun Exp $
+// $Id: user.php,v 1.45 2002/12/13 19:39:56 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -536,7 +536,11 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         DB_delete($_TABLES['users'],'uid',$uid,$_CONF['site_admin_url'] . '/user.php?msg=22');
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
-    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']],$delete_photo);
+    $display = saveusers ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['username'],
+            $HTTP_POST_VARS['fullname'], $HTTP_POST_VARS['passwd'],
+            $HTTP_POST_VARS['email'], $HTTP_POST_VARS['regdate'],
+            $HTTP_POST_VARS['homepage'], $HTTP_POST_VARS[$_TABLES['groups']],
+            $HTTP_POST_VARS['delete_photo']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
@@ -544,7 +548,7 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         $display = $tmp;
     }
 } else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
-    changepw($uid,$passwd);
+    changepw ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= edituser($uid);
