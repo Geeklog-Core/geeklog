@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.292 2004/02/28 11:04:30 dhaun Exp $
+// $Id: lib-common.php,v 1.293 2004/02/28 16:57:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -330,6 +330,16 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 */
 
 $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
+
+if( isset( $HTTP_GET_VARS['topic'] ))
+{
+    $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );                       
+}
+else          
+{
+    $topic = '';
+}
+
 
 // +---------------------------------------------------------------------------+
 // | STORY FUNCTIONS                                                           |

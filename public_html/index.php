@@ -32,14 +32,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.55 2004/02/10 19:18:57 dhaun Exp $
+// $Id: index.php,v 1.56 2004/02/28 16:57:47 dhaun Exp $
 
-if (isset ($HTTP_GET_VARS['topic'])) {
-    $topic = strip_tags ($HTTP_GET_VARS['topic']);
-}
-else {
-    $topic = '';
-}
+require_once('lib-common.php');
 
 $newstories = false;
 $displayall = false;
@@ -52,11 +47,12 @@ if (isset ($HTTP_GET_VARS['display']) && empty ($topic)) {
 }
 
 $page = 1;
-if (isset ($HTTP_GET_VARS['page']) && is_numeric ($HTTP_GET_VARS['page'])) {
-    $page = $HTTP_GET_VARS['page'];
+if (isset ($HTTP_GET_VARS['page'])) {
+    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+    if ($page == 0) {
+        $page = 1;
+    }
 }
-
-require_once('lib-common.php');
 
 $display = '';
 
