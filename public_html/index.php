@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.63 2004/08/16 10:44:44 dhaun Exp $
+// $Id: index.php,v 1.64 2004/08/25 21:25:46 blaine Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -137,8 +137,9 @@ while (list ($sid,$expiretopic,$title,$expire,$statuscode) = DB_fetchArray($expi
         DB_query("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
     } elseif ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLOG("Delete Story and comments: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
-        DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
+        STORY_deleteImages ($sid);
         DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}'");
+        DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
     }
 }
 $sql = " (date <= NOW()) AND (draft_flag = 0)";

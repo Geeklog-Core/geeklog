@@ -15,7 +15,8 @@
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // |          Dirk Haun         - dirk@haun-online.de                          |
 // |          Vincent Furia     - vinny01@users.sourceforge.net                |
-// +---------------------------------------------------------------------------+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
 // | modify it under the terms of the GNU General Public License               |
 // | as published by the Free Software Foundation; either version 2            |
@@ -32,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.3 2004/08/23 12:38:53 dhaun Exp $
+// $Id: lib-story.php,v 1.4 2004/08/25 21:25:48 blaine Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
