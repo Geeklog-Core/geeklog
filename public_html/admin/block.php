@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.51 2003/06/19 17:40:06 dhaun Exp $
+// $Id: block.php,v 1.52 2003/07/31 12:10:44 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -484,7 +484,11 @@ function listblocks()
             $block_templates->set_var('block_access', $access);
             $block_templates->set_var('block_type',$A['type']);
             $block_templates->set_var('block_id', $A['bid']);
-            $block_templates->set_var('block_title', stripslashes ($A['title']));
+            $btitle = stripslashes ($A['title']);
+            if (empty ($btitle)) {
+                $btitle = '(' . $A['name'] . ')';
+            }
+            $block_templates->set_var('block_title', $btitle);
 
             if ($A['is_enabled'] == 1) {
                 $enabled = $LANG32[20];
