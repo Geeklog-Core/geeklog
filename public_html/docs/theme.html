@@ -173,6 +173,8 @@ a "normal" theme and one with the blocks on the right.</p>
 default theme (Professional) that ships with Geeklog.</p>
 
 <ul>
+<li>The comment templates <tt>commentbar.thtml</tt> and <tt>thread.thtml</tt>
+    have changed due to changes in the comment handling.</li>
 <li>New directories <tt>trackback</tt> and <tt>admin/trackback</tt> containing
     several new template files have been added for the trackback support.</li>
 <li>New variables <code>{send_trackback_link}</code>,
@@ -184,6 +186,9 @@ default theme (Professional) that ships with Geeklog.</p>
 <li>The <tt>admin/block/blockeditor.thtml</tt> template has a new input field
     to limit the number of headlines to import into a portal block. New
     variables: <code>{lang_rdflimit}</code>, <code>{block_rdflimit}</code>.</li>
+<li>The <tt>admin/story/liststories.thtml</tt> and <tt>listitem.thtml</tt>
+    template files have an additional column with a link to the new "ping"
+    features (Trackback, Pingback, pinging weblog directory services).</li>
 </ul>
 
 <h2><a name="changes1311">Theme changes in Geeklog 1.3.11</a></h2>

@@ -28,13 +28,16 @@ of files that have been changed since the last release.</p>
 
 <ul>
 <li>Added support for sending and receiving <a
-    href="http://en.wikipedia.org/wiki/Trackback">trackback</a> comments
-    (Feature Request #34). Trackback is only supported for stories, but there
-    is also a new plugin API function so that plugins can use this feature,
-    too.<br>
-    Trackback can be disabled by setting
-    <code>$_CONF['trackback_enabled'] = false;</code> in <tt>config.php</tt>.
-    </li>
+    href="http://en.wikipedia.org/wiki/Trackback">Trackback</a> (Feature
+    Request #34) and <a
+    href="http://en.wikipedia.org/wiki/Pingback">Pingback</a> comments. Both
+    are only supported fo stories, but there is also a new plugin API so that
+    plugins can use this feature, too.<br>
+    Trackback and Pingback can be disabled in <tt>config.php</tt>.</li>
+<li>Added the ability to "ping" weblog directory services (like e.g. <a
+    href="http://blo.gs/">blo.gs</a>) to advertise site updates (Feature Request
+    #35). As with Trackback and Pingback, this is only supported for stories,
+    but plugins can make use of this feature via the plugin API.</li>
 <li>Introduced an "Article Directory", providing an overview of all past
     articles, sorted by year and month.</li>
 <li>New syndication framework so that Geeklog can now <strong>read and
