@@ -1553,10 +1553,14 @@ function whatsnewblock() {
 #
 ###############################################################################
 function showmessage($msg) {
-	global $MESSAGE;
+	global $MESSAGE,$MESSAGE_HEADER;
 
-	if ($msg > 0)
+	if ($msg > 0) {
+		$timestamp = strftime("%c");
+		startblock("{$MESSAGE_HEADER[1]} - $timestamp");
 		print $MESSAGE[$msg] . "<BR><BR>";
+		endblock();
+	}
 }
 
 ###############################################################################
