@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.5 2002/05/14 13:29:50 mlimburg Exp $
+// $Id: index.php,v 1.6 2002/06/07 07:55:50 dhaun Exp $
 
 require_once('../lib-common.php');
 
@@ -61,17 +61,23 @@ if (!($error)) {
 		    $retval .= COM_siteHeader('none');
         }
 	}
+    if ($_SP_CONF['in_block'] == 1) {
+        $retval .= COM_startBlock (stripslashes ($A['sp_title']));
+    }
 	$retval .= stripslashes($A['sp_content']);
     if ($A['sp_format'] <> 'blankpage') {
 	    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
-	    $retval .= '<br><br><center>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0] . '<br>'; 
+	    $retval .= '<p align="center"><br>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0]; 
 	    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-		    $retval .= "<a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&sp_id=$page>";
-		    $retval .= $LANG_STATIC[edit] . "</a></center>";
+		    $retval .= "<br><a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id=$page>";
+		    $retval .= $LANG_STATIC[edit] . "</a>";
 	    }
+        $retval .= '</p>';
+    }
+    if ($_SP_CONF['in_block'] == 1) {
+        $retval .= COM_endBlock ();
     }
 
-    
     if ($A['sp_format'] <> 'blankpage') 
     {
 
