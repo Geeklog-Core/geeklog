@@ -30,8 +30,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.18 2002/04/23 04:22:02 mlimburg Exp $
+// $Id: article.php,v 1.19 2002/05/14 21:16:31 tony_bibbs Exp $
 
+/**
+* This page is responsible for showing a single article in different modes which
+* may, or may not, include the comments attached
+*
+* @author   Jason Whittenburg
+* @author   Tony Bibbbs <tony@tonybibbs.com>
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -62,7 +73,7 @@ if ($A['count'] > 0) {
 		$result = DB_query("SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
 		$A = DB_fetchArray($result);
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-		if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0) {	
+		if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0 OR (!SEC_hasTopicAccess($A['tid']))) {	
 			$display .= COM_siteHeader('menu')
 				.COM_startBlock($LANG_ACCESS[accessdenied])
 				.$LANG_ACCESS[storydenialmsg]
@@ -92,14 +103,14 @@ if ($A['count'] > 0) {
 	} else {
 		// Set page title
 		
-		$_CONF["pagetitle"] = stripslashes($A['title']);
+		$_CONF['pagetitle'] = stripslashes($A['title']);
 		$display .= COM_siteHeader('menu');
 		$result = DB_query("SELECT *,unix_timestamp(date) AS day FROM {$_TABLES["stories"]} WHERE sid = '$story'");
 		$A = DB_fetchArray($result);
 
         // Make sure user has access to this article
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0) {
+        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 0 OR (!SEC_hasTopicAccess($A['tid']))) {
             // Bail, they don't have access
 			$display .= COM_startBlock($LANG_ACCESS[accessdenied])
 				.$LANG_ACCESS[storydenialmsg]
