@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.16 2003/12/30 15:51:31 dhaun Exp $
+// $Id: search.class.php,v 1.17 2004/01/01 19:50:46 blaine Exp $
 
 if (eregi ('search.class.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -432,7 +432,7 @@ class Search {
         global $LANG09, $_CONF, $_TABLES;
 
         // Build SQL
-        if (($this->_type == 'links') OR ($this->_type == 'all')) {
+        if ( $this->_query != "" AND (($this->_type == 'links') OR ($this->_type == 'all')) ) {
             $sql = "SELECT lid,title,description,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE ";
     
             if ($this->_keyType == 'phrase') {
