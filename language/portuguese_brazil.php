@@ -541,7 +541,7 @@ $LANG21 = array(
 	42 => "You must enter the blockorder and security level for Geeklog default blocks",
 	43 => "Somente na Página Inicial",
 	44 => "Acesso Negado",
-	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/block.php\">go back to the block administration screen</a>.",
+	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/block.php\">go back to the block administration screen</a>.",
 	46 => 'Novo Bloco',
 	47 => 'Administração',
     48 => 'Nome',
@@ -571,7 +571,7 @@ $LANG22 = array(
 	14 => "Início",
 	15 => "Término",
 	16 => "Acesso Negado",
-	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>.",
+	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/event.php\">go back to the event administration screen</a>.",
 	18 => 'Novo Evento',
 	19 => 'Administração'
 );
@@ -596,7 +596,7 @@ $LANG23 = array(
 	14 => "Categoria",
 	15 => "URL",
 	16 => "Acesso Negado",
-	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/link.php\">go back to the link administration screen</a>.",
+	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/link.php\">go back to the link administration screen</a>.",
 	18 => 'Novo Link',
 	19 => 'Administração',
 	20 => 'Se outra, especifique'
@@ -646,8 +646,8 @@ $LANG24 = array(
 	38 => "Mais de",
 	39 => "Emails",
 	40 => "Acesso Negado ",
-	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done.",
-	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>.",
+	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF["site_admin_url"]}/story.php\">go back to the story administration screen</a> when you are done.",
+	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF["site_admin_url"]}/story.php\">go back to the story administration screen</a>.",
 	43 => 'Nova História',
 	44 => 'Administração',
 	45 => 'Acesso'
@@ -679,7 +679,7 @@ $LANG25 = array(
 	19 => "To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.",
 	20 => "Votantes",
 	21 => "Acesso Negado",
-	22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/poll.php\">go back to the poll administration screen</a>.",
+	22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/poll.php\">go back to the poll administration screen</a>.",
 	23 => 'Nova Enquete',
 	24 => 'Administração',
 	25 => 'Sim',
@@ -702,7 +702,7 @@ $LANG27 = array(
 	10=> "Ordem de Exibição",
 	11 => "Hístórias/Página",
 	12 => "Acesso Negado",
-	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/topic.php\">go back to the topic administration screen</a>.",
+	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_admin_url"]}/topic.php\">go back to the topic administration screen</a>.",
 	14 => "Ordem",
 	15 => "alfabética",
 	16 => "o padrão é",
@@ -820,7 +820,7 @@ $LANG31 = array(
  	14 => "Ignorar preferências do usuário ",
  	15 => "Erro ao enviar para: ",
 	16 => "Mensagens enviadas para: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Enviar outra mensagem</a>"
+	17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Enviar outra mensagem</a>"
 );
 
 
@@ -922,7 +922,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Grant Above Group Edit Rights",
 	permmsg => "NOTE: members is all logged in members of the site and anonymous is all users browsing the site that aren't logged in.",
 	securitygroups => "Security Groups",
-	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_url"]}/admin/users.php\">User Administration page</a>.",
+	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
 	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
 	groupeditor => "Editor de Grupos",
 	description => "Descrição",
