@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.65 2004/05/31 12:53:33 dhaun Exp $
+// $Id: comment.php,v 1.66 2004/06/10 13:47:15 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -321,7 +321,8 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 
         if (isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
-            sendNotification ($title, $comment, $uid, $REMOTE_ADDR, $type, $sid);
+            $cid = DB_insertId();
+            sendNotification ($title, $comment, $uid, $REMOTE_ADDR, $type, $cid);
         }
 
         if ($type == 'poll') {
@@ -357,10 +358,10 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 * @param    $uid        integer     user id
 * @param    $ipaddress  string      poster's IP address
 * @param    $type       string      type of comment ('article', 'poll', ...)
-* @param    $sid        string      id of story / poll / ...
+* @param    $cid        integer     comment id
 *
 */
-function sendNotification ($title, $comment, $uid, $ipaddress, $type, $sid)
+function sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 {
     global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09;
 
@@ -394,13 +395,8 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $sid)
         $mailbody .= $comment . "\n\n";
     }
 
-    if ($type == 'article') {
-        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-                  . '/article.php?story=' . $sid  . "#comments>\n\n";
-    } else if ($type == 'poll') {
-        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-                  . '/pollbooth.php?qid=' . $sid . "&aid=-1>\n\n";
-    }
+    $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
@@ -635,13 +631,8 @@ function send_report ($cid, $type)
         $mailbody .= $comment . "\n\n";
     }
 
-    if ($type == 'article') {
-        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-                  . '/article.php?story=' . $A['sid']  . "#comments>\n\n";
-    } else if ($type == 'poll') {
-        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
-                  . '/pollbooth.php?qid=' . $A['sid'] . "&aid=-1>\n\n";
-    }
+    $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+              . '/comment.php?mode=view&cid=' . $cid . ">\n\n";
 
     $mailbody .= "\n------------------------------\n";
     $mailbody .= "\n$LANG08[34]\n";
@@ -669,6 +660,7 @@ case $LANG03[14]: // Preview
             COM_applyFilter ($HTTP_POST_VARS['postmode']))
         . COM_siteFooter(); 
     break;
+
 case $LANG03[11]: // Submit Comment
     $display .= savecomment (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
             strip_tags ($HTTP_POST_VARS['title']), $HTTP_POST_VARS['comment'],
@@ -677,13 +669,15 @@ case $LANG03[11]: // Submit Comment
             COM_applyFilter ($HTTP_POST_VARS['type']),
             COM_applyFilter ($HTTP_POST_VARS['postmode']));
     break;
+
 case $LANG01[28]: // Delete
-    $display .= deletecomment (COM_applyFilter ($cid),
+    $display .= deletecomment (COM_applyFilter ($cid, true),
                                COM_applyFilter ($sid), COM_applyFilter ($type));
     break;
+
 case 'view':
     $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
-    if (!empty($cid)) {
+    if ($cid > 0) {
         $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
         $A = DB_fetchArray( DB_query($sql) );
         $sid = $A['sid'];
@@ -719,6 +713,7 @@ case 'view':
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
     break;
+
 case 'display':
     $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
     $type = COM_applyFilter ($HTTP_GET_VARS['type']);
@@ -751,16 +746,19 @@ case 'display':
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
     break;
+
 case 'report':
     $display = COM_siteHeader ('menu')
-             . report_abusive_comment (COM_applyFilter ($HTTP_GET_VARS['cid']),
-                    COM_applyFilter ($HTTP_GET_VARS['type']))
+             . report_abusive_comment (COM_applyFilter ($HTTP_GET_VARS['cid'],
+                    true), COM_applyFilter ($HTTP_GET_VARS['type']))
              . COM_siteFooter ();
     break;
+
 case 'sendreport':
-    $display = send_report (COM_applyFilter ($HTTP_POST_VARS['cid']),
+    $display = send_report (COM_applyFilter ($HTTP_POST_VARS['cid'], true),
                             COM_applyFilter ($HTTP_POST_VARS['type']));
     break;
+
 default:
     if (isset ($HTTP_POST_VARS['sid'])) {
         $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
@@ -799,9 +797,9 @@ default:
     } else {
         // This could still be a plugin wanting comments
         if (isset ($HTTP_POST_VARS['cid'])) {
-            $cid = COM_applyFilter ($HTTP_POST_VARS['cid']);
+            $cid = COM_applyFilter ($HTTP_POST_VARS['cid'], true);
         } else {
-            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
+            $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
         }
         if (!empty ($type) && !empty ($cid)) {
             $display .= PLG_callCommentForm ($type, $cid);
