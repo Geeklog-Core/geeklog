@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.24 2002/09/13 17:08:23 dhaun Exp $
+// $Id: calendar.php,v 1.25 2002/10/10 14:27:38 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -756,6 +756,14 @@ for ($i = 1; $i <= 6; $i++) {
     $cal_templates->set_var('wyear', $wyear);
     $cal_templates->parse('cal_week', 'week',true);
     $cal_templates->set_var('cal_days','');
+
+    // check if we need to render the following week at all
+    if ($i < 6) {
+        $data = $cal->getDayData ($i + 1, 1);
+        if (empty ($data)) {
+            break;     
+        }
+    }
 }
 
 if ($mode == 'personal') {
