@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.70 2002/04/20 12:45:26 dhaun Exp $
+// $Id: lib-common.php,v 1.71 2002/04/20 19:39:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1454,7 +1454,7 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
                 $retval .= COM_comment($A,0,$type,0,$mode);
                 $retval .= COM_commentChildren($sid,$A['cid'],$order,$mode,$type);
             }
-            $retval .= '</td></tr></table></td></tr></table>';
+            $retval .= '</table></td></tr></table>';
         } else {
             $retval .= COM_startComment()
                 . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
@@ -1470,7 +1470,7 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
                 $A = DB_fetchArray($result);
                 $retval .= COM_comment($A,0,$type,0,$mode);
             }
-            $retval .= '</td></tr></table></td></tr></table>';
+            $retval .= '</table></td></tr></table>';
         } else {
             $retval .= COM_startComment()
                 . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
@@ -1489,7 +1489,7 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
                     . COM_commentChildren($sid,$A['cid'],$order,$mode,$type)
                     . '</td></tr>';
             }
-            $retval .= '</td></tr></table></td></tr></table>';
+            $retval .= '</table></td></tr></table>';
         } else {
             $retval .= COM_startComment()
             . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
