@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.168 2002/10/15 03:39:25 mlimburg Exp $
+// $Id: lib-common.php,v 1.169 2002/10/17 07:04:34 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -345,7 +345,18 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         if( $A['uid'] > 1 )
         {
             $article->set_var( 'start_contributedby_anchortag', '<a class="storybyline" href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
-            $article->set_var( 'contributedby_user', DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" ));
+
+            $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
+
+            if( empty( $fullname ))
+            {
+                $article->set_var( 'contributedby_user', DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" ));
+            }
+            else
+            {
+                $article->set_var( 'contributedby_user', $fullname );
+            }
+
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
         }
         else
