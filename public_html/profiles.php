@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.25 2003/09/01 12:53:06 dhaun Exp $
+// $Id: profiles.php,v 1.26 2003/11/08 17:54:09 dhaun Exp $
 
 include('lib-common.php');
 
@@ -50,6 +50,32 @@ include('lib-common.php');
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG08;
+
+    // check for correct $_CONF permission
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['emailuserloginrequired'] == 1))
+        && ($uid != 2)) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    // check for correct 'to' user preferences
+    $result = DB_query ("SELECT emailfromadmin,emailfromuser FROM {$_TABLES['userprefs']} WHERE uid = '$uid'");
+    $P = DB_fetchArray ($result);
+    if (SEC_inGroup ('Root') || SEC_hasRights ('user.mail')) {
+        $isAdmin = true;
+    } else {
+        $isAdmin = false;
+    }
+    if ((($P['emailfromadmin'] != 1) && $isAdmin) ||
+        (($P['emailfromuser'] != 1) && !$isAdmin)) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    // check mail speedlimit
+    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
+    if (COM_checkSpeedlimit ('mail') > 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
         if (COM_isemail($authoremail)) {
@@ -71,6 +97,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             $message = strip_tags (COM_stripslashes ($message)) . $sig;
             $from = $author . ' <' . $authoremail . '>';
             COM_mail ($A['email'], $subject, $message, $from);
+            COM_updateSpeedlimit ('mail');
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
@@ -179,6 +206,18 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $sid, $shortmsg)
 {
  	global $_CONF, $_TABLES, $LANG01, $LANG08;
 
+    // check for correct $_CONF permission
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
+        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+    }
+
+    // check mail speedlimit
+    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
+    if (COM_checkSpeedlimit ('mail') > 0) {
+        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+    }
+
  	$sql = "SELECT uid,title,introtext,bodytext,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$sid'";
  	$result = DB_query ($sql);
  	$A = DB_fetchArray ($result);
@@ -207,6 +246,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $sid, $shortmsg)
  	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
     COM_mail ($toemail, $subject, $mailtext, $mailfrom);
+    COM_updateSpeedlimit ('mail');
 
  	$retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
 
