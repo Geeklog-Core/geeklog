@@ -8,11 +8,12 @@
 // | Geeklog story administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.81 2003/02/02 19:46:47 dhaun Exp $
+// $Id: story.php,v 1.82 2003/03/19 17:14:52 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -413,20 +414,8 @@ function liststories($page = 1)
         $page = 1;
     }
 
-    $groupList = '';
-    if (!empty ($_USER['uid'])) {
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-    }
-
     $excludetopics = '';
-    $topicsql = "SELECT tid FROM {$_TABLES['topics']} WHERE "
-              . "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR "     
-              . "(group_id IN ($groupList) AND perm_group >= 2) OR "
-              . "(perm_members >= 2) OR "
-              . "(perm_anon >= 2)";
+    $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
     $tresult = DB_query( $topicsql );
     $trows = DB_numRows( $tresult );     
     if( $trows > 0 )
@@ -655,7 +644,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
                 $perm_members, $perm_anon);
     }
-    if (($access < 3) || (SEC_hasTopicAccess ($tid) < 3) || !SEC_inGroup ($group_id)) {
+    if (($access < 3) || (SEC_hasTopicAccess ($tid) < 2) || !SEC_inGroup ($group_id)) {
         $display .= COM_siteHeader('menu');
         $display .= COM_startBlock($MESSAGE[30]);
         $display .= $MESSAGE[31];
@@ -748,6 +737,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $upload = new upload();
 
             $upload->setDebug(true);
+            $upload->setMaxFileUploads ($_CONF['maximagesperarticle']);
             if (!empty($_CONF['image_lib'])) {
                 if ($_CONF['image_lib'] == 'imagemagick') {
                     // Using imagemagick
