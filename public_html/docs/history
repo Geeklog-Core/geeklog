@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added an option to sort the static pages that are added to a site's menu
+  (see {plg_menu_elements in header.thtml) by id, label, title, or date [Dirk]
 - Incorporated a patch provided by Drago Goricanec to sort the Admin's user
   list by uid [Dirk]
 - Introduced 2 config options for the Who's Online block:

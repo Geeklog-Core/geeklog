@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.35 2004/07/11 18:18:06 dhaun Exp $
+// $Id: functions.inc,v 1.36 2004/07/24 13:19:53 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -60,17 +60,32 @@ include ($_CONF['path'] . 'plugins/staticpages/config.php');
 */
 function plugin_getmenuitems_staticpages()
 {
-    global $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_SP_CONF;
 
-    $result = DB_query ('SELECT sp_id, sp_label, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon FROM ' . $_TABLES['staticpage'] . ' WHERE sp_onmenu = 1');
+    $order = '';
+    if (!empty ($_SP_CONF['sort_menu_by'])) {
+        $order = ' ORDER BY ';
+        if ($_SP_CONF['sort_menu_by'] == 'date') {
+            $order .= 'sp_date DESC';
+        } else if ($_SP_CONF['sort_menu_by'] == 'label') {
+            $order .= 'sp_label';
+        } else if ($_SP_CONF['sort_menu_by'] == 'title') {
+            $order .= 'sp_title';
+        } else { // default to "sort by id"
+            $order .= 'sp_id';
+        }
+    }
+
+    $result = DB_query ('SELECT sp_id, sp_label, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon FROM ' . $_TABLES['staticpage'] . ' WHERE sp_onmenu = 1' . $order);
     $nrows = DB_numRows ($result);
     $menuitems = array ();
-    for ($i = 1; $i <= $nrows; $i++) {
+    for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
         if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $menuitems[$A['sp_label']] = COM_buildURL ($_CONF['site_url'] . "/staticpages/index.php?page={$A['sp_id']}");
+            $menuitems[$A['sp_label']] = COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']);
     	}
     }
+
     return $menuitems;
 }
 

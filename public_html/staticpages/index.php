@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.18 2004/06/17 19:42:37 dhaun Exp $
+// $Id: index.php,v 1.19 2004/07/24 13:19:53 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -161,6 +161,7 @@ function print_page ($page, $A)
     $print->set_var ('sp_title', stripslashes ($A['sp_title']));
     $print->set_var ('sp_content',
             render_content (stripslashes ($A['sp_content']), $A['sp_php']));
+    $print->set_var ('sp_hits', $A['sp_hits']);
     $print->parse ('output', 'print');
 
     return $print->finish ($print->get_var ('output'));
