@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.8 2002/01/11 22:59:43 tony_bibbs Exp $
+// $Id: install.php,v 1.9 2002/01/12 03:06:31 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -108,7 +108,7 @@ function INST_welcomePage()
     $retval .= '<title>Geeklog 1.3 Installation</title>' . LB;
     $retval .= '<body bgcolor="#ffffff">' . LB;
     $retval .= '<h2>Geeklog Installation (Step 1 of 3)</h2>' . LB;
-    $retval .= '<P>Welcome to Geeklog 1.3.1, the Ultimate Weblog!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter either your Geeklog database, your filesystem or both.  <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.1.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manaully upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates. This script will do incremental upgrades after this version (i.e. when 1.3.2 comes out this script will be able to upgrade from 1.2.5-1, 1.3 or 1.3.1 directly to 1.3.2.  Please note this script will not upgrade any beta version of 1.3. ';
+    $retval .= '<P>Welcome to Geeklog 1.3.1, the Ultimate Weblog!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3.1 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter either your Geeklog database, your filesystem or both.  <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.1.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manaully upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.3.2 comes out this script will be able to upgrade from 1.2.5-1, 1.3 or 1.3.1 directly to 1.3.2.  Please note this script will not upgrade any beta version of 1.3. ';
     if ($write_privs) {
         $retval .= '<P>We have performed a test on your system to see if this installation script can write to a file and it CAN.  There are four types of installations this script can do.  The first is a new installation which will create your Geeklog configuration files and set-up your database structures.  The second option is an upgrade installation which is the same as the full installation except your database will be upgraded from a prior Geeklog version.  The third installation option is a database installation only which is useful for people who have manually edited their configuration files and just need the database created and initialized.  The final option is a database upgrade only which is useful for people who have manually edited their configuration files and already have an older Geeklog database they want to upgrade.  Select the option you need in the form below. <P>To make the installation go easier, we need to know where your Geeklog installation resides on the file system.  Please enter the path to your geeklog installation.  On *nix systems that would be something like /path/to/geeklog.  On windows systems this would be something like C:\path\to\geeklog.' . LB;
         $install_options = '<option value="complete_new">New Installation</option>'.LB;
@@ -542,7 +542,7 @@ function INST_getDatabaseSettings($geeklog_path,$upgrade)
     if ($upgrade == 1) {
         $db_templates->set_var('upgrade',1);
         // The already have a lib-database file...they can't chnage their tables names
-        $old_versions = array('1.2.5-1');
+        $old_versions = array('1.2.5-1','1.3');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         for ($j = 1; $j <= count($old_versions); $j++) {
            $versiondd .= '<option>' . current($old_versions) . '</option>';
@@ -588,11 +588,15 @@ function INST_saveDatabaseSettings($A)
     $db_template->set_var('dbname', $A['dbname']);
     $db_template->set_var('dbuser', $A['dbuser']);
     $db_template->set_var('dbpass', $A['dbpass']);
-    $db_template->set_var('dbprefix', $A['dbprefix']);
+    $db_template->set_var('dbprefix', $A['prefix']);
 
     // To make this easier to automate load, defaults and loop through those instead
     // of doing a set_var for each table
-    include_once($_CONF['path_system'] . 'install_templates/database_defaults.php');
+    if ($A['upgrade'] == 1 && empty($A['prefix'])) {
+        include_once($_CONF['path_system'] . 'lib-database.php');
+    } else {
+        include_once($_CONF['path_system'] . 'install_templates/database_defaults.php');
+    }
     reset($_TABLES);
 
     // Ok, if this is an upgrade then we will use current table names.  Otherwise
@@ -601,7 +605,7 @@ function INST_saveDatabaseSettings($A)
         // This is an upgrade
         for ($i = 1; $i <= count($_TABLES); $i++) {
             $varname = 'cfg_tbl_' . key($_TABLES);
-            $db_template->set_var($varname, key($_TABLES));
+            $db_template->set_var($varname, $A['prefix']. key($_TABLES));
             next($_TABLES);
         }
     } else {
@@ -676,11 +680,13 @@ function INST_createDatabaseStructures() {
     echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';    
 }
 
-function INST_doDatabaseUpgrades($current_gl_version) {
-    global $_CONF;
+function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
+    global $_CONF, $_DB_dbms;
 
     // Because the upgrade sql syntax can vary from dbms-to-dbms we are
     // leaving that up to each database driver
+
+    if (empty($_DB_dbms)) $_DB_dbms = 'mysql';
 
     // Include lib-database.php now that it exists
     include_once($_CONF['path_system'] . 'lib-database.php');
@@ -828,7 +834,7 @@ case 2:
 case 3:
     if (INST_saveDatabaseSettings($HTTP_POST_VARS)) {
         if ($upgrade == 1) {
-            if (INST_doDatabaseUpgrades($version)) {
+            if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
                 // Great, installation is complete
                 // Done with installation...redirect to success page
                 echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
