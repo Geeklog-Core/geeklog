@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.28 2003/03/29 19:12:28 dhaun Exp $
+// $Id: calendar.php,v 1.29 2003/06/16 09:36:24 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -649,6 +649,14 @@ if ($month == 12) $cal_templates->set_var('selected_dec','SELECTED');
 $cal_templates->set_var('lang_day', $LANG30[39]);
 $cal_templates->set_var('lang_week', $LANG30[40]);
 $cal_templates->set_var('lang_month', $LANG30[41]);
+
+if ($mode == 'personal') {
+    $cal_templates->set_var ('calendar_title',
+                             $LANG30[28] . ' ' . $_USER['username']);
+} else {
+    $cal_templates->set_var ('calendar_title',
+                             $_CONF['site_name'] . ' ' . $LANG30[29]);
+}
 
 for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
     $yroptions .= '<option value="' . $y . '" ';
