@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.88 2004/11/20 12:16:11 dhaun Exp $
+// $Id: user.php,v 1.89 2005/01/31 10:12:28 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -522,7 +522,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
 */
 function importusers ($file)
 {
-    global $_CONF, $_TABLES, $LANG04, $LANG28, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $LANG04, $LANG28;
 
     // Setting this to true will cause import to print processing status to
     // webpage and to the error.log file
@@ -539,7 +539,7 @@ function importusers ($file)
     $upload->setFileNames ('user_import_file.txt');
     if ($upload->uploadFiles ()) {
         // Good, file got uploaded, now install everything
-        $thefile =  current ($HTTP_POST_FILES);
+        $thefile =  current ($_FILES);
         $filename = $_CONF['path_data'] . 'user_import_file.txt';
     } else {
         // A problem occurred, print debug information
@@ -552,17 +552,8 @@ function importusers ($file)
         return $retval;
     }
 
-    $handle = @fopen ($filename, 'r');
-    if (empty ($handle)) {
-        $retval = COM_siteHeader ('menu', $LANG28[22]);
-        $retval .= COM_startBlock ($LANG28[24], '',
-                COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= $LANG28[34];
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-
-        return $retval;
-    }
-
+    $users = file ($filename);
+    
     $retval .= COM_siteHeader ('menu', $LANG28[22]);
     $retval .= COM_startBlock ($LANG28[31], '',
             COM_getBlockTemplate ('_admin_block', 'header'));
@@ -570,9 +561,13 @@ function importusers ($file)
     // Following variables track import processing statistics
     $successes = 0;
     $failures = 0;
-    while ($user1 = fgets ($handle, 4096)) {
-        $user = rtrim ($user1);
-        list ($full_name, $u_name, $email) = split ("\t", $user);
+    foreach ($users as $line) {
+        $line = rtrim ($line);
+        if (empty ($line)) {
+            continue;
+        }
+
+        list ($full_name, $u_name, $email) = explode ("\t", $line);
 
         $full_name = strip_tags ($full_name);
         $u_name = COM_applyFilter ($u_name);
@@ -620,9 +615,8 @@ function importusers ($file)
             }
             $failures++;
         } // end if COM_isEmail($email)
-    } // end while
+    } // end foreach
 
-    fclose ($handle);
     unlink ($filename);
 
     $retval .= '<p>' . sprintf ($LANG28[32], $successes, $failures);
@@ -690,14 +684,12 @@ function deleteUser ($uid)
 
 // MAIN
 $mode = '';
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
-} else if (isset ($HTTP_GET_VARS['mode'])) {
-    $mode = $HTTP_GET_VARS['mode'];
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
 }
 
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
-    $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+    $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
         $display .= deleteUser ($uid);
     } else {
@@ -705,12 +697,12 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         $display = COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
-    $display = saveusers (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
-            $HTTP_POST_VARS['username'], $HTTP_POST_VARS['fullname'],
-            $HTTP_POST_VARS['passwd'], $HTTP_POST_VARS['email'],
-            $HTTP_POST_VARS['regdate'], $HTTP_POST_VARS['homepage'],
-            $HTTP_POST_VARS[$_TABLES['groups']],
-            $HTTP_POST_VARS['delete_photo']);
+    $display = saveusers (COM_applyFilter ($_POST['uid'], true),
+            $_POST['username'], $_POST['fullname'],
+            $_POST['passwd'], $_POST['email'],
+            $_POST['regdate'], $_POST['homepage'],
+            $_POST[$_TABLES['groups']],
+            $_POST['delete_photo']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
@@ -718,14 +710,14 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         $display = $tmp;
     }
 } else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
-    $display .= changepw (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
-                          $HTTP_POST_VARS['passwd']);
+    $display .= changepw (COM_applyFilter ($_POST['uid'], true),
+                          $_POST['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
-    $display .= edituser (COM_applyFilter ($HTTP_GET_VARS['uid']));
+    $display .= edituser (COM_applyFilter ($_GET['uid']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
-    $display .= importusers ($HTTP_POST_VARS['file']);
+    $display .= importusers ($_POST['file']);
 } else if ($mode == 'importform') {
     $display .= COM_siteHeader('menu', $LANG28[24]);
     $display .= COM_startBlock ($LANG28[24], '',
@@ -736,27 +728,22 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu', $LANG28[11]);
-    if (isset ($HTTP_POST_VARS['q']) || isset ($HTTP_POST_VARS['query_limit'])) {
-        $VARS = $HTTP_POST_VARS;
-    } else {
-        $VARS = $HTTP_GET_VARS;
-    }
-    if (isset ($VARS['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($VARS['msg'], true));
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
     }
     $offset = 0;
-    if (isset ($VARS['offset'])) {
-        $offset = COM_applyFilter ($VARS['offset'], true);
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
     }
     $page = 1;
-    if (isset ($VARS['page'])) {
-        $page = COM_applyFilter ($VARS['page'], true);
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
     }
     if ($page < 1) {
         $page = 1;
     }
-    $display .= listusers ($offset, $page, $VARS['q'],
-                           COM_applyFilter ($VARS['query_limit'], true));
+    $display .= listusers ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter();
 }
 
