@@ -22,7 +22,38 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
 of files that have been changed since the last release.</p>
 
-<h2>Geeklog 1.3.7sr1</h2>
+<h2><a name="changes137sr2">Geeklog 1.3.7sr2</a></h2>
+
+<h3>Security issues</h3>
+
+<p>The purpose of this release is to fix the following security issues.
+All users are <em>strongly</em> encouraged to upgrade to this version ASAP.</p>
+<ol>
+<li>It was possible to obtain valid session ids for every account on a Geeklog
+    site, including the Admin account (reported by SCAN Associates).</li>
+<li>Using Internet Explorer, it was possible to upload an image with embedded
+    PHP code and execute it (reported by SCAN Associates).</li>
+<li>Story permissions could override topic permissions, resulting in the display
+    of stories to users who shouldn't have access to them (reported by Andrew
+    Lawlor). This was already fixed with the new <tt>index.php</tt>, released
+    2003-05-15.</li>
+<li>Added a warning in <tt>config.php</tt> that adding any of the following
+    tags to the list of allowable HTML can make the site vulnerable to
+    scripting attacks:<br>
+    <code>&lt;img&gt; &lt;span&gt; &lt;marquee&gt; &lt;script&gt;
+          &lt;embed&gt; &lt;object&gt; &lt;iframe&gt;</code><br>
+    (pointed out by Joat Dede).</li>
+</ol>
+
+<p>This update also includes fixes for the notorious "permission denied"
+error messages that some users would get in the Admin area (e.g. when trying
+to save a story and being "only" a user with Story Admin permissions).</p>
+
+<p>The full 1.3.7sr2 tarball also includes various new and updated language
+files (see the Changelog for details).</p>
+
+
+<h2><a name="changes137sr1">Geeklog 1.3.7sr1</a></h2>
 
 <h3>Security issues</h3>
 
