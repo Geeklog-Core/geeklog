@@ -116,7 +116,7 @@ for ($i=0;$i<=1;$i++) {
 		}
 
 		// Print Google-like paging navigation
-		if ($i==1) PrintPageNavigation($page, $num_pages);
+		if ($i==1) PrintPageNavigation($page, $num_pages, $topic);
 
 	} else if ($i == 1 && $feature != "true") {
 		startblock($LANG05[1]);
