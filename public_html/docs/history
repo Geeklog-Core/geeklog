@@ -1,24 +1,12 @@
 GeekLog History/Changes:
 
-- Fixed the "12pm bug": Posting a story between 12 and 1 pm would result in
-  the story being posted with a date in 1969.
-- Use mysql_connect() instead of mysql_pconnect() in MySQL class.
 - In the admin menu, the count of available submissions is now displayed
   according to the admin's access rights (e.g. don't count story submissions
   for someone who's only a link admin).
 - Links in the What's New block are now counted when clicked (for the site
   statistics).
-- The redirect after submitting a story always went to /index.php
 - Fixed a stray "(N/A)" that would show up in the admin menu for admins which
   were not static pages admins.
-- HTML tags are now stripped out of search queries.
-- Fixed a wrong link from personal events in the upcoming events block.
-- Removed the logging of all search queries to error.log.
-- Added a test for register_globals=off in the install script (and display a
-  warning if it is off).
-- The "Home" link in the section block was not active on pages > 1. It was,
-  however, always active on the home page when the Geeklog site was not
-  located in the DocumentRoot.
 - You can now block anonymous users from accessing any part of a Geeklog site
   or you can block them from certain parts, e.g. block anonymous access to the
   calendar (via a new set of XXXloginrequired flags in config.php).
@@ -59,7 +47,6 @@ GeekLog History/Changes:
 - Search: User drop down only shows users that have posted a comment or a story.
 - Fixed bug with double quotes in title of story submission.
 - The upcoming events block uses the list templates now.
-- Display of stories in older stories block was off by one day.
 - The (Event)Admin could not delete events (delete button was missing).
 - The calendar class reverted to using the english day and month names as
   soon as you called setCalendarMatrix().
@@ -78,6 +65,41 @@ GeekLog History/Changes:
   German language files are included.
 - New variables that can be used in footer.thtml: {execution_textandtime},
   {powered_by}.
+
+
+July ??, 2002 (1.3.5sr2)
+-------------
+- New installation instructions (now back in docs/install.html).
+  Please note that some of the other documentation may be out of date ...
+- Display of stories in older stories block was off by one day.
+- Number of guest users in Who's online block should now be reset properly.
+- Added some scripts in admin/install to help with the installation:
+  + info.php just does a phpinfo()
+  + check.php will check the file and directory permissions
+  + configinfo.php will display the contents of config.php
+  Note: It is now even more important that you remove the install directory
+  after the installation went through (or at least block read access to this
+  directory).
+- Disable all onXXX Javascript events in HTML postings (stories and comments).
+- Fill in user name and email address when writing an email to a user (via
+  the 'send email' form from the user profile).
+- Make sure that the first comment to a story has the 'title' field filled in
+  (previously, only comments to comments took over the title).
+- Cut off the subject at the first linefeed when sending email to a user,
+  thus preventing the injection of additional email headers.
+- Added a test for register_globals=off in the install script (and display a
+  warning if it is off). Also added a hint what the current path is and tries
+  to guess the /path/to/geeklog.
+- Fixed the "12pm bug": Posting a story between 12 and 1 pm would result in
+  the story being posted with a date in 1969.
+- Use mysql_connect() instead of mysql_pconnect() in MySQL class.
+- The redirect after submitting a story always went to /index.php
+- HTML tags are now stripped out of search queries.
+- Removed the logging of all search queries to error.log.
+- Fixed a wrong link from personal events in the upcoming events block.
+- The "Home" link in the section block was not active on pages > 1. It was,
+  however, always active on the home page when the Geeklog site was not
+  located in the DocumentRoot.
 
 
 June 10, 2002 (1.3.5sr1)
