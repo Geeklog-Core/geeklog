@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.24 2002/01/25 17:44:57 tony_bibbs Exp $
+// $Id: story.php,v 1.25 2002/02/26 17:58:48 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -182,7 +182,39 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_var('permissions_msg', $LANG_ACCESS[permmsg]);
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
     $story_templates->set_var('lang_date', $LANG24[15]);
-    $story_templates->set_var('story_date', $curtime[0]);
+//    $story_templates->set_var('story_date', $curtime[0]);
+    $publish_month = date('m', $A['unixdate']);
+    $publish_day = date('d', $A['unixdate']);
+    $publish_year = date('Y', $A['unixdate']);
+    $publish_hour = date('H', $A['unixdate']);
+    $publish_minute = date('i', $A['unixdate']);
+    $publish_ampm = '';
+    if ($publish_hour > 12) {
+        $publish_hour = $publish_hour - 12;
+        $ampm = 'pm';
+    }
+    if ($ampm == 'pm') {
+        $story_templates->set_var('publishpm_selected','selected="SELECTED"');
+    } else {
+        $story_templates->set_var('publisham_selected','selected="SELECTED"');
+    }
+    $month_options = COM_getMonthFormOptions($publish_month);
+    $story_templates->set_var('publish_month_options', $month_options);
+    
+    $day_options = COM_getDayFormOptions($publish_day);
+    $story_templates->set_var('publish_day_options', $day_options);
+
+    $year_options = COM_getYearFormOptions($publish_year);
+    $story_templates->set_var('publish_year_options', $year_options);
+
+    $hour_options = COM_getHourFormOptions($publish_hour);
+    $story_templates->set_var('publish_hour_options', $hour_options);   
+
+    $minute_options = COM_getMinuteOptions($publish_minute);
+    $story_templates->set_var('publish_minute_options', $minute_options);
+
+    $story_templates->set_var('publish_date_explanation', $LANG24[46]);
+
     $story_templates->set_var('story_unixstamp', $A['unixdate']); 
     $story_templates->set_var('lang_title', $LANG24[13]);
     $story_templates->set_var('story_title', stripslashes($A['title']));
@@ -510,6 +542,10 @@ case 'editsubmission':
     echo $display;
     break;
 case 'save':
+    if ($publish_ampm == 'pm') {
+        $publish_hour = $publish_hour + 12;
+    }
+    $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:00");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     break;
 case 'cancel':
