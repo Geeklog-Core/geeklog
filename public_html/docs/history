@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Make sure the database backup files are always sorted by (last modified) date 
+  (found & fixed by Alexander Schmacks).
+- Make sure the user's preferred comment limit is used when changing the
+  comment display via the comment bar (bug #176).
 - The static pages editor doesn't display a "delete" button for new and
   cloned pages any more (since, obviously, you can't delete what hasn't been
   saved yet ...).
