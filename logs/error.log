@@ -1,4 +1,0 @@
-Sat Jan 19 05:41:19 2002 - 1054: Unknown column 'help' in 'field list' SQL in question: REPLACE INTO blocks (bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon) VALUES (0,'JeffTest','Jeff Test','','normal','0','this is just a test.','all','','','',1,2,2,3,3,2,2) 
-Thu Jan 24 11:55:06 2002 - {LANG01[54]} /home/httpd/html/geeklog-1.3/public_html/backend/geeklog.rdf 
-Thu Jan 24 11:55:15 2002 - {LANG01[54]} /home/httpd/html/geeklog-1.3/public_html/backend/geeklog.rdf 
-Thu Jan 24 17:18:10 2002 - 1054: Unknown column 'help' in 'field list' SQL in question: REPLACE INTO blocks (bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon) VALUES (12,'JT2','Jeff Test 2','','portal','5','','all','http://freshmeat.net/backend/fm.rdf','0000-00-00 00:00:00','',1,2,2,3,3,2,2) 
