@@ -108,7 +108,7 @@ $LANG_SX00 = array (
 
 /* Define Messages that are shown when SPAMX module action is taken */
 $PLG_spamx_MESSAGE128 = 'SPAM detected and Comment or Message was deleted.';
-$PLG_spamx_MESSAGE8   = 'SPAM detected and Comment. Email sent to admin.';
+$PLG_spamx_MESSAGE8   = 'SPAM detected. Email sent to admin.';
 
 
 ?>
