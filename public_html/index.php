@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.61 2004/08/01 21:37:50 blaine Exp $
+// $Id: index.php,v 1.62 2004/08/15 19:57:49 blaine Exp $
 
 require_once('lib-common.php');
 
@@ -125,19 +125,16 @@ COM_rdfUpToDateCheck();
 COM_featuredCheck();
 
 // Scan for any stories that have expired and should be deleted
+// Retrieve the archive topic - currently only one supported
+$archivetid = DB_getItem($_TABLES['topics'],'tid',"archive_flag='1'");
 $expiresql = DB_query("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']}"
-                            . " WHERE tid != '{$_CONF['archivetopic']}'"
-                            . " AND (expire <= NOW()) AND (statuscode >= 10)");
+            . " WHERE (expire <= NOW()) AND "
+            . " ( statuscode = " .STORY_ARCHIVE_ON_EXPIRE." OR statuscode = ".STORY_DELETE_ON_EXPIRE." )");
 while (list ($sid,$expiretopic,$title,$expire,$statuscode) = DB_fetchArray($expiresql)) {
-    if ($statuscode == 10) {
-        if (DB_COUNT($_TABLES['topics'],'archive_flag', '1') == 1) {
-            $archivetid = DB_getItem($_TABLES['topics'],'tid',"archive_flag='1'");
-            COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
-            DB_query("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
-        } else {
-            COM_errorLOG("ERROR: Archive Topic does not exist. Attempt to archive Story: $sid");
-        }
-    } else {
+    if ( $archivetid != '' AND $statuscode == STORY_ARCHIVE_ON_EXPIRE ) {
+        COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
+        DB_query("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
+    } elseif ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLOG("Delete Story and comments: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
         DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
         DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}'");

@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.129 2004/08/13 08:54:49 dhaun Exp $
+// $Id: config.php,v 1.130 2004/08/15 19:57:48 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -708,6 +708,11 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 $_CONF['url_rewrite']       = false; // false = off, true = on
 
 // Define a few useful things for GL
+
+/* Story Record Options for the STATUS Field */
+define('STORY_ARCHIVE_ON_EXPIRE', '10');
+define('STORY_DELETE_ON_EXPIRE', '11');
+
 if (!defined ('LB')) {
     define('LB',"\n");
 }

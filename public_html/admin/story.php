@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.124 2004/08/14 15:52:18 dhaun Exp $
+// $Id: story.php,v 1.125 2004/08/15 19:57:48 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -376,10 +376,10 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('expire_minute_options', $minute_options);
     $story_templates->set_var('expire_date_explanation', $LANG24[46]);
     $story_templates->set_var('story_unixstamp', $A['expiredate']); 
-    if ($A['statuscode'] == 10) {
+    if ($A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked3', 'checked="checked"');
-    } elseif ($A['statuscode'] == 11) {
+    } elseif ($A['statuscode'] == STORY_DELETE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked4', 'checked="checked"');
     } else {
@@ -1215,8 +1215,10 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $publish_year = COM_applyFilter ($HTTP_POST_VARS['publish_year'], true);
     $publish_month = COM_applyFilter ($HTTP_POST_VARS['publish_month'], true);
     $publish_day = COM_applyFilter ($HTTP_POST_VARS['publish_day'], true);
+    $archiveflag = COM_applyFilter ($HTTP_POST_VARS['archiveflag'], true);
+
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
-    if ($archiveflag != 1) {
+    if ($archiveflag =!= 1) {
         $statuscode = 0;
     }
 
