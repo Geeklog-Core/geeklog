@@ -9,7 +9,7 @@
 # jwhitten@securitygeeks.com
 #
 # Converted to Unicode (UTF-8) by Samuel M Stone <sam@stonemicro.com>
-
+#
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation; either version 2
@@ -296,7 +296,7 @@ $LANG04 = array(
     86 => 'Find all postings by',
     87 => 'Your login name',
     88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
-    89 => 'If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n',
+    89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
     90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'Set New Password',
     92 => 'Enter New Password',
