@@ -1,10 +1,10 @@
-Last Updated: November 15, 2001
+Last Updated: May 21, 2002
 
 Creating a Theme for Geeklog
 ----------------------------
 
 Creating a theme for Geeklog is easy and quite fast.  If you can manipulate HTML files then you can create a theme!
-There's no need to learn HTML.
+There's no need to learn PHP.
 
 First, let me preface this by saying the theme support, though usable, isn't complete yet. We plan to make is so that
 Geeklog admins can upload themes via a Geeklog web administration page.  This will be available in a later beta release.
@@ -35,6 +35,8 @@ blockfooter.thtml
 menuitem.thtml
 storybody.thtml
 storybodytext.thtml
+featuredstorybody.thtml
+featuredstorybodytext.thtml
 style.css
 
 After you have edited your themes, you are now ready to test it out.  Simply go to http://mygeeklogsite/users.php?mode=peferences 
