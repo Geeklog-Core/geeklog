@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.105 2002/06/06 07:20:19 dhaun Exp $
+// $Id: lib-common.php,v 1.106 2002/06/06 07:42:37 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1541,7 +1541,7 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
     $retval .= '</td></tr>' . LB . '<tr><td align="center" class="commentbar2">';
 
     if (!empty($HTTP_GET_VARS['qid'])) {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&aid=-1" method="POST">' . LB
+        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1" method="POST">' . LB
             . '<input type="hidden" name="scale" value="400">' . LB;
     } else {
         $retval .= '<form action="' . $_CONF['site_url'] . '/article.php" method="POST">' . LB
@@ -2406,7 +2406,7 @@ function COM_emailUserTopics()
             continue;
         }
 
-        $mailtext = $LANG08[29] . date("Y-m-d",time()) . "\n";
+        $mailtext = $LANG08[29] . strftime($_CONF['shortdate'],time()) . "\n";
         for ($y=0; $y<$nsrows; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
