@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.101 2003/08/31 18:58:54 blaine Exp $
+// $Id: story.php,v 1.102 2003/09/04 03:58:38 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -412,7 +412,7 @@ function storyeditor($sid = '', $mode = '')
 */
 function liststories($page = 1) 
 {
-    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $_USER, $_GROUPS,$HTTP_POST_VARS,$HTTP_GET_VARS;
+    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $LANG09, $_USER, $_GROUPS,$HTTP_POST_VARS,$HTTP_GET_VARS;
 
     $display = '';
 
@@ -442,13 +442,13 @@ function liststories($page = 1)
     } elseif (!empty ($HTTP_POST_VARS['tid'])) {
         $current_topic = $HTTP_POST_VARS['tid'];
     } else {
-        $current_topic = 'all';
+        $current_topic = $LANG09['9'];
     }
     if (empty($page)) {
         $page = 1;
     }
 
-    if ($current_topic == 'all') {
+    if ($current_topic == $LANG09['9']) {
         $excludetopics = '';
         $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
         $tresult = DB_query( $topicsql );
@@ -476,11 +476,11 @@ function liststories($page = 1)
         $seltopics = COM_topicList ('tid,topic', $current_topic);
     }
 
-    $alltopics = '<option value="all"';
-    if ($current_topic == 'all') {
+    $alltopics = '<option value="' .$LANG09['9']. '"';
+    if ($current_topic == $LANG09['9']) {
         $alltopics .= ' selected="selected"';
     }
-    $alltopics .= '>' . "All" . '</option>' . LB;
+    $alltopics .= '>' .$LANG09['9']. '</option>' . LB;
     $story_templates->set_var ('topic_selection', '<select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>');
 
     $limit = (50 * $page) - 50;
