@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.301 2004/03/13 11:54:48 dhaun Exp $
+// $Id: lib-common.php,v 1.302 2004/03/21 18:31:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1910,7 +1910,7 @@ function COM_showTopics( $topic='' )
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
         if (!empty ($tids)) {
-            $sql .= " AND (tid NOT IN ('" . str_replace( ' ', "','", $tids )
+            $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
                  . "'))";
         }
     }
