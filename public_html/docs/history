@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Fixed typo in timer.class.php that broke the ->restart() function.
 - Make sure the database backup files are always sorted by (last modified) date 
   (found & fixed by Alexander Schmacks).
 - Make sure the user's preferred comment limit is used when changing the
