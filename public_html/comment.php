@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.36 2002/11/24 11:14:59 dhaun Exp $
+// $Id: comment.php,v 1.37 2002/12/03 03:11:00 efarmboy Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -248,8 +248,8 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
         DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
         DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
 		
-        // See if plugin will handle this
-        PLG_handlePluginComment($type,$sid);
+        // See if plugin will handle this to update it's records
+        PLG_handlePluginComment($type,$sid,'save');
 		
         // If we reach here then no plugin issued a COM_refresh() so continue
 
@@ -293,6 +293,9 @@ function deletecomment($cid,$sid,$type)
 
         DB_change($_TABLES['comments'],'pid',$A['pid'],'pid',$cid);
         DB_delete($_TABLES['comments'],'cid',$cid);
+		
+		// See if plugin will handle this to update it's records
+        PLG_handlePluginComment($type,$sid,'delete');
 
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
 
@@ -309,7 +312,6 @@ function deletecomment($cid,$sid,$type)
 	
     return $retval;
 }
-
 // MAIN
 $title = strip_tags ($title);
 switch ($mode) {
