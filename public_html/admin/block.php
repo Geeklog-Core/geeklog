@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.36 2002/08/08 12:11:58 dhaun Exp $
+// $Id: block.php,v 1.37 2002/08/08 13:08:16 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -309,6 +309,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         
         if ($type == 'portal') {
             $content = '';
+            $rdfupdated = '';
             $phpblockfn = '';
         }
         if ($type == 'gldefault') {
