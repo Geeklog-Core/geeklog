@@ -1244,7 +1244,8 @@ $LANG_PDF = array(
            is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site',
     11 => 'URL',
     12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On'
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>
