@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.26 2002/04/27 19:54:24 dhaun Exp $
+// $Id: users.php,v 1.27 2002/05/01 08:53:29 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -340,7 +340,15 @@ function defaultform($msg, $referrer='')
 }
 
 // MAIN
-
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = $HTTP_POST_VARS['mode'];
+}
+elseif (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = $HTTP_GET_VARS['mode'];
+}
+else {
+    $mode = "";
+}
 switch ($mode) {
 case 'logout':
     if (!empty($_USER['uid']) AND $_USER['uid'] > 1) {
@@ -352,10 +360,10 @@ case 'logout':
     $display .= COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 case 'profile':
-    $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
+    $display .= COM_siteHeader('menu') . userprofile($HTTP_GET_VARS['uid']) . COM_siteFooter();
     break;
 case 'create':
-    $display .= createuser($username,$email);
+    $display .= createuser($HTTP_POST_VARS['username'],$HTTP_POST_VARS['email']);
     break;
 case 'getpassword':
     $display .= COM_siteHeader('menu');
@@ -363,7 +371,7 @@ case 'getpassword':
     $display .= COM_siteFooter();
     break;
 case 'emailpasswd':
-    $display .= emailpassword($username, 1);
+    $display .= emailpassword($HTTP_POST_VARS['username'], 1);
     break;
 case 'new':
     $display .= COM_siteHeader('menu');
@@ -371,6 +379,12 @@ case 'new':
     $display .= COM_siteFooter();
     break;
 default:
+    if (isset ($HTTP_POST_VARS['loginname'])) {
+        $loginname = $HTTP_POST_VARS['loginname'];
+    }
+    if (isset ($HTTP_POST_VARS['passwd'])) {
+        $passwd = $HTTP_POST_VARS['passwd'];
+    }
     if (!empty($loginname) && !empty($passwd)) {
         $mypasswd = COM_getPassword($loginname);
     } else {
