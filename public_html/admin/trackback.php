@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.1 2005/01/16 19:14:28 dhaun Exp $
+// $Id: trackback.php,v 1.2 2005/01/17 15:29:06 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -265,7 +265,10 @@ if ($mode == 'delete') {
                                          $send_excerpt, $send_blog);
 
         $display .= COM_siteHeader ('menu');
-        if ($result === false) {
+        if ($result === true) {
+            $display .= COM_showMessage (64);
+            $display .= trackback_editor ();
+        } else {
             $message = '<p>' . $LANG_TRB['send_error_details'] . '<br>'
                      . '<span class="warningsmall">'
                      . htmlspecialchars ($result) . '</span></p>';
@@ -273,9 +276,6 @@ if ($mode == 'delete') {
 
             // display editor with the same contents again
             $display .= trackback_editor ($target, $url, $title, $excerpt, $blog);
-        } else {
-            $display .= COM_showMessage (64);
-            $display .= trackback_editor ();
         }
     }
     $display .= COM_siteFooter ();
