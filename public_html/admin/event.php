@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.17 2002/04/11 22:14:00 tony_bibbs Exp $
+// $Id: event.php,v 1.18 2002/04/14 19:06:07 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -81,6 +81,7 @@ function editevent($mode, $A)
     $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
     $event_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $event_templates->set_var('layout_url',$_CONF['layout_url']);
 
 	if ($mode <> 'editsubmission' AND !empty($eid)) {
 		//$result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
