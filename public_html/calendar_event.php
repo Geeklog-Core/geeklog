@@ -8,11 +8,11 @@
 // | Shows details of an event or events                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.23 2002/11/27 18:11:26 dhaun Exp $
+// $Id: calendar_event.php,v 1.24 2003/03/29 20:51:17 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -49,7 +49,7 @@ require_once($_CONF['path_system'] . 'classes/calendar.class.php');
 function adduserevent($eid) 
 {
     global $_USER, $LANG02, $_CONF, $_TABLES;
-	
+
     $retval .= COM_startBlock($LANG02[11]);
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
@@ -498,7 +498,7 @@ default:
                     
                     
                 } else {
-                    $thedatetime = strftime('%A, %B %e %Y',strtotime($A['start'] . ' ' . $A['timestart']));
+                    $thedatetime = strftime("%A, " . $_CONF['shortdate'],strtotime($A['start']));
                     $cal_templates->set_var('event_start', $thedatetime);
                     $cal_templates->set_var('event_end', $LANG30[26]);
                 }
@@ -515,7 +515,7 @@ default:
                     $cal_templates->set_var('br1', '');
                     $cal_templates->set_var('event_address2','');
                 }
-                if (empty($A['event_city']) && empty($A['event_state']) && empty($A['event_zip'])) {
+                if (empty($A['city']) && empty($A['state']) && empty($A['zip'])) {
                     $cal_templates->set_var('br2','');
                 } else {
                     $cal_templates->set_var('br2','<br>');
@@ -530,6 +530,13 @@ default:
                     $cal_templates->set_var('event_state', ', ' . $A['state']);
                 }
                 $cal_templates->set_var('event_zip', $A['zipcode']);
+                if (!empty ($A['location']) && (!empty ($A['address1']) ||
+                    !empty ($A['address2']) || !empty ($A['city']) ||
+                    !empty ($A['state']) || !empty($A['zip']))) {
+                    $cal_templates->set_var ('br0', '<br>');
+                } else {
+                    $cal_templates->set_var ('br0', '');
+                }
                 $cal_templates->set_var('event_location', stripslashes ($A['location']));
                 $cal_templates->set_var('lang_description', $LANG02[5]);
                 $cal_templates->set_var('event_description', stripslashes ($A['description']));
