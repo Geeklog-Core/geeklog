@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.111 2005/02/05 10:57:33 dhaun Exp $
+// $Id: usersettings.php,v 1.112 2005/02/20 09:55:52 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -845,6 +845,17 @@ function saveuser($A)
         setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
                    $_CONF['cookie_path'], $_CONF['cookiedomain'],
                    $_CONF['cookiesecure']);
+    }
+
+    // a quick spam check with the unfiltered field contents
+    $profile = '<h1>' . $LANG04[1] . ' ' . $_USER['username'] . '</h1>'
+             . '<p><a href="' . $A['homepage'] . '">' . $A['homepage']
+             . '</a><br>' . $A['location'] . '<br>' . $A['sig'] . '<br>'
+             . $A['about'] . '<br>' . $A['pgpkey'] . '</p>';
+    $result = PLG_checkforSpam ($profile, $_CONF['spamx']);
+    if ($result > 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
+                            . '&amp;plugin=spamx');
     }
 
     $A['email'] = COM_applyFilter ($A['email']);
