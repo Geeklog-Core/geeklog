@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.142 2002/08/23 09:09:10 dhaun Exp $
+// $Id: lib-common.php,v 1.143 2002/08/27 00:18:28 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -267,7 +267,6 @@ function COM_article($A,$index='')
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml','featuredarticle'=>'featuredstorytext.thtml','featuredbodytext'=>'featuredstorybodytext.thtml'));
     $article->set_var('layout_url',$_CONF['layout_url']);
-    $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
     $article->set_var('story_date',$A['day']);
     $article->set_var('lang_views', $LANG01[106]);
@@ -296,11 +295,14 @@ function COM_article($A,$index='')
 
     if ($index == 'n') {
         if ($A['postmode'] == 'plaintext') {
+            $A['title'] = str_replace('$','&#36;',$A['title']);
             $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
             $A['bodytext'] = str_replace('$','&#36;',$A['bodytext']);
         }
+        $article->set_var('story_title',stripslashes($A['title']));
         $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.stripslashes($A['bodytext']));
     } else {
+        $article->set_var('story_title',stripslashes($A['title']));
         $article->set_var('story_introtext', stripslashes($A['introtext']));
 
         if (!empty($A['bodytext'])) {
