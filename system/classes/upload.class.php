@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.11 2002/05/08 18:26:21 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.12 2002/05/09 18:52:35 tony_bibbs Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -89,6 +89,10 @@ class upload
     * @access private
     */
     var $_maxFileSize = 1048576;          // Long, in bytes
+    /**
+    *
+    */
+    var $_maxFileUploadsPerForm = 5;
     /**
     * @access private
     */
