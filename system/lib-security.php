@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.23 2004/12/18 15:25:50 dhaun Exp $
+// $Id: lib-security.php,v 1.24 2004/12/29 08:41:24 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -164,16 +164,17 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
-    if ( empty($uid) || ($uid == $_USER['uid']) 
-         || ($uid == 1 && empty($_USER['uid'])) ) {
-        if (empty($_USER['uid'])) {
+    if (empty ($uid)) {
+        if (empty ($_USER['uid'])) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
         }
+    }
 
-        if (empty($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups($uid);
+    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
+        if (empty ($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups ($uid);
         }
         $groups = $_GROUPS;
     } else {
@@ -452,21 +453,21 @@ function SEC_getUserPermissions($grp_id='',$uid='')
     }
 
     // Get user ID if we don't already have it
-    if (empty($uid)) {
-        if (empty($_USER['uid'])) {
+    if (empty ($uid)) {
+        if (empty ($_USER['uid'])) {
             $uid = 1;
         } else {
             $uid = $_USER['uid'];
         }
     }
 
-    if ($uid == $_USER['uid']) {
-        if (!isset($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups($uid);
+    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
+        if (empty ($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups ($uid);
         }
         $groups = $_GROUPS;
     } else {
-        $groups = SEC_getUserGroups($uid);
+        $groups = SEC_getUserGroups ($uid);
     }
 
     $glist = join(',', $groups);
@@ -614,6 +615,9 @@ function SEC_getFeatureGroup ($feature, $uid = '')
         } else {
             $uid = $_USER['uid'];
         }
+    }
+
+    if ((empty ($_USER['uid']) && ($uid == 1)) || ($uid == $_USER['uid'])) {
         if (empty ($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups ($uid);
         }
