@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.375 2004/09/18 15:43:04 dhaun Exp $
+// $Id: lib-common.php,v 1.376 2004/09/21 10:58:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3957,7 +3957,7 @@ function COM_allowedHTML()
 {
     global $_CONF, $LANG01;
 
-    $retval = '<span class="warningsmall">' . $LANG01[31];
+    $retval = '<span class="warningsmall">' . $LANG01[31] . ' ';
 
     if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['admin_html'] ))
     {
@@ -3981,6 +3981,21 @@ function COM_allowedHTML()
     }
 
     $retval .= '[code]';
+    $br++;
+
+    $autotags = PLG_collectTags();
+    foreach( $autotags as $tag )
+    {
+        $retval .= ',';
+        if( $br == 10 )
+        {
+            $retval .= ' ';
+            $br = 0;
+        }
+        $br++;
+        $retval .= '[' . $tag . ':]';
+    }
+
     $retval .= '</span>';
 
     return $retval;

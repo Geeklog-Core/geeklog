@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.40 2004/09/21 10:06:30 dhaun Exp $
+// $Id: lib-plugins.php,v 1.41 2004/09/21 10:58:17 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -871,6 +871,34 @@ function PLG_getHeaderCode()
 }
 
 /**
+* Get a list of all currently supported autolink tags.
+*
+* Returns an associative array where $A['plugin-name'] = 'tag-name'
+*
+* @return   array   All currently supported autolink tags
+*
+*/
+function PLG_collectTags ()
+{
+    global $_PLUGINS;
+
+    // Determine which Core Modules and Plugins support AutoLinks
+    $autolinkModules = array ('story'    => 'story',
+                              'calendar' => 'event'
+                             );
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_autotags_' . $pi_name;
+        if (function_exists ($function)) {
+            $autotag = $function ('tagname');
+            $autolinkModules[$pi_name]  = $autotag;
+        }
+    }
+
+    return $autolinkModules;
+}
+
+/**
 * This function will allow plugins to support the use of custom autolinks
 * in other site content. Plugins can now use this API when saving content
 * and have the content checked for any autolinks before saving.
@@ -883,18 +911,7 @@ function PLG_replaceTags ($content)
 {
     global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
-    // Determine which Core Modules and Plugins support AutoLinks
-    $autolinkModules = array ('story'    => 'story',
-                              'calendar' => 'event'
-                             );
-
-    foreach ($_PLUGINS as $pi_name) {
-        $function = 'plugin_autotags_' . $pi_name;
-        if (function_exists($function)) {
-            $autotag = $function('tagname');
-            $autolinkModules[$pi_name]  = $autotag;
-        }
-    }
+    $autolinkModules = PLG_collectTags ();
 
     // For each supported module - scan the content looking for any AutoLink tags
     $tags = array();
