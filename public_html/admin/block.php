@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.41 2002/09/20 20:54:15 dhaun Exp $
+// $Id: block.php,v 1.42 2002/11/11 22:38:17 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -163,7 +163,6 @@ function editblock($bid='')
         $access = 3;
     }
 
-
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','blockeditor.thtml');
     $block_templates->set_var('site_url', $_CONF['site_url']);
@@ -270,7 +269,7 @@ function editblock($bid='')
     $block_templates->set_var('end_block', COM_endBlock());
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output')); 
-		
+
     return $retval;
 }
 
@@ -313,7 +312,9 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
             $phpblockfn = '';
         }
         if ($type == 'gldefault') {
-            $content = '';
+            if ($name != 'older_stories') {
+                $content = '';
+            }
             $rdfurl = '';
             $rdfupdated = '';
             $phpblockfn = '';
