@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.17 2004/05/09 16:51:45 dhaun Exp $
+// $Id: database.php,v 1.18 2004/05/29 11:42:27 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -116,6 +116,7 @@ if (isset ($HTTP_POST_VARS['mode']) &&
                 $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                                 'footer'));
                 COM_errorLog ("Backup Filesize was 0 bytes", 1);	
+                COM_errorLog ("Command used for mysqldump: $command", 1);
             }
 		} else {
             $display .= COM_startBlock ($LANG08[06], '',
@@ -123,14 +124,15 @@ if (isset ($HTTP_POST_VARS['mode']) &&
             $display .= $LANG_DB_BACKUP['not_found'];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                             'footer'));
-            COM_errorLog("Backup Error: Bad path or mysqldump does not exist",1);
+            COM_errorLog ("Backup Error: Bad path or mysqldump does not exist", 1);
+            COM_errorLog ("Command used for mysqldump: $command", 1);
 		}
 	} else {
         $display .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG_DB_BACKUP['path_not_found'];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        COM_errorLog($_CONF['backup_path'] . " does not exist or is not a directory",1);
+        COM_errorLog ("Backup directory '" . $_CONF['backup_path'] . "' does not exist or is not a directory", 1);
 	}
 }
 
