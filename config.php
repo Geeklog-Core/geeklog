@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.23 2002/04/12 13:44:53 tony_bibbs Exp $
+// $Id: config.php,v 1.24 2002/04/15 20:32:11 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -64,7 +64,7 @@ $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 $_CONF['theme']             = 'Yahoo';
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/Yahoo';
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
-$_CONF['path_layout']       = $_CONF['path_themes'] . 'layout/Yahoo/';
+$_CONF['path_layout']       = $_CONF['path_themes'] . 'Yahoo/';
 $_CONF['allow_user_themes'] = 1;
 
 // +---------------------------------------------------------------------------+
