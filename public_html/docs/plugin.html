@@ -24,6 +24,7 @@
       <li><a href="#mod_functions">Moderation Functions</a></li>
       <li><a href="#admin_user_functions">Admin and User Functions</a></li>
       <li><a href="#Search_Functions">Search Functions</a></li>
+      <li><a href="#Comment_Functions">Comment Functions</a></li>
       <li><a href="#Stats_Function">Stats Function</a></li>
       <li><a href="#Uninstall_Function">Uninstall Function</a></li>
     </ul></li>
@@ -117,31 +118,31 @@ and links then you must implement these functions.</p>
 <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
 <caption align="bottom">Table 1. Moderation functions<br></caption>
 <tr>
-  <th valign="Top">Function</th>
-  <th valign="Top">Description of Function</th></tr>
+  <th valign="top">Function</th>
+  <th valign="top">Description of Function</th></tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_submit_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Shows the submission form for your plugin.</td>
+  <td valign="top" class="codeheader">plugin_submit_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Shows the submission form for your plugin.</td>
   </tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_itemlist_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Shows any items needing moderation for your plugin on moderation.php</td>
+  <td valign="top" class="codeheader">plugin_itemlist_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Shows any items needing moderation for your plugin on moderation.php</td>
   </tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_savesubmission_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Saves submitted item from a user in &lt;plugin name&gt;submission table</td>
+  <td valign="top" class="codeheader">plugin_savesubmission_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Saves submitted item from a user in &lt;plugin name&gt;submission table</td>
   </tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_moderationdelete_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Takes an ID into &lt;plugin name&gt;submission table and deletes it</td>
+  <td valign="top" class="codeheader">plugin_moderationdelete_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Takes an ID into &lt;plugin name&gt;submission table and deletes it</td>
   </tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_moderationapprove_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Takes an ID into &lt;plugin name&gt;submission and moves it to the main table called &lt;plugin name&gt;</td>
+  <td valign="top" class="codeheader">plugin_moderationapprove_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Takes an ID into &lt;plugin name&gt;submission and moves it to the main table called &lt;plugin name&gt;</td>
   </tr>
 <tr>
-  <td valign="Top" class="codeheader">plugin_moderationvalues_&lt;plugin name&gt;</td>
-  <td valign="Top" class="code">Returns the primary key column name, the main 
+  <td valign="top" class="codeheader">plugin_moderationvalues_&lt;plugin name&gt;</td>
+  <td valign="top" class="code">Returns the primary key column name, the main 
     table name (called &lt;plugin name&gt;) and the list of fields from that 
     table that you'd like to have show up on the moderation page.</td>
   </tr>
@@ -156,37 +157,37 @@ functions.</p>
       <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
         <caption align="bottom">Table 2. Admin and User functions</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_adminoptions_&lt;plugin name&gt;</td>
-            <td valign="Top" class="code">Will show options under the Admin
+            <td valign="top" class="codeheader">plugin_adminoptions_&lt;plugin name&gt;</td>
+            <td valign="top" class="code">Will show options under the Admin
       Functions block for your plugin</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_getuseroption_&lt;plugin
+            <td valign="top" class="codeheader">plugin_getuseroption_&lt;plugin
       name&gt;</td>
-            <td valign="Top" class="code">Will show options under the User
+            <td valign="top" class="code">Will show options under the User
       Functions block for your plugin</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_adminedit_&lt;plugin
+            <td valign="top" class="codeheader">plugin_adminedit_&lt;plugin
       name&gt;</td>
-            <td valign="Top" class="code">Shows the links at the top of admin/plugins/&lt;plugin
+            <td valign="top" class="code">Shows the links at the top of admin/plugins/&lt;plugin
      name&gt;.php for New and Admin Home. This is for consistency sake only</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_submissioncount_&lt;plugin
+            <td valign="top" class="codeheader">plugin_submissioncount_&lt;plugin
       name&gt;</td>
-            <td valign="Top" class="code">Shows the number of submissions
+            <td valign="top" class="code">Shows the number of submissions
       pending for you plugin.&nbsp; This is usually just "dbcount(&lt;plugin
    name&gt;submission);"</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_cclabel_&lt;plugin
+            <td valign="top" class="codeheader">plugin_cclabel_&lt;plugin
       name&gt;</td>
-            <td valign="Top" class="code">Returns array of your plugin image
+            <td valign="top" class="code">Returns array of your plugin image
       and a label for your plugin.&nbsp; This is called to show your plugin
   in   the command and control block on moderation.php</td>
           </tr>
@@ -199,24 +200,60 @@ functions.</p>
       <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
         <caption align="bottom">Table 3. Search functions</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_getsearchtypes_&lt;plugin 
+            <td valign="top" class="codeheader">plugin_getsearchtypes_&lt;plugin 
      name&gt;</td>
-            <td valign="Top" class="code">You will probably want to add a
+            <td valign="top" class="code">You will probably want to add a
      new type in the Type drop down on search.php.&nbsp; This function prints
     the option tags needed. make sure that the value tag is &lt;plugin name&gt;</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_dopluginsearch_&lt;plugin 
+            <td valign="top" class="codeheader">plugin_dopluginsearch_&lt;plugin 
      name&gt;</td>
-            <td valign="Top" class="code">Takes the search criteria and lets
+            <td valign="top" class="code">Takes the search criteria and lets
      you build search results for your plugin.&nbsp; This returns a string
  array    of table rows, one row for each record returned by your search.</td>
           </tr>
       </table>
+
+<h2><a name="Comment_Functions">Comment Function</a></h2>
+
+<p>If you want your plugin to support comments and use the Geeklog comment
+engine, then you need to implement these functions in your plugin
+functions.inc file:</p>
+
+<table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
+<caption align="bottom">Table 4. Comment functions</caption>
+  <tr>
+    <th valign="top">Function</th>
+    <th valign="top">Description of Function</th>
+  </tr>
+  <tr>
+    <td valign="top" class="codeheader">plugin_commentsupport_&lt;plugin name&gt;</td>
+    <td valign="top" class="code">
+    This function does not take any parameters but simply returns true if this plugin supports comments. This call is made in Geeklog code (example: article.php) to determine if it should redirect handling to the plugin.</td>
+  </tr>
+  <tr>
+    <td valign="top" class="codeheader">plugin_commentsave_&lt;plugin name&gt;</td>
+    <td valign="top" class="code">
+    This function expects the comment id (primary index in the comment table) and will update the plugin record with the total number of comments for this plugin item. It then handles the refresh or redirection of the user back to the plugin instead of the main site page.</td>
+  </tr>
+  <tr>
+    <td valign="top" class="codeheader">plugin_commentform_&lt;plugin name&gt;</td>
+    <td valign="top" class="code">
+    This function expects a number of parameters and is called from Geeklog article.php and comment.php. Parameters are: comment_id (primary key), comment_mode (nested, flat, threaded, none, order (Ascending or Descending) and reply (Was the reply submit button used on the comment bar).<br>
+    Only comment_id is mandatory.</td>
+  </tr>
+  <tr>
+    <td valign="top" class="codeheader">plugin_commentparent_&lt;plugin name&gt;</td>
+    <td valign="top" class="code">
+    Optional function which can be called from your plugin_commentform function to also display the plugin parent above the comments. This is how Geeklog articles are displayed with the story and then the comment bar and associated comments.</td>
+  </tr>
+</table>
+
 
 <h2><a name="Stats_Function">Stats Function</a></h2>
 
@@ -224,15 +261,15 @@ functions.</p>
 implement this function.</p>
 
       <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 4. Stats function</caption>
+        <caption align="bottom">Table 5. Stats function</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_showstats_&lt;plugin 
+            <td valign="top" class="codeheader">plugin_showstats_&lt;plugin 
      name&gt;</td>
-            <td valign="Top" class="code">This function takes a showsitestats 
+            <td valign="top" class="code">This function takes a showsitestats 
      flag.&nbsp; If set to 1, this function shows the overall stats for your 
    plugin  in the site statistics box.&nbsp; If it is set to 2 it shows the 
   statistic  blocks for you plugin (similar to Top Ten Viewed Stories and 
@@ -245,15 +282,15 @@ Top  Ten Commented  Stories).</td>
 <p>If you want to give your plugin the ability to uninstall itself then you must implement this function.</p>
 
       <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
-        <caption align="bottom">Table 5. Uninstall function</caption>
+        <caption align="bottom">Table 6. Uninstall function</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">plugin_uninstall_&lt;plugin 
+            <td valign="top" class="codeheader">plugin_uninstall_&lt;plugin 
      name&gt;</td>
-            <td valign="Top" class="code">This function does not take any parameters. The plugin should try and uninstall itself, especially removing all its tables and data structures from the database.<br>
+            <td valign="top" class="code">This function does not take any parameters. The plugin should try and uninstall itself, especially removing all its tables and data structures from the database.<br>
 The function should return <code>true</code> if the uninstall succeeded and <code>false</code> if it failed.</td>
           </tr>
       </table>
@@ -407,48 +444,48 @@ to  access    the   moderation   system.</p>
       <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
         <caption align="bottom">Table 1. Moderation Functions</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">SubmitPlugin</td>
-            <td valign="Top" class="code">This function loops through all 
+            <td valign="top" class="codeheader">SubmitPlugin</td>
+            <td valign="top" class="code">This function loops through all 
           enabled plugins and calls the  plugins plugin_submit_&lt;plugin 
 name&gt;         method so that a plugins submission  form is shown to the 
 user.</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">GetPluginModerationValues</td>
-            <td valign="Top" class="code">Responsible for calling the plugin_moderationvalue_&lt;plugin
+            <td valign="top" class="codeheader">GetPluginModerationValues</td>
+            <td valign="top" class="code">Responsible for calling the plugin_moderationvalue_&lt;plugin
             name&gt; method so that the plugin specific values can be set
 so   that     moderation    can occur.</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">ShowPluginModerationLists</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">ShowPluginModerationLists</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
           and call itemlist() so that  all items needing moderation for the 
   plugin       shows up in moderation.php</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">ShowPluginModerationOptions</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">ShowPluginModerationOptions</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
           and calls the plugin_cclabel_&lt;plugin  name&gt; method so the 
 plugin       shows   in the command and control center.</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">SavePluginSubmission</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">SavePluginSubmission</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
           and calls the plugin_savesubmission_&lt;plugin  name&gt; method 
 so   that     the  plugin submission for a specified plugin gets  saved.</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">DoPluginModerationDelete</td>
-            <td valign="Top" class="code">Calls the plugin_moderationdelete_&lt;plugin 
+            <td valign="top" class="codeheader">DoPluginModerationDelete</td>
+            <td valign="top" class="code">Calls the plugin_moderationdelete_&lt;plugin 
           name&gt; method  of a specifid plugin so that a submission is deleted</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">DoPluginModerationApprove</td>
-            <td valign="Top" class="code">Calls the plugin_moderationapprove_&lt;plugin 
+            <td valign="top" class="codeheader">DoPluginModerationApprove</td>
+            <td valign="top" class="code">Calls the plugin_moderationapprove_&lt;plugin 
           name&gt; method  of a specified plugin so that the submission is 
  approved.</td>
           </tr>
@@ -462,31 +499,31 @@ to  access    the   admin   and user system</p>
       <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
         <caption align="bottom">Table 2.&nbsp;Admin and User options functions</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">ShowPluginAdminOptions</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">ShowPluginAdminOptions</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
         and calls their plugin_showadminoption_&lt;plugin name&gt; so that 
  the    plugin   shows any option(s) they need under the Admin block.</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">ShowPluginUserOptions</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">ShowPluginUserOptions</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
         and calls their plugin_showuseroptions_&lt;plugin name&gt; so that 
  the    plugin   shows any option(s) users need in their User Functions block</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">HandlePluginAdminEdit</td>
-            <td valign="Top" class="code">Calls the plugin_adminedit_&lt;plugin 
+            <td valign="top" class="codeheader">HandlePluginAdminEdit</td>
+            <td valign="top" class="code">Calls the plugin_adminedit_&lt;plugin 
         name&gt; method so that the "new &lt;plugin name&gt; | Admin Home" 
  links      show up at the top of admin/plugins/&lt;plugin name&gt;.php.&nbsp; 
  This    is  implemented strictly for consistency of the UI</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">GetPluginSubmissionCounts</td>
-            <td valign="Top" class="code">Loops through all enabled plugins 
+            <td valign="top" class="codeheader">GetPluginSubmissionCounts</td>
+            <td valign="top" class="code">Loops through all enabled plugins 
         and calls their plugin_submissioncount_&lt;plugin name&gt; method 
 so   that     the number of submissions for plugins gets displayed</td>
           </tr>
@@ -500,19 +537,19 @@ to  access    the   search system</p>
 <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
         <caption align="bottom">Table 3. Search functions</caption>
           <tr>
-            <th valign="Top">Function</th>
-            <th valign="Top">Description of Function</th>
+            <th valign="top">Function</th>
+            <th valign="top">Description of Function</th>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">GetPluginSearchTypes</td>
-            <td valign="Top" class="code">Loops through all enabled plugins
+            <td valign="top" class="codeheader">GetPluginSearchTypes</td>
+            <td valign="top" class="code">Loops through all enabled plugins
         and calls their plugin_getsearchtypes_&lt;plugin name&gt; method
 to   get    any  plugin specific values that need to show up in the Type
 drop  down on   search.php</td>
           </tr>
           <tr>
-            <td valign="Top" class="codeheader">DoPluginSearches</td>
-            <td valign="Top" class="code">Loops through all enabled plugins
+            <td valign="top" class="codeheader">DoPluginSearches</td>
+            <td valign="top" class="code">Loops through all enabled plugins
         and submits the search criteria to the plugin_dopluginsearch_&lt;pluginname&gt;
         method so that the plugin can perform it's own search</td>
           </tr>
@@ -526,12 +563,12 @@ system:</p>
 <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center">
 <caption align="bottom">Table 4. Stats functions</caption>
 <tr>
-  <th valign="Top">Function</th>
-  <th valign="Top">Description of Function</th>
+  <th valign="top">Function</th>
+  <th valign="top">Description of Function</th>
 </tr>
 <tr>
-  <td valign="Top" class="codeheader">Show Plugin Stats</td>
-  <td valign="Top" class="code">Loops through all enabled plugins 
+  <td valign="top" class="codeheader">Show Plugin Stats</td>
+  <td valign="top" class="code">Loops through all enabled plugins 
      and calls the plugin's plugin_showstats_&lt;plugin name&gt; method 
      so that statistics can be reported for the plugin</td>
 </tr>

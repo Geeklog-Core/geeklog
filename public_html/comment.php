@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.34 2002/10/31 19:08:25 dhaun Exp $
+// $Id: comment.php,v 1.35 2002/11/15 15:50:15 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -342,10 +342,7 @@ default:
     } else {
         // This could still be a plugin wanting comments
         if (strlen($type) > 0) {
-            if (PluginCommentForm('','','',$title,'',$sid,$pid,$type,$mode,$postmode)) {
-		        //Good, it was handled...break
-                break;
-            }
+            $display .= PLG_callCommentForm($type,$cid);
         } else {
             // must be a mistake at this point
             $display .= COM_refresh("{$_CONF['site_url']}/index.php");

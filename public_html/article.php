@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.28 2002/10/20 13:04:20 dhaun Exp $
+// $Id: article.php,v 1.29 2002/11/15 15:50:15 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -56,7 +56,9 @@ require_once('lib-common.php');
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
 if (PLG_supportsComments($type)) {
     // Yes, this is a plugin wanting to be commented on...do it
-    echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
+    $display .= PLG_callCommentForm($type,$story,$mode,$order,$reply);
+    echo $display;
+    exit();
 }
 
 if ($type == 'poll') {

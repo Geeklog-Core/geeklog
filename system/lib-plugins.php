@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.11 2002/10/16 17:18:57 dhaun Exp $
+// $Id: lib-plugins.php,v 1.12 2002/11/15 15:50:15 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -216,6 +216,31 @@ function PLG_handlePluginComment($type, $id)
 	$args[1] = $id;
 	PLG_callFunctionForOnePlugin('plugin_commentsave_' . $type, $args);
 }
+
+
+/**
+* User has reuested to create a comment for the plugin
+* Redirects user to comment form if initial comment for plugin record or returns
+* formated HTML including the Site footer and the comments 
+*
+* @param        string   $type            Plugin to have handle the comment
+* @param        int      $id      GL Comment table primary key. 
+* @param        string   $mode     Has user selected a new comment preview mode (Flat, Nested, Threaded, None)
+* @param        string   $order           Has the user selected a different comment first (Newest or Oldest comment first)
+* @param        string   $reply           Has the user used the reply button on the Comment Bar 
+* @return       string   Formated HTML containing site footer and the comments with the comment command bar 
+*                        or redirect user to create top level comment
+*/
+function PLG_callCommentForm($type,$id,$mode="",$order="",$reply="")
+{
+    $args[1] = $id;
+    $args[2] = $mode;
+    $args[3] = $order;
+    $args[4] = $reply;
+
+    return PLG_callFunctionForOnePlugin('plugin_commentform_' . $type, $args);
+}
+
 
 /**
 * The way this function works is very specific to how Geeklog shows it's
