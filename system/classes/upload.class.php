@@ -8,9 +8,10 @@
 // | Geeklog file upload class library.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.31 2004/01/12 20:07:41 dhaun Exp $
+// $Id: upload.class.php,v 1.32 2004/07/10 17:32:02 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -168,7 +169,7 @@ class upload
     {
         $this->_setAvailableMimeTypes();
     }
-    
+
     // PRIVATE METHODS
 
     /**
@@ -187,7 +188,7 @@ class upload
             $this->_logItem('Warning',$warningText);
         }
 	}
-	
+
 	/**
 	* Adds an error that was encountered
 	*
@@ -221,7 +222,7 @@ class upload
             $this->_logItem('Debug',$debugText);
         }
     }
-    
+
     /**
     * Logs an item to the log file
     *
@@ -244,7 +245,7 @@ class upload
         fclose($file);
         return true;
 	}
-	
+
     /**
     * Defines superset of available Mime types.
     *
@@ -280,7 +281,7 @@ class upload
             $this->_availableMimeTypes = $mimeTypes;
         }
     }
-    
+
     /**
     * Checks if current file is an image
     *
@@ -304,10 +305,10 @@ class upload
             }
             $this->_addDebugMsg($msg);
         }
-        
+
         return $isImage;
     }
-    
+
     /**
     * Verifies the file size meets specified size limitations
     *
@@ -340,16 +341,16 @@ class upload
         if (!$this->_isImage()) {
             return true;
         }
-        
+
         $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
-		   
+
         $sizeOK = true;
-		
+
         if ($this->_debug) {
             $this->_addDebugMsg('Max allowed width = ' . $this->_maxImageWidth . ', Image width = ' . $imageInfo['width']);
             $this->_addDebugMsg('Max allowed height = ' . $this->_maxImageHeight . ', Image height = ' . $imageInfo['height']);
         }
-       
+
         // If user set _autoResize then ignore these settings and try to resize on upload 
         if (($doResizeCheck AND !($this->_autoResize)) OR (!($doResizeCheck))) {
             if ($imageInfo['width'] > $this->_maxImageWidth) {
@@ -374,7 +375,7 @@ class upload
 
         return $sizeOK;
     }
-	
+
 	/**
 	* Gets the width and height of an image
 	*
@@ -389,7 +390,59 @@ class upload
         }
 		return array('width' => $dimensions[0], 'height' => $dimensions[1]);
 	}
-	
+
+    /**
+    * Calculate the factor to scale images with if they're not meeting
+    * the size restrictions.
+    *
+    * @access   private
+    * @param    int     $width      width of the unscaled image
+    * @param    int     $height     height of the unscaled image
+    * @return   double              resize factor
+    *
+    */
+    function _calcSizefactor ($width, $height)
+    {
+        if (($width > $this->_maxImageWidth) ||
+                ($height > $this->_maxImageHeight)) {
+            if (($width > $this->_maxImageWidth) && ($width > $height)) {
+                $sizefactor = (double) ($this->_maxImageWidth / $width);
+            } else {
+                $sizefactor = (double) ($this->_maxImageHeight / $height);
+            }
+        } else {
+            $sizefactor = 1.0;
+        }
+
+        return $sizefactor;
+    }
+
+    /**
+    * Keep the original (unscaled) image file, if configured.
+    *
+    * @access   private
+    * @param    string  $filename   name of uploaded file
+    * @return   bool                true: okay, false: an error occured
+    *
+    */
+    function _keepOriginalFile ($filename)
+    {
+        if ($this->_keepOriginalImage) {
+            $lFilename_large = substr_replace ($this->_getDestinationName (),
+                '_original.', strrpos ($this->_getDestinationName (), '.'), 1);
+            $lFilename_large_complete = $this->_fileUploadDirectory . '/'
+                                      .  $lFilename_large;
+            if (!copy ($filename, $lFilename_large_complete)) {
+                $this->_addError ("Couldn't copy $filename to $lFilename_large_complete.  You'll need to remove both files.");
+                $this->printErrors ();
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 	/**
 	* Gets destination file name for current file
 	*
@@ -430,10 +483,10 @@ class upload
         if (empty($perms)) {
             $perms = '';
         }
-        
+
         return $perms;
 	}
-	
+
 	/**
 	* This function actually completes the upload of a file
 	*
@@ -463,11 +516,8 @@ class upload
         $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
         if (!($sizeOK)) {
             // OK, resize
-            if ($imageInfo['height'] > $imageInfo['width']) { 
-                $sizefactor = (double) ($this->_maxImageHeight / $imageInfo['height']);
-            } else {
-                $sizefactor = (double) ($this->_maxImageWidth / $imageInfo['width']);
-            }
+            $sizefactor = $this->_calcSizefactor ($imageInfo['width'],
+                                                  $imageInfo['height']);
             $newwidth = (int) ($imageInfo['width'] * $sizefactor);
             $newheight = (int) ($imageInfo['height'] * $sizefactor);
             $this->_addDebugMsg ('Going to resize image to ' . $newwidth . 'x'
@@ -478,17 +528,10 @@ class upload
                 $cmd = $this->_pathToMogrify . ' -resize '. $newsize . " '" . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . "' 2>&1";
                 $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
 
-                if ($this->_keepOriginalImage) {
-                    $filename = $this->_fileUploadDirectory . '/'
-                              . $this->_getDestinationName ();
-                    $lFilename_large = substr_replace ($this->_getDestinationName (), '_original.', strrpos ($this->_getDestinationName (), '.'), 1);
-                    $lFilename_large_complete = $this->_fileUploadDirectory
-                                              . '/' .  $lFilename_large;
-                    if (!copy ($filename, $lFilename_large_complete)) {
-                        $this->_addError ("Couldn't copy $filename to $lFilename_large_complete.  You'll need to remove both files.");
-                        $this->printErrors ();
-                        exit;
-                    }
+                $filename = $this->_fileUploadDirectory . '/'
+                            . $this->_getDestinationName ();
+                if (!$this->_keepOriginalFile ($filename)) {
+                    exit;
                 }
 
                 exec($cmd, $mogrify_output, $retval);
@@ -517,15 +560,8 @@ class upload
                 $this->_addDebugMsg('Attempting to resize with this command (netpbm): ' . $cmd);
                 exec($cmd, $netpbm_output, $retval);
 
-                if ($this->_keepOriginalImage) {
-                    $lFilename_large = substr_replace ($this->_getDestinationName(), '_original.', strrpos ($this->_getDestinationName (), '.'), 1);
-                    $lFilename_large_complete = $this->_fileUploadDirectory
-                                              . '/' .  $lFilename_large;
-                    if (!copy ($filename, $lFilename_large_complete)) {
-                        $this->_addError ("Couldn't copy $filename to $lFilename_large_complete.  You'll need to remove both files.");
-                        $this->printErrors ();
-                        exit;
-                    }
+                if (!$this->_keepOriginalFile ($filename)) {
+                    exit;
                 }
 
                 // Move tmp file to actual file
@@ -589,8 +625,17 @@ class upload
                                 $this->_getDestinationName ());
                 }
 
+                if (!$this->_keepOriginalFile ($filename)) {
+                    exit;
+                }
+
                 if (($this->_currentFile['type'] == 'image/png') OR
                     ($this->_currentFile['type'] == 'image/x-png')) {
+                    if (!function_exists ('imagecreatefrompng')) {
+                        $this->_addError ('Sorry, this version of the GD library does not support PNG images.');
+                        $this->printErrors ();
+                        exit;
+                    }
                     if (!$image_source = imagecreatefrompng ($filename)) {
                         $this->_addError ('Could not create image from PNG: '
                                           . $filename);
@@ -599,6 +644,11 @@ class upload
                     }
                 } elseif (($this->_currentFile['type'] == 'image/jpeg') OR
                           ($this->_currentFile['type'] == 'image/pjpeg')) {
+                    if (!function_exists ('imagecreatefromjpeg')) {
+                        $this->_addError ('Sorry, this version of the GD library does not support JPEG images.');
+                        $this->printErrors ();
+                        exit;
+                    }
                     if (!$image_source = imagecreatefromjpeg ($filename)) {
                         $this->_addError ('Could not create image from JPEG: '
                                           . $filename);
@@ -613,11 +663,8 @@ class upload
                 }
 
                 // do resize
-                if ($imageInfo['height'] > $imageInfo['width']) {
-                    $sizefactor = (double) ($this->_maxImageHeight / $imageInfo['height']);
-                } else {
-                    $sizefactor = (double) ($this->_maxImageWidth / $imageInfo['width']);
-                }
+                $sizefactor = _calcSizefactor ($imageInfo['width'],
+                                               $imageInfo['height']);
                 $this->_addDebugMsg ('Resizing image, factor=' . $sizefactor);
                 $newwidth = (int) ($imageInfo['width'] * $sizefactor);
                 $newheight = (int) ($imageInfo['height'] * $sizefactor);
@@ -666,18 +713,18 @@ class upload
                 $returnChmod = chmod ($this->_fileUploadDirectory . '/' . $this->_getDestinationName (), octdec ($perms));
             }
         }
-        
+
         if ($returnMove AND $returnChmod) {
             return true;
         } else {
             if (!$returnMove) {
                 $this->_addError('Upload of ' . $this->_currentFile['name'] . ' failed.');
             }
-            
+
             if (!$returnChmod) {
                 $this->_addError('Chmod of ' . $this->_currentFile['name'] . ' to ' . $perms . ' failed');
             }
-            
+
             return false;
         }
 	}
@@ -723,7 +770,7 @@ class upload
     }
 
     /**
-    * Sets mode to autmatically resize images that are either too wide or 
+    * Sets mode to automatically resize images that are either too wide or 
     * too tall
     *
     * @param    boolean    $switch  True to turn on, false to turn off
@@ -769,7 +816,7 @@ class upload
 
         return true;
     }
-    
+
     /**
     * Sets the max number of files that can be uploaded per form
     *
@@ -796,7 +843,7 @@ class upload
 
         return true;
     }
-    
+
     /**
     * Extra security option that forces all attempts to upload a file to be done
     * so from a set of VERY specific IP's.  This is only good for those who are
@@ -816,12 +863,12 @@ class upload
             return false;
         }
     }
-    
+
     /**
     * Allows you to specify whether or not to continue processing other files
     * when an error occurs or exit immediately. Default is to exit immediately
     *
-    * NOTE: this only effects the actual file upload process.
+    * NOTE: this only affects the actual file upload process.
     *
     * @param    boolean     $switch     true or false
     *
@@ -834,7 +881,7 @@ class upload
             $this->_continueOnError = false;
         }
     }
-    
+
     /**
     * Sets log file
     *
@@ -853,7 +900,7 @@ class upload
         $this->_logFile = $logFile;
         return true;
     }
-    
+
     /**
     * Enables/disables logging of errors and warnings
     *
@@ -900,7 +947,7 @@ class upload
             $this->_debug = false;
         }
     }
-    
+
     /**
     * This function will print any errors out.  This is useful in debugging
     *
@@ -925,7 +972,7 @@ class upload
             return $retval;
         }
     }
-    
+
     /**
     * This function will print any warnings out.  This is useful in debugging
     *
@@ -941,7 +988,7 @@ class upload
             }
         }
     }
-    
+
     /**
     * This function will print any debmug messages out.
     *
@@ -957,7 +1004,7 @@ class upload
             }
         }
     }
-    
+
     /**
     * Returns if any errors have been encountered thus far
     *
@@ -972,7 +1019,7 @@ class upload
             return false;
         }
     }
-    
+
     /**
     * Sets allowed mime types for this instance
     *
@@ -983,7 +1030,7 @@ class upload
 	{
 		$this->_allowedMimeTypes = $mimeTypes;
 	}
-	
+
 	/**
 	* Gets allowed mime types for this instance
 	*
@@ -994,7 +1041,7 @@ class upload
 	{
 		return $this->_allowedMimeTypes;
 	}
-	
+
     /**
     * Checks to see that mime type for current file is allowed for upload
     *
@@ -1024,7 +1071,7 @@ class upload
                           . ' not in list of allowed types.');
         return false;
     }
-    
+
     /**
     * Sets file upload path
     *
@@ -1038,17 +1085,17 @@ class upload
             $this->_addError('Specified upload directory, ' . $uploadDir . ' is not a valid directory');
             return false;
         }
-        
+
         if (!is_writable($uploadDir)) {
             $this->_addError('Specified upload directory, ' . $uploadDir . ' exists but is not writable');
             return false;
         }
-        
+
         $this->_fileUploadDirectory = $uploadDir;
-        
+
         return true;
 	}
-	
+
 	/**
 	* Returns directory to upload to
 	*
@@ -1059,7 +1106,7 @@ class upload
 	{
         return $this->_fileUploadDirectory;
 	}
-    
+
     /**
     * Sets file name(s) for files
     *
@@ -1100,7 +1147,7 @@ class upload
             $this->_permissions = array($perms);
         }
     }
-    
+
     /**
     * Returns how many actual files were sent for upload.  NOTE: this will
     * ignore HTML file fields that were left blank.
@@ -1113,9 +1160,9 @@ class upload
         if (empty($this->_filesToUpload)) {
             $this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
         }
-        
+
         $fcount = 0;
-        
+
         for ($i = 1; $i <= count($GLOBALS['HTTP_POST_FILES']); $i++) {
             $curFile = current($this->_filesToUpload);
         
@@ -1126,10 +1173,10 @@ class upload
             next($this->_filesToUpload);
         }
         reset($GLOBALS['HTTP_POST_FILES']);
-        
+
         return $fcount;
 	}
-	
+
 	/**
 	* Uploads any posted files.
 	*
@@ -1147,12 +1194,12 @@ class upload
                 return false;
             }
         }
-        
+
 		$this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
 		$numFiles = count($this->_filesToUpload);
-        
-        // For security sake, check to make sure a DOS isn't happening by making sure
-        // there is a limit of the number of files being uploaded
+
+        // For security sake, check to make sure a DOS isn't happening by making
+        // sure there is a limit of the number of files being uploaded
         if ($numFiles > $this->_maxFileUploadsPerForm) {
             $this->_addError('Max. number of files you can upload from a form is '
                 . $this->_maxFileUploadsPerForm . ' and you sent ' . $numFiles);
@@ -1163,36 +1210,36 @@ class upload
         if (!$this->_fileUploadDirectory) {
             $this->_addError('No Upload Directory Specified, use setPath() method');
         }
-        
+
         // Verify allowed mime types exist
         if (!$this->_allowedMimeTypes) {
             $this->_addError('No allowed mime types specified, use setAllowedMimeTypes() method');
         }
-      
+
         for ($i = 1; $i <= $numFiles; $i++) {
-		
+
             $this->_currentFile = current($GLOBALS['HTTP_POST_FILES']);
-            
+
             // Make sure file field on HTML form wasn't empty before proceeding
             if (!empty($this->_currentFile['name'])) {
                 // Verify file meets size limitations
                 if (!$this->_fileSizeOk()) {
                     $this->_addError('File, ' . $this->_currentFile['name'] . ', is bigger than the ' . $this->_maxFileSize . ' byte limit');
                 }
-                
+
                 // If all systems check, do the upload
                 if ($this->checkMimeType() AND $this->_imageSizeOK() AND !$this->areErrors()) {
                     if ($this->_copyFile()) {
                         $this->_uploadedFiles[] = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                     }
                 }
-                
+
                 $this->_currentFile = array();
-                
+
                 if ($this->areErrors() AND !$this->_continueOnError) {
                     return false;
                 }
-                
+
                 $this->_imageIndex++;
             } else {
                 // No file name specified...send as warning.
@@ -1200,7 +1247,7 @@ class upload
             }
             next($GLOBALS['HTTP_POST_FILES']);
         }
-		
+
 		// This function returns false if any errors were encountered
         if ($this->areErrors()) {
             return false;
