@@ -1,13 +1,57 @@
 <?php
 
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | url.class.php                                                             |
+// | class to allow for spider friendly URL's                                  |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2002 by the following authors:                              |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: url.class.php,v 1.4 2002/05/07 20:59:31 tony_bibbs Exp $
+
+/**
+* This class will allow you to use friendlier URL's, like:
+* http://www.example.com/index.php/arg_value_1/arg_value_2/ instead of
+* uglier http://www.example.com?arg1=value1&arg2=value2.
+* NOTE: this does not currently work under windows as there is a well documented
+* but with IIS and PATH_INFO.  Not sure yet if this will work with windows under
+* apache.  This was built so you could use this class and just disable it
+* if you are an IIS user.
+*
+* @author       Tony Bibbs <tony@tonybibbs.com>
+*
+*/
 class url {
-    var $_arguments;		// Array of argument names
-    var $_enabled;
+    var $_arguments = array();		// Array of argument names
+    var $_enabled = true;
     
     /**
     * Constructor
     *
-    * @enabled  boolean whether rewriting is enabled
+    * @param        boolean     $enabled    whether rewriting is enabled
     *
     */
     function url($enabled=true)
@@ -22,6 +66,7 @@ class url {
     /**
     * Grabs any variables from the query string
     *
+    * @access   private
     */
     function _getArguments()
     {
@@ -34,7 +79,7 @@ class url {
     /**
     * Enables url rewriting, otherwise URL's are passed back
     *
-    * @switch   boolean     true/false
+    * @param        boolean     $switch     turns URL rewriting on/off
     *
     */
     function setEnabled($switch)
@@ -69,7 +114,7 @@ class url {
     /**
     * Assigns logical names to query string variables
     *
-    * @names        Array   String array of names to assign to variables pulled from query string
+    * @param        array       $names      String array of names to assign to variables pulled from query string
     */
     function setArgNames($names)
     {
@@ -95,7 +140,7 @@ class url {
     /**
     * Gets the value for an argument
     *
-    * @name     string  Name of argument to fetch value for
+    * @param        string      $name       Name of argument to fetch value for
     *
     */
     function getArgument($name)
@@ -116,9 +161,9 @@ class url {
     }
 
     /**
-    * Builds crawler friendly URL
+    * Builds crawler friendly URL if URL rewriting is enabled
     *
-    * @url      string      URL to try and convert
+    * @param        string      $url    URL to try and convert
     *
     */
     function buildURL($url)
