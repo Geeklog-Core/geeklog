@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.13 2002/11/10 14:15:26 dhaun Exp $
+// $Id: index.php,v 1.14 2003/01/29 17:08:52 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -62,7 +62,11 @@ function form($A, $error=false)
         $retval .= $error . "<br><br>";
     } else {
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
-        $sp_template->set_file('form','editor.thtml');
+        if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
+            $sp_template->set_file('form','editor_advanced.thtml');
+        } else {
+            $sp_template->set_file('form','editor.thtml');
+        }
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC['staticpageeditor']));

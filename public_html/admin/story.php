@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.79 2003/01/10 14:21:28 dhaun Exp $
+// $Id: story.php,v 1.80 2003/01/29 17:08:52 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -168,7 +168,11 @@ function storyeditor($sid = '', $mode = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
+    if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+        $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
+    } else {
+        $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
+    }
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $story_templates->set_var('layout_url', $_CONF['layout_url']);

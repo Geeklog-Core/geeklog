@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.48 2003/01/01 20:02:19 efarmboy Exp $
+// $Id: submit.php,v 1.49 2003/01/29 17:08:52 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -351,7 +351,11 @@ function submitstory()
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
 
     $storyform = new Template($_CONF['path_layout'] . 'submit');
-    $storyform->set_file('storyform','submitstory.thtml');
+    if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'submit/submitstory_advanced.thtml')) { 
+        $storyform->set_file('storyform','submitstory_advanced.thtml');
+    } else {
+        $storyform->set_file('storyform','submitstory.thtml');
+    }
     $storyform->set_var('site_url', $_CONF['site_url']);
     $storyform->set_var('lang_username', $LANG12[27]);
 

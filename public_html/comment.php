@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.38 2003/01/13 18:54:45 dhaun Exp $
+// $Id: comment.php,v 1.39 2003/01/29 17:08:52 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -149,7 +149,11 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             }
 	       
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
-            $comment_template->set_file('form','commentform.thtml');
+            if (($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'comment/commentform_advanced.thtml')) {
+                $comment_template->set_file('form','commentform_advanced.thtml');
+            } else {
+                $comment_template->set_file('form','commentform.thtml');
+            }
             $comment_template->set_var('site_url', $_CONF['site_url']);
             $comment_template->set_var('start_block_postacomment', COM_startBlock($LANG03[1]));
             $comment_template->set_var('lang_username', $LANG03[5]);
