@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.39 2004/08/08 10:14:49 dhaun Exp $
+// $Id: functions.inc,v 1.40 2004/08/11 09:24:35 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -113,11 +113,13 @@ function plugin_commentsupport_staticpages()
 */
 function plugin_showstats_staticpages($showsitestats) 
 {
-    global $LANG_STATIC, $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $LANG_STATIC;
+
+    $retval = '';
 
     $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
-    $stat_templates->set_file (array ('itemstats'=>'itemstatistics.thtml',
-                                      'statrow'=>'singlestat.thtml'));
+    $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                      'statrow'   => 'singlestat.thtml'));
     if ($showsitestats == 1) {
         $perms = SP_getPerms ();
         if (!empty ($perms)) {
