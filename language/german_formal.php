@@ -3,17 +3,14 @@
 ###############################################################################
 # german_formal.php
 #
-# This is an almost complete german language file for GeekLog.
-# Please contact Dirk Haun <dirk@haun-online.de> if you think anything
-# important is missing ...
-# Modification by P.Sack <psack@pr-ide.de> Sie statt du
+# This is the German language file for Geeklog, addressing the user as "Sie"
+# (formal German). See german.php for a language file addressing the user with
+# the more informal "Du".
 #
-# Credits from the original english.php file:
+# Authors: P. Sack   <psack@pr-ide.de>
+#          Dirk Haun <dirk@haun-online.de>
 #
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
+# Based on the original english.php, started by Jason Whittenburg.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -227,7 +224,7 @@ $LANG04 = array(
 	12 => "User-Einstellungen für",
 	13 => "E-Mail Nightly Digest",
 	14 => "Dieses Passwort wurde mit einem Zufallsgenerator erzeugt. Es wird empfohlen, das Passwort nach dem Anmelden sofort zu ändern. Um Ihr Passwort zu ändern, melden Sie sich bitte an und wählen dann den Punkt Userprofil ändern im User Block.",
-	15 => "Ihr Account für {$_CONF["site_name"]} wurde erfolgreich angelegt. Um ihn benutzen zu können, melden Sie sich bitte mit den folgenden Informationen an. Diese E-Mail bitte aufheben.",
+	15 => "Ihr Account für {$_CONF['site_name']} wurde erfolgreich angelegt. Um ihn benutzen zu können, melden Sie sich bitte mit den folgenden Informationen an. Diese E-Mail bitte aufheben.",
 	16 => "Ihre Zugangsdaten",
 	17 => "Account existiert nicht",
 	18 => "Die angegebene E-Mail-Adresse scheint keine gültige E-Mail-Adresse zu sein",
@@ -275,7 +272,7 @@ $LANG04 = array(
 	60 => "Wie sollen Kommentare angezeigt werden?",
 	61 => "Neueste oder älteste zuerst?",
 	62 => "Defaultwert: 100",
-	63 => "Ihr Passwort sollte in Kürze per E-Mail eintreffen. Bitte beachten Sie die Hinweise in der E-Mail und Danke für Ihr Interesse an " . $_CONF["site_name"],
+	63 => "Ihr Passwort sollte in Kürze per E-Mail eintreffen. Bitte beachten Sie die Hinweise in der E-Mail und Danke für Ihr Interesse an " . $_CONF['site_name'],
 	64 => "Kommentar-Einstellungen für",
 	65 => "Bitte noch einmal versuchen, sich anzumelden",
 	66 => "Haben Sie sich vertippt? Bitte versuchen Sie noch einmal, sich hier anzumelden. Oder möchten Sie sich <a href=\"{$_CONF['site_url']}/users.php?mode=new\">als neuer User registrieren</a>?",
@@ -416,7 +413,7 @@ $LANG09 = array(
 	16 => "Titel",
 	17 => "Datum",
 	18 => "Autor",
-	19 => "Durchsuchen Sie die komplette Datenbank von {$_CONF["site_name"]} ...",
+	19 => "Durchsuchen Sie die komplette Datenbank von {$_CONF['site_name']} ...",
 	20 => "Datum",
 	21 => "bis",
 	22 => "(Datumsformat: JJJJ-MM-TT)",
@@ -531,13 +528,13 @@ $LANG12 = array(
 	28 => "Kategorie",
 	29 => "Artikel",
 	30 => "Ihr letzter Beitrag war vor ",
-	31 => " Sekunden. Zwischen zwei Beträgen müssen aber mindestens {$_CONF["speedlimit"]} Sekunden vergangen sein.",
+	31 => " Sekunden. Zwischen zwei Beiträgen müssen aber mindestens {$_CONF['speedlimit']} Sekunden vergangen sein.",
 	32 => "Vorschau",
 	33 => "Artikelvorschau",
 	34 => "Abmelden",
 	35 => "HTML-Tags sind nicht erlaubt",
 	36 => "Modus",
-	37 => "Wenn Sie einen Termin bei {$_CONF["site_name"]} einreichen, wird er in den Master-Kalender aufgenommen, von wo aus ihn andere User in ihren persönlichen Kalender übernehmen können. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Sie einen Termin einreichen, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Master-Kalender erscheinen.",
+	37 => "Wenn Sie einen Termin bei {$_CONF['site_name']} einreichen, wird er in den Master-Kalender aufgenommen, von wo aus ihn andere User in ihren persönlichen Kalender übernehmen können. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Sie einen Termin einreichen, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Master-Kalender erscheinen.",
     38 => "Termin hinzufügen zu",
     39 => "Master-Kalender",
     40 => "Persönlicher Kalender",
@@ -660,7 +657,7 @@ $LANG22 = array(
 	14 => "Startdatum",
 	15 => "Enddatum",
 	16 => "Zugriff verweigert",
-	17 => "Sie haben keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/event.php\">Zurück zum Administrator-Menü</a>.",
+	17 => "Sie haben keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/event.php\">Zurück zum Administrator-Menü</a>.",
 	18 => 'Neuer Termin',
 	19 => 'Admin Home',
     20 => 'Speichern',
@@ -688,7 +685,7 @@ $LANG23 = array(
 	14 => "Kategorie",
 	15 => "URL",
 	16 => "Zugriff verweigert",
-	17 => "Sie haben keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/link.php\">Zurück zum Administrator-Menü</a>.",
+	17 => "Sie haben keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/link.php\">Zurück zum Administrator-Menü</a>.",
 	18 => 'Neuer Link',
 	19 => 'Admin Home',
 	20 => 'Andere bitte eingeben',
@@ -741,8 +738,8 @@ $LANG24 = array(
 	38 => "Mehr aus",
 	39 => "E-Mails",
 	40 => "Zugriff verweigert",
-	41 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Sie können sich den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF["site_admin_url"]}/story.php\">Zurück zum Administrator-Menü</a>.",
-	42 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/story.php\">Zurück zum Administrator-Menü</a>.",
+	41 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Sie können sich den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
+	42 => "Sie haben keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
 	43 => 'Neuer Artikel',
 	44 => 'Admin Home',
 	45 => 'Zugriff',
@@ -785,7 +782,7 @@ $LANG25 = array(
 	19 => "Um eine Umfrage zu ändern oder löschen, auf die Umfrage klicken. Mit Neue Umfrage (s.o.) wird eine neue Umfrage angelegt.",
 	20 => "Stimmen",
 	21 => "Zugriff verweigert",
-	22 => "Sie haben keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/poll.php\">Zurück zum Administrator-Menü</a>.",
+	22 => "Sie haben keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/poll.php\">Zurück zum Administrator-Menü</a>.",
 	23 => 'Neue Umfrage',
 	24 => 'Admin Home',
 	25 => 'Ja',
@@ -808,7 +805,7 @@ $LANG27 = array(
 	10=> "Sortierreihenfolge",
 	11 => "Artikel/Seite",
 	12 => "Zugriff verweigert",
-	13 => "Sie haben keine Zugriffsrechte für diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/topic.php\">Zurück zum Administrator-Menü</a>.",
+	13 => "Sie haben keine Zugriffsrechte für diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/topic.php\">Zurück zum Administrator-Menü</a>.",
 	14 => "Sortiermethode",
 	15 => "alphabetisch",
 	16 => "Default:",
@@ -957,7 +954,7 @@ $LANG31 = array(
  	14 => "User Einstellungen ignorieren",
  	15 => "Fehler beim Senden an: ",
 	16 => "E-Mail erfolgreich gesendet an: ",
-  17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Noch eine Nachricht schreiben</a>",
+  17 => "<a href=" . $_CONF['site_admin_url'] . "/mail.php>Noch eine Nachricht schreiben</a>",
   18 => "An",
   19 => "HINWEIS: Wenn Sie eine Nachricht an alle eingetragenen Benutzer schicken wollen, müssen Sie die Gruppe Logged-in Users auswählen.",
   20 => "<successcount> Nachricht(en) erfolgreich verschickt, bei <failcount> Nachricht(en) traten Fehler auf. Details können der folgenden Liste entnommen werden. Sie k&ouml:nnen jetzt <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">zurück zum Admin-Menü gehen</a>.",
@@ -974,10 +971,10 @@ $LANG31 = array(
 # confirmation and error messages
 
 $MESSAGE = array (
-	1 => "Ihr Passwort sollte in Kürze per E-Mail bei Ihnen eintreffen. Bitte beachten Sie die Hinweise in der E-Mail. Danke, dass Sie sich bei " . $_CONF["site_name"] . " angemeldet haben.",
-	2 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website für alle Besucher zu lesen sein.",
-	3 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF["site_url"]}/links.php\">Links</a> aufgelistet werden.",
-	4 => "Danke für Ihren Beitrag zu {$_CONF["site_name"]}. Ihr Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF["site_url"]}/calendar.php\">Kalender</a> erscheinen.",
+	1 => "Ihr Passwort sollte in Kürze per E-Mail bei Ihnen eintreffen. Bitte beachten Sie die Hinweise in der E-Mail. Danke, dass Sie sich bei " . $_CONF['site_name'] . " angemeldet haben.",
+	2 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website für alle Besucher zu lesen sein.",
+	3 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF["site_url"]}/links.php\">Links</a> aufgelistet werden.",
+	4 => "Danke für Ihren Beitrag zu {$_CONF['site_name']}. Ihr Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF["site_url"]}/calendar.php\">Kalender</a> erscheinen.",
 	5 => "Ihr User-Profil wurde gespeichert.",
 	6 => "Ihre Einstellungen wurden gespeichert.",
 	7 => "Ihre Kommentar-Einstellungen wurden gespeichert.",
@@ -1038,7 +1035,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
+	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
 	2 => "Plugin-Installation -- Disclaimer",
 	3 => "Plugin-Installationsformular",
 	4 => "Plugin-Datei",
@@ -1101,7 +1098,7 @@ $LANG33 = array (
     30 => 'Letztes Update',
     31 => 'Zeichensatz',
     32 => 'Sprache',
-    33 => 'Kategorie',
+    33 => 'Inhalt',
     34 => 'Einträge',
     35 => 'Stunden',
     36 => 'Art des Feeds festlegen',
@@ -1123,7 +1120,7 @@ $LANG_ACCESS = array(
     'grantgrouplabel' => "Grant Above Group Edit Rights",
     'permmsg' => "Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.",
     'securitygroups' => "Security-Gruppen",
-    'editrootmsg' => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/users.php\">User Administration page</a>.",
+    'editrootmsg' => "Obwohl Sie User-Administrator sind, können Sie die Informationen von Usern in der Root-Gruppe nicht ändern, ohne selbst Mitglied der Root-Gruppe zu sein. Sie können die Informationen aller anderen User bearbeiten, nur nicht die der Mitglieder der Root-Gruppe. Beachten Sie bitte, dass alle derartigen Versuche protokolliert werden. <a href=\"{$_CONF['site_admin_url']}/user.php\">Zurück zur User-Admin-Seite</a>.",
     'securitygroupsmsg' => "Mit den Checkboxen können Sie festlegen, zu welchen Gruppen dieser User gehört.",
     'groupeditor' => "Gruppen-Editor",
     'description' => "Beschreibung",
@@ -1137,9 +1134,9 @@ $LANG_ACCESS = array(
     'coregroup' => "Core-Gruppe",
     'yes' => "Ja",
     'no' => "Nein",
-    'corerightsdescr' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
+    'corerightsdescr' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF['site_name']}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
     'groupmsg' => "Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Sie diese Gruppe zu einer der folgenden Gruppen hinzufügen, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, können Sie die gewünschte(n) Gruppe(n) einfach anklicken.",
-    'coregroupmsg' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
+    'coregroupmsg' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF['site_name']}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
     'rightsdescr' => "Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.",
     'lock' => "Lock",
     'members' => "Mitglieder",
@@ -1149,8 +1146,8 @@ $LANG_ACCESS = array(
     'edit' => "Edit",
     'none' => "None",
     'accessdenied' => "Zugriff verweigert",
-    'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-    'eventdenialmsg' => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    'storydenialmsg' => "Sie haben nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise sind Sie kein registrierter User von {$_CONF['site_name']}. Bitte melden Sie sich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF['site_name']} an um vollen Zugriff auf alle Bereiche zu bekommen.",
+    'eventdenialmsg' => "Sie haben nicht die nötigen Rechte, um diesen Termin abzurufen. Möglicherweise sind Sie kein registrierter User von {$_CONF['site_name']}. Bitte melden Sie sich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF['site_name']} an um vollen Zugriff auf alle Bereiche zu bekommen.",
     'nogroupsforcoregroup' => "Diese Gruppe gehört zu keiner anderen Gruppe.",
     'grouphasnorights' => "Diese Gruppe hat keine Rechte für die Administration der Website",
     'newgroup' => 'Neue Gruppe',
@@ -1158,7 +1155,7 @@ $LANG_ACCESS = array(
     'save' => 'Speichern',
     'cancel' => 'Abbruch',
     'delete' => 'Löschen',
-    'canteditroot' => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.',
+    'canteditroot' => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wenden Sie sich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.',
     'listusers' => 'User',
     'listthem' => 'anzeigen',
     'usersingroup' => 'User in Gruppe "%s"',

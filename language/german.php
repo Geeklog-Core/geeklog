@@ -3,16 +3,13 @@
 ###############################################################################
 # german.php
 #
-# This is an almost complete german language file for GeekLog.
-# Please contact Dirk Haun <dirk@haun-online.de> if you think anything
-# important is missing ...
+# This is the German language file for Geeklog, addressing the user as "Du"
+# (informal German). See german_formal.php for a language file addressing the
+# user with the formal "Sie".
 #
-# Credits from the original english.php file:
+# Author: Dirk Haun <dirk@haun-online.de>
 #
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
+# Based on the original english.php, started by Jason Whittenburg.
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -415,7 +412,7 @@ $LANG09 = array(
 	16 => "Titel",
 	17 => "Datum",
 	18 => "Autor",
-	19 => "Durchsuche die komplette Datenbank von {$_CONF["site_name"]} ...",
+	19 => "Durchsuche die komplette Datenbank von {$_CONF['site_name']} ...",
 	20 => "Datum",
 	21 => "bis",
 	22 => "(Datumsformat: JJJJ-MM-TT)",
@@ -530,7 +527,7 @@ $LANG12 = array(
 	28 => "Kategorie",
 	29 => "Artikel",
 	30 => "Dein letzter Beitrag war vor ",
-	31 => " Sekunden. Zwischen zwei Beträgen müssen aber mindestens {$_CONF['speedlimit']} Sekunden vergangen sein.",
+	31 => " Sekunden. Zwischen zwei Beiträgen müssen aber mindestens {$_CONF['speedlimit']} Sekunden vergangen sein.",
 	32 => "Vorschau",
 	33 => "Artikelvorschau",
 	34 => "Abmelden",
@@ -659,7 +656,7 @@ $LANG22 = array(
 	14 => "Startdatum",
 	15 => "Enddatum",
 	16 => "Zugriff verweigert",
-	17 => "Du hast keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/event.php\">Zurück zum Administrator-Menü</a>.",
+	17 => "Du hast keine Zugriffsrechte für diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/event.php\">Zurück zum Administrator-Menü</a>.",
 	18 => 'Neuer Termin',
 	19 => 'Admin Home',
     20 => 'Speichern',
@@ -687,7 +684,7 @@ $LANG23 = array(
 	14 => "Kategorie",
 	15 => "URL",
 	16 => "Zugriff verweigert",
-	17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/link.php\">Zurück zum Administrator-Menü</a>.",
+	17 => "Du hast keine Zugriffsrechte für diesen Link. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/link.php\">Zurück zum Administrator-Menü</a>.",
 	18 => 'Neuer Link',
 	19 => 'Admin Home',
 	20 => 'Andere bitte eingeben',
@@ -740,8 +737,8 @@ $LANG24 = array(
 	38 => "Mehr aus",
 	39 => "E-Mails",
 	40 => "Zugriff verweigert",
-	41 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Du kannst Dir den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF["site_admin_url"]}/story.php\">Zurück zum Administrator-Menü</a>.",
-	42 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/story.php\">Zurück zum Administrator-Menü</a>.",
+	41 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. Du kannst Dir den Artikel aber ansehen (s.u., Ändern nicht möglich). <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
+	42 => "Du hast keine Zugriffsrechte für diesen Artikel. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/story.php\">Zurück zum Administrator-Menü</a>.",
 	43 => 'Neuer Artikel',
 	44 => 'Admin Home',
 	45 => 'Zugriff',
@@ -784,7 +781,7 @@ $LANG25 = array(
     19 => 'Um eine Umfrage zu ändern oder löschen, auf die Umfrage klicken. Mit Neue Umfrage (s.o.) wird eine neue Umfrage angelegt.',
     20 => 'Stimmen',
     21 => 'Zugriff verweigert',
-    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/poll.php\">Zurück zum Administrator-Menü</a>.",
+    22 => "Du hast keine Zugriffsrechte für diese Umfrage. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/poll.php\">Zurück zum Administrator-Menü</a>.",
     23 => 'Neue Umfrage',
     24 => 'Admin Home',
     25 => 'Ja',
@@ -807,7 +804,7 @@ $LANG27 = array(
 	10=> "Sortierreihenfolge",
 	11 => "Artikel/Seite",
 	12 => "Zugriff verweigert",
-	13 => "Du hast keine Zugriffsrechte für diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_admin_url"]}/topic.php\">Zurück zum Administrator-Menü</a>.",
+	13 => "Du hast keine Zugriffsrechte für diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF['site_admin_url']}/topic.php\">Zurück zum Administrator-Menü</a>.",
 	14 => "Sortiermethode",
 	15 => "alphabetisch",
 	16 => "Default:",
@@ -956,7 +953,7 @@ $LANG31 = array(
  	14 => "User-Einstellungen ignorieren",
  	15 => "Fehler beim Senden an: ",
 	16 => "E-Mail erfolgreich gesendet an: ",
-  17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Noch eine Nachricht schreiben</a>",
+  17 => "<a href=" . $_CONF['site_admin_url'] . "/mail.php>Noch eine Nachricht schreiben</a>",
   18 => "An",
   19 => "HINWEIS: Wenn Du eine Nachricht an alle eingetragenen Benutzer schicken willst, musst Du die Gruppe Logged-in Users auswählen.",
   20 => "<successcount> Nachricht(en) erfolgreich verschickt, bei <failcount> Nachricht(en) traten Fehler auf. Details können der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">zurück zum Admin-Menü gehen</a>.",
@@ -1100,7 +1097,7 @@ $LANG33 = array (
     30 => 'Letztes Update',
     31 => 'Zeichensatz',
     32 => 'Sprache',
-    33 => 'Kategorie',
+    33 => 'Inhalt',
     34 => 'Einträge',
     35 => 'Stunden',
     36 => 'Art des Feeds festlegen',
@@ -1122,7 +1119,7 @@ $LANG_ACCESS = array(
     'grantgrouplabel' => 'Grant Above Group Edit Rights',
     'permmsg' => 'Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.',
     'securitygroups' => 'Security-Gruppen',
-    'editrootmsg' => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$_CONF["site_admin_url"]}/user.php\">User Administration page</a>.",
+    'editrootmsg' => "Obwohl Du ein User-Administrator bist, kannst Du die Informationen von Usern in der Root-Gruppe nicht ändern, ohne selbst Mitglied der Root-Gruppe zu sein. Du kannst die Informationen aller anderen User bearbeiten, nur nicht die der Mitglieder der Root-Gruppe. Beachte bitte, dass alle derartigen Versuche protokolliert werden. <a href=\"{$_CONF['site_admin_url']}/user.php\">Zurück zur User-Admin-Seite</a>.",
     'securitygroupsmsg' => 'Mit den Checkboxen kannst Du festlegen, zu welchen Gruppen dieser User gehört.',
     'groupeditor' => 'Gruppen-Editor',
     'description' => 'Beschreibung',
@@ -1136,9 +1133,9 @@ $LANG_ACCESS = array(
     'coregroup' => 'Core-Gruppe',
     'yes' => 'Ja',
     'no' => 'Nein',
-    'corerightsdescr' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
+    'corerightsdescr' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF['site_name']}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Rechte dieser Gruppe.",
     'groupmsg' => 'Security-Gruppen auf dieser Site sind hierarchisch organisiert. Wenn Du diese Gruppe zu einer der folgenden Gruppen hinzufügst, bekommt diese Gruppe die gleichen Rechte wie die unten ausgewählte(n). Wenn möglich, sollten Gruppenrechte durch Auswahl von Gruppen aus dieser Liste vergeben werden. Werden nur einzelne Rechte benötigt, können diese auch aus der Liste der Rechte weiter unten ausgewählt werden. Um diese Gruppe zu einer der folgenden hinzuzufügen, kannst Du die gewünschte(n) Gruppe(n) einfach anklicken.',
-    'coregroupmsg' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF["site_name"]}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
+    'coregroupmsg' => "Diese Gruppe ist eine Core-Gruppe auf {$_CONF['site_name']}. Die Rechte dieser Gruppe können daher nicht geändert werden. Das Folgende ist eine (nicht veränderbare) Liste der Gruppen, zu der diese Gruppe gehört.",
     'rightsdescr' => 'Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.',
     'lock' => 'Lock',
     'members' => 'Mitglieder',
@@ -1148,8 +1145,8 @@ $LANG_ACCESS = array(
     'edit' => 'Edit',
     'none' => 'None',
     'accessdenied' => 'Zugriff verweigert',
-    'storydenialmsg' => "Du hast nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
-    'eventdenialmsg' => "Du hast nicht die nötigen Rechte, um diesen Termin abzurufen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
+    'storydenialmsg' => "Du hast nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise bist Du kein registrierter User von {$_CONF['site_name']}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF['site_name']} an um vollen Zugriff auf alle Bereiche zu bekommen.",
+    'eventdenialmsg' => "Du hast nicht die nötigen Rechte, um diesen Termin abzurufen. Möglicherweise bist Du kein registrierter User von {$_CONF['site_name']}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF['site_name']} an um vollen Zugriff auf alle Bereiche zu bekommen.",
     'nogroupsforcoregroup' => 'Diese Gruppe gehört zu keiner anderen Gruppe.',
     'grouphasnorights' => 'Diese Gruppe hat keine Rechte für die Administration der Website',
     'newgroup' => 'Neue Gruppe',
