@@ -266,11 +266,10 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 }
 
 /**
-* Changes records in a table
+* Count records in a table
 *
-* This will change the data in the given table that meet the 
-* given criteria and will redirect user to another page if 
-* told to do so
+* This will return the number of records which meet the given criteria in the
+* given table.
 *
 * @param        string              $table      Table to perform count on
 * @param        array|string        $id         field name(s) to use in where clause
