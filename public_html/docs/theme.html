@@ -129,6 +129,19 @@ put them in the file <tt>functions.php</tt> within your themes directory.</p>
 You can give the blocks on the left and right a different look. See 
 <a href="http://www.geeklog.net/article.php?story=20020429092841722">this story on the Geeklog homepage</a> for details.</p>
 
+<p><strong>Polls:</strong>
+To use multi-colored bars in the graphical display of poll results, you can use
+the <code>{answer_counter}</code> and <code>{answer_odd}</code> variables in
+the <tt>pollbooth/pollvotes_bar.thtml</tt> template file.
+<code>{answer_counter}</code> will be replaced with a running number for each
+answer, hence <code>bar{answer_counter}.gif</code> would result in
+<tt>bar1.gif</tt>, <tt>bar2.gif</tt>, etc. Giving each of those GIFs a different
+color would give you a different color for each answer.<br>
+<code>{answer_odd}<code> will alternate between 0 and 1 for every answer, hence
+<code>bar{answer_odd}.gif</code> will result in <tt>bar0.gif</tt> for the first,
+third, fifth, etc. answer and <tt>bar1.gif</tt> for the second, fourth, etc.
+answer.</p>
+
 
 <h2><a name="changes">Theme changes in Geeklog 1.3.7</a></h2>
 
