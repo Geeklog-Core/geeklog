@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.31 2002/09/01 21:34:55 dhaun Exp $
+// $Id: comment.php,v 1.32 2002/09/10 14:50:56 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -70,11 +70,11 @@ require_once('lib-common.php');
 function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $LANG_LOGIN, $_USER;
-	
+
 	if ($uid > 1) {
         $sig = DB_getItem($_TABLES['users'], 'sig', "uid='$uid'");
     }
-    
+
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
         $retval .= COM_startBlock($LANG_LOGIN[1]);
@@ -97,7 +97,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             $result = DB_query("SELECT date FROM {$_TABLES['commentspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
             $A = DB_fetchArray($result);
             $last = time() - $A[0];
-			
+
             $retval .= COM_startBlock($LANG12[26])
                 . $LANG03[7]
                 . $last
@@ -107,10 +107,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 if ($postmode == 'html') {
                     $commenttext = stripslashes($comment);
-                    $title = stripslashes(COM_checkHTML(COM_checkWords($title)));      
-                    $commenttext = stripslashes(COM_checkHTML(COM_checkWords($commenttext)));      
-                    $comment = str_replace('<pre><code>','[code]',$comment);
-                    $comment= str_replace('</code></pre>','[/code]',$comment);
+                    $commenttext = str_replace('$','&#36;',$commenttext);
+
+                    $comment = COM_checkHTML(COM_checkWords($comment));
+                    $title = COM_checkHTML(COM_checkWords($title));
                 } else {
                     $title = stripslashes(htmlspecialchars(COM_checkWords($title)));
                     $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
@@ -120,7 +120,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 // Replace { and } with special HTML equivalents
                 $commenttext = str_replace('{','&#123;',$commenttext);
                 $commenttext = str_replace('}','&#125;',$commenttext);
-                    
+
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
                 $newcomment = $comment;
@@ -131,7 +131,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                         $newcomment .= LB . LB . '---' . LB . $sig;
                     }
                 }
-                $HTTP_POST_VARS['comment'] = $newcomment;
+                $HTTP_POST_VARS['comment'] = addslashes ($newcomment);
 
                 $retval .= COM_startComment($LANG03[14])
                     . COM_comment($HTTP_POST_VARS,1,$type,0,'flat',true)
