@@ -32,9 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.62 2004/08/15 19:57:49 blaine Exp $
+// $Id: index.php,v 1.63 2004/08/16 10:44:44 dhaun Exp $
 
-require_once('lib-common.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 $newstories = false;
 $displayall = false;
@@ -189,7 +190,7 @@ if ( $A = DB_fetchArray( $result ) ) {
     }
 
     // display first article
-    $display .= COM_article($A,'y');
+    $display .= STORY_renderArticle ($A, 'y');
 
     // get plugin center blocks after featured article
     if ($A['featured'] == 1) {
@@ -198,7 +199,7 @@ if ( $A = DB_fetchArray( $result ) ) {
 
     // get reamaining stories
     while ( $A = DB_fetchArray($result) ) {
-        $display .= COM_article($A,'y');
+        $display .= STORY_renderArticle ($A, 'y');
     }
 
     // get plugin center blocks that follow articles

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.125 2004/08/15 19:57:48 blaine Exp $
+// $Id: story.php,v 1.126 2004/08/16 10:44:45 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -46,6 +46,7 @@
 * Geeklog commong function library
 */
 require_once ('../lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 /**
 * Security check to ensure user even belongs on this page
@@ -131,7 +132,7 @@ function storyeditor($sid = '', $mode = '')
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[41];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            $display .= COM_article($A,n);
+            $display .= STORY_renderArticle ($A, 'n');
             COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
             return $display;
         } else if ($access == 0) {
@@ -245,7 +246,7 @@ function storyeditor($sid = '', $mode = '')
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
         }
-        $display .= COM_article ($A, 'n');
+        $display .= STORY_renderArticle ($A, 'n');
         $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     }
 
@@ -934,7 +935,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         
         // Get the related URLs
-        $related = addslashes (COM_whatsRelated ("$introtext $bodytext", $uid, $tid));
+        $related = addslashes (STORY_whatsRelated ("$introtext $bodytext", $uid, $tid));
 
         // Clean up the text
         if ($postmode == 'html') {
@@ -950,24 +951,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         // Delete any images if needed
         for ($i = 1; $i <= count($delete); $i++) {
             $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename', "ai_sid = '$sid' AND ai_img_num = " . key ($delete));
-            $curfile = $_CONF['path_images'] . 'articles/' . $ai_filename;
-            if (!@unlink($curfile)) {
-                echo COM_errorLog("Unable to delete image $curfile. Please check file permissions");
-            }
+            STORY_deleteImage ($ai_filename);
 
-            // remove unscaled image, if it exists
-            $lFilename_large = substr_replace ($ai_filename, '_original.',
-                    strrpos ($ai_filename, '.'), 1);
-            $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
-                                      . $lFilename_large;
-            if (file_exists ($lFilename_large_complete)) {
-                if (!@unlink ($lFilename_large_complete)) {
-                    echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-                }
-            }
-
-            DB_query("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($delete));
-            next($delete);
+            DB_query ("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key ($delete));
+            next ($delete);
         }
 
         // OK, let's upload any pictures with the article
@@ -1124,29 +1111,7 @@ function deletestory ($sid)
         return COM_refresh ($_CONF['site_admin_url'] . '/story.php');
     }
 
-    $result = DB_query ("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
-    $nrows = DB_numRows ($result);
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray ($result);
-        $filename = $_CONF['path_images'] . 'articles/' . $A['ai_filename'];
-        if (!@unlink ($filename)) {
-            // log the problem but don't abort the script
-            echo COM_errorLog ('Unable to remove the following image from the article: ' . $filename);
-        }
-
-        // remove unscaled image, if it exists
-        $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
-                                           strrpos ($A['ai_filename'], '.'), 1);
-        $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
-                                  . $lFilename_large;
-        if (file_exists ($lFilename_large_complete)) {
-            if (!@unlink ($lFilename_large_complete)) {
-                // again, log the problem but don't abort the script
-                echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-            }
-        }
-    }
-    DB_delete ($_TABLES['article_images'], 'ai_sid', $sid);
+    STORY_deleteImages ($sid);
     DB_delete ($_TABLES['comments'], 'sid', $sid);
     DB_delete ($_TABLES['stories'], 'sid', $sid);
 
@@ -1218,7 +1183,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $archiveflag = COM_applyFilter ($HTTP_POST_VARS['archiveflag'], true);
 
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
-    if ($archiveflag =!= 1) {
+    if ($archiveflag != 1) {
         $statuscode = 0;
     }
 

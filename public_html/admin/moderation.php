@@ -32,11 +32,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.50 2004/05/15 13:02:21 dhaun Exp $
+// $Id: moderation.php,v 1.51 2004/08/16 10:44:45 dhaun Exp $
 
-require_once('../lib-common.php');
-require_once('auth.inc.php');
-require_once($_CONF['path_system'] . 'lib-user.php');
+require_once ('../lib-common.php');
+require_once ('auth.inc.php');
+require_once ($_CONF['path_system'] . 'lib-user.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -537,7 +538,7 @@ function moderation($mid,$action,$type,$count)
             if ($type == 'story') {
                 $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
                 $A = DB_fetchArray ($result);
-                $A['related'] = addslashes (COM_whatsRelated ($A['introtext'], $A['uid'], $A['tid']));
+                $A['related'] = addslashes (STORY_whatsRelated ($A['introtext'], $A['uid'], $A['tid']));
                 $A['owner_id'] = $A['uid'];
                 $A['title'] = addslashes ($A['title']);
                 $A['introtext'] = addslashes ($A['introtext']);

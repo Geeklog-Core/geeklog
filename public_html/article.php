@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.50 2004/08/13 15:41:58 dhaun Exp $
+// $Id: article.php,v 1.51 2004/08/16 10:44:44 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -44,7 +44,8 @@
 /**
 * Geeklog common function library
 */
-require_once('lib-common.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -187,8 +188,8 @@ if ($A['count'] > 0) {
                         . '/pdfgenerator.php?pageType=2&amp;pageData='
                         . urlencode ($printUrl) . '">' . $LANG11[5] . '</a>';
             }
-            $related = COM_whatsRelated ($A['introtext'] . ' ' . $A['bodytext'],
-                                         $A['uid'], $A['tid']);
+            $related = STORY_whatsRelated ($A['introtext'] . ' '
+                                    . $A['bodytext'], $A['uid'], $A['tid']);
             if (!empty ($related)) {
                 $related = COM_startBlock ($LANG11[1], '',
                     COM_getBlockTemplate ('whats_related_block', 'header'))
@@ -214,7 +215,8 @@ if ($A['count'] > 0) {
             //     $display .= COM_showPoll(80,$story);
             // }
 
-            $story_template->set_var('formatted_article', COM_article($A, 'n'));
+            $story_template->set_var ('formatted_article',
+                                      STORY_renderArticle ($A, 'n'));
             // Display the comments, if there are any ..
             if ($A['commentcode'] >= 0) {
                 $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
