@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.72 2003/09/06 21:53:42 dhaun Exp $
+// $Id: usersettings.php,v 1.73 2003/09/07 17:41:39 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -691,8 +691,8 @@ function saveuser($A)
                 } elseif ($_CONF['image_lib'] == 'netpbm') {
                     // using netPBM
                     $upload->setNetPBM ($_CONF['path_to_netpbm']);
-                } else {
-                    // must be using the GD library
+                } elseif ($_CONF['image_lib'] == 'gdlib') {
+                    // using the GD library
                     $upload->setGDLib ();
                 }
                 $upload->setAutomaticResize(true);

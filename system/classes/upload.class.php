@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.29 2003/09/05 17:18:15 dhaun Exp $
+// $Id: upload.class.php,v 1.30 2003/09/07 17:41:40 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -660,7 +660,11 @@ class upload
         $returnChmod = true;
         $perms = $this->_getPermissions();
         if (!empty($perms)) {
-            $returnChmod = chmod ($this->_fileUploadDirectory . '/' . eregi_replace ("\.gif", ".png", $this->_getDestinationName ()), octdec ($perms));
+            if ($this->_imageLib == 'gdlib') {
+                $returnChmod = chmod ($this->_fileUploadDirectory . '/' . eregi_replace ("\.gif", ".png", $this->_getDestinationName ()), octdec ($perms));
+            } else {
+                $returnChmod = chmod ($this->_fileUploadDirectory . '/' . $this->_getDestinationName (), octdec ($perms));
+            }
         }
         
         if ($returnMove AND $returnChmod) {
