@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.335 2004/07/08 19:38:11 dhaun Exp $
+// $Id: lib-common.php,v 1.336 2004/07/08 20:11:32 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5636,7 +5636,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 */
 function COM_makeClickableLinks( $text )
 {
-    $text = preg_replace( '/((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '<a href="\\1">\\1</a>', $text );
+    $text = preg_replace( '/([^"])((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '\\1<a href="\\2">\\2</a>', $text );
     $text = str_replace( '<a href="www', '<a href="http://www', $text );
 
     return $text;
