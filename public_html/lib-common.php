@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.9 2001/12/07 16:24:36 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.10 2001/12/11 19:34:05 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1893,14 +1893,39 @@ function COM_printUpcomingEvents()
     $retval .= COM_startBlock($LANG01[78], '', COM_getBlockTemplate('events_block', 'header'));
     $eventSql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['events']} WHERE dateend >= NOW() AND " 
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
+    $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE dateend >= NOW() AND "
+        . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
+
     $allEvents = DB_query($eventSql);
     $numRows   = DB_numRows($allEvents);
+    $totalrows = $numRows;
     $numDays   = 0;         // Without limits, I'll force them.
     $theRow    = 1;         // Start with today!
     $oldDate1  = 'no_day';  // Invalid Date!
     $oldDate2  = 'last_d';  // Invalid Date!
 
-    if ($numRows == 0) {
+    if ($_CONF['personalcalendars'] == 1) {
+        $iterations = 2;
+    } else {
+        $iterations = 1;
+    }
+
+    for ($z = 1; $z <= $iterations; $z++) {
+        if ($z == 2) {
+            $allEvents = DB_query($personaleventsql);
+            $numRows = DB_numRows($allEvents);
+            $totalrows = $totalrows + $numRows;
+            $numDays   = 0;         // Without limits, I'll force them.
+            $theRow    = 1;         // Start with today!
+            $oldDate1  = 'no_day';  // Invalid Date!
+            $oldDate2  = 'last_d';  // Invalid Date!
+            if ($totalrows > 0) $retval .= '<p><b><u>Your Events</u></b><br>';
+        } else {
+             if ($iterations == 2 && $totalrows > 0) $retval .= '<b><u>Public Events</u></b><br>';
+        }
+
+    //if ($numRows == 0) {
+    if ($z == 2 AND $totalrows == 0) {
         // There aren't any upcoming events, show a nice message
         $retval .= $LANG01[89];
     }
@@ -1946,6 +1971,7 @@ function COM_printUpcomingEvents()
         $theRow ++ ;  
     }
 
+    } // end for z
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 	
     return $retval;
