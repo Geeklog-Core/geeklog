@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.29 2002/12/01 20:50:35 dhaun Exp $
+// $Id: topic.php,v 1.30 2002/12/15 13:34:44 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -81,7 +81,7 @@ function edittopic($tid='')
         // and the private flag should be turned OFF
         $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Topic Admin'");
         $A['perm_owner'] = 3;
-        $A['perm_group'] = 3;
+        $A['perm_group'] = 2;
         $A['perm_members'] = 2;
         $A['perm_anon'] = 2;
         $access = 3;

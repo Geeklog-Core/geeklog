@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.26 2002/10/29 16:02:43 dhaun Exp $
+// $Id: poll.php,v 1.27 2002/12/15 13:34:44 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -186,7 +186,7 @@ function editpoll($qid='')
         $Q['owner_id'] = $_USER['uid'];
 	    $Q['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Poll Admin'");
         $Q['perm_owner'] = 3;
-        $Q['perm_group'] = 3;
+        $Q['perm_group'] = 2;
         $Q['perm_members'] = 2;
         $Q['perm_anon'] = 2;
         $Q['statuscode'] = 0;

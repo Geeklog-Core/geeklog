@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.75 2002/12/15 10:57:28 dhaun Exp $
+// $Id: story.php,v 1.76 2002/12/15 13:34:44 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -131,7 +131,7 @@ function storyeditor($sid = '', $mode = '')
         $A['owner_id'] = $_USER['uid'];
         $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Story Admin'");
         $A['perm_owner'] = 3;
-        $A['perm_group'] = 3;
+        $A['perm_group'] = 2;
         $A['perm_members'] = 2;
         $A['perm_anon'] = 2;
         $access = 3;

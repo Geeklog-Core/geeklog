@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.33 2002/12/07 16:25:09 dhaun Exp $
+// $Id: event.php,v 1.34 2002/12/15 13:34:44 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -90,15 +90,15 @@ function editevent($mode, $A)
             $retval .= COM_endBlock();
             return $retval ;
         }
-	} else {
-		$A['owner_id'] = $_USER['uid'];
-		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Event Admin'");
-		$A['perm_owner'] = 3;
-        $A['perm_group'] = 3;
+    } else {
+        $A['owner_id'] = $_USER['uid'];
+        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Event Admin'");
+        $A['perm_owner'] = 3;
+        $A['perm_group'] = 2;
         $A['perm_members'] = 2;
         $A['perm_anon'] = 2;
-		$access = 3;
-	}
+        $access = 3;
+    }
 
     if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
