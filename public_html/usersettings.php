@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.48 2003/01/01 18:54:46 dhaun Exp $
+// $Id: usersettings.php,v 1.49 2003/01/05 21:35:07 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -85,7 +85,7 @@ function edituser()
         . '</tr>' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[6] . ':</b><br><small>' . $LANG04[36] . '</small></td>' . LB
-        . '<td><input type="text" name="homepage" size="60" maxlength="96" value="' . $A['homepage'] . '"></td>' . LB
+        . '<td><input type="text" name="homepage" size="60" maxlength="96" value="' . COM_killJS ($A['homepage']) . '"></td>' . LB
         . '</tr>' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[32] . ':</b><br><small>' . $LANG04[37] . '</small></td>' . LB
@@ -210,6 +210,16 @@ function editpreferences()
                 $language_options .= '<option value="' . $file . '" ';
                 if ($userlang == $file) {
                     $language_options .= 'selected="SELECTED"';
+                }
+                $uscore = strpos ($file, '_');
+                if ($uscore !== false) {
+                    $lngname = substr ($file, 0, $uscore);
+                    $lngadd = substr ($file, $uscore + 1);
+                    $lngname = strtoupper ($lngname{0}) . substr ($lngname, 1);
+                    $lngadd = strtoupper ($lngadd{0}) . substr ($lngadd, 1);
+                    $file = $lngname . ' (' . $lngadd . ')';
+                } else {
+                    $file = strtoupper ($file{0}) . substr ($file, 1);
                 }
                 $language_options .= '>' . $file . '</option>' . LB;
             }
@@ -439,7 +449,7 @@ function saveuser($A)
 
     $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
     $A['email'] = strip_tags (COM_stripslashes ($A['email']));
-    $A['homepage'] = strip_tags (COM_stripslashes ($A['homepage']));
+    $A['homepage'] = COM_killJS(strip_tags (COM_stripslashes ($A['homepage'])));
     $A['sig'] = strip_tags (COM_stripslashes ($A['sig']));
     $A['about'] = strip_tags (COM_stripslashes ($A['about']));
     $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
