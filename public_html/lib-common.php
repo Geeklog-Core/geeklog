@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.367 2004/08/25 22:56:02 blaine Exp $
+// $Id: lib-common.php,v 1.368 2004/08/26 03:35:27 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -912,7 +912,21 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
         }
     }
 
-    if( $what <> 'none' )
+    /* Check if an array has been passed that includes the name of a plugin function or custom function
+    *  This can be used to take control over what blocks are then displayed
+    */
+     if (is_array($what))
+    {
+        $function = $what['0'];
+        if (function_exists($function)) {
+            $lblocks = $function($what['1'],'left');
+            if ($lblocks != '') {
+                $header->set_var( 'geeklog_blocks', $lblocks);
+                $header->parse( 'left_blocks', 'leftblocks', true );
+           }
+        }
+    }
+    elseif( $what <> 'none' )
     {
         // Now show any blocks -- need to get the topic if not on home page
         $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
@@ -926,6 +940,9 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 
     // Call any plugin that may want to include Extra Metatags or Javascript functions
     $header->set_var( 'plg_headercode', PLG_getHeaderCode());
+
+    // Call to plugins to set template variables in the header
+    PLG_templateSetVars ('header', $header);
 
     // The following line allows users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
@@ -948,12 +965,13 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 * This loads the proper templates, does variable substitution and returns the
 * HTML for the site footer.
 *
-* @param        boolean     $rightblock     Whether or not to show blocks on right hand side default is no
+* @param   boolean     $rightblock     Whether or not to show blocks on right hand side default is no
+* @param   array       $custom         An array defining custom function to be used to format Rightblocks
 * @see function COM_siteHeader
 * @return   string  Formated HTML containing site footer and optionally right blocks
 *
 */
-function COM_siteFooter( $rightblock = false )
+function COM_siteFooter( $rightblock = false, $custom='')
 {
     global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic;
 
@@ -1009,7 +1027,17 @@ function COM_siteFooter( $rightblock = false )
     $footer->set_var( 'execution_time', $exectime );
     $footer->set_var( 'execution_textandtime', $exectext );
 
-    if( $rightblock )
+    /* Check if an array has been passed that includes the name of a plugin function or custom function
+    *  This can be used to take control over what blocks are then displayed
+    */
+    if (is_array($custom)) 
+    {
+        $function = $custom['0'];
+        if (function_exists($function)) {
+            $rblocks = $function($custom['1'],'right');
+        }
+    } 
+    elseif( $rightblock )
     {
         $rblocks = COM_showBlocks( 'right', $topic );
     }
