@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.58 2002/04/11 17:05:07 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.59 2002/04/11 20:43:41 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -118,7 +118,7 @@ setlocale(LC_ALL, $_CONF['locale']);
 
 // Get user permissions
 $_RIGHTS = explode(',',SEC_getUserPermissions());
-$_GROUPS = $_GROUPS = SEC_getUserGroups($_USER['uid']);
+$_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
 // | BLOCK LOADER: Load all definable HTML blocks in to memory                 | 
@@ -183,7 +183,7 @@ function COM_article($A,$index='')
     }
    
     if ($index == 'n') {
-        $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.nl2br(stripslashes($A['bodytext'])));
+        $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.stripslashes($A['bodytext']));
     } else {
         $article->set_var('story_introtext', stripslashes($A['introtext'])); 
         if (!empty($A['bodytext'])) {
