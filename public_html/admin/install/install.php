@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.69 2004/09/17 10:52:38 dhaun Exp $
+// $Id: install.php,v 1.70 2004/09/28 17:47:12 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -655,7 +655,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             $spversion = get_SP_ver ();
             if ($spversion > 0) {
                 // no database changes this time, but set new version number
-                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.1' WHERE pi_name = 'staticpages'");
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4.1', pi_gl_version = '1.3.10' WHERE pi_name = 'staticpages'");
             }
 
             // install SpamX plugin
