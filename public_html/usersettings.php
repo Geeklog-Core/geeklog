@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id
+// $Id: usersettings.php,v 1.40 2002/08/17 12:51:12 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -142,7 +142,7 @@ function edituser()
 */
 function editpreferences() 
 {
-    global $_TABLES, $_CONF, $LANG04, $_USER;
+    global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
 
     $retval = '';
 
@@ -255,14 +255,30 @@ function editpreferences()
         . '</tr>' . LB
         . '</table>'
         . COM_endBlock();
-    
+
+    $groupList = '';
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+    }
+
+    $permissions = '';
+    if (!empty ($_USER['uid'])) {
+        $permissions .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $permissions .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $permissions .= "(perm_members >= 2) OR "; 
+    }
+    $permissions .= "(perm_anon >= 2)";
+
     $retval .= COM_startBlock($LANG04[46] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">'.LB
         . '<tr>' . LB
         . '<td colspan="3">' . $LANG04[54] . '</td>' . LB
         . '</tr>' . LB
         . '<tr valign="top">' . LB
-        . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic','',$A['tids']) . '</td>' . LB
+        . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']) . '</td>' . LB
         . '<td><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="40" height="1"></td>' . LB;
         
     if ($_CONF['contributedbyline'] == 1) {
@@ -285,7 +301,7 @@ function editpreferences()
         $retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
         $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
         $retval .= "<tr valign=\"top\"><td>$LANG04[76]<br>";
-        $tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
+        $tmp .= COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$user_etids);
         $retval .= str_replace($_TABLES['topics'],'etids',$tmp);
         $retval .= '</td></tr></table>';
         $retval .= COM_endBlock();  
@@ -302,6 +318,7 @@ function editpreferences()
             }
         }
     }
+    $whereblock = "(" . $permissions . ") AND ((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block'))) ORDER BY onleft desc,blockorder,title";
     $retval .= COM_startBlock($LANG04[47] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
         . '<tr>' . LB
@@ -309,7 +326,7 @@ function editpreferences()
         .' </tr>' . LB
         . '<tr>' . LB
         . '<td>'
-        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',"(type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block')) ORDER BY onleft desc,blockorder,title",$selectedblocks)
+        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',$whereblock,$selectedblocks)
         . '</td>'.LB
         . '</tr>'.LB
         . '</table>'
