@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.27 2002/02/25 23:33:59 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.28 2002/02/26 14:27:09 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -156,6 +156,7 @@ function COM_article($A,$index='')
 
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
+    $article->set_var('layout_url',$_CONF['layout_url']);
     $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
     $article->set_var('story_date',$A['day']);
@@ -430,6 +431,7 @@ function COM_siteFooter()
     DB_change($_TABLES['vars'],'value','value + 1','name','totalhits','',true);
 
     $footer->set_var('site_url', $_CONF['site_url']);
+    $footer->set_var('layout_url',$_CONF['layout_url']);
     $footer->set_var('copyright_notice', '&nbsp;'.$LANG01[93].' &copy; 2001 '.$_CONF['site_name'].'<br>&nbsp;'.$LANG01[94]);
     $footer->set_var('geeklog_version', VERSION);
     $footer->set_var('execution_time', $_PAGE_TIMER->stopTimer());
