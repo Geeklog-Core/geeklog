@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.126 2002/08/03 14:22:57 dhaun Exp $
+// $Id: lib-common.php,v 1.127 2002/08/03 18:01:29 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -387,7 +387,7 @@ function COM_getThemes()
         $themes[$index] = $_CONF['theme'];
     } else {
         while (($dir = @readdir($fd)) == TRUE) {
-            if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..' && $dir <> 'CVS') {
+            if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..' && $dir <> 'CVS' && substr ($dir, 0 , 1) <> '.') {
                 clearstatcache();
                 $themes[$index] = $dir;
                 $index++;
