@@ -1,4 +1,4 @@
-Updated December 17th, 2001
+Updated January 11th, 2001
 
 Quick and Dirty Install
 -----------------------
@@ -14,7 +14,12 @@ To Upgrade
 Upgrading is no different than a fresh installation except your database already exists.  
 First, back-up any files with custom code in them.  Then remove your current geeklog directory.  
 After that just uncompress the new version and copy the resulting directory to the name of your
-older geeklog version.  This it's just a matter of following the steps below.
+older geeklog version.  Then you need to change into /path/to/geeklog/sql/updates and apply all
+needed database updates.  For example, if you are upgrading from Geeklog 1.1 you will need to 
+apply 1.1_to_1.2.sql and 1.2_to_1.2.2.sql which will upgrade your database to Geeklog 1.2.5-1.
+I say 1.2.5-1 because there were no database changes from 1.2.2 to 1.2.5-1 (e.g. a 1.2.2 database 
+is the same as a 1.2.5-1 database).  Then it's just a matter of following the steps below to upgrade
+your system and database to the latest version
 
 Using the automated installation script (preferred)
 ----------------------------------------------------
