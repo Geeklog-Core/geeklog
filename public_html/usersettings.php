@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.83 2004/01/23 09:42:57 dhaun Exp $
+// $Id: usersettings.php,v 1.84 2004/01/23 10:09:52 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -191,7 +191,7 @@ function edituser()
 /**
 * Ask user for confirmation to delete his/her account.
 *
-* @param    int      form_reqid   request id
+* @param    string   form_reqid   request id
 * @return   string   confirmation form
 *
 */
@@ -237,7 +237,7 @@ function confirmAccountDelete ($form_reqid)
 /**
 * Delete an account (keep in sync with delete_user() in admin/user.php).
 *
-* @param    form_reqid   string   request id
+* @param    string   form_reqid   request id
 * @return   string   redirection to main page (+ success msg)
 *
 */
@@ -987,7 +987,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
                                  . '/usersettings.php?mode=preferences&msg=6');
         break;
     case 'confirmdelete':
-        if ($_CONF['allow_account_delete'] == 1) {
+        if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
             $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
             if (!empty ($accountId)) {
                 $display .= confirmAccountDelete ($accountId);
@@ -999,7 +999,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         }
         break;
     case 'deleteconfirmed':
-        if ($_CONF['allow_account_delete'] == 1) {
+        if (($_CONF['allow_account_delete'] == 1) && ($_USER['uid'] > 1)) {
             $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
             if (!empty ($accountId)) {
                 $display .= deleteUserAccount ($accountId);
