@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.8 2004/06/09 17:54:26 tony Exp $
+// $Id: pdfgenerator.php,v 1.9 2004/06/09 18:11:03 tony Exp $
 
 require_once 'lib-common.php';
 
@@ -74,19 +74,25 @@ if ($_CONF['pdf_enabled'] == 0 OR
 */
 function PDF_servePDF($pdfFileName)
 {
-    global $_CONF;
+    global $_CONF, $LANG_PDF;
     
     require_once $_CONF['path_system'] . 'classes/downloader.class.php';
-
+    
     $downloader = new downloader();
     $downloader->setLogFile($_CONF['path_log'] . 'error.log');
     $downloader->setLogging(true);
     $downloader->setAllowedExtensions(array('pdf' => 'application/pdf'));
     $downloader->setPath($_CONF['path_pdf']);
-    if (is_file($downloader->getPath() . $pdfFileName)) {
+    $fileToGet = $_CONF['path_pdf'] . $pdfFileName;
+    // OK, now make sure the file they requested exists and ensure they didn't
+    // try to use relative pathing (e.g. ../../some.pdf)
+    if ((dirname(realpath($fileToGet)) == strtolower(realpath($_CONF['path_pdf']))) AND
+       (is_file($fileToGet))) {
         $downloader->downloadFile($pdfFileName);
     } else {
-        header ('HTTP/1.0 404 Not Found');
+        echo COM_siteHeader();
+        echo $LANG_PDF[14];
+        echo COM_siteFooter();
     }
 }
 
