@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.50 2003/06/07 15:19:27 dhaun Exp $
+// $Id: block.php,v 1.51 2003/06/19 17:40:06 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -44,10 +44,11 @@ include('auth.inc.php');
 
 if (!SEC_hasrights('block.edit')) {
     $display .= COM_siteHeader()
-        . COM_startBlock($MESSAGE[30])
+        . COM_startBlock ($MESSAGE[30], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'))
         . $MESSAGE[31]
-        . COM_endBlock()
-        . COM_siteFooter();
+        . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+        . COM_siteFooter ();
     echo $display;
     exit;
 }
@@ -90,7 +91,8 @@ function editdefaultblock($A,$access)
 
     $retval = '';
 
-    $retval .= COM_startBlock($LANG21[3]);
+    $retval .= COM_startBlock ($LANG21[3], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file('editor','defaultblockeditor.thtml');
@@ -140,7 +142,7 @@ function editdefaultblock($A,$access)
     $block_templates->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->parse('output','editor');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -163,9 +165,10 @@ function editblock($bid='')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
-            $retval .= COM_startBlock($LANG21[44])
-                .$LANG21[45]
-                .COM_endBlock();
+            $retval .= COM_startBlock ($LANG21[44], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
+                    . $LANG21[45]
+                    . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 
                 return $retval;
         } 
@@ -192,7 +195,8 @@ function editblock($bid='')
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
-    $block_templates->set_var('start_block_editor', COM_startBlock($LANG21[3]));
+    $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
+            '', COM_getBlockTemplate ('_admin_block', 'header')));
 		
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
@@ -290,7 +294,8 @@ function editblock($bid='')
     $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
     $block_templates->set_var('lang_blockcontent', $LANG21[17]);
     $block_templates->set_var('block_content', htmlspecialchars (stripslashes ($A['content'])));
-    $block_templates->set_var('end_block', COM_endBlock());
+    $block_templates->set_var ('end_block',
+            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output')); 
 
@@ -339,9 +344,10 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
     }
     if (($access < 3) || !hasBlockTopicAccess ($tid) || !SEC_inGroup ($group_id)) {
         $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter();
         COM_errorLog("User {$_USER['username']} tried to illegally create or edit block $bid",1);
         echo $display;
@@ -373,11 +379,13 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
             // the arbitrary execution of code
             if (!(stristr($phpblockfn,'phpblock_'))) {
                 $retval .= COM_siteHeader()
-                    .COM_startBlock($LANG21[37])
-                    .$LANG21[38]
-                    .COM_endBlock()
-                    .editblock($bid)
-                    .COM_siteFooter();
+                        . COM_startBlock ($LANG21[37], '',
+                                  COM_getBlockTemplate ('_msg_block', 'header'))
+                        . $LANG21[38]
+                        . COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                              'footer'))
+                        . editblock ($bid)
+                        . COM_siteFooter ();
                 return $retval;
             }
             $content = '';
@@ -405,7 +413,8 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
 
     } else {
         $retval .= COM_siteHeader()
-            .COM_startBlock($LANG21[32]);
+                . COM_startBlock ($LANG21[32], '',
+                          COM_getBlockTemplate ('_msg_block', 'header'));
         if ($type == 'portal') {
             // Portal block is missing fields
             $retval .= $LANG21[33];
@@ -422,9 +431,9 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
             // Layout block missing content
             $retval .= $LANG21[36];
         }
-        $retval .= COM_endBlock()
-            .editblock($bid)
-            .COM_siteFooter();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . editblock ($bid)
+                . COM_siteFooter ();
     }
 	
     return $retval;
@@ -443,7 +452,8 @@ function listblocks()
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
     $block_templates->set_file(array('list'=>'listblocks.thtml', 'row'=>'listitem.thtml'));
 
-    $retval .= COM_startBlock($LANG21[19]);
+    $retval .= COM_startBlock ($LANG21[19], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
     $block_templates->set_var('site_url', $_CONF['site_url']);
     $block_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -497,7 +507,7 @@ function listblocks()
 
     $block_templates->parse('output','list');
     $retval .= $block_templates->finish($block_templates->get_var('output'));
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
