@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.10 2002/01/03 21:44:53 tony_bibbs Exp $
+// $Id: event.php,v 1.11 2002/01/04 22:42:28 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -462,7 +462,7 @@ function saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-		DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,dateend,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url','$datestart','$dateend','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
+		DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,dateend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url','$datestart','$dateend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		COM_errorLog($LANG22[10],2);
