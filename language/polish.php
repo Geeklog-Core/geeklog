@@ -1081,5 +1081,11 @@ $LANG_404 = array(
     3 => "<p>Przykro nam ale dany plik nie istnieje. Sprawd¼ <a href=\"{$_CONF['site_url']}/search.php\">stronê z wyszukiwark±</a> aby sprawdziæ czy mo¿na znale¼æ co zgubi³e¶."
 );
 
-?>
+$LANG_LOGIN = array (
+    1 => 'Wymagany jest login',
+    2 => 'Sorry, aby wej¶æ na te strony musisz byæ zalogowany.',
+    3 => 'Login',
+    4 => 'Nowy U¿ytkownik'
+);
 
+?>
