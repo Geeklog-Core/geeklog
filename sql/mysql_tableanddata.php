@@ -829,22 +829,21 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('rdf_sids','')"
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('staticpages','1')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('sp_group_id','15')";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['events']} ADD INDEX events_datestart(datestart)';
-$_INDEX[] = 'ALTER TABLE {$_TABLES['events']} ADD INDEX events_dateend(dateend)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['events']} ADD INDEX events_datestart(datestart)";
+$_INDEX[] = "ALTER TABLE {$_TABLES['events']} ADD INDEX events_dateend(dateend)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_main_grp_id(ug_main_grp_id)';
-$_INDEX[] = 'ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_uid(ug_uid)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_uid(ug_uid)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['links']} ADD INDEX links_category(category)';
-$_INDEX[] = 'ALTER TABLE {$_TABLES['links']} ADD INDEX links_date(date)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['links']} ADD INDEX links_category(category)";
+$_INDEX[] = "ALTER TABLE {$_TABLES['links']} ADD INDEX links_date(date)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_date(date)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_date(date)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)';
-$_INDEX[] = 'ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)";
+$_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)";
 
-$_INDEX[] = 'ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)';
+$_INDEX[] = "ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)";
 
 ?>
