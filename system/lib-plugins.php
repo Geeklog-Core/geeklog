@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.15 2003/02/23 14:57:12 dhaun Exp $
+// $Id: lib-plugins.php,v 1.16 2003/02/23 20:45:09 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -545,7 +545,7 @@ function PLG_showModerationList()
 */
 function PLG_getModerationValues($type) 
 {
-	return PLG_callFunctionForOnePlugin('plugin_moderationvalues_' . $type);
+    return PLG_callFunctionForOnePlugin('plugin_moderationvalues_' . $type);
 }
 
 /**
@@ -553,12 +553,12 @@ function PLG_getModerationValues($type)
 * that the submission form for the plugin is displayed.
 *
 * @param        string      $type       Plugin to show submission form for
-* @return       string      HTML for submti form for plugin
+* @return       string      HTML for submit form for plugin
 *
 */
 function PLG_showSubmitForm($type) 
 {
-	return PLG_callFunctionForOnePlugin('plugin_submit_' . $type);
+    return PLG_callFunctionForOnePlugin('plugin_submit_' . $type);
 }
 
 /**
@@ -626,6 +626,125 @@ function PLG_deleteUser ($uid)
         if (function_exists ($function)) {
             $function ($uid);
         }
+    }
+}
+
+/**
+* Geeklog is about to display the edit form for the user's profile. Plugins
+* now get a chance to add their own variables and input fields to the form.
+*
+* @param   int   $uid        user id of the user profile to be edited
+* @param   ref   $template   reference of the Template for the profile edit form
+*
+*/
+function PLG_profileVariablesEdit ($uid, &$template)
+{
+    global $_TABLES;
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_profilevariablesedit_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $function ($uid, $template);
+        }
+    }
+}
+
+/**
+* Geeklog is about to display the edit form for the user's profile. Plugins
+* now get a chance to add their own blocks below the standard form.
+*
+* @param    int      $uid   user id of the user profile to be edited
+* @return   string          HTML for additional block(s)
+*
+*/
+function PLG_profileBlocksEdit ($uid)
+{
+    global $_TABLES;
+
+    $retval = '';
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_profileblocksedit_' . $A['pi_name'];   
+        if (function_exists($function)) {
+            $retval .= $function ($uid);
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Geeklog is about to display the user's profile. Plugins now get a chance to
+* add their own variables to the profile.
+*
+* @param   int   $uid        user id of the user profile to be edited
+* @param   ref   $template   reference of the Template for the profile edit form
+*
+*/
+function PLG_profileVariablesDisplay ($uid, &$template)
+{
+    global $_TABLES;
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_profilevariablesdisplay_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $function ($uid, $template);
+        }
+    }
+}
+
+/**
+* Geeklog is about to display the user's profile. Plugins now get a chance to
+* add their own blocks below the standard profile form.
+*
+* @param    int      $uid        user id of the user profile to be edited
+* @return   string               HTML for additional block(s)
+*
+*/
+function PLG_profileBlocksDisplay ($uid)
+{
+    global $_TABLES;
+
+    $retval = '';
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_profileblocksdisplay_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $retval .= $function ($uid);
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* The user wants to save changes to his/her profile. Any plugin that added it's
+* own variables or blocks to the profile input form will now have to extract
+* it's data and save it.
+* Plugins will have to refer to the global $HTTP_POST_VARS array to get the
+* actual data.
+*
+* @param   string   $plugin   name of a specific plugin or empty (all plugins)
+*
+*/
+function PLG_profileExtrasSave ($plugin = '')
+{
+    if (empty ($plugin)) {
+        PLG_callFunctionForAllPlugins ('plugin_profileextrassave_');
+    } else {
+        PLG_callFunctionForOnePlugin ('plugin_profileextrassave_' . $plugin);
     }
 }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.55 2003/02/07 00:29:32 blaine Exp $
+// $Id: usersettings.php,v 1.56 2003/02/23 20:45:09 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -146,7 +146,12 @@ function edituser()
     $preferences->set_var ('uid_value', $user);
     $preferences->set_var ('username_value', $_USER['username']);
 
-    return $preferences->finish ($preferences->parse ('output', 'profile'));
+    PLG_profileVariablesEdit ($_USER['uid'], $preferences);
+
+    $retval = $preferences->finish ($preferences->parse ('output', 'profile'));
+    $retval .= PLG_profileBlocksEdit ($_USER['uid']);
+
+    return $retval;
 }
 
 /**
@@ -715,6 +720,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         break;
     case 'saveuser':
         $display .= saveuser($HTTP_POST_VARS);
+        PLG_profileExtrasSave ();
         break;
     case 'savepreferences':
         savepreferences ($HTTP_POST_VARS);

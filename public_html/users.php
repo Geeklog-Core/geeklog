@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.53 2003/02/23 14:57:12 dhaun Exp $
+// $Id: users.php,v 1.54 2003/02/23 20:45:09 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -263,8 +263,12 @@ function userprofile($user)
     $user_templates->set_var('number_comments', $N['count']);
     $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
 
+    PLG_profileVariablesDisplay ($user, $user_templates);
+
     $user_templates->parse('output', 'profile');
     $retval .= $user_templates->finish($user_templates->get_var('output'));	
+
+    $retval .= PLG_profileBlocksDisplay ($user);
 
     return $retval;
 }
