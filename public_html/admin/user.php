@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.28 2002/04/12 16:00:17 tony_bibbs Exp $Scripts cannot
+// $Id: user.php,v 1.29 2002/04/15 18:02:11 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -97,6 +97,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_file(array('form'=>'edituser.thtml','groupedit'=>'groupedit.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
 	if ($A['uid'] > 1) { 
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
