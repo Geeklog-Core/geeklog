@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.4 2002/04/11 22:14:00 tony_bibbs Exp $
+// $Id: database.php,v 1.5 2002/05/22 10:06:17 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -57,14 +57,18 @@ if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
 
 // Perform the backup if asked
 if ($mode == $LANG_DB_BACKUP['do_backup']) {
-    $curdatetime = date("m_d_Y");
-    if (!empty($_DB_pass)) {
-        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user -p$_DB_pass $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
+    if (file_exists ($_DB_mysqldump_path)) {
+        $curdatetime = date("m_d_Y");
+        if (!empty($_DB_pass)) {
+            $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user -p$_DB_pass $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
+        } else {
+            $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
+        }
+        exec($command);
+        $display .= '<font color="red">' . $LANG_DB_BACKUP['backup_successful'] . '</font><br>';
     } else {
-        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user $_DB_name > {$_CONF['backup_path']}geeklog_db_backup_$curdatetime.sql"; 
+        $display .= '<font color="red">' . $LANG_DB_BACKUP['not_found'] . '</font><br><br>';
     }
-    exec($command);
-    $display .= '<font color="red">' . $LANG_DB_BACKUP['backup_successful'] . '</font><br>';
 }
 
 // Show last ten backups

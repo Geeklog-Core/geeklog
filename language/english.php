@@ -1059,7 +1059,8 @@ $LANG_DB_BACKUP = array(
     do_backup => 'Do Backup',
     backup_successful => 'Database back up was successful.',
     no_backups => 'No backups in the system',
-    db_explanation => 'To create a new backup of your Geeklog system, hit the button below'
+    db_explanation => 'To create a new backup of your Geeklog system, hit the button below',
+    not_found => "Error: {$_DB_mysqldump_path} could not be found."
 );
 
 $LANG_BUTTONS = array(
