@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.9 2003/07/23 17:13:51 dhaun Exp $
+// $Id: search.class.php,v 1.10 2003/07/24 21:09:45 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -808,14 +808,24 @@ class Search {
     {
         global $_USER, $_CONF;
 
-        if (empty($_USER['username']) AND (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] == 2))) {
-            return false;
+        if (empty($_USER['username'])) {
+
+            if ($this->_hasAdvancedCriteria ()) {
+
+                if (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] >= 1)) {
+                    return false;
+            }
+
+            } else {
+
+                if (($_CONF['loginrequired'] == 1) OR ($_CONF['searchloginrequired'] == 2)) {
+                    return false;
+                }
+
+            }
+
         }
-        
-        if ($this->_hasAdvancedCriteria() AND empty($_USER['username'])) {
-            return false;
-        }
-        
+
         return true;
     }
 
