@@ -3,7 +3,7 @@
 ###############################################################################
 # polish.php
 # This is the Polish language page for GeekLog!
-# Special thanks to Robert Stadnik for his work on this project
+# Special thanks to Robert Stadnik robert_stadnik@wp.pl for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -42,7 +42,7 @@ $LANG_CHARSET = 'iso-8859-2';
 
 $LANG01 = array(
     1 => 'Zamie¶ci³:',
-    2 => 'wiêcej informacji',
+    2 => 'czytaj dalej',
     3 => 'komentarzy',
     4 => 'Edycja',
     5 => 'G³osuj',
@@ -76,11 +76,11 @@ $LANG01 = array(
     33 => 'B³±d, nie mo¿na zapisaæ w logu',
     34 => 'B³±d',
     35 => 'Wylogowanie',
-    36 => 'on',
+    36 => 'dnia',
     37 => 'Brak artyku³ów u¿ytkownika',
-    38 => 'Content Syndication',
+    38 => 'Syndykacja',
     39 => 'Od¶wie¿',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => 'Masz <tt>register_globals = Off</tt> w pliku <tt>php.ini</tt>. Niestety, Geeklog wymaga <tt>register_globals</tt> aby by³y ustawione na <strong>on</strong>. Proszê zminieæ ustawienia na <strong>on</strong> i restartowaæ serwer www.',
     41 => 'Go¶æ',
     42 => 'Autor:',
     43 => 'Odpowiedz',
@@ -99,8 +99,8 @@ $LANG01 = array(
     56 => 'G³osuj',
     57 => 'Has³o',
     58 => 'Login',
-    59 => "Nie masz jeszcze konta? Za³ó¿ sobie <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Nowego U¿ytkownika</a>",
-    60 => 'Skomentuj',
+    59 => "Nie masz jeszcze konta? Za³ó¿ sobie <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Nowy U¿ytkownik</a>",
+    60 => 'Komentarze',
     61 => 'Za³ó¿ Konto',
     62 => 's³ów',
     63 => 'Komentarze - Preferencje',
@@ -111,7 +111,7 @@ $LANG01 = array(
     68 => 'strona g³ówna',
     69 => 'kontakt',
     70 => 'szukaj',
-    71 => 'zamie¶æ',
+    71 => 'napisz',
     72 => 'linki',
     73 => 'sonda',
     74 => 'kalendarz',
@@ -145,7 +145,7 @@ $LANG01 = array(
     102 => 'Wydarzenia na Serwisie',
     103 => 'Kopie zapasowe bazy',
     104 => 'przez',
-    105 => 'U¿ytkownicy Mailowi',
+    105 => 'Wy¶lij Maila',
     106 => 'Ods³on',
     107 => 'Wersja GL - Test',
     108 => 'Opró¿nij Cache'
@@ -176,7 +176,7 @@ $LANG02 = array(
 # comment.php
 
 $LANG03 = array(
-    1 => 'Zamie¶æ Komentarz',
+    1 => 'Napisz Komentarz',
     2 => 'Format',
     3 => 'Wylogowanie',
     4 => 'Za³ó¿ Konto',
@@ -186,7 +186,7 @@ $LANG03 = array(
     8 => " sekund temu.  Wymagana jest przerwa równa {$_CONF['commentspeedlimit']} sekund pomiêdzy komentarzami",
     9 => 'Komentarz',
     10 => '',
-    11 => 'Prze¶lij Komentarz',
+    11 => 'Wy¶lij Komentarz',
     12 => 'Proszê uzupe³niæ pola Tytu³ i Komentarz. Pola te s± wymagane do zamieszczenia komentarza.',
     13 => 'Twoje Informacje',
     14 => 'Podgl±d',
@@ -277,7 +277,7 @@ $LANG04 = array(
     69 => 'Jak d³ugo pamiêtaæ ciê po zalogowaniu?',
     70 => "Dostosuj wygl±d i zawarto¶æ serwisu {$_CONF['site_name']}",
     71 => "Jedn± z extra mo¿liwo¶ci serwisu {$_CONF['site_name']} jest mo¿liwo¶æ dopasowania zawarto¶ci i wygl±du strony.  Aby skorzystaæ z tych udogodnieñ nale¿y siê najpierw <a href=\"{$_CONF['site_url']}/users.php?mode=new\">zarejestrowaæ</a> w serwisie {$_CONF['site_name']}.  Jeste¶ ju¿ cz³onkiem?  Zaloguj siê!",
-    72 => 'Motyw',
+    72 => 'Pulpit',
     73 => 'Jêzyk',
     74 => 'Zmieñ wygl±d strony!',
     75 => 'Artyku³y Wysy³ane Mailem do',
@@ -294,7 +294,7 @@ $LANG04 = array(
     86 => 'Znajd¼ wszystkie materia³y zamieszczone przez',
     87 => 'Twój login',
     88 => "Kto¶ (prawdopodobnie Ty) chce uzyskaæ nowe has³o do tego konta \"%s\" w {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nJe¶li chcesz kontynuowaæ proszê kliknij ten link:\n\n",
-    89 => 'Je¶li nie chcesz kontynuowaæ, zignoruj t± wiadomo¶æ (Twoje has³o pozostanie niezmienione).\n\n',
+    89 => "Je¶li nie chcesz kontynuowaæ, zignoruj t± wiadomo¶æ (Twoje has³o pozostanie niezmienione).\n\n",
     90 => 'Poni¿ej mo¿esz wprowadziæ nowe has³o. Pamiêtaj, ¿e stare has³o jest aktywne do czasu przes³ania tego zg³oszenia.',
     91 => 'Ustaw Nowe Has³o',
     92 => 'Wpisz Nowe Has³o',
@@ -359,7 +359,7 @@ $LANG08 = array(
     7 => 'Profil U¿ytkownika',
     8 => 'U¿ytkownik',
     9 => 'URL U¿ytkownika',
-    10 => 'Wy¶lij mail do',
+    10 => 'Wy¶lij maila do',
     11 => 'Przedstaw Siê:',
     12 => 'Twój email:',
     13 => 'Temat:',
@@ -378,11 +378,11 @@ $LANG08 = array(
     26 => 'Ten formularz umo¿liwia wys³anie maila do wybranego u¿ytkownika.  Wymagane jest wype³nienie wszystkich pól.',
     27 => 'Krótka Wiadomo¶æ',
     28 => "{$from} napisa³: {$shortmsg}",
-    29 => "Dzienne zestawienie artyku³ów w Serwisie {$_CONF['site_name']} dla ",
-    30 => 'Codzienny Newsletter dla ',
+    29 => "Dzienne zestawienie artyku³ów w Serwisie {$_CONF['site_name']} z dnia ",
+    30 => 'Newsletter z dnia ',
     31 => 'Tytu³',
     32 => 'Data',
-    33 => 'Ca³y artyku³ przeczytany ',
+    33 => 'Ca³y artyku³ dostêpny tutaj ',
     34 => 'Koniec Wiadomo¶ci',
     35 => 'Sorry, ale ten u¿ytkownik nie ¿yczy sobie otrzymywania ¿adnych emaili.'
 );
@@ -436,8 +436,8 @@ $LANG09 = array(
     43 => 'z wyra¿eniem',
     44 => 'ze wszystkimi s³owami',
     45 => 'z którymkolwiek ze s³ów',
-    46 => 'Nastêpne',
-    47 => 'Poprzednie',
+    46 => 'Dalej',
+    47 => 'Wstecz',
     48 => 'Autor',
     49 => 'Data',
     50 => 'Ods³on',
@@ -559,7 +559,7 @@ $LANG12 = array(
 $LANG20 = array(
     1 => 'Wymagana jest Autoryzacja',
     2 => 'Odmowa! Niew³a¶ciwy Login',
-    3 => 'Niew³a¶ciwe has³o dla u¿ytkownika',
+    3 => 'Niew³a¶ciwe has³o u¿ytkownika',
     4 => 'Login:',
     5 => 'Has³o:',
     6 => 'Wszelkie próby wej¶cia do segmentów administracyjnych s± logowane i weryfikowane.<br>Dostêp tylko dla osób upowa¿nionych.',
@@ -573,7 +573,7 @@ $LANG21 = array(
     1 => 'Niewystarczaj±ce Uprawnienia Administracyjne',
     2 => 'Nie masz wystarczaj±cych uprawnieñ do edycji tego bloku.',
     3 => 'Edytor Bloków',
-    4 => 'There was a problem reading this feed (see error.log for details).',
+    4 => 'Wyst±pi³ b³±d odczytu (szczegó³y w pliku error.log).',
     5 => 'Tytu³ Bloku',
     6 => 'Sekcja',
     7 => 'Wszystkie',
@@ -626,10 +626,10 @@ $LANG21 = array(
     54 => 'zapisz',
     55 => 'anuluj',
     56 => 'kasuj',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => 'Przesuñ Blok w Dó³',
+    58 => 'Przesuñ Blok w Górê',
+    59 => 'Przesuñ blok na prawo',
+    60 => 'Przesuñ blok w lewo'
 );
 
 ###############################################################################
@@ -995,50 +995,50 @@ $LANG32 = array(
     28 => 'Plugin Wersja',
     29 => 'Geeklog Wersja',
     30 => 'Skasowaæ Plugin?',
-    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.'
+    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.'merykanistyka
 );
 
 ###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
-    10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
+    1 => 'stwórz plik',
+    2 => 'zapisz',
+    3 => 'kasuj',
+    4 => 'anuluj',
+    10 => 'Syndykacja Tre¶ci',
+    11 => 'Nowy Plik',
+    12 => 'Menu Admina',
+    13 => 'Aby zmodyfikowaæ lub usun±æ plik, kliknij na tytu³ pliku poni¿ej. Aby stworzyæ nowy plik, kliknij Nowy Plik powy¿ej.',
+    14 => 'Tytu³',
+    15 => 'Rodzaj',
+    16 => 'Plik',
     17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
-    21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
+    18 => 'ost. aktualizacja',
+    19 => 'Aktywne',
+    20 => 'Tak',
+    21 => 'Nie',
+    22 => '<i>(plików brak)</i>',
+    23 => 'wszystkie Artyku³y',
+    24 => 'Edytor Plików',
+    25 => 'Tytu³ Pliku',
     26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
-    34 => 'Entries',
-    35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links',
-    42 => 'Events'
+    27 => 'D³ugo¶æ tekstu',
+    28 => '(0 = bez tekstu, 1 = pe³ny tekst, inne = ograniczona liczba znaków.)',
+    29 => 'Opis',
+    30 => 'Ost. Aktualizacja',
+    31 => 'Kodowanie',
+    32 => 'Jêzyk',
+    33 => 'Zawarto¶æ',
+    34 => 'Tytu³ów',
+    35 => 'Godzin',
+    36 => 'Wybierz rodzaj pliku',
+    37 => 'Masz zainstalowany co najmniej jeden plugin zarz±dzaj±cy syndykacj± tre¶ci. Poni¿ej nale¿y wybraæ opcjê czy chcesz stworzyæ plik Geeklogowy czy te¿ plik dla jednego z pluginów.',
+    38 => 'B³±d: Brakuj±ce Pola',
+    39 => 'Wpisz Tytu³ Pliku, Opis i Nazwê Pliku.',
+    40 => 'Proszê podaæ liczbê tytu³ów lub czas w godzinach.',
+    41 => 'Linki',
+    42 => 'Wydarzenia'
 );
 
 ###############################################################################
@@ -1091,7 +1091,7 @@ $MESSAGE = array(
     44 => 'Plugin zosta³ zainstalowany!',
     45 => 'Plugin zosta³ wykasowany.',
     46 => 'Sorry, nie masz dostêpu do opcji archiwizowania bazy danych.  Pamiêtaj, ¿e Wszelkie nieautoryzowane próby wej¶cia s± logowane',
-    47 => 'Ta opcja dzia³a tylko pod systemem *nix. Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie.',
+    47 => 'Ta opcja dzia³a tylko pod systemem *nixowym. Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie.',
     48 => "Dziekujemy za zainteresowanie cz³onkowstwem w {$_CONF['site_name']}. Zweryfikujemy twoje zg³oszenie i po zatwierdzeniu zostanie wys³ane has³o pod podany adres e-mail.",
     49 => 'Twoja grupa zosta³a zapisana.',
     50 => 'Grupa zosta³a wykasowana.',
@@ -1102,8 +1102,8 @@ $MESSAGE = array(
     55 => 'Wkrótce powinien dotrzeæ do Ciebie email. Postêpuj zgodnie ze wskazówkami aby ustawiæ nowe has³o dla Twojego konta.',
     56 => 'Podany adres email jest ju¿ u¿ywany.',
     57 => 'Twoje konto zosta³o pomy¶lnie usuniête.',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    58 => 'Plik zosta³ zapisany.',
+    59 => 'Plik zosta³ skasowany.'
 );
 
 ###############################################################################
@@ -1133,7 +1133,7 @@ $LANG_ACCESS = array(
     'yes' => 'Tak',
     'no' => 'Nie',
     'corerightsdescr' => "Ta grupa jest G³ówn± Grup± strony {$_CONF['site_name']} .  Z tego wzglêdu prawa dla  tej grupy nie mog± byæ edytowane.  Poni¿ej znajduje siê lista do-odczytu praw tej grupy.",
-    'groupmsg' => 'Security Groups w tym serwisie s± hierarchiczne.  Poprzez dodanie tej grupy do jakiejkolwiek grupy poni¿ej, tym samym nadasz tej grupie takie same prawa.  Je¿eli to mo¿liwe to zalecamy wykorzystanie poni¿szych grup przy nadawaniu praw jakiejkolwiek grupie.  Je¶li chcesz nadaæ tej grupie specjalne prawa, mo¿esz wybraæ uprawnienia do ró¿nych funkcji serwisu w poni¿szej sekcji \'Uprawnienia\'.  Aby dodaæ t± grupê do którejkolwiek z poni¿szej listy, zaznacz po prostu wybran± grupê(y).',
+    'groupmsg' => 'Grupy Zabezpieczeñ Groups w tym serwisie s± hierarchiczne.  Poprzez dodanie tej grupy do jakiejkolwiek grupy poni¿ej, tym samym nadasz tej grupie takie same prawa.  Je¿eli to mo¿liwe to zalecamy wykorzystanie poni¿szych grup przy nadawaniu praw jakiejkolwiek grupie.  Je¶li chcesz nadaæ tej grupie specjalne prawa, mo¿esz wybraæ uprawnienia do ró¿nych funkcji serwisu w poni¿szej sekcji \'Uprawnienia\'.  Aby dodaæ t± grupê do którejkolwiek z poni¿szej listy, zaznacz po prostu wybran± grupê(y).',
     'coregroupmsg' => "To jest Grupa g³ówna serisu {$_CONF['site_name']}.  Z tego wzglêdu grupy nale¿±ce do tej kategorii nie mog± byæ edytowane.  Poni¿ej znajduje siê lista, tylko do odczytu, grup z tej kategorii.",
     'rightsdescr' => 'Dostêp grupowy to wybranych uprawnieñ poni¿ej mo¿e byæ nadany bezpo¶rednio danej grupie LUB innej grupie, do której dana grupa nale¿y.  Te z listy poni¿ej bez pola wyboru oznaczaj± uprawnienia tej grupy wynikaj±ce z faktu przynale¿no¶ci do grupy z danym uprawnieniem.  Uprawnienia z polami wyboru mog± zostaæ bezpo¶rednio nadane danej grupie.',
     'lock' => 'Blokada',
@@ -1157,23 +1157,23 @@ $LANG_ACCESS = array(
     'listusers' => 'Listuj U¿ytkowników',
     'listthem' => 'listuj',
     'usersingroup' => 'U¿ytkownicy w grupie %s',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'usergroupadmin' => 'Administracja Grupami U¿ytkowników',
+    'add' => 'Dodaj',
+    'remove' => 'Usuñ',
+    'availmembers' => 'Dostêpni Cz³onkowie',
+    'groupmembers' => 'Cz³onkowie Grupy',
+    'canteditgroup' => 'Aby wyedytowaæ t± grupê musisz do niej nale¿eæ. Proszê skontaktowaæ siê z administratorem je¶li uwa¿asz, ¿e nast±pi³a pomy³ka.'
 );
 
 ###############################################################################
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Ostatnie 10 Backupów',
-    'do_backup' => 'Wykonaj Backup',
-    'backup_successful' => 'Backup bazy wykonany pomy¶lnie.',
-    'no_backups' => 'Brak backupów w systemie',
-    'db_explanation' => 'Aby wykonaæ nowy backup twojego systemu, kliknij poni¿szy przycisk',
+    'last_ten_backups' => 'Ostatnie 10 Kopii Zapasowych',
+    'do_backup' => 'Wykonaj Kopiê Zapasow±',
+    'backup_successful' => 'Kopia bazy wykonana pomy¶lnie.',
+    'no_backups' => 'Brak kopii zapasowych w systemie',
+    'db_explanation' => 'Aby wykonaæ now± kopiê zapasow± twojego systemu, kliknij poni¿szy przycisk',
     'not_found' => "Niew³a¶ciwa ¶cie¿ka lub program archiwizuj±cy nie jest wykonywalny.<br>Sprawd¼ <strong>\$_DB_mysqldump_path</strong> ustawienia w config.php.<br>Zmienna jest obecnie ustawiona na: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Wykonanie Kopii Nie Powiod³o Siê: Rozmiar pliku 0 bajtów',
     'path_not_found' => "{$_CONF['backup_path']} nie istnieje lub nie jest katalogiem",
