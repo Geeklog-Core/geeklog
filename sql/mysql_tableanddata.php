@@ -832,5 +832,5 @@ $_DATA[329] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd,
 
 $_DATA[330] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[331] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
-
+$_DATA[332] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('rdf_sids','');
 ?>
