@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.25 2002/10/10 14:27:38 dhaun Exp $
+// $Id: calendar.php,v 1.26 2002/10/30 20:10:21 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -524,8 +524,8 @@ case 'week':
     $cal_templates->set_var('week_num',$thedate[1]);
     for ($i = 1; $i <= 7; $i++) {
         $dayname = $cal->getDayName(date('w',$thedate[1]) + 1);
-        $monthnum = date('n', $thedate[1]);
-        $daynum = date('j', $thedate[1]);
+        $monthnum = date('m', $thedate[1]);
+        $daynum = date('d', $thedate[1]);
         $yearnum = date('Y', $thedate[1]);
         if ($yearnum . '-' . $monthnum . '-' . $daynum == date('Y-m-d',time())) {
             $cal_templates->set_var('class'.$i,'weekview-curday');
