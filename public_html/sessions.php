@@ -38,12 +38,11 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
 	// code on in config.php (it's turned off by default)
 
 	if ($md5_based == 1) {
-		errorlog("in ipbasedsessid code", 1);
 		$ip = str_replace(".","",$remote_ip);
 		$md5_sessid = md5($ip + $sessid);
 	} else {
 		$md5_sessid = ""; 		
-		errorlog("ip = $ip",1);
+	}
 
         $currtime = (string) (time());
         $expirytime = (string) (time() - $lifespan);
@@ -52,23 +51,21 @@ function new_session($userid, $remote_ip, $lifespan, $md5_based=0) {
         $delresult = mysql_query($deleteSQL);
 
         if (!$delresult) {
-			die("Delete failed in new_session()");
+		die("Delete failed in new_session()");
         }
-        $sql = "INSERT INTO sessions (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
 
-		//errorlog("sql = $sql");
+        $sql = "INSERT INTO sessions (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
 
         $result = mysql_query($sql);
 
         if ($result) {
-		if ($md5_based == 1)
+		if ($md5_based == 1) 
 			return $md5_sessid;
-		else
+		else 
 			return $sessid;
         } else {
 			echo mysql_errno().": ".mysql_error()."<BR>";
 			die("Insert failed in new_session()");
-		}
 	}
 
 } 
@@ -107,6 +104,7 @@ function get_userid_from_session($sessid, $cookietime, $remote_ip, $md5_based=0)
 		$sql = "SELECT uid FROM sessions WHERE (md5_sess_id = '$sessid') AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
 	} else {
 		$sql = "SELECT uid FROM sessions WHERE (sess_id = $sessid) AND (start_time > $mintime) AND (remote_ip = '$remote_ip')";
+	}
         $result = dbquery($sql);
 
         if (!$result) {
@@ -120,7 +118,6 @@ function get_userid_from_session($sessid, $cookietime, $remote_ip, $md5_based=0)
                 return 0;
         } else {
                 return $row[uid];
-        }
 	}
 }
 
@@ -137,11 +134,13 @@ function update_session_time($sessid, $md5_based=0) {
 		$sql = "UPDATE sessions SET start_time=$newtime WHERE (md5_sess_id = '$sessid')";
 	} else {
 		$sql = "UPDATE sessions SET start_time=$newtime WHERE (sess_id = $sessid)";
+	}
+
         $result = dbquery($sql);
 
-		if (!$result) {
-			echo mysql_error() . "<br>\n";
-			die("Error doing DB update in update_session_time()");
+	if (!$result) {
+		echo mysql_error() . "<br>\n";
+		die("Error doing DB update in update_session_time()");
         }
 
         return 1;
