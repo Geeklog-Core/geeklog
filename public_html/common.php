@@ -26,7 +26,7 @@ $VERSION="1.3";
 #
 #	These settings must suit your server environment.
 
-#include("/path/to/geeklog/conf-server.php");
+#include('/path/to/geeklog/conf-server.php');
 
 include('/path/to/geeklog/config.php'); #Temporary until Marks adds the two new config files
 #include($CONF['path'].'conf-site.php')
@@ -620,7 +620,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 # Creates the list of topics and the number of stories in each topic
 
 function showtopics($topic="") {
-	global $CONF, $USER, $LANG01, $PHP_SELF;
+	global $CONF, $USER, $LANG01;
 	if ($CONF["sortmethod"] == 'alpha')
 		$result = dbquery("SELECT tid,topic FROM topics ORDER BY tid ASC");
 	else
@@ -629,7 +629,7 @@ function showtopics($topic="") {
 	$nrows = mysql_num_rows($result);
 	#Give a link to the hompage here since a lot of people use this
 	#for navigating the site
-	if (($PHP_SELF <> "/index.php") OR !empty($topic)) {
+	if (!empty($topic)) {
                 print "<a href={$CONF["site_url"]}/index.php><b>{$LANG01[90]}</b></a><br>";
         } else {
                 print "{$LANG01[90]}<br>";
@@ -1039,9 +1039,9 @@ function showblock($side,$topic="") {
 	}
 
 	if (!empty($topic)) {
-		$sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
+		$sql .= " AND (tid = '$topic'  OR (tid = 'all' AND type <> 'layout'))";
 	} else {
-		$sql .= " AND (tid = 'all' AND type != 'layout')";
+		$sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type != 'layout'))";
 	}
 
 	if (!empty($U["boxes"])) {
