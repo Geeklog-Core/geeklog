@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.57 2002/09/19 21:50:00 dhaun Exp $
+// $Id: config.php,v 1.58 2002/10/20 13:04:20 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -194,6 +194,7 @@ $_CONF['statsloginrequired'] = 0;
 $_CONF['searchloginrequired'] = 0;
 $_CONF['profileloginrequired'] = 0;
 $_CONF['emailuserloginrequired'] = 0;
+$_CONF['emailstoryloginrequired'] = 0;
 
 // Submission Settings
 
@@ -245,9 +246,15 @@ $_CONF['newstoriesinterval']  = 86400;
 $_CONF['newcommentsinterval'] = 172800;
 $_CONF['newlinksinterval']    = 1209600;
 
+// Set to 1 to hide a section from the What's New block:
+$_CONF['hidenewstories'] = 0;
+$_CONF['hidenewcomments'] = 0;
+$_CONF['hidenewlinks'] = 0;
+
 // Calendar Settings
 $_CONF['personalcalendars']     = 1;
 $_CONF['showupcomingevents']    = 1;
+$_CONF['upcomingeventsrange']   = 14; // days
 $_CONF['event_types']           = 'Anniversary,Appointment,Birthday,Business,Education,Holiday,Meeting,Miscellaneous,Personal,Phone Call,Special Occasion,Travel,Vacation';
 
 // Story Settings
@@ -257,6 +264,8 @@ $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
+$_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
+$_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 
 // Optional Image Settings
 

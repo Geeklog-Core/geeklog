@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.16 2002/09/06 15:33:47 dhaun Exp $
+// $Id: profiles.php,v 1.17 2002/10/20 13:04:21 dhaun Exp $
 
 include('lib-common.php');
 
@@ -205,11 +205,27 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
 */
 function mailstoryform($sid) 
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER;
+    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER, $LANG_LOGIN;
 
     $retval = '';
 	
-    if (!empty($_USER['username'])) {
+    if (empty($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
+        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $login = new Template($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $retval .= $login->finish ($login->get_var('output'));
+        $retval .= COM_endBlock();
+
+        return $retval;
+    }
+
+    if (!empty ($_USER['username'])) {
         $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = {$_USER['uid']}");
         $A = DB_fetchArray($result);
         $from = $_USER['username'];
@@ -244,7 +260,11 @@ switch ($what) {
 		$display .= contactemail($uid,$author,$authoremail,$subject,$message);
 		break;
 	case 'emailstory':
-		$display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
+        if ($_CONF['hideemailicon'] == 1) {
+            $display = COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+        } else {
+		    $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
+        }
 		break;
 	case 'sendstory':
 		$display .= mailstory($sid,$to,$toemail,$from,$fromemail,$sid,$shortmsg);

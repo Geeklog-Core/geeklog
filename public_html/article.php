@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.27 2002/10/10 11:08:18 dhaun Exp $
+// $Id: article.php,v 1.28 2002/10/20 13:04:20 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -69,7 +69,7 @@ $A = DB_fetchArray($result);
 if ($A['count'] > 0) {
     if ($reply == $LANG01[25]) {
         echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
-    } else if ($mode == "print") {
+    } else if (($mode == "print") && ($_CONF['hideprintericon'] == 0)) {
         $result = DB_query("SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -135,11 +135,17 @@ if ($A['count'] > 0) {
 
         $story_template->set_var('site_url', $_CONF['site_url']);
         $story_template->set_var('layout_url', $_CONF['layout_url']);
-        $story_options = array ('<a href="' . $_CONF['site_url'] .
-            '/profiles.php?sid=' . $story . '&amp;what=emailstory">' .
-            $LANG11[2] . '</a>',
-            '<a href="' . $_CONF['site_url'] .  '/article.php?story=' . $story .
-            '&amp;mode=print">' . $LANG11[3] . '</a>');
+        $story_options = array ();
+        if ($_CONF['hideemailicon'] == 0) {
+            $story_options[] = '<a href="' . $_CONF['site_url'] .
+                    '/profiles.php?sid=' . $story . '&amp;what=emailstory">' .
+                    $LANG11[2] . '</a>';
+        }
+        if ($_CONF['hideprintericon'] == 0) {
+            $story_options[] = '<a href="' . $_CONF['site_url']
+                    .  '/article.php?story=' . $story .  '&amp;mode=print">'
+                    . $LANG11[3] . '</a>';
+        }
         $related = $A['related'];
         if (!empty ($related)) {
             $related = COM_startBlock ($LANG11[1], '',
@@ -148,10 +154,14 @@ if ($A['count'] > 0) {
                 . COM_endBlock (COM_getBlockTemplate ('whats_related_block',
                     'footer'));
         }
-        $optionsblock = COM_startBlock ($LANG11[4], '',
-                COM_getBlockTemplate ('story_options_block', 'header'))
-            . COM_makeList ($story_options)
-            . COM_endBlock(COM_getBlockTemplate('story_options_block','footer'));
+        if (count ($story_options) > 0) {
+            $optionsblock = COM_startBlock ($LANG11[4], '',
+                    COM_getBlockTemplate ('story_options_block', 'header'))
+                . COM_makeList ($story_options)
+                . COM_endBlock(COM_getBlockTemplate('story_options_block','footer'));
+        } else {
+            $optionsblock = '';
+        }
         $story_template->set_var ('whats_related', $related);
         $story_template->set_var ('story_options', $optionsblock);
         $story_template->set_var ('whats_related_story_options',

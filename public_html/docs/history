@@ -1,5 +1,13 @@
 GeekLog History/Changes:
 
+- New options in config.php:
+  $_CONF['upcomingeventsrange'] = no. of days to look ahead for upcoming events
+  $_CONF['emailstoryloginrequired'] = disallow "send story be email" for
+  anonymous users
+  $_CONF['hideemailicon'], $_CONF['hideprintericon'] = hide email / printer
+  icon from stories (and from Story Options block)
+  $_CONF['hidenewstories'], $_CONF['hidenewcomments'], $_CONF['hidenewlinks'] =
+  hide new stories / comments / links from What's New block
 - User photos are now resized according to the image dimensions in config.php
   (if an imagelib is configured - otherwise images exceeding those dimensions
   are rejected).
@@ -24,6 +32,7 @@ GeekLog History/Changes:
 - Allow for theme-based topic icons by using the $_THEME_URL variable as the
   base directory for topic icons (if that variable is set).
 - Fixed display (or lack thereof) of $ signs in portal blocks
+- New Swedish language file, provided by Markus Berg
 - Updated Dutch language file, provided by R.F. van der Veen
 - Updated French language file, provided by Florent Guiliani
 - lib-common.php didn't use $_CONF['path_language'] to include the default

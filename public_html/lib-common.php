@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.169 2002/10/17 07:04:34 mlimburg Exp $
+// $Id: lib-common.php,v 1.170 2002/10/20 13:04:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -346,15 +346,17 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         {
             $article->set_var( 'start_contributedby_anchortag', '<a class="storybyline" href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
 
-            $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
+            $username = DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" );
+            $article->set_var( 'contributedby_user', $username );
 
+            $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
             if( empty( $fullname ))
             {
-                $article->set_var( 'contributedby_user', DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" ));
+                $article->set_var( 'contributedby_fullname', $username );
             }
             else
             {
-                $article->set_var( 'contributedby_user', $fullname );
+                $article->set_var( 'contributedby_fullname', $fullname );
             }
 
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
@@ -362,6 +364,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         else
         {
             $article->set_var( 'contributedby_user', DB_getItem( $_TABLES['users'], 'username',"uid = 1" ));
+            $article->set_var( 'contributedby_fullname', DB_getItem( $_TABLES['users'], 'fullname',"uid = 1" ));
         }
     }
 
@@ -419,8 +422,30 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $recent_post_anchortag = ' <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
         }
 
-        $article->set_var( 'email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">' . '<img src="' . $_CONF['layout_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>' );
-        $article->set_var( 'print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&amp;mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>' );
+        if( $_CONF['hideemailicon'] == 1 )
+        {
+            $article->set_var( 'email_icon', '' );
+        }
+        else
+        {
+            $article->set_var( 'email_icon', '<a href="' . $_CONF['site_url']
+                . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">'
+                . '<img src="' . $_CONF['layout_url']
+                . '/images/mail.gif" alt="' . $LANG01[64]
+                . '" border="0"></a>' );
+        }
+        if( $_CONF['hideprinticon'] == 1 )
+        {
+            $article->set_var( 'print_icon', '' );
+        }
+        else
+        {
+            $article->set_var( 'print_icon', '<a href="' . $_CONF['site_url']
+                . '/article.php?story=' . $A['sid']
+                . '&amp;mode=print"><img border="0" src="'
+                . $_CONF['layout_url'] . '/images/print.gif" alt="'
+                . $LANG01[65] . '"></a>' );
+        }
     }
 
     $access = SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] );
@@ -3145,6 +3170,12 @@ function COM_printUpcomingEvents( $help='', $title='' )
 {
     global $_TABLES, $LANG01, $_CONF, $_USER;
 
+    $range = $_CONF['upcomingeventsrange'];
+    if( $range == 0 )
+    {
+        $range = 14;
+    }
+
     if( empty( $title ))
     {
         $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
@@ -3154,12 +3185,12 @@ function COM_printUpcomingEvents( $help='', $title='' )
 
     $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
         . "FROM {$_TABLES['events']} "
-        . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) "
+        . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
         . 'ORDER BY datestart,dateend';
 
     $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
         . "FROM {$_TABLES['personal_events']} "
-        . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) "
+        . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < $range) "
         . 'ORDER BY datestart, dateend';
 
     $allEvents = DB_query( $eventSql );
@@ -3201,7 +3232,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
             $headline = false;
         }
 
-        while( $theRow <= $numRows AND $numDays < 14 )
+        while( $theRow <= $numRows AND $numDays < $range )
         {
             // Retreive the next event, and format the start date.
             $theEvent = DB_fetchArray( $allEvents );
@@ -3249,7 +3280,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
                     $oldDate2 = $abbrDate2;
                     $numDays ++;
 
-                    if( $numDays < 14 )
+                    if( $numDays < $range )
                     {
                         if( !empty( $newevents ))
                         {
@@ -3269,7 +3300,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
                 }
 
                 // Now display this event record.
-                if( $numDays < 14 )
+                if( $numDays < $range )
                 {
                     // Display the url now!
                     $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
@@ -3447,232 +3478,241 @@ function COM_whatsNewBlock( $help='', $title='' )
         $groupList = substr( $groupList, 0, -1 );
     }
 
-    // Find the newest stories
-    $nesql = '';
-
-    if( !empty( $_USER['uid'] ))
-    {
-        $nesql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $nesql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $nesql .= "(perm_members >= 2) OR ";
-    }
-
-    $nesql .= "(perm_anon >= 2)";
-    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
-    $result = DB_query( $sql );
-    $A = DB_fetchArray( $result );
-    $nrows = $A['count'];
-
-    if( empty( $title ))
-    {
-        $title = DB_getItem( $_TABLES['block'], 'title', "name='whats_new_block'" );
-    }
-
     $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
-    // Any late breaking news stories?
-    $retval .= '<b>' . $LANG01[99] . '</b><br>';
-
-    if( $nrows > 0 )
+    if( $_CONF['hidenewstories'] == 0 )
     {
-        $hours = (( $_CONF['newstoriesinterval'] / 60 ) / 60 );
-        if( $nrows == 1 )
+        // Find the newest stories
+        $nesql = '';
+
+        if( !empty( $_USER['uid'] ))
         {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+            $nesql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+            $nesql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+            $nesql .= "(perm_members >= 2) OR ";
+        }
+
+        $nesql .= "(perm_anon >= 2)";
+        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
+        $result = DB_query( $sql );
+        $A = DB_fetchArray( $result );
+        $nrows = $A['count'];
+
+        if( empty( $title ))
+        {
+            $title = DB_getItem( $_TABLES['block'], 'title', "name='whats_new_block'" );
+        }
+
+        // Any late breaking news stories?
+        $retval .= '<b>' . $LANG01[99] . '</b><br>';
+
+        if( $nrows > 0 )
+        {
+            $hours = (( $_CONF['newstoriesinterval'] / 60 ) / 60 );
+            if( $nrows == 1 )
+            {
+                $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+            }
+            else
+            {
+                $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+            }
         }
         else
         {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
-        }
-    }
-    else
-    {
-        $retval .= $LANG01[100] . '<br>';
-    }
-
-    $retval .= '<br>';
-
-    // Go get the newest comments
-    $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
-
-    $stsql = '';
-    $stwhere = '';
-
-    if( !empty( $_USER['uid'] ))
-    {
-        $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
-        $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
-        $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
-        $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
-        $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
-        $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
-    }
-
-    $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
-    $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
-
-    $posql = '';
-    $powhere = '';
-
-    if( !empty( $_USER['uid'] ))
-    {
-        $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
-        $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
-        $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
-    }
-
-    $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
-    $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-
-    $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
-        . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
-        . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
-    $sql .= "{$_TABLES['comments']}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
-    $sql .= " GROUP BY {$_TABLES['comments']}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
-
-    $result = DB_query( $sql );
-
-    $nrows = DB_numRows( $result );
-
-    if( $nrows > 0 )
-    {
-        $newcomments = array();
-
-        for( $x = 1; $x <= $nrows; $x++ )
-        {
-            $A = DB_fetchArray( $result );
-
-            if( $A['type'] == 'article' )
-            {
-                $itemlen = strlen( $A['title'] );
-                $titletouse = stripslashes( $A['title'] );
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
-            }
-            else
-            {
-                $itemlen = strlen( $A['question'] );
-                $titletouse = $A['question'];
-                $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
-            }
-
-            if( $itemlen > 20 )
-            {
-                $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
-            }
-            else
-            {
-                $urlstart .= '>';
-            }
-
-            // Trim the length if over 20 characters
-            if( $itemlen > 20 )
-            {
-                $titletouse = substr( $titletouse, 0, 17 );
-                $acomment = str_replace( '$', '&#36;', $titletouse ) . '...';
-                $acomment = str_replace( ' ', '&nbsp;', $acomment );
-
-                if( $A['dups'] > 1 )
-                {
-                    $acomment .= ' [+' . $A['dups'] . ']';
-                }
-            }
-            else
-            {
-                $acomment = str_replace( '$', '&#36;', $titletouse );
-                $acomment = str_replace( ' ', '&nbsp;', $acomment );
-
-                if( $A['dups'] > 1 )
-                {
-                    $acomment .= ' [+' . $A['dups'] . ']';
-                }
-            }
-
-            $newcomments[] = $urlstart . $acomment . '</a>';
+            $retval .= $LANG01[100] . '<br>';
         }
 
-        $retval .= COM_makeList( $newcomments );
-    }
-    else
-    {
-        $retval .= $LANG01[86] . '<br>' . LB;
+        $retval .= '<br>';
     }
 
-    $retval .= '<br>';
-
-    // Get newest links
-    $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
-
-    $lisql = '';
-    if( !empty( $_USER['uid'] ))
+    if( $_CONF['hidenewcomments'] == 0 )
     {
-        $lisql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $lisql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $lisql .= '(perm_members >= 2) OR ';
-    }
+        // Go get the newest comments
+        $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
 
-    $lisql .= '(perm_anon >= 2)';
+        $stsql = '';
+        $stwhere = '';
 
-    $sql = "SELECT lid,title,url FROM {$_TABLES['links']} "
-        . "WHERE $lisql "
-        . 'ORDER BY lid DESC LIMIT 15';
-    $foundone = 0;
-    $now = time();
-    $desired = $now - $_CONF['newlinksinterval'];
-    $result = DB_query( $sql );
-    $nrows = DB_numRows( $result );
-
-    if( $nrows > 0 )
-    {
-        $newlinks = array();
-        for( $x = 1; $x <= $nrows; $x++ )
+        if( !empty( $_USER['uid'] ))
         {
-            $A = DB_fetchArray( $result );
+            $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
+            $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
+            $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
+            $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
+            $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+            $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
+        }
 
-            // Need to reparse the date from the link id
-            $myyear = substr( $A['lid'], 0, 4 );
-            $mymonth = substr( $A['lid'], 4, 2 );
-            $myday = substr( $A['lid'], 6, 2 );
-            $myhour = substr( $A['lid'], 8, 2 );
-            $mymin = substr( $A['lid'], 10, 2 );
-            $mysec = substr( $A['lid'], 12, 2 );
-            $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-            $convtime = strtotime( $newtime );
+        $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
+        $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
 
-            if( $convtime > $desired )
+        $posql = '';
+        $powhere = '';
+
+        if( !empty( $_USER['uid'] ))
+        {
+            $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
+            $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
+            $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
+        }
+
+        $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
+        $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
+
+        $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
+            . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
+            . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
+        $sql .= "{$_TABLES['comments']}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
+        $sql .= " GROUP BY {$_TABLES['comments']}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
+
+        $result = DB_query( $sql );
+
+        $nrows = DB_numRows( $result );
+
+        if( $nrows > 0 )
+        {
+            $newcomments = array();
+
+            for( $x = 1; $x <= $nrows; $x++ )
             {
-                $foundone = 1;
+                $A = DB_fetchArray( $result );
 
-                // redirect link via portal.php so we can count the clicks
-                $lcount = $_CONF['site_url'] . '/portal.php?url='
-                        . urlencode( $A['url'] ) . '&amp;what=link&amp;item='
-                        . $A['lid'];
-
-                // Trim the length if over 16 characters
-                $itemlen = strlen( $A['title'] );
-                if( $itemlen > 16 )
+                if( $A['type'] == 'article' )
                 {
-                    $newlinks [] = '<a href="' . $lcount . '" title="'
-                        . $A['title'] . '">' . substr( $A['title'], 0, 16 )
-                        . '...</a>' . LB;
+                    $itemlen = strlen( $A['title'] );
+                    $titletouse = stripslashes( $A['title'] );
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
+                }
+                else if( $A['type'] == 'poll' )
+                {
+                    $itemlen = strlen( $A['question'] );
+                    $titletouse = $A['question'];
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
+                }
+
+                if( $itemlen > 20 )
+                {
+                    $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
                 }
                 else
                 {
-                    $newlinks[] = '<a href="' . $lcount . '">'
-                        . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
+                    $urlstart .= '>';
                 }
-            }
-        }
 
-        if( $foundone == 0 )
-        {
-            $retval .= $LANG01[88] . '<br>' . LB;
+                // Trim the length if over 20 characters
+                if( $itemlen > 20 )
+                {
+                    $titletouse = substr( $titletouse, 0, 17 );
+                    $acomment = str_replace( '$', '&#36;', $titletouse ) . '...';
+                    $acomment = str_replace( ' ', '&nbsp;', $acomment );
+
+                    if( $A['dups'] > 1 )
+                    {
+                        $acomment .= ' [+' . $A['dups'] . ']';
+                    }
+                }
+                else
+                {
+                    $acomment = str_replace( '$', '&#36;', $titletouse );
+                    $acomment = str_replace( ' ', '&nbsp;', $acomment );
+
+                    if( $A['dups'] > 1 )
+                    {
+                        $acomment .= ' [+' . $A['dups'] . ']';
+                    }
+                }
+
+                $newcomments[] = $urlstart . $acomment . '</a>';
+            }
+
+            $retval .= COM_makeList( $newcomments );
         }
         else
         {
-            $retval .= COM_makeList( $newlinks );
+            $retval .= $LANG01[86] . '<br>' . LB;
+        }
+
+        $retval .= '<br>';
+    }
+
+    if( $_CONF['hidenewlinks'] == 0 )
+    {
+        // Get newest links
+        $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
+
+        $lisql = '';
+        if( !empty( $_USER['uid'] ))
+        {
+            $lisql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+            $lisql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+            $lisql .= '(perm_members >= 2) OR ';
+        }
+
+        $lisql .= '(perm_anon >= 2)';
+
+        $sql = "SELECT lid,title,url FROM {$_TABLES['links']} "
+            . "WHERE $lisql "
+            . 'ORDER BY lid DESC LIMIT 15';
+        $foundone = 0;
+        $now = time();
+        $desired = $now - $_CONF['newlinksinterval'];
+        $result = DB_query( $sql );
+        $nrows = DB_numRows( $result );
+
+        if( $nrows > 0 )
+        {
+            $newlinks = array();
+            for( $x = 1; $x <= $nrows; $x++ )
+            {
+                $A = DB_fetchArray( $result );
+
+                // Need to reparse the date from the link id
+                $myyear = substr( $A['lid'], 0, 4 );
+                $mymonth = substr( $A['lid'], 4, 2 );
+                $myday = substr( $A['lid'], 6, 2 );
+                $myhour = substr( $A['lid'], 8, 2 );
+                $mymin = substr( $A['lid'], 10, 2 );
+                $mysec = substr( $A['lid'], 12, 2 );
+                $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
+                $convtime = strtotime( $newtime );
+
+                if( $convtime > $desired )
+                {
+                    $foundone = 1;
+
+                    // redirect link via portal.php so we can count the clicks
+                    $lcount = $_CONF['site_url'] . '/portal.php?url='
+                            . urlencode( $A['url'] )
+                            . '&amp;what=link&amp;item=' . $A['lid'];
+
+                    // Trim the length if over 16 characters
+                    $itemlen = strlen( $A['title'] );
+                    if( $itemlen > 16 )
+                    {
+                        $newlinks [] = '<a href="' . $lcount . '" title="'
+                            . $A['title'] . '">' . substr( $A['title'], 0, 16 )
+                            . '...</a>' . LB;
+                    }
+                    else
+                    {
+                        $newlinks[] = '<a href="' . $lcount . '">'
+                            . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
+                    }
+                }
+            }
+
+            if( $foundone == 0 )
+            {
+                $retval .= $LANG01[88] . '<br>' . LB;
+            }
+            else
+            {
+                $retval .= COM_makeList( $newlinks );
+            }
         }
     }
 
