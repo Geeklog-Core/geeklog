@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.19 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: story.php,v 1.20 2001/12/06 22:32:33 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -44,9 +44,9 @@ $display = '';
 
 if (!SEC_hasRights('story.edit')) {
     $display .= COM_siteHeader('menu');
-    $display .= $display .= COM_startBlock($MESSAGE[30]); 
+    $display .= COM_startBlock($MESSAGE[30]); 
     $display .= $MESSAGE[31];
-    $display .= $display .= COM_endBlock();
+    $display .= COM_endBlock();
     $display .= COM_siteFooter();
     COM_errorLog("User {$_USER['username']} tried to illegally access the story administration screen",1);
     echo $display;
