@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-common.php                                                            |
-// | Geeklog common library.                                                   |
 // |                                                                           |
+// | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.228 2003/06/19 11:00:29 dhaun Exp $
+// $Id: lib-common.php,v 1.229 2003/06/21 12:55:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -61,6 +61,9 @@ $_COM_VERBOSE = false;
 /**
 * Configuration Include: You should ONLY have to modify this line.
 * Leave the rest of this file intact!
+*
+* Make sure to include the name of the config file,
+* i.e. the path should end in .../config.php
 */
 
 require_once( '/path/to/geeklog/config.php' );
@@ -1541,7 +1544,11 @@ function COM_errorLog($logentry, $actionid = '')
                 break;
 
            case 2:
-                $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp, '',
+                               COM_getBlockTemplate( '_msg_block', 'header' ))
+                        . nl2br( $logentry )
+                        . COM_endBlock( COM_getBlockTemplate( '_msg_block',
+                                                              'footer' ));
                 break;
 
             default:
@@ -1554,7 +1561,12 @@ function COM_errorLog($logentry, $actionid = '')
                 else
                 {
                     fputs( $file, "$timestamp - $logentry \n" );
-                    $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                    $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp,
+                                   '', COM_getBlockTemplate( '_msg_block',
+                                   'header' ))
+                            . nl2br( $logentry )
+                            . COM_endBlock( COM_getBlockTemplate( '_msg_block',
+                                                                  'footer' ));
                 }
                 break;
         }
@@ -2087,7 +2099,8 @@ function COM_userMenu( $help='', $title='' )
             }
         }
 
-        $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'user_block', 'header' ));
+        $retval .= COM_startBlock( $title, $help,
+                           COM_getBlockTemplate( 'user_block', 'header' ));
 
         if( $_CONF['personalcalendars'] == 1 )
         {
@@ -2177,7 +2190,8 @@ function COM_userMenu( $help='', $title='' )
     }
     else
     {
-        $retval .= COM_startBlock( $LANG01[47], $help, COM_getBlockTemplate( 'user_block', 'header' ));
+        $retval .= COM_startBlock( $LANG01[47], $help,
+                           COM_getBlockTemplate( 'user_block', 'header' ));
 
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
@@ -2264,7 +2278,7 @@ function COM_adminMenu( $help = '', $title = '' )
         }
 
         $retval .= COM_startBlock( $title, $help,
-                COM_getBlockTemplate( 'admin_block', 'header' ));
+                           COM_getBlockTemplate( 'admin_block', 'header' ));
 
         if( SEC_isModerator() )
         {
@@ -3215,7 +3229,8 @@ function COM_showBlock( $name, $help='', $title='' )
             break;
 
         case 'section_block':
-            $retval .= COM_startBlock( $title,$help, COM_getBlockTemplate( $name, 'header' ))
+            $retval .= COM_startBlock( $title, $help,
+                               COM_getBlockTemplate( $name, 'header' ))
                 . COM_showTopics( $topic )
                 . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
             break;
@@ -3373,8 +3388,10 @@ function COM_showBlocks( $side, $topic='', $name='all' )
                     $blockcontent = nl2br( $blockcontent );
                 }
 
-                $retval .= COM_startBlock( $A['title'], $A['help'], COM_getBlockTemplate( $A['name'], 'header' )) . $blockcontent . LB
-                    . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
+                $retval .= COM_startBlock( $A['title'], $A['help'],
+                               COM_getBlockTemplate( $A['name'], 'header' ))
+                        . $blockcontent . LB
+                        . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
             }
         }
     }
@@ -3660,7 +3677,8 @@ function COM_printUpcomingEvents( $help='', $title='' )
         $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
     }
 
-    $retval .= COM_startBlock( $title, '', COM_getBlockTemplate( 'events_block', 'header' ));
+    $retval .= COM_startBlock( $title, '',
+                       COM_getBlockTemplate( 'events_block', 'header' ));
 
     $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
         . "FROM {$_TABLES['events']} "
@@ -3983,7 +4001,8 @@ function COM_whatsNewBlock( $help='', $title='' )
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS, $page, $newstories;
 
-    $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'whats_new_block', 'header' ));
+    $retval .= COM_startBlock( $title, $help,
+                       COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
     if( $_CONF['hidenewstories'] == 0 )
     {
@@ -4232,9 +4251,12 @@ function COM_showMessage( $msg )
     if( $msg > 0 )
     {
         $timestamp = strftime( $_CONF['daytime'] );
-        $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp )
-            . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top" alt="">'
-            . $MESSAGE[$msg] . '<BR><BR>' . COM_endBlock();
+        $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate( '_msg_block', 'header' ))
+            . '<img src="' . $_CONF['layout_url']
+            . '/images/sysmessage.gif" border="0" align="top" alt="">'
+            . $MESSAGE[$msg] . '<br><br>'
+            . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
 
     return $retval;
