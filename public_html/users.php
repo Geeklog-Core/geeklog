@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.48 2002/12/30 13:28:53 dhaun Exp $
+// $Id: users.php,v 1.49 2003/01/05 21:28:08 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -83,7 +83,7 @@ function userprofile($user)
     }
 
     $retval = '';
-	
+
     $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows($result);
     if ($nrows == 0) { // no such user
@@ -114,7 +114,7 @@ function userprofile($user)
     $user_templates->set_var('user_id', $user);
     $user_templates->set_var('lang_sendemail', $LANG04[81]);
     $user_templates->set_var('lang_homepage', $LANG04[6]);
-    $user_templates->set_var('user_homepage', $A['homepage']);
+    $user_templates->set_var('user_homepage', COM_killJS ($A['homepage']));
     $user_templates->set_var('lang_bio', $LANG04[7]);
     $user_templates->set_var('user_bio', nl2br(stripslashes($A['about']))); 
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
@@ -605,7 +605,12 @@ case 'logout':
     $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 case 'profile':
-    $display .= COM_siteHeader('menu') . userprofile($HTTP_GET_VARS['uid']) . COM_siteFooter();
+    $uid = strip_tags ($HTTP_GET_VARS['uid']);
+    if (is_numeric ($uid)) {
+        $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
+    } else {
+        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
     break;
 case 'create':
     $display .= createuser($HTTP_POST_VARS['username'],$HTTP_POST_VARS['email']);
