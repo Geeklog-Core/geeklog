@@ -2,6 +2,12 @@ GeekLog History/Changes:
 
 ??? ??, 2002 (1.3.6)
 ------------
+- Fresh installations now have a "Are you secure?" block pre-installed
+  that only the Admin can see and which does some (very simple) tests whether
+  the site is secure or not.
+- Fixed the page navigation in (admin's) user list.
+- Using the preview in the admin story editor will now keep the topic icon
+  and the time will not revert from pm to am any more.
 - The links section now includes a list of the link categories at the top.
   The list of links is now also separated into pages (10 links per page by
   default, configurable in config.php).
@@ -21,11 +27,17 @@ GeekLog History/Changes:
   requests will be redirected.
 - Fixed various access rights / privacy issues where users could see (but
   not access) information even when they shouldn't ...
-  + Search returns only those links and events to which the user has the
-    proper access rights
-  + Upcoming events are only visible to those with the proper rights
-  + Topics are not available for submissions without proper rights
-  + "Last 10 comments" in profile takes proper rights into account
+  + Search returns only those stories, comments, links, and events to which the
+    user has the proper access rights
+  + What's New block counts stories and comments according to access rights
+    now (this should also fix the problems some people had when New Comments
+    were not displayed for anonymous users). New Links also take access rights
+    into account.
+  + Upcoming events are only visible to those with the proper rights.
+  + Topics are not available for submissions without proper rights.
+  + Topic selection in the user preferences also follows access rights.
+  + "Last 10 comments" (and the new "Last 10 stories too, of course) in profile
+    takes proper rights into account
 - Story display and paged navigation weren't working properly when some stories
   were only accessible to certain users.
 - Fixed a bug where users weren't able to use the site when their theme had
@@ -34,9 +46,9 @@ GeekLog History/Changes:
   before) and a Moderator account that has access to the story, links, and
   events submission queues.
 - The Older Stories block should work again.
-- The submission queues for stories, links, and events can now be switched
-  off separately (in config.php), i.e. user submissions will then be visible
-  to everybody immediately.
+- The submission queues for stories, links, events, and users can now be
+  switched off separately (in config.php), i.e. items submitted by users will
+  then be visible to everybody immediately.
 - The database backup is more verbose now, especially when there are problems
   (changes provided by Blaine Lang).
 - Fixed a bug where the admin's user photo overwrote a user's photo when the
@@ -54,6 +66,8 @@ GeekLog History/Changes:
   + List of authors is now sorted by username.
   + Search results for links are now routed via portal.php, too, so that the
     links are counted when clicked.
+  + When no results are returned for a search, then the search form will now
+    be displayed below that message again.
 - The static pages plugin uses the table prefix now (databases created with
   Geeklog 1.3.5 or older need to be upgraded).
 - A user submission queue has been added. When activated in config.php
