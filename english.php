@@ -757,7 +757,10 @@ $MESSAGE = array (
 	37 => "Sorry, you do not have access to the user administration page.  Please note that all attempts to access unauthorized features are logged",
 	38 => "Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged",
 	39 => "Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged",
-	40 => "System Message"
+	40 => "System Message",
+    41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
+    42 => "Your word has been successfully saved.",
+	43 => "The word has been successfully deleted."
 );
 
 #for plugins.php
@@ -778,9 +781,9 @@ $LANG32 = array (
 
 $LANG_ACCESS = array(
 	access => "Access",
-        ownerroot => "Owner/Root",
-        group => "Group",
-        readonly => "Read-Only",
+    ownerroot => "Owner/Root",
+    group => "Group",
+    readonly => "Read-Only",
 	accessrights => "Access Rights",
 	owner => "Owner",
 	grantgrouplabel => "Grant Above Group Edit Rights",
@@ -817,4 +820,17 @@ $LANG_ACCESS = array(
 	nogroupsforcoregroup => "This group doesn't belong to any of the other groups",
 	grouphasnorights => "This group doesn't have access to any of the administrative features of this site" 
 );
+
+#admin/word.php
+$LANG_WORDS = array(
+    editor => "Word Replacment editor",
+    wordid => "Word ID",
+    intro => "To modify or delete a word, click on that word.  To create a new word replacement click the new word button to the left.",
+    wordmanager => "Word Manager",
+    word => "Word",
+    replacmentword => "Replacment Word",
+    newword => "New Word"
+);
+
+
 ?>

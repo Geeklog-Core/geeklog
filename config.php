@@ -182,8 +182,5 @@ $CONF["pollorder"] 		= 1;
 # Parameters for checking words and HTML tags
 
 $CONF["allowablehtml"] 		= "<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>";
-$CONF["censormode"] 		= 0;
-$CONF["censorreplace"] 		= "*censored*";
-$CONF["censorlist"] 		= array("fuck","cunt","fucker","fucking","pussy","cock","c0ck","cum","twat","clit","bitch","fuk","fuking","motherfucker");
-
+$CONF["parsemode"] 		= 1;
 ?>

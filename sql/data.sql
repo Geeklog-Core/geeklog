@@ -107,3 +107,6 @@ INSERT INTO wordlist (wid, word, replaceword) VALUES ( '8', 'twat', '*censored*'
 INSERT INTO wordlist (wid, word, replaceword) VALUES ( '9', 'bitch', '*censored*');
 INSERT INTO wordlist (wid, word, replaceword) VALUES ( '10', 'motherfucker', '*censored*');
 INSERT INTO wordlist (wid, word, replaceword) VALUES ( '11', 'bastard', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '12', 'shit', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '13', 'Geeklog', '<b><a href=http://geeklog.sf.net>Geeklog</a></b>');
+

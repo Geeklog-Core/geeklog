@@ -1012,30 +1012,34 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 ###############################################################################
 # This function checks for words in the censor list.
 #
-# The core of this code has been lifted from thatphpware which is licenced
-# under the GPL.
 
 function checkwords($Message) {
 	global $CONF;
-	$EditedMessage = $Message;
-	if ($CONF["censormode"] != 0) {
-		if (is_array($CONF["censorlist"])) {
-			$Replacement = $CONF["censorreplace"];
-				if ($CONF["censormode"] == 1) { # Exact match
-				$RegExPrefix   = '([^[:alpha:]]|^)';
-				$RegExSuffix   = '([^[:alpha:]]|$)';
-			} elseif ($CONF["censormode"] == 2) {    # Word beginning
-				$RegExPrefix   = '([^[:alpha:]]|^)';
-				$RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]|$)';
-			} elseif ($CONF["censormode"] == 3) {    # Word fragment
-				$RegExPrefix   = '([^[:alpha:]]*)[[:alpha:]]*';
-				$RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]*)';
+
+    if ($CONF["parsemode"] != 0) {
+
+    $result = dbquery ("SELECT * FROM wordlist");
+    $nrows = mysql_num_rows($result);
+    $EditedMessage = $Message;
+
+        if ($CONF["censormode"] == 1) { # Exact match
+           $RegExPrefix   = '([^[:alpha:]]|^)';
+           $RegExSuffix   = '([^[:alpha:]]|$)';
+         } elseif ($CONF["censormode"] == 2) {    # Word beginning
+           $RegExPrefix   = '([^[:alpha:]]|^)';
+			$RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]|$)';
+         } elseif ($CONF["censormode"] == 3) {    # Word fragment
+			$RegExPrefix   = '([^[:alpha:]]*)[[:alpha:]]*';
+			$RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]*)';
+         }
+
+   //for ($i = 0; $i < $nrows && $RegExPrefix != ''; $i++); {
+   while ($checkwords = mysql_fetch_array($result)) {
+   $Replacement = $checkwords["replaceword"];
+   				$EditedMessage = eregi_replace($RegExPrefix.$checkwords["word"].$RegExSuffix,"\\1$Replacement\\2",$EditedMessage);
 			}
-			for ($i = 0; $i < count($CONF["censorlist"]) && $RegExPrefix != ''; $i++) {
-				$EditedMessage = eregi_replace($RegExPrefix.$CONF["censorlist"][$i].$RegExSuffix,"\\1$Replacement\\2",$EditedMessage);
-			}
-		}
-	}
+    }
+
 	return ($EditedMessage);
 }
 
