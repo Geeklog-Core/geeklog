@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.41 2004/09/25 03:03:10 blaine Exp $
+// $Id: functions.inc,v 1.42 2004/09/28 15:26:18 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -553,11 +553,32 @@ function plugin_user_delete_staticpages($uid)
 * Return the current version of code. 
 * Used in the Plugin Editor to show the registered version and code version
 */
-function plugin_chkVersion_staticpages() {
+function plugin_chkVersion_staticpages()
+{
     global $_SP_CONF;
+
     return $_SP_CONF['version'];
 }
 
+/**
+* Implements the [staticpage:] autotag.
+*
+*/
+function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
+{
+    global $_CONF;
+
+    if ($op == 'tagname' ) {
+        return 'staticpage';
+    } else if ($op == 'parse') {
+        $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
+                             . $autotag['parm1']);
+        $link = '<a href="' . $url . '">' . $autotag['parm2'] . '</a>';
+        $content = str_replace ($autotag['tagstr'], $link, $content);
+
+        return $content;
+    }
+}
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
