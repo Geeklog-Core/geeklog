@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.314 2004/04/10 18:42:57 dhaun Exp $
+// $Id: lib-common.php,v 1.315 2004/04/26 19:09:37 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -321,15 +321,6 @@ if( setlocale( LC_ALL, $_CONF['locale'] ) === false )
 }
 
 /**
-* Global array of current user permissions [read,edit]
-*
-* @global array $_RIGHTS
-*
-*/
-
-$_RIGHTS = explode( ',', SEC_getUserPermissions() );
-
-/**
 * Global array of groups current user belongs to
 *
 * @global array $_GROUPS
@@ -337,6 +328,15 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 */
 
 $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
+
+/**
+* Global array of current user permissions [read,edit]
+*
+* @global array $_RIGHTS
+*
+*/
+
+$_RIGHTS = explode( ',', SEC_getUserPermissions() );
 
 if( isset( $HTTP_GET_VARS['topic'] ))
 {
@@ -3421,13 +3421,15 @@ function COM_showBlock( $name, $help='', $title='' )
 
     $retval = '';
 
-    if( !empty( $_USER['uid'] ))
-    {
-        $U['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
-    }
-    else
-    {
-        $U['noboxes'] = 0;
+    if ( isset( $_USER['noboxes'] ) ) {
+        if( !empty( $_USER['uid'] ) )
+        {
+            $_USER['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+        }
+        else
+        {
+            $_USER['noboxes'] = 0;
+        }
     }
 
     switch( $name )
@@ -3448,21 +3450,21 @@ function COM_showBlock( $name, $help='', $title='' )
             break;
 
         case 'events_block':
-            if( !$U['noboxes'] && $_CONF['showupcomingevents'] )
+            if( !$_USER['noboxes'] && $_CONF['showupcomingevents'] )
             {
                 $retval .= COM_printUpcomingEvents( $help, $title );
             }
             break;
 
         case 'poll_block':
-            if( !$U['noboxes'] )
+            if( !$_USER['noboxes'] )
             {
                 $retval .= COM_showPoll( 60 );
             }
             break;
 
         case 'whats_new_block':
-            if( !$U['noboxes'] )
+            if( !$_USER['noboxes'] )
             {
                 $retval .= COM_whatsNewBlock( $help, $title );
             }
@@ -3493,16 +3495,17 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $retval = '';
 
     // Get user preferences on blocks
-
-    if( !empty( $_USER['uid'] ))
-    {
-        $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
-        $U = DB_fetchArray( $result );
-    }
-    else
-    {
-        $U['boxes'] = '';
-        $U['noboxes'] = 0;
+    if ( isset( $_USER['noboxes'] ) || isset( $_USER['boxes'] ) ) {
+        if( !empty( $_USER['uid'] ) )
+        {
+            $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
+            list($_USER['boxes'], $_USER['noboxes']) = DB_fetchArray( $result );
+        }
+        else
+        {
+            $_USER['boxes'] = '';
+            $_USER['noboxes'] = 0;
+        }
     }
 
     if( $side == 'left' )
@@ -3531,9 +3534,9 @@ function COM_showBlocks( $side, $topic='', $name='all' )
         }
     }
 
-    if( !empty( $U['boxes'] ))
+    if( !empty( $_USER['boxes'] ))
     {
-        $BOXES = str_replace( ' ', ',', $U['boxes'] );
+        $BOXES = str_replace( ' ', ',', $_USER['boxes'] );
 
         $sql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
@@ -3563,7 +3566,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
                 $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
             }
 
-            if( $A['type'] == 'phpblock' && !$U['noboxes'] )
+            if( $A['type'] == 'phpblock' && !$_USER['noboxes'] )
             {
                 if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
                 {
@@ -3592,7 +3595,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
                 }
             }
 
-            if( !empty( $A['content'] ) && !$U['noboxes'] )
+            if( !empty( $A['content'] ) && !$_USER['noboxes'] )
             {
                 $blockcontent = stripslashes( $A['content'] );
 
@@ -5199,7 +5202,7 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
             $matches[2][$i] = substr( $matches[2][$i], 0, $maxlength - 3 ) . '...';
         }
 
-	$rel[] = '<a href="' . $matches[1][$i] . '">' . $matches[2][$i] . '</a>';
+        $rel[] = '<a href="' . $matches[1][$i] . '">' . $matches[2][$i] . '</a>';
     }
 
     return( $rel );
@@ -5267,8 +5270,7 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     {
         $table .= '.';
     }
-
-    if( $u_id <= 0 )
+    if( ($u_id <= 0) || ($u_id == $_USER['uid']) )
     {
         $uid = $_USER['uid'];    
         $GROUPS = $_GROUPS;
