@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.76 2002/04/23 04:22:02 mlimburg Exp $
+// $Id: lib-common.php,v 1.77 2002/04/23 19:06:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1743,7 +1743,7 @@ function COM_olderstuff()
                 $daycheck = strftime("%A",$A['day']);
                 if ($day != $daycheck) {
                     $day2 = strftime("%m/%d",$A['day']);
-                    $string .= '<br><b>' . $day . '</b> <small>' . $day2 . '</small><br>' . LB;
+                    $string .= '<br><b>' . $daycheck . '</b> <small>' . $day2 . '</small><br>' . LB;
                     if ($day != 'noday') {
                         $string .= COM_makeList ($oldnews);
                     }
