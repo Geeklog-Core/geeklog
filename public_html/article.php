@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.25 2002/10/07 22:22:07 dhaun Exp $
+// $Id: article.php,v 1.26 2002/10/09 10:06:17 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -147,13 +147,14 @@ if ($A['count'] > 0) {
                 . COM_endBlock (COM_getBlockTemplate ('whats_related_block',
                     'footer'));
         }
-        $story_template->set_var ('whats_related_story_options',
-            $related
-            . COM_startBlock ($LANG11[4], '',
+        $optionsblock = COM_startBlock ($LANG11[4], '',
                 COM_getBlockTemplate ('story_options_block', 'header'))
             . COM_makeList ($story_options)
-            . COM_endBlock(COM_getBlockTemplate('story_options_block','footer'))
-        );
+            . COM_endBlock(COM_getBlockTemplate('story_options_block','footer'));
+        $story_template->set_var ('whats_related', $related);
+        $story_template->set_var ('story_options', $optionsblock);
+        $story_template->set_var ('whats_related_story_options',
+            $related . $optionsblock);
 
         // if (DB_count($_TABLES['pollquestions'],'qid',$story) > 0) {
         //  $display .= COM_showPoll(80,$story);
