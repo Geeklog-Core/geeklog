@@ -605,7 +605,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (15,
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (16,4) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (17,14) ";
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (18,14) ";
-$_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (22,14) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (1,'user_block','gldefault','User Functions','all',2,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['blocks']} (bid, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES (2,'admin_block','gldefault','Admins Only','all',1,'','','0000-00-00 00:00:00',1,'',1,2,3,3,2,2) ";
@@ -743,7 +742,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All Registered Members',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (14,'Static Page Admin','Can administer static pages',0) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20030119095147683','Geeklog Sites','http://www.geeklog.net','All you ever need to know about GeekLog - and more ...','Geeklog Project Homepage',42,NULL,5,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20040119095147683','Geeklog Sites','http://www.geeklog.net','All you ever need to know about GeekLog - and more ...','Geeklog Project Homepage',42,NULL,5,2,3,3,2,2) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
@@ -758,7 +757,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALU
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Extended plugin API',0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',7,'Other',0) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,'2003-01-01 12:43:20',1,0,0,8,2,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,'2004-01-01 12:43:20',1,0,0,8,2,3,3,2,2) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('plaintext','Plain Old Text') ";
 $_DATA[] = "INSERT INTO {$_TABLES['postmodes']} (code, name) VALUES ('html','HTML Formatted') ";
@@ -770,9 +769,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (1,'Refres
 $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (0,'Normal') ";
 $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (10,'Archive') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20030101093000103',2,0,'GeekLog','2003-01-01 09:30:00','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site. While Admin has access to everything, Moderator only has access to the areas related to stories, links, and events. The password for each account is <b>password</b>. \r\r<p>Accounts:\r<ul>\r<li>Admin</li>\r<li>Moderator</li>\r</ul>','',100,1,0,'<li><a href=\"/search.php?mode=search&amp;type=stories&amp;author=2\">More by Admin</a><li><a href=\"/search.php?mode=search&amp;type=stories&amp;topic=GeekLog\">More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20040101093000103',2,0,'GeekLog','2004-01-01 09:30:00','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site. While Admin has access to everything, Moderator only has access to the areas related to stories, links, and events. The password for each account is <b>password</b>. \r\r<p>Accounts:\r<ul>\r<li>Admin</li>\r<li>Moderator</li>\r</ul>','',100,1,0,'<li><a href=\"/search.php?mode=search&amp;type=stories&amp;author=2\">More by Admin</a><li><a href=\"/search.php?mode=search&amp;type=stories&amp;topic=GeekLog\">More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20030101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2003-01-01 12:05:56','html') ";
+$_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20040101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2004-01-01 12:05:56','html') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['syndication']} (type, topic, format, limits, content_length, title, description, filename, charset, language, is_enabled, updated, update_info) VALUES ('geeklog', '::all', 'rss', 10, 0, 'Geeklog Site', 'Another Nifty Geeklog Site', 'geeklog.rdf', 'UTF-8', 'en-gb', 1, '0000-00-00 00:00:00', NULL)";
 
@@ -858,9 +857,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tz
 # Dumping data for table 'users'
 #
 
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2003-01-01 00:00:01',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2003-01-01 00:00:02',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2003-01-01 00:00:03',NULL,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2004-01-01 00:00:01',0,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2004-01-01 00:00:02',0,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2004-01-01 00:00:03',NULL,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
