@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.52 2004/08/22 17:53:20 dhaun Exp $
+// $Id: article.php,v 1.53 2004/08/27 10:08:40 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -173,20 +173,29 @@ if ($A['count'] > 0) {
             $story_template->set_var('layout_url', $_CONF['layout_url']);
             $story_options = array ();
             if ($_CONF['hideemailicon'] == 0) {
-                $story_options[] = '<a href="' . $_CONF['site_url']
-                    . '/profiles.php?sid=' . $story . '&amp;what=emailstory">'
-                    . $LANG11[2] . '</a>';
+                $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $story
+                          . '&amp;what=emailstory';
+                $story_options[] = '<a href="' . $emailUrl . '">' . $LANG11[2]
+                                 . '</a>';
+                $story_template->set_var ('email_story_url', $emailUrl);
+                $story_template->set_var ('lang_email_story', $LANG11[2]);
             }
             $printUrl = COM_buildUrl ($_CONF['site_url']
                     . '/article.php?story=' . $story .  '&amp;mode=print');
             if ($_CONF['hideprintericon'] == 0) {
                 $story_options[] = '<a href="' . $printUrl . '">' . $LANG11[3]
                                  . '</a>';
+                $story_template->set_var ('print_story_url', $printUrl);
+                $story_template->set_var ('lang_print_story', $LANG11[3]);
             }
             if ($_CONF['pdf_enabled'] == 1) {
-                $story_options[] = '<a href="' . $_CONF['site_url']
+                $pdfUrl = $_CONF['site_url']
                         . '/pdfgenerator.php?pageType=2&amp;pageData='
-                        . urlencode ($printUrl) . '">' . $LANG11[5] . '</a>';
+                        . urlencode ($printUrl);
+                $story_options[] = '<a href="' . $pdfUrl . '">' . $LANG11[5]
+                                 . '</a>';
+                $story_template->set_var ('pdf_story_url', $printUrl);
+                $story_template->set_var ('lang_pdf_story', $LANG11[5]);
             }
             $related = STORY_whatsRelated ($A['related'], $A['uid'], $A['tid']);
             if (!empty ($related)) {

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.5 2004/08/26 19:13:28 dhaun Exp $
+// $Id: lib-story.php,v 1.6 2004/08/27 10:08:39 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -241,11 +241,14 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         }
         else
         {
-            $article->set_var( 'email_icon', '<a href="' . $_CONF['site_url']
-                . '/profiles.php?sid=' . $A['sid'] . '&amp;what=emailstory">'
+            $emailUrl = $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid']
+                      . '&amp;what=emailstory';
+            $article->set_var( 'email_icon', '<a href="' . $emailUrl . '">'
                 . '<img src="' . $_CONF['layout_url']
                 . '/images/mail.gif" alt="' . $LANG01[64]
                 . '" title="' . $LANG11[2] . '" border="0"></a>' );
+            $article->set_var( 'email_story_url', $emailUrl );
+            $article->set_var( 'lang_email_story', $LANG11[2] );
         }
         $printUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                   . $A['sid'] . '&amp;mode=print' );
@@ -259,13 +262,17 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 . '<img border="0" src="' . $_CONF['layout_url']
                 . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
                 . $LANG11[3] . '"></a>' );
+            $article->set_var( 'print_story_url', $printUrl );
+            $article->set_var( 'lang_print_story', $LANG11[3] );
         }
         if( $_CONF['pdf_enabled'] == 1 )
         {
+            $pdfUrl = $_CONF['site_url'] . '/pdfgenerator.php?pageType=2&amp;'
+                    . 'pageData=' . urlencode( $printUrl );
             $article->set_var( 'pdf_icon',
-                sprintf( '<a href="%s/pdfgenerator.php?pageType=2&amp;pageData=%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s"></a>',
-                    $_CONF['site_url'], urlencode( $printUrl ),
-                    $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
+                sprintf( '<a href="%s"><img border="0" src="%s/images/pdf.gif" alt="%s" title="%s"></a>', $pdfUrl, $_CONF['layout_url'], $LANG01[111], $LANG11[5] ));
+            $article->set_var( 'pdf_story_url', $pdfUrl );
+            $article->set_var( 'lang_pdf_story', $LANG11[5] );
         }
         else
         {
