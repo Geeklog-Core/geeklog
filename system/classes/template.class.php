@@ -14,7 +14,6 @@
 *
 * $Id&
 */ 
-
 class Template {
   var $classname = "Template";
 
@@ -43,20 +42,25 @@ class Template {
   /* last error message is retained here */
   var $last_error     = "";
 
-
-  /***************************************************************************/
-  /* public: Constructor.
-   * root:     template directory.
-   * unknowns: how to handle unknown variables.
-   */
+  /**
+  * Constructor.
+  *
+  * @param      string      $root       template directory.
+  * @param      string      $unknowns   how to handle unknown variables
+  *
+  */
   function Template($root = ".", $unknowns = "remove") {
     $this->set_root($root);
     $this->set_unknowns($unknowns);
   }
 
-  /* public: setroot(pathname $root)
-   * root:   new template directory.
-   */  
+  /**
+  * Sets root template directory
+  * 
+  * @param  string      $root   new template directory.
+  * @return boolean     true if successful, otherwise false
+  *
+  */  
   function set_root($root) {
     if (!is_dir($root)) {
       $this->halt("set_root: $root is not a directory.");
@@ -67,21 +71,23 @@ class Template {
     return true;
   }
 
-  /* public: set_unknowns(enum $unknowns)
-   * unknowns: "remove", "comment", "keep"
-   *
-   */
+  /**
+  * Specifies what to do with unparsed variables
+  *
+  * @param  string  $unknowns   can either "remove", "comment" or "keep"
+  *
+  */
   function set_unknowns($unknowns = "keep") {
     $this->unknowns = $unknowns;
   }
 
-  /* public: set_file(array $filelist)
-   * filelist: array of handle, filename pairs.
-   *
-   * public: set_file(string $handle, string $filename)
-   * handle: handle for a filename,
-   * filename: name of template file
-   */
+  /**
+  * Assigns handle to file and puts file in memory for later use
+  *
+  * @param  string      $handle     handle for a filename
+  * @param  string      $filename   name of template file
+  *
+  */
   function set_file($handle, $filename = "") {
     if (!is_array($handle)) {
       if ($filename == "") {
@@ -97,10 +103,14 @@ class Template {
     }
   }
 
-  /* public: set_block(string $parent, string $handle, string $name = "")
-   * extract the template $handle from $parent, 
-   * place variable {$name} instead.
-   */
+  /**
+  * Extracts the template $handle from $parent
+  *
+  * @param  string      $parent     ??
+  * @param  string      $handle     handle to template to operate on
+  * @param  string      $name       ??
+  *
+  */
   function set_block($parent, $handle, $name = "") {
     if (!$this->loadfile($parent)) {
       $this->halt("subst: unable to load $parent.");
@@ -117,13 +127,13 @@ class Template {
     $this->set_var($parent, $str);
   }
   
-  /* public: set_var(array $values)
-   * values: array of variable name, value pairs.
-   *
-   * public: set_var(string $varname, string $value)
-   * varname: name of a variable that is to be defined
-   * value:   value of that variable
-   */
+  /**
+  * replaces template variable with a value
+  *
+  * @param  string  $varname    name of a variable that is to be defined
+  * @param  string  $value      value of that variable
+  *
+  */
   function set_var($varname, $value = "") {
     if (!is_array($varname)) {
       if (!empty($varname))
@@ -141,9 +151,13 @@ class Template {
     }
   }
 
-  /* public: subst(string $handle)
-   * handle: handle of template where variables are to be substituted.
-   */
+  /**
+  * Substitute variables into template and returns result
+  *
+  * @param  string      $handle     handle of template where variables are to be substituted.
+  * @return string      resulting, fully parsed file
+  *
+  */
   function subst($handle) {
     if (!$this->loadfile($handle)) {
       $this->halt("subst: unable to load $handle.");
@@ -161,21 +175,28 @@ class Template {
     return $str;
   }
   
-  /* public: psubst(string $handle)
-   * handle: handle of template where variables are to be substituted.
-   */
+  /**
+  * Same as subst but prints results
+  *
+  * @param  string  $handle     handle of template where variables are to be substituted.
+  * @return boolean returns false...no idea why
+  *
+  */
   function psubst($handle) {
     print $this->subst($handle);
     
     return false;
   }
 
-  /* public: parse(string $target, string $handle, boolean append)
-   * public: parse(string $target, array  $handle, boolean append)
-   * target: handle of variable to generate
-   * handle: handle of template to substitute
-   * append: append to target handle
-   */
+  /**
+  * Parses a tempalte and assigns to target variable.
+  *
+  * @param      string      $target     handle of variable to generate
+  * @param      string      $handle     handle of template to substitute
+  * @param      boolean     $append     append to target handle
+  * @return     string      returns parsed string
+  *
+  */
   function parse($target, $handle, $append = false) {
     if (!is_array($handle)) {
       $str = $this->subst($handle);
@@ -195,13 +216,27 @@ class Template {
     return $str;
   }
   
+  /**
+  * Same as parse() but this also issues a print
+  *
+  * @param      string      $target     handle of variable to generate
+  * @param      string      $handle     handle of template to substitute
+  * @param      boolean     $append     append to target handle
+  * @return     boolean     false...not sure why
+  *
+  */
   function pparse($target, $handle, $append = false) {
     print $this->parse($target, $handle, $append);
     return false;
   }
+
   
-  /* public: get_vars()
-   */
+  /**
+  * Returns array of all template variables in memory
+  *
+  * @return     array       All variables in memory
+  *
+  */
   function get_vars() {
     reset($this->varkeys);
     while(list($k, $v) = each($this->varkeys)) {
@@ -211,12 +246,13 @@ class Template {
     return $result;
   }
   
-  /* public: get_var(string varname)
-   * varname: name of variable.
-   *
-   * public: get_var(array varname)
-   * varname: array of variable names
-   */
+  /**
+  * Returns value for specified template variable
+  *
+  * @param      string  $varname    name of variable to get value for
+  * @return     mixed   value of variable
+  *
+  */
   function get_var($varname) {
     if (!is_array($varname)) {
       return $this->varvals[$varname];
@@ -230,9 +266,13 @@ class Template {
     }
   }
   
-  /* public: get_undefined($handle)
-   * handle: handle of a template.
-   */
+  /**
+  * Returns all undefined template variables
+  *
+  * @param      string      $handle     template file to get undefined vars for
+  * @return     array       Returns an array of all undefined variables
+  *
+  */
   function get_undefined($handle) {
     if (!$this->loadfile($handle)) {
       $this->halt("get_undefined: unable to load $handle.");
@@ -256,9 +296,14 @@ class Template {
       return false;
   }
 
-  /* public: finish(string $str)
-   * str: string to finish.
-   */
+  /**
+  * This will take a parsed string and handle the undefined variables as
+  * told by the unknowns property
+  *
+  * @param      string      $str    string to finish processing
+  * @return     string      Finished string
+  *
+  */
   function finish($str) {
     switch ($this->unknowns) {
       case "keep":
@@ -276,21 +321,34 @@ class Template {
     return $str;
   }
 
-  /* public: p(string $varname)
-   * varname: name of variable to print.
-   */
+  /**
+  * Finishes and prints a given variable
+  *
+  * @param      string      $varname        Variable to print
+  *
+  */
   function p($varname) {
     print $this->finish($this->get_var($varname));
   }
 
+  /**
+  * Gets a parsed variable
+  *
+  * @param      string      $varname        Variable to get
+  * @return     string      Finished version of variable
+  *
+  */
   function get($varname) {
     return $this->finish($this->get_var($varname));
   }
     
-  /***************************************************************************/
-  /* private: filename($filename)
-   * filename: name to be completed.
-   */
+  /** Verifies a filename is valid
+  *
+  * @param      string      $filename       Name of file to verify
+  * @return     string      Fully quailified file location
+  * @access     private
+  *
+  */
   function filename($filename) {
     if (substr($filename, 0, 1) != "/") {
       $filename = $this->root."/".$filename;
@@ -302,16 +360,26 @@ class Template {
     return $filename;
   }
   
-  /* private: varname($varname)
-   * varname: name of a replacement variable to be protected.
-   */
+  /**
+  * returns proper template variable name
+  *
+  * @param      string      $varname    variable name to process
+  * @return     string      properly formated template variable
+  * @access     private
+  *
+  */
   function varname($varname) {
     return preg_quote("{".$varname."}");
   }
 
-  /* private: loadfile(string $handle)
-   * handle:  load file defined by handle, if it is not loaded yet.
-   */
+  /**
+  * Attempts to load file represented by $handle into memory
+  *
+  * @param      string      $handle     Handle to file to load
+  * @return     boolean     true on success otherwise false
+  * @access     private
+  *
+  */
   function loadfile($handle) {
     if (isset($this->varkeys[$handle]) and !empty($this->varvals[$handle]))
       return true;
@@ -333,10 +401,13 @@ class Template {
     return true;
   }
 
-  /***************************************************************************/
-  /* public: halt(string $msg)
-   * msg:    error message to show.
-   */
+  /**
+  * Processes an error
+  *
+  * @param      string      $msg        Error message
+  * @return     boolean     Always false...no idea why
+  *
+  */
   function halt($msg) {
     $this->last_error = $msg;
     
@@ -349,11 +420,15 @@ class Template {
     return false;
   }
   
-  /* public, override: haltmsg($msg)
-   * msg: error message to show.
-   */
+  /**
+  * Prints a formated error message
+  *
+  * @param      string      $msg        Error message to print
+  *
+  */
   function haltmsg($msg) {
     printf("<b>Template Error:</b> %s<br>\n", $msg);
   }
 }
+
 ?>
