@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.122 2004/07/26 14:32:44 dhaun Exp $
+// $Id: config.php,v 1.123 2004/07/26 15:30:57 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -239,6 +239,18 @@ $_CONF['dateonly']   = '%d-%b';
 $_CONF['timeonly']   = '%I:%M %p %Z';
 $_CONF['week_start'] = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
+
+// "Timezone Hack"
+// If your webserver is located in a different timezone than yourself but you
+// prefer Geeklog to post stories in your local time, then set your local
+// timezone here.
+//
+// Please note that this does not work when safe_mode is on!
+//
+// For more information, see this discussion on geeklog.net:
+// http://www.geeklog.net/forum/viewtopic.php?forum=10&showtopic=21232
+// $_CONF['timezone'] = 'Etc/GMT-6'; // e.g. 6 hours behind GMT
+
 
 // +---------------------------------------------------------------------------+
 // | SITE STATUS                                                               |

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.344 2004/07/23 19:10:48 dhaun Exp $
+// $Id: lib-common.php,v 1.345 2004/07/26 15:30:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -100,6 +100,13 @@ if( eregi( 'lib-common.php', $PHP_SELF ))
     echo COM_refresh( $_CONF['site_url'] . '/index.php' );
     exit;
 }
+
+// timezone hack - set the webserver's timezone
+if( !empty( $_CONF['timezone'] ) && !ini_get( 'safe_mode' ) &&
+        function_exists( 'putenv' )) {
+    putenv( 'TZ=' . $_CONF['timezone'] );
+}
+
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
