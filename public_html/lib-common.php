@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.334 2004/06/17 11:15:29 dhaun Exp $
+// $Id: lib-common.php,v 1.335 2004/07/08 19:38:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2082,12 +2082,8 @@ function COM_showTopics( $topic='' )
     {
         // Give a link to the homepage here since a lot of people use this for
         // navigating the site
-        // Note: We can't use $PHP_SELF here since the site may not be in the
-        // DocumentRoot
 
-        preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
-        if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" )
-                OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+        if( COM_isFrontpage() )
         {
             $sections->set_var( 'option_url',
                                 $_CONF['site_url'] . '/index.php' );
@@ -2227,45 +2223,7 @@ function COM_userMenu( $help='', $title='' )
         }
 
         // what's our current URL?
-        $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
-        if( empty( $thisUrl ))
-        {
-            $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
-        }
-        if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
-        {
-            $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
-        }
-        if( empty( $thisUrl ))
-        {
-            $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
-            if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
-            {
-                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
-                if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
-                {
-                    $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
-                }
-            }
-
-            $firstslash = strpos( $_CONF['site_url'], '/' );
-            if( $firstslash === false )
-            {
-                // special case - assume it's okay
-                $thisUrl = $_CONF['site_url'] . $requestUri;
-            }
-            else if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
-            {
-                // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $requestUri;
-            }
-            else
-            {
-                // extract server name first
-                $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
-                $thisUrl = substr( $_CONF['site_url'], 0, $pos ) . $requestUri;
-            }
-        }
+        $thisUrl = COM_getCurrentURL();
 
         $retval .= COM_startBlock( $title, $help,
                            COM_getBlockTemplate( 'user_block', 'header' ));
@@ -2402,45 +2360,7 @@ function COM_adminMenu( $help = '', $title = '' )
     if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
     {
         // what's our current URL?
-        $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
-        if( empty( $thisUrl ))
-        {
-            $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
-        }
-        if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
-        {
-            $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
-        }
-        if( empty( $thisUrl ))
-        {
-            $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
-            if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
-            {
-                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
-                if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
-                {
-                    $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
-                }
-            }
-
-            $firstslash = strpos( $_CONF['site_url'], '/' );
-            if( $firstslash === false )
-            {
-                // special case - assume it's okay
-                $thisUrl = $_CONF['site_url'] . $requestUri;
-            }
-            else if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
-            {
-                // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $requestUri;
-            }
-            else
-            {
-                // extract server name first
-                $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
-                $thisUrl = substr( $_CONF['site_url'], 0, $pos ) . $requestUri;
-            }
-        }
+        $thisUrl = COM_getCurrentURL();
 
         $adminmenu = new Template( $_CONF['path_layout'] );
         $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
@@ -3411,7 +3331,8 @@ function COM_checkHTML( $str )
     return $filter->Parse( $str );
 }
 
-/** undo function for htmlspecialchars()
+/**
+* undo function for htmlspecialchars()
 *
 * This function translates HTML entities created by htmlspecialchars() back
 * into their ASCII equivalents. Also handles the entities for $, {, and }.
@@ -3767,8 +3688,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
     else
     {
-        preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
-        if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+        if( COM_isFrontpage() )
         {
             $sql .= " AND (tid = 'all' AND type <> 'layout')";
         }
@@ -5848,6 +5768,108 @@ function COM_dateDiff($interval, $date1, $date2)
     return $diff;
 }
 
+/**
+* Try to figure out our current URL, including all parameters.
+*
+* This is an ugly hack since there's no single variable that returns what
+* we want and the variables used here may not be available on all servers
+* and / or setups.
+*
+* Seems to work on Apache (1.3.x and 2.x), IIS, and Zeus ...
+*
+* @return   string  complete URL, e.g. 'http://www.example.com/blah.php?foo=bar'
+*
+*/
+function COM_getCurrentURL()
+{
+    global $_CONF, $HTTP_SERVER_VARS;
+
+    $thisUrl = $HTTP_SERVER_VARS['SCRIPT_URI'];
+    if( empty( $thisUrl ))
+    {
+        $thisUrl = $HTTP_SERVER_VARS['DOCUMENT_URI'];
+    }
+    if( !empty( $thisUrl ) && !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+    {
+        $thisUrl .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];
+    }
+    if( empty( $thisUrl ))
+    {
+        $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
+        if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
+        {
+            // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
+            if( empty( $HTTP_SERVER_VARS['PATH_INFO'] ))
+            {
+                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+            }
+            else
+            {
+                $requestUri = $HTTP_SERVER_VARS['PATH_INFO'];
+            }
+            if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+            {
+                $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
+            }
+        }
+
+        $firstslash = strpos( $_CONF['site_url'], '/' );
+        if( $firstslash === false )
+        {
+            // special case - assume it's okay
+            $thisUrl = $_CONF['site_url'] . $requestUri;
+        }
+        else if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
+        {
+            // site is in the document root
+            $thisUrl = $_CONF['site_url'] . $requestUri;
+        }
+        else
+        {
+            // extract server name first
+            $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
+            $thisUrl = substr( $_CONF['site_url'], 0, $pos ) . $requestUri;
+        }
+    }
+
+    return $thisUrl;
+}
+
+/**
+* Check if we're on Geeklog's index page.
+*
+* See if we're on the main index page (first page, no topics selected).
+*
+* @return   bool    true = we're on the frontpage, false = we're not
+*
+*/
+function COM_isFrontpage()
+{
+    global $_CONF, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+
+    // Note: We can't use $PHP_SELF here since the site may not be in the
+    // DocumentRoot
+    $isFrontpage = false;
+
+    // on a Zeus webserver, prefer PATH_INFO over SCRIPT_NAME
+    if( empty( $HTTP_SERVER_VARS['PATH_INFO'] ))
+    {
+        $scriptName = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+    }
+    else
+    {
+        $scriptName = $HTTP_SERVER_VARS['PATH_INFO'];
+    }
+
+    preg_match( '/\/\/[^\/]*(.*)/', $_CONF['site_url'], $pathonly );
+    if(( $scriptName <> $pathonly[1] . '/index.php' ) OR
+            !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+    {
+        $isFrontpage = true;
+    }
+
+    return $isFrontpage;
+}
 
 // Now include all plugin functions
 foreach ($_PLUGINS as $pi_name) {
