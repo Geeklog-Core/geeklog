@@ -200,7 +200,7 @@ function make_login_logout_link($user_logged_in, $url_phpbb) {
 #	Gets user's data based on their username
 
 function get_userdata($username) {
-	$sql = "SELECT  users.uid, username, username name, seclev, email, homepage, sig,noicons, dfid FROM {$CONF["db_prefix"]}users, {$CONF["db_prefix"]}userprefs WHERE userprefs.uid = users.uid AND username = '$username'";
+	$sql = "SELECT  users.uid, username, username name, email, homepage, sig,noicons, dfid FROM {$CONF["db_prefix"]}users, {$CONF["db_prefix"]}userprefs WHERE userprefs.uid = users.uid AND username = '$username'";
 
 	if(!$result = dbquery($sql)) {
 		errorlog("error in get_userdata");
