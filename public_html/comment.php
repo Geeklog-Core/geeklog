@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.75 2004/09/03 19:59:56 tony Exp $
+// $Id: comment.php,v 1.76 2004/09/25 20:08:16 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -737,14 +737,17 @@ case 'view':
                 if ( $_USER['uid'] > 1 ) {
                     $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
                                           "uid = {$_USER['uid']}" );
-                }
-                if ( empty($format) || $_USER['uid'] <= 1 ) {
+                } else {
                     $format = $_CONF['comment_mode'];
                 }
             }
+            $delete_option = ( SEC_hasRights( 'story.edit' ) &&
+                SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon'] ) == 3 ? true : false );
             $display .= COM_userComments ($sid, $title, $type, 
                             COM_applyFilter ($_REQUEST['order']), $format, $cid,
-                            COM_applyFilter ($_REQUEST['page'], true), true);
+                            COM_applyFilter ($_REQUEST['page'], true), true, $delete_option);
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'))
@@ -781,9 +784,13 @@ case 'display':
             if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
                 $format = 'threaded';
             }
+            $delete_option = ( SEC_hasRights( 'story.edit' ) &&
+                SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon'] ) == 3 ? true : false );
             $display .= COM_userComments ($sid, $title, $type,
                     COM_applyFilter ($_REQUEST['order']), $format, $pid,
-                    COM_applyFilter ($_REQUEST['page'], true));
+                    COM_applyFilter ($_REQUEST['page'], true), false, $delete_option);
         } else {
             $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'))
