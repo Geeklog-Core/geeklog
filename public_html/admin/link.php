@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.12 2002/01/03 21:45:47 tony_bibbs Exp $
+// $Id: link.php,v 1.13 2002/01/25 18:28:03 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -84,7 +84,7 @@ function editlink($mode, $lid = '')
         }
 	} else {
 		if ($mode == 'editsubmission') {
-			$result = DB_query ("SELECT * FROM {$_TABLES['linksubmission']}linksubmission WHERE lid = '$lid'");
+			$result = DB_query ("SELECT * FROM {$_TABLES['linksubmission']} WHERE lid = '$lid'");
 			$A = DB_fetchArray($result);
 		}
 		$A['hits'] = 0;
