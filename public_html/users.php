@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.56 2003/04/16 13:20:27 dhaun Exp $
+// $Id: users.php,v 1.57 2003/05/03 18:28:21 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -456,14 +456,17 @@ function createuser($username,$email)
 
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
-            $retval .= COM_siteHeader ('Menu')
-                    . newuserform ($LANG04[19])
-                    . COM_siteFooter ();
+		    $retval .= COM_siteHeader('menu');
+	        if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+		        $retval .= custom_userform('new','',$LANG04[19]);
+	        } else {
+		        $retval .= newuserform($LANG04[19]);
+	        }
         }
     } else {
         $retval .= COM_siteHeader ('Menu')
                 . newuserform ($LANG04[18])
-                . COM_siteFooter();
+                . COM_siteFooter ();
     }
 
     return $retval;
@@ -633,7 +636,12 @@ case 'logout':
 case 'profile':
     $uid = strip_tags ($HTTP_GET_VARS['uid']);
     if (is_numeric ($uid)) {
-        $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
+	    // Call custom registration and account record create function if enabled and exists
+        if ($_CONF['custom_registration'] AND (function_exists(custom_userform)) AND SEC_hasRights("user.edit")) {
+            $display .= COM_siteHeader('menu') . custom_userform('moderate',$uid) . COM_siteFooter();
+	    } else {
+		    $display .= COM_siteHeader('menu') . userprofile($uid) . COM_siteFooter();
+        }
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
     }
@@ -650,13 +658,13 @@ case 'emailpasswd':
     $display .= emailpassword($HTTP_POST_VARS['username'], 1);
     break;
 case 'new':
-    $display .= COM_siteHeader('menu');
 	// Call custom registration and account record create function if enabled and exists
+    $display .= COM_siteHeader('menu');
 	if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
         $display .= custom_userform('new');
 	} else {
 	    $display .= newuserform($msg);
-	}	
+	}		
     $display .= COM_siteFooter();
     break;
 default:
