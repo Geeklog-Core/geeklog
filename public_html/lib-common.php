@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.240 2003/07/16 13:04:19 dhaun Exp $
+// $Id: lib-common.php,v 1.241 2003/07/26 19:13:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -747,12 +747,16 @@ function COM_siteHeader( $what = 'menu' )
     $header->set_var( 'site_mail', "mailto:{$_CONF['site_mail']}" );
     $header->set_var( 'site_name', $_CONF['site_name'] );
     $header->set_var( 'site_slogan', $_CONF['site_slogan'] );
+    $rdf = substr_replace( $_CONF['rdf_file'], $_CONF['site_url'], 0,
+                           strlen( $_CONF['path_html'] ) - 1 );
+    $header->set_var( 'rdf_file', $rdf );
+    $header->set_var( 'rss_url', $rdf );
 
-    $msg = '&nbsp;'.$LANG01[67].' '.$_CONF['site_name'];
+    $msg = '&nbsp;' . $LANG01[67] . ' ' . $_CONF['site_name'];
 
     if( !empty( $_USER['username'] ))
     {
-        $msg .= ', '.$_USER['username'];
+        $msg .= ', ' . $_USER['username'];
     }
 
     $curtime =  COM_getUserDateTimeFormat();
@@ -947,6 +951,7 @@ function COM_siteFooter( $rightblock = false )
     $rdf = substr_replace( $_CONF['rdf_file'], $_CONF['site_url'], 0,
                            strlen( $_CONF['path_html'] ) - 1 );
     $footer->set_var( 'rdf_file', $rdf );
+    $footer->set_var( 'rss_url', $rdf );
 
     $year = date( 'Y' );
     $copyrightyear = $year;
@@ -1386,7 +1391,8 @@ function COM_exportRDF()
                         }
                     }
 
-                    $desc .= $storytext . "</description>\n";
+                    $desc .= htmlspecialchars( $storytext )
+                          . "</description>\n";
                 }
                 else
                 {
