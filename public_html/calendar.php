@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.38 2004/08/02 19:43:56 dhaun Exp $
+// $Id: calendar.php,v 1.39 2004/08/03 10:56:16 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -184,13 +184,22 @@ function getSmallCalendar ($m, $y, $mode = '')
 
     for ($i = 1; $i <= 6; $i++) {
         if ($i % 2 == 0) {
-            $retval .= '<tr class="smallcal-week-even">' . LB;
+            $tr = '<tr class="smallcal-week-even">' . LB;
         } else {
-            $retval .= '<tr class="smallcal-week-odd">' . LB;
+            $tr = '<tr class="smallcal-week-odd">' . LB;
         }
+        $tr_sent = false;
         for ($j = 1; $j <= 7; $j++) {
-            $retval .= '<td align="right"';
             $curday = $mycal->getDayData ($i, $j);
+            if (!$tr_sent) {
+                if (empty ($curday)) {
+                    $retval .= '<tr class="smallcal-week-empty">' . LB;
+                } else {
+                    $retval .= $tr;
+                }
+                $tr_sent = true;
+            }
+            $retval .= '<td align="right"';
             if (!empty ($curday)) {
                 if ($j % 2 == 0) {
                     $retval .= ' class="smallcal-day-even">' . LB;
@@ -203,7 +212,7 @@ function getSmallCalendar ($m, $y, $mode = '')
                     $i = 7;
                     $j = 8;
                 }
-                $retval .= '>&nbsp;';
+                $retval .= ' class="smallcal-day-empty">&nbsp;';
             }
             $retval .= '</td>' . LB;
         }
