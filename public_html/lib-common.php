@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.122 2002/07/22 03:04:18 mlimburg Exp $
+// $Id: lib-common.php,v 1.123 2002/07/23 01:07:14 mlimburg Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2865,7 +2865,7 @@ $result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
 $nrows = DB_numRows($result);
 for ($i = 1; $i <= $nrows; $i++) {
 	$A = DB_fetchArray($result);
-	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.php');
+	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
 }
 
 /**

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.php,v 1.1 2002/07/22 03:04:19 mlimburg Exp $
+// $Id: functions.inc,v 1.11 2002/07/23 01:06:14 mlimburg Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
