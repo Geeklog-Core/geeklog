@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.72 2004/08/09 18:36:29 dhaun Exp $
+// $Id: comment.php,v 1.73 2004/08/15 12:06:05 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -245,7 +245,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 */
 function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03, $REMOTE_ADDR;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -273,6 +273,18 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
                 . $LANG03[8]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         return $retval;
+    }
+
+    $commentcode = 0;
+    if ($type == 'article') {
+        $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
+                                   "sid = '$sid'");
+    } else if ($type == 'poll') {
+        $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
+                                   "qid = '$sid'");
+    }
+    if ($commentcode < 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
     // Clean 'em up a bit!
@@ -318,18 +330,19 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                    . "WHERE sid = '$sid' AND rht >= $rht");
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','$REMOTE_ADDR'");
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$HTTP_SERVER_VARS['REMOTE_ADDR']}'");
         } else {
             $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)');
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','$REMOTE_ADDR'");
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$HTTP_SERVER_VARS['REMOTE_ADDR']}'");
         }
         DB_query('UNLOCK TABLES');
 
         if (isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
             $cid = DB_insertId();
-            sendNotification ($title, $comment, $uid, $REMOTE_ADDR, $type, $cid);
+            sendNotification ($title, $comment, $uid,
+                              $HTTP_SERVER_VARS['REMOTE_ADDR'], $type, $cid);
         }
 
         if ($type == 'poll') {
@@ -425,7 +438,7 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 */
 function deletecomment ($cid, $sid, $type) 
 {
-    global $_CONF, $_TABLES, $_USER, $REMOTE_ADDR;
+    global $_CONF, $_TABLES, $_USER, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -475,7 +488,8 @@ function deletecomment ($cid, $sid, $type)
                 }
             } else {
                 COM_errorLog ('User ' . $_USER['username'] . ' (IP: '
-                        . $REMOTE_ADDR . ') tried to illegally delete comment '
+                        . $HTTP_SERVER_VARS['REMOTE_ADDR']
+                        . ') tried to illegally delete comment '
                         . $cid . ' from ' . $type . ' ' . $sid);
                 $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }

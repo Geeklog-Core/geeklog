@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.84 2004/08/14 15:52:17 dhaun Exp $
+// $Id: users.php,v 1.85 2004/08/15 12:06:07 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -839,7 +839,7 @@ default:
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
         $userdata = SESS_getUserData($loginname);
         $_USER=$userdata;
-        $sessid = SESS_newSession($_USER['uid'], $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+        $sessid = SESS_newSession($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
         // Now that we handled session cookies, handle longterm cookie

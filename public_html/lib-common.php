@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.359 2004/08/13 15:41:58 dhaun Exp $
+// $Id: lib-common.php,v 1.360 2004/08/15 12:06:06 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -304,7 +304,7 @@ else if( !empty( $_USER['language'] ))
 if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
 {
     // The following code handles anonymous users so they show up properly
-    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1" );
+    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}' AND uid = 1" );
 
     $tries = 0;
     do
@@ -315,7 +315,7 @@ if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
         $curtime = time();
 
         // Insert anonymous user session
-        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '$REMOTE_ADDR', 1)", 1 );
+        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '{$HTTP_SERVER_VARS['REMOTE_ADDR']}', 1)", 1 );
         $tries++;
     }
     while(( $result === false) && ( $tries < 5 ));
@@ -1734,7 +1734,7 @@ function COM_errorLog($logentry, $actionid = '')
 
 function COM_accessLog( $logentry )
 {
-    global $_CONF, $_USER, $LANG01, $REMOTE_ADDR;
+    global $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -1748,11 +1748,11 @@ function COM_accessLog( $logentry )
 
     if( isset( $_USER['uid'] ))
     {
-        $byuser = $_USER['uid'] . '@' . $REMOTE_ADDR;
+        $byuser = $_USER['uid'] . '@' . $HTTP_SERVER_VARS['REMOTE_ADDR'];
     }
     else
     {
-        $byuser = 'anon@' . $REMOTE_ADDR;
+        $byuser = 'anon@' . $HTTP_SERVER_VARS['REMOTE_ADDR'];
     }
 
     fputs( $file, "$timestamp ($byuser) - $logentry\n" );
@@ -1774,7 +1774,7 @@ function COM_accessLog( $logentry )
 
 function COM_pollVote( $qid )
 {
-    global $_CONF, $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $LANG01;
+    global $_CONF, $_TABLES, $LANG01, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -1788,7 +1788,7 @@ function COM_pollVote( $qid )
 
     $nquestion = DB_numRows( $question );
     $fields = array( 'ipaddress', 'qid' );
-    $values = array( $REMOTE_ADDR, $qid );
+    $values = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
     $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
 
     if( empty( $HTTP_COOKIE_VARS[$qid] ) && $id == 0 )
@@ -1873,7 +1873,7 @@ function COM_pollVote( $qid )
 
 function COM_showPoll( $size, $qid='' )
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $_CONF;
+    global $_CONF, $_TABLES, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -1882,7 +1882,7 @@ function COM_showPoll( $size, $qid='' )
     if( !empty( $qid ))
     {
         $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                            array( $REMOTE_ADDR, $qid ));
+                            array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid ));
 
         if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
         {
@@ -1905,7 +1905,7 @@ function COM_showPoll( $size, $qid='' )
                 $Q = DB_fetchArray( $result );
                 $qid = $Q['qid'];
                 $id = array( 'ipaddress', 'qid' );
-                $value = array( $REMOTE_ADDR, $qid );
+                $value = array( $HTTP_SERVER_VARS['REMOTE_ADDR'], $qid );
                 $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
 
                 if( !isset( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
@@ -5324,12 +5324,12 @@ function COM_makeList( $listofitems, $classname = '' )
 */
 function COM_checkSpeedlimit ($type = 'submit')
 {
-    global $_TABLES, $REMOTE_ADDR;
+    global $_TABLES, $HTTP_SERVER_VARS;
 
     $last = 0;
 
     $date = DB_getItem ($_TABLES['speedlimit'], 'date',
-                        "(type = '$type') AND (ipaddress = '$REMOTE_ADDR')");
+                        "(type = '$type') AND (ipaddress = '{$HTTP_SERVER_VARS['REMOTE_ADDR']}')");
     if (!empty ($date)) {
         $last = time () - $date;
         if ($last == 0) {
@@ -5349,10 +5349,10 @@ function COM_checkSpeedlimit ($type = 'submit')
 */
 function COM_updateSpeedlimit ($type = 'submit')
 {
-    global $_TABLES, $REMOTE_ADDR;
+    global $_TABLES, $HTTP_SERVER_VARS;
 
     DB_save ($_TABLES['speedlimit'], 'ipaddress,date,type',
-             "'$REMOTE_ADDR',unix_timestamp(),'$type'");
+             "'{$HTTP_SERVER_VARS['REMOTE_ADDR']}',unix_timestamp(),'$type'");
 }
 
 /**

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.30 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-sessions.php,v 1.31 2004/08/15 12:06:11 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -78,7 +78,7 @@ $_USER = SESS_sessionCheck();
 */
 function SESS_sessionCheck()
 {
-    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE, $HTTP_COOKIE_VARS, $REMOTE_ADDR;
+    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Inside SESS_sessionCheck***",1);
@@ -100,7 +100,7 @@ function SESS_sessionCheck()
             COM_errorLog("got $sessid as the session id from lib-sessions.php",1);
         }
 
-        $userid = SESS_getUserIdFromSession($sessid, $_CONF['session_cookie_timeout'], $REMOTE_ADDR, $_CONF['cookie_ip']);
+        $userid = SESS_getUserIdFromSession($sessid, $_CONF['session_cookie_timeout'], $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['cookie_ip']);
 
         if ($_SESS_VERBOSE) {
             COM_errorLog("Got $userid as User ID from the session ID",1);
@@ -130,7 +130,7 @@ function SESS_sessionCheck()
                     } else {
                         if ($userid) {
                             $user_logged_in = 1;
-                            $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                            $sessid = SESS_newSession($userid, $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                             $userdata = SESS_getUserDataFromId($userid);
                             $_USER = $userdata;
@@ -166,7 +166,7 @@ function SESS_sessionCheck()
                         $user_logged_in = 1;
 
                         // Create new session and write cookie
-                        $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                        $sessid = SESS_newSession($userid, $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
                         $userdata = SESS_getUserDataFromId($userid);
                         $_USER = $userdata;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.29 2004/08/14 09:04:14 dhaun Exp $
+// $Id: pollbooth.php,v 1.30 2004/08/15 12:06:07 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -52,10 +52,10 @@ define ('POLLS_PER_PAGE', 50);
 */
 function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $LANG07, $REMOTE_ADDR;
+    global $_TABLES, $LANG07, $HTTP_SERVER_VARS;
 
     $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
-                        array ($REMOTE_ADDR, $qid));
+                        array ($HTTP_SERVER_VARS['REMOTE_ADDR'], $qid));
     if ($pcount > 0) {
         exit;
     }
@@ -68,7 +68,7 @@ function pollsave($qid = '', $aid = 0)
     // This call to DB-change will properly supress the insertion of quoes around $value in the sql
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
     // This always does an insert so no need to provide key_field and key_value args
-    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'$REMOTE_ADDR'," . time() . ",'$qid'");
+    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'{$HTTP_SERVER_VARS['REMOTE_ADDR']}'," . time() . ",'$qid'");
     $retval .= COM_startBlock ($LANG07[1], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
         . $LANG07[2] . ' "'
