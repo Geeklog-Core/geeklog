@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.32 2002/08/04 20:20:13 dhaun Exp $
+// $Id: search.php,v 1.33 2002/08/05 17:18:55 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -120,7 +120,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
     }
 
     if (($type == 'links') || (($type == 'all') && empty ($author))) {
-        $sql = "SELECT lid,title,url,hits,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
+        $sql = "SELECT lid,title,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
 		$sql .= " (title like '%$query%' ";
 		$sql .= " OR description like '%$query%') ";
         if (!empty($datestart) && !empty($dateend)) {
@@ -140,26 +140,33 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
         $link_results->addSearchHeading($LANG09[16]);
         $link_results->addSearchHeading($LANG09[33]);
         $link_results->addSearchHeading($LANG09[23]);
-        $link_results->num_searchresults = DB_numRows($result_links);
+        $link_results->num_searchresults = 0;
         $link_results->num_itemssearched = DB_count($_TABLES['links']);
 
         // NOTE if any of your data items need to be links then add them here! 
         // make sure data elements are in an array and in the same order as your
         // headings above!
-        for ($i = 1; $i <= $link_results->num_searchresults; $i++) {
+        $numRows = DB_numRows($result_links);
+        for ($i = 1; $i <= $numRows; $i++) {
             $A = DB_fetchArray($result_links);
-            $thetime = COM_getUserDateTimeFormat($A['day']);
-            $row = array($A['title'], '<a href="' . $_CONF['site_url']
-                 . '/portal.php?url=' . urlencode ($A['url'])
-                 . '&amp;what=link&amp;item=' . $A['lid'] . '">' . $A['url']
-                 . '</a>', $A['hits']);
-            $link_results->addSearchResult($row);
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                $thetime = COM_getUserDateTimeFormat($A['day']);
+                $row = array($A['title'], '<a href="' . $_CONF['site_url']
+                     . '/portal.php?url=' . urlencode ($A['url'])
+                     . '&amp;what=link&amp;item=' . $A['lid'] . '">' . $A['url']
+                     . '</a>', $A['hits']);
+                $link_results->addSearchResult($row);
+                $link_results->num_searchresults++;
+            } else {
+                // user is not allowed to see this item so don't count it either
+                $link_results->num_itemssearched--;
+            }
         }
-        return $link_results;
     } else {
         $link_results = new Plugin();
         $link_results->searchlabel = $LANG09[38];
     }
+
     return $link_results;
 }
 
@@ -171,7 +178,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
     }
 
     if (($type == 'events') || (($type == 'all') && empty ($author))) {
-		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
+		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
         $sql .= "(title like '%$query%' OR ";
         $sql .= "location like '%$query%' ";
 		$sql .= "OR description like '%$query%') ";
@@ -193,28 +200,35 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
         $event_results->addSearchHeading($LANG09[16]);
         $event_results->addSearchHeading($LANG09[17]);
         $event_results->addSearchHeading($LANG09[34]);
-        $event_results->num_searchresults = DB_numRows($result_events);
+        $event_results->num_searchresults = 0;
         $event_results->num_itemssearched = DB_count($_TABLES['events']);
 
         // NOTE if any of your data items need to be links then add them here! 
         // make sure data elements are in an array and in the same order as your
         // headings above!
-        for ($i = 1; $i <= $event_results->num_searchresults; $i++) {
+        $numRows = DB_numRows($result_events);
+        for ($i = 1; $i <= $numRows; $i++) {
             $A = DB_fetchArray($result_events);
-            if ($A['allday'] == 0) {
-                $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - ' . $A['dateend'] . ' ' . $A['timeend'];
-            } else {
-                if ($A['datestart'] <> $A['dateend']) {
-                    $fulldate = $A['datestart'] . ' - ' . $A['dateend'] . ' ' . $LANG09[35];
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                if ($A['allday'] == 0) {
+                    $fulldate = $A['datestart'] . ' ' . $A['timestart'] . ' - ' . $A['dateend'] . ' ' . $A['timeend'];
                 } else {
-                    $fulldate = $A['datestart'] . ' ' . $LANG09[35];
+                    if ($A['datestart'] <> $A['dateend']) {
+                        $fulldate = $A['datestart'] . ' - ' . $A['dateend'] . ' ' . $LANG09[35];
+                    } else {
+                        $fulldate = $A['datestart'] . ' ' . $LANG09[35];
+                    }
                 }
+                $thetime = COM_getUserDateTimeFormat($A['day']);
+                $row = array('<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '">' . $A['title'] . '</a>',
+                            $fulldate,
+                            $A['location']);
+                $event_results->addSearchResult($row);
+                $event_results->num_searchresults++;
+            } else {
+                // user is not allowed to see this item so don't count it either
+                $event_results->num_itemssearched--;
             }
-            $thetime = COM_getUserDateTimeFormat($A['day']);
-            $row = array('<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '">' . $A['title'] . '</a>',
-                        $fulldate,
-                        $A['location']);
-            $event_results->addSearchResult($row);
         }
     } else {
         $event_results = new Plugin();
@@ -233,7 +247,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
 	if ($type == 'all' OR $type == 'stories') {
-		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) ";
+		$sql = "SELECT sid,title,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) ";
         if (!empty ($query)) {
 		    $sql .= "AND (introtext like '%$query%'  ";
 		    $sql .= "OR bodytext like '%$query%' ";
@@ -257,7 +271,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 
 		$result_stories = DB_query($sql);
 		$nrows_stories = DB_numRows($result_stories);
-		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE draft_flag = 0");
+		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())");
 		$B = DB_fetchArray($result_count);
 		$total_stories = $B[0];
 		$A = DB_fetchArray($result_stories);
@@ -377,7 +391,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
                         $searchresults->set_var('data_cols','');
 
                         $C = DB_fetchArray($result_comments);
-                    } 
+                    }
                 }
             } else {
                 $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[28] . '</td></tr>');
@@ -388,7 +402,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
         }
 
         // Print link results
-		  if (($link_results->num_searchresults > 0) ||
+        if (($link_results->num_searchresults > 0) ||
 		          $_CONF['showemptysearchresults']) {
             $searchresults->set_var('data_cols','');
             $searchresults->set_var('start_block_results',
@@ -422,7 +436,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
         }
 
         // Print event results
-		  if (($event_results->num_searchresults > 0) ||
+        if (($event_results->num_searchresults > 0) ||
 		          $_CONF['showemptysearchresults']) {
             $searchresults->set_var('data_cols','');
             $searchresults->set_var('start_block_results',
@@ -502,7 +516,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
                     . $LANG09[14].' <b>'.$query.'</b> '.$LANG09[15]
 			        . COM_endBlock();
 	}
-			
+
 	return $retval;
 }
 
