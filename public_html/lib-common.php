@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.273 2004/01/10 13:44:45 dhaun Exp $
+// $Id: lib-common.php,v 1.274 2004/01/13 20:00:40 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -196,8 +196,11 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 if( !$_CONF['have_pear'] )
 {
     $curPHPIncludePath = ini_get( 'include_path' );
-    ini_set( 'include_path',
-             $curPHPIncludePath . PATH_SEPARATOR . $_CONF['path_pear'] );  
+    if( ini_set( 'include_path', $_CONF['path_pear'] . PATH_SEPARATOR
+                                 . $curPHPIncludePath ) === false )
+    {
+        COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
+    }
 }
 
 // Set theme
@@ -1407,7 +1410,7 @@ function COM_featuredCheck()
 *
 * @param        string      $logentry       Text to log to error log
 * @param        int         $actionid       1 = write to log file, 2 = write to screen (default) both
-* @see function COM_accesslog
+* @see function COM_accessLog
 * @return   string  If $actionid = 2 or '' then HTML formated string (wrapped in block) else nothing
 *
 */
@@ -1479,7 +1482,7 @@ function COM_errorLog($logentry, $actionid = '')
 *
 */
 
-function COM_accesslog( $logentry )
+function COM_accessLog( $logentry )
 {
     global $_CONF, $LANG01;
 
@@ -5161,10 +5164,10 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 
 
 // Now include all plugin functions
-$result = DB_query( "SELECT pi_name FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1" );
+$result = DB_query( "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1" );
 $nrows = DB_numRows( $result );
 
-for( $i = 1; $i <= $nrows; $i++ )
+for( $i = 0; $i < $nrows; $i++ )
 {
     $A = DB_fetchArray( $result );
     require_once( $_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc' );
