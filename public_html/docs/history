@@ -1,5 +1,31 @@
 GeekLog History/Changes:
 
+- A proper error message is now displayed when attempting to use "Mail Users"
+  but not filling out all the fields.
+- Editing a portal block shouldn't make it disappear any more ...
+- The somewhat random order of poll answers has been fixed.
+- The site can be disabled by setting $_CONF['site_enabled'] = false; in
+  config.php. $_CONF['site_disabled_msg'] can either contain a message to be
+  displayed in that case or a URL (has to start with http:) to which all
+  requests will be redirected.
+- Fixed various access rights / privacy issues where users could see (but
+  not access) information even when they shouldn't ...
+  + Search returns only those links and events to which the user has the
+    proper access rights
+  + Upcoming events are only visible to those with the proper rights
+  + Topics are not available for submissions without proper rights
+  + "Last 10 comments" in profile takes proper rights into account
+- Story display and paged navigation weren't working properly when some stories
+  were only accessible to certain users.
+- Fixed a bug where users weren't able to use the site when their theme had
+  been removed (until they cleared their cookies).
+- New installations now have only two default accounts: The Admin account (as
+  before) and a Moderator account that has access to the story, links, and
+  events submission queues.
+- The Older Stories block should work again.
+- The submission queues for stories, links, and events can now be switched
+  off separately (in config.php), i.e. user submissions will then be visible
+  to everybody immediately.
 - The database backup is more verbose now, especially when there are problems
   (changes provided by Blaine Lang).
 - Fixed a bug where the admin's user photo overwrote a user's photo when the
