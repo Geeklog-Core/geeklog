@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.51 2003/08/03 08:15:42 dhaun Exp $
+// $Id: install.php,v 1.52 2003/08/07 10:23:16 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -139,8 +139,13 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
         // They already have a lib-database file...they can't change their tables names
         $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5','1.3.6','1.3.7');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
-        for ($j = 1; $j <= count($old_versions); $j++) {
-           $versiondd .= '<option>' . current($old_versions) . '</option>';
+        $cnt = count ($old_versions);
+        for ($j = 1; $j <= $cnt; $j++) {
+           $versiondd .= '<option';
+           if ($j == $cnt) {
+               $versiondd .= ' selected="selected"';
+           }
+           $versiondd .= '>' . current ($old_versions) . '</option>';
            next($old_versions);
         }
         $versiondd .= '</select></td></tr>';
