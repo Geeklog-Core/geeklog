@@ -149,6 +149,7 @@ $CONF["headingtextcolor"] = 'black';
 
 # Story Settings
 
+$CONF["pagetitle"] = "";
 $CONF["backend"] = "0";
 $CONF["limitnews"] = "10";
 $CONF["minnews"] = "1"; // minimum number of stories per page
