@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.52 2003/06/12 09:26:17 dhaun Exp $
+// $Id: user.php,v 1.53 2003/06/16 08:53:53 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -324,7 +324,7 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
         $num_pages = ceil(DB_getItem($_TABLES['users'],'count(*)','uid > 1') / $limit);
     }
 
-    $offset = (($curpage - 1) * $limit) + 1;
+    $offset = (($curpage - 1) * $limit);
 
     if (!empty($query)) {
         $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') LIMIT $offset,$limit";
