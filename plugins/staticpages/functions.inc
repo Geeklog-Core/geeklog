@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.22 2003/06/26 04:09:04 blaine Exp $
+// $Id: functions.inc,v 1.23 2003/06/26 18:36:44 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -366,54 +366,65 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
         $moresql = "(sp_where = $where) AND (sp_tid = '{$topic}')";
     }
 
+    if ($_SP_CONF['sort_by'] == 'date') {
+        $sort = 'sp_date DESC';
+    } else if ($_SP_CONF['sort_by'] == 'title') {
+        $sort = 'sp_title';
+    } else { // default to "sort by id"
+        $sort = 'sp_id';
+    }
+
     $perms = SP_getPerms ();
     if (!empty ($perms)) {
         $perms = ' AND ' . $perms;
     }
-    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY sp_date DESC";
+    $spsql = "SELECT sp_id,sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE (sp_centerblock = 1) AND " . $moresql . $perms . " ORDER BY " . $sort;
     $result = DB_query ($spsql);
 
-    if (DB_numRows ($result) > 0) {
-        $spresult = DB_fetchArray ($result);
+    $pages = DB_numRows ($result);
+    if ($pages > 0) {
+        for ($i = 0; $i < $pages; $i++) {
+            $spresult = DB_fetchArray ($result);
 
-        if ($where == 0) {
-            switch ($spresult['sp_format']) {
-                case 'noblocks':
-                    $retval .= COM_siteHeader ('none');
-                    break;
-                case 'allblocks':
-                case 'leftblocks':
-                    $retval .= COM_siteHeader ('menu');
-                    break;
+            if ($where == 0) {
+                switch ($spresult['sp_format']) {
+                    case 'noblocks':
+                        $retval .= COM_siteHeader ('none');
+                        break;
+                    case 'allblocks':
+                    case 'leftblocks':
+                        $retval .= COM_siteHeader ('menu');
+                        break;
+                }
+                $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
             }
-            $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
-        }
 
-        if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
-            $retval .= COM_startBlock ($spresult['sp_title']);
-        }
-
-        // Check for type (ie html or php)
-        if ($spresult['sp_php'] == 1) {
-            $retval .= eval (stripslashes ($spresult['sp_content']));
-        } else {
-            $retval .= stripslashes ($spresult['sp_content']);
-        }
-
-        if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
-            $retval .= COM_endBlock ();
-        }
-
-        if ($where == 0) {
-            if ($spresult['sp_format'] == 'allblocks') {
-                $retval .= COM_siteFooter (true);
-            } else if ($spresult['sp_format'] != 'blankpage') {
-                $retval .= COM_siteFooter ();
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
+                $retval .= COM_startBlock ($spresult['sp_title']);
             }
-        }
 
-        // increment hit counter for page
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$spresult['sp_id']}'");
+            // Check for type (ie html or php)
+            if ($spresult['sp_php'] == 1) {
+                $retval .= eval (stripslashes ($spresult['sp_content']));
+            } else {
+                $retval .= stripslashes ($spresult['sp_content']);
+            }
+
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
+                $retval .= COM_endBlock ();
+            }
+
+            if ($where == 0) {
+                if ($spresult['sp_format'] == 'allblocks') {
+                    $retval .= COM_siteFooter (true);
+                } else if ($spresult['sp_format'] != 'blankpage') {
+                    $retval .= COM_siteFooter ();
+                }
+            }
+
+            // increment hit counter for page
+            DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '{$spresult['sp_id']}'");
+        }
     }
 
     return $retval;
