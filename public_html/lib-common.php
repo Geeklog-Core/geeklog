@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.233 2003/06/28 01:36:27 blaine Exp $
+// $Id: lib-common.php,v 1.234 2003/06/28 05:25:27 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -891,6 +891,9 @@ function COM_siteHeader( $what = 'menu' )
         $header->set_var( 'geeklog_blocks', '' );
         $header->set_var( 'left_blocks', '' );
     }
+
+    // Call any plugin that may want to include Extra Metatags or Javascript functions
+    $header->set_var( 'plg_headercode', PLG_getHeaderCode());
 
     // The following line allows users to embed PHP in their templates.  This
     // is almost a contradition to the reasons for using templates but this may
