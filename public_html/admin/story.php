@@ -135,7 +135,7 @@ function liststories($page="1") {
 			$scount = (50 * $page) - 50 + $i;
 			$A = mysql_fetch_array($result);
 			print "<tr align=center><td align=left><a href={$CONF["base"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
-			print "<td align=left><a href={$CONF["base"]}/article.php?story={$A["sid"]}>{$A["title"]}</a></td>";
+			print "<td align=left><a href={$CONF["base"]}/article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
 			if ($A["draft_flag"] == 1)
 				print "<td>{$LANG24[35]}</td>";
 			else
@@ -192,7 +192,21 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		$check = " ";
 		while($check != $reg[0]) {
 			$check = $reg[0];
+
+			#this gets any links from the article
 			eregi("<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>",$fulltext,$reg);
+
+			#this gets what is between <a href=...> and </a>
+			preg_match("/<a href=\"([^\]]+)\">([^\]]+)<\/a>/",stripslashes($reg[0]),$url_text);
+			if (empty($url_text[1])) {
+				preg_match("/<A HREF=\"([^\]]+)\">([^\]]+)<\/A>/",stripslashes($reg[0]),$url_text);
+			}
+			#if links is too long, shorten it and add ... at the end
+			if (strlen($url_text[1]) > 26) {
+				$new_text = substr($url_text[1],0,26) . '...';
+				#note, this assumes there is no space between > and url_text[1]
+				$reg[0] = str_replace(">".$url_text[1],">".$new_text,$reg[0]);
+			}	
 			if(stristr($fulltext,"<img ")) {
 				#this is a linked images tag, ignore
 				$reg[0] = "";
