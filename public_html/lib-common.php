@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.190 2002/12/02 17:52:23 dhaun Exp $
+// $Id: lib-common.php,v 1.191 2002/12/07 18:23:06 efarmboy Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3962,8 +3962,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
 
     $hasargs = strstr( $base_url, '?' );
 
-    if( $num_pages == 1 )
-    {
+    if( $num_pages < 2    {
         return;
     }
 
