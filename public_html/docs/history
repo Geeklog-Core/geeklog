@@ -1,5 +1,14 @@
 GeekLog History/Changes:
 
+- Various fixes for the consistent use of $_CONF['site_admin_url'] instead of
+  $_CONF['site_url']/admin, provided by Gene Wood.
+- The static pages plugin can now wrap static pages in a block
+  (option in staticpages.cfg)
+- Added updated Japanese language file, provided by Yusuke Sakata.
+- An error message is displayed now if mysqldump can not be found.
+- Fixed type pulldown menu in search when more than one plugin was used.
+- Signatures in comments are working again.
+- The daily digest uses $_CONF['shortdate'] now
 - New configuration variable $_CONF['emailstorieslength'] to specify the length
   of stories sent in the daily digest: 0 = only the title and a link to the
   story are included, 1 = entire introtext is included (default), any other
@@ -40,7 +49,7 @@ GeekLog History/Changes:
   German language files are included.
 - New variables that can be used in footer.thtml: {execution_textandtime},
   {powered_by}.
-- The field 'emailfromadmin' was missing from the userprefs table on a fesh
+- The field 'emailfromadmin' was missing from the userprefs table on a fresh
   install of Geeklog 1.3.5 (it was added when upgrading from an older version,
   though).
 - Image sizes of the XSilver theme have been reduced and some HTML errors have
