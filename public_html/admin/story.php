@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.44 2002/04/23 17:13:36 tony_bibbs Exp $
+// $Id: story.php,v 1.45 2002/04/30 20:59:34 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -253,8 +253,14 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
     list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
     $story_templates->set_var('lang_introtext', $LANG24[16]);
+    if ($A['postmode'] == 'plaintext') {
+        $newintro = str_replace('$','&#36;',$newintro);
+    }
     $story_templates->set_var('story_introtext', $newintro);
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
+    if ($A['postmode'] == 'plaintext') {
+        $newbody = str_replace('$','&#36;',$newbody);
+    }
     $story_templates->set_var('story_bodytext', $newbody);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
@@ -527,7 +533,7 @@ function insert_images($sid, $intro, $body)
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
     global $_TABLES, $_CONF, $LANG24, $HTTP_POST_FILES;
-    
+        
     if (!empty($title) && !empty($introtext)) {
         $date = date("Y-m-d H:i:s",$unixdate);
         
@@ -718,7 +724,6 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
-        
         DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", 'admin/story.php?msg=9');
         
         // If this is done as part of moderation stuff then delete the submission
