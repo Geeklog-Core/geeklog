@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.142 2004/10/24 08:39:24 dhaun Exp $
+// $Id: config.php,v 1.143 2004/11/06 17:13:48 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -223,6 +223,8 @@ $_CONF['allow_user_photo']    = 1; // allow users to upload self-photo
 // hides the list of authors from the preferences
 $_CONF['hide_author_exclusion'] = 0;
 
+// Used by COM_displayName to return Members's Full Name else username  (1 = yes, 0 = no)
+$_CONF['show_fullname'] = 0;
 
 // +---------------------------------------------------------------------------+
 // | Support for custom user registration form and account details             |

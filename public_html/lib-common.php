@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.395 2004/10/30 14:57:31 dhaun Exp $
+// $Id: lib-common.php,v 1.396 2004/11/06 17:13:48 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4093,6 +4093,37 @@ function COM_getPassword( $loginname )
 
     return '';
 }
+
+
+/**
+* Return the username or fullname for the passed member id (uid)
+*
+* Allows the siteAdmin to determine if loginname (username) or fullname
+* should be displayed.
+*
+* @param    int  $uid  site member id
+* @return   string     username or fullname - default is username
+*
+*/
+function COM_getDisplayName($uid='') {
+   global $_TABLES,$_USER,$_CONF;
+ 
+   if ($uid == '') {
+      $uid = $_USER['uid'];
+   }
+
+   $query = DB_query("SELECT username, fullname FROM {$_TABLES['users']} WHERE uid='$uid' ");
+   list ($username,$fullname) = DB_fetchArray($query);
+ 
+   if ($fullname != '' AND $_CONF['show_fullname'] == 1) {
+      return $fullname;
+   } else {
+     return $username;
+   }
+}
+
+
+
 
 /**
 * Adds a hit to the system
