@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.33 2002/07/19 08:49:54 dhaun Exp $
+// $Id: users.php,v 1.34 2002/07/20 17:12:37 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -129,7 +129,6 @@ function userprofile($user)
     // list of last 10 stories by this user
     $result = DB_query("SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) ORDER BY unixdate desc LIMIT 10");
     $nrows = DB_numRows($result);
-    $user_templates->set_var('number_stories', $nrows);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
@@ -149,7 +148,6 @@ function userprofile($user)
     // list of last 10 comments by this user
     $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
     $nrows = DB_numRows($result);
-    $user_templates->set_var('number_comments', $nrows);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
@@ -171,8 +169,14 @@ function userprofile($user)
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
+    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())");
+    $nrows = DB_numRows($result);
+    $user_templates->set_var('number_stories', $nrows);
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $_USER['username']);
+    $result = DB_query("SELECT sid FROM {$_TABLES['comments']} WHERE uid = $user");
+    $nrows = DB_numRows($result);
+    $user_templates->set_var('number_comments', $nrows);
+    $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
 
     $user_templates->parse('output', 'profile');
     $retval .= $user_templates->finish($user_templates->get_var('output'));	
