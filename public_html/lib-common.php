@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.181 2002/11/23 18:02:51 dhaun Exp $
+// $Id: lib-common.php,v 1.182 2002/11/24 10:21:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1769,7 +1769,8 @@ function COM_showTopics( $topic='' )
     // navigating the site
     // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
 
-    if(( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+    preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
+    if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
     {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
     }
@@ -2901,7 +2902,7 @@ function COM_showBlock( $name, $help='', $title='' )
 
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
-    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS;
+    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS, $topic, $page, $newstories;
 
     // Get user preferences on blocks
 
@@ -2926,7 +2927,8 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     }
     else
     {
-        if( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" )
+        preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
+        if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
         {
             $sql .= " AND (tid = 'all' AND type <> 'layout')";
         }
