@@ -16,7 +16,7 @@ CREATE TABLE {$_TABLES['blocks']} (
   type varchar(20) NOT NULL default 'normal',
   title varchar(48) default NULL,
   tid varchar(20) NOT NULL default 'All',
-  blockorder tinyint(3) unsigned NOT NULL default '1',
+  blockorder smallint(5) unsigned NOT NULL default '1',
   content text,
   rdfurl varchar(255) default NULL,
   rdfupdated datetime NOT NULL default '0000-00-00 00:00:00',

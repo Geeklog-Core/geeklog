@@ -44,4 +44,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['linksubmission']} CHANGE url url varchar(255) 
 $_SQL[] = "ALTER TABLE {$_TABLES['personal_events']} CHANGE url url varchar(255) default NULL";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} CHANGE imageurl imageurl varchar(255) default NULL";
 
+// change 'blockorder' to accept values > 255 (added in 1.3.9rc2)
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} CHANGE blockorder blockorder smallint(5) unsigned NOT NULL default '1'";
+
 ?>
