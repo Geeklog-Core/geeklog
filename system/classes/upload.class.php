@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.3 2002/04/08 17:40:07 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.4 2002/04/08 21:44:13 tony_bibbs Exp $
 
 class upload
 {
@@ -529,6 +529,15 @@ class upload
         
         return true;
 	}
+	
+	/**
+	* Returns directory to upload to
+	*
+	*/
+	function getPath()
+	{
+        return $this->_fileUploadDirectory;
+	}
     
     /**
     * Sets file name(s) for files
@@ -548,6 +557,31 @@ class upload
         } else {
             $this->_fileNames = array($fileNames);
         }
+	}
+    
+    /**
+    * Returns how many actual files were sent for upload.  NOTE: this will
+    * ignore HTML file fields that were left blank.
+    *
+    */
+	function numFiles()
+	{
+        if (empty($this->_filesToUpload)) {
+            $this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
+        }
+        
+        $fcount = 0;
+        
+        for ($i = 1; $i <= count($GLOBALS['HTTP_POST_FILES']); $i++) {
+            $curFile = current($this->_filesToUpload);
+        
+            // Make sure file field on HTML form wasn't empty
+            if (!empty($curFile['name'])) {
+                $fcount++;
+            }
+            next($this->_filesToUpload);
+        }
+        return $fcount;
 	}
 	
 	/**
