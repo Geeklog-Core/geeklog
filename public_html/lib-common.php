@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.27 2002/01/19 10:28:15 dreamscape Exp $
+// $Id: lib-common.php,v 1.28 2002/01/24 14:16:08 dreamscape Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -156,7 +156,7 @@ function COM_article($A,$index='')
 
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
-    $article->set_var('story_title',$A['title']);
+    $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
     $article->set_var('story_date',$A['day']);
 

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN"
+ "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<rss version="0.91">
+
+<channel>
+<title>dr3amscap3 development geeklog site</title>
+ <link>http://www.dr3amscap3.com:8080/geeklog-1.3/public_html</link>
+<description>Another Nifty Geeklog Site</description>
+<language>en-gb</language>
+
+<item>
+<title>what's this</title>
+<link>http://www.dr3amscap3.com:8080/geeklog-1.3/public_html/article.php?story=20020124091031399</link>
+</item>
+
+<item>
+<title>Test</title>
+<link>http://www.dr3amscap3.com:8080/geeklog-1.3/public_html/article.php?story=20011018120556538</link>
+</item>
+
+<item>
+<title>Welcome to Geeklog!</title>
+<link>http://www.dr3amscap3.com:8080/geeklog-1.3/public_html/article.php?story=20010719095630103</link>
+</item>
+
+</channel>
+</rss>
