@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.39 2004/09/21 09:43:30 dhaun Exp $
+// $Id: lib-plugins.php,v 1.40 2004/09/21 10:06:30 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -879,11 +879,15 @@ function PLG_getHeaderCode()
 * @param   string   $content   Content that should be parsed for autolinks
 *
 */
-function PLG_replacetags($content) {
+function PLG_replaceTags ($content)
+{
     global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
     // Determine which Core Modules and Plugins support AutoLinks
-    $autolinkModules = array('story' => 'story');
+    $autolinkModules = array ('story'    => 'story',
+                              'calendar' => 'event'
+                             );
+
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
         if (function_exists($function)) {
@@ -941,9 +945,14 @@ function PLG_replacetags($content) {
                 $filelink = '<a href="' . COM_buildUrl ($_CONF['site_url']
                           . '/article.php?story=' . $autotag['parm1']) . '">'
                           . $autotag['parm2'] . '</a>';
-                $content = str_replace($autotag['tagstr'],$filelink,$content);
+                $content = str_replace($autotag['tagstr'], $filelink, $content);
+            } else if ($autotag['module'] == 'calendar') {
+                $filelink = '<a href="' . $_CONF['site_url']
+                          . '/calendar_event.php?eid=' . $autotag['parm1']
+                          . '">' . $autotag['parm2'] . '</a>';
+                $content = str_replace($autotag['tagstr'], $filelink, $content);
             } elseif (function_exists($function)) {
-                $content = $function('parse',$content,$autotag);
+                $content = $function('parse', $content, $autotag);
             }
         }
     }
