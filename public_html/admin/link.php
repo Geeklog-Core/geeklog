@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.35 2003/09/01 19:01:05 dhaun Exp $
+// $Id: link.php,v 1.36 2003/09/12 11:53:41 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -252,7 +252,10 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
         DB_delete($_TABLES['linksubmission'],'lid',$lid);
         DB_delete($_TABLES['links'],'lid',$lid);
 
-		DB_save($_TABLES['links'],'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . '/link.php?msg=15');
+		DB_save($_TABLES['links'],'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        COM_rdfUpToDateCheck ();
+
+        return $_CONF['site_admin_url'] . '/link.php?msg=15';
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
