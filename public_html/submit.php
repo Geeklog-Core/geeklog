@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.74 2004/08/22 17:53:20 dhaun Exp $
+// $Id: submit.php,v 1.75 2004/08/23 12:38:50 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -395,7 +395,9 @@ function sendNotification ($table, $A)
             if ($table == $_TABLES['storysubmission']) {
                 $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
             } else {
-                $mailbody .= "$LANG08[33] <{$_CONF['site_url']}/article.php?story={$A['sid']}>\n\n";
+                $articleUrl = COM_buildUrl ($_CONF['site_url']
+                                        . '/article.php?story=' . $A['sid']);
+                $mailbody .= $LANG08[33] . ' <' . $articleUrl . ">\n\n";
             }
             $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[35];
             break;
@@ -682,7 +684,8 @@ function savesubmission($type,$A)
                 if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {
                     sendNotification ($_TABLES['stories'], $A);
                 }
-                $retval = COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+                $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                                       . '/article.php?story=' . $A['sid']));
             }
         } else {
             $retval .= COM_startBlock ($LANG12[22], '',

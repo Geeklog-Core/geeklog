@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.29 2004/08/09 18:36:29 dhaun Exp $
+// $Id: stats.php,v 1.30 2004/08/23 12:38:50 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -146,7 +146,8 @@ if ($nrows > 0) {
     $stat_templates->set_var('stat_name',$LANG10[9]);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
+        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
+                                    . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['hits']);
         $stat_templates->parse('stat_row','statrow',true); 
@@ -170,7 +171,8 @@ if ($nrows > 0) {
     $stat_templates->set_var('stat_name',$LANG10[12]);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);	
-        $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
+        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
+                                    . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['comments']);
         $stat_templates->parse('stat_row','statrow',true); 
@@ -194,7 +196,8 @@ if ($nrows > 0) {
     $stat_templates->set_var('stat_name',$LANG10[23]);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', 'article.php?story=' . $A['sid']);
+        $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
+                                    . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
         $stat_templates->set_var('item_stat', $A['numemails']);
         $stat_templates->parse('stat_row','statrow',true); 

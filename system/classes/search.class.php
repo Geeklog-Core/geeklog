@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.26 2004/08/13 16:53:47 dhaun Exp $
+// $Id: search.class.php,v 1.27 2004/08/23 12:38:53 dhaun Exp $
 
 if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -303,13 +303,15 @@ class Search {
                     // get rows    
                     $A['title'] = str_replace('$','&#36;',$A['title']);
                     $thetime = COM_getUserDateTimeFormat($A['day']);
-                    $articleUrl = '/article.php?story=' . $A['sid'];
-                    if (!empty ($urlQuery)) {
-                        $articleUrl .= '&amp;query=' . urlencode($urlQuery);
+                    if (empty ($urlQuery)) {
+                        $articleUrl = COM_buildUrl ($_CONF['site_url']
+                                        . '/article.php?story=' . $A['sid']);
+                    } else {
+                        $articleUrl = $_CONF['site_url'] . '/article.php?story='
+                            . $A['sid'] . '&amp;query=' . urlencode ($urlQuery);
                     }
-                    $row = array ('<a href="' . $_CONF['site_url']
-                            . $articleUrl . '">' . stripslashes ($A['title'])
-                            . '</a>', $thetime[0],
+                    $row = array ('<a href="' . $articleUrl . '">'
+                            . stripslashes ($A['title']) . '</a>', $thetime[0],
                             DB_getItem ($_TABLES['users'], 'username',
                             "uid = '{$A['uid']}'"), $A['hits']);
                     $story_results->addSearchResult($row);
@@ -412,15 +414,12 @@ class Search {
                 } else {
                     $querystring = '';
                 }
-                $A['title'] = '<a href="' . $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $A['cid'] . '">' . stripslashes ($A['title']) . '</a>';
-                /*if ($A['comment_type'] == 'article') {
-                    $A['title'] = '<a href="' .$_CONF['site_url'] .'/article.php?story=' . $A['sid'] . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
-                } else {
-                    $A['title'] = '<a href="' .$_CONF['site_url'] .'/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1' . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
-                }*/
+                $A['title'] = '<a href="' . $_CONF['site_url']
+                            . '/comment.php?mode=view&amp;cid=' . $A['cid']
+                            . '">' . stripslashes ($A['title']) . '</a>';
 
-                $thetime = COM_getUserDateTimeFormat($A['day']);
-                $row = array($A['title'], $thetime[0],DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+                $thetime = COM_getUserDateTimeFormat ($A['day']);
+                $row = array ($A['title'], $thetime[0], DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['uid']}'"));
                 $comment_results->addSearchResult($row);
                 $comment_results->num_searchresults++;
             }

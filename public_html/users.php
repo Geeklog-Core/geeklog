@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.85 2004/08/15 12:06:07 dhaun Exp $
+// $Id: users.php,v 1.86 2004/08/23 12:38:50 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -172,9 +172,12 @@ function userprofile ($user, $msg)
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
             $user_templates->set_var('row_number', $i . '.');
-            $user_templates->set_var('story_begin_href', '<a href="' .
-                $_CONF['site_url'] . '/article.php?story=' . $C['sid'] . '">');
-            $C['title'] = str_replace('$','&#36;',$C['title']);
+            $articleUrl = COM_buildUrl ($_CONF['site_url']
+                                        . '/article.php?story=' . $C['sid']);
+            $user_templates->set_var ('article_url', $articleUrl);
+            $user_templates->set_var ('story_begin_href',
+                                      '<a href="' . $articleUrl . '">');
+            $C['title'] = str_replace ('$', '&#36;', $C['title']);
             $user_templates->set_var('story_title', stripslashes($C['title']));
             $user_templates->set_var('story_end_href', '</a>');
             $storytime = COM_getUserDateTimeFormat($C['unixdate']);

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.127 2004/08/22 17:53:22 dhaun Exp $
+// $Id: story.php,v 1.128 2004/08/23 12:38:51 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -593,6 +593,9 @@ function liststories($page = 1)
             }
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $story_templates->set_var('story_id', $A['sid']);
+            $story_templates->set_var ('article_url',
+                    COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                  . $A['sid']));
             $story_templates->set_var('row_num', $scount);
             $A['title'] = str_replace('$', '&#36;', $A['title']);
             $story_templates->set_var('story_title', stripslashes($A['title']));

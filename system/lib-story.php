@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.2 2004/08/22 17:53:22 dhaun Exp $
+// $Id: lib-story.php,v 1.3 2004/08/23 12:38:53 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -204,7 +204,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             if( $A['comments'] > 0 )
             {
                 $commentsUrl = COM_buildUrl( $_CONF['site_url']
-                        . '/article.php?story=' . $A['sid'] . '#comments' );
+                        . '/article.php?story=' . $A['sid'] ) . '#comments';
                 $article->set_var( 'comments_url', $commentsUrl );
                 $article->set_var( 'comments_text', $A['comments'] . ' '
                         . $LANG01[3] );
@@ -354,7 +354,7 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
 * Creates an HTML-formatted list of links to be used for the What's Related
 * block next to a story (in article view).
 *
-* @param        string      $fulltext   the story text
+* @param        string      $related    contents of gl_stories 'related' field
 * @param        int         $uid        user id of the author
 * @param        int         $tid        topic id
 * @return       string      HTML-formatted list of links
@@ -365,8 +365,9 @@ function STORY_whatsRelated( $related, $uid, $tid )
     global $_CONF, $_TABLES, $_USER, $LANG24;
 
     // get the links from the story text
-    $rel = explode ("\n", $related);
-    if ((sizeof ($rel) == 1) && empty ($rel[0])) {
+    if (!empty ($related)) {
+        $rel = explode ("\n", $related);
+    } else {
         $rel = array ();
     }
 

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.73 2004/08/15 12:06:05 dhaun Exp $
+// $Id: comment.php,v 1.74 2004/08/23 12:38:50 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -351,8 +351,8 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         } elseif ($type == 'article') {
             $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
             DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            $retval = COM_refresh ($_CONF['site_url']
-                    . "/article.php?story=$sid");
+            $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                    . "/article.php?story=$sid"));
         } else { // assume it's a comment handled by a plugin
             $cid = DB_getItem ($_TABLES['comments'], 'cid', "(type = '$type') AND (pid = '$pid') AND (sid = '$sid') AND (uid = '$uid')");
             $retval = PLG_handlePluginComment ($type, $cid, 'save');
@@ -483,8 +483,8 @@ function deletecomment ($cid, $sid, $type)
                     $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
                     DB_change ($_TABLES['stories'], 'comments', $comments,
                                'sid', $sid);
-                    $retval .= COM_refresh ($_CONF['site_url']
-                            . '/article.php?story=' . $sid . '#comments');
+                    $retval .= COM_refresh (COM_buildUrl ($_CONF['site_url']
+                            . '/article.php?story=' . $sid) . '#comments');
                 }
             } else {
                 COM_errorLog ('User ' . $_USER['username'] . ' (IP: '

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.362 2004/08/16 21:09:22 vinny Exp $
+// $Id: lib-common.php,v 1.363 2004/08/23 12:38:50 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -67,8 +67,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-//require_once( '/path/to/geeklog/config.php' );
-require_once( '/home/vmf/work/geeklog-1.3/config.php' );
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -2490,11 +2489,15 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 
     if ( $type == 'poll' )
     {
-        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/pollbooth.php?scale=400&qid=$sid&aid=-1" );
+        $commentbar->set_var( 'story_link', $_CONF['site_url']
+                . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
     }
     else
     {
-        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/article.php?story=$sid" );
+        $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                    . $sid );
+        $commentbar->set_var( 'story_link', $articleUrl );
+        $commentbar->set_var( 'article_url', $articleUrl );
     }
 
     if( $_USER['uid'] > 1)
@@ -4351,7 +4354,7 @@ function COM_whatsNewBlock( $help='', $title='' )
                     $itemlen = strlen( $A['title'] );
                     $titletouse = stripslashes( $A['title'] );
                     $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
-                        . '/article.php?story=' . $A['sid'] . '#comments' ) . '"';
+                        . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
                 }
                 else if( $A['type'] == 'poll' )
                 {
@@ -5418,7 +5421,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 }
 
 /**
-* Detect links in a plain-ascii texts and turn them into clickable links.
+* Detect links in a plain-ascii text and turn them into clickable links.
 * Will detect links starting with "http:", "https:", "ftp:", and "www.".
 *
 * Derived from a newgroup posting by Andreas Schwarz in
@@ -5464,7 +5467,7 @@ function COM_highlightQuery( $text, $query )
 }
 
 /**
-* Determines the difference between to dates.
+* Determines the difference between two dates.
 *
 * This will takes either unixtimestamps or English dates as input and will
 * automatically do the date diff on the more recent of the two dates (e.g. the
