@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.20 2002/08/06 18:05:41 dhaun Exp $
+// $Id: group.php,v 1.21 2002/08/18 18:20:28 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -128,8 +128,10 @@ function editgroup($grp_id = '')
     
 	if ($A['grp_gl_core'] == 0) {	
         $group_templates->set_var('groupname_inputtype', 'text');
+        $group_templates->set_var('groupname_static', '');
 	} else {
         $group_templates->set_var('groupname_inputtype', 'hidden');
+        $group_templates->set_var('groupname_static', $A['grp_name']);
 	}
     $group_templates->set_var('group_name', $A['grp_name']);
 
