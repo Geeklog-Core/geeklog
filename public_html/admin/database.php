@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.2 2002/02/27 16:03:27 tony_bibbs Exp $
+// $Id: database.php,v 1.3 2002/02/27 16:34:33 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -88,7 +88,7 @@ if (is_array($backups) AND $index > 0) {
         next($backups);
     }
 } else {
-   $display .= $LANG_DB_BAACKUP['no_backups'];
+   $display .= $LANG_DB_BACKUP['no_backups'];
 }
 $display .= COM_endBlock();
 
