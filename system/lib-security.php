@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.10 2002/08/21 20:08:59 dhaun Exp $
+// $Id: lib-security.php,v 1.11 2002/10/26 18:28:09 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -161,20 +161,23 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
         } else {
             $uid = $_USER['uid'];
         }
-    }
 
-    if (empty($_GROUPS)) {
-        $_GROUPS = SEC_getUserGroups($_USER['uid']);
+        if (empty($_GROUPS)) {
+            $_GROUPS = SEC_getUserGroups($_USER['uid']);
+        }
+        $groups = $_GROUPS;
+    } else {
+        $groups = SEC_getUserGroups ($uid);
     }
 
     if (is_numeric($grp_to_verify)) {
-        if (in_array($grp_to_verify, $_GROUPS)) {
+        if (in_array($grp_to_verify, $groups)) {
            return true;
         } else {
            return false;
         }
     } else {
-        if (!empty($_GROUPS[$grp_to_verify])) {
+        if (!empty($groups[$grp_to_verify])) {
             return true;
         } else {
             return false;
