@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog common library.                                                   |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.272 2004/01/06 15:24:49 dhaun Exp $
+// $Id: lib-common.php,v 1.273 2004/01/10 13:44:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
-error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
+error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -170,6 +170,7 @@ require_once( $_CONF['path_system'] . 'lib-custom.php' );
 * Include plugin class.
 * This is a poorly implemented class that was not very well thought out.
 * Still very necessary
+*
 */
 
 require_once( $_CONF['path_system'] . 'lib-plugins.php' );
@@ -185,6 +186,7 @@ require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 * Ulf Harnhammar's kses class
 *
 */
+
 require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 
 /**
@@ -194,13 +196,8 @@ require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 if( !$_CONF['have_pear'] )
 {
     $curPHPIncludePath = ini_get( 'include_path' );
-    $separator = ';';
-    if( strpos( $curPHPIncludePath, ';' ) === false )
-    {
-        $separator = ':';
-    }
     ini_set( 'include_path',
-             $curPHPIncludePath . $separator . $_CONF['path_pear'] );  
+             $curPHPIncludePath . PATH_SEPARATOR . $_CONF['path_pear'] );  
 }
 
 // Set theme
@@ -775,14 +772,16 @@ function COM_siteHeader( $what = 'menu' )
         'leftblocks'=>'leftblocks.thtml'
         ));
 
-    if( empty( $_CONF['pagetitle'] ))
+    $pagetitle = $_CONF['pagetitle'];
+    if( empty( $pagetitle ))
     {
-        $header->set_var( 'page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
+        $pagetitle = $_CONF['site_slogan'];
     }
-    else
+    if( !empty( $pagetitle ))
     {
-        $header->set_var( 'page_title', $_CONF['site_name'] . ' - ' . $_CONF['pagetitle']);
+        $pagetitle = ' - ' . $pagetitle;
     }
+    $header->set_var( 'page_title', $_CONF['site_name'] . $pagetitle );
 
     $header->set_var( 'background_image', $_CONF['layout_url'] . '/images/bg.gif' );
     $header->set_var( 'site_url', $_CONF['site_url'] );
