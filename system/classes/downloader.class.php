@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.4 2003/12/31 05:41:51 tony Exp $
+// $Id: downloader.class.php,v 1.5 2004/01/11 19:16:10 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -500,9 +500,9 @@ class downloader
         // Send headers.
         if ($this->checkExtension($fextension)) {
             // Display file inside browser.
-            header('Content-type: ' . $this->_availableMimeTypes[$fextension] . "\n");
-            header('Content-transfer-encoding: binary' . "\n");
-            header('Content-length: ' . filesize($this->_sourceDirectory . $fileName) . "\n");
+            header('Content-Type: ' . $this->_availableMimeTypes[$fextension]);
+            header('Content-transfer-encoding: binary');
+            header('Content-length: ' . filesize($this->_sourceDirectory . $fileName));
             header('Content-Disposition: attachment; filename="' . $fileName . '"');
 
             // Send file contents.
