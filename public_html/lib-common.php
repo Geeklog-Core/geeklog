@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.106 2002/06/06 07:42:37 dhaun Exp $
+// $Id: lib-common.php,v 1.107 2002/06/07 08:00:46 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1880,7 +1880,7 @@ function COM_checkHTML($str)
         $str = str_replace($orig_pre_string, '<pre><code>'.$new_pre_string.'</code></pre>', $str);    
     }
     
-    if (!SEC_hasRights('story.edit')) {
+    if (!SEC_hasRights('story.edit') || empty ($_CONF['adminhtml'])) {
         $str = strip_tags($str,$_CONF['allowablehtml']);
     }
     else {    
@@ -2201,7 +2201,7 @@ function COM_allowedhtml()
     global $_CONF,$LANG01;
 
     $retval = '<span class="warningsmall">' . $LANG01[31]; 
-    if (!SEC_hasRights('story.edit')) {
+    if (!SEC_hasRights('story.edit') || empty ($_CONF['adminhtml'])) {
         $retval .= htmlspecialchars($_CONF['allowablehtml']);
     }
     else {
