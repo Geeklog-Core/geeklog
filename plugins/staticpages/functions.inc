@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.30 2004/01/21 19:13:34 dhaun Exp $
+// $Id: functions.inc,v 1.31 2004/01/31 17:12:33 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -310,7 +310,11 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
     if ($table != '') { $table .= '.'; }
 
     if ($u_id == '') {
-        $uid = $_USER['uid'];
+        if (isset ($_USER['uid'])) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
         $GROUPS = $_GROUPS;
     } else {
         $uid = $u_id;
@@ -340,7 +344,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 /**
 * Display static pages in the center block.
 *
-* @param   where   int      where the static page will be displayed (0..2)
+* @param   where   int      where the static page will be displayed (0..3)
 * @param   page    int      page number
 * @param   topic   string   topic ID
 * @return          string   HTML for the static page (can be empty)
@@ -356,6 +360,20 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     }
 
     $moresql = "(sp_where = $where) AND ";
+    $displayFeatured = false;
+
+    // If there are no featured stories, we won't be called with $where == 2.
+    // So, if asked to display pages for the top of the page, check if we
+    // have pages to be displayed after the featured story and if there is
+    // no features story, display those pages as well.
+    if ($where == 1) {
+        if (DB_count ($_TABLES['stories'], 'featured', 1) == 0) {
+            // no featured story found - redefine $moresql
+            $moresql = "(sp_where = 1 OR sp_where = 2) AND ";
+            $displayFeatured = true;
+        }
+    }
+
     if (empty ($topic)) {
         $moresql .= "((sp_tid = 'none') OR (sp_tid = 'all'))";
     } else {
@@ -368,6 +386,9 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
         $sort = 'sp_title';
     } else { // default to "sort by id"
         $sort = 'sp_id';
+    }
+    if ($displayFeatured) {
+        $sort = 'sp_where,' . $sort;
     }
 
     $perms = SP_getPerms ();
