@@ -1,5 +1,11 @@
 GeekLog History/Changes:
 
+- Geeklog now uses PEAR::Mail to send all emails.
+  In config.php, you can select whether emails should be sent via PHP's mail()
+  function, sendmail, or SMTP.
+- Introduced /path/to/geeklog/system/pear as the directory to hold the PEAR
+  packages used by Geeklog. Currently, those are PEAR, Mail, Net_SMTP, and
+  Net_Socket. These packages will be included in the releases from now on.
 - Introduced function COM_mail(). From now on, all Geeklog email will be sent
   from this function (instead of using PHP's mail() function directly).
 - When users try to register with an empty username or invalid email address,

@@ -33,13 +33,15 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.96 2003/08/31 08:18:01 dhaun Exp $
+// $Id: config.php,v 1.97 2003/09/04 09:50:15 dhaun Exp $
 
-// When setting up Geeklog for the first time, you only need to make sure the
-// settings in the following 3 sections are correct:
+// When setting up Geeklog for the first time, you need to make sure the
+// settings in the following 5 sections are correct:
 // (1) Database Settings
 // (2) Paths
 // (3) Site Settings
+// (4) PEAR Settings
+// (5) Email Settings
 // You can adjust the other settings once your site is up and running.
 
 // +---------------------------------------------------------------------------+
@@ -91,8 +93,50 @@ $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 // This is the return address for all email sent by Geeklog:
 $_CONF['site_mail']         = 'admin@example.com';
 
+// Name and slogan of your site
 $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
+
+
+// +---------------------------------------------------------------------------+
+// | (4) PEAR Settings                                                         |
+// +---------------------------------------------------------------------------+
+
+// If your server is running PHP 4.3.0 (or newer) then chances are that PEAR
+// is already installed and you can leave this as "true".
+$_CONF['have_pear'] = true;
+
+// Geeklog comes with the necessary PEAR packages, so if you don't have PEAR
+// installed, set $_CONF['have_pear'] = false (above). The following path
+// points to those packages (leave as is unless you know what your're doing).
+$_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
+
+
+// +---------------------------------------------------------------------------+
+// | (5) Email Settings                                                        |
+// +---------------------------------------------------------------------------+
+
+// To send email from Geeklog, you will need to select one of the following
+// email backends:
+// - 'mail', i.e. use PHP's built-in mail() function
+// - 'sendmail', i.e. use the sendmail utility
+// - 'smtp', i.e. talk directly to your SMTP server
+
+$_CONF['mail_settings'] = array (  
+    'backend' => 'mail', // can be one of 'mail', 'sendmail', 'smtp'
+
+    // sendmail parameters
+    'sendmail_path' => '/usr/bin/sendmail',
+    'sendmail_args' => '',
+
+    // SMTP parameters
+    'host'     => 'smtp.example.com',
+    'port'     => '25',
+    'auth'     => false,
+    'username' => 'smtp-username',
+    'password' => 'smtp-password'
+);
+
 
 // ****************************************************************************
 // * If you set up Geeklog for the first time, you shouldn't need to change   *
@@ -244,7 +288,7 @@ $_CONF['expanded_search_results']  =  true;
     
 // 0: use users max stories per page
 // 1: Show all
-// any other number is the # of resuilts per page
+// any other number is the # of results per page
 $_CONF['max_search_results']  =  1;
     
 // maximum length for the summary text for search results should be    

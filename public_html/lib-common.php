@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.250 2003/09/01 19:11:57 dhaun Exp $
+// $Id: lib-common.php,v 1.251 2003/09/04 09:50:15 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -173,6 +173,16 @@ require_once( $_CONF['path_system'] . 'lib-plugins.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
+
+/**
+* If needed, add our PEAR path to the list of include paths
+*
+*/
+if( !$_CONF['have_pear'] )
+{
+    $curPHPIncludePath = ini_get( 'include_path' );
+    ini_set( 'include_path', $curPHPIncludePath . ':' . $_CONF['path_pear'] );  
+}
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That
@@ -2966,6 +2976,26 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 {
     global $_CONF, $LANG_CHARSET;
 
+    static $mailobj;
+
+    include_once ('Mail.php');
+    include_once ('Mail/RFC822.php');
+
+    $method = $_CONF['mail_settings']['backend'];
+
+    if( !isset( $mailobj ))
+    {
+        if(( $method == 'sendmail' ) || ( $method == 'smtp' ))
+        {
+            $mailobj =& Mail::factory( $method, $_CONF['mail_settings'] );
+        }
+        else
+        {
+            $method = 'mail';
+            $mailobj =& Mail::factory( $method );
+        }
+    }
+
     if( empty( $LANG_CHARSET ))
     {
         $charset = $_CONF['default_charset'];
@@ -2977,35 +3007,51 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     else
     {
         $charset = $LANG_CHARSET;
-    }
-
-    $headers = '';
+    }    
 
     if( empty( $from ))
     {
-        $headers .= "From: {$_CONF['site_name']} <{$_CONF['site_mail']}>\r\n"
-                 . "Return-Path: <{$_CONF['site_mail']}>\r\n";
+        $from = $_CONF['site_name'] . ' <' . $_CONF['site_mail'] . '>';
     }
-    else
+
+    $headers = array();
+
+    $headers['From'] = $from;
+    if( $method != 'mail' )
     {
-        $headers .= "From: $from\r\n";
+        $headers['To'] = $to;
+    }
+    $headers['Date'] = date( 'r' ); // RFC822 formatted date
+    if( $method == 'smtp' )
+    {
+        list( $usec, $sec ) = explode( ' ', microtime());
+        $m = substr( $usec, 2, 5 );
+        $headers['Message-Id'] = '<' .  date( 'YmdHis' ) . '.' . $m
+                               . '@' . $_CONF['mail_settings']['host'] . '>';
     }
     if( $html )
     {
-        $headers .= "Content-Type: text/html; charset=$charset\r\n"
-                 . "Content-Transfer-Encoding: 8bit\r\n";
+        $headers['Content-Type'] = 'text/html; charset=' . $charset;
+        $headers['Content-Transfer-Encoding'] = '8bit';
     }
     else
     {
-        $headers .= "Content-Type: text/plain; charset=$charset\r\n";
+        $headers['Content-Type'] = 'text/plain; charset=' . $charset;
     }
-    if( $priority > 0 )
+    $headers['Subject'] = $subject;
+    if( $priority > 0 )    
     {
-        $headers .= 'X-Priority: ' . $priority . "\r\n";
+        $headers['X-Priority'] = $priority;
     }
-    $headers .= 'X-Mailer: GeekLog ' . VERSION;
+    $headers['X-Mailer'] = 'GeekLog ' . VERSION;
 
-    return mail( $to, $subject, $message, $headers );
+    $retval = $mailobj->send( $to, $headers, $message );
+    if( $retval !== true )
+    {
+        COM_errorLog( $retval->toString(), 1 );
+    }
+
+    return( $retval === true ? true : false );
 }
 
 
