@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.78 2002/04/23 20:48:25 dhaun Exp $
+// $Id: lib-common.php,v 1.79 2002/04/24 14:15:52 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -2519,12 +2519,16 @@ function phpblock_whosonline()
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
-    $result = DB_query("SELECT DISTINCT {$_TABLES['sessions']}.uid, username FROM {$_TABLES['sessions']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username");
+    $result = DB_query("SELECT DISTINCT {$_TABLES['sessions']}.uid, username,photo FROM {$_TABLES['sessions']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username");
 
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' . $A['username'] . '</a><br>';
+        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' . $A['username'] . '</a>';
+        if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
+            $retval .= '&nbsp;<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '"><img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif" border="0"></a>';
+        }
+        $retval .= '<br>';
     }
     $num_anon = DB_query("SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1");
     $num_anon = DB_numRows($num_anon);
