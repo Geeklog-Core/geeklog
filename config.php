@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.102 2003/12/28 18:52:29 dhaun Exp $
+// $Id: config.php,v 1.103 2004/01/07 04:29:20 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -115,6 +115,10 @@ $_CONF['path_system']     = $_CONF['path'] . 'system/';
 $_CONF['path_log']        = $_CONF['path'] . 'logs/';
 $_CONF['path_language']   = $_CONF['path'] . 'language/';
 $_CONF['backup_path']     = $_CONF['path'] . 'backups/';
+// If you set path_images to something other than the default, you will need to
+// make sure that you add the following subdirectories to that directory:
+// articles/, topics/, userphotos/
+$_CONF['path_images']     = $_CONF['path_html'] . 'images/';
 
 // +---------------------------------------------------------------------------+
 // | PEAR Settings                                                             |
