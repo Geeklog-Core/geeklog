@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.54 2002/08/28 20:18:51 dhaun Exp $
+// $Id: config.php,v 1.55 2002/09/10 04:26:40 tony_bibbs Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -255,6 +255,16 @@ $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
+
+// Story image settings.  Images not meeting these requirements will be either rejected or
+// resized.  If the path to mogrify command is empty, images will be rejected, otherwise they
+// will be resized. Mogrify is a command that is part of the ImageMagick library and it should
+// work on windows (not tested yet).  If this doesn't work on windows just set the path to empty 
+// string ''
+$_CONF['path_to_mogrify']       = '/usr/bin/X11/mogrify';
+$_CONF['max_image_width']       = 300;  // In pixels
+$_CONF['max_image_height']      = 300;  // In pixels
+$_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
 
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;
