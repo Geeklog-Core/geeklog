@@ -998,7 +998,7 @@ $LANG32 = array(
     8 => 'Plugin Compatibility Check Failed',
     9 => 'This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a> or get a newer version of the plug-in.',
     10 => '<br><b>There are no plugins currently installed.</b><br><br>',
-    11 => 'To modify or delete a plug-in, click on that plug-in name below. This will show the plug-in detail including the authors\'s website. Both the installed version and the version returned from the plug-in\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plug-in please consult its documentation.',
+    11 => 'To modify or delete a plug-in, click on that plug-in name below. This will show the plug-in details including the authors\'s website. Both the installed version and the version returned from the plug-in\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plug-in please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
     13 => 'Plugin Editor',
     14 => 'New Plug-in',
