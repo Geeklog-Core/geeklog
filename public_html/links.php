@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.22 2002/11/27 14:45:01 dhaun Exp $
+// $Id: links.php,v 1.23 2002/11/28 15:14:54 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -88,7 +88,7 @@ if (empty ($_USER['username']) &&
                     '/links.php?category=' . urlencode ($C['category']));
                 $linklist->set_var ('category_count', $D['count']);
                 $linklist->set_var ('width', floor (100 / $_CONF['linkcols']));
-                if ($category == $C['category']) {
+                if (stripslashes ($category) == $C['category']) {
                     $linklist->parse ('category_col', 'actcol', true);
                 } else {
                     $linklist->parse ('category_col', 'catcol', true);
@@ -114,8 +114,7 @@ if (empty ($_USER['username']) &&
 
     $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} WHERE ";
     if ($_CONF['linkcols'] > 0) {
-        $cat = addslashes ($category);
-        $sql .= "category = '$cat' AND ";
+        $sql .= "category = '$category' AND ";
     }
     $sql .= "{$permsql} ";
     $sql .= "ORDER BY category asc,title";
@@ -124,6 +123,25 @@ if (empty ($_USER['username']) &&
     if ($nrows == 0) {
         $page = 0;
         $end = 10;
+
+        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE hits > 0 ORDER BY hits DESC LIMIT 10");
+        $nrows  = DB_numRows($result);
+        if ($nrows > 0) {
+            $linklist->set_var('link_details','');
+            $linklist->set_var('link_category',$LANG10[18]);
+            for ($i = 0; $i < $nrows; $i++) {
+                $A = DB_fetchArray($result);
+                $linklist->set_var('link_url', $_CONF['site_url'] .
+                    '/portal.php?url=' . urlencode($A['url']) .
+                    '&amp;what=link&amp;item=' . $A['lid']);
+                $linklist->set_var('link_name', stripslashes($A['title']));
+                $linklist->set_var('link_hits', $A['hits']);
+                $linklist->set_var('link_description',
+                        stripslashes ($A['description']));
+                $linklist->parse('link_details', 'link', true);
+            }
+            $linklist->parse('category_links','catlinks',true);
+        }
     } else {
         if ($_CONF['linksperpage'] == 0) {
             $start = 1;
@@ -145,13 +163,13 @@ if (empty ($_USER['username']) &&
         for ($i = 1; $i < $end; $i++) {
             $A = DB_fetchArray($result);
             if ($i >= $start) {
-                if (($A['category'] <> $currentcategory) AND ($i > $start)) {
+                if ((strcasecmp ($A['category'], $currentcategory) != 0) AND ($i > $start)) {
                     // print the category and link
                     $linklist->parse('category_links','catlinks',true);
                     $linklist->set_var('link_details','');
                     $currentcategory = $A['category'];
                     $linklist->set_var('link_category',$currentcategory);
-                } else if ($A['category'] <> $currentcategory) {
+                } else if (strcasecmp ($A['category'], $currentcategory) != 0) {
                     $currentcategory = $A['category'];
                     $linklist->set_var('link_category',$currentcategory);
                 }
@@ -160,7 +178,8 @@ if (empty ($_USER['username']) &&
                     '&amp;what=link&amp;item=' . $A['lid']);
                 $linklist->set_var('link_name', stripslashes($A['title']));
                 $linklist->set_var('link_hits', $A['hits']);
-                $linklist->set_var('link_description', stripslashes ($A['description']));
+                $linklist->set_var('link_description',
+                        stripslashes ($A['description']));
                 $linklist->parse('link_details', 'link', true);
             }
         }
