@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.41 2004/09/29 17:43:43 dhaun Exp $
+// $Id: poll.php,v 1.42 2004/12/10 09:56:34 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -426,6 +426,7 @@ function deletePoll ($qid)
 
     DB_delete ($_TABLES['pollquestions'], 'qid', $qid);
     DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
+    DB_query ("DELETE FROM {$_TABLES['comments']} WHERE sid = '$qid' AND type = 'poll'");
 
     return COM_refresh ($_CONF['site_admin_url'] . '/poll.php?msg=20');
 }
