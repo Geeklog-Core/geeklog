@@ -40,7 +40,7 @@ include_once('lib-common.php');
 $display = '';
 
 if (!empty($url) && !empty($item)) {
-	DB_change($_TABLES['links','hits','hits + 1','lid',$item);
+	DB_change($_TABLES['links'],'hits','hits + 1','lid',$item);
 	$display .= COM_refresh($url);
 } else {
 	$display .= COM_refresh($_CONF['site_url']);
