@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.36 2002/02/26 17:55:23 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.37 2002/02/26 23:06:13 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1777,20 +1777,10 @@ function COM_showBlocks($side, $topic='', $name='all')
     }
 
     if (!empty($U['boxes'])) {
-        $BOXES = explode(' ',$U['boxes']);
+        $BOXES = str_replace(' ',',',$U['boxes']);
         $sql .= ' AND (';
 
-        for ($i = 0; $i < sizeof($BOXES); $i++) {
-            $sql .= "bid = '$BOXES[$i]' OR ";
-        }
-
-        $result = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE name = 'user_block' OR name= 'section_block' OR name='admin_block'");
-        $nrows = DB_numRows($result);
-
-        for ($i = 1; $i <= $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $sql .= "bid = '" . $A['bid'] . "' OR ";
-        }
+        $sql .= "bid NOT IN ($BOXES) OR ";
 
         $sql .= "bid = '-1')";
     }
