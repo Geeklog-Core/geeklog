@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.180 2002/11/21 18:26:14 dhaun Exp $
+// $Id: lib-common.php,v 1.181 2002/11/23 18:02:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2494,8 +2494,13 @@ function COM_comment( $A, $mode=0, $type, $level=0, $mode='flat', $ispreview=fal
         }
 
         $A['nice_date'] = strftime( $_CONF['date'], $A['nice_date'] );
+        $comment = stripslashes( $A['comment'] );
+        if( preg_match( '/<.*>/', $comment ) == 0 )
+        {
+            $comment = nl2br( $comment );
+        }
         $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . '</td></tr>' . LB
-            . '<tr><td valign="top">' . nl2br( stripslashes( $A['comment'] ));
+                . '<tr><td valign="top">' . $comment;
 
         if( $mode == 0 && $ispreview == false )
         {
@@ -2617,7 +2622,6 @@ function COM_handleCode( $str )
     $str = str_replace( '\\', '&#092;', $str );
     $str = str_replace( '<', '&lt;', $str );
     $str = str_replace( '>', '&gt;', $str );
-    $str = nl2br( $str );
 
     return( $str );
 }
