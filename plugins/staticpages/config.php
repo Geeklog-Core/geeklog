@@ -2,6 +2,12 @@
 
 $_SP_CONF['version'] = '1.4';
 
+// If you don't plan on using PHP code in static pages, you should set this
+// to 0, thus disabling the execution of PHP.
+
+$_SP_CONF['allow_php'] = 1;
+
+
 // If you have more than one static page that is to be displayed in Geeklog's 
 // center area, you can specify how to sort them:
 

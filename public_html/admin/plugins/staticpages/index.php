@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.3                                           |
+// | Static Pages Geeklog Plugin 1.4                                           |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Phill Gillespie  - phill@mediaaustralia.com.au                   |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.29 2004/01/02 22:10:03 dhaun Exp $
+// $Id: index.php,v 1.30 2004/01/14 18:05:42 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -43,6 +43,7 @@ if (!SEC_hasRights('staticpages.edit')) {
     $display .= $LANG_STATIC['access_denied_msg'];
     $display .= COM_endBlock();
     $display .= COM_siteFooter();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the static pages administration screen.");
     echo $display;
     exit;
 }
@@ -188,7 +189,7 @@ function form ($A, $error = false)
         $position .= '</select>';
         $sp_template->set_var ('pos_selection', $position);
 
-        if (SEC_hasRights ('staticpages.PHP')) {
+        if (($_SP_CONF['allow_php'] == 1) && SEC_hasRights ('staticpages.PHP')) {
             $selection = '<select name="sp_php">' . LB;
             $selection .= '<option value="0"';
             if (($A['sp_php'] <= 0) || ($A['sp_php'] > 2)) {
@@ -208,12 +209,12 @@ function form ($A, $error = false)
             $selection .= '</select>';
             $sp_template->set_var ('php_selector', $selection);
             $sp_template->set_var ('php_warn', $LANG_STATIC['php_warn']);
-            $sp_template->set_var ('php_msg', $LANG_STATIC['php_msg']);
         } else {
             $sp_template->set_var ('php_selector', '');
-            $sp_template->set_var ('php_warn', '');
-            $sp_template->set_var ('php_msg', '');
+            $sp_template->set_var ('php_warn', $LANG_STATIC['php_not_activated']);
         }
+        $sp_template->set_var ('php_msg', $LANG_STATIC['php_msg']);
+
         // old variables (for the 1.3-type checkbox)
         $sp_template->set_var ('php_checked', '');
         $sp_template->set_var ('php_type', 'hidden');
@@ -528,7 +529,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         $sp_label = addslashes ($sp_label);
 
         // If user does not have php edit perms, then set php flag to 0.
-        if (!SEC_hasRights ('staticpages.PHP')) {
+        if (($_SP_CONF['allow_php'] != 1) || !SEC_hasRights ('staticpages.PHP')) {
             $sp_php = 0;
         }
 
@@ -563,25 +564,43 @@ if (empty($mode) OR empty($sp_id)) {
 }
 
 if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
+    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
         COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
     } else {
-        DB_delete($_TABLES['staticpage'],'sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+        DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_id,
+                $_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     }
 } else if ($mode == 'edit') {
-    $display .= COM_siteHeader('menu');
-    $display .= staticpageeditor($sp_id,$mode);
-    $display .= COM_siteFooter();
+    $sp_id = COM_applyFilter ($HTTP_GET_VARS['sp_id']);
+    if (!empty ($sp_id)) {
+        $display .= COM_siteHeader('menu');
+        $display .= staticpageeditor($sp_id,$mode);
+        $display .= COM_siteFooter();
+    } else {
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    }
 } else if ($mode == 'clone') {
-    $display .= COM_siteHeader ('menu');
-    $display .= staticpageeditor ($sp_id,$mode);
-    $display .= COM_siteFooter ();
+    $sp_id = COM_applyFilter ($HTTP_GET_VARS['sp_id']);
+    if (!empty ($sp_id)) {
+        $display .= COM_siteHeader ('menu');
+        $display .= staticpageeditor ($sp_id,$mode);
+        $display .= COM_siteFooter ();
+    } else {
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    }
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
-    submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
+    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
+    if (!empty ($sp_id)) {
+        submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
             $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,
             $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php,
             $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock);
+    } else {
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    }
 } else {
+    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= liststaticpages ($page);
     $display .= COM_siteFooter ();

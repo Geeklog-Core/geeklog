@@ -65,7 +65,7 @@ $LANG_STATIC= array(
     'no_title_or_content' => 'You must at least fill in the <b>Title</b> and <b>Content</b> fields.',
     'no_such_page_logged_in' => 'Sorry '.$_USER['username'].'..',
     'no_such_page_anon' => 'Please log in..',
-    'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF["site_name"]}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF["site_name"]} to receive full membership access",
+    'no_page_access_msg' => "This could be because you're not logged in, or not a member of {$_CONF['site_name']}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF['site_name']} to receive full membership access",
     'php_msg' => 'PHP: ',
     'php_warn' => 'Warning: PHP code in your page will be evaluated if you enable this option. Use with caution !!',
     'exit_msg' => 'Exit Type: ',
@@ -101,7 +101,8 @@ $LANG_STATIC= array(
     'title_display' => 'Display page',
     'select_php_none' => 'do not execute PHP',
     'select_php_return' => 'execute PHP (return)',
-    'select_php_free' => 'execute PHP'
+    'select_php_free' => 'execute PHP',
+    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the documentation for details.'
 );
 
 ?>

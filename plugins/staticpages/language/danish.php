@@ -102,7 +102,8 @@ $LANG_STATIC= array(
     'title_display' => 'Display page',
     'select_php_none' => 'do not execute PHP',
     'select_php_return' => 'execute PHP (return)',
-    'select_php_free' => 'execute PHP'
+    'select_php_free' => 'execute PHP',
+    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the documentation for details.'
 );
 
 ?>

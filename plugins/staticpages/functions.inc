@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.3 for Geeklog - The Ultimate Weblog                 |
+// | Static Pages Plugin 1.4 for Geeklog - The Ultimate Weblog                 |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net                |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.27 2004/01/02 22:08:59 dhaun Exp $
+// $Id: functions.inc,v 1.28 2004/01/14 18:05:42 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -406,14 +406,18 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                 $retval .= COM_startBlock ($spresult['sp_title']);
             }
 
-            // Check for type (ie html or php)
-            if ($spresult['sp_php'] == 1) {
-                $retval .= eval (stripslashes ($spresult['sp_content']));
-            } else if ($spresult['sp_php'] == 2) {
-                ob_start ();
-                eval (stripslashes ($spresult['sp_content']));
-                $retval .= ob_get_contents ();
-                ob_end_clean ();
+            if ($_SP_CONF['allow_php'] == 1) {
+                // Check for type (ie html or php)
+                if ($spresult['sp_php'] == 1) {
+                    $retval .= eval (stripslashes ($spresult['sp_content']));
+                } else if ($spresult['sp_php'] == 2) {
+                    ob_start ();
+                    eval (stripslashes ($spresult['sp_content']));
+                    $retval .= ob_get_contents ();
+                    ob_end_clean ();
+                } else {
+                    $retval .= stripslashes ($spresult['sp_content']);
+                }
             } else {
                 $retval .= stripslashes ($spresult['sp_content']);
             }

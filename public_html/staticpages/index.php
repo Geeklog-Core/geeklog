@@ -2,13 +2,13 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.3                                            |
+// | Static Page Geeklog Plugin 1.4                                            |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
 // | This is the main page for the Geeklog Static Page Plugin                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net                |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2004/01/02 22:10:03 dhaun Exp $
+// $Id: index.php,v 1.15 2004/01/14 18:05:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -44,21 +44,22 @@ if (!empty ($_USER['uid'])) {
 }
 
 COM_setArgNames (array ('page'));
-$page = COM_getArgument ('page');
+$page = COM_applyFilter (COM_getArgument ('page'));
 
 if (empty ($page)) {
     $error = 1;
-}
+} else {
 
-$perms = SP_getPerms ();
-if (!empty ($perms)) {
-    $perms = ' AND ' . $perms;
-}
-$result = DB_query ("SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
-$count = DB_numRows ($result);
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+    $result = DB_query ("SELECT * FROM {$_TABLES['staticpage']} WHERE (sp_id = '$page')" . $perms);
+    $count = DB_numRows ($result);
 
-if ($count == 0 || $count > 1) {
-    $error = 1;
+    if ($count == 0 || $count > 1) {
+        $error = 1;
+    }
 }
 
 if (!($error)) {
@@ -74,14 +75,18 @@ if (!($error)) {
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_startBlock (stripslashes ($A['sp_title']));
     }
-    // Check for type (ie html or php)
-    if ($A['sp_php'] == 1) {
-        $retval .= eval (stripslashes ($A['sp_content']));
-    } else if ($A['sp_php'] == 2) {
-        ob_start ();
-        eval (stripslashes ($A['sp_content']));
-        $retval .= ob_get_contents ();
-        ob_end_clean ();
+    if ($_SP_CONF['allow_php'] == 1) {
+        // Check for type (ie html or php)
+        if ($A['sp_php'] == 1) {
+            $retval .= eval (stripslashes ($A['sp_content']));
+        } else if ($A['sp_php'] == 2) {
+            ob_start ();
+            eval (stripslashes ($A['sp_content']));
+            $retval .= ob_get_contents ();
+            ob_end_clean ();
+        } else {
+            $retval .= stripslashes ($A['sp_content']);
+        }
     } else {
         $retval .= stripslashes ($A['sp_content']);
     }
@@ -114,7 +119,11 @@ if (!($error)) {
     // increment hit counter for page...is SQL compliant?  
     DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'"); 
 } else {
-    $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
+    if (empty ($page)) {
+        $failflg = 0;
+    } else {
+        $failflg = DB_getItem ($_TABLES['staticpage'], 'sp_nf', "sp_id='$page'");
+    }
     if ($failflg) {
         $retval = COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG_LOGIN[1]);

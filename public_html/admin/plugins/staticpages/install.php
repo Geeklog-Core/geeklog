@@ -2,14 +2,14 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.3 for Geeklog - The Ultimate Weblog                 |
+// | Static Pages Plugin 1.4 for Geeklog - The Ultimate Weblog                 |
 // +---------------------------------------------------------------------------+
 // | install.php                                                               |
 // |                                                                           |
 // | This file installs and removes the data structures for the Static Pages   |
 // | plugin for Geeklog.                                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002,2003 by the following authors:                         |
+// | Copyright (C) 2002-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.12 2003/12/29 10:07:53 dhaun Exp $
+// $Id: install.php,v 1.13 2004/01/14 18:05:42 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -210,7 +210,7 @@ function plugin_install_staticpages()
     COM_errorLog('Registering Static Page plugin with Geeklog', 1);
     DB_delete($_TABLES['plugins'],'pi_name','staticpages');
     DB_query("INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_homepage, pi_enabled) "
-        . "VALUES ('staticpages', '{$_SP_CONF['version']}', '1.3.8', 'http://www.tonybibbs.com', 1)");
+        . "VALUES ('staticpages', '{$_SP_CONF['version']}', '1.3.9', 'http://www.tonybibbs.com', 1)");
 
     if (DB_error()) {
         plugin_uninstall_staticpages($steps);

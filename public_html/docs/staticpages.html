@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Geeklog Documentation - Static Pages plugin</title>
+  <title>Geeklog Documentation - Static Pages plugin 1.4</title>
   <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
 </head>
 
@@ -15,114 +15,102 @@
 </tr>
 </table>
 
-<h1>Static Pages plugin</h1>
+<h1>Static Pages plugin 1.4</h1>
 
 <h2><a name="about">What is it?</a></h2>
 
 <p>The Static Pages plugin was originally aimed at creating pages with static content (as opposed to the dynamic pages created by Geeklog) - hence the name. Pages like an "about us" page, a mission statement, etc. would come to mind.</p>
 
-<p>Since then, people have used the Static Pages for all kinds of things and with the inclusion of PHP into Static Pages, even the original name isn't quite right any more ...</p>
+<p>Since then, people have used the static pages for all kinds of things and with the inclusion of PHP into static pages, even the original name isn't quite right any more ...</p>
 
 
 <h2><a name="history">History</a></h2>
 
-<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.5. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version allows the use of PHP in Static Pages and also supports proper Geeklog permissions.</p>
+<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.5. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version was the first to allow the use of PHP in static pages and also supported proper Geeklog permissions.</p>
 
-<p>With Geeklog 1.3.8 and Static Pages 1.3 these two versions have now been merged again. Static Pages 1.3 also includes some new features that were not included in either of its predecessors.</p>
+<p>With Geeklog 1.3.8 and Static Pages 1.3, these two versions were merged again. Static Pages 1.3 also introduced some new features that were not included in either of its predecessors.</p>
 
 
 <h2><a name="features">Features</a></h2>
 
 <ul>
   <li>supports <a href="#php">use of PHP</a></li>
-  <li>proper support for Geeklog permissions</li>
   <li><a href="#id">editable page ID</a> to make more readable URLs</li>
-  <li>Static Pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
+  <li>Static pages can be displayed on Geeklog's <a href="#frontpage">index and topic pages</a> and can even replace it entirely ("splash screen")</li>
   <li>"<a href="#cloning">cloning</a>" of existing pages</li>
   <li>Makes use of Geeklog's <a href="#url">URL rewrite feature</a></li>
+  <li>proper support for Geeklog permissions</li>
 </ul>
 
 
 <h2><a name="php">Use of PHP</a></h2>
 
-<p align="center"><em>The use of PHP in Static Pages may result in security issues if not used properly. Use this feature with care!</em></p>
+<h3><a name="activation">Activating PHP</a></h3>
 
-<p>The use of PHP has to be enabled for each individual Static Page. Make sure you check the PHP checkbox below the content edit field. If that checkbox is not checked, your PHP code will be displayed as the page's content instead (i.e. it will not be executed).</p>
+<p><strong>Important:</strong> For security reasons, the use of PHP in static pages is disabled by default. To enable it, you will have to grant the 'staticpages.PHP' permission to the "Static Page Admin" group. To do this, log in as the Admin and from the Admin's Only block, select "Groups". Find the "Static Page Admin" group and edit it by clicking on the name of the group. At the bottom of the page, you will find a list of "Rights" (permissions) that can be granted to all members of this group. Note that 'staticpages.delete' and 'staticpages.edit' are checked, while 'staticpages.PHP' is not checked. To allow members of the Static Page Admin group to use PHP in static pages, you will have to check the 'staticpages.PHP' checkbox and save your changes.</p>
 
-<p>To use PHP, the person editing the Static Page will also need to have "staticpages.PHP" permission. This is the default for all users in the "Static Page Admin" group, but you could create a second Admin group with only the "staticpages.edit" and "staticpages.delete" permissions if you don't want to allow all your Static Page Admins to make use of PHP.</p>
+<p>In addition to the 'staticpages.PHP' permission discussed above, there is also a global flag, <code>$_SP_CONF['allow_php']</code>, that can be used to disable the use of PHP in static pages entirely. When set to 0, it will override the 'staticpages.PHP' permission and disable all use of PHP in static pages. The flag is located in the static pages' <tt>config.php</tt> file in the <tt>plugins/staticpages</tt> directory.</p>
 
-<p>Please note that when you enable PHP for a Static Page, the content of the page is treated as PHP source, i.e. you will need to write PHP code. Some examples may help:</p>
+<h3><a name="usage">Usage</a></h3>
 
-<p><strong>Example 1 (wrong!)</strong></p>
-<pre><code>
-    &lt;?php 
-     return "This is a test"; 
-    ?&gt;
-    This is not a test.
-</code></pre>
+<p align="center"><em>The use of PHP in static pages may result in security issues if not used properly. Use this feature with care!</em></p>
 
-<p>With PHP enabled, this will not display anything at all. With PHP disabled, it will only display "This is not a test."</p>
-
-<p>Why? Because everything between <code>&lt;?php</code> and <code>?&gt;</code> will <em>always</em> be stripped out, whether the page has been set to PHP mode or not.</p>
-
-<p><strong>Example 2 (good)</strong></p>
-<pre><code>
-    return "This is a test";
-</code></pre>
-
-<p>With PHP enabled, this will display "This is a test". With PHP disabled, it will display the entire PHP code, i.e. <code>return "This is a test";</code>
-
-<p><strong>Example 3 (wrong)</strong></p>
-<pre><code>
-    echo "This is a test";
-</code></pre>
-
-<p>With PHP enabled, this will display "This is a test" - but not where you would expect it. When using PHP in Static Pages, you should not use <code>echo</code> or <code>print</code> but return the content you want to be displayed using a <code>return</code> statement (see example 2).</p>
-
-<h3><a name="phpsummary">Summary</a></h3>
+<p>The use of PHP has to be enabled for each individual static page. Below the content edit field, you will find a drop-down menu with the following options:</p>
 <ul>
-  <li>You will need to enable the use of PHP for each individual page.</li>
-  <li>Don't include your PHP code in <code>&lt;?php</code> and <code>?&gt;</code> tags.</li>
-  <li>Don't use <code>echo</code> or <code>print</code>.</li>
-  <li>Use <code>return</code> to return the content you want to be displayed.</li>
+<li>do not execute PHP<br>
+Obivously, when you select this option, any PHP code in the static page will <em>not</em> be executed but will instead be printed out as-is.</li>
+<li>execute PHP (return)<br>
+If you select this option, PHP code in static pages <em>will</em> be executed. The 'return' indicates that the code should return any output it generates, using a PHP <code>return</code> statement, instead of printing it out directly. This is the PHP option as introduced with the Static Pages plugin 1.3.</li>
+<li>execute PHP<br>
+Again, this option <em>will</em> enable execution of PHP. Only this time, the PHP code can actually use <code>echo</code> and <code>print</code> statements without having the output interfere with the page layout.</li>
 </ul>
+
+<p>Please note that when embedding PHP code in a static page, your code should <em>not</em> be enclosed in the PHP <code>&lt;?php</code> and <code>?&gt;</code> tags. Instead, it is assumed that the static page contains the PHP code that would normally go <em>between</em> those two tags.</p>
+
+<p>When selecting the second of the above PHP execution options ("execute PHP") you can, however, switch back and forth between PHP and plain HTML like this:</p>
+<pre style="padding-left: 2em"><code>echo "Hello"; ?&gt;, &lt;b&gt;world&lt;/b&gt;, &lt;?php echo "how are you?";</code></pre>
+<p>The above example would print out "Hello, <b>world</b>, how are you?".</p>
 
 
 <h2><a name="id">Page ID</a></h2>
 
-<p>When creating a new Static Page, it will be assigned a page ID automatically. This ID consists of the date and time and up to three random digits. When you anticipate that the URL of this page may be used a lot, e.g. quoted in emails, it may make sense to use a more readable ID for the page.</p>
+<p>When creating a new static page, it will be assigned a page ID automatically. This ID consists of the date and time and up to three random digits. When you anticipate that the URL of this page may be used a lot, e.g. quoted in emails, it may make sense to use a more readable ID for the page.</p>
 
-<p>The Static Pages editor will let you change the page ID. For example, you may want to rename the ID for your "about" page from "20030313100131123" to "about", thus creating a URL like</p>
+<p>The static pages editor will let you change the page ID. For example, you may want to rename the ID for your "about" page from "20030313100131123" to "about", thus creating a URL like</p>
 
 <p align="center"><tt>http://yoursite/staticpages/index.php?page=about</tt></p>
 
 <p>which looks much nicer when quoted (and is easier to remember). You could further improve this by making use of Geeklog's <a href="#url">URL rewrite feature</a>.</p>
 
-<p>Please note that you should only use letters and digits for the page ID. Avoid national special characters, most punctuation characters ('-' and '.' should be okay, though) and spaces. The Static Page editor will catch some illegal characters but not all of them ...</p>
+<p>Please note that you should only use letters and digits for the page ID. Avoid national special characters, most punctuation characters ('-' and '.' should be okay, though) and spaces. The static page editor will catch some illegal characters but not all of them ...</p>
 
 
 <h2><a name="frontpage">Using Static Pages on the index page</a></h2>
 
-<p>Geeklog 1.3.8 introduces a new concept for use by plugins, called Center Blocks. Basically, this means that any plugin can place blocks in the center area of a Geeklog site, i.e. among the stories.</p>
+<p>Geeklog 1.3.8 introduced a new concept for use by plugins, called Center Blocks. Basically, this means that any plugin can place blocks in the center area of a Geeklog site, i.e. among the stories.</p>
 
-<p>When you check the "Centerblock" option for a Static Page, you can use the "Position" and "Topic" drop-downs to chose where this Static Page will be displayed. For "Position", the options are "Top Of Page", "After Featured Story", "Bottom Of Page" (which should be self-explanatory) and "Entire Page". That last option, "Entire Page" will tell Geeklog that this Static Page will replace the entire index page - it will not display any stories, but only the contents of this Static Page. This is useful e.g. for "Splash" screens or Welcome pages.</p>
+<p>When you check the "Centerblock" option for a static page, you can use the "Position" and "Topic" drop-downs to chose where this static page will be displayed. For "Position", the options are "Top Of Page", "After Featured Story", "Bottom Of Page" (which should be self-explanatory) and "Entire Page". That last option, "Entire Page", will tell Geeklog that this static page will replace the entire index page - it will not display any stories, but only the contents of this static page. This is useful e.g. for "splash" screens or Welcome pages.</p>
 
-<p>The second drop-down, "Topic", lets you restrict the display of a Static Page to only a certain topic, the Homepage Only, or all pages (i.e. all topic pages and the homepage). This is the same as the options you have for blocks.</p>
+<p><strong>Tip:</strong> When using a static page as a "splash" screen, you may need a link that takes your visitors to the normal index page, i.e. the list of current stories. To do this, create a link to <code>index.php?display=all</code></p>
 
-<p><strong>Tip:</strong> You can combine these options with the permission settings. This will let you, for example, create a Welcome page that is only displayed to anonymous users.</p>
+<p>The second drop-down, "Topic", lets you restrict the display of a static page to only a certain topic, the homepage only, or all pages (i.e. all topic pages and the homepage). This is the same as the options you have for blocks.</p>
+
+<p><strong>Tip:</strong> You can combine these options with the permission settings. This will let you, for example, create a "welcome" page that is only displayed to anonymous users.</p>
 
 <h3><a name="sort">Sorting</a></h3>
 
-<p>When you have more than one Static Page that would appear in the same section of the center area (e.g. two Static Pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the Static Pages' <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
+<p>When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
-<p>Static Pages will be wrapped in a block when <code>$_SP_CONF['in_block']</code> is set to <code>1</code> (in the plugin's <tt>config.php</tt> file). The title of the Static Page is then used as the block title.</p>
+<p>You can chose to have a static page wrapped in a Geeklog block by checking the "wrap static page in a block" option in the static pages editor. If selected, the page's title will be used as the block title.</p>
+
+<p>The plugin's <tt>config.php</tt> file also has a flag, <code>$_SP_CONF['in_block']</code>, which is used as the default for this option.</p>
 
 
 <h2><a name="cloning">Cloning Static Pages</a></h2>
 
-<p>When you have a lot of similar Static Pages you may want to make a copy of an existing page and then edit that copy. This can easily be done by clicking on the [C] from the list of Static Pages. Doing so will create a copy of that page with a new page ID.</p>
+<p>When you have a lot of similar static pages you may want to make a copy of an existing page and then edit that copy. This can easily be done by clicking on the [C] from the list of static pages. Doing so will create a copy of that page with a new page ID.</p>
 
 
 <h2><a name="url">URL rewriting</a></h2>
