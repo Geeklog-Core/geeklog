@@ -1,5 +1,26 @@
 GeekLog History/Changes:
 
+- Need to use date_sub() in the SQL request for the display=new mode on the
+  index page to ensure compatibility with old versions of MySQL (reported by
+  Markus Guske).
+- New users created manually from the Admin's User menu were assigned a
+  random password, even when the Admin entered one (reported by TechFan).
+  This bug was only introduced in 1.3.8rc1.
+- The printer-friendly version of a story in HTML format should not call
+  nl2br() on the story text (bug #762636).
+- When attempting to edit a submission, check that it still exists in the
+  submission queue (since another Admin could already have handled it),
+  avoiding an SQL error (reported by Simon Lord).
+
+- Updated Spanish language file, provided by Angel Romero.
+- Updated Polish language file, provided by Robert Stadnik.
+- Updated Japanese language file, provided by Yusuke Sakata.
+- Updated Italian language file, provided by quess65.
+- New Italian language file for the Static Pages plugin, provided by quess65.
+- New language file for formal German (addressing the user as "Sie" instead of
+  "Du"), provided by Philip Sack.
+
+
 June 29, 2003 (1.3.8rc1)
 -------------
 
