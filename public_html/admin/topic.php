@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.48 2004/09/29 17:43:43 dhaun Exp $
+// $Id: topic.php,v 1.49 2004/12/10 09:32:09 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -375,6 +375,15 @@ function deleteTopic ($tid)
 
     // same with feeds
     DB_query ("UPDATE {$_TABLES['syndication']} SET topic = '::all', is_enabled = 0 WHERE topic = '$tid'");
+
+    // delete comments and images associated with stories in this topic
+    $result = DB_query ("SELECT sid FROM {$_TABLES['stories']} WHERE tid = '$tid'");
+    $numStories = DB_numRows ($result);
+    for ($i = 0; $i < $numStories; $i++) {
+        $A = DB_fetchArray ($result);
+        STORY_deleteImages ($A['sid']);
+        DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '{$A['sid']}' AND type = 'article'");
+    }
 
     // delete these
     DB_delete ($_TABLES['stories'], 'tid', $tid);
