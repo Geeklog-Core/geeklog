@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.232 2003/06/27 18:29:29 dhaun Exp $
+// $Id: lib-common.php,v 1.233 2003/06/28 01:36:27 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -709,6 +709,7 @@ function COM_getThemes($all = false)
 function COM_siteHeader( $what = 'menu' )
 {
     global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS, $LANG_CHARSET;
+    global $_TABLES, $HTTP_POST_VARS, $HTTP_GET_VARS;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -866,7 +867,22 @@ function COM_siteHeader( $what = 'menu' )
 
     if( $what <> 'none' )
     {
-        // Now show any blocks
+        // Now show any blocks -- need to get the topic if not on home page
+        if (!isset($HTTP_GET_VARS['topic'])) {
+            if (isset($HTTP_GET_VARS['story'])) {
+                $sid = $HTTP_GET_VARS['story'];
+            } elseif (isset($HTTP_GET_VARS['sid'])) {
+                $sid = $HTTP_GET_VARS['sid'];
+            } elseif (isset($HTTP_POST_VARS['story'])) {
+                $sid = $HTTP_POST_VARS['story'];
+            }
+            if (isset($sid)) {
+              $topic = DB_getItem($_TABLES['stories'], "tid", "sid='$sid'");
+            }
+
+        } else {
+                $topic = $HTTP_GET_VARS['topic'];
+        }
         $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
         $header->parse( 'left_blocks', 'leftblocks', true );
     }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.19 2003/05/22 21:05:46 dhaun Exp $
+// $Id: lib-plugins.php,v 1.20 2003/06/28 01:36:27 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -791,6 +791,28 @@ function PLG_profileExtrasSave ($plugin = '')
     } else {
         PLG_callFunctionForOnePlugin ('plugin_profileextrassave_' . $plugin);
     }
+}
+
+/**
+* This function is called from COM_siteHeader and will return additional Header information
+* This can be Javascript funcitons required for the plugin or extra Metatags
+*
+* @return   string      returns a concatented string of all plugins extra header code
+*/
+function PLG_getHeaderCode()
+{
+    global $_TABLES;
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_getHeaderCode_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $headercode .= $function();
+        }
+    }
+	return $headercode;
 }
 
 ?>
