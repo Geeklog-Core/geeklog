@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.27 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: event.php,v 1.28 2002/06/28 14:59:08 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -530,7 +530,7 @@ function listevents()
 // MAIN
 
 switch ($mode) {
-	case "$LANG22[21]":
+	case "$LANG22[22]":
 		DB_delete($_TABLES['events'],'eid',$eid);
         echo COM_refresh($_CONF['site_admin_url'] . '/event.php?msg=18');
 		break;
