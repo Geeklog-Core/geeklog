@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.15 2002/04/11 16:41:55 tony_bibbs Exp $
+// $Id: event.php,v 1.16 2002/04/11 18:01:29 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -420,13 +420,13 @@ function editevent($mode, $A)
 function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode) 
 {
 	global $_TABLES, $_CONF, $LANG22;
-
+    
     if ($allday == 'on') {
         $allday = 1;
     } else {
         $allday = 0;
     }
-
+    
     // Make sure start date is before end date
     if (checkdate($start_month, $start_day, $start_year)) {
         $datestart = $start_year . '-' . $start_month . '-' . $start_day;
@@ -459,10 +459,7 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 	$address2 = addslashes(COM_checkHTML(COM_checkWords($address2)));
     $city = addslashes(COM_checkHTML(COM_checkWords($city)));
     $zipcode =  addslashes(COM_checkHTML(COM_checkWords($zipcode)));
-    if ($allday == 'on') {
-        $allday = 1;
-    } else {
-        $allday = 0;
+    if ($allday == 0) {
         // Add 12 to make time on 24 hour clock if needed
         if ($start_ampm == 'pm' AND $start_hour <> 12) {
             $start_hour = $start_hour + 12;
