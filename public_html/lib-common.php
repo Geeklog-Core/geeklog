@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.241 2003/07/26 19:13:38 dhaun Exp $
+// $Id: lib-common.php,v 1.242 2003/08/02 15:07:32 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2835,7 +2835,7 @@ function COM_commentChildren( $sid, $pid, $order, $mode, $type, $level=0 )
 
 function COM_comment( $A, $mode=0, $type, $level=0, $mode='flat', $ispreview=false )
 {
-    global $_TABLES, $_CONF, $LANG01, $_USER, $order;
+    global $_TABLES, $_CONF, $LANG01, $_USER, $order, $query;
 
     $level = $level * 25;
 
@@ -2877,6 +2877,15 @@ function COM_comment( $A, $mode=0, $type, $level=0, $mode='flat', $ispreview=fal
         else
         {
             $retval .= '<tr>';
+        }
+
+        if( !empty( $query ))
+        {
+            $mywords = explode( ' ', $query );
+            foreach( $mywords as $searchword )
+            {
+                $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
+            }
         }
 
         $A['title'] = str_replace( '$', '&#36;', $A['title'] );
@@ -4989,12 +4998,12 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
         // if link is too long, shorten it and add ... at the end
         if(( $maxlength > 0 ) && ( strlen( $url_text[2] ) > $maxlength ))
         {
-            $new_text = substr( $url_text[2], 0, $maxlength ) . '...';
+            $new_text = substr( $url_text[2], 0, $maxlength - 3 ) . '...';
             // NOTE, this assumes there is no space between > and url_text[1]
             $reg[0] = str_replace( ">".$url_text[2], ">".$new_text, $reg[0] );
         }
 
-        if( stristr( $fulltext, "<img " ))
+        if( stristr( $url_text[2], "<img " ))
         {
             // this is a linked images tag, ignore
             $reg[0] = '';
@@ -5005,7 +5014,7 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
             $fulltext = str_replace( $orig, '', $fulltext );
         }
 
-        if( $check != $reg[0] )
+        if( !empty( $reg[0] ) && $check != $reg[0] )
         {
             // Only write if we are dealing with something other than an image
             if( !( stristr( $reg[0], "<img " )))
