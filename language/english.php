@@ -1129,7 +1129,8 @@ $MESSAGE = array(
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated'
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
