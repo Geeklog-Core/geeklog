@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.35 2004/01/23 12:38:39 dhaun Exp $
+// $Id: calendar.php,v 1.36 2004/01/23 21:16:38 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -303,7 +303,7 @@ if ($mode != 'personal') {
 }
 
 // Set mode back to master if user refreshes screen after their session expires
-if (empty ($_USER['uid']) AND $mode == 'personal') {
+if (($_USER['uid'] <= 1) AND $mode == 'personal') {
     $mode = '';
 }
 
