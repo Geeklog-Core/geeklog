@@ -430,18 +430,19 @@ function saveuser($A)
             }
         }
         $A['homepage'] = strip_tags ($A['homepage']);
-        $pos = strpos ($A['homepage'], ':');
-        if ($pos === false) {
-            $A['homepage'] = 'http://' . $A['homepage'];
-        } 
-        else {
-            $prot = substr ($A['homepage'], 0, $pos + 1);
-            if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['homepage'] = 'http:' . substr ($A['homepage'], $pos + 1);
+        if (!empty ($A['homepage'])) {
+            $pos = strpos ($A['homepage'], ':');
+            if ($pos === false) {
+                $A['homepage'] = 'http://' . $A['homepage'];
             }
+            else {
+                $prot = substr ($A['homepage'], 0, $pos + 1);
+                if (($prot != 'http:') && ($prot != 'https:')) {
+                    $A['homepage'] = 'http:' . substr ($A['homepage'], $pos + 1);
+                }
+            }
+            $A['homepage'] = addslashes ($A['homepage']); 
         }
-        $A['homepage'] = addslashes ($A['homepage']); 
-
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");

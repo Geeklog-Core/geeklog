@@ -398,17 +398,19 @@ function savesubmission($type,$A)
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A['description'])));
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['url'] = strip_tags ($A['url']);
-            $pos = strpos ($A['url'], ':');
-            if ($pos === false) {
-                $A['url'] = 'http://' . $A['url'];
-            }
-            else {
-                $prot = substr ($A['url'], 0, $pos + 1);
-                if (($prot != 'http:') && ($prot != 'https:')) {
-                    $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+            if (!empty ($A['url'])) {
+                $pos = strpos ($A['url'], ':');
+                if ($pos === false) {
+                    $A['url'] = 'http://' . $A['url'];
                 }
+                else {
+                    $prot = substr ($A['url'], 0, $pos + 1);
+                    if (($prot != 'http:') && ($prot != 'https:')) {
+                        $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+                    }
+                }
+                $A['url'] = addslashes ($A['url']);
             }
-            $A['url'] = addslashes ($A['url']);
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'","index.php?msg=3");
@@ -436,18 +438,19 @@ function savesubmission($type,$A)
             $A['city'] = addslashes(strip_tags(COM_checkWords($A['city'])));
             $A['location'] = addslashes(strip_tags(COM_checkWords($A['location'])));
             $A['url'] = strip_tags ($A['url']);
-            $pos = strpos ($A['url'], ':');
-            if ($pos === false) {
-                $A['url'] = 'http://' . $A['url'];
-            }
-            else {
-                $prot = substr ($A['url'], 0, $pos + 1);
-                if (($prot != 'http:') && ($prot != 'https:')) {
-                    $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+            if (!empty ($A['url'])) {
+                $pos = strpos ($A['url'], ':');
+                if ($pos === false) {
+                    $A['url'] = 'http://' . $A['url'];
                 }
+                else {
+                    $prot = substr ($A['url'], 0, $pos + 1);
+                    if (($prot != 'http:') && ($prot != 'https:')) {
+                        $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+                    }
+                }
+                $A['url'] = addslashes ($A['url']);
             }
-            $A['url'] = addslashes ($A['url']);
-
             if (empty($A['eid'])) {
                 $A['eid'] = COM_makesid();
             }
