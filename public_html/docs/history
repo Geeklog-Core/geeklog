@@ -3,12 +3,16 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Added a missing stripslashes call to remove backslashes when a topic's name
+  was displayed in the index page's title (bug #369) [Dirk]
+- Added two new SpamX modules to filter posts based on the IP address of the
+  poster and the IP address of the spamvertised site, provided by Tom Willet.
 - Incorporated the new syndication framework for reading and writing feeds of
   different formats (RSS, RDF, Atom), provided by Michael Jervis (patch #352).
+  This contribution also addresses Task #19 ("RSS import class") and Feature
+  Request #67 ("Limiting number of entries in RSS feeds").
   Please note that the feed writer classes, system/classes/*.feed.class.php,
   are now obsolete and can be removed.
-  This also addresses Task #19 ("RSS import class") and Feature Request #67
-  ("Limiting number of entries in RSS feeds").
 - Story, event, and link submissions are now also checked for spam [Dirk]
 - Added support for sending and receiving trackback comments (Feature Request
   #34) [Dirk]
@@ -30,6 +34,9 @@ GeekLog History/Changes:
 - The column headline for event search results was not displayed [Dirk]
 
 - Updated Italian language file, provided by Marcello Teodori
+- Updated Italian language file for the Static Pages plugin, provided by
+  Marcello Teodori
+- New Italian language file for the SpamX plugin, provided by Marcello Teodori
 
 
 Dec 31, 2004 (1.3.11)
