@@ -65,8 +65,6 @@ $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD lft mediumint(10) unsigned NOT
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD rht mediumint(10) unsigned NOT NULL default '0' AFTER lft";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD indent mediumint(10) unsigned NOT NULL default '0' AFTER rht";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD ipaddress varchar(15) NOT NULL default '' AFTER uid";
-$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_pid(pid)";
-$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_sid_pid(sid,pid)";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_lft(lft)";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_rht(rht)";
 
