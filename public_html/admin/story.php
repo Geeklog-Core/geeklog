@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.102 2003/09/04 03:58:38 blaine Exp $
+// $Id: story.php,v 1.103 2003/09/04 08:13:18 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -436,7 +436,6 @@ function liststories($page = 1)
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('lang_featured', $LANG24[32]); 
 
-    $current_topic = $topic;
     if (!empty ($HTTP_GET_VARS['tid'])) {
         $current_topic = $HTTP_GET_VARS['tid'];
     } elseif (!empty ($HTTP_POST_VARS['tid'])) {
@@ -450,7 +449,7 @@ function liststories($page = 1)
 
     if ($current_topic == $LANG09['9']) {
         $excludetopics = '';
-        $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
+        $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
         $tresult = DB_query( $topicsql );
         $trows = DB_numRows( $tresult );     
         if( $trows > 0 )
@@ -466,7 +465,7 @@ function liststories($page = 1)
                 if ($current_topic == "{$T['tid']}") {
                     $seltopics .= ' selected="selected"';
                 }
-                $seltopics .= '>' . $T['tid'] . '</option>' . LB;
+                $seltopics .= '>' . $T['topic'] . '</option>' . LB;
             }
             $excludetopics .= ") ";
         } 
