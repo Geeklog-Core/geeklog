@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.8 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-syndication.php,v 1.9 2004/08/23 19:36:35 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -505,8 +505,8 @@ function SYND_getFeedContentLinks( $limit, &$link, &$update )
         $linktitle = stripslashes( $row['title'] );
         $linkdesc = stripslashes( $row['description'] );
 
-        $linklink = $_CONF['site_url'] . '/portal.php?what=link&item='
-                  . $row['lid'];
+        $linklink = COM_buildUrl( $_CONF['site_url']
+                  . '/portal.php?what=link&item=' . $row['lid'] );
 
         $content[] = array( 'title'  => $linktitle,
                             'text'   => $linkdesc,

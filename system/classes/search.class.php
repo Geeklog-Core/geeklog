@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.27 2004/08/23 12:38:53 dhaun Exp $
+// $Id: search.class.php,v 1.28 2004/08/23 19:36:36 dhaun Exp $
 
 if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -508,9 +508,9 @@ class Search {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     $thetime = COM_getUserDateTimeFormat($A['day']);
                     $row = array (stripslashes ($A['title']),
-                                  '<a href="' . $_CONF['site_url']
+                                  '<a href="' . COM_buildUrl ($_CONF['site_url']
                                   . '/portal.php?what=link&amp;item='
-                                  . $A['lid'] . '">' . $A['url'] . '</a>',
+                                  . $A['lid']) . '">' . $A['url'] . '</a>',
                                   $A['hits']);
                     $link_results->addSearchResult($row);
                     $link_results->num_searchresults++;

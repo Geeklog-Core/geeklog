@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.11 2004/01/01 20:50:08 dhaun Exp $
+// $Id: portal.php,v 1.12 2004/08/23 19:36:34 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -40,12 +40,18 @@ require_once('lib-common.php');
 
 $url = '';
 
-$item = COM_applyFilter ($HTTP_GET_VARS['item']);
+COM_setArgNames (array ('what', 'item'));
+$what = COM_getArgument ('what');
 
-if (!empty ($item)) {
-    $url = DB_getItem ($_TABLES['links'], 'url', "lid = '{$item}'");
-    if (!empty ($url)) {
-        DB_change ($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
+if ($what == 'link') {
+
+    $item = COM_applyFilter (COM_getArgument ('item'));
+
+    if (!empty ($item)) {
+        $url = DB_getItem ($_TABLES['links'], 'url', "lid = '{$item}'");
+        if (!empty ($url)) {
+            DB_change ($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
+        }
     }
 }
 

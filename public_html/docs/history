@@ -3,6 +3,7 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added support for the URL rewriting to portal.php [Dirk]
 - The links for the What's Related block are stored in the 'related' field in
   the gl_stories table again. Parsing the story for links every time it is
   rendered uses too much CPU power (with apologies to groklaw.net) [Dirk]
