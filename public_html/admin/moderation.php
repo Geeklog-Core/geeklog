@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.30 2002/10/08 15:13:24 dhaun Exp $
+// $Id: moderation.php,v 1.31 2002/11/09 12:49:46 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -399,9 +399,9 @@ function moderation($mid,$action,$type,$count)
                 DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
             } else {
                 // This is called in case this is a plugin. There may be some
-                // plugin specific processing that needs to happen first.
-                $retval .= PLG_approveSubmission($type,$mid[$i]);
+                // plugin specific processing that needs to happen.
                 DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
+                $retval .= PLG_approveSubmission($type,$mid[$i]);
             }
             break;
         }

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.42 2002/10/28 17:32:29 dhaun Exp $
+// $Id: submit.php,v 1.43 2002/11/09 12:49:45 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -607,8 +607,16 @@ if ($mode == $LANG12[8]) { // submit
             }
             break;
         default:
-            if (SEC_hasRights('story.edit')) {
-                echo COM_refresh($_CONF['site_admin_url'] . '/story.php?mode=edit');
+            if ((strlen ($type) > 0) && ($type <> 'story')) {
+                if (SEC_hasRights ("$type.edit") ||
+                    SEC_hasRights ("$type.admin"))  {
+                    echo COM_refresh ($_CONF['site_admin_url']
+                         . "/plugins/$type/index.php?mode=edit");
+                    exit;
+                }
+            } elseif (SEC_hasRights ('story.edit')) {
+                echo COM_refresh ($_CONF['site_admin_url']
+                     . '/story.php?mode=edit');
                 exit;
             }
             break;
