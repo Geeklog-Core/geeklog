@@ -80,7 +80,7 @@ $LANG01 = array(
 	38 => "",
 	39 => "Aggiorna",
 	40 => "",
-	41 => "",
+	41 => "Ospiti",
 	42 => "Contributo di:",
 	43 => "Rispondi a questo",
 	44 => "Relativo",
@@ -145,7 +145,9 @@ $LANG01 = array(
     103 => 'DB Backups',
     104 => 'da',
     105 => 'Utenti Mail',
-    106 => 'Visualizzazioni'
+    106 => 'Visualizzazioni',
+    107 => 'GL Version Test',
+    108 => 'Cancella Cache'
 );
 
 ###############################################################################
@@ -281,7 +283,9 @@ $LANG04 = array(
     76 => "Se selezioni un argomento dalla lista sottostante riceverai via mail ogni nuovo articolo associato all'argomento alla fine della giornata.  Seleziona solo gli argomenti che ti interessano!",
     77 => "Foto",
     78 => "Aggiungi una tua foto!",
-    79 => "Seleziona quì per cancellare questa immagine"
+    79 => "Seleziona quì per cancellare questa immagine",
+    80 => "Entra",
+    81 => "Invia E-Mail"
 );
 
 ###############################################################################
@@ -497,7 +501,8 @@ $LANG12 = array(
     49 => 'Tipo Evento',
     50 => 'Modifica Tipi di Eventi',
     51 => 'Posizione',
-    52 => 'Cancella'
+    52 => 'Cancella',
+    53 => 'Crea un Account'
 );
 
 
@@ -566,7 +571,7 @@ $LANG21 = array(
 	42 => "Devi inserire un ordine e un livello di sicurezza per i blocchi di definizione per Geeklog",
 	43 => "Solo in Homepage",
 	44 => "Accesso negato",
-	45 => "Stai cercando di accedere a un blocco del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_url"]}/admin/block.php\">ritorna alla pagina amministrazione blocchi</a>.",
+	45 => "Stai cercando di accedere a un blocco del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_adminurl"]}/block.php\">ritorna alla pagina amministrazione blocchi</a>.",
 	46 => 'Nuovo Blocco',
 	47 => 'Home Amministrazione',
     48 => 'Nome Blocco',
@@ -597,7 +602,7 @@ $LANG22 = array(
 	14 => "Data Inizio",
 	15 => "Data Termine",
 	16 => "Accesso negato",
-	17 => "Stai cercando di accedere a un link del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_url"]}/admin/event.php\">ritorna alla pagina amministrazione eventi</a>.",
+	17 => "Stai cercando di accedere a un link del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_admin_url"]}/event.php\">ritorna alla pagina amministrazione eventi</a>.",
 	18 => 'Nuovo Evento',
 	19 => 'Home Amministrazione'
 );
@@ -622,7 +627,7 @@ $LANG23 = array(
 	14 => "Categoria Link",
 	15 => "URL Link",
 	16 => "Accesso negato",
-	17 => "Stai cercando di accedere a un link del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_url"]}/admin/link.php\">ritorna alla pagina amministrazione link</a>.",
+	17 => "Stai cercando di accedere a un link del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_admin_url"]}/link.php\">ritorna alla pagina amministrazione link</a>.",
 	18 => 'Nuovo Link',
 	19 => 'Home Amministrazione',
 	20 => 'Se altro, specifica'
@@ -671,8 +676,8 @@ $LANG24 = array(
 	38 => "Altro da",
 	39 => "Emails",
 	40 => "Accesso negato",
-	41 => "Stai cercando di accedere a un articolo del quale non hai i permessi di modifica.  Questo tentativo è stato registrato.  Puoi vedere l'\articolo in sola letura quì sotto. Prego <a href=\"{$_CONF["site_url"]}/admin/story.php\">ritorna alla pagina amministrazione articoli</a> quando hai finito.",
-	42 => "Stai cercando di accedere a un articolo del quale non hai i permessi di modifica.  Questo tentativo è stato registrato.  Prego <a href=\"{$_CONF["site_url"]}/admin/story.php\">ritorna al menu amministrazione</a>.",
+	41 => "Stai cercando di accedere a un articolo del quale non hai i permessi di modifica.  Questo tentativo è stato registrato.  Puoi vedere l'\articolo in sola letura quì sotto. Prego <a href=\"{$_CONF["site_admin_url"]}/story.php\">ritorna alla pagina amministrazione articoli</a> quando hai finito.",
+	42 => "Stai cercando di accedere a un articolo del quale non hai i permessi di modifica.  Questo tentativo è stato registrato.  Prego <a href=\"{$_CONF["site_admin_url"]}/story.php\">ritorna al menu amministrazione</a>.",
 	43 => 'Nuovo Articolo',
 	44 => 'Amministrazione',
 	45 => 'Accesso',
@@ -714,7 +719,7 @@ $LANG25 = array(
 	19 => "Per modificare o cancellare un sondaggio, clicca sul sondaggio selezionato.  Per creare un nuovo sondaggio clicca su Nuovo Sondaggio sopra.",
 	20 => "Votanti",
 	21 => "Accesso negato",
-	22 => "Stai cercando di accedere a un sondaggio del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_url"]}/admin/poll.php\">ritorna alla pagina amministrazione votazioni</a>.",
+	22 => "Stai cercando di accedere a un sondaggio del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_admin_url"]}/poll.php\">ritorna alla pagina amministrazione votazioni</a>.",
 	23 => 'Nuovo Sondaggio',
 	24 => 'Home Amministrazione',
 	25 => 'Si',
@@ -737,7 +742,7 @@ $LANG27 = array(
 	10=> "Ordinamento",
 	11 => "Articoli/Pagina",
 	12 => "Accesso negato",
-	13 => "Stai cercando di accedere a un argomento del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_url"]}/admin/topic.php\">ritorna alla pagina amministrazione argomenti</a>.",
+	13 => "Stai cercando di accedere a un argomento del quale non hai i permessi di visualizzazione.  Questo tentativo è stato registrato. Prego <a href=\"{$_CONF["site_admin_url"]}/topic.php\">ritorna alla pagina amministrazione argomenti</a>.",
 	14 => "Metodo Ordinamento",
 	15 => "alfabetico",
 	16 => "per definizione è",
@@ -867,10 +872,10 @@ $LANG31 = array(
  	14 => "Ignora preferenze utente",
  	15 => "Errore nell'invio a: ",
 	16 => "Messaggio inviato correttamente a: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Invia un'altro messaggio</a>",
+	17 => "<a href=" . $_CONF["site_admin_url"] . "/mail.php>Invia un'altro messaggio</a>",
     18 => "A",
     19 => "NOTA: se vuoi inviare un messaggio a tutti i membri del sito, selezione il gruppo Logged-in Users dalla lista.",
-    20 => "Messaggi inviati con successo <successcount> e messaggi non inviati <failcount>.  Se lo necessiti, i dettagli di ogni messaggio sono elencati sotto.  Altrimenti puoi <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Inviare un'altro messaggio</a> o puoi <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">ritornare alla pagina amministrazione</a>.",
+    20 => "Messaggi inviati con successo <successcount> e messaggi non inviati <failcount>.  Se lo necessiti, i dettagli di ogni messaggio sono elencati sotto.  Altrimenti puoi <a href=\"" . $_CONF['site_admin_url'] . "/mail.php\">Inviare un'altro messaggio</a> o puoi <a href=\"" . $_CONF['site_admin_url'] . "/moderation.php\">ritornare alla pagina amministrazione</a>.",
     21 => 'Fallito',
     22 => 'Eseguito con successo',
     23 => 'Nessun errore',
@@ -915,7 +920,8 @@ $MESSAGE = array (
 	31 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione articoli.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
 	32 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione argomenti.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
 	33 => "Spiacenti, non hai i permessi per accedere alla pagina amminitrazione blocchi.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
-	34 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione link.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
+	34 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione link.  Prego nota che tutti i tentativi di accesso non
+ autorizzati vengono registrati.",
 	35 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione eventi.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
 	36 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione sondaggi.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
 	37 => "Spiacenti, non hai i permessi per accedere alla pagina amministrazione utenti.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
@@ -927,7 +933,8 @@ $MESSAGE = array (
 	43 => "La parola è stata cancellata correttamente.",
     44 => 'Il plug-in è stato installato correttamente!',
     45 => 'Il plug-in è stato cancellato correttamente.',
-    46 => "Spiacenti, non hai i permessi per accedere all'utility database backup.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati."
+    46 => "Spiacenti, non hai i permessi per accedere all'utility database backup.  Prego nota che tutti i tentativi di accesso non autorizzati vengono registrati.",
+    47 => "Questa funzionalità lavora solo sotto *nix.  Se Geeklog sta girando sotto un sistema operativo *nix la tua cache verrà regolarmente azzerata. Se sei su Windows, dovrai necessariamente cercare i files con nome adodb_*.php e rimuoverli manualmente."
 );
 
 // for plugins.php
@@ -976,7 +983,7 @@ $LANG_ACCESS = array(
 	grantgrouplabel => "Grant Above Group Edit Rights",
 	permmsg => "NOTA: membri sono tutti gli utenti registrati nel sito e anonimi tutti i rimanenti visitatori non registrati.",
 	securitygroups => "Sicurezza Gruppi",
-	editrootmsg => "Ricorda! Anche se sei un Utente Amministratore, non puoi modificare l'utente root senza prima essere entrato con l'account di root.  Puoi modificare tutti gli gli altri utenti ad eccezzione dell'utente root. Prego nota che tutti i tentativi di modificare illegalmente l'utente root vengono registrati.  Ritorna a <a href=\"{$_CONF["site_url"]}/admin/users.php\">Pagina Amministrazione Utenti</a>.",
+	editrootmsg => "Ricorda! Anche se sei un Utente Amministratore, non puoi modificare l'utente root senza prima essere entrato con l'account di root.  Puoi modificare tutti gli gli altri utenti ad eccezzione dell'utente root. Prego nota che tutti i tentativi di modificare illegalmente l'utente root vengono registrati.  Ritorna a <a href=\"{$_CONF["site_admin_url"]}/users.php\">Pagina Amministrazione Utenti</a>.",
 	securitygroupsmsg => "Seleziona la casella per i gruppi nei quali vuoi inserire l'utente.",
 	groupeditor => "Editor Gruppi",
 	description => "Descrizione",
@@ -1025,11 +1032,12 @@ $LANG_WORDS = array(
 );
 
 $LANG_DB_BACKUP = array(
+    not_found => "Errore: {$_DB_mysqldump_path} non trovato.",
     last_ten_backups => 'Ultimi 10 Back-ups',
     do_backup => 'Esegui il Backup',
     backup_successful => 'Il Back up è stato eseguito con sussesso.',
     no_backups => 'Nessun backups del sistema',
-    db_explanation => 'Per creare un nuovo Backup del tuo sistema Geeklog, clicca su bottone sottostante'
+    db_explanation => 'Per creare un nuovo Backup del tuo sistema Geeklog, clicca sul bottone sottostante'
 );
 
 $LANG_BUTTONS = array(
@@ -1043,6 +1051,12 @@ $LANG_BUTTONS = array(
     8 => "Personalizza",
     9 => "Ricerca",
     10 => "ricerca avanzata"
+);
+
+$LANG_404 = array(
+     1 => "Errore 404",
+     2 => "Attenzione, Abbiamo cercato in tutto il sito ma la pagina http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]} non è stato trovata.",
+     3 => "Siamo spiacenti, ma il file da te richiesto non esiste.  Prego controlla nella pagina principale o nella pagina di ricerca per vedere se puoi trovare quanto da te richiesto."  
 );
 
 ?>
