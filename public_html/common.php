@@ -223,13 +223,20 @@ function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 
 function article($A,$index="") {
 	global $mode,$CONF,$LANG01,$USER;
-	if (empty($A["day"])) {
-		$A["day"] = time();
+	if (!empty($USER["uid"])) {
+		$result = dbquery("SELECT noicons FROM userprefs WHERE uid = {$USER["uid"]}",1);
+		$nrows = mysql_num_rows($result);
+		if ($nrows == 1) {
+			$U = mysql_fetch_array($result);
+			$USER["noicons"] = $U["noicons"];
+		}
 	}
+	$curtime = getuserdatetimeformat($A["day"]);
+	$A["day"] = $curtime[0];
 	print "<table border=0 cellpadding=0 cellspacing=0 width=100%>\n";
 	print "<tr><td class=storytitle>" . stripslashes($A["title"]) . "</TD></TR>\n";
 	print "<tr><td height=1 class=storyunderline><IMG SRC={$CONF["site_url"]}/images/speck.gif width=1 height=1></td></tr>\n";
-	print "<tr><td class=storybyline>" . strftime($CONF["date"],$A["day"]);
+	print "<tr><td class=storybyline>" . $A["day"];
 	if ($CONF["contributedbyline"] == 1) {
 		if ($A["uid"] > 1) {
 			print "<br>{$LANG01[1]} <a class=storybyline href={$CONF["site_url"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a></td></tr>\n";
@@ -1020,7 +1027,7 @@ function showblock($side,$topic="") {
 
 	#Get user preferences on blocks
 	if (!empty($USER["uid"])) {
-		$result = dbquery("SELECT boxes FROM userindex WHERE uid = '{$USER["uid"]}'");
+		$result = dbquery("SELECT boxes,noboxes FROM userindex WHERE uid = '{$USER["uid"]}'");
 		$U = mysql_fetch_array($result);
 	}
 
@@ -1071,17 +1078,17 @@ function showblock($side,$topic="") {
 					endblock();
 					break;
 				case "Events Block":
-					printupcomingevents();
+					if (!$U["noboxes"]) printupcomingevents();
 					break;
 				case "Poll Block":
                         		showpoll(60);
 					break;
 				case "Whats New Block":
-					whatsnewblock();
+					if (!$U["noboxes"]) whatsnewblock();
 					break;
 			}
 		}
-		if ($A["type"] == "phpblock") {
+		if ($A["type"] == "phpblock" && !$U["noboxes"]) {
                         $function = $A["phpblockfn"];
                         startblock($A["title"]);
                         if (function_exists($function)) {
@@ -1093,7 +1100,7 @@ function showblock($side,$topic="") {
                         }
                         endblock();
                 }
-		if (!empty($A["content"])) {
+		if (!empty($A["content"]) && !$U["noboxes"]) {
 			startblock($A["title"]);
 			print nl2br(stripslashes($A["content"])) . "<br>\n";
 			# print "</td></tr>\n";
