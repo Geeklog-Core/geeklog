@@ -3,11 +3,22 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.9rc1)
 ------------
 
+- After saving your account information, you are now redirected to your
+  profile page, so that you can see your changes as they would be displayed
+  for other users of the site.
+- Integrated Vincent Furia's patches to use Geeklog's URL rewriting for links
+  to stories (i.e. article.php).
+- In the story templates, you can now use {article_url} as the URL to the
+  article.php with the current story (e.g. for a "link to this story" link).
+- There is a new file, system/lib-user.php, for user-related code that is
+  used by usersettings.php, admin/user.php, and admin/moderation.php.
+- All template files that let you enter a URL are now using {max_url_length}
+  for the maxlength attribute.
 - Access to admin/mail.php is now granted to all users with 'user.mail'
   permissions (previously, users with that permission without being in the
   'Mail Admin' group would see the "Mail Users" entry in the Admin block but
   were refused access to it).
-- The list of groups names in the Mail Users form is now sorted alphabetically.
+- The list of group names in the Mail Users form is now sorted alphabetically.
 - Any unauthorized attempts to access the admin pages are now properly logged
   in access.log.
 - Fixed problems when resizing userphotos for user names that have spaces in
@@ -35,6 +46,7 @@ GeekLog History/Changes:
 - Comments from a story that has been marked as "draft" are no longer returned
   from a search (bug #128).
 - The Admin's link list now uses "google paging", 50 links per page (bug #104).
+  Note: Requires a change in the admin/link/linklist.thtml template file.
 - (Block)Admins can now change the order of blocks and enable / disable blocks
   directly from the Admin's list of blocks (based on a concept by stratosfear).
 - An alternative interface to adding (multiple) users to a group is now
@@ -63,9 +75,11 @@ GeekLog History/Changes:
   for empty (but existing) feeds now.
 - When the user submission queue is activated, you now have an "edit" link
   that takes you to the Admin's user editor (the profile link is now on the
-  username).
+  username). Contributed by Ed Magin.
 - COM_siteHeader() now uses output buffering for the eval(), preventing the
   header from being output directly.
+  Note: This may require changes in 3rd party scripts, e.g. the Geeklog/Gallery
+  integration.
 - The install script will set the 'date' field for links to sensible values
   now (reconstructed from the date that's encoded in the link id).
 - The author exclusion list in the preferences is now a (multi-select) listbox.
@@ -131,6 +145,9 @@ Static Pages Plugin 1.4
 - The option to wrap static pages in a block can now be applied to each page
   individually. $_SP_CONF['in_block'] is only used as the default setting
   for new pages.
+- Static pages to be displayed after the featured story (in a center block) are
+  now displayed even if there is no featured story (after the static pages to
+  be displayed at the top of the page).
 - Static pages are not wrapped in a block when the page format is set to "blank
   page" (bug #60).
 - Added a "Cancel" button in the static pages editor.
@@ -142,6 +159,32 @@ Static Pages Plugin 1.4
   'staticpages.PHP' permissions by default any more.
 
 Please see docs/staticpages.html for details.
+
+
+January 26, 2004 (1.3.8-1sr4)
+----------------
+
+This release addresses the following security issues:
+
+1. It was possible for users in the Group Admin and User Admin groups to
+   become a member of the Root group (reported by Samuel M. Stone, bug #135).
+2. Being admin for a certain area (e.g. Story Admin for stories) made it
+   possible to delete all objects in that area (e.g. stories) even if the
+   user was not supposed to have access to them, provided the id of the object
+   was known.
+3. It was possible to delete other people's personal events if you knew the
+   event ID.
+4. It was possible to browse through the comments of a story even if the user
+   did not have access to the actual story (reported by Peter Roozemaal).
+5. Due to an XSS issue, it was possible to change someone's account settings
+   (including the password) if you got them to click on a specially crafted
+   link (reported by Jelmer, fix suggested by Vincent Furia).
+6. The comment display suffered from the possibility of an SQL injection
+   (reported by Jelmer).
+7. It was possible to inject Javascript code in the calendar (reported by
+   Jelmer).
+8. It was possible to execute (but not save) Javascript code in the comment
+   preview (reported by Jelmer).
 
 
 December 5, 2003 (1.3.8-1sr3)
@@ -534,6 +577,32 @@ Static Pages Plugin 1.3
   static pages editor.
 
 Please see docs/staticpages.html for details.
+
+
+January 26, 2004 (1.3.7sr5)
+----------------
+
+This release addresses the following security issues:
+
+1. It was possible for users in the Group Admin and User Admin groups to
+   become a member of the Root group (reported by Samuel M. Stone, bug #135).
+2. Being admin for a certain area (e.g. Story Admin for stories) made it
+   possible to delete all objects in that area (e.g. stories) even if the
+   user was not supposed to have access to them, provided the id of the object
+   was known.
+3. It was possible to delete other people's personal events if you knew the
+   event ID.
+4. It was possible to browse through the comments of a story even if the user
+   did not have access to the actual story (reported by Peter Roozemaal).
+5. Due to an XSS issue, it was possible to change someone's account settings
+   (including the password) if you got them to click on a specially crafted
+   link (reported by Jelmer, fix suggested by Vincent Furia).
+6. The comment display suffered from the possibility of an SQL injection
+   (reported by Jelmer).
+7. It was possible to inject Javascript code in the calendar (reported by
+   Jelmer).
+8. It was possible to execute (but not save) Javascript code in the comment
+   preview (reported by Jelmer).
 
 
 December 5, 2003 (1.3.7sr4)
