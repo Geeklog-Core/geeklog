@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.16 2002/01/03 21:49:03 tony_bibbs Exp $
+// $Id: user.php,v 1.17 2002/01/11 17:52:14 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -74,7 +74,9 @@ function edituser($uid = '', $msg = '')
 	if (!empty($uid)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
 		$A = DB_fetchArray($result);
-		
+	
+        $curtime = COM_getUserDateTimeFormat($A['regdate']);
+	
 		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
 			// the current admin user isn't Root but is trying to change
 			// a root account.  Deny them and log it.
@@ -91,8 +93,6 @@ function edituser($uid = '', $msg = '')
 		$curtime =  COM_getUserDateTimeFormat();
     }
 
-	$A['regdate'] = $curtime[0];
-
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file(array('form'=>'edituser.thtml','groupedit'=>'groupedit.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
@@ -108,7 +108,8 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_userid', $LANG28[2]);
     $user_templates->set_var('user_id', $A['uid']);
     $user_templates->set_var('lang_regdate', $LANG28[14]);
-    $user_templates->set_var('user_regdate', $A['regdate']);
+    $user_templates->set_var('regdate_timestamp', $curtime[1]);
+    $user_templates->set_var('user_regdate', $curtime[0]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
@@ -189,14 +190,15 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
     }
 
 	if (!empty($username) && !empty($email)) {
+        $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
 		if (($uid == 1) or !empty($passwd)) { 
 			$passwd = md5($passwd);
-			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','$passwd','$email','$homepage')";
+			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage,regdate) VALUES ($uid,'$username','$fullname','$passwd','$email','$homepage','$regdate')";
 		} else {
 			$sql = "SELECT passwd FROM {$_TABLES['users']} WHERE uid = $uid";
 			$result = DB_query($sql);
 			$A = DB_fetchArray($result);
-			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$email','$homepage')";
+			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage,regdate) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$email','$homepage','$regdate')";
 		} 
 		$result = DB_query($sql);
 
