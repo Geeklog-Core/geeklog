@@ -87,3 +87,19 @@ INSERT INTO group_assignments VALUES (13,9,NULL);
 INSERT INTO group_assignments VALUES (13,10,NULL);
 INSERT INTO group_assignments VALUES (13,11,NULL);
 INSERT INTO group_assignments VALUES (13,12,NULL);
+
+#
+# Dumping data for table 'wordlist'
+#
+
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '1', 'fuck', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '2', 'cunt', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '3', 'fucker', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '4', 'fucking', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '5', 'pussy', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '6', 'cock', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '7', 'cum', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '8', 'twat', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '9', 'bitch', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '10', 'motherfucker', '*censored*');
+INSERT INTO wordlist (wid, word, replaceword) VALUES ( '11', 'bastard', '*censored*');

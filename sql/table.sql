@@ -917,3 +917,14 @@ CREATE TABLE vars (
 INSERT INTO vars VALUES ('totalhits','17');
 INSERT INTO vars VALUES ('lastemailedstories','2001-09-26 19:17:13');
 
+#
+# Table structure for table 'wordlist'
+#
+
+CREATE TABLE wordlist (
+   wid mediumint(8) unsigned NOT NULL auto_increment,
+   word varchar(255) NOT NULL,
+   replaceword varchar(255) NOT NULL,
+   PRIMARY KEY (wid)
+);
+
