@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.22 2002/03/23 21:50:11 tony_bibbs Exp $
+// $Id: user.php,v 1.23 2002/04/06 04:51:10 tony_bibbs Exp $Scripts cannot
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -256,6 +256,7 @@ function listusers()
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_newuser', $LANG28[15]);
+    $user_templates->set_var('lang_batchadd',$LANG28[23]);
     $user_templates->set_var('lang_adminhome', $LANG28[16]);
     $user_templates->set_var('lang_instructions', $LANG28[12]); 
     $user_templates->set_var('lang_username', $LANG28[3]);
@@ -283,8 +284,149 @@ function listusers()
 
 }
 
-###############################################################################
-# MAIN
+/**
+* This function allows the administrator to import batches of users
+*
+* $file     string      file to import
+*
+*/
+function importusers($file)
+{
+    global $_TABLES, $LANG04, $_CONF, $HTTP_POST_FILES;
+
+    // Setting this to true will cause import to print processing status to webpage.
+    // and to the error.log file
+    $verbose_import = false;    
+    
+    // First, upload the file
+    require_once($_CONF['path_system'] . "classes/upload.class.php");
+
+    $upload = new upload();
+    $upload->setPath($_CONF['path']);
+    $upload->setAllowedMimeTypes(array('text/plain'));
+    $upload->setFileNames('user_import_file.txt');
+    if ($upload->uploadFiles()) {
+        // Good, file got uploaded, now install everything
+        $thefile =  current($HTTP_POST_FILES);
+        $filename = $_CONF['path'] . 'user_import_file.txt';
+    } else {
+        // A problem occurred, print debug information
+        print 'ERRORS<br>';
+        $upload->printErrors();
+        exit;
+    }
+
+    $retval = '';
+
+    $handle = fopen($filename,'r');
+    
+    // Following variables track import processing statistics
+    $successes = 0;
+    $failures = 0;
+    while ($user1 = fgets($handle,4096)) {
+        $user = rtrim($user1);
+        list($full_name,$u_name,$email) = split("\t",$user);
+
+        $ucount = DB_count($_TABLES['users'],'username',$u_name);
+        $ecount = DB_count($_TABLES['users'],'email',$email);
+        
+        if ($verbose_import) {
+            $retval .="<BR><B>Working on username=$u_name, fullname=$full_name, and email=$email</B><BR>\n";
+            COM_errorLog("Working on username=$u_name, fullname=$full_name, and email=$email",1);
+        }
+        
+        if ($ucount == 0 && ecount == 0) {
+            // user doesn't already exist
+            if (COM_isEmail($email)) {
+                // email is valid form
+                $regdate = strftime('%Y-%m-%d %H:%M:%S',time());
+                
+                // Create user record
+                DB_query("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$u_name','$full_name','$email','$regdate')");
+                $uid = DB_getItem($_TABLES['users'],'uid',"username = '$u_name'");
+
+                // Add user to Logged-in group (i.e. members) and the All Users group (which includes
+                // anonymous users
+                $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
+                $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
+                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
+                DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
+                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+                DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
+                DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+                $retval .= emailpassword($u_name, 1);
+                
+                if ($verbose_import) {
+                    $retval .= "<BR> Account for <B>$u_name</B> created successfully.<BR>\n";
+                    COM_errorLog("Account for $u_name created successfully",1);
+                }
+                $successes++;
+            } else {
+                if ($verbose_import) {
+                    $retval .= "<BR><B>$email</B> is not a valid email address, account not created<BR>\n"; // malformed email
+                    COM_errorLog("$email is not a valid email address, account not created",1);
+                }
+                $failures++;
+            } // end if COM_isEmail($email)
+        } else {
+            if ($verbose_import) {
+                $retval .= "<BR><B>$u_name</B> already exists, account not created.<BR>\n"; // users already exists
+                COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
+            }
+            $failures++;
+        } // end if $ucount == 0 && ecount == 0
+    } // end while
+        
+    fclose($handle);
+    unlink($filename);
+
+    $retval .= "<P>Done processing. Imported $successes and encountered $failures failures";
+    
+    return $retval;
+
+} // end importusers
+
+function emailpassword($username)
+{
+    global $_TABLES, $_CONF, $LANG04;
+
+    $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE username = '$username'");
+    $nrows = DB_numRows($result);
+    if ($nrows == 1) {
+        srand((double)microtime()*1000000);
+        $passwd = rand();
+        $passwd = md5($passwd);
+        $passwd = substr($passwd,1,8);
+        $passwd2 = md5($passwd);
+        DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
+        $A = DB_fetchArray($result);
+        $mailtext = "{$LANG04[15]}\n\n";
+        $mailtext .= "{$LANG04[2]}: $username\n";
+        $mailtext .= "{$LANG04[4]}: $passwd\n\n";
+        $mailtext .= "{$LANG04[14]}\n\n";
+        $mailtext .= "{$_CONF["site_name"]}\n";
+        $mailtext .= "{$_CONF['site_url']}\n";
+        mail($A["email"]
+            ,"{$_CONF["site_name"]}: {$LANG04[16]}"
+            ,$mailtext
+            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nX-Mailer: GeekLog $VERSION"
+            );
+    }
+    return $retval;
+}
+
+
+function display_form()
+{
+	$retval .="<FORM action=".$_CONF['site_url']."/admin/user.php method=post enctype=multipart/form-data>
+			Path:<INPUT type=file name=importfile size=40>
+			<INPUT type=hidden name=mode value=import>
+			<INPUT type=submit name=submit value=Import></FORM>";
+	return $retval;
+}
+
+// MAIN
 switch ($mode) {
 case $LANG28[19]:
     // Ok, delete everything related to this user
@@ -318,6 +460,21 @@ case 'edit':
     $display .= edituser($uid);
     $display .= COM_siteFooter();
     break;
+case 'import':
+    $display .= COM_siteHeader('menu');
+	$display .= COM_startBlock("New Users");
+	$display .= importusers($file);
+	$display .= COM_endBlock();
+	$display .= COM_siteFooter();  
+	break;
+case 'importform':
+	$display .= COM_siteHeader('menu');
+	$display .= COM_startBlock($LANG28[24]);
+	$display .= $LANG28[25] . '<br><br>';
+	$display .= display_form();
+	$display .= COM_endBlock();
+	$display .= COM_siteFooter();  
+	break;
 case $LANG28[18]:
 default:
     $display .= COM_siteHeader('menu');
