@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.12 2002/05/17 01:14:39 mlimburg Exp $
+// $Id: profiles.php,v 1.13 2002/07/06 14:35:20 dhaun Exp $
 
 include('lib-common.php');
 
@@ -54,7 +54,6 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 		if (COM_isemail($authoremail)) {
 			$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
 			$A = DB_fetchArray($result);
-			$tmp = urlencode($LANG08[1]);
         if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
             if (empty ($charset)) {
@@ -64,8 +63,10 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
         else {
             $charset = $LANG_CHARSET;
         }
+        $subject = strip_tags (stripslashes ($subject));
+        $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
 			$RET = @mail($A['username'].' <'.$A['email'].'>'
-				,strip_tags(stripslashes($subject))
+				,$subject
 				,strip_tags(stripslashes($message))
 				,"From: $author <$authoremail>\n"
 				."Return-Path: <$authoremail>\n"
