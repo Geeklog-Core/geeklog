@@ -155,15 +155,15 @@ $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
 $_SQL[] = "CREATE TABLE {$_TABLES['spamx']} ("
 	. " name varchar(20) NOT NULL default '',"
 	. " value varchar(255) NOT NULL default '',"
-	. " INDEX name (name)"
+	. " PRIMARY KEY  (name)"
 	. ") TYPE=MyISAM
 ";
 
 // Ok, the rest of the file is data
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Action','DeleteComment')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Examine','BlackList')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Examine','MTBlackList')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Personal','zaraz.com')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 
 ?>

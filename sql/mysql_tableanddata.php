@@ -595,11 +595,11 @@ CREATE TABLE {$_TABLES['staticpage']} (
 ";
  
 $_SQL[41] = "
-CREATE TABLE {$_TABLES['spamx']} ("
-	. " name varchar(20) NOT NULL default '',"
-	. " value varchar(255) NOT NULL default '',"
-	. " INDEX name (name)"
-	. ") TYPE=MyISAM
+CREATE TABLE {$_TABLES['spamx']} (
+  name varchar(20) NOT NULL default '',
+  value varchar(255) NOT NULL default '',
+  PRIMARY KEY (name)
+) TYPE=MyISAM
 ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
@@ -889,10 +889,10 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedsto
 #
 # Dumping data for spamx
 #
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Action','DeleteComment')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Examine','BlackList')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Examine','MTBlackList')";
-$_DATA[] = "INSERT INTO gl_spamx VALUES ('Personal','zaraz.com')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
+$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)";
 
