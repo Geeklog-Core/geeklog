@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.37 2004/12/11 14:54:48 dhaun Exp $
+// $Id: calendar_event.php,v 1.38 2004/12/15 14:55:09 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -381,12 +381,9 @@ function setCalendarLanguage (&$aCalendar)
 
 $display = '';
 
-if (isset ($HTTP_POST_VARS['action'])) {
-    $action = COM_applyFilter ($HTTP_POST_VARS['action']);
-} else if (isset ($HTTP_GET_VARS['action'])) {
-    $action = COM_applyFilter ($HTTP_GET_VARS['action']);
-} else {
-    $action = '';
+$action = '';
+if (isset ($_REQUEST['action'])) {
+    $action = COM_applyFilter ($_REQUEST['action']);
 }
 
 switch ($action) {
@@ -395,7 +392,7 @@ case 'addevent':
             isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $display .= COM_siteHeader ();
 
-        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        $eid = COM_applyFilter ($_GET['eid']);
         if (!empty ($eid)) {
             $display .= adduserevent ($eid);
         } else {
@@ -410,7 +407,7 @@ case 'addevent':
 
 case 'saveuserevent':
     if ($_CONF['personalcalendars'] == 1) {
-        $eid = COM_applyFilter ($HTTP_POST_VARS['eid']);
+        $eid = COM_applyFilter ($_POST['eid']);
         if (!empty ($eid)) {
             $display .= saveuserevent ($eid);
         } else {
@@ -425,7 +422,7 @@ case 'saveuserevent':
 
 case 'deleteevent':
     if ($_CONF['personalcalendars'] == 1) {
-        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        $eid = COM_applyFilter ($_GET['eid']);
         if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
             $display .= COM_refresh ($_CONF['site_url']
@@ -440,7 +437,7 @@ case 'deleteevent':
 
 case 'edit':
     if ($_CONF['personalcalendars'] == 1) {
-        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        $eid = COM_applyFilter ($_GET['eid']);
         if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
             $result = DB_query ("SELECT * FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})");
             if (DB_numRows ($result) == 1) {
@@ -462,8 +459,8 @@ case 'edit':
     break;
 
 default:
-    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
-    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+    $mode = COM_applyFilter ($_GET['mode']);
+    $eid = COM_applyFilter ($_GET['eid']);
     if (!empty ($eid)) {
         if (($mode == 'personal') && ($_CONF['personalcalendars'] == 1) &&
                 (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
@@ -482,9 +479,9 @@ default:
         $display .= COM_startBlock ($pagetitle);
 
     } else {
-        $year = COM_applyFilter ($HTTP_GET_VARS['year']);
-        $month = COM_applyFilter ($HTTP_GET_VARS['month']);
-        $day = COM_applyFilter ($HTTP_GET_VARS['day']);
+        $year = COM_applyFilter ($_GET['year'], true);
+        $month = COM_applyFilter ($_GET['month'], true);
+        $day = COM_applyFilter ($_GET['day'], true);
         if (($year == 0) || ($month == 0) || ($day == 0)) {
             $year = date ('Y');
             $month = date ('n');
