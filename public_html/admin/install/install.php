@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.54 2003/08/13 09:00:26 dhaun Exp $
+// $Id: install.php,v 1.55 2003/09/08 20:49:14 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -490,6 +490,27 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $pos = strrpos ($_CONF['rdf_file'], '/');
             $filename = substr ($_CONF['rdf_file'], $pos + 1);
             DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$_CONF['site_name']}', '{$_CONF['site_slogan']}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+
+            // recreate 'date' field for old links
+            $result = DB_query ("SELECT lid FROM {$_TABLES['links']} WHERE date IS NULL");
+            $num = DB_numRows ($result);
+            if ($num > 0) {
+                for ($i = 0; $i < $num; $i++) {
+                    $A = DB_fetchArray ($result);
+
+                    $myyear = substr ($A['lid'], 0, 4);
+                    $mymonth = substr ($A['lid'], 4, 2);
+                    $myday = substr ($A['lid'], 6, 2);
+                    $myhour = substr ($A['lid'], 8, 2);
+                    $mymin = substr ($A['lid'], 10, 2);
+                    $mysec = substr ($A['lid'], 12, 2);
+
+                    $mtime = mktime ($myhour, $mymin, $mysec,
+                                     $mymonth, $myday, $myyear);
+                    $date = date ("Y-m-d H:i:s", $mtime);
+                    DB_query ("UPDATE {$_TABLES['links']} SET date = '$date' WHERE lid = '{$A['lid']}'");
+                }
+            }
 
             $current_gl_version = '1.3.9';
             $_SQL = '';
