@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.30 2002/04/24 16:05:13 tony_bibbs Exp $
+// $Id: config.php,v 1.31 2002/04/30 18:49:00 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -187,7 +187,7 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['commentspeedlimit']     = 45;
 $_CONF['commentsloginrequired'] = 0;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
-$_CONF['comment_mode']          = threaded; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
+$_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
 
 // Poll Settings                                            
 $_CONF['maxanswers']        = 10;
@@ -206,7 +206,9 @@ $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck','cum','twat','clit','bitch','fuk','fuking','motherfucker');
 
 // Define a few useful things for GL
-define('LB',"\n");
+if (!defined ('LB')) {
+    define('LB',"\n");
+}
 define('VERSION', '1.3.5');
 
 //$_CONF['default_state_cde'] = 'IA'; // NOT IMPLEMENTED

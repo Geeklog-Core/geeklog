@@ -34,9 +34,11 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.27 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: install.php,v 1.28 2002/04/30 18:49:00 dhaun Exp $
 
-define(LB, "\n");
+if (!defined ("LB")) {
+    define("LB", "\n");
+}
 
 // Turn this on to have the install process print debug messages.  NOTE: these
 // message will get written to installerrors.log as this file may not know
@@ -275,8 +277,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 }
 
 // Main
+if (isset ($_POST['page'])) {
+    $page = $_POST['page'];
+}
+else {
+    $page = 0;
+}
 
-if ($action == '<< Previous') {
+if (isset ($_POST['action']) && ($_POST['action'] == '<< Previous')) {
     $page = 0;
 }
 
@@ -286,25 +294,25 @@ if ($action == '<< Previous') {
 
 // Include template class if we got it
 if ($page > 0) {
-    require_once($geeklog_path . '/system/classes/template.class.php');
-    require_once($geeklog_path . '/config.php');
-    require_once($geeklog_path . '/system/lib-database.php');
+    require_once($_POST['geeklog_path'] . '/system/classes/template.class.php');
+    require_once($_POST['geeklog_path'] . '/config.php');
+    require_once($_POST['geeklog_path'] . '/system/lib-database.php');
 }
 
 $display = '';
 
 switch ($page) {
 case 1:
-    if ($install_type == 'complete_upgrade') {
+    if ($_POST['install_type'] == 'complete_upgrade') {
         $upgrade = 1;
     } else {
         $upgrade = 0;
     }
-    $display .= INST_getDatabaseSettings($install_type, $geeklog_path); 
+    $display .= INST_getDatabaseSettings($_POST['install_type'], $_POST['geeklog_path']); 
     break;
 case 2:
     if (!empty($version)) {
-        if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
+        if (INST_doDatabaseUpgrades($version, $_POST['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
