@@ -68,7 +68,6 @@ CREATE TABLE {$_TABLES['comments']} (
   INDEX comments_cid(cid),
   INDEX comments_type(type),
   INDEX comments_sid(sid),
-  INDEX comments_date(date),
   INDEX comments_uid(uid),
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
@@ -125,8 +124,6 @@ CREATE TABLE {$_TABLES['events']} (
   timestart time default NULL,
   timeend time default NULL,
   INDEX events_eid(eid),
-  INDEX events_datestart(datestart),
-  INDEX events_dateend(dateend),
   INDEX events_event_type(event_type),
   PRIMARY KEY  (eid)
 ) TYPE=MyISAM
@@ -187,8 +184,6 @@ CREATE TABLE {$_TABLES['group_assignments']} (
   ug_uid mediumint(8) unsigned default NULL,
   ug_grp_id mediumint(8) unsigned default NULL,
   INDEX group_assignments_ug_main_grp_id(ug_main_grp_id),
-  INDEX group_assignments_ug_uid(ug_uid),
-  INDEX group_assignments_ug_grp_id(ug_grp_id),
   KEY ug_main_grp_id (ug_main_grp_id)
 ) TYPE=MyISAM
 ";
@@ -220,8 +215,6 @@ CREATE TABLE {$_TABLES['links']} (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX links_lid(lid),
-  INDEX links_category(category),
-  INDEX links_date(date),
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
@@ -313,7 +306,6 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX pollquestions_qid(qid),
-  INDEX pollquestions_date(date),
   INDEX pollquestions_display(display),
   INDEX pollquestions_commentcode(commentcode),
   INDEX pollquestions_statuscode(statuscode),
@@ -397,9 +389,7 @@ CREATE TABLE {$_TABLES['stories']} (
   perm_anon tinyint(1) unsigned NOT NULL default '2',
   INDEX stories_sid(sid),
   INDEX stories_tid(tid),
-  INDEX stories_date(date),
   INDEX stories_uid(uid),
-  INDEX stories_frontpage(frontpage),
   INDEX stories_featured(featured),
   INDEX stories_hits(hits),
   PRIMARY KEY  (sid)
@@ -475,7 +465,6 @@ CREATE TABLE {$_TABLES['userindex']} (
   maxstories tinyint(4) default NULL,
   INDEX userindex_uid(uid),
   INDEX userindex_noboxes(noboxes),
-  INDEX userindex_maxstories(maxstories),
   PRIMARY KEY  (uid)
 ) TYPE=MyISAM
 ";
@@ -543,7 +532,8 @@ CREATE TABLE {$_TABLES['article_images']} (
 ";
 
 $_SQL[40] = "
-CREATE TABLE {$_TABLES['staticpage']} (sp_id varchar(20) DEFAULT '' NOT NULL,
+CREATE TABLE {$_TABLES['staticpage']} (
+  sp_id varchar(20) DEFAULT '' NOT NULL,
   sp_uid mediumint(8) DEFAULT '1' NOT NULL,
   sp_title varchar(128) DEFAULT '' NOT NULL,
   sp_content text DEFAULT '' NOT NULL,
@@ -743,9 +733,9 @@ $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (1,'Refres
 $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (0,'Normal') ";
 $_DATA[] = "INSERT INTO {$_TABLES['statuscodes']} (code, name) VALUES (10,'Archive') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20020101093000103',2,0,'GeekLog','2002-01-01 09:30:00','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site. While Admin has access to everything, Moderator only has access to the areas related to stories, links, and events. The password for each account is <b>password</b>. \r\r<p>Accounts:\r<ul>\r<li>Admin</li>\r<li>Moderator</li>\r</ul>','',100,1,0,'<li><a href=\"/search.php?mode=search&amp;type=stories&amp;author=2\">More by Admin</a><li><a href=\"/search.php?mode=search&amp;type=stories&amp;topic=GeekLog\">More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2) ";
+$_DATA[] = "INSERT INTO {$_TABLES['stories']} (sid, uid, draft_flag, tid, date, title, introtext, bodytext, hits, numemails, comments, related, featured, commentcode, statuscode, postmode, frontpage, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20030101093000103',2,0,'GeekLog','2003-01-01 09:30:00','Welcome to Geeklog!','<p>Welcome and let me be the first to congratulate you on installing GeekLog. Please take the time to read everything in the docs directory. Geeklog now has enhanced, user-based security.  You should thoroughly understand how these work before you run a production Geeklog Site.\r\r<p>Below are a list of usernames that have access to a specific portion of the site. While Admin has access to everything, Moderator only has access to the areas related to stories, links, and events. The password for each account is <b>password</b>. \r\r<p>Accounts:\r<ul>\r<li>Admin</li>\r<li>Moderator</li>\r</ul>','',100,1,0,'<li><a href=\"/search.php?mode=search&amp;type=stories&amp;author=2\">More by Admin</a><li><a href=\"/search.php?mode=search&amp;type=stories&amp;topic=GeekLog\">More from GeekLog</a>',1,0,0,'html',1,2,3,3,3,2,2) ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20020101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2002-01-01 12:05:56','html') ";
+$_DATA[] = "INSERT INTO {$_TABLES['storysubmission']} (sid, uid, tid, title, introtext, date, postmode) VALUES ('20030101120556538',2,'GeekLog','Are you secure?','<p>This is a reminder to secure your site once you have Geeklog up and running. What you should do:</p>\r\r<ol>\r<li>Change the default password for all Admin accounts.</li>\r<li>Remove the install directory (you won\'t need it any more).</li>\r</ol>','2003-01-01 12:05:56','html') ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('General','General News','/images/topics/topic_news.gif',1,10,2,2,3,3,2,2) ";
 $_DATA[] = "INSERT INTO {$_TABLES['topics']} (tid, topic, imageurl, sortnum, limitnews, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('GeekLog','GeekLog','/images/topics/topic_gl.gif',2,0,2,2,3,3,2,2) ";
@@ -829,14 +819,32 @@ $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tz
 # Dumping data for table 'users'
 #
 
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2002-01-01 00:00:01',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2002-01-01 00:00:02',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2002-01-01 00:00:03',NULL,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2003-01-01 00:00:01',0,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2003-01-01 00:00:02',0,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2003-01-01 00:00:03',NULL,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('rdf_sids','')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('staticpages','1')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('sp_group_id','15')";
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_date(date)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['events']} ADD INDEX events_datestart(datestart)';
+$_INDEX[] = 'ALTER TABLE {$_TABLES['events']} ADD INDEX events_dateend(dateend)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_main_grp_id(ug_main_grp_id)';
+$_INDEX[] = 'ALTER TABLE {$_TABLES['group_assignments']} ADD INDEX group_assignments_ug_uid(ug_uid)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['links']} ADD INDEX links_category(category)';
+$_INDEX[] = 'ALTER TABLE {$_TABLES['links']} ADD INDEX links_date(date)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_date(date)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)';
+$_INDEX[] = 'ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)';
+
+$_INDEX[] = 'ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)';
 
 ?>

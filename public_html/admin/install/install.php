@@ -8,11 +8,12 @@
 // | Geeklog installation script.                                              |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -34,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.41 2002/12/04 17:25:17 dhaun Exp $
+// $Id: install.php,v 1.42 2003/02/17 21:18:44 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -91,20 +92,19 @@ function INST_welcomePage()
     $retval .= '<head>' . LB;
     $retval .= '<title>Geeklog ' . VERSION . ' Installation</title>' . LB;
     $retval .= '</head>' . LB;
-    $retval .= '<body bgcolor="#ffffff">' . LB;
+    $retval .= '<body text="#000000" bgcolor="#ffffff">' . LB;
     $retval .= '<h2>Geeklog Installation (Step 1 of 2)</h2>' . LB;
     $retval .= '<p><strong>Welcome to Geeklog ' . VERSION . '</strong>.  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version ' . VERSION . ' you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.' . LB;
     $retval .= "<p>If you haven't already done so, you should edit config.php prior to running the script. This script will then apply the database structures for both fresh installations and upgrades." . LB;
     $retval .= '<h3>Upgrading</h3>' . LB;
     $retval .= '<p>This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systems in a variety of environments we have opted to revert that portion of the installation back to config.php.';
-    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).  Please note this script will not upgrade any beta versions of Geeklog. ';
+    $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).<p>Please note this script will not upgrade any beta or release candidate versions of Geeklog. ';
     $retval .= '<h3>Installation Options</h3>' . LB;
     if (!ini_get ('register_globals')) {
         $retval .= '<p><font color="red"><strong>Warning:</strong> You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
     }
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
-    $retval .= '<center>' . LB;
     $retval .= '<form action="install.php" method="post">' . LB;
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
     $retval .= '<tr><td align="right">Installation Type:&nbsp;</td><td><select name="install_type">'. LB;
@@ -120,7 +120,6 @@ function INST_welcomePage()
     $retval .= '</table>' . LB;
     $retval .= '<input type="hidden" name="page" value="1">' . LB;
     $retval .= '</form>' . LB;
-    $retval .= '</center>' . LB;
     $retval .= '</body>' . LB;
     $retval .= '</html>' . LB;
 
@@ -163,13 +162,6 @@ function INST_createDatabaseStructures() {
     // leaving that up to each database driver (e.g. mysql.class.php, 
     // postgresql.class.php, etc)
 
-
-    // Include lib-database.php now that it exists
-    //require_once($_CONF['path_system'] . 'lib-database.php');
-    //require_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
-    //$instDB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'');
-
-
     // Get DBMS-specific create table array and data array
     require_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
 
@@ -180,6 +172,34 @@ function INST_createDatabaseStructures() {
         next($_SQL);
     }
 
+    if ($_DB_dbms == 'mysql') {
+        @mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
+        $mysqlv = '';
+        $mysqlv = @mysql_get_server_info();
+        if (!empty ($mysqlv)) {
+            preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
+            $mysqlmajorv = $match[1];
+            $mysqlminorv = $match[2];
+            $mysqlrev = $match[3];
+        } else {
+            $mysqlmajorv = 0;
+            $mysqlminorv = 0;
+            $mysqlrev = 0;
+        }
+        @mysql_close();
+
+        if ((($mysqlmajorv == 3) && ($mysqlminorv >= 23) && ($mysqlrev >= 2)) ||
+             ($mysqlmajorv > 3)) {
+            // http://www.mysql.com/doc/en/Problems_with_NULL.html
+            // Note that you can only add an index on a column that can have
+            // NULL values if you are using MySQL Version 3.23.2 or newer
+            for ($i = 1; $i <= count ($_INDEX); $i++) {
+                DB_query (current ($_INDEX));
+                next ($_INDEX);
+            }
+        }
+    }
+
     // Now insert mandatory data and a small subset of initial data
     for ($i = 1; $i <= count($_DATA); $i++) {
         $progress .= "executing " . current($_DATA) . "<br>\n";
@@ -188,8 +208,6 @@ function INST_createDatabaseStructures() {
     }
 
     return true;
-    // Done with installation...redirect to success page
-    echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';    
 }
 
 function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
