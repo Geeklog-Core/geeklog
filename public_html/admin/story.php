@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.93 2003/06/28 12:52:38 dhaun Exp $
+// $Id: story.php,v 1.94 2003/07/01 14:52:56 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -110,21 +110,27 @@ function storyeditor($sid = '', $mode = '')
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
-        $A = DB_fetchArray($result);
-        $A['show_topic_icon'] = 1;
-        $A["commentcode"] = $_CONF['comment_code'];
-        $A["featured"] = 0;
-        $A["statuscode"] = 0;
-        $A['owner_id'] = $A['uid'];
-        $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-        $T = DB_fetchArray ($result);
-        $A['group_id'] = $T['group_id'];
-        $A['perm_owner'] = $T['perm_owner'];
-        $A['perm_group'] = $T['perm_group'];
-        $A['perm_members'] = $T['perm_members'];
-        $A['perm_anon'] = $T['perm_anon'];
-        $access = 3;
-        $A['title'] = htmlspecialchars ($A['title']);
+        if (DB_numRows ($result) > 0) {
+            $A = DB_fetchArray($result);
+            $A['show_topic_icon'] = 1;
+            $A['commentcode'] = $_CONF['comment_code'];
+            $A['featured'] = 0;
+            $A['statuscode'] = 0;
+            $A['owner_id'] = $A['uid'];
+            $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+            $T = DB_fetchArray ($result);
+            $A['group_id'] = $T['group_id'];
+            $A['perm_owner'] = $T['perm_owner'];
+            $A['perm_group'] = $T['perm_group'];
+            $A['perm_members'] = $T['perm_members'];
+            $A['perm_anon'] = $T['perm_anon'];
+            $access = 3;
+            $A['title'] = htmlspecialchars ($A['title']);
+        } else {
+            // that submission doesn't seem to be there any more (may have been
+            // handled by another Admin) - take us back to the moderation page
+            return COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
+        }
     } elseif ($mode == "edit") {
         $A['sid'] = COM_makesid();
         $A['show_topic_icon'] = 1;
