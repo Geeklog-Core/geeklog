@@ -31,8 +31,20 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.30 2002/05/17 01:14:39 mlimburg Exp $
+// $Id: users.php,v 1.31 2002/05/22 13:21:42 tony_bibbs Exp $
 
+/**
+* This file handles user authentication
+*
+* @author   Tony Bibbs <tony@tonybibbs.com>
+* @author   Mark Limburg <mlimburg@users.sourceforge.net>
+* @author   Jason Whittenburg
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -46,7 +58,8 @@ require_once('lib-common.php');
 *
 * This grabs the user profile for a given user and displays it
 *
-* @user		int	User ID of profile to get
+* @param    int     $user       User ID of profile to get
+* @return   string  HTML for user profile page
 *
 */
 function userprofile($user) 
@@ -118,8 +131,9 @@ function userprofile($user)
 *
 * This will email the given user their password.
 *
-* @username     string      Username for which to get and email password
-* @msg          int         Message number of message to show when done
+* @param    string      $username       Username for which to get and email password
+* @param    int         $msg            Message number of message to show when done
+* @return   string      Optionally returns the HTML for the default form if the user info can't be found
 *
 */
 function emailpassword($username,$msg=0) 
@@ -174,8 +188,9 @@ function emailpassword($username,$msg=0)
 *
 * Creates a user with the give username and email address
 *
-* @username     string      username to create user for
-* @email        string      email address to assign to user
+* @param    string      $username       username to create user for
+* @param    string      $email          email address to assign to user
+* @return   string      HTML for the form again if error occurs, otherwise nothing.
 *
 */
 function createuser($username,$email) 
@@ -216,6 +231,8 @@ function createuser($username,$email)
 * Shows the user login form after failed attempts to either login or access a page
 * requiring login. 
 *
+* @return   string      HTML for login form
+*
 */
 function loginform()
 {
@@ -242,9 +259,9 @@ function loginform()
 /**
 * Shows the user registration form
 *
-* @msg          int         message number to show
-* @referrer     string      page to send user to after registration
-* 
+* @param    int     $msg        message number to show
+* @param    string  $referrer   page to send user to after registration
+* @return   string  HTML for user registration page
 */
 function newuserform($msg = '')
 {
@@ -273,6 +290,8 @@ function newuserform($msg = '')
 /**
 * Shows the password retrieval form
 *
+* @return   string  HTML for form used to retrieve user's password
+*
 */
 function getpasswordform()
 {
@@ -298,8 +317,9 @@ function getpasswordform()
 /**
 * Shows user their account info form
 *
-* @msg
-* @referrer
+* @param    int     $msg        Id of message to display if one is needed
+* @param    string  $referrer   
+* @return   string  HTML for form
 *
 */
 function defaultform($msg, $referrer='') 
