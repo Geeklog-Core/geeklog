@@ -1106,7 +1106,8 @@ $LANG33 = array (
     37 => 'Sie haben (mindestens) ein Plugin installiert, das Content Syndication unterstützt. Bitte wählen Sie zunächst aus, ob Sie einen Feed für Geeklog oder für ein Plugin anlegen wollen.',
     38 => 'Fehler: Nicht alle Felder ausgefüllt',
     39 => 'Bitte die Felder Feed-Titel, Beschreibung und Dateiname ausfüllen.',
-    40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.'
+    40 => 'Bitte ein Limit (Anzahl Einträge oder Anzahl Stunden) eingeben.',
+    41 => 'Links'
 );
 
 $LANG_ACCESS = array(

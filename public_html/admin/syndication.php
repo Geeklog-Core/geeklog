@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.2 2003/09/01 19:01:06 dhaun Exp $
+// $Id: syndication.php,v 1.3 2003/09/08 17:33:00 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -174,6 +174,8 @@ function get_geeklogFeeds ()
         $A = DB_fetchArray ($result);
         $options[] = array ('id' => $A['tid'], 'name' => $A['topic']);
     }
+
+    $options[] = array ('id' => '::link', 'name' => $LANG33[41]);
 
     return $options;
 }

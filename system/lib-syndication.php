@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.2 2003/09/01 19:01:07 dhaun Exp $
+// $Id: lib-syndication.php,v 1.3 2003/09/08 17:33:00 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -86,7 +86,6 @@ function SYND_feedUpdateCheckAll( $update_info, $limit )
 
     $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
     $nrows = DB_numRows( $result );
-    $sids = '';
 
     $sids = array ();
     for( $i = 0; $i < $nrows; $i++ )
@@ -137,7 +136,6 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
 
     $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
     $nrows = DB_numRows( $result );
-    $sids = '';
 
     $sids = array ();
     for( $i = 0; $i < $nrows; $i++ )
@@ -154,7 +152,95 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
     return ( $current != $update_info ) ? false : true;
 }
 
-/*
+/**
+* Check if a feed for the links needs to be updated.
+*
+* @param    string   $update_info   list of link ids
+* @param    string   $limit         number of entries or number of hours
+* @return   bool                    false = feed needs to be updated
+*
+*/
+function SYND_feedUpdateCheckLinks( $update_info, $limit )
+{
+    global $_CONF, $_TABLES, $_SYND_DEBUG;
+
+    $where = '';
+    if( !empty( $limit ))
+    {
+        if( substr( $limit, -1 ) == 'h' ) // last xx hours
+        {
+            $limitsql = '';
+            $hours = substr( $limit, 0, -1 );
+            $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+        }
+        else
+        {
+            $limitsql = ' LIMIT ' . $limit;
+        }
+    }
+    else
+    {
+        $limitsql = ' LIMIT 10';
+    }
+
+    $result = DB_query( "SELECT lid FROM {$_TABLES['links']} WHERE perm_anon > 0 $where ORDER BY date DESC $limitsql" );
+    $nrows = DB_numRows( $result );
+
+    $lids = array();
+    for( $i = 0; $i < $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
+        $lids[] = $A['lid'];
+    }
+    $current = implode( ',', $lids );
+
+    if ($_SYND_DEBUG) {
+        COM_errorLog ("Update check for links: comparing new list ($current) with old list ($update_info)", 1);
+    }
+
+    return ( $current != $update_info ) ? false : true;
+}
+
+/**
+* Check if the feed contents need to be updated.
+*
+* @param    string   plugin   plugin name
+* @param    int      feed     feed id
+* @param    string   topic    "topic" of the feed - plugin specific
+* @param    string   limit    number of entries or number of hours
+* @return   bool              false = feed has to be updated, true = ok
+*
+*/
+function SYND_feedUpdateCheck( $plugin, $feed, $topic, $update_data, $limit )
+{
+    $is_current = true;
+
+    switch( $topic )
+    {
+        case '::all':
+        {
+            $is_current = SYND_feedUpdateCheckAll( $update_data, $limit );
+        }
+        break;
+
+        case '::links':
+        {
+            $is_current = SYND_feedUpdateCheckLinks( $update_data, $limit );
+        }
+        break;
+
+        default:
+        {
+            $is_current = SYND_feedUpdateChecktopic( $topic, $update_data,
+                                                     $limit );
+        }
+        break;
+    }
+
+    return $is_current;
+}
+
+/**
 * Get content for a feed that holds stories from one topic.
 *
 * @param    string   $tid      topic id
@@ -226,7 +312,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
     return $content;
 }
 
-/*
+/**
 * Get content for a feed that holds all stories.
 *
 * @param    string   $limit    number of entries or number of stories
@@ -312,6 +398,71 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
 }
 
 /**
+* Get content for a feed that holds all links.
+*
+* @param    string   $limit    number of entries or number of stories
+* @param    string   $link     link to homepage
+* @param    string   $update   list of story ids
+* @return   array              content of the feed
+*
+*/
+function SYND_getFeedContentLinks( $limit, &$link, &$update )
+{
+    global $_TABLES, $_CONF, $LANG01;
+
+    $where = '';
+    if( !empty( $limit ))
+    {
+        if( substr( $limit, -1 ) == 'h' ) // last xx hours
+        {
+            $limitsql = '';
+            $hours = substr( $limit, 0, -1 );
+            $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR) ORDER BY date DESC";
+        }
+        else
+        {
+            $limitsql = ' LIMIT ' . $limit;
+            $where = " ORDER BY lid DESC";
+        }
+    }
+    else
+    {
+        $limitsql = ' LIMIT 10';
+    }
+
+    $result = DB_query( "SELECT lid,owner_id,title,description,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['links']} WHERE perm_anon > 0 $where $limitsql" );
+
+    $content = array();
+    $lids = array();
+    $nrows = DB_numRows( $result );
+
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $row = DB_fetchArray( $result );
+        $lids[] = $row['lid'];
+
+        $linktitle = stripslashes( $row['title'] );
+        $linkdesc = stripslashes( $row['description'] );
+
+        $linklink = $_CONF['site_url'] . '/portal.php?what=link&item='
+                  . $row['lid'];
+
+        $content[] = array( 'title'  => $linktitle,
+                            'text'   => $linkdesc,
+                            'link'   => $linklink,
+                            'uid'    => $row['owner_id'],
+                            'date'   => $row['modified'],
+                            'format' => 'plaintext'
+                          );
+    }
+
+    $link = $_CONF['site_url'] . '/links.php';
+    $update = implode( ',', $lids );
+
+    return $content;
+}
+
+/**
 * Update a feed.
 *
 * @param   int   $fid   feed id
@@ -339,6 +490,10 @@ function SYND_updateFeed( $fid )
             if( $A['topic'] == '::all')
             {
                 $content = SYND_getFeedContentAll( $A['limits'], $link, $data );
+            }
+            elseif( $A['topic'] == '::links')
+            {
+                $content = SYND_getFeedContentLinks( $A['limits'], $link, $data );
             }
             else // feed for a single topic only
             {

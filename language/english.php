@@ -1097,7 +1097,8 @@ $LANG33 = array (
     37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.'
+    40 => 'Please enter a  number of entries or number of hours.',
+    41 => 'Links'
 );
 
 $LANG_ACCESS = array(

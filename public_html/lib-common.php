@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.256 2003/09/07 17:44:51 dhaun Exp $
+// $Id: lib-common.php,v 1.257 2003/09/08 17:33:00 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1316,16 +1316,8 @@ function COM_rdfUpToDateCheck()
             $is_current = true;
             if( $A['type'] == 'geeklog' )
             {
-                if( $A['topic'] == '::all' )
-                {
-                    $is_current = SYND_feedUpdateCheckAll( $A['update_info'],
-                                                           $A['limits'] );
-                }
-                else
-                {
-                    $is_current = SYND_feedUpdateChecktopic( $A['topic'],
-                            $A['update_info'], $A['limits'] );
-                }
+                $is_current = SYND_feedUpdateCheck( $A['type'], $A['fid'],
+                        $A['topic'], $A['update_info'], $A['limits'] );
             }
             else
             {
