@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Sort the admin's list of polls by date (newest first). Also added paging,
+  a row number and parameter filtering. Paging and the row number require
+  theme changes in admin/poll/polllist.thtml and listitem.thtml [Dirk]
 - Added paging to the plugin editor (for more than 25 installed plugins).
   A {google_paging} variable is needed in admin/plugins/pluginlist.thtml for
   the paging links to show up [Dirk]
