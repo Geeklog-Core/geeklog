@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.160 2002/09/15 21:40:41 dhaun Exp $
+// $Id: lib-common.php,v 1.161 2002/09/18 11:33:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1150,7 +1150,7 @@ function COM_debug( $A )
 
 function COM_exportRDF() 
 {
-    global $_TABLES, $_CONF, $_COM_VERBOSE;
+    global $_TABLES, $_CONF, $_COM_VERBOSE, $LANG01;
 
     if ($_CONF['backend']>0) 
     {
@@ -1164,7 +1164,7 @@ function COM_exportRDF()
 
         if( !$file = @fopen( $outputfile, w ))
         {
-            COM_errorLog( "{LANG01[54]} $outputfile", 1 );
+            COM_errorLog( "{$LANG01[54]} $outputfile", 1 );
         }
         else
         {
