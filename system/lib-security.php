@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.13 2003/03/27 21:07:16 dhaun Exp $
+// $Id: lib-security.php,v 1.14 2003/05/06 15:53:21 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -121,14 +121,18 @@ function SEC_getUserGroups($uid='')
             }
             if (!in_array($A['ug_main_grp_id'], $groups)) {
                 array_push($cgroups, $A['ug_main_grp_id']);
+                $groups[$A['grp_name']] = $A['ug_main_grp_id'];
             }
-            $groups[$A['grp_name']] = $A['ug_main_grp_id'];
         }
-        
-        $glist = join(',', $cgroups);
-        $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-                . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
-        $nrows = DB_numRows($result);
+
+        if (sizeof ($cgroups) > 0) {
+            $glist = join(',', $cgroups);
+            $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
+                    . " WHERE grp_id = ug_main_grp_id AND ug_grp_id IN ($glist)",1);
+            $nrows = DB_numRows($result);
+        } else {
+            $nrows = 0;
+        }
     }
 
     ksort($groups);
