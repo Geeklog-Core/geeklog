@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.342 2004/07/19 01:30:04 vinny Exp $
+// $Id: lib-common.php,v 1.343 2004/07/21 19:38:02 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5373,7 +5373,7 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
 
     /* Only match anchor tags that contain 'href="<something>"'
      */
-    preg_match_all( "/<a[^>]*href=\"([^\"]*)\"[^>]*>([^<]*)<\/a>/i", $fulltext, $matches );
+    preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $fulltext, $matches );
     for ( $i=0; $i< count( $matches[0] ); $i++ )
     {
         $matches[2][$i] = strip_tags( $matches[2][$i] );

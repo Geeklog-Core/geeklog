@@ -3,6 +3,7 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added support for single quotes and nested tags to COM_extractLinks [Vinny]
 - The admin_html and user_html are now merged recursively (bug #240) [Vinny]
 - Remove colons from email addresses, as they have a special meaning,
   according to RFC(2)822, that we didn't intend (bug #6) [Dirk]
