@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.20 2001/12/17 15:51:21 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.21 2001/12/17 16:06:57 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -72,11 +72,13 @@ if ($_CONF['allow_user_themes'] == 1) {
         $_CONF['theme'] = $_USER['theme'];
         $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
         $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-        if (file_exists($_CONF['path_layout'] . 'functions.php')) {
-            include_once($_CONF['path_layout'] . 'functions.php');
-        }
     }
 } 
+
+// Include theme functions file which may/may not do anything
+if (file_exists($_CONF['path_layout'] . 'functions.php')) {
+    include_once($_CONF['path_layout'] . 'functions.php');
+}
 
 // Similarly set language
 if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
