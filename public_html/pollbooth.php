@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.28 2004/08/11 13:33:34 dhaun Exp $
+// $Id: pollbooth.php,v 1.29 2004/08/14 09:04:14 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -214,8 +214,14 @@ if (empty($qid)) {
                $_CONF['cookiesecure']);
     $display .= COM_siteHeader() . pollsave($qid, $aid);
 } else {
-    $display .= COM_siteHeader()
-             . COM_pollResults($qid,400,$order,$mode);
+    $question = DB_query ("SELECT question FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" . COM_getPermSql ('AND'));
+    $Q = DB_fetchArray ($question);
+    if (empty ($Q['question'])) {
+        $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ($page);
+    } else {
+        $display .= COM_siteHeader ('menu', $Q['question'])
+                 . COM_pollResults ($qid, 400, $order, $mode);
+    }
 }
 $display .= COM_siteFooter();
 
