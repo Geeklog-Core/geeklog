@@ -1,5 +1,19 @@
 GeekLog History/Changes:
 
+March 7, 2002
+-----------------
+- Fixed broken older stories block (lib-common.php)
+- Fixed problems with saving rights to a group in admin/group.php (admin/group.php)
+- Fixed bug in admin/user that would reset user's settings when admin made a change (admin/user.php)
+- Fixed bug in index.php.  There were two FOR loops, one nested inside the other both interating
+  on the variable $i.  This caused problems only for users who went into display preferences and
+  selected only the topics they wanted to get articles for (index.php)
+- Fixed bug in story admin that would prevent the date edit from prepopulating right when admin hit
+  the preview button (admin/story.php)
+- Modified admin/plugin.php to reflect change in how plugins are installed.  Because of platform 
+  dependance issues, all plugins will have a simple but manual installation process.  This should
+  work across all platforms.
+
 March 1, 2002
 -----------------
 - Admins can now manually edit the publish date of an article.  This include the ability
