@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.57 2004/04/10 02:24:52 vinny Exp $
+// $Id: comment.php,v 1.58 2004/04/20 02:23:19 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -203,18 +203,18 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $comment_template->set_var('postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$postmode));
             $comment_template->set_var('allowed_html', COM_allowedHTML());
             $comment_template->set_var('lang_importantstuff', $LANG03[18]);
-            $comment_template->set_var('lang_instr_line1', $LANG03[19]);	
-            $comment_template->set_var('lang_instr_line2', $LANG03[20]);	
-            $comment_template->set_var('lang_instr_line3', $LANG03[21]);	
-            $comment_template->set_var('lang_instr_line4', $LANG03[22]);	
-            $comment_template->set_var('lang_instr_line5', $LANG03[23]);	
+            $comment_template->set_var('lang_instr_line1', $LANG03[19]);        
+            $comment_template->set_var('lang_instr_line2', $LANG03[20]);        
+            $comment_template->set_var('lang_instr_line3', $LANG03[21]);        
+            $comment_template->set_var('lang_instr_line4', $LANG03[22]);        
+            $comment_template->set_var('lang_instr_line5', $LANG03[23]);        
             $comment_template->set_var('lang_preview', $LANG03[14]);
 
             if (($_CONF['skip_preview'] == 1) || ($mode == $LANG03[14])) {
                 $comment_template->set_var('save_option', '<input type="submit" name="mode" value="' . $LANG03[11] . '">');
             }
 
-            $comment_template->set_var('end_block', COM_endBlock());	
+            $comment_template->set_var('end_block', COM_endBlock());        
             $comment_template->parse('output', 'form');
             $retval .= $comment_template->finish($comment_template->get_var('output'));
         }
@@ -297,10 +297,10 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         $comment = addslashes ($comment);
 
         // Insert the comment into the comment table
+        DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
         if ($pid > 0) {
-            $rht = DB_getItem($_TABLES['comments'], 'rht', "cid = $pid");
-	    $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid");
-	    list($rht, $indent) = DB_fetchArray($result);
+            $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid");
+            list($rht, $indent) = DB_fetchArray($result);
             DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
                    . "WHERE sid = '$sid' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
@@ -312,6 +312,7 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type'");               
         }
+        DB_query('UNLOCK TABLES');
 
 
         if ($type == 'poll') {
@@ -374,17 +375,19 @@ function deletecomment ($cid, $sid, $type)
             if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
+                DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
                 $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
                                  . "WHERE cid = $cid");
                 list($pid,$lft,$rht) = DB_fetchArray($result); 
                 DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
                 DB_delete ($_TABLES['comments'], 'cid', $cid);
                 DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
-		   . "WHERE sid = '$sid' AND lft BETWEEN $lft AND $rht");
+                   . "WHERE sid = '$sid' AND lft BETWEEN $lft AND $rht");
                 DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
                    . "WHERE sid = '$sid' AND lft >= $rht");
                 DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
                    . "WHERE sid = '$sid' AND rht >= $rht");
+                DB_query('UNLOCK TABLES');
 
                 if ($type == 'poll') {
                     $retval .= COM_refresh ($_CONF['site_url']
