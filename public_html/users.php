@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.50 2003/01/09 19:33:02 dhaun Exp $
+// $Id: users.php,v 1.51 2003/01/12 17:37:23 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -427,11 +427,15 @@ function createuser($username,$email)
                     emailpassword($username, 1);
                     $msg = 1;
                 }
-                sendNotification ($username, $email, $uid, $queueUser);
+                if (isset ($_CONF['notification']) && in_array ('user', $_CONF['notification'])) {
+                    sendNotification ($username, $email, $uid, $queueUser);
+                }
             } else {
                 emailpassword($username, 1);
                 $msg = 1;
-                sendNotification ($username, $email, $uid, false);
+                if (isset ($_CONF['notification']) && in_array ('user', $_CONF['notification'])) {
+                    sendNotification ($username, $email, $uid, false);
+                }
             }
             DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
             DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
