@@ -12,6 +12,7 @@ $_SQL[] = "CREATE TABLE {$_TABLES['trackback']} (
   ipaddress varchar(15) NOT NULL default '',
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid), 
+  INDEX trackback_url(url), 
   INDEX trackback_date(date), 
   INDEX trackback_type(type)
 ) TYPE=MyISAM";

@@ -578,7 +578,9 @@ CREATE TABLE {$_TABLES['trackback']} (
   ipaddress varchar(15) NOT NULL default '',
   PRIMARY KEY (cid),
   INDEX trackback_sid(sid),
+  INDEX trackback_url(url)
   INDEX trackback_type(type)
+  INDEX trackback_date(date)
 ) TYPE=MyISAM
 ";
 
@@ -924,8 +926,6 @@ $_INDEX[] = "ALTER TABLE {$_TABLES['pollquestions']} ADD INDEX pollquestions_dat
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_date(date)";
 $_INDEX[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_frontpage(frontpage)";
-
-$_INDEX[] = "ALTER TABLE {$_TABLES['trackback']} ADD INDEX trackback_date(date)";
 
 $_INDEX[] = "ALTER TABLE {$_TABLES['userindex']} ADD INDEX userindex_maxstories(maxstories)";
 
