@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# hebrew.php # last Update  01/03/2004 01:35
+# hebrew.php # last Update  07/03/2004 23:35
 # this is "hebrew.php" Written by Tal Vizel tal-hebrew-lang-gl@1212.co.il
 # This is the Hebrew language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
@@ -232,8 +232,8 @@ $LANG04 = array(
 	20 => "כתובת האימייל שהוקלד לא תקני!", # "The email address provided does not appear to be a valid email address",
 	21 => "שגיאה!", # "Error",
 	22 => "רישום ב{$_CONF['site_name']}!", # "Register with {$_CONF['site_name']}!",
-	23 => "יצירת חשבון ב{$_CONF['site_name']} תאפשר לך להינות מכל האפשרויות והשירותים המתקדמים שהאתר מציע. למי שלא יהיה חשבון אמנם אמנם יוכל לפרסם הודעות משלו אך לא יוכל להגיע עם הודעות ומאמרים של אחרים. האימייל שנמסר שנמסר בזמן הרישום <b>לא</b> יפורסם באתר באופן אוטומטי אלה ידרוש שינוי הגדרות לשם כך על-ידך", # "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
-	24 => "סיסמתך תשלך לכתובת האימייל שהוקלדה על-ידך", # "Your password will be sent to the email address you enter.",
+	23 => "יצירת חשבון באתר {$_CONF['site_name']}, תאפשר לך ליהנות ממגוון אפשרויות ושירותים מתקדמים. למי שלא יהיה חשבון יוכל לפרסם הודעות  כמשתמש אנונימי בלבד וללא יכולת קבלת תגובות למייל או שימוש שפונקציות מתקדמות. לידיעתך, כתובת הדואל שתימסר באתר <b>לא</b> תתפרסם או תהיה גלויה באתר.", # "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
+	24 => "סיסמתך תשלח לכתובת האימייל שהכנסת.", # "Your password will be sent to the email address you enter.",
 	25 => "האם שחכת את הסיסמה?", # "Did You Forget Your Password?",
 	26 => "הכנס את שם המשתמש שלך ולחץ על <b> שלח סיסמה חדשה לאימייל </b> וסיסמה חדשה תישלח לאימייל שרשום במערכת.", # "Enter your username and click Email Password and a new password will be mailed to the email address on record.",
 	27 => "הרשם/מי עכשיו!", # "Register Now!",
@@ -380,7 +380,7 @@ $LANG08 = array(
 	23 => "This email was sent to you by $from at $fromemail because they thought you might be interested in this article from {$_CONF["site_url"]}.  This is not SPAM and the email addresses involved in this transaction were not saved to a list or stored for later use.",
 	24 => "Comment on this story at",
 	25 => "You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system",
-	26 => "This form will allow you to send an email to the selected user.  All fields are required.",
+	26 => "חובה למלא את <b>כל</b>  השדות אחרת ההודעה <b>לא</b> תישלח.", # "This form will allow you to send an email to the selected user.  All fields are required.",
 	27 => "כתוב הודעה קצרה", # "Short message",
 	28 => "$from wrote: $shortmsg",
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
