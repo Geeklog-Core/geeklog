@@ -102,4 +102,7 @@ $_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'gldefault' WHERE name = 'olde
 // add an index on the 'topic' field of the syndication table
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD INDEX syndication_topic(topic)";
 
+// make sure old links have a proper owner (user "anonymous")
+$_SQL[] = "UPDATE {$_TABLES['links']} SET owner_id = 1 WHERE owner_id = 0";
+
 ?>
