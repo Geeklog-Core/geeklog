@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.3 2001/12/11 21:02:30 tony_bibbs Exp $
+// $Id: install.php,v 1.4 2001/12/14 00:47:01 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -680,6 +680,17 @@ function INST_doDatabaseUpgrades($current_gl_version) {
                 $U = $instDB->dbFetchArray($result);
                 $instDB->dbQuery("INSERT INTO {$_TABLES['group_assignments']} VALUES (2, {$U['uid']}, NULL)");
                 $instDB->dbQuery("INSERT INTO {$_TABLES['group_assignments']} VALUES (13, {$U['uid']}, NULL)");
+            }
+            // Now take care of any orphans off the user table
+            $result = $instDB->dbQuery("SELECT MAX(uid) FROM {$_TABLES['users']}");
+            $ITEM = $instDB->dbFetchArray($result);
+            $max_uid = $ITEM[0];
+            if (!empty($max_uid) AND $max_uid <> 0) {
+                $instDB->dbQuery("DELETE FROM {$_TABLES['userindex']} WHERE uid > $max_uid");
+                $instDB->dbQuery("DELETE FROM {$_TABLES['userinfo']} WHERE uid > $max_uid");
+                $instDB->dbQuery("DELETE FROM {$_TABLES['userprefs']} WHERE uid > $max_uid");
+                $instDB->dbQuery("DELETE FROM {$_TABLES['usercomment']} WHERE uid > $max_uid");
+
             }
             $current_gl_version = '1.3';
             break;
