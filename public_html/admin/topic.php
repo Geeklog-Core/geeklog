@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.28 2002/11/25 21:10:47 dhaun Exp $
+// $Id: topic.php,v 1.29 2002/12/01 20:50:35 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -258,6 +258,7 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
     } else {
         DB_delete($_TABLES['stories'],'tid',$tid);
+        DB_delete($_TABLES['storysubmission'],'tid',$tid);
         DB_delete($_TABLES['blocks'],'tid',$tid);
         DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
     }
