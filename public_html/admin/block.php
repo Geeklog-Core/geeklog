@@ -138,6 +138,7 @@ function editblock($bid="") {
 	print "<tr><td colspan=2><hr></td></tr>";
 	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
         print "<tr><td align=right>{$LANG21[29]}:</td><td><input type=text size=50 maxlength=50 name=phpblockfn value=\"{$A["phpblockfn"]}\"></td></tr><tr><td colspan=2>{$LANG21[30]}</td></tr>";
+	print "<tr><td colspan=2><hr></td></tr>";
 	print "<tr><td colspan=2><b>{$LANG21[13]}</b></td></tr>";
 	print "<tr><td align=right>{$LANG21[14]}:</td><td><input type=text size=50 maxlength=96 name=rdfurl value=\"{$A["rdfurl"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG21[15]}:</td><td><input type=text size=19 name=rdfupdated value=\"{$A["rdfupdated"]}\"></td></tr>";
