@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.24 2002/04/08 15:45:36 dhaun Exp $Scripts cannot
+// $Id: user.php,v 1.25 2002/04/10 18:37:33 tony_bibbs Exp $Scripts cannot
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -244,10 +244,10 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 * Lists all users in the system
 *
 */
-function listusers() 
+function listusers($offset, $curpage, $query = '', $query_limit = 50) 
 {
 	global $_TABLES, $LANG28, $_CONF;
-
+        
     $retval = '';
 
 	$retval .= COM_startBlock($LANG28[11]);
@@ -259,12 +259,39 @@ function listusers()
     $user_templates->set_var('lang_newuser', $LANG28[15]);
     $user_templates->set_var('lang_batchadd',$LANG28[23]);
     $user_templates->set_var('lang_adminhome', $LANG28[16]);
-    $user_templates->set_var('lang_instructions', $LANG28[12]); 
+    $user_templates->set_var('lang_instructions', $LANG28[12]);
+    $user_templates->set_var('lang_search', $LANG28[26]);
+    $user_templates->set_var('last_query', $query);
+    $user_templates->set_var('lang_limit_results', $LANG28[27]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
 
-	$result = DB_query("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1");
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    $user_templates->set_var($limit . '_selected', 'selected="SELECTED"');
+    
+    if (!empty($query)) {
+        $query = str_replace('*','%',$query);
+        $num_pages = ceil(DB_getItem($_TABLES['users'],'count(*)',"uid > 1 AND username LIKE '$query'") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil(DB_getItem($_TABLES['users'],'count(*)','uid > 1') / $limit);
+    }
+
+    $offset = ($curpage - 1) * $limit;
+
+    if (!empty($query)) {
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') LIMIT $offset,$limit";
+    } else {
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 LIMIT $offset,$limit";
+    }
+	$result = DB_query($sql);
 	$nrows = DB_numRows($result);
 
 	for ($i = 0; $i < $nrows; $i++) {
@@ -275,7 +302,14 @@ function listusers()
         $user_templates->set_var('user_email', $A['email']);
         $user_templates->parse('user_row', 'row', true);
 	}
-    
+    if (!empty($query)) {
+        $query = str_replace('%','*',$query);
+        $base_url = $_CONF['site_url'] . '/admin/user.php?q=' . urlencode($query) . '&amp;query_limit=' . $query_limit;
+    } else {
+        $base_url = $_CONF['site_url'] . '/admin/user.php?query_limit=' . $query_limit;
+    }
+
+    $user_templates->set_var('google_paging',COM_printPageNavigation2($base_url,$curpage,$num_pages));
     $user_templates->parse('output', 'list');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
@@ -480,7 +514,13 @@ case $LANG28[18]:
 default:
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
-    $display .= listusers();
+    if (empty($offset)) {
+        $offset = 0;
+    }
+    if (empty($page)) {
+        $page = 1;
+    }
+    $display .= listusers($offset,$page,$q,$query_limit);
     $display .= COM_siteFooter();
     break;
 }
