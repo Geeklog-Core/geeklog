@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.63 2002/04/14 14:54:01 dhaun Exp $
+// $Id: lib-common.php,v 1.64 2002/04/16 16:42:56 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -163,6 +163,8 @@ function COM_article($A,$index='')
     $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
     $article->set_var('story_date',$A['day']);
+    $article->set_var('lang_views', $LANG01[106]);
+    $article->set_var('story_hits', $A['hits']);
 
     if ($_CONF['contributedbyline'] == 1) {
         $article->set_var('lang_contributed_by',$LANG01[1]);
