@@ -1,5 +1,17 @@
 GeekLog History/Changes:
 
+January 1?, 2003 (1.3.7sr1)
+----------------
+
+- {copyright_notice} in the site's footer (footer.thtml) will now use the
+  current year for the copyright notice. You can override this by setting
+  $_CONF['copyrightyear'] to the year you want.
+  Also, new variables {lang_copyright} and {current_year} as well as {site_name}
+  and {site_slogan} are now available in footer.thtml so that you can build a
+  customised copyright notice from them.
+- Fixed incomplete links to search results from poll comments.
+- Fixed wrong link to the week view from the last week of the month view.
+- Fixed bug where links was not using the date field - being stored as null.
 - Fixed image resizing when using ImageMagick.
 - Added the actual and max. image dimensions in the error message that is
   displayed when an image exceeds the max. image dimensions and no imagelib
@@ -20,7 +32,6 @@ GeekLog History/Changes:
 - Updated Dutch language file, provided by R.F. van der Veen
 - New Danish language files (for Geeklog and for the Static Pages plugin),
   provided by Steen Broelling
-- Jan 01/03: Fixed bug where links was not using the date field - being stored as null.
 
 
 December 16, 2002 (1.3.7)

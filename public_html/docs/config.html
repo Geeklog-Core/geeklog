@@ -412,6 +412,11 @@ that are defined below:
   <td>hidenewlinks</td>
   <td>0</td>
   <td>Set to 1 to hide new links from What's New block.</td></tr>
+<tr>
+  <td>copyrightyear</td>
+  <td><i>(commented out)</i></td>
+  <td>Set this to the year you want to appear in the copyright notice of your
+    site's footer. If not set, Geeklog will use the current year.</td></tr>
 </table>
 
 
@@ -573,14 +578,14 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
     <th width="63%">Description</th></tr>
 <tr>
   <td>image_lib</td>
-  <td>'' (empty string)</td>
+  <td>'' <i>(empty string)</i></td>
   <td>Set this to either 'imagemagick' or 'netpbm' if images should be
     resized during upload. Leave as '' if you don't want images to be
     resized or if you don't have those packages available.</td>
 </tr>
 <tr>
   <td>path_to_mogrify</td>
-  <td>(commented out)</td>
+  <td><i>(commented out)</i></td>
   <td>If you chose 'imagemagick' for $_CONF['image_lib'] above, then this
     should hold the complete path to the mogrify binary (from the ImageMagick
     package), e.g. '/usr/bin/mogrify'.<br>
@@ -590,7 +595,7 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 </tr>
 <tr>
   <td>path_to_netpbm</td>
-  <td>(commented out)</td>
+  <td><i>(commented out)</i></td>
   <td>If you chose 'netpbm' for $_CONF['image_lib'] above, then this should
     hold the complete path to the <em>directory</em> where the binaries from
     the netpbm package are kept, e.g. '/usr/bin/netpbm/'. Note that the path
@@ -616,7 +621,7 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 </tr>
 <tr>
   <td>max_image_size</td>
-  <td>1048576 (equals 1 MB)</td>
+  <td>1048576 <i>(equals 1 MB)</i></td>
   <td>Max. size of an image in bytes. If it exceeds this, it is either
     rejected or resized (depending on the setting of $_CONF['image_lib']
     above).
@@ -637,7 +642,7 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 </tr>
 <tr>
   <td>max_photo_size</td>
-  <td>65536 (equals 64 KB)</td>
+  <td>65536 <i>(equals 64 KB)</i></td>
   <td>Max. size of a user photo in bytes. If it exceeds this, it is either
     rejected or resized (depending on the setting of $_CONF['image_lib']
     above).
@@ -678,8 +683,8 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 
 <h2><a name="Localization">Localization</a></h2>
 
-<p>Localizing GeekLog is now fairly easy. All strings are contained in a 
-language file, the default file that ships with the tarball is english.php. 
+<p>Localizing GeekLog is fairly easy. All strings are contained in a 
+language file. The default file that ships with the tarball is english.php. 
 People interested in translating Geeklog to other languages are encouraged 
 to join the <a 
 href="http://lists.geeklog.net/listinfo/geeklog-translations">geeklog-translations</a> 
