@@ -6,9 +6,9 @@
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
+# jwhitten AT securitygeeks DOT com
 #
-# Converted to Unicode (UTF-8) by Samuel M Stone <sam@stonemicro.com>
+# Converted to Unicode (UTF-8) by Samuel M Stone <sam AT stonemicro DOT com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -158,7 +158,8 @@ $LANG01 = array(
     113 => 'Documentation',
     114 => 'TRACKBACKS',
     115 => 'No new trackback comments',
-    116 => 'Trackback'
+    116 => 'Trackback',
+    117 => 'Directory'
 );
 
 ###############################################################################
@@ -1235,7 +1236,8 @@ $LANG_BUTTONS = array(
     7 => 'Site Stats',
     8 => 'Personalize',
     9 => 'Search',
-    10 => 'advanced search'
+    10 => 'advanced search',
+    11 => 'Directory'
 );
 
 ###############################################################################
@@ -1306,6 +1308,17 @@ $LANG_TRB = array(
     'url_required' => 'Please enter at least a URL for the entry.',
     'target_missing' => 'No Trackback URL',
     'target_required' => 'Please enter a trackback URL'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array (
+    'title'            => 'Article Directory',
+    'title_year'       => 'Article Directory for %d',
+    'title_month_year' => 'Article Directory for %s %d',
+    'nav_top'          => 'Back to Article Directory',
+    'no_articles'      => 'No articles.',
 );
 
 ?>

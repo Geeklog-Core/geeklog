@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.149 2005/01/16 19:14:26 dhaun Exp $
+// $Id: config.php,v 1.150 2005/01/17 12:42:05 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -205,6 +205,7 @@ $_CONF['menu_elements'] = array
     'calendar',     // link to the site calendar
     'search',       // link to advanced search
     'stats',        // link to site stats
+    'directory',    // link to list of past stories
     // 'prefs',     // link to user's preferences
     'plugins'       // links added by plugins, like {plg_menu_elements}
     // 'custom'     // for custom links (see lib-custom.php)
@@ -378,16 +379,17 @@ $_CONF['summary_length']  =  250;
 
 // this lets you select which functions are available for registered users only 
 $_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else 
-$_CONF['submitloginrequired'] = 0;
-$_CONF['commentsloginrequired'] = 0;
-$_CONF['linksloginrequired'] = 0;
-$_CONF['pollsloginrequired'] = 0;
-$_CONF['calendarloginrequired'] = 0;
-$_CONF['statsloginrequired'] = 0;
-$_CONF['searchloginrequired'] = 0;
-$_CONF['profileloginrequired'] = 0;
-$_CONF['emailuserloginrequired'] = 0;
+$_CONF['submitloginrequired']     = 0;
+$_CONF['commentsloginrequired']   = 0;
+$_CONF['linksloginrequired']      = 0;
+$_CONF['pollsloginrequired']      = 0;
+$_CONF['calendarloginrequired']   = 0;
+$_CONF['statsloginrequired']      = 0;
+$_CONF['searchloginrequired']     = 0;
+$_CONF['profileloginrequired']    = 0;
+$_CONF['emailuserloginrequired']  = 0;
 $_CONF['emailstoryloginrequired'] = 0;
+$_CONF['directoryloginrequired']  = 0;
 
 // Submission Settings
 

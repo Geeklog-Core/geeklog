@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: directory.php,v 1.1 2005/01/08 20:09:20 dhaun Exp $
+// $Id: directory.php,v 1.2 2005/01/17 12:42:05 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -41,13 +41,27 @@ $conf_list_current_month = false;
 // name of this script
 define ('THIS_SCRIPT', 'directory.php');
 
-$LANG_DIR = array (
-    'title' => 'Article Directory',
-    'title_year' => 'Article Directory for %d',
-    'title_month_year' => 'Article Directory for %s %d',
-    'nav_top' => 'Back to Article Directory',
-    'no_articles' => 'No articles.',
-);
+$display = '';
+
+if (empty ($_USER['username']) && (($_CONF['loginrequired'] == 1) ||
+                                   ($_CONF['directoryloginrequired'] == 1))) {
+    $display = COM_siteHeader ('menu', $LANG_DIR['title']);
+    $display .= COM_startBlock ($LANG_LOGIN[1], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+    $login = new Template ($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
+    $login->set_var ('site_url', $_CONF['site_url']);
+    $login->set_var ('layout_url', $_CONF['layout_url']);
+    $login->set_var ('login_message', $LANG_LOGIN[2]);
+    $login->set_var ('lang_login', $LANG_LOGIN[3]);
+    $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+    $login->parse ('output', 'login');
+    $display .= $login->finish ($login->get_var ('output'));
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
+    echo $display; 
+    exit;
+}
 
 /**
 * Display a topic selection drop-down menu
@@ -412,7 +426,7 @@ if (isset ($_POST['topic']) && isset ($_POST['year']) && isset ($_POST['month'])
     COM_setArgNames (array ('topic', 'year', 'month'));
     $topic = COM_getArgument ('topic');
     $year = COM_getArgument ('year');
-    $month = COM_getArgument('month');
+    $month = COM_getArgument ('month');
 }
 
 $topic = COM_applyFilter ($topic);

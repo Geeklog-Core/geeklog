@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.409 2005/01/16 19:14:28 dhaun Exp $
+// $Id: lib-common.php,v 1.410 2005/01/17 12:42:05 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -505,7 +505,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     {
         $_CONF['menu_elements'] = array( // default set of links
                 'contribute', 'links', 'polls', 'calendar', 'search', 'stats',
-                'plugins' );
+                'directory', 'plugins' );
     }
 
     $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;
@@ -600,6 +600,21 @@ function COM_renderMenu( &$header, $plugin_menu )
                 }
                 $url = '';
                 $label = '';
+                break;
+
+            case 'directory':
+                $url = $_CONF['site_url'] . '/directory.php';
+                if( !empty( $topic ))
+                {
+                    $url = COM_buildUrl( $url . '?topic='
+                                         . urlencode( $topic ));
+                }
+                $label = $LANG01[117];
+                if( $anon && ( $_CONF['loginrequired'] ||
+                        $_CONF['directoryloginrequired'] ))
+                {
+                    $allowed = false;
+                }
                 break;
 
             case 'home':
@@ -718,10 +733,11 @@ function COM_renderMenu( &$header, $plugin_menu )
 *
 * Programming Note:
 *
-* The two functions COM_siteHeader and COM_siteFooter provide the framework for page display
-* in Geeklog.  COM_siteHeader controls the display of the Header and left blocks and COM_siteFooter
-* controls the dsiplay of the right blocks and the footer.  You use them like a sandwich.  Thus the
-* following code will display a Geeklog page with both right and left blocks displayed.
+* The two functions COM_siteHeader and COM_siteFooter provide the framework for
+* page display in Geeklog.  COM_siteHeader controls the display of the Header
+* and left blocks and COM_siteFooter controls the dsiplay of the right blocks
+* and the footer.  You use them like a sandwich.  Thus the following code will
+* display a Geeklog page with both right and left blocks displayed.
 *
 * -------------------------------------------------------------------------------------
 * <?php
@@ -732,8 +748,9 @@ function COM_renderMenu( &$header, $plugin_menu )
 * echo $display;
 * ? >
 * ---------------------------------------------------------------------------------------
-* Note that the default for the header is to display the left blocks and the default of the
-* footer is to not display the right blocks.
+*
+* Note that the default for the header is to display the left blocks and the
+* default of the footer is to not display the right blocks.
 *
 * This sandwich produces code like this (greatly simplified)
 *
@@ -750,6 +767,7 @@ function COM_renderMenu( &$header, $plugin_menu )
 *
 * @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
 * @param    string  $pagetitle  optional content for the page's <title>
+* @param    string  $headercode optional code to go into the page's <head>
 * @return   string              Formatted HTML containing the site header
 * @see function COM_siteFooter
 *
@@ -881,6 +899,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'button_personalize', $LANG_BUTTONS[8] );
     $header->set_var( 'button_search', $LANG_BUTTONS[9] );
     $header->set_var( 'button_advsearch', $LANG_BUTTONS[10] );
+    $header->set_var( 'button_directory', $LANG_BUTTONS[11] );
 
     // Get plugin menu options
     $plugin_menu = PLG_getMenuItems();
