@@ -19,10 +19,33 @@
 
 <h2>Setting up config.php</h2>
 
-<p>GeekLog's server settings are configured in a text file called config.php. 
-It is necessary to edit this file to get your system running as well as 
-configuring it to your preferences. This file contains a set of variables 
-that are defined below:
+<p>Most of Geeklog's "static" settings (i.e. those that you aren't going to
+change often) are set in a text file called <tt>config.php</tt>. It is
+necessary to edit this file to get your system running as well as 
+configuring it to your preferences. This file contains a set of variables as
+defined below:</p>
+
+<ul>
+<li><a href="#database">Database Settings</a></li>
+<li><a href="#server">Server Settings</a></li>
+<li><a href="#site">Site Settings</a></li>
+<li><a href="#locale">Locale Settings</a></li>
+<li><a href="#session">Session Settings</a></li>
+<li><a href="#cookie">Cookie Names</a></li>
+<li><a href="#email">E-Mail Settings</a></li>
+<li><a href="#login">Login Settings</a></li>
+<li><a href="#submission">Submission Settings</a></li>
+<li><a href="#misc">Topic, What's New &amp; E-mail Settings</a></li>
+<li><a href="#calendar">Calendar Settings</a></li>
+<li><a href="#story">Story Settings</a></li>
+<li><a href="#comment">Comment Settings</a></li>
+<li><a href="#poll">Poll Settings</a></li>
+<li><a href="#links">Links Settings</a></li>
+<li><a href="#image">Image Settings</a></li>
+<li><a href="#rdf">RSS/RDF Feed Settings</a></li>
+<li><a href="#content">Content Control Settings</a></li>
+<li><a href="#url-rewrite">URL Rewriting</a></li>
+</ul>
 
 
 <h3><a name="database">Database Settings</a></h3>
@@ -33,8 +56,8 @@ that are defined below:
     <th width="63%">Description</th></tr>
 <tr><td valign="top">_DB_dbms</td>
     <td valign="top">mysql</td>
-    <td valign="top"><strong>Do not change!</strong> This tells Geeklog that it's 
-      dealing with a MySQL database - and currently, that is the only type of 
+    <td valign="top"><strong>Do not change!</strong> This tells Geeklog that it
+      is using a MySQL database - and currently, that is the only type of 
       database that is supported.</td></tr>
 <tr><td valign="top">_DB_host</td>
     <td valign="top">localhost</td>
@@ -50,7 +73,8 @@ that are defined below:
     <td valign="top">Database User Password</td></tr>
 <tr><td valign="top">_DB_table_prefix</td>
     <td valign="top">gl_</td>
-    <td valign="top">Allows you to change the default table names for Geeklog</td></tr>
+    <td valign="top">Prefix put in front of all of Geeklog's table names (to
+        avoid name collisions with tables used by other applications)</td></tr>
 <tr><td valign="top">_DB_mysqldump_path</td>
     <td valign="top">/usr/bin/mysqldump</td>
     <td valign="top">Complete path to the <a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility (part of MySQL) for making 
@@ -81,7 +105,7 @@ that are defined below:
     <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
 <tr><td valign="top"><a name="desc_path_images">path_images</a></td>
     <td valign="top">/path/to/geeklog//public_html/images/</td>
-    <td valing="top">Path where Geeklog expects to find its images, including
+    <td valign="top">Path where Geeklog expects to find its images, including
         user photos and images for stories.</td>
 <tr><td valign="top"><a name="desc_path_log">path_log</a></td>
     <td valign="top">/path/to/geeklog/logs/</td>
@@ -90,7 +114,7 @@ that are defined below:
     <td valign="top">/path/to/geeklog/language/</td>
     <td valign="top">location of the Geeklog language files</td></tr>
 <tr><td valign="top"><a name="desc_backup_path">backup_path</a></td>
-    <td valign="top">Base path with "/backups/" suffix</td>
+    <td valign="top">/path/to/geeklog/backups/</td>
     <td valign="top">location where mysqldump (see above) will store database backups</td></tr>
 <tr><td valign="top"><a name="desc_path_data">path_data</a></td>
     <td valign="top">/path/to/geeklog/data/</td>
@@ -122,7 +146,7 @@ that are defined below:
   <td valign="top">Base URL for your site (no trailing slash)</td></tr>
 <tr>
   <td valign="top"><a name="desc_theme">theme</a></td>
-  <td valign="top">XSilver</td>
+  <td valign="top">professional</td>
   <td valign="top">Default theme to use on the site</td></tr>
 <tr>
   <td valign="top"><a name="desc_layout_url">layout_url</a></td>
@@ -134,7 +158,7 @@ that are defined below:
   <td valign="top">Directory where all themes reside</td></tr>
 <tr>
   <td valign="top"><a name="desc_path_layout">path_layout</a></td>
-  <td valign="top">/path/to/geeklog/public_html/layout/XSilver/</td>
+  <td valign="top">/path/to/geeklog/public_html/layout/professional/</td>
   <td valign="top">Path to current theme directory</td></tr>
 <tr>
   <td valign="top"><a name="desc_allow_user_themes">allow_user_themes</a></td>
@@ -155,14 +179,19 @@ that are defined below:
 <tr>
   <td valign="top"><a name="desc_site_enabled">site_enabled</a></td>
   <td valign="top">true</td>
-  <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance) by setting
-    this to 'false'.</td></tr>
+  <td valign="top">A Geeklog site can be disabled quickly (e.g. for maintenance)
+    by setting this to 'false'.</td></tr>
 <tr>
   <td valign="top"><a name="desc_site_disabled_msg">site_disabled_msg</a></td>
   <td valign="top">'Geeklog Site is down. Please come back soon.'</td>
-  <td valign="top">This contains the message to display when a Geeklog site is disabled.
-    If the text begins with "http:" then visitors are redirected to that
-    URL.</td></tr>
+  <td valign="top">This contains the message to display when a Geeklog site is
+    disabled.  If the text begins with "http:" then visitors are redirected to
+    that URL.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_link_documentation">link_documentation</a></td>
+  <td valign="top">1</td>
+  <td valign="top">Add a link to Geeklog's documentation to the Admin block.
+    Set this to 0 if you don't want that link to show up.</td></tr>
 </table>
 
 
@@ -263,7 +292,7 @@ that are defined below:
   <tr>
   <td valign="top"><a name="desc_sessionid_prefix">sessionid_prefix</a></td>
   <td valign="top">(empty)</td>
-  <td valign="top">In rare cases it may be necessary to use a prefix for the Unique Session ID. Prefix would be added to a ID that is generated based on the current time in microseconds.Prefix can be up to 114 characters long.</td></tr>
+  <td valign="top">In rare cases it may be necessary to use a prefix for the Unique Session ID. Prefix would be added to a ID that is generated based on the current time in microseconds. Prefix can be up to 114 characters long.</td></tr>
 </table>
 
 <h3><a name="cookie">Cookie Names</a></h3>
@@ -304,7 +333,7 @@ that are defined below:
   <td valign="top">Name of a temporary cookie that stores the time of the last visit (used in session handling).</td></tr>
 </table>
 
-<h3><a name="email">E-Mail settings</a></h3>
+<h3><a name="email">E-Mail Settings</a></h3>
 
 <p>Starting with Geeklog 1.3.9, Geeklog uses the PEAR::Mail class to send all
 emails. You can then select whether emails should be sent through SMTP,
@@ -353,7 +382,7 @@ options:</p>
         password for your SMTP account.</td></tr>
 </table>
 
-<h3><a name="login">Login settings</a></h3>
+<h3><a name="login">Login Settings</a></h3>
 
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
@@ -435,11 +464,12 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_notification">notification</a></td>
   <td valign="top">array()</td>
-  <td valign="top">Send an email notification to <tt>$_CONF['site_email']</tt> when a new
-    story, link, or event has been submitted or a new user has registered with
-    the site. The <tt>array()</tt> can hold any combination of  the strings
-    <tt>'story'</tt>, <tt>'link'</tt>, <tt>'event'</tt>, and <tt>'user'</tt>
-    (separated by commas), depending on which notification(s) you want.<br>
+  <td valign="top">Send an email notification to <tt>$_CONF['site_email']</tt>
+    when a new story, comment, link, or event has been submitted or a new user
+    has registered with the site. The <tt>array()</tt> can hold any combination
+    of  the strings <tt>'story'</tt>, <tt>'comment'</tt>, <tt>'link'</tt>,
+    <tt>'event'</tt>, and <tt>'user'</tt> (separated by commas), depending on
+    which notification(s) you want.<br>
     <strong>Example:</strong> <code>array('story','user');</code> would
     send notifications when a new story has been submitted or a new user has
     registered. No notifications would be sent for new links or events.</td>
@@ -502,7 +532,7 @@ options:</p>
 <tr>
   <td valign="top"><a name="desc_whosonline_anonymous">whosonline_anonymous</a></td>
   <td valign="top">0</td>
-  <td valign="top">If enables (i.e. set to 1), anonymous users will only see the number of registered users currently only in the Who's Online block but not their names. Only logged-in users will see the names of other users that are currently online.</td></tr>
+  <td valign="top">If enabled (i.e. set to 1), anonymous users will only see the number of registered users currently online in the Who's Online block but not their names. Only logged-in users will see the names of other users that are currently online.</td></tr>
 <tr>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
@@ -571,7 +601,7 @@ options:</p>
   <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
   <td valign="top"><i>not set</i></td>
   <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report missuse to ISPs, etc.<br>
-<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sf.net/project/showfiles.php?group_id=68255&package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';</code></td></tr>
+<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's <a href="http://sourceforge.net/project/showfiles.php?group_id=68255&amp;package_id=95743">NetTools</a> package, in which case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';</code></td></tr>
 </table>
 
 

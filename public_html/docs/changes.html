@@ -58,6 +58,9 @@ theme, kindly provided by Victor B. Gonzales (of <a href="http://aeonserv.com">A
 
 <ul>
 <li>Various changes have been made to improve the overall performance.</li>
+<li>Fresh installs are now using InnoDB tables if your MySQL version supports
+    them (as of MySQL 4.0, or 3.x "Max" builds). Existing databases can be
+    converted to InnoDB by using the script <tt>admin/install/toinnodb.php</tt>.
 <li>The calendar's week can now either start on a Sunday or a Monday.</li>
 <li>The Static Pages plugin now has an option to display a printer-friendly
     version of a static page.</li>
@@ -124,8 +127,9 @@ theme, kindly provided by Victor B. Gonzales (of <a href="http://aeonserv.com">A
 <li>Fixed sporadic "Duplicate entry '...' for key 1." messages in error.log,
     caused by the handling of pseudo-session ids for anonymous users.</li>
 <li>Fixed incorrect author names in Daily Digest (bug #207).</li>
-<li>The <code>plugin_profileblocksedit_<i>plugin-name</i> Plugin API function
-    wasn't working due to a missing piece of code in usersettings.php.</li>
+<li>The <code>plugin_profileblocksedit_<i>plugin-name</i></code> Plugin API
+    function wasn't working due to a missing piece of code in
+    usersettings.php.</li>
 <li><code>COM_extractLinks</code> will now ignore anchor tags that do not
     contain "<code>href</code>" (bug #183).</li>
 </ul>
