@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: configinfo.php,v 1.1 2002/07/07 16:00:46 dreamscape Exp $
+// $Id: configinfo.php,v 1.2 2002/07/07 16:21:16 dreamscape Exp $
 
 /**
 * This script will display file and permission information based on settings in
@@ -39,7 +39,7 @@
 *
 */
 
-require_once('/path/to/geeklog/config.php');
+require_once('../../../config.php');
 
 $highlight_on 	= '#bcbcbc';
 $highlight_off	= '#3399FF';
