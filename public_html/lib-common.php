@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.40 2002/03/07 15:22:25 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.41 2002/03/07 18:07:12 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -190,9 +190,9 @@ function COM_article($A,$index='')
             $article->set_var('comments_url',$_CONF['site_url'].'/article.php?story='.$A['sid'].'#comments');
             $article->set_var('comments_text', $A['comments'] . ' ' . $LANG01[3]);
 
-            $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['comments']} WHERE sid = '{$A['sid']}' ORDER BY date desc LIMIT 1");
+            $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1");
             $C = DB_fetchArray($result);
-            $recent_post_anchortag = '<span class="storybyline">'.$LANG01[27].': '.strftime($_CONF['daytime'],$C['day']).'</span>';
+            $recent_post_anchortag = '<span class="storybyline">'.$LANG01[27].': '.strftime($_CONF['daytime'],$C['day']). ' ' . $LANG01[104] . ' ' . $C['username'] . '</span>';
         } else if ($A['commentcode'] >= 0) {
             $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>';
         }
