@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.6 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.7 2001/11/19 23:18:50 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -64,13 +64,18 @@ include_once($_CONF['path_system'] . 'lib-sessions.php');
 // Need to modify this code to check if theme was cached in user cookie.  That way
 // if user logged in and set theme and then logged out we would still know which
 // theme to show them.
-if (!empty($_USER['theme'])) {
-    $_CONF['theme'] = $_USER['theme'];
-    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
-    if (file_exists($_CONF['path_layout'] . 'functions.php')) {
-       include_once($_CONF['path_layout'] . 'functions.php');
-   }
+if ($_CONF['allow_user_themes'] == 1) {
+    if (isset($HTTP_COOKIE_VARS['theme']) && empty($_USER['theme'])) {
+        $_USER['theme'] = $HTTP_COOKIE_VARS['theme'];
+    }
+    if (!empty($_USER['theme'])) {
+        $_CONF['theme'] = $_USER['theme'];
+        $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+        $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+        if (file_exists($_CONF['path_layout'] . 'functions.php')) {
+            include_once($_CONF['path_layout'] . 'functions.php');
+        }
+    }
 } 
 
 setlocale(LC_ALL, $_CONF['locale']);
@@ -243,16 +248,21 @@ function COM_getThemes()
 
     $themes = array();
 
-    COM_errorLog("THEMEDIR: " . $_CONF['path_themes'], 1);
-
     $fd = opendir($_CONF['path_themes']); 
 
-    while (($dir = @readdir($fd)) == TRUE) {
-        if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..') {
-            clearstatcache();
-            $themes[] = $dir;
+    // If users aren't allowed to change their theme then only return the 
+    // default theme
+    if ($_CONF['allow_user_themes'] == 0) {
+        $themes[] = $_CONF['theme'];
+    } else {
+        while (($dir = @readdir($fd)) == TRUE) {
+            if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..') {
+                clearstatcache();
+                $themes[] = $dir;
+            }
         }
     }
+
     return $themes;
 }
 
