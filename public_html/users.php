@@ -38,11 +38,14 @@ include("custom_code.php");
 
 function userprofile($user) {
 	global $CONF,$LANG04;
-	$result = dbquery("SELECT username,fullname,homepage FROM {$CONF["db_prefix"]}users WHERE uid = $user");
+	$result = dbquery("SELECT username,fullname,regdate,homepage FROM {$CONF["db_prefix"]}users WHERE uid = $user");
 	$A = mysql_fetch_array($result);
+	$curtime = getuserdatetimeformat($A["regdate"]);
+	$A["regdate"] = $curtime[0];
 	startblock("{$LANG04[1]} {$A["username"]}");
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td align=right><b>{$LANG04[2]}:</b></td><td>{$A["username"]} ({$A["fullname"]})</td></tr>\n";
+	print "<tr><td align=\"right\"><b>{$LANG04[67]}:</b></td><td>{$A["regdate"]}</td></tr>\n";
 	print "<tr><td align=right><b>{$LANG04[5]}:</b></td><td><a href={$CONF["site_url"]}/profiles.php?uid=$user>Send Email</a></td></tr>\n";
 	print "<tr><td align=right><b>{$LANG04[6]}:</b></td><td><a href={$A["homepage"]}>{$A["homepage"]}</a></td></tr>\n";
 	$result = dbquery("SELECT about,pgpkey FROM {$CONF["db_prefix"]}userinfo WHERE uid = $user");
