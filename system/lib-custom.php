@@ -38,7 +38,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.4 2002/08/17 20:12:17 dhaun Exp $
+// $Id: lib-custom.php,v 1.5 2003/07/02 14:29:31 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -93,7 +93,20 @@ function phpblock_getBent()
 
     $insecure_msg = '';
 
-    $installdir = $_CONF['path_html'] . 'admin/install';
+    // we don't have the path to the admin directory, so try to figure it out
+    // from $_CONF['site_admin_url']
+    $adminurl = $_CONF['site_admin_url'];
+    if (strrpos ($adminurl, '/') == strlen ($adminurl)) {
+        $adminurl = substr ($adminurl, 0, -1);
+    }
+    $pos = strrpos ($adminurl, '/');
+    if ($pos === false) {
+        // only guessing ...
+        $installdir = $_CONF['path_html'] . 'admin/install';
+    } else {
+        $installdir = $_CONF['path_html'] . substr ($adminurl, $pos + 1)
+                    . '/install';
+    }
 
     if (is_dir ($installdir)) {
         $insecure_msg .= '<p>You should really remove the install directory <b>' . $installdir .'</b> once you have your site up and running without any errors.';
@@ -102,12 +115,12 @@ function phpblock_getBent()
         $secure = false;
     }
 
-    //check to see if any Admin still has 'password' as it's password.
+    // check to see if any account still has 'password' as its password.
     $count = DB_query("select count(*) as count from {$_TABLES['users']} where passwd='" . md5('password') . "'");
     $A = DB_fetchArray($count);
     if ( $A['count'] > 0 ) {
         $secure = false;
-        $insecure_msg .= '<p>You still have not changed some default Admin password from "password". ';
+        $insecure_msg .= '<p>You still have not changed the default password from "password" on ' . $A['count'] . ' account(s). ';
         $insecure_msg .= 'This will allow people to do serious harm to your site!';
     }
 
