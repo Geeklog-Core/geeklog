@@ -4,15 +4,16 @@
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
-// | lib-common.php                                                            |
-// | Geeklog common library.                                                   |
+// | submit.php                                                                |
 // |                                                                           |
+// | Let users submit stories, links, and events.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.49 2003/01/29 17:08:52 dhaun Exp $
+// $Id: submit.php,v 1.50 2003/03/19 16:05:35 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -697,7 +698,7 @@ function savesubmission($type,$A)
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
                 $T = DB_fetchArray ($result);
                 $related = addslashes (COM_whatsRelated ($introtext, $_USER['uid'], $A['tid']));
-                DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}','{$related}',NOW(),'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+                DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}','{$related}',NOW(),{$_CONF['comment_code']},'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 if (isset ($_CONF['notification']) && in_array ('story', $_CONF['notification'])) {
                     $A['uid'] = $_USER['uid'];
                     sendNotification ($_TABLES['stories'], $A);
