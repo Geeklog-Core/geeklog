@@ -34,7 +34,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.38 2002/09/02 22:10:43 dhaun Exp $
+// $Id: install.php,v 1.39 2002/09/12 15:05:40 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -100,7 +100,7 @@ function INST_welcomePage()
     $retval .= '<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <strong>YOU HAVE BEEN WARNED</strong>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).  Please note this script will not upgrade any beta versions of Geeklog. ';
     $retval .= '<h3>Installation Options</h3>' . LB;
     if (!ini_get ('register_globals')) {
-        $retval .= '<p><strong>Warning:</strong> You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</p>' . LB;
+        $retval .= '<p><font color="red"><strong>Warning:</strong> You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
     }
     $install_options = '<option value="new_db">New Database</option>'.LB;
     $install_options .= '<option value="upgrade_db">Upgrade Database</option>'.LB;
