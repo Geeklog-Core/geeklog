@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.13 2002/07/29 12:18:17 dhaun Exp $
+// $Id: auth.inc.php,v 1.14 2002/09/18 17:35:28 dhaun Exp $
 
 // MAIN
 
@@ -68,7 +68,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
-} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
+} else if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
     $display .= COM_siteHeader();
 
     $display .= COM_startBlock($LANG20[01]);
@@ -81,11 +81,11 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
 	
     $display .= '<form action="'.$PHP_SELF.'" method="POST">'
         .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
-        .'<tr><td align="right">'.$LANG20[04].'</td>'.LB
+        .'<tr><td align="right">'.$LANG20[04].'&nbsp;</td>'.LB
         .'<td><input type="text" name="loginname" size="16" maxlength="16"></td>'.LB
         .'</tr>'.LB
         .'<tr>'.LB
-        .'<td align="right">'.$LANG20[05].'</td>'.LB
+        .'<td align="right">'.$LANG20[05].'&nbsp;</td>'.LB
         .'<td><input type="password" name="passwd" size="16" maxlength="16"></td>'
         .'</tr>'.LB
         .'<tr>'.LB
