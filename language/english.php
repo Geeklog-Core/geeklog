@@ -138,7 +138,9 @@ $LANG01 = array(
         97 => "Word List",
 	98 => "Plug-ins",
 	99 => "STORIES",
-    100 => "No new stories"
+    100 => "No new stories",
+    101 => 'Your Events',
+    102 => 'Site Events'
 );
 
 ###############################################################################
@@ -539,7 +541,10 @@ $LANG21 = array(
 	46 => 'New Block',
 	47 => 'Admin Home',
     48 => 'Block Name',
-    49 => ' (no spaces and must be unique)'
+    49 => ' (no spaces and must be unique)',
+    50 => 'Help File URL',
+    51 => 'include http://',
+    52 => 'If you leave this blank the help icon for this block will not be displayed'
 );
 
 ###############################################################################
