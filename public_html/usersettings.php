@@ -8,7 +8,7 @@
 // | Geeklog user settings page.                                               |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.80 2004/01/11 19:14:33 dhaun Exp $
+// $Id: usersettings.php,v 1.81 2004/01/18 14:47:16 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -907,7 +907,7 @@ function savepreferences($A)
     }
 
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
-    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
+    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A['theme']}',language='{$A['language']}' WHERE uid = {$_USER['uid']}");
     setcookie ($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
@@ -915,7 +915,7 @@ function savepreferences($A)
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
 
-    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
+    DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {
         $etids = '-';
@@ -927,10 +927,10 @@ function savepreferences($A)
 
 // MAIN
 if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
 }
 else if (isset ($HTTP_GET_VARS['mode'])) {
-    $mode = $HTTP_GET_VARS['mode'];
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
 }
 $display = '';
 
@@ -939,16 +939,18 @@ if (!empty($_USER['username']) && !empty($mode)) {
     case 'preferences':
     case 'comments':
         $display .= COM_siteHeader('menu');
-        if (isset ($HTTP_GET_VARS['msg'])) {
-            $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage ($msg);
         }
         $display .= editpreferences();
         $display .= COM_siteFooter();
         break;
     case 'edit':
         $display .= COM_siteHeader('menu');
-        if (isset ($HTTP_GET_VARS['msg'])) {
-            $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage ($msg);
         }
         $display .= edituser();
         $display .= COM_siteFooter();
@@ -963,10 +965,20 @@ if (!empty($_USER['username']) && !empty($mode)) {
                                  . '/usersettings.php?mode=preferences&msg=6');
         break;
     case 'confirmdelete':
-        $display .= confirmAccountDelete ($HTTP_POST_VARS['account_id']);
+        $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id'], true);
+        if ($accountId > 1) {
+            $display .= confirmAccountDelete ($accountId);
+        } else {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
         break;
     case 'deleteconfirmed':
-        $display .= deleteUserAccount ($HTTP_POST_VARS['account_id']);
+        $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id'], true);
+        if ($accountId > 1) {
+            $display .= deleteUserAccount ($accountId);
+        } else {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
         break;
     }
 } else {
