@@ -1078,7 +1078,13 @@ $LANG_DB_BACKUP = array(
     backup_successful => 'Backup der Datenbank war erfolgreich.',
     no_backups => 'Keine Backups im System',
     db_explanation => 'Um ein neues Backup Deines Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken',
-    not_found => "Fehler: Konnte {$_DB_mysqldump_path} nicht finden."
+    not_found => "Falscher Pfad oder mysqldump ist nicht ausf&uuml;hrbar.<br>Bitte &uuml;berpr&uuml;fe die Variable <strong>\$_DB_mysqldump_path</strong> in der config.php.<br>Aktueller Wert der Variablen: <var>{$_DB_mysqldump_path}</var>",
+    zero_size => 'Backup fehlgeschlagen: Datei ist 0 Bytes gro&szlig;.',
+    path_not_found => "{$_CONF['backup_path']} existiert nicht oder ist kein Verzeichnis.",
+    no_access => "Fehler: Konnte nicht auf das Verzeichnis {$_CONF['backup_path']} zugreifen.",
+    backup_file => 'Backup-Datei',
+    size => 'Gr&ouml;&szlig;e',
+    bytes => 'Bytes'
 );
 
 $LANG_BUTTONS = array(
