@@ -47,24 +47,35 @@ if (!hasrights('link.edit')) {
 ###############################################################################
 # Displays the link editor form
 
-function editlink($lid="") {
+function editlink($mode,$lid="") {
 	global $LANG23,$CONF,$USER,$LANG_ACCESS;
 
 	startblock($LANG23[1]);
-	if (!empty($lid)) {
+	if ($mode <> 'editsubmission' AND !empty($lid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}links where lid ='$lid'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-		if ($access == 0) {
-			startblock($LANG23[16]);
-                        print  $LANG23[17];
+
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access == 0 OR $access == 2) {
+                        startblock($LANG24[16]);
+                        print $LANG23[17];
                         endblock();
                         return;
                 }
+
 	} else {
+		if ($mode == 'editsubmission') {
+			$result = dbquery ("SELECT * FROM {$CONF["db_prefix"]}linksubmission where lid = '$lid'");
+			$A = mysql_fetch_array($result);
+		}
+		$A["hits"] = 0;
 		$A['owner_id'] = $USER['uid'];
-		$A['private_flag'] = 1;
-		$access = 1;
+		$A['group_id'] = getitem('groups','grp_id',"grp_name = 'Link Admin'");
+		$A["perm_owner"] = 3;
+                $A["perm_group"] = 3;
+                $A["perm_members"] = 2;
+                $A["perm_anon"] = 2;
+		$access = 3;
 	}
 	print "<form action={$CONF["site_url"]}/admin/link.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
@@ -104,7 +115,7 @@ function editlink($lid="") {
         print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
         print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
         	for ($i=0;$i<count($usergroups);$i++) {
                 	print "<option value=" . $usergroups[key($usergroups)];
@@ -118,12 +129,14 @@ function editlink($lid="") {
 	} else {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
+        print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+        print $html;
+	print "</td></tr>";
+
         print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 
 	print "</table></form>";
@@ -133,7 +146,7 @@ function editlink($lid="") {
 ###############################################################################
 # Svaes the links to the database
 
-function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$private_flag) {
+function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $CONF,$LANG23; 
 
 	# clean 'em up 
@@ -142,9 +155,17 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 
 	if (!empty($title) && !empty($description) && !empty($url)) {
 		if (!empty($lid)) {
+			dbdelete("linksubmission","lid",$lid);
 			dbdelete("links","lid",$lid);
 		} else {
+			#this is a submission, set default values
 			$lid = makesid();
+			$owner_id = $USER['uid'];
+			$group_id = getitem('groups','grp_id',"grp_name = 'Link Admin'");
+                	$perm_owner = 3;
+                	$perm_group = 3;
+                	$perm_members = 2;
+                	$perm_anon = 2;		
 		}
 		if ($categorydd!="Other" && !empty($categorydd)) {
 			$category = $categorydd;
@@ -152,16 +173,14 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 			refresh("{$CONF["site_url"]}/admin/link.php");
 		}
 
-		if ($private_flag == 'on') {
-                        $private_flag = 1;
-                } else {
-                        $private_flag = 0;
-		}
-		dbsave("links","lid,category,url,description,title,hits,owner_id,group_id,private_flag","$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$private_flag","admin/link.php?msg=15");
+		#Convert array values to numeric permission values
+                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
+		dbsave("links","lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/link.php?msg=15");
 	} else {
 		site_header('menu');
 		errorlog($LANG23[10],2);
-		editlink($lid);
+		editlink($mode,$lid);
 		site_footer();
 	}
 }
@@ -179,17 +198,17 @@ function listlinks() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-	 	$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-                if ($access) {
-                	if ($access == 1) {
-                        	$access = $LANG_ACCESS[ownerroot];
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access > 0) {
+                	if ($access == 3) {
+                        	$access = $LANG_ACCESS[edit];
                         } else {
-                                $access = $LANG_ACCESS[group];
+                                $access = $LANG_ACCESS[readonly];
                         }
                 } else {
-                        $access = $LANG_ACCESS[readonly];
+                        $access = $LANG_ACCESS[none];
                 }	
-		print "<tr align=center><td align=left><a href={$CONF["site_url"]}../admin/link.php?mode=edit&lid={$A["lid"]}>" . stripslashes($A["title"]) . "</a></td>";
+		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/link.php?mode=edit&lid={$A["lid"]}>" . stripslashes($A["title"]) . "</a></td>";
 		print "<td>$access</td><td>{$A["category"]}</td><td>{$A["url"]}</td></tr>";
 	}
 	print "</table></form>";
@@ -204,11 +223,16 @@ switch ($mode) {
 		dbdelete('links','lid',$lid,'/admin/link.php?msg=16');
 		break;
 	case 'save':
-		savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$private_flag);
+		savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		break;
+	case 'editsubmission':
+		site_header('menu');
+		editlink($mode,$id);
+		site_footer();
 		break;
 	case 'edit':
 		site_header('menu');
-		editlink($lid);
+		editlink($mode,$lid);
 		site_footer();
 		break;
 	case 'cancel':

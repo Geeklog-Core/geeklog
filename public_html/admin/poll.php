@@ -47,15 +47,12 @@ if (!hasrights('poll.edit')) {
 ###############################################################################
 # Saves a poll from the database
 
-function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$private_flag) {
+function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $LANG25,$CONF;
 	if (empty($voters)) { $voters = "0"; }
 
-	if ($private_flag == 'on') {
-        	$private_flag = 1;
-        } else {
-        	$private_flag = 0;
-        }
+	#Convert array values to numeric permission values
+        list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
 	dbdelete("pollquestions","qid",$qid);
 	dbdelete("pollanswers","qid",$qid);
@@ -65,8 +62,8 @@ function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V
 	} else {
 		$sql .= "',0";
 	}
-	$sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$private_flag";
-	dbsave("pollquestions","qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, private_flag",$sql);
+	$sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
+	dbsave("pollquestions","qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql);
 	for ($i=0; $i<sizeof($A); $i++) {
 		if (!empty($A[$i])) {
 			if (empty($V[$i])) { $V[$i] = "0"; }
@@ -86,8 +83,8 @@ function editpoll($qid="") {
 	$answers = dbquery("select answer,aid,votes from pollanswers WHERE qid='$qid'");
 
 	$Q = mysql_fetch_array($question);
-	$access = hasaccess($Q["private_flag"],$Q["owner_id"],$Q["group_id"]);
-	if ($access == 0) {
+	$access = hasaccess($Q["owner_id"],$Q["group_id"],$Q["perm_owner"],$Q["perm_group"],$Q["perm_members"],$Q["perm_anon"]);
+	if ($access == 0 OR $access == 2) {
         	startblock($LANG25[21]);
                 print  $LANG25[22];
                 endblock();
@@ -99,12 +96,15 @@ function editpoll($qid="") {
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><INPUT TYPE=SUBMIT NAME=mode VALUE=save> ";
 	print "<input type=submit name=mode value=cancel> ";
-	if (!empty($qid)) {
+	if (!empty($qid) AND $access == 3) {
 		print "<INPUT TYPE=SUBMIT NAME=mode VALUE=delete>";
 	} else {
 		$Q['owner_id'] = $USER['uid'];
-		$Q['private_flag'] = 1;
-		$access = 1;
+		$Q["perm_owner"] = 3;
+                $Q["perm_group"] = 3;
+                $Q["perm_members"] = 2;
+                $Q["perm_anon"] = 2;
+		$access = 3;
 	}
 	print "</td></tr>\n";
 	print "<tr><td align=right>{$LANG25[6]}:</td><td><INPUT TYPE=TEXT NAME=qid value=\"{$Q["qid"]}\" SIZE=20> {$LANG25[7]}</td></tr>\n";
@@ -128,7 +128,7 @@ function editpoll($qid="") {
         print "<input type=hidden name=owner_id value={$Q["owner_id"]}>" . "</td></tr>";
         print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
         	for ($i=0;$i<count($usergroups);$i++) {
                 	print "<option value=" . $usergroups[key($usergroups)];
@@ -142,13 +142,14 @@ function editpoll($qid="") {
 	} else {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$Q["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($Q["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}</td></tr>";	
+	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($Q["perm_owner"],$Q["perm_group"],$Q["perm_members"],$Q["perm_anon"]);
+        print $html;
+        print "</td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}</td></tr>";	
         print "<tr><td colspan=2><hr><td></tr>"; 
 
 	print "<tr><td align=right valign=top>{$LANG25[10]}:</td><td>\n";
@@ -175,15 +176,15 @@ function listpoll() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-                if ($access) {
-                        if ($access == 1) {
-                                $access = $LANG_ACCESS[ownerroot];
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access > 0) {
+                        if ($access == 3) {
+                                $access = $LANG_ACCESS[edit];
                         } else {
-                                $access = $LANG_ACCESS[group];
+                                $access = $LANG_ACCESS[readonly];
                         }
                 } else {
-                        $access = $LANG_ACCESS[readonly];
+                        $access = $LANG_ACCESS[none];
                 }
 		$curtime = getuserdatetimeformat($A["date"]); 
 		if ($A[4] == 1) $A[4] = "Y";
@@ -207,7 +208,7 @@ switch($mode)
 		        for ($i=0; $i<sizeof($answer); $i++) {
                 		$voters = $voters + $votes[$i];
         		}
-		        savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$private_flag);
+		        savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		}
 		break;
 	case "edit":
