@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.87 2004/09/04 19:37:35 dhaun Exp $
+// $Id: users.php,v 1.88 2004/09/08 09:42:02 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -812,7 +812,7 @@ case 'emailpasswd':
     break;
 
 case 'new':
-    $display .= COM_siteHeader('menu');
+    $display .= COM_siteHeader ('menu', $LANG04[22]);
     // Call custom registration and account record create function
     // if enabled and exists
     if ($_CONF['custom_registration'] AND (function_exists('custom_userform'))) {
