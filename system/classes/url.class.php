@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.4 2002/05/07 20:59:31 tony_bibbs Exp $
+// $Id: url.class.php,v 1.5 2002/05/08 18:26:07 tony_bibbs Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -45,7 +45,13 @@
 *
 */
 class url {
+    /**
+    * @access private
+    */
     var $_arguments = array();		// Array of argument names
+    /**
+    * @access private
+    */
     var $_enabled = true;
     
     /**
@@ -94,6 +100,8 @@ class url {
     /**
     * Returns whether or not URL rewriting is enabled
     *
+    * @return   boolean true if URl rewriting is enabled, otherwise false
+    *
     */
     function isEnabled()
     {
@@ -105,6 +113,8 @@ class url {
     *
     * This is particularly useful just before calling setArgNames() method
     *
+    * @return   int     Number of arguments found in URL
+    *
     */
     function numArguments()
     {
@@ -115,6 +125,8 @@ class url {
     * Assigns logical names to query string variables
     *
     * @param        array       $names      String array of names to assign to variables pulled from query string
+    * @return       boolean     true on success otherwise false
+    *
     */
     function setArgNames($names)
     {
@@ -141,6 +153,7 @@ class url {
     * Gets the value for an argument
     *
     * @param        string      $name       Name of argument to fetch value for
+    * @return       mixed       returns value for a given argument
     *
     */
     function getArgument($name)
@@ -163,7 +176,11 @@ class url {
     /**
     * Builds crawler friendly URL if URL rewriting is enabled
     *
+    * This function will attempt to build a crawler friendly URL.  If this feature is
+    * disabled because of platform issue it just returns original $url value
+    *
     * @param        string      $url    URL to try and convert
+    * @return       string      rewritten if _isenabled is true otherwise original url
     *
     */
     function buildURL($url)
