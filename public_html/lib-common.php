@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.366 2004/08/25 08:41:33 dhaun Exp $
+// $Id: lib-common.php,v 1.367 2004/08/25 22:56:02 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3464,6 +3464,7 @@ function COM_showBlock( $name, $help='', $title='' )
     return $retval;
 }
 
+
 /**
 * Shows Geeklog blocks
 *
@@ -3541,72 +3542,93 @@ function COM_showBlocks( $side, $topic='', $name='all' )
 
         if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
         {
-            if( $A['type'] == 'portal' )
-            {
-                if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] ))
-                {
-                    $A['content'] = DB_getItem( $_TABLES['blocks'], 'content',
-                                                "bid = '{$A['bid']}'");
-                }
-            }
-
-            if( $A['type'] == 'gldefault' )
-            {
-                $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
-            }
-
-            if( $A['type'] == 'phpblock' && !$_USER['noboxes'] )
-            {
-                if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
-                {
-                    $function = $A['phpblockfn'];
-                    $blkheader = COM_startBlock( $A['title'], $A['help'],
-                            COM_getBlockTemplate( $A['name'], 'header' ));
-                    $blkfooter = COM_endBlock( COM_getBlockTemplate( $A['name'],
-                            'footer' ));
-
-                    if( function_exists( $function ))
-                    {
-                        $fretval = $function();
-                        if (!empty ($fretval)) {
-                            $retval .= $blkheader;
-                            $retval .= $fretval;
-                            $retval .= $blkfooter;
-                        }
-                    }
-                    else
-                    {
-                        // show error message
-                        $retval .= $blkheader;
-                        $retval .= sprintf( $LANG21[31], $function );
-                        $retval .= $blkfooter;
-                    }
-                }
-            }
-
-            if( !empty( $A['content'] ) && !$_USER['noboxes'] )
-            {
-                $blockcontent = stripslashes( $A['content'] );
-
-                // Hack: If the block content starts with a '<' assume it
-                // contains HTML and do not call nl2br() which would only add
-                // unwanted <br> tags.
-
-                if( substr( $blockcontent, 0, 1 ) != '<' )
-                {
-                    $blockcontent = nl2br( $blockcontent );
-                }
-
-                $retval .= COM_startBlock( $A['title'], $A['help'],
-                               COM_getBlockTemplate( $A['name'], 'header' ))
-                        . $blockcontent . LB
-                        . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
-            }
+            $retval .= COM_formatBlock($A,$U['noboxes']);
         }
     }
 
     return $retval;
 }
+
+
+/**
+* Formats a Geeklog block
+*
+* This shows a single block and is typically called from
+* COM_showBlocks OR from plugin code
+*
+* @param        array     $A          Block Record
+* @param        bool      $hnoboxes   Set to true if userpref is no blocks
+* @return       string    HTML Formated block
+*
+*/
+function COM_formatBlock($A, $noboxes=false) {
+    global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+
+    $retval = '';
+    if( $A['type'] == 'portal' )
+    {
+        if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] ))
+        {
+            $A['content'] = DB_getItem( $_TABLES['blocks'], 'content',
+                                        "bid = '{$A['bid']}'");
+        }
+    }
+
+    if( $A['type'] == 'gldefault' )
+    {
+        $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
+    }
+
+    if( $A['type'] == 'phpblock' && !$_USER['noboxes'] )
+    {
+        if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
+        {
+            $function = $A['phpblockfn'];
+            $blkheader = COM_startBlock( $A['title'], $A['help'],
+                    COM_getBlockTemplate( $A['name'], 'header' ));
+            $blkfooter = COM_endBlock( COM_getBlockTemplate( $A['name'],
+                    'footer' ));
+
+            if( function_exists( $function ))
+            {
+                $fretval = $function();
+                if (!empty ($fretval)) {
+                    $retval .= $blkheader;
+                    $retval .= $fretval;
+                    $retval .= $blkfooter;
+                }
+            }
+            else
+            {
+                // show error message
+                $retval .= $blkheader;
+                $retval .= sprintf( $LANG21[31], $function );
+                $retval .= $blkfooter;
+            }
+        }
+    }
+
+    if( !empty( $A['content'] ) && !$_USER['noboxes'] )
+    {
+        $blockcontent = stripslashes( $A['content'] );
+
+        // Hack: If the block content starts with a '<' assume it
+        // contains HTML and do not call nl2br() which would only add
+        // unwanted <br> tags.
+
+        if( substr( $blockcontent, 0, 1 ) != '<' )
+        {
+            $blockcontent = nl2br( $blockcontent );
+        }
+
+        $retval .= COM_startBlock( $A['title'], $A['help'],
+                       COM_getBlockTemplate( $A['name'], 'header' ))
+                . $blockcontent . LB
+                . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
+    }
+    return $retval;
+}
+
 
 /**
 * Checks to see if it's time to import and RDF/RSS block again
