@@ -10,7 +10,7 @@ if (!empty($CONF["pagetitle"])) {
 }
 ?>
 <title><?php echo $window_title ?></title>
-<?php include("{$CONF["path"]}/public_html/layout/smartstyle.css"); ?>
+<?php include("{$CONF["html"]}layout/smartstyle.css"); ?>
 </head>
 <body background="<?php echo $CONF["base"]; ?>/images/bg.gif" link=444444 vlink=444444 alink=444444 leftmargin=0 topmargin=0 marginheight=0 marginwidth=0>
 
