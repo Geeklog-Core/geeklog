@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.26 2002/09/20 20:54:15 dhaun Exp $
+// $Id: topic.php,v 1.27 2002/10/14 19:38:33 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -97,11 +97,11 @@ function edittopic($tid='')
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
     $topic_templates->set_var('lang_donotusespaces', $LANG27[5]);
-    $topic_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
-    $topic_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $topic_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
+    $topic_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
     $topic_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}")); 
     $topic_templates->set_var('owner_id', $A['owner_id']);
-    $topic_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $topic_templates->set_var('lang_group', $LANG_ACCESS['group']);
     $topic_templates->set_var('lang_save', $LANG27[19]);
     $topic_templates->set_var('lang_cancel', $LANG27[20]);
 
@@ -125,10 +125,10 @@ function edittopic($tid='')
 	}
     $topic_templates->set_var('group_dropdown', $groupdd);
 
-    $topic_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
-    $topic_templates->set_var('lang_permissions_key', $LANG_ACCESS[permissionskey]);
+    $topic_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
+    $topic_templates->set_var('lang_permissions_key', $LANG_ACCESS['permissionskey']);
     $topic_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    $topic_templates->set_var('lang_lockmsg', $LANG_ACCESS[lockmsg]);
+    $topic_templates->set_var('lang_lockmsg', $LANG_ACCESS['lockmsg']);
 
 	// show sort order only if they specified sortnum as the sort method
 	if ($_CONF["sortmethod"] <> 'alpha') {
@@ -180,8 +180,8 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 ###############################################################################
 # Displays a list of topics
 function listtopics() {
-	global $_TABLES, $LANG27, $_CONF, $LANG_ACCESS;
-	
+	global $_TABLES, $LANG27, $_CONF, $LANG_ACCESS, $_THEME_URL;
+
 	$retval = '';
 
 	$retval .= COM_startBlock($LANG27[8]);
@@ -202,24 +202,29 @@ function listtopics() {
 
 	for ($i = 0; $i < $nrows; $i++) {
 		$A = DB_fetchArray($result);
-        
+
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
         if ($access > 0) {
             if ($access == 3) {
-                $access = $LANG_ACCESS[edit];
+                $access = $LANG_ACCESS['edit'];
             } else {
-                $access = $LANG_ACCESS[readonly];
+                $access = $LANG_ACCESS['readonly'];
             }
         } else {
-            $access = $LANG_ACCESS[none];
+            $access = $LANG_ACCESS['none'];
         }   
      
         $topic_templates->set_var('topic_id', $A['tid']);
         $topic_templates->set_var('topic_name', $A['topic']);
         $topic_templates->set_var('topic_access', $access);
 		if (!empty($A["imageurl"])) {
-            $topic_templates->set_var('image_tag', '<img src="' . $_CONF['site_url'] . $A['imageurl'] . '" border="0" alt=""><br>');
+            if (isset ($_THEME_URL)) {
+                $imagebase = $_THEME_URL;
+            } else {
+                $imagebase = $_CONF['site_url'];
+            }
+            $topic_templates->set_var('image_tag', '<img src="' . $imagebase . $A['imageurl'] . '" border="0" alt=""><br>');
 		} else {
             $topic_templates->set_var('image_tag', '');
 		}
