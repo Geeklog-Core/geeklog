@@ -167,13 +167,15 @@ function saveuser($A) {
 	if (!empty($A["passwd"])) {
 		$passwd = md5($A["passwd"]);
 		dbchange("users","passwd","'$passwd'","uid",$USER["uid"]);
-		#setcookie("gl_password",$passwd,0,"/");
 	}
 	if (isemail($A["email"])) {
-		if ($A["cooktime"] > 0) {
-			setcookie($CONF["cookie_name"],$USER["uid"],time() + $cooktime,$CONF["cookie_path"]);	
-		} else {
+		errorlog("cooktime = " . $A["cooktime"],1);
+		if ($A["cooktime"] <= 0) {
 			$A["cooktime"] = "NULL";
+			$cooktime = 1000;
+			setcookie($CONF["cookie_name"],$USER["uid"],time() - $cooktime,$CONF["cookie_path"]);	
+		} else {
+			setcookie($CONF["cookie_name"],$USER["uid"],time() + $A["cooktime"],$CONF["cookie_path"]);	
 		}
 		dbquery("UPDATE users SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]} WHERE uid={$USER["uid"]}");
 		dbquery("UPDATE userprefs SET emailstories='{$A["emailstories"]}' WHERE uid={$USER["uid"]}");
