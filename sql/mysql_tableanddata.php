@@ -435,7 +435,7 @@ CREATE TABLE {$_TABLES['usercomment']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[35] = "
+$_SQL[34] = "
 CREATE TABLE {$_TABLES['userindex']} (
   uid mediumint(8) NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
@@ -448,7 +448,7 @@ CREATE TABLE {$_TABLES['userindex']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[36] = "
+$_SQL[35] = "
 CREATE TABLE {$_TABLES['userinfo']} (
   uid mediumint(8) NOT NULL default '1',
   about text,
@@ -461,7 +461,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[37] = "
+$_SQL[36] = "
 CREATE TABLE {$_TABLES['userprefs']} (
   uid mediumint(8) NOT NULL default '1',
   noicons tinyint(3) unsigned NOT NULL default '0',
@@ -474,7 +474,7 @@ CREATE TABLE {$_TABLES['userprefs']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[38] = "
+$_SQL[37] = "
 CREATE TABLE {$_TABLES['users']} (
   uid mediumint(8) NOT NULL auto_increment,
   username varchar(16) NOT NULL default '',
@@ -493,7 +493,7 @@ CREATE TABLE {$_TABLES['users']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[39] = "
+$_SQL[38] = "
 CREATE TABLE {$_TABLES['vars']} (
   name varchar(20) NOT NULL default '',
   value varchar(128) default NULL,
@@ -501,7 +501,7 @@ CREATE TABLE {$_TABLES['vars']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[40] = "
+$_SQL[39] = "
 CREATE TABLE {$_TABLES['article_images']} (
   ai_sid varchar(20) NOT NULL,
   ai_img_num tinyint(2) unsigned NOT NULL,
@@ -510,7 +510,7 @@ CREATE TABLE {$_TABLES['article_images']} (
 ) TYPE=MyISAM
 ";
 
-$_SQL[41] = "
+$_SQL[40] = "
 CREATE TABLE {$_TABLES['staticpage']} (sp_id varchar(20) DEFAULT '' NOT NULL,
   sp_uid mediumint(8) DEFAULT '1' NOT NULL,
   sp_title varchar(128) DEFAULT '' NOT NULL,
@@ -563,8 +563,6 @@ $_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('flat','
 $_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nested','Nested') ";
 $_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('threaded','Threaded') ";
 $_DATA[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nocomment','No Comments') ";
-
-$_DATA[] = "INSERT INTO {$_TABLES['commentspeedlimit']} (id, ipaddress, date) VALUES (3,'127.0.0.1',1007411781) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (3600,'1 Hour') ";
 $_DATA[] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (7200,'2 Hours') ";
@@ -775,22 +773,18 @@ $_DATA[] = "INSERT INTO {$_TABLES['tzcodes']} (tz, offset, description) VALUES (
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (1,'nested','ASC',100) ";
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (2,'threaded','ASC',100) ";
 $_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (3,'threaded','ASC',100) ";
-$_DATA[] = "INSERT INTO {$_TABLES['usercomment']} (uid, commentmode, commentorder, commentlimit) VALUES (0,'threaded','ASC',100) ";
-
 
 $_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','','','',0,NULL) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (3,'','','','',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userindex']} (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (0,'','','','',0,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (1,NULL,NULL,'',0,0,0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (2,NULL,NULL,'',0,0,0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (3,NULL,NULL,'',0,0,0) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userinfo']} (uid, about, pgpkey, userspace, tokens, totalcomments, lastgranted) VALUES (0,NULL,NULL,'',0,0,0) ";
+
 $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (1,0,0,0,'',0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (2,0,1,0,'edt',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (3,0,1,0,'edt',1) ";
-$_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tzid, emailstories) VALUES (0,0,1,0,'edt',1) ";
 
 #
 # Dumping data for table 'users'
@@ -805,4 +799,5 @@ $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedsto
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('rdf_sids','')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('staticpages','1')";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('sp_group_id','15')";
+
 ?>
