@@ -3,6 +3,11 @@ GeekLog History/Changes:
 ??? ??, 200? (1.3.10-1)
 ------------
 
+- Avoid emitting an extra <br> tag after the last section in the What's New
+  block (bug #330) [Dirk]
+- Update comment count in Older Stories block when a new comment is posted
+  (bug #317). Also optimized the code to collect the contents of the Older
+  Stories block [Dirk]
 - Fixed extra <br> being emitted in the calendar for events that aren't
   visible for the current user (bug #268) [Dirk]
 - (Event) Admins can now delete events directly from the calendar's day and
