@@ -8,12 +8,12 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.94 2005/01/06 10:01:11 dhaun Exp $
+// $Id: users.php,v 1.95 2005/01/15 19:14:29 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -55,7 +55,7 @@ $VERBOSE = false;
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 /**
 * Shows a profile for a user
@@ -442,7 +442,7 @@ function sendNotification ($username, $email, $uid, $queued = false)
 * @return   string      HTML for the form again if error occurs, otherwise nothing.
 *
 */
-function createuser($username,$email) 
+function createuser ($username, $email) 
 {
     global $_CONF, $_TABLES, $LANG01, $LANG04;
 
@@ -456,6 +456,22 @@ function createuser($username,$email)
         $ecount = DB_count ($_TABLES['users'], 'email', addslashes ($email));
 
         if ($ucount == 0 AND $ecount == 0) {
+
+            // For Geeklog, it would be okay to create this user now. But check
+            // with a custom userform first, if one exists.
+            if ($_CONF['custom_registration'] &&
+                    function_exists ('custom_usercheck')) {
+                $msg = custom_usercheck ($username, $email);
+                if (!empty ($msg)) {
+                    // no, it's not okay with the custom userform
+                    $retval = COM_siteHeader ('menu')
+                            . custom_userform ($msg)
+                            . COM_siteFooter ();
+
+                    return $retval;
+                }
+            }
+
             $uid = USER_createAccount ($username, $email);
 
             $queueUser = USER_isQueued ($uid);
@@ -481,7 +497,9 @@ function createuser($username,$email)
             }
             $retval .= COM_siteFooter ();
         }
-    } else {
+
+    } else { // invalid username or email address
+
         if (empty ($username)) {
             $msg = $LANG01[32]; // invalid username
         } else {
@@ -626,14 +644,10 @@ function defaultform ($msg)
 
 
 // MAIN
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
-}
-elseif (isset ($HTTP_GET_VARS['mode'])) {
-    $mode = $HTTP_GET_VARS['mode'];
-}
-else {
-    $mode = "";
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
+} else {
+    $mode = '';
 }
 
 $display = '';
@@ -653,9 +667,9 @@ case 'logout':
     break;
 
 case 'profile':
-    $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+    $uid = COM_applyFilter ($_GET['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        $msg = COM_applyFilter ($_GET['msg'], true);
         $display .= userprofile ($uid, $msg);
     } else {
         $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -663,7 +677,7 @@ case 'profile':
     break;
 
 case 'user':
-    $username = COM_applyFilter ($HTTP_GET_VARS['username']);
+    $username = COM_applyFilter ($_GET['username']);
     if (!empty ($username)) {
         $username = addslashes ($username);
         $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username'");
@@ -678,8 +692,8 @@ case 'user':
     break;
 
 case 'create':
-    $display .= createuser (COM_applyFilter ($HTTP_POST_VARS['username']),
-                            COM_applyFilter ($HTTP_POST_VARS['email']));
+    $display .= createuser (COM_applyFilter ($_POST['username']),
+                            COM_applyFilter ($_POST['email']));
     break;
 
 case 'getpassword':
@@ -701,8 +715,8 @@ case 'getpassword':
     break;
 
 case 'newpwd':
-    $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
-    $reqid = COM_applyFilter ($HTTP_GET_VARS['rid']);
+    $uid = COM_applyFilter ($_GET['uid'], true);
+    $reqid = COM_applyFilter ($_GET['rid']);
     if (!empty ($uid) && is_numeric ($uid) && ($uid > 0) &&
             !empty ($reqid) && (strlen ($reqid) == 16)) {
         $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
@@ -724,19 +738,19 @@ case 'newpwd':
     break;
 
 case 'setnewpwd':
-    if (empty ($HTTP_POST_VARS['passwd'])) {
+    if (empty ($_POST['passwd'])) {
         $display = COM_refresh ($_CONF['site_url']
-                 . '/users.php?mode=newpwd&uid=' . $HTTP_POST_VARS['uid']
-                 . '&rid=' . $HTTP_POST_VARS['rid']);
+                 . '/users.php?mode=newpwd&uid=' . $_POST['uid']
+                 . '&rid=' . $_POST['rid']);
     } else {
-        $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
-        $reqid = COM_applyFilter ($HTTP_POST_VARS['rid']);
+        $uid = COM_applyFilter ($_POST['uid'], true);
+        $reqid = COM_applyFilter ($_POST['rid']);
         if (!empty ($uid) && is_numeric ($uid) && ($uid > 0) &&
                 !empty ($reqid) && (strlen ($reqid) == 16)) {
             $valid = DB_count ($_TABLES['users'], array ('uid', 'pwrequestid'),
                                array ($uid, $reqid));
             if ($valid == 1) {
-                $passwd = md5 ($HTTP_POST_VARS['passwd']);
+                $passwd = md5 ($_POST['passwd']);
                 DB_change ($_TABLES['users'], 'passwd', "$passwd",
                            "uid", $uid);
                 DB_delete ($_TABLES['sessions'], 'uid', $uid);
@@ -770,8 +784,8 @@ case 'emailpasswd':
                  . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                  . COM_siteFooter ();
     } else {
-        $username = COM_applyFilter ($HTTP_POST_VARS['username']);
-        $email = COM_applyFilter ($HTTP_POST_VARS['email']);
+        $username = COM_applyFilter ($_POST['username']);
+        $email = COM_applyFilter ($_POST['email']);
         if (empty ($username) && !empty ($email)) {
             $username = DB_getItem ($_TABLES['users'], 'username',
                                     "email = '$email'");
@@ -798,13 +812,9 @@ case 'new':
     break;
 
 default:
-    if (isset ($HTTP_POST_VARS['loginname'])) {
-        $loginname = COM_applyFilter ($HTTP_POST_VARS['loginname']);
-    } else {
-        $loginname = COM_applyFilter ($HTTP_GET_VARS['loginname']);
-    }
-    if (isset ($HTTP_POST_VARS['passwd'])) {
-        $passwd = COM_applyFilter ($HTTP_POST_VARS['passwd']);
+    $loginname = COM_applyFilter ($_REQUEST['loginname']);
+    if (isset ($_POST['passwd'])) {
+        $passwd = COM_applyFilter ($_POST['passwd']);
     }
     if (!empty($loginname) && !empty($passwd)) {
         $mypasswd = COM_getPassword($loginname);
@@ -816,12 +826,12 @@ default:
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
         $userdata = SESS_getUserData($loginname);
         $_USER=$userdata;
-        $sessid = SESS_newSession($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+        $sessid = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         PLG_loginUser ($_USER['uid']);
 
         // Now that we handled session cookies, handle longterm cookie
-        if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']]) || !isset($HTTP_COOKIE_VARS['password'])) {
+        if (!isset($_COOKIE[$_CONF['cookie_name']]) || !isset($_COOKIE['password'])) {
             // Either their cookie expired or they are new
             $cooktime = COM_getUserCookieTimeout();
             if ($VERBOSE) {
@@ -840,7 +850,7 @@ default:
                            $_CONF['cookiedomain'], $_CONF['cookiesecure']);
             }
         } else {
-            $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
+            $userid = $_COOKIE[$_CONF['cookie_name']];
             if (empty ($userid) || ($userid == 'deleted')) {
                 unset ($userid);
             } else {
@@ -866,12 +876,12 @@ default:
                    $_CONF['cookie_path'], $_CONF['cookiedomain'],
                    $_CONF['cookiesecure']);
 
-        if (!empty ($HTTP_SERVER_VARS['HTTP_REFERER']) && (strstr ($HTTP_SERVER_VARS['HTTP_REFERER'], '/users.php') === false)) {
+        if (!empty ($_SERVER['HTTP_REFERER']) && (strstr ($_SERVER['HTTP_REFERER'], '/users.php') === false)) {
             $indexMsg = $_CONF['site_url'] . '/index.php?msg=';
-            if (substr ($HTTP_SERVER_VARS['HTTP_REFERER'], 0, strlen ($indexMsg)) == $indexMsg) {
+            if (substr ($_SERVER['HTTP_REFERER'], 0, strlen ($indexMsg)) == $indexMsg) {
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             } else {
-                $display .= COM_refresh ($HTTP_SERVER_VARS['HTTP_REFERER']);
+                $display .= COM_refresh ($_SERVER['HTTP_REFERER']);
             }
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -879,10 +889,8 @@ default:
     } else {
         $display .= COM_siteHeader('menu');
 
-        if (isset ($HTTP_POST_VARS['msg'])) {
-            $msg = $HTTP_POST_VARS['msg'];
-        } else if (isset ($HTTP_GET_VARS['msg'])) {
-            $msg = $HTTP_GET_VARS['msg'];
+        if (isset ($_REQUEST['msg'])) {
+            $msg = COM_applyFilter ($_REQUEST['msg'], true);
         } else {
             $msg = 0;
         }
