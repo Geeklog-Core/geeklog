@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.45 2002/04/09 14:25:47 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.46 2002/04/09 20:02:17 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1763,9 +1763,9 @@ function COM_showBlocks($side, $topic='', $name='all')
     }
 	
     if ($side == 'left') {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1";
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
     } else {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 0";
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
     }
 
     if (!empty($topic)) {
