@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | topic.php                                                                 |
-// | Geeklog topic administration page.                                        |
 // |                                                                           |
+// | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,17 +32,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.35 2003/06/19 08:59:35 dhaun Exp $
+// $Id: topic.php,v 1.36 2003/06/20 21:30:56 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
 
 if (!SEC_hasRights('topic.edit')) {
-    $display = COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display = COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[32];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     echo $display;
     exit;
 }
@@ -67,14 +68,16 @@ function edittopic($tid='')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
-            $retval .= COM_startBlock($LANG27[12]);
+            $retval .= COM_startBlock ($LANG27[12], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG27[13]; 
-            $retval .= COM_endBlock();
+            $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval; 
         }
     }
 
-    $retval .= COM_startBlock($LANG27[1]);
+    $retval .= COM_startBlock ($LANG27[1], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
     if (!is_array ($A) || empty ($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
@@ -121,7 +124,7 @@ function edittopic($tid='')
         }
         $groupdd .= "</select>";
     } else { 
-		// they can't set the group then
+        // they can't set the group then
         $groupdd = DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
         $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
 	}
@@ -162,7 +165,8 @@ function edittopic($tid='')
 
     $topic_templates->parse('output', 'editor');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
 	return $retval;
 }
 
@@ -189,11 +193,12 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
-        $display .= COM_siteFooter();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= COM_siteFooter ();
         COM_errorLog("User {$_USER['username']} tried to illegally create or edit topic $tid",1);
         echo $display;
         exit;
@@ -222,12 +227,14 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 
 ###############################################################################
 # Displays a list of topics
-function listtopics() {
+function listtopics()
+{
 	global $_TABLES, $LANG27, $_CONF, $LANG_ACCESS, $_THEME_URL;
 
 	$retval = '';
 
-	$retval .= COM_startBlock($LANG27[8]);
+	$retval .= COM_startBlock ($LANG27[8], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
@@ -289,7 +296,7 @@ function listtopics() {
     $topic_templates->set_var('end_row','</tr>');
     $topic_templates->parse('output', 'list');
     $retval .= $topic_templates->finish($topic_templates->get_var('output'));
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
 	return $retval;
 }

@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | user.php                                                                  |
-// | Geeklog user administration page.                                         |
 // |                                                                           |
+// | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,23 +32,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.54 2003/06/19 17:52:23 dhaun Exp $
+// $Id: user.php,v 1.55 2003/06/20 21:30:56 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
 
-include('../lib-common.php');
-include('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 $display = '';
 
 // Make sure user has access to this page  
 if (!SEC_hasRights('user.edit')) {
-    $retval .= COM_siteHeader('menu');
-    $retval .= COM_startBlock($MESSAGE[30]);
+    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_startBlock ($MESSAGE[30], '',
+               COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= $MESSAGE[37];
-    $retval .= COM_endBlock();
-    $retval .= COM_siteFooter();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $retval .= COM_siteFooter ();
     COM_errorLog("User {$_USER['username']} tried to illegally access the user administration screen",1);
     echo $retval;
     exit;
@@ -62,15 +63,16 @@ if (!SEC_hasRights('user.edit')) {
 */
 function edituser($uid = '', $msg = '') 
 {
-	global $_TABLES, $LANG28, $_CONF, $LANG_ACCESS, $_USER;
+    global $_TABLES, $LANG28, $_CONF, $LANG_ACCESS, $_USER;
 
     $retval = '';
 
-    if (!empty($msg)) {
-        $retval .= COM_startBlock($LANG28[22]) . $LANG28[$msg] . COM_endBlock();
+    if (!empty ($msg)) {
+        $retval .= COM_startBlock ($LANG28[22], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG28[$msg]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
-
-	$retval .= COM_startBlock($LANG28[1]);
 
 	if (!empty($uid)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
@@ -84,9 +86,11 @@ function edituser($uid = '', $msg = '')
 		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
 			// the current admin user isn't Root but is trying to change
 			// a root account.  Deny them and log it.
+	        $retval .= COM_startBlock ($LANG28[1], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
 			$retval .= $LANG_ACCESS['editrootmsg'];
 			COM_errorLog("User {$_USER['username']} tried to edit a root account with insufficient privileges",1);
-			$retval .= COM_endBlock();
+			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 			return $retval;
 		}
 		$curtime = COM_getUserDateTimeFormat($A['regdate']);
@@ -97,8 +101,12 @@ function edituser($uid = '', $msg = '')
 		$curtime =  COM_getUserDateTimeFormat();
     }
 
+    $retval .= COM_startBlock ($LANG28[1], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file(array('form'=>'edituser.thtml','groupedit'=>'groupedit.thtml'));
+    $user_templates->set_file (array ('form' => 'edituser.thtml',
+                                      'groupedit' => 'groupedit.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -160,7 +168,7 @@ function edituser($uid = '', $msg = '')
 	}
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output')); 
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -201,7 +209,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 
     $ucount = DB_getItem($_TABLES['users'],'count(*)',"username = '$username' AND uid <> $uid");
     if ($ucount > 0) {
-        // Admin just changes a user's username to one that already exists...bail
+        // Admin just changed a user's username to one that already exists...bail
         return edituser($uid, 21);
     }
 
@@ -211,6 +219,14 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 			$passwd = md5($passwd);
 		} else {
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
+            if (empty ($password)) {
+                // no password? create one ...
+                srand ((double) microtime () * 1000000);
+                $passwd = rand ();
+                $passwd = md5 ($passwd);
+                $passwd = substr ($passwd, 1, 8);
+                $passwd = md5 ($passwd);
+            }
 		}
 
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
@@ -288,10 +304,12 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
         
     $retval = '';
 
-	$retval .= COM_startBlock($LANG28[11]);
+	$retval .= COM_startBlock ($LANG28[11], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
-    $user_templates->set_file(array('list'=>'userslist.thtml','row'=>'listitem.thtml'));
+    $user_templates->set_file (array ('list' => 'userslist.thtml',
+                                      'row' => 'listitem.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
@@ -357,10 +375,9 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->parse('output', 'list');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
-	$retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
-
 }
 
 /**
@@ -373,8 +390,8 @@ function importusers($file)
 {
     global $_TABLES, $LANG04, $LANG28, $_CONF, $HTTP_POST_FILES;
 
-    // Setting this to true will cause import to print processing status to webpage.
-    // and to the error.log file
+    // Setting this to true will cause import to print processing status to
+    // webpage and to the error.log file
     $verbose_import = false;    
 
     // First, upload the file
@@ -427,8 +444,8 @@ function importusers($file)
                 DB_query("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$u_name','$full_name','$email','$regdate')");
                 $uid = DB_getItem($_TABLES['users'],'uid',"username = '$u_name'");
 
-                // Add user to Logged-in group (i.e. members) and the All Users group (which includes
-                // anonymous users
+                // Add user to Logged-in group (i.e. members) and the All Users
+                // group (which includes anonymous users)
                 $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
                 $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
@@ -584,17 +601,19 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($LANG28[31]);
+    $display .= COM_startBlock ($LANG28[31], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= importusers($file);
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();  
 } else if ($mode == 'importform') {
     $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($LANG28[24]);
+    $display .= COM_startBlock ($LANG28[24], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= $LANG28[25] . '<br><br>';
     $display .= display_form();
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();  
+    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
