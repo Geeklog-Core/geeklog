@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.5 2002/05/13 18:57:45 tony_bibbs Exp $
+// $Id: plugin.class.php,v 1.6 2002/10/30 22:03:49 dhaun Exp $
 
 /**
 * This is a poorly thought out class that is used pretty much as a structure when
@@ -60,7 +60,7 @@ class Plugin {
     var $numsubmissions = '';
     var $submissionlabel = '';
     var $submissionhelpfile = '';
-    var $getsumbissionssql = '';
+    var $getsubmissionssql = '';
     var $submissionheading = array();
     
 
@@ -96,7 +96,7 @@ class Plugin {
         $num_searchheadings = 0; 
         $submissionlabel = '';
         $submissionhelpfile = '';
-        $getsumbissionssql = '';
+        $getsubmissionssql = '';
         $submissionheading = array();
     }
    
