@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.69 2004/02/08 14:17:50 dhaun Exp $
+// $Id: user.php,v 1.70 2004/02/08 18:36:40 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -438,14 +438,14 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
 */
 function importusers($file)
 {
-    global $_TABLES, $LANG04, $LANG28, $_CONF, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $LANG04, $LANG28, $HTTP_POST_FILES;
 
     // Setting this to true will cause import to print processing status to
     // webpage and to the error.log file
-    $verbose_import = false;    
+    $verbose_import = false;
 
     // First, upload the file
-    require_once($_CONF['path_system'] . "classes/upload.class.php");
+    require_once($_CONF['path_system'] . 'classes/upload.class.php');
 
     $upload = new upload();
     $upload->setPath($_CONF['path']);
@@ -468,31 +468,40 @@ function importusers($file)
     if (empty ($handle)) {
         return $LANG28[34];
     }
-    
+
     // Following variables track import processing statistics
     $successes = 0;
     $failures = 0;
     while ($user1 = fgets($handle,4096)) {
         $user = rtrim($user1);
-        list($full_name,$u_name,$email) = split("\t",$user);
+        list ($full_name, $u_name, $email) = split ("\t", $user);
 
-        $ucount = DB_count($_TABLES['users'],'username',$u_name);
-        $ecount = DB_count($_TABLES['users'],'email',$email);
-        
+        $full_name = strip_tags ($full_name);
+        $u_name = COM_applyFilter ($u_name);
+        $email = COM_applyFilter ($email);
+
         if ($verbose_import) {
             $retval .="<br><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br>\n";
             COM_errorLog("Working on username=$u_name, fullname=$full_name, and email=$email",1);
         }
-        
-        if ($ucount == 0 && ecount == 0) {
-            // user doesn't already exist
-            if (COM_isEmail($email)) {
-                // email is valid form
+
+        // prepare for database
+        $userName = addslashes (trim ($u_name));
+        $fullName = addslashes (trim ($full_name));
+        $emailAddr = addslashes (trim ($email));
+
+        if (COM_isEmail ($email)) {
+            // email is valid form
+            $ucount = DB_count ($_TABLES['users'], 'username', $userName);
+            $ecount = DB_count ($_TABLES['users'], 'email', $emailAddr);
+
+            if ($ucount == 0 && ecount == 0) {
+                // user doesn't already exist
                 $regdate = strftime('%Y-%m-%d %H:%M:%S',time());
-                
+
                 // Create user record
-                DB_query("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$u_name','$full_name','$email','$regdate')");
-                $uid = DB_getItem($_TABLES['users'],'uid',"username = '$u_name'");
+                DB_query("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$userName','$fullName','$emailAddr','$regdate')");
+                $uid = DB_getItem($_TABLES['users'],'uid',"username = '$userName'");
 
                 // Add user to Logged-in group (i.e. members) and the All Users
                 // group (which includes anonymous users)
@@ -519,20 +528,20 @@ function importusers($file)
                 $successes++;
             } else {
                 if ($verbose_import) {
-                    $retval .= "<br><b>$email</b> is not a valid email address, account not created<br>\n"; // malformed email
-                    COM_errorLog("$email is not a valid email address, account not created",1);
+                    $retval .= "<br><b>$u_name</b> or <b>$email</b> already exists, account not created.<br>\n"; // user already exists
+                    COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
                 }
                 $failures++;
-            } // end if COM_isEmail($email)
+            } // end if $ucount == 0 && ecount == 0
         } else {
             if ($verbose_import) {
-                $retval .= "<br><b>$u_name</b> already exists, account not created.<br>\n"; // users already exists
-                COM_errorLog("$u_name,$email: username or email already exists, account not created",1);
+                $retval .= "<br><b>$email</b> is not a valid email address, account not created<br>\n"; // malformed email
+                COM_errorLog("$email is not a valid email address, account not created",1);
             }
             $failures++;
-        } // end if $ucount == 0 && ecount == 0
+        } // end if COM_isEmail($email)
     } // end while
-        
+
     fclose($handle);
     unlink($filename);
 
@@ -540,10 +549,9 @@ function importusers($file)
     eval ("\$report = \"$report\";");
 
     $retval .= '<p>' . $report;
-    
-    return $retval;
 
-} // end importusers
+    return $retval;
+}
 
 function emailpassword($username)
 {
