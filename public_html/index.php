@@ -31,8 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.27 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: index.php,v 1.28 2002/06/08 20:00:16 dhaun Exp $
 
+if (isset ($HTTP_GET_VARS['topic'])) {
+    $topic = strip_tags ($HTTP_GET_VARS['topic']);
+}
+else {
+    $topic = '';
+}
 require_once('lib-common.php');
 
 $display .= COM_siteHeader();
@@ -44,9 +50,6 @@ if (isset ($HTTP_GET_VARS['page'])) {
 if (empty($page)) {
     // If no page sent then assume the first.
     $page = 1;
-}
-if (isset ($HTTP_GET_VARS['topic'])) {
-    $topic = $HTTP_GET_VARS['topic'];
 }
 
 if (!empty($_USER['uid'])) {

@@ -223,6 +223,12 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
         $comment = addslashes(htmlspecialchars(COM_checkWords($comment)));
     } 
 
+    // check again for non-int pid's
+    // this should just create a top level comment that is a reply to the original item
+    if (!is_numeric($pid)) {
+        $pid = 0;
+    }
+
     $title = addslashes(strip_tags(COM_checkWords($title)));
 
     if (!empty($title) && !empty($comment)) {
@@ -291,6 +297,7 @@ function deletecomment($cid,$sid,$type)
 }
 
 // MAIN
+$title = strip_tags ($title);
 switch ($mode) {
 case $LANG03[14]: //Preview
     $display .= COM_siteHeader()
