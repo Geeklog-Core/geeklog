@@ -3,7 +3,21 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
-- Changes handling of plugin comments slightly: Plugins will have to do the
+- Introduced new config.php variable $_CONF['mysqldump_options'] that holds
+  additional options to be used when Geeklog calls mysqldump to do a backup
+  of the database.
+- Added a check for an existing email address in the user's profile so that
+  users can't change their email address to one that's already in use for
+  another account.
+- Pick up the 'postmode' default setting for the Admin's story editor.
+- Stories in the Daily Digest are now sorted by date (newest first, as on the
+  index page).
+- Fixed a problem with topic permissions in index.php: If the user doesn't
+  have access to a topic, s/he shouldn't be able to see any stories posted under
+  that topic, even if the story permissions would allow that.
+- The "Google paging" on the index page may have displayed the wrong number
+  of pages for users who disabled topics in their display preferences.
+- Changed handling of plugin comments slightly: Plugins will have to do the
   'delete' operation on their comments on their own now since Geeklog can't
   possibly know which (if any) permissions are needed to delete a comment.
   The 'id' parameter in the call to plugin_handlecomment_<type> will now
@@ -153,6 +167,7 @@ GeekLog History/Changes:
 - Updated Hellenic (Greek) language file, provided by Access-=-Denied Networks
 - Updated Spanish and Spanish (Argentina) language files,
   provided by Fernando Bernardini
+- New Portuguese language file, provided by Mario Seabra
 - New Bulgarian language file, provided by lachko
 - New Turkish language file, provided by Sinan Ussakli
 - New Slovenian language file, provided by gape

@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Variables in Themes</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="235" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Variables in Themes</td>
+</tr>
+</table>
+
+<h1>Variables in Themes</h1>
+
+<p><strong>Note:</strong> This is not a complete documentation of the theme
+variables - it only covers variables that can be used in the story
+templates.</p>
+
+<h2>Introduction</h2>
+
+<p>Geeklog uses the template engine of the <a href="http://phplib.sf.net/">PHP
+Base Library</a> (also known as PHPlib). This library allows the use of
+so-called variables in the template files. A variable is a word enclosed in
+curly brackets, like this: <code>{variable}</code>. When Geeklog creates a web
+page it will replace the variables in the template files with certain values.
+A variable can hold static text (i.e. it will alway be replaced with the same
+text), dynamic content (e.g. the number of comments to a story or the entire
+text of a story), or even the content of another template file (used for lists,
+for example).</p>
+
+<p>Please note that not all variables are available in all template files.
+While the variable <code>{site_url}</code> (which holds the URL of your Geeklog
+site) is available in most template files, many variables are only available
+in one template file (e.g. the variable <code>{formatted_article}</code> is only
+available in the <tt>article.thtml</tt> template file). Geeklog will remove any
+variables which are not defined for the current template file (i.e. they will
+be replaced with an empty string). No error or warning messages will be
+created when you use an undefined variable.</p>
+
+
+<h2><a name="site-header">Site Header</a></h2>
+
+<p>The following variables are available in the site header, i.e. in the
+<tt>header.thtml</tt> template file:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>site_url</code></td>
+    <td><tt>http://www.yoursite.com</tt></td>
+    <td>The URL of your Geeklog site (the exact same URL you specified in
+        <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
+        file).</td></tr>
+<tr><td><code>layout_url</code></td>
+    <td><tt>http://www.yoursite.com/layout/XSilver</tt></td>
+    <td>The URL of the layout folder of the user's current theme.</td></tr>
+<tr><td><code>page_title</code></td>
+    <td>Geeklog Site - Another Nifty Geeklog Site</td>
+    <td>Holds either the site's name and slogan or the site name and the title
+        of the current story.</td></tr>
+<tr><td><code>background_image</code></td>
+    <td><tt>http://www.yoursite.com/layout/<br>XSilver/images/bg.gif</tt></td>
+    <td>Points to a file named <tt>bg.gif</tt> in the <tt>images</tt> folder of
+        the current theme, intended to be used as a background image.</td></tr>
+<tr><td><code>site_mail</code></td>
+    <td><tt>admin@example.com</tt></td>
+    <td>Email address where people can contact the site's administrator.
+        Because of the spam problem, it is recommended you don't actually use
+        this on your site and provide a link to the Admin's email submission
+        form instead: <tt>{site_url}/profiles.php?uid=2</tt> (where "2" is the
+        user id of the person who will receive the email, usually the Admin
+        user.</td></tr>
+<tr><td><code>site_name</code></td>
+    <td>Geeklog Site</td>
+    <td>The name of your Geeklog site.</td></tr>
+<tr><td><code>site_slogan</code></td>
+    <td>Another Nifty Geeklog Site</td>
+    <td>The slogan of your site.</td></tr>
+<tr><td><code>welcome_msg</code></td>
+    <td>Welcome to Geeklog Site</td>
+    <td>A welcome message, followed by the user's name (for registered 
+        users).</td></tr>
+<tr><td><code>datetime</code></td>
+    <td>Thursday, November 28 2002 @ 11:43 AM PST</td>
+    <td>The current date and time, formatted according to
+        <code>$_CONF['date']</code>.</td></tr>
+<tr><td><code>site_logo</code></td>
+    <td><tt>http://www.yoursite.com/layout/<br>XSilver/images/logo.gif</tt></td>
+    <td>Points to a file named <tt>logo.gif</tt> in the <tt>images</tt>
+        directory of the current theme, intended to be used as the site's
+        logo.</td></tr>
+<tr><td><code>css_url</code></td>
+    <td><tt>http://www.yoursite.com/layout/<br>XSilver/style.css</tt></td>
+    <td>Points to the style sheet of the current theme.</td></tr>
+<tr><td><code>theme</code></td>
+    <td>XSilver</td>
+    <td>Name of the current theme.</td></tr>
+<tr><td><code>charset</code></td>
+    <td>iso-8859-1</td>
+    <td>The character set for the current language file.</td></tr>
+</table>
+
+
+<h2><a name="story">Stories</a></h2>
+
+<p>The following variables are available in the <tt>storytext.thtml</tt>,
+<tt>storybodytext.thtml</tt>, <tt>featuredstorytext.thtml</tt>, and
+<tt>featuredstorybodytext.thtml</tt> template files. These files are used to
+render stories for the index page as well as the content of the
+<code>{formatted_article}</code> variable in the <tt>article/article.thtml</tt>
+file (which is used to display a story on its own page).</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>site_url</code></td>
+    <td><tt>http://www.yoursite.com</tt></td>
+    <td>The URL of your Geeklog site (the exact same URL you specified in
+        <code>$_CONF['site_url']</code> in your <tt>config.php</tt>
+        file).</td></tr>
+<tr><td><code>layout_url</code></td>
+    <td><tt>http://www.yoursite.com/layout/XSilver</tt></td>
+    <td>The URL of the layout folder of the user's current theme.</td></tr>
+<tr><td><code>story_date</code></td>
+    <td>Tuesday, October 22 2002 @ 11:50 PM PDT</td>
+    <td>The date and time of the story, formatted according to the user's
+        preferred date and time format.</td></tr>
+<tr><td><code>lang_views</code></td>
+    <td>Views</td>
+    <td>The word "Views" in the user's preferred language.</td></tr>
+<tr><td><code>story_hits</code></td>
+    <td>42</td>
+    <td>Number of times the story was read.</td></tr>
+<tr><td><code>story_id</code></td>
+    <td>20021022234959146</td>
+    <td>The ID of a story (can be used to build URLs, e.g. for a "link to this
+        story" link).</td></tr>
+<tr><td><code>story_title</code></td>
+    <td>Welcome to Geeklog!</td>
+    <td>The title of the story.</td></tr>
+<tr><td><code>story_introtext</code></td>
+    <td>Welcome and let me be the first to congratulate you on installing GeekLog ...</td>
+    <td>When displayed on the index page, this variable contains The "intro
+        text" part of a story. However, when displayed as an article on a
+        single page, it contains <em>both</em> the intro text <em>and</em> the
+        body text of the story.</td></tr>
+<tr><td><code>lang_todays_featured_article</code></td>
+    <td>Today's Featured Article</td>
+    <td>The words "Today's Featured Article" in the user's preferred language.
+        <strong>Only available when the story is the featured story.</strong></td></tr>
+</table>
+
+<p>The following variables are only available when the story is displayed on
+the index page <em>and</em> the body text of the story is <em>not</em> empty:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>lang_readmore</code></td>
+    <td>read more</td>
+    <td>The words "read more" in the user's preferred language.</td></tr>
+<tr><td><code>lang_readmore_words</code></td>
+    <td>words</td>
+    <td>The word "words" in the user's preferred language.</td></tr>
+<tr><td><code>readmore_words</code></td>
+    <td>62</td>
+    <td>The number of words in the body text of the story.</td></tr>
+<tr><td><code>readmore_link</code></td>
+    <td><code>&lt;a href="..."&gt;read more&lt;/a&gt; (62 words)</code></td>
+    <td>Link to the story on a separate page, including the number of word in
+        the body text.</td></tr>
+<tr><td><code>start_readmore_anchortag</code></td>
+    <td><code>&lt;a href=".../article.php<br>?story=20021022234959146"&gt;</code></td>
+    <td>Opening tag for a link to the story on a separate page.</td></tr>
+<tr><td><code>end_readmore_anchortag</code></td>
+    <td><code>&lt;/a&gt;</code></td>
+    <td>Closing tag for a link to the story.</td></tr>
+<tr><td><code>email_icon</code></td>
+    <td>(icon)</td>
+    <td>The email icon, linking to the form to send the story by email.</td></tr>
+<tr><td><code>print_icon</code></td>
+    <td>(icon)</td>
+    <td>The printer icon, linking to a "printer friendly" version of the story.</td></tr>
+<tr><td><code>recent_post_anchortag</code></td>
+    <td>--</td>
+    <td>When no comments have been posted yet, this variable contains just a
+        link to the comment submission form (just like
+        <code>{post_comment_link}</code>). When there are comments to the story,
+        then this variable does <em>not</em> contain a link but instead
+        contains the user name of the person who posted the last comment as well
+        as the date and time when that comment was posted.</td></tr>
+</table>
+
+<p>The following variables are only available when comments on a story are
+enabled and when comments have been made to the story already:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>comments_url</code></td>
+    <td><tt>http://www.yoursite.com/article.php<br>?story=20021022234959146#comments</tt></td>
+    <td>URL of the comments section (when a story is displayed on a separate
+        page).</td></tr>
+<tr><td><code>comments_text</code></td>
+    <td>2 comments</td>
+    <td>The number of comments, followed by the word "comments" in the user's
+        preferred language.</td></tr>
+<tr><td><code>comments_count</code></td>
+    <td>2</td>
+    <td>The number of comments to the story (will always be 1 or greater).</td></tr>
+<tr><td><code>lang_comments</code></td>
+    <td>comments</td>
+    <td>The word "comments" in the user's preferred language.</td></tr>
+<tr><td><code>start_comments_anchortag</code></td>
+    <td><code>&lt;a href=".../article.php<br>?story=20021022234959146#comments"&gt;</code></td>
+    <td>Opening tag for a link to the comments section of a story.</td></tr>
+<tr><td><code>end_comments_anchortag</code></td>
+    <td><code>&lt;/a&gt;</code></td>
+    <td>Closing tag for a link to the comments section of a story.</td></tr>
+<tr><td><code>post_comment_link</code></td>
+    <td><code>&lt;a href=".../comment.php<br>?sid=20021022234959146&amp;pid=0<br>&amp;type=article"&gt;Post a comment&lt;/a&gt;</code></td>
+    <td>Link to the comment submission form (using "Post a comment" in the
+        user's preferred language as the link text).</td></tr>
+</table>
+
+<p>The following variables are only available when
+<code>$_CONF['contributedbyline'] = 1;</code> in your <tt>config.php</tt>, i.e.
+when you allow the name of the story's author to be displayed:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>lang_contributed_by</code></td>
+    <td>Contributed by:</td>
+    <td>The text "Contributed by:" in the user's preferred language.</td></tr>
+<tr><td><code>contributedby_uid</code></td>
+    <td>7</td>
+    <td>The user id of the story's author.</td></tr>
+<tr><td><code>contributedby_user</code></td>
+    <td>Tony</td>
+    <td>The user name (short name) of the story's author.</td></tr>
+<tr><td><code>contributedby_fullname</code></td>
+    <td>Tony Bibbs</td>
+    <td>The full name of the story's author. If the user hasn't filled in
+        his/her full name, the user name is used instead.</td></tr>
+<tr><td><code>start_contributedby_anchortag</code></td>
+    <td><code>&lt;a class="storybyline" href="http://www.yoursite.com/<br>users.php?mode=profile&amp;uid=7"&gt;</code></td>
+    <td>Opening tag for a link to the story author's profile (empty for
+        anonymous authors).</td></tr>
+<tr><td><code>end_contributedby_anchortag</code></td>
+    <td><code>&lt;/a&gt;</code></td>
+    <td>Closing tag for a link to the story author's profile (empty for
+        anonymous authors).</td></tr>
+<tr><td><code>contributedby_url</code></td>
+    <td><tt>http://www.yoursite.com/<br>users.php?mode=profile&amp;uid=7</tt></td>
+    <td>Link to the story author's profile (empty for anonymous authors).</td></tr>
+<tr><td><code>contributedby_photo</code></td>
+    <td><tt>&lt;img src=".../images/userphotos/Tony.gif" alt="Tony Bibbs"&gt;</tt></td>
+    <td>User photo of the story author, if provided (always empty for anonymous authors).</td></tr>
+</table>
+
+<p>The following variables are only available if topic icons are enabled for
+the story <em>and</em> the user has not disabled topic icons in his/her
+display preferences:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>story_anchortag_and_image</code></td>
+    <td><code>&lt;a href="http://www.yoursite.com/<br>index.php?topic=Geeklog"&gt;&lt;img src="..." ...&gt;&lt;/a&gt;</code> <small>(shortened)</small></td>
+    <td>Topic icon for the story's topic, enclosed in a link to the site's 
+        index page, sorted by topic.</td></tr>
+<tr><td><code>story_topic_image</code></td>
+    <td><code>&lt;img align="right" src="http://www.yoursite.com/<br>images/topics/topic_gl.gif" alt="Geeklog" title="Geeklog"&gt;</td>
+    <td>Topic icon for the story.</td></tr>
+<tr><td><code>story_topic_id</code></td>
+    <td>General</td>
+    <td>Id (internal name) of the topic, e.g. to be used in links.</td></tr>
+<tr><td><code>story_topic_name</code></td>
+    <td>General News</td>
+    <td>Topic name (as seen on the Sections block).</td></tr>
+<tr><td><code>story_topic_url</code></td>
+    <td><code>&lt;a href="http://www.yoursite.com/<br>index.php?topic=General"&gt;</code></td>
+    <td>URL to your site's index page, so that only stories with the story's
+        topic are displayed.</td></tr>
+</table>
+
+<p>The following variables are only available when the current user has the
+permissions to edit a story:</p>
+
+<table border="1" width="100%" cellpadding="2">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Example</th>
+    <th width="63%">Description</th></tr>
+<tr><td><code>edit_link</code></td>
+    <td><code>&lt;a href=".../admin/story.php<br>?mode=edit&amp;sid=20021022234959146"&gt;edit&lt;/a&gt;</code></td>
+    <td>Link to open the story in the admin's story editor.</td></tr>
+<tr><td><code>edit_url</code></td>
+    <td><tt>http://www.yoursite.com/admin/story.php<br>?mode=edit&amp;sid=20021022234959146</tt></td>
+    <td>URL to open the story in the admin's story editor</td></tr>
+<tr><td><code>lang_edit_text</code></td>
+    <td>edit</td>
+    <td>The word "edit" in the user's preferred language.</td></tr>
+</table>
+
+<br><br>
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
