@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.37 2004/10/07 21:10:23 dhaun Exp $
+// $Id: profiles.php,v 1.38 2004/10/19 10:53:18 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -79,7 +79,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
         if (COM_isemail($authoremail)) {
-            $result = DB_query("SELECT username,email FROM {$_TABLES['users']} WHERE uid = $uid");
+            $result = DB_query("SELECT username,fullname,email FROM {$_TABLES['users']} WHERE uid = $uid");
             $A = DB_fetchArray($result);
 
             // Append the user's signature to the message
@@ -95,8 +95,13 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             $subject = strip_tags (COM_stripslashes ($subject));
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
             $message = strip_tags (COM_stripslashes ($message)) . $sig;
-            $from = $author . ' <' . $authoremail . '>';
-            COM_mail ($A['email'], $subject, $message, $from);
+            if (!empty ($A['fullname'])) {
+                $to = COM_formatEmailAddress ($A['fullname'], $A['email']);
+            } else {
+                $to = COM_formatEmailAddress ($A['username'], $A['email']);
+            }
+            $from = COM_formatEmailAddress ($author, $authoremail);
+            COM_mail ($to, $subject, $message, $from);
             COM_updateSpeedlimit ('mail');
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
@@ -260,8 +265,8 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         . COM_buildUrl ($_CONF['site_url'] . '/article.php?story=' . $sid
                         . '#comments');
 
- 	$mailto = $to . ' <' . $toemail . '>';
- 	$mailfrom = $from . ' <' . $fromemail . '>';
+    $mailto = COM_formatEmailAddress ($to, $toemail);
+    $mailfrom = COM_formatEmailAddress ($from, $fromemail);
  	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
     COM_mail ($toemail, $subject, $mailtext, $mailfrom);
