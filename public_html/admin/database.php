@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.19 2004/07/18 22:47:59 blaine Exp $
+// $Id: database.php,v 1.20 2004/11/21 10:13:34 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -196,7 +196,7 @@ if(is_writable($_CONF['backup_path'])) {
     $display .= COM_startBlock ($LANG08[06], '',
                         COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $LANG_DB_BACKUP['no_access'];
-    COM_errorLog ($_CONF['backup_path'] . ' is not accessible.', 1);
+    COM_errorLog ($_CONF['backup_path'] . ' is not writable.', 1);
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 }
 
