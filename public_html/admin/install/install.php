@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.70 2004/09/28 17:47:12 dhaun Exp $
+// $Id: install.php,v 1.71 2004/10/13 13:26:54 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -51,10 +51,6 @@ if (!defined ('VERSION')) {
     define('VERSION', '1.3.10');
 }
 
-// Turn this on to have the install process print debug messages.  NOTE: these
-// message will get written to installerrors.log as this file may not know
-// anything about error.log (the Geeklog error log file)
-$_INST_DEBUG = false;
 
 /**
 * Shows welcome page and gets location of /path/to/geeklog/. NOTE: this
@@ -175,15 +171,25 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
         $db_templates->set_var('UPGRADE_OPTIONS', $versiondd);
         $db_templates->set_var('DB_TABLE_OPTIONS', '');
     } else {
-        // This is a fresh installation, let them change their table settings
-        $db_templates->set_var('upgrade',0);
-        $db_templates->set_var('UPGRADE_OPTIONS','<tr><td>&nbsp;</td></tr>');
+        // This is a fresh installation
+        $db_templates->set_var ('upgrade', 0);
+
+        if (innodb_supported ()) {
+            $innodb_option = '<tr><td align="left">';
+            $innodb_option .= '<p>Using InnoDB tables may improve performance on (very) large sites, but makes database backups more complicated. Leave the option unchecked unless you know what you\'re doing.</p>';
+            $innodb_option .= '<input type="checkbox" name="innodb"> Use InnoDB tables';
+            $innodb_option .= '</td></tr>';
+            $db_templates->set_var ('UPGRADE_OPTIONS', $innodb_option);
+        } else {
+            $db_templates->set_var ('UPGRADE_OPTIONS',
+                                    '<tr><td>&nbsp;</td></tr>');
+        }
     }
 
     return $db_templates->parse('output','db');
 }
 
-function INST_createDatabaseStructures()
+function INST_createDatabaseStructures ($use_innodb = false)
 {
     global $_CONF, $_DB, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_TABLES;
 
@@ -200,12 +206,10 @@ function INST_createDatabaseStructures()
 
     if ($_DB_dbms == 'mysql') {
 
-        $has_innodb = innodb_supported ();
-
         for ($i = 1; $i <= count ($_SQL); $i++) {
             $sql = current ($_SQL);
 
-            if ($has_innodb) {
+            if ($use_innodb) {
                 $sql = str_replace ('MyISAM', 'InnoDB', $sql);
             }
 
@@ -759,7 +763,12 @@ case 2:
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
         }
     } else {
-        if (INST_createDatabaseStructures()) {
+        $use_innodb = false;
+        if (isset ($HTTP_POST_VARS['innodb']) &&
+                ($HTTP_POST_VARS['innodb'] == 'on')) {
+            $use_innodb = true;
+        }
+        if (INST_createDatabaseStructures ($use_innodb)) {
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_admin_url'] . '/install/success.php"></head></html>';
             // Great, installation is complete

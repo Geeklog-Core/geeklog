@@ -213,15 +213,10 @@ function install_spamx_plugin ()
         DB_delete ($_TABLES['plugins'], 'pi_name', 'spamx');
 
         // create 'spamx' table
-        if (innodb_supported ()) {
-            DB_query (str_replace ('MyISAM', 'InnoDB', $_SPX_TABLE));
-        } else {
-            DB_query ($_SPX_TABLE);
-        }
+        DB_query ($_SPX_TABLE);
 
         DB_query ($_SPX_PLUGIN); // add entry to 'plugins' table
     }
-
 
     return true;
 }
