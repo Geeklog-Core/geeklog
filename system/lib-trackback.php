@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.2 2005/01/17 16:20:26 dhaun Exp $
+// $Id: lib-trackback.php,v 1.3 2005/01/21 12:04:21 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -107,7 +107,7 @@ function TRB_makeTrackbackUrl ($id, $type = 'article')
     global $_CONF;
 
     $url = $_CONF['site_url'] . '/trackback.php?id=' . $id;
-    if ($type != 'article') {
+    if (!empty ($type) && ($type != 'article')) {
         $url .= '&amp;type=' . $type;
     }
 
@@ -156,7 +156,7 @@ function TRB_filterExcerpt ($excerpt)
 * Check if the current user is allowed to delete trackback comments.
 *
 * @param    string  $sid    ID of the parent object of the comment
-* @param    string  $type   type of the paren object ('article' = story, etc.)
+* @param    string  $type   type of the parent object ('article' = story, etc.)
 * @return   bool            true = user can delete the comment, false = nope
 *
 */
@@ -198,8 +198,8 @@ function TRB_deleteTrackbackComment ($cid)
 {
     global $_TABLES;
 
-    $id = addslashes ($id);
-    DB_query ("DELETE FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
+    $cid = addslashes ($cid);
+    DB_delete ($_TABLES['trackback'], 'cid', $cid);
 }
 
 /**
