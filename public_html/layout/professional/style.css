@@ -73,7 +73,9 @@ textarea {
 }
 th {
   color:#000000;
-  font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif
+  background-color: #DAE0ED;
+  font:bold smaller Tahoma,verdana,helvetica,arial,sans-serif;
+  padding-left:3px;
 }
 .block-divider {
   background:#FFFFFF;
