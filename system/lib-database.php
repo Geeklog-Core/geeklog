@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.31 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-database.php,v 1.32 2004/09/03 19:59:56 tony Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -88,6 +88,9 @@ $_TABLES['vars']                = $_DB_table_prefix . 'vars';
 
 // the static pages plugin has become an integral part of Geeklog anyway ...
 $_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
+
+// ditto for spamx
+$_TABLES['spamx']				= $_DB_table_prefix . 'spamx';
 
 // these tables aren't used by Geeklog any more, but the table names are needed
 // when upgrading from old versions

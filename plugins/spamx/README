@@ -1,0 +1,59 @@
+Tom Willett     tomw@pigstye.net
+Unionville, Indiana, USA
+June 13, 2004
+
+The Geeklog SpamX plugin was created to fight the problem of comment spam for 
+Geeklog systems. If you are unfamiliar with comment spam you might see the
+Comment Spam Manifesto at http://kalsey.com/2003/11/comment_spam_manifesto/.
+The main mechanism SpamX uses to fight comment spam is to use the blacklist 
+created by Jay Allen and Movable type Users - MT-Blacklist.  You can find out
+info about this project at http://www.jayallen.org/comment_spam/. Jay has taken
+it upon himself not only to write and support the plugin for movable type but
+also to maintain the blacklist.  This requires human effort to review all the
+submissions and determine which are really spam and which are just noise.  If
+you have a few extra bucks drop by Jay's website above and drop a few dollars
+in his paypal account to show your appreciation.  
+
+The MT-Blacklist theory is that comment spammers do it to increase their google 
+rankings and therefore the link is all important.  The MT-Blacklist therefore
+only filters on urls.
+
+The MT-Blacklist is only one part of the Geeklog SpamX plugin however.  The
+SpamX plugin has its own personal blacklist that you can add to. You can
+use it to filter anything from comments.  One option is to import the Geeklog
+censor list and ban all comments which contain one of those words.  This or an
+expanded list might be usefull for a website that caters to children.  Then no
+comments with offensive language could be posted.
+
+The SpamX plugin was built to be expandable to easily adapt to changes the
+comment spammers might make.  There are three types of modules admin, examin
+and action.  A new module is contained in a file and can simply be dropped in
+and it will be added to the plugin.  The modules with which the plugin ships
+are:  
+Admin -> View SpamX log, 
+	 Update MT-Blacklist, 
+	 Edit Personal Blacklist,
+	 View/Import Other Personal Blacklists, 
+	 Configure Spamx Modules; 
+Examine -> MT-Blacklist, 
+	   Personal Blacklist; 
+Action -> Delete Comment if on Blacklist,
+	  Mail Admin if Comment Rejected. (requires 1.3.9)
+
+Other modules can be just dropped into place.  Planned modules include:
+Admin->  Easy mass deletion of spam comments.
+	 Parsing comments and automatic adding spam links.
+	 Comparing MT-Blacklist and personal blacklist to eliminate duplications.
+Examine -> Other parsing of comments like making links clickable.
+	 Specialized blacklists.  (These are in planning stages).
+Action -> Save comment for review.
+
+One feature of the SpamX plugin is the ability to share your blacklist and to
+view and import the Blacklists of other SpamX plugin users.  Your participation
+in this will help give early warning to other SpamX plugin users.  This
+facility will also make it possible to create special blacklists for different
+classes of users such as k-12 schools. The sharing of blacklists uses rss feeds 
+to distibute the blacklists.  If anyone wants to create a special blacklist I 
+will make the server and interface scripts to facilitate this.
+
+TomW

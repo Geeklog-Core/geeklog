@@ -1,0 +1,2 @@
+<a href="{site_url}/{plugin}/index.php"><img src="{site_url}/{plugin}/images/{plugin}.gif" border="0"></a>
+&nbsp;&nbsp; <b><font size="4"> {header} </font></b>

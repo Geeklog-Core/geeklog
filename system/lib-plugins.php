@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.33 2004/08/29 04:23:05 blaine Exp $
+// $Id: lib-plugins.php,v 1.34 2004/09/03 19:59:56 tony Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -230,6 +230,39 @@ function PLG_handlePluginComment ($type, $id, $operation='')
     return PLG_callFunctionForOnePlugin('plugin_handlecomment_' . $type, $args);
 }
 
+/**
+* Allows plugins a chance to handle a comment before GL does.  
+
+* This is a first-come-first-serve affair so if a plugin returns an error, other
+* plugins wishing to handle comment preprocessing won't get called
+*
+* @author Tony Bibbs <tony@geeklog.net>
+* @access public
+* @param integer $uid User ID
+* @param string $title Comment title
+* @param string $sid Story ID (not always a story, remember!)
+* @param integer $pid Parent comment ID
+* @param string $type Type of comment
+* @param string $postmode HTML or text
+* @return an error otherwise false if no errors were encountered
+*
+*/
+function PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode)
+{
+	global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_commentPreSave_' . $pi_name;
+        if (function_exists($function)) {
+            $someError = $function($uid, $title, $comment, $sid, $pid, $type, $postmode);
+            if ($someError) {
+            	// Plugin doesn't want to save the comment
+            	return $someError;
+            }
+        }
+    }
+    return false;
+}
 
 /**
 * User has requested to create a comment for the plugin

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.74 2004/08/23 12:38:50 dhaun Exp $
+// $Id: comment.php,v 1.75 2004/09/03 19:59:56 tony Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -240,13 +240,15 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 * @param        int         $pid        ID of parent comment
 * @param        string      $type       Type of comment this is (article, poll, etc)
 * @param        string      $postmode   Indicates if text is HTML or plain text
+* @param		string		$prepocessed Indicates that preprocessing by another plugin
+*                                        i.e. Spamx has already occured
 * @return       string      either nothing or HTML formated error
 *
 */
 function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $HTTP_SERVER_VARS;
-
+    
     $retval = '';
 
     // ignore $uid as it may be manipulated anyway
@@ -275,6 +277,14 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         return $retval;
     }
 
+    // Let plugins have a chance to decide what to do before saving the comment.
+    $someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode);
+    
+    // If a plugin returned an error, return it
+    if ($someError) {
+    	return $someError;
+    }
+    
     $commentcode = 0;
     if ($type == 'article') {
         $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
