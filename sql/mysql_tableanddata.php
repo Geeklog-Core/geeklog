@@ -11,7 +11,7 @@ CREATE TABLE {$_TABLES['access']} (
 $_SQL[2] = "
 CREATE TABLE {$_TABLES['blocks']} (
   bid smallint(5) unsigned NOT NULL auto_increment,
-  is_enabled tinyint(1) unsigned NOT NULL DEAULT '1',
+  is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1',
   name varchar(48) NOT NULL default '',
   type varchar(20) NOT NULL default 'normal',
   title varchar(48) default NULL,
