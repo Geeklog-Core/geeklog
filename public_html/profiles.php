@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.28 2004/01/02 16:32:18 dhaun Exp $
+// $Id: profiles.php,v 1.29 2004/05/29 11:44:31 dhaun Exp $
 
 include('lib-common.php');
 
@@ -251,10 +251,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
  	$retval .= COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
 
 	// Increment numemails counter for story
-	$result = DB_query("SELECT numemails FROM {$_TABLES['stories']} WHERE sid = '$sid'");
-	$A = DB_fetchArray($result);
-	$numemails = $A['numemails'] + 1;
-	DB_change($_TABLES['stories'],'numemails',$numemails,'sid',$sid);
+    DB_query ("UPDATE {$_TABLES['stories']} SET numemails = numemails + 1 WHERE sid = '$sid'");
 
 	return $retval;
 }
