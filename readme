@@ -17,18 +17,20 @@ GeekLog's feature are as follows:
 
 - Full localization and locale aware.
 - Threaded comment system that support different modes.
-- HTML configurable for custome look and feel
-- User accounts and access controls
-- HTML and key word checking in stories and comments
-- RDF/RSS import and export ability
-- Easy to use admin interface
-- Admin interface has complete configurability for all functions of the site
-- All passwords are are stored encrypted
-- Complete error loging on all forms and SQL calls
-- All admin access is logged
-- All errors are logged
-- Save story drafts until they are ready for publishing
+- HTML configurable for custome look and feel.
+- User accounts and access controls.
+- HTML and key word checking in stories and comments.
+- RDF/RSS import and export ability.
+- Easy to use admin interface.
+- Admin interface has complete configurability for all functions of the site.
+- All passwords are are stored encrypted.
+- Complete error loging on all forms and SQL calls.
+- All admin access is logged.
+- All errors are logged.
+- Save story drafts until they are ready for publishing.
 - Robust calendar feature with support for personalized calendars.
+- Plugin support with API for developers.
+- A fully configurable block system, with php-in-block support.
 
 LICENSE
 -------
@@ -37,7 +39,9 @@ if it really intrests you (or you having trouble sleeping) go ahead a read it.
 
 In a nice gesture you could provide a link back to us:
 
-http://www.geeklog.org
+http://geeklog.sourceforge.net
+
+There is also a button that is in the release that we would appreciate you use.
 
 SUPPORT
 -------
@@ -47,7 +51,15 @@ http://lists.sourceforge.net/mailman/listinfo/geeklog-devel.
 
 Additionally the GeekLog home page is a good source of information at:
 
-http://www.geeklog.org 
+http://geeklog.sourceforge.net
+
+
+There is also a IRC channel, where we have live Geeklog chat.  Once you have an IRC client
+such as mIRC (www.mirc.co.uk), or BitchX the you can log on:
+
+Server: irc.openprojects.net
+Channel: #Geeklog
+
 
 KNOWN ISSUES
 ------------
@@ -83,6 +95,8 @@ PHPWebLog Project - Some of the functions in GeekLog came from them!
 PHPSlash Project - Some of the functions in GeekLog came from them!
 thatphpware Project - Some of the functions in GeekLog came from them!
 PHPBB Project - Some of the functions in Geeklog came from them!
+
+And of course, all the members of the Geeklog mailing lists and IRC channel.
 
 ENJOY!
 ------
