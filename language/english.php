@@ -322,7 +322,9 @@ $LANG05 = array(
     3 => " for topic {$topic}",
     4 => 'Today\'s Featured Article',
     5 => 'Next',
-    6 => 'Previous'
+    6 => 'Previous',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
