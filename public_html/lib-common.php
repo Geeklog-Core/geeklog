@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.62 2002/04/13 09:47:58 dhaun Exp $
+// $Id: lib-common.php,v 1.63 2002/04/14 14:54:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1542,7 +1542,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
         }
 
         $A['nice_date'] = strftime($_CONF['date'],$A['nice_date']);
-        $retval .= ' on ' . $A['nice_date'] . '</td></tr>' . LB
+        $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . '</td></tr>' . LB
             . '<tr><td valign="top">' . nl2br(stripslashes($A['comment']));
 
         if ($mode == 0 && $ispreview == false) {
