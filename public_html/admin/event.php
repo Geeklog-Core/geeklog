@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.42 2003/09/12 11:51:03 dhaun Exp $
+// $Id: event.php,v 1.43 2004/01/06 15:25:22 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -168,113 +168,30 @@ function editevent($mode, $A)
     } else {
         $event_templates->set_var('endam_selected', 'selected="SELECTED"');
     }
-    for ($j = 1; $j <= 2; $j++) {
-        $month_options = '';
-        for ($i = 1; $i <= 12; $i++) {
-            if ($i < 10) {
-                $mval = '0' . $i;
-            } else {
-                $mval = $i;
-            }
-            $month_options .= '<option value="' . $mval . '" ';
-            if ($j == 1) {
-                if ($i == $start_month) {
-                    $month_options .= 'selected="SELECTED"';
-                }
-            } else {
-                if ($i == $end_month) {
-                    $month_options .= 'selected="SELECTED"';
-                }
-            }
-            $month_options .= '>' . $LANG30[$mval+12] . '</option>';
-        }
-        if ($j == 1) {
-            $event_templates->set_var('startmonth_options', $month_options);
-        } else {
-            $event_templates->set_var('endmonth_options', $month_options);
-        }
-        $day_options = '';
-        for ($i = 1; $i <= 31; $i++) {
-            if ($i < 10) {
-                $dval = '0' . $i;
-            } else {
-                $dval = $i;
-            }
-            $day_options .= '<option value="' . $dval . '" ';
-            if ($j == 1) {
-                if ($i == $start_day) {
-                    $day_options .= 'selected="SELECTED"';
-                }
-            } else {
-                if ($i == $end_day) {
-                    $day_options .= 'selected="SELECTED"';
-                }
-            }
-            $day_options .= '>' . $dval . '</option>';
-        }
-        if ($j == 1) {
-            $event_templates->set_var('startday_options', $day_options);
-        } else {
-            $event_templates->set_var('endday_options', $day_options);
-        }
-        $year_options = '';
-        $cur_year = date('Y',time());
-        for ($i = $cur_year; $i <= $cur_year + 5; $i++) {
-            $year_options .= '<option value="' . $i . '" ';
-            if ($j == 1) {
-                if ($i == $start_year) {
-                    $year_options .= 'selected="SELECTED"';
-                }
-            } else {
-                if ($i == $end_year) {
-                    $year_options .= 'selected="SELECTED"';
-                }
-            }
-            $year_options .= '>' . $i . '</option>';
-        }
-        if ($j == 1) {
-            $event_templates->set_var('startyear_options', $year_options);
-        } else {
-            $event_templates->set_var('endyear_options', $year_options);
-        }
-        $hour_options = '';
-        for ($i = 1; $i <= 11; $i++) {
-            if ($i < 10) {
-                $hval = '0' . $i;
-            } else {
-                $hval = $i;
-            }
-            if ($i == 1 ) {
-                $hour_options .= '<option value="12" ';
-                if ($j == 1) {
-                    if ($start_hour == 12) {
-                        $hour_options .= 'selected="SELECTED"';
-                    }
-                } else {
-                    if ($end_hour == 12) {
-                        $hour_options .= 'selected="SELECTED"';
-                    }
-                }
-                $hour_options .= '>12</option>';
-            }
-            $hour_options .= '<option value="' . $hval . '" ';
-            if ($j == 1) {
-                if ($start_hour == $i) {
-                    $hour_options .= 'selected="SELECTED"';
-                }
-            } else {
-                if ($end_hour == $i) {
-                    $hour_options .= 'selected="SELECTED"';
-                }
-            }
-            $hour_options .= '>' . $i . '</option>';
-        }
-        if ($j == 1) {
-            $event_templates->set_var('starthour_options', $hour_options);
-        } else {
-            $event_templates->set_var('endhour_options', $hour_options);
-        }
-    }
+
+    $month_options = COM_getMonthFormOptions ($start_month);
+    $event_templates->set_var ('startmonth_options', $month_options);
+
+    $month_options = COM_getMonthFormOptions ($end_month);
+    $event_templates->set_var ('endmonth_options', $month_options);
+
+    $day_options = COM_getDayFormOptions ($start_day);
+    $event_templates->set_var ('startday_options', $day_options);
+
+    $day_options = COM_getDayFormOptions ($end_day);
+    $event_templates->set_var ('endday_options', $day_options);
+
+    $year_options = COM_getYearFormOptions ($start_year);
+    $event_templates->set_var ('startyear_options', $year_options);
+
+    $year_options = COM_getYearFormOptions ($end_year);
+    $event_templates->set_var ('endyear_options', $year_options);
+
+    $hour_options = COM_getHourFormOptions ($start_hour);
+    $event_templates->set_var ('starthour_options', $hour_options);
+
+    $hour_options = COM_getHourFormOptions ($end_hour);
+    $event_templates->set_var ('endhour_options', $hour_options);
 
     // Set minute for start time
     switch ($start_minute) {
