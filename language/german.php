@@ -146,14 +146,14 @@ $LANG01 = array(
 	97 => "Wortliste",
 	98 => "Plugins",
 	99 => "ARTIKEL",
-    100 => "Keine neuen Artikel",
+    100 => 'Keine neuen Artikel',
     101 => 'Meine Termine',
     102 => 'Allgemeine Termine',
     103 => 'DB Backups',
     104 => 'von',
     105 => 'Mail an User',
     106 => 'Angezeigt',
-    107 => 'GL-Version testen',
+    107 => 'Update verfügbar?',
     108 => 'Cache löschen'
 );
 
@@ -336,7 +336,8 @@ $LANG07 = array(
     2 => 'Deine Stimme wurde für die Umfrage gespeichert: ',
     3 => 'Stimme',
     4 => 'Umfragen im System',
-    5 => 'Stimme(n)'
+    5 => 'Stimme(n)',
+    6 => 'Ältere Umfragen'
 );
 
 ###############################################################################
