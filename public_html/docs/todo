@@ -2,14 +2,13 @@ Next Version - To Do List
 -------------------------
 - Allow topics, links etc to use a hierarchical category system that is generic
   enough to be used by plugins if needed
-- Add a story and comment rating system
+- Allow intro/teaser to be something other than the first part of the story
+- Archiving of articles
 - Email admin when a new story is submitted
-- Email Digest
 - User configurable Time Zones
 
 Future - To Do List
 -------------------
-- Archiving of pages
 - Open submission que
 - Flood protection and lamness filtering
   - Scan comments for exact dupliate content when
@@ -18,7 +17,6 @@ Future - To Do List
   - Additional Troll and flame checking
 - Quote of the day
 - Post per day limit
-- Allow intro/teaser to be something other than the first part of the story
 - Genericise the comment engine and make it scalable for high traffic sites
 
 Possible Items to Implement Sometime
