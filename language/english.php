@@ -150,7 +150,8 @@ $LANG01 = array(
     107 => 'GL Version Test',
     108 => 'Clear Cache',
     109 => 'Report abuse',
-    110 => 'Report this post to the site admin'
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version'
 );
 
 ###############################################################################
@@ -494,7 +495,8 @@ $LANG11 = array(
     1 => 'What\'s Related',
     2 => 'Mail Story to a Friend',
     3 => 'Printable Story Format',
-    4 => 'Story Options'
+    4 => 'Story Options',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -1222,6 +1224,20 @@ $LANG_LOGIN = array(
     2 => 'Sorry, to access this area you need to be logged in as a user.',
     3 => 'Login',
     4 => 'New User'
+);
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written'
+         . ' to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.'
+         . 'The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => 'No page data was given.  PDF generation cannot continue',
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid.  Please contact the site administrator if this problem
+          persists.'
 );
 
 ?>
