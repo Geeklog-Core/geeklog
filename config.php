@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.62 2002/11/26 19:44:32 dhaun Exp $
+// $Id: config.php,v 1.63 2002/11/26 19:49:35 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -305,9 +305,9 @@ $_CONF['max_image_height']      = 300;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
 
 // User photo settings
-$_CONF['max_image_width']       = 96;  // In pixels
-$_CONF['max_image_height']      = 96;  // In pixels
-$_CONF['max_image_size']        = 65536; // 65536 = 64KB
+$_CONF['max_photo_width']       = 96;  // In pixels
+$_CONF['max_photo_height']      = 96;  // In pixels
+$_CONF['max_photo_size']        = 65536; // 65536 = 64KB
 
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;
