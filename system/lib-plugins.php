@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.16 2003/02/23 20:45:09 dhaun Exp $
+// $Id: lib-plugins.php,v 1.17 2003/05/02 04:05:35 tony Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -306,6 +306,29 @@ function PLG_getSearchTypes()
 }
 
 /**
+* Determines if s specific plugin supports Geeklog's
+* expanded search results feature
+*
+* @author Tony Bibbs <tony AT geeklog DOT net>
+* @access public
+* @param string $type Plugin name
+* @return boolean True if it is supported, otherwise false
+*
+*/
+function PLG_supportsExpandedSearch($type)
+{
+    $retval = '';
+    $function = 'plugin_supportsexpandedsearch_' . $type;
+    if (function_exists($function)) {
+        $retval = $function();
+    }
+    if (empty($retval) OR !is_bool($retval)) {
+        $retval = false;
+    }
+    return $retval;
+}
+
+/**
 * This function gives each plugin the opportunity to do their search
 * and return their results.  Results comeback in an array of HTML 
 * formatted table rows that can be quickly printed by search.php 
@@ -326,13 +349,13 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
 
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $cur_plugin = new Plugin();
-
 	$result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
 	$nrows_plugins = 0;
 	$total_plugins = 0;
 	for ($i = 1; $i <= $nrows; $i++) {
 		$A = DB_fetchArray($result);
+		$cur_plugin->setExpandedSearchSupport(PLG_supportsExpandedSearch($A['pi_name']));
 		$function = 'plugin_dopluginsearch_' . $A['pi_name'];
 		if (function_exists($function)) {
             $cur_plugin->reset();
