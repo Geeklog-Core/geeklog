@@ -46,7 +46,7 @@ $CONF["db_prefix"]		= ""; #e.g. "gl_"
 #	The 'path' value signifies where the config.php file resides.
 
 $CONF["path"] 			= "/path/to/geeklog/";
-$CONF["path_log"]		= $CONF["path"]."/logs";
+$CONF["path_log"]		= $CONF["path"]."logs";
 $CONF["path_html"]		= $CONF["path"]."public_html/";
 $CONF["path_rdf"]		= $CONF["path_html"]."backend/geeklog.rdf";
 
@@ -69,27 +69,6 @@ $CONF["locale"]			= "en-gb";
 $CONF["date"]			= "%A, %B %d %Y @ %I:%M %p %Z";
 $CONF["daytime"]		= "%m/%d %I:%M%p";
 $CONF["shortdate"]		= "%x";
-
-##/ SECURITY SETTINGS /########################################################
-#
-#	These settings assign the security levels for specific administration
-#	duties/pages.  
-
-$CONF["sec_mod"] 		= 100;
-$CONF["sec_story"] 		= 150;
-$CONF["sec_links"] 		= 150;
-$CONF["sec_event"] 		= 150;
-$CONF["sec_poll"] 		= 150;
-$CONF["sec_topic"] 		= 200;
-$CONF["sec_block"] 		= 200;
-$CONF["sec_user"] 		= 200;
-$CONF["sec_delstory"] 		= 200;	// deletion of comments
-$CONF["sec_email"] 		= 200; 	// email other admins or all GL users
-
-# The value below needs to be equal to the lowest seclevel found in the ones 
-# above.  This is temporary until I find a better fix
-
-$CONF["sec_lowest"]		= 150;
 
 ##/ SESSION SETTINGS /#########################################################
 #
