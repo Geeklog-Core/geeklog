@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.50 2002/04/03 21:57:14 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.51 2002/04/06 03:58:33 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1255,14 +1255,6 @@ function COM_adminMenu($help='',$title='')
             next($plugin_options);
         }
              
-
-        if (SEC_hasrights('user.mail')) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/mail.php');
-            $adminmenu->set_var('option_label', 'Mail');
-            $adminmenu->set_var('option_count', 'N/A');
-            $retval .= $adminmenu->parse('item', 'option');
-        }
-
         if ($_CONF['allow_mysqldump'] == 1 AND SEC_inGroup('Root')) {
             $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/database.php');
             $adminmenu->set_var('option_label', $LANG01[103]);
