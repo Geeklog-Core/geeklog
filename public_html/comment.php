@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.26 2002/07/06 16:52:04 dhaun Exp $
+// $Id: comment.php,v 1.27 2002/07/06 18:18:09 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -318,7 +318,7 @@ case display:
 default:
     if (!empty($sid)) {
         if (empty ($title)) {
-            $result = DB_query ("SELECT title FROM {$_TABLES['stories']} WHERE sid = $sid");
+            $result = DB_query ("SELECT title FROM {$_TABLES['stories']} WHERE sid = '$sid'");
             $A = DB_fetchArray ($result);
             $title = $A['title'];         
         }
