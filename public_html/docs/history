@@ -3,6 +3,17 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Added -Q option to the mysqldump call when doing a database backup. This will
+  enclose database names in quotes and thus prevent problems with special
+  characters in table names as used by some plugins (bug #712901).
+- Set the max length of the input field for the event URL to 128 characters
+  (was 96) in the default themes (other themes may need adjusting).
+- Fixed localisation of the date of all-day events in the event details.
+- Added missing {event_location} variable in calender/eventdetails.thtml
+  template files.
+- Fixed display of events spanning several days in the personal calendar.
+- Moved hard-coded HTML for the login form in the User Functions block to a new
+  template file.
 - The Sections block now uses the useroption.thtml and the new
   useroption_off.thtml template files for the list of topics. You can also use
   $_CONF['hide_home_link'] to hide the "Home" link from the Sections block.
