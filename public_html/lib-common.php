@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.282 2004/02/14 13:07:57 dhaun Exp $
+// $Id: lib-common.php,v 1.283 2004/02/14 13:27:47 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2755,6 +2755,7 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
         $mywords = explode( ' ', $query );
         foreach( $mywords as $searchword )
         {
+            $searchword = str_replace( '*', '\*', $searchword );
             $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
         }
     }

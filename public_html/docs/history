@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Fixed bug when highlighting search queries that contained a '*' (reported
+  by wlparks).
 - Fixed a bug/typo introduced in 1.3.8-1sr4 that prevented you from deleting
   story submissions from the Admin's story editor (reported by James Bothe).
 - Changed all url fields in the database to hold up to 255 characters per URL.

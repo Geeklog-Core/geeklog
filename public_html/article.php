@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Shows articles in various formats.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.40 2004/01/31 14:16:25 dhaun Exp $
+// $Id: article.php,v 1.41 2004/02/14 13:27:47 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -145,6 +145,7 @@ if ($A['count'] > 0) {
             if ($query) {
                 $mywords = explode (" ", $query);
                 foreach ($mywords as $searchword) {
+                    $searchword = str_replace ('*', '\*', $searchword);
                     $A['introtext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['introtext'] . "<x>");
                     $A['bodytext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')" ,"<x>" . $A['bodytext'] . "<x>");
                 }
