@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.36 2004/08/28 19:17:58 dhaun Exp $
+// $Id: links.php,v 1.37 2004/12/14 22:34:35 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -44,22 +44,22 @@ if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['linksloginrequired'] == 1))) {
     $display .= COM_startBlock ($LANG_LOGIN[1], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
-    $login = new Template($_CONF['path_layout'] . 'submit');
-    $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+    $login = new Template ($_CONF['path_layout'] . 'submit');
+    $login->set_file (array ('login' => 'submitloginrequired.thtml'));
     $login->set_var ('login_message', $LANG_LOGIN[2]);
     $login->set_var ('site_url', $_CONF['site_url']);
     $login->set_var ('lang_login', $LANG_LOGIN[3]);
     $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
     $login->parse ('output', 'login');
-    $display .= $login->finish ($login->get_var('output'));
+    $display .= $login->finish ($login->get_var ('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
-    $category = COM_applyFilter ($HTTP_GET_VARS['category']);
-    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+    $category = strip_tags (COM_stripslashes ($_GET['category']));
+    $page = COM_applyFilter ($_GET['page'], true);
 
-    $display .= COM_startBlock($LANG06[1]);
+    $display .= COM_startBlock ($LANG06[1]);
 
-    $linklist = new Template($_CONF['path_layout'] . 'links');
+    $linklist = new Template ($_CONF['path_layout'] . 'links');
     $linklist->set_file (array ('linklist' => 'links.thtml',
                                 'catlinks' => 'categorylinks.thtml',
                                 'link'     => 'linkdetails.thtml',
@@ -70,15 +70,15 @@ if (empty ($_USER['username']) &&
                                 'pagenav'  => 'pagenavigation.thtml'));
 
     if ($_CONF['linkcols'] > 0) {
-        $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
-        $nrows  = DB_numRows($result);
+        $result = DB_query ("SELECT DISTINCT category FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category");
+        $nrows  = DB_numRows ($result);
         if ($nrows > 0) {
             $linklist->set_var ('lang_categories', $LANG23[14]);
             for ($i = 1; $i <= $nrows; $i++) {
                 $C = DB_fetchArray($result);
                 $cat = addslashes ($C['category']);
                 $result1 = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'" . COM_getPermSQL ('AND'));
-                $D = DB_fetchArray($result1);
+                $D = DB_fetchArray ($result1);
                 if (empty ($C['category'])) {
                     $linklist->set_var ('category_name', $LANG23[7]);
                 } else {
@@ -109,13 +109,13 @@ if (empty ($_USER['username']) &&
         $linklist->set_var ('category_navigation', '');
     }
 
-    $linklist->set_var('site_url', $_CONF['site_url']);
-    $linklist->set_var('lang_addalink', $LANG06[3]);
+    $linklist->set_var ('site_url', $_CONF['site_url']);
+    $linklist->set_var ('lang_addalink', $LANG06[3]);
 
     $sql = "SELECT lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']}";
     if ($_CONF['linkcols'] > 0) {
         if (!empty ($category)) {
-            $sql .= " WHERE category = '$category'";
+            $sql .= " WHERE category = '" . addslashes ($category) . "'";
         } else {
             $sql .= " WHERE category = ''";
         }
@@ -123,26 +123,26 @@ if (empty ($_USER['username']) &&
     } else {
         $sql .= COM_getPermSQL ();
     }
-    $sql .= ' ORDER BY category asc,title';
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $sql .= ' ORDER BY category ASC,title';
+    $result = DB_query ($sql);
+    $nrows = DB_numRows ($result);
     if ($nrows == 0) {
         $page = 0;
         $end = 10;
 
         $result = DB_query ("SELECT lid,url,title,description,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
-        $nrows  = DB_numRows($result);
+        $nrows  = DB_numRows ($result);
         if ($nrows > 0) {
-            $linklist->set_var('link_details','');
-            $linklist->set_var('link_category',$LANG10[18]);
+            $linklist->set_var ('link_details', '');
+            $linklist->set_var ('link_category', $LANG10[18]);
             for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $linklist->set_var('link_url', COM_buildUrl ($_CONF['site_url']
+                $A = DB_fetchArray ($result);
+                $linklist->set_var ('link_url', COM_buildUrl ($_CONF['site_url']
                     . '/portal.php?what=link&amp;item=' . $A['lid']));
                 $linklist->set_var ('link_actual_url', $A['url']);
-                $linklist->set_var('link_name', stripslashes($A['title']));
-                $linklist->set_var('link_hits', $A['hits']);
-                $linklist->set_var('link_description',
+                $linklist->set_var ('link_name', stripslashes($A['title']));
+                $linklist->set_var ('link_hits', $A['hits']);
+                $linklist->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
@@ -159,9 +159,9 @@ if (empty ($_USER['username']) &&
                     $linklist->set_var ('link_edit', '');
                     $linklist->set_var ('edit_icon', '');
                 }
-                $linklist->parse('link_details', 'link', true);
+                $linklist->parse ('link_details', 'link', true);
             }
-            $linklist->parse('category_links','catlinks',true);
+            $linklist->parse ('category_links', 'catlinks', true);
         }
     } else {
         if ($_CONF['linksperpage'] == 0) {
@@ -182,24 +182,24 @@ if (empty ($_USER['username']) &&
 
         $currentcategory = '';
         for ($i = 1; $i < $end; $i++) {
-            $A = DB_fetchArray($result);
+            $A = DB_fetchArray ($result);
             if ($i >= $start) {
                 if ((strcasecmp ($A['category'], $currentcategory) != 0) AND ($i > $start)) {
                     // print the category and link
-                    $linklist->parse('category_links','catlinks',true);
-                    $linklist->set_var('link_details','');
+                    $linklist->parse ('category_links', 'catlinks', true);
+                    $linklist->set_var ('link_details','');
                     $currentcategory = $A['category'];
-                    $linklist->set_var('link_category',$currentcategory);
+                    $linklist->set_var ('link_category', $currentcategory);
                 } else if (strcasecmp ($A['category'], $currentcategory) != 0) {
                     $currentcategory = $A['category'];
-                    $linklist->set_var('link_category',$currentcategory);
+                    $linklist->set_var ('link_category',$currentcategory);
                 }
-                $linklist->set_var('link_url', COM_buildUrl ($_CONF['site_url']
+                $linklist->set_var ('link_url', COM_buildUrl ($_CONF['site_url']
                     . '/portal.php?what=link&amp;item=' . $A['lid']));
                 $linklist->set_var ('link_actual_url', $A['url']);
-                $linklist->set_var('link_name', stripslashes($A['title']));
-                $linklist->set_var('link_hits', $A['hits']);
-                $linklist->set_var('link_description',
+                $linklist->set_var ('link_name', stripslashes ($A['title']));
+                $linklist->set_var ('link_hits', $A['hits']);
+                $linklist->set_var ('link_description',
                         nl2br (stripslashes ($A['description'])));
                 if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
                         $A['perm_owner'], $A['perm_group'], $A['perm_members'],
@@ -216,10 +216,10 @@ if (empty ($_USER['username']) &&
                     $linklist->set_var ('link_edit', '');
                     $linklist->set_var ('edit_icon', '');
                 }
-                $linklist->parse('link_details', 'link', true);
+                $linklist->parse ('link_details', 'link', true);
             }
         }
-        $linklist->parse('category_links','catlinks',true);
+        $linklist->parse ('category_links', 'catlinks', true);
     }
 
     if ($_CONF['linksperpage'] > 0) {
@@ -236,16 +236,17 @@ if (empty ($_USER['username']) &&
         }
         $linklist->set_var ('page_navigation',
             COM_printPageNavigation ($_CONF['site_url'] . '/links.php' .
-            $catlink, $page, $pages));
+                                     $catlink, $page, $pages));
     } else {
         $linklist->set_var ('page_navigation', '');
     }
 
-    $linklist->parse('output', 'linklist');
-    $display .= $linklist->finish($linklist->get_var('output'));
+    $linklist->parse ('output', 'linklist');
+    $display .= $linklist->finish ($linklist->get_var ('output'));
     $display .= COM_endBlock ();
 }
-$display .= COM_siteFooter();
+
+$display .= COM_siteFooter ();
 
 echo $display;
 
