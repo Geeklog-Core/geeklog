@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.356 2004/08/09 07:56:21 dhaun Exp $
+// $Id: lib-common.php,v 1.357 2004/08/11 18:34:34 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -111,14 +111,42 @@ if( !empty( $_CONF['timezone'] ) && !ini_get( 'safe_mode' ) &&
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
+
+/**
+* If needed, add our PEAR path to the list of include paths
+*
+*/
+if( !$_CONF['have_pear'] )
+{
+    $curPHPIncludePath = ini_get( 'include_path' );
+    if( defined( 'PATH_SEPARATOR' ))
+    {
+        $separator = PATH_SEPARATOR;
+    }
+    else
+    {
+        // prior to PHP 4.3.0, we have to guess the correct separator ...
+        $separator = ';';
+        if( strpos( $curPHPIncludePath, $separator ) === false )
+        {
+            $separator = ':';
+        }
+    }
+    if( ini_set( 'include_path', $_CONF['path_pear'] . $separator
+                                 . $curPHPIncludePath ) === false )
+    {
+        COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
+    }
+}
+
 /**
 * Include the PEAR Class to support PHP SESSIONS
 * Setup the SESSIONS Class and start SESSIONS and restore any SESSION Based Variables
 */
 
-require_once ("HTTP/Session.php");
-HTTP_Session::useCookies($_CONF['sessions_usecookie']);
-HTTP_Session::start($_CONF['sessionid'], uniqid($_CONF['sessionid_prefex']));
+require_once ('HTTP/Session.php');
+HTTP_Session::useCookies ($_CONF['sessions_usecookie']);
+HTTP_Session::start ($_CONF['sessionid'], uniqid ($_CONF['sessionid_prefex']));
 
 /**
 * Include page time -- used to time how fast each page was created
@@ -205,32 +233,6 @@ require_once( $_CONF['path_system'] . 'lib-sessions.php' );
 
 require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 
-/**
-* If needed, add our PEAR path to the list of include paths
-*
-*/
-if( !$_CONF['have_pear'] )
-{
-    $curPHPIncludePath = ini_get( 'include_path' );
-    if( defined( 'PATH_SEPARATOR' ))
-    {
-        $separator = PATH_SEPARATOR;
-    }
-    else
-    {
-        // prior to PHP 4.3.0, we have to guess the correct separator ...
-        $separator = ';';
-        if( strpos( $curPHPIncludePath, $separator ) === false )
-        {
-            $separator = ':';
-        }
-    }
-    if( ini_set( 'include_path', $_CONF['path_pear'] . $separator
-                                 . $curPHPIncludePath ) === false )
-    {
-        COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
-    }
-}
 
 // Set theme
 // Need to modify this code to check if theme was cached in user cookie.  That
