@@ -110,14 +110,15 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
                 $newcomment = $comment;
-                if (!$postmode == 'html') {
-                    $newcomment .= LB . LB . LB . '-----' . LB . $sig;
-                } else {
-                    $newcomment .= '<p>----<br>' . $sig;
+                if (!empty ($sig)) {
+                    if (!$postmode == 'html') {
+                        $newcomment .= '<p>---<br>' . nl2br ($sig);
+                    } else {
+                        $newcomment .= LB . LB . '---' . LB . $sig;
+                    }
                 }
                 $HTTP_POST_VARS['comment'] = $newcomment;
-                
-				
+
                 $retval .= COM_startComment($LANG03[14])
                     . COM_comment($HTTP_POST_VARS,1,$type,0,'flat',true)
                     . '</td></tr></table></td></tr></table>';
@@ -205,12 +206,14 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
     if ($uid > 1) {
         $sig = DB_getItem($_TABLES['users'],'sig', "uid = '$uid'");
     }
-    if ($postmode == 'html') {
-        $comment .= '<p>----<br>' . nl2br($sig);
-    } else {
-        $comment .= LB . LB . LB . '-----' . LB . $sig;
+    if (!empty ($sig)) {
+        if ($postmode == 'html') {
+            $comment .= '<p>---<br>' . nl2br($sig);
+        } else {
+            $comment .= LB . LB . '---' . LB . $sig;
+        }
     }
-    
+
     DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
 
     // Clean 'em up a bit!
