@@ -392,10 +392,10 @@ $LANG09 = array(
 	20 => "Date",
 	21 => "to",
 	22 => "(Date Format YYYY-MM-DD)",
-	23 => "Hits",
-	24 => "Found",
-	25 => "matches for",
-	26 => "items in",
+	23 => "Views",
+	24 => "Results",
+	25 => "Searched for",
+	26 => "items ",
 	27 => "seconds",
     28 => 'No story or comment matches for your search',
     29 => 'Story and Comment Results',
@@ -411,7 +411,17 @@ $LANG09 = array(
     39 => 'Links',
     40 => 'Events',
     41 => 'Your query string should have at least 3 characters.',
-    42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).'
+    42 => 'Please use a date formatted as YYYY-MM-DD (year-month-day).',
+    43 => 'exact phrase',
+    44 => 'all of these words',
+    45 => 'any of these words',
+    46 => 'Next',
+    47 => 'Previous',
+    48 => 'Author',
+    49 => 'Date',
+    50 => 'Hits',
+    51 => 'Link',
+    52 => 'Location'
 );
 
 ###############################################################################
