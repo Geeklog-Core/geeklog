@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.30 2002/02/05 17:24:53 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.31 2002/02/07 22:31:33 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2038,16 +2038,17 @@ function COM_emailUserTopics()
     global $_TABLES, $LANG08, $_CONF;
 
     // Get users who want stories emailed to them
-
-    $users = DB_query("SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
-        . "userindex.uid = {$_TABES['users']}.uid AND etids IS NOT NULL");
+    $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
+        . "{$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
+    COM_errorLog('usersql = ' . $usersql);
+    $users = DB_query($usersql);
     $nrows = DB_numRows($users);
     // $file = @fopen('testemail.txt',w);
     // fputs($file, "got $nrows users who want stories emailed to them\n");
 
     // For each user, pull the stories they want and email it to them
     for ($x = 0; $x < $nrows; $x++) {
-        fputs($file, "inside for loop\n");
+        //fputs($file, "inside for loop\n");
         $U = DB_fetchArray($users);
         $cur_day = strftime("%D",time());
         $result = DB_query("SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'");
@@ -2055,7 +2056,7 @@ function COM_emailUserTopics()
         $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE date >= '"
             . $L['lastrun'] . "' AND (";
         $ETIDS = explode(' ',$U['etids']);
-        // fputs($file, "got $ETIDS[$x] for a category\n");
+        // fputs(file, "got $ETIDS[$x] for a category\n");
 
         for ($i = 0; $i < sizeof($ETIDS); $i++) {
             if ($i == (sizeof($ETIDS) - 1)) {
@@ -2065,7 +2066,8 @@ function COM_emailUserTopics()
             }
         }
 
-        fputs($file, $storysql . "\n");
+        //fputs($file, $storysql . "\n");
+        COM_errorLog('storysql = ' . $storysql);
         $stories = DB_query($storysql);
         $nsrows = DB_numRows($stories);
         // fputs($file, "got $nsrows stories that need to be emailed to user: {$U['username']}\n");
@@ -2090,13 +2092,15 @@ function COM_emailUserTopics()
         $mailtext .= "\nEnd of Message\n";
         $mailtext .= "\n------------------------------\n";
         $toemail = $U['email'];
-		$mailto = "{$U['username']} <{$toemail}>";
-        $mailfrom = "FROM: Iowa Outdoors <newsletter@iowaoutdoors.org>";                        $subject = strip_tags(stripslashes("Iowa Outdoors Daily Newsletter for " . strftime('%m/%d/%Y',time())));
+                $mailto = "{$U['username']} <{$toemail}>";
+        $mailfrom = "FROM: Iowa Outdoors <noreply@iowaoutdoors.org>";                        $subject = strip_tags(stripslashes("Iowa Outdoors Daily Newsletter for " . strftime('%m/%d/%Y',time())));
         // fputs($file,"to: $toemail, from: $mailfrom, sub: $subject\ntext: $mailtext");
+        if ($U['username'] == 'Tony') {
         @mail($toemail,$subject,$mailtext,$mailfrom);
+        }
     }
     $tmpdate = date("Y-m-d H:i:s",time());
-    DB_query("UPDATE {$_TABLES['vars']} SET value = '$tmpdate'");
+    DB_query("UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'");
     // fclose($file);
 }
 
