@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.64 2004/05/31 08:45:08 dhaun Exp $
+// $Id: comment.php,v 1.65 2004/05/31 12:53:33 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -242,11 +242,16 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 
     $retval = '';
 
+    // ignore $uid as it may be manipulated anyway
+    if (empty ($_USER['uid'])) {
+        $uid = 1;
+    } else {
+        $uid = $_USER['uid'];
+    }
+
     if (empty ($sid) || empty ($title) || empty ($comment) || empty ($type) ||
-            ($uid < 1) || (($uid != $_USER['uid']) &&
-            !empty ($_USER['username'])) || (empty ($_USER['username'])
-            && (($_CONF['loginrequired'] == 1) ||
-           ($_CONF['commentsloginrequired'] == 1)))) {
+            (($uid == 1) && (($_CONF['loginrequired'] == 1) ||
+                ($_CONF['commentsloginrequired'] == 1)))) {
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
         return $retval;
     }
