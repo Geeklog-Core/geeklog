@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.55 2003/06/20 21:30:56 dhaun Exp $
+// $Id: user.php,v 1.56 2003/06/22 10:19:15 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -219,6 +219,9 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 			$passwd = md5($passwd);
 		} else {
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
+		}
+
+        if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             if (empty ($password)) {
                 // no password? create one ...
                 srand ((double) microtime () * 1000000);
@@ -227,9 +230,6 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 $passwd = substr ($passwd, 1, 8);
                 $passwd = md5 ($passwd);
             }
-		}
-
-        if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
             DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
             if ($_CONF['emailstoriesperdefault'] == 1) {
