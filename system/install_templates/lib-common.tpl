@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.36 2002/03/18 19:25:04 dhaun Exp $
+// $Id: lib-common.tpl,v 1.37 2002/03/23 22:35:06 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -162,13 +162,13 @@ function COM_article($A,$index='')
     $article->set_var('story_date',$A['day']);
 
     if ($_CONF['contributedbyline'] == 1) {
+        $article->set_var('lang_contributed_by',$LANG01[1]);
         if ($A['uid'] > 1) {
-            $article->set_var('lang_contributed_by',$LANG01[1]);
             $article->set_var('start_contributedby_anchortag', '<a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&amp;uid='.$A['uid'].'">');
             $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
             $article->set_var('end_contributedby_anchortag', '</a>');
         } else {
-            $article->set_var('contributedby_user', $LANG01[1].' '.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+            $article->set_var('contributedby_user', DB_getItem($_TABLES['users'],'username',"uid = 1"));
         }
     }
 	
