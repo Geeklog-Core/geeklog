@@ -426,17 +426,17 @@ INSERT INTO usercomment (uid, commentmode, commentorder, commentlimit) VALUES (1
 # Dumping data for table 'userindex'
 #
 
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (1,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (2,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (3,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (5,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (0,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (8,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (7,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (9,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (10,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (11,'','','',0,NULL);
-INSERT INTO userindex (uid, tids, aids, boxes, noboxes, maxstories) VALUES (12,'','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (1,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (2,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (3,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (5,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (0,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (8,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (7,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (9,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (10,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (11,'','','','',0,NULL);
+INSERT INTO userindex (uid, tids, etids, aids, boxes, noboxes, maxstories) VALUES (12,'','','','',0,NULL);
 
 #
 # Dumping data for table 'userinfo'
