@@ -3,12 +3,20 @@
 class url {
     var $_arguments;		// Array of argument names
     
+    /**
+    * Constructor
+    *
+    */
     function url()
     {
         $this->_arguments = array();
         $this->_getArguments();
     }
 
+    /**
+    * Grabs any variables from the query string
+    *
+    */
     function _getArguments()
     {
         global $PATH_INFO;
@@ -17,6 +25,22 @@ class url {
         array_shift($this->_arguments);
     }
 
+    /**
+    * Returns the number of variables found in query string
+    *
+    * This is particularly useful just before calling setArgNames() method
+    *
+    */
+    function numArguments()
+    {
+        return count($this->_arguments);
+    }
+    
+    /**
+    * Assigns logical names to query string variables
+    *
+    * @names        Array   String array of names to assign to variables pulled from query string
+    */
     function setArgNames($names)
     {
         if (count($names) < count($this->arguments)) {
@@ -38,16 +62,26 @@ class url {
         return true;
     }
 
+    /**
+    * Gets the value for an argument
+    *
+    * @name     string  Name of argument to fetch value for
+    *
+    */
     function getArgument($name)
     {
         if (in_array($name,array_keys($this->_arguments))) {
             return $this->_arguments[$name];
         } 
-        //unset($name);
-        //return $name;
         return '';
     }
 
+    /**
+    * Builds crawler friendly URL
+    *
+    * @url      string      URL to try and convert
+    *
+    */
     function buildURL($url)
     {
         $pos = strpos($url,'?');
