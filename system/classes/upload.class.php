@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.38 2004/10/13 19:00:18 dhaun Exp $
+// $Id: upload.class.php,v 1.39 2004/12/19 10:12:28 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -525,7 +525,7 @@ class upload
 
             if ($this->_imageLib == 'imagemagick') {
                 $newsize = $newwidth . 'x' . $newheight;
-                $cmd = $this->_pathToMogrify . ' -resize '. $newsize . " '" . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . "' 2>&1";
+                $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' "' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . '" 2>&1';
                 $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
 
                 $filename = $this->_fileUploadDirectory . '/'
