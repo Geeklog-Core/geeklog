@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.41 2004/10/16 16:42:42 dhaun Exp $
+// $Id: plugins.php,v 1.42 2004/10/23 21:31:38 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -500,6 +500,7 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
     }
 
 } else if ($mode == $LANG32[34]) {
+        $pi_name = COM_applyFilter ($HTTP_POST_VARS['pi_name']);
         $display .= COM_siteHeader ('menu');
         $display .= do_update ($pi_name);
         $display .= COM_siteFooter ();
