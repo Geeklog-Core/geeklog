@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.343 2004/07/21 19:38:02 vinny Exp $
+// $Id: lib-common.php,v 1.344 2004/07/23 19:10:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4896,26 +4896,44 @@ function COM_getUserCookieTimeout()
 
 function phpblock_whosonline()
 {
-    global $_CONF, $_TABLES, $LANG01;
+    global $_CONF, $_TABLES, $_USER, $LANG01;
 
     $retval = '';
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
-    $result = DB_query( "SELECT DISTINCT {$_TABLES['sessions']}.uid, username,photo,showonline FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username" );
+    if( $_CONF['whosonline_fullname'] == 1 )
+    {
+        $byname = 'fullname,username';
+    }
+    else
+    {
+        $byname = 'username';
+    }
+
+    $result = DB_query( "SELECT DISTINCT {$_TABLES['sessions']}.uid,{$byname},photo,showonline FROM {$_TABLES['sessions']},{$_TABLES['users']},{$_TABLES['userprefs']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY {$byname}" );
     $nrows = DB_numRows( $result );
 
     $num_anon = 0;
+    $num_reg  = 0;
 
-    for( $i = 1; $i <= $nrows; $i++ )
+    for( $i = 0; $i < $nrows; $i++ )
     {
         $A = DB_fetchArray( $result );
 
-        if( $A['showonline'] == 1 ) {
-
+        if( $A['showonline'] == 1 )
+        {
+            $username = $A['username'];
+            if( $_CONF['whosonline_fullname'] == 1 )
+            {
+                if( !empty( $A['fullname'] ))
+                {
+                    $username = $A['fullname'];
+                }
+            }
             $retval .= '<a href="' . $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                    . $A['username'] . '</a>';
+                    . $username . '</a>';
 
             if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1)
             {
@@ -4925,8 +4943,10 @@ function phpblock_whosonline()
                         . '/images/smallcamera.gif" border="0" alt=""></a>';
             }
             $retval .= '<br>';
-
-        } else {
+            $num_reg++;
+        }
+        else
+        {
             // this user does not want to show up in Who's Online
             $num_anon++; // count as anonymous
         }
@@ -4934,6 +4954,20 @@ function phpblock_whosonline()
 
     $result = DB_query( "SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1" );
     $num_anon += DB_numRows( $result );
+
+    if(( $_CONF['whosonline_anonymous'] == 1 ) &&
+            ( empty( $_USER['uid'] ) || ( $_USER['uid'] == 1 )))
+    {
+        // note that we're overwriting the contents of $retval here
+        if( $num_reg > 0 )
+        {
+            $retval = $LANG01[112] . ': ' . $num_reg . '<br>';
+        }
+        else
+        {
+            $retval = '';
+        }
+    }
 
     if( $num_anon > 0 )
     {

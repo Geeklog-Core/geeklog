@@ -3,6 +3,11 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Introduced 2 config options for the Who's Online block:
+  - $_CONF['whosonline_fullname'] will display the user's full name,
+  - $_CONF['whosonline_anonymous'] does not display the names of registered
+    users to anonymous visitors of the site.
+  Both options are disabled by default [Dirk]
 - Added support for single quotes and nested tags to COM_extractLinks [Vinny]
 - The admin_html and user_html are now merged recursively (bug #240) [Vinny]
 - Remove colons from email addresses, as they have a special meaning,

@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.120 2004/06/09 13:55:16 tony Exp $
+// $Id: config.php,v 1.121 2004/07/23 19:10:49 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -431,8 +431,17 @@ $_CONF['hide_home_link'] = 0;
 // Show blocks for empty search results
 $_CONF['showemptysearchresults'] = 0;
 
+
+// Who's Online block settings
+
 // How long an anonymous (guest) user session is good for
 $_CONF['whosonline_threshold'] = 300; // in seconds
+
+// Show full names (= 1) or usernames (= 0) in Who's Online block
+$_CONF['whosonline_fullname'] = 0; // 1 = show full names, 0 = usernames
+
+// If set to 1, don't show names of registered users to anonymous users
+$_CONF['whosonline_anonymous'] = 0; // 1 = don't show names to anon. users
 
 
 // "Daily Digest" settings

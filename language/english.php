@@ -151,7 +151,8 @@ $LANG01 = array(
     108 => 'Clear Cache',
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
-    111 => 'View PDF Version'
+    111 => 'View PDF Version',
+    112 => 'Registered Users'
 );
 
 ###############################################################################
