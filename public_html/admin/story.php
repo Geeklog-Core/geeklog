@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.51 2002/05/15 15:59:20 dhaun Exp $
+// $Id: story.php,v 1.52 2002/05/16 17:28:43 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -225,6 +225,8 @@ function storyeditor($sid = '', $mode = '')
             $publish_hour = $publish_hour - 12;
         }
         $ampm = 'pm';
+    } else {
+        $ampm = 'am';
     }
     if ($ampm == 'pm') {
         $story_templates->set_var('publishpm_selected','selected="SELECTED"');
@@ -820,7 +822,9 @@ case 'editsubmission':
     break;
 case "$LANG24[8]":
     if ($publish_ampm == 'pm') {
-        $publish_hour = $publish_hour + 12;
+        if ($publish_hour < 12) {
+            $publish_hour = $publish_hour + 12;
+        }
     }
     if ($publish_ampm == 'am' AND $publish_hour == 12) {
         $publish_hour = '00';
