@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.10 2002/01/03 21:47:25 tony_bibbs Exp $
+// $Id: poll.php,v 1.11 2002/04/11 17:26:37 tony_bibbs Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -155,19 +155,22 @@ function editpoll($qid='')
     $poll_templates->set_file(array('editor'=>'polleditor.thtml','answer'=>'pollansweroption.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
 
-    $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
-    $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid'");
-    $Q = DB_fetchArray($question);
+    if (!empty($qid)) {
+        $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
+        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid'");
+        $Q = DB_fetchArray($question);
 
-    // Get permissions for poll
-    $access = SEC_hasAccess($Q['owner_id'],$Q['group_id'],$Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']);
-
-    if ($access == 0 OR $access == 2) {
-        // User doesn't have access...bail
-        $retval .= COM_startBlock($LANG25[21]);
-        $retval .= $retval .=   $LANG25[22];
-        $retval .= COM_endBlock();
-        return $retval;
+        // Get permissions for poll
+    
+        $access = SEC_hasAccess($Q['owner_id'],$Q['group_id'],$Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']);
+    
+        if ($access == 0 OR $access == 2) {
+            // User doesn't have access...bail
+            $retval .= COM_startBlock($LANG25[21]);
+            $retval .= $retval .=   $LANG25[22];
+            $retval .= COM_endBlock();
+            return $retval;
+        }
     }
 
     if (!empty($qid) AND $access == 3) {
