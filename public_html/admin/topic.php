@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.22 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: topic.php,v 1.23 2002/07/30 13:52:31 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -72,7 +72,8 @@ function edittopic($tid='')
             $retval .= COM_endBlock();
             return $retval; 
         }
-    } else {
+    }
+    if (!is_array ($A) || empty ($A['owner_id'])) {
         $A['owner_id'] = $_USER['uid'];
 
         // this is the one instance where we default the group
