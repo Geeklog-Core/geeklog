@@ -36,7 +36,7 @@ class BlackList extends BaseCommand {
 	*/
 	function execute()
 	{
-		global $_CONF, $result, $comment, $_USER, $_TABLES, $REMOTE_ADDR, $LANG_SX00;
+		global $_CONF, $result, $comment, $_USER, $_TABLES, $LANG_SX00, $HTTP_SERVER_VARS;
 		
 		/**
 		* Include Blacklist Data
@@ -51,7 +51,7 @@ class BlackList extends BaseCommand {
 			$val=$A['value'];
 			if (preg_match("#$val#",$comment['comment'])) {
 				$ans=1;  // quit on first positive match
-				SPAMX_log($LANG_SX00['foundspam'] . $val .$LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $REMOTE_ADDR);
+				SPAMX_log($LANG_SX00['foundspam'] . $val .$LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $HTTP_SERVER_VARS['REMOTE_ADDR']);
 				break;
 			}
 		}				

@@ -106,7 +106,7 @@ $NEWFEATURE['spamx.admin']="spamx Admin";
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
     // Someone is trying to illegally access this page
-    COM_errorLog("Someone has tried to illegally access the spamx install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: $REMOTE_ADDR",1);
+    COM_errorLog("Someone has tried to illegally access the spamx install/uninstall page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$HTTP_SERVER_VARS['REMOTE_ADDR']}",1);
     $display = COM_siteHeader();
     $display .= COM_startBlock($LANG_SX00['access_denied']);
     $display .= $LANG_SX00['access_denied_msg'];
