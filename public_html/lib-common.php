@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.414 2005/01/29 09:02:10 dhaun Exp $
+// $Id: lib-common.php,v 1.415 2005/02/01 08:20:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2519,7 +2519,8 @@ function COM_adminMenu( $help = '', $title = '' )
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
 
-        if( $_CONF['trackback_enabled'] && SEC_hasRights( 'story.ping' ))
+        if(( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] ||
+                $_CONF['ping_enabled'] ) && SEC_hasRights( 'story.ping' ))
         {
             $url = $_CONF['site_admin_url'] . '/trackback.php';
             $adminmenu->set_var( 'option_url', $url );

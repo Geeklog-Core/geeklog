@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | trackback.php                                                             |
 // |                                                                           |
-// | Admin functions to send and delete trackback comments.                    |
+// | Admin functions handle Trackback, Pingback, and Ping                      |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2005 by the following authors:                              |
 // |                                                                           |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.7 2005/01/30 20:23:17 dhaun Exp $
+// $Id: trackback.php,v 1.8 2005/02/01 08:20:57 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -38,7 +38,8 @@ require_once ('../lib-common.php');
 */
 require_once ('auth.inc.php');
 
-if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled']) {
+if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled'] &&
+        !$_CONF['ping_enabled']) {
     echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     exit;
 }
@@ -162,12 +163,7 @@ function deleteTrackbackComment ($id)
     $cid = addslashes ($id);
     $result = DB_query ("SELECT sid,type FROM {$_TABLES['trackback']} WHERE cid = '$cid'");
     list ($sid, $type) = DB_fetchArray ($result);
-
-    if ($type == 'article') {
-        $url = STORY_getItemInfo ($sid, 'url');
-    } else {
-        $url = PLG_getItemInfo ($type, $sid, 'url');
-    }
+    $url = getItemInfo ($type, $sid, 'url');
 
     if (TRB_allowDelete ($sid, $type)) {
         TRB_deleteTrackbackComment ($id);
@@ -218,11 +214,7 @@ function sendPingbacks ($type, $id)
 
     $retval = '';
 
-    if ($type == 'article') {
-        list ($url, $text) = STORY_getItemInfo ($id, 'url,description');
-    } else {
-        list ($url, $text) = PLG_getItemInfo ($type, $id, 'url,description');
-    }
+    list ($url, $text) = getItemInfo ($type, $id, 'url,description');
 
     // extract all links from the text
     preg_match_all ("/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $text,
@@ -290,11 +282,7 @@ function sendPings ($type, $id)
 
     $retval = '';
 
-    if ($type == 'article') {
-        list ($itemurl,$feedurl) = STORY_getItemInfo ($id, 'url,feed');
-    } else {
-        list ($itemurl,$feedurl) = PLG_getItemInfo ($type, $id, 'url,feed');
-    }
+    list ($itemurl,$feedurl) = getItemInfo ($type, $id, 'url,feed');
 
     $template = new Template ($_CONF['path_layout'] . 'admin/trackback');
     $template->set_file (array ('list' => 'pinglist.thtml',
@@ -400,6 +388,24 @@ function prepareAutodetect ($type, $id, $text)
     return $retval;
 }
 
+/**
+* Wrapper for STORY_getItemInfo / PLG_getItemInfo to keep things readable
+*
+* @param    string  $type   type of entry ('article' = story, else plugin)
+* @param    string  $id     ID of that entry
+* @param    string  $what   info requested
+* @return   mixed           requested info, as a string or array of strings
+*
+*/
+function getItemInfo ($type, $id, $what)
+{
+    if ($type == 'article') {
+        return STORY_getItemInfo ($id, 'title');
+    } else {
+        return PLG_getItemInfo ($type, $id, 'title');
+    }
+}
+
 // MAIN
 $display = '';
 
@@ -471,13 +477,8 @@ if ($mode == 'delete') {
     }
     $id = COM_applyFilter ($_REQUEST['id']);
     if (!empty ($id)) {
-        if ($type == 'article') {
-            list ($url, $title, $excerpt) = STORY_getItemInfo ($id,
-                                                'url,title,excerpt');
-        } else {
-            list ($url, $title, $excerpt) = PLG_getItemInfo ($type, $id,
-                                                'url,title,excerpt');
-        }
+        list ($url, $title, $excerpt) = getItemInfo ($type, $id,
+                                                     'url,title,excerpt');
         $excerpt = trim (strip_tags ($excerpt));
         $blog = TRB_filterBlogname ($_CONF['site_name']);
 
@@ -537,11 +538,7 @@ if ($mode == 'delete') {
         }
     }
 
-    if ($type == 'article') {
-        $title = STORY_getItemInfo ($id, 'title');
-    } else {
-        $title = PLG_getItemInfo ($type, $id, 'title');
-    }
+    $title = getItemInfo ($type, $id, 'title');
 
     $display .= COM_siteHeader ('menu', $LANG_TRB['send_pings']);
     $display .= COM_startBlock (sprintf ($LANG_TRB['send_pings_for'], $title));
@@ -627,11 +624,7 @@ if ($mode == 'delete') {
         $type = 'article';
     }
 
-    if ($type == 'article') {
-        $fulltext = STORY_getItemInfo ($id, 'description');
-    } else {
-        $fulltext = PLG_getItemInfo ($type, $id, 'description');
-    }
+    $fulltext = getItemInfo ($type, $id, 'description');
 
     $display .= COM_siteHeader ('menu', $LANG_TRB['trackback'])
               . COM_startBlock ($LANG_TRB['select_url'])
@@ -652,13 +645,8 @@ if ($mode == 'delete') {
 
     $trackbackUrl = TRB_detectTrackbackUrl ($url);
 
-    if ($type == 'article') {
-        list ($url, $title, $excerpt) = STORY_getItemInfo ($id,
-                                                           'url,title,excerpt');
-    } else {
-        list ($url, $title, $excerpt) = PLG_getItemInfo ($type, $id,
-                                                         'url,title,excerpt');
-    }
+    list ($url, $title, $excerpt) = getItemInfo ($type, $id,
+                                                 'url,title,excerpt');
     $excerpt = trim (strip_tags ($excerpt));
     $blog = TRB_filterBlogname ($_CONF['site_name']);
 
@@ -689,13 +677,8 @@ if ($mode == 'delete') {
         $id = COM_applyFilter ($_REQUEST['id']);
         $type = COM_applyFilter ($_REQUEST['type']);
         if (!empty ($id) && !empty ($type)) {
-            if ($type == 'article') {
-                list ($newurl, $newtitle, $newexcerpt) =
-                        STORY_getItemInfo ($id, 'url,title,excerpt');
-            } else {
-                list ($newurl, $newtitle, $newexcerpt) =
-                        PLG_getItemInfo ($type, $id, 'url,title,excerpt');
-            }
+            list ($newurl, $newtitle, $newexcerpt) =
+                                getItemInfo ($type, $id, 'url,title,excerpt');
             $newexcerpt = trim (strip_tags ($newexcerpt));
 
             if (empty ($url) && !empty ($newurl)) {
