@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.69 2002/10/07 14:32:35 dhaun Exp $
+// $Id: story.php,v 1.70 2002/10/08 15:13:24 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -656,56 +656,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         
         // Get the related URLs
-        $rel = array ();
-        $fulltext = "$introtext $bodytext";
-        $check = " ";
-        while($check != $reg[0]) {
-            $check = $reg[0];
-
-            // this gets any links from the article
-            eregi("<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>",$fulltext,$reg);
-
-            // this gets what is between <a href=...> and </a>
-            preg_match("/<a href=([^\]]+)>([^\]]+)<\/a>/",stripslashes($reg[0]),$url_text);
-            if (empty($url_text[1])) {
-                preg_match("/<A HREF=([^\]]+)>([^\]]+)<\/A>/",stripslashes($reg[0]),$url_text);
-            }
-			
-            $orig = $reg[0]; 
-
-            //if links is too long, shorten it and add ... at the end
-            if (strlen($url_text[2]) > 26) {
-                $new_text = substr($url_text[2],0,26) . '...';
-                // NOTE, this assumes there is no space between > and url_text[1]
-                $reg[0] = str_replace(">".$url_text[2],">".$new_text,$reg[0]);
-            }	
-
-            if(stristr($fulltext,"<img ")) {
-                // this is a linked images tag, ignore
-                $reg[0] = '';
-            }
-
-            if ($reg[0] != '') {
-                $fulltext = str_replace($orig,'',$fulltext);
-            }
-
-            if ($check != $reg[0]) {
-                // Only write if we are dealing with something other than an image 
-                if(!(stristr($reg[0],"<img "))) { 
-                    $rel[] = stripslashes($reg[0]);
-                }
-            }
-        }
-
-        $author = DB_getItem($_TABLES['users'],'username',"uid = $uid");
-        $topic = DB_getItem($_TABLES['topics'],'topic',"tid = '$tid'");
-
-        if ($_CONF["contributedbyline"] == 1) {
-            $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
-        }
-
-        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
-        $related = addslashes(COM_checkHTML(COM_checkWords(COM_makeList($rel))));
+        $related = addslashes (COM_whatsRelated ("$introtext $bodytext", $uid, $tid));
 
         // Clean up the text
         if ($postmode == "html") {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.29 2002/09/09 15:35:24 dhaun Exp $
+// $Id: moderation.php,v 1.30 2002/10/08 15:13:24 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -388,13 +388,14 @@ function moderation($mid,$action,$type,$count)
             if ($type == 'story') {
                 $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
                 $A = DB_fetchArray ($result);
+                $A['related'] = addslashes (COM_whatsRelated ($A['introtext'], $A['uid'], $A['tid']));
                 $A['owner_id'] = $A['uid'];
                 $A['title'] = addslashes ($A['title']);
                 $A['introtext'] = addslashes ($A['introtext']);
                 $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
                 $T = DB_fetchArray ($result);
-                DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
-                "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
+                DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
+                "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['related']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
             } else {
                 // This is called in case this is a plugin. There may be some

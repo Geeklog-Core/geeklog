@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.38 2002/09/19 17:16:45 dhaun Exp $
+// $Id: submit.php,v 1.39 2002/10/08 15:13:23 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -338,6 +338,7 @@ function submitstory()
         $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
 
         $A['show_topic_icon'] = 1;
+        $A['hits'] = 0;
         $retval .= COM_startBlock($LANG12[32])
             . COM_article($A,'n')
             . COM_endBlock();
@@ -548,6 +549,7 @@ function savesubmission($type,$A)
         if (!empty($A['title']) && !empty($A['introtext'])) {
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['title'] = str_replace('$','&#36;',$A['title']);
+            $introtext = $A['introtext'];
             if ($A['postmode'] == 'html') {
                 $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
             } else {
@@ -563,7 +565,8 @@ function savesubmission($type,$A)
             } else { // post this story directly
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
                 $T = DB_fetchArray ($result);
-                DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,date,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}", $_CONF['site_url'] . '/article.php?story=' . $A['sid']);
+                $related = addslashes (COM_whatsRelated ($introtext, $_USER['uid'], $A['tid']));
+                DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A["sid"]},{$_USER['uid']},'{$A["tid"]}','{$A['title']}','{$A["introtext"]}','{$related}',NOW(),'{$A["postmode"]}',{$_USER['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}", $_CONF['site_url'] . '/article.php?story=' . $A['sid']);
             }
         } else {
             $retval .= COM_startBlock($LANG12[22])

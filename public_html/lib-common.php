@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.163 2002/10/07 14:14:58 dhaun Exp $
+// $Id: lib-common.php,v 1.164 2002/10/08 15:13:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -253,7 +253,7 @@ if( DB_getItem( $_TABLES['blocks'], 'is_enabled', "name = 'whosonline_block'" ) 
 *
 */
 
-require_once( $_CONF['path'] . 'language/' . $_CONF['language'] . '.php' );
+require_once( $_CONF['path_language'] . $_CONF['language'] . '.php' );
 
 setlocale( LC_ALL, $_CONF['locale'] );
 
@@ -2527,6 +2527,9 @@ function COM_checkHTML( $str )
         $str = str_replace( $orig_pre_string, '<pre><code>' . $new_pre_string . '</code></pre>', $str );
     }
     
+    // strip_tags() gets confused by HTML comments ...
+    $str = preg_replace( '/<!--.+?-->/', '', $str );
+
     if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['adminhtml'] ))
     {
         $str = strip_tags( $str, $_CONF['allowablehtml'] );
@@ -4196,6 +4199,107 @@ function COM_getRate( $occurrences, $timespan )
     
 	return $singular;
 }
+
+/**
+* Extract links from an HTML-formatted text.
+*
+* Collects all the links in a story and returns them in an array.
+*
+* @param        string      $fulltext   the text to search for links
+* @param        int         $maxlength  max. length of text in a link (can be 0)
+* @return       array       an array of strings of form <a href="...">link</a>
+*/
+
+function COM_extractLinks( $fulltext, $maxlength = 26 )
+{
+    $rel = array();
+
+    $check = " ";
+    while( $check != $reg[0])
+    {
+        $check = $reg[0];
+
+        // this gets any links from the article
+        eregi( "<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>", $fulltext, $reg );   
+
+        // this gets what is between <a href=...> and </a>
+        preg_match( "/<a href=([^\]]+)>([^\]]+)<\/a>/", stripslashes( $reg[0] ),
+                $url_text);
+        if( empty( $url_text[1] ))
+        {
+            preg_match( "/<A HREF=([^\]]+)>([^\]]+)<\/A>/",
+                    stripslashes( $reg[0] ), $url_text );
+        }
+
+        $orig = $reg[0];
+
+        // if link is too long, shorten it and add ... at the end
+        if(( $maxlength > 0 ) && ( strlen( $url_text[2] ) > $maxlength ))
+        {
+            $new_text = substr( $url_text[2], 0, $maxlength ) . '...';
+            // NOTE, this assumes there is no space between > and url_text[1]
+            $reg[0] = str_replace( ">".$url_text[2], ">".$new_text, $reg[0] );
+        }
+
+        if( stristr( $fulltext, "<img " ))
+        {
+            // this is a linked images tag, ignore
+            $reg[0] = '';
+        }
+
+        if( $reg[0] != '' )
+        {
+            $fulltext = str_replace( $orig, '', $fulltext );
+        }
+
+        if( $check != $reg[0] )
+        {
+            // Only write if we are dealing with something other than an image
+            if( !( stristr( $reg[0], "<img " )))
+            {
+                $rel[] = stripslashes( $reg[0] );
+            }
+        }
+    }
+
+    return( $rel );
+}
+
+/**
+* Create "What's Related" links for a story
+*
+* Creates an HTML-formatted list of links to be used for the What's Related
+* block next to a story (in article view).
+*
+* @param        string      $fulltext   the story text
+* @param        int         $uid        user id of the author
+* @param        int         $tid        topic id
+* @return       string      HTML-formatted list of links
+*/
+
+function COM_whatsRelated( $fulltext, $uid, $tid )
+{
+    global $_CONF, $_TABLES, $LANG24;
+
+    // collect any links from the story text
+    $rel = COM_extractLinks( $fulltext );
+
+    // add a link to "search by author"
+    if( $_CONF["contributedbyline"] == 1 )
+    {
+        $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
+        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
+    }
+
+    // add a link to "search by topic"
+    $topic = DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" );       
+    $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
+
+    $related = COM_checkHTML( COM_checkWords( COM_makeList( $rel )));
+
+    return( $related );
+}
+
 
 // Now include all plugin functions
 $result = DB_query( "SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1" );
