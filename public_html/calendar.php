@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.52 2004/10/26 10:26:54 dhaun Exp $
+// $Id: calendar.php,v 1.53 2004/12/11 14:54:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -259,12 +259,16 @@ function getQuickAdd($tpl, $month, $day, $year)
 
     $cur_hour = date ('H', time ());
     if ($cur_hour >= 12) {
+        $tpl->set_var ('am_selected', '');
         $tpl->set_var ('pm_selected', 'selected="selected"');
     } else {
         $tpl->set_var ('am_selected', 'selected="selected"');
+        $tpl->set_var ('pm_selected', '');
     }
     if ($cur_hour > 12) {
         $cur_hour = $cur_hour - 12;
+    } else if ($cur_hour == 0) {
+        $cur_hour = 12;
     }
     $tpl->set_var('hour_options', COM_getHourFormOptions ($cur_hour));
 

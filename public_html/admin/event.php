@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.53 2004/12/10 09:26:17 dhaun Exp $
+// $Id: event.php,v 1.54 2004/12/11 14:54:49 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -176,27 +176,35 @@ function editevent ($mode, $A, $msg = '')
     $end_month = date('m', $end_stamp);
     $end_day = date('d', $end_stamp);
     $end_year = date('Y', $end_stamp);
-    $start_ampm = '';
-    $end_ampm = '';
+
     $start_hour = date('H', $start_stamp);
     $start_minute = date('i', $start_stamp);
+    if ($start_hour >= 12) {
+        $event_templates->set_var ('startam_selected', '');
+        $event_templates->set_var ('startpm_selected', 'selected="selected"');
+    } else {
+        $event_templates->set_var ('startam_selected', 'selected="selected"');
+        $event_templates->set_var ('startpm_selected', '');
+    }
     if ($start_hour > 12) {
         $start_hour = $start_hour - 12;
-        $event_templates->set_var('startpm_selected','selected="selected"');
-    } else {
-        $event_templates->set_var('startam_selected','selected="selected"');
+    } else if ($start_hour == 0) {
+        $start_hour = 12;
     }
+
     $end_hour = date('H', $end_stamp);
     $end_minute = date('i', $end_stamp);
-    $ampm = '';
+    if ($end_hour >= 12) {
+        $event_templates->set_var ('endam_selected', '');
+        $event_templates->set_var ('endpm_selected', 'selected="selected"');
+    } else {
+        $event_templates->set_var ('endam_selected', 'selected="selected"');
+        $event_templates->set_var ('endpm_selected', '');
+    }
     if ($end_hour > 12) {
         $end_hour = $end_hour - 12;
-        $ampm = 'pm';
-    }
-    if ($ampm == 'pm') {
-        $event_templates->set_var('endpm_selected', 'selected="selected"');
-    } else {
-        $event_templates->set_var('endam_selected', 'selected="selected"');
+    } else if ($end_hour == 0) {
+        $end_hour = 12;
     }
 
     $month_options = COM_getMonthFormOptions ($start_month);

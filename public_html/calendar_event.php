@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.36 2004/12/10 09:24:15 dhaun Exp $
+// $Id: calendar_event.php,v 1.37 2004/12/11 14:54:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -506,8 +506,13 @@ default:
             'addremove' => 'addremoveevent.thtml'
             ));
         
-    $cal_templates->set_var('lang_addevent', $LANG02[6]);
-    $cal_templates->set_var('lang_backtocalendar', $LANG02[15]);
+    $cal_templates->set_var ('lang_addevent', $LANG02[6]);
+    $cal_templates->set_var ('lang_backtocalendar', $LANG02[15]);
+    if ($mode == 'personal') {
+        $cal_templates->set_var ('calendar_mode', '&amp;mode=personal');
+    } else {
+        $cal_templates->set_var ('calendar_mode', '');
+    }
 
     $result = DB_query($datesql);
     $nrows = DB_numRows($result);
