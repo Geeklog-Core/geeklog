@@ -1,5 +1,19 @@
 GeekLog History/Changes:
 
+??? ??, 2005 (1.3.12)
+------------
+
+- Added a new script, directory.php, that implements a date-based listing of
+  all the stories on a site [Dirk]
+  Needs some more work and better integration with the rest ...
+- When $_CONF['profileloginrequired'] was set to 1, the actual message that
+  you have to log in before being able to see a user profile was not wrapped
+  in the Geeklog framework (reported by Sean C) [Dirk]
+- Save one SQL request for a story's printable view [Dirk]
+- The column headline for event search results was not displayed [Dirk]
+- Fixed / updated some texts in the German language files [Dirk]
+
+
 Dec 31, 2004 (1.3.11)
 ------------
 
