@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.18 2002/04/14 19:06:07 dhaun Exp $
+// $Id: event.php,v 1.19 2002/04/14 20:16:08 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -520,7 +520,8 @@ function listevents()
     $event_templates->set_var('lang_access', $LANG_ACCESS[access]);
     $event_templates->set_var('lang_startdate', $LANG22[14]);
     $event_templates->set_var('lang_enddate', $LANG22[15]);
-    
+    $event_templates->set_var('layout_url',$_CONF['layout_url']);
+
 	$result = DB_query("SELECT * FROM {$_TABLES['events']} ORDER BY datestart");
 	$nrows = DB_numRows($result);
 	for ($i = 0;$i < $nrows; $i++) {

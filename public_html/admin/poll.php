@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.12 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: poll.php,v 1.13 2002/04/14 20:16:08 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -155,6 +155,7 @@ function editpoll($qid='')
     $poll_templates->set_file(array('editor'=>'polleditor.thtml','answer'=>'pollansweroption.thtml'));
     $poll_templates->set_var('site_url', $_CONF['site_url']);
     $poll_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $poll_templates->set_var('layout_url', $_CONF['layout_url']);
 
     if (!empty($qid)) {
         $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.20 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: plugins.php,v 1.21 2002/04/14 20:16:08 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -85,6 +85,7 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_file('editor', 'editor.thtml');
     $plg_templates->set_var('site_url', $_CONF['site_url']);
     $plg_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $plg_templates->set_var('layout_url', $_CONF['layout_url']);
     $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13]));
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
@@ -93,6 +94,7 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
     $plg_templates->set_var('pi_version', $A['pi_version']);
     $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
+    $plg_templates->set_var('pi_icon', $_CONF['site_url'] . "/" . $pi_name . "/images/" . $pi_name . ".gif");
 	if (!empty($pi_name)) {
 		$plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
 	}

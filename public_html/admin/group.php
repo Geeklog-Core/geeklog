@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.13 2002/04/11 22:14:00 tony_bibbs Exp $
+// $Id: group.php,v 1.14 2002/04/14 20:16:08 dhaun Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -72,6 +72,7 @@ function editgroup($grp_id = '')
     $group_templates->set_file('editor','groupeditor.thtml');
     $group_templates->set_var('site_url', $_CONF['site_url']);
     $group_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $group_templates->set_var('layout_url', $_CONF['layout_url']);
     $group_templates->set_var('lang_save', $LANG_ACCESS[save]);
     $group_templates->set_var('lang_cancel', $LANG_ACCESS[cancel]);
 

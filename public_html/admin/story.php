@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.33 2002/04/12 15:55:18 tony_bibbs Exp $
+// $Id: story.php,v 1.34 2002/04/14 20:16:08 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -135,6 +135,7 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $story_templates->set_var('layout_url', $_CONF['layout_url']);
     if (empty($A['unixdate'])) {
         if ($A['ampm'] == 'pm') {
             $A['publish_hour'] = $A['publish_hour'] + 12;
