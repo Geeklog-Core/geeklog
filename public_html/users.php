@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.58 2003/05/05 09:33:38 dhaun Exp $
+// $Id: users.php,v 1.59 2003/05/05 09:45:44 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -551,7 +551,7 @@ function createuser($username,$email)
             if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
                 $retval .= custom_userform ('new', '', $LANG04[19]);
             } else {
-                $retval .= newuserform ($LANG04[19])
+                $retval .= newuserform ($LANG04[19]);
             }
             $retval .= COM_siteFooter ();
         }
