@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.60 2003/05/23 11:43:27 dhaun Exp $
+// $Id: usersettings.php,v 1.61 2003/06/08 15:22:50 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -269,7 +269,6 @@ function editpreferences()
 
     // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
-        $selection = '<select name="language">' . LB;
 
         if (empty($_USER['language'])) {
             $userlang = $_CONF['language'];
@@ -278,30 +277,32 @@ function editpreferences()
         }
 
         // Get available languages
-        $language_options = '';
+        $language = array ();
         $fd = opendir ($_CONF['path_language']);
         while (($file = @readdir ($fd)) !== false) {
             if (is_file ($_CONF['path_language'] . $file)) {
                 clearstatcache ();
                 $file = str_replace ('.php', '', $file);
-                $language_options .= '<option value="' . $file . '"';
-                if ($userlang == $file) {
-                    $language_options .= ' selected="SELECTED"';
-                }
                 $uscore = strpos ($file, '_');
-                if ($uscore !== false) {
-                    $lngname = substr ($file, 0, $uscore);
-                    $lngadd = substr ($file, $uscore + 1);
-                    $lngname = strtoupper ($lngname{0}) . substr ($lngname, 1);
-                    $lngadd = strtoupper ($lngadd{0}) . substr ($lngadd, 1);
-                    $file = $lngname . ' (' . $lngadd . ')';
+                if ($uscore === false) {
+                    $lngname = ucfirst ($file);
                 } else {
-                    $file = strtoupper ($file{0}) . substr ($file, 1);
+                    $lngname = ucfirst (substr ($file, 0, $uscore));
+                    $lngadd = ucfirst (substr ($file, $uscore + 1));
+                    $lngname .= ' (' . $lngadd . ')';
                 }
-                $language_options .= '>' . $file . '</option>' . LB;
+                $language[$file] = $lngname;
             }
         }
-        $selection .= $language_options;
+        asort ($language);
+        $selection = '<select name="language">' . LB;
+        foreach ($language as $langFile => $langName) {
+            $selection .= '<option value="' . $langFile . '"';
+            if ($userlang == $langFile) {
+                $selection .= ' selected="selected"';
+            }
+            $selection .= '>' . $langName . '</option>' . LB;
+        }
         $selection .= '</select>';
         $preferences->set_var ('language_selector', $selection);
         $preferences->parse ('language_selection', 'language', true);
@@ -318,20 +319,20 @@ function editpreferences()
             $usertheme = $_USER['theme'];
         }
 
-        $themes = COM_getThemes ();
-        for ($i = 1; $i <= count ($themes); $i++) {
-            $selection .= '<option value="' . current ($themes) . '"';
-            if ($usertheme == current ($themes)) {
-                $selection .= ' selected="SELECTED"';
+        $themeFiles = COM_getThemes ();
+        // first, some theme name beautifying ...
+        $themes = array ();
+        foreach ($themeFiles as $themeFile) {
+            $themeName = str_replace ('_', ' ', $themeFile);
+            $themes[$themeFile] = ucwords ($themeName);
+        }
+        asort ($themes);
+        foreach ($themes as $themeFile => $themeName) {
+            $selection .= '<option value="' . $themeFile . '"';
+            if ($usertheme == $themeFile) {
+                $selection .= ' selected="selected"';
             }
-            // some theme name beautifying ...
-            $th = str_replace ('_', ' ', current ($themes));
-            if ((strtolower ($th{0}) == $th{0}) &&
-                (strtolower ($th{1}) == $th{1})) {
-                $th = strtoupper ($th{0}) . substr ($th, 1);
-            }
-            $selection .= '>' . $th . '</option>' . LB;
-            next ($themes);
+            $selection .= '>' . $themeName . '</option>' . LB;
         }
         $selection .= '</select>';
         $preferences->set_var ('theme_selector', $selection);
