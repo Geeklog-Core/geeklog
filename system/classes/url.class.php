@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | url.class.php                                                             |
-// | class to allow for spider friendly URL's                                  |
 // |                                                                           |
+// | class to allow for spider friendly URL's                                  |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2002 by the following authors:                              |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.7 2003/09/01 18:23:55 dhaun Exp $
+// $Id: url.class.php,v 1.8 2004/08/11 09:23:34 dhaun Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -78,8 +78,12 @@ class url {
     {
         global $HTTP_SERVER_VARS;
 
-        $this->_arguments = explode('/',$HTTP_SERVER_VARS['PATH_INFO']);
-        array_shift($this->_arguments);
+        if (isset ($HTTP_SERVER_VARS['PATH_INFO'])) {
+            $this->_arguments = explode ('/', $HTTP_SERVER_VARS['PATH_INFO']);
+            array_shift ($this->_arguments);
+        } else {
+            $this->_arguments = array ();
+        }
     }
 
     /**

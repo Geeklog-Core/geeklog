@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.24 2004/08/09 07:56:22 dhaun Exp $
+// $Id: search.class.php,v 1.25 2004/08/11 09:23:34 dhaun Exp $
 
 if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -965,7 +965,9 @@ class Search {
     */
     function showForm()
     {
-        global $_TABLES, $LANG09, $_CONF;
+        global $_CONF, $_TABLES, $LANG09;
+
+        $retval = '';
 
         // Verify current user my use the search form
         if (!$this->_isFormAllowed()) {
@@ -974,7 +976,8 @@ class Search {
 
         $retval .= COM_startBlock($LANG09[1],'advancedsearch.html');
         $searchform = new Template($_CONF['path_layout'].'search');
-        $searchform->set_file(array('searchform'=>'searchform.thtml', 'authors'=>'searchauthors.thtml'));
+        $searchform->set_file (array ('searchform' => 'searchform.thtml',
+                                      'authors'    => 'searchauthors.thtml'));
         $searchform->set_var('search_intro', $LANG09[19]);
         $searchform->set_var('site_url', $_CONF['site_url']);
         $searchform->set_var('lang_keywords', $LANG09[2]);
