@@ -99,7 +99,7 @@ $LANG01 = array(
 	56 => "G³osuj",
 	57 => "Has³o",
 	58 => "Login",
-	59 => "Nie masz jeszcze konta? Za³ó¿ sobie <a href={$_CONF["site_url"]}/users.php?mode=new>Nowego U¿ytkownika</a>",
+	59 => "Nie masz jeszcze konta? Za³ó¿ sobie <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Nowego U¿ytkownika</a>",
 	60 => "Skomentuj",
 	61 => "Za³ó¿ Konto",
 	62 => "s³ów",
