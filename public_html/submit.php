@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.64 2004/02/15 09:44:05 dhaun Exp $
+// $Id: submit.php,v 1.65 2004/02/28 11:02:14 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -681,8 +681,13 @@ function savesubmission($type,$A)
 $display = '';
 $display .= COM_siteHeader();
 
-// 'type' always comes in as a GET variable
-$type = COM_applyFilter ($HTTP_GET_VARS['type']);
+// note that 'type' _may_ come in through $HTTP_GET_VARS even when the
+// other parameters are in $HTTP_POST_VARS
+if (isset ($HTTP_POST_VARS['type'])) {
+    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+} else {
+    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+}
 
 if (isset ($HTTP_POST_VARS['mode'])) {
     $http_vars = $HTTP_POST_VARS;
