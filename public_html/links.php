@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.20 2002/09/16 13:00:38 dhaun Exp $
+// $Id: links.php,v 1.21 2002/11/24 11:47:11 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -56,15 +56,28 @@ if (empty ($_USER['username']) &&
     $linklist = new Template($_CONF['path_layout'] . 'links');
     $linklist->set_file(array('linklist'=>'links.thtml','catlinks'=>'categorylinks.thtml','link'=>'linkdetails.thtml','catnav'=>'categorynavigation.thtml','catrow'=>'categoryrow.thtml','catcol'=>'categorycol.thtml','actcol'=>'categoryactivecol.thtml','pagenav'=>'pagenavigation.thtml'));
 
+    $permsql = "(";
+    if (!empty ($_USER['uid'])) {
+        $groupList = '';
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+        $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $permsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $permsql .= "(perm_members >= 2) OR ";
+    }
+    $permsql .= "(perm_anon >= 2))";
+
     if ($_CONF['linkcols'] > 0) {
-        $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} ORDER BY category");
+        $result = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']} WHERE {$permsql} ORDER BY category");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var ('lang_categories', $LANG23[14]);
             for ($i = 1; $i <= $nrows; $i++) {
                 $C = DB_fetchArray($result);
                 $cat = addslashes ($C['category']);
-                $result1 = DB_query ("SELECT count(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}'");
+                $result1 = DB_query ("SELECT count(*) AS count FROM {$_TABLES['links']} WHERE category = '{$cat}' AND {$permsql}");
                 $D = DB_fetchArray($result1);
                 if (empty ($C['category'])) {
                     $linklist->set_var ('category_name', $LANG23[7]);
@@ -99,11 +112,12 @@ if (empty ($_USER['username']) &&
     $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('lang_addalink', $LANG06[3]);
 
-    $sql = "SELECT * FROM {$_TABLES['links']} ";
+    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} ";
     if ($_CONF['linkcols'] > 0) {
         $cat = addslashes ($category);
         $sql .= "WHERE category = '$cat' ";
     }
+    $sql .= "AND {$permsql} ";
     $sql .= "ORDER BY category asc,title";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -131,25 +145,23 @@ if (empty ($_USER['username']) &&
         for ($i = 1; $i < $end; $i++) {
             $A = DB_fetchArray($result);
             if ($i >= $start) {
-                if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                    if (($A['category'] <> $currentcategory) AND ($i > $start)) {
-                        // print the category and link
-                        $linklist->parse('category_links','catlinks',true);
-                        $linklist->set_var('link_details','');
-                        $currentcategory = $A['category'];
-                        $linklist->set_var('link_category',$currentcategory);
-                    } else if ($A['category'] <> $currentcategory) {
-                        $currentcategory = $A['category'];
-                        $linklist->set_var('link_category',$currentcategory);
-                    }
-                    $linklist->set_var('link_url', $_CONF['site_url'] .
-                        '/portal.php?url=' . urlencode($A['url']) .
-                        '&amp;what=link&amp;item=' . $A['lid']);
-                    $linklist->set_var('link_name', stripslashes($A['title']));
-                    $linklist->set_var('link_hits', $A['hits']);
-                    $linklist->set_var('link_description', stripslashes ($A['description']));
-                    $linklist->parse('link_details', 'link', true);
+                if (($A['category'] <> $currentcategory) AND ($i > $start)) {
+                    // print the category and link
+                    $linklist->parse('category_links','catlinks',true);
+                    $linklist->set_var('link_details','');
+                    $currentcategory = $A['category'];
+                    $linklist->set_var('link_category',$currentcategory);
+                } else if ($A['category'] <> $currentcategory) {
+                    $currentcategory = $A['category'];
+                    $linklist->set_var('link_category',$currentcategory);
                 }
+                $linklist->set_var('link_url', $_CONF['site_url'] .
+                    '/portal.php?url=' . urlencode($A['url']) .
+                    '&amp;what=link&amp;item=' . $A['lid']);
+                $linklist->set_var('link_name', stripslashes($A['title']));
+                $linklist->set_var('link_hits', $A['hits']);
+                $linklist->set_var('link_description', stripslashes ($A['description']));
+                $linklist->parse('link_details', 'link', true);
             }
         }
         $linklist->parse('category_links','catlinks',true);
