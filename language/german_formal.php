@@ -1363,7 +1363,9 @@ $LANG_TRB = array(
     'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
     'button_save'        => 'Speichern',
     'button_cancel'      => 'Abbruch',
-    'button_delete'      => 'Löschen'
+    'button_delete'      => 'Löschen',
+    'trackbacks'         => 'Trackbacks',
+    'editor_intro'       => 'Hier können Sie Ihren Trackback-Kommentar für <a href="%s">%s</a> eingeben.'
 );
 
 ###############################################################################

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.11 2005/02/11 20:10:31 dhaun Exp $
+// $Id: trackback.php,v 1.12 2005/02/20 10:07:33 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -121,6 +121,8 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $template->set_var ('php_self', $_CONF['site_admin_url']
                                     . '/trackback.php');
 
+    $template->set_var ('lang_explain',
+                        sprintf ($LANG_TRB['editor_intro'], $url, $title));
     $template->set_var ('lang_trackback_url', $LANG_TRB['trackback_url']);
     $template->set_var ('lang_entry_url', $LANG_TRB['entry_url']);
     $template->set_var ('lang_title', $LANG_TRB['entry_title']);

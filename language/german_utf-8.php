@@ -1365,7 +1365,9 @@ anderen Weblog geschrieben hast.',
     'edit_service'       => 'Weblog-Verzeichnis bearbeiten',
     'button_save'        => 'Speichern',
     'button_cancel'      => 'Abbruch',
-    'button_delete'      => 'Loeschen'
+    'button_delete'      => 'Loeschen',
+    'trackbacks'         => 'Trackbacks',
+    'editor_intro'       => 'Hier kannst Du Deinen Trackback-Kommentar fuer <a href="%s">%s</a> eingeben.'
 );
 
 ###############################################################################

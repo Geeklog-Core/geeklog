@@ -3,6 +3,13 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Added a spam check to the user profile [Dirk]
+- The SpamX plugin's examine modules run the post through html_entity_decode()
+  now in case the spammers try to obfuscate their posts by using HTML entities
+  [Tom Willet]
+- Upgraded included kses class to version 0.2.2 which fixes problems with
+  Japanese and Thai characters (among other things), thus addressing bugs #94
+  and #119 [Dirk]
 - Hide 'edit' option for articles in preview (bug #347) [Dirk]
 - It wasn't possible to disable poll comments (reported by Demonhood) [Dirk]
 - Added the ability to dynamically expand and collapse comments without a page
@@ -11,8 +18,6 @@ GeekLog History/Changes:
 - Changed admin/user.php to use file() for the batch import [Dirk]
 - Implemented pinging weblog directory services like blo.gs and weblogs.com
   (Feature Request #35) [Dirk]
-  To do: Store them in the database and add an Admin interface (they're
-  currently listed in config.php).
 - Complete overhaul of the Plugin Comment API to reduce the likelyhood of 
   plugins introducing security problems.  Older plugins that use the comment
   API will no longer work. [Vinny]

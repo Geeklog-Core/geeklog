@@ -1361,7 +1361,9 @@ $LANG_TRB = array(
     'edit_service'       => 'Edit Weblog Directory Service',
     'button_save'        => 'Save',
     'button_cancel'      => 'Cancel',
-    'button_delete'      => 'Delete'
+    'button_delete'      => 'Delete',
+    'trackbacks'         => 'Trackbacks',
+    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.'
 );
 
 ###############################################################################

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.22 2005/02/06 10:57:48 dhaun Exp $
+// $Id: lib-story.php,v 1.23 2005/02/20 10:07:33 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -276,6 +276,26 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'start_post_comment_anchortag',
                                ' <a href="' . $postCommentUrl . '">' );
             $article->set_var( 'end_post_comment_anchortag', '</a>' );
+        }
+
+        if( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] )
+        {
+            $num_trackbacks = DB_count( $_TABLES['trackback'],
+                    array( 'sid', 'type' ), array( $A['sid'], 'article' ));
+            $trackbacksUrl = COM_buildUrl( $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] ) . '#trackback';
+            $article->set_var( 'trackbacks_url', $trackbacksUrl );
+            $article->set_var( 'trackbacks_text', $num_trackbacks . ' '
+                                                  . $LANG_TRB['trackbacks'] );
+            $article->set_var( 'trackbacks_count', $num_trackbacks );
+            $article->set_var( 'lang_trackbacks', $LANG_TRB['trackbacks'] );
+
+            if( $num_trackbacks > 0 )
+            {
+                $article->set_var( 'start_trackbacks_anchortag', '<a href="'
+                        . $trackbacksUrl . '">' );
+                $article->set_var( 'end_trackbacks_anchortag', '</a>' );
+            }
         }
 
         if( $_CONF['hideemailicon'] == 1 )
@@ -564,7 +584,8 @@ function STORY_getItemInfo ($sid, $what)
                                   . stripslashes ($A['bodytext']));
                 break;
             case 'excerpt':
-                $retval[] = trim (stripslashes ($A['introtext']));
+                $retval[] = trim (stripslashes ($A['introtext']) . "\n\n"
+                                  . stripslashes ($A['bodytext']));
                 break;
             case 'feed':
                 $feedfile = DB_getItem ($_TABLES['syndication'], 'filename',
