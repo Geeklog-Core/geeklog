@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.52 2003/08/07 10:23:16 dhaun Exp $
+// $Id: install.php,v 1.53 2003/08/11 08:53:04 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -510,7 +510,7 @@ if ($page > 0) {
         require_once($HTTP_POST_VARS['geeklog_path'] . '/config.php');
         require_once($HTTP_POST_VARS['geeklog_path'] . '/system/lib-database.php');
     } else {
-        $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">' . LB;
+        $display = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
         $display .= '<html>' . LB;
         $display .= '<head><title>Geeklog Installation - Error</title></head>' . LB;
         $display .= '<body bgcolor="#ffffff">' . LB;
