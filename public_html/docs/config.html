@@ -317,7 +317,18 @@ that are defined below:
   <td>When user submission is enabled this can contain a comma-separated list
     of domain names from which user submissions will not be queued (but
     approved automatically).
-    <br>Example: 'mycompany.com,myothercompany.com'</td></tr>
+    <br><strong>Example:</strong> 'mycompany.com,myothercompany.com'</td></tr>
+<tr>
+  <td>notification</td>
+  <td>array()</td>
+  <td>Send an email notification to <tt>$_CONF['site_email']</tt> when a new
+    story, link, or event has been submitted or a new user has registered with
+    the site. The <tt>array()</tt> can hold any combination of  the strings
+    <tt>'story'</tt>, <tt>'link'</tt>, <tt>'event'</tt>, and <tt>'user'</tt>
+    (separated by commas), depending on which notification(s) you want.<br>
+    <strong>Example:</strong> <code>array('story','user');</code> would
+    send notifications when a new story has been submitted or a new user has
+    registered. No notifications would be sent for new links or events.</td>
 <tr>
   <td>postmode</td>
   <td>plaintext</td>
@@ -602,6 +613,27 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td>max_image_size</td>
   <td>1048576 (equals 1 MB)</td>
   <td>Max. size of an image in bytes. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+<tr>
+  <td>max_photo_width</td>
+  <td>96</td>
+  <td>Max. width of a user photo in pixels. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+<tr>
+  <td>max_photo_height</td>
+  <td>96</td>
+  <td>Max. height of a user photo in pixels. If it exceeds this, it is either
+    rejected or resized (depending on the setting of $_CONF['image_lib']
+    above).
+</tr>
+<tr>
+  <td>max_photo_size</td>
+  <td>65536 (equals 64 KB)</td>
+  <td>Max. size of a user photo in bytes. If it exceeds this, it is either
     rejected or resized (depending on the setting of $_CONF['image_lib']
     above).
 </tr>

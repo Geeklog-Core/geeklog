@@ -1,5 +1,12 @@
 GeekLog History/Changes:
 
+- Added a simple email notification when a new story, link, or event has been
+  submitted or a new user has registered. See $_CONF['notification'] for details
+- Added a separate set of config variables for the max. dimensions of user
+  photos.
+- Fixed a problem when resizing GIF images using the netpbm tools.
+- Check the topic permissions when presenting a list of topics in the Admin
+  story editor (i.e. the StoryAdmin may not have access to all topics).
 - Removed the Normal / Archive / Refreshing drop down menus from the admin
   story and poll editors since they're not used anyway.
 - In the links section, do not display link categories when the current user
