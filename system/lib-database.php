@@ -269,12 +269,12 @@ function DB_delete($table,$id,$value,$return_page='')
 function DB_getItem($table,$what,$selection='',$ttl=0) 
 {
     if (!empty($selection)) {
-        $result = DB_query("SELECT $what FROM $table WHERE $selection",$ttl);
+        $result = DB_query("SELECT $what FROM $table WHERE $selection",0,$ttl);
     } else {
-        $result = DB_query("SELECT $what FROM $table",$ttl);
+        $result = DB_query("SELECT $what FROM $table",0,$ttl);
     }
     $ITEM = DB_fetchArray($result);
-    return $ITEM[0];
+    return $ITEM[DB_fieldName($result,0)];
 }
 
 /**
