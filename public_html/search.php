@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.11 2001/12/18 21:55:04 tony_bibbs Exp $
+// $Id: search.php,v 1.12 2002/02/26 17:56:59 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -94,7 +94,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
 	if ($type == 'all' OR $type == 'stories') {
-		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND ";
+		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND ";
 		$sql .= "((introtext like '%$query%' OR introtext like '$query%' OR introtext like '%$query') ";
 		$sql .= "OR (bodytext like '%$query%' OR bodytext like '$query%' OR bodytext like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
