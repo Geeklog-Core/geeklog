@@ -8,11 +8,11 @@
 // | Geeklog event administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.36 2003/02/02 19:46:47 dhaun Exp $
+// $Id: event.php,v 1.37 2003/04/09 18:43:48 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -112,10 +112,11 @@ function editevent($mode, $A)
     $event_templates->set_var('lang_eventtitle', $LANG22[3]);
     $event_templates->set_var('event_title', stripslashes ($A['title']));
     $types  = explode(',',$_CONF['event_types']);
+    asort ($types);
     for ($i = 1; $i <= count($types); $i++) {
-        $catdd .= '<option value="' . current($types) . '" ';
+        $catdd .= '<option value="' . current($types) . '"';
         if ($A['event_type'] == current($types)) {
-            $catdd .= 'selected="SELECTED"';
+            $catdd .= ' selected="SELECTED"';
         }
         $catdd .= '>' . current($types) . '</option>';
         next($types);
