@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.35 2003/09/14 09:07:54 dhaun Exp $
+// $Id: article.php,v 1.36 2003/10/14 18:38:26 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -183,7 +183,8 @@ if ($A['count'] > 0) {
             $story_template->set_var('formatted_article', COM_article($A, 'n'));
             // Display the comments, if there are any ..
             if ($A['commentcode'] >= 0) {
-                $delete_option = ($access == 3 ? true : false);
+                $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
+                                 ? true : false);
                 $story_template->set_var ('commentbar',
                         COM_userComments ($story, $A['title'], 'article',
                                           $order, $mode, $delete_option));
