@@ -139,6 +139,7 @@ function DB_setdebug($flag)
 *
 * @param        string  $sql                SQL to be executed
 * @param        int     $ignore_errors      If 1 this function supresses any error messages
+* @return       object  Returns results from query
 *
 */
 function DB_query($sql, $ignore_errors=0)
@@ -212,6 +213,7 @@ function DB_delete($table,$id,$value,$return_page='')
 * @param        string      $table      Table to get item from
 * @param        string      $what       field name to get
 * @param        string      $selection  Where clause to use in SQL
+* @return       mixed       Returns value sought
 *
 */
 function DB_getItem($table,$what,$selection='') 
@@ -266,6 +268,7 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 * @param        string              $table      Table to perform count on
 * @param        array|string        $id         field name(s) to use in where clause
 * @param        array|string        $value      Value(s) to use in where clause
+* @return       int     Returns row count from generated SQL
 *
 */
 function DB_count($table,$id='',$value='') 
@@ -312,6 +315,7 @@ function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
 * This returns the number of rows in a recordset
 *
 * @param        object     $recordset      The recordset to operate one
+* @return       int         Returns number of rows returned by a previously executed query
 *
 */
 function DB_numRows($recordset)
@@ -324,11 +328,12 @@ function DB_numRows($recordset)
 /**
 * Retrieves the number of rows in a recordset
 *
-* This returns the number of rows in a recordset
+* This returns the number of rows in a recordset...is this even used?
 *
 * @param        object      $recordset      The recordset to operate one
 * @param        int         $row            row to get data from
 * @param        string      $field          field to return
+* @return       int         Returns number of rows in a recordset
 *
 */
 function DB_result($recordset,$row,$field)
@@ -344,6 +349,7 @@ function DB_result($recordset,$row,$field)
 * This returns the number of fields in a recordset
 *
 * @param        object     $recordset       The recordset to operate on
+* @return       int         Returns the number fields in a result set
 *
 */
 function DB_numFields($recordset)
@@ -360,6 +366,7 @@ function DB_numFields($recordset)
 *
 * @param        object      $recordset      The recordset to operate on
 * @param        int         $fnumber        field number to return the name of
+* @return       string      Returns name of specified field
 *
 */
 function DB_fieldName($recordset,$fnumber)
@@ -375,6 +382,7 @@ function DB_fieldName($recordset,$fnumber)
 * Retrieves returns the number of effected rows for last query
 *
 * @param        object      $recordset      The recordset to operate on
+* @return       int         returns numbe of rows affected by previously executed query
 *
 */
 function DB_affectedRows($recordset)
@@ -390,6 +398,7 @@ function DB_affectedRows($recordset)
 * Gets the next record in a recordset and returns in array
 *
 * @param        object      $recordset      The recordset to operate on
+* @return       Array      Returns data for a record in an array
 *
 */
 function DB_fetchArray($recordset)
@@ -405,6 +414,7 @@ function DB_fetchArray($recordset)
 * Returns the last auto_increment ID generated for recordset
 *
 * @param        object      $recordset      Recorset to operate on
+* @return       int         Returns the last ID auto-generated
 *
 */
 function DB_insertId($recordset='')
@@ -419,6 +429,8 @@ function DB_insertId($recordset='')
 *
 * Returns an database error message
 *
+* @return   string  Returns database error message
+*
 */
 function DB_error()
 {
@@ -429,6 +441,10 @@ function DB_error()
 
 /**
 * Creates database structures for fresh installation
+*
+* This may not be used by Geeklog currently
+*
+* @return   boolean     returns true on success otherwise false
 *
 */
 function DB_createDatabaseStructures() 
@@ -442,6 +458,7 @@ function DB_createDatabaseStructures()
 * Executes the sql upgrade script(s)
 *
 * @param        string      $current_gl_version     version of geeklog to upgrade from
+* @return       boolean     returns true on success otherwise false
 *
 */
 function DB_doDatabaseUpgrade($current_gl_version) 
