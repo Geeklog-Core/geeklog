@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.4 2002/05/02 16:17:18 tony_bibbs Exp $
+// $Id: index.php,v 1.5 2002/05/14 13:29:50 mlimburg Exp $
 
 require_once('../lib-common.php');
 
@@ -39,9 +39,6 @@ if (!empty($USER["uid"])) {
         $result = DB_query("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$USER["uid"]}'");
         $U = DB_fetchArray($result);
 }
-
-COM_setArgNames(array('page'));
-$page = COM_getArgument('page');
 
 if (empty($page)) {
 	$error = 1;
@@ -69,23 +66,23 @@ if (!($error)) {
 	    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
 	    $retval .= '<br><br><center>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0] . '<br>'; 
 	    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-		    $retval .= '<a href="' . COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&sp_id=' . $page) .'">';
+		    $retval .= "<a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&sp_id=$page>";
 		    $retval .= $LANG_STATIC[edit] . "</a></center>";
 	    }
-	    $retval .= "<td><img src={$_CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
     }
 
-	if ($A['sp_format'] == 'allblocks' && $U['noboxes'] != 1) {
-        	$retval .= '<td valign="top" width="180">' . LB;
-        	$retval .= COM_showBlocks('right',$topic);
-        	$retval .= '<br><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="180" height="1">' . LB;
-	} else {
-        if ($A['sp_format'] <> 'blankpage') {
-        	$retval .= '<td>&nbsp';
+    
+    if ($A['sp_format'] <> 'blankpage') 
+    {
+
+    	if ($A['sp_format'] == 'allblocks' && $U['noboxes'] != 1) {
+            $retval .= COM_siteFooter(true);
+    	} 
+        else 
+        {
+            $retval .= COM_siteFooter();
         }
-	}
-    if ($A['sp_format'] <> 'blankpage') {
-        $retval .= COM_siteFooter();
+        
     }
    
     // increment hit counter for page...is SQL compliant?  
