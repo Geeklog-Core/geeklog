@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.164 2002/10/08 15:13:21 dhaun Exp $
+// $Id: lib-common.php,v 1.165 2002/10/10 08:59:42 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -306,7 +306,7 @@ for( $i = 1; $i <= $nrows; $i++ )
 
 function COM_article( $A, $index='' ) 
 {
-    global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05;
+    global $_TABLES, $mode, $_CONF, $LANG01, $_USER, $LANG05, $_THEME_URL;
 
     $curtime = COM_getUserDateTimeFormat( $A['day'] );
     $A['day'] = $curtime[0];
@@ -361,8 +361,16 @@ function COM_article( $A, $index='' )
         
         if( !empty( $T['imageurl'] ))
         {
+            if( isset( $_THEME_URL ))
+            {
+                $imagebase = $_THEME_URL;
+            }
+            else
+            {
+                $imagebase = $_CONF['site_url'];
+            }
             $topicname = htmlspecialchars( $T['topic'] );
-            $article->set_var( 'story_anchortag_and_image', '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><img align="' . $_CONF['article_image_align'] . '" src="' . $_CONF['site_url'] . $T['imageurl'] . '" alt="' . $topicname . '" title="' . $topicname . '" border="0"></a>' );
+            $article->set_var( 'story_anchortag_and_image', '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><img align="' . $_CONF['article_image_align'] . '" src="' . $imagebase . $T['imageurl'] . '" alt="' . $topicname . '" title="' . $topicname . '" border="0"></a>' );
         }
     }
 
@@ -1559,13 +1567,21 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
         {
             COM_errorLog( "got $answers answers in COM_pollResults", 1 );
         }
-        
+
 		if( $nanswers > 0 ) 
         {
             $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
-            
-			$retval .= COM_startBlock( $title, '', COM_getBlockTemplate( 'poll_block', 'header' ))
-				. '<h2>' . $Q['question'] . '</h2>'
+
+            if( $scale < 120 ) // assume we're in the poll block
+            {
+                $retval .= COM_startBlock( $title, '',
+                        COM_getBlockTemplate( 'poll_block', 'header' ));
+            }
+            else // assume we're in pollbooth.php
+            {
+                $retval .= COM_startBlock( $title );
+            }
+            $retval .= '<h2>' . $Q['question'] . '</h2>'
 				.'<table border="0" cellpadding="3" cellspacing="0" align="center">' . LB;
 
 			for( $i = 1; $i <= $nanswers; $i++ )
@@ -1609,8 +1625,16 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     . DB_count( $_TABLES['comments'], 'sid', $qid ) . ' ' . $LANG01[3] . '</a>';
 			}
 
-			$retval .= '</div>'. LB . COM_endBlock( COM_getBlockTemplate( 'poll_block', 'footer' ));
-				
+			$retval .= '</div>'. LB;
+            if( $scale < 120)
+            {
+                $retval .= COM_endBlock( COM_getBlockTemplate( 'poll_block',
+                        'footer' ));
+            }
+            else
+            {
+                $retval .= COM_endBlock();
+            }
 			if( $scale > 399 && $Q['commentcode'] >= 0 ) 
             {
 				$retval .= COM_userComments( $qid, $Q['question'], 'poll', $order, $mode );
@@ -2888,6 +2912,7 @@ function COM_rdfEndElement( $parser, $name )
 
     if( $name == "ITEM" ) 
     {
+        $RDFtitle = str_replace( '$', '&#36;', $RDFtitle );
         $RDFheadlines[] .= '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
         $RDFtitle = '';
         $RDFlink = '';
