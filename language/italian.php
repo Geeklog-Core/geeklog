@@ -890,7 +890,7 @@ $LANG31 = array(
     22 => 'Eseguito con successo',
     23 => 'Nessun errore',
     24 => 'Nessuna esecuzione',
-    25 => '',
+    25 => '-- Seleziona Gruppo --',
     26 => "Prego compila tutti i campi del modulo e seleziona un gruppo dal menù a tendina."
 );
 
