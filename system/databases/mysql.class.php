@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.13 2002/06/26 14:54:45 dhaun Exp $
+// $Id: mysql.class.php,v 1.14 2003/01/21 03:34:02 blaine Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -303,7 +303,7 @@ class database {
             }
         } else {
             // just regular string values, build sql
-            if (!empty($id) && !empty($value)) {
+            if (!empty($id) && ( isset($value) || $value != "")) { 
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -364,7 +364,7 @@ class database {
             }
         } else {
             // These are regular strings, build sql
-            if (!empty($id) && !empty($value)) {
+            if (!empty($id) && ( isset($value) || $value != "")) { 
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -420,7 +420,7 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && !empty($value)) {
+            if (!empty($id) && ( isset($value) || $value != "")) { 
                 $sql .= " WHERE $id = '$value'";
             }
         }
@@ -481,7 +481,7 @@ class database {
                 return false;
             }
         } else {
-            if (!empty($id) && !empty($value)) {
+            if (!empty($id) && ( isset($value) || $value != "")) { 
                 $sql .= " WHERE $id = '$value'";
             }
         }
