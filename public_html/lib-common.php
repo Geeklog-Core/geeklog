@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.90 2002/05/10 15:08:05 dhaun Exp $
+// $Id: lib-common.php,v 1.91 2002/05/10 16:20:06 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1209,7 +1209,7 @@ function COM_showTopics($topic='')
                         $T = DB_fetchArray($rcount);
                         $retval .= $T['count'];
                     }
-                    if ($_CONF['showstorycount']) {
+                    if ($_CONF['showsubmissioncount']) {
                         if ($_CONF['showstorycount']) {
                             $retval .= '/';
                         }
