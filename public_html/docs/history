@@ -1,5 +1,18 @@
 GeekLog History/Changes:
 
+July 1?, 2003 (1.3.8)
+-------------
+
+- Hide those story submissions from moderators that don't have access to the
+  topic.
+- Use $HTTP_SERVER_VARS['PATH_INFO'] instead of $PATH_INFO for the url_rewrite
+  feature, since the latter doesn't seem to work on some setups.
+
+- Updated Slovenian language file, provided by gape.
+- Updated Polish language file for the Static Pages plugin, provided by
+  Robert Stadnik
+
+
 July 6, 2003 (1.3.8rc2)
 ------------
 
