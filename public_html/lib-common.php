@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.384 2004/10/05 19:59:33 dhaun Exp $
+// $Id: lib-common.php,v 1.385 2004/10/07 01:50:31 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1195,7 +1195,7 @@ function COM_endBlock( $template='blockfooter.thtml' )
 *
 * @param        string      $table      Database Table to get data from
 * @param        string      $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
-* @param        string      $selected   Value (from $selection) to set to SELECTED or default
+* @param        string/array      $selected   Value (from $selection) to set to SELECTED or default
 * @param        int         $sortcol    Which field to sort option list by 0 (value) or 1 (label)
 * @param        string      $where      Optional WHERE clause to use in the SQL Selection
 * @see function COM_checkList
@@ -1222,8 +1222,16 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where=''
         $A = DB_fetchArray( $result, true );
         $retval .= '<option value="' . $A[0] . '"';
 
-        if( $A[0] == $selected )
-        {
+        if ( is_array($selected) AND count($selected) > 0 ) {
+            foreach ($selected as $selected_item)
+            {
+                if( $A[0] == $selected_item )
+                {
+                    $retval .= ' selected="selected"';
+                }
+            }
+        } elseif (!is_array($selected) AND $A[0] == $selected) {
+
             $retval .= ' selected="selected"';
         }
 
