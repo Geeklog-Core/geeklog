@@ -472,6 +472,7 @@ CREATE TABLE {$_TABLES['userinfo']} (
   tokens tinyint(3) unsigned NOT NULL default '0',
   totalcomments mediumint(9) NOT NULL default '0',
   lastgranted int(10) unsigned NOT NULL default '0',
+  lastlogin VARCHAR(10) NOT NULL default '0',
   PRIMARY KEY  (uid)
 ) TYPE=MyISAM
 ";

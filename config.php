@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.87 2003/06/17 10:30:26 dhaun Exp $
+// $Id: config.php,v 1.88 2003/06/22 15:47:13 blaine Exp $
 
 // When setting up Geeklog for the first time, you only need to make sure the
 // settings in the following 3 sections are correct:
@@ -212,6 +212,9 @@ $_CONF['session_cookie_timeout']        = 7200;
 $_CONF['cookie_path']                   = '/';
 $_CONF['cookiedomain']                  = ''; // e.g. '.example.com'
 $_CONF['cookiesecure']                  = 0;
+
+// Set to false if you don't want to store last login data and time in the userinfo table
+$_CONF['lastlogin']                     = true;
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |

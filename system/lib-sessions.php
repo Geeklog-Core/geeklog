@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.21 2003/06/07 15:25:03 dhaun Exp $
+// $Id: lib-sessions.php,v 1.22 2003/06/22 15:47:13 blaine Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -263,7 +263,11 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
     }
     $result = DB_query($sql);
     if ($result) {
-    	if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
+        if ($_CONF['lastlogin'] == true) {
+	        // Update userinfo record to record the date and time as lastlogin
+            DB_query("UPDATE {$_TABLES['userinfo']} SET lastlogin = UNIX_TIMESTAMP() WHERE uid=$userid");
+	    }
+		if ($_SESS_VERBOSE) COM_errorLog("Assigned the following session id: $sessid",1);
     	if ($_SESS_VERBOSE) COM_errorLog("*************leaving SESS_newSession*****************",1);
         if ($md5_based == 1) {
             return $md5_sessid;
