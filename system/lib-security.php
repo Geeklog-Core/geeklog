@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.18 2003/12/28 18:48:05 dhaun Exp $
+// $Id: lib-security.php,v 1.19 2004/02/08 11:10:18 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -478,7 +478,10 @@ function SEC_getUserPermissions($grp_id='',$uid='')
         if ($_SEC_VERBOSE) {
             COM_errorLog('Adding right ' . $A['ft_name'] . ' in SEC_getUserPermissions',1);
         }
-        $retval .= $A['ft_name'] . ',';
+        $retval .= $A['ft_name'];
+        if ($j < $nrows) {
+            $retval .= ',';
+        }
     }
     
     return $retval;
