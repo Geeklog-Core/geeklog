@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.9 2002/08/14 20:00:14 dhaun Exp $
+// $Id: index.php,v 1.10 2002/09/11 10:17:01 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -288,23 +288,22 @@ if (empty($mode) OR empty($sp_id)) {
     $sp_id = COM_getArgument('sp_id');
 }
 
-switch ($mode) {
-case $LANG_STATIC['delete']:
-    DB_delete($_TABLES['staticpage'],'sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
-    break;
-case 'edit':
+if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
+    if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
+        COM_errorLog ('Attempted to delete static page sp_id=' . $sp_id);
+    } else {
+        DB_delete($_TABLES['staticpage'],'sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+    }
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= staticpageeditor($sp_id,$mode);
     $display .= COM_siteFooter();
-    break;
-case $LANG_STATIC['save']:
+} else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
     submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format,$sp_onmenu,$sp_label);
-    break;
-default:
+} else {
     $display .= COM_siteHeader('menu');
     $display .= liststaticpages($sp_id);
     $display .= COM_siteFooter();
-    break;
 }
 
 echo $display;
