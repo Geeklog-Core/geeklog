@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.20 2002/01/04 17:04:32 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.21 2002/01/11 17:20:32 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -462,9 +462,15 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
     $block->set_var('layout_url', $_CONF['layout_url']);
     $block->set_var('block_title',$title);
     if (!empty($helpfile)) {
-        $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
-            . '" target="_blank"><img src="' . $_CONF['layout_url'] 
-            . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+        if (!stristr($helpfile,'http://')) {
+            $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
+                . '" target="_blank"><img src="' . $_CONF['layout_url'] 
+                . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+        } else {
+            $help = '<a class="blocktitle" href="' . $helpfile 
+                . '" target="_blank"><img src="' . $_CONF['layout_url'] 
+                . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+        }
         $block->set_var('block_help',$help); 
     }
 
@@ -1023,7 +1029,7 @@ function COM_showTopics($topic='')
 * This shows the average joe use their menu options
 *
 */
-function COM_userMenu($title='') 
+function COM_userMenu($help='',$title='') 
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
@@ -1034,7 +1040,7 @@ function COM_userMenu($title='')
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'],'title',"name='user_block'");
         }
-        $retval .= COM_startBlock($title,'',COM_getBlockTemplate('user_block', 'header'));
+        $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('user_block', 'header'));
 			
         if ($_CONF['personalcalendars'] == 1) {
             $adminmenu->set_var('option_url', $_CONF['site_url'] . '/calendar.php?mode=personal');
@@ -1102,7 +1108,7 @@ function COM_userMenu($title='')
 * sufficient rights to
 *
 */
-function COM_adminMenu($title='') 
+function COM_adminMenu($help='',$title='') 
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
@@ -1113,7 +1119,7 @@ function COM_adminMenu($title='')
         if (empty($title)) {
             $title = DB_getItem($_TABLES['blocks'],'title',"name='admin_block'");
         }
-	    $retval .= COM_startBlock($title,'',COM_getBlockTemplate('admin_block', 'header'));
+	    $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('admin_block', 'header'));
         if (SEC_isModerator()) {
             $num = DB_count($_TABLES['storysubmission'],'uid',0) + 
                     DB_count($_TABLES['eventsubmission'],'eid',0) + 
@@ -1650,25 +1656,25 @@ function COM_olderstuff()
 * @name     string      Logical name of block (not same as title)
 *
 */
-function COM_showBlock($name,$title='')
+function COM_showBlock($name,$help='',$title='')
 {
     global $_CONF;
 
     switch ($name) {
     case 'user_block':
-        $retval .= COM_userMenu($title);
+        $retval .= COM_userMenu($help,$title);
         break;
     case 'admin_block':
-        $retval .= COM_adminMenu($title);
+        $retval .= COM_adminMenu($help,$title);
         break;
     case 'section_block':
-        $retval .= COM_startBlock($title,'', COM_getBlockTemplate($name,'header')) 
+        $retval .= COM_startBlock($title,$help, COM_getBlockTemplate($name,'header')) 
             . COM_showTopics($topic) 
             . COM_endBlock(COM_getBlockTemplate($name,'footer'));
         break;
     case 'events_block':
         if (!$U['noboxes'] && $_CONF['showupcomingevents']) {
-            $retval .= COM_printUpcomingEvents($title);
+            $retval .= COM_printUpcomingEvents($help,$title);
         } 
         break;
     case 'poll_block':
@@ -1676,7 +1682,7 @@ function COM_showBlock($name,$title='')
         break;
     case 'whats_new_block':
         if (!$U['noboxes']) {
-            $retval .= COM_whatsNewBlock($title);
+            $retval .= COM_whatsNewBlock($help,$title);
         }
         break;
     }
@@ -1747,14 +1753,14 @@ function COM_showBlocks($side, $topic='', $name='all')
         }
 
         if ($A['type'] == 'gldefault') {
-            $retval .= COM_showBlock($A['name'],$A['title']);
+            $retval .= COM_showBlock($A['name'],$A['help'],$A['title']);
         }
 
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['type'] == 'phpblock' && !$U['noboxes']) {
                 if (!($A['name'] == 'whosonline_block' && $_CONF['whosonline'] == 0)) {
                     $function = $A['phpblockfn'];
-                    $retval .= COM_startBlock($A['title']);
+                    $retval .= COM_startBlock($A['title'],$A['help']);
 
                     if (function_exists($function)) {
                         // great, call it
@@ -1767,7 +1773,7 @@ function COM_showBlocks($side, $topic='', $name='all')
                 }
             }
             if (!empty($A['content']) && !$U['noboxes']) {
-                $retval .= COM_startBlock($A['title'],'',COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . '<br>' . LB
+                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . '<br>' . LB
                     . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
             }
         }
@@ -1925,16 +1931,16 @@ function COM_hit()
 * Returns the HTML for any upcoming events in the calendar
 *
 */
-function COM_printUpcomingEvents($title='') 
+function COM_printUpcomingEvents($help='',$title='') 
 {
     global $_TABLES, $LANG01,$_CONF, $_USER;
 
-    if (empty($title)) {	
+    if (empty($title)) {
         $title = DB_getItem($_TABLES['blocks'],'title',"name = 'events_block'");
     }
     $retval .= COM_startBlock($title, '', COM_getBlockTemplate('events_block', 'header'));
 
-    $eventSql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['events']} WHERE dateend >= NOW() AND " 
+    $eventSql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['events']} WHERE dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
     $personaleventsql = "SELECT eid, title, url, datestart, dateend FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
@@ -1962,22 +1968,21 @@ function COM_printUpcomingEvents($title='')
             $theRow    = 1;         // Start with today!
             $oldDate1  = 'no_day';  // Invalid Date!
             $oldDate2  = 'last_d';  // Invalid Date!
-            if ($totalrows > 0) $retval .= '<p><b><u>' . $LANG01[101] . '</u></b><br>';
+            if ($numRows > 0) $retval .= '<p><b><u>' . $LANG01[101] . '</u></b><br>';
         } else {
-             if ($iterations == 2 && $totalrows > 0) $retval .= '<b><u>' . $LANG01[102] . '</u></b><br>';
+             if ($totalrows > 0) $retval .= '<b><u>' . $LANG01[102] . '</u></b><br>';
         }
 
-        //if ($numRows == 0) {
-        if (empty($_USER['uid']) OR ($z == 2 AND $totalrows == 0)) {
+        if ($totalrows == 0 AND ($iterations == 1 OR ($iterations == 2 AND $z == 2))) {
             // There aren't any upcoming events, show a nice message
             $retval .= $LANG01[89];
         }
 
         while ($theRow <= $numRows AND $numDays < 14) {
-    
+
             // Retreive the next event, and format the start date.
             $theEvent   = DB_fetchArray($allEvents);
-		
+
             // Start Date strings...
             $startDate  = $theEvent['datestart'];
             $theTime1   = strtotime($startDate);
@@ -2011,12 +2016,12 @@ function COM_printUpcomingEvents($title='')
                 $retval .= '<li><a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
                     . '">' . stripslashes($theEvent['title']) . '</a></li>';
             }
-            $theRow ++ ;  
+            $theRow ++ ;
         }
 
     } // end for z
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
-	
+
     return $retval;
 }
 
@@ -2101,7 +2106,7 @@ function COM_emailUserTopics()
 * Return the HTML that shows any new stories, comments, etc
 *
 */
-function COM_whatsNewBlock($title='') 
+function COM_whatsNewBlock($help='',$title='') 
 {
     global $_TABLES, $_CONF, $LANG01;
 	
@@ -2123,7 +2128,7 @@ function COM_whatsNewBlock($title='')
     if (empty($title)) {
         $title = DB_getItem($_TABLES['block'],'title',"name='whats_new_block'");
     }
-    $retval .= COM_startBlock($title, '', COM_getBlockTemplate('whats_new_block', 'header'));
+    $retval .= COM_startBlock($title, $help, COM_getBlockTemplate('whats_new_block', 'header'));
 
     // Any late breaking news stories?
     $retval .= '<b>' . $LANG01[99] . '</b><br>';
