@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.38 2002/09/29 13:21:21 dhaun Exp $
+// $Id: search.php,v 1.39 2002/10/12 17:54:22 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -123,8 +123,11 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
         $type = 'all';
     }
 
-    if (($type == 'links') || (($type == 'all') && empty ($author))) {
-        $sql = "SELECT lid,title,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
+    // Note: When searching for "all" with an empty query string and any of
+    // the author, date start or date end fields NOT empty, we just skip the
+    // search, since links don't have an author or a date.
+    if (($type == 'links') || !(($type == 'all') && empty ($query) && (!empty ($author) || !empty ($datestart) || !empty ($dateend)))) {
+        $sql = "SELECT lid,title,url,hits,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE ";
 		$sql .= " (title like '%$query%' ";
 		$sql .= " OR description like '%$query%') ";
         if (!empty($datestart) && !empty($dateend)) {
@@ -135,7 +138,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
 			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
 			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
 		}
-        $sql .= "ORDER BY date desc";
+        $sql .= "ORDER BY title ASC";
 		$result_links = DB_query($sql);
 		$nrows_links = DB_numRows($result_links);
         require_once($_CONF['path_system'] . 'classes/plugin.class.php');
@@ -169,6 +172,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
     } else {
         $link_results = new Plugin();
         $link_results->searchlabel = $LANG09[38];
+        $link_results->num_itemssearched = DB_count($_TABLES['links']);
     }
 
     return $link_results;
