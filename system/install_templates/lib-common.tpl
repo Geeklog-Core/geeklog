@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.9 2001/12/14 16:22:11 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.10 2001/12/14 16:27:01 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1716,9 +1716,6 @@ function COM_showBlocks($side, $topic='', $name='all')
         }
 
         $sql .= "bid = '-1')";
-
-    } else {
-        $sql .= ' AND blockorder < 10';
     }
     
     $sql .= ' ORDER BY blockorder,title asc';
