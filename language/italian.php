@@ -227,7 +227,7 @@ $LANG04 = array(
 	20 => "L'indirizzo email fornito non è un indirizzo valido",
 	21 => "Errore",
 	22 => "Registrati in {$_CONF['site_name']}!",
-	23 => "La creazione di un Account Utente da la possibilità di partecipare alla costruzione di {$_CONF['site_name']} e ti permette di inviare commenti e articoli da te realizzati. Senza un Account sarai in grado di inserire solo come Anonimo. Prego nota che il tuo indirizzo email non sarà<b><i>mai</i></b> disponibile pubblicamente o visualizzata nel sito.",
+	23 => "<div align=justify>La creazione di un Account Utente da la possibilità di partecipare alla costruzione di {$_CONF['site_name']} e ti permette di inviare commenti e articoli da te realizzati. Senza un Account sarai in grado di inserire solo come Anonimo. Prego nota che il tuo indirizzo email non sarà <b><i>mai</i></b> disponibile pubblicamente o visualizzata nel sito.<div>",
 	24 => "La tua password sarà inviata all'indirizzo da te inserito.",
 	25 => "Ti sei dimenticato la tua password?",
 	26 => "Inserisci il tuo Nome Utente e clicca su Email Password e una nuova password ti sarà inviata all'indirizzo registrato nel nostro database.",
@@ -408,7 +408,9 @@ $LANG09 = array(
     37 => 'Risultato Eventi',
     38 => 'Risultato Links',
     39 => 'Links',
-    40 => 'Eventi'
+    40 => 'Eventi',
+    41 => 'La tua stringa di ricerca deve avere almeno 3 caratteri.',
+    42 => 'Prego usa una data formattata come YYYY-MM-DD (anno-mese-giorno).'
 );
 
 ###############################################################################
