@@ -68,7 +68,7 @@ $LANG01 = array(
     21 => 'Username',
     22 => 'User-ID',
     23 => 'Security Level',
-    24 => 'Anonymous',
+    24 => 'Gast',
     25 => 'Antwort',
     26 => 'Die folgenden Kommentare geben Meinungen von Lesern wieder und entsprechen nicht notwendigerweise der Meinung der Betreiber dieser Site. Die Betreiber behalten sich die Löschung von Kommentaren vor.',
     27 => 'Letzter Beitrag',
@@ -208,7 +208,7 @@ $LANG03 = array(
     21 => 'Lesen Sie bitte die vorhandenen Kommentare bevor Sie Ihren eigenen abgeben, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
     22 => 'Benutzen Sie eine eindeutige Betreffzeile, die den Inhalt Ihres Kommentars zusammenfasst.',
     23 => 'Ihre E-Mail-Adresse wird NICHT veröffentlicht.',
-    24 => 'Anonymous',
+    24 => 'Gast',
     25 => 'Sind Sie sicher, dass Sie diesen Beitrag als möglichen Missbrauch melden wollen?',
     26 => '%s meldete den folgenden Beitrag als möglichen Missbrauch:',
     27 => 'Hinweis auf Missbrauch'
@@ -312,7 +312,7 @@ $LANG04 = array(
     92 => 'Neues Passwort eingeben',
     93 => 'Sie haben zuletzt vor %d Sekunden ein neues Passwort angefordert. Zwischen zwei Passwort-Anforderungen müssen aber mindestens %d Sekunden vergangen sein.',
     94 => 'Account "%s" löschen',
-    95 => 'Sie können Ihren Account löschen, indem Sie auf den "Account Löschen"-Button klicken. Artikel und Kommentare, die Sie unter diesem Account geschrieben haben, werden <strong>nicht</strong> gelöscht, werden aber fortan als vom User "Anonymous" geschrieben erscheinen.',
+    95 => 'Sie können Ihren Account löschen, indem Sie auf den "Account Löschen"-Button klicken. Artikel und Kommentare, die Sie unter diesem Account geschrieben haben, werden <strong>nicht</strong> gelöscht, werden aber fortan als vom User "Gast" geschrieben erscheinen.',
     96 => 'Account Löschen',
     97 => 'Account Löschen bestätigen',
     98 => 'Sind Sie sicher, dass Sie Ihren  Account löschen wollen? Sie werden sich danach nicht mehr einloggen können (es sei denn, Sie legen einen neuen Account an). Wenn Sie sich sicher sind, klicken Sie bitte noch einmal auf "Account Löschen".',
@@ -502,7 +502,7 @@ $LANG11 = array(
     2 => 'Artikel an einen Freund schicken',
     3 => 'Druckfähige Version',
     4 => 'Artikel-Optionen',
-    5 => 'PDF Story Format'
+    5 => 'Als PDF'
 );
 
 ###############################################################################
@@ -545,9 +545,9 @@ $LANG12 = array(
     34 => 'Abmelden',
     35 => 'HTML-Tags sind nicht erlaubt',
     36 => 'Modus',
-    37 => "Wenn Sie einen Termin bei {$_CONF['site_name']} einreichen, wird er in den Master-Kalender aufgenommen, von wo aus ihn andere User in ihren persönlichen Kalender übernehmen können. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Sie einen Termin einreichen, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Master-Kalender erscheinen.",
+    37 => "Wenn Sie einen Termin bei {$_CONF['site_name']} einreichen, wird er in den Kalender aufgenommen, von wo aus ihn andere User in ihren persönlichen Kalender übernehmen können. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Sie einen Termin einreichen, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Kalender erscheinen.",
     38 => 'Termin hinzufügen zu',
-    39 => 'Master-Kalender',
+    39 => 'Kalender',
     40 => 'Persönlicher Kalender',
     41 => 'Endzeit',
     42 => 'Startzeit',
@@ -641,10 +641,10 @@ $LANG21 = array(
     54 => 'Speichern',
     55 => 'Abbruch',
     56 => 'Löschen',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => 'Block nach unten',
+    58 => 'Block nach oben',
+    59 => 'Block auf die rechte Seite',
+    60 => 'Block auf die linke Seite'
 );
 
 ###############################################################################
@@ -673,9 +673,9 @@ $LANG22 = array(
     20 => 'Speichern',
     21 => 'Abbruch',
     22 => 'Löschen',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Ungültiges Startdatum.',
+    24 => 'Ungültiges Enddatum.',
+    25 => 'Enddatum ist vor dem Startdatum.'
 );
 
 ###############################################################################
@@ -689,7 +689,7 @@ $LANG23 = array(
     5 => 'Kategorie',
     6 => '(mit http://)',
     7 => 'Andere',
-    8 => 'Treffer',
+    8 => 'Klicks',
     9 => 'Beschreibung',
     10 => 'Sie müssen einen Titel, eine URL und eine Beschreibung für den Link angeben.',
     11 => 'Link-Manager',
@@ -728,13 +728,13 @@ $LANG24 = array(
     15 => 'Datum',
     16 => 'Einleitung',
     17 => 'Haupttext',
-    18 => 'Treffer',
+    18 => 'Gelesen',
     19 => 'Kommentare',
     20 => '',
     21 => '',
     22 => 'Artikel-Liste',
     23 => 'Auf die Nummer klicken, um einen Artikel zu ändern oder zu löschen. Um einen Artikel anzusehen, auf dessen Titel klicken. Auf Neuer Artikel (s.o.) klicken, um einen neuen Artikel zu schreiben.',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
+    24 => 'Diese ID wird bereits für einen anderen Artikel benutzt. Bitte wählen Sie eine andere ID.',
     25 => '',
     26 => 'Artikel-Vorschau',
     27 => '',
@@ -768,11 +768,11 @@ $LANG24 = array(
     55 => 'Folgende Fehler traten beim Versuch, den Artikel zu speichern, auf. Bitte diese Fehler beheben und den Artikel noch einmal speichern.',
     56 => 'mit Icon',
     57 => 'Bild in Originalgröße',
-    58 => 'Story Management',
+    58 => 'Artikel-Verwaltung',
     59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    60 => 'Aktiviert',
+    61 => 'automatisch archivieren',
+    62 => 'automatisch löschen'
 );
 
 ###############################################################################
@@ -835,8 +835,8 @@ $LANG27 = array(
     22 => 'Default',
     23 => 'Zur Default-Kategorie für neue Artikel machen',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'Archiv-Kategorie',
+    26 => 'Zur Archiv-Kategorie machen (nur für eine Kategorie möglich)'
 );
 
 ###############################################################################
@@ -921,7 +921,7 @@ $LANG30 = array(
     8 => 'Neuer Termin',
     9 => 'Termin',
     10 => 'Termine am',
-    11 => 'Master-Kalender',
+    11 => 'Kalender',
     12 => 'Mein Kalender',
     13 => 'Januar',
     14 => 'Februar',
@@ -1020,7 +1020,10 @@ $LANG32 = array(
     28 => 'Plugin-Version',
     29 => 'Geeklog-Version',
     30 => 'Plugin löschen?',
-    31 => 'Sind Sie sicher, dass Sie dieses Plugin löschen wollen? Dies wird alle Dateien, Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Sie sicher sind, dann klicken Sie jetzt bitte noch einmal auf Löschen.'
+    31 => 'Sind Sie sicher, dass Sie dieses Plugin löschen wollen? Dies wird alle Dateien, Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Sie sicher sind, dann klicken Sie jetzt bitte noch einmal auf Löschen.',
+    32 => '<p><b>Fehler: Ungültiges Format für Autolink.</b></p>',
+    33 => 'Code-Version',
+    34 => 'Aktualisieren'
 );
 
 ###############################################################################
@@ -1128,7 +1131,8 @@ $MESSAGE = array(
     56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.',
     57 => 'Ihr Account wurde gelöscht.',
     58 => 'Der Feed wurde gespeichert.',
-    59 => 'Der Feed wurde gelöscht.'
+    59 => 'Der Feed wurde gelöscht.',
+    60 => 'Das Plugin wurde erfolgreich aktualisiert.'
 );
 
 ###############################################################################
@@ -1141,7 +1145,7 @@ $LANG_ACCESS = array(
     'accessrights' => 'Zugriffsrechte',
     'owner' => 'Eigent.',
     'grantgrouplabel' => 'Grant Above Group Edit Rights',
-    'permmsg' => 'Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Anonymous steht für alle nicht eingeloggten Besucher.',
+    'permmsg' => 'Hinweis: Mitglieder meint alle eingeloggten Mitglieder und Gast steht für alle nicht eingeloggten Besucher.',
     'securitygroups' => 'Security-Gruppen',
     'editrootmsg' => "Obwohl Sie User-Administrator sind, können Sie die Informationen von Usern in der Root-Gruppe nicht ändern, ohne selbst Mitglied der Root-Gruppe zu sein. Sie können die Informationen aller anderen User bearbeiten, nur nicht die der Mitglieder der Root-Gruppe. Beachten Sie bitte, dass alle derartigen Versuche protokolliert werden. <a href=\"{$_CONF['site_admin_url']}/user.php\">Zurück zur User-Admin-Seite</a>.",
     'securitygroupsmsg' => 'Mit den Checkboxen können Sie festlegen, zu welchen Gruppen dieser User gehört.',
@@ -1163,7 +1167,7 @@ $LANG_ACCESS = array(
     'rightsdescr' => 'Die folgenden Rechte können an eine Gruppe entweder direkt (durch Auswählen) oder indirekt vergeben werden (wenn die Gruppe zu einer anderen Gruppe gehört, die diese Rechte hat). Die im Folgenden aufgeführten Rechte ohne Checkbox sind indirekte Rechte, die von einer anderen Gruppe geerbt wurden, zu der die aktuelle Gruppe gehört. Alle anderen Rechte können hier direkt vergeben werden.',
     'lock' => 'Lock',
     'members' => 'Mitglieder',
-    'anonymous' => 'Anonymous',
+    'anonymous' => 'Gast',
     'permissions' => 'Rechte',
     'permissionskey' => 'R = lesen, E = editieren, Editier-Rechte setzen Lese-Rechte voraus',
     'edit' => 'Edit',
@@ -1187,7 +1191,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, müssen Sie selbst ein Mitglied der Gruppe sein. Wenden Sie sich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'
+    'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, müssen Sie selbst ein Mitglied der Gruppe sein. Wenden Sie sich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.',
+    'cantlistgroup' => 'Um die Mitglieder dieser Gruppe sehen zu können, müssen Sie selbst ein Mitglied der Gruppe sein. Wenden Sie sich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'
 );
 
 ###############################################################################
