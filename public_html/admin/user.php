@@ -36,12 +36,15 @@ function edituser($uid="") {
 	if (!empty($uid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}users where uid ='$uid'");
 		$A = mysql_fetch_array($result);
+		$curtime = getuserdatetimeformat($A["regdate"]);
 	}
 	if ($A["uid"] == "") {
                 $tmp = dbquery("SELECT MAX(uid) AS max FROM {$CONF["db_prefix"]}users");
                 $T = mysql_fetch_array($tmp);
                 $A["uid"] = $T["max"] + 1;
+		$curtime =  getuserdatetimeformat();
         }
+	$A["regdate"] = $curtime[0];
 	print "<form action={$CONF["site_url"]}/admin/user.php name=storyeditor method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
@@ -51,6 +54,7 @@ function edituser($uid="") {
 		print "<input type=submit value=delete name=mode>";
 	print "<tr></td>";
 	print "<tr><td align=right>{$LANG28[2]}:</td><td>{$A["uid"]}<input type=hidden name=uid value={$A["uid"]}></td></tr>";
+	print "<tr><td align=\"right\">{$LANG28[14]}:</td><td><input type=hidden name=regdate value=\"{$A["regdate"]}\">{$A["regdate"]}</td></tr>";
 	print "<tr><td align=right>{$LANG28[3]}:</td><td><input type=text size=16 name=username value=\"{$A["username"]}\"> {$LANG28[9]}</td></tr>";
 	print "<tr><td align=right>{$LANG28[4]}:</td><td><input type=text size=48 maxlength=80 name=fullname value=\"{$A["fullname"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG28[5]}:</td><td><input type=password size=16 name=passwd value=\"{$A["password"]}\"></td></tr>";
@@ -79,7 +83,7 @@ function changepw($uid,$passwd) {
 ###############################################################################
 # Saves $uid to the database
 
-function saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$homepage) {
+function saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$regdate,$homepage) {
 	global $CONF,$LANG28;
 	if (!empty($username) && !empty($email)) {
 		if (($uid == 1) or !empty($passwd)) { 
@@ -141,7 +145,7 @@ switch ($mode) {
 		dbdelete("users","uid",$uid,"admin/user.php?msg=22");
 		break;
 	case "save":
-		saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$homepage);
+		saveusers($uid,$username,$fullname,$passwd,$seclev,$email,$regdate,$homepage);
 		break;
 	case "changepw":
 		errorlog("user id = " . $uid . " pass = " . $passwd);
