@@ -100,6 +100,29 @@
 			</table>
 			<br>
 		</ol>
+
+<p>The following instructions will refer to the <tt>public_html</tt> directory
+a lot. Here is what this is all about:<p>
+
+<p>Basically, a Geeklog installation consists of two parts: The part that is
+visible "to the world" - which is everything in the public_html directory.
+"public_html" is a popular name for the world-accessible directory that can be
+found on a webserver ("htdocs" is another). So if you have such a directory,
+just copy everything from Geeklog's public_html directory into that directory on
+your webserver. Then you only need to set up $_CONF['path_html'] (in config.php)
+to point to that directory.</p>
+
+<p>The other part of Geeklog, which is everything outside the public_html
+directory, should not be accessible via a URL since it contains sensitive
+information. So you should really put those files and directories outside of
+your document root (i.e. outside the web server's public_html or htdocs
+directory). Then you only need to set up $_CONF['path'] (again, in config.php)
+to point to the place where you put those files and directories.</p>
+
+<p>Separating the install in this way will also ensure that you can access your
+Geeklog site directly via a domain name (if you have one), e.g.
+http://www.yourdomain.com/, and that you don't need to include "public_html"
+in the URL.</p>
 	</td>
 </tr>
 <tr>
@@ -187,7 +210,7 @@
 			  delete the admin/install directory</b> (and all files within 
 			  it).<br><br>
       <li>Read the first story on your Geeklog site to learn how to log in 
-        as the administrator. Please remember to change the default passwords on all administrator accounts right away.<br>
+        as the administrator. Please remember to change the default passwords on all pre-configured accounts right away.<br>
 				<br>
 			
 			
@@ -376,7 +399,9 @@
 				<tr>
 					<td>
 						<p>Answer:</p>
-						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions</p>
+						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions.</p>
+
+<p><strong>Tip:</strong> Use the script that is located at <b>http://yourgeeklogsite/admin/install/check.php</b> to test if all the permissions have been set up correctly.</p>
 					</td>
 				</tr>
 			</table>
@@ -420,6 +445,8 @@
 </tr>
 </table>
  
+<br><br>
+
 <table border="0" width="100%" class="footer">
 <tr valign="top">
   <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>

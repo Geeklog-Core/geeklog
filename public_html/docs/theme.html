@@ -93,6 +93,40 @@ at <a
 href="http://sourceforge.net/projects/geeklog">http://sourceforge.net/projects/geeklog</a> 
 or check us out in IRC at irc.openprojects.net in #geeklog.</p>
 
+<h3>Theme changes in Geeklog 1.3.6</h3>
+
+<p>There have been a lot of changes in the themes for 1.3.6 to get rid of the
+last pieces of hard-coded english texts so as to make localisation easier.
+Most of these changes have been made in the Admin editors (<tt>admin</tt> 
+directory) and the calendar (<tt>calendar</tt> directory). If you created
+your own theme for an earlier version of Geeklog, we recommend that you copy
+over these two directories from one of the themes that come with Geeklog
+(choose one that is similar to your own theme or which it was originally based
+on). It seems like most Geeklog themes didn't change these files anyway, so
+this shouldn't be too much of a hassle ...</p>
+
+<p>Other changes:</p>
+<ul>
+  <li>The template file <tt>admin/mail/mailform.thtml</tt> has been added.
+    This form for sending emails to other users of the site was previously
+    hard-coded into Geeklog.<br>
+    If you followed the above advice and copied over the <tt>admin</tt>
+    directory to your theme, you got this file already.</li>
+  <li>New files have been added and the existing files have been changed for
+    the links section (<tt>links</tt> directory). Again, we recommend to just
+    copy over those files from one of the themes that ship with Geeklog.<br>
+    The new files are: <tt>categoryactivecol.thtml</tt>,
+    <tt>categorycol.thtml</tt>, <tt>categorynavigation.thtml</tt>,
+    <tt>categoryrow.thtml</tt>, <tt>pagenavigation.thtml</tt></li>
+  <li>The user profile has been extended to include a list of the last 10
+    stories as well as the total numbers of stories and comments posted by that
+    user. Have a look at the file <tt>users/profile.thtml</tt> to see the
+    changes or just copy that file over from one of the themes that ship with
+    Geeklog.</li>
+  <li>The Classic theme has been updated to have an "Edit" link (for
+    StoryAdmins) in every story now.</li>
+</ul>
+
 <table border="0" width="100%" class="footer">
 <tr valign="top">
   <td colspan="2"><a href="http://geeklog.sf.net">The Geeklog Documentation Project</a><br>
