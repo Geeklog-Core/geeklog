@@ -41,7 +41,7 @@ class IP extends BaseCommand {
         for($i = 1;$i <= $nrows;$i++) {
             $A = DB_fetchArray($result);
             $val = $A['value'];
-            if ($val = $_SERVER['REMOTE_ADDR'])) {
+            if ($val = $_SERVER['REMOTE_ADDR']) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
