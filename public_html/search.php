@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.30 2002/07/29 19:36:24 dhaun Exp $
+// $Id: search.php,v 1.31 2002/07/30 14:17:46 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -91,7 +91,7 @@ function searchform()
             }
             next($searchusers);
         }
-        $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist)");
+        $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist) ORDER by username");
         $useroptions = '';
         for ($i = 1; $i <= DB_numRows($result); $i++) {
             $A = DB_fetchArray($result);
