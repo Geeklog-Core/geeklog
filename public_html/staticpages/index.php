@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.22 2004/08/08 08:55:58 dhaun Exp $
+// $Id: index.php,v 1.23 2004/09/28 15:26:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -60,7 +60,7 @@ function render_content ($sp_content, $sp_php)
             $retval .= ob_get_contents ();
             ob_end_clean ();
         } else {
-            $retval .= $sp_content;
+            $retval .= PLG_replacetags ($sp_content);
         }
     } else {
         if ($sp_php != 0) {
