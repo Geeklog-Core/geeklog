@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.13 2002/09/10 04:23:48 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.14 2002/09/19 04:28:08 tony_bibbs Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -93,6 +93,14 @@ class upload
     * @access private
     */
     var $_pathToMogrify = '';             // String
+    /** 
+    * @access private
+    */
+    var $_pathToNetPBM= '';               // String
+    /**
+    * @access private
+    */
+    var $_imageLib = '';                 // Integer
     /**
     * @access private
     */
@@ -445,19 +453,56 @@ class upload
         if (!($sizeOK)) {
             // OK, resize
             if ($imageInfo['height'] > $imageInfo['width']) { 
-                $sizefactor = (double) ($this->_maxImageheight / $imageInfo['height']);
+                $sizefactor = (double) ($this->_maxImageHeight / $imageInfo['height']);
             } else {
                 $sizefactor = (double) ($this->_maxImageWidth / $imageInfo['width']);
             }
             $newwidth = (int) ($imageInfo['width'] * $sizefactor);
             $newheight = (int) ($imageInfo['height'] * $sizefactor);
-            $newsize = $newwidth . 'x' . $newheight;
-            $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
-            $this->_addDebugMsg('Attempting to resize with this command: ' . $cmd);
-            exec($cmd, $mogrify_output, $retval);
-                
+            if ($this->_imageLib == 'imagemagick') {
+                $newsize = $newwidth . 'x' . $newheight;
+                $cmd = $this->_pathToMogrify . ' -resize '. $newsize . ' ' . $this->_fileUploadDirectory . '/' . $this->_getDestinationName() . ' 2>&1';
+                $this->_addDebugMsg('Attempting to resize with this command (imagemagick): ' . $cmd);
+                exec($cmd, $mogrify_output, $retval);
+            } else {
+                // use netpm
+                $cmd = $_CONF['path_to_netpbm'];
+                $filename = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
+                $cmd_end = ' ' . $filename . ' | ' . $this->_pathToNetPBM . 'pnmscale -xsize=' . $newwidth . ' -ysize=' . $newheight . ' | ' . $this->_pathToNetPBM; 
+                // convert to pnm, resize, convert back
+                if (eregi('\.png', $filename)) {
+                    $tmpfile = $this->_fileUploadDirectory . '/tmp.png';
+		    $cmd .= $this->_pathToNetPBM . 'pngtopnm ' . $cmd_end . 'pnmtopng > ' . $tmpfile;
+	        } else {
+                    if (eregi('\.(jpg|jpeg)', $filename)) {
+                        $tmpfile = $this->_fileUploadDirectory . '/tmp.jpg';
+		        $cmd .= $this->_pathToNetPBM . 'jpegtopnm ' . $cmd_end . 'ppmtojpeg > ' . $tmpfile;
+                    }  else {
+                        if (eregi('\.gif', $filename)) {
+                            $tmpfile = $this->_fileUploadDirectory . '/tmp.gif';
+	  	            $cmd .= $this->_pathToNetPBM . 'giftopnm ' . $cmd_end . 'ppmtogif > ' . $tmpfile;
+                        }
+                    }
+	        }
+                $this->_addDebugMsg('Attempting to resize with this command (netpbm): ' . $cmd);
+                exec($cmd, $netpbm_output, $retval);
+
+                // Move tmp file to actual file
+                if (!copy($tmpfile,$filename)) {
+                    $this->_addError("Couldn't copy $tmpfile to $filename.  You'll need remove both files");
+                    $this->printErrorMsgs();
+                    exit;
+                }
+            }
+
             if ($retval > 0) {
-                $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $mogrify_output[0]);
+                if ($this->_imageLib == 'imagemagick') {
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $mogrify_output[0]);
+                } else {
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $netpbm_output[0]);
+                }
+                $this->printErrorMsgs();
+                exit;
             } else {
                     $this->_addDebugMsg('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newsize);
             }
@@ -492,7 +537,22 @@ class upload
     */
     function setMogrifyPath($path_to_mogrify)
     {
+        $this->_imageLib = 'imagemagick';
         $this->_pathToMogrify = $path_to_mogrify;
+        return true;
+    }
+
+    /**
+    * Sets the path to where the mogrify ImageMagic function is
+    *
+    * @param     string    $path_to_mogrify    Absolute path to mogrify
+    * @return    boolean   True if set, false otherwise
+    *
+    */
+    function setNetPBM($path_to_netpbm)
+    {
+        $this->_imageLib = 'netpbm';
+        $this->_pathToNetPBM = $path_to_netpbm;
         return true;
     }
 
