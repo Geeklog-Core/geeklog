@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.61 2004/05/15 18:41:32 dhaun Exp $
+// $Id: comment.php,v 1.62 2004/05/17 11:34:22 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -485,6 +485,14 @@ function deletecomment ($cid, $sid, $type)
     return $retval;
 }
 
+/**
+* Display form to report abusive comment.
+*
+* @param    string  $cid    comment id
+* @param    string  $type   type of comment ('article', 'poll', ...)
+* @return   string          HTML for the form (or error message)
+*
+*/
 function report_abusive_comment ($cid, $type)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
@@ -551,6 +559,14 @@ function report_abusive_comment ($cid, $type)
     return $retval;
 }
 
+/**
+* Send report about abusive comment
+*
+* @param    string  $cid    comment id
+* @param    string  $type   type of comment ('article', 'poll', ...)
+* @return   string          Meta refresh or HTML for error message
+*
+*/
 function send_report ($cid, $type)
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG_LOGIN;
