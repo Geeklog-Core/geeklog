@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.324 2004/05/15 18:41:32 dhaun Exp $
+// $Id: lib-common.php,v 1.325 2004/05/20 18:57:45 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1874,7 +1874,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
                     $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
                     $Q['perm_anon'] ) == 3 ? true : false );
                 $retval .= COM_userComments( $qid, $Q['question'], 'poll',
-                                             $order, $mode, 0, 1, $delete_option ); 
+                                             $order, $mode, 0, 1, false, $delete_option ); 
             }
         }
     }
@@ -2928,13 +2928,15 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 * @param        string      $order     How to order the comments 'ASC' or 'DESC'
 * @param        string      $mode      comment mode (nested, flat, etc.)
 * @param        int         $pid       id of parent comment
+* @param        int         $page      page number of comments to display
+* @param        boolean     $cid       true if $pid should be interpreted as a cid instead
 * @param        boolean     $delete_option   if current user can delete comments
 * @see function COM_commentBar
 * @see function COM_commentChildren
 * @return     string  HTML Formated Comments
 *
 */
-function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $delete_option = false )
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid = 0, $page = 1, $cid = false, $delete_option = false )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -2988,13 +2990,22 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         switch( $mode )
         {
             case 'flat':
-                $count = DB_count($_TABLES['comments'], "sid", $sid);
+                if ( cid ) {
+                    $count = 1;
+
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
+                         . "unix_timestamp(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                       . "WHERE c.uid = u.uid AND c.cid = $pid";
+                } else {
+                    $count = DB_count($_TABLES['comments'], "sid", $sid);
             
-                $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
-                     . "unix_timestamp(c.date) AS nice_date "
-                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                   . "WHERE c.uid = u.uid AND c.sid = '$sid' "
-                   . "ORDER BY date $order LIMIT $start, $limit";
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
+                         . "unix_timestamp(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                       . "WHERE c.uid = u.uid AND c.sid = '$sid' "
+                       . "ORDER BY date $order LIMIT $start, $limit";
+                }
                 break;
 
             case 'nested':
@@ -3011,35 +3022,49 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
                 // We can simplify the query, and hence increase performance when pid=0
                 // (when fetching all the comments for a given sid)
-                if ( $pid == 0 )
-                {
-                    // count the total number of applicable comments
-                    $count = DB_count($_TABLES['comments'], "sid", $sid);
-
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
-                         . "unix_timestamp(c.date) AS nice_date "
-                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
-                       . "WHERE c.sid = '$sid' AND c.uid = u.uid "
-                       . "ORDER BY $cOrder LIMIT $start, $limit";
-                }
-                else
-                {
+                if ( $cid ) {
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
                         . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
-                        . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                         . "AND c2.cid = $pid";
                     $result = DB_query($q2);
                     list($count) = DB_fetchArray($result);
 
-                    $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent + 1 as pindent, " 
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent as pindent, " 
                          . "unix_timestamp(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
                          . "{$_TABLES['users']} as u "
-                       . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                       . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                          . "AND c2.cid = $pid AND c.uid = u.uid "
                        . "ORDER BY $cOrder LIMIT $start, $limit";
+                } else {
+                    if ( $pid == 0 ) {
+                        // count the total number of applicable comments
+                        $count = DB_count($_TABLES['comments'], "sid", $sid);
 
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
+                             . "unix_timestamp(c.date) AS nice_date "
+                           . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                           . "WHERE c.sid = '$sid' AND c.uid = u.uid "
+                           . "ORDER BY $cOrder LIMIT $start, $limit";
+                    } else {
+                        // count the total number of applicable comments
+                        $q2 = "SELECT COUNT(*) "
+                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
+                            . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                            . "AND c2.cid = $pid";
+                        $result = DB_query($q2);
+                        list($count) = DB_fetchArray($result);
+
+                        $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent + 1 as pindent, " 
+                             . "unix_timestamp(c.date) AS nice_date "
+                           . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
+                             . "{$_TABLES['users']} as u "
+                           . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                             . "AND c2.cid = $pid AND c.uid = u.uid "
+                           . "ORDER BY $cOrder LIMIT $start, $limit";
+                    }
                 }
                 break;
         }

@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added 'view' mode to allow links directly to a single comment (and optionally
+  its children) in comments.php.  [Vinny]
 - Added a few variables to be used in the eventdetails.thtml template file:
   {event_state_name} (full name of the state), {event_state_only} and
   {event_state_name_only} (abbreviated and full state name without the comma),

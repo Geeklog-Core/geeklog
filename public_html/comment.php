@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.62 2004/05/17 11:34:22 dhaun Exp $
+// $Id: comment.php,v 1.63 2004/05/20 18:57:45 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -675,6 +675,44 @@ case $LANG03[11]: // Submit Comment
 case $LANG01[28]: // Delete
     $display .= deletecomment (COM_applyFilter ($cid),
                                COM_applyFilter ($sid), COM_applyFilter ($type));
+    break;
+case 'view':
+    $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
+    if (!empty($cid)) {
+        $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
+        $A = DB_fetchArray( DB_query($sql) );
+        $sid = $A['sid'];
+        $title = $A['title'];
+        $type = $A['type'];
+        $allowed = 1;
+        if ($type == 'article') {
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+        } else if ($type == 'poll') {
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+        }
+        $display .= COM_siteHeader();
+        if ($allowed == 1) {
+            $format = COM_applyFilter ($HTTP_GET_VARS['format']);
+            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {  //FIXME
+                $format = 'threaded';
+            }
+            $display .= COM_userComments ($sid, $title, $type, 
+                            COM_applyFilter ($HTTP_GET_VARS['order']), $format, $cid,
+                            COM_applyFilter ($HTTP_GET_VARS['page']), true);
+        } else {
+            $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'))
+                     . $LANG_ACCESS['storydenialmsg']
+                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        }
+        $display .= COM_siteFooter();
+    } else {
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
     break;
 case 'display':
     $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
