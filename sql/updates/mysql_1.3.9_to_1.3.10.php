@@ -109,7 +109,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD INDEX syndication_topic(top
 $_SQL[] = "UPDATE {$_TABLES['links']} SET owner_id = 1 WHERE owner_id = 0";
 
 // Add new fields for Story Archive feature 
-$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD `expire` DATETIME NOT NULL AFTER `statuscode";
-$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD `archive_flag` tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER `is_default";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD expire DATETIME NOT NULL AFTER statuscode";
+$_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD archive_flag tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_default";
 
 ?>
