@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.158 2002/09/13 18:21:00 dhaun Exp $
+// $Id: lib-common.php,v 1.159 2002/09/14 17:31:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2472,7 +2472,7 @@ function COM_checkWords( $Message )
 
 function COM_killJS( $Message ) 
 {
-	return( preg_replace( '/on(\w*) ?=/', 'in\1=', $Message ));
+    return( preg_replace( '/(\s)+[oO][nN](\w*) ?=/', '\1in\2=', $Message ));
 }
 
 /**
