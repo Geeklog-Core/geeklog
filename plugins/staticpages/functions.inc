@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.24 2003/06/27 13:44:49 dhaun Exp $
+// $Id: functions.inc,v 1.25 2003/09/01 14:43:04 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -277,7 +277,7 @@ function plugin_getadminoption_staticpages()
         $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
-        return array ($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
+        return array ($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
     }	
 }
 

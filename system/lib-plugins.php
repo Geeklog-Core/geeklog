@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.23 2003/08/12 21:10:06 dhaun Exp $
+// $Id: lib-plugins.php,v 1.24 2003/09/01 14:43:04 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -405,6 +405,9 @@ function PLG_getSubmissionCount()
 function PLG_getUserOptions() 
 {
     global $_TABLES;
+
+    $plgresults = array ();
+
     $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
     $plugin = new Plugin();
@@ -422,6 +425,7 @@ function PLG_getUserOptions()
             $plugin->reset();
         }
     }
+
     return $plgresults;
 }
 
@@ -799,6 +803,8 @@ function PLG_profileExtrasSave ($plugin = '')
 function PLG_getHeaderCode()
 {
     global $_TABLES;
+
+    $headercode = '';
 
     $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);

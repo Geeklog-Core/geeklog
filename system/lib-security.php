@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.14 2003/05/06 15:53:21 dhaun Exp $
+// $Id: lib-security.php,v 1.15 2003/09/01 14:43:04 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -439,6 +439,8 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 function SEC_getUserPermissions($grp_id='',$uid='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE;
+
+    $retval = '';
 
     if ($_SEC_VERBOSE) {
         COM_errorLog("**********inside SEC_getUserPermissions(grp_id=$grp_id)**********",1);
