@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.276 2004/01/31 14:16:25 dhaun Exp $
+// $Id: lib-common.php,v 1.277 2004/02/01 11:04:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1830,10 +1830,18 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
 function COM_showTopics( $topic='' )
 {
-    global $_TABLES, $_CONF, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
+    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
            $page, $newstories;
 
     $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']}" . COM_getPermSQL();
+    if( $_USER['uid'] > 1 ) {
+        $tids = DB_getItem( $_TABLES['userindex'], 'tids',
+                            "uid = '{$_USER['uid']}'" );
+        if (!empty ($tids)) {
+            $sql .= " AND (tid NOT IN ('" . str_replace( ' ', "','", $tids )
+                 . "'))";
+        }
+    }
     if( $_CONF['sortmethod'] == 'alpha' )
     {
         $sql .= " ORDER BY topic ASC";
