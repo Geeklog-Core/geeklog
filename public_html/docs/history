@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2005 (1.3.12)
 ------------
 
+- COM_applyFilter will now accept negative numbers if the isnumeric parameter
+  is true. Needed to fix problems with pollbooth.php (and others) [Vinny]
 - Added a spam check to the user profile [Dirk]
 - The SpamX plugin's examine modules run the post through html_entity_decode()
   now in case the spammers try to obfuscate their posts by using HTML entities

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.417 2005/02/20 09:54:09 dhaun Exp $
+// $Id: lib-common.php,v 1.418 2005/02/23 18:48:17 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5182,7 +5182,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
     if( $isnumeric )
     {
         // Note: PHP's is_numeric() accepts values like 4e4 as numeric
-        if( !is_numeric( $p ) || ( preg_match( '/^([0-9]+)$/', $p ) == 0 ))
+        if( !is_numeric( $p ) || ( preg_match( '/^-?\d+$/', $p ) == 0 ))
         {
             $p = 0;
         }
