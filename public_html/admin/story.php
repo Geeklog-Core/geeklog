@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.143 2004/12/29 15:06:25 dhaun Exp $
+// $Id: story.php,v 1.144 2004/12/31 10:22:45 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -267,10 +267,26 @@ function storyeditor($sid = '', $mode = '')
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
         }
+
         if ($A['postmode'] == 'plaintext') {
             $B = $A;
+
+            // if the plain-text story has images embedded, we'll have to do
+            // some awkward back-and-forth conversion ...
+            $has_images = false;
+            $tmpsid = addslashes ($A['sid']);
+            if (DB_count ($_TABLES['article_images'], 'ai_sid', $tmpsid) > 0) {
+                $has_images = true;
+                list ($B['introtext'], $B['bodytext']) = replace_images ($A['sid'], $B['introtext'], $B['bodytext']);
+            }
+
             $B['introtext'] = COM_makeClickableLinks ($B['introtext']);
             $B['bodytext'] = COM_makeClickableLinks ($B['bodytext']);
+
+            if ($has_images) {
+                list ($errors, $B['introtext'], $B['bodytext']) = insert_images ($A['sid'], $B['introtext'], $B['bodytext']);
+            }
+
             $display .= STORY_renderArticle ($B, 'n');
         } else {
             $display .= STORY_renderArticle ($A, 'n');
