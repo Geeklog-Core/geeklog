@@ -8,7 +8,7 @@
 // | Geeklog session library.                                                  |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.27 2004/01/25 19:00:48 dhaun Exp $
+// $Id: lib-sessions.php,v 1.28 2004/02/14 13:04:10 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -70,15 +70,15 @@ $_USER = SESS_sessionCheck();
 /**
 * This gets the state for the user
 *
-* Much of this code if from phpBB (www.phpbb.org).  This checks the session cookie
-* and long term cookie to get the users state.
+* Much of this code if from phpBB (www.phpbb.org).  This checks the session
+* cookie and long term cookie to get the users state.
 *
 * @return   array   returns $_USER array
 *
 */
 function SESS_sessionCheck()
 {
-    global $_USER, $_SESS_VERBOSE, $_CONF, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $_TABLES;
+    global $_CONF, $_TABLES, $_USER, $_SESS_VERBOSE, $HTTP_COOKIE_VARS, $REMOTE_ADDR;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Inside SESS_sessionCheck***",1);
@@ -97,13 +97,13 @@ function SESS_sessionCheck()
     if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_session']])) {
         $sessid = $HTTP_COOKIE_VARS[$_CONF['cookie_session']];
         if ($_SESS_VERBOSE) {
-            COM_errorLog("got $sessid as the session id from lib-common.php",1);
+            COM_errorLog("got $sessid as the session id from lib-sessions.php",1);
         }
 
         $userid = SESS_getUserIdFromSession($sessid, $_CONF['session_cookie_timeout'], $REMOTE_ADDR, $_CONF['cookie_ip']);
 
         if ($_SESS_VERBOSE) {
-            COM_errorLog("Got $userid as User ID From the session ID",1);
+            COM_errorLog("Got $userid as User ID from the session ID",1);
         }
        
         if ($userid) {
@@ -141,16 +141,16 @@ function SESS_sessionCheck()
         }
     } else {
         if ($_SESS_VERBOSE) {
-            COM_errorLog('session cookie not found from lib-common.php',1);
+            COM_errorLog('session cookie not found from lib-sessions.php',1);
         }
 
         // Check if the persistent cookie exists
 
         if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
-            // Session cookie doesn't exist but a perminant cookie does.
+            // Session cookie doesn't exist but a permanent cookie does.
             // Start a new session cookie;
             if ($_SESS_VERBOSE) {
-                COM_errorLog('perm cookie found from lib-common.php',1);
+                COM_errorLog('perm cookie found from lib-sessions.php',1);
             }
 
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
@@ -180,7 +180,8 @@ function SESS_sessionCheck()
     $expiredate1 = time() + 3600 * 24 * 365;
     $expiredate2 = time() + 600;
 
-    // Update the LastVisit cookie. This cookie is updated each time auth.php runs
+    // Update the LastVisit cookie.
+    // This cookie is updated each time auth.inc.php runs
     setcookie($_CONF['cookie_lastvisit'], time(), $expiredate1,  $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
     // Set LastVisitTemp cookie, which only gets the time from the LastVisit
@@ -239,11 +240,11 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
 
     $currtime = (string) (time());
     $expirytime = (string) (time() - $lifespan);
-    if (!isset($HTTP_COOKIE_VARS[$_CONF["cookie_session"]])) {
+    if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_session']])) {
         // ok, delete any old sessons for this user
-        DB_query("DELETE FROM {$_TABLES["sessions"]} WHERE uid = $userid");
+        DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = $userid");
     } else {
-        $deleteSQL = "DELETE FROM {$_TABLES["sessions"]} WHERE (start_time < $expirytime)";
+        $deleteSQL = "DELETE FROM {$_TABLES['sessions']} WHERE (start_time < $expirytime)";
         $delresult = DB_query($deleteSQL);
 	
         if ($_SESS_VERBOSE) {
@@ -352,12 +353,12 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
 
     $result = DB_query($sql);
     $row = DB_fetchArray($result);
-        
+
     if ($_SESS_VERBOSE) {
         COM_errorLog("****Leaving SESS_getUserIdFromSession",1);
     }
 
-    if (!$row) {	
+    if (!$row) {
         if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
             return $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
         } else {
@@ -430,7 +431,7 @@ function SESS_getUserData($username)
 
     $sql = "SELECT *,format FROM {$_TABLES['users']}, {$_TABLES['userprefs']}, {$_TABLES['dateformats']} "
         . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
-        . "{$_TABLES["userprefs"]}.uid = {$_TABLES["users"]}.uid AND username = '$username'";
+        . "{$_TABLES['userprefs']}.uid = {$_TABLES['users']}.uid AND username = '$username'";
 
     if(!$result = DB_query($sql)) {
         COM_errorLog("error in get_userdata");
