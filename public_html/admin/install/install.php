@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.6 2002/01/03 20:43:45 tony_bibbs Exp $
+// $Id: install.php,v 1.7 2002/01/11 22:57:43 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -725,6 +725,20 @@ function INST_doDatabaseUpgrades($current_gl_version) {
                 $instDB->dbQuery("DELETE FROM {$_TABLES['usercomment']} WHERE uid > $max_uid");
             }
             $current_gl_version = '1.3';
+            break;
+        case '1.3':
+            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                $progress .= "executing " . current($_SQL) . "<br>\n";
+                $instDB->dbQuery(current($_SQL),1);
+                $error = $instDB->dbError(current($_SQL));
+                if (!empty($error)) {
+                    echo $progress . $error;
+                    return false;
+                }
+                next($_SQL);
+            }
+            $current_gl_version = '1.3.1';
             break;
         default:
             $done = true;
