@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.51 2002/04/06 03:58:33 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.52 2002/04/09 14:24:51 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1800,7 +1800,7 @@ function COM_showBlocks($side, $topic='', $name='all')
             if ($A['type'] == 'phpblock' && !$U['noboxes']) {
                 if (!($A['name'] == 'whosonline_block' && $_CONF['whosonline'] == 0)) {
                     $function = $A['phpblockfn'];
-                    $retval .= COM_startBlock($A['title'],$A['help']);
+                    $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header'));
 
                     if (function_exists($function)) {
                         // great, call it
@@ -1809,7 +1809,7 @@ function COM_showBlocks($side, $topic='', $name='all')
                         // show friendly error message
                         $retval .= $LANG21[31];
                     }
-                    $retval .= COM_endBlock();
+                    $retval .= COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
                 }
             }
             if (!empty($A['content']) && !$U['noboxes']) {
