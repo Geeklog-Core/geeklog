@@ -512,6 +512,7 @@ function savesubmission($type,$A)
 // MAIN
 
 $display = '';
+$display .= COM_siteHeader();
 
 if ($mode == $LANG12[8]) { 
     $display .= savesubmission($type,$HTTP_POST_VARS);
@@ -539,11 +540,11 @@ if ($mode == $LANG12[8]) {
             }
             break;
     }
-    $display .= COM_siteHeader();
+    
     $display .= submissionform($type, $mode, $month, $day, $year, $hour); 
-    $display .= COM_siteFooter();	
+    
 }
-	
+$display .= COM_siteFooter();		
 echo $display;
 
 ?>
