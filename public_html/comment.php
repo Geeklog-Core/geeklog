@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.30 2002/08/27 14:11:15 dhaun Exp $
+// $Id: comment.php,v 1.31 2002/09/01 21:34:55 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -69,14 +69,25 @@ require_once('lib-common.php');
 */
 function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
-    global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $_USER;
+    global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $LANG_LOGIN, $_USER;
 	
 	if ($uid > 1) {
         $sig = DB_getItem($_TABLES['users'], 'sig', "uid='$uid'");
     }
     
-    if ($_CONF['commentsloginrequired'] == 1 && empty($_USER['username'])) {
-        $retval .= COM_refresh($_CONF['site_url'] . '/users.php?msg=' . urlencode($LANG03[6]));
+    if (empty($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['commentsloginrequired'] == 1))) {
+        $retval .= COM_startBlock($LANG_LOGIN[1]);
+        $loginreq = new Template($_CONF['path_layout'] . 'submit');
+        $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+        $loginreq->set_var('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var('site_url', $_CONF['site_url']);
+        $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
+        $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
+        $loginreq->parse('errormsg', 'loginreq');
+        $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
+        $retval .= COM_endBlock();
+        return $retval;
     } else {
         DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF['commentspeedlimit']}");
 
