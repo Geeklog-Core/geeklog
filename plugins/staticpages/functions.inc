@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.1 2002/04/16 21:07:13 tony_bibbs Exp $
+// $Id: functions.inc,v 1.2 2002/04/16 21:16:47 tony_bibbs Exp $
 
 include($_CONF['path'] . 'plugins/staticpages/lang.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
@@ -175,10 +175,10 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 */
 function plugin_cclabel_staticpages() 
 {
-    global $LANG_STATIC;
+    global $LANG_STATIC, $_CONF;
 
     // Need to change to not hardcode the language
-    return array($LANG_STATIC['staticpages'],$_CONF['site_url'] . '/admin/plugins/staticpages/index.php',$_CONF['site_url'] . '/staticpages/images/staticpages.gif');
+    return array($LANG_STATIC['staticpages'],$_CONF['site_admin_url'] . '/plugins/staticpages/index.php',$_CONF['site_url'] . '/staticpages/images/staticpages.gif');
 }
 
 /**
@@ -190,7 +190,7 @@ function plugin_getadminoption_staticpages()
     global $_CONF, $LANG_STATIC;
 
     if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-        return array($LANG_STATIC[staticpages], $_CONF['site_url'] . '/admin/plugins/staticpages/index.php', DB_count(staticpage));
+        return array($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', DB_count(staticpage));
     }	
 }
 
