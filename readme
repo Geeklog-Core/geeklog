@@ -1,5 +1,5 @@
 GeekLog Readme
-December 4, 2001
+April 16, 2002
 
 For the quick-and-dirty installation instructions see INSTALL
 
@@ -18,7 +18,7 @@ what we can do to make GeekLog better.
 
 GeekLog's feature are as follows:
 
-- Easy to use installation script
+- Easy to install
 - Full localization and locale aware.
 - Threaded comment system that support different modes.
 - User-specified theming engine for custom look and feel.
@@ -27,6 +27,7 @@ GeekLog's feature are as follows:
 - RDF/RSS import and export ability.
 - Easy to use admin interface.
 - Admin interface has complete configurability for all functions of the site.
+- Ability to attach images to articles
 - All passwords are are stored encrypted.
 - Complete error loging on all forms and SQL calls.
 - All admin access is logged.
