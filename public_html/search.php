@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.17 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: search.php,v 1.18 2002/05/02 20:00:47 tony_bibbs Exp $
 
 require_once('lib-common.php');
 
@@ -72,7 +72,31 @@ function searchform()
 
 	if ($_CONF['contributedbyline'] == 1) {
         $searchform->set_var('lang_authors', $LANG09[8]);
-        $searchform->set_var('author_option_list', COM_optionList($_TABLES['users'],'uid,username'));
+        $searchusers = array();
+        $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['comments']}");
+        for ($i = 1; $i <= DB_numRows($result); $i++) {
+            $A = DB_fetchArray($result);
+            $searchusers[$A['uid']] .= $A['uid'];
+        }
+        $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
+        for ($i = 1; $i <= DB_numRows($result); $i++) {
+            $A = DB_fetchArray($result);
+            $searchusers[$A['uid']] .= $A['uid'];
+        }
+        for ($i = 1; $i <= count($searchusers); $i++) {
+            $inlist .= current($searchusers);
+            if ($i < count($searchusers)) {
+                $inlist .= ',';
+            }
+            next($searchusers);
+        }
+        $result = DB_query("SELECT uid,username FROM {$_TABLES['users']} WHERE uid in ($inlist)");
+        $useroptions = '';
+        for ($i = 1; $i <= DB_numRows($result); $i++) {
+            $A = DB_fetchArray($result);
+            $useroptions .= '<option value="' . $A['uid'] . '">' . $A['username'] . '</option>';
+        }
+        $searchform->set_var('author_option_list', $useroptions);
         $searchform->parse('author_form_element', 'authors', true);
 	} else {
 		$searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
