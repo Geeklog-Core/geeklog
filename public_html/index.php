@@ -32,7 +32,7 @@ include("custom_code.php");
 include("layout/header.php");
 $maxstories = 0;
 
-// if no page sent then assume the first 
+// if no page sent then assume the first
 if (empty($page)) $page = 1;
 
 if (!empty($USER["uid"])) {
@@ -85,11 +85,11 @@ for ($i=0;$i<=1;$i++) {
 
 
 	# if this is the first pass get the featured story, if any
-	if ($i == 0) { 
-		$sql .= " featured = 1 ORDER BY date desc LIMIT 1"; 
+	if ($i == 0) {
+		$sql .= " featured = 1 ORDER BY date desc LIMIT 1";
 	} else {
 		if ($feature == "true") $U["maxstories"] = $U["maxstories"] - 1;
-			
+
  		$sql .= " featured != 1 ORDER BY date desc LIMIT $limit,{$U["maxstories"]}";
 	}
 	$result = dbquery($sql);
@@ -123,15 +123,19 @@ for ($i=0;$i<=1;$i++) {
 	}
 }
 
+# this closes the story block <td> which is started in layout/header.php, but never gets closed
+print "</td>\n\n";
+
 # Display any blocks, polls, olderstuff configured for this page
+# </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
 
 print "<td><img src={$CONF["base"]}/images/speck.gif heigth=1 width=10></td>\n";
 if ($U["noboxes"] != 1) {
 	print "<td valign=top width=180>\n";
 	showblock($topic);
-	print "<br><img src={$CONF["base"]}/images/speck.gif width=180 height=1></td>\n";
+	print "<br><img src={$CONF["base"]}/images/speck.gif width=180 height=1>\n";
 } else {
-	print "<td>&nbsp</td>";
+	print "<td>&nbsp";
 }
 include("layout/footer.php");
 

@@ -125,12 +125,12 @@ function dbdelete($table,$id,$value,$return="") {
 		 $sql .= " WHERE $id = '$value'";
 	}
 	dbquery($sql);
-	if ($table == "stories") { 
+	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
-	if (!empty($return)) { 
-		refresh("{$CONF["base"]}/$return");	
+	if (!empty($return)) {
+		refresh("{$CONF["base"]}/$return");
 	}
 }
 
@@ -141,12 +141,12 @@ function dbsave($table,$fields,$values,$return="") {
 	global $CONF;
 	$sql = "REPLACE INTO $table ($fields) VALUES ($values)";
 	dbquery($sql);
-	if ($table == "stories") { 
+	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
-	if (!empty($return)) { 
-		refresh("{$CONF["base"]}/$return");	
+	if (!empty($return)) {
+		refresh("{$CONF["base"]}/$return");
 	}
 }
 
@@ -163,12 +163,12 @@ function dbchange($table,$id,$value,$id2="",$value2="",$id3="",$value3="",$retur
 		}
 	}
 	dbquery($sql);
-	if ($table == "stories") { 
+	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
-	if (!empty($return)) { 
-		refresh("{$CONF["base"]}/$return");	
+	if (!empty($return)) {
+		refresh("{$CONF["base"]}/$return");
 	}
 }
 
@@ -199,12 +199,12 @@ function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 	errorlog('sql ' . $sql);
 	dbquery($sql);
 	dbdelete($tablefrom,$id,$value);
-	if ($table == "stories") { 
+	if ($table == "stories") {
 		export_rdf();
 		olderstuff();
 	}
-	if (!empty($return)) { 
-		refresh("{$CONF["base"]}/$return");	
+	if (!empty($return)) {
+		refresh("{$CONF["base"]}/$return");
 	}
 }
 
@@ -218,16 +218,18 @@ function dbcopy($table,$fields,$values,$tablefrom,$id,$value,$return="") {
 function article($A,$index="") {
 	global $mode,$CONF,$LANG01,$USER;
 	if (empty($A["day"])) {
-		$A["day"] = time(); 
+		$A["day"] = time();
 	}
 	print "<table border=0 cellpadding=0 cellspacing=0 width=100%>\n";
 	print "<tr><td class=storytitle>" . stripslashes($A["title"]) . "</TD></TR>\n";
 	print "<tr><td height=1 class=storyunderline><IMG SRC={$CONF["base"]}/images/speck.gif width=1 height=1></td></tr>\n";
-	print "<tr><td class=storybyline>" . strftime($CONF["date"],$A["day"]) . "<br>";
-	if ($A["uid"] > 1) {
-		print "{$LANG01[1]} <a class=storybyline href={$CONF["base"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a></td></tr>\n";
-	} else {
-		print "{$LANG01[1]} " . getitem("users","username","uid = '{$A["uid"]}'") . "</td></tr>\n";
+	print "<tr><td class=storybyline>" . strftime($CONF["date"],$A["day"]);
+	if ($CONF["contributedbyline"] == 1) {
+		if ($A["uid"] > 1) {
+			print "<br>{$LANG01[1]} <a class=storybyline href={$CONF["base"]}/users.php?mode=profile&uid={$A["uid"]}>" . getitem("users","username","uid = {$A["uid"]}") . "</a></td></tr>\n";
+		} else {
+			print "<br>{$LANG01[1]} " . getitem("users","username","uid = '{$A["uid"]}'") . "</td></tr>\n";
+		}
 	}
 	print "<tr><td>";
 	if ($USER["noicons"] != 1) {
@@ -381,7 +383,7 @@ function debug($A) {
 	if (!empty($A)) {
 		echo "<pre><p>---- DEBUG ----\n";
 		for (reset($A);$k=key($A);next($A)) {
-			printf("<li>%13s [%s]</li>\n",$k,$A[$k]); 
+			printf("<li>%13s [%s]</li>\n",$k,$A[$k]);
 		}
 		echo "<br>---------------\n</pre>\n";
 	}
@@ -398,10 +400,10 @@ function export_rdf() {
 	if ($CONF["backend"]>0) {
 		$outputfile = $CONF["rdfpath"];
 		$rdencoding = "UTF-8";
-		$rdtitle = $CONF["sitename"];	
+		$rdtitle = $CONF["sitename"];
 		$rdlink	= $CONF["base"];
 		$rddescr = $CONF["siteslogan"];
-		$rdlang	= $CONF["locale"];	
+		$rdlang	= $CONF["locale"];
 
 		$result = dbquery("SELECT * FROM stories WHERE uid > 1 ORDER BY date DESC limit 10");
        		if (!$file = @fopen($outputfile,w)) {
@@ -420,12 +422,12 @@ function export_rdf() {
 				$title = "title";
 				$link = "sid";
 				$author = "author";
-				fputs ( $file, "<item>\n" );            
+				fputs ( $file, "<item>\n" );
 				$title = "<title>" . htmlspecialchars(stripslashes($row[$title])) . "</title>\n";
 				$author = "<author>" . htmlspecialchars(stripslashes($row[$author])) . "</author>\n";
 				$link  = "<link>{$CONF["base"]}/article.php?story={$row[$link]}</link>\n";
 				fputs ( $file,  $title );
-				fputs ( $file,  $link );            
+				fputs ( $file,  $link );
 				fputs ( $file, "</item>\n\n" );
 			}
 		}
@@ -449,7 +451,7 @@ function errorlog($logentry,$actionid="") {
      				if (!$file=fopen($logfile,a)) {
 					print "{$LANG01[33]} $logfile ($timestamp)<br>\n";
 				}
-				fputs ( $file, "$timestamp - $logentry \n");	
+				fputs ( $file, "$timestamp - $logentry \n");
 				break;
 			case 2:
 				startblock("{$LANG01[55]} $timestamp");
@@ -460,14 +462,14 @@ function errorlog($logentry,$actionid="") {
 				$logfile = $CONF["logpath"] . "/error.log";
      				if (!$file=fopen($logfile,a)) {
 					print "{$LANG01[33]} $logfile ($timestamp)<br>\n";
-				}	
+				}
 				fputs ( $file, "$timestamp - $logentry \n");
 				startblock("{$LANG01[34]} - $timestamp");
 				print nl2br($logentry);
 				endblock();
 				break;
 		}
-	}	
+	}
 }
 
 ###############################################################################
@@ -480,7 +482,7 @@ function accesslog($logentry) {
 	if (!$file=fopen($logfile,a)) {
 		print $LANG01[33] . "$logfile ($timestamp)<br>\n";
 	}
-	fputs ( $file, "$timestamp - $logentry \n");	
+	fputs ( $file, "$timestamp - $logentry \n");
 }
 
 
@@ -510,8 +512,9 @@ function pollvote($qid) {
 				print " <a href={$CONF["base"]}/pollbooth.php?qid=$qid&aid=-1>{$LANG01[6]}</a><br>";
 				print "<span class=storybyline align=right>{$Q["voters"]} {$LANG01[8]}";
 				if ($Q["commentcode"] >= 0) print " | <a href={$CONF["base"]}/pollbooth.php?qid=$qid&aid=-1#comments>" . dbcount("comments","sid",$qid) . " {$LANG01[3]}</a>";
+				print "</span>";
 				endblock();
-				print "</span></form>\n";
+				print "</form>\n";
 			}
 		}
 	} else {
@@ -520,7 +523,7 @@ function pollvote($qid) {
 }
 
 ###############################################################################
-# Find the proper poll to display at the proper state to display it in. 
+# Find the proper poll to display at the proper state to display it in.
 
 function showpoll($size,$qid="") {
 	global $HTTP_COOKIE_VARS,$REMOTE_ADDR,$CONF;
@@ -603,7 +606,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 # Creates the list of topics and the number of stories in each topic
 
 function showtopics($topic="") {
-	global $CONF;
+	global $CONF, $USER;
 	if ($CONF["sortmethod"] == 'alpha')
 		$result = dbquery("SELECT tid,topic FROM topics ORDER BY tid ASC");
 	else
@@ -616,9 +619,11 @@ function showtopics($topic="") {
 			print $A["topic"];
 			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
 				print "(";
-				if ($CONF["showstorycount"]) 
+				if ($CONF["showstorycount"] && ($USER["seclev"] >= $CONF["storyadmin"] )) {
 					print dbcount("stories","tid",$A["tid"]);
-				if ($CONF["showsubmissioncount"]) {
+                }
+
+             if ($CONF["showstorycount"] && ($USER["seclev"] >= $CONF["storyadmin"] )) {
 					if ($CONF["showstorycount"])
 						print "/";
 					print dbcount("storysubmission","tid",$A["tid"]);
@@ -630,7 +635,7 @@ function showtopics($topic="") {
 			print "<a href={$CONF["base"]}/index.php?topic={$A["tid"]}><b>{$A["topic"]}</b></a> ";
 			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
 				print "(";
-				if ($CONF["showstorycount"]) 
+				if ($CONF["showstorycount"])
 					print dbcount("stories","tid",$A["tid"]);
 				if ($CONF["showsubmissioncount"]) {
 					if ($CONF["showstorycount"])
@@ -649,31 +654,31 @@ function showtopics($topic="") {
 
 function usermenu() {
 	global $USER,$CONF,$LANG01, $VERSION;
-	if ($USER["seclev"] >= $CONF["lowestadmin"]) { 
+	if ($USER["seclev"] >= $CONF["lowestadmin"]) {
 		startblock($LANG01[9]);
 		if ($USER["seclev"] >= $CONF["moderator"]) {
 			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
 			//now handle submissions for plugins
 			$num = $num + GetPluginSubmissionCounts();
-			print "<a href={$CONF["base"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n"; 
+			print "<a href={$CONF["base"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
 		}
-		if ($USER["seclev"] >= $CONF["storyadmin"]) print "<a href={$CONF["base"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n"; 
-		if ($USER["seclev"] >= $CONF["blockadmin"]) print "<a href={$CONF["base"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n"; 
+		if ($USER["seclev"] >= $CONF["storyadmin"]) print "<a href={$CONF["base"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["blockadmin"]) print "<a href={$CONF["base"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
 		if ($USER["seclev"] >= $CONF["topicadmin"]) print "<a href={$CONF["base"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["linkadmin"]) print "<a href={$CONF["base"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n"; 
-		if ($USER["seclev"] >= $CONF["eventadmin"]) print "<a href={$CONF["base"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n"; 
-		if ($USER["seclev"] >= $CONF["polladmin"]) print "<a href={$CONF["base"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n"; 
-		if ($USER["seclev"] >= $CONF["useradmin"]) print "<a href={$CONF["base"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n"; 
+		if ($USER["seclev"] >= $CONF["linkadmin"]) print "<a href={$CONF["base"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["eventadmin"]) print "<a href={$CONF["base"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["polladmin"]) print "<a href={$CONF["base"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["useradmin"]) print "<a href={$CONF["base"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
 		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["base"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
 
 		// This function wil show the admin options
 		// for all installed plugins (if any)
 		ShowPluginAdminOptions();
 		if ($USER["seclev"] >= $CONF["emailadmin"]) print "<a href={$CONF["base"]}/admin/mail.php>Mail</a><br>\n";
-		
-		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n"; 
+
+		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n";
 		endblock();
-	} 
+	}
 
 	if ($USER["uid"] > 1) {
 		startblock($LANG01[47]);
@@ -721,7 +726,7 @@ function commentbar($sid,$title,$type,$order,$mode) {
 	}
 	print "</td></tr>\n";
 	print "<tr><td align=center class=commentbar2>";
-	if ($type == 1) { 
+	if ($type == 1) {
 		print "<form action={$CONF["base"]}/pollbooth.php method=POST>\n<input type=hidden name=scale value=400>\n";
 		print "<input type=hidden name=qid value=$sid>\n<input type=hidden name=aid value=-1>\n";
 	} else {
@@ -742,7 +747,7 @@ function commentbar($sid,$title,$type,$order,$mode) {
 }
 
 ###############################################################################
-# This function displays the comments in a high level format.  
+# This function displays the comments in a high level format.
 
 function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 	global $CONF,$LANG01,$USER;
@@ -752,7 +757,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 		$order = $U[0];
 		$mode = $U[1];
 		$limit = $U[2];
-	} 
+	}
 	if (empty($order)) $order = "ASC";
 	if (empty($mode)) $mode = "threaded";
 	if (empty($limit)) $limit = 100;
@@ -767,7 +772,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
 				startcomment();
-				for ($i=0;$i<$nrows;$i++) {	
+				for ($i=0;$i<$nrows;$i++) {
 					$A	= mysql_fetch_array($result);
 					comment($A,0,$type,0,$mode);
 					commentchildren($sid,$A["cid"],$order,$mode,$type);
@@ -785,7 +790,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
 				startcomment();
-				for ($i=0;$i<$nrows;$i++) {	
+				for ($i=0;$i<$nrows;$i++) {
 					$A	= mysql_fetch_array($result);
 					comment($A,0,$type,0,$mode);
 				}
@@ -802,7 +807,7 @@ function usercomments($sid,$title,$type="article",$order="",$mode="",$pid=0) {
 			commentbar($sid,$title,$type,$order,$mode);
 			if ($nrows>0) {
 				startcomment();
-				for ($i=0;$i<$nrows;$i++) {	
+				for ($i=0;$i<$nrows;$i++) {
 					$A	= mysql_fetch_array($result);
 					comment($A,0,$type,0,$mode);
 					print "<tr><td>";
@@ -827,7 +832,7 @@ function commentchildren($sid,$pid,$order,$mode,$type,$level=0) {
 	$nrows = mysql_num_rows($result);
 	if ($nrows>0) {
 		if ($mode == "threaded") { print "<UL>"; }
-		for ($i=0;$i<$nrows;$i++) {	
+		for ($i=0;$i<$nrows;$i++) {
 			$A = mysql_fetch_array($result);
 			comment($A,0,$type,$level+1,$mode);
 			commentchildren($sid,$A["cid"],$order,$mode,$type,$level+1);
@@ -839,12 +844,12 @@ function commentchildren($sid,$pid,$order,$mode,$type,$level=0) {
 }
 
 ###############################################################################
-# This function print $A in comment format 
+# This function print $A in comment format
 
 function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 	global $CONF,$LANG01,$USER,$order;
 	$level = $level * 25;
-	
+
 	# if no date, make it now!
 	if (empty($A["nice_date"])) { $A["nice_date"] = time(); }
 
@@ -899,10 +904,10 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 }
 
 ###############################################################################
-# This function checks for words in the censor list.  
+# This function checks for words in the censor list.
 #
 # The core of this code has been lifted from thatphpware which is licenced
-# under the GPL. 
+# under the GPL.
 
 function checkwords($Message) {
 	global $CONF;
@@ -929,16 +934,16 @@ function checkwords($Message) {
 }
 
 ###############################################################################
-# This function checks html tags.  
+# This function checks html tags.
 #
 # The core of this code has been lifted from phpslash which is licenced under
-# the GPL. 
+# the GPL.
 function checkhtml($str) {
         global $CONF;
 	$str = stripslashes($str);
 
 	// Get rid of any newline characters
-	$str = preg_replace("/\n/","",$str); 
+	$str = preg_replace("/\n/","",$str);
         $str = strip_tags($str,$CONF["allowablehtml"]);
         return $str;
 }
@@ -972,12 +977,12 @@ function isemail($email) {
 function olderstuff() {
 	global $CONF,$LANG01;
 	if ($CONF["olderstuff"] == 1) {
-		$result = dbquery("SELECT sid,title,comments,unix_timestamp(date) AS day FROM stories ORDER BY date desc LIMIT {$CONF["limitnews"]}, {$CONF["limitnews"]}"); 
-		$nrows = mysql_num_rows($result); 
-		if ($nrows>0) { 
-			$day = "noday"; 
+		$result = dbquery("SELECT sid,title,comments,unix_timestamp(date) AS day FROM stories ORDER BY date desc LIMIT {$CONF["limitnews"]}, {$CONF["limitnews"]}");
+		$nrows = mysql_num_rows($result);
+		if ($nrows>0) {
+			$day = "noday";
 			$string = "";
-			for ($i=0;$i<$nrows;$i++) { 
+			for ($i=0;$i<$nrows;$i++) {
 				$A = mysql_fetch_array($result);
                                 $daycheck = strftime("%A",$A["day"]);
                                 if ($day != $daycheck) {
@@ -1017,7 +1022,7 @@ function showblock($topic="") {
 		}
 		$sql .= "bid = '-1') ";
 	} else {
-		$sql .= "AND blockorder < 10";	
+		$sql .= "AND blockorder < 10";
 	}
 	$sql .= " ORDER BY blockorder asc";
 	$result	= dbquery($sql);
@@ -1033,8 +1038,8 @@ function showblock($topic="") {
 		}
 		if (!empty($A["content"])) {
 			startblock($A["title"]);
-			print nl2br($A["content"]) . "<br>\n";
-			print "</td></tr>\n";
+			print nl2br(stripslashes($A["content"])) . "<br>\n";
+			# print "</td></tr>\n";
 			endblock();
 		}
 	}
@@ -1059,7 +1064,7 @@ function rdfcheck($bid,$rdfurl,$date) {
 
 function rdfimport($bid,$rdfurl) {
 	$update = date("Y-m-d H:i:s");
-	$result = dbchange("blocks","rdfupdated","'$update'","bid","$bid"); 
+	$result = dbchange("blocks","rdfupdated","'$update'","bid","$bid");
 	clearstatcache();
 	if ($fp = fopen($rdfurl, "r")) {
 		$rdffile = file($rdfurl);
@@ -1082,18 +1087,18 @@ function rdfimport($bid,$rdfurl) {
 						$channel_data_title[$di]=$data;
 					} else if (($item=='link') && ($type=='item')) {
 							$channel_data_link[$di]=$data;
-					} 
+					}
 				}
 			}
 			$blockcontent = "";
 			for ($i=1; $i <= $di; $i++) {
 				$blockcontent .= "<LI><a href=" . addslashes($channel_data_link[$i]) . ">" . addslashes($channel_data_title[$i]) . "</a>";
 			}
-			$result = dbchange("blocks","content","'$blockcontent'","bid","$bid"); 
-		} 
+			$result = dbchange("blocks","content","'$blockcontent'","bid","$bid");
+		}
 	} else {
 		errorlog("can not reach $rdfurl",1);
-		$result = dbchange("blocks","content","GeekLog can not reach the suppiled RDF file at $update.  Please double check the URL provided.  Make sure your url is correctly entered and it begins with http://. GeekLog will try in one hour to fetch the file again.","bid","$bid"); 
+		$result = dbchange("blocks","content","GeekLog can not reach the suppiled RDF file at $update.  Please double check the URL provided.  Make sure your url is correctly entered and it begins with http://. GeekLog will try in one hour to fetch the file again.","bid","$bid");
 	}
 }
 
@@ -1114,21 +1119,23 @@ function getpassword($loginname) {
 	$result = dbquery("SELECT passwd FROM users WHERE username='$loginname'");
 	$tmp = mysql_errno();
 	$nrows = mysql_num_rows($result);
-	if (($tmp == 0) && ($nrows == 1)) { 
+	if (($tmp == 0) && ($nrows == 1)) {
 		$U = mysql_fetch_array($result);
 		return($U["passwd"]);
 	} else {
 		$tmp = $LANG01[32] . "$loginname!";
 		errorlog($tmp,1);
 	}
-}		
+}
 
 function hit() {
 	dbchange("vars","value","value + 1","name","totalhits");
 }
-	
+
 function PrintUpcomingEvents() {
-  startblock("Upcoming Events");
+  global $LANG01,$CONF;
+
+  startblock($LANG01[78]);
 
   $eventSql = "select eid, title, url, datestart, dateend from events
   where dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14)
@@ -1207,8 +1214,8 @@ function emailusertopics() {
                 $cur_day = strftime("%D",time());
 		$result = dbquery("SELECT value AS lastrun FROM vars WHERE name = 'lastemailedstories'");
 		$L = mysql_fetch_array($result);
-                $storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where date >= '" . $L["lastrun"] . "' AND ("; 
-                //$storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where DATE_FORMAT(date,'%Y-%m-%d') = '" . strftime('%Y-%m-%d',time()) . "' AND ("; 
+                $storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where date >= '" . $L["lastrun"] . "' AND (";
+                //$storysql = "SELECT sid, date AS day, title, introtext, bodytext from stories where DATE_FORMAT(date,'%Y-%m-%d') = '" . strftime('%Y-%m-%d',time()) . "' AND (";
                 $ETIDS = explode(" ",$U["etids"]);
                 fputs($file, "got $ETIDS[$x] for a category\n");
                 for ($i=0; $i<sizeof($ETIDS); $i++) {
@@ -1245,39 +1252,40 @@ function emailusertopics() {
                         fputs($file,"to: $toemail, from: $mailfrom, sub: $subject\ntext: $mailtext");
                         @mail($toemail,$subject,$mailtext,$mailfrom);
         }
-	$tmpdate = date("Y-m-d H:i:s",time()); 
-	dbquery("update vars set value = '$tmpdate'"); 
+	$tmpdate = date("Y-m-d H:i:s",time());
+	dbquery("update vars set value = '$tmpdate'");
         fclose($file);
 }
 
 
 function whatsnewblock() {
-	global $CONF;
+	global $CONF,$LANG01;
 
 	if ($CONF["whatsnewbox"] == 0) return;
 
 	#find the newest stories; change 86400 to your desired interval in seconds
-	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM stories where ";
+	$sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM stories WHERE ";
 	$now = time();
 	$desired = $now - $CONF["newstoriesinterval"];
-	
+
 	$sql .= "UNIX_TIMESTAMP(date) > {$desired}";// ORDER BY day DESC"
+	$sql .= " AND draft_flag = 0";
 	$result = dbquery($sql);
 	$nrows = mysql_num_rows($result);
 
 	if ($nrows > 0) {
 		$hours = (($CONF["newstoriesinterval"] / 60) / 60);
 		if ($nrows == 1) {
-			startblock("<b>What's New: {$nrows} story in last {$hours} hours</b>");
-		} else {
-			startblock("<b>What's New: {$nrows} stories in last {$hours} hours</b>");
+			startblock("<b>{$LANG01[79]}: {$nrows} {$LANG01[81]} {$hours} {$LANG01[82]}</b>");
+ 		} else {
+			startblock("<b>{$LANG01[79]}: {$nrows} {$LANG01[80]} {$hours} {$LANG01[82]}</b>");
 		}
 	} else {
-		startblock("<div align=left><b>What's New</b></div>");
+		startblock("<div align=left><b>{$LANG01[79]}</b></div>");
 	}
 
 	#now go get the newest comments; change 172800 to desired interval in seconds
-	print "<b>COMMENTS</b> <small>last 48 hrs</small><br>";
+	print "<b>{$LANG01[83]}</b> <small>{$LANG01[85]}</small><br>";
 	$sql    = "SELECT distinct *, count(*) as dups, comments.cid,comments.sid,stories.sid,stories.title,max(UNIX_TIMESTAMP(comments.date)) as day FROM comments,stories where ";
 	$now = time();
 	$desired = $now - $CONF["newcommentsinterval"];
@@ -1303,13 +1311,13 @@ function whatsnewblock() {
 			}
 		}
 	} else {
-		print "<font class=storyclose>No new comments</font>";
+		print "<font class=storyclose>{$LANG01[86]}</font>";
 	}
 
 	print "<br>";
 
 	#get newest links; change 1209600 to desired interval in seconds
-	print "<b>LINKS</b> <small>last 2 wks</small><br> ";
+	print "<b>{$LANG01[84]}</b> <small>{$LANG01[87]}</small><br> ";
 	$sql    = "SELECT * FROM links  ORDER BY lid DESC";
 	$foundone = 0;
 	$now = time();
@@ -1343,7 +1351,7 @@ function whatsnewblock() {
 			}
 		}
 		if ($foundone == 0) {
-			print "<font class=storyclose>No recent new links</font><br>";
+			print "<font class=storyclose>{$LANG01[88]}</font><br>";
 		}
 	}
 
@@ -1402,7 +1410,7 @@ function whatsnewblock() {
 #
 # Returns: (none)
 #
-# Description: Displays an error message.  HTML formatting is left to the 
+# Description: Displays an error message.  HTML formatting is left to the
 # caller to do
 #
 ###############################################################################
@@ -1415,7 +1423,7 @@ function whatsnewblock() {
 ###############################################################################
 function showmessage($msg) {
 	global $MESSAGE;
-	
+
 	if ($msg > 0)
 		print $MESSAGE[$msg] . "<BR><BR>";
 }
@@ -1433,7 +1441,7 @@ function showmessage($msg) {
 #
 # Returns: (none)
 #
-# Description: Shows the Goggle-like paging navigation
+# Description: Shows the Google-like paging navigation
 #
 ###############################################################################
 #
@@ -1441,10 +1449,11 @@ function showmessage($msg) {
 #
 # Name                  Date            Description
 # ----------------      -----------     ---------------------------------------
+# Baba                  19 Aug 2001     Bug fix - declared $CONF as global
 #
 ###############################################################################
 function PrintPageNavigation ($page, $num_pages) {
-	global $LANG05;
+	global $CONF,$LANG05;
 
 	//Bail if there is only one page...makes no sense
 	if ($num_pages == 1) return;
