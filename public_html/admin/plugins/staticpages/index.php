@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.20 2003/03/12 11:34:05 dhaun Exp $
+// $Id: index.php,v 1.21 2003/04/24 15:08:28 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -254,6 +254,7 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['sp_id'] = COM_makesid ();
         $A['sp_uid'] = $_USER['uid'];
         $A['unixdate'] = time ();
+        $A['sp_hits'] = 0;
         $A['sp_old_id'] = '';
     } else {
         $A = $HTTP_POST_VARS;
