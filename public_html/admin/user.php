@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.72 2004/03/05 17:28:23 dhaun Exp $
+// $Id: user.php,v 1.73 2004/03/14 15:09:23 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -84,29 +84,29 @@ function edituser($uid = '', $msg = '')
         }
     }
 
-	if (!empty ($uid) && ($uid > 1)) {
-		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = '$uid'");
-		$A = DB_fetchArray($result);
+    if (!empty ($uid) && ($uid > 1)) {
+        $result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = '$uid'");
+        $A = DB_fetchArray($result);
         if (empty ($A['uid'])) {
             return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
         }
 
-		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
-			// the current admin user isn't Root but is trying to change
-			// a root account.  Deny them and log it.
-	        $retval .= COM_startBlock ($LANG28[1], '',
+        if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
+            // the current admin user isn't Root but is trying to change
+            // a root account.  Deny them and log it.
+            $retval .= COM_startBlock ($LANG28[1], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
-			$retval .= $LANG_ACCESS['editrootmsg'];
+            $retval .= $LANG_ACCESS['editrootmsg'];
             COM_accessLog("User {$_USER['username']} tried to edit a Root account with insufficient privileges.");
-			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-			return $retval;
-		}
-		$curtime = COM_getUserDateTimeFormat($A['regdate']);
-	} else {
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            return $retval;
+        }
+        $curtime = COM_getUserDateTimeFormat($A['regdate']);
+    } else {
         $tmp = DB_query("SELECT MAX(uid) AS max FROM {$_TABLES['users']}");
         $T = DB_fetchArray($tmp);
         $A['uid'] = $T['max'] + 1;
-		$curtime =  COM_getUserDateTimeFormat();
+        $curtime =  COM_getUserDateTimeFormat();
     }
 
     $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
@@ -122,12 +122,12 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
-	if ($A['uid'] > 1) { 
+    if ($A['uid'] > 1) { 
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
     }
-	if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
+    if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG28[19] . '" name="mode">');
-	}
+    }
     $user_templates->set_var('lang_cancel', $LANG28[18]);
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
@@ -170,19 +170,19 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
 
         if (!empty($uid)) { 
-		    $usergroups = SEC_getUserGroups($uid);
-		    if (is_array($usergroups) && !empty($uid)) {
-			    $selected = implode(' ',$usergroups);
-		    } else {
-			    $selected = '';
-		    }
+            $usergroups = SEC_getUserGroups($uid);
+            if (is_array($usergroups) && !empty($uid)) {
+                $selected = implode(' ',$usergroups);
+            } else {
+                $selected = '';
+            }
         } else {
             $selected = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'") . ' ';
             $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
         }
         $thisUsersGroups = SEC_getUserGroups ();
         $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
-		$user_templates->set_var ('group_options',
+        $user_templates->set_var ('group_options',
                 COM_checkList ($_TABLES['groups'], 'grp_id,grp_name',
                                $where, $selected));
         $user_templates->parse('group_edit', 'groupedit', true);
@@ -194,7 +194,7 @@ function edituser($uid = '', $msg = '')
     }
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output')); 
-	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -208,18 +208,18 @@ function edituser($uid = '', $msg = '')
 */
 function changepw($uid,$passwd) 
 {
-	global $_TABLES, $_CONF; 
+    global $_TABLES, $_CONF; 
 
     $retval = '';
 
-	if (!empty($passwd) && !empty($uid)) {
-		$passwd = md5($passwd);
-		$result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,$_CONF['site_admin_url'] . '/user.php?mode=none');	
-	} else {
-		$retval .= COM_siteHeader('menu');
-		COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
-		$retval .= COM_siteFooter();
-	}
+    if (!empty($passwd) && !empty($uid)) {
+        $passwd = md5($passwd);
+        $result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,$_CONF['site_admin_url'] . '/user.php?mode=none');    
+    } else {
+        $retval .= COM_siteHeader('menu');
+        COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
+        $retval .= COM_siteFooter();
+    }
 }
 
 /**
@@ -229,13 +229,12 @@ function changepw($uid,$passwd)
 function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups,$delete_photo = '') 
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
+    $retval = '';
 
-	$retval = '';
+    if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);    
+    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);    
 
-	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
-	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
-
-	if (!empty($username) && !empty($email)) {
+    if (!empty($username) && !empty($email)) {
 
         $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
                               "username = '$username' AND uid <> $uid");
@@ -256,11 +255,11 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
         }
 
         $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
-		if (($uid == 1) or !empty($passwd)) { 
-			$passwd = md5($passwd);
-		} else {
+        if (($uid == 1) or !empty($passwd)) { 
+            $passwd = md5($passwd);
+        } else {
             $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
-		}
+        }
 
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             if (empty ($passwd)) {
@@ -280,7 +279,9 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             }
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-
+            if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
+                custom_usersave($uid);
+            }
             PLG_createUser ($uid);
         } else {
             $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
@@ -296,8 +297,8 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 custom_usersave($uid);
             }
         }
-		
-		// if groups is -1 then this user isn't allowed to change any groups so ignore
+        
+        // if groups is -1 then this user isn't allowed to change any groups so ignore
         if (is_array ($groups) && SEC_inGroup ('Group Admin')) {
             if (!SEC_inGroup ('Root')) {
                 $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
@@ -308,47 +309,47 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                     exit;
                 }
             }
-			if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
+            if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
             // remove user from all groups that the User Admin is a member of
             $UserAdminGroups = SEC_getUserGroups ();
             $whereGroup = 'ug_main_grp_id IN ('
                         . implode (',', $UserAdminGroups) . ')';
-			DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
-			if (!empty($groups)) {
-				for ($i = 1; $i <= sizeof($groups); $i++) {
+            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
+            if (!empty($groups)) {
+                for ($i = 1; $i <= sizeof($groups); $i++) {
                     if (in_array (current ($groups), $UserAdminGroups)) {
-					    if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
-					    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
-					    DB_query($sql);
+                        if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
+                        $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
+                        DB_query($sql);
                     }
-					next($groups);		
-				}
-			}
-		}
+                    next($groups);        
+                }
+            }
+        }
         $errors = DB_error();
-		if (empty($errors)) { 
-			echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
-		} else {
-			$retval .= COM_siteHeader('menu');
+        if (empty($errors)) { 
+            echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
+        } else {
+            $retval .= COM_siteHeader('menu');
             $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/user.php');
-			$retval .= COM_siteFooter();
+            $retval .= COM_siteFooter();
             echo $retval;
             exit;
-		}
-	} else {
-		$retval = COM_siteHeader('menu');
-		$retval .= COM_errorLog($LANG28[10]);
+        }
+    } else {
+        $retval = COM_siteHeader('menu');
+        $retval .= COM_errorLog($LANG28[10]);
         if (DB_count($_TABLES['users'],'uid',$uid) > 0) {
             $retval .= edituser($uid);
         } else {
             $retval .= edituser();
         }
-		$retval .= COM_siteFooter();
+        $retval .= COM_siteFooter();
         echo $retval;
         exit;
-	}
+    }
 
-	if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);	
+    if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);    
 
     return $retval;
 }
@@ -359,11 +360,11 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 */
 function listusers($offset, $curpage, $query = '', $query_limit = 50) 
 {
-	global $_TABLES, $LANG28, $_CONF;
+    global $_TABLES, $LANG28, $_CONF;
         
     $retval = '';
 
-	$retval .= COM_startBlock ($LANG28[11], '',
+    $retval .= COM_startBlock ($LANG28[11], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
@@ -408,17 +409,17 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     } else {
         $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 LIMIT $offset,$limit";
     }
-	$result = DB_query($sql);
-	$nrows = DB_numRows($result);
+    $result = DB_query($sql);
+    $nrows = DB_numRows($result);
 
-	for ($i = 0; $i < $nrows; $i++) {
-		$A = DB_fetchArray($result);
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
         $user_templates->set_var('user_id', $A['uid']);
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
         $user_templates->set_var('user_email', $A['email']);
         $user_templates->parse('user_row', 'row', true);
-	}
+    }
     if (!empty($query)) {
         $query = str_replace('%','*',$query);
         $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . '&amp;query_limit=' . $query_limit;
