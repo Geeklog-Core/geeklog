@@ -5,16 +5,16 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | profiles.php                                                              |
-// | This pages let's GL user communicate with each other without risk of      |
+// |                                                                           |
+// | This pages lets GL users communicate with each other without risk of      |
 // | their email address being intercepted by spammers.                        |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.38 2004/10/19 10:53:18 dhaun Exp $
+// $Id: profiles.php,v 1.39 2005/01/28 08:42:50 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -132,7 +132,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 */
 function contactform($uid, $subject='', $message='') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN, $HTTP_COOKIE_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
     $retval = '';
 
@@ -157,12 +157,12 @@ function contactform($uid, $subject='', $message='')
         } else {
             $isAdmin = false;
         }
+
+        $displayname = COM_getDisplayName ($uid);
         if ((($P['emailfromadmin'] == 1) && $isAdmin) ||
             (($P['emailfromuser'] == 1) && !$isAdmin)) {
 
-            $username = DB_getItem ($_TABLES['users'], 'username',
-                                    "uid = '$uid'");
-            $retval = COM_startBlock ($LANG08[10] . ' ' . $username);
+            $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname);
             $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
             $mail_template->set_file ('form', 'contactuserform.thtml');	
             $mail_template->set_var ('site_url', $_CONF['site_url']);
@@ -182,9 +182,7 @@ function contactform($uid, $subject='', $message='')
             $retval .= $mail_template->finish ($mail_template->get_var ('output'));
             $retval .= COM_endBlock ();
         } else {
-            $username = DB_getItem ($_TABLES['users'], 'username',
-                                    "uid = '$uid'");
-            $retval = COM_startBlock ($LANG08[10] . ' ' . $username, '',
+            $retval = COM_startBlock ($LANG08[10] . ' ' . $displayname, '',
                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG08[35];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
@@ -269,7 +267,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
  	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
-    COM_mail ($toemail, $subject, $mailtext, $mailfrom);
+    COM_mail ($mailto, $subject, $mailtext, $mailfrom);
     COM_updateSpeedlimit ('mail');
 
 	// Increment numemails counter for story
@@ -287,7 +285,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 */
 function mailstoryform($sid)
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER, $LANG_LOGIN;
+    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN;
 
     $retval = '';
 
@@ -311,7 +309,11 @@ function mailstoryform($sid)
     if (!empty ($_USER['username'])) {
         $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE uid = {$_USER['uid']}");
         $A = DB_fetchArray($result);
+
         $from = $_USER['username'];
+        if (($_CONF['show_fullname'] == 1) && !empty ($_USER['fullname'])) {
+            $from = $_USER['fullname'];
+        }
         $fromemail = $A['email'];
     }
 
@@ -340,28 +342,28 @@ function mailstoryform($sid)
 // MAIN
 $display = '';
 
-if (isset ($HTTP_POST_VARS['what'])) {
-    $what = COM_applyFilter ($HTTP_POST_VARS['what']);
-} else if (isset ($HTTP_GET_VARS['what'])) {
-    $what = COM_applyFilter ($HTTP_GET_VARS['what']);
+if (isset ($_POST['what'])) {
+    $what = COM_applyFilter ($_POST['what']);
+} else if (isset ($_GET['what'])) {
+    $what = COM_applyFilter ($_GET['what']);
 } else {
     $what = '';
 }
 
 switch ($what) {
     case 'contact':
-        $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+        $uid = COM_applyFilter ($_POST['uid'], true);
         if ($uid > 1) {
-            $display .= contactemail ($uid, $HTTP_POST_VARS['author'],
-                    $HTTP_POST_VARS['authoremail'], $HTTP_POST_VARS['subject'],
-                    $HTTP_POST_VARS['message']);
+            $display .= contactemail ($uid, $_POST['author'],
+                    $_POST['authoremail'], $_POST['subject'],
+                    $_POST['message']);
         } else {
             $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
         break;
 
     case 'emailstory':
-        $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
+        $sid = COM_applyFilter ($_GET['sid']);
         if (empty ($sid)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         } else if ($_CONF['hideemailicon'] == 1) {
@@ -375,19 +377,18 @@ switch ($what) {
         break;
 
     case 'sendstory':
-        $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
+        $sid = COM_applyFilter ($_POST['sid']);
         if (empty ($sid)) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         } else {
-            $display .= mailstory ($sid, $HTTP_POST_VARS['to'],
-                    $HTTP_POST_VARS['toemail'], $HTTP_POST_VARS['from'],
-                    $HTTP_POST_VARS['fromemail'], $HTTP_POST_VARS['shortmsg']);
+            $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
+                    $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
         }
         break;
 
     default:
-        if (isset ($HTTP_GET_VARS['uid'])) {
-            $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
+        if (isset ($_GET['uid'])) {
+            $uid = COM_applyFilter ($_GET['uid'], true);
         } else {
             $uid = 0;
         }
