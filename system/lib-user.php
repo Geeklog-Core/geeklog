@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.1 2004/01/31 09:21:43 dhaun Exp $
+// $Id: lib-user.php,v 1.2 2004/02/14 17:26:53 dhaun Exp $
 
 if (eregi ('lib-user.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -82,7 +82,7 @@ function USER_deleteAccount ($uid)
     // log the user out
     SESS_endUserSession ($uid);
 
-    // Ok, delete everything related to this user
+    // Ok, now delete everything related to this user
 
     // let plugins update their data for this user
     PLG_deleteUser ($uid);
@@ -122,10 +122,22 @@ function USER_deleteAccount ($uid)
         if (!empty ($photo)) {
             $filetodelete = $_CONF['path_images'] . 'userphotos/' . $photo;
             if (!@unlink ($filetodelete)) {
+                // just log the problem, but don't abort
                 COM_errorLog ("Unable to remove file $filetodelete.", 1);
             }
         }
     }
+
+    // in case the user owned any objects that require Admin access, assign
+    // them to the Root user with the lowest uid
+    $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = 'Root'");
+    $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid");
+    $A = DB_fetchArray ($result);
+    $rootuser = $A['ug_uid'];
+
+    DB_query ("UPDATE {$_TABLES['blocks']} SET owner_id = $rootuser WHERE owner_id = $uid");
+    DB_query ("UPDATE {$_TABLES['pollquestions']} SET owner_id = $rootuser WHERE owner_id = $uid");
+    DB_query ("UPDATE {$_TABLES['topics']} SET owner_id = $rootuser WHERE owner_id = $uid");
 
     // now delete the user itself
     DB_delete ($_TABLES['users'], 'uid', $uid);
