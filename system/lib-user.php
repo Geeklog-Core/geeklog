@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.2 2004/02/14 17:26:53 dhaun Exp $
+// $Id: lib-user.php,v 1.3 2004/05/15 13:02:21 dhaun Exp $
 
 if (eregi ('lib-user.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -143,6 +143,36 @@ function USER_deleteAccount ($uid)
     DB_delete ($_TABLES['users'], 'uid', $uid);
 
     return true;
+}
+
+/**
+* Create a new password and send it to the user
+*
+* @param    string  $username   user's login name
+* @param    string  $useremail  user's email address
+* @return   bool                true = success, false = an error occured
+*
+*/
+function USER_createAndSendPassword ($username, $useremail)
+{
+    global $_CONF, $_TABLES, $LANG04;
+
+    srand ((double) microtime () * 1000000);
+    $passwd = rand ();
+    $passwd = md5 ($passwd);
+    $passwd = substr ($passwd, 1, 8);
+    $passwd2 = md5 ($passwd);
+    DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'username', $username);
+
+    $mailtext = $LANG04[15] . "\n\n";
+    $mailtext .= $LANG04[2] . ": $username\n";
+    $mailtext .= $LANG04[4] . ": $passwd\n\n";
+    $mailtext .= $LANG04[14] . "\n\n";
+    $mailtext .= $_CONF['site_name'] . "\n";
+    $mailtext .= $_CONF['site_url'] . "\n";
+    $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+
+    return COM_mail ($useremail, $subject, $mailtext);
 }
 
 ?>

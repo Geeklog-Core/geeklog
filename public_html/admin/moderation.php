@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.49 2004/04/09 08:39:27 dhaun Exp $
+// $Id: moderation.php,v 1.50 2004/05/15 13:02:21 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -601,25 +601,8 @@ function moderateusers ($uid, $action, $count)
                 $nrows = DB_numRows($result);
                 if ($nrows == 1) {
                     $A = DB_fetchArray($result);
-                    srand((double)microtime()*1000000);
-                    $passwd = rand();
-                    $passwd = md5($passwd);
-                    $passwd = substr($passwd,1,8);
-                    $passwd2 = md5($passwd);
-                    DB_change ($_TABLES['users'], 'passwd', "$passwd2",
-                               'username', $A['username']);
-                    DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
-                               'username', $A['username']);
 
-                    $mailtext = "{$LANG04[15]}\n\n";
-                    $mailtext .= "{$LANG04[2]}: {$A['username']}\n";
-                    $mailtext .= "{$LANG04[4]}: $passwd\n\n";
-                    $mailtext .= "{$LANG04[14]}\n\n";
-                    $mailtext .= "{$_CONF["site_name"]}\n";
-                    $mailtext .= "{$_CONF['site_url']}\n";
-
-                    $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-                    COM_mail ($A['email'], $subject, $mailtext);
+                    USER_createAndSendPassword ($A['username'], $A['email']);
                 }
                 break;
         }

@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.10)
 ------------
 
+- Bugfix: New users created through the batch import didn't get the email with
+  their password [Dirk]
+- Moved function to create and send a password to lib-user.php to avoid having
+  identical code in users.php, admin/user.php, and admin/moderation.php [Dirk]
 - Added {topic_image} variable (available in the topicoption.thtml and
   topicoption_off.thtml template files) so that you can use topic images in
   the Sections block (feature request #152) [Dirk]

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.78 2004/05/10 18:20:40 dhaun Exp $
+// $Id: users.php,v 1.79 2004/05/15 13:02:20 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -46,7 +46,8 @@
 /**
 * Geeklog common function library
 */
-require_once('lib-common.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-user.php');
 
 $VERBOSE = false;
 
@@ -293,24 +294,10 @@ function emailpassword($username,$msg=0)
     if ($nrows == 1) {
         $A = DB_fetchArray($result);
         if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5(''))) {
-            return COM_refresh ("{$_CONF['site_url']}/index.php?msg=48");
+            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
-        srand((double)microtime()*1000000);
-        $passwd = rand();
-        $passwd = md5($passwd);
-        $passwd = substr($passwd,1,8);
-        $passwd2 = md5($passwd);
-        DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
-        DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$username);
-        $mailtext = "{$LANG04[15]}\n\n";
-        $mailtext .= "{$LANG04[2]}: $username\n";
-        $mailtext .= "{$LANG04[4]}: $passwd\n\n";
-        $mailtext .= "{$LANG04[14]}\n\n";
-        $mailtext .= "{$_CONF["site_name"]}\n";
-        $mailtext .= "{$_CONF['site_url']}\n";
 
-        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-        COM_mail ($A['email'], $subject, $mailtext);
+        USER_createAndSendPassword ($username, $A['email']);
 
         if ($msg) {
             $retval .= COM_refresh("{$_CONF['site_url']}/index.php?msg=$msg");

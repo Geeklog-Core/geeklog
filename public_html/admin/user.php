@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.73 2004/03/14 15:09:23 blaine Exp $
+// $Id: user.php,v 1.74 2004/05/15 13:02:21 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -452,7 +452,7 @@ function importusers($file)
 
     // Setting this to true will cause import to print processing status to
     // webpage and to the error.log file
-    $verbose_import = false;
+    $verbose_import = true;
 
     // First, upload the file
     require_once($_CONF['path_system'] . 'classes/upload.class.php');
@@ -527,7 +527,7 @@ function importusers($file)
                 }
                 DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
                 DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-                $retval .= emailpassword($u_name, 1);
+                emailpassword ($userName);
 
                 PLG_createUser ($uid);
 
@@ -563,29 +563,13 @@ function importusers($file)
     return $retval;
 }
 
-function emailpassword($username)
+function emailpassword ($username)
 {
-    global $_CONF, $_TABLES, $LANG04;
+    global $_TABLES;
 
-    $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE username = '$username'");
-    $nrows = DB_numRows($result);
-    if ($nrows == 1) {
-        srand((double)microtime()*1000000);
-        $passwd = rand();
-        $passwd = md5($passwd);
-        $passwd = substr($passwd,1,8);
-        $passwd2 = md5($passwd);
-        DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
-        $A = DB_fetchArray($result);
-        $mailtext = "{$LANG04[15]}\n\n";
-        $mailtext .= "{$LANG04[2]}: $username\n";
-        $mailtext .= "{$LANG04[4]}: $passwd\n\n";
-        $mailtext .= "{$LANG04[14]}\n\n";
-        $mailtext .= "{$_CONF["site_name"]}\n";
-        $mailtext .= "{$_CONF['site_url']}\n";
-
-        $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
-        COM_mail ($A['email'], $subject, $mailtext);
+    $email = DB_getItem ($_TABLES['users'], 'email', "username = '$username'");
+    if (!empty ($email)) {
+        USER_createAndSendPassword ($username, $email);
     }
 
     return $retval;
