@@ -507,7 +507,7 @@ CREATE TABLE usercomment (
 CREATE TABLE userindex (
   uid mediumint(8) NOT NULL default '1',
   tids varchar(255) NOT NULL default '',
-  eids varchar(255) NOT NULL default '',
+  etids varchar(255) NOT NULL default '',
   aids varchar(255) NOT NULL default '',
   boxes varchar(255) NOT NULL default '',
   noboxes tinyint(4) NOT NULL default '0',
