@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.309 2004/04/02 04:48:15 vinny Exp $
+// $Id: lib-common.php,v 1.310 2004/04/05 19:22:03 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-require_once( '/path/to/geeklog/config.php' );
+require_once( '/home/vmf/cvs/geeklog-1.3/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -2706,12 +2706,17 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A = DB_fetchArray($comments);
     }
     
+    if ( empty( $A ) )
+    {
+	return '';
+    }
+    
     do
     {
         // determines indentation for current comment
         if ( $mode == 'threaded' || $mode = 'nested' )
         {
-            $indent = ($A['indent'] - 1) * $_CONF['comment_indent'];
+            $indent = $A['indent'] * $_CONF['comment_indent'];
         }
         
         // comment variables
@@ -2928,10 +2933,10 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
             case 'threaded':
             default:
                 // count the total number of applicable comments
-                $q2 = "SELECT COUNT(*) as count "
+                $q2 = "SELECT COUNT(*) "
                     . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
-                    . "WHERE c.lft BETWEEN c2.lft AND c2.rht "
-                    . "AND c2.pid = $pid";
+                    . "WHERE c.sid = '$sid' AND c.lft BETWEEN c2.lft AND c2.rht "
+                    . "AND c2.sid = '$sid' AND c2.pid = $pid";
                 $result = DB_query($q2);
                 list($count) = DB_fetchArray($result);
 
@@ -2944,13 +2949,11 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                     $cOrder = 'c.lft ASC'; 
                 }                            
                 $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
-                     . "unix_timestamp(c.date) AS nice_date, COUNT(c2.cid) as indent "
+                     . "unix_timestamp(c.date) AS nice_date "
                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
-                     . "{$_TABLES['comments']} as c3, {$_TABLES['users']} as u "
-                   . "WHERE c.sid = '$sid' AND c.uid = u.uid AND c3.pid = $pid "
-                     . "AND c2.lft >= c3.lft AND c2.rht <= c3.rht "
-                     . "AND c.lft BETWEEN c2.lft AND c2.rht "
-                   . "GROUP BY c.cid "
+                     . "{$_TABLES['users']} as u "
+                   . "WHERE c.sid = '$sid' AND c.lft BETWEEN c2.lft AND c2.rht "
+                     . "AND c2.sid = '$sid' AND c2.pid = $pid AND c.uid = u.uid "
                    . "ORDER BY $cOrder LIMIT $start, $limit";
                 break;
         }
@@ -5154,6 +5157,9 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
 {
     $rel = array();
 
+    /* [href|name] needs to replace href below at the least, it would be better
+     * to find a method that will work in all cases however.
+     */
     preg_match_all( "/(<a.*?href=\"(.*?)\".*?>)(.*?)(<\/a>)/i", $fulltext, $matches );
     for ( $i=0; $i< count( $matches[0] ); $i++ )
     {

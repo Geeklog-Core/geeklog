@@ -1,6 +1,6 @@
 <?php
 
-function commentsToPreorderTreeHelper($commentid, $left)
+function commentsToPreorderTreeHelper($commentid, $left, $indent)
 {
     global $_TABLES;
     $right = $left + 1;
@@ -13,13 +13,13 @@ function commentsToPreorderTreeHelper($commentid, $left)
     while ( $A = DB_fetchArray($result) )
     {
         //DEBUG: print("calling recurisive({$A['cid']}, $right)\n");
-        $right = commentsToPreorderTreeHelper($A['cid'], $right);
+        $right = commentsToPreorderTreeHelper($A['cid'], $right, $indent + 1);
         $right++;   
     }
     
     //Update the comment, set lft = $left and rht = return value + 1
-    $q = "UPDATE {$_TABLES['comments']} SET lft = $left, rht = $right "
-       . "WHERE cid = $commentid";
+    $q = "UPDATE {$_TABLES['comments']} SET lft = $left, rht = $right, "
+       . "indent = $indent WHERE cid = $commentid";
     DB_query($q);
     //DEBUG: print "$q\n";
     
@@ -51,7 +51,7 @@ function commentsToPreorderTree()
         while ( $B = DB_fetchArray($res2) ) 
         {
             //DEBUG: print("calling recurisive({$B['cid']}, $left)\n");
-            $left = commentsToPreorderTreeHelper($B['cid'], $left);
+            $left = commentsToPreorderTreeHelper($B['cid'], $left, 0);
             $left++;   
         }
         
@@ -61,8 +61,11 @@ function commentsToPreorderTree()
 }
 
 // modify the comments table to speed things up
-$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD lft int(10) unsigned NOT NULL default '0' AFTER pid";
-$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD rht int(10) unsigned NOT NULL default '0' AFTER lft";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD lft mediumint(10) unsigned NOT NULL default '0' AFTER pid";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD rht mediumint(10) unsigned NOT NULL default '0' AFTER lft";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD indent mediumint(10) unsigned NOT NULL default '0' AFTER rht";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_pid(pid)";
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_sid_pid(sid,pid)";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_lft(lft)";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_rht(rht)";
 
