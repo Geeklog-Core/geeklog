@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.46 2004/11/27 14:06:08 dhaun Exp $
+// $Id: functions.inc,v 1.47 2004/12/22 17:13:45 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -476,7 +476,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                     $retval .= ob_get_contents ();
                     ob_end_clean ();
                 } else {
-                    $retval .= stripslashes ($spresult['sp_content']);
+                    $retval .= PLG_replacetags (stripslashes ($spresult['sp_content']));
                 }
             } else {
                 if ($spresult['sp_php'] != 0) {
