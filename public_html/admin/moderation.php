@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.25 2002/07/23 08:51:40 dhaun Exp $
+// $Id: moderation.php,v 1.26 2002/08/03 14:33:59 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -244,9 +244,17 @@ function itemlist($type)
                     . '.php?mode=editsubmission&amp;id=' . $A['id']); 
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);
-            $mod_templates->set_var('data_col1', stripslashes($A[1]));
-            $mod_templates->set_var('data_col2', stripslashes($A[2]));
-            $mod_templates->set_var('data_col3', stripslashes($A[3]));
+
+            // Hack for clickable URLs. From a posting by Andreas Schwarz in
+            // news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
+            for ($j = 1; $j <= 3; $j++) {
+                $A[$j] = preg_replace("/((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is",
+                "<a href=\"\\1\" target=\"_BLANK\">\\1</a>", stripslashes ($A[$j]));
+                $A[$j] = str_replace("<a href=\"www","<a href=\"http://www", $A[$j]);
+            }
+            $mod_templates->set_var('data_col1', $A[1]);
+            $mod_templates->set_var('data_col2', $A[2]);
+            $mod_templates->set_var('data_col3', $A[3]);
             $mod_templates->set_var('cur_row', $i);
             $mod_templates->set_var('item_id', $A[0]);
             $mod_templates->parse('list_of_items','itemrows',true);
