@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.11 2002/01/04 22:42:28 tony_bibbs Exp $
+// $Id: event.php,v 1.12 2002/01/11 18:35:17 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -104,7 +104,7 @@ function editevent($mode, $eid='')
         $A['perm_anon'] = 2;
 		$access = 3;
 	}
-
+/*
     if (!empty($A['datestart'])) {
         $thedatetime = COM_getUserDateTimeFormat($A['datestart']);
     } else {
@@ -117,6 +117,7 @@ function editevent($mode, $eid='')
         $thedatetime = COM_getUserDateTimeFormat();
     }
     $A['dateend'] = $thedatetime[1];
+*/
 	if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
 	}
@@ -158,8 +159,8 @@ function editevent($mode, $eid='')
     $end_year = date('Y', $A['dateend']);
     $start_ampm = '';
     $end_ampm = '';
-    $start_hour = date('H', $A['datestart']);
-    $start_minute = date('i', $A['datestart']);
+    $start_hour = date('H', strtotime($A['datestart']));
+    $start_minute = date('i', strtotime($A['datestart']));
     if ($start_hour > 12) {
         $start_hour = $start_hour - 12;
         $ampm = 'pm';
@@ -169,8 +170,8 @@ function editevent($mode, $eid='')
     } else {
         $event_templates->set_var('startam_selected','selected="SELECTED"');
     }
-    $end_hour = date('H', $A['dateend']);
-    $end_minute = date('i', $A['dateend']);
+    $end_hour = date('H', strtotime($A['dateend']));
+    $end_minute = date('i', strtotime($A['dateend']));
     $ampm = '';
     if ($end_hour > 12) {
         $end_hour = $end_hour - 12;
@@ -410,7 +411,7 @@ function editevent($mode, $eid='')
 * @perm_anon    string          Permissions anonymous users have
 *
 */
-function saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
 	global $_TABLES, $_CONF, $LANG22;
 
@@ -440,21 +441,28 @@ function saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start
 	$address2 = addslashes(COM_checkHTML(COM_checkWords($address2)));
     $city = addslashes(COM_checkHTML(COM_checkWords($city)));
     $zipcode =  addslashes(COM_checkHTML(COM_checkWords($zipcode)));
-    // Add 12 to make time on 24 hour clock if needed
-    if ($start_ampm == 'pm' AND $start_hour <> 12) {
-        $start_hour = $start_hour + 12;
-    }
-    // If 12AM set hour to 00
-    if ($start_ampm == 'am' AND $start_hour == 12) {
-        $start_hour = '00';
-    }
-    // Add 12 to make time on 24 hour clock if needed
-    if ($end_ampm == 'pm' AND $end_hour <> 12) {
-        $end_hour = $end_hour + 12;
-    }
-    // If 12AM set hour to 00
-    if ($end_ampm == 'am' AND $end_hour == 12) {
-        $end_hour = '00';
+    if ($allday == 'on') {
+        $allday = 1;
+    } else {
+        $allday = 0;
+        // Add 12 to make time on 24 hour clock if needed
+        if ($start_ampm == 'pm' AND $start_hour <> 12) {
+            $start_hour = $start_hour + 12;
+        }
+        // If 12AM set hour to 00
+        if ($start_ampm == 'am' AND $start_hour == 12) {
+            $start_hour = '00';
+        }
+        // Add 12 to make time on 24 hour clock if needed
+        if ($end_ampm == 'pm' AND $end_hour <> 12) {
+           $end_hour = $end_hour + 12;
+        }
+        // If 12AM set hour to 00
+        if ($end_ampm == 'am' AND $end_hour == 12) {
+            $end_hour = '00';
+        }
+        $timestart = $start_hour . ':' . $start_minute . ':00';
+        $timeend = $end_hour . ':' . $end_minute . ':00';
     }
 	if (!empty($eid) && !empty($description) && !empty($title)) {
 		DB_delete($_TABLES['eventsubmission'],'eid',$eid);
@@ -462,7 +470,7 @@ function saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-		DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,dateend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url','$datestart','$dateend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
+	DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		COM_errorLog($LANG22[10],2);
@@ -486,7 +494,6 @@ function listevents()
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
     $event_templates->set_var('site_url', $_CONF['site_url']);
-    $event_templates->set_var('layout_url', $_CONF['layout_url']);
     $event_templates->set_var('lang_newevent', $LANG22[18]);
     $event_templates->set_var('lang_adminhome', $LANG22[19]);
     $event_templates->set_var('lang_instructions', $LANG22[12]);
@@ -529,7 +536,7 @@ switch ($mode) {
 		DB_delete($_TABLES['events'],'eid',$eid,'/admin/event.php?msg=18');
 		break;
 	case 'save':
-		$display .= saveevent($eid,$title,$event_type,$url,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case 'editsubmission':
 		$display .= COM_siteHeader('menu');
