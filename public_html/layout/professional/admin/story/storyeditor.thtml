@@ -224,7 +224,7 @@ function enablearchive(obj) {
                             </form>
 <script>
 <!-- This code will only be executed by a browser that suppports Javascript -->
-var jstest = {showarchivedisabled}
+var jstest = "{showarchivedisabled}";
 if (jstest) {
     document.frmstory.expire_month.disabled=true;
     document.frmstory.expire_day.disabled=true;
