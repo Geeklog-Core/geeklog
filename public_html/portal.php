@@ -5,14 +5,15 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | portal.php                                                                |
+// |                                                                           |
 // | Geeklog portal page that tracks link click throughs.                      |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,22 +32,27 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.10 2002/12/03 13:45:26 dhaun Exp $
+// $Id: portal.php,v 1.11 2004/01/01 20:50:08 dhaun Exp $
 
 require_once('lib-common.php');
 
 // MAIN
 
-$display = '';
+$url = '';
 
-if (!empty($item)) {
+$item = COM_applyFilter ($HTTP_GET_VARS['item']);
+
+if (!empty ($item)) {
     $url = DB_getItem ($_TABLES['links'], 'url', "lid = '{$item}'");
-    DB_change($_TABLES['links'],'hits','hits + 1','lid',$item,'',true);
-    $display .= COM_refresh($url);
-} else {
-    $display .= COM_refresh($_CONF['site_url']);
+    if (!empty ($url)) {
+        DB_change ($_TABLES['links'], 'hits','hits + 1', 'lid',$item, '', true);
+    }
 }
 
-echo $display;
+if (empty ($url)) {
+    $url = $_CONF['site_url'];
+}
+
+header ('Location: ' . $url);
 
 ?>
