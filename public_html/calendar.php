@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.22 2002/06/24 19:24:38 dhaun Exp $
+// $Id: calendar.php,v 1.23 2002/08/09 19:03:45 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -528,9 +528,9 @@ case 'week':
         $daynum = date('j', $thedate[1]);
         $yearnum = date('Y', $thedate[1]);
         if ($yearnum . '-' . $monthnum . '-' . $daynum == date('Y-m-d',time())) {
-            $cal_templates->set_var('class'.$i,'weekview_curday');
+            $cal_templates->set_var('class'.$i,'weekview-curday');
         } else {
-            $cal_templates->set_var('class'.$i,'weekview_offday');
+            $cal_templates->set_var('class'.$i,'weekview-offday');
         }
         $monthname = $cal->getMonthName($monthnum);
         $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ("%x", $thedate[1]) . '</a>');
@@ -671,12 +671,12 @@ for ($i = 1; $i <= 6; $i++) {
             if (($currentyear > $year) OR
                 ($currentmonth > $month && $currentyear == $year) OR
                 ($currentmonth == $month && $currentday > $curday->daynumber && $currentyear == $year)) {
-                $cal_templates->set_var('cal_day_style', 'cal_oldday'); 
+                $cal_templates->set_var('cal_day_style', 'cal-oldday'); 
             } else {
                 if ($currentyear == $year && $currentmonth == $month && $currentday == $curday->daynumber) {
-                    $cal_templates->set_var('cal_day_style','cal_today');
+                    $cal_templates->set_var('cal_day_style','cal-today');
                 } else {
-                    $cal_templates->set_var('cal_day_style', 'cal_futureday');
+                    $cal_templates->set_var('cal_day_style', 'cal-futureday');
                 }
             }
 
@@ -733,7 +733,7 @@ for ($i = 1; $i <= 6; $i++) {
             if ($i > 1) {
                 // Close out calendar if needed
                 for ($k = $j; $k <= 7; $k++) {
-                    $cal_templates->set_var('cal_day_style','cal_nullday');
+                    $cal_templates->set_var('cal_day_style','cal-nullday');
                     $cal_templates->set_var('cal_day_anchortags', '');
                     $cal_templates->set_var('cal_day_entries','&nbsp;');
                     if ($k < 7) $cal_templates->parse('cal_days', 'day', true);
@@ -743,7 +743,7 @@ for ($i = 1; $i <= 6; $i++) {
                 $j = 8;
             } else {
                 // Print empty box for any day in the first week that occur before the first day
-                $cal_templates->set_var('cal_day_style','cal_nullday');
+                $cal_templates->set_var('cal_day_style','cal-nullday');
                 $cal_templates->set_var('cal_day_anchortags', '');
                 $cal_templates->set_var('cal_day_entries','&nbsp;');
             }
