@@ -51,6 +51,10 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
     lib-custom.php.</li>
 <li>Clickable links in text postings: URLs in non-HTML postings are now
     recognized by Geeklog and displayed as clickable links.</li>
+<li>Editable story IDs: The IDs of stories can now be changed (like the IDs of
+    static pages) to provide more readable URLs (and further improve the
+    chances of being picked up by seach engines, especially when used with
+    URL rewriting).</li>
 <li>Autolinks are a new form of links that can be used in stories and comments.
     An autolink takes the form
     <code>[<i>name</i>:<i>id</i> <i>link text</i>]</code> where <i>name</i> is
@@ -75,9 +79,14 @@ theme, kindly provided by Victor B. Gonzalez (of <a href="http://aeonserv.com">A
 
 <ul>
 <li>Various changes have been made to improve the overall performance.</li>
-<li>Fresh installs are now using InnoDB tables if your MySQL version supports
-    them (as of MySQL 4.0, or 3.x "Max" builds). Existing databases can be
-    converted to InnoDB by using the script <tt>admin/install/toinnodb.php</tt>.
+<li>On fresh installs, there is now an option to use InnoDB tables (instead of
+    MyISAM) if your MySQL version supports them (as of MySQL 4.0, or 3.x "Max"
+    builds). Existing databases can be converted to InnoDB by using the script
+    <tt>admin/install/toinnodb.php</tt>.<br>
+    <strong>Warning:</strong> Using InnoDB tables makes database backups
+    somewhat more complicated. Small and medium-sized sites should work just
+    fine with MyISAM tables, so if in doubt <em>don't</em> use InnoDB
+    tables.</li>
 <li>The calendar's week can now either start on a Sunday or a Monday.</li>
 <li>The Static Pages plugin now has an option to display a printer-friendly
     version of a static page.</li>
@@ -134,8 +143,14 @@ environment it's running in.</p>
     not the max. width (bug #242).</li>
 <li>Keeping an unscaled image wasn't possible when using gdlib to rescale
     images (bug #197).</li>
+<li>When using gdlib, GIF images were converted to PNG format, but Geeklog
+    was still trying to display the GIF version. Since the LZW patent has
+    now <a href="http://www.unisys.com/about__unisys/lzw">expired</a>, it is
+    safe to use GIF images again and the PNG conversion has been dropped.</li>
 <li>The tarball also includes updated PEAR packages which should address the
-    email problems some users were having (bug #246).</p>
+    email problems some users were having (bug #246).<br>
+    <strong>Note:</strong> These are the same PEAR packages that already
+    shipped with Geeklog 1.3.9sr2.</li>
 </ul>
 
 <p>This release contains various improvements provided by the Geeklog community
