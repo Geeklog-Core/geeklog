@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog poll administration page                                          |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.35 2003/09/27 20:45:42 dhaun Exp $
+// $Id: poll.php,v 1.36 2004/01/13 19:15:52 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -49,7 +49,7 @@ if (!SEC_hasRights('poll.edit')) {
     $display .= $MESSAGE[36];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    $display .= COM_errorLog("User {$_USER['username']} tried to illegally access the poll administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the poll administration screen.");
     echo $display;
     exit;
 }
@@ -119,7 +119,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
             $display .= COM_endBlock ();
             $display .= COM_siteFooter (COM_getBlockTemplate ('_msg_block',
                                                               'footer'));
-            COM_errorLog("User {$_USER['username']} tried to illegally submit or edit poll $pid",1);
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
             echo $display;
             exit;
         }
@@ -219,6 +219,7 @@ function editpoll($qid='')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG25[22];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
             return $retval;
         }
     }

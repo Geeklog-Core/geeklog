@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.53 2003/11/16 21:30:35 blaine Exp $
+// $Id: block.php,v 1.54 2004/01/13 19:15:51 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -49,6 +49,7 @@ if (!SEC_hasrights('block.edit')) {
         . $MESSAGE[31]
         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
         . COM_siteFooter ();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the block administration screen");
     echo $display;
     exit;
 }
@@ -169,8 +170,9 @@ function editblock($bid='')
                                COM_getBlockTemplate ('_msg_block', 'header'))
                     . $LANG21[45]
                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
 
-                return $retval;
+            return $retval;
         } 
         if ($A['type'] == 'gldefault') {
             $retval .= editdefaultblock($A,$access);
@@ -349,7 +351,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         $display .= $MESSAGE[31];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter();
-        COM_errorLog("User {$_USER['username']} tried to illegally create or edit block $bid",1);
+        COM_accessLog("User {$_USER['username']} tried to illegally create or edit block $bid.");
         echo $display;
         exit;
     } elseif (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {

@@ -8,10 +8,9 @@
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001,2002 by the following authors:                         |
+// | Copyright (C) 2001-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.19 2003/09/01 19:01:06 dhaun Exp $
+// $Id: mail.php,v 1.20 2004/01/13 19:15:52 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -48,7 +47,7 @@ if (!SEC_inGroup('Mail Admin')) {
     $retval .= $MESSAGE[37];
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= COM_siteFooter ();
-    COM_errorLog("User {$_USER['username']} tried to illegally access the mail administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the mail administration screen.");
     echo $retval;
     exit;
 }

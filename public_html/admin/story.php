@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog story administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.109 2004/01/07 04:22:32 tony Exp $
+// $Id: story.php,v 1.110 2004/01/13 19:15:52 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -64,7 +64,7 @@ if (!SEC_hasRights('story.edit')) {
     $display .= $MESSAGE[31];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    COM_errorLog("User {$_USER['username']} tried to illegally access the story administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the story administration screen.");
     echo $display;
     exit;
 }
@@ -101,12 +101,14 @@ function storyeditor($sid = '', $mode = '')
             $display .= $LANG24[41];
             $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             $display .= COM_article($A,n);
+            COM_accessLog("User {$_USER['username']} tried to illegally edit story $sid.");
             return $display;
         } else if ($access == 0) {
             $display .= COM_startBlock($LANG24[40], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG24[42];
             $display .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally access story $sid.");
             return $display;
         }
     } elseif (!empty($sid) && $mode == "editsubmission") {
@@ -778,7 +780,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $display .= $MESSAGE[31];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
-        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit story $sid",1);
+        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
         echo $display;
         exit;
     } elseif (!empty($title) && !empty($introtext)) {

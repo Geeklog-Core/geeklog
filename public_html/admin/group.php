@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.32 2003/11/17 01:40:31 blaine Exp $
+// $Id: group.php,v 1.33 2004/01/13 19:15:52 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -66,6 +66,7 @@ if (!SEC_hasRights('group.edit')) {
     $display .= $MESSAGE[32];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the group administration screen.");
     echo $display;
     exit;
 }
@@ -95,13 +96,14 @@ function editgroup($grp_id = '')
 		$result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
 		$A = DB_fetchArray($result);
 
-	    // If this is a not Root user (e.g. Group Admin) and they are editing the 
-	    // Root root then bail...they can't change groups
-		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == "Root")) {
+        // If this is a not Root user (e.g. Group Admin) and they are editing
+        // the Root group then bail...they can't change groups
+		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == 'Root')) {
             $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG_ACCESS['canteditroot'];
 			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+			COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
 			return $retval;
 		}
 	} else {

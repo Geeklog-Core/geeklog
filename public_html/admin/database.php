@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog database backup administration page.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Blaine Lang      - langmail@sympatico.ca                         |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.13 2003/09/01 19:01:05 dhaun Exp $
+// $Id: database.php,v 1.14 2004/01/13 19:15:51 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -53,7 +53,7 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
     $display .= $MESSAGE[46];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    COM_errorLog("User {$_USER['username']} tried to illegally access the database backup screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the database backup screen.");
     echo $display;
     exit;
 }

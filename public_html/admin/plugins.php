@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog plugin administration page.                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.35 2003/09/01 19:01:06 dhaun Exp $
+// $Id: plugins.php,v 1.36 2004/01/13 19:15:52 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -51,7 +51,7 @@ if (!SEC_inGroup('Root')) {
     $display .= $MESSAGE[38];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    COM_errorLog("User {$_USER['username']} tried to illegally access the poll administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the poll administration screen.");
     echo $display;
     exit;
 }

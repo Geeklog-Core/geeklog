@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003 by the following authors:                              |
+// | Copyright (C) 2003-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.5 2003/12/28 18:45:05 dhaun Exp $
+// $Id: syndication.php,v 1.6 2004/01/13 19:15:52 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -41,6 +41,7 @@ if (!SEC_inGroup ('Root')) {
         . $MESSAGE[31]
         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
         . COM_siteFooter ();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the content syndication administration screen.");
     echo $display;
     exit;
 }

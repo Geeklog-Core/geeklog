@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog links administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.38 2003/12/11 21:05:28 dhaun Exp $
+// $Id: link.php,v 1.39 2004/01/13 19:15:52 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -51,7 +51,7 @@ if (!SEC_hasRights('link.edit')) {
     $display .= $MESSAGE[34];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
-    $display .= COM_errorLog("User {$_USER['username']} tried to illegally access the link administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the link administration screen.");
     echo $display;
     exit;
 }
@@ -83,6 +83,7 @@ function editlink($mode, $lid = '')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG23[17];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
             return $retval;
         }
 	} else {
@@ -239,7 +240,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
         $display .= $MESSAGE[31];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
-        COM_errorLog("User {$_USER['username']} tried to illegally submit or edit link $lid",1);
+        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
         echo $display;
         exit;
     } elseif (!empty($title) && !empty($description) && !empty($url)) {

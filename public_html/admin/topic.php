@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.38 2004/01/01 21:55:20 blaine Exp $
+// $Id: topic.php,v 1.39 2004/01/13 19:15:52 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -44,6 +44,7 @@ if (!SEC_hasRights('topic.edit')) {
     $display .= $MESSAGE[32];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the topic administration screen.");
     echo $display;
     exit;
 }
@@ -72,6 +73,7 @@ function edittopic($tid='')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG27[13]; 
             $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
+            COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
             return $retval; 
         }
     }
@@ -199,7 +201,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
         $display .= $MESSAGE[31];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter ();
-        COM_errorLog("User {$_USER['username']} tried to illegally create or edit topic $tid",1);
+        COM_accessLog("User {$_USER['username']} tried to illegally create or edit topic $tid.");
         echo $display;
         exit;
     } elseif (!empty($tid) && !empty($topic)) {

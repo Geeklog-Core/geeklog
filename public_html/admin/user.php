@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog user administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.64 2004/01/02 20:58:26 blaine Exp $
+// $Id: user.php,v 1.65 2004/01/13 19:15:52 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -50,7 +50,7 @@ if (!SEC_hasRights('user.edit')) {
     $retval .= $MESSAGE[37];
     $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $retval .= COM_siteFooter ();
-    COM_errorLog("User {$_USER['username']} tried to illegally access the user administration screen",1);
+    COM_accessLog("User {$_USER['username']} tried to illegally access the user administration screen.");
     echo $retval;
     exit;
 }
@@ -87,7 +87,7 @@ function edituser($uid = '', $msg = '')
 	        $retval .= COM_startBlock ($LANG28[1], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
 			$retval .= $LANG_ACCESS['editrootmsg'];
-			COM_errorLog("User {$_USER['username']} tried to edit a root account with insufficient privileges",1);
+			COM_accessLog("User {$_USER['username']} tried to edit a root account with insufficient privileges.");
 			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 			return $retval;
 		}
