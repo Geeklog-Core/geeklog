@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.106 2004/10/09 20:18:34 blaine Exp $
+// $Id: usersettings.php,v 1.107 2004/10/09 20:44:41 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -761,6 +761,8 @@ function handlePhotoUpload ($delete_photo = '')
             echo $display;
             exit; // don't return
         }
+    } else if (!$delete_photo && !empty ($curphoto)) {
+        $filename = $curphoto;
     }
 
     return $filename;
@@ -905,7 +907,7 @@ function saveuser($A)
 }
 
 /**
-* Saves user's perferences back to the database
+* Saves user's preferences back to the database
 *
 * @A        array       User's data to save
 *
