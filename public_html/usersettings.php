@@ -272,9 +272,20 @@ function editpreferences()
     	$tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
         $retval .= str_replace('topics','etids',$tmp);
     	$retval .= '</td></tr></table>';
-   	$retval .= COM_endBlock();	
+   	    $retval .= COM_endBlock();	
     }
-	
+
+    $selectedblock = '';
+    if (strlen($A['boxes']) > 0) {
+        $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ',',',$A['boxes']) . ")");
+        for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
+            $row = DB_fetchArray($blockresult);
+            $selectedblocks .= $row['bid'];
+            if ($x <> DB_numRows($blockresult)) {
+                $selectedblocks .= ' ';
+            }
+        }
+    }
     $retval .= COM_startBlock($LANG04[47] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
         . '<tr>' . LB
@@ -282,7 +293,7 @@ function editpreferences()
         .' </tr>' . LB
         . '<tr>' . LB
         . '<td>'
-        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',"(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND title in ('Whats New Block','Poll Block','Events Block')) ORDER BY onleft desc,blockorder,title",$A["boxes"])
+        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',"(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND name IN ('whats_new_block','poll_block','events_block')) ORDER BY onleft desc,blockorder,title",$selectedblocks)
         . '</td>'.LB
         . '</tr>'.LB
         . '</table>'
@@ -414,16 +425,33 @@ function savepreferences($A)
             $aids .= $AIDS[$i] . ' ';
         }
     }
-    if (sizeof($BOXES) > 0) {
-        for ($i = 0; $i < sizeof($BOXES); $i++) {
-            $boxes .= $BOXES[$i] . ' ';
+    if (count($BOXES) > 0) {
+        for ($i = 1; $i <= count($BOXES); $i++) {
+            $boxes .= current($BOXES); 
+            if ($i <> count($BOXES)) {
+                $boxes .= ',';
+            }
+            next($BOXES);
+        }
+        $blockresult = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($boxes)");
+        $selectedblocks = '';
+        for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
+            $row = DB_fetchArray($blockresult);
+            if ($row['name'] <> 'user_block' AND $row['name'] <> 'admin_block' AND $row['name'] <> 'section_block') {
+                $selectedblocks .= $row['bid'];
+                if ($x <> DB_numRows($blockresult)) {
+                    $selectedblocks .= ' ';
+                }
+            }
         }
     } 
+
     if (sizeof($ETIDS) > 0) {
         for ($i = 0; $i < sizeof($ETIDS); $i++) {
             $etids .= $ETIDS[$i] . " ";
         }
     }
+    
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
     setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']);	
@@ -431,7 +459,7 @@ function savepreferences($A)
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$boxes','{$A['noboxes']}','{$A['maxstories']}','$etids'","usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}','{$A['maxstories']}','$etids'","usersettings.php?mode=preferences&msg=6");
 
 }
 
