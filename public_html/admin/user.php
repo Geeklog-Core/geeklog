@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.14 2001/12/07 15:50:03 tony_bibbs Exp $
+// $Id: user.php,v 1.15 2001/12/17 16:23:12 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -122,13 +122,18 @@ function edituser($uid = '', $msg = '')
 	if (SEC_inGroup('Group Admin')) {
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS[securitygroupsmsg]);
-         
-		$usergroups = SEC_getUserGroups($uid);
-		if (is_array($usergroups) && !empty($uid)) {
-			$selected = implode(' ',$usergroups);
-		} else {
-			$selected = '';
-		}
+        
+        if (!empty($uid)) { 
+		    $usergroups = SEC_getUserGroups($uid);
+		    if (is_array($usergroups) && !empty($uid)) {
+			    $selected = implode(' ',$usergroups);
+		    } else {
+			    $selected = '';
+		    }
+        } else {
+            $selected = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'") . ' ';
+            $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
+        }
 		$user_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name','',$selected));
         $user_templates->parse('group_edit', 'groupedit', true);
 	} else {
