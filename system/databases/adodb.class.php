@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: adodb.class.php,v 1.3 2002/05/22 18:24:46 tony_bibbs Exp $
+// $Id: adodb.class.php,v 1.4 2002/05/29 20:33:01 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -60,6 +60,10 @@ class database {
     * @access private
     */
     var $_pass = '';
+    /**
+    * @access private
+    */
+    var $_dbms = '';
     /**
     * @access private
     */
@@ -131,7 +135,7 @@ class database {
         }
 
         // Connect to MySQL server
-        $conn = &ADONewConnection('mysql');
+        $conn = &ADONewConnection($this->_dbms);
         $conn->Connect($this->_host, $this->_user, $this->_pass, $this->_name);
         
         if ($this->isVerbose()) {
@@ -162,6 +166,7 @@ class database {
         $this->_name = $dbname;
         $this->_user = $dbuser;
         $this->_pass = $dbpass;
+        $this->_dbms = 'mysql';
         $this->_verbose = false;
         $this->_errorlog_fn = $errorlogfn;
         $this->_conn = $this->_connect();
@@ -259,11 +264,12 @@ class database {
                 $this->_errorlog("\n***sql ran just fine***<BR>");
                 $this->_errorlog("\n*** Leaving database->dbQuery ***<BR>");
             }
-            
             return $rs_count;
         } else {
             // callee may want to supress printing of errors
-            if ($ignore_errors == 1) return false;
+            if ($ignore_errors == 1) {
+                return false;
+            }
 
             if ($this->isVerbose()) {
                 $this->_errorlog("\n***sql caused an error***<br>");
@@ -623,7 +629,11 @@ class database {
     function dbFetchArray($recordset)
     {
         if (!is_numeric($recordset)) {
-            $this->_errorLog('Recieved improper recordset index...returning gracefully');
+            if (empty($recordset)) {
+                $this->_errorLog('Recordset passed to dbFetchArray was empty');
+            } else {
+                $this->_errorLog("Recieved improper recordset index of $recordset...returning gracefully");
+            }
             return;
         }
         $rs = $this->_recordSets[$recordset];
@@ -674,6 +684,7 @@ class database {
 	
 	return;
     }
+        
 }
 
 ?>
