@@ -135,14 +135,15 @@ $LANG01 = array(
 	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
 	95 => "Powered By",
 	96 => "Groups",
-        97 => "Word List",
+    97 => "Word List",
 	98 => "Plug-ins",
 	99 => "STORIES",
     100 => "No new stories",
     101 => 'Your Events',
     102 => 'Site Events',
     103 => 'DB Backups',
-    104 => 'by'
+    104 => 'by',
+    105 => 'Mail Users'
 );
 
 ###############################################################################
@@ -532,17 +533,17 @@ $LANG21 = array(
 	25 => "To modify or delete a block, click on that block below.  To create a new block click on new block above.",
 	26 => "Layout Block",
 	27 => "PHP Block",
-        28 => "PHP Block Options",
-        29 => "Block Function",
-        30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in /path/to/geeklog/system/lib-custom.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
-        31 => "Error in PHP Block.  Function, $function, does not exist.",
-        32 => "Error Missing Field(s)",
-        33 => "You must enter the URL to the .rdf file for portal blocks",
-        34 => "You must enter the title and the function for PHP blocks",
-        35 => "You must enter the title and the content for normal blocks",
-        36 => "You must enter the content for layout blocks",
-        37 => "Bad PHP block function name",
-        38 => "Functions for PHP Blocks must have the prefix 'phpblock_' (e.g. phpblock_getweather).  The 'phpblock_' prefix is required for security reasons to prevent the execution of arbitrary code.",
+    28 => "PHP Block Options",
+    29 => "Block Function",
+    30 => "If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix \"phpblock_\" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis \"()\" after your function name.  Finally, it is recommended that you put all your PHP Block code in /path/to/geeklog/system/lib-custom.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.",
+    31 => "Error in PHP Block.  Function, $function, does not exist.",
+    32 => "Error Missing Field(s)",
+    33 => "You must enter the URL to the .rdf file for portal blocks",
+    34 => "You must enter the title and the function for PHP blocks",
+    35 => "You must enter the title and the content for normal blocks",
+    36 => "You must enter the content for layout blocks",
+    37 => "Bad PHP block function name",
+    38 => "Functions for PHP Blocks must have the prefix 'phpblock_' (e.g. phpblock_getweather).  The 'phpblock_' prefix is required for security reasons to prevent the execution of arbitrary code.",
 	39 => "Side",
 	40 => "Left",
 	41 => "Right",
@@ -746,7 +747,10 @@ $LANG28 = array(
 	19 => 'delete',
 	20 => 'save',
     21 => 'The username you tried saving already exists.',
-    22 => 'Error'
+    22 => 'Error',
+    23 => 'Batch Add',
+    24 => 'Batch Import of Users',
+    25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!'
 );
 
 
@@ -812,7 +816,7 @@ $LANG30 = array(
 ###############################################################################
 # admin/mail.php
 $LANG31 = array(
- 	1 => "Mail",
+ 	1 => $_CONF['site_name'] . " Mail Utility",
  	2 => "From",
  	3 => "Reply-to",
  	4 => "Subject",
@@ -828,7 +832,14 @@ $LANG31 = array(
  	14 => "Ignore user settings",
  	15 => "Error when sending to: ",
 	16 => "Successfully sent messages to: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>"
+	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>",
+    18 => "To",
+    19 => "NOTE: if you wish to send a message to all logged in users, select the Logged-in Users group from the drop down.",
+    20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Send another message</a> or you can <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">go back to the administration page</a>.",
+    21 => 'Failures',
+    22 => 'Successes',
+    23 => 'No failures',
+    24 => 'No successes'
 );
 
 
