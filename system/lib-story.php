@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.11 2004/11/14 14:06:12 dhaun Exp $
+// $Id: lib-story.php,v 1.12 2004/12/10 09:19:50 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -197,7 +197,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = sizeof( explode( ' ', $A['bodytext'] ));
+            $numwords = sizeof( explode( ' ', strip_tags( $A['bodytext'] )));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link', '<a href="' . $articleUrl . '">'
