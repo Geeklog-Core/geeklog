@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.22 2001/12/17 16:30:14 tony_bibbs Exp $
+// $Id: story.php,v 1.23 2002/01/24 22:14:42 dreamscape Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -273,7 +273,7 @@ function liststories($page="1")
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $story_templates->set_var('story_id', $A['sid']);
             $story_templates->set_var('row_num', $scount);
-            $story_templates->set_var('story_title', $A['title']);
+            $story_templates->set_var('story_title', stripslashes($A['title']));
             $story_templates->set_var('story_access', $access);
             if ($A['draft_flag'] == 1) {
                 $story_templates->set_var('story_draft', $LANG24[35]);
