@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.17 2003/05/21 10:33:20 dhaun Exp $
+// $Id: lib-sessions.php,v 1.18 2003/05/23 11:42:06 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -108,12 +108,12 @@ function SESS_sessionCheck()
             // Session probably expired, now check permanent cookie
             if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
                 $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-                if (empty ($userid) || ($userid == 'deleted')) {
+                if (empty ($userid) || !is_int ($userid)) {
                     unset ($userid);
                 } else {
                     $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
                     $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
-                    if ($cookie_password <> $userpass) {
+                    if (empty ($cookie_password) || ($cookie_password <> $userpass)) {
                         //User may have modified their UID in cookie, ignore them
                     } else {
                         if ($userid) {
@@ -142,19 +142,23 @@ function SESS_sessionCheck()
             }
 
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
-            $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
-            if ($cookie_password <> $userpass) {
-                // User could have modified UID in cookie, don't do shit
+            if (!is_int ($userid)) {
+                unset ($userid);
             } else {
-                if ($userid) {
-                    $user_logged_in = 1;
+                $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
+                $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
+                if (empty ($cookie_password) || ($cookie_password <> $userpass)) {
+                    // User could have modified UID in cookie, don't do shit
+                } else {
+                    if ($userid) {
+                        $user_logged_in = 1;
 
-                    // Create new session and write cookie
-                    $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-                    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-                    $userdata = SESS_getUserDataFromId($userid);
-                    $_USER = $userdata;
+                        // Create new session and write cookie
+                        $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                        SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                        $userdata = SESS_getUserDataFromId($userid);
+                        $_USER = $userdata;
+                    }
                 }
             }
         }
