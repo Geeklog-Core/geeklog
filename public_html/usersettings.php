@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.79 2004/01/07 04:42:34 tony Exp $
+// $Id: usersettings.php,v 1.80 2004/01/11 19:14:33 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -756,9 +756,14 @@ function saveuser($A)
                 if (!empty($curphoto) AND isset ($A['delete_photo']) AND
                         $A['delete_photo'] == 'on') {
                     $filetodelete = $_CONF['path_images'] . 'userphotos/' . $curphoto;
-                    if (!unlink($filetodelete)) {
-                        echo COM_errorLog("Unable to remove file $filetodelete");
-                        exit;
+                    if (file_exists ($filetodelete)) {
+                        if (!@unlink ($filetodelete)) {
+                            $display = COM_siteHeader ('menu');
+                            $display .= COM_errorLog ("Unable to remove file $filetodelete");
+                            $display .= COM_siteFooter ();
+                            echo $display;
+                            exit;
+                        }
                     }
                     $curphoto = '';
                 }
