@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.5 2002/07/23 10:12:35 dhaun Exp $
+// $Id: install.php,v 1.6 2002/08/04 17:35:24 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -220,7 +220,7 @@ function plugin_uninstall_staticpages($steps = '')
     if (empty($steps) OR $steps['createtable'] == 1) {
         // Remove the staticpage table 
         COM_errorLog('Dropping staticpage table',1);
-        DB_query('DROP TABLE {$_TABLES['staticpage']}');
+        DB_query("DROP TABLE {$_TABLES['staticpage']}");
         COM_errorLog('...success',1);
     }
 
