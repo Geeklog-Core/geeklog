@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.130 2002/08/04 20:20:13 dhaun Exp $
+// $Id: lib-common.php,v 1.131 2002/08/05 20:18:28 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -63,7 +63,12 @@ if (!$_CONF['site_enabled']) {
     if (empty($_CONF['site_disabled_msg'])) {
         print $_CONF['site_name'] . ' is temporarily down.  Please check back soon';
     } else {
-        print $_CONF['site_disabled_msg'];
+        // if the msg starts with http: assume it's a URL we should redirect to
+        if (preg_match ("/^(https?):/", $_CONF['site_disabled_msg']) === 1) {
+            print COM_refresh ($_CONF['site_disabled_msg']);
+        } else {
+            print $_CONF['site_disabled_msg'];
+        }
     }
     exit;
 }
