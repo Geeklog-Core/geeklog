@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.73 2003/02/09 21:33:35 tony Exp $
+// $Id: config.php,v 1.74 2003/03/16 03:58:43 mlimburg Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -393,11 +393,11 @@ $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
 
-// Experimental, only works with staticpages right now. This feature is known
-// to have issues that are unresolvable with systems running IIS.  Have not
-// tested on windows with apache yet.  This feature when fully implemented,
-// will make your site crawler friendly.  Problems with IIS are known PHP CGI
-// bug.
+// EXPERIMENTAL!  This feature when fully implemented, will make your site crawler friendly.
+//
+// Note: Works with Apache (Linux and Windows successfully tested).
+//       Only works with staticpages right now.
+//       Unresolvable issues with systems running IIS; known PHP CGI bug.
 
 $_CONF['url_rewrite']       = false; // false = off, true = on
 
