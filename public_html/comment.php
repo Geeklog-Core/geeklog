@@ -71,6 +71,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 {
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $_USER;
 	
+	if ($uid > 1) {
+        $sig = DB_getItem($_TABLES['users'], 'sig', "uid='$uid'");
+    }
+    
     if ($_CONF['commentsloginrequired'] == 1 && empty($_USER['username'])) {
         $retval .= COM_refresh($_CONF['site_url'] . '/users.php?msg=' . urlencode($LANG03[6]));
     } else {
@@ -105,7 +109,14 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                     
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
-                $HTTP_POST_VARS['comment'] = $comment;
+                $newcomment = $comment;
+                if (!$postmode == 'html') {
+                    $newcomment .= LB . LB . LB . '-----' . LB . $sig;
+                } else {
+                    $newcomment .= '<p>----<br>' . $sig;
+                }
+                $HTTP_POST_VARS['comment'] = $newcomment;
+                
 				
                 $retval .= COM_startComment($LANG03[14])
                     . COM_comment($HTTP_POST_VARS,1,$type,0,'flat',true)
@@ -115,17 +126,6 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                     . $LANG03[12]
                     . COM_endBlock();
                 $mode = 'error';
-            }
-            if (!empty($_USER['uid']) && empty($comment)) {
-                $result = DB_query("SELECT sig FROM {$_TABLES['users']} WHERE uid = '{$_USER['uid']}'");
-                $U = DB_fetchArray($result);
-                if (!empty($U["sig"])) {
-                    if (!$postmode == 'html') {
-                        $commenttext = LB . LB . LB . '-----' . LB . $U[0];
-                    } else {
-                        $commenttext = '<p>----<br>' . LB . nl2br($U[0]);
-                    }
-                }
             }
                 
             if (empty($postmode)) {
@@ -200,6 +200,17 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 {
     global $_TABLES, $_CONF, $LANG03, $REMOTE_ADDR; 
 
+    // Get signature
+    $sig = '';
+    if ($uid > 1) {
+        $sig = DB_getItem($_TABLES['users'],'sig', "uid = '$uid'");
+    }
+    if ($postmode == 'html') {
+        $comment .= '<p>----<br>' . nl2br($sig);
+    } else {
+        $comment .= LB . LB . LB . '-----' . LB . $sig;
+    }
+    
     DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
 
     // Clean 'em up a bit!
