@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.1 2004/01/07 01:15:47 tony Exp $
+// $Id: getimage.php,v 1.2 2004/01/07 01:34:10 tony Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -68,10 +68,11 @@ if (isset($HTTP_GET_VARS['image'])) {
 if (strstr($image, '..')) {
     // Can you believe this, some jackass tried to relative pathing to access files they
     // shouldn't have access to?
-    COM_errorLog('Someone tried to illegally access files using getImage.php');
+    COM_errorLog('Someone tried to illegally access files using getimage.php');
     exit;
 }
 
+// Set the path properly
 switch ($mode) {
     case 'articles':
         $downloader->setPath($_CONF['path_images'] . 'articles/');
@@ -83,8 +84,15 @@ switch ($mode) {
         $downloader->setPath($_CONF['path_images'] . 'userphotos/');
         break;
     default:
+        // Hrm, got a bad path, just die
+        exit;
 }
 
-$downloader->downloadFile($image);
+// Let's see if we don't have a legit file.  If not bail
+if (is_file($downloader->getPath() . $image)) {
+    $downloader->downloadFile($image);
+} else {
+    COM_errorLog('File, ' . $downloader->getPath() . $image . ', was not found in getimage.php');
+}
 
 ?>
