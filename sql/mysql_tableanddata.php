@@ -59,7 +59,7 @@ $_SQL[5] = "
 CREATE TABLE {$_TABLES['comments']} (
   cid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL DEFAULT 'article',
-  sid varchar(20) NOT NULL default '',
+  sid varchar(40) NOT NULL default '',
   date datetime default NULL,
   title varchar(128) default NULL,
   comment text,
