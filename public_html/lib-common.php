@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.145 2002/08/27 01:26:26 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.146 2002/08/27 16:21:05 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2808,7 +2808,7 @@ function COM_whatsNewBlock($help='',$title='')
                 $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
             }
             if ($itemlen > 20) {
-                $urlstart .= ' title="' . $titletouse . '">';
+                $urlstart .= ' title="' . htmlspecialchars ($titletouse) . '">';
             } else {
                 $urlstart .= '>';
             }
