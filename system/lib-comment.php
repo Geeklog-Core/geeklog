@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.3 2005/01/25 04:04:13 vinny Exp $
+// $Id: lib-comment.php,v 1.4 2005/01/27 09:14:08 dhaun Exp $
 
 /**
 * This function displays the comment control bar
@@ -669,7 +669,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $commenttext = str_replace('}','&#125;',$commenttext);
 
             $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
-            // $title = str_replace('$','&#36;',$title); done in COM_getComment
+            // $title = str_replace('$','&#36;',$title); done in CMT_getComment
             $title = str_replace('{','&#123;',$title);
             $title = str_replace('}','&#125;',$title);
 
@@ -694,7 +694,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $_POST['username'] = DB_getItem ($_TABLES['users'],
                             'username', "uid = $uid");
                 }
-                $thecomments = COM_getComment ($_POST, 'flat', $type,
+                $thecomments = CMT_getComment ($_POST, 'flat', $type,
                                                'ASC', false, true );
 
                 $start->set_var( 'comments', $thecomments );
