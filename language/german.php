@@ -83,7 +83,7 @@ $LANG01 = array(
 	34 => "Fehler",
 	35 => "Abmelden",
 	36 => "am",
-	37 => "",
+	37 => "Keine Artikel.",
 	38 => "",
 	39 => "Neuladen",
 	40 => "",
@@ -292,7 +292,12 @@ $LANG04 = array(
     78 => "Ein Bild von Dir",
     79 => "Ankreuzen, um dieses Bild zu l&ouml;schen:",
     80 => "Anmelden",
-    81 => "E-Mail schreiben"
+    81 => "E-Mail schreiben",
+    82 => 'Die letzten 10 Artikel von',
+    83 => 'Statistik f&uuml;r',
+    84 => 'Gesamtanzahl Artikel:',
+    85 => 'Gesamtanzahl Kommentare',
+    86 => 'Alle Artikel und Kommentare von'
 );
 
 ###############################################################################

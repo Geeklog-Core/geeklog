@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.41 2002/07/18 13:14:25 dhaun Exp $
+// $Id: config.php,v 1.42 2002/07/19 08:49:53 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -161,6 +161,8 @@ $_CONF['pollsloginrequired'] = 0;
 $_CONF['calendarloginrequired'] = 0;
 $_CONF['statsloginrequired'] = 0;
 $_CONF['searchloginrequired'] = 0;
+$_CONF['profileloginrequired'] = 0;
+$_CONF['emailuserloginrequired'] = 0;
 
 // Submission Settings
 

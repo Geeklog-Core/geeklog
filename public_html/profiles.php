@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.14 2002/07/06 21:56:44 dhaun Exp $
+// $Id: profiles.php,v 1.15 2002/07/19 08:49:54 dhaun Exp $
 
 include('lib-common.php');
 
@@ -98,30 +98,47 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 */
 function contactform($uid, $subject='', $message='') 
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER;
+    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $LANG_LOGIN, $_USER;
 
-    $result = DB_query ("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
-    $A = DB_fetchArray ($result);
+    $retval = '';
 
-    $retval = COM_startBlock ($LANG08[10] . ' ' . $A['username']);
-    $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
-    $mail_template->set_file ('form', 'contactuserform.thtml');	
-    $mail_template->set_var ('site_url', $_CONF['site_url']);
-    $mail_template->set_var ('lang_description', $LANG08[26]);
-    $mail_template->set_var ('lang_username', $LANG08[11]);
-    $mail_template->set_var ('username', $_USER['username']);
-    $mail_template->set_var ('lang_useremail', $LANG08[12]);
-    $mail_template->set_var ('useremail', $_USER['email']);
-    $mail_template->set_var ('lang_subject', $LANG08[13]);
-    $mail_template->set_var ('subject', $subject);
-    $mail_template->set_var ('lang_message', $LANG08[14]);
-    $mail_template->set_var ('message', $message);
-    $mail_template->set_var ('lang_nohtml', $LANG08[15]);
-    $mail_template->set_var ('lang_submit', $LANG08[16]);
-    $mail_template->set_var ('uid', $uid);
-    $mail_template->parse ('output', 'form');
-    $retval .= $mail_template->finish ($mail_template->get_var ('output'));
-    $retval .= COM_endBlock ();
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['emailuserloginrequired'] == 1))) {
+        $retval = COM_startBlock($LANG_LOGIN[1]);
+        $login = new Template($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $retval .= $login->finish ($login->get_var('output'));
+        $retval .= COM_endBlock();
+    }
+    else {
+        $result = DB_query ("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
+        $A = DB_fetchArray ($result);
+
+        $retval = COM_startBlock ($LANG08[10] . ' ' . $A['username']);
+        $mail_template = new Template ($_CONF['path_layout'] . 'profiles');
+        $mail_template->set_file ('form', 'contactuserform.thtml');	
+        $mail_template->set_var ('site_url', $_CONF['site_url']);
+        $mail_template->set_var ('lang_description', $LANG08[26]);
+        $mail_template->set_var ('lang_username', $LANG08[11]);
+        $mail_template->set_var ('username', $_USER['username']);
+        $mail_template->set_var ('lang_useremail', $LANG08[12]);
+        $mail_template->set_var ('useremail', $_USER['email']);
+        $mail_template->set_var ('lang_subject', $LANG08[13]);
+        $mail_template->set_var ('subject', $subject);
+        $mail_template->set_var ('lang_message', $LANG08[14]);
+        $mail_template->set_var ('message', $message);
+        $mail_template->set_var ('lang_nohtml', $LANG08[15]);
+        $mail_template->set_var ('lang_submit', $LANG08[16]);
+        $mail_template->set_var ('uid', $uid);
+        $mail_template->parse ('output', 'form');
+        $retval .= $mail_template->finish ($mail_template->get_var ('output'));
+        $retval .= COM_endBlock ();
+    }
 
     return $retval;
 }

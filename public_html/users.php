@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.32 2002/07/12 12:12:27 dhaun Exp $
+// $Id: users.php,v 1.33 2002/07/19 08:49:54 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -64,9 +64,25 @@ require_once('lib-common.php');
 */
 function userprofile($user) 
 {
-    global $_TABLES, $_CONF, $LANG04, $LANG01;
+    global $_TABLES, $_CONF, $_USER, $LANG04, $LANG01, $LANG_LOGIN;
 
-    $retval .= '';
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
+        $retval .= COM_startBlock($LANG_LOGIN[1]);
+        $login = new Template($_CONF['path_layout'] . 'submit');
+        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_var ('login_message', $LANG_LOGIN[2]);
+        $login->set_var ('site_url', $_CONF['site_url']);
+        $login->set_var ('lang_login', $LANG_LOGIN[3]);
+        $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $login->parse ('output', 'login');
+        $retval .= $login->finish ($login->get_var('output'));
+        $retval .= COM_endBlock();
+ 
+        return $retval;
+    }
+
+    $retval = '';
 	
     $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $A = DB_fetchArray($result);
@@ -76,7 +92,7 @@ function userprofile($user)
     $A['regdate'] = $curtime[0];
 
     $user_templates = new Template($_CONF['path_layout'] . 'users');
-    $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml'));
+    $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml','strow'=>'storyrow.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $A['username']));
     $user_templates->set_var('end_block', COM_endBlock());
@@ -88,7 +104,7 @@ function userprofile($user)
         $user_templates->set_var('user_photo','');
     }
     $user_templates->set_var('user_fullname', $A['fullname']);
-	$user_templates->set_var('lang_membersince', $LANG04[67]);
+    $user_templates->set_var('lang_membersince', $LANG04[67]);
     $user_templates->set_var('user_regdate', $A['regdate']);
     $user_templates->set_var('lang_email', $LANG04[5]);
     $user_templates->set_var('user_id', $user);
@@ -99,17 +115,50 @@ function userprofile($user)
     $user_templates->set_var('user_bio', nl2br(stripslashes($A['about']))); 
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
     $user_templates->set_var('user_pgp', nl2br($A['pgpkey']));
-    $user_templates->set_var('start_block_last10comments', COM_startBlock($LANG04[10] . ' ' . $A['username']));
-    $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
-    $nrows = DB_numRows($result);
+    $user_templates->set_var('start_block_last10stories',
+            COM_startBlock($LANG04[82] . ' ' . $A['username']));
+    $user_templates->set_var('start_block_last10comments',
+            COM_startBlock($LANG04[10] . ' ' . $A['username']));
+    $user_templates->set_var('start_block_postingstats',
+            COM_startBlock($LANG04[83] . ' ' . $A['username']));
+    // for alternative layouts: use these as headlines instead of block titles
+    $user_templates->set_var('headline_last10stories', $LANG04[82]);
+    $user_templates->set_var('headline_last10comments', $LANG04[10]);
+    $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
+    // list of last 10 stories by this user
+    $result = DB_query("SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) ORDER BY unixdate desc LIMIT 10");
+    $nrows = DB_numRows($result);
+    $user_templates->set_var('number_stories', $nrows);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
             $user_templates->set_var('row_number', $i . '.');
-            $user_templates->set_var('comment_begin_href', '<a href="' .$_CONF['site_url'] 
-                . '/comment.php?mode=display&amp;sid=' . $C['sid'] . '&amp;title=' . urlencode($C['title']) 
-                . '&amp;pid=' . $C['pid'] . '">');
+            $user_templates->set_var('story_begin_href', '<a href="' .
+                $_CONF['site_url'] . '/article.php?story=' . $C['sid'] . '">');
+            $user_templates->set_var('story_title', stripslashes($C['title']));
+            $user_templates->set_var('story_end_href', '</a>');
+            $storytime = COM_getUserDateTimeFormat($C['unixdate']);
+            $user_templates->set_var('story_date', $storytime[0]);
+            $user_templates->parse('story_row','strow',true);
+        }
+    } else {
+        $user_templates->set_var('story_row','<tr><td>' . $LANG01[37] . '</td></tr>');
+    }
+
+    // list of last 10 comments by this user
+    $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
+    $nrows = DB_numRows($result);
+    $user_templates->set_var('number_comments', $nrows);
+    if ($nrows > 0) {
+        for ($i = 1; $i <= $nrows; $i++) {
+            $C = DB_fetchArray($result);
+            $user_templates->set_var('row_number', $i . '.');
+            $user_templates->set_var('comment_begin_href',
+                '<a href="' . $_CONF['site_url'] .
+                '/comment.php?mode=display&amp;sid=' . $C['sid'] .
+                '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
+                $C['pid'] . '">');
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
@@ -120,7 +169,12 @@ function userprofile($user)
         $user_templates->set_var('comment_row','<tr><td>' . $LANG01[29] . '</td></tr>');
     }
 
-	$user_templates->parse('output', 'profile');
+    // posting stats for this user
+    $user_templates->set_var ('lang_number_stories', $LANG04[84]);
+    $user_templates->set_var ('lang_number_comments', $LANG04[85]);
+    $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $_USER['username']);
+
+    $user_templates->parse('output', 'profile');
     $retval .= $user_templates->finish($user_templates->get_var('output'));	
 
     return $retval;

@@ -77,7 +77,7 @@ $LANG01 = array(
 	34 => "Error",
 	35 => "Logout",
 	36 => "on",
-	37 => "",
+	37 => "No user stories",
 	38 => "",
 	39 => "Refresh",
 	40 => "",
@@ -286,7 +286,9 @@ $LANG04 = array(
     78 => "Add a picture of yourself!",
     79 => "Check here to delete this picture",
     80 => "Login",
-    81 => "Send Email"
+    81 => "Send Email",
+    82 => 'Last 10 stories for user',
+    83 => 'Posting statistics for user',
 );
 
 ###############################################################################
