@@ -32,7 +32,16 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.35 2002/05/13 15:37:53 dhaun Exp $
+// $Id: config.php,v 1.36 2002/05/14 18:23:35 tony_bibbs Exp $
+
+// ----------------------------------------------------------------------------+
+// | SITE STATUS                                                               |
+// |                                                                           |
+// | To disable your Geeklog site quickly, simply set this flag to false       |
+// +---------------------------------------------------------------------------+
+$_CONF['site_enabled'] = true;  // true or false
+// Message shown when site is down
+$_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -55,7 +64,6 @@ $_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
 // | All paths must have a trailing slash ('/'). The 'path' value signifies    |
 // | where the config.php (this file) resides                                  | 
 // +---------------------------------------------------------------------------+
-
 $_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
 $_CONF['path_system']       = $_CONF['path'] . 'system/';
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
@@ -77,7 +85,6 @@ $_CONF['url_rewrite']       = false; // false = off, true = on
 // |                                                                           |
 // | These settings help define your Geeklog site.                             |
 // +---------------------------------------------------------------------------+
-
 $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']         = 'admin@example.com';
@@ -213,12 +220,12 @@ $_CONF['polladdresstime']   = 604800;
 
 // Parameters for checking words and HTML tags
 
-$_CONF['allowablehtml'] = '<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>';
+$_CONF['allowablehtml'] = '<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<div>,<ul>,<code>,<pre>';
 $_CONF['adminhtml'] = $_CONF['allowablehtml'] . ',<table>,<tr>,<td>,<th>';
 $_CONF['parsemode']     = '';
 $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
-$_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck','cum','twat','clit','bitch','fuk','fuking','motherfucker');
+$_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
 
 // Define a few useful things for GL
 if (!defined ('LB')) {
