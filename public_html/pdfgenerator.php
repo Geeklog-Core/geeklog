@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.7 2004/06/09 13:53:22 tony Exp $
+// $Id: pdfgenerator.php,v 1.8 2004/06/09 17:54:26 tony Exp $
 
 require_once 'lib-common.php';
 
@@ -48,7 +48,8 @@ if ($_CONF['pdf_enabled'] == 0 OR
     } else {
         $is_exec = file_exists($_CONF['path_to_htmldoc']);
     }
-    if ($is_exec) {
+    if (!$is_exec) {
+        print 'here'; exit;
         echo COM_siteHeader();
         echo $LANG_PDF[8];
         echo COM_siteFooter();
@@ -222,8 +223,6 @@ function PDF_generatePDF()
             $pdf->set_var('lang_generate_pdf', $LANG_PDF[12]);
             $pdf->parse('page', 'pdf' );
             echo $pdf->finish($pdf->get_var('page'));
-            echo ;
-            
         } else {
             echo $LANG_PDF[3];
         }
