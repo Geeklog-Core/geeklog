@@ -1,10 +1,19 @@
 GeekLog History/Changes:
 
+- New RDF/RSS parser, provided by Roger Webster. This should now properly
+  import even those RDF feeds which Geeklog previously refused to display.
+- Updated language files:
+  + Italian, provided by quess65
+  + Japanese, provided by Yusuke Sakata
+  + Polish, provided by Robert Stadnik
 - Various fixes for the consistent use of $_CONF['site_admin_url'] instead of
   $_CONF['site_url']/admin, provided by Gene Wood.
 - The static pages plugin can now wrap static pages in a block
-  (option in staticpages.cfg)
-- Added updated Japanese language file, provided by Yusuke Sakata.
+  (available as an option in staticpages.cfg)
+- You can now use [code] ... [/code] in stories and comments (HTML formatted
+  only) to mark portions of the text as containing code of any form (HTML, PHP,
+  any other programming language). Geeklog will then reproduce this section
+  verbatim, i.e. not interpreting any special characters in that section.
 - An error message is displayed now if mysqldump can not be found.
 - Fixed type pulldown menu in search when more than one plugin was used.
 - Signatures in comments are working again.
@@ -13,7 +22,6 @@ GeekLog History/Changes:
   of stories sent in the daily digest: 0 = only the title and a link to the
   story are included, 1 = entire introtext is included (default), any other
   number = cut off text after that amount of characters.
-- Added updated Polish language file, provided by Robert Stadnik.
 - The selection of the user theme is now hidden from the user's preferences
   when 'allow_user_themes' is turned off in config.php
 - The links "Add To My Calendar" are now hidden when personal calendars are
@@ -28,13 +36,10 @@ GeekLog History/Changes:
 - Fixed bug with double quotes in title of story submission.
 - The upcoming events block uses the list templates now.
 - Display of stories in older stories block was off by one day.
-- The batch user import didn't work.
 - The (Event)Admin could not delete events (delete button was missing).
 - The calendar class reverted to using the english day and month names as
   soon as you called setCalendarMatrix().
 - Added {edit_link} in story templates in Classic theme.
-- The {site_admin_url} was not used in some template files (mainly Classic,
-  but also some in Yahoo/admin).
 - All admin editors have the save / cancel / delete buttons at the bottom now.
 - The link to the plugin homepage did not work from the plugin editor.
 - Added $_CONF['default_charset'] in config.php and $LANG_CHARSET in the
@@ -49,14 +54,26 @@ GeekLog History/Changes:
   German language files are included.
 - New variables that can be used in footer.thtml: {execution_textandtime},
   {powered_by}.
-- The field 'emailfromadmin' was missing from the userprefs table on a fresh
-  install of Geeklog 1.3.5 (it was added when upgrading from an older version,
-  though).
-- Image sizes of the XSilver theme have been reduced and some HTML errors have
-  been fixed, so that it should load faster now ...
 
 
-April 24, 2002
+June 10, 2002 (1.3.5sr1)
+-------------
+- This release addresses security issues recently discovered by the people at
+  olympos.org. These issues allow for the injection of malicious javascript
+  code (which could be used to access the admin's cookie) and the injection
+  of MySQL code which could be used to access and even damaged the database
+  (under certain circumstances). Details will be available in a report on
+  the Bugtraq list shortly after this release is out.
+- The following bugs from the 1.3.5 release have also been fixed:
+  + missing field 'emailfromadmin' in userprefs table (fresh installs only)
+  + fixed a typo that prevented the page navigation from working
+  + fixed batch user import
+  + fixed logo size and path to search in XSilver theme
+  + optimized size of image files in XSilver theme
+  + fixed path to search in Clean theme
+
+
+April 24, 2002 (1.3.5)
 --------------
 - Change installation so that server configuration is manual, DB configuration is scripted
 - Search page now properly generates the right link to search comments
