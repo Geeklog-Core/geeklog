@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.118 2004/07/13 19:09:26 dhaun Exp $
+// $Id: story.php,v 1.119 2004/07/26 14:58:54 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -262,7 +262,6 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var ('story_author', DB_getItem ($_TABLES['users'],
                                'username', "uid = {$A['uid']}"));
     $story_templates->set_var('story_uid', $A['uid']);
-    $story_templates->set_var ('user_list', userlist ($A['uid']));
 
     // user access info
     $story_templates->set_var('lang_accessrights',$LANG_ACCESS['accessrights']);
@@ -1146,11 +1145,8 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $publish_month = COM_applyFilter ($HTTP_POST_VARS['publish_month'], true);
     $publish_day = COM_applyFilter ($HTTP_POST_VARS['publish_day'], true);
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
-    if (isset ($HTTP_POST_VARS['author_from_list'])) {
-        $uid = COM_applyFilter ($HTTP_POST_VARS['author_from_list'], true);
-    } else {
-        $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
-    }
+    $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+
     submitstory (COM_applyFilter ($HTTP_POST_VARS['type']),
                  COM_applyFilter ($HTTP_POST_VARS['sid']), $uid,
                  COM_applyFilter ($HTTP_POST_VARS['tid']),
