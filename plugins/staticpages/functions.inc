@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.3 2002/04/22 18:51:46 tony_bibbs Exp $
+// $Id: functions.inc,v 1.4 2002/04/22 20:41:24 tony_bibbs Exp $
 
 include($_CONF['path'] . 'plugins/staticpages/lang.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
@@ -120,7 +120,12 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
     
     // Bail if we aren't supppose to do our search
-    if ($type <> 'all' AND $type <> 'staticpages') return;
+    if ($type <> 'all' AND $type <> 'staticpages') {
+        $plugin_results = new Plugin();
+        $plugin_results->plugin_name = 'staticpages';
+        $plugin_results->searchlabel = 'Static Pages Results';
+        return $plugin_results;
+    }
 
     // Build search SQL
 	$sql = "SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ";
