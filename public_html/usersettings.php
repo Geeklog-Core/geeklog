@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.101 2004/08/14 15:52:17 dhaun Exp $
+// $Id: usersettings.php,v 1.102 2004/08/28 15:55:33 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -156,8 +156,7 @@ function edituser()
     $A = DB_fetchArray($result);
 
     $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
-    DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
-                                  'username', $username);
+    DB_change ($_TABLES['users'], 'pwrequestid', $reqid, 'uid', $_USER['uid']);
 
     $preferences->set_var ('about_value', htmlspecialchars ($A['about']));
     $preferences->set_var ('pgpkey_value', htmlspecialchars ($A['pgpkey']));
