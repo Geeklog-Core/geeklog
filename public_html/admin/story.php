@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.139 2004/12/11 15:01:57 dhaun Exp $
+// $Id: story.php,v 1.140 2004/12/14 22:35:29 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -442,12 +442,14 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$A['commentcode']));
     $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
     $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',$A['frontpage']));
-    list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
 
     if ($A['postmode'] == 'plaintext') {
-        $newintro = COM_undoClickableLinks ($newintro);
-        $newbody = COM_undoClickableLinks ($newbody);
+        $A['introtext'] = COM_undoClickableLinks ($A['introtext']);
+        $A['bodytext']  = COM_undoClickableLinks ($A['bodytext']);
     }
+
+    list($newintro, $newbody) = replace_images ($A['sid'],
+        stripslashes ($A['introtext']), stripslashes ($A['bodytext']));
 
     $story_templates->set_var('lang_introtext', $LANG24[16]);
     if ($A['postmode'] == 'plaintext') {
