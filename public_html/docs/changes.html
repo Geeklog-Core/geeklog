@@ -29,10 +29,11 @@ of files that have been changed since the last release.</p>
 <ul>
 <li>Fixes the length of the 'sid' field in the gl_comments table. Using story IDs longer than 20 characters prevented comment posts from being associated with the story.</li>
 <li>Ensures compatibility with PHP 4.1.x (includes updated PEAR packages).</li>
-<li>Properly deletes comments and story images when deleting entire topics.</li>
+<li>Fixes the archiving option being activated too early (bug #345).</li>
+<li>Properly deletes comments and story images when deleting entire topics (bug #339).</li>
 <li>Deletes comments when deleting polls.</li>
-<li>Fixes several bugs in the calendar and improves overall handling of both the site calendar and the personal calendars.</li>
-<li>Fixes "More by (author)" and "More from (topic)" links in articles.</li>
+<li>Fixes several bugs in the calendar and improves overall handling of both the site calendar and the personal calendars (bugs #268, #336, #338, and others).</li>
+<li>Fixes "More by <i>author</i>" and "More from <i>topic</i>" links in articles.</li>
 <li>Various other fixes, see <tt>docs/history</tt> for details.</li>
 </ul>
 

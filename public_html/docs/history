@@ -3,13 +3,16 @@ GeekLog History/Changes:
 Dec 22, 2004 (1.3.11rc1)
 ------------
 
+- Fixed "archive" option being activated too early on certain non-featured
+  stories (bug #345) [Blaine]
+- Added missing handling of autotags in static pages being displayed as center
+  blocks (reported by Jill) [Dirk]
 - Fixed size of the 'sid' field in the gl_comments table. It should be 40
   characters, to be able to hold the long story IDs introduced in 1.3.10
   (reported by Douglas Santos) [Dirk]
 - When using mogrify (ImageMagick) to resize uploaded images, the name of the
   image is now enclosed in double quotes instead of single quotes, which
   caused the command to fail on Windows [Dirk]
-- Added French language files for the SpamX plugin, provided by Alain Ponton.
 - The emails sent from the SpamX plugin's MailAdmin action now also include
   the IP address of the spam poster [Dirk]
 - SEC_getFeatureGroup() should not overwrite $_GROUPS if not operating on the
@@ -67,6 +70,12 @@ Dec 22, 2004 (1.3.11rc1)
   site event to the personal calendar (bug #336) [Dirk]
 - Fixed wrong use of htmlentities() on comment title (bug #335) [Dirk]
 - Changed "read more" word count so that it ignores HTML tags (bug #333) [Dirk]
+
+- Updated Slovenian language file, provided by gape.
+- Updated Dutch language file, provided by Ko de Pree.
+- Updated Dutch language file for the Static Pages plugin,
+  provided by Ko de Pree.
+- New French language files for the SpamX plugin, provided by Alain Ponton.
 
 
 Nov 28, 2004 (1.3.10)
