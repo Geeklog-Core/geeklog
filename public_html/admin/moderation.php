@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.40 2003/07/06 09:16:14 dhaun Exp $
+// $Id: moderation.php,v 1.41 2003/07/14 10:35:09 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -163,6 +163,34 @@ function commandcontrol()
 }
 
 /**
+* Build part of an SQL request to check the topic permissions of current user.
+*
+* @return   string   SQL request to check for topic permissions (can be empty)
+*
+*/
+function buildTopicSql ()
+{
+    global $_TABLES;
+
+    $topicsql = '';
+    $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
+                         . COM_getPermSQL ());
+    $trows = DB_numRows ($tresult);
+    if ($trows > 0) {
+        $tids = array ();
+        for ($i = 0; $i < $trows; $i++) {
+            $T = DB_fetchArray ($tresult);
+            $tids[] = $T['tid'];
+        }
+        if (sizeof ($tids) > 0) {
+            $topicsql = " (tid IN ('" . implode ("','", $tids) . "'))";
+        }
+    }
+
+    return $topicsql;
+}
+
+/**
 * Diplays items needing moderation
 *
 * Displays the moderation list of items from the submission tables
@@ -208,7 +236,11 @@ function itemlist($type)
         } else {
             $retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
                     COM_getBlockTemplate ('_admin_block', 'header'));
-            $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']} ORDER BY date ASC";
+            $topicsql = buildTopicSql ();
+            if (!empty ($topicsql)) {
+                $topicsql = ' WHERE' . $topicsql;
+            }
+            $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']}" . $topicsql . " ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             break;
         }
@@ -229,7 +261,7 @@ function itemlist($type)
     if ($nrows > 0) {
         $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
         $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
-                                               'itemrows'=>'itemlistrows.thtml'));
+                                       'itemrows'=>'itemlistrows.thtml'));
         $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
         $mod_templates->set_var('item_type', $type);
         $mod_templates->set_var('num_rows', $nrows);
@@ -352,19 +384,9 @@ function draftlist ()
     $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
             COM_getBlockTemplate ('_admin_block', 'header'));
 
-    $topicsql = '';
-    $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
-                         . COM_getPermSQL ());
-    $trows = DB_numRows ($tresult);
-    if ($trows > 0) {
-        $tids = array ();
-        for ($i = 0; $i < $trows; $i++) {
-            $T = DB_fetchArray ($tresult);
-            $tids[] = $T['tid'];
-        }
-        if (sizeof ($tids) > 0) {
-            $topicsql = " AND (tid IN ('" . implode ("','", $tids) . "'))";
-        }
+    $topicsql = buildTopicSql ();
+    if (!empty ($topicsql)) {
+        $topicsql = ' AND' . $topicsql;
     }
 
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . $topicsql . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
