@@ -3,7 +3,7 @@
 ###############################################################################
 # lang.php
 # This is the Polish language page for the Geeklog Static Page Plug-in!
-# Translation by Robert Stadnik rstadnik@poczta.wp.pl
+# Translation by Robert Stadnik robert_stadnik@wp.pl
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
 #
@@ -94,15 +94,15 @@ $LANG_STATIC= array(
     centerblock_feat => 'Strona Dnia',
     centerblock_bottom => 'Dó³',
     centerblock_entire => 'Ca³a Strona',
-    'inblock_msg' => 'In a block: ',
-    'inblock_info' => 'Wrap Static Page in a block.',
-    'title_edit' => 'Edit page',
-    'title_copy' => 'Make a copy of this page',
-    'title_display' => 'Display page',
-    'select_php_none' => 'do not execute PHP',
-    'select_php_return' => 'execute PHP (return)',
-    'select_php_free' => 'execute PHP',
-    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the documentation for details.'
+    'inblock_msg' => 'W bloku: ',
+    'inblock_info' => 'Zawijaj Stronê Statyczn± w bloku.',
+    'title_edit' => 'Edycja strony',
+    'title_copy' => 'Utwórz kopiê tej strony',
+    'title_display' => 'Poka¿ stronê',
+    'select_php_none' => 'nie wykonuj kodu PHP',
+    'select_php_return' => 'wykonaj kod PHP (enter)',
+    'select_php_free' => 'wykonaj kod PHP',
+    'php_not_activated' => 'U¿ywanie PHP w stronie statycznej nie jest aktywne. Sprawd¼ szczegó³y w dokumentacji.'
 );
 
 ?>
