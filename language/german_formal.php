@@ -7,8 +7,8 @@
 # (formal German). See german.php for a language file addressing the user with
 # the more informal "Du".
 #
-# Authors: P. Sack   <psack@pr-ide.de>
-#          Dirk Haun <dirk@haun-online.de>
+# Authors: P. Sack   <psack AT pr-ide DOT de>
+#          Dirk Haun <dirk AT haun-online DOT de>
 #
 # Based on the original english.php, started by Jason Whittenburg.
 #
@@ -160,7 +160,8 @@ $LANG01 = array(
     113 => 'Dokumentation',
     114 => 'TRACKBACKS',
     115 => 'Keine neuen Trackback-Kommentare',
-    116 => 'Trackback'
+    116 => 'Trackback',
+    117 => 'Verzeichnis'
 );
 
 ###############################################################################
@@ -1237,7 +1238,8 @@ $LANG_BUTTONS = array(
     7 => 'Statistik',
     8 => 'Einstellungen',
     9 => 'Suchen',
-    10 => 'Erweiterte Suche'
+    10 => 'Erweiterte Suche',
+    11 => 'Verzeichnis'
 );
 
 ###############################################################################
@@ -1303,11 +1305,25 @@ $LANG_TRB = array(
     'button_send' => 'Abschicken',
     'button_preview' => 'Vorschau',
     'send_error' => 'Fehler',
-    'send_error_details' => 'Fehler beim Senden des Trackback-Kommentars',
+    'send_error_details' => 'Fehler beim Senden des Trackback-Kommentars:',
     'url_missing' => 'Keine URL für den Eintrag',
     'url_required' => 'Es muss mindestens die URL für den Eintrag angegeben werden.',
     'target_missing' => 'Keine Trackback-URL',
     'target_required' => 'Bitte geben Sie die Trackback-URL ein.',
+    'error_socket'       => 'Socket konnte nicht geöffnet werden.',
+    'error_response'     => 'Antwort nicht verstanden.',
+    'error_unspecified'  => 'Fehler nicht näher spezifiziert.'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Artikel-Verzeichnis',
+    'title_year' => 'Artikel-Verzeichnis für %d',
+    'title_month_year' => 'Artikel-Verzeichnis für %s %d',
+    'nav_top' => 'Zurück zum Artikel-Verzeichnis',
+    'no_articles' => 'Keine Artikel.'
 );
 
 ?>

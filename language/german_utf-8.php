@@ -7,11 +7,11 @@
 # (informal German). See german_formal.php for a language file addressing the
 # user with the formal "Sie".
 #
-# Author: Dirk Haun <dirk@haun-online.de>
+# Author: Dirk Haun <dirk AT haun-online DOT de>
 #
 # Based on the original english.php, started by Jason Whittenburg.
 #
-# Converted to Unicode (UTF-8) by Samuel Stone <sam@stonemicro.com>
+# Converted to Unicode (UTF-8) by Samuel Stone <sam AT stonemicro DOT com>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -161,7 +161,8 @@ $LANG01 = array(
     113 => 'Dokumentation',
     114 => 'TRACKBACKS',
     115 => 'Keine neuen Trackback-Kommentare',
-    116 => 'Trackback'
+    116 => 'Trackback',
+    117 => 'Verzeichnis'
 );
 
 ###############################################################################
@@ -1238,7 +1239,8 @@ $LANG_BUTTONS = array(
     7 => 'Statistik',
     8 => 'Einstellungen',
     9 => 'Suchen',
-    10 => 'Erweiterte Suche'
+    10 => 'Erweiterte Suche',
+    11 => 'Verzeichnis'
 );
 
 ###############################################################################
@@ -1304,11 +1306,25 @@ $LANG_TRB = array(
     'button_send' => 'Abschicken',
     'button_preview' => 'Vorschau',
     'send_error' => 'Fehler',
-    'send_error_details' => 'Fehler beim Senden des Trackback-Kommentars',
+    'send_error_details' => 'Fehler beim Senden des Trackback-Kommentars:',
     'url_missing' => 'Keine URL für den Eintrag',
     'url_required' => 'Es muss mindestens die URL für den Eintrag angegeben werden.',
     'target_missing' => 'Keine Trackback-URL',
     'target_required' => 'Bitte gib die Trackback-URL ein.',
+    'error_socket'       => 'Socket konnte nicht geöffnet werden.',
+    'error_response'     => 'Antwort nicht verstanden.',
+    'error_unspecified'  => 'Fehler nicht näher spezifiziert.'
+);
+
+###############################################################################
+# directory.php
+
+$LANG_DIR = array(
+    'title' => 'Artikel-Verzeichnis',
+    'title_year' => 'Artikel-Verzeichnis für %d',
+    'title_month_year' => 'Artikel-Verzeichnis für %s %d',
+    'nav_top' => 'Zurück zum Artikel-Verzeichnis',
+    'no_articles' => 'Keine Artikel.'
 );
 
 ?>
