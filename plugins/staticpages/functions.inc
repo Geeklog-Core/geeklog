@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.2 2002/04/16 21:16:47 tony_bibbs Exp $
+// $Id: functions.inc,v 1.3 2002/04/22 18:51:46 tony_bibbs Exp $
 
 include($_CONF['path'] . 'plugins/staticpages/lang.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
@@ -115,6 +115,10 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 {
 	global $_TABLES, $_CONF;
 
+    if (empty($type)) {
+        $type = 'all';
+    }
+    
     // Bail if we aren't supppose to do our search
     if ($type <> 'all' AND $type <> 'staticpages') return;
 
