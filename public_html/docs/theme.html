@@ -21,14 +21,6 @@
 manipulate HTML files then you can create a theme! There's no need to learn
 PHP.
 
-<p>First, let me preface this by saying the theme support, though usable,
-isn't complete yet. We plan to make it so that Geeklog admins can upload
-themes via a Geeklog web administration page. This will be available in a
-later beta release.
-
-<p>Until then people will have to learn how to install themes manually
-(covered at the bottom of this document).
-
 <h2>Creating a theme</h2>
 
 <p>First, copy an existing theme that is most similar to what you want to
@@ -77,7 +69,7 @@ of the <tt>blockheader.thtml</tt> and <tt>blockfooter.thtml</tt> files.
 
 <p>The above only described how Geeklog's main page and stories are rendered.
 More templates exist for the various editors and lists you will see in Geeklog,
-as well es for the calendar and almost every other part of Geeklog.</p>
+as well as for the calendar and almost every other part of Geeklog.</p>
 
 <p>There is currently no complete list available that explains which template
 file is used for which part of Geeklog. However, in most cases the use should
@@ -99,7 +91,7 @@ from the <tt>users</tt> directory within the theme's layout directory.</p>
 <h3>Testing a theme and further information</h3>
 
 <p>After you have edited your themes, you are now ready to test it out.
-Simply go to http://mygeeklogsite/users.php?mode=peferences in the theme
+Simply go to http://mygeeklogsite/users.php?mode=preferences - in the theme
 drop-down select your newly created theme (note the name of your theme is
 the <em>same</em> name as the directory for your theme).
 
@@ -111,13 +103,33 @@ href="http://phplib.sourceforge.net/">http://phplib.sourceforge.net/</a>).
 Read their documentation and, optionally, look at 
 /path/to/geeklog/system/classes/template.class.php to see how it is 
 implemented. Even with this knowledge it may not be clear which templates 
-are used in conjunction with one another (i.e. storybody.thtml and 
-storybodytext.thtml together make up the complete format of a 
+are used in conjunction with one another (i.e. <tt>storybody.thtml</tt> and 
+<tt>storybodytext.thtml</tt> together make up the complete format of a 
 <em>single</em>
 story). If you have questions join our mailing list at our SourceForge site 
 at <a 
 href="http://sourceforge.net/projects/geeklog">http://sourceforge.net/projects/geeklog</a> 
 or check us out in IRC at irc.freenode.net in #geeklog.</p>
+
+<h3>Tips and tricks</h4>
+
+<p><strong>Themes and WYSIWG editors:</strong>
+The template files used by Geeklog are not complete HTML files - they contain
+only parts of the HTML that Geeklog puts together to build a proper HTML
+document. This, however, seems to confuse some WYSIWYG HTML editors and some of
+them tend to add the HTML which they think is missing from the file, thus
+making it unusable for Geeklog.<br>
+We suggest you use a simple text editor to edit your themes.</p>
+
+<p><strong>PHP in themes:</strong>
+You can use PHP in the <em>header</em> of a theme, i.e. in the
+<tt>header.thtml</tt> file. If you want to use custom PHP functions, you can
+put them in the file <tt>functions.php</tt> within your themes directory.</p>
+
+<p><strong>Different look for left and right blocks:</strong>
+You can give the blocks on the left and right a different look. See 
+<a href="http://geeklog.sourceforge.net/article.php?story=20020429092841722">this story on the Geeklog homepage</a> for details.</p>
+
 
 <h2><a name="changes">Theme changes in Geeklog 1.3.6</a></h2>
 
