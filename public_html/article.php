@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.26 2002/10/09 10:06:17 dhaun Exp $
+// $Id: article.php,v 1.27 2002/10/10 11:08:18 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -134,6 +134,7 @@ if ($A['count'] > 0) {
         $story_template->set_file('article','article.thtml');
 
         $story_template->set_var('site_url', $_CONF['site_url']);
+        $story_template->set_var('layout_url', $_CONF['layout_url']);
         $story_options = array ('<a href="' . $_CONF['site_url'] .
             '/profiles.php?sid=' . $story . '&amp;what=emailstory">' .
             $LANG11[2] . '</a>',
