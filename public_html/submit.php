@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.40 2002/10/10 10:36:28 dhaun Exp $
+// $Id: submit.php,v 1.41 2002/10/28 15:22:09 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -601,7 +601,7 @@ if ($mode == $LANG12[8]) { // submit
             }
             break;
         case 'event':
-            if (SEC_hasRights('event.edit')) {
+            if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
                 echo COM_refresh($_CONF['site_admin_url'] . '/event.php?mode=edit');
                 exit;
             }
