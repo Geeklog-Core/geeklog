@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.147 2002/08/27 16:58:13 dhaun Exp $
+// $Id: lib-common.php,v 1.148 2002/09/02 15:38:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2939,7 +2939,8 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages)
     if ($num_pages == 1) {
         return;
     }
-    
+
+    $retval = '';
     if ($curpage > 1) {
         if ($hasargs) {
             $retval .= '<a href="' . $base_url . '&amp;page=' . ($curpage - 1) . '">' . $LANG05[6] . '</a> ';
@@ -2972,6 +2973,11 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages)
             $retval .= '<a href="' . $base_url . '?page=' . ($curpage + 1) . '">' . $LANG05[5] . '</a>';
         }
     }
+
+    if (!empty ($retval)) {
+        $retval = '<div class="pagenav">' . $retval . '</div>';
+    }
+
     return $retval;
 }
 
