@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.11 2003/07/25 10:53:34 dhaun Exp $
+// $Id: search.class.php,v 1.12 2003/08/02 22:07:42 blaine Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -671,8 +671,8 @@ class Search {
         $searchmain->set_var('num_matches', '');
         
         if ($this->_keyType == 'any') {
-        	$searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>",$this->_query);
-        	$searchQuery = "<b>'$searchQuery'</b>";
+            $searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>",$this->_query);
+            $searchQuery = "<b>'$searchQuery'</b>";
         } else {
             if ($this->_keyType == 'all') {
                 $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>",$this->_query);
@@ -740,7 +740,16 @@ class Search {
         $searchmain->set_var('search_blocks', $searchblocks);
         $searchmain->set_var('search_pager', $this->_showPager($resultPage, $pages, ''));
         $retval .= $searchmain->parse('output','searchresults');
-        
+
+        reset($result_plugins);
+        $totalfound = 0;
+        foreach ($result_plugins as $key) {
+            $totalfound .= $key->num_searchresults;
+        }
+        if ( $totalfound == 0) {
+            $searchObj = new Search();
+            $retval .=  $searchObj->showForm();
+        }
         return $retval;
     }
     
@@ -872,7 +881,7 @@ class Search {
                 if($pos < $position OR $position == 0) {
                     $position = $pos;
                 }
-            }	
+            }    
             // Make sure we aren't beyond the end of the string
             if ($position >= strlen($fullText)) {
                 $position = 0;
@@ -892,7 +901,7 @@ class Search {
             $summary = strip_tags($summary,'<ol><ul><li><br>');
             $summary = preg_replace ("/^.*\">/i", "", $summary);
             
-            //Dress it up a little					  
+            //Dress it up a little                      
             if (strlen($summary) != strlen($fullText)) {
                 if ($position > 0) {
                     $summary = "&hellip; $summary";
@@ -942,7 +951,7 @@ class Search {
         $searchform->set_var('lang_keywords', $LANG09[2]);
         $searchform->set_var('lang_date', $LANG09[20]);
         $searchform->set_var('lang_to', $LANG09[21]);
-        $searchform->set_var('date_format', $LANG09[22]);	
+        $searchform->set_var('date_format', $LANG09[22]);    
         $searchform->set_var('lang_topic', $LANG09[3]);
         $searchform->set_var('lang_all', $LANG09[4]);
         $searchform->set_var('topic_option_list', COM_topicList('tid,topic'));
@@ -993,7 +1002,7 @@ class Search {
         } else {
             $searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
         }
-        $searchform->set_var('lang_search', $LANG09[10]);	
+        $searchform->set_var('lang_search', $LANG09[10]);    
         $searchform->parse('output', 'searchform');
     
         $retval .= $searchform->finish($searchform->get_var('output'));
