@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.49 2003/12/22 20:34:34 dhaun Exp $
+// $Id: comment.php,v 1.50 2004/01/18 14:46:17 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -404,13 +404,35 @@ case 'display':
     } else {
         $commentmode = $_CONF['comment_mode'];
     }
-    $display .= COM_siteHeader()
-        . COM_userComments (COM_applyFilter ($HTTP_GET_VARS['sid']),
-                strip_tags ($HTTP_GET_VARS['title']),
-                COM_applyFilter ($HTTP_GET_VARS['type']),
-                COM_applyFilter ($HTTP_GET_VARS['order']), $commentmode,
-                COM_applyFilter ($HTTP_GET_VARS['pid'], true))
-        . COM_siteFooter();
+    $sid = COM_applyFilter ($HTTP_GET_VARS['sid']);
+    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+    if (!empty ($sid) && !empty ($type)) {
+        $allowed = 1;
+        if ($type == 'article') {
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+        } else if ($type == 'poll') {
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+        }
+        $display .= COM_siteHeader();
+        if ($allowed == 1) {
+            $display .= COM_userComments ($sid,
+                    strip_tags ($HTTP_GET_VARS['title']), $type,
+                    COM_applyFilter ($HTTP_GET_VARS['order']), $commentmode,
+                    COM_applyFilter ($HTTP_GET_VARS['pid'], true));
+        } else {
+            $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'))
+                     . $LANG_ACCESS['storydenialmsg']
+                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        }
+        $display .= COM_siteFooter();
+    } else {
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
+    }
     break;
 default:
     if (isset ($HTTP_POST_VARS['sid'])) {
