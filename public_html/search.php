@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.21 2002/06/24 19:24:38 dhaun Exp $
+// $Id: search.php,v 1.22 2002/06/27 18:34:03 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -445,7 +445,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
             for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
                 $columns = current($cur_plugin->searchresults);
                 for ($x = 1; $x <= count($columns); $x++) {
-                    COM_errorLog('column val = ' . current($columns),1);
+                    // COM_errorLog('column val = ' . current($columns),1);
                     $searchresults->set_var('data', current($columns));
                     $searchresults->parse('data_cols','resultcolumn',true);
                     next($columns);
