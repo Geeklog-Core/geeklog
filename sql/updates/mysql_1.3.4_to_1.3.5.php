@@ -1,7 +1,10 @@
 <?php
+
 $_SQL[] = "ALTER TABLE {$_TABLES['userprefs']} ADD emailfromadmin tinyint(1) NOT NULL DEFAULT '1'";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD is_enabled tinyint(1) unsigned NOT NULL DEFAULT '1'";
-$_SQL[] = "
+$_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD type varchar(30) NOT NULL DEFAULT 'story'";
+
+$_SQL[] ="
 CREATE TABLE {$_TABLES['article_images']} (
   ai_sid varchar(20) NOT NULL,
   ai_img_num tinyint(2) unsigned NOT NULL,
