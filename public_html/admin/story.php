@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.137 2004/11/14 14:06:13 dhaun Exp $
+// $Id: story.php,v 1.138 2004/12/10 09:29:51 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -74,7 +74,7 @@ if (!SEC_hasRights('story.edit')) {
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// debug($_POST);
 
 
 /**
@@ -115,8 +115,7 @@ function userlist ($uid = 0)
 */
 function storyeditor($sid = '', $mode = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
-           $HTTP_POST_VARS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $_POST;
 
     $display = '';
 
@@ -197,7 +196,7 @@ function storyeditor($sid = '', $mode = '')
         $A['perm_anon'] = 2;
         $access = 3;
     } else {
-        $A = $HTTP_POST_VARS;
+        $A = $_POST;
         $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
         $A += DB_fetchArray($res);
         $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
@@ -531,7 +530,7 @@ function storyeditor($sid = '', $mode = '')
 function liststories($page = 1) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
-           $HTTP_POST_VARS, $HTTP_GET_VARS;
+           $_POST, $_GET;
 
     $display = '';
 
@@ -555,10 +554,10 @@ function liststories($page = 1)
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('lang_featured', $LANG24[32]); 
 
-    if (!empty ($HTTP_GET_VARS['tid'])) {
-        $current_topic = $HTTP_GET_VARS['tid'];
-    } elseif (!empty ($HTTP_POST_VARS['tid'])) {
-        $current_topic = $HTTP_POST_VARS['tid'];
+    if (!empty ($_GET['tid'])) {
+        $current_topic = $_GET['tid'];
+    } elseif (!empty ($_POST['tid'])) {
+        $current_topic = $_POST['tid'];
     } else {
         $current_topic = $LANG09[9];
     }
@@ -983,17 +982,15 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $show_topic_icon = 0;
         }
         
-        // Get the related URLs
-        $related = addslashes (implode ("\n", STORY_extractLinks ("$introtext $bodytext")));
-
         // Clean up the text
         if ($postmode == 'html') {
-            $introtext = addslashes(COM_checkHTML(COM_checkWords($introtext)));
-            $bodytext = addslashes(COM_checkHTML(COM_checkWords($bodytext)));
+            $introtext = COM_checkHTML (COM_checkWords ($introtext));
+            $bodytext = COM_checkHTML (COM_checkWords ($bodytext));
         } else {
-            $introtext = addslashes(htmlspecialchars(COM_checkWords($introtext)));
-            $bodytext = addslashes(htmlspecialchars(COM_checkWords($bodytext)));
+            $introtext = htmlspecialchars (COM_checkWords ($introtext));
+            $bodytext = htmlspecialchars (COM_checkWords ($bodytext));
         }
+
         $title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($title))));
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
 
@@ -1106,6 +1103,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $bodytext = COM_makeClickableLinks ($bodytext);
         }
 
+        // Get the related URLs
+        $related = addslashes (implode ("\n",
+                        STORY_extractLinks ("$introtext $bodytext")));
+
         if ($_CONF['maximagesperarticle'] > 0) {
             if ($delete_old_story) {
                 // story id has changed - update article_images table first
@@ -1128,6 +1129,9 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
+
+        $introtext = addslashes ($introtext);
+        $bodytext = addslashes ($bodytext);
 
         DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode','$expire','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
 
@@ -1186,7 +1190,7 @@ function deletestory ($sid)
     }
 
     STORY_deleteImages ($sid);
-    DB_delete ($_TABLES['comments'], 'sid', $sid);
+    DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid = '$sid' AND type = 'article'");
     DB_delete ($_TABLES['stories'], 'sid', $sid);
 
     // update RSS feed and Older Stories block
@@ -1197,17 +1201,12 @@ function deletestory ($sid)
 }
 
 // MAIN
-$mode = '';
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
-} else if (isset ($HTTP_GET_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
-}
+$mode = COM_applyFilter ($_REQUEST['mode']);
 
 $display = '';
 if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
-    $sid = COM_applyFilter ($HTTP_POST_VARS['sid']);
-    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+    $sid = COM_applyFilter ($_POST['sid']);
+    $type = COM_applyFilter ($_POST['type']);
     if (!isset ($sid) || empty ($sid)) {
         COM_errorLog ('Attempted to delete story sid=' . $sid);
         echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
@@ -1225,24 +1224,24 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     }
 } else if (($mode == $LANG24[9]) && !empty ($LANG24[9])) { // preview
     $display .= COM_siteHeader('menu');
-    $display .= storyeditor (COM_applyFilter ($HTTP_POST_VARS['sid']), $mode);
+    $display .= storyeditor (COM_applyFilter ($_POST['sid']), $mode);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
-    $display .= storyeditor (COM_applyFilter ($HTTP_GET_VARS['sid']), $mode);
+    $display .= storyeditor (COM_applyFilter ($_GET['sid']), $mode);
     $display .= COM_siteFooter();
     echo $display;
 } else if ($mode == 'editsubmission') {
     $display .= COM_siteHeader('menu');
-    $display .= storyeditor (COM_applyFilter ($HTTP_GET_VARS['id']), $mode);
+    $display .= storyeditor (COM_applyFilter ($_GET['id']), $mode);
     $display .= COM_siteFooter();
     echo $display;
 } else if (($mode == $LANG24[8]) && !empty ($LANG24[8])) { // save
-    $publish_ampm = COM_applyFilter ($HTTP_POST_VARS['publish_ampm']);
-    $publish_hour = COM_applyFilter ($HTTP_POST_VARS['publish_hour'], true);
-    $publish_minute = COM_applyFilter ($HTTP_POST_VARS['publish_minute'], true);
-    $publish_second = COM_applyFilter ($HTTP_POST_VARS['publish_second'], true);
+    $publish_ampm = COM_applyFilter ($_POST['publish_ampm']);
+    $publish_hour = COM_applyFilter ($_POST['publish_hour'], true);
+    $publish_minute = COM_applyFilter ($_POST['publish_minute'], true);
+    $publish_second = COM_applyFilter ($_POST['publish_second'], true);
     if ($publish_ampm == 'pm') {
         if ($publish_hour < 12) {
             $publish_hour = $publish_hour + 12;
@@ -1251,23 +1250,23 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     if ($publish_ampm == 'am' AND $publish_hour == 12) {
         $publish_hour = '00';
     }
-    $publish_year = COM_applyFilter ($HTTP_POST_VARS['publish_year'], true);
-    $publish_month = COM_applyFilter ($HTTP_POST_VARS['publish_month'], true);
-    $publish_day = COM_applyFilter ($HTTP_POST_VARS['publish_day'], true);
-    $archiveflag = COM_applyFilter ($HTTP_POST_VARS['archiveflag'], true);
+    $publish_year = COM_applyFilter ($_POST['publish_year'], true);
+    $publish_month = COM_applyFilter ($_POST['publish_month'], true);
+    $publish_day = COM_applyFilter ($_POST['publish_day'], true);
+    $archiveflag = COM_applyFilter ($_POST['archiveflag'], true);
 
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     if ($archiveflag != 1) {
         $statuscode = 0;
     }
 
-    $expire_ampm = COM_applyFilter ($HTTP_POST_VARS['expire_ampm']);
-    $expire_hour = COM_applyFilter ($HTTP_POST_VARS['expire_hour'], true);
-    $expire_minute = COM_applyFilter ($HTTP_POST_VARS['expire_minute'], true);
-    $expire_second = COM_applyFilter ($HTTP_POST_VARS['expire_second'], true);
-    $expire_year = COM_applyFilter ($HTTP_POST_VARS['expire_year'], true);
-    $expire_month = COM_applyFilter ($HTTP_POST_VARS['expire_month'], true);
-    $expire_day = COM_applyFilter ($HTTP_POST_VARS['expire_day'], true);
+    $expire_ampm = COM_applyFilter ($_POST['expire_ampm']);
+    $expire_hour = COM_applyFilter ($_POST['expire_hour'], true);
+    $expire_minute = COM_applyFilter ($_POST['expire_minute'], true);
+    $expire_second = COM_applyFilter ($_POST['expire_second'], true);
+    $expire_year = COM_applyFilter ($_POST['expire_year'], true);
+    $expire_month = COM_applyFilter ($_POST['expire_month'], true);
+    $expire_day = COM_applyFilter ($_POST['expire_day'], true);
 
     if (isset($expire_hour))  {
         if ($expire_ampm == 'pm') {
@@ -1282,39 +1281,36 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     } else {
         $expiredate = time();
     }
-    $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+    $uid = COM_applyFilter ($_POST['uid'], true);
 
-    submitstory (COM_applyFilter ($HTTP_POST_VARS['type']),
-                 COM_applyFilter ($HTTP_POST_VARS['sid']), $uid,
-                 COM_applyFilter ($HTTP_POST_VARS['tid']),
-                 $HTTP_POST_VARS['title'],
-                 $HTTP_POST_VARS['introtext'], $HTTP_POST_VARS['bodytext'],
-                 COM_applyFilter ($HTTP_POST_VARS['hits'], true), $unixdate,$expiredate,
-                 COM_applyFilter ($HTTP_POST_VARS['comments'], true),
-                 COM_applyFilter ($HTTP_POST_VARS['featured'], true),
-                 COM_applyFilter ($HTTP_POST_VARS['commentcode']),
-                 COM_applyFilter ($HTTP_POST_VARS['statuscode']),
-                 COM_applyFilter ($HTTP_POST_VARS['postmode']),
-                 COM_applyFilter ($HTTP_POST_VARS['frontpage']),
-                 COM_applyFilter ($HTTP_POST_VARS['draft_flag']),
-                 COM_applyFilter ($HTTP_POST_VARS['numemails'], true),
-                 COM_applyFilter ($HTTP_POST_VARS['owner_id'], true),
-                 COM_applyFilter ($HTTP_POST_VARS['group_id'], true),
-                 $HTTP_POST_VARS['perm_owner'], $HTTP_POST_VARS['perm_group'],
-                 $HTTP_POST_VARS['perm_members'], $HTTP_POST_VARS['perm_anon'],
-                 $HTTP_POST_VARS['delete'],
-                 COM_applyFilter ($HTTP_POST_VARS['show_topic_icon']),
-                 COM_applyFilter ($HTTP_POST_VARS['old_sid']));
+    submitstory (COM_applyFilter ($_POST['type']),
+                 COM_applyFilter ($_POST['sid']), $uid,
+                 COM_applyFilter ($_POST['tid']),
+                 $_POST['title'], $_POST['introtext'], $_POST['bodytext'],
+                 COM_applyFilter ($_POST['hits'], true), $unixdate, $expiredate,
+                 COM_applyFilter ($_POST['comments'], true),
+                 COM_applyFilter ($_POST['featured'], true),
+                 COM_applyFilter ($_POST['commentcode']),
+                 COM_applyFilter ($_POST['statuscode']),
+                 COM_applyFilter ($_POST['postmode']),
+                 COM_applyFilter ($_POST['frontpage']),
+                 COM_applyFilter ($_POST['draft_flag']),
+                 COM_applyFilter ($_POST['numemails'], true),
+                 COM_applyFilter ($_POST['owner_id'], true),
+                 COM_applyFilter ($_POST['group_id'], true),
+                 $_POST['perm_owner'], $_POST['perm_group'],
+                 $_POST['perm_members'], $_POST['perm_anon'], $_POST['delete'],
+                 COM_applyFilter ($_POST['show_topic_icon']),
+                 COM_applyFilter ($_POST['old_sid']));
 } else { // 'cancel' or no mode at all
-    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+    $type = COM_applyFilter ($_POST['type']);
     if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
             ($type == 'submission')) {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
     } else {
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'],
-                                                      true));
-        $display .= liststories (COM_applyFilter ($HTTP_GET_VARS['page'], true));
+        $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
+        $display .= liststories (COM_applyFilter ($_GET['page'], true));
         $display .= COM_siteFooter();
     }
     echo $display;
