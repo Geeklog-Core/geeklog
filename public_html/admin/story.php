@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.97 2003/07/06 09:34:32 dhaun Exp $
+// $Id: story.php,v 1.98 2003/07/06 13:55:58 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -787,9 +787,8 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         for ($i = 1; $i <= count($delete); $i++) {
             $ai_filename = DB_getItem ($_TABLES['article_images'],'ai_filename',                    "ai_sid = '$sid' AND ai_img_num = " . key ($delete));
             $curfile = $_CONF['path_html'] . 'images/articles/' . $ai_filename;
-            if (!unlink($curfile)) {
+            if (!@unlink($curfile)) {
                 echo COM_errorLog("Unable to delete image $curfile. Please check file permissions");
-                exit;
             }
 
             // remove unscaled image, if it exists
@@ -798,16 +797,15 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
                                       . $lFilename_large;
             if (file_exists ($lFilename_large_complete)) {
-                if (!unlink ($lFilename_large_complete)) {
+                if (!@unlink ($lFilename_large_complete)) {
                     echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-                    exit;
                 }
             }
 
             DB_query("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($delete));
             next($delete);
         }
-        
+
         // OK, let's upload any pictures with the article
         if (DB_count($_TABLES['article_images'], 'ai_sid', $sid) > 0) {
             $index_start = DB_getItem($_TABLES['article_images'],'max(ai_img_num)',"ai_sid = '$sid'") + 1;
@@ -940,9 +938,8 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
-            if (!unlink($filename)) {
+            if (!@unlink($filename)) {
                 echo COM_errorLog('Unable to remove the following image from the article: ' . $filename);
-                exit;
             }
 
             // remove unscaled image, if it exists
@@ -951,9 +948,8 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
             $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
                                       . $lFilename_large;
             if (file_exists ($lFilename_large_complete)) {
-                if (!unlink ($lFilename_large_complete)) {
+                if (!@unlink ($lFilename_large_complete)) {
                     echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
-                    exit;
                 }
             }
         }
