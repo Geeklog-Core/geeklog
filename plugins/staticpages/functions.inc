@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.12 2002/07/23 10:12:35 dhaun Exp $
+// $Id: functions.inc,v 1.13 2002/08/12 10:47:56 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -66,15 +66,15 @@ function plugin_getmenuitems_staticpages()
     $menuitems = array();
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $menuitems[$A['sp_label']] = $_CONF['site_url'] . "/staticpages/index.php?page={$A['sp_id']}";
+        $menuitems[$A['sp_label']] = COM_buildURL ($_CONF['site_url'] . "/staticpages/index.php?page={$A['sp_id']}");
     }
     return $menuitems;
 }
 
 /**
-* Geeklog is checking to see if this plugin supports comments, tell it yes!
-* NOTE: to support comments you must used the same date/time based ID for your
-* widget.  In otherwords, to make primary keys for your plugin you should call
+* Geeklog is checking to see if this plugin supports comments, tell it no!
+* NOTE: to support comments you must use the same date/time based ID for your
+* widget.  In other words, to make primary keys for your plugin you should call
 * makesid().  Comments are keyed off of that...it is a limitation on how geeklog
 * does comments.
 *
@@ -86,9 +86,9 @@ function plugin_commentsupport_staticpages()
 }
 
 /**
-* shows the statistics for the book review plugin on stats.php.  If $showsitestats
-* is 1 then we are to only print the overall stats in the 'site statistics box'
-* otherwise we show the detailed stats for the photo album
+* Shows the statistics for the static pages plugin on stats.php.  If
+* $showsitestats is 1 then we are to only print the overall stats in the 'site
+* statistics' box otherwise we show the detailed stats for the static pages
 *
 * @showsitestate        int         Flag to let us know which stats to get
 */
@@ -98,8 +98,8 @@ function plugin_showstats_staticpages($showsitestats)
 }
 
 /**
-* Geeklog is asking us to provide any new items that show up in the type drop-down
-* on search.php.  Let's let users search static pages!
+* Geeklog is asking us to provide any new items that show up in the type
+* drop-down on search.php.  Let's let users search static pages!
 *
 */
 function plugin_searchtypes_staticpages() 
@@ -111,7 +111,7 @@ function plugin_searchtypes_staticpages()
 }
 
 /**
-* this searches for static pages matching the user query and returns an array of 
+* this searches for static pages matching the user query and returns an array of
 * for the header and table rows back to search.php where it will be formated and
 * printed 
 *
@@ -161,7 +161,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     // Perform search
     $result = DB_query($sql);
     
-    // OK, now return coma delmited string of table header labels
+    // OK, now return coma delimited string of table header labels
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'staticpages';
@@ -178,7 +178,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
 	for ($i = 1; $i <= $plugin_results->num_searchresults; $i++) {
         $A = DB_fetchArray($result);
         $thetime = COM_getUserDateTimeFormat($A['day']);
-        $row = array("<a href={$_CONF['site_url']}/staticpages/index.php?page={$A['sp_id']}>{$A['sp_title']}</a>",
+        $row = array('<a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']) . '">' . $A['sp_title'] . '</a>',
                     $thetime[0],
                     DB_getItem($_TABLES['users'],'username',"uid = '{$A["sp_uid"]}'"),
                     $A['sp_hits']);

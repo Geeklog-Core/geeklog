@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2002/07/23 10:12:35 dhaun Exp $
+// $Id: index.php,v 1.8 2002/08/12 10:47:57 dhaun Exp $
 
 require_once('../lib-common.php');
 
@@ -39,6 +39,9 @@ if (!empty($USER["uid"])) {
         $result = DB_query("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$USER["uid"]}'");
         $U = DB_fetchArray($result);
 }
+
+COM_setArgNames(array('page'));
+$page = COM_getArgument('page');
 
 if (empty($page)) {
 	$error = 1;
@@ -69,7 +72,7 @@ if (!($error)) {
 	    $curtime = COM_getUserDateTimeFormat($A['sp_date']);
 	    $retval .= '<p align="center"><br>' . $LANG_STATIC[lastupdated] . ' ' . $curtime[0]; 
 	    if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-		    $retval .= "<br><a href={$_CONF['site_admin_url']}/plugins/staticpages/index.php?mode=edit&amp;sp_id=$page>";
+		    $retval .= '<br><a href="' . COM_buildURL ($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $page) . '">';
 		    $retval .= $LANG_STATIC[edit] . "</a>";
 	    }
         $retval .= '</p>';
