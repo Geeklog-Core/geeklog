@@ -223,6 +223,7 @@ define('VERSION', '1.3.1');
 
 //$_CONF['default_state_cde'] = 'IA'; // NOT IMPLEMENTED
 $_STATES = array(
+        '--'=>'',
         'AL'=>'Alabama',
         'AK'=>'Alaska',
         'AZ'=>'Arizona',
