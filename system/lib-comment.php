@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.9 2005/02/18 20:04:22 vinny Exp $
+// $Id: lib-comment.php,v 1.10 2005/02/27 23:15:14 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -298,12 +298,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $P = DB_fetchArray( $result );
             if ($P['pid'] != 0) {
                 $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
-                       . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+                       . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
-                       . $P['pid'];
+                       . $P['pid'] . '&amp;format=threaded';;
             } else {
                 $plink = $_CONF['site_url'] . '/comment.php?mode=view&amp;sid='
-                       . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
+                       . $A['sid'] . '&amp;title=' . urlencode( htmlspecialchars( $P['title'] ))
                        . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;cid='
                        . $A['pid'] . '&amp;format=threaded';
             }
@@ -343,12 +343,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'delete_option', '' );
         }
 
-        $A['title'] = stripslashes( $A['title'] );
-        $A['title'] = htmlspecialchars( $A['title'] );
-        $A['title'] = str_replace( '$', '&#36;', $A['title'] );
-
         // and finally: format the actual text of the comment
-        $A['comment'] = stripslashes( $A['comment'] );
         if( preg_match( '/<.*>/', $A['comment'] ) == 0 ) {
             $A['comment'] = nl2br( $A['comment'] );
         }
@@ -364,6 +359,15 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // Replace any plugin autolink tags
         $A['comment'] = PLG_replaceTags( $A['comment'] );
+
+        // create a reply to link
+        $reply_link = "{$_CONF['site_url']}/comment.php?sid={$A['sid']}&amp;pid={$A['cid']}"
+                    . "&amp;title=" . urlencode($A['title']) . "&amp;type={$A['type']}";
+        $template->set_var( 'reply_link', $reply_link);
+        
+        // format title for display, must happen after reply_link is created
+        $A['title'] = htmlspecialchars( $A['title'] );
+        $A['title'] = str_replace( '$', '&#36;', $A['title'] );
 
         $template->set_var( 'title', $A['title'] );
         $template->set_var( 'comments', $A['comment'] );
@@ -640,10 +644,8 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $commenttext = str_replace('{','&#123;',$commenttext);
             $commenttext = str_replace('}','&#125;',$commenttext);
 
-            $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
+            $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
-            $title = str_replace('{','&#123;',$title);
-            $title = str_replace('}','&#125;',$title);
 
             $_POST['title'] = addslashes ($title);
             $newcomment = $comment;
@@ -707,7 +709,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             }
 
             $comment_template->set_var('lang_title', $LANG03[16]);
-            $comment_template->set_var('title', stripslashes($title));
+            $comment_template->set_var('title', htmlspecialchars($title));
             $comment_template->set_var('lang_comment', $LANG03[9]);
             $comment_template->set_var('comment', $commenttext);
             $comment_template->set_var('lang_postmode', $LANG03[2]);
@@ -770,7 +772,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
     if (($uid == 1) && (($_CONF['loginrequired'] == 1) 
             || ($_CONF['commentsloginrequired'] == 1))) {
         COM_errorLog("CMT_saveComment: IP address {$_SERVER['REMOTE_ADDR']} "
-                   . 'attempted to save acomment with comments diabled for site.');
+                   . 'attempted to save a comment with anonymous comments disabled for site.');
         return $ret = 2;
     }
 
@@ -837,23 +839,34 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
         // Insert the comment into the comment table
         DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
         if ($pid > 0) {
-            $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid");
+            $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid "
+                             . "AND sid = '$sid'");
             list($rht, $indent) = DB_fetchArray($result);
-            DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
-                   . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
-            DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
-                   . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
-            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$_SERVER['REMOTE_ADDR']}'");
+            if ( !DB_error() ) {
+                DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
+                       . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
+                DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
+                       . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
+                DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
+                        "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$_SERVER['REMOTE_ADDR']}'");
+            } else { //replying to non-existent comment or comment in wrong article
+                COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
+                           . 'to reply to a non-existent comment or the pid/sid did not match');
+                $ret = 4; // Cannot return here, tables locked!
+            }
         } else {
-            $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)');
+            $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)', "sid = '$sid'");
+            if ( DB_error() ) {
+                $rht = 0;
+            }
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','{$_SERVER['REMOTE_ADDR']}'");
         }
         $cid = DB_insertId();
         DB_query('UNLOCK TABLES');
 
-        if (isset ($_CONF['notification']) &&
+        // Send notification of comment if no errors and notications enabled for comments
+        if (($ret == 0) && isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
             CMT_sendNotification ($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
                               $type, $cid);
@@ -861,7 +874,7 @@ function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
     } else {
         COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
                    . 'to submit a comment with invalid $title and/or $comment.');
-        return $ret = 4;
+        return $ret = 5;
     }
 
     return $ret;
