@@ -580,14 +580,14 @@ $LANG22 = array(
 	7 => "Ort",
 	8 => "Beschreibung",
 	9 => "(mit http://)",
-	10 => "You need to fill in all fields in this form!",
+	10 => "Es m&uuml;ssen mindestens Datum und Uhrzeit, Beschreibung und Ort angegeben werden!",
 	11 => "Termin-Manager",
-	12 => "To modify or delete a event, click on that event below.  To create a new event click on new event above.",
+	12 => "Auf einen Termin klicken, um ihn zu &auml;ndern oder l&ouml;schen. Mit Neuer Termin (s.o.) wird ein neuer Termin angelegt.",
 	13 => "Titel",
 	14 => "Startdatum",
 	15 => "Enddatum",
-	16 => "Access Denied",
-	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>.",
+	16 => "Zugriff verweigert",
+	17 => "Du hast keine Zugriffsrechte f&uuml;r diesen Termin. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_url"]}/admin/event.php\">Zur&uuml;ck zum Administrator-Men&uuml;</a>.",
 	18 => 'Neuer Termin',
 	19 => 'Admin Home'
 );
@@ -727,7 +727,7 @@ $LANG27 = array(
 	10=> "Sortierreihenfolge",
 	11 => "Artikel/Seite",
 	12 => "Zugriff verweigert",
-	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/topic.php\">go back to the topic administration screen</a>.",
+	13 => "Du hast keine Zugriffsrechte f&uuml;r diese Kategorie. Dieser Zugriffsversuch wurde protokolliert. <a href=\"{$_CONF["site_url"]}/admin/topic.php\">Zur&uuml;ck zum Administrator-Men&uuml;</a>.",
 	14 => "Sortiermethode",
 	15 => "alphabetisch",
 	16 => "Default:",
@@ -894,7 +894,7 @@ $MESSAGE = array (
 	27 => "Nachricht wurde verschickt.",
 	28 => "Das Plugin wurde gespeichert.",
 	29 => "Sorry, personal calendars are not enabled on this site",
-	30 => "Access Denied",
+	30 => "Zugriff verweigert",
 	31 => "Sorry, you do not have access to the story administration page.  Please note that all attempts to access unauthorized features are logged",
 	32 => "Sorry, you do not have access to the topic administration page.  Please note that all attempts to access unauthorized features are logged",
 	33 => "Sorry, you do not have access to the block administration page.  Please note that all attempts to access unauthorized features are logged",
@@ -1008,11 +1008,11 @@ $LANG_WORDS = array(
 );
 
 $LANG_DB_BACKUP = array(
-    last_ten_backups => 'Last 10 Back-ups',
-    do_backup => 'Do Backup',
-    backup_successful => 'Database back up was successful.',
-    no_backups => 'No backups in the system',
-    db_explanation => 'To create a new backup of your Geeklog system, hit the button below'
+    last_ten_backups => 'Die 10 letzten Backups',
+    do_backup => 'Backup anlegen',
+    backup_successful => 'Backup der Datenbank war erfolgreich.',
+    no_backups => 'Keine Backups im System',
+    db_explanation => 'Um ein neues Backup Deines Geeklog-Systems anzulegen, einfach auf den folgenden Button klicken'
 );
 
 ?>
