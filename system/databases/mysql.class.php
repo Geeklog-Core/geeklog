@@ -29,17 +29,43 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.6 2002/01/03 21:23:00 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.7 2002/05/13 20:09:36 tony_bibbs Exp $
 
+/**
+* This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
+* the Geeklog abstraction layer isn't 100% abstract because a key few functions use
+* MySQL's REPLACE INTO syntax which is not a SQL standard.  Those issue will be resolved
+* in the near future
+*
+*/
 class database {
 
     // PRIVATE PROPERTIES
-    var $_host;
-    var $_name;
-    var $_user;
-    var $_pass;
-    var $_verbose;
-    var $_errorlog_fn;
+    
+    /**
+    * @access private
+    */
+    var $_host = '';
+    /**
+    * @access private
+    */
+    var $_name = '';
+    /**
+    * @access private
+    */
+    var $_user = '';
+    /**
+    * @access private
+    */
+    var $_pass = '';
+    /**
+    * @access private
+    */
+    var $_verbose = false;
+    /**
+    * @access private
+    */
+    var $_errorlog_fn = '';
 
     // PRIVATE METHODS
 
@@ -48,8 +74,8 @@ class database {
     *
     * Logs messages by calling the function held in $_errorlog_fn
     *
-    * @msg        string        Message to log
-    *
+    * @param    string      $msg        Message to log
+    * @access   private
     */
     function _errorlog($msg)
     {
@@ -63,6 +89,9 @@ class database {
     * Connects to the MySQL database server
     *
     * This function connects to the MySQL server and returns the connection object
+    *
+    * @return   object      Returns connection object
+    * @access   private
     *
     */
     function _connect()
@@ -101,11 +130,11 @@ class database {
     *
     * This initializes an instance of the database object
     *
-    * @dbhost        string        Database host
-    * @dbname        string        Name of database
-    * @dbuser        string        User to make connection as
-    * @pass          string        Password for dbuser
-    * @errorlogfn    string        Name of the errorlog function
+    * @param        string      $dbhost     Database host
+    * @param        string      $dbname     Name of database
+    * @param        sring       $dbuser     User to make connection as
+    * @param        string      $pass       Password for dbuser
+    * @param        string      $errorlogfn Name of the errorlog function
     *
     */
     function database($dbhost,$dbname,$dbuser,$dbpass,$errorlogfn='')
@@ -123,7 +152,7 @@ class database {
     *
     * Set this to true to see debug messages
     *
-    * @flag     boolean     true or false
+    * @param    boolean     $flag   true or false
     *
     */
     function setVerbose($flag)
@@ -135,6 +164,8 @@ class database {
     * Checks to see if debug mode is on
     *
     * Returns value of $_verbose
+    *
+    * @return   boolean     true if in verbose mode otherwise false
     *
     */
     function isVerbose()
@@ -151,7 +182,7 @@ class database {
     /**
     * Sets the function this class should call to log debug messages
     *
-    * @functionname        string        Function name
+    * @param        string      $functionname   Function name
     *
     */
     function setErrorFunction($functionname)
@@ -164,8 +195,9 @@ class database {
     *
     * This executes the passed SQL and returns the recordset or errors out
     *
-    * @sql  string  SQL to be executed
-    * @ignore_error int     If 1 this function supresses any error messages
+    * @param    string      $sql            SQL to be executed
+    * @param    boolean     $ignore_error   If 1 this function supresses any error messages
+    * @return   object      Returns results of query
     *
     */
     function dbQuery($sql,$ignore_errors=0)
@@ -210,10 +242,9 @@ class database {
     * This will use a REPLACE INTO to save a record into the
     * database
     *
-    * @table        string  The table to save to
-    * @fields       string  Comma demlimited list of fields to save
-    * @values       string  Values to save to the database table
-    * @return       string  URL to send user to when done
+    * @param    string      $table      The table to save to
+    * @param    string      $fields     string  Comma demlimited list of fields to save
+    * @param    string      $values     Values to save to the database table
     *
     */
     function dbSave($table,$fields,$values)
@@ -238,9 +269,10 @@ class database {
     * id and value are arrays then it will traverse the arrays setting
     * $id[curval] = $value[curval].
     *
-    * @table        string          Table to delete data from
-    * @id           array|string    field name(s) to include in where clause
-    * @value        array|string    field value(s) corresponding to field names
+    * @param    string          $table      Table to delete data from
+    * @param    array|string    $id         field name(s) to include in where clause
+    * @param    array|string    $value      field value(s) corresponding to field names
+    * @return   boolean     Returns true on success otherwise false
     *
     */
     function dbDelete($table,$id,$value)
@@ -276,10 +308,6 @@ class database {
             }
         }
 
-        // if ($this->isVerbose()) {
-        //     print "dbDelete sql = $sql<BR>";
-        // }
-
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
@@ -295,11 +323,13 @@ class database {
     * This will change the data in the given table that meet the given criteria and will
     * redirect user to another page if told to do so
     *
-    * @table        string          Table to perform change on
-    * @item_to_set  string          field name of unique ID field for table
-    * @value_to_set string          Value for id
-    * @id           array|string    additional field name used in where clause
-    * @value        array|string    Value for id2
+    * @param    string          $table          Table to perform change on
+    * @param    string          $item_to_set    field name of unique ID field for table
+    * @param    string          $value_to_set   Value for id
+    * @param    array|string    $id             additional field name used in where clause
+    * @param    array|string    $value          additional values used in where clause
+    * @param    boolean         $supress_quotes if false it will not use '<value>' in where clause
+    * @return   boolean     Returns true on success otherwise false
     *
     */
     function dbChange($table,$item_to_set,$value_to_set,$id,$value, $supress_quotes=false)
@@ -357,9 +387,10 @@ class database {
     * This will build a SELECT count(*) statement with the given criteria and
     * return the result
     *
-    * @table        string          Table to perform count on
-    * @id           array|string    field name(s) of fields to use in where clause
-    * @value        array|string    Value(s) to use in where clause
+    * @param    string          $table  Table to perform count on
+    * @param    array|string    $id     field name(s) of fields to use in where clause
+    * @param    array|string    $value  Value(s) to use in where clause
+    * @return   boolean     returns count on success otherwise false
     *
     */
     function dbCount($table,$id='',$value='')
@@ -414,12 +445,13 @@ class database {
     * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
     * to another table.  They can be the same table.
     *
-    * @table        string          Table to insert record into
-    * @fields       string          Comma delmited list of fields to copy over
-    * @values       string          Values to store in database fields
-    * @tablefrom    string          Table to get record from
-    * @id           array|string    field name(s) to use in where clause
-    * @value        array|string    Value(s) to use in where clause
+    * @param    string          $table      Table to insert record into
+    * @param    string          $fields     Comma delmited list of fields to copy over
+    * @param    string          $values     Values to store in database fields
+    * @param    string          $tablefrom  Table to get record from
+    * @param    array|string    $id         field name(s) to use in where clause
+    * @param    array|string    $value      Value(s) to use in where clause
+    * @return   boolean     Returns true on success otherwise false
     *
     */
     function dbCopy($table,$fields,$values,$tablefrom,$id,$value)
@@ -468,7 +500,8 @@ class database {
     *
     * This returns the number of rows in a recordset
     *
-    * @recordset object     The recordset to operate one
+    * @param    object      $recordset      The recordset to operate one
+    * @return   int         Returns number of rows otherwise false (0)
     *
     */
     function dbNumRows($recordset)
@@ -498,9 +531,10 @@ class database {
     *
     * This returns the number of rows in a recordset
     *
-    * @recordset object     The recordset to operate one
-    * @row  int     row to get data from
-    * @field        string  field to return
+    * @param    object      $recordset      The recordset to operate one
+    * @param    int         $row            row to get data from
+    * @param    string      $field          field to return
+    * @return   int
     *
     */
     function dbResult($recordset,$row,$field=0)
@@ -522,7 +556,8 @@ class database {
     *
     * This returns the number of fields in a recordset
     *
-    * @recordset object     The recordset to operate on
+    * @param    object      $recordset      The recordset to operate on
+    * @return   int     Returns number of rows from query
     *
     */
     function dbNumFields($recordset)
@@ -530,13 +565,14 @@ class database {
         return @mysql_numfields($recordset);
     }
 
-        /**
+    /**
     * Retrieves returns the field name for a field
     *
     * Returns the field name for a given field number
     *
-    * @recordset object     The recordset to operate on
-    * @fnumber      int     field number to return the name of
+    * @param    object      $recordset      The recordset to operate on
+    * @param    int         $fnumber        field number to return the name of
+    * @return   string      Returns name of specified field
     *
     */
     function dbFieldName($recordset,$fnumber)
@@ -549,7 +585,8 @@ class database {
     *
     * Retrieves returns the number of effected rows for last query
     *
-    * @recordset object     The recordset to operate on
+    * @param    object      $recordset      The recordset to operate on
+    * @return   int     Number of rows affected by last query
     *
     */
     function dbAffectedRows($recordset)
@@ -562,7 +599,8 @@ class database {
     *
     * Gets the next record in a recordset and returns in array
     *
-    * @recordset    object  The recordset to operate on
+    * @param    object      $recordset  The recordset to operate on
+    * @return   array       Returns data array of current row from recordset
     *
     */
     function dbFetchArray($recordset)
@@ -575,7 +613,9 @@ class database {
     *
     * Returns the last auto_increment ID generated for recordset
     *
-    * @recordset    object  Recorset to operate on
+    * @param    object      $recordset      Recorset to operate on
+    * @return   int     Returns last auto-generated ID
+    *
     */
     function dbInsertId($recordset='')
     {
@@ -591,7 +631,8 @@ class database {
     *
     * Returns an database error message
     *
-    * @sql        string        SQL that may have caused the error
+    * @param    string      $sql    SQL that may have caused the error
+    * @return   string      Text for error message
     *
     */
     function dbError($sql='')
