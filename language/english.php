@@ -291,8 +291,8 @@ $LANG04 = array(
 
 $LANG05 = array(
 	1 => "No News to Display",
-	2 => "There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive.",
-	3 => "for topic $topic",
+	2 => "There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive",
+	3 => " for topic $topic",
 	4 => "Today's Featured Article",
 	5 => "Next",
 	6 => "Previous"
