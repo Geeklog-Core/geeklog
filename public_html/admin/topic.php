@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.33 2003/03/24 17:42:17 dhaun Exp $
+// $Id: topic.php,v 1.34 2003/03/24 18:19:07 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -257,7 +257,7 @@ function listtopics() {
             $topic_templates->set_var('topic_name', stripslashes ($A['topic']));
             $topic_templates->set_var('topic_access', $access);
             if ($A['is_default'] == 1) {
-                $topic_templates->set_var ('default_topic', '(*)');
+                $topic_templates->set_var ('default_topic', $LANG27[24]);
             } else {
                 $topic_templates->set_var ('default_topic', '');
             }
