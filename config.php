@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.127 2004/08/08 17:00:06 blaine Exp $
+// $Id: config.php,v 1.128 2004/08/11 18:14:42 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -111,15 +111,16 @@ $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 // +---------------------------------------------------------------------------+
 
 // you shouldn't need to edit theses
-$_CONF['path_system']     = $_CONF['path'] . 'system/';
-$_CONF['path_log']        = $_CONF['path'] . 'logs/';
-$_CONF['path_language']   = $_CONF['path'] . 'language/';
-$_CONF['backup_path']     = $_CONF['path'] . 'backups/';
+$_CONF['path_system']   = $_CONF['path'] . 'system/';
+$_CONF['path_log']      = $_CONF['path'] . 'logs/';
+$_CONF['path_language'] = $_CONF['path'] . 'language/';
+$_CONF['backup_path']   = $_CONF['path'] . 'backups/';
+$_CONF['path_data']     = $_CONF['path'] . 'data/';
 
 // If you set path_images to something other than the default, you will need to
 // make sure that you add the following subdirectories to that directory:
 // articles/, userphotos/
-$_CONF['path_images']     = $_CONF['path_html'] . 'images/';
+$_CONF['path_images']   = $_CONF['path_html'] . 'images/';
 
 // +---------------------------------------------------------------------------+
 // | PEAR Settings                                                             |

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.79 2004/07/24 13:05:06 dhaun Exp $
+// $Id: user.php,v 1.80 2004/08/11 18:14:42 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -456,7 +456,8 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
 /**
 * This function allows the administrator to import batches of users
 *
-* $file     string      file to import
+* @param    string  $file   file to import
+* @return   string          HTML with success or error message
 *
 */
 function importusers($file)
@@ -467,36 +468,50 @@ function importusers($file)
     // webpage and to the error.log file
     $verbose_import = true;
 
-    // First, upload the file
-    require_once($_CONF['path_system'] . 'classes/upload.class.php');
-
-    $upload = new upload();
-    $upload->setPath($_CONF['path']);
-    $upload->setAllowedMimeTypes(array('text/plain'=>'.txt'));
-    $upload->setFileNames('user_import_file.txt');
-    if ($upload->uploadFiles()) {
-        // Good, file got uploaded, now install everything
-        $thefile =  current($HTTP_POST_FILES);
-        $filename = $_CONF['path'] . 'user_import_file.txt';
-    } else {
-        // A problem occurred, print debug information
-        print 'ERRORS<br>';
-        $upload->printErrors();
-        exit;
-    }
-
     $retval = '';
 
-    $handle = @fopen($filename,'r');
-    if (empty ($handle)) {
-        return $LANG28[34];
+    // First, upload the file
+    require_once ($_CONF['path_system'] . 'classes/upload.class.php');
+
+    $upload = new upload ();
+    $upload->setPath ($_CONF['path_data']);
+    $upload->setAllowedMimeTypes (array ('text/plain' => '.txt'));
+    $upload->setFileNames ('user_import_file.txt');
+    if ($upload->uploadFiles ()) {
+        // Good, file got uploaded, now install everything
+        $thefile =  current ($HTTP_POST_FILES);
+        $filename = $_CONF['path_data'] . 'user_import_file.txt';
+    } else {
+        // A problem occurred, print debug information
+        $retval = COM_siteHeader ('menu', $LANG28[22]);
+        $retval .= COM_startBlock ($LANG28[24], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= $upload->printErrors ();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
     }
+
+    $handle = @fopen ($filename, 'r');
+    if (empty ($handle)) {
+        $retval = COM_siteHeader ('menu', $LANG28[22]);
+        $retval .= COM_startBlock ($LANG28[24], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= $LANG28[34];
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
+
+    $retval .= COM_siteHeader ('menu', $LANG28[22]);
+    $retval .= COM_startBlock ($LANG28[31], '',
+            COM_getBlockTemplate ('_admin_block', 'header'));
 
     // Following variables track import processing statistics
     $successes = 0;
     $failures = 0;
-    while ($user1 = fgets($handle,4096)) {
-        $user = rtrim($user1);
+    while ($user1 = fgets ($handle, 4096)) {
+        $user = rtrim ($user1);
         list ($full_name, $u_name, $email) = split ("\t", $user);
 
         $full_name = strip_tags ($full_name);
@@ -505,7 +520,7 @@ function importusers($file)
 
         if ($verbose_import) {
             $retval .="<br><b>Working on username=$u_name, fullname=$full_name, and email=$email</b><br>\n";
-            COM_errorLog("Working on username=$u_name, fullname=$full_name, and email=$email",1);
+            COM_errorLog ("Working on username=$u_name, fullname=$full_name, and email=$email",1);
         }
 
         // prepare for database
@@ -520,10 +535,10 @@ function importusers($file)
 
             if ($ucount == 0 && ecount == 0) {
                 // user doesn't already exist
-                $regdate = strftime('%Y-%m-%d %H:%M:%S',time());
+                $regdate = strftime ('%Y-%m-%d %H:%M:%S', time ());
 
                 // Create user record
-                DB_query("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$userName','$fullName','$emailAddr','$regdate')");
+                DB_query ("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$userName','$fullName','$emailAddr','$regdate')");
                 $uid = DB_getItem($_TABLES['users'],'uid',"username = '$userName'");
 
                 // Add user to Logged-in group (i.e. members) and the All Users
@@ -565,13 +580,16 @@ function importusers($file)
         } // end if COM_isEmail($email)
     } // end while
 
-    fclose($handle);
-    unlink($filename);
+    fclose ($handle);
+    unlink ($filename);
 
     $report = $LANG28[32];
     eval ("\$report = \"$report\";");
 
     $retval .= '<p>' . $report;
+
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+    $retval .= COM_siteFooter ();  
 
     return $retval;
 }
@@ -593,10 +611,11 @@ function display_form()
 {
     global $_CONF, $LANG28;
 
-    $retval .= '<form action="' . $_CONF['site_admin_url'] . '/user.php" method="post" enctype="multipart/form-data">'
+    $retval = '<form action="' . $_CONF['site_admin_url'] . '/user.php" method="post" enctype="multipart/form-data">'
             . $LANG28[29] . ': <input type="file" name="importfile" size="40">'
             . '<input type="hidden" name="mode" value="import">'
             . '<input type="submit" name="submit" value="' . $LANG28[30] . '"></form>';
+
     return $retval;
 }
 
@@ -651,12 +670,7 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= edituser (COM_applyFilter ($HTTP_GET_VARS['uid']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
-    $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock ($LANG28[31], '',
-                        COM_getBlockTemplate ('_admin_block', 'header'));
     $display .= importusers ($HTTP_POST_VARS['file']);
-    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $display .= COM_siteFooter();  
 } else if ($mode == 'importform') {
     $display .= COM_siteHeader('menu');
     $display .= COM_startBlock ($LANG28[24], '',
