@@ -27,6 +27,17 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+if (!hasrights('user.mail')) {
+        site_header('menu');
+        startblock($MESSAGE[30]);
+        print $MESSAGE[39];
+        endblock();
+        site_footer();
+        errorlog("User {$USER["username"]} tried to illegally access the poll administration screen",1);
+        exit;
+}
+
+
 //error_reporting(15);
 if (isset($mail)) {
  	if ($fra=="" || $fraepost=="" || $subject=="" || $message=="" || $sendtil=="") {
@@ -55,16 +66,10 @@ if (isset($mail)) {
 	if (!isset($overstyr)) {
  		$sql = "SELECT username,fullname,email,emailstories  FROM {$CONF["db_prefix"]}users,{$CONF["db_prefix"]}userprefs WHERE users.uid > 1";
  		$sql .= " AND users.uid = userprefs.uid AND userprefs.emailstories = 1";
- 		if ($sendtil == "adm") {
-  			$sql .= " AND users.seclev > 99";
- 		}
 	}
 
 	if (isset($overstyr)) {
  		$sql = "SELECT username,fullname,email  FROM {$CONF["db_prefix"]}users WHERE uid > 1";
- 		if ($sendtil == "adm") {
-  			$sql .= " AND users.seclev > 99";
- 		}
 	}
  
 	$sendttil = "";
@@ -94,12 +99,6 @@ if (isset($mail)) {
 
 global $CONF,$LANG31;
 site_header("menu");
-
-if ($USER["seclev"] >= $CONF["sec_email"]) {
- 	$disabled = "";
-} else {
- 	$disabled = "DISABLED";
-}
 
 if (isset($sendttil)){
  	startblock($LANG31[16]);
@@ -142,7 +141,7 @@ echo "
             </tr>
           <tr>
             <td >$LANG31[7]</td>
-            <td ><INPUT type=radio name=sendtil value=alle $disabled></td>
+            <td ><INPUT type=radio name=sendtil value=alle></td>
           </tr>
 	  <tr>
             <td>$LANG31[8]</td>

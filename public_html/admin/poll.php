@@ -27,6 +27,16 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+if (!hasrights('poll.edit')) {
+        site_header('menu');
+        startblock($MESSAGE[30]);
+        print $MESSAGE[36];
+        endblock();
+        site_footer();
+        errorlog("User {$USER["username"]} tried to illegally access the poll administration screen",1);
+        exit;
+}
+
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see
@@ -37,9 +47,16 @@ include("auth.inc.php");
 ###############################################################################
 # Saves a poll from the database
 
-function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V) {
+function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$private_flag) {
 	global $LANG25,$CONF;
 	if (empty($voters)) { $voters = "0"; }
+
+	if ($private_flag == 'on') {
+        	$private_flag = 0;
+        } else {
+        	$private_flag = 1;
+        }
+
 	dbdelete("pollquestions","qid",$qid);
 	dbdelete("pollanswers","qid",$qid);
 	$sql = "'$qid','$question',$voters,'" . date("Y-m-d H:i:s");
@@ -48,8 +65,8 @@ function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V
 	} else {
 		$sql .= "',0";
 	}
-	$sql .= ",'$statuscode','$commentcode'";
-	dbsave("pollquestions","qid, question, voters, date, display, statuscode, commentcode",$sql);
+	$sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$private_flag";
+	dbsave("pollquestions","qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, private_flag",$sql);
 	for ($i=0; $i<sizeof($A); $i++) {
 		if (!empty($A[$i])) {
 			if (empty($V[$i])) { $V[$i] = "0"; }
@@ -57,26 +74,38 @@ function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V
 		}
 	}
 	refresh($CONF["site_url"] . "/admin/poll.php?msg=19");
-	//startblock($LANG25[3]);
-	//print $LANG25[4];
-	//endblock();
 }
 
 ###############################################################################
 # Displays the poll editor form
 
 function editpoll($qid="") {
-	global $LANG25,$CONF;
+	global $LANG25,$CONF,$USER,$LANG_ACCESS;
+
 	$question = dbquery("select * from pollquestions WHERE qid='$qid'");
 	$answers = dbquery("select answer,aid,votes from pollanswers WHERE qid='$qid'");
+
 	$Q = mysql_fetch_array($question);
+	$access = hasaccess($Q["private_flag"],$Q["owner_id"],$Q["group_id"]);
+	if ($access == 0) {
+        	startblock($LANG25[21]);
+                print  $LANG25[22];
+                endblock();
+                return;
+        }
+
 	startblock($LANG25[5]);
 	print "<FORM ACTION={$CONF["site_url"]}/admin/poll.php METHOD=post>\n";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><INPUT TYPE=SUBMIT NAME=mode VALUE=save> ";
 	print "<input type=submit name=mode value=cancel> ";
-	if (!empty($qid))
+	if (!empty($qid)) {
 		print "<INPUT TYPE=SUBMIT NAME=mode VALUE=delete>";
+	} else {
+		$Q['owner_id'] = $USER['uid'];
+		$Q['private_flag'] = 1;
+		$access = 1;
+	}
 	print "</td></tr>\n";
 	print "<tr><td align=right>{$LANG25[6]}:</td><td><INPUT TYPE=TEXT NAME=qid value=\"{$Q["qid"]}\" SIZE=20> {$LANG25[7]}</td></tr>\n";
 	print "<tr><td align=right>{$LANG25[9]}:</td><td><INPUT TYPE=TEXT NAME=question value=\"{$Q["question"]}\" SIZE=50 MAXLENGTH=255></td></tr>\n";
@@ -91,6 +120,37 @@ function editpoll($qid="") {
 		print "checked ";
 	}
 	print "value=\"{$Q["display"]}\"></td></tr>\n";
+
+	#user access info 
+        print "<tr><td colspan=2><hr><td></tr>"; 
+        print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$Q["owner_id"]}");
+        print "<input type=hidden name=owner_id value={$Q["owner_id"]}>" . "</td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
+        $usergroups = getusergroups();
+	if ($access == 1) {
+		print "<SELECT name=group_id>";
+        	for ($i=0;$i<count($usergroups);$i++) {
+                	print "<option value=" . $usergroups[key($usergroups)];
+                	if ($Q["group_id"] == $usergroups[key($usergroups)]) {
+                        	print " SELECTED";
+                	}
+                	print ">" . key($usergroups) . "</option>";
+                	next($usergroups);
+        	}
+        	print "</SELECT>";
+	} else {
+		#they can't set the group then
+                print getitem("groups","grp_name","grp_id = {$Q["group_id"]}");
+	}
+        print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
+        if ($Q["private_flag"] == 0) {
+                print "CHECKED";
+        }
+        print "></td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}</td></tr>";	
+        print "<tr><td colspan=2><hr><td></tr>"; 
+
 	print "<tr><td align=right valign=top>{$LANG25[10]}:</td><td>\n";
 	for ($i=0; $i<$CONF["maxanswers"]; $i++) {
 		$A = mysql_fetch_array($answers);
@@ -106,18 +166,28 @@ function editpoll($qid="") {
 # Displays a list of existing blocks
 
 function listpoll() {
-	global $CONF,$LANG25;
+	global $CONF,$LANG25,$LANG_ACCESS;
 	startblock($LANG25[18]);
 	adminedit("poll",$LANG25[19]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-	print "<tr><th align=left>$LANG25[9]</th><th>$LANG25[20]</th><th>$LANG25[3]</th><th>$LANG25[8]</th></tr>";
+	print "<tr><th align=left>$LANG25[9]</th><th>{$LANG_ACCESS[access]}</th><th>$LANG25[20]</th><th>$LANG25[3]</th><th>$LANG25[8]</th></tr>";
 	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}pollquestions");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+                if ($access) {
+                        if ($access == 1) {
+                                $access = $LANG_ACCESS[ownerroot];
+                        } else {
+                                $access = $LANG_ACCESS[group];
+                        }
+                } else {
+                        $access = $LANG_ACCESS[readonly];
+                } 
 		if ($A[4] == 1) $A[4] = "Y";
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/poll.php?mode=edit&qid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td></tr>";
+		print "<td>$access</td><td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td></tr>";
 	}
 	print "</table>";
 	endblock();
@@ -136,7 +206,7 @@ switch($mode)
 		        for ($i=0; $i<sizeof($answer); $i++) {
                 		$voters = $voters + $votes[$i];
         		}
-		        savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$answer,$votes);
+		        savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$private_flag);
 		}
 		break;
 	case "edit":

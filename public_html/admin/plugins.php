@@ -27,6 +27,16 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+if (!ingroup('Root')) {
+	site_header('menu');
+        startblock($MESSAGE[30]);
+        print $MESSAGE[38];
+        endblock();
+        site_footer();
+        errorlog("User {$USER["username"]} tried to illegally access the poll administration screen",1);
+        exit;
+}
+
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see

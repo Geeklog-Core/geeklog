@@ -23,9 +23,19 @@
 #
 ###############################################################################
 
-include("../common.php");
-include("../custom_code.php");
-include("auth.inc.php");
+include('../common.php');
+include('../custom_code.php');
+include('auth.inc.php');
+
+if (!hasrights('story.edit')) {
+	site_header('menu');
+        startblock($MESSAGE[30]); 
+        print $MESSAGE[31];
+        endblock();
+        site_footer();
+	errorlog("User {$USER["username"]} tried to illegally access the story administration screen",1);
+        exit;
+}
 
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
@@ -38,10 +48,18 @@ include("auth.inc.php");
 # Displays the Story Editor
 
 function storyeditor($sid,$mode="") {
-	global $HTTP_POST_VARS,$USER,$CONF,$LANG24;
+	global $HTTP_POST_VARS,$USER,$CONF,$LANG24,$LANG_ACCESS;
 	if (!empty($sid) && $mode == "edit") {
 		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+		if ($access == 0) {
+			startblock($LANG24[40]);
+			print $LANG24[41];
+			endblock();
+			article($A,n);
+			return;
+		}
 	} elseif (!empty($sid) && $mode == "editsubmission") {
 		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}storysubmission WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
@@ -55,6 +73,9 @@ function storyeditor($sid,$mode="") {
 		$A["commentcode"] = 0;
 		$A["statuscode"] = 0;
 		$A["featured"] = 0;
+		$A["private_flag"] = 1;
+		$A["owner_id"] = $USER["uid"];
+		$access = 1;
 	} else {
 		$A = $HTTP_POST_VARS;
 		if ($A["postmode"] == "html") {
@@ -77,13 +98,42 @@ function storyeditor($sid,$mode="") {
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	print "<input type=submit value=preview name=mode> ";
 	print "<input type=submit value=cancel name=mode> ";
-	if (!empty($sid))
+	if (!empty($sid) && hasrights('story.delete'))
 		print "<input type=submit value=delete name=mode> ";
 	if ($A["type"] == "editsubmission" || $mode == "editsubmission") {
                 print "<input type=hidden name=type value=submission>";
         }
 	print "<tr></td>";
 	print "<tr><td align=right>{$LANG24[7]}:</td><td>" . getitem("users","username","uid = {$A["uid"]}") . "<input type=hidden name=uid value={$A["uid"]}></td></tr>";
+	#user access info
+	print "<tr><td colspan=2><hr><td></tr>";
+	print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+	print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
+	print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
+	print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
+	$usergroups = getusergroups();
+	if ($access == 1) {
+		print "<SELECT name=group_id>";
+		for ($i=0;$i<count($usergroups);$i++) {
+			print "<option value=" . $usergroups[key($usergroups)];
+			if ($A["group_id"] == $usergroups[key($usergroups)]) {
+				print " SELECTED";
+			}
+			print ">" . key($usergroups) . "</option>";
+			next($usergroups);
+		}
+		print "</SELECT>";
+	} else {
+		#they can't set the group then
+		print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+	}
+	print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
+	if ($A["private_flag"] == 0) {
+		print "CHECKED";
+	}
+	print "></td></tr>";
+	print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+	print "<tr><td colspan=2><hr><td></tr>";
 	print "<tr><td align=right>{$LANG24[15]}:</td><td>". strftime($CONF["date"],$A["unixdate"]) . "<input type=hidden name=unixdate value={$A["unixdate"]}></td></tr>";
 	print "<tr><td align=right>{$LANG24[13]}:</td><td><input type=text size=48 maxlength=255 name=title value=\"" . stripslashes($A["title"]) . "\"></td></tr>";
 	print "<tr><td align=right>{$LANG24[14]}:</td><td><select name=tid>";
@@ -102,6 +152,7 @@ function storyeditor($sid,$mode="") {
 	print "</select> <select name=frontpage>";
 	optionlist("frontpagecodes","code,name",1);
 	print "</select></td></tr>";
+
 	print "<tr><td valign=top align=right>{$LANG24[16]}:</td><td><textarea name=introtext cols=50 rows=6 wrap=virtual>" . stripslashes($A["introtext"]) . "</textarea></td></tr>";
 	print "<tr><td valign=top align=right>{$LANG24[17]}:</td><td><textarea name=bodytext cols=50 rows=8 wrap=virtual>" . stripslashes($A["bodytext"]) . "</textarea></td></tr>";
 	print "<tr valign=top><td align=right><b>{$LANG24[4]}:</b></td><td><select name=postmode>";
@@ -110,8 +161,8 @@ function storyeditor($sid,$mode="") {
 	allowedhtml();
 	print "</td></tr>\n";
 	print "<tr><td align=right>{$LANG24[18]}:</td><td><input type=hidden name=hits value={$A["hits"]}>{$A["hits"]}</td></tr>";
-	print "<tr><td align=right>{$LANG24[19]}:</td><td>{$A["comments"]}<input type=hidden name=comments value={$A["comments"]}>";
-	print "<tr><td align=right>{$LANG24[39]}:</td><td>{$A["numemails"]}<input type=hidden name=numemails value={$A["numemails"]}>";
+	print "<tr><td align=right>{$LANG24[19]}:</td><td>{$A["comments"]}<input type=hidden name=comments value={$A["comments"]}></td></tr>";
+	print "<tr><td align=right>{$LANG24[39]}:</td><td>{$A["numemails"]}<input type=hidden name=numemails value={$A["numemails"]}></td></tr>";
 	print "<input type=hidden name=sid value={$A["sid"]}></td></tr>";
 	print "</table>";
 	endblock();
@@ -122,21 +173,32 @@ function storyeditor($sid,$mode="") {
 # Displays a list of stories
 
 function liststories($page="1") {
-	global $LANG24,$CONF;
+	global $LANG24,$CONF,$LANG_ACCESS;
 	startblock($LANG24[22]);
 	adminedit("story",$LANG24[23]);
 	if (empty($page)) $page = 1;
 	$limit = (50 * $page) - 50;
-	$result = dbquery("SELECT sid,uid,tid,title,featured, draft_flag,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories ORDER BY date DESC LIMIT $limit,50");
+	$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories ORDER BY date DESC LIMIT $limit,50");
 	$nrows = mysql_num_rows($result);
 	if ($nrows > 0) {
 		print "<table cellpadding=0 cellspacing=3 border=0 width=100%>\n";
-		print "<tr><th align=left>#</th><th align=left>{$LANG24[13]}</th><th>{$LANG24[34]}</th><th>{$LANG24[7]}</th><th>{$LANG24[15]}</th><th>{$LANG24[14]}</th><th>{$LANG24[32]}</th></tr>";
+		print "<tr><th align=left>#</th><th align=left>{$LANG24[13]}</th><th>{$LANG_ACCESS[access]}</th><th>{$LANG24[34]}</th><th>{$LANG24[7]}</th><th>{$LANG24[15]}</th><th>{$LANG24[14]}</th><th>{$LANG24[32]}</th></tr>";
  		for ($i=1; $i<=$nrows; $i++) {
 			$scount = (50 * $page) - 50 + $i;
 			$A = mysql_fetch_array($result);
+			$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+			if ($access) {
+				if ($access == 1) {
+					$access = $LANG_ACCESS[ownerroot];
+				} else {
+					$access = $LANG_ACCESS[group];
+				}
+			} else {
+				$access = $LANG_ACCESS[readonly];
+			}
 			print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
 			print "<td align=left><a href={$CONF["site_url"]}/article.php?story={$A["sid"]}>" . stripslashes($A["title"]) . "</a></td>";
+			print "<td align=center>$access</td>";
 			if ($A["draft_flag"] == 1)
 				print "<td>{$LANG24[35]}</td>";
 			else
@@ -169,13 +231,20 @@ function liststories($page="1") {
 ###############################################################################
 # Saves a story to the database
 
-function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails) {
+function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$private_flag) {
 	global $CONF,$LANG24;
 	if (!empty($title) && !empty($introtext)) {
+		if (empty($hits)) $hits = 0;
+
 		if ($draft_flag == "on")
 			$draft_flag = 1;
 		else
 			$draft_flag = 0;
+
+		if ($private_flag == "on")
+			$private_flag = 0;
+		else
+			$private_flag = 1;
 
 		if ($featured == "1") {
 			#there can only be one non-draft featured story
@@ -248,7 +317,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 		$title = addslashes(htmlspecialchars(strip_tags(checkwords($title))));
 		$comments = dbcount("comments","sid",$sid);
 		if ($type = "submission") dbdelete("storysubmission","sid",$sid);
-		dbsave("stories","sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails","$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails","admin/story.php?msg=9");
+		dbsave("stories","sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,private_flag","$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$private_flag","admin/story.php?msg=9");
 	} else {
 		site_header("menu");
 		errorlog($LANG24[31],2);
@@ -284,7 +353,7 @@ switch ($mode) {
 		site_footer();
 		break;
 	case "save":
-		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails);
+		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$private_flag);
 		break;
 	case "cancel":
 	default:

@@ -114,11 +114,14 @@ function createuser($username,$email) {
 	$ecoutn = dbcount("users","email",$email);
 	if ($ucount == 0 && ecount == 0) {
 		if (isemail($email)) {
-			dbsave("users","username,seclev,email","'$username',0,'$email'");
-			dbquery("INSERT INTO userprefs (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
-			dbquery("INSERT INTO userindex (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
-			dbquery("INSERT INTO usercomment (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
-			dbquery("INSERT INTO userinfo (uid) SELECT uid FROM {$CONF["db_prefix"]}users WHERE username = '$username'");
+			dbsave("users","username,email","'$username','$email'");
+			$uid = getitem('users','uid',"username = '$username'");
+			$normal_grp = getitem('groups','grp_id',"grp_name='Normal User'");
+			dbquery("INSERT INTO group_assignments (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
+			dbquery("INSERT INTO userprefs (uid) VALUES ($uid)");
+			dbquery("INSERT INTO userindex (uid) VALUES ($uid)");
+			dbquery("INSERT INTO usercomment (uid) VALUES ($uid)");
+			dbquery("INSERT INTO userinfo (uid) VALUES ($uid)");
 			emailpassword($username, 1);
 		} else {
 			site_header("menu");
@@ -178,10 +181,8 @@ switch ($mode) {
 	case "logout":
 		if ($user_logged_in) {
                         end_user_session($userdata[uid], $db);
-                }
-		if ($USER["seclev"] >= $CONF["sec_lowest"]) {
 			accesslog("{$HTTP_COOKIE_VARS["gl_loginname"]} {$LANG04[29]} $REMOTE_ADDR.");
-		}
+                }
                 refresh("{$CONF["site_url"]}/index.php?msg=8");
                 break;
 	case "profile":

@@ -27,6 +27,15 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+if (!hasrights('topic.edit')) {
+        site_header("menu");
+        startblock($MESSAGE[30]);
+        print $MESSAGE[32];
+        endblock();
+        site_footer();
+        exit;
+}
+
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see
@@ -38,12 +47,27 @@ include("auth.inc.php");
 # Displays the topic editor
 
 function edittopic($tid="") {
-	global $LANG27,$CONF;
+	global $LANG27,$CONF,$USER,$LANG_ACCESS;
 	startblock($LANG27[1]);
 	if (!empty($tid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics where tid ='$tid'");
 		$A = mysql_fetch_array($result);
-	}	 
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+		if ($access == 0) {
+                        startblock($LANG27[12]);
+                        print $LANG27[13]; 
+                        endblock();
+                        return;
+                }
+	} else {
+		$A["owner_id"] = $USER["uid"];
+		#this is the one instance where we default the group
+		#most topics should belong to the normal user group 
+		# and the private flag should be turned OFF
+		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Normal User'");
+		$A["private_flag"] == 0;
+		$access = 1;
+	}
 	print "<form action={$CONF["site_url"]}/admin/topic.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
@@ -52,6 +76,37 @@ function edittopic($tid="") {
 		print "<input type=submit value=delete name=mode>";
 	print "<tr></td>";
 	print "<tr><td align=right>{$LANG27[2]}:</td><td><input type=text size=20 name=tid value=\"{$A["tid"]}\"> {$LANG27[5]}</td></tr>";
+
+	#user access info
+        print "<tr><td colspan=2><hr><td></tr>";
+        print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
+        print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
+        $usergroups = getusergroups();
+	if ($access == 1) {
+		print "<SELECT name=group_id>";
+        	for ($i=0;$i<count($usergroups);$i++) {
+                	print "<option value=" . $usergroups[key($usergroups)];
+                	if ($A["group_id"] == $usergroups[key($usergroups)]) {
+                        	print " SELECTED";
+                	}
+                	print ">" . key($usergroups) . "</option>";
+                	next($usergroups);
+        	}
+        	print "</SELECT>";
+	} else { 
+		#they can't set the group then
+                print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+	}
+        print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
+        if ($A["private_flag"] == 0) {
+                print "CHECKED";
+        }
+        print "></td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+        print "<tr><td colspan=2><hr><td></tr>";
+
 	// show sort order only if they specified sortnum as the sort method
 	if ($CONF["sortmethod"] <> 'alpha')
 		print "<tr><td align=right>{$LANG27[10]}:</td><td><input type=text size=3 maxlength=3 name=sortnum value=\"{$A["sortnum"]}\"></td></tr>";
@@ -67,13 +122,23 @@ function edittopic($tid="") {
 ###############################################################################
 # Saves $tid to the database
 
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews) {
+function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$private_flag) {
 	global $CONF,$LANG27;
+
 	if (!empty($tid) && !empty($topic)) {
-		if ($imageurl == "/images/topics/") { $imageurl = ""; }	
-		dbsave("topics","tid, topic, imageurl, sortnum, limitnews","'$tid', '$topic', '$imageurl','$sortnum','$limitnews'","admin/topic.php?msg=13");
+		if ($imageurl == '/images/topics/') { 
+			$imageurl = ''; 
+		}	
+
+		if ($private_flag == 'on') {
+                        $private_flag = 0;
+                } else {
+                        $private_flag = 1;
+		}
+
+		dbsave("topics","tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, private_flag","'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$private_flag","admin/topic.php?msg=13");
 	} else {
-		site_header("menu");
+		site_header('menu');
 		errorlog($LANG27[7],2);
 		edittopic($tid);
 		site_footer();
@@ -84,7 +149,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews) {
 # Displays a list of topics
 
 function listtopics() {
-	global $LANG27,$CONF;
+	global $LANG27,$CONF,$LANG_ACCESS;
 	startblock($LANG27[8]);
 	adminedit("topic",$LANG27[9]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
@@ -94,10 +159,20 @@ function listtopics() {
 	$counter = 1;
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+                if ($access) {
+                        if ($access == 1) {
+                                $access = $LANG_ACCESS[ownerroot];
+                        } else {
+                                $access = $LANG_ACCESS[group];
+                        }
+                } else {
+                        $access = $LANG_ACCESS[readonly];
+                }        
 		if (!empty($A["imageurl"])) {
-			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}><img src={$CONF["site_url"]}{$A["imageurl"]} border=0><br>{$A["topic"]}</a></td>";
+			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}><img src={$CONF["site_url"]}{$A["imageurl"]} border=0><br>{$A["topic"]}</a> ($access)</td>";
 		} else {
-			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}>{$A["topic"]}</a></td>";
+			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}>{$A["topic"]}</a> ($access)</td>";
 		}
 		if ($counter == 5) {
 			$counter = 1;
@@ -120,7 +195,7 @@ switch ($mode) {
 		dbdelete("topics","tid",$tid,"/admin/topic.php?msg=14");
 		break;
 	case "save":
-		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews);
+		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$private_flag);
 		break;
 	case "edit":
 		site_header("menu");
