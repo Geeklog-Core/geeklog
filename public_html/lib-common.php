@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.288 2004/02/20 11:15:13 dhaun Exp $
+// $Id: lib-common.php,v 1.289 2004/02/20 20:33:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -282,30 +282,23 @@ else if( !empty( $_USER['language'] ))
     }
 }
 
-// Handle Who's online hack if desired
-if( DB_getItem( $_TABLES['blocks'], 'is_enabled', "name = 'whosonline_block'" ) == 1 )
+// Handle Who's Online block
+if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
 {
-    if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
-    {
-        // The following code handles anonymous users so they show up properly
+    // The following code handles anonymous users so they show up properly
+    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1" );
 
-        DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1" );
+    // Build a useless sess_id (needed for insert to work properly)
+    mt_srand(( double )microtime() * 1000000 );
+    $sess_id = mt_rand();
+    $curtime = time();
 
-        // Build a useless sess_id (needed for insert to work properly)
-
-        mt_srand(( double )microtime() * 1000000 );
-        $sess_id = mt_rand();
-        $curtime = time();
-
-        // Insert anonymous user session
-
-        DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)" );
-    }
-
-    // Clear out any expired sessions
-
-    DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
+    // Insert anonymous user session
+    DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)" );
 }
+
+// Clear out any expired sessions
+DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . ( time() - $_CONF['whosonline_threshold'] ));
 
 /**
 *
@@ -337,19 +330,6 @@ $_RIGHTS = explode( ',', SEC_getUserPermissions() );
 */
 
 $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
-
-// +---------------------------------------------------------------------------+
-// | BLOCK LOADER: Load all definable HTML blocks in to memory                 |
-// +---------------------------------------------------------------------------+
-
-$result = DB_query( "SELECT title,content FROM {$_TABLES['blocks']} WHERE type = 'layout'" );
-$nrows = DB_numRows( $result );
-
-for( $i = 1; $i <= $nrows; $i++ )
-{
-    $A = DB_fetchArray( $result );
-    $BLOCK[$A['title']] = $A['content'];
-}
 
 // +---------------------------------------------------------------------------+
 // | STORY FUNCTIONS                                                           |
@@ -387,16 +367,16 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     $A['bodytext'] = str_replace( '}', '&#125;', $A['bodytext'] );
 
     $article = new Template( $_CONF['path_layout'] );
-    $article->set_file(array(
-        'article'=>$storytpl,
-        'bodytext'=>'storybodytext.thtml',
-        'featuredarticle'=>'featuredstorytext.thtml',
-        'featuredbodytext'=>'featuredstorybodytext.thtml'
-        ));
+    $article->set_file( array(
+            'article'          => $storytpl,
+            'bodytext'         => 'storybodytext.thtml',
+            'featuredarticle'  => 'featuredstorytext.thtml',
+            'featuredbodytext' => 'featuredstorybodytext.thtml'
+            ));
 
-    $article->set_var( 'layout_url',$_CONF['layout_url'] );
-    $article->set_var( 'site_url',$_CONF['site_url'] );
-    $article->set_var( 'story_date',$A['day'] );
+    $article->set_var( 'layout_url', $_CONF['layout_url'] );
+    $article->set_var( 'site_url', $_CONF['site_url'] );
+    $article->set_var( 'story_date', $A['day'] );
     $article->set_var( 'lang_views', $LANG01[106] );
     $article->set_var( 'story_hits', $A['hits'] );
     $article->set_var( 'story_id', $A['sid'] );
@@ -985,24 +965,24 @@ function COM_siteHeader( $what = 'menu' )
         {
             if( isset( $HTTP_GET_VARS['story'] ))
             {
-                $sid = $HTTP_GET_VARS['story'];
+                $sid = COM_applyFilter( $HTTP_GET_VARS['story'] );
             }
             elseif( isset( $HTTP_GET_VARS['sid'] ))
             {
-                $sid = $HTTP_GET_VARS['sid'];
+                $sid = COM_applyFilter( $HTTP_GET_VARS['sid'] );
             }
             elseif( isset( $HTTP_POST_VARS['story'] ))
             {
-                $sid = $HTTP_POST_VARS['story'];
+                $sid = COM_applyFilter( $HTTP_POST_VARS['story'] );
             }
-            if( isset( $sid ))
+            if( !empty( $sid ))
             {
                 $topic = DB_getItem( $_TABLES['stories'], 'tid', "sid='$sid'" );
             }
         }
         else
         {
-            $topic = $HTTP_GET_VARS['topic'];
+            $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
         }
         $header->set_var( 'geeklog_blocks', COM_showBlocks( 'left', $topic ));
         $header->parse( 'left_blocks', 'leftblocks', true );
@@ -1149,12 +1129,12 @@ function COM_siteFooter( $rightblock = false )
 
 function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' )
 {
-    global $BLOCK, $LANG01, $_CONF;
+    global $_CONF, $LANG01;
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
 
-    $block->set_var( 'site_url', $_CONF['site_url'] ); // not used but some custom theme may want it
+    $block->set_var( 'site_url', $_CONF['site_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
     $block->set_var( 'block_title', stripslashes( $title ));
 
@@ -1191,14 +1171,14 @@ function COM_startBlock( $title='', $helpfile='', $template='blockheader.thtml' 
 */
 function COM_endBlock( $template='blockfooter.thtml' )
 {
-    global $_CONF, $BLOCK;
+    global $_CONF;
 
     $block = new Template( $_CONF['path_layout'] );
     $block->set_file( 'block', $template );
 
     $block->set_var( 'site_url', $_CONF['site_url'] );
     $block->set_var( 'layout_url', $_CONF['layout_url'] );
-    $block->parse( 'endHTML','block' );
+    $block->parse( 'endHTML', 'block' );
 
     return $block->finish( $block->get_var( 'endHTML' ));
 }
@@ -1602,8 +1582,8 @@ function COM_pollVote( $qid )
     }
 
     $nquestion = DB_numRows( $question );
-    $fields = array( 'ipaddress','qid' );
-    $values = array( $REMOTE_ADDR,$qid );
+    $fields = array( 'ipaddress', 'qid' );
+    $values = array( $REMOTE_ADDR, $qid );
     $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
 
     if( empty( $HTTP_COOKIE_VARS[$qid] ) && $id == 0 )
