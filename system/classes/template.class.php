@@ -5,7 +5,7 @@
  * (C) Copyright 1999-2000 NetUSE GmbH
  *                    Kristian Koehntopp
  *
- * $Id: template.class.php,v 1.5 2002/11/27 17:44:18 dhaun Exp $
+ * $Id: template.class.php,v 1.6 2003/06/06 19:09:50 dhaun Exp $
  *
  */
 
@@ -196,6 +196,9 @@ class Template
   function set_root($root) {
     if ($this->debug & 4) {
       echo "<p><b>set_root:</b> root = $root</p>\n";
+    }
+    if (substr ($root, -1) == '/') {
+      $root = substr ($root, 0, -1);
     }
     if (!is_dir($root)) {
       $this->halt("set_root: $root is not a directory.");
