@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.14 2002/09/19 04:28:08 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.15 2002/09/19 21:28:42 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -256,7 +256,9 @@ class upload
                 'image/gif' 						=> '.gif',
                 'image/pjpeg'						=> '.jpg, .jpeg',
                 'image/jpeg'						=> '.jpg, .jpeg',
+                'image/png'						=> '.png',
                 'image/x-png'						=> '.png',
+                'image/png'						=> '.png',
                 'audio/mpeg'						=> '.mp3 etc',
                 'audio/wav'							=> '.wav',
                 'application/pdf'					=> '.pdf',

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.66 2002/09/19 04:38:48 tony_bibbs Exp $
+// $Id: story.php,v 1.67 2002/09/19 21:28:39 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -742,7 +742,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 }    
                 $upload->setAutomaticResize(true);
             }
-            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
+            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png','image/png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {
                 print 'File Upload Errors:<br>' . $upload->printErrors();
                 exit;
