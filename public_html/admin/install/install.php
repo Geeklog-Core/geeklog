@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.20 2002/03/07 23:02:02 tony_bibbs Exp $
+// $Id: install.php,v 1.21 2002/03/16 13:27:27 dhaun Exp $
 
 define(LB, "\n");
 
@@ -102,10 +102,11 @@ function INST_welcomePage()
 
     $retval = '';
 
-    $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">' . LB;
+    $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
     $retval .= '<html>' . LB;
     $retval .= '<head>' . LB;
     $retval .= '<title>Geeklog 1.3 Installation</title>' . LB;
+    $retval .= '</head>' . LB;
     $retval .= '<body bgcolor="#ffffff">' . LB;
     $retval .= '<h2>Geeklog Installation (Step 1 of 3)</h2>' . LB;
     $retval .= '<P>Welcome to Geeklog 1.3.4, the Ultimate Weblog!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3.4 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter either your Geeklog database, your filesystem or both. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.4.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manaully upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4.  Please note this script will not upgrade any beta versions of Geeklog. ';
@@ -132,7 +133,6 @@ function INST_welcomePage()
     $retval .= '<input type="hidden" name="page" value="1">' . LB;
     $retval .= '</form>' . LB;
     $retval .= '</center>' . LB;
-    $retval .= '<body>' . LB;
     $retval .= '</body>' . LB;
     $retval .= '</html>' . LB;
 

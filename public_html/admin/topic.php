@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.12 2002/03/01 16:50:18 tony_bibbs Exp $
+// $Id: topic.php,v 1.13 2002/03/16 13:27:27 dhaun Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -212,7 +212,7 @@ function listtopics() {
         $topic_templates->set_var('topic_name', $A['topic']);
         $topic_templates->set_var('topic_access', $access);
 		if (!empty($A["imageurl"])) {
-            $topic_templates->set_var('image_tag', '<img src="' . $_CONF['site_url'] . $A['imageurl'] . '" border="0"><br>');
+            $topic_templates->set_var('image_tag', '<img src="' . $_CONF['site_url'] . $A['imageurl'] . '" border="0" alt=""><br>');
 		} else {
             $topic_templates->set_var('image_tag', '');
 		}
