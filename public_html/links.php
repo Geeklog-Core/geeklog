@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.11 2001/12/13 22:14:11 tony_bibbs Exp $
+// $Id: links.php,v 1.12 2001/12/14 15:23:00 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -61,13 +61,13 @@ if ($nrows==0) {
                 $currentcategory = $A['category'];
             } else if ($A['category'] <> $currentcategory) {
                 $currentcategory = $A['category'];
-                $linklist->set_var('link_category',$currentcategory);
+                $linklist->set_var('link_category',stripslashes($currentcategory));
             }
             $linklist->set_var('link_url', $_CONF['site_url'] . '/portal.php?url=' . urlencode($A['url'])
                     . '&what=link&item=' . $A['lid']);
-            $linklist->set_var('link_name', $A['title']);
+            $linklist->set_var('link_name', stripslashes($A['title']));
             $linklist->set_var('link_hits', $A['hits']);
-            $linklist->set_var('link_description', $A['description']);
+            $linklist->set_var('link_description', stripslashes($A['description']));
             $linklist->parse('link_details', 'link', true);
         }
     }
