@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.11 2002/03/01 16:41:38 tony_bibbs Exp $
+// $Id: topic.php,v 1.12 2002/03/01 16:50:18 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -161,7 +161,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 		}	
 		//Convert array values to numeric permission values
                 list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_group","admin/topic.php?msg=13");
+		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG27[7],2);
