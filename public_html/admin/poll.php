@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.43 2005/02/05 18:48:39 dhaun Exp $
+// $Id: poll.php,v 1.44 2005/02/05 20:01:09 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -457,8 +457,8 @@ if ($mode == 'edit') {
         }
         $display .= savepoll ($qid, $_POST['mainpage'], $_POST['question'],
                         $voters, COM_applyFilter ($_POST['statuscode'], true),
-                        $_POST['commentcode'] $_POST['answer'], $_POST['votes'],
-                        $_POST['owner_id'], $_POST['group_id'],
+                        $_POST['commentcode'], $_POST['answer'],
+                        $_POST['votes'], $_POST['owner_id'], $_POST['group_id'],
                         $_POST['perm_owner'], $_POST['perm_group'],
                         $_POST['perm_members'], $_POST['perm_anon']);
     } else {
