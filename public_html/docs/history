@@ -3,6 +3,13 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Fixed a bug that prevented certain right blocks from showing up when there
+  where no stories for a topic.
+- When a new user registeres, we need to check for a valid email address
+  first (before searching the database to see if that address is already in use)
+- You are now taken back to the moderation page after editing a story submission
+- Fixed 'previous' link on the Admin's list of stories. Alternatively, you can
+  now use {google_paging} there (requires a change in the template).
 - Added -Q option to the mysqldump call when doing a database backup. This will
   enclose database names in quotes and thus prevent problems with special
   characters in table names as used by some plugins (bug #712901).

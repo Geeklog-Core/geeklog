@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.213 2003/03/29 17:30:02 dhaun Exp $
+// $Id: lib-common.php,v 1.214 2003/04/13 17:16:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2125,6 +2125,13 @@ function COM_adminMenu( $help = '', $title = '' )
             if( SEC_hasrights( 'story.edit' ))
             {
                 $num += DB_count( $_TABLES['storysubmission'] );
+
+                if( $_CONF['listdraftstories'] == 1 )
+                {
+                    $result = DB_query( "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getPermSQL( 'AND', 0, 3 ));
+                    $A = DB_fetchArray( $result );
+                    $num += $A['count'];
+                }
             }
 
             if( SEC_hasrights( 'event.edit' ))

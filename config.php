@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.78 2003/03/28 18:19:56 dhaun Exp $
+// $Id: config.php,v 1.79 2003/04/13 17:16:09 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -237,6 +237,10 @@ $_CONF['storysubmission'] = 1;
 $_CONF['linksubmission']  = 1;
 $_CONF['eventsubmission'] = 1;
 $_CONF['usersubmission']  = 0;
+
+// When set to 1, this will display an additional block on the submissions page
+// that lists all stories that have the 'draft' flag set.
+$_CONF['listdraftstories'] = 0;
 
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'link', 'event', and 'user'.

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.34 2003/04/10 17:23:07 dhaun Exp $
+// $Id: moderation.php,v 1.35 2003/04/13 17:16:09 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -139,6 +139,10 @@ function commandcontrol()
 		
     if (SEC_hasRights('story.moderate')) {
         $retval .= itemlist('story');
+
+        if ($_CONF['listdraftstories'] == 1) {
+            $retval .= draftlist ();
+        }
     }
     if (SEC_hasRights('link.moderate')) {
         $retval .= itemlist('link');
@@ -284,7 +288,8 @@ function itemlist($type)
 * password is sent out immediately.
 *
 */
-function userlist () {
+function userlist ()
+{
     global $_TABLES, $_CONF, $LANG29;
 
     $retval .= COM_startBlock ($LANG29[40]);
@@ -330,12 +335,108 @@ function userlist () {
 }
 
 /**
+* Displays a list of all the stories that have the 'draft' flag set.
+*
+* When enabled, this will list all the stories that have been marked as
+* 'draft'. Approving a story from this list will clear the draft flag and
+* thus publish the story.
+*
+*/
+function draftlist ()
+{
+    global $_TABLES, $_CONF, $LANG24, $LANG29;
+
+    $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')');
+    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
+    $nrows = DB_numRows($result);
+    if ($nrows > 0) {
+        $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
+        $mod_templates->set_file(array('itemlist'=>'itemlist.thtml',
+                                       'itemrows'=>'itemlistrows.thtml'));
+        $mod_templates->set_var('form_action', $_CONF['site_admin_url'] . '/moderation.php');
+        $mod_templates->set_var('item_type', 'draft');
+        $mod_templates->set_var('num_rows', $nrows);
+        $mod_templates->set_var('heading_col1', $LANG29[10]);
+        $mod_templates->set_var('heading_col2', $LANG29[14]);
+        $mod_templates->set_var('heading_col3', $LANG29[15]);
+        $mod_templates->set_var('lang_approve', $LANG29[2]);
+        $mod_templates->set_var('lang_delete', $LANG29[1]);
+ 
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $mod_templates->set_var('edit_submission_url',
+                    $_CONF['site_admin_url'] . '/story.php?mode=edit&amp;sid='
+                    . $A['id']);
+            $mod_templates->set_var('lang_edit', $LANG29[3]);
+            $mod_templates->set_var('data_col1', stripslashes($A['title']));
+            $mod_templates->set_var('data_col2', strftime ("%c", $A[day]));
+            $mod_templates->set_var('data_col3', stripslashes($A['tid']));
+            $mod_templates->set_var('cur_row', $i);
+            $mod_templates->set_var('item_id', $A['id']);
+            $mod_templates->parse('list_of_items','itemrows',true);
+        }
+        $mod_templates->set_var('lang_submit', $LANG29[38]);
+        $mod_templates->parse('output','itemlist');
+        $retval .= $mod_templates->finish($mod_templates->get_var('output'));
+    } else {
+        if ($nrows <> -1) {
+            $retval .= $LANG29[39];
+        }
+    }
+    $retval .= COM_endBlock ();
+
+    return $retval;
+}
+
+/**
+* Delete a story.
+*
+* This is used to delete a story from the list of stories with the 'draft' flag
+* set (see function draftlist() above).
+* Note: This code has been lifted from admin/story.php and should be kept in
+*       sync with the code there.
+*
+* @sid      string      ID of the story to delete
+*
+*/
+function deletestory ($sid)
+{
+    global $_TABLES, $_CONF;
+
+    $result = DB_query ("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
+    $nrows = DB_numRows ($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $filename = $_CONF['path_html'] . 'images/articles/' . $A['ai_filename'];
+        if (!unlink ($filename)) {
+            echo COM_errorLog ('Unable to remove the following image from the article: ' . $filename);
+            exit;
+        }
+
+        // remove unscaled image, if it exists
+        $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                strrpos ($A['ai_filename'], '.'), 1);
+        $lFilename_large_complete = $_CONF['path_html'] . 'images/articles/'
+                                  . $lFilename_large;
+        if (file_exists ($lFilename_large_complete)) {
+            if (!unlink ($lFilename_large_complete)) {
+                echo COM_errorLog ('Unable to remove the following image from the article: ' . $lFilename_large_complete);
+                exit;
+            }
+        }
+    }
+    DB_delete ($_TABLES['article_images'], 'ai_sid', $sid);
+    DB_delete ($_TABLES['comments'], 'sid', $sid);
+    DB_delete ($_TABLES['stories'], 'sid', $sid);
+}
+
+/**
 * Moderates an item
 *
 * This will actually perform moderation (approve or delete) one or more items
 *
 * @mid          array       Array of items
-* @action       array?      Array of actions to perform on items
+* @action       array       Array of actions to perform on items
 * @count        int         Number of items to moderate
 *
 */
@@ -376,15 +477,20 @@ function moderation($mid,$action,$type,$count)
     for ($i = 1; $i <= $count; $i++) {
         switch ($action[$i]) {
         case 'delete':
-            if ((strlen($type) > 0) && ($type <> 'story')) {
-                //There may be some plugin specific processing that needs to happen first.
+            if ((strlen($type) > 0) && ($type <> 'story') && ($type <> 'draft')) {
+                // There may be some plugin specific processing that needs to
+                // happen first.
                 $retval .= PLG_deleteSubmission($type, $mid[$i]);
             }
             if (empty($mid[$i])) {
                 $retval .= COM_errorLog("moderation.php just tried deleting everything in table $submissiontable because it got an empty id.  Please report this immediately to your site administrator");
                 return $retval;
             }
-            DB_delete($submissiontable,"$id",$mid[$i]);
+            if ($type == 'draft') {
+                deletestory ($mid[$i]);
+            } else {
+                DB_delete($submissiontable,"$id",$mid[$i]);
+            }
             break;
         case 'approve':
             if ($type == 'story') {
@@ -399,6 +505,8 @@ function moderation($mid,$action,$type,$count)
                 DB_save ($_TABLES['stories'],'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',
                 "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['related']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES["storysubmission"],"$id",$mid[$i]);
+            } else if ($type == 'draft') {
+                DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = {$mid[$i]}");
             } else {
                 // This is called in case this is a plugin. There may be some
                 // plugin specific processing that needs to happen.
@@ -423,7 +531,8 @@ function moderation($mid,$action,$type,$count)
 * Note: The code for sending the password is coped&pasted from users.php
 *
 */
-function moderateusers ($uid, $action, $count) {
+function moderateusers ($uid, $action, $count)
+{
     global $_TABLES, $_CONF, $LANG_CHARSET, $LANG04;
 
     for ($i = 1; $i <= $count; $i++) {
@@ -478,6 +587,7 @@ function moderateusers ($uid, $action, $count) {
 
     return $retval;
 }
+
 
 // MAIN
 
