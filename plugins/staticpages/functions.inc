@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.23 2003/06/26 18:36:44 dhaun Exp $
+// $Id: functions.inc,v 1.24 2003/06/27 13:44:49 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -360,10 +360,11 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
         return $retval; // we only support page 1 at the moment ...
     }
 
+    $moresql = "(sp_where = $where) AND ";
     if (empty ($topic)) {
-        $moresql = "(sp_where = $where) AND (sp_tid = 'none')";
+        $moresql .= "((sp_tid = 'none') OR (sp_tid = 'all'))";
     } else {
-        $moresql = "(sp_where = $where) AND (sp_tid = '{$topic}')";
+        $moresql .= "((sp_tid = '{$topic}') OR (sp_tid = 'all'))";
     }
 
     if ($_SP_CONF['sort_by'] == 'date') {

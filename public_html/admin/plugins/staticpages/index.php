@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2003/06/27 08:51:26 dhaun Exp $
+// $Id: index.php,v 1.24 2003/06/27 13:44:49 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -149,13 +149,18 @@ function form ($A, $error = false)
             $current_topic = 'none';
         }
         $topics = COM_topicList ('tid,topic', $current_topic);
+        $alltopics = '<option value="all"';
+        if ($current_topic == 'all') {
+            $alltopics .= ' selected="selected"';
+        }
+        $alltopics .= '>' . $LANG_STATIC['all_topics'] . '</option>' . LB;
         $notopic = '<option value="none"';
         if ($current_topic == 'none') {
             $notopic .= ' selected="selected"';
         }
         $notopic .= '>' . $LANG_STATIC['no_topic'] . '</option>' . LB;
         $sp_template->set_var ('topic_selection', '<select name="sp_tid">'
-                               . $topics . $notopic . '</select>');
+                               . $alltopics . $notopic . $topics . '</select>');
         $position = '<select name="sp_where">';
         $position .= '<option value="1"';
         if ($A['sp_where'] == 1) {
