@@ -138,7 +138,7 @@ in the URL.</p>
 		<ol>
 			<li>Unpack the tarball *within* your web tree by running the following in your shell (this assumes you have ssh access and that you are working with the tarball <i>on the designated server </i>- this can be locally or hosted elsewhere):<br>
 				<br>
-				<code>tar -zxvf geeklog-1.3.6.tar.gz</code><br>
+				<code>tar -zxvf geeklog-1.3.7sr1.tar.gz</code><br>
 				<br>
 				<b>FTP, Windows Users:</b> unpack the tarball on your <i>local computer</i> and upload the result to your designated server. Everything uploads as ASCII except the images.<br>
 				<br>
@@ -283,7 +283,7 @@ Please read the comments in config.php carefully.<br>
 				<br>
 				If you are upgrading from 1.2.5-1 or a more recent version, the second step of the installation script should have an option to convert your database to the current version.<br>
 				<br>
-        Please note that there were no database changes between versions 1.3.5, 1.3.5sr1, and 1.3.5sr2, so when upgrading from any of those versions, simply select "1.3.5" as your current version.<br>
+        Please note that there were no database changes between versions 1.3.5, 1.3.5sr1, and 1.3.5sr2. So when upgrading from any of those versions, simply select "1.3.5" as your current version. Also, there were no database changes between versions 1.3.7 and 1.3.7sr1, so you don't need to run the install script at all when upgrading from 1.3.7 to 1.3.7sr1.<br>
 				<br>
 			<li>The rest of the upgrade process is identical to the install process. Once you successfully run the install script, you should be ready to go after restoring any files with custom code.
 		</ol>
@@ -330,6 +330,8 @@ Please read the comments in config.php carefully.<br>
 						<p>and</p>
 						<p><code>INDEX stories_tid(tid),</code></p>
 						<p>Make sure you remove the entire line, including the comma. Once those lines are removed, you need to drop all the tables that were created by the installation script and re-run the installation script.</p>
+
+<p><strong>Note:</strong> In December 2002, several <a href="http://security.e-matters.de/advisories/042002.html">security issues</a> have been found in MySQL. To fix these, MySQL AB has released <a href="http://www.mysql.com/documentation/mysql/bychapter/manual_News.html#News-3.23.54">MySQL version 3.23.54</a>. It may be a good idea to upgrade your MySQL installation (or ask your hosting service to do so).</p>
 					</td>
 				</tr>
 			</table>
@@ -375,7 +377,7 @@ Please read the comments in config.php carefully.<br>
 					<td bgcolor="#ffedf2">
 						<p><b>I've set up my site successfully, but get the following error message on the top:</b></p>
 <p><code>
-Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1318
+Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1440
 </code></p>
 					</td>
 				</tr>
@@ -415,7 +417,7 @@ Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/pa
 						<div align="left">
 							<p>If you still have problems, please do one or more of the following:</p>
 							<p>1) Go to <a href="http://www.geeklog.net">http://www.geeklog.net</a> and check out the Support section. The Support section includes a <a href="http://www.geeklog.net/staticpages/index.php?page=20011218115325696">FAQ</a> and a <a href="http://www.geeklog.net/search.php">search system</a> (try searching for the error message, if you get one).</p>
-							<p>2) Visit the mailing list archives at <a href="http://lists.geeklog.net/listinfo/geeklog-users">http://lists.geeklog.net/listinfo/geeklog-users</a>. You can also <a href="http://lists.geeklog.net/listinfo/geeklog-users">subscribe to the mailing list</a> and post your question to the Geeklog community</p>
+							<p>2) Visit the mailing list archives at <a href="http://lists.geeklog.net/pipermail/geeklog-users/">http://lists.geeklog.net/pipermail/geeklog-users/</a>. You can also <a href="http://lists.geeklog.net/listinfo/geeklog-users">subscribe to the mailing list</a> and post your question to the Geeklog community.</p>
 							<p>3) Try the chat room at <b>irc.freenode.net, channel #geeklog</b>. Please have all your path information in config.php and lib-common.php readily available.</p>
 							<p>4) Try entering the text of the error message on Google. Chances are you will find someone else who had the same problem and fixed it.  And sometimes searching for a specific error will cause Google to bring up broken pages that have the same error.</p>
 						</div>

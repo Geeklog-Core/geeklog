@@ -19,9 +19,37 @@
 
 <p>This document is intended to give a quick overview over the most import
 and / or obvious changes. For a detailed list of changes, please consult the
-<a href="history">ChangeLog</a>.</p>
+<a href="history">ChangeLog</a>. The file <tt>docs/changed-files</tt> has a list
+of files that have been changed since the last release.</p>
 
-<h2>Geeklog 1.3.7</h2>
+<h2>Geeklog 1.3.7sr1</h2>
+
+<h3>Security issues</h3>
+
+<p>The main purpose of this release is to fix the following security issues.
+All users are strongly recommended to upgrade to this version.</p>
+<ol>
+<li>Javascript code could be injected in the homepage field of a user's profile (reported by Jin Yean Tan).</li>
+<li>Javascript code could be injected in certain URLs to be used in a cross-site scripting attack (reported by Jin Yean Tan).</li>
+<li>Comments could be deleted by anybody if they knew the comment id (which is not normally visible).</li>
+<li>A StoryAdmin could manipulate stories even if s/he did not have access to them (e.g. when s/he was not a member of a certain group). The same applied to Admins for events, links, polls, topics, and blocks (reported by Kobaz).</li>
+</ol>
+
+<h3>Other Bugfixes</h3>
+
+<ul>
+<li>Fixed possible causes for endless loops with the redirect in index.php: No redirect will be done if $HTTP_SERVER_VARS['HTTP_HOST'] is not set. Also, the comparison of the configured and actual server name is not case-sensitive any more.</li>
+<li>Fixed image resizing when using ImageMagick.</li>
+<li>The new user notification email (introduced in Geeklog 1.3.7) was always
+ sent out, even if 'user' was not listed in $_CONF['notification'].
+<li>The Admin menu will now be displayed for users who have Admin access to plugins only, but not to one of the core Admin features.</li>
+<li>The default for the daily digest is now back to "off", i.e. new users will not receive it automatically. To enable the daily digest for new users again, set $_CONF['emailstoriesperdefault'] = 1 in config.php.</li>
+</ul>
+
+<p>Documentation and hard-coded links (version check, link to Geeklog in a site's footer) have been updated to point to <a href="http://www.geeklog.net/">www.geeklog.net</a>.</p>
+
+
+<h2><a name="changes137">Geeklog 1.3.7</a></h2>
 
 <h3>New Features</h3>
 
@@ -95,7 +123,7 @@ a fresh install of Geeklog 1.3.7. A database created during a fresh install
 already has the new index fields.</p>
 
 
-<h2>Geeklog 1.3.6</h2>
+<h2><a name="changes136">Geeklog 1.3.6</a></h2>
 
 <h3>New Features</h3>
 
