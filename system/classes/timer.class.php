@@ -94,6 +94,10 @@ class timerobject {
         $mtime = $mtime[1] + $mtime[0];
         $this->_endtime = $mtime;
         $this->_setElapsedTime();
+
+        // We are going to assume that when the timer is stopped
+        // they will want the elapsed time immediately
+        return $this->getElapsedTime();
     }
 
     /** 
