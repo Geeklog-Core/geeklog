@@ -1,29 +1,31 @@
 <?php
 
-function commentsToPreorderTreeHelper($commentid, $left, $indent)
+function commentsToPreorderTreeHelper(&$tP, $left, $indent = 0)
 {
     global $_TABLES;
+
+    // start with the right terminal value = left terminal value + 1
     $right = $left + 1;
     
-    //get all children of the comment
-    $q = "SELECT cid FROM {$_TABLES['comments']} WHERE pid = $commentid";
-    $result = DB_query($q);
-    
-    //foreach child run the recursive function
-    while ( $A = DB_fetchArray($result) )
+    //foreach child (if any) run the recursive function
+    if ( isset( $tP['children'] ))
     {
-        //DEBUG: print("calling recurisive({$A['cid']}, $right)\n");
-        $right = commentsToPreorderTreeHelper($A['cid'], $right, $indent + 1);
-        $right++;   
+	    while( list( $k, $A ) = each( $tP['children'] ) )
+    	{
+        	//DEBUG: print("calling recurisive($k, $right)\n");
+        	$right = commentsToPreorderTreeHelper($A, $right, $indent + 1);
+        	$right++;   
+    	}
     }
     
     //Update the comment, set lft = $left and rht = return value + 1
     $q = "UPDATE {$_TABLES['comments']} SET lft = $left, rht = $right, "
-       . "indent = $indent WHERE cid = $commentid";
+       . "indent = $indent WHERE cid = " . $tP['cid'];
     DB_query($q);
-    //DEBUG: print "$q\n";
     
-    //return rht
+    //DEBUG: print $q."<br>";
+    
+    //return right
     return $right;
 }
 
@@ -31,32 +33,58 @@ function commentsToPreorderTree()
 {
     global $_TABLES;
     
-    //Get all the unique sid's from the database
+    // Get all the unique sid's from the database
     $q = "SELECT sid FROM {$_TABLES['comments']} group by sid";
     $result = DB_query($q);
 
-    //Foreach sid, get all the top level comments
-    // begin with $left = 1
+    // Loop through every sid supplementing comments with new rows
+    //   'lft', 'rht', and 'indent'
     while ( $A = DB_fetchArray($result) )
     {
-        // initialize left terminal value
+        // build a tree
+    	$aP = array();
+    	$tP = array();
+    	
+        // grab comments associated with the current 'sid'
+        $qC = "SELECT cid,pid FROM {$_TABLES['comments']} "
+           	. "WHERE sid = '{$A['sid']}' ORDER BY cid ASC";
+        $rC = DB_query( $qC ); 
+        
+        // put the comments in a usefull array
+        while ( $dC = DB_fetchArray( $rC ) )
+        {
+        	if ( $dC['pid'] == 0 )
+        	{
+        		// Root comment
+        		$tP[$dC['cid']] = $dC;
+        		$aP[$dC['cid']] =& $tP[$dC['cid']];
+        	}
+        	else
+        	{
+        		// Child comment
+        		$aP[$dC['pid']]['children'][$dC['cid']] = $dC;
+       			$aP[$dC['cid']] =& $aP[$dC['pid']]['children'][$dC['cid']];	
+       		}
+        }
+        
+        unset ($aP);
+        
+        // initialize left terminal value, this starts with 1 for every
+        //   set of comments associated with a 'sid'
         $left = 1;
         
-        // get top level comments
-        $q = "SELECT cid FROM {$_TABLES['comments']} "
-           . "WHERE sid = '{$A['sid']}' AND pid = 0";
-        $res2 = DB_query($q); 
-        
-        //Foreach toplevel comment run the recursive funtion
-        while ( $B = DB_fetchArray($res2) ) 
+        // Foreach toplevel comment run the recursive funtion
+        while( list( $k, $B ) = each( $tP ) )
         {
-            //DEBUG: print("calling recurisive({$B['cid']}, $left)\n");
-            $left = commentsToPreorderTreeHelper($B['cid'], $left, 0);
+        	//DEBUG: print("calling recurisive({$B['cid']}, $left)\n");
+            $left = commentsToPreorderTreeHelper($B, $left);
             $left++;   
         }
         
-        //Print results to error log
-        $left = ($left-1)/2;
+        /* Print results to error log for DEBUGing
+         * $left = ($left-1)/2;
+         * COM_errorLog("$left comments in story {$A['sid']} converted");
+         */
     }
 }
 
