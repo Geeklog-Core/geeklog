@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.4 2002/01/04 17:02:48 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.5 2002/01/09 17:36:18 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -53,7 +53,7 @@ $_USER = SESS_sessionCheck();
 */
 function SESS_sessionCheck()
 {
-    global $_USER, $_SESS_VERBOSE, $_CONF, $HTTP_COOKIE_VARS, $REMOTE_ADDR;
+    global $_USER, $_SESS_VERBOSE, $_CONF, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $_TABLES;
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Inside SESS_sessionCheck***",1);
@@ -107,14 +107,20 @@ function SESS_sessionCheck()
             }
 
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            if ($userid) {
-                $user_logged_in = 1;
+            $cookie_password = $HTTP_COOKIE_VARS['password'];
+            $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
+            if ($cookie_password <> $userpass) {
+                // User could have modified UID in cookie, don't do shit
+            } else {
+                if ($userid) {
+                    $user_logged_in = 1;
 
-                // Create new session and write cookie
-                $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-                SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-                $userdata = SESS_getUserDataFromId($userid);
-                $_USER = $userdata;
+                    // Create new session and write cookie
+                    $sessid = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                    $userdata = SESS_getUserDataFromId($userid);
+                    $_USER = $userdata;
+                }
             }
         }
     }
