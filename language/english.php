@@ -647,7 +647,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Event Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Event Title',
     4 => 'Event URL',
     5 => 'Event Start Date',
@@ -655,7 +655,7 @@ $LANG22 = array(
     7 => 'Event Location',
     8 => 'Event Description',
     9 => '(include http://)',
-    10 => 'You must provide the dates/times, description and event location!',
+    10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that event below.  To create a new event click on new event above. Click on [C] to create a copy of an existing event.',
     13 => 'Event Title',
@@ -667,7 +667,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'save',
     21 => 'cancel',
-    22 => 'delete'
+    22 => 'delete',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
