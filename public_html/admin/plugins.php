@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.37 2004/07/17 08:12:12 dhaun Exp $
+// $Id: plugins.php,v 1.38 2004/07/17 17:16:33 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -252,7 +252,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 
         DB_save ($_TABLES['plugins'], 'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage', "'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'");
 
-        $retval = $_CONF['site_admin_url'] . '/plugins.php?msg=28';
+        $retval = COM_refresh($_CONF['site_admin_url'] . '/plugins.php?msg=28');
     } else {
         $retval .= COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG32[13], '',
