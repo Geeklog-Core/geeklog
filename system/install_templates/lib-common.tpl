@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.40 2002/03/31 14:26:10 dhaun Exp $
+// $Id: lib-common.tpl,v 1.41 2002/03/31 20:33:32 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2115,19 +2115,19 @@ function COM_emailUserTopics()
         for ($y=0; $y<$nsrows; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
-            // fputs($file, "introtext = {$S['introtext']}\n, bodytext = {$S['bodytext']}\n");
             $mailtext .= "\n------------------------------\n\n";
-            $mailtext .= "Title: {$S['title']}\n";
-            $mailtext .= "Date: " . strftime($_CONF['date'],strtotime($S['day'])) . "\n\n";
+            $mailtext .= "$LANG08[31]: {$S['title']}\n";
+            $mailtext .= "$LANG08[32]: " . strftime($_CONF['date'],strtotime($S['day'])) . "\n\n";
             $mailtext .= nl2br(stripslashes(strip_tags($S['introtext']))) . "\n\n";
-            $mailtext .= "Read the full article at {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
+            $mailtext .= "$LANG08[33] {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
         }
         $mailtext .= "\n------------------------------\n";
-        $mailtext .= "\nEnd of Message\n";
+        $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
         $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
+        $subject = strip_tags(stripslashes($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d',time())));
         @mail($toemail,$subject,$mailtext,$mailfrom);
     }
     $tmpdate = date("Y-m-d H:i:s",time());
