@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | usersettings.php                                                          |
-// | Geeklog user settings page.                                               |
 // |                                                                           |
+// | Geeklog user settings page.                                               |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.82 2004/01/21 19:58:00 dhaun Exp $
+// $Id: usersettings.php,v 1.83 2004/01/23 09:42:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -169,7 +169,7 @@ function edituser()
         $preferences->set_var ('delete_text', $LANG04[95]);
         $preferences->set_var ('lang_button_delete', $LANG04[96]);
         $preferences->set_var ('delete_mode', 'confirmdelete');
-        $preferences->set_var ('account_id', $_USER['uid']);
+        $preferences->set_var ('account_id', $reqid);
         $preferences->parse ('delete_account_option', 'deleteaccount', false);
     } else {
         $preferences->set_var ('delete_account_option', '');
@@ -191,18 +191,22 @@ function edituser()
 /**
 * Ask user for confirmation to delete his/her account.
 *
-* @param    int      account_id   uid of account to delete (must match current user's uid)
+* @param    int      form_reqid   request id
 * @return   string   confirmation form
 *
 */
-function confirmAccountDelete ($account_id)
+function confirmAccountDelete ($form_reqid)
 {
-    global $_CONF, $_USER, $LANG04;
+    global $_CONF, $_TABLES, $_USER, $LANG04;
 
-    if ($account_id != $_USER['uid']) {
-        // now that doesn't look right - abort ...
+    if (DB_count ($_TABLES['users'], array ('pwrequestid', 'uid'), array ($form_reqid, $_USER['uid'])) != 1) {
+        // not found - abort
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
+
+    $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
+    DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
+                                  'uid', $_USER['uid']);
 
     $retval = '';
 
@@ -217,7 +221,7 @@ function confirmAccountDelete ($account_id)
     $confirm->set_var ('delete_text', $LANG04[95]);
     $confirm->set_var ('lang_button_delete', $LANG04[96]);
     $confirm->set_var ('delete_mode', 'deleteconfirmed');
-    $confirm->set_var ('account_id', $_USER['uid']);
+    $confirm->set_var ('account_id', $reqid);
 
     $retval .= COM_siteHeader ('menu');
     $retval .= COM_startBlock ($LANG04[97], '',
@@ -233,18 +237,20 @@ function confirmAccountDelete ($account_id)
 /**
 * Delete an account (keep in sync with delete_user() in admin/user.php).
 *
-* @param    uid      int   uid of account to delete
+* @param    form_reqid   string   request id
 * @return   string   redirection to main page (+ success msg)
 *
 */
-function deleteUserAccount ($uid)
+function deleteUserAccount ($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if ($uid != $_USER['uid']) {
-        // now that doesn't look right - abort ...
+    if (DB_count ($_TABLES['users'], array ('pwrequestid', 'uid'), array ($form_reqid, $_USER['uid'])) != 1) {
+        // not found - abort
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
+
+    $uid = $_USER['uid'];
 
     // log the user out
     SESS_endUserSession ($_USER['uid']);
@@ -271,6 +277,9 @@ function deleteUserAccount ($uid)
     // avoid having orphand stories/comments by making them anonymous posts
     DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
     DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
+
+    // delete personal events
+    DB_delete ($_TABLES['personal_events'], 'uid', $uid);
 
     // now delete the user itself
     DB_delete ($_TABLES['users'], 'uid', $uid);
@@ -978,17 +987,25 @@ if (!empty($_USER['username']) && !empty($mode)) {
                                  . '/usersettings.php?mode=preferences&msg=6');
         break;
     case 'confirmdelete':
-        $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id'], true);
-        if ($accountId > 1) {
-            $display .= confirmAccountDelete ($accountId);
+        if ($_CONF['allow_account_delete'] == 1) {
+            $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
+            if (!empty ($accountId)) {
+                $display .= confirmAccountDelete ($accountId);
+            } else {
+                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
         } else {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
         break;
     case 'deleteconfirmed':
-        $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id'], true);
-        if ($accountId > 1) {
-            $display .= deleteUserAccount ($accountId);
+        if ($_CONF['allow_account_delete'] == 1) {
+            $accountId = COM_applyFilter ($HTTP_POST_VARS['account_id']);
+            if (!empty ($accountId)) {
+                $display .= deleteUserAccount ($accountId);
+            } else {
+                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
         } else {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         }
