@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.310 2004/04/05 19:22:03 vinny Exp $
+// $Id: lib-common.php,v 1.311 2004/04/09 08:36:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-require_once( '/home/vmf/cvs/geeklog-1.3/config.php' );
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -377,8 +377,8 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     // If plain text then replace newlines with <br> tags
     if( $A['postmode'] == 'plaintext' )
     {
-        $A['introtext'] = nl2br( $A['introtext'] );
-        $A['bodytext'] = nl2br( $A['bodytext'] );
+        $A['introtext'] = nl2br( COM_makeClickableLinks( $A['introtext'] ));
+        $A['bodytext'] = nl2br( COM_makeClickableLinks( $A['bodytext'] ));
     }
 
     $A['introtext'] = str_replace( '{', '&#123;', $A['introtext'] );
@@ -2812,7 +2812,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A['comment'] = stripslashes( $A['comment'] );
         if( preg_match( '/<.*>/', $A['comment'] ) == 0 )
         {
-            $A['comment'] = nl2br( $A['comment'] );
+            $A['comment'] = nl2br( COM_makeClickableLinks( $A['comment'] ));
         }
     
         // highlight search terms if specified
@@ -5349,6 +5349,25 @@ function COM_applyFilter( $parameter, $isnumeric = false )
     }
 
     return $p;
+}
+
+/**
+* Detect links in a plain-ascii texts and turn them into clickable links.
+* Will detect links starting with "http:", "https:", "ftp:", and "www".
+*
+* Derived from a newgroup posting by Andreas Schwarz in
+* news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
+*
+* @param    string    $text     the (plain-ascii) text string
+* @return   string    the same string, with links enclosed in <a>...</a> tags
+*
+*/
+function COM_makeClickableLinks( $text )
+{
+    $text = preg_replace( '/((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is', '<a href="\\1">\\1</a>', $text );
+    $text = str_replace( '<a href="www', '<a href="http://www', $text );
+
+    return $text;
 }
 
 
