@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.12 2001/12/13 17:39:20 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.13 2001/12/14 15:01:53 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1052,6 +1052,7 @@ function COM_userMenu($title='')
         $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=comments');
         $adminmenu->set_var('option_label', $LANG01[63]);
         $adminmenu->set_var('option_count', '');
+        $retval .= $adminmenu->parse('item', 'option');
 
         $adminmenu->set_var('option_url', $_CONF['site_url'] . '/users.php?mode=logout');
         $adminmenu->set_var('option_label', $LANG01[19]);
