@@ -33,6 +33,18 @@
 //
 // $Id
 
+/**
+* This file is responsible for letting user enter a comment and saving the
+* comments to the DB.  All comment display stuff is in lib-common.php
+*
+* @author   Jason Whittenburg
+* @author   Tony Bibbs  <tony@tonybibbs.com>
+*
+*/
+
+/**
+* Geeklog common function library
+*/
 require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -43,15 +55,16 @@ require_once('lib-common.php');
 /**
 * Displays the comment form
 *
-* @uid          int         User ID
-* @save         string      ??
-* @anon         string      Indicates if this is posted anonymously
-* @title        string      Title of comment
-* @sid          string      ID of object comment belongs to
-* @pid          string      ??
-* @type         string      ??
-* @mode         string      ??
-* @postmode     string      Indicates if comment is plain text or HTML
+* @param    int     $uid        User ID
+* @param    string  $save       ??
+* @param    string  $anon       Indicates if this is posted anonymously
+* @param    string  $title      Title of comment
+* @param    string  $sid        ID of object comment belongs to
+* @param    string  $pid        ??
+* @param    string  $type       Type of object comment is posted to
+* @param    string  $mode       ??
+* @param    string  $postmode   Indicates if comment is plain text or HTML
+* @return   string  HTML for comment form
 *
 */
 function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
@@ -79,10 +92,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 if ($postmode == 'html') {
                     $comment = stripslashes(COM_checkHTML(COM_checkWords($comment)));
-                    $commenttext = htmlspecialchars($comment);
+                    $commenttext = $comment;
                 } else {
                     $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
-                    $commenttext = $comment;
+                    $commenttext = str_replace('$','&#36;',$comment);
                 }
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
@@ -104,9 +117,10 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                     $comment = LB . LB . LB . '-----' . LB . $U[0];
                 }
             }
-	    if (empty($postmode)) {
-	        $postmode = $_CONF['postmode'];
-	    }
+                
+            if (empty($postmode)) {
+                $postmode = $_CONF['postmode'];
+            }
 	       
             $comment_template = new Template($_CONF['path_layout'] . 'comment');
             $comment_template->set_file('form','commentform.thtml');
@@ -160,15 +174,16 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 /**
 * Save a comment
 *
-* @uid          string      User ID of user making the comment
-* @save         string      ??
-* @anon         string      Indicates an anonymous post
-* @title        string      Title of comment
-* @comment      string      Test of comment
-* @sid          string      ID of object receiving comment
-* @pid          string      ??
-* @type         string      ??
-* @postmode     string      Indicates if text is HTML or plain text
+* @param        int         $uid        User ID of user making the comment
+* @param        string      $save       ??
+* @param        string      $anon       Indicates an anonymous post
+* @param        string      $title      Title of comment
+* @param        string      $comment    Text of comment
+* @param        string      $sid        ID of object receiving comment
+* @param        string      $pid        ID of parent comment
+* @param        string      $type       Type of comment this is (story, poll, etc)
+* @param        string      $postmode   Indicates if text is HTML or plain text
+* @return       string      either nothing or HTML formated error
 *
 */
 function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode) 
@@ -218,9 +233,10 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 /**
 * Deletes a given comment
 *
-* @cid          string      Comment ID
-* @sid          string      ID of object comment belongs to
-* @type         string      ??
+* @param    string      $cid    Comment ID
+* @param    string      $sid    ID of object comment belongs to
+* @param    string      $type   Comment type (e.g. story, poll, etc)
+* @return   string      Returns string needed to redirect page to right place
 *
 */
 function deletecomment($cid,$sid,$type) 
