@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Introduced function COM_getTopicSQL which returns part of an SQL request to
+  check for a user's topic access [Dirk]
 - Escape all PCRE special characters in the code to highlight search query
   words (bug #200). Also moved the code to its own function, COM_highlightQuery,
   in lib-common.php [Dirk]

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.329 2004/05/30 23:27:28 blaine Exp $
+// $Id: lib-common.php,v 1.330 2004/05/31 08:45:08 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5499,6 +5499,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
 * @param        int         $access   access to check for (2=read, 3=r&write)
 * @param        string      $table    table name if ambiguous (e.g. in JOINs)
 * @return       string      SQL expression string (may be empty)
+*
 */
 function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
 {
@@ -5551,6 +5552,71 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
     return $sql;   
 }
 
+/**
+* Return SQL expression to check for allowed topics.
+*
+* Creates part of an SQL expression that can be used to only request stories
+* from topics to which the user has access to.
+*
+* @param        string      $type     part of the SQL expr. e.g. 'WHERE', 'AND'
+* @param        int         $u_id     user id or 0 = current user
+* @param        string      $table    table name if ambiguous (e.g. in JOINs)
+* @return       string      SQL expression string (may be empty)
+*
+*/
+function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )
+{
+    global $_TABLES, $_USER, $_GROUPS;
+
+    $topicsql = ' ' . $type . ' ';
+
+    if( !empty( $table ))
+    {
+        $table .= '.';
+    }
+
+    if(( $u_id <= 0 ) || ( $u_id == $_USER['uid'] ))
+    {
+        $uid = $_USER['uid'];
+        $GROUPS = $_GROUPS;
+    }
+    else
+    {
+        $uid = $u_id;
+        $GROUPS = SEC_getUserGroups( $uid );
+    }
+
+    if( empty( $_GROUPS ))
+    {
+        // this shouldn't really happen, but if it does, handle user
+        // like an anonymous user
+        $uid = 1;
+    }
+
+    if( SEC_inGroup( 'Root', $uid ))
+    {
+        return '';
+    }
+
+    $result = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+                        . COM_getPermSQL( 'WHERE', $uid ));
+    $tids = array();
+    while( $T = DB_fetchArray( $result ))
+    {
+        $tids[] = $T['tid'];
+    }
+
+    if( sizeof( $tids ) > 0 )
+    {
+        $topicsql .= "({$table}tid IN ('" . implode( "','", $tids ) . "'))";
+    }
+    else
+    {
+        $topicsql .= '0';
+    }
+
+    return $topicsql;
+}
 
 /**
 * Strip slashes from a string only when magic_quotes_gpc = on.

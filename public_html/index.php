@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.58 2004/05/30 23:27:28 blaine Exp $
+// $Id: index.php,v 1.59 2004/05/31 08:45:08 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -143,18 +143,7 @@ if (!empty($U['tids'])) {
     $sql .= " AND s.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
 }
 
-$tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL());
-$trows = DB_numRows ($tresult);
-if ($trows > 0) {
-    $tids = array ();
-    while ( $T = DB_fetchArray ($tresult) ) {
-        $tids[] = $T['tid'];
-    }
-    if (sizeof ($tids) > 0) {
-        $sql .= "AND (s.tid IN ('" . implode ("','", $tids) . "')) ";
-    }
-    /* HELPME -- what happens when sizeof($tids) == 0 ? */
-}
+$sql .= COM_getTopicSQL ('AND', 0, 's') . ' ';
 
 if ($newstories) {
     $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.63 2004/05/20 18:57:45 vinny Exp $
+// $Id: comment.php,v 1.64 2004/05/31 08:45:08 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -720,7 +720,7 @@ case 'display':
     if (!empty ($sid) && !empty ($type)) {
         $allowed = 1;
         if ($type == 'article') {
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND'));
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
             $A = DB_fetchArray ($result);
             $allowed = $A['count'];
         } else if ($type == 'poll') {
