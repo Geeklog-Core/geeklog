@@ -8,13 +8,13 @@
 // |                                                                           |
 // | Let user comment on a story, poll, or plugin.                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // |          Dirk Haun         - dirk@haun-online.de                          |
-// |          Vincent Furia     - vinny01@users.sourceforge.net                |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.88 2005/01/25 04:04:15 vinny Exp $
+// $Id: comment.php,v 1.89 2005/01/28 04:49:09 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -41,6 +41,7 @@
 *
 * @author   Jason Whittenburg
 * @author   Tony Bibbs  <tony@tonybibbs.com>
+* @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
 *
 */
 
@@ -79,9 +80,9 @@ function handleSubmit() {
                 return COM_refresh ($_CONF['site_url'] . '/index.php');
             }
 
-            $ret .= CMT_saveComment ( strip_tags ($_POST['title']), $_POST['comment'], 
-                    $sid, COM_applyFilter ($_POST['pid'], true), 'article',
-                    COM_applyFilter ($_POST['postmode']));
+            CMT_saveComment ( strip_tags ($_POST['title']), $_POST['comment'], 
+                $sid, COM_applyFilter ($_POST['pid'], true), 'article',
+                COM_applyFilter ($_POST['postmode']));
 
             if ( $ret > 0 ) { // failure
                 $display .= COM_siteHeader()
@@ -104,9 +105,9 @@ function handleSubmit() {
                 return COM_refresh ($_CONF['site_url'] . '/index.php');
             }
 
-            $ret .= CMT_saveComment (strip_tags ($_POST['title']), $_POST['comment'], 
-                    $sid, COM_applyFilter ($_POST['pid'], true), 'poll',
-                    COM_applyFilter ($_POST['postmode']));
+            CMT_saveComment (strip_tags ($_POST['title']), $_POST['comment'], 
+                $sid, COM_applyFilter ($_POST['pid'], true), 'poll',
+                COM_applyFilter ($_POST['postmode']));
 
             if ( $ret > 0 ) { // failure
                 $display .= COM_siteHeader()
@@ -120,7 +121,9 @@ function handleSubmit() {
             break;
 
         default: // assume plugin
-            if ( !($display = PLG_handlePluginComment($type, null, 'save')) ) {
+            if ( !($display = PLG_commentSave($type, strip_tags ($_POST['title']), 
+                                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true),
+                                COM_applyFilter ($_POST['postmode']))) ) {
                 $display = COM_refresh ($_CONF['site_url'] . '/index.php');
             }
             break;
@@ -150,7 +153,7 @@ function handleDelete() {
             if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
-                $ret .= CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
+                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
                 $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
                 DB_change ($_TABLES['stories'], 'comments', $comments,
                            'sid', $sid);
@@ -171,7 +174,7 @@ function handleDelete() {
             if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
                     $A['group_id'], $A['perm_owner'], $A['perm_group'],
                     $A['perm_members'], $A['perm_anon']) == 3) {
-                $ret .= CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
+                CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
                 $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$sid&aid=-1");
             } else {
                 COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
@@ -181,8 +184,8 @@ function handleDelete() {
             break;
 
         default: //assume plugin
-            if ( !($display = PLG_handlePluginComment($type, 
-                    COM_applyFilter($_REQUEST['cid'], true), 'delete')) ) {
+            if ( !($display = PLG_commentDelete($type, 
+                                COM_applyFilter($_REQUEST['cid'], true), $sid)) ) {
                 $display = COM_refresh ($_CONF['site_url'] . '/index.php');
             }
             break;
@@ -191,10 +194,102 @@ function handleDelete() {
     return $display;
 }
 
+/**
+ * Hanldes a comment view request
+ *
+ * @copyright Vincent Furia 2005
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param boolean $view View or display (true for view)
+ * @return string HTML (possibly a refresh)
+ */
+function handleView($view = true) {
+    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+
+    if ($view) {
+        $cid = COM_applyFilter ($_REQUEST['cid'], true);
+    } else {
+        $cid = COM_applyFilter ($_REQUEST['pid'], true);
+    }
+
+    if ($cid <= 0) {
+        return COM_refresh($_CONF['site_url'] . '/index.php');
+    }
+    
+    $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
+    $A = DB_fetchArray( DB_query($sql) );
+    $sid   = $A['sid'];
+    $title = $A['title'];
+    $type  = $A['type'];
+
+    $format = COM_applyFilter ($_REQUEST['format']);
+    if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
+        if ( $_USER['uid'] > 1 ) {
+            $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
+                                  "uid = {$_USER['uid']}" );
+        } else {
+            $format = $_CONF['comment_mode'];
+        }
+    }
+
+    switch ( $type ) {
+        case 'article':
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'story.edit' ) &&
+                    ( SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon'] ) == 3 ) );
+                $display .= CMT_userComments ($sid, $title, $type, 
+                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
+                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
+            } else {
+                $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                    COM_getBlockTemplate ('_msg_block', 'header'))
+                         . $LANG_ACCESS['storydenialmsg']
+                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            }
+            break;
+
+        case 'poll':
+            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
+            $A = DB_fetchArray ($result);
+            $allowed = $A['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                    ( SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                        $A['perm_anon'] ) == 3 ) );
+                $display .= CMT_userComments ($sid, $title, $type, 
+                        COM_applyFilter ($_REQUEST['order']), $format, $cid,
+                        COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
+            } else {
+                $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                                    COM_getBlockTemplate ('_msg_block', 'header'))
+                         . $LANG_ACCESS['storydenialmsg']
+                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            }
+            break;
+
+        default: // assume comment
+            if ( !($display = PLG_displayComment($type, $sid, $cid, $title,
+                                  COM_applyFilter ($_REQUEST['order']), $format, 
+                                  COM_applyFilter ($_REQUEST['page'], true), $view)) ) {
+                return COM_refresh($_CONF['site_url'] . '/index.php');
+            }
+            break;
+    }
+
+    return COM_siteHeader() . $display . COM_siteFooter();
+}
 
 // MAIN
 $display = '';
 
+// If reply specified, force comment submission form
 if (isset ($_REQUEST['reply'])) {
     $_REQUEST['mode'] = '';
 }
@@ -210,132 +305,31 @@ case $LANG03[14]: // Preview
     break;
 
 case $LANG03[11]: // Submit Comment
-    $display = handleSubmit();  // moved to function for readibility
+    $display .= handleSubmit();  // moved to function for readibility
     break;
 
 case 'delete':
-    $display = handleDelete();  // moved to function for readibility
+    $display .= handleDelete();  // moved to function for readibility
     break;
 
 case 'view':
-    $cid = COM_applyFilter ($_REQUEST['cid'], true);
-    if ($cid > 0) {
-        $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $cid";
-        $A = DB_fetchArray( DB_query($sql) );
-        $sid = $A['sid'];
-        $title = $A['title'];
-        $type = $A['type'];
-        $allowed = 1;
-        if ($type == 'article') {
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
-        } else if ($type == 'poll') {
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
-        }
-        $display .= COM_siteHeader();
-        if ($allowed == 1) {
-            $format = COM_applyFilter ($_REQUEST['format']);
-            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
-                if ( $_USER['uid'] > 1 ) {
-                    $format = DB_getItem( $_TABLES['usercomment'], 'commentmode', 
-                                          "uid = {$_USER['uid']}" );
-                } else {
-                    $format = $_CONF['comment_mode'];
-                }
-            }
-            if ($type == 'poll' || $type == 'article') {
-                if ( $type == 'poll' ) {
-                    $delete_option = SEC_hasRights( 'poll.edit' );
-                } else {
-                    $delete_option = SEC_hasRights( 'story.edit' );
-                }
-                $delete_option = ( $delete_option &&
-                    SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                    $A['perm_anon'] ) == 3 ? true : false );
-            } else {
-                $delete_option = false;
-            }
-            $display .= CMT_userComments ($sid, $title, $type, 
-                            COM_applyFilter ($_REQUEST['order']), $format, $cid,
-                            COM_applyFilter ($_REQUEST['page'], true), true, $delete_option);
-        } else {
-            $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'))
-                     . $LANG_ACCESS['storydenialmsg']
-                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        }
-        $display .= COM_siteFooter();
-    } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-    }
+    $display .= handleView(true);  // moved to function for readibility
     break;
 
 case 'display':
-    $pid = COM_applyFilter ($_REQUEST['pid'], true);
-    if ($pid > 0) {
-        $sql = "SELECT sid, title, type FROM {$_TABLES['comments']} WHERE cid = $pid";
-        $A = DB_fetchArray( DB_query($sql) );
-        $sid = $A['sid'];
-        $title = $A['title'];
-        $type = $A['type'];
-        $allowed = 1;
-        if ($type == 'article') {
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
-        } else if ($type == 'poll') {
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
-        }
-        $display .= COM_siteHeader();
-        if ($allowed == 1) {
-            $format = COM_applyFilter ($_REQUEST['format']);
-            if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
-                $format = 'threaded';
-            }
-            if ($type == 'poll' || $type == 'article') {
-                if ( $type == 'poll' ) {
-                    $delete_option = SEC_hasRights( 'poll.edit' );
-                } else {
-                    $delete_option = SEC_hasRights( 'story.edit' );
-                }
-                $delete_option = ( $delete_option &&
-                    SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                    $A['perm_anon'] ) == 3 ? true : false );
-            } else {
-                $delete_option = false;
-            }
-            $display .= CMT_userComments ($sid, $title, $type,
-                    COM_applyFilter ($_REQUEST['order']), $format, $pid,
-                    COM_applyFilter ($_REQUEST['page'], true), false, $delete_option);
-        } else {
-            $display .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'))
-                     . $LANG_ACCESS['storydenialmsg']
-                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        }
-        $display .= COM_siteFooter();
-    } else {
-        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-    }
+    $display .= handleView(false);  // moved to function for readibility
     break;
 
 case 'report':
-    $display = COM_siteHeader ('menu')
-             . CMT_reportAbusiveComment (COM_applyFilter ($_GET['cid'], true),
-                                         COM_applyFilter ($_GET['type']))
-             . COM_siteFooter ();
+    $display .= COM_siteHeader ('menu')
+              . CMT_reportAbusiveComment (COM_applyFilter ($_GET['cid'], true),
+                                          COM_applyFilter ($_GET['type']))
+              . COM_siteFooter ();
     break;
 
 case 'sendreport':
-    $display = CMT_sendReport (COM_applyFilter ($_POST['cid'], true),
-                               COM_applyFilter ($_POST['type']));
+    $display .= CMT_sendReport (COM_applyFilter ($_POST['cid'], true),
+                                COM_applyFilter ($_POST['type']));
     break;
 
 default:  // New Comment

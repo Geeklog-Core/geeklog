@@ -13,6 +13,7 @@
 // | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
 // |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Vincent Furia     - vinny01 AT users DOT sourceforge DOT net     |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.60 2005/01/25 04:04:14 vinny Exp $
+// $Id: article.php,v 1.61 2005/01/28 04:49:09 vinny Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -39,6 +40,7 @@
 *
 * @author   Jason Whittenburg
 * @author   Tony Bibbbs <tony@tonybibbs.com>
+* @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
 */
 
 /**

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.5 2005/01/27 09:22:28 dhaun Exp $
+// $Id: lib-comment.php,v 1.6 2005/01/28 04:49:10 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -178,12 +178,10 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
 * @return    string     HTML       Formated Comment 
 *
 */
-function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
-{
+function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false ) {
     global $_CONF, $_TABLES, $_USER, $LANG01, $query;
 
     $indent = 0;  // begin with 0 indent
-    $level = array(); // used to track depth
     $retval = ''; // initialize return value
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
@@ -200,35 +198,28 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $template->set_var( 'order', $order );    
 
     // Make sure we have a default value for comment indentation
-    if( !isset( $_CONF['comment_indent'] ))
-    {
+    if( !isset( $_CONF['comment_indent'] )) {
         $_CONF['comment_indent'] = 25;
     }
 
-    if( $preview )
-    {
+    if( $preview ) {
         $A = $comments;   
         if( empty( $A['nice_date'] ))
         {
             $A['nice_date'] = time();
         }
         $mode = 'flat';
-    }
-    else
-    {
+    } else {
         $A = DB_fetchArray($comments);
     }
 
-    if( empty( $A ) )
-    {
+    if( empty( $A ) ) {
         return '';
     }
 
-    do
-    {
+    do {
         // determines indentation for current comment
-        if( $mode == 'threaded' || $mode == 'nested' )
-        {
+        if( $mode == 'threaded' || $mode == 'nested' ) {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
 
@@ -237,21 +228,16 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'author', $A['username'] );
         $template->set_var( 'author_id', $A['uid'] );
 
-        if( $A['uid'] > 1 )
-        {
-            if( empty( $A['fullname'] ))
-            {
+        if( $A['uid'] > 1 ) {
+            if( empty( $A['fullname'] )) {
                 $template->set_var( 'author_fullname', $A['username'] );
                 $alttext = $A['username'];
-            }
-            else
-            {
+            } else {
                 $template->set_var( 'author_fullname', $A['fullname'] );
                 $alttext = $A['fullname'];
             }
 
-            if( !empty( $A['photo'] ))
-            {
+            if( !empty( $A['photo'] )) {
                 $template->set_var( 'author_photo', '<img src="'
                                     . $_CONF['site_url']
                                     . '/images/userphotos/' . $A['photo']
@@ -261,9 +247,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                         . '/users.php?mode=profile&amp;uid=' . $A['uid']
                         . '"><img src="' . $_CONF['layout_url']
                         . '/images/smallcamera.gif" border="0" alt=""></a>' );
-            }
-            else
-            {
+            } else {
                 $template->set_var( 'author_photo', '' );
                 $template->set_var( 'camera_icon', '' );
             }
@@ -272,9 +256,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                     . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
                     . $A['uid'] . '">' );
             $template->set_var( 'end_author_anchortag', '</a>' );
-        }
-        else
-        {
+        } else {
             $template->set_var( 'author_fullname', $A['username'] );
             $template->set_var( 'author_photo', '' );
             $template->set_var( 'camera_icon', '' );
@@ -284,24 +266,20 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // hide reply link from anonymous users if they can't post replies
         $hidefromanon = false;
-        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 ) || ( $_CONF['commentsloginrequired'] == 1 )))
-        {
+        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 ) 
+                || ( $_CONF['commentsloginrequired'] == 1 ))) {
             $hidefromanon = true;
         }
 
         // this will hide HTML that should not be viewed in preview mode
-        if( $preview || $hidefromanon )
-        {
+        if( $preview || $hidefromanon ) {
             $template->set_var( 'hide_if_preview', 'style="display:none"' );
-        }
-        else
-        {
+        } else {
             $template->set_var( 'hide_if_preview', '' );
         }
 
         // for threaded mode, add a link to comment parent
-        if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 )
-        {
+        if( $mode == 'threaded' && $A['pid'] != 0 && $indent == 0 ) {
             $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
             $P = DB_fetchArray( $result );
             if ($P['pid'] != 0) {
@@ -316,9 +294,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                        . $A['pid'] . '&amp;format=threaded';
             }
             $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
-        }
-        else
-        {
+        } else {
             $template->set_var( 'parent_link', '');
         }
 
@@ -327,20 +303,15 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'type', $A['type'] );
 
         // If deletion is allowed, displays delete link
-        if( $delete_option )
-        {
+        if( $delete_option ) {
             $deloption = '| <a href="' . $_CONF['site_url']
                        . '/comment.php?mode=delete&amp;cid='
                        . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
                        . $type . '">' . $LANG01[28] . '</a> ';
-            if( !empty( $A['ipaddress'] ))
-            {
-                if( empty( $_CONF['ip_lookup'] ))
-                {
+            if( !empty( $A['ipaddress'] )) {
+                if( empty( $_CONF['ip_lookup'] )) {
                     $deloption .= '| ' . $A['ipaddress'] . ' ';
-                }
-                else
-                {
+                } else {
                     $iplookup = str_replace( '*', $A['ipaddress'],
                                              $_CONF['ip_lookup'] );
                     $deloption .= '| <a href="' . $iplookup . '">'
@@ -348,17 +319,13 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 }
             }
             $template->set_var( 'delete_option', $deloption );
-        }
-        else if( !empty( $_USER['username'] ))
-        {
+        } else if( !empty( $_USER['username'] )) {
             $reportthis = ' | <a href="' . $_CONF['site_url']
                         . '/comment.php?mode=report&amp;cid=' . $A['cid']
                         . '&amp;type=' . $type . '" title="' . $LANG01[110]
                         . '">' . $LANG01[109] . '</a> ';
             $template->set_var( 'delete_option', $reportthis );
-        }
-        else
-        {
+        } else {
             $template->set_var( 'delete_option', '' );
         }
 
@@ -368,14 +335,12 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
         // and finally: format the actual text of the comment
         $A['comment'] = stripslashes( $A['comment'] );
-        if( preg_match( '/<.*>/', $A['comment'] ) == 0 )
-        {
+        if( preg_match( '/<.*>/', $A['comment'] ) == 0 ) {
             $A['comment'] = nl2br( $A['comment'] );
         }
 
         // highlight search terms if specified
-        if( !empty( $query ))
-        {
+        if( !empty( $query )) {
             $A['comment'] = COM_highlightQuery( $A['comment'], $query );
         }
 
@@ -390,18 +355,14 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'comments', $A['comment'] );
 
         // parse the templates
-        if( $mode == 'threaded' && $indent > 0 )
-        {
+        if( $mode == 'threaded' && $indent > 0 ) {
             $template->set_var( 'pid', $A['pid'] );
             $retval .= $template->parse( 'output', 'thread' );   
-        }
-        else
-        {
+        } else {
             $template->set_var( 'pid', $A['cid'] );
             $retval .= $template->parse( 'output', 'comment' ); 
         }
-    }
-    while( $A = DB_fetchArray( $comments ));
+    } while( $A = DB_fetchArray( $comments ));
 
     return $retval;
 }
@@ -429,38 +390,31 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
-    if( !empty( $_USER['uid'] ) )
-    {
+    if( !empty( $_USER['uid'] ) ) {
         $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
-        if( empty( $order ) ) 
-        {
+        if( empty( $order ) ) {
             $order = $U['commentorder'];
         }
-        if( empty( $mode ) ) 
-        {
+        if( empty( $mode ) ) {
             $mode = $U['commentmode'];
         }
         $limit = $U['commentlimit'];
     }
 
-    if( empty( $order ))
-    {
+    if( empty( $order )) {
         $order = 'ASC';
     }
 
-    if( empty( $mode ))
-    {
+    if( empty( $mode )) {
         $mode = $_CONF['comment_mode'];
     }
 
-    if( empty( $limit ))
-    {
+    if( empty( $limit )) {
         $limit = $_CONF['comment_limit'];
     }
     
-    if( !is_numeric($page) || $page < 1 )
-    {
+    if( !is_numeric($page) || $page < 1 ) {
         $page = 1;
     }
 
@@ -473,23 +427,18 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'commentbar',
                         CMT_commentBar( $sid, $title, $type, $order, $mode));
     
-    if( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' )
-    {
+    if( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' ) {
         // build query
-        switch( $mode )
-        {
+        switch( $mode ) {
             case 'flat':
-                if( $cid )
-                {
+                if( $cid ) {
                     $count = 1;
 
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
                          . "unix_timestamp(c.date) AS nice_date "
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid";
-                }
-                else
-                {
+                } else {
                     $count = DB_count( $_TABLES['comments'], 'sid', $sid );
             
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
@@ -503,19 +452,15 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
             case 'nested':
             case 'threaded':
             default:
-                if( $order == 'DESC' )
-                {
+                if( $order == 'DESC' ) {
                     $cOrder = 'c.rht DESC';
-                }
-                else
-                {
+                } else {
                     $cOrder = 'c.lft ASC'; 
                 }                            
 
                 // We can simplify the query, and hence increase performance
                 // when pid = 0 (when fetching all the comments for a given sid)
-                if( $cid )
-                {
+                if( $cid ) {
                     // count the total number of applicable comments
                     $q2 = "SELECT COUNT(*) "
                         . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
@@ -531,11 +476,8 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "WHERE c.sid = '$sid' AND (c.lft >= c2.lft AND c.lft <= c2.rht) "
                          . "AND c2.cid = $pid AND c.uid = u.uid "
                        . "ORDER BY $cOrder LIMIT $start, $limit";
-                }
-                else
-                {
-                    if( $pid == 0 )
-                    {
+                } else {
+                    if( $pid == 0 ) {
                         // count the total number of applicable comments
                         $count = DB_count( $_TABLES['comments'], 'sid', $sid );
 
@@ -544,9 +486,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
                            . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                            . "WHERE c.sid = '$sid' AND c.uid = u.uid "
                            . "ORDER BY $cOrder LIMIT $start, $limit";
-                    }
-                    else
-                    {
+                    } else {
                         // count the total number of applicable comments
                         $q2 = "SELECT COUNT(*) "
                             . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
@@ -769,7 +709,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 /**
  * Save a comment
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author   Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param    string      $title      Title of comment
  * @param    string      $comment    Text of comment
  * @param    string      $sid        ID of object receiving comment
@@ -959,11 +899,11 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
  * requesting user has the correct permissions and that the comment exits
  * for the specified $type and $sid.
  *
- * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @author  Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
  * @param   string      $type   article, poll, or plugin identifier 
  * @param   string      $sid    id of object comment belongs to
  * @param   int         $cid    Comment ID
- * @return  string      null indicates success, string identifies problem
+ * @return  string      0 indicates success, >0 identifies problem
  */
 function CMT_deleteComment ($cid, $sid, $type) {
     global $_TABLES, $_CONF, $_USER;

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.53 2005/01/16 19:14:29 dhaun Exp $
+// $Id: lib-plugins.php,v 1.54 2005/01/28 04:49:10 vinny Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -110,6 +110,12 @@ function PLG_callFunctionForOnePlugin($function, $args='')
             break;
         case 5:
             return $function($args[1], $args[2], $args[3], $args[4], $args[5]);
+            break;
+        case 6:
+            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6]);
+            break;
+        case 7:
+            return $function($args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7]);
             break;
         default:
             return $function($args);
@@ -218,31 +224,67 @@ function PLG_getMenuItems()
 }
 
 /**
-* Returns if a specific plugin supports user comments
-*
-* @param        string      $type       Plugin to check comment support for
-* @return       boolean     True if plugin uses comments otherwise false
-*
-*/
-function PLG_supportsComments($type) 
-{
-    return PLG_callFunctionForOnePlugin('plugin_commentsupport_' . $type);
+ * Plugin should delete a comment
+ *
+ * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param   string  $type   Plugin to delete comment
+ * @param   int     $cid    Comment to be deleted
+ * @param   string  $id     Item id to which $cid belongs
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function PLG_commentDelete($type, $cid, $id) {
+    $args[1] = $cid;
+    $args[2] = $id;
+
+    return PLG_callFunctionForOnePlugin('plugin_deletecomment_' . $type, $args);
 }
 
 /**
-* Plugin should perform an operation on one of its comments.
-*
-* @param        string      $type       Plugin to have handle the comment
-* @param        string      $id         Comment ID
-* @param        string      $operation  "save" or "delete"
-* @return       string      COM_refresh() string to redirect to the proper URL
-*/
-function PLG_handlePluginComment ($type, $id, $operation='') 
-{
-    $args[1] = $id;
-    $args[2] = $operation;
+ * Plugin should save a comment
+ *
+ * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param   string  $type   Plugin to delete comment
+ * @param   string  $title  comment title
+ * @param   string  $comment comment text
+ * @param   string  $id     Item id to which $cid belongs
+ * @param   int     $pid    comment parent
+ * @param   string  $postmode 'html' or 'text'
+ * @return  mixed   false for failure, HTML string (redirect?) for success
+ */
+function PLG_commentSave($type, $title, $comment, $id, $pid, $postmode) {
+    $args[1] = $title;
+    $args[2] = $comment;
+    $args[3] = $id;
+    $args[4] = $pid;
+    $args[5] = $postmode;
 
-    return PLG_callFunctionForOnePlugin('plugin_handlecomment_' . $type, $args);
+    return PLG_callFunctionForOnePlugin('plugin_savecomment_' . $type, $args);
+}
+
+/**
+ * Plugin should display [a] comment[s]
+ *
+ * @author Vincnet Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param   string  $type   Plugin to display comment
+ * @param   string  $id     Unique idenifier for item comment belongs to
+ * @param   int     $cid    Comment id to display (possibly including sub-comments)
+ * @param   string  $title  Page/comment title
+ * @param   string  $order  'ASC' or 'DSC' or blank
+ * @param   string  $format 'threaded', 'nested', or 'flat'
+ * @param   int     $page   Page number of comments to display
+ * @param   boolean $view   True to view comment (by cid), false to display (by $pid)
+ * @return  mixed   results of calling the plugin_displaycomment_ function
+ */
+function PLG_displayComment($type, $id, $cid, $title, $order, $format, $page, $view) {
+    $args[1] = $id;
+    $args[2] = $cid;
+    $args[3] = $title;
+    $args[4] = $order;
+    $args[5] = $format;
+    $args[6] = $page;
+    $args[7] = $view;
+
+    return PLG_callFunctionForOnePlugin('plugin_displaycomment_' . $type, $args);
 }
 
 /**
@@ -277,29 +319,6 @@ function PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode
         }
     }
     return false;
-}
-
-/**
-* User has requested to create a comment for the plugin
-* Redirects user to comment form if initial comment for plugin record or returns
-* formated HTML including the Site footer and the comments 
-*
-* @param        string   $type            Plugin to have handle the comment
-* @param        int      $id      GL Comment table primary key. 
-* @param        string   $mode     Has user selected a new comment preview mode (Flat, Nested, Threaded, None)
-* @param        string   $order           Has the user selected a different comment first (Newest or Oldest comment first)
-* @param        string   $reply           Has the user used the reply button on the Comment Bar 
-* @return       string   Formated HTML containing site footer and the comments with the comment command bar 
-*                        or redirect user to create top level comment
-*/
-function PLG_callCommentForm($type,$id,$mode="",$order="",$reply="")
-{
-    $args[1] = $id;
-    $args[2] = $mode;
-    $args[3] = $order;
-    $args[4] = $reply;
-
-    return PLG_callFunctionForOnePlugin('plugin_commentform_' . $type, $args);
 }
 
 
