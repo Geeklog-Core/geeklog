@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.9 2002/08/22 14:45:51 dhaun Exp $
+// $Id: lib-plugins.php,v 1.10 2002/09/01 20:34:30 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -364,8 +364,10 @@ function PLG_getUserOptions()
         if (function_exists($function)) {
             // I know this uses the adminlabel, adminurl but who cares?
             list($plugin->adminlabel, $plugin->adminurl, $plugin->numsubmissions) = $function();
-            $counter++;
-            $plgresults[$counter] = $plugin;
+            if (!empty ($plugin->adminlabel) && !empty ($plugin->adminurl)) {
+                $counter++;
+                $plgresults[$counter] = $plugin;
+            }
             $plugin->reset();
         }
     }
