@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.42 2004/10/19 10:52:48 dhaun Exp $
+// $Id: group.php,v 1.43 2005/03/25 21:47:27 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -518,6 +518,7 @@ function listgroups()
 
     $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
     $nrows = DB_numRows($result);
+    $rowid = 0;
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
         if (in_array ($A['grp_id'], $thisUsersGroups)) {
@@ -530,8 +531,10 @@ function listgroups()
             $group_templates->set_var ('group_name', $A['grp_name']);
             $group_templates->set_var ('group_description', $A['grp_descr']);
             $group_templates->set_var ('group_core', $core);
+            $group_templates->set_var ('cssid', ($rowid%2)+1);
             $group_templates->set_var ('lang_list', $LANG_ACCESS['listthem']);
             $group_templates->parse ('group_row', 'row', true);
+            $rowid++;
         }
     }
     $group_templates->parse('output', 'list');
@@ -648,6 +651,7 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
         $user_templates->set_var ('username', $A['username']);
         $user_templates->set_var ('user_fullname', $A['fullname']);
         $user_templates->set_var ('user_email', $A['email']);
+        $user_templates->set_var ('cssid', ($i%2)+1);
         $user_templates->parse ('user_row', 'row', true);
     }
 
@@ -699,6 +703,7 @@ function editusers ($group)
     global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
 
     $thisUsersGroups = SEC_getUserGroups ();
+	$groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
     if (!empty ($group) && ($group > 0) &&
             !in_array ($group, $thisUsersGroups)) {
         $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
@@ -715,7 +720,7 @@ function editusers ($group)
         return $retval;
     }
 
-    $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'] , '',
+    $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'] . " - $groupName" , '',
                        COM_getBlockTemplate ('_admin_block', 'header'));
     $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
     $groupmembers->set_file (array ('groupmembers'=>'groupmembers.thtml'));

@@ -1,4 +1,4 @@
-  <tr>
+  <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
     <td><a href="{site_admin_url}/group.php?mode=edit&amp;grp_id={group_id}">{group_name}</a></td>
     <td>{group_description}</td>
     <td align="center">{group_core}</td>

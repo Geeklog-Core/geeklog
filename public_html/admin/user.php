@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.90 2005/03/25 21:34:08 blaine Exp $
+// $Id: user.php,v 1.91 2005/03/25 21:47:27 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -431,7 +431,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
 */
 function listusers ($offset, $curpage, $query = '', $query_limit = 50) 
 {
-    global $_CONF, $_TABLES, $LANG28;
+    global $_CONF, $_TABLES, $LANG28, $order,$prevorder,$direction;
         
     $retval = '';
 
@@ -456,11 +456,51 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
 
+    if ($prevorder != $order) {
+        $direction = 'desc';
+    }
+    switch($order) {
+        case 1:
+            $orderby = 'uid';
+            break;
+        case 2:
+            $orderby = 'username';
+            break;
+        case 3:
+            $orderby = 'fullname';
+            break;
+        case 4:
+            $orderby = 'email';
+            break;
+        default:
+            $orderby = 'uid';
+            $order = 1;
+            break;
+    }
+    if ($direction == "asc") {
+        $prevdirection = 'asc';
+        $direction = 'desc';
+        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    } else {
+        $prevdirection = 'desc';
+        $direction = 'asc';
+        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    }
+
+    $user_templates->set_var ('direction', $direction);
+    $user_templates->set_var ('page', $page);
+    $user_templates->set_var ('prevorder', $order);
     if (empty($query_limit)) {
         $limit = 50;
     } else {
         $limit = $query_limit;
     }
+    if ($query != '') {
+        $user_templates->set_var ('query', urlencode($query) );
+    } else {
+        $user_templates->set_var ('query', '');
+    }
+    $user_templates->set_var ('query_limit', $query_limit);
     $user_templates->set_var($limit . '_selected', 'selected="selected"');
     
     if (!empty ($query)) {
@@ -478,9 +518,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $offset = (($curpage - 1) * $limit);
 
     if (!empty($query)) {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY uid LIMIT $offset,$limit";
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY $orderby $direction LIMIT $offset,$limit";
     } else {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY uid LIMIT $offset,$limit";
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY $orderby $direction LIMIT $offset,$limit ";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
@@ -491,13 +531,14 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
         $user_templates->set_var('user_email', $A['email']);
+        $user_templates->set_var ('cssid', ($i%2)+1);
         $user_templates->parse('user_row', 'row', true);
     }
     if (!empty($query)) {
         $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . '&amp;query_limit=' . $query_limit;
+        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&order={$order}&prevorder={$prevorder}&direction={$prevdirection}";
     } else {
-        $base_url = $_CONF['site_admin_url'] . '/user.php?query_limit=' . $query_limit;
+        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&order={$order}&prevorder={$prevorder}&direction={$prevdirection}";
     }
 
     if ($num_pages > 1) {
@@ -686,6 +727,14 @@ function deleteUser ($uid)
 $mode = '';
 if (isset ($_REQUEST['mode'])) {
     $mode = $_REQUEST['mode'];
+}
+
+if (isset ($_REQUEST['order'])) {
+    $order =  COM_applyFilter ($_REQUEST['order'],true);
+}
+
+if (isset ($_GET['direction'])) {
+    $direction =  COM_applyFilter ($_GET['direction']);
 }
 
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete

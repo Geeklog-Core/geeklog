@@ -28,11 +28,12 @@
                                     </td>
                                 </tr>
                             </table>
-                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
-                                <tr>
-                                    <th align="left">{lang_username}</th>
-                                    <th>{lang_fullname}</th>
-                                    <th>{lang_emailaddress}</th>
+                            <table border="0" cellspacing="1" cellpadding="2" width="100%">
+                                <tr style="background:#FFFFFF;">
+                                    <th colspan="2" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/user.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>ID{img_arrow1}</th>
+                                    <th width="30%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/user.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_username}{img_arrow2}</th>
+                                    <th width="30%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/user.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_fullname}{img_arrow3}</th>
+                                    <th style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/user.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_emailaddress}{img_arrow4}</th>
                                 </tr>
                                 {user_row}
                             </table>
