@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.15 2002/02/26 21:43:05 tony_bibbs Exp $
+// $Id: install.php,v 1.16 2002/02/26 23:04:34 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -795,13 +795,15 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             for ($i = 1; $i <= $nrows; $i++) {
                 $row = $instDB->dbFetchArray($result);
                 $ublocks = str_replace(' ',',',$row['boxes']);
-                $result2 = $instDB->dbQuery("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN ($ublocks)");
+                $result2 = $instDB->dbQuery("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($ublocks)");
                 $newblocks = '';
                 for ($x = 1; $x <= $instDB->dbNumRows($result2); $x++) {
                     $curblock = $instDB->dbFetchArray($result2);
-                    $newblocks .= $curblock['bid'];
-                    if ($x <> $instDB->dbNumRows($result2)) {
-                        $newblocks .= ' ';
+                    if ($curblock['name'] <> 'user_block' AND $curblock['name'] <> 'admin_block' AND $curblock['name'] <> 'section_block') {
+                        $newblocks .= $curblock['bid'];
+                        if ($x <> $instDB->dbNumRows($result2)) {
+                            $newblocks .= ' ';
+                        }
                     }
                 }
                 $instDB->dbQuery("UPDATE {$_TABLES['userindex']} SET boxes = '$newblocks' WHERE uid = {$row['uid']}");
