@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.219 2003/05/05 16:52:35 dhaun Exp $
+// $Id: lib-common.php,v 1.220 2003/05/06 13:56:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -351,12 +351,16 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 
     if( $_CONF['contributedbyline'] == 1 )
     {
+        $sql = "SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = '{$A['uid']}'";
+        $results = DB_query( $sql );
+        $U = DB_fetchArray( $results );
+
         $article->set_var( 'lang_contributed_by', $LANG01[1] );
         $article->set_var( 'contributedby_uid', $A['uid'] );
-        $username = DB_getItem( $_TABLES['users'],'username',"uid = '{$A['uid']}'" );
+        $username = $U['username'];
         $article->set_var( 'contributedby_user', $username );
 
-        $fullname = DB_getItem( $_TABLES['users'],'fullname',"uid = '{$A['uid']}'" );
+        $fullname = $U['fullname'];
         if( empty( $fullname ))
         {
             $article->set_var( 'contributedby_fullname', $username );
@@ -368,13 +372,14 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 
         if( $A['uid'] > 1 )
         {
-            $article->set_var( 'start_contributedby_anchortag', '<a class="storybyline" href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
+            $article->set_var( 'start_contributedby_anchortag',
+                    '<a class="storybyline" href="' . $_CONF['site_url']
+                    . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' );
             $article->set_var( 'end_contributedby_anchortag', '</a>' );
             $article->set_var( 'contributedby_url', $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
 
-            $photo = DB_getItem( $_TABLES['users'], 'photo',
-                    "uid = {$A['uid']}" );
+            $photo = $U['photo'];
             if( !empty( $photo ))
             {
                 if( empty( $fullname ))
