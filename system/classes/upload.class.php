@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.35 2004/08/21 08:03:15 dhaun Exp $
+// $Id: upload.class.php,v 1.36 2004/10/11 18:30:25 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -663,8 +663,8 @@ class upload
                 }
 
                 // do resize
-                $sizefactor = _calcSizefactor ($imageInfo['width'],
-                                               $imageInfo['height']);
+                $sizefactor = $this->_calcSizefactor ($imageInfo['width'],
+                                                      $imageInfo['height']);
                 $this->_addDebugMsg ('Resizing image, factor=' . $sizefactor);
                 $newwidth = (int) ($imageInfo['width'] * $sizefactor);
                 $newheight = (int) ($imageInfo['height'] * $sizefactor);
