@@ -246,7 +246,9 @@ $LANG04 = array(
 	64 => "Comment Preferences for",
 	65 => "Try Logging in Again",
 	66 => "You may have mistyped your login credentials.  If so, you may try logging in again below. If you can't remember your password you can have a new one sent to by filling out the password form at the bottom of this page.",
-	67 => "Member Since"
+	67 => "Member Since",
+	68 => "Remember Me For",
+	69 => "How long should we remember you after logging in?"
 );
 
 ###############################################################################
