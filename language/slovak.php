@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for GeekLog!
+# slovak.php
+# This is the slovak language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -319,7 +319,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'No News to Display',
     2 => 'There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive',
-    3 => " for topic {$topic}",
+    3 => " for topic %s",
     4 => 'Dne¹ný hlavný èlanok',
     5 => 'Ïaµ¹í',
     6 => 'Predo¹lý'
@@ -372,12 +372,12 @@ $LANG08 = array(
     20 => 'From Name',
     21 => 'From Email Address',
     22 => 'All fields are required',
-    23 => "This email was sent to you by {$from} at {$fromemail} because they thought you might be interested it this article from {$_CONF['site_url']}.  This is not SPAM and the email addresses involved in this transaction were not saved to a list or stored for later use.",
+    23 => "This email was sent to you by %s at %s because they thought you might be interested it this article from {$_CONF['site_url']}.  This is not SPAM and the email addresses involved in this transaction were not saved to a list or stored for later use.",
     24 => 'Comment on this story at',
     25 => 'You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system',
     26 => 'This form will allow you to send an email to the selected user.  All fields are required.',
     27 => 'Short message',
-    28 => "{$from} wrote: {$shortmsg}",
+    28 => "%s wrote: ",
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
     30 => ' Daily Newsletter for ',
     31 => 'Title',
@@ -494,7 +494,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "To submit a {$type} you are required to be logged in as a user.",
+    1 => "To submit a %s you are required to be logged in as a user.",
     2 => 'Login',
     3 => 'New User',
     4 => 'Submit a Event',
@@ -518,7 +518,7 @@ $LANG12 = array(
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
-    25 => "Yours {$type} submission has been saved successfully.",
+    25 => "Your %s submission has been saved successfully.",
     26 => 'Speed Limit',
     27 => 'Username',
     28 => 'Topic',
@@ -600,7 +600,7 @@ $LANG21 = array(
     28 => 'PHP Block Options',
     29 => 'Block Function',
     30 => 'If you would like to have one of your blocks use PHP code, enter the name of the function above.  Your function name must start with the prefix "phpblock_" (e.g. phpblock_getweather).  If it does not have this prefix, your function will NOT be called.  We do this to keep people who may have hacked your Geeklog installation from putting arbitrary function calls that may be harmful to your system.  Be sure not to put empty parenthisis "()" after your function name.  Finally, it is recommended that you put all your PHP Block code in /path/to/geeklog/system/lib-custom.php.  That will allow the code to stay with you even when you upgrade to a newer version of Geeklog.',
-    31 => 'Error in PHP Block.  Function, $function, does not exist.',
+    31 => 'Error in PHP Block.  Function, %s, does not exist.',
     32 => 'Error Missing Field(s)',
     33 => 'You must enter the URL to the .rdf file for portal blocks',
     34 => 'You must enter the title and the function for PHP blocks',
@@ -759,15 +759,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Poll Created',
-    4 => "Poll {$qid} saved",
+    4 => "Poll %s saved",
     5 => 'Edit Poll',
     6 => 'Poll ID',
     7 => '(do not use spaces)',
     8 => 'Appears on Homepage',
     9 => 'Question',
     10 => 'Answers / Votes',
-    11 => "There was an error getting poll answer data about the poll {$qid}",
-    12 => "There was an error getting poll question data about the poll {$qid}",
+    11 => "There was an error getting poll answer data about the poll %s",
+    12 => "There was an error getting poll question data about the poll %s",
     13 => 'Create Poll',
     14 => 'save',
     15 => 'cancel',
@@ -849,7 +849,7 @@ $LANG28 = array(
     29 => 'Path',
     30 => 'Import',
     31 => 'New Users',
-    32 => 'Done processing. Imported $successes and encountered $failures failures',
+    32 => 'Done processing. Imported %d and encountered %d failures',
     33 => 'submit',
     34 => 'Error: You must specify a file to upload.',
     35 => 'Last Login',

@@ -1,8 +1,8 @@
 <?php
 
 ###############################################################################
-# english.php
-# This is the english language page for GeekLog!
+# indonesian.php
+# This is the indonesian language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
@@ -326,7 +326,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Tidak ada berita yang harus ditampilkan',
     2 => 'Belum ada bacaan atau berita yang perlu ditampilkan.',
-    3 => "untuk topic {$topic}",
+    3 => "untuk topic %s",
     4 => 'Artikel atau Bahan Bacaan Hari Ini',
     5 => 'Berikutnya',
     6 => 'Sebelumnya',
@@ -381,12 +381,12 @@ $LANG08 = array(
     20 => 'dari Nama',
     21 => 'dari alamat email',
     22 => 'Semua harus diisi',
-    23 => "Email ini telah dikirim ke anda oleh {$from} pada {$fromemail} karena mereka mengira bahwa anda tertarik pada artikle ini {$_CONF['site_url']}.  ini bukan SPAM.",
+    23 => "Email ini telah dikirim ke anda oleh %s pada %s karena mereka mengira bahwa anda tertarik pada artikle ini {$_CONF['site_url']}.  ini bukan SPAM.",
     24 => 'Tanggapan pada bacaan ini pada',
     25 => 'Anda harus Login.',
     26 => 'Form ini akan mengizinkan dan mengirim email kepada user yang anda pilih.  Semua harus diisi.',
     27 => 'Pesan singkat',
-    28 => "{$from} tulis: {$shortmsg}",
+    28 => "%s tulis: ",
     29 => "Ini adalah digest harian dari{$_CONF['site_name']} untuk ",
     30 => ' Berita harian untuk ',
     31 => 'Judul',
@@ -504,7 +504,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Untuk mengirim {$type} anda harus login dulu.",
+    1 => "Untuk mengirim %s anda harus login dulu.",
     2 => 'Login',
     3 => 'User Baru',
     4 => 'Kirim Even',
@@ -528,7 +528,7 @@ $LANG12 = array(
     22 => 'Error: Ada yang masih kosong',
     23 => 'Harus diisi semua.',
     24 => 'Pengiriman tersimpan',
-    25 => " {$type} pengiriman anda tersimpan dengan sukses.",
+    25 => " %s pengiriman anda tersimpan dengan sukses.",
     26 => 'Limit kecepatan',
     27 => 'nama user',
     28 => 'Topik',
@@ -777,15 +777,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Silahkan masukkan pertanyaan dan minimal satu pertanyaan.',
     3 => 'Polling dibuat',
-    4 => "Poll {$qid} disimpan",
+    4 => "Poll %s disimpan",
     5 => 'Edit Polling',
     6 => 'Poll ID',
     7 => '(jangan gunakan spasi)',
     8 => 'Muncul pada Homepage',
     9 => 'Pertanyaan',
     10 => 'Jawaban / Votes',
-    11 => "There was an error getting poll answer data about the poll {$qid}",
-    12 => "There was an error getting poll question data about the poll {$qid}",
+    11 => "There was an error getting poll answer data about the poll %s",
+    12 => "There was an error getting poll question data about the poll %s",
     13 => 'Buat Polling',
     14 => 'simpan',
     15 => 'batal',
@@ -869,7 +869,7 @@ $LANG28 = array(
     29 => 'Path',
     30 => 'Import',
     31 => 'User baru',
-    32 => 'Proses telah selesai. Impor $successes and encountered $failures failures',
+    32 => 'Proses telah selesai. Impor %d and encountered %d failures',
     33 => 'Cari',
     34 => 'Error: anda harus mengisi file yang akan di upload.',
     35 => 'Login terakhir',

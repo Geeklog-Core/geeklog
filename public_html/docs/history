@@ -3,6 +3,12 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- In the light of bug #293, removed all variable names from the language files,
+  leaving only the $_CONF config variables [Dirk]
+- Fixed an error message when plugins didn't return an array from
+  plugin_getmenuitems_xxx (reported by computerade) [Dirk]
+- When sending emails from the admin/mail.php, some user's names weren't set
+  in their email address (reported by LWC) [Dirk]
 - Removed an extra <br> from before and between data provided by plugins in
   the What's New block (feature request #292) [Dirk]
 - When creating a new user from admin/user.php, don't determine the uid before

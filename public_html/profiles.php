@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.36 2004/08/09 18:36:29 dhaun Exp $
+// $Id: profiles.php,v 1.37 2004/10/07 21:10:23 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -239,9 +239,9 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
  	$result = DB_query ($sql);
  	$A = DB_fetchArray ($result);
     $shortmsg = COM_stripslashes ($shortmsg);
- 	$mailtext = $LANG08[23] . LB;
+ 	$mailtext = sprintf ($LANG08[23], $from, $fromemail) . LB;
 	if (strlen ($shortmsg) > 0) {
-		$mailtext .= LB . $LANG08[28] . LB;
+		$mailtext .= LB . sprintf ($LANG08[28], $from) . $shortmsg . LB;
 	}
     $mailtext .= '------------------------------------------------------------'
               . LB . LB

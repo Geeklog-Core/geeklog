@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.85 2004/10/05 19:52:46 dhaun Exp $
+// $Id: user.php,v 1.86 2004/10/07 21:10:23 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -600,10 +600,7 @@ function importusers ($file)
     fclose ($handle);
     unlink ($filename);
 
-    $report = $LANG28[32];
-    eval ("\$report = \"$report\";");
-
-    $retval .= '<p>' . $report;
+    $retval .= '<p>' . sprintf ($LANG28[32], $successes, $failures);
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $retval .= COM_siteFooter ();  

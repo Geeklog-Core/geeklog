@@ -3,7 +3,7 @@
 ###############################################################################
 # This is the spanish language page for GeekLog!
 # 
-# Copyright (C) 2000 Jason Whittenburg
+# Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
 #
 # This program is free software; you can redistribute it and/or
@@ -317,7 +317,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'No hay novedades para mostrar',
     2 => 'No hay nuevas notas para mostrar. Puede que no haya novedades para esta Sección o que sus preferencias sean muy restrictivas.',
-    3 => "para la Sección {$topic}",
+    3 => "para la Sección %s",
     4 => 'Nota del Día',
     5 => 'Siguiente',
     6 => 'Anterior'
@@ -370,12 +370,12 @@ $LANG08 = array(
     20 => 'Remitente',
     21 => 'Responder a',
     22 => 'Todos los campos son requeridos',
-    23 => "Este email fue enviado a Ud por {$from} en {$fromemail} porque pensó que podría interesarle esta Nota en  {$_CONF['site_url']}. Esto no es SPAM y los emails involucrados en este envío no fueron guardados para ningún uso posterior.",
+    23 => "Este email fue enviado a Ud por %s en %s porque pensó que podría interesarle esta Nota en  {$_CONF['site_url']}. Esto no es SPAM y los emails involucrados en este envío no fueron guardados para ningún uso posterior.",
     24 => 'Comentario sobre esta nota en',
     25 => 'Debe conectarse para utilizar esta herramienta. Este control se realiza para evitar el mal uso del sistema.',
     26 => 'Este form le permitirá enviar un email al usuario seleccionado. Todos los campos son necesarios.',
     27 => 'Mensaje corto',
-    28 => "{$from} escribió: {$shortmsg}",
+    28 => "%s escribió: ",
     29 => "Este es el resúmen diario de {$_CONF['site_name']} para ",
     30 => ' Diario para ',
     31 => 'Título',
@@ -492,7 +492,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Para enviar {$type} debe estar conectado con su usuario.",
+    1 => "Para enviar %s debe estar conectado con su usuario.",
     2 => 'Ingresar',
     3 => 'Nuevo usuario',
     4 => 'Enviar un Evento',
@@ -598,7 +598,7 @@ $LANG21 = array(
     28 => 'Opciones del Bloque PHP',
     29 => 'Funciones de Bloque',
     30 => 'Si desea que su bloque utilice código PHP, ingrese aqui el nombre de la función. La función debe tener el prefijo "phpblock_" (ej. phpblock_getweather). De no tenerlo NO será invocada. Asegúrese de no incluir los paréntesis, "()", al final del nombre. Por último, se recomienda que guarde todo código PHP en /path/to/geeklog/system/lib-custom.php. Esto le permitirá que su código se mantenga aún entre cambios de versiones del sistema.',
-    31 => 'Error en un Bloque PHP.  La función, $function, no existe.',
+    31 => 'Error en un Bloque PHP.  La función, %s, no existe.',
     32 => 'Error, Faltan Campos',
     33 => 'Debe ingresar el URL del archivo .rdf para los Bloques del Sistema',
     34 => 'debe ingresar el Título y la Función en los Bloques PHP',
@@ -757,15 +757,15 @@ $LANG25 = array(
     1 => 'Modo',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Fecha de creación',
-    4 => "Encuesta {$qid} grabada",
+    4 => "Encuesta %s grabada",
     5 => 'Editar la Encuesta',
     6 => 'ID',
     7 => '(no use espacios)',
     8 => 'Aparece en la Portada',
     9 => 'Pregunta',
     10 => 'Respuestas / Votos',
-    11 => "Hubo un error buscando los datos para las respuesta de la Encuesta {$qid}",
-    12 => "Hubo un error buscando los datos para la pregunta de la Encuesta {$qid}",
+    11 => "Hubo un error buscando los datos para las respuesta de la Encuesta %s",
+    12 => "Hubo un error buscando los datos para la pregunta de la Encuesta %s",
     13 => 'Crear Encuesta',
     14 => 'grabar',
     15 => 'cancelar',
@@ -847,7 +847,7 @@ $LANG28 = array(
     29 => 'Ruta',
     30 => 'Importar',
     31 => 'Nuevos Usuarios',
-    32 => 'Proceso finalizado. Se importaron $successes y hubieron $failures fallos',
+    32 => 'Proceso finalizado. Se importaron %d y hubieron %d fallos',
     33 => 'enviar',
     34 => 'Error: Debes especificar un archivo a enviar.',
     35 => 'Last Login',

@@ -2,7 +2,7 @@
 
 ###############################################################################
 # danish.php
-# This is the english language page for GeekLog!
+# This is the danish language page for GeekLog!
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -318,7 +318,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Der er ingen nyheder at vise',
     2 => 'Der er ingen nyheder i databasen. Enten er der ikke nogen nyheder tilføjet dette emne, eller også er dine brugerpræferencer muligvis for restriktive.',
-    3 => "for emnet {$topic}",
+    3 => "for emnet %s",
     4 => 'Mest spændende lige nu',
     5 => 'Næste',
     6 => 'Forrige'
@@ -371,12 +371,12 @@ $LANG08 = array(
     20 => 'Fra Navn',
     21 => 'Fra Emailadresse',
     22 => 'Alle felter skal udfyldes',
-    23 => "Denne email er sendt til dig fra {$from} ({$fromemail}), fordi vedkommende mener at du måtte være interesseret i denne nyhed/historie fra {$_CONF['site_url']}. Dette er ikke SPAM (reklameemail), og emailadresserne involveret i denne transaktion blev ikke gemt til senere brug.",
+    23 => "Denne email er sendt til dig fra %s (%s), fordi vedkommende mener at du måtte være interesseret i denne nyhed/historie fra {$_CONF['site_url']}. Dette er ikke SPAM (reklameemail), og emailadresserne involveret i denne transaktion blev ikke gemt til senere brug.",
     24 => 'Kommenter denne historie på',
     25 => 'Du skal være logget ind for at kunne anvende denne mulighed. Ved at du logger ind, hjælper det os til at undgå misbrug af systemet',
     26 => 'Denne formular lader dig afsende en email til den valgte bruger. Alle felter skal udfyldes.',
     27 => 'Kort besked',
-    28 => "{$from} skrev: {$shortmsg}",
+    28 => "%s skrev: ",
     29 => "Dette er den daglige dosis fra {$_CONF['site_name']} for ",
     30 => ' Daglig Dosis for ',
     31 => 'Titel',
@@ -493,7 +493,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "For at tilføje en {$type} skal du være logget ind.",
+    1 => "For at tilføje en %s skal du være logget ind.",
     2 => 'Log ind',
     3 => 'Ny Bruger',
     4 => 'Tilføj en Begivenhed',
@@ -517,7 +517,7 @@ $LANG12 = array(
     22 => 'Fejl: Manglende Felter',
     23 => 'Udfyld alle felter i formularen. De er alle påkrævet.',
     24 => 'Tilføjelsen er Gemt',
-    25 => "Din {$type} tilføjelse er gemt.",
+    25 => "Din %s tilføjelse er gemt.",
     26 => 'Fartbegrænsning',
     27 => 'Brugernavn',
     28 => 'Emne',
@@ -758,15 +758,15 @@ $LANG25 = array(
     1 => 'Måde',
     2 => 'Indtast et spørgsmål og mindst et svar',
     3 => 'Afstemning Lavet',
-    4 => "Afstemning {$qid} gemt",
+    4 => "Afstemning %s gemt",
     5 => 'Rediger Afstemning',
     6 => 'Afstemning ID',
     7 => '(brug ikke mellemrum)',
     8 => 'Vises på Siden',
     9 => 'Spørgsmål',
     10 => 'Svar/Stemmer',
-    11 => "Der er sket en fejl ved hentning af svardata til afstemning {$qid}",
-    12 => "Der er sket en fejl ved hentning af spørgsmåldata til afstemning {$qid}",
+    11 => "Der er sket en fejl ved hentning af svardata til afstemning %s",
+    12 => "Der er sket en fejl ved hentning af spørgsmåldata til afstemning %s",
     13 => 'Lav Afstemning',
     14 => 'gem',
     15 => 'fortryd',
@@ -848,7 +848,7 @@ $LANG28 = array(
     29 => 'Sti',
     30 => 'Importer',
     31 => 'Nye Brugere',
-    32 => 'Arbejdet er gjort. Importerede $successes og stødte på $failures fejl',
+    32 => 'Arbejdet er gjort. Importerede %d og stødte på %d fejl',
     33 => 'tilføj',
     34 => 'Fejl: Du skal specificere en fil.',
     35 => 'Last Login',
