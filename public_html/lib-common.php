@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.203 2003/02/24 15:40:06 dhaun Exp $
+// $Id: lib-common.php,v 1.204 2003/03/01 16:40:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -4649,18 +4649,25 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
     // collect any links from the story text
     $rel = COM_extractLinks( $fulltext );
 
-    // add a link to "search by author"
-    if( $_CONF["contributedbyline"] == 1 )
+    if( !empty( $_USER['username'] ) || (( $_CONF['loginrequired'] == 0 ) &&
+           ( $_CONF['searchloginrequired'] == 0 ))) {
+        // add a link to "search by author"
+        if( $_CONF["contributedbyline"] == 1 )
     {
-        $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
-        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
+            $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
+            $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
+        }
+
+        // add a link to "search by topic"
+        $topic = DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" );
+        $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
     }
 
-    // add a link to "search by topic"
-    $topic = DB_getItem( $_TABLES['topics'], 'topic', "tid = '$tid'" );
-    $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;topic=$tid\">{$LANG24[38]} $topic</a>";
-
-    $related = COM_checkHTML( COM_checkWords( COM_makeList( $rel )));
+    $related = '';
+    if( sizeof( $rel ) > 0 )
+    {
+        $related = COM_checkHTML( COM_checkWords( COM_makeList( $rel )));
+    }
 
     return( $related );
 }

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.49 2003/02/09 21:27:01 tony Exp $
+// $Id: search.php,v 1.50 2003/03/01 16:40:25 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -1099,16 +1099,15 @@ if ($mode == 'search') // search query
     } else {
         $query = strip_tags ($query);
 
-        if (!advsearchAllowed ($query)) {
-            // if advanced search is not allowed for the current user
-            // then just ignore the advanced options
-            $type = 'all';
-            unset ($datestart);
-            unset ($dateend);
-            unset ($author);
-            unset ($topic);
+        // check for an advanced search
+        if (!advsearchAllowed ($query) && (($type != 'all') ||
+                (isset ($datestart) && !empty ($datestart)) ||
+                (isset ($dateend) && !empty ($dateend)) ||
+                (isset ($author) && ($author > 0)) ||   
+                (isset ($topic) && !empty ($topic)))) {
+            $display .= loginRequired ();
         }
-
+        else
         // check for minimal length of the query
         if ((strlen ($query) < 3) && (empty ($topic) || ($topic == '0')) &&
                 (empty ($datestart) && empty ($dateend)) && (empty ($type) ||
