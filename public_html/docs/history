@@ -1,0 +1,823 @@
+GeekLog History/Changes:
+
+
+August 17, 2001
+----------------
+- Released 1.3b
+- Added in support for plugins and has been test for *nix and *should* work for windows
+- A few bug fixes
+
+August 3, 2001
+----------------
+- Released 1.2.2 
+- Added the ability for admins to save drafts of stories
+- Fixed a bug with in calendar_event.php when adding event to user calendar
+- Fixed a bug with the search bar in header.php
+
+August 1, 2001
+----------------
+- Released 1.2.1
+- a few minor bug fixes
+- Added google-like paging feature
+- fixed all references to newsgeeks to point to geeklog.org
+- when you login when on users.php you are routed to index.php when successfully logged in
+  instead of back to users.php
+
+July 19, 2001
+----------------
+- Released 1.2 stable.  
+- Added personalized calendars
+- Fixed a number of bugs from 1.2b
+- Fixed MySQL 3.23 incompatibility issues
+- Added alt_header.php which is the same as header.php minus the left hand side
+
+May 29, 2001
+----------------
+
+- Released 1.2b.  Changes are below:
+-Fixed security error in usersettings.php with PGP key
+-Now allows posts that don't go to front page
+-Added new calendar
+-Whether the count of stories and submissions shows up in the Sections block is driven in config.php
+-Add ability to sort topics in Section block by number or alpha (specified in config.php)
+-Renamed header.inc and footer.inc to have the php extension to avoid letting nosy people see the code
+-Added field called limitnews to topics table.  This is the same as limitnews in the config.php but applys to only that topic (i.e. you can control the number of stories that show up in each topic
+-changed userindex.maxstories to default to null.  This is so that the order of precedence for the number for articles that show up will be 1) userindex.maxstories 2) topic.limitnews 3) $CONF["limitnews"]
+-added config variable called $CONF["minnews"] which specifies the minimum number of stories per page regardless of topic (i.e. it overrides topics.limitnews)
+-an anonymous user can now email a story to a friend and they can enter some text to accompany the message
+-fixed bug that allowed users to post comments to non-existent articles through article.php
+-added the Get Geeklog Articles in Your Mailbox feature.  This is dependent on cron and a shelled php script.  This can be turned off in the config file
+-session management has been improved
+-moved "appears on homepage" setting on poll administraction screen to the top of the form to
+keep from having to scroll down all the way.
+-Added messages to various user actions (i.e. notification that submission was sent, confirmation that user data was saved, etc)
+-Added Upcoming events block
+-Fixed MySQL 3.23 incompatibilities
+-added account creation date to user table along with other useful information (aim, yim, etc)
+-added email gl users/admins feature
+-fixed checkhtml function so that strings to gain extra spaces
+-added file custom_code.php.  This is where admins should put all custom code (not addon code).  GL admins should never touch common.php moving forward
+-added version checking system to let admins check for current version
+-added $CONF["OS"] for use by Geeklog Addons (Use PHP OS variable).  It represents the operating system that Geeklog is running on and is useful for producing useful error messages should a user be trying to use an addon that is OS specific
+ 
+
+September 24, 2000
+---------------------------------------
+
+- Tar'ed it up and shipped 1.1 out the door!
+
+September 24, 2000
+-----------------
+
+- Date in moderation now shows the correct
+  submission date.
+- Maxstories now counts a feature as a story.
+- Saving user information now returns you the
+  the edit screen.
+
+September 18, 2000
+-----------------
+
+- Fixed comment post mode preview bug.
+- If a block is empty, it will not be displayed.
+- Fixed a user creation error.
+- Fixed the submission scripts to add and remove 
+  slashes in all the right places.
+
+September 13, 2000
+-----------------
+
+- Added a limit check to index.php to ensure stories
+  are displayed.
+- If block order is between 1 and 9 it is a default
+  block.  Anything greater than 9 will not be displayed
+  without the user configuring thier settings for it.
+- Added bolding to the display preferences screen for
+  default blocks.
+
+September 12, 2000
+-----------------
+
+- If a user sets maxstories to less than 5, max stories
+  will be 5.
+- If a story id and poll id are the smae they will 
+  share comments and the poll will be displayed on the
+  stories article page.
+- Poll results box is now linked to comments.
+- Added stripslashes to the links description.
+- Made HTML the default posting format.
+- Updated the user authentication to address a login bug.
+- Added a 404 script.
+- Updated the admin user editor to create all the new
+  user tables when creating a user.
+- Updated the What's Releated function to better parse
+  for links.
+- Updated comment functions to update the comment counter
+  more often.
+- Finished the addition of a "smart" style sheet!  It will
+  now format the font size according to the users browser
+  an platform.
+
+September 9, 2000
+-----------------
+
+- Updated some missing to language in english.php.  
+  Thanks to Hidekazu SHIOZAWA.
+- Updated the stats script.
+- Added post modes, the user can now select plain
+  text or HTML.
+- Added user preferences for date format.
+
+September 8, 2000
+-----------------
+
+- Fixed a few more issues surronding the 
+  $CONF["base"] placement. Thanks to Hidekazu SHIOZAWA.
+- Added sig to user accounts.
+- Added a system hit counter
+- Fixed a poll comment bug.
+- Comments can now be enabled on a per story basis.
+- Comments can now be enabled on a per poll basis.
+ 
+September 7, 2000
+-----------------
+
+- Fixed the // uri issue.
+- Fixed a few issues surronding the $CONF["base"]
+  placement in links.
+- Began work on new user customization system!
+	- Index Configuration
+	- Comment Configuration
+	- Story Configuation
+	- User Configuration
+- Fixed the link submission script so it now
+  actually works.
+
+September 6, 2000
+-----------------
+
+- Updated the email story to a friend to use the
+  db widgets. 
+- Fixed the "More by author" search links from the
+  article page.
+- Fixed the article editor to be able to delete
+  submissions.
+- Fixed translation issues by adding two more
+  strings to english.php.  Added $LANG01[61] and
+  $LANG01[62].
+- Fixed a formating error on the links page.
+- Fixed the admin user editor to allow blanking
+  on non-essential fields.
+- Removed moderation option from config.  If you 
+  want an unmoderated site there are better
+  applications out there like UBB and FreeLinks.
+- Updated the user profile page to put all
+  descriptors at the top of the cell for the
+  about and PGP key boxes.
+- Updated INSTALL.HTML
+
+September 5, 2000
+-----------------
+
+- Olderstuff() will now parse special charactors.
+- Fixed the admin story editor to properly parse
+  the special charactors in the text for editing.
+- Fixed article() to stripslashes from the title.
+
+September 4, 2000
+-----------------
+
+- Fixed a logout bug effecting Netscape users.
+- Fixed a change password bug effecting Netscape
+  users.
+- Fixed references to speck.gif, spec.gif was
+  referenced incorrectly.
+- Fixed the story submission to correctly 
+  record the user instead of Anonymous.
+- Added multiple previews when submitting a
+  story.
+- Update to english.php
+- Updated the blockparser to use str_replace()
+  instead of strtr().  The use of strtr() was
+  causing issues on some platforms using 
+  earlier versions of PHP4.
+- Added a sample httpd.conf Apache configuration
+  file to the distribution.
+- Updated INSTALL.HTML
+- Updated README
+
+September 1, 2000
+-----------------
+
+- Fixed a bug in the database upgrade scripts.
+
+RELEASE!!!  1.0!!! - August 29, 2000
+------------------------------------
+
+- Tar'ed it up and shipped 1.0 out the door!
+
+August 29, 2000
+---------------
+
+- Fixed a bug in the command and control center
+  which didn't allow the display to be completely
+  updated after a batch moderation.
+
+August 28, 2000
+---------------
+
+- Completed the command and control center
+  functionality.
+- Completed new search engine.
+- Fixed language display bug in story submission
+  form.
+
+August 27, 2000
+---------------
+
+- Fixed a login bug that occoured under FreeBSD.
+
+August 26, 2000
+---------------
+
+- Fixed a bug that allowed anyone logged in to
+  delete a comment.
+
+August 22, 2000
+---------------
+
+- Fixed a nasty delete everything bug with the
+  link editor.
+- Continued with search engine update.
+
+August 21, 2000
+---------------
+
+- Fixed a bug with the link counter.
+- Reworked the olderstuff block.
+- Updated the search engine.
+- Fixed the speed limit warnings so they show the
+  number of seconds since the last post.
+- Updated the index page to show date of last
+  comment.
+
+August 20, 2000
+---------------
+
+- Cleaned out now defuct class settings.
+- Comments can now be set to force login to post.
+- Block list is now sorted by type
+- Email forms updated.
+- Fixed the no from info bug in the password email.
+- Fixed the topic editor background bug.
+- Postions of the olderstuff and poll blocks is now
+  configurable.
+- Olderstuff block can now be turned off.
+- Olderstuff block now shows 2x the news limit.
+- Updated the install instructions.
+
+August 19, 2000
+---------------
+
+- Modified the polls, you can now set then maximum
+  number of possible answers in config.php.
+- Fixed edit link bug.
+- Updared english.php for the new admin files.
+- Modified the cookies to have a configurable
+  expiration time for users and admins.  This can
+  be set in config.php.
+
+August 18, 2000
+---------------
+
+- Reworked the default interface.
+- Fixed numerous bugs.
+
+August 14, 2000
+---------------
+
+- Began moving portions of the HTML in to blocks
+- Updated the english.php file.
+
+August 13, 2000
+---------------
+
+- Updated how polls are shown.
+- Updated the poll adminstration interface, this was
+  the last old piece of code to be re-worked.
+
+August 12, 2000
+---------------
+
+- Completed new submission forms.
+- Completed added base path to all references.
+- Completed scripts for user account creation.
+- Completed comment intergration with user
+  accounts.
+- Added comment posting speed limit.
+
+
+August 11, 2000
+---------------
+
+- Completed new story editor and managment 
+  functions.
+- Completed database widgets.
+- Began work on reworking the poll editor
+  and managment.
+- Removed the following functions that have
+  become obsolete:
+	- countx
+	- topicsel
+	- getTopic
+	- saveuser
+	- rot13
+- Removed the following array used to set
+  premissions in older versions
+	- $ADMIN
+- Began work on intergrating comments with
+  user accounts.
+
+August 7, 2000
+--------------
+
+- More work on user accounts and database
+  widgets.
+- Minor cosmetic fixes.
+- Began re-working the administration forms.
+
+August 7, 2000
+--------------
+
+- More work on new submission engine and 
+  database widgets.
+- Implemented submission speed limit.
+
+August 6, 2000
+--------------
+
+- Added command and contol center to admin and
+  moderate submissions.
+- Added ability for users to submit links.
+- Added ability for users to submit events.
+- Began intergrating user accounts.
+- Began intergration of a help system.
+
+August 5, 2000
+--------------
+
+- Created new database function templates.  Began
+  updating all the scripts to use these new
+  database calls.
+
+BETA RELEASE!!!  0.5!!! - August 3, 2000
+----------------------------------------
+
+- Tar'ed it up and shipped 0.5 BETA out the door!
+
+August 2, 2000
+--------------
+
+- Getting ready for 0.5 release!!
+- Parent links no longer show up on top level
+  comments.
+- Story moderation now show the "new story" button
+  even if no stories exist.
+- Story contribution preview now displays the date
+  correctly.
+- Comment preview now displays the date correctly.
+- Made the log path configurable.
+- Fixed false "no stories" error in index.php.
+- Fixed the topic highlighting in showtopics.  
+- Fixed comments so that the posting and delete
+  work properly again.
+- Events (calander) now properly parses special
+  charactors.
+- Links now properly parses special charactors.
+- Mail to a friend should work better now.
+
+July 30, 2000
+-------------
+
+- Moved all date functions to using strftime and
+  locale settings for display of dates and times
+  in local languages and formats.  These are also
+  configurable in the config.php file.
+
+July 27, 2000
+-------------
+
+- Finished move admin strings to english.php.
+
+July 26, 2000
+-------------
+
+- Added the featured article functionality.
+- Fixed a special charactors problem in the 
+  comments, you can now use special charactors.
+- Made some changes to the email story function
+  to provide a statement on this isn't spam!
+- Added parent function to comments.
+
+July 25, 2000
+-------------
+
+- Began moving strings from the admin files in to 
+  english.php
+- Finished up printable story and email story
+  functions.
+- More minor bug fixes to the comment engine.
+
+July 24, 2000
+-------------
+
+- Fixed encoding bugs in comments.  Slashes are now
+  being stripped properly.
+- Fixed the comment control bar, the title and
+  number of comments are now showing up correctly.
+- Fixed the url encoding in the reply links.  The 
+  title of a reply now copies over in to the form.
+- Bought more vodka!  The vodka shortage is over!
+- Adjusted the comment spacing.
+- Began to add the printable story and email story
+  functions.
+
+July 23, 2000
+-------------
+
+- Added comment count to olderstuff block.
+- Reworked the polls for better display
+- Worked more on the comment engine, all comment
+  modes (none, flat, threaded, nested) work at
+  one level or another.  This is really shaping up
+  well and we have unchained the monkies from
+  their typewriters...  But no novel yet...
+- Out of vodka and can't buy any more since it is
+  illegal to sell alcohol on Sundays in Georgia.
+
+July 22, 2000
+-------------
+
+- Changed password functions to use md5, crypt()
+  is becoming to unreliable.  Running the dat
+
+<editor problems, change log for 0.4.1.2 - 0.4.1.1 lost> 
+
+BETA RELEASE!!!  0.4.1!!! - July 19, 2000
+-----------------------------------------
+
+- Tar'ed it up and shipped 0.4.1 BETA out the door!
+
+July 19, 2000
+-------------
+
+- RDF fetch bug fixed.  The rdfimport routine was
+  not correctly identifying if the file open didn't
+  work correctly.
+- Poll Dispaly bug fixed.  Poll wouldn't display if
+  there wern't at least two user defined blocks.
+- Added word count to the read more display.
+- Move all strings for public side functions to 
+  a resource bundle called english.php.  Geeklog can
+  now be translated.  If you do translate Geeklog
+  please send me your resource file!  Great thanks 
+  goes to Mischa Polivanov for his work on this
+  project!
+- When moderating a story, it now returns you to 
+  the submissions que when your done.
+
+BETA RELEASE!!!  0.4.0!!! - July 8, 2000
+----------------------------------------
+
+- Tar'ed it up and shipped 0.4.0 BETA out the door!
+
+July 8, 2000
+------------
+
+- Update the poll to restrict votes by IP.  This
+  function only creates a table of IP addresses
+  pollids and timestamps, votes are NOT tracked!
+  Addresses are deleted after an admin specified 
+  peroid of time set with the config.php variable
+  $CONF["polladdresstime"].
+- Added $CONF["pollcookietime"] to config.php to
+  allow you to set the amount of time the poll
+  cookies will exist for the user.
+- Changed poll to only show a % in the smaller
+  index window.  Graphs are now only on the full
+  view of the results.
+- Added SQL query interface for admins.  This was
+  added for those that don't have shell access or
+  shell access isn't alaways avaiable for 
+  troubleshooting.  Be VERY careful with this!
+- Fixed a really nasty bug with the RDF import
+  HTTP calls!  This was causing the server to 
+  lock up under certian circumstances.
+- Update showblocks() to now order polls and
+  olderstuff as well.  Here's the new method:
+    - show blockoder = 0 to 1
+    - show the polls
+    - show blockorder = 2
+    - show olderstuff
+    - show remaining blocks
+- Reworked the calendar layout a bit.
+- Added two new doc files dbschema.html and
+  dbschema.png to document the database.
+
+July 5, 2000
+------------
+
+- New admin menu as well as more admin checks
+  in editing of stories and blocks.  In stories
+  only the owner or someone with a seclev of 200
+  or higher can edit a story.  Blocks seclev's
+  are now being enforced.
+- More stats stuff
+- Access logging is now working!  It reports on
+  admin access and illegal operations in
+  /logs/access.log
+- Found some more bugs released to stricter PHP
+  syntax guidelines in blocks.php and users.php.
+  They've been fixed!
+- Added the beginings for threaded comments, but
+  it is NOT working yet.
+- Refined different aspects of the database, this
+  is going to be the bigest DB update script yet!
+- Calendar has been rewored as events, since I can
+  see Security Geeks using this functionality for
+  things other than a calendar.  Hmm, what is he 
+  thinking?
+- Adding CSS references where needed when I find
+  them.
+
+July 4, 2000
+------------
+
+- Added additional security checks for admins
+  as well as adding additional admin tracking.
+- REMOVAL: function isAdmin() is being removed.
+- Created a new story format and parser.  The
+  story text is now broken in to two blocks, an
+  introtext block and bodytext block.  Introtext
+  is all that is displayed on the index page.
+  Both introtext and bodytext are displayed on
+  an article page.  There are many other neat
+  things that have changed to go along with this,
+  too many to mention!  An example is "read more"
+  is only displayed when there is data in bodytext.
+- Added comment and poll stats to the stats page.
+
+BETA RELEASE!!!  0.3.0!!! - July 3, 2000
+----------------------------------------
+
+- Tar'ed it up and shipped 0.3.0 BETA out the door!
+
+July 3, 2000
+------------
+
+- Fixed poll division by zero error. (xix)
+- Added the calander.  This also involved adding
+  lines to config.php and style.css.
+- Added next a previous links to the stories list.
+  Security Geeks has almost 2000 stories now.  We
+  needed a better way to view this information
+  without killing the SQL server!
+- Fixed a parsing bug on the contrib form. (richpav)
+- Fixed a bug in which votes were not being saved
+  if the first answer has 0 votes in the poll
+  editor. (richpav)
+
+July 2, 2000
+------------
+
+- Fixed a rouge <xmp> tag in contrib.php.
+- Added a new function to check email addresses.
+- Fixed a problem with the checking of <a href=>
+  tags. (frank)
+- Moved more of the layout to CSS.  Giving some 
+  though to creating a CSS editor for the site.
+- Added additional error checking on submissions.
+- Evaluated the security of the file layout, file
+  premissions, cookies and made some minor changes
+- Added the RDF import capibilty to the blocks.  
+  Woo-hoo!  Half way there to 0.3.0!
+- Fixed a bunch of function calls that are now
+  considered errors in PHP 4.0.1pl2 (richpav)
+
+BETA RELEASE!!!  0.2.1!!! - July 1, 2000
+----------------------------------------
+
+- Tar'ed it up and shipped 0.2.1 BETA out the door!
+  The bugs fixed here are pretty signifant.  This 
+  has none of the 0.3.0 features.
+
+July 1, 2000
+------------
+
+- Cleaned up the all of the PHP scripts and added 
+  missing ;'s. (macole)
+- Fixed some table layouts for comment and story 
+  submissions.
+
+June 30, 2000
+-------------
+
+- Fixed an bug in the story submit functions.  It
+  seems addslashes was droped when putting in the
+  content checking.  It's back now!
+- Added a line to display the allowable HTML in the
+  story editor and submission form.
+
+BETA RELEASE!!!  0.2.0!!! - June 29, 2000
+-----------------------------------------
+
+- Tar'ed it up and shipped 0.2.0 BETA out the door!
+
+June 29, 2000
+-------------
+
+- Bugs Found Score: Women:28 Men:13 
+- Security hole regarding user cookies.  The
+  user cookie contined the site key, this 33%
+  is part of the information needed to forge
+  a admin site key.  This has been fixed.
+- Also fixed a problem in the user cookie where
+  some of Jason's (the other Jason) info for
+  his site was coded in there.
+- Added the ability to specify your own salt 
+  value for the encryptor.
+- Added filters that are admin configurable to
+  strip out unwanted HTML tags and key words.
+  These options are configurable in the 
+  config.php file.
+- Blocks are now topic aware.
+- Change sid to char(20) in the database tables
+  stories and comments.  This was in order to 
+  create compatibilty between stories, comments
+  and polls.
+- Poll comments!
+- Added a blockorder field to the blocks table. You 
+  can now modify the display order of blocks.
+- Fixed a bug in the link generation in stats.php.
+- Changed the description field in the links
+  tables from varchar(255) to text to allow for
+  longer descriptions.
+- Preview now uses article() function.  Shows a 
+  true preview!
+- Fixed a bug in comment.php that still may the 
+  user type in a user name email even if if the
+  anonymous option was chosen.  It never actually
+  saved the info, just asked for it.  Now it no
+  longer asks. :-)
+
+June 28, 2000
+-------------
+
+- Correct setting of a user cookie in comment.php,
+  contrib.php and profile.php.  The cookie was not 
+  being set to remember a users infomation if they 
+  selected to do so.
+- Fixed the CSS layout for the comment bar, this 
+  wasn't working properly under Netscape.
+- Fixed an error in the change password function.  It
+  was displaying a error even when the change was 
+  successful.
+- Made total votes a caculated field in the poll
+  editor, this is also a easy way to reset the count
+  in the case of SQL errors.
+- Fixed topic sorting bug, topics sort themselves now.
+  This also involved a change to the config.php file
+  in which $CONF["topicssort"] was changed to
+  $CONF["topicsort"].
+- Added feature to track which admin moderated a 
+  story and posted it to the site.
+
+BETA RELEASE!!!  0.1.0!!! - June 27, 2000
+-----------------------------------------
+
+- Tar'ed it up and shipped 0.1.0 BETA out the door!
+
+June 27, 2000
+-------------
+
+- Added the ability to delete comments.  NOTE: I do
+  not plan on the abilty to edit comments.  Just
+  a personal thing, thats all.
+
+June 26, 2000
+-------------
+
+- Created search engine that searched stories,
+  comments and links.
+- Update comments and how they are displayed.
+- Created new form for submitting comments.
+- Enhansed a bunch of the forms.
+- Removed some obsolete stuff, cleaned things up a bit.
+- Added some additional error checking to submits.  Also
+  moved all error checking to the server side.  I was 
+  testing the use of JavaScript but too many people 
+  like to turn it off!  I know I do! :-)
+
+June 25, 2000
+-------------
+
+- Squashed 23 bugs with the help of my wife!  Now if
+  only Frank would get his bug reports in! 
+- Created interface for editing, creating and deleting
+  links.
+- Cleaned PHP procedures out of inc files.
+- Updated and tested SQL statements to refelct DB 
+  changes.
+- DB changes frozen for release and the beta testers 
+  rejoiced!
+
+June 24, 2000
+-------------
+
+- Created interface for editing, creating and deleting
+  users.
+- Figgin problem with polls deleting themselves seems
+  to be fixed now.
+- Created interface for editing, creating and deleting
+  topics.
+- Created interface for editing, creating and deleting
+  blocks.
+- Created interface for moderation, editing and posting
+  of stories by admin.  This worked out well!
+
+June 23, 2000
+-------------
+
+- Finished up additions to the datebase, need to change
+  the forms now so the site can use the new fields.
+  Some of the new feilds are for future use as well.
+- Added descriptions to the Links page.
+- Fixed the search page so its now formated correctly.
+- Finished up the pollbooth functions (edit and delete).
+- Optimized some of the HTML in the scripts, further 
+  optimization later!
+
+June 21, 2000
+-------------
+
+- Created a new layout format using all external CSS
+  calls.  Let the client do the work!
+- Finished moving configuration to config.php
+- Weeded out some functions in common.php.  Move
+  functions that are only used by one script to that
+  script.  Combined other similar functions in to one
+  function.  Smaller...  Faster... More Stable!
+- Only 6 more items on the to do list for 0.1.0.0
+
+June 20, 2000
+-------------
+
+- Created admin functions for the pollbooth.  Seems the 
+  other authors on the site don't like hand entering SQL!
+  I don't like them having shell accounts!  -grin-
+- Update the Header feild in the Stories block to be a 
+  little bigger.  This should let wordy authors emblish
+  their titles more!
+- Created a more robust errorlog routine.  Now has the
+  options of output to a log, the screen or both!
+
+June 19, 2000
+-------------
+
+- Created a pollbooth for voting.  All user functions are
+  in pollbooth.php.  There are no admin functions yet as I
+  just love hand entering SQL!
+
+June 18, 2000
+-------------
+
+- Optimizations made to the SQL connections and calls.  Too
+  much done here to talk about, but part of it was moving 
+  the site configuration to a flat file.  These changes
+  should decrease the usage of the SQL server a great deal.
+  This took up most of my day.
+- Variable usage optimizations.  Made many, many chnages in
+  the way variables were being used.  This should result in
+  cleaner, faster code that _may_ use a little less memory?
+  Hey, if I can save 2k per hit, thats a big deal! :-)
+- Updated all code and tested to ensure php4 compatibility.
+  So from now on only php4 will be run on the Geeks web
+  servers.  So I changed all the extentions and links from
+  .php3 to .php to mark this moment.
+- Restructured the directory layout so I can implement some
+  new security settings on the files.  Hmmm, I bet you 
+  wondering "what is this mad-man thinking?"
+
+June 17, 2000
+-------------
+
+- Initial announcement, running this new code on the Geeks
+  web servers.
+- Special thanks to Jason Hines and phpWebLog! His work 
+  inspired much of my efforts!  Unfortunatly phpWebLog is 
+  taking a different direction that the Geeks sites needed.
+  However, all the code I am writing here will be published
+  in the hopes that Jason and others may find these functions
+  useful.  If you looking for a weblog software that is cool,
+  configurable and supported by someone I would recommend you
+  check out http://phpweblog.org and party on dudes!

@@ -1,0 +1,54 @@
+<?php
+
+function find($component) { 
+	global $HTTP_USER_AGENT; 
+	$result = stristr($HTTP_USER_AGENT,$component); 
+	return $result; 
+} 
+
+if (find('Win') && (find('MSIE 4') || find('MSIE 5') || find('MSIE 6'))) {
+        $font_medium='medium';
+        $font_small='small';
+        $font_smaller='x-small';
+        $font_smallest='xx-small';
+} else if (find('Win')) {
+        $font_medium='large';
+        $font_small='medium';
+        $font_smaller='small';
+        $font_smallest='x-small';
+} else if (find('Mac')){
+        $font_medium='x-large';
+        $font_small='large';
+        $font_smaller='medium';
+        $font_smallest='small';
+} else {
+        $font_medium='large';
+        $font_small='medium';
+        $font_smaller='small';
+        $font_smallest='x-small';
+}
+
+?>
+
+<style TYPE="text/css">
+<!--
+
+BODY,TD		{ color: black; font-size: <?php echo $font_smaller; ?>; font-family: verdana, arial, sans-serif }
+H1 		{ color: black; font-size: <?php echo $font_medium; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+H2 		{ color: black; font-size: <?php echo $font_small; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+
+.blocktitle 	{ color: white; font-size: <?php echo $font_smaller; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+.footer 	{ font-size: <?php echo $font_smallest; ?>; font-family: verdana, arial, sans-serif }
+.storytitle 	{ font-size: <?php echo $font_medium; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+.storybyline 	{ color: gray; font-size: <?php echo $font_smallest; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+.storyunderline { background: #404040; }
+.warning 	{ color: red; font-size: <?php echo $font_small; ?>; font-weight: bold; font-family: verdana, arial, sans-serif }
+.warningsmall 	{ color: red; font-size: <?php echo $font_smaller; ?>; font-family: verdana, arial, sans-serif }
+.commentbar1 	{ color: white; background: #404040; font-size: <?php echo $font_smaller; ?>; font-family: verdana, arial, sans-serif }
+.commentbar2 	{ background: #404040; font-size: <?php echo $font_smaller; ?>; font-family: verdana, arial, sans-serif }
+.commentbar3 	{ color: white; background: #404040; font-size: <?php echo $font_smallest; ?>; font-family: verdana, arial, sans-serif }
+.commenttitle 	{ font-size: <?php echo $font_small; ?>; font-weight: bold; background: #EEEEEE; font-family: verdana, arial, sans-serif }
+
+-->
+</style>
+

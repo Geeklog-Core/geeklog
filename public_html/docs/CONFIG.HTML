@@ -1,0 +1,608 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (Win95; U) [Netscape]">
+   <title>GeekLog Configuration Guide</title>
+</head>
+<body>
+
+<h1>
+GeekLog Configuration Guide</h1>
+
+<ul>
+<li>
+<a href="#overview">Overview</a></li>
+
+<li>
+<a href="#config.php">Configuring config.php</a></li>
+
+<li>
+<a href="#localization">Localization</a></li>
+
+<ul>
+<li>
+<a href="#locale">Locale and Date Formats</a></li>
+</ul>
+
+<li>
+<a href="#support">Support</a></li>
+</ul>
+
+<h2>
+<a NAME="overview"></a>Overview</h2>
+GeekLog was developed for the Security Geeks web site and has been released
+under the GNU GPL for use by others.&nbsp; Configuring GeekLog is meant
+to be an easy process though it will require you to have access to several
+components of your system.
+<p>This document is still evolving, so there may be unintended omissions
+or various steps may be over or under explained. It's assumed that you
+have some working experience with some form of&nbsp; Apache, SQL databases,
+and PHP.
+<h2>
+<a NAME="config.php"></a>Configuring config.php</h2>
+GeekLog's setting are configured in a text file called config.php.&nbsp;
+It is necessary to edit this file to get your system running as well as
+configuring it to your preferences.&nbsp; This file contains a set of variables
+that are defined below:
+<p><b>Database Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>dbname</td>
+
+<td>geeklog</td>
+
+<td>Database Name</td>
+</tr>
+
+<tr>
+<td>dbhost</td>
+
+<td>localhost</td>
+
+<td>Database Server</td>
+</tr>
+
+<tr>
+<td>dbuser</td>
+
+<td>root</td>
+
+<td>Database User Account</td>
+</tr>
+
+<tr>
+<td>dbpass</td>
+
+<td></td>
+
+<td>Database User Password</td>
+</tr>
+</table>
+
+<p><b>Base Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>sitename</td>
+
+<td>GeekLogSite</td>
+
+<td>Name of your site</td>
+</tr>
+
+<tr>
+<td>siteslogan</td>
+
+<td>Another Nifty GeekLog Site</td>
+
+<td>Slogan for your site.&nbsp; This is added to the HTML title feild</td>
+</tr>
+
+<tr>
+<td>sitemail</td>
+
+<td>root@localhost</td>
+
+<td>Email address for all admin mail</td>
+</tr>
+
+<tr>
+<td>base</td>
+
+<td>http://geeklog-devel.geeklog.org</td>
+
+<td>Base URL for your site</td>
+</tr>
+
+<tr>
+<td>path</td>
+
+<td>/home/geeklog-devel</td>
+
+<td>Base file system path for your site</td>
+</tr>
+
+<tr>
+<td>logpath</td>
+
+<td>/home/geeklog-devel/logs</td>
+
+<td>File system path for the log files</td>
+</tr>
+
+<tr>
+<td>rdfpath</td>
+
+<td>/home/geeklog-devel/public_html/backend/geeklog.rdf</td>
+
+<td>File system path for the RDF file</td>
+</tr>
+</table>
+
+<p><b>Locale Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>languagefile</td>
+
+<td>/english.php</td>
+
+<td>Name of your language file.&nbsp; Additional language files are avaiable
+for download at http://www.geeklog.org.&nbsp; If you translate a
+language file, please send it to us</td>
+</tr>
+
+<tr>
+<td>locale</td>
+
+<td>en-us</td>
+
+<td>Locale for the system</td>
+</tr>
+
+<tr>
+<td>date</td>
+
+<td>%A, %B %d %Y @ %I:%M %p %Z</td>
+
+<td>Date format used for most of the site, including story displays</td>
+</tr>
+
+<tr>
+<td>daytime</td>
+
+<td>%m/%d %I:%M%p</td>
+
+<td>Date format used when a shorter date is needed</td>
+</tr>
+
+<tr>
+<td>shortdate</td>
+
+<td>%x</td>
+
+<td>Date format this is the shortest date</td>
+</tr>
+</table>
+
+<p><b>Access Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>admintimeout</td>
+
+<td>3600</td>
+
+<td>Number of seconds to set an admin cookie to time out</td>
+</tr>
+
+<tr>
+<td>usertimeout</td>
+
+<td>31536000</td>
+
+<td>Number of seconds to set an user cookie to time out</td>
+</tr>
+</table>
+
+<p><b>Submission Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>loginrequired</td>
+
+<td>0</td>
+
+<td>Login required to submit items (0=no, 1=yes)</td>
+</tr>
+
+<tr>
+<td>speedlimit</td>
+
+<td>300</td>
+
+<td>Number of seconds between submissions</td>
+</tr>
+</table>
+
+<p><b>Story Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>backend</td>
+
+<td>1</td>
+
+<td>Create an RSS/RDF file for the stories in rdfpath (0=no, 1=yes)</td>
+</tr>
+
+<tr>
+<td>limitnews</td>
+
+<td>10</td>
+
+<td>Number of stories to limit the index page to, this same number will
+appear in the older stuff block</td>
+</tr>
+
+<tr>
+<td>olderstuff</td>
+
+<td>1</td>
+
+<td>Use the olderstuff block (0=no, 1=yes)</td>
+</tr>
+
+<tr>
+<td>olderstufforder</td>
+
+<td>2</td>
+
+<td>Order code to display the olderstuff block in</td>
+</tr>
+</table>
+
+<p><b>Comment Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>speedlimit2</td>
+
+<td>60</td>
+
+<td>Number of seconds between posting comment for the user</td>
+</tr>
+
+<tr>
+<td>loginrequired2</td>
+
+<td>0</td>
+
+<td>Login required to post comments (0=no, 1=yes)</td>
+</tr>
+</table>
+
+<p><b>Poll Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>maxanswers</td>
+
+<td>10</td>
+
+<td>Maximum number of possible answers for the poll editor</td>
+</tr>
+
+<tr>
+<td>pollcookietime</td>
+
+<td>86400</td>
+
+<td>Number of seconds to set a poll answer cookie to time out on</td>
+</tr>
+
+<tr>
+<td>polladdresstime</td>
+
+<td>604800</td>
+
+<td>Number of seconds to set a poll answer IP address to time out on</td>
+</tr>
+
+<tr>
+<td>pollorder</td>
+
+<td>1</td>
+
+<td>Order code to display the poll block in</td>
+</tr>
+</table>
+
+<p><b>Content Control Settings</b>
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td BGCOLOR="#000000"><font color="#FFFFFF">Variable</font></td>
+
+<td><font color="#FFFFFF">Default Value</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>allowablehtml</td>
+
+<td>array( "p"=>2,"b"=>1,"i"=>1,"a"=>2,"em"=>1,
+<br>"br"=>1,"strong"=>1,"blockquote"=>1,"tt"=>1,
+<br>"hr"=>1,"li"=>1,"ol"=>1,"div"=>2,"ul"=>1)</td>
+
+<td>An array of allowed HTML in stories submissions and comments. The format
+is "code"=>"Level". The levels are (1=Allow only tag, 2=Allow tag and modifiers)</td>
+</tr>
+
+<tr>
+<td>censormode</td>
+
+<td>1</td>
+
+<td>Censor submissions and comments (0=no, 1=yes)</td>
+</tr>
+
+<tr>
+<td>censorreplace</td>
+
+<td>*censored*</td>
+
+<td>Text to replace a censored work with</td>
+</tr>
+
+<tr>
+<td>censorlist</td>
+
+<td>array("fuck","cunt","fucker","fucking","pussy","cock",
+<br>"c0ck","cum","twat","clit","bitch","fuk","fuking",
+<br>"motherfucker")</td>
+
+<td>An array of censored words</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="localization"></a>Localization</h2>
+Localizing GeekLog is now fairly easy. All strings are contained in a language
+file, the default file that ships with the tar ball is english.php.&nbsp;
+As people translate the file, local versions will be posted on the <a href="http://www.geeklog.org/download.php">GeekLog
+Download Page</a>.&nbsp; If you translate a language file for GeekLog please
+forward me a copy at <a href="mailto:tony@tonybibbs.com">tony@tonybibbs.com</a>.
+<h3>
+<a NAME="locale"></a>Locale and Date Formats</h3>
+You can set the locale and date format in the config.php file.&nbsp; To
+set the locale, set the variable to the proper string or if you leave it
+blank it will pull the default locale from the operating system.&nbsp;
+The date formats are handled by your locale. Isn't that smart? Locale names
+are OS dependent. On most UNIX hosts, you can find locale codes in the
+<i>/usr/share/locale/locale.alias</i>
+file and on some systems the command
+<i>locale -a</i> will display all
+available locales on a system. If a local doesn't exist you can create
+it using the <i>localedef</i> command.
+<p>More info on locale: <a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>
+<br>More info on localdef: <a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
+<h4>
+Date Format Syntax:</h4>
+
+<ul>
+<li>
+<tt>%a - abbreviated weekday name according to the current locale</tt></li>
+
+<li>
+<tt>%A - full weekday name according to the current locale</tt></li>
+
+<li>
+<tt>%b - abbreviated month name according to the current locale</tt></li>
+
+<li>
+<tt>%B - full month name according to the current locale</tt></li>
+
+<li>
+<tt>%c - preferred date and time representation for the current locale</tt></li>
+
+<li>
+<tt>%C - century number (the year divided by 100 and truncated to an integer,
+range 00 to 99)</tt></li>
+
+<li>
+<tt>%d - day of the month as a decimal number (range 00 to 31)</tt></li>
+
+<li>
+<tt>%D - same as %m/%d/%y</tt></li>
+
+<li>
+<tt>%e - day of the month as a decimal number, a single digit is preceded
+by a space (range ' 1' to '31')</tt></li>
+
+<li>
+<tt>%h - same as %b</tt></li>
+
+<li>
+<tt>%H - hour as a decimal number using a 24-hour clock (range 00 to 23)</tt></li>
+
+<li>
+<tt>%I - hour as a decimal number using a 12-hour clock (range 01 to 12)</tt></li>
+
+<li>
+<tt>%j - day of the year as a decimal number (range 001 to 366)</tt></li>
+
+<li>
+<tt>%m - month as a decimal number (range 1 to 12)</tt></li>
+
+<li>
+<tt>%M - minute as a decimal number</tt></li>
+
+<li>
+<tt>%n - newline character</tt></li>
+
+<li>
+<tt>%p - either `am' or `pm' according to the given time value, or the
+corresponding strings for the current locale</tt></li>
+
+<li>
+<tt>%r - time in a.m. and p.m. notation</tt></li>
+
+<li>
+<tt>%R - time in 24 hour notation</tt></li>
+
+<li>
+<tt>%S - second as a decimal number</tt></li>
+
+<li>
+<tt>%t - tab character</tt></li>
+
+<li>
+<tt>%T - current time, equal to %H:%M:%S</tt></li>
+
+<li>
+<tt>%u - weekday as a decimal number [1,7], with 1 representing Monday</tt></li>
+
+<li>
+<tt>%U - week number of the current year as a decimal number, starting
+with the first Sunday as the first day of the first week</tt></li>
+
+<li>
+<tt>%V - The ISO 8601:1988 week number of the current year as a decimal
+number, range 01 to 53, where week 1 is the first week that has at least
+4 days in the current year, and with Monday as the first day of the week.</tt></li>
+
+<li>
+<tt>%W - week number of the current year as a decimal number, starting
+with the first Monday as the first day of the first week</tt></li>
+
+<li>
+<tt>%w - day of the week as a decimal, Sunday being 0</tt></li>
+
+<li>
+<tt>%x - preferred date representation for the current locale without the
+time</tt></li>
+
+<li>
+<tt>%X - preferred time representation for the current locale without the
+date</tt></li>
+
+<li>
+<tt>%y - year as a decimal number without a century (range 00 to 99)</tt></li>
+
+<li>
+<tt>%Y - year as a decimal number including the century</tt></li>
+
+<li>
+<tt>%Z - time zone or name or abbreviation</tt></li>
+
+<li>
+<tt>%% - a literal `%' character</tt></li>
+</ul>
+
+<h2>
+<a NAME="support"></a>Support</h2>
+
+<ul>
+<li>
+<b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">SourceForge</a>.</li>
+
+<li>
+<b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
+list</a>.</li>
+
+<li>
+<b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">SourceForge</a>.</li>
+
+<li>
+<b>General Help</b> - A better place for general "I can't do it!" help
+is the <a href="http://sourceforge.net/mail/?group_id=7371">mailing list</a>.
+Stuff that may be of more general interest is welcome here; but you will
+probably get better help on the lists.</li>
+
+<li>
+<b>Link submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=link">contribute
+link</a> link to tell us about your new site running GeekLog.</li>
+
+<li>
+<b>Story submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=story">contribute
+news</a> link to tell us your ideas for the GeekLog site and questions.
+DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">bug
+reports</a>. Also try not to use it for general "I can't do this!" help;
+you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
+list</a>.</li>
+
+<li>
+<b>Feature requests</b> - Where to send feature requests depends a bit
+on what the request is. In general, the mailing list is a decent place,
+and if it is something significant, you may want to send it in as a story
+submission. You may also want to go over to SourceForge and submit it as
+a <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">bug
+report</a> (make sure you select "Feature Request" for the "Group"), so
+we can have it filed and we can track it easily.</li>
+</ul>
+
+<p><br>
+<hr WIDTH="100%">
+<br>Tony Bibbs (<a href="mailto:tony@tonybibbs.com">tony@tonybibbs.com</a>)
+<br>Last Updated: September 18, 2000
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (Win95; U) [Netscape]">
+   <title>GeekLog Costomization Guide</title>
+</head>
+<body>
+
+<h1>
+GeekLog Costomization Guide</h1>
+
+<ul>
+<li>
+<a href="#overview">Overview</a></li>
+
+<li>
+<a href="#customization">Customization</a></li>
+
+<li>
+<a href="#support">Support</a></li>
+</ul>
+
+<h2>
+<a NAME="overview"></a>Overview</h2>
+GeekLog was developed for the Security Geeks web site and has been released
+under the GNU GPL for use by others.&nbsp; Configuring GeekLog is meant
+to be an easy process though it will require you to have access to several
+components of your system.
+<p>This document is still evolving, so there may be unintended omissions
+or various steps may be over or under explained. It's assumed that you
+have some working experience with some form of&nbsp; Apache, SQL databases,
+and PHP.
+<h2>
+<a NAME="customization"></a>Customization</h2>
+Customizing GeekLog is fairly easy, but not automated...&nbsp; Yet...&nbsp;
+My suggestion when working with customizing GeekLog is to take it slow,
+make one change at a time and always backup your your work!
+<p>There are three main files to customize the look of Geeklog:
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td><font color="#FFFFFF">File&nbsp;</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>public_html/layout/style.css</td>
+
+<td>Here you can change font's, colors, borders or anything that CSS can
+do.</td>
+</tr>
+
+<tr>
+<td>public_html/layout/header.inc</td>
+
+<td>This is the header that formats the layout for the page.&nbsp; Be careful
+in here as there are some PHP calls as well, but this is the base HTML
+layout for the site.</td>
+</tr>
+
+<tr>
+<td>public_html/layout/footer.inc</td>
+
+<td>This is the corresponding footer to the header file.&nbsp; Be careful
+in here as well.</td>
+</tr>
+</table>
+
+<p>Additionally some HTML has been moved in to layout blocks which you
+can edit though the user interface.&nbsp; Right now this is limited to
+the block functions (<i>blockheader</i> and <i>blockfooter</i>) but customizing
+this will go a long way to making your site look unique!
+<p>Certain tags are supported in the layout blocks, these are:
+<br>&nbsp;
+<table BORDER WIDTH="100%" >
+<tr BGCOLOR="#000000">
+<td><font color="#FFFFFF">Row</font></td>
+
+<td><font color="#FFFFFF">Description</font></td>
+</tr>
+
+<tr>
+<td>%title</td>
+
+<td>Will print the title for the block that is supplied when the block
+is called.</td>
+</tr>
+
+<tr>
+<td>%help</td>
+
+<td>Will print a ? and link to a help file for this block.</td>
+</tr>
+</table>
+
+<h2>
+<a NAME="support"></a>Support</h2>
+
+<ul>
+<li>
+<b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">SourceForge</a>.</li>
+
+<li>
+<b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
+list</a>.</li>
+
+<li>
+<b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">SourceForge</a>.</li>
+
+<li>
+<b>General Help</b> - A better place for general "I can't do it!" help
+is the <a href="http://sourceforge.net/mail/?group_id=7371">mailing list</a>.
+Stuff that may be of more general interest is welcome here; but you will
+probably get better help on the lists.</li>
+
+<li>
+<b>Link submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=link">contribute
+link</a> link to tell us about your new site running GeekLog.</li>
+
+<li>
+<b>Story submissions</b> - Use the <a href="http://www.geeklog.org/submit.php?type=story">contribute
+news</a> link to tell us your ideas for the GeekLog site and questions.
+DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">bug
+reports</a>. Also try not to use it for general "I can't do this!" help;
+you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">mailing
+list</a>.</li>
+
+<li>
+<b>Feature requests</b> - Where to send feature requests depends a bit
+on what the request is. In general, the mailing list is a decent place,
+and if it is something significant, you may want to send it in as a story
+submission. You may also want to go over to SourceForge and submit it as
+a <a href="http://sourceforge.net/bugs/?func=addbug&group_id=7371">bug
+report</a> (make sure you select "Feature Request" for the "Group"), so
+we can have it filed and we can track it easily.</li>
+</ul>
+
+<p><br>
+<hr WIDTH="100%">
+<br>Tony Bibbs (<a href="mailto:tony@tonybibbs.com">tony@tonybibbs.com</a>)
+<br>Last Updated: September 18, 2000
+</body>
+</html>

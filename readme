@@ -1,0 +1,89 @@
+GeekLog Readme
+July 19, 2001
+
+WELCOME
+-------
+Geeklog is the source code and database that was originally used to run 
+SecurityGeeks and NewsGeeks, and has now been released under the GNU General 
+Public License. It is a bona fide Open Source / Free Software project. Use 
+this site to get the GeekLog source, read the latest GeekLog news, and 
+participate in Geeklog discussions. 
+
+GeekLog is run by Tony Bibbs, but like all good open source projects,
+depends on the community. Thanks for your continued support, and let us know
+what we can do to make GeekLog better. 
+
+GeekLog's feature are as follows:
+
+- Full localization and locale aware.
+- Threaded comment system that support different modes.
+- HTML configurable for custome look and feel
+- User accounts and access controls
+- HTML and key word checking in stories and comments
+- RDF/RSS import and export ability
+- Easy to use admin interface
+- Admin interface has complete configurability for all functions of the site
+- All passwords are are stored encrypted
+- Complete error loging on all forms and SQL calls
+- All admin access is logged
+- All errors are logged
+- Save story drafts until they are ready for publishing
+- Robust calendar feature with support for personalized calendars.
+
+LICENSE
+-------
+GeekLog is licenses under the: GPL. There should be an included LICENSE file
+if it really intrests you (or you having trouble sleeping) go ahead a read it.
+
+In a nice gesture you could provide a link back to us:
+
+http://www.geeklog.org
+
+SUPPORT
+-------
+The best support channel is a mailing list located at:
+
+http://lists.sourceforge.net/mailman/listinfo/geeklog-devel. 
+
+Additionally the GeekLog home page is a good source of information at:
+
+http://www.geeklog.org 
+
+KNOWN ISSUES
+------------
+All known issus are in docs/knownbugs. If you identify a bug please
+let us know by filling out a bug report at:
+
+https://sourceforge.net/bugs/?group_id=7371
+
+SYSTEM REQUIREMENTS AND INSTALLATION
+------------------------------------
+See INSTALL.HTML in the /docs directory
+
+SECURITY ISSUES
+---------------
+It is up to you to properly secure your database, web server and host 
+settings.  If you are looking for information in securing your system
+some starting points I can recommend are:
+
+http://www.php.net
+http://www.mysql.com
+http://www.apache.org
+http://www.devshed.com
+http://www.securityfocus.com
+http://www.linux.com
+
+SPECIAL THANKS
+--------------
+
+I want to send out thanks to:
+
+Jason Whittenberg - He is the original Geeklog developer!
+PHPWebLog Project - Some of the functions in GeekLog came from them!
+PHPSlash Project - Some of the functions in GeekLog came from them!
+thatphpware Project - Some of the functions in GeekLog came from them!
+PHPBB Project - Some of the functions in Geeklog came from them!
+
+ENJOY!
+------
+Read the documents in the /docs directory for more information, etc...

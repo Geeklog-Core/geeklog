@@ -1,0 +1,9 @@
+#!/usr/local/bin/php -q 
+<?php
+#This code snippet is responsible for emailing Geeklog stories to users 
+#for the topics they select.  For this script to work you must have compiled
+#php so it can also be used a shell scripting language.  DO NOT change anything
+#in this file.  You should call this script from your crontab (man crontab).
+include("/web/prod/public_html/common.php");
+emailusertopics();
+?>

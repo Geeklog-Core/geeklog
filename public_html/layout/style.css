@@ -1,0 +1,16 @@
+BODY 		{ color: black; font-size: x-small; font-family: verdana, arial, sans-serif }
+TD 		{ color: black; font-size: x-small; font-family: verdana, arial, sans-serif }
+H1 		{ color: black; font-size: medium; font-weight: bold; font-family: verdana, arial, sans-serif }
+H2 		{ color: black; font-size: small; font-weight: bold; font-family: verdana, arial, sans-serif }
+
+.blocktitle 	{ color: white; font-size: x-small; font-weight: bold; font-family: verdana, arial, sans-serif }
+.footer 	{ font-size: xx-small; font-family: verdana, arial, sans-serif }
+.storytitle 	{ font-size: medium; font-weight: bold; font-family: verdana, arial, sans-serif }
+.storybyline 	{ color: gray; font-size: xx-small; font-weight: bold; font-family: verdana, arial, sans-serif }
+.storyunderline { background: #404040; }
+.warning 	{ color: red; font-size: small; font-weight: bold; font-family: verdana, arial, sans-serif }
+.warningsmall 	{ color: red; font-size: x-small; font-family: verdana, arial, sans-serif }
+.commentbar1 	{ color: white; background: #404040; font-size: x-small; font-family: verdana, arial, sans-serif }
+.commentbar2 	{ background: #404040; font-size: x-small; font-family: verdana, arial, sans-serif }
+.commentbar3 	{ color: white; background: #404040; font-size: xx-small; font-family: verdana, arial, sans-serif }
+.commenttitle 	{ font-size: small; font-weight: bold; background: #EEEEEE; font-family: verdana, arial, sans-serif }

@@ -1,0 +1,37 @@
+Next Version - To Do List
+-------------------------
+- Better Access Control (security)
+- Templating and themes
+- Addon Support
+
+Future - To Do List
+-------------------
+- Writing of static pages
+- Archiving of pages
+- Open submission que
+- Flood protection and lamness filtering
+  - Scan comments for exact dupliate content when
+    posting a comment
+  - First posters
+  - Additional Troll and flame checking
+- Comment moderation
+- Sub Topics and Sections
+- Text to URL matching for What's Releated function
+- User configurable Time Zones
+- Export most HTML to user customizable blocks
+- Email admin when a new story is submitted
+- Quote of the day
+- Post per day limit
+- Email Digest
+
+Possible Items to Implement Sometime
+(i.e. would you like to do this for us?)
+----------------------------------------
+- Email Story Importer
+- Headline News
+- Stock quote and index engine
+- Admin Reporting
+- Some photo or images stuff
+- Files Library
+- Address/Contact list
+- Better stats page
