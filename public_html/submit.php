@@ -317,8 +317,10 @@ function submitstory()
     if (!empty($A['title'])) {
         if ($A['postmode'] == 'html') {
             $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
+            $A['title'] = addslashes(COM_checkHTML(COM_checkWords($A['title'])));
         } else {
             $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
+            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
         }
         $A['title'] = stripslashes($A['title']);
         $retval .= COM_startBlock($LANG12[32])
