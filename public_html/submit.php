@@ -547,7 +547,7 @@ if ($mode == $LANG12[8]) {
     $display .= savesubmission($type,$HTTP_POST_VARS);
 } else if ($mode == $LANG12[52]) {
     if (!empty($eid)) {
-        DB_delete($_TABLES['personal_events'], 'eid',$eid,$_CONF['site_url'].'calendar.php?mode=personal');
+        DB_delete($_TABLES['personal_events'], 'eid',$eid,$_CONF['site_url'].'/calendar.php?mode=personal');
     }  
 } else {
     switch($type) {
