@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Added tracking of IP addresses of comment posters (as suggested by Michael
+  Jervis) [Dirk]
 - Altered COM_article to improve performance by reducing queries. [Vinny]
 - Reduced DB queries in COM_showTopics to improve performance. [Vinny]
 - Cached enabled plugins to reduce db queries and improve performance. [Vinny]

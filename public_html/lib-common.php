@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.318 2004/05/01 17:57:04 vinny Exp $
+// $Id: lib-common.php,v 1.319 2004/05/09 09:54:03 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2812,10 +2812,15 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // If deletion is allowed, displays delete link
         if( $delete_option )
         {
-            $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
-                    . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
-                    . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'
-                    . $LANG01[28] . '</a> ' );
+            $deloption = '| <a href="' . $_CONF['site_url']
+                       . '/comment.php?mode=' . $LANG01[28] . '&amp;cid='
+                       . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type='
+                       . $type . '">' . $LANG01[28] . '</a> ';
+            if( !empty( $A['ipaddress'] ))
+            {
+                $deloption .= '| ' . $A['ipaddress'] . ' ';
+            }
+            $template->set_var( 'delete_option', $deloption );
         }
         else
         {

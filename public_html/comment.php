@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.58 2004/04/20 02:23:19 vinny Exp $
+// $Id: comment.php,v 1.59 2004/05/09 09:54:03 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -238,7 +238,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 */
 function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG03;
+    global $_CONF, $_TABLES, $_USER, $LANG03, $REMOTE_ADDR;
 
     $retval = '';
 
@@ -305,12 +305,12 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
                    . "WHERE sid = '$sid' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
                    . "WHERE sid = '$sid' AND rht >= $rht");
-            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type'");            
+            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','$REMOTE_ADDR'");
         } else {
             $rht = DB_getItem($_TABLES['comments'], 'MAX(rht)');
-            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type',
-                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type'");               
+            DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
+                    "'$sid',$uid,'$comment',now(),'$title',$pid,$rht+1,$rht+2,0,'$type','$REMOTE_ADDR'");
         }
         DB_query('UNLOCK TABLES');
 

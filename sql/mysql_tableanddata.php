@@ -68,6 +68,7 @@ CREATE TABLE {$_TABLES['comments']} (
   rht mediumint(10) unsigned NOT NULL default '0',
   indent mediumint(10) unsigned NOT NULL default '0',
   uid mediumint(8) NOT NULL default '1',
+  ipaddress varchar(15) NOT NULL default '',
   INDEX comments_cid(cid),
   INDEX comments_type(type),
   INDEX comments_sid_pid(sid, pid),
