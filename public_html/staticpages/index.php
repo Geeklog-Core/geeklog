@@ -31,20 +31,158 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.16 2004/01/21 19:13:34 dhaun Exp $
+// $Id: index.php,v 1.17 2004/06/17 19:29:59 dhaun Exp $
 
 require_once ('../lib-common.php');
 
 
+/**
+* Render the actual content of a static page.
+*
+* @param    string  $sp_content the content (HTML or PHP source)
+* @param    int     $sp_php     flag: 1 = content is PHP source, 0 = is HTML
+* @return   string              rendered content (HTML)
+*
+*/
+function render_content ($sp_content, $sp_php)
+{
+    global $_SP_CONF, $LANG_STATIC;
+
+    $retval = '';
+
+    if ($_SP_CONF['allow_php'] == 1) {
+        // Check for type (ie html or php)
+        if ($sp_php == 1) {
+            $retval .= eval ($sp_content);
+        } else if ($sp_php == 2) {
+            ob_start ();
+            eval ($sp_content);
+            $retval .= ob_get_contents ();
+            ob_end_clean ();
+        } else {
+            $retval .= $sp_content;
+        }
+    } else {
+        if ($sp_php != 0) {
+            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
+            $retval .= $LANG_STATIC['deny_msg'];
+        } else {
+            $retval .= $sp_content;
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare static page for display.
+*
+* @param    string  $page       static page id
+* @param    array   $A          static page data
+* @param    int     $noboxes    the user's "noboxes" setting (see Preferences)
+* @return   string              HTML for the static page
+*
+*/
+function display_page ($page, $A, $noboxes)
+{
+    global $_CONF, $LANG01, $LANG11, $LANG_STATIC;
+
+    $retval = '';
+
+    if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
+        $retval .= COM_siteHeader ('menu');
+    } else {
+        if ($A['sp_format'] <> 'blankpage') {
+            $retval .= COM_siteHeader ('none');
+        }
+    }
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
+        $retval .= COM_startBlock (stripslashes ($A['sp_title']));
+    }
+
+    $retval .= render_content (stripslashes ($A['sp_content']), $A['sp_php']);
+
+    if ($A['sp_format'] <> 'blankpage') {
+        $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
+        $retval .= '<p align="center"><br>' . $LANG_STATIC['lastupdated']
+                . ' ' . $curtime[0]; 
+
+        if ($_CONF['hideprintericon'] == 0) {
+            $retval .= ' <a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $page) . '&amp;mode=print"><img src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '" title="' . $LANG11[3] . '" border="0"></a>';
+        }
+
+        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('staticpages.edit')) {
+            $retval .= '<br><a href="' . COM_buildURL ($_CONF['site_admin_url']
+                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
+                    . $page) . '">';
+            $retval .= $LANG_STATIC['edit'] . '</a>';
+        }
+        $retval .= '</p>';
+    }
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
+        $retval .= COM_endBlock ();
+    }
+
+    if ($A['sp_format'] <> 'blankpage') {
+    	if (($A['sp_format'] == 'allblocks') && ($noboxes != 1)) {
+            $retval .= COM_siteFooter (true);
+    	} else {
+            $retval .= COM_siteFooter ();
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Prepare static page for print (i.e. display as "printable version").
+*
+* @param    string  $page       static page id
+* @param    array   $A          static page data
+* @return   string              HTML for the static page
+*
+*/
+function print_page ($page, $A)
+{
+    global $_CONF;
+
+    $print = new Template ($_CONF['path'] . 'plugins/staticpages/templates');
+    $print->set_file (array ('print' => 'printable.thtml'));
+    $print->set_var ('site_url', $_CONF['site_url']);
+    $print->set_var ('site_name', $_CONF['site_name']);
+    $print->set_var ('site_slogan', $_CONF['site_slogan']);
+
+    $print->set_var ('page_title', $_CONF['site_name'] . ' - '
+                                   . stripslashes ($A['sp_title']));
+    $print->set_var ('sp_url', COM_buildUrl ($_CONF['site_url']
+                               . '/staticpages/index.php?page=' . $page));
+    $print->set_var ('sp_title', stripslashes ($A['sp_title']));
+    $print->set_var ('sp_content',
+            render_content (stripslashes ($A['sp_content']), $A['sp_php']));
+    $print->parse ('output', 'print');
+
+    return $print->finish ($print->get_var ('output'));
+}
+
+
+// MAIN
 $error = 0;
 
 if (!empty ($_USER['uid'])) {
-    $result = DB_query ("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
-    $U = DB_fetchArray ($result);
+    $noboxes = DB_getItem ($_TABLES['userindex'], 'noboxes',
+                           "uid = '{$_USER['uid']}'");
+} else {
+    $noboxes = 0;
 }
 
-COM_setArgNames (array ('page'));
+COM_setArgNames (array ('page', 'mode'));
 $page = COM_applyFilter (COM_getArgument ('page'));
+$mode = COM_applyFilter (COM_getArgument ('mode'));
+if ($mode != 'print') {
+    unset ($mode);
+}
 
 if (empty ($page)) {
     $error = 1;
@@ -65,65 +203,18 @@ if (empty ($page)) {
 if (!($error)) {
     $A = DB_fetchArray ($result);
     $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
-    if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
-        $retval .= COM_siteHeader ('menu');
+
+    if (!empty ($mode) && ($mode == 'print')) {
+        $retval = print_page ($page, $A);
     } else {
-        if ($A['sp_format'] <> 'blankpage') {
-            $retval .= COM_siteHeader ('none');
-        }
-    }
-    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_startBlock (stripslashes ($A['sp_title']));
-    }
-    if ($_SP_CONF['allow_php'] == 1) {
-        // Check for type (ie html or php)
-        if ($A['sp_php'] == 1) {
-            $retval .= eval (stripslashes ($A['sp_content']));
-        } else if ($A['sp_php'] == 2) {
-            ob_start ();
-            eval (stripslashes ($A['sp_content']));
-            $retval .= ob_get_contents ();
-            ob_end_clean ();
-        } else {
-            $retval .= stripslashes ($A['sp_content']);
-        }
-    } else {
-        if ($A['sp_php'] != 0) {
-            COM_errorLog ("PHP in static pages is disabled. Can not display page '$page'.", 1);
-            $retval .= $LANG_STATIC['deny_msg'];
-        } else {
-            $retval .= stripslashes ($A['sp_content']);
-        }
-    }
-    if ($A['sp_format'] <> 'blankpage') {
-        $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
-        $retval .= '<p align="center"><br>' . $LANG_STATIC['lastupdated']
-                . ' ' . $curtime[0]; 
-        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-                SEC_hasRights ('staticpages.edit')) {
-            $retval .= '<br><a href="' . COM_buildURL ($_CONF['site_admin_url']
-                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                    . $page) . '">';
-            $retval .= $LANG_STATIC['edit'] . "</a>";
-        }
-        $retval .= '</p>';
-    }
-    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_endBlock ();
+        $retval = display_page ($page, $A, $noboxes);
     }
 
-    if ($A['sp_format'] <> 'blankpage') {
-    	if ($A['sp_format'] == 'allblocks' && $U['noboxes'] != 1) {
-            $retval .= COM_siteFooter (true);
-    	} else {
-            $retval .= COM_siteFooter ();
-        }
-    }
-
-    // increment hit counter for page...is SQL compliant?  
+    // increment hit counter for page
     DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'"); 
-} else {
+
+} else { // an error occured (page not found, access denied, ...)
+
     if (empty ($page)) {
         $failflg = 0;
     } else {
@@ -133,7 +224,7 @@ if (!($error)) {
         $retval = COM_siteHeader ('menu');
         $retval .= COM_startBlock ($LANG_LOGIN[1]);
         $login = new Template ($_CONF['path_layout'] . 'submit');
-        $login->set_file (array ('login'=>'submitloginrequired.thtml'));
+        $login->set_file (array ('login' => 'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
         $login->set_var ('site_url', $_CONF['site_url']);
         $login->set_var ('lang_login', $LANG_LOGIN[3]);
