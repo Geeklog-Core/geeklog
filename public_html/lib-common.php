@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.155 2002/09/13 04:12:01 mlimburg Exp $
+// $Id: lib-common.php,v 1.156 2002/09/13 05:51:55 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1906,7 +1906,7 @@ function COM_refresh( $url )
 *
 */
 
-function COM_commentBar($sid,$title,$type,$order,$mode) 
+function COM_commentBar( $sid, $title, $type, $order, $mode ) 
 {
     global $_TABLES, $LANG01, $_USER, $_CONF, $HTTP_GET_VARS;
 	
@@ -1919,33 +1919,37 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
         . '<tr><td align="center" class="commentbar1"><b>' . stripslashes($title) . '</b> | '
         . $nrows . ' ' . $LANG01[3] . ' | ';
 
-    if (!empty($_USER['username'])) {
+    if( !empty( $_USER['username'] ))
+    {
         $retval .= $_USER['username'] . ' <a href="' . $_CONF['site_url'] . '/users.php?mode=logout" class="commentbar1">'
             . $LANG01[35] . '</a>';
-    } else {
+    }
+    else 
+    {
         $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=new" class="commentbar1">' . $LANG01[61] . '</a>';
     }
 
     $retval .= '</td></tr>' . LB . '<tr><td align="center" class="commentbar2">';
 
-    if (!empty($HTTP_GET_VARS['qid'])) {
+    if( !empty( $HTTP_GET_VARS['qid'] ))
+    {
         $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1" method="POST">' . LB
             . '<input type="hidden" name="scale" value="400">' . LB;
-    } else {
+    }
+    else 
+    {
         $retval .= '<form action="' . $_CONF['site_url'] . '/article.php" method="POST">' . LB
             . '<input type="hidden" name="story" value="' . $sid . '">' . LB;
     }
 	
     // Order
-	
     $retval .= '<select name="order">'
-        . COM_optionList($_TABLES['sortcodes'],'code,name',$order)
+        . COM_optionList( $_TABLES['sortcodes'], 'code,name', $order )
         .'</select> ';
 	
     // Mode
-	
     $retval .= '<select name="mode">'
-        . COM_optionList($_TABLES['commentmodes'],'mode,name',$mode)
+        . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
         . '</select> '
         . '<input type="submit" value="'. $LANG01[39] . '"> '
         . '<input type="hidden" name="type" value="'.$type . '">'
@@ -1973,86 +1977,114 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
 * @return     string  HTML Formated Comments
 *
 */
-function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0) 
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid=0 ) 
 {
-    global $_TABLES, $_CONF,$LANG01,$_USER;
+    global $_TABLES, $_CONF, $LANG01, $_USER;
 	
-    if (!empty($_USER['uid']) && empty($order) && empty($mode)) {
-        $result = DB_query("SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'");
-        $U = DB_fetchArray($result);
+    if( !empty( $_USER['uid'] ) && empty( $order ) && empty( $mode ))
+    {
+        $result = DB_query( "SELECT commentorder,commentmode,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = '{$_USER['uid']}'" );
+        $U = DB_fetchArray( $result );
         $order = $U['commentorder'];
         $mode = $U['commentmode'];
         $limit = $U['commentlimit'];
     }
 	
-    if (empty($order)) {
+    if( empty( $order )) 
+    {
         $order = 'ASC';
     }
 
-    if (empty($mode)) {
+    if( empty( $mode )) 
+    {
         $mode = $_CONF['comment_mode'];
     }
 
-    if (empty($limit)) {
+    if( empty( $limit ))
+    {
         $limit = $_CONF['comment_limit'];
     }
 	
-    switch ($mode) {
-    case 'nocomments':
-        $retval .= COM_commentBar($sid,$title,$type,$order,$mode);
-		break;
-    case 'nested':
-        $result = DB_query("SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 ORDER BY date $order LIMIT $limit");
-        $nrows = DB_numRows($result);
-        $retval .= COM_commentBar($sid,$title,$type,$order,$mode);
+    switch( $mode ) 
+    {
+        case 'nocomments':
+            $retval .= COM_commentBar( $sid, $title, $type, $order, $mode);
+		    break;
 
-        if ($nrows>0) {
+    case 'nested':
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = 0 ORDER BY date $order LIMIT $limit" );
+        $nrows = DB_numRows( $result );
+        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode);
+
+        if( $nrows > 0 ) 
+        {
             $retval .= COM_startComment();
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $retval .= COM_comment($A,0,$type,0,$mode);
-                $retval .= COM_commentChildren($sid,$A['cid'],$order,$mode,$type);
+            
+            for( $i = 0; $i < $nrows; $i++ )
+            {
+                $A = DB_fetchArray( $result );
+                $retval .= COM_comment( $A, 0, $type, 0, $mode );
+                $retval .= COM_commentChildren( $sid, $A['cid'], $order, $mode, $type );
             }
+            
             $retval .= '</table></td></tr></table>';
-        } else {
+        } 
+        else 
+        {
             $retval .= COM_startComment()
                 . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
         }
+        
         break;
     case 'flat':
-        $result = DB_query("SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' ORDER BY date $order LIMIT $limit");
-        $nrows = DB_numRows($result);
-        $retval .= COM_commentBar($sid,$title,$type,$order,$mode);
-        if ($nrows>0) {
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' ORDER BY date $order LIMIT $limit" );
+        $nrows = DB_numRows( $result );
+        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+
+        if( $nrows > 0 ) 
+        {
             $retval .= COM_startComment();
-            for ($i =0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $retval .= COM_comment($A,0,$type,0,$mode);
+            
+            for( $i =0; $i < $nrows; $i++ )
+            {
+                $A = DB_fetchArray( $result );
+                $retval .= COM_comment( $A, 0 ,$type, 0, $mode );
             }
+            
             $retval .= '</table></td></tr></table>';
-        } else {
+        } 
+        else 
+        {
             $retval .= COM_startComment()
                 . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
         }
         break;
+
     case 'threaded':
-        $result = DB_query("SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order LIMIT $limit");
-        $nrows = DB_numRows($result);
-        $retval .= COM_commentBar($sid,$title,$type,$order,$mode);
-        if ($nrows > 0) {
+        $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order LIMIT $limit" );
+        $nrows = DB_numRows( $result );
+        $retval .= COM_commentBar( $sid, $title, $type, $order, $mode );
+
+        if( $nrows > 0 ) 
+        {
             $retval .= COM_startComment();
-            for ($i = 0; $i < $nrows; $i++) {
-                $A = DB_fetchArray($result);
-                $retval .= COM_comment($A,0,$type,0,$mode)
+            for( $i = 0; $i < $nrows; $i++ )
+            {
+                $A = DB_fetchArray( $result );
+                $retval .= COM_comment( $A, 0, $type, 0, $mode)
                     . '<tr><td>'
-                    . COM_commentChildren($sid,$A['cid'],$order,$mode,$type)
+                    . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type )
                     . '</td></tr>';
             }
+            
             $retval .= '</table></td></tr></table>';
-        } else {
+        } 
+        else 
+        {
             $retval .= COM_startComment()
             . '<tr><td class="commenttitle" align="center">' . $LANG01[29] . '</td></tr></table></td></tr></table>';
         }
+        
         break;
     }
 	
@@ -2075,28 +2107,36 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
 * @see COM_userComments
 *
 */
-function COM_commentChildren($sid,$pid,$order,$mode,$type,$level=0) 
+
+function COM_commentChildren( $sid, $pid, $order, $mode, $type, $level=0 ) 
 {
-    global $_TABLES,$_CONF;
+    global $_TABLES, $_CONF;
 	
-    $result = DB_query("SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order");
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        if ($mode == 'threaded') { 
+    $result = DB_query( "SELECT *,unix_timestamp(date) AS nice_date FROM {$_TABLES['comments']} WHERE sid = '$sid' AND pid = $pid ORDER BY date $order" );
+    $nrows = DB_numRows( $result );
+    
+    if( $nrows > 0 ) 
+    {
+        if( $mode == 'threaded' )
+        { 
             $retval .= '<ul>'; 
         }
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $retval .= COM_comment($A,0,$type,$level+1,$mode)
-                . COM_commentChildren($sid,$A['cid'],$order,$mode,$type,$level+1);
+        
+        for( $i = 0; $i < $nrows; $i++ ) 
+        {
+            $A = DB_fetchArray( $result );
+            $retval .= COM_comment( $A, 0, $type, $level + 1, $mode)
+                . COM_commentChildren( $sid, $A['cid'], $order, $mode, $type, $level + 1 );
         }
-        if ($mode == 'threaded') {
+        
+        if( $mode == 'threaded' )
+        {
             $retval .= '</ul>'; 
         }
     } 
+    
     return $retval;
 }
-
 
 /**
 * This function prints $A (an individual comment) in comment format
@@ -2109,74 +2149,93 @@ function COM_commentChildren($sid,$pid,$order,$mode,$type,$level=0)
 * @return     string      HTML Formated Comment
 *
 */
-function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false) 
+
+function COM_comment( $A, $mode=0, $type, $level=0, $mode='flat', $ispreview=false ) 
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $order;
 	
     $level = $level * 25;
 	
     // if no date, make it now!
-    if (empty($A['nice_date'])) {
+    if( empty( $A['nice_date'] ))
+    {
         $A['nice_date'] = time(); 
     }
 
-    $A['title'] = stripslashes($A['title']);
-    if ($mode == 'threaded' && $level > 0) {
+    $A['title'] = stripslashes( $A['title'] );
+    
+    if( $mode == 'threaded' && $level > 0 )
+    {
         $retval .= '<li><b><a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
-            . '&amp;title=' . urlencode($A['title']) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' . $A['pid'].'">'
+            . '&amp;title=' . urlencode( $A['title'] ) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' . $A['pid'].'">'
             . $A['title'] . '</a></b> - ' . $LANG01[42] . ' ';
 
-        if ($A['uid'] == 1) {
+        if( $A['uid'] == 1 )
+        {
             $retval .= $LANG01[24];
-        } else {
+        }
+        else 
+        {
             $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'") . '</a>';
+                . DB_getItem( $_TABLES['users'], 'username', "uid = '{$A['uid']}'" ) . '</a>';
         }
 
-        $A['nice_date'] = strftime($_CONF['date'], $A['nice_date']);
+        $A['nice_date'] = strftime( $_CONF['date'], $A['nice_date'] );
         $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . LB;
-    } else {
-        if ($level > 0) {
+    } 
+    else 
+    {
+        if( $level > 0 ) 
+        {
             $retval .= '<tr><td><table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB
                 . '<tr><td rowspan="3" width="' . $level . '"><img src="' . $_CONF['site_url'] 
                 . '/images/speck.gif" width="' . $level . '" height="100%" alt=""></td>' . LB;
-        } else {
+        } 
+        else 
+        {
             $retval .= '<tr>';
         }
 
-        $A['title'] = str_replace('$','&#36;',$A['title']);
-        $A['comment'] = str_replace('$','&#36;',$A['comment']);
-        $A['comment'] = str_replace('{','&#123;',$A['comment']);
-        $A['comment'] = str_replace('}','&#125;',$A['comment']);
-        $retval .= '<td class="commenttitle">' . stripslashes($A['title']) . '</td></tr>' . LB
+        $A['title'] = str_replace( '$', '&#36;', $A['title'] );
+        $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
+        $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
+        $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
+
+        $retval .= '<td class="commenttitle">' . stripslashes( $A['title'] ) . '</td></tr>' . LB
             . '<tr><td>' . $LANG01[42] . ' ';
 
-        if ($A['uid'] == 1) {
+        if( $A['uid'] == 1 )
+        {
             $retval .= $LANG01[24];
-        } else {
+        }
+        else 
+        {
             $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">'
-                . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'") .'</a>';
+                . DB_getItem( $_TABLES['users'], 'username', "uid = '{$A['uid']}'" ) .'</a>';
         }
 
-        $A['nice_date'] = strftime($_CONF['date'],$A['nice_date']);
+        $A['nice_date'] = strftime( $_CONF['date'], $A['nice_date'] );
         $retval .= ' ' . $LANG01[36] . ' ' . $A['nice_date'] . '</td></tr>' . LB
-            . '<tr><td valign="top">' . nl2br(stripslashes($A['comment']));
+            . '<tr><td valign="top">' . nl2br( stripslashes( $A['comment'] ));
 
-        if ($mode == 0 && $ispreview == false) {
+        if( $mode == 0 && $ispreview == false )
+        {
             $retval .= '<p>[ <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&amp;pid='
-                . $A['cid'] . '&amp;title=' . rawurlencode($A['title']) . '&amp;type=' . $type . '">' . $LANG01[43]
+                . $A['cid'] . '&amp;title=' . rawurlencode( $A['title'] ) . '&amp;type=' . $type . '">' . $LANG01[43]
             . '</a> ';
 			
             // Until I find a better way to parent, we're stuck with this...
-            if ($mode == 'threaded' && $A['pid'] != 0) {
-                $result = DB_query("SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'");
-                $P = DB_fetchArray($result);
+            if( $mode == 'threaded' && $A['pid'] != 0 ) 
+            {
+                $result = DB_query( "SELECT title,pid from {$_TABLES['comments']} where cid = '{$A['pid']}'" );
+                $P = DB_fetchArray( $result );
                 $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=display&amp;sid=' . $A['sid']
-                    . '&amp;title=' . rawurlencode($P['title']) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
+                    . '&amp;title=' . rawurlencode( $P['title'] ) . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
                     . $P['pid'] . '">' . $LANG01[44] . '</a> ';
             }
 			
-            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3) {
+            if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 )
+            {
                 $retval .= '| <a href="' . $_CONF['site_url'] . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' 
                     . $A['cid'] . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'  . $LANG01[28] . '</a> ';
             }
@@ -2186,7 +2245,8 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 		
         $retval .= '</td></tr>' . LB;
 		
-        if ($level > 0) {
+        if( $level > 0 )
+        {
             $retval .= '</table></td></tr>' . LB;
         }
     }
@@ -2204,33 +2264,44 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 * @return	string	Edited $Message
 *
 */
-function COM_checkWords($Message)
+
+function COM_checkWords( $Message )
 {
     global $_CONF;
 
     $EditedMessage = $Message;
-    if ($_CONF["censormode"] != 0) {
-        if (is_array($_CONF["censorlist"])) {
-            $Replacement = $_CONF["censorreplace"];
-            switch ($_CONF["censormode"]) {
-                case 1:     # Exact match
-                    $RegExPrefix   = '(\s*)';
-                    $RegExSuffix   = '(\W*)';
+    
+    if( $_CONF['censormode'] != 0 )
+    {
+        if( is_array( $_CONF['censorlist'] ))
+        {
+            $Replacement = $_CONF['censorreplace'];
+            
+            switch( $_CONF['censormode'])
+            {
+                case 1: # Exact match
+                    $RegExPrefix = '(\s*)';
+                    $RegExSuffix = '(\W*)';
                     break;
-                case 2:     # Word beginning
-                    $RegExPrefix   = '(\s*)';
-                    $RegExSuffix   = '(\w*)';
+                    
+                case 2: # Word beginning
+                    $RegExPrefix = '(\s*)';
+                    $RegExSuffix = '(\w*)';
                     break;
-                case 3:     # Word fragment
+                    
+                case 3: # Word fragment
                     $RegExPrefix   = '(\w*)';
                     $RegExSuffix   = '(\w*)';
                     break;
             }
-            for ($i = 0; $i < count($_CONF["censorlist"]); $i++) {
-                $EditedMessage = eregi_replace($RegExPrefix.$_CONF["censorlist"][$i].$RegExSuffix,"\\1$Replacement\\2",$EditedMessage);
+            
+            for( $i = 0; $i < count( $_CONF['censorlist']); $i++ )
+            {
+                $EditedMessage = eregi_replace( $RegExPrefix . $_CONF['censorlist'][$i] . $RegExSuffix, "\\1$Replacement\\2", $EditedMessage );
             }
         }
     }
+
     return ($EditedMessage);
 }
 
@@ -2247,9 +2318,10 @@ function COM_checkWords($Message)
 * @see  COM_checkHTML
 *
 */
-function COM_killJS($Message) 
+
+function COM_killJS( $Message ) 
 {
-	return (preg_replace('/on(\w*) ?=/','in\1=',$Message));
+	return( preg_replace( '/on(\w*) ?=/', 'in\1=', $Message ));
 }
 
 /**
@@ -2264,44 +2336,49 @@ function COM_killJS($Message)
 * @return	string	Filtered HTML
 *
 */
-function COM_checkHTML($str) 
+
+function COM_checkHTML( $str ) 
 {
     global $_CONF;
 	
     $str = stripslashes($str);
 
     // Get rid of any newline characters
-	
-    $str = preg_replace("/\n/","",$str);
+    $str = preg_replace( "/\n/", '', $str );
     
     // Replace any $ with &#36; (HTML equiv)
-    $str = str_replace('$','&#36;',$str);
-    $start_pos = strpos(strtolower($str),'[code]');
-    if (!($start_pos === false)) {
-        $end_pos = strpos(strtolower($str),'[/code]');
+    $str = str_replace( '$', '&#36;', $str );
+    $start_pos = strpos( strtolower( $str ), '[code]' );
+    
+    if( !( $start_pos === false ))
+    {
+        $end_pos = strpos( strtolower( $str ), '[/code]' );
         $end_pos = $end_pos + 7;
     }
-    if (!($start_pos === false) AND !($end_pos === false)) {
-        $orig_pre_string = substr($str, $start_pos, $end_pos - $start_pos);
-        $new_pre_string = str_replace('\\', '&#092;',$orig_pre_string);
-        $new_pre_string = str_replace('<','&lt;',$new_pre_string);
-        $new_pre_string = str_replace('>','&gt;',$new_pre_string);
-        $new_pre_string = str_replace('[code]','',$new_pre_string);
-        $new_pre_string = str_replace('[CODE]','',$new_pre_string);
-        $new_pre_string = str_replace('[/code]','',$new_pre_string);
-        $new_pre_string = str_replace('[/CODE]','',$new_pre_string);
-        $new_pre_string = nl2br($new_pre_string);
-        $str = str_replace($orig_pre_string, '<pre><code>'.$new_pre_string.'</code></pre>', $str);    
+    if( !( $start_pos === false ) AND !( $end_pos === false ))
+    {
+        $orig_pre_string = substr( $str, $start_pos, $end_pos - $start_pos );
+        $new_pre_string = str_replace( '\\', '&#092;', $orig_pre_string );
+        $new_pre_string = str_replace( '<', '&lt;', $new_pre_string );
+        $new_pre_string = str_replace( '>', '&gt;', $new_pre_string );
+        $new_pre_string = str_replace( '[code]', '', $new_pre_string );
+        $new_pre_string = str_replace( '[CODE]', '', $new_pre_string );
+        $new_pre_string = str_replace( '[/code]', '', $new_pre_string );
+        $new_pre_string = str_replace( '[/CODE]', '', $new_pre_string );
+        $new_pre_string = nl2br( $new_pre_string );
+        $str = str_replace( $orig_pre_string, '<pre><code>' . $new_pre_string . '</code></pre>', $str );
     }
     
-    if (!SEC_hasRights('story.edit') || empty ($_CONF['adminhtml'])) {
-        $str = strip_tags($str,$_CONF['allowablehtml']);
+    if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['adminhtml'] ))
+    {
+        $str = strip_tags( $str, $_CONF['allowablehtml'] );
     }
-    else {    
-        $str = strip_tags($str,$_CONF['adminhtml']);
+    else
+    {
+        $str = strip_tags( $str, $_CONF['adminhtml'] );
     }
 
-    return COM_killJS($str);
+    return COM_killJS( $str );
 }
 
 /**
@@ -2315,11 +2392,12 @@ function COM_checkHTML($str)
 * @return	string	$sid  Story ID
 *
 */
+
 function COM_makesid() 
 {
-    $sid = date("YmdHis");
-    srand((double)microtime()*1000000);
-    $sid .= rand(0,999);
+    $sid = date( "YmdHis" );
+    srand(( double )microtime() * 1000000 );
+    $sid .= rand( 0,999 );
 
     return $sid;
 }
@@ -2333,11 +2411,15 @@ function COM_makesid()
 * @return	boolean	True if valid otherwise false
 *
 */
-function COM_isemail($email) 
+
+function COM_isemail( $email ) 
 {
-    if (eregi("^[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*.[a-z]{2,3}$", $email, $check)) {
+    if( eregi( "^[0-9a-z]([-_.]?[0-9a-z])*@[0-9a-z]([-.]?[0-9a-z])*.[a-z]{2,3}$", $email, $check ))
+    {
         return TRUE;
-    } else {
+    }
+    else 
+    {
         return FALSE;
     }
 }
@@ -2349,39 +2431,49 @@ function COM_isemail($email)
 * Actually updates the olderstuff record in the gl_blocks database.
 * @return	void
 */
+
 function COM_olderStuff() 
 {
     global $_TABLES, $_CONF;
 
-    $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
-    $nrows = DB_numRows($result);
+    $result = DB_query( "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}" );
+    $nrows = DB_numRows( $result );
 
-    if ($nrows>0) {
+    if( $nrows > 0 ) 
+    {
         $day = 'noday';
         $string = '';
-        for ($i = 0; $i < $nrows; $i++) {
-            $A = DB_fetchArray($result);
-            $daycheck = strftime("%A",$A['day']);
-            if ($day != $daycheck) {
-                if ($day != 'noday') {
-                    $daylist = COM_makeList ($oldnews);
-                    $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+        
+        for( $i = 0; $i < $nrows; $i++ ) 
+        {
+            $A = DB_fetchArray( $result );
+            $daycheck = strftime( "%A", $A['day'] );
+            
+            if( $day != $daycheck ) 
+            {
+                if( $day != 'noday' )
+                {
+                    $daylist = COM_makeList( $oldnews );
+                    $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
                     $string .= $daylist . '<br>';
                 }
-                $day2 = strftime("%m/%d",$A['day']);
+                
+                $day2 = strftime( "%m/%d", $A['day'] );
                 $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
-                $oldnews = array ();
+                $oldnews = array();
                 $day = $daycheck;
             }
+            
             $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
                 . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
         }
-        $daylist = COM_makeList ($oldnews);
-        $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+        
+        $daylist = COM_makeList( $oldnews );
+        $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
         $string .= $daylist;
-
-        $string = addslashes($string);
-        DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
+        $string = addslashes( $string );
+        
+        DB_query( "UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'" );
     }
 }
 
@@ -2398,39 +2490,47 @@ function COM_olderStuff()
 * @return	string	HTML Formated block
 *
 */
-function COM_showBlock($name,$help='',$title='')
+
+function COM_showBlock( $name, $help='', $title='' )
 {
     global $_CONF, $topic;
 
-    switch ($name) {
-    case 'user_block':
-        $retval .= COM_userMenu($help,$title);
-        break;
-    case 'admin_block':
-        $retval .= COM_adminMenu($help,$title);
-        break;
-    case 'section_block':
-        $retval .= COM_startBlock($title,$help, COM_getBlockTemplate($name,'header')) 
-            . COM_showTopics($topic) 
-            . COM_endBlock(COM_getBlockTemplate($name,'footer'));
-        break;
-    case 'events_block':
-        if (!$U['noboxes'] && $_CONF['showupcomingevents']) {
-            $retval .= COM_printUpcomingEvents($help,$title);
-        } 
-        break;
-    case 'poll_block':
-        $retval .= COM_showPoll(60);
-        break;
-    case 'whats_new_block':
-        if (!$U['noboxes']) {
-            $retval .= COM_whatsNewBlock($help,$title);
-        }
-        break;
+    switch( $name )
+    {
+        case 'user_block':
+            $retval .= COM_userMenu( $help,$title );
+            break;
+            
+        case 'admin_block':
+            $retval .= COM_adminMenu( $help,$title );
+            break;
+            
+        case 'section_block':
+            $retval .= COM_startBlock( $title,$help, COM_getBlockTemplate( $name, 'header' )) 
+                . COM_showTopics( $topic ) 
+                . COM_endBlock( COM_getBlockTemplate( $name, 'footer' ));
+            break;
+            
+        case 'events_block':
+            if( !$U['noboxes'] && $_CONF['showupcomingevents'] ) 
+            {
+                $retval .= COM_printUpcomingEvents( $help, $title );
+            } 
+            break;
+            
+        case 'poll_block':
+            $retval .= COM_showPoll( 60 );
+            break;
+            
+        case 'whats_new_block':
+            if( !$U['noboxes'] ) 
+            {
+                $retval .= COM_whatsNewBlock( $help, $title );
+            }
+            break;
     }
 
     return $retval;
-
 }
 
 /**
@@ -2446,85 +2546,114 @@ function COM_showBlock($name,$help='',$title='')
 * @return	string	HTML Formated blocks
 *
 */
-function COM_showBlocks($side, $topic='', $name='all') 
+
+function COM_showBlocks( $side, $topic='', $name='all' )
 {
     global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS;
 
     // Get user preferences on blocks
 	
-    if (!empty($_USER['uid'])) {
-        $result = DB_query("SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
-        $U = DB_fetchArray($result);
+    if( !empty( $_USER['uid'] )) 
+    {
+        $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
+        $U = DB_fetchArray( $result );
     }
 	
-    if ($side == 'left') {
-        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1";
-    } else {
+    if( $side == 'left' )
+    {
+        $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 1 AND is_enabled = 1 ";
+    } 
+    else 
+    {
         $sql = "SELECT *,UNIX_TIMESTAMP(rdfupdated) as date FROM {$_TABLES['blocks']} WHERE onleft = 0 AND is_enabled = 1";
     }
 
-    if (!empty($topic)) {
+    if( !empty( $topic )) 
+    {
         $sql .= " AND (tid = '$topic' OR (tid = 'all' AND type <> 'layout'))";
-    } else {
-        if ($HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php") {
+        
+    } 
+    else 
+    {
+        if( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" )
+        {
             $sql .= " AND (tid = 'all' AND type <> 'layout')";
-        } else {
+        }
+        else 
+        {
             $sql .= " AND (tid = 'homeonly' OR (tid = 'all' AND type <> 'layout'))";
         }
     }
 
-    if (!empty($U['boxes'])) {
-        $BOXES = str_replace(' ',',',$U['boxes']);
-        $sql .= ' AND (';
-
-        $sql .= "bid NOT IN ($BOXES) OR ";
-
-        $sql .= "bid = '-1')";
+    if( !empty( $U['boxes'] )) 
+    {
+        $BOXES = str_replace( ' ', ',', $U['boxes'] );
+    
+        $sql .= " AND (bid NOT IN ($BOXES) OR bid = '-1')";
     }
     
     $sql .= ' ORDER BY blockorder,title asc';
-    $result	= DB_query($sql);
-    $nrows = DB_numRows($result);	
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        if ($A['type'] == 'portal') {
-            COM_rdfCheck($A['bid'],$A['rdfurl'],$A['date']);
+    
+    $result	= DB_query( $sql );
+    $nrows = DB_numRows( $result );	
+    
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
+        
+        if( $A['type'] == 'portal' )
+        {
+            COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] );
         }
 
-        if ($A['type'] == 'gldefault') {
-            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                $retval .= COM_showBlock($A['name'],$A['help'],$A['title']);
+        if( $A['type'] == 'gldefault' ) 
+        {
+            if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+            {
+                $retval .= COM_showBlock( $A['name'], $A['help'], $A['title'] );
             }
         }
 
-        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-            if ($A['type'] == 'phpblock' && !$U['noboxes']) {
-                if (!($A['name'] == 'whosonline_block' AND DB_getItem($_TABLES['blocks'],'is_enabled',"name='whosonline_block'") == 0)) {
+        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+        {
+            if( $A['type'] == 'phpblock' && !$U['noboxes'] )
+            {
+                if( !($A['name'] == 'whosonline_block' AND DB_getItem( $_TABLES['blocks'], 'is_enabled', "name='whosonline_block'") == 0 ))
+                {
                     $function = $A['phpblockfn'];
-                    $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header'));
+                    $retval .= COM_startBlock( $A['title'], $A['help'], COM_getBlockTemplate( $A['name'], 'header' ));
 
-                    if (function_exists($function)) {
-                        // great, call it
+                    if( function_exists( $function )) 
+                    {
                         $retval .= $function();
-                    } else {
-                        // show friendly error message
+                    } 
+                    else 
+                    {
+                        // show error message
                         $errmsg = $LANG21[31];
-                        eval ("\$errmsg = \"$errmsg\";"); 
+                        eval( "\$errmsg = \"$errmsg\";" ); 
                         $retval .= $errmsg;
                     }
-                    $retval .= COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
+                    
+                    $retval .= COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
                 }
             }
-            if (!empty($A['content']) && !$U['noboxes']) {
-                $blockcontent = stripslashes($A['content']);
+            
+            if( !empty( $A['content'] ) && !$U['noboxes'] ) 
+            {
+                $blockcontent = stripslashes( $A['content'] );
+            
                 // Hack: If the block content starts with a '<' assume it
                 // contains HTML and do not call nl2br() which would only add
                 // unwanted <br> tags.
-                if (substr ($blockcontent, 0, 1) != '<') {
-                    $blockcontent = nl2br ($blockcontent);
+            
+                if( substr( $blockcontent, 0, 1 ) != '<' ) 
+                {
+                    $blockcontent = nl2br( $blockcontent );
                 }
-                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . $blockcontent . LB
-                    . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
+                
+                $retval .= COM_startBlock( $A['title'], $A['help'], COM_getBlockTemplate( $A['name'], 'header' )) . $blockcontent . LB
+                    . COM_endBlock( COM_getBlockTemplate( $A['name'], 'footer' ));
             }
         }
     }
@@ -2543,12 +2672,14 @@ function COM_showBlocks($side, $topic='', $name='all')
 * @see function COM_rdfImport
 * @return	void
 */
-function COM_rdfCheck($bid,$rdfurl,$date) 
+
+function COM_rdfCheck( $bid, $rdfurl, $date ) 
 {
     $nextupdate = $date + 3600;
 
-    if ($nextupdate < time()) {
-        COM_rdfImport($bid,$rdfurl);
+    if( $nextupdate < time() ) 
+    {
+        COM_rdfImport( $bid, $rdfurl );
     }
 }
 
@@ -2561,43 +2692,53 @@ function COM_rdfCheck($bid,$rdfurl,$date)
 * new RDF parser provided by Roger Webster
 *
 */
+
 $RDFinsideitem = false;
-$RDFtag = "";
-$RDFtitle = "";
-$RDFlink = "";
+$RDFtag = '';
+$RDFtitle = '';
+$RDFlink = '';
 $RDFheadlines = array ();
 
-function COM_rdfStartElement ($parser, $name, $attrs) {
+function COM_rdfStartElement( $parser, $name, $attrs ) 
+{
     global $RDFinsideitem, $RDFtag;
 
-    if ($RDFinsideitem) {
+    if( $RDFinsideitem ) 
+    {
         $RDFtag = $name;
-    } elseif ($name == "ITEM") {
+    } 
+    elseif( $name == 'ITEM' )
+    {
         $RDFinsideitem = true;
     }
 }
 
-function COM_rdfEndElement ($parser, $name) {
+function COM_rdfEndElement( $parser, $name )
+{
     global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
-    if ($name == "ITEM") {
-        $RDFheadlines[] .= '<a href="' . addslashes (trim ($RDFlink)) . '">'
-                        . addslashes (trim ($RDFtitle)) . '</a>';
-        $RDFtitle = "";
-        $RDFlink = "";
+    if( $name == "ITEM" ) 
+    {
+        $RDFheadlines[] .= '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
+        $RDFtitle = '';
+        $RDFlink = '';
         $RDFinsideitem = false;
     }
 }
 
-function COM_rdfCharacterData ($parser, $data) {
+function COM_rdfCharacterData ($parser, $data) 
+{
     global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink;
 
-    if ($RDFinsideitem) {
-        switch ($RDFtag) {
-            case "TITLE":
+    if( $RDFinsideitem )
+    {
+        switch( $RDFtag ) 
+        {
+            case 'TITLE':
                 $RDFtitle .= $data;
                 break;
-            case "LINK":
+                
+            case 'LINK':
                 $RDFlink .= $data;
                 break;
         }
@@ -2612,57 +2753,74 @@ function COM_rdfCharacterData ($parser, $data) {
 * @see function COM_rdfCheck
 *
 */
-function COM_rdfImport ($bid, $rdfurl) {
+
+function COM_rdfImport( $bid, $rdfurl ) 
+{
     global $_TABLES, $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
     $RDFinsideitem = false;
-    $RDFtag = "";
-    $RDFtitle = "";
-    $RDFlink = "";
-    $RDFheadlines = array ();
+    $RDFtag = '';
+    $RDFtitle = '';
+    $RDFlink = '';
+    $RDFheadlines = array();
 
-    $update = date ("Y-m-d H:i:s");
-    $result = DB_change ($_TABLES['blocks'],'rdfupdated',"$update",'bid',$bid);
-    clearstatcache ();
+    $update = date( "Y-m-d H:i:s" );
+    
+    $result = DB_change( $_TABLES['blocks'], 'rdfupdated', "$update", 'bid', $bid );
+    clearstatcache();
 
     $rdferror = false;
-    $xml_parser = xml_parser_create ();
-    xml_set_element_handler ($xml_parser, "COM_rdfStartElement",
-                             "COM_rdfEndElement");
-    xml_set_character_data_handler ($xml_parser, "COM_rdfCharacterData");
-    if ($fp = fopen ($rdfurl, 'r')) {
-        while ($data = fread ($fp, 4096)) {
-            if (!xml_parse ($xml_parser, $data, feof ($fp))) {
-                $errmsg = sprintf ("Parse error in %s: %s at line %d", $rdfurl,
-                        xml_error_string (xml_get_error_code ($xml_parser)),
-                        xml_get_current_line_number ($xml_parser));
-                COM_errorLog ($errmsg, 1);
+    $xml_parser = xml_parser_create();
+    xml_set_element_handler($xml_parser, 'COM_rdfStartElement', 'COM_rdfEndElement');
+    xml_set_character_data_handler( $xml_parser, 'COM_rdfCharacterData' );
+
+    if( $fp = fopen( $rdfurl, 'r' ))
+    {
+        while( $data = fread( $fp, 4096 ))
+        {
+            if( !xml_parse( $xml_parser, $data, feof( $fp )))
+            {
+                $errmsg = sprintf(
+                    "Parse error in %s: %s at line %d", 
+                    $rdfurl,
+                    xml_error_string( xml_get_error_code( $xml_parser )),
+                    xml_get_current_line_number( $xml_parser )
+                    );
+                    
+                COM_errorLog( $errmsg, 1 );
                 $rdferror = true;
-                $result = DB_change ($_TABLES['blocks'], 'content',
-                                     addslashes ($errmsg), 'bid', "$bid");
+                $result = DB_change( $_TABLES['blocks'], 'content', addslashes ($errmsg), 'bid', "$bid" );
                 break;
             }
         }
-        fclose($fp);
-        xml_parser_free($xml_parser);
+        
+        fclose( $fp );
+        xml_parser_free( $xml_parser );
 
-        if (!$rdferror) {
-            $blockcontent = COM_makeList ($RDFheadlines);
-            $RDFheadlines = array ();
-            $blockcontent = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $blockcontent);
-            $result = DB_change($_TABLES['blocks'],'content',"$blockcontent",'bid',$bid);
+        if( !$rdferror ) 
+        {
+            $blockcontent = COM_makeList( $RDFheadlines );
+            $RDFheadlines = array();
+            $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $blockcontent );
+            $result = DB_change( $_TABLES['blocks'], 'content', "$blockcontent", 'bid', $bid);
         }
-    } else {
+    } 
+    else 
+    {
         $rdferror = true;
-        COM_errorLog ("Can not reach $rdfurl", 1);
-        $result = DB_change ($_TABLES['blocks'], 'content',
-              "GeekLog can not reach the supplied RDF file at $update. "
+        COM_errorLog( "Can not reach $rdfurl", 1 );
+        
+        $result = DB_change(
+            $_TABLES['blocks'], 
+            'content',
+            "GeekLog can not reach the supplied RDF file at $update. "
             . "Please double check the URL provided.  Make sure your url is correctly entered and it begins with "
             . "http://. GeekLog will try in one hour to fetch the file again.",
-            'bid', "$bid");
+            'bid', 
+            "$bid"
+            );
     }
 }
-
 
 /**
 * Returns what HTML is allows in content
@@ -2673,17 +2831,22 @@ function COM_rdfImport ($bid, $rdfurl) {
 *
 * @return	string	HTML <span> enclosed string
 */
+
 function COM_allowedhtml() 
 {
-    global $_CONF,$LANG01;
+    global $_CONF, $LANG01;
 
     $retval = '<span class="warningsmall">' . $LANG01[31]; 
-    if (!SEC_hasRights('story.edit') || empty ($_CONF['adminhtml'])) {
-        $retval .= htmlspecialchars($_CONF['allowablehtml']);
+    
+    if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['adminhtml'] )) 
+    {
+        $retval .= htmlspecialchars( $_CONF['allowablehtml'] );
     }
-    else {
-        $retval .= htmlspecialchars($_CONF['adminhtml']);
+    else 
+    {
+        $retval .= htmlspecialchars( $_CONF['adminhtml'] );
     }
+    
     $retval .= '</span>';
 
     return $retval;
@@ -2698,20 +2861,24 @@ function COM_allowedhtml()
 * @return	string	   Password or ''
 *
 */
-function COM_getpassword($loginname) 
+
+function COM_getpassword( $loginname ) 
 {
     global $_TABLES, $LANG01;
 
-    $result = DB_query("SELECT passwd FROM {$_TABLES['users']} WHERE username='$loginname'");
+    $result = DB_query( "SELECT passwd FROM {$_TABLES['users']} WHERE username='$loginname'" );
     $tmp = mysql_errno();
-    $nrows = DB_numRows($result);
+    $nrows = DB_numRows( $result );
 
-    if (($tmp == 0) && ($nrows == 1)) {
-        $U = DB_fetchArray($result);
+    if(( $tmp == 0 ) && ( $nrows == 1 ))
+    {
+        $U = DB_fetchArray( $result );
         return $U['passwd'];
-    } else {
+    } 
+    else 
+    {
         $tmp = $LANG01[32] . ': ' . $loginname;
-        COM_errorLog($tmp,1);
+        COM_errorLog( $tmp, 1 );
     }
 }
 
@@ -2723,11 +2890,12 @@ function COM_getpassword($loginname)
 * shown on stats.php
 *
 */
+
 function COM_hit() 
 {
     global $_TABLES;
 
-    DB_query("UPDATE {$_TABLES['vars']} SET value = value + 1 WHERE name = 'totalhits'");
+    DB_query( "UPDATE {$_TABLES['vars']} SET value = value + 1 WHERE name = 'totalhits'" );
 }
 
 /**
@@ -2739,125 +2907,167 @@ function COM_hit()
 * @param        string      $title      Title to be used in block header
 * @return	string	HTML formated block containing events.
 */
-function COM_printUpcomingEvents($help='',$title='') 
+
+function COM_printUpcomingEvents( $help='', $title='' ) 
 {
-    global $_TABLES, $LANG01,$_CONF, $_USER;
+    global $_TABLES, $LANG01, $_CONF, $_USER;
 
-    if (empty($title)) {
-        $title = DB_getItem($_TABLES['blocks'],'title',"name = 'events_block'");
+    if( empty( $title )) 
+    {
+        $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
     }
-    $retval .= COM_startBlock($title, '', COM_getBlockTemplate('events_block', 'header'));
+    
+    $retval .= COM_startBlock( $title, '', COM_getBlockTemplate( 'events_block', 'header' ));
 
-    $eventSql = "SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE dateend >= NOW() AND "
-        . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
-    $personaleventsql = "SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['personal_events']} WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND "
-        . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
+    $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
+        . "FROM {$_TABLES['events']}"
+        . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) "
+        . 'ORDER BY datestart,dateend';
+        
+    $personaleventsql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
+        . "FROM {$_TABLES['personal_events']} "
+        . "WHERE uid = {$_USER['uid']} AND dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) "
+        . 'ORDER BY datestart, dateend';
 
-    $allEvents = DB_query($eventSql);
-    $numRows   = DB_numRows($allEvents);
+    $allEvents = DB_query( $eventSql );
+    $numRows = DB_numRows( $allEvents );
     $totalrows = $numRows;
-    $numDays   = 0;         // Without limits, I'll force them.
-    $theRow    = 1;         // Start with today!
-    $oldDate1  = 'no_day';  // Invalid Date!
-    $oldDate2  = 'last_d';  // Invalid Date!
 
-    if ($_CONF['personalcalendars'] == 1 AND !empty($_USER['uid'])) {
+    $numDays = 0;          // Without limits, I'll force them.
+    $theRow = 1;           // Start with today!
+    $oldDate1 = 'no_day';  // Invalid Date!
+    $oldDate2 = 'last_d';  // Invalid Date!
+
+    if( $_CONF['personalcalendars'] == 1 AND !empty( $_USER['uid'] ))
+    {
         $iterations = 2;
-    } else {
+    }
+    else 
+    {
         $iterations = 1;
     }
 
     $eventsFound = 0;
-    for ($z = 1; $z <= $iterations; $z++) {
-        if ($z == 2) {
+    
+    for( $z = 1; $z <= $iterations; $z++ )
+    {
+        if( $z == 2 ) 
+        {
             $allEvents = DB_query($personaleventsql);
             $numRows = DB_numRows($allEvents);
             $totalrows = $totalrows + $numRows;
-            $numDays   = 0;         // Without limits, I'll force them.
-            $theRow    = 1;         // Start with today!
-            $oldDate1  = 'no_day';  // Invalid Date!
-            $oldDate2  = 'last_d';  // Invalid Date!
+            
+            $numDays = 0;          // Without limits, I'll force them.
+            $theRow = 1;           // Start with today!
+            $oldDate1 = 'no_day';  // Invalid Date!
+            $oldDate2 = 'last_d';  // Invalid Date!
             $headline = false;
-        } else {
+        } 
+        else 
+        {
             $headline = false;
         }
 
-        while ($theRow <= $numRows AND $numDays < 14) {
-
+        while( $theRow <= $numRows AND $numDays < 14 )
+        {
             // Retreive the next event, and format the start date.
-            $theEvent   = DB_fetchArray($allEvents);
+            $theEvent = DB_fetchArray( $allEvents );
 
-            if (SEC_hasAccess($theEvent['owner_id'],$theEvent['group_id'],$theEvent['perm_owner'],$theEvent['perm_group'],$theEvent['perm_members'],$theEvent['perm_anon']) > 0) {
+            if( SEC_hasAccess( $theEvent['owner_id'], $theEvent['group_id'], $theEvent['perm_owner'], $theEvent['perm_group'], $theEvent['perm_members'], $theEvent['perm_anon'] ) > 0 )
+            {
                 $eventsFound++;
-                if (!$headline) {
-                    if ($z == 2) {
-                        if ($numRows > 0)
+                
+                if( !$headline )
+                {
+                    if($z == 2)
+                    {
+                        if( $numRows > 0 )
+                        {
                             $retval .= '<p><b>' . $LANG01[101] . '</b><br>';
-                    } else {
-                        if ($totalrows > 0)
+                        }
+                    } 
+                    else 
+                    {
+                        if( $totalrows > 0 )
+                        {
                             $retval .= '<b>' . $LANG01[102] . '</b><br>';
+                        }
                     }
+                    
                     $headline = true;
                 }
 
                 // Start Date strings...
-                $startDate  = $theEvent['datestart'];
-                $theTime1   = strtotime($startDate);
-                $dayName1   = strftime("%A", $theTime1);
-                $abbrDate1  = strftime("%d-%b", $theTime1);
+                $startDate = $theEvent['datestart'];
+                $theTime1 = strtotime( $startDate );
+                $dayName1 = strftime( "%A", $theTime1 );
+                $abbrDate1 = strftime( "%d-%b", $theTime1 );
 
                 // End Date strings...
-                $endDate    = $theEvent['dateend'];
-                $theTime2   = strtotime($endDate);
-                $dayName2   = strftime("%A", $theTime2);
-                $abbrDate2  = strftime("%d-%b", $theTime2);
+                $endDate = $theEvent['dateend'];
+                $theTime2 = strtotime( $endDate );
+                $dayName2 = strftime( "%A", $theTime2 );
+                $abbrDate2 = strftime( "%d-%b", $theTime2 );
 
                 // If either of the dates [start/end] change, then display a new header.
-                if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
+                if( $oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2 ) 
+                {
                     $oldDate1 = $abbrDate1;
                     $oldDate2 = $abbrDate2;
                     $numDays ++;
-                    if ($numDays < 14) {
-                        if (!empty ($newevents)) {
-                             $retval .= COM_makeList ($newevents);
+                    
+                    if( $numDays < 14 ) 
+                    {
+                        if( !empty( $newevents ))
+                        {
+                             $retval .= COM_makeList( $newevents );
                         }
+                        
                         $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
+                        
                         // If different start and end Dates, then display end date:
-                        if ($abbrDate1 != $abbrDate2) {
+                        if( $abbrDate1 != $abbrDate2 )
+                        {
                             $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
                         }
                     }
-                    $newevents = array ();
+                    
+                    $newevents = array();
                 }
 
                 // Now display this event record.
-
-                if ($numDays < 14) {
+                if( $numDays < 14 ) 
+                {
                     // Display the url now!
                     $newevent = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?';
-                    if ($z == 2) {
+
+                    if( $z == 2 ) 
+                    {
                         $newevent .= 'mode=personal&amp;';
                     }
-                    $newevent .= 'eid=' . $theEvent['eid'] . '">'
-                              . stripslashes($theEvent['title']) . '</a>';
+                    
+                    $newevent .= 'eid=' . $theEvent['eid'] . '">' . stripslashes( $theEvent['title'] ) . '</a>';
                     $newevents[] = $newevent;
                 }
 
-                if (!empty ($newevents)) {
-                    $retval .= COM_makeList ($newevents);
-                    $newevents = array ();
+                if( !empty( $newevents )) 
+                {
+                    $retval .= COM_makeList( $newevents );
+                    $newevents = array();
                 }
             }
+            
             $theRow++;
         }
-
-
     } // end for z
-    if ($eventsFound == 0) {
+    
+    if( $eventsFound == 0 ) 
+    {
         // There aren't any upcoming events, show a nice message
         $retval .= $LANG01[89];
     }
-    $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
+    
+    $retval .= COM_endBlock( COM_getBlockTemplate( 'events_block', 'footer' ));
 
     return $retval;
 }
@@ -2871,74 +3081,104 @@ function COM_printUpcomingEvents($help='',$title='')
 *
 * @return	void
 */
+
 function COM_emailUserTopics() 
 {
     global $_TABLES, $LANG08, $_CONF, $LANG_CHARSET;
 
     // Get users who want stories emailed to them
-    $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
-        . "{$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
-    $users = DB_query($usersql);
-    $nrows = DB_numRows($users);
+    $usersql = 'SELECT username,email, etids '
+        . "FROM {$_TABLES['users']}, {$_TABLES['userindex']} "
+        . "WHERE {$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
+
+    $users = DB_query( $usersql );
+    $nrows = DB_numRows( $users );
 
     // For each user, pull the stories they want and email it to them
-    for ($x = 1; $x <= $nrows; $x++) {
-        $U = DB_fetchArray($users);
-        $cur_day = strftime("%D",time());
-        $result = DB_query("SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'");
+    for( $x = 1; $x <= $nrows; $x++ ) 
+    {
+        $U = DB_fetchArray( $users );
+        $cur_day = strftime( "%D", time() );
+        $result = DB_query( "SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'" );
         $L = DB_fetchArray($result);
-        $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '"
-            . $L['lastrun'] . "' AND (";
-        $ETIDS = explode(' ',$U['etids']);
+        
+        $storysql = 'SELECT sid,date AS day,title,introtext,bodytext '
+            . "FROM {$_TABLES['stories']} "
+            . "WHERE draft_flag = 0 AND date <= NOW() AND date >= " . $L['lastrun'] . "' AND (";
 
-        for ($i = 0; $i < sizeof($ETIDS); $i++) {
-            if ($i == (sizeof($ETIDS) - 1)) {
+        $ETIDS = explode( ' ', $U['etids'] );
+
+        for( $i = 0; $i < sizeof( $ETIDS ); $i++ ) 
+        {
+            if( $i == (sizeof( $ETIDS ) - 1 )) 
+            {
                 $storysql .= "tid = '$ETIDS[$i]')";
-            } else {
+            } 
+            else
+            {
                 $storysql .= "tid = '$ETIDS[$i]' OR ";
             }
         }
 
-        $stories = DB_query($storysql);
-        $nsrows = DB_numRows($stories);
+        $stories = DB_query( $storysql );
+        $nsrows = DB_numRows( $stories );
 
-        if ($nsrows == 0) {
+        if( $nsrows == 0 ) 
+        {
             // If no new stories where pulled for this user, continue with next
             continue;
         }
 
-        $mailtext = $LANG08[29] . strftime($_CONF['shortdate'],time()) . "\n";
-        for ($y=0; $y<$nsrows; $y++) {
+        $mailtext = $LANG08[29] . strftime( $_CONF['shortdate'], time() ) . "\n";
+        
+        for( $y=0; $y < $nsrows; $y++ ) 
+        {
             // Loop through stories building the requested email message
-            $S = DB_fetchArray($stories);
+            $S = DB_fetchArray( $stories );
+            
             $mailtext .= "\n------------------------------\n\n";
             $mailtext .= "$LANG08[31]: {$S['title']}\n";
-            $mailtext .= "$LANG08[32]: " . strftime($_CONF['date'],strtotime($S['day'])) . "\n\n";
-            if ($_CONF['emailstorieslength'] > 0) {
-                $storytext = stripslashes(strip_tags($S['introtext']));
-                if ($_CONF['emailstorieslength'] > 1) {
-                   if (strlen ($storytext) > $_CONF['emailstorieslength']) {
-                       $storytext = substr ($storytext, 0, $_CONF['emailstorieslength']) . '...';
+            $mailtext .= "$LANG08[32]: " . strftime( $_CONF['date'], strtotime( $S['day' ])) . "\n\n";
+
+            if( $_CONF['emailstorieslength'] > 0 )
+            {
+                $storytext = stripslashes( strip_tags( $S['introtext'] ));
+                
+                if( $_CONF['emailstorieslength'] > 1 ) 
+                {
+                   if( strlen( $storytext ) > $_CONF['emailstorieslength'] )
+                   {
+                       $storytext = substr( $storytext, 0, $_CONF['emailstorieslength'] ) . '...';
                    }
                 }
+                
                 $mailtext .= $storytext . "\n\n";
             }
+            
             $mailtext .= "$LANG08[33] {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
         }
+        
         $mailtext .= "\n------------------------------\n";
         $mailtext .= "\n$LANG08[34]\n";
         $mailtext .= "\n------------------------------\n";
+        
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
         $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
-        if (!empty ($LANG_CHARSET)) {
+        
+        if( !empty( $LANG_CHARSET )) 
+        {
             $mailfrom .= "\nContent-Type: text/plain; charset={$LANG_CHARSET}";
         }
-        $subject = strip_tags(stripslashes($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d',time())));
-        @mail($toemail,$subject,$mailtext,$mailfrom);
+        
+        $subject = strip_tags( stripslashes( $_CONF['site_name'] . $LANG08[30] . strftime( '%Y-%m-%d', time() )));
+        
+        @mail( $toemail, $subject, $mailtext, $mailfrom );
     }
-    $tmpdate = date("Y-m-d H:i:s",time());
-    DB_query("UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'");
+
+    $tmpdate = date( "Y-m-d H:i:s", time() );
+
+    DB_query( "UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'" );
 }
 
 /**
@@ -2951,51 +3191,66 @@ function COM_emailUserTopics()
 * @return     string  Return the HTML that shows any new stories, comments, etc
 *
 */
-function COM_whatsNewBlock($help='',$title='') 
+
+function COM_whatsNewBlock( $help='', $title='' ) 
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS;
 
     $groupList = '';
-    if (!empty ($_USER['uid'])) {
-        foreach ($_GROUPS as $grp) {
+
+    if( !empty( $_USER['uid'] )) 
+    {
+        foreach( $_GROUPS as $grp )
+        {
             $groupList .= $grp . ',';
         }
-        $groupList = substr ($groupList, 0, -1);
+        
+        $groupList = substr( $groupList, 0, -1 );
     }
 
     // Find the newest stories
     $nesql = '';
-    if (!empty ($_USER['uid'])) {
+    
+    if( !empty( $_USER['uid'] ))
+    {
         $nesql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $nesql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
         $nesql .= "(perm_members >= 2) OR ";
     }
+    
     $nesql .= "(perm_anon >= 2)";
     $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
-    $result = DB_query ($sql);
-    $A = DB_fetchArray ($result);
+    $result = DB_query( $sql );
+    $A = DB_fetchArray( $result );
     $nrows = $A['count'];
 
-    if (empty($title)) {
-        $title = DB_getItem($_TABLES['block'],'title',"name='whats_new_block'");
+    if( empty( $title )) 
+    {
+        $title = DB_getItem( $_TABLES['block'], 'title', "name='whats_new_block'" );
     }
-    $retval .= COM_startBlock($title, $help, COM_getBlockTemplate('whats_new_block', 'header'));
+    
+    $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
     // Any late breaking news stories?
     $retval .= '<b>' . $LANG01[99] . '</b><br>';
 
-    if ($nrows > 0) {
-        $hours = (($_CONF['newstoriesinterval']/60)/60);
-        if ($nrows == 1) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81]
-                . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
-        } else {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' '
-                . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+    if( $nrows > 0 ) 
+    {
+        $hours = (( $_CONF['newstoriesinterval'] / 60 ) / 60 );
+        if( $nrows == 1 ) 
+        {
+            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+        } 
+        else 
+        {
+            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
         }
-    } else {
+    } 
+    else 
+    {
         $retval .= $LANG01[100] . '<br>';
     }
+    
     $retval .= '<br>';
 
     // Go get the newest comments
@@ -3003,7 +3258,9 @@ function COM_whatsNewBlock($help='',$title='')
 
     $stsql = '';
     $stwhere = '';
-    if (!empty ($_USER['uid'])) {
+    
+    if( !empty( $_USER['uid'] ))
+    {
         $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
         $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
         $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
@@ -3011,12 +3268,15 @@ function COM_whatsNewBlock($help='',$title='')
         $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
         $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
     }
+    
     $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
     $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
 
     $posql = '';
     $powhere = '';
-    if (!empty ($_USER['uid'])) {
+    
+    if( !empty( $_USER['uid'] )) 
+    {
         $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
         $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
         $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
@@ -3024,117 +3284,160 @@ function COM_whatsNewBlock($help='',$title='')
         $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
         $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
     }
+    
     $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
     $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
 
     $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
         . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
         . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
-    $sql .= "{$_TABLES["comments"]}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
-    $sql .= " GROUP BY {$_TABLES["comments"]}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
-    $result = DB_query($sql);
+    $sql .= "{$_TABLES['comments']}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
+    $sql .= " GROUP BY {$_TABLES['comments']}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
+    
+    $result = DB_query( $sql );
 
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        $newcomments = array ();
-        for ($x = 1; $x <= $nrows; $x++) {
-            $A = DB_fetchArray($result);
-            if ($A['type'] == 'article') {
-                $itemlen = strlen($A['title']);
-                $titletouse = stripslashes ($A['title']);
+    $nrows = DB_numRows( $result );
+    
+    if( $nrows > 0 ) 
+    {
+        $newcomments = array();
+        
+        for( $x = 1; $x <= $nrows; $x++ ) 
+        {
+            $A = DB_fetchArray( $result );
+            
+            if( $A['type'] == 'article' ) 
+            {
+                $itemlen = strlen( $A['title'] );
+                $titletouse = stripslashes( $A['title'] );
                 $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
-            } else {
-                $itemlen = strlen($A['question']);
+            } 
+            else 
+            {
+                $itemlen = strlen( $A['question'] );
                 $titletouse = $A['question'];
                 $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
             }
-            if ($itemlen > 20) {
-                $urlstart .= ' title="' . htmlspecialchars ($titletouse) . '">';
-            } else {
+            
+            if( $itemlen > 20 ) 
+            {
+                $urlstart .= ' title="' . htmlspecialchars( $titletouse ) . '">';
+            } 
+            else 
+            {
                 $urlstart .= '>';
             }
+            
             // Trim the length if over 20 characters
-            if ($itemlen > 20) {
-                $titletouse = substr ($titletouse, 0, 17);
-                $acomment = str_replace ('$','&#36;', $titletouse) . '...';   
-                $acomment = str_replace (' ', '&nbsp;', $acomment);
-                if ($A['dups'] > 1) {
+            if( $itemlen > 20 )
+            {
+                $titletouse = substr( $titletouse, 0, 17 );
+                $acomment = str_replace( '$', '&#36;', $titletouse ) . '...';   
+                $acomment = str_replace( ' ', '&nbsp;', $acomment );
+                
+                if( $A['dups'] > 1 )
+                {
                     $acomment .= ' [+' . $A['dups'] . ']';
                 }
-            } else {
-                $acomment = str_replace ('$','&#36;', $titletouse);
-                $acomment = str_replace (' ', '&nbsp;', $acomment);
-                if ($A['dups'] > 1) {
+            } 
+            else 
+            {
+                $acomment = str_replace( '$', '&#36;', $titletouse );
+                $acomment = str_replace( ' ', '&nbsp;', $acomment );
+
+                if( $A['dups'] > 1 ) 
+                {
                     $acomment .= ' [+' . $A['dups'] . ']';
                 }
             }
+            
             $newcomments[] = $urlstart . $acomment . '</a>';
         }
-        $retval .= COM_makeList ($newcomments);
-    } else {
+        
+        $retval .= COM_makeList( $newcomments );
+    } 
+    else 
+    {
         $retval .= $LANG01[86] . '<br>' . LB;
     }
 
     $retval .= '<br>';
+    
     // Get newest links
     $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
 
     $lisql = '';
-    if (!empty ($_USER['uid'])) {
+    if( !empty( $_USER['uid'] )) 
+    {
         $lisql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $lisql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $lisql .= "(perm_members >= 2) OR ";
+        $lisql .= '(perm_members >= 2) OR ';
     }
-    $lisql .= "(perm_anon >= 2)";
+    
+    $lisql .= '(perm_anon >= 2)';
 
-    $sql = "SELECT lid,title,url FROM {$_TABLES['links']} WHERE ". $lisql
-         . " ORDER BY lid DESC LIMIT 15";
+    $sql = "SELECT lid,title,url FROM {$_TABLES['links']} "
+        . "WHERE $lisql "
+        . 'ORDER BY lid DESC LIMIT 15';
     $foundone = 0;
     $now = time();
     $desired = $now - $_CONF['newlinksinterval'];
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $result = DB_query( $sql );
+    $nrows = DB_numRows( $result );
 
-    if ($nrows > 0) {
+    if( $nrows > 0 ) 
+    {
         $newlinks = array();
-        for ($x = 1; $x <= $nrows; $x++) {
-            $A = DB_fetchArray($result);
+        for( $x = 1; $x <= $nrows; $x++ )
+        {
+            $A = DB_fetchArray( $result );
+            
             // Need to reparse the date from the link id
-            $myyear  = substr($A['lid'],0,4);
-            $mymonth = substr($A['lid'],4,2);
-            $myday   = substr($A['lid'],6,2);
-            $myhour  = substr($A['lid'],8,2);
-            $mymin   = substr($A['lid'],10,2);
-            $mysec   = substr($A['lid'],12,2);
+            $myyear = substr( $A['lid'], 0, 4 );
+            $mymonth = substr( $A['lid'], 4, 2 );
+            $myday = substr( $A['lid'], 6, 2 );
+            $myhour = substr( $A['lid'], 8, 2 );
+            $mymin = substr( $A['lid'], 10, 2 );
+            $mysec = substr( $A['lid'], 12, 2 );
             $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-            $convtime = strtotime($newtime);
+            $convtime = strtotime( $newtime );
 
-            if ($convtime > $desired) {
+            if( $convtime > $desired )
+            {
                 $foundone = 1;
+                
                 // redirect link via portal.php so we can count the clicks
                 $lcount = $_CONF['site_url'] . '/portal.php?url='
-                        . urlencode ($A['url']) . '&amp;what=link&amp;item='
+                        . urlencode( $A['url'] ) . '&amp;what=link&amp;item='
                         . $A['lid'];
+                        
                 // Trim the length if over 16 characters
-                $itemlen = strlen($A['title']);
-                if ($itemlen > 16) {
+                $itemlen = strlen( $A['title'] );
+                if( $itemlen > 16 ) 
+                {
                     $newlinks [] = '<a href="' . $lcount . '" title="'
-                        . $A['title'] . '">' . substr($A['title'],0,16)
+                        . $A['title'] . '">' . substr( $A['title'], 0, 16 )
                         . '...</a>' . LB;
-                } else {
+                } 
+                else 
+                {
                     $newlinks[] = '<a href="' . $lcount . '">'
-                        . substr($A['title'],0,$itemlen) . '</a>' . LB;
+                        . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
                 }
             }
         }
-        if ($foundone == 0) {
+        
+        if( $foundone == 0 ) 
+        {
             $retval .= $LANG01[88] . '<br>' . LB;
-        } else {
-            $retval .= COM_makeList ($newlinks);
+        } 
+        else 
+        {
+            $retval .= COM_makeList( $newlinks );
         }
     }
 
-    $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer'));
+    $retval .= COM_endBlock( COM_getBlockTemplate( 'whats_new_block', 'footer' ));
 
     return $retval;
 } 
@@ -3148,15 +3451,17 @@ function COM_whatsNewBlock($help='',$title='')
 * @param        int     $msg        ID of message to show
 * @return     string  HTML block with message
 */
-function COM_showMessage($msg) 
+
+function COM_showMessage( $msg )
 {
     global $MESSAGE, $_CONF;
 
     $retval = '';
 	
-    if ($msg > 0) {
-        $timestamp = strftime($_CONF['daytime']);
-        $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
+    if( $msg > 0 ) 
+    {
+        $timestamp = strftime( $_CONF['daytime'] );
+        $retval .= COM_startBlock( $MESSAGE[40] . ' - ' . $timestamp )
             . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top" alt="">'
             . $MESSAGE[$msg] . '<BR><BR>' . COM_endBlock();
     }
@@ -3172,50 +3477,74 @@ function COM_showMessage($msg)
 * @param        int         $num_pages      Total number of pages
 * @return	string	 HTML formated widget 
 */
-function COM_printPageNavigation($base_url, $curpage, $num_pages)
+
+function COM_printPageNavigation( $base_url, $curpage, $num_pages )
 {
     global $LANG05;
     
-    $hasargs = strstr($base_url, '?');
-    if ($num_pages == 1) {
+    $hasargs = strstr( $base_url, '?' );
+
+    if( $num_pages == 1 )
+    {
         return;
     }
 
     $retval = '';
-    if ($curpage > 1) {
-        if ($hasargs) {
-            $retval .= '<a href="' . $base_url . '&amp;page=' . ($curpage - 1) . '">' . $LANG05[6] . '</a> ';
+    
+    if( $curpage > 1 ) 
+    {
+        if( $hasargs )
+        {
+            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> ';
         } else {
-            $retval .= '<a href="' . $base_url . '?page=' . ($curpage - 1) . '">' . $LANG05[6] . '</a>  ';
+            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a>  ';
         }
-    } else {
+    } 
+    else 
+    {
         $retval .= $LANG05[6] . ' ' ;
     }
-    for ($pgcount = ($curpage - 10); ($pgcount <= ($curpage + 9)) AND ($pgcount <= $num_pages); $pgcount++) {
-        if ($pgcount <= 0) {
+    
+    for( $pgcount = ( $curpage - 10 ); ( $pgcount <= ( $curpage + 9 )) AND ( $pgcount <= $num_pages ); $pgcount++ )
+    {
+        if( $pgcount <= 0 ) 
+        {
             $pgcount = 1;
         }
-        if ($pgcount == $curpage) {
+        
+        if( $pgcount == $curpage )
+        {
             $retval .= '<b>' . $pgcount . '</b> ';
-        } else {
-            if ($hasargs) {
+        }
+        else 
+        {
+            if( $hasargs ) 
+            {
                 $retval .= '<a href="' . $base_url . '&amp;page=' . $pgcount . '">' . $pgcount . '</a> ';
-            } else {
+            } 
+            else 
+            {
                 $retval .= '<a href="' . $base_url . '?page=' . $pgcount . '">' . $pgcount . '</a> ';
             }
         }
     }
-    if ($curpage == $num_pages) {
+    
+    if( $curpage == $num_pages ) 
+    {
         $retval .= $LANG05[5];
-    } else {
-        if ($hasargs) {
-            $retval .= '<a href="' . $base_url . '&amp;page=' . ($curpage + 1) . '">' . $LANG05[5] . '</a>';
+    } 
+    else 
+    {
+        if( $hasargs )
+        {
+            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a>';
         } else {
-            $retval .= '<a href="' . $base_url . '?page=' . ($curpage + 1) . '">' . $LANG05[5] . '</a>';
+            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a>';
         }
     }
 
-    if (!empty ($retval)) {
+    if( !empty( $retval )) 
+    {
         $retval = '<div class="pagenav">' . $retval . '</div>';
     }
 
@@ -3233,42 +3562,50 @@ function COM_printPageNavigation($base_url, $curpage, $num_pages)
 * @param        string      $date       date to format, otherwise we format current date/time
 * @return	array	array[0] is the formated date and array[1] is the unixtimestamp.
 */
-function COM_getUserDateTimeFormat($date='') 
+
+function COM_getUserDateTimeFormat( $date='' ) 
 {
     global $_TABLES, $_USER, $_CONF;
 
     // Get display format for time
 
-    if ($_USER['uid'] > 1) {
-        if (empty($_USER['format'])) {
+    if( $_USER['uid'] > 1 )
+    {
+        if( empty( $_USER['format'] ))
+        {
             $dateformat = $_CONF['date'];
-        } else {
+        } 
+        else 
+        {
             $dateformat = $_USER['format'];
         }
-    } else {    
+    } 
+    else 
+    {
         $dateformat = $_CONF['date'];
     }
 
-    if (empty($date)) {
+    if( empty( $date ))
+    {
         // Date is empty, get current date/time
         $stamp = time();
-    } else if (is_numeric($date)) {
-	
-        // This is a timestamp
-	
+    } 
+    else if( is_numeric( $date )) 
+    {
+	    // This is a timestamp
         $stamp = $date;
-    } else {
-	
-        // This is a string representation of a date/time
-    
-        $stamp = strtotime($date);
+    } 
+    else 
+    {
+	    // This is a string representation of a date/time
+        $stamp = strtotime( $date );
     }
 
     // Format the date
 
-    $date = strftime($dateformat,$stamp);
+    $date = strftime( $dateformat, $stamp );
 
-    return array($date, $stamp);
+    return array( $date, $stamp );
 }
 
 /**
@@ -3279,17 +3616,20 @@ function COM_getUserDateTimeFormat($date='')
 *
 * @return	int	Cookie time out value in seconds
 */
+
 function COM_getUserCookieTimeout() 
 {
     global $_TABLES, $_USER, $_CONF;
 
-    if (empty($_USER)) {
+    if( empty( $_USER )) 
+    {
         return;
     }
 	
-    $timeoutvalue = DB_getItem($_TABLES['users'],'cookietimeout',"uid = {$_USER['uid']}");
+    $timeoutvalue = DB_getItem( $_TABLES['users'], 'cookietimeout', "uid = {$_USER['uid']}" );
 
-    if (empty($timeoutvalue)) {
+    if( empty( $timeoutvalue )) 
+    {
         $timeoutvalue = $_CONF['default_perm_cookie_timeout'];
     }
 
@@ -3300,28 +3640,37 @@ function COM_getUserCookieTimeout()
 * Shows who is online in slick little block
 * @return	string  HTML string of online users seperated by line breaks.
 */
+
 function phpblock_whosonline()
 {
     global $_CONF,$_TABLES,$LANG01;
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
-    $result = DB_query("SELECT DISTINCT {$_TABLES['sessions']}.uid, username,photo FROM {$_TABLES['sessions']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username");
-
-    $nrows = DB_numRows($result);
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
+    $result = DB_query( "SELECT DISTINCT {$_TABLES['sessions']}.uid, username,photo FROM {$_TABLES['sessions']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username" );
+    $nrows = DB_numRows( $result );
+    
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
         $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '">' . $A['username'] . '</a>';
-        if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
+        
+        if( !empty( $A['photo'] ) AND $_CONF['allow_user_photo'] == 1) 
+        {
             $retval .= '&nbsp;<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['uid'] . '"><img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif" border="0" alt=""></a>';
         }
+        
         $retval .= '<br>';
     }
-    $num_anon = DB_query("SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1");
-    $num_anon = DB_numRows($num_anon);
-    if ($num_anon > 0) {
+    
+    $num_anon = DB_query( "SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1" );
+    $num_anon = DB_numRows( $num_anon );
+
+    if( $num_anon > 0 )
+    {
         $retval .= $LANG01[41] . ': ' . $num_anon . '<br>';
     }
+
     return $retval;
 }
 
@@ -3335,21 +3684,32 @@ function phpblock_whosonline()
 * @see function COM_getMinuteFormOptions
 * @return	string	HTML Months as option values
 */
-function COM_getMonthFormOptions($selected = '') 
+
+function COM_getMonthFormOptions( $selected = '' ) 
 {
     $month_options = '';
-    for ($i = 1; $i <= 12; $i++) {
-        if ($i < 10) {
+    
+    for( $i = 1; $i <= 12; $i++ )
+    {
+        if( $i < 10 ) 
+        {
             $mval = '0' . $i;
-        } else {
+        } 
+        else 
+        {
             $mval = $i;
         }
+        
         $month_options .= '<option value="' . $mval . '" ';
-        if ($i == $selected) {
+        
+        if( $i == $selected )
+        {
             $month_options .= 'selected="SELECTED"';
         }
+        
         $month_options .= '>' . $mval . '</option>';
     }
+    
     return $month_options;
 }
 
@@ -3363,21 +3723,32 @@ function COM_getMonthFormOptions($selected = '')
 * @see function COM_getMinuteFormOptions
 * @return string HTML days as option values
 */
-function COM_getDayFormOptions($selected = '')
+
+function COM_getDayFormOptions( $selected = '' )
 {
     $day_options = '';
-    for ($i = 1; $i <= 31; $i++) {
-        if ($i < 10) {
+    
+    for( $i = 1; $i <= 31; $i++ )
+    {
+        if( $i < 10 )
+        {
             $dval = '0' . $i;
-        } else {
+        }
+        else 
+        {
             $dval = $i;
         }
+        
         $day_options .= '<option value="' . $dval . '" ';
-        if ($i == $selected) {
+        
+        if( $i == $selected )
+        {
             $day_options .= 'selected="SELECTED"';
         }
+        
         $day_options .= '>' . $dval . '</option>';
     }
+    
     return $day_options;
 }
 
@@ -3394,23 +3765,33 @@ function COM_getDayFormOptions($selected = '')
 * @see function COM_getMinuteFormOptions
 * @return string  HTML years as option values
 */
-function COM_getYearFormOptions($selected = '')
+
+function COM_getYearFormOptions( $selected = '' )
 {
     $year_options = '';
-    $cur_year = date('Y',time());
+    $cur_year = date( 'Y', time() );
     $start_year = $cur_year;
-    if (!empty($selected)) {
-        if ($selected < $cur_year) {
+    
+    if( !empty( $selected )) 
+    {
+        if( $selected < $cur_year )
+        {
             $start_year = $selected;
         }
     }
-    for ($i = $start_year; $i <= $cur_year + 5; $i++) {
+    
+    for( $i = $start_year; $i <= $cur_year + 5; $i++ )
+    {
         $year_options .= '<option value="' . $i . '" ';
-        if ($i == $selected) {
+        
+        if( $i == $selected ) 
+        {
             $year_options .= 'selected="SELECTED"';
         }
+        
         $year_options .= '>' . $i . '</option>';
     }
+    
     return $year_options;
 }
 
@@ -3424,28 +3805,44 @@ function COM_getYearFormOptions($selected = '')
 * @see function COM_getMinuteFormOptions
 * @return string	HTML string of options
 */
-function COM_getHourFormOptions($selected = '')
+
+function COM_getHourFormOptions( $selected = '' )
 {
     $hour_options = '';
-    for ($i = 1; $i <= 11; $i++) {
-        if ($i < 10) {
+    
+    for( $i = 1; $i <= 11; $i++ )
+    {
+        if( $i < 10 ) 
+        {
             $hval = '0' . $i;
-        } else {
+        } 
+        else 
+        {
             $hval = $i;
         }
-        if ($i == 1 ) {
+        
+        if( $i == 1 )
+        {
             $hour_options .= '<option value="12" ';
-            if ($selected == 12) {
+        
+            if( $selected == 12 ) 
+            {
                 $hour_options .= 'selected="SELECTED"';
             }
+            
             $hour_options .= '>12</option>';
         }
+        
         $hour_options .= '<option value="' . $hval . '" ';
-        if ($selected == $i) {
+        
+        if( $selected == $i ) 
+        {
             $hour_options .= 'selected="SELECTED"';
         }
+        
         $hour_options .= '>' . $i . '</option>';
     }
+    
     return $hour_options;
 }
 
@@ -3459,21 +3856,32 @@ function COM_getHourFormOptions($selected = '')
 * @see function COM_getYearFormOptions
 * @return string  HTML of option minutes
 */
-function COM_getMinuteOptions($selected = '')
+
+function COM_getMinuteOptions( $selected = '' )
 {
     $minute_options = '';
-    for ($i = 0; $i <= 59; $i++) {
-        if ($i < 10) {
+    
+    for( $i = 0; $i <= 59; $i++ )
+    {
+        if( $i < 10 )
+        {
             $mval = '0' . $i;
-        } else {
+        }
+        else 
+        {
             $mval = $i;
         }
+        
         $minute_options .= '<option value="' . $mval . '" ';
-        if ($selected == $i) {
+        
+        if( $selected == $i )
+        {
             $minute_options .= 'selected="SELECTED"';
         }
+        
         $minute_options .= '>' . $mval . '</option>';
     }
+    
     return $minute_options;
 }
 
@@ -3485,19 +3893,23 @@ function COM_getMinuteOptions($selected = '')
 * @param        array       $listofitems        Items to list out
 * @return	string	HTML unordered list of array items
 */
-function COM_makeList($listofitems) {
+
+function COM_makeList( $listofitems ) 
+{
     global $_CONF;
 
-    $list = new Template($_CONF['path_layout']);
-    $list->set_file(array('list'=>'list.thtml','listitem'=>'listitem.thtml'));
+    $list = new Template( $_CONF['path_layout'] );
+    $list->set_file( array( 'list' => 'list.thtml','listitem'=>'listitem.thtml' ));
 
-    foreach ($listofitems as $oneitem) {
-        $list->set_var('list_item', $oneitem);
-        $list->parse('list_items', 'listitem', true);
+    foreach( $listofitems as $oneitem ) 
+    {
+        $list->set_var( 'list_item', $oneitem );
+        $list->parse( 'list_items', 'listitem', true );
     }
-    $list->parse ('newlist', 'list', true);
+    
+    $list->parse( 'newlist', 'list', true );
 
-    return $list->finish($list->get_var('newlist'));
+    return $list->finish( $list->get_var( 'newlist' ));
 }
 
 /**
@@ -3509,11 +3921,12 @@ function COM_makeList($listofitems) {
 * @param        string      $url        URL to try to build crawler friendly URL for
 * @return	string	    Rewritten URL
 */
-function COM_buildURL($url)
+
+function COM_buildURL( $url )
 {
     global $_URL;
     
-    return $_URL->buildURL($url);
+    return $_URL->buildURL( $url );
 }
 
 /**
@@ -3524,11 +3937,12 @@ function COM_buildURL($url)
 * @param        array       $names      Names of arguments in query string to assign to values
 * @return	boolean		True if suscessful
 */
-function COM_setArgNames($names)
+
+function COM_setArgNames( $names )
 {
     global $_URL;
     
-    return $_URL->setArgNames($names);
+    return $_URL->setArgNames( $names );
 }
 
 /**
@@ -3539,11 +3953,12 @@ function COM_setArgNames($names)
 * @param        string      $name       argument to get value for
 * @return	string	   Argument value
 */
-function COM_getArgument($name)
+
+function COM_getArgument( $name )
 {
     global $_URL;
     
-    return $_URL->getArgument($name);
+    return $_URL->getArgument( $name );
 }
 
 /**
@@ -3556,11 +3971,13 @@ function COM_getArgument($name)
 * @param	int		$timespan			time interval in seconds
 * @return	int	Seconds per interval
 */
-function COM_getRate($occurrences, $timespan)
+
+function COM_getRate( $occurrences, $timespan )
 {
 	// want to define some common time words (yes, dirk, i need to put this in LANG)
 	// time words and their value in seconds
 	// week is 7 * day, month is 30 * day, year is 365.25 * day
+    
 	$common_time = array(
 		"second" => 1,
 		"minute" => 60,
@@ -3569,18 +3986,24 @@ function COM_getRate($occurrences, $timespan)
 		"week"   => 604800,
 		"month"  => 2592000,
 		"year"   => 31557600
-	);
+	    );
 
-	if ($occurrences != 0) {
-		$rate = (int)($timespan/$occurrences);
+	if( $occurrences != 0 )
+    {
+		$rate = ( int )( $timespan / $occurrences );
 		$adjustedRate = $occurrences + 1;
 		$time_unit = 'second';
 	
 		$found_one = false;
-		foreach ($common_time as $unit=>$seconds) {
-			if ($rate > $seconds) {
-				$foo = (int)(($rate/$seconds)+.5);
-				if (($foo < $occurrences) && ($foo > 0)) {
+        
+		foreach( $common_time as $unit=>$seconds )
+        {
+			if( $rate > $seconds ) 
+            {
+				$foo = (int)(( $rate / $seconds ) + .5 );
+                
+				if(( $foo < $occurrences ) && ( $foo > 0 ))
+                {
 					$adjustedRate = $foo;
 					$time_unit = $unit;
 				}
@@ -3588,21 +4011,28 @@ function COM_getRate($occurrences, $timespan)
 		}
 	
 		$singular = '1 shout every ' . $adjustedRate . ' ' . $time_unit;
-		if ($adjustedRate > 1) {
+
+		if( $adjustedRate > 1 ) 
+        {
 			$singular .= 's';
 		}
-	} else {
+	} 
+    else 
+    {
 		$singular = 'No events';
 	}
+    
 	return $singular;
 }
 
 // Now include all plugin functions
-$result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
-$nrows = DB_numRows($result);
-for ($i = 1; $i <= $nrows; $i++) {
-	$A = DB_fetchArray($result);
-	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
+$result = DB_query( "SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1" );
+$nrows = DB_numRows( $result );
+
+for( $i = 1; $i <= $nrows; $i++ ) 
+{
+	$A = DB_fetchArray( $result );
+	require_once( $_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc' );
 }
 
 ?>
