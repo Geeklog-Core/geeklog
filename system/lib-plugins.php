@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.50 2004/11/13 18:08:17 dhaun Exp $
+// $Id: lib-plugins.php,v 1.51 2004/11/27 14:06:07 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -977,7 +977,7 @@ function PLG_collectTags ()
 */
 function PLG_replaceTags ($content)
 {
-    global $_CONF, $_PLUGINS, $LANG32;
+    global $_CONF, $_TABLES, $_PLUGINS, $LANG32;
 
     if (isset ($_CONF['disable_autolinks']) && ($_CONF['disable_autolinks'] == 1)) {
         // autolinks are disabled - return $content unchanged
@@ -1036,16 +1036,24 @@ function PLG_replaceTags ($content)
             $function = 'plugin_autotags_' . $autotag['module'];
             if ($autotag['module'] == 'geeklog') {
                 $url = '';
+                $linktext = $autotag['parm2'];
                 if ($autotag['tag'] == 'story') {
+                    $autotag['parm1'] = COM_applyFilter ($autotag['parm1']);
                     $url = COM_buildUrl ($_CONF['site_url']
                          . '/article.php?story=' . $autotag['parm1']);
+                    if (empty ($linktext)) {
+                        $linktext = stripslashes (DB_getItem ($_TABLES['stories'], 'title', "sid = '{$autotag['parm1']}'"));
+                    }
                 } else if ($autotag['tag'] == 'event') {
+                    $autotag['parm1'] = COM_applyFilter ($autotag['parm1']);
                     $url = $_CONF['site_url'] . '/calendar_event.php?eid='
                          . $autotag['parm1'];
+                    if (empty ($linktext)) {
+                        $linktext = stripslashes (DB_getItem ($_TABLES['events'], 'title', "eid = '{$autotag['parm1']}'"));
+                    }
                 }
                 if (!empty ($url)) {
-                    $filelink = '<a href="' . $url . '">' . $autotag['parm2']
-                              . '</a>';
+                    $filelink = '<a href="' . $url . '">' . $linktext . '</a>';
                     $content = str_replace ($autotag['tagstr'], $filelink,
                                             $content);
                 }

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.45 2004/10/25 08:59:52 dhaun Exp $
+// $Id: functions.inc,v 1.46 2004/11/27 14:06:08 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -558,14 +558,21 @@ function plugin_chkVersion_staticpages()
 */
 function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
 {
-    global $_CONF;
+    global $_CONF, $_TABLES;
 
     if ($op == 'tagname' ) {
         return 'staticpage';
     } else if ($op == 'parse') {
+        $sp_id = COM_applyFilter ($autotag['parm1']);
         $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
-                             . $autotag['parm1']);
-        $link = '<a href="' . $url . '">' . $autotag['parm2'] . '</a>';
+                             . $sp_id);
+        if (empty ($autotag['parm2'])) {
+            $linktext = stripslashes (DB_getItem ($_TABLES['staticpages'],
+                                      'sp_title', "sp_id = '$sp_id'"));
+        } else {
+            $linktext = $autotag['parm2'];
+        }
+        $link = '<a href="' . $url . '">' . $linktext . '</a>';
         $content = str_replace ($autotag['tagstr'], $link, $content);
 
         return $content;
