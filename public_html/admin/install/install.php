@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.5 2001/12/17 19:10:06 tony_bibbs Exp $
+// $Id: install.php,v 1.6 2002/01/03 20:43:45 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -255,6 +255,13 @@ function INST_getServerSettings($gl_path,$upgrade)
     } else {
         $server_template->set_var('whatsnewbox_checked', '');
     }
+    if ($_CONF['whosonline'] == 1) {
+        $server_template->set_var('whosonline_checked', 'checked="CHECKED"');
+    } else {
+        $server_template->set_var('whosonline_checked', '');
+    }
+    $server_template->set_var('whosonline_threshold', $_CONF['whosonline_threshold']);
+
     // Get new story interval options
     $newstoriesinterval_options = INST_getCookieTimeoutValues($_CONF['newstoriesinterval']);
     $server_template->set_var('newstoriesinterval_options', $newstoriesinterval_options);
@@ -407,6 +414,12 @@ function INST_saveServerSettings($A)
     } else {
         $config_template->set_var('cfg_whatsnewbox', 0);
     }
+    if ($A['whosonline'] == 'on') {
+        $config_template->set_var('cfg_whosonline', 1);
+    } else {
+        $config_template->set_var('cfg_whosonline', 0);
+    }
+    $config_template->set_var('cfg_whosonline_threshold', $A['whosonline_threshold']);
     if ($A['emailstories'] == 'on') {
         $config_template->set_var('cfg_emailstories', 1);
     } else {
