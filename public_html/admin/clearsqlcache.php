@@ -29,11 +29,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: clearsqlcache.php,v 1.1 2002/05/20 20:04:45 tony_bibbs Exp $
+// $Id: clearsqlcache.php,v 1.2 2002/05/20 20:05:34 tony_bibbs Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
-include_once($_CONF['path_system'] . 'databases/adodb/adodb.inc.php');
+
 $display = '';
 
 // Make sure user has access to this page  
