@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.48 2003/05/22 21:08:31 dhaun Exp $
+// $Id: index.php,v 1.49 2003/05/30 12:23:49 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -185,6 +185,8 @@ if ($nrows > 0) {
         }
     }
 
+    $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
+
     // Print Google-like paging navigation
     if (empty($topic)) {
         $base_url = $_CONF['site_url'] . '/index.php';
@@ -195,18 +197,18 @@ if ($nrows > 0) {
         $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
     }
     $display .= COM_printPageNavigation($base_url,$page, $num_pages);
-} else {
+} else { // no stories to display
     $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
     if (!empty($topic)) {
         $topicname = DB_getItem ($_TABLES['topics'], 'topic', "tid='{$topic}'");
         $display .= sprintf ($LANG05[3], $topicname);
     }
     $display .= COM_endBlock();
+
+    $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 }
 
-$display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
-
-$display .= COM_siteFooter(true); // The true value enables right hand blocks.
+$display .= COM_siteFooter (true); // The true value enables right hand blocks.
 
 // Output page 
 echo $display;
