@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.9 2001/12/07 05:53:54 tony_bibbs Exp $
+// $Id: stats.php,v 1.10 2001/12/19 17:50:01 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -85,7 +85,7 @@ $display .= COM_endBlock();
 
 // Detailed story statistics
 		
-$result = DB_query("SELECT sid,title,hits FROM {$_TABLES["stories"]} WHERE draft_flag = 0 AND uid > 1 and Hits > 0 ORDER BY Hits desc LIMIT 10");
+$result = DB_query("SELECT sid,title,hits FROM {$_TABLES["stories"]} WHERE draft_flag = 0 AND Hits > 0 ORDER BY Hits desc LIMIT 10");
 $nrows  = DB_numRows($result);
 
 $display .= COM_startBlock($LANG10[7]);
