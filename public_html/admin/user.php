@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.15 2001/12/17 16:23:12 tony_bibbs Exp $
+// $Id: user.php,v 1.16 2002/01/03 21:49:03 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -252,6 +252,7 @@ function listusers()
     $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
     $user_templates->set_file(array('list'=>'userslist.thtml','row'=>'listitem.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_newuser', $LANG28[15]);
     $user_templates->set_var('lang_adminhome', $LANG28[16]);
     $user_templates->set_var('lang_instructions', $LANG28[12]); 
