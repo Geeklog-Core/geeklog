@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.53 2003/06/16 08:53:53 dhaun Exp $
+// $Id: user.php,v 1.54 2003/06/19 17:52:23 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -382,7 +382,7 @@ function importusers($file)
 
     $upload = new upload();
     $upload->setPath($_CONF['path']);
-    $upload->setAllowedMimeTypes(array('text/plain'));
+    $upload->setAllowedMimeTypes(array('text/plain'=>'.txt'));
     $upload->setFileNames('user_import_file.txt');
     if ($upload->uploadFiles()) {
         // Good, file got uploaded, now install everything
