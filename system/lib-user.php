@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.5 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-user.php,v 1.6 2004/08/11 18:30:35 dhaun Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -164,12 +164,30 @@ function USER_createAndSendPassword ($username, $useremail)
     $passwd2 = md5 ($passwd);
     DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'username', $username);
 
-    $mailtext = $LANG04[15] . "\n\n";
-    $mailtext .= $LANG04[2] . ": $username\n";
-    $mailtext .= $LANG04[4] . ": $passwd\n\n";
-    $mailtext .= $LANG04[14] . "\n\n";
-    $mailtext .= $_CONF['site_name'] . "\n";
-    $mailtext .= $_CONF['site_url'] . "\n";
+    if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
+        $template = new Template ($_CONF['path_data']);
+        $template->set_file (array ('mail' => 'welcome_email.txt'));
+        $template->set_var ('auth_info',
+                            "$LANG04[2]: $username\n$LANG04[4]: $passwd");
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_name', $_CONF['site_name']);
+        $template->set_var ('site_slogan', $_CONF['site_slogan']);
+        $template->set_var ('lang_text1', $LANG04[15]);
+        $template->set_var ('lang_text2', $LANG04[14]);
+        $template->set_var ('lang_username', $LANG04[2]);
+        $template->set_var ('lang_password', $LANG04[4]);
+        $template->set_var ('username', $username);
+        $template->set_var ('password', $passwd);
+        $template->parse ('output', 'mail');
+        $mailtext = $template->get_var ('output');
+    } else {
+        $mailtext = $LANG04[15] . "\n\n";
+        $mailtext .= $LANG04[2] . ": $username\n";
+        $mailtext .= $LANG04[4] . ": $passwd\n\n";
+        $mailtext .= $LANG04[14] . "\n\n";
+        $mailtext .= $_CONF['site_name'] . "\n";
+        $mailtext .= $_CONF['site_url'] . "\n";
+    }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
 
     return COM_mail ($useremail, $subject, $mailtext);
