@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.117 2004/07/02 18:30:16 dhaun Exp $
+// $Id: story.php,v 1.118 2004/07/13 19:09:26 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -790,7 +790,7 @@ function insert_images($sid, $intro, $body)
 */
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
@@ -937,7 +937,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
             $upload->setAllowedMimeTypes(array('image/gif'=>'.gif','image/jpeg'=>'.jpg,.jpeg','image/pjpeg'=>'.jpg,.jpeg','image/x-png'=>'.png','image/png'=>'.png'));
             if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
-                print 'File Upload Errors:<br>' . $upload->printErrors();
+                $display = COM_siteHeader ('menu');
+                $display .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
+                $display .= $upload->printErrors (false);
+                $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                $display .= COM_siteFooter ();
+                echo $display;
                 exit;
             }
 
@@ -972,7 +977,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                                COM_getBlockTemplate ('_msg_block', 'header'));
                 $retval .= $upload->printErrors(false);
                 $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
-                $retval .= COM_siteFooter('true');
+                $retval .= COM_siteFooter();
                 echo $retval;
                 exit; 
             }

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.95 2004/03/28 18:34:17 dhaun Exp $
+// $Id: usersettings.php,v 1.96 2004/07/13 19:09:25 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -634,7 +634,7 @@ function emailAddressExists ($email, $uid)
 */
 function saveuser($A) 
 {
-    global $_TABLES, $_CONF, $_USER, $_US_VERBOSE, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $_US_VERBOSE, $HTTP_POST_FILES;
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
@@ -741,9 +741,16 @@ function saveuser($A)
                                                  'image/x-png' => '.png',
                                                  'image/png'   => '.png'
                                          )      );
-            if (!$upload->setPath($_CONF['path_images'] . 'userphotos')) {
-                print 'File Upload Errors:<BR>' . $upload->printErrors();
-                exit;
+            if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
+                $display = COM_siteHeader ('menu');
+                $display .= COM_startBlock ($LANG24[30], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'));
+                $display .= $upload->printErrors (false);
+                $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                                'footer'));
+                $display .= COM_siteFooter ();
+                echo $display;
+                exit; // don't return
             }
             if ($upload->numFiles() == 1) {
                 $curfile = current($HTTP_POST_FILES);
@@ -769,9 +776,14 @@ function saveuser($A)
                     reset($HTTP_POST_FILES);
                     $upload->uploadFiles();
                     if ($upload->areErrors()) {
-                       print "ERRORS<br>";
-                       $upload->printErrors();
-                       exit; 
+                        $display = COM_siteHeader ('menu');
+                        $display .= COM_startBlock ($LANG24[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+                        $display .= $upload->printErrors (false);
+                        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+                        $display .= COM_siteFooter ();
+                        echo $display;
+                        exit; // don't return
                     }
                 } else {
                     $filename = '';
