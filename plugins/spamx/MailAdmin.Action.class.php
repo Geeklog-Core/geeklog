@@ -36,7 +36,7 @@ class MailAdmin extends BaseCommand {
 
         $msg = sprintf($LANG_SX00['emailmsg'], $_CONF['site_name'], $_USER['uid'], $comment);
 
-        //COM_mail($_SPX_CONF['notification_email'], 'Spam Comment at ' . $_CONF['site_name'], $msg);
+        COM_mail($_SPX_CONF['notification_email'], 'Spam Comment at ' . $_CONF['site_name'], $msg);
         $result = 8;
         SPAMX_log('Mail Sent to Admin');
         return 0;
