@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.16 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: topic.php,v 1.17 2002/05/04 19:28:37 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -90,8 +90,8 @@ function edittopic($tid='')
     $topic_templates->set_var('site_url', $_CONF['site_url']);
     $topic_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $topic_templates->set_var('layout_url', $_CONF['layout_url']);
-    if (!empty($tid)) {
-        $topic_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
+    if (!empty($tid) && SEC_hasRights('topic.edit')) {
+        $topic_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG27[21]\" name=\"mode\">");
     }
     $topic_templates->set_var('lang_topicid', $LANG27[2]);
     $topic_templates->set_var('topic_id', $A['tid']);
@@ -101,6 +101,8 @@ function edittopic($tid='')
     $topic_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}")); 
     $topic_templates->set_var('owner_id', $A['owner_id']);
     $topic_templates->set_var('lang_group', $LANG_ACCESS[group]);
+    $topic_templates->set_var('lang_save', $LANG27[19]);
+    $topic_templates->set_var('lang_cancel', $LANG27[20]);
 
     $usergroups = SEC_getUserGroups();
 
@@ -244,12 +246,12 @@ function listtopics() {
 $display = '';
 
 switch ($mode) {
-	case 'delete':
+	case "$LANG27[21]":
 		DB_delete($_TABLES['stories'],'tid',$tid);
 		DB_delete($_TABLES['blocks'],'tid',$tid);
 		DB_delete($_TABLES['topics'],'tid',$tid,'admin/topic.php?msg=14');
 		break;
-	case 'save':
+	case "$LANG27[19]":
 		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case 'edit':
@@ -257,7 +259,7 @@ switch ($mode) {
 		$display .= edittopic($tid);
 		$display .= COM_siteFooter();
 		break;
-	case 'cancel':
+	case "$LANG27[20]":
 	default:
 		$display .= COM_siteHeader('menu');
 		$display .= COM_showMessage($msg);
