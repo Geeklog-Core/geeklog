@@ -142,27 +142,53 @@ function editpreferences()
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
         . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
+    . '<tr>' . LB
+    . '<td align="right"><b>' . $LANG04[73] . ':</td>' . LB
+    . '<td><select name="language">' . LB;
+
+    if (empty($_USER['language'])) {
+        $userlang = $_CONF['language'];
+    } else {
+        $userlang = $_USER['language'];
+    }
+
+    // Get available languages
+    $language_options = '';
+    $fd = opendir($_CONF['path_language']);
+    while (($file = @readdir($fd)) == TRUE) {
+        if (is_file($_CONF['path_language'].$file)) {
+            clearstatcache();
+            $file = str_replace('.php', '', $file);
+            $language_options .= '<option value="' . $file . '" ';
+            if ($userlang == $file) {
+                $language_options .= 'selected="SELECTED"';
+            }
+            $language_options .= '>' . $file . '</option>' . LB;
+        }
+    }
+    $retval .= $language_options;
+    $retval .= '</select></td></tr>'
 	. '<tr valign="top">' . LB
 	. '<td align=right><b>Theme: </b><br><small>Change what this site looks like!</small></td>' . LB
 	. '<td><select name="theme">'.LB;
 
 	$themes = COM_getThemes();
-        if (empty($_USER['theme'])) {
-            $usertheme = $_CONF['theme'];
-        } else {
-            $usertheme = $_USER['theme'];
-        }
+    if (empty($_USER['theme'])) {
+        $usertheme = $_CONF['theme'];
+    } else {
+        $usertheme = $_USER['theme'];
+    }
 
 	for ($i = 1; $i <= count($themes); $i++) {
-            $retval .= '<option value="' . current($themes) . '"';
-            if ($usertheme == current($themes)) {
-                $retval .= ' SELECTED';
-            }
-            $retval .= '>' . current($themes) . '</option>' . LB;
-            next($themes);
+        $retval .= '<option value="' . current($themes) . '"';
+        if ($usertheme == current($themes)) {
+            $retval .= ' SELECTED';
         }
+        $retval .= '>' . current($themes) . '</option>' . LB;
+        next($themes);
+    }
 
-        $retval .= '<select>' . LB . '</td></tr>' . LB
+    $retval .= '</select>' . LB . '</td></tr>' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
         . '<td><input type="checkbox" name="noicons"';
@@ -380,8 +406,9 @@ function savepreferences($A)
     } 
 
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
-    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}' WHERE uid = {$_USER['uid']}");
+    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
     setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']);	
+    setcookie('language',$A['language'],time() + 31536000,$_CONF['cookie_path']);	
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.11 2001/12/13 16:01:20 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.12 2001/12/13 17:39:20 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -53,7 +53,6 @@ $_PAGE_TIMER->startTimer();
 include_once($_CONF['path_system'] . 'classes/template.class.php');
 include_once($_CONF['path_system'] . 'lib-database.php');
 include_once($_CONF['path_system'] . 'lib-security.php');
-include_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 include_once($_CONF['path_system'] . 'lib-custom.php');
 include_once($_CONF['path_system'] . 'lib-plugins.php');
 include_once($_CONF['path_system'] . 'lib-sessions.php');
@@ -78,6 +77,19 @@ if ($_CONF['allow_user_themes'] == 1) {
         }
     }
 } 
+
+// Similarly set language
+if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
+    if (is_file($_CONF['path_language'] . $HTTP_COOKIE_VARS['language'] . '.php')) {
+        $_USER['language'] = $HTTP_COOKIE_VARS['language'];
+        $_CONF['language'] = $HTTP_COOKIE_VARS['language'];
+    }
+} else if (!empty($_USER['language'])) {
+    if (is_file($_CONF['path_language'] . $_USER['language'] . '.php')) {
+        $_CONF['language'] = $_USER['language'];
+    }
+}
+include_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 
 setlocale(LC_ALL, $_CONF['locale']);
 
@@ -247,6 +259,8 @@ function COM_getThemes()
 {
     global $_CONF;
 
+    $index = 1;
+
     $themes = array();
 
     $fd = opendir($_CONF['path_themes']); 
@@ -254,16 +268,16 @@ function COM_getThemes()
     // If users aren't allowed to change their theme then only return the 
     // default theme
     if ($_CONF['allow_user_themes'] == 0) {
-        $themes[] = $_CONF['theme'];
+        $themes[$index] = $_CONF['theme'];
     } else {
         while (($dir = @readdir($fd)) == TRUE) {
-            if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..') {
+            if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..' && $dir <> 'CVS') {
                 clearstatcache();
-                $themes[] = $dir;
+                $themes[$index] = $dir;
+                $index++;
             }
         }
     }
-
     return $themes;
 }
 
