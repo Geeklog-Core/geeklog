@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.79 2003/04/13 17:16:09 dhaun Exp $
+// $Id: config.php,v 1.80 2003/04/18 21:12:04 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -463,7 +463,7 @@ $_STATES = array(
         'NE'=>'Nebraska',
         'NV'=>'Nevada',
         'NH'=>'New Hampshire',
-        'NJ'=>'New Jersy',
+        'NJ'=>'New Jersey',
         'NM'=>'New Mexico',
         'NY'=>'New York',
         'NC'=>'North Carolina',
@@ -481,7 +481,7 @@ $_STATES = array(
         'VT'=>'Vermont',
         'VA'=>'Virginia',
         'WA'=>'Washington',
-        'WV'=>'West Viginia',
+        'WV'=>'West Virginia',
         'WI'=>'Wisconsin',
         'WY'=>'Wyoming'
     );
