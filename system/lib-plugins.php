@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.32 2004/08/26 03:31:30 blaine Exp $
+// $Id: lib-plugins.php,v 1.33 2004/08/29 04:23:05 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -799,6 +799,37 @@ function PLG_getHeaderCode()
 
     return $headercode;
 }
+
+/**
+* This function will allow plugins to support the use of custom autolinks
+* in other site content. Plugins can now use this API when saving content
+* and have the content checked for any autolinks before saving.
+* The autolink would be like:  [story:20040101093000103 here]
+*
+* @param   string   $content   Content that should be parsed for autolinks
+*
+*/
+function PLG_replacetags($content) {
+    global $_TABLES;
+
+    $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_replacetags_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $content = $function($content);
+        }
+    }
+    /* Now check if GL Core Story API exists */
+    if (function_exists('plugin_replacetags_story')) {
+        $content = plugin_replacetags_story($content);
+    }
+
+    return $content;
+
+}
+
 
 /**
 * Prepare a list of all plugins that support feeds. To do this, we re-use
