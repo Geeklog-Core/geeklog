@@ -429,7 +429,9 @@ $LANG09 = array(
     37 => 'Aktivitetsresultat',
     38 => 'Länkresultat',
     39 => 'Länkar',
-    40 => 'Aktiviteter'
+    40 => 'Aktiviteter',
+    41 => 'Du måste söka på minst tre tecken..',
+    42 => 'Du måste använda datumformatet ÅÅÅÅ-MM-DD (år-månad-dag).'
 );
 
 ###############################################################################
