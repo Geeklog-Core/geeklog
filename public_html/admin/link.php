@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.33 2003/06/19 20:01:41 dhaun Exp $
+// $Id: link.php,v 1.34 2003/06/21 08:57:13 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -79,9 +79,10 @@ function editlink($mode, $lid = '')
 		$A = DB_fetchArray($result);
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
-            $retval .= COM_startBlock($LANG24[16]);
+            $retval .= COM_startBlock($LANG24[16], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG23[17];
-            $retval .= COM_endBlock();
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval;
         }
 	} else {
