@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.52 2003/07/31 12:10:44 dhaun Exp $
+// $Id: block.php,v 1.53 2003/11/16 21:30:35 blaine Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -197,7 +197,7 @@ function editblock($bid='')
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('start_block_editor', COM_startBlock ($LANG21[3],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
-		
+        
     if ($A['type'] != 'layout') {
         if (!empty($bid) && SEC_hasrights('block.delete')) {
             $block_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG21[56]\" name=\"mode\">");
@@ -271,16 +271,16 @@ function editblock($bid='')
             $groupdd .= '>'.key($usergroups).'</option>' . LB;
             next($usergroups);
         }
-	$groupdd .= '</select>' . LB;
+    $groupdd .= '</select>' . LB;
     } else {
         // They can't set the group then
         $groupdd.= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = '{$A['group_id']}'")
-			.'<input type="hidden" name="group_id" value="'.$A['group_id'].'">';
+            .'<input type="hidden" name="group_id" value="'.$A['group_id'].'">';
     }
     $block_templates->set_var('group_dropdown', $groupdd);
     $block_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $block_templates->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
-    $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));	
+    $block_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));    
     $block_templates->set_var('lang_permissions_msg', $LANG_ACCESS['permmsg']);
     $block_templates->set_var('lang_phpblockoptions', $LANG21[28]);
     $block_templates->set_var('lang_blockfunction', $LANG21[29]);
@@ -435,7 +435,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
                 . editblock ($bid)
                 . COM_siteFooter ();
     }
-	
+    
     return $retval;
 }
 
@@ -447,10 +447,11 @@ function listblocks()
 {
     global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS;
 
+    // Added enhanced Block admin based on concept from stratosfear
     $retval = '';
 
     $block_templates = new Template($_CONF['path_layout'] . 'admin/block');
-    $block_templates->set_file(array('list'=>'listblocks.thtml', 'row'=>'listitem.thtml'));
+    $block_templates->set_file(array('list'=>'listblocks.thtml', 'row'=>'listitem.thtml', 'leftRight'=>'listside.thtml'));
 
     $retval .= COM_startBlock ($LANG21[19], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -464,14 +465,20 @@ function listblocks()
     $block_templates->set_var('lang_access', $LANG_ACCESS['access']);
     $block_templates->set_var('lang_blocktype', $LANG21[22]);
     $block_templates->set_var('lang_side', $LANG21[39]);
-    $block_templates->set_var('lang_blockorder', $LANG21[23]);
     $block_templates->set_var('lang_blocktopic', $LANG21[24]);
     $block_templates->set_var('lang_enabled', $LANG21[53]);
  
     $result = DB_query("SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft DESC,blockorder");
     $nrows = DB_numRows($result);
+    $hasPrintedRight = false;
+    $blockOrd = 10;
+    $stepNumber = 10;
 
     for ($i = 0; $i < $nrows; $i++) {
+        if ($i == 0) {
+            $block_templates->set_var('side', $LANG21[40]);
+            $block_templates->parse('blocklist_item', 'leftRight', true);
+        }
         $A = DB_fetchArray($result);
 
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -491,21 +498,43 @@ function listblocks()
             $block_templates->set_var('block_title', $btitle);
 
             if ($A['is_enabled'] == 1) {
-                $enabled = $LANG32[20];
+                $block_templates->set_var('enabled', "checked");
             } else {
-                $enabled = $LANG32[21];
+                $block_templates->set_var('enabled', "");
             }
             $block_templates->set_var ('block_enabled', $enabled);
 
             if ($A['onleft'] == 1) {
                 $side = $LANG21[40];
+                $blockcontrol_image = 'block-right.gif';
+                $moveTitleMsg = $LANG21[59];
+                $switchside = '1';
             } else {
+                $blockcontrol_image = 'block-left.gif';
+                $moveTitleMsg = $LANG21[60];
+                $switchside = '0';
+                if (!$hasPrintedRight) {
+                    $block_templates->set_var('side', $LANG21[41]);
+                    $block_templates->parse('blocklist_item', 'leftRight', true);
+                    $hasPrintedRight = true;
+                    $blockOrd = 10;
+                }
                 $side = $LANG21[41];
             }
-            $block_templates->set_var('block_side', $side);
-            $block_templates->set_var('block_order', $A['blockorder']);
+            $block_templates->set_var('blockcontrol_image', $blockcontrol_image);
+            $block_templates->set_var('switchside', $switchside);
+            $block_templates->set_var('upTitleMsg', $LANG21[58]);
+            $block_templates->set_var('moveTitleMsg', $moveTitleMsg);
+            $block_templates->set_var('dnTitleMsg', $LANG21[57]);
+            if ($A['blockorder'] != $blockOrd) {
+                $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `blockorder` = ' " .
+                      $blockOrd . "' WHERE `bid` = '" . $A['bid'] ."'";
+                DB_query($q);
+            }
+            $block_templates->set_var('block_order', $blockOrd);
             $block_templates->set_var('block_topic', $A['tid']); 
             $block_templates->parse('blocklist_item', 'row', true);
+            $blockOrd += $stepNumber;
         }
     }
 
@@ -515,6 +544,65 @@ function listblocks()
 
     return $retval;
 }
+
+/**
+* Move blocks UP, Down and Switch Sides - Left and Right
+*
+*/
+
+function moveBlock() {
+
+    global $HTTP_GET_VARS,$_CONF, $_TABLES, $LANG21;
+    $retval = '';
+
+    $bid = $HTTP_GET_VARS['bid'];
+    $where = $HTTP_GET_VARS['where'];
+
+    // if the block id exists
+    if (DB_count($_TABLES['blocks'], "bid", $bid) == 1) {
+
+        switch ($where) {
+
+            case ("up"): $q = "UPDATE `" . $_TABLES['blocks'] . "` SET blockorder = blockorder-11 WHERE `bid` = '" . $bid . "'";
+                         DB_query($q);
+                         break;
+
+            case ("dn"): $q = "UPDATE `" . $_TABLES['blocks'] . "` SET blockorder = blockorder+11 WHERE `bid` = '" . $bid . "'";
+                         DB_query($q);
+                         break;
+
+            case ("0"):  $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `onleft` = '1', blockorder = blockorder-1 WHERE `bid` = '" . $bid ."'";
+                         DB_query($q);
+                         break;
+
+            case ("1"):  $q = "UPDATE `" . $_TABLES['blocks'] . "` SET `onleft` = '0',blockorder = blockorder-1 WHERE `bid` = '" . $bid ."'";
+                         DB_query($q);
+                         break;
+        }
+
+    } else {
+        COM_errorLOG("block admin error: Attempt to move an non existing block id: $bid");
+    }
+    echo COM_refresh($_CONF['site_admin_url'] . "/block.php");
+    exit;
+    return $retval;
+}
+
+
+/**
+* Enable and Disable block
+*/
+function changeBlockStatus($bid) {
+    global $_TABLES,$_CONF;
+    if (DB_getItem($_TABLES['blocks'],"is_enabled", "bid=$bid")) {
+        DB_query("UPDATE {$_TABLES['blocks']} set is_enabled = '0' WHERE bid=$bid");
+        return;
+    } else {
+        DB_query("UPDATE {$_TABLES['blocks']} set is_enabled = '1' WHERE bid=$bid");
+        return;
+    }
+}
+
 
 // MAIN
 if (isset ($HTTP_POST_VARS['mode'])) {
@@ -530,9 +618,13 @@ elseif (isset ($HTTP_GET_VARS['bid'])) {
     $bid = $HTTP_GET_VARS['bid'];
 }
 
+if (isset($HTTP_POST_VARS['blkChange'])) {
+    changeBlockStatus($HTTP_POST_VARS['blkChange']);
+}
+
 if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
-        COM_errorLog ('Attempted to delete block bid=' . $bid);
+        COM_errorLog ('Attempted to delete block, bid empty or null, value =' . $bid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/block.php');
     } else {
         DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
@@ -545,7 +637,12 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
     $display .= COM_siteHeader()
         .editblock($bid)
         .COM_siteFooter();
-} else { // 'cancel' or no mode at all
+} else if ($mode == "move") {
+    $display .= COM_siteHeader();
+    $display .= moveBlock();
+    $display .= listblocks();
+    $display .= COM_siteFooter();
+} else {  // 'cancel' or no mode at all
     $display .= COM_siteHeader()
         .COM_showMessage($msg)
         .listblocks()

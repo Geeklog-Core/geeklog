@@ -626,7 +626,11 @@ $LANG21 = array(
     53 => 'Enabled',
     54 => 'save',
     55 => 'cancel',
-    56 => 'delete'
+    56 => 'delete',
+    57 => 'Move Block Down',
+    58 => 'Move Block Up',
+    59 => 'Move block to the right side',
+    60 => 'Move block to the left side'
 );
 
 ###############################################################################
