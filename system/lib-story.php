@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.12 2004/12/10 09:19:50 dhaun Exp $
+// $Id: lib-story.php,v 1.13 2004/12/18 14:15:36 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -129,7 +129,22 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 $article->set_var( 'contributedby_photo', '<img src="'
                         . $_CONF['site_url'] . '/images/userphotos/' . $photo
                         . '" alt="' . $altname . '">' );
+                $article->set_var( 'camera_icon', '<a href="'
+                        . $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                        . '"><img src="' . $_CONF['layout_url']
+                        . '/images/smallcamera.gif" border="0" alt=""></a>' );
             }
+            else
+            {
+                $article->set_var( 'contributedby_photo', '' );
+                $article->set_var( 'camera_icon', '' );
+            }
+        }
+        else
+        {
+            $article->set_var( 'contributedby_photo', '' );
+            $article->set_var( 'camera_icon', '' );
         }
     }
 

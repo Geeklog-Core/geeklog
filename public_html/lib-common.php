@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.405 2004/12/18 06:12:42 vinny Exp $
+// $Id: lib-common.php,v 1.406 2004/12/18 14:15:36 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2832,10 +2832,16 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                                     . $_CONF['site_url']
                                     . '/images/userphotos/' . $A['photo']
                                     . '" alt="' . $alttext . '">' );
+                $template->set_var( 'camera_icon', '<a href="'
+                        . $_CONF['site_url']
+                        . '/users.php?mode=profile&amp;uid=' . $A['uid']
+                        . '"><img src="' . $_CONF['layout_url']
+                        . '/images/smallcamera.gif" border="0" alt=""></a>' );
             }
             else
             {
                 $template->set_var( 'author_photo', '' );
+                $template->set_var( 'camera_icon', '' );
             }
 
             $template->set_var( 'start_author_anchortag', '<a href="'
@@ -2847,6 +2853,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         {
             $template->set_var( 'author_fullname', $A['username'] );
             $template->set_var( 'author_photo', '' );
+            $template->set_var( 'camera_icon', '' );
             $template->set_var( 'start_author_anchortag', '' );
             $template->set_var( 'end_author_anchortag', '' );
         }
