@@ -1,0 +1,149 @@
+Static Pages Geeklog Plug-in version 1.0
+March 8th, 2002
+
+In This Document
+----------------
+
+Welcome
+List of Files with Descriptions
+License
+Support
+How To Help
+Known Issues
+System Requirements and Installation
+Security Issues
+Uninstalling
+Special Thanks
+
+Welcome
+-------
+This Static Page Geeklog Plug-in is the source code and database that is used to 
+for creating semi-static pages in Geeklog quickly.  Like Geeklog this 
+has is released under the GNU General Public License. It is a bona fide Open 
+Source / Free Software project. 
+
+The Static Page Geeklog Plugin-in is managed by Tony Bibbs
+Like all good open source projects, Geeklog and this plug-in both depend on the 
+community. Thanks for your continued support, and let us know what we can 
+do to make Geeklog and the Static Page Plug-in even better.
+
+The Static Page GeekLog Plug-in features the following:
+
+- Runs on Geeklog version 1.3.4
+- 100% database driven
+- Automatically displays the last time a pages was updated after changes (unless blank page option is used).
+- Let's you pick if the left or right blocks (or both) show up on a static page or, if you prefer, you can create an
+  HTML page from scratch
+- Uses the Geeklog security model to control who can edit a page
+- Automatically generates the URL for pages for easy pasting into a template or
+  or HTML file
+- Great for creating security policies, about us pages and other static content.
+
+LIST OF FILES WITH DESCRIPTIONS
+-------------------------------
+
+FILE: /path/to/geeklog/public_html/admin/plugins/staticpages/install.php 
+DESCRIPTION: Static Page install and uninstall untility. 
+
+FILE: /path/to/geeklog/public_html/admin/plugins/staticpages/index.php 
+DESCRIPTION: Static Page administration page 
+
+FILE: /path/to/geeklog/public_html/staticpages/index.php 
+DESCRIPTION: Core static page code
+
+FILE: /path/to/geeklog/plugins/staticpages/staticpages.cfg
+DESCRIPTION: The static pages configuration file 
+
+FILE: /path/to/geeklog/plugins/staticpages/functions.inc
+DESCRIPTION: Implements the Geeklog Plugin-API and has any common functions 
+
+LICENSE
+-------
+Like GeekLog, the Static Page Plug-in is licensed under the: GPL. There should be an included LICENSE file
+if it really interests you (or you having trouble sleeping) go ahead a read it.
+
+In a nice gesture you could provide a link back to Geeklog and the Static Page Geeklog Plug-in: 
+
+http://geeklog.sourceforge.net/
+http://sourceforge.net/projects/geeklogplugins
+
+SUPPORT
+-------
+The best support channel is a mailing list located at:
+http://lists.sourceforge.net/mailman/listinfo/geeklog-devel.
+
+Additionally the GeekLog home page is a good source of information at:
+http://geeklog.sourceforge.net
+
+Finally, you can catch most of the developers in IRC at:
+irc.openprojects.net
+#Geeklog
+
+HOW TO HELP
+-----------
+If you would like to help make the Static Pages Geeklog Plug-in even better 
+please feel free to contribute bug fixes and submit enhancement requests
+to the Geeklog website.  This is the first release and it has a long way
+before it is 'polished' and I realize that.
+
+KNOWN ISSUES
+------------
+May want to enhance the security so that each page is assigned an owner/group and 
+associated permissions just like Geeklog stories/blocks/etc do it.  I am speaking from
+the user's perspective, NOT the admin's perspective.  Administrative security already
+uses the Geeklog security model.
+
+SYSTEM REQUIREMENTS AND INSTALLATION
+------------------------------------
+You must install this plugin-in with a version of Geeklog version 1.3.4. You can get this
+plugin to work with Geeklog 1.3 through 1.3.3 by downloading the latest admin/plugins.php and
+getting the update templates for layout/<theme_name/admin/plugins/pluginlist.thtml. This is gauranted
+not to work with any version prior to Geeklog 1.3.
+
+To install:
+1) Download the tarball and put it in /path/to/geeklog/plugins
+2) uncompress the tarball
+3) Change into the newly created staticpages directory
+4) Move the staticpages/admin directory to /path/to/geeklog/public_html/admin/plugins/staticpages/
+   NOTE: you must use that directory name
+5) Move the staticpages/public_html directory to /path/to/geeklog/public_html/staticpages/
+   NOTE: you must use that directory name
+6) In your browser, go to http://your_geeklog_url/admin/plugins/staticpages/install.php
+7) You should get a message that your the datastructures have been created
+8) That's it!
+
+UNINSTALLING
+------------
+1) Execute this in your database client:
+        ALTER TABLE <vars_table> SET value = '0' WHERE name = 'staticpages'
+   Be sure to substitute <vars_table> with the name of your Geeklog vars table
+2) In your browser, navigate to http://your_geeklog_url/admin/plugins/staticpages/install.php
+3) You should get a message saying the data structure were successfully removed.
+4) Remove the following directories:
+         /path/to/geeklog/plugins/staticpages/
+         /path/to/geeklog/public_html/staticpages/
+         /path/to/geeklog/public_html/admin/plugins/staticpages/
+5) that's it!
+
+SECURITY ISSUES
+---------------
+It is up to you to properly secure your database, web server and host
+settings.  If you are looking for information in securing your system
+some starting points I can recommend are:
+
+http://www.php.net
+http://www.mysql.com
+http://www.apache.org
+http://www.devshed.com
+http://www.securityfocus.com
+http://www.linux.com
+
+SPECIAL THANKS
+--------------
+
+I want to send out thanks to the great people on the geeklog-devel mailing list for helping us make
+a great plug-in!
+
+
+ENJOY!
+

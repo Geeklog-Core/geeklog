@@ -1,0 +1,8 @@
+Static Pages Geeklog Plugin 0.1.0
+---------------------------------
+
+1) Integrate a bb-code style system as opposed to using HTML.
+2) May want to make this part of the core GL code-base and have it so that users can have a personal page...something like http://www.example.com/userpage.php?uid=1
+3) May want to implement the same security on each individual page as you would for stories, links, etc.
+3) Anything else?  Email suggestions on how this plugin could be made better to Tony Bibbs at tony@tonybibbs.com
+
