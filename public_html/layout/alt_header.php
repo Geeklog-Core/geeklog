@@ -46,7 +46,8 @@ if (!empty($CONF["pagetitle"])) {
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
 <tr><td bgcolor=FFFFFF colspan=2><img src=<?php echo $CONF["site_url"]; ?>/images/speck.gif width=1 height=1></td></tr>
 <tr bgcolor=DDDDDD><td height=20>&nbsp;<b><?php print $LANG01[67] . $CONF["site_name"]; ?>
-<?php if (!empty($USER["username"])) echo " {$USER["username"]}"; ?>!</b></td><td align=right><b><?php echo date("D M j"); ?></b>&nbsp;</td></tr>
+<?php $curtime = getuserdatetimeformat();?>
+<?php if (!empty($USER["username"])) echo " {$USER["username"]}"; ?>!</b></td><td align=right><b><?php echo $curtime[0]; ?></b>&nbsp;</td></tr>
 <tr><td bgcolor=AAAAAA colspan=2><img src=<?php echo $CONF["site_url"]; ?>/images/speck.gif width=1 height=1></td></tr>
 <tr><td bgcolor=FFFFFF colspan=2><img src=<?php echo $CONF["site_url"]; ?>/images/speck.gif width=1 height=15></td></tr>
 </table>
