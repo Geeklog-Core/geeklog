@@ -172,6 +172,9 @@ Static Pages Plugin 1.4.1
   in the static pages' template directory [Dirk]
 - Added an option to sort the static pages that are added to a site's menu
   (see {plg_menu_elements} in header.thtml) by id, label, title, or date [Dirk]
+- The block templates used to wrap a static page in a block can now be
+  overridden, using '_staticpages_block' and '_staticpages_centerblock' as the
+  index for the $_BLOCK_TEMPLATE array [Dirk]
 - The static pages editor doesn't display a "delete" button for new and
   cloned pages any more (since, obviously, you can't delete what hasn't been
   saved yet ...). [Dirk]

@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Geeklog Plugin 1.4                                           |
+// | Static Pages Geeklog Plugin 1.4.1                                         |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -32,18 +32,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.34 2004/07/11 19:07:29 dhaun Exp $
+// $Id: index.php,v 1.35 2004/08/02 18:38:52 dhaun Exp $
 
-require_once('../../../lib-common.php');
-require_once('../../auth.inc.php');
+require_once ('../../../lib-common.php');
+require_once ('../../auth.inc.php');
 
-if (!SEC_hasRights('staticpages.edit')) {
-    $display = COM_siteHeader('menu');
-    $display .= COM_startBlock($LANG_STATIC['access_denied']);
+if (!SEC_hasRights ('staticpages.edit')) {
+    $display = COM_siteHeader ('menu');
+    $display .= COM_startBlock ($LANG_STATIC['access_denied'], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $LANG_STATIC['access_denied_msg'];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
-    COM_accessLog("User {$_USER['username']} tried to illegally access the static pages administration screen.");
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
+    COM_accessLog ("User {$_USER['username']} tried to illegally access the static pages administration screen.");
     echo $display;
     exit;
 }
@@ -52,13 +53,13 @@ if (!SEC_hasRights('staticpages.edit')) {
 /**
 * Displays the static page form 
 *
-* @A        array       Data to display
-* @error    string      Error message to display
+* @param    array   $A      Data to display
+* @param    string  $error  Error message to display
 *
 */ 
 function form ($A, $error = false) 
 {
-	global $_TABLES, $PHP_SELF, $_CONF, $HTTP_POST_VARS, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
+	global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
 
 	if (!empty($sp_id) && $mode=='edit') {
     	$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -75,13 +76,14 @@ function form ($A, $error = false)
     $retval = '';
 
     if (empty ($A['owner_id'])) {
-	    $error = COM_startBlock($LANG_ACCESS['accessdenied']);
+	    $error = COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'));
     	$error .= $LANG_STATIC['deny_msg'];
-	    $error .= COM_endBlock();
+	    $error .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
     
     if ($error) {
-        $retval .= $error . "<br><br>";
+        $retval .= $error . '<br><br>';
     } else {
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
         if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path'] . 'plugins/staticpages/templates/admin/editor_advanced.thtml')) {
@@ -116,11 +118,12 @@ function form ($A, $error = false)
     	$sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     	$sp_template->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     	$sp_template->set_var('lang_perm_key', $LANG_ACCESS['permissionskey']);
-    	$sp_template->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
 		$sp_template->set_var('permissions_msg', $LANG_ACCESS['permmsg']);
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC['staticpageeditor']));
+        $sp_template->set_var('start_block_editor',
+                COM_startBlock($LANG_STATIC['staticpageeditor']), '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
         $sp_template->set_var('lang_save', $LANG_STATIC['save']);
         $sp_template->set_var('lang_cancel', $LANG_STATIC['cancel']);
         $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
@@ -131,7 +134,7 @@ function form ($A, $error = false)
             $sp_template->set_var('delete_option','');
         }
         $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
-        $sp_template->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
+        $sp_template->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A['sp_uid']}"));
         $sp_template->set_var ('lang_url', $LANG_STATIC['url']);
         $sp_template->set_var ('lang_id', $LANG_STATIC['id']);
         $sp_template->set_var('sp_uid', $A['sp_uid']);
@@ -257,22 +260,22 @@ function form ($A, $error = false)
         $sp_template->set_var('lang_leftblocks', $LANG_STATIC['leftblocks']);
         $sp_template->set_var('lang_leftrightblocks', $LANG_STATIC['leftrightblocks']);
 		if ($A['sp_format'] == 'noblocks') {
-			$sp_template->set_var('noblock_selected', 'selected="SELECTED"');
+			$sp_template->set_var('noblock_selected', 'selected="selected"');
 		} else {
 			$sp_template->set_var('noblock_selected', '');
 		}
 		if ($A['sp_format'] == 'leftblocks') {
-			$sp_template->set_var('leftblocks_selected', 'selected="SELECTED"');
+			$sp_template->set_var('leftblocks_selected', 'selected="selected"');
 		} else {
 			$sp_template->set_var('leftblocks_selected', '');
 		}
         if ($A['sp_format'] == 'blankpage') {
-            $sp_template->set_var('blankpage_selected', 'selected="SELECTED"');
+            $sp_template->set_var('blankpage_selected', 'selected="selected"');
         } else {
             $sp_template->set_var('blankpage_selected', '');
         }
 		if (($A['sp_format'] == 'allblocks') OR empty($A['sp_format'])) {
-			$sp_template->set_var('allblocks_selected', 'selected="SELECTED"');
+			$sp_template->set_var('allblocks_selected', 'selected="selected"');
 		} else {
 			$sp_template->set_var('allblocks_selected', '');
 		}
@@ -290,7 +293,8 @@ function form ($A, $error = false)
         } else {
             $sp_template->set_var('sp_hits', $A['sp_hits']);
         }
-        $sp_template->set_var('end_block', COM_endblock());
+        $sp_template->set_var('end_block',
+                COM_endBlock (COM_getBlockTemplate ('_admin_block', 'header')));
         $retval .= $sp_template->parse('output','form');
 	}
 
@@ -349,7 +353,7 @@ function liststaticpages ($page = 1)
     $sp_templates->set_file(array('list'=>'list.thtml','row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']));
+    $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']), '', COM_getBlockTemplate ('_admin_block', 'header'));
     $sp_templates->set_var('new_page_url', COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit'));
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
@@ -436,7 +440,8 @@ function liststaticpages ($page = 1)
         $sp_templates->set_var ('list_item', '');
         $sp_templates->set_var ('google_paging', '');
     }
-    $sp_templates->set_var ('end_block', COM_endBlock ());	
+    $sp_templates->set_var ('end_block',
+            COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
     $retval .= $sp_templates->parse('output', 'list');
 
@@ -499,7 +504,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         $retval .= COM_siteFooter ();
         echo $retval;
     } elseif (!empty ($sp_title) && !empty ($sp_content)) {
-        $date = date ("Y-m-d H:i:s", $unixdate);
+        $date = date ('Y-m-d H:i:s', $unixdate);
 
         if (empty ($sp_hits)) $sp_hits = 0;
 
@@ -588,10 +593,17 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     }
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
     if (!empty ($sp_id)) {
-        submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
-            $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,
-            $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php,
-            $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock);
+        submitstaticpage ($sp_id, $HTTP_POST_VARS['sp_uid'],
+            $HTTP_POST_VARS['sp_title'], $HTTP_POST_VARS['sp_content'],
+            $HTTP_POST_VARS['unixdate'], $HTTP_POST_VARS['sp_hits'],
+            $HTTP_POST_VARS['sp_format'], $HTTP_POST_VARS['sp_onmenu'],
+            $HTTP_POST_VARS['sp_label'], $HTTP_POST_VARS['owner_id'],
+            $HTTP_POST_VARS['group_id'], $HTTP_POST_VARS['perm_owner'],
+            $HTTP_POST_VARS['perm_group'], $HTTP_POST_VARS['perm_members'],
+            $HTTP_POST_VARS['perm_anon'], $HTTP_POST_VARS['sp_php'],
+            $HTTP_POST_VARS['sp_nf'], $HTTP_POST_VARS['sp_old_id'],
+            $HTTP_POST_VARS['sp_centerblock'], $HTTP_POST_VARS['sp_tid'],
+            $HTTP_POST_VARS['sp_where'], $HTTP_POST_VARS['sp_inblock']);
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }

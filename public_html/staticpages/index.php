@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Page Geeklog Plugin 1.4                                            |
+// | Static Page Geeklog Plugin 1.4.1                                          |
 // +---------------------------------------------------------------------------+
 // | index.php                                                                 |
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2004/07/24 13:19:53 dhaun Exp $
+// $Id: index.php,v 1.20 2004/08/02 18:38:52 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -97,7 +97,8 @@ function display_page ($page, $A, $noboxes)
         }
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_startBlock (stripslashes ($A['sp_title']));
+        $retval .= COM_startBlock (stripslashes ($A['sp_title']), '',
+                        COM_getBlockTemplate ('_staticpages_block', 'header'));
     }
 
     $retval .= render_content (stripslashes ($A['sp_content']), $A['sp_php']);
@@ -122,7 +123,8 @@ function display_page ($page, $A, $noboxes)
         $retval .= '</p>';
     }
     if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
-        $retval .= COM_endBlock ();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_block',
+                                                       'footer'));
     }
 
     if ($A['sp_format'] <> 'blankpage') {
@@ -223,7 +225,8 @@ if (!($error)) {
     }
     if ($failflg) {
         $retval = COM_siteHeader ('menu');
-        $retval .= COM_startBlock ($LANG_LOGIN[1]);
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template ($_CONF['path_layout'] . 'submit');
         $login->set_file (array ('login' => 'submitloginrequired.thtml'));
         $login->set_var ('login_message', $LANG_LOGIN[2]);
@@ -232,13 +235,14 @@ if (!($error)) {
         $login->set_var ('lang_newuser', $LANG_LOGIN[4]);
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var ('output'));
-        $retval .= COM_endBlock ();
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $retval .= COM_siteFooter (true);
     } else {
         $retval = COM_siteHeader ('menu');
-	    $retval .= COM_startBlock ($LANG_ACCESS['accessdenied']);
+	    $retval .= COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
     	$retval .= $LANG_STATIC['deny_msg'];
-	    $retval .= COM_endBlock ();
+	    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     	$retval .= COM_siteFooter (true);
     }
 }

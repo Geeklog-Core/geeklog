@@ -2,7 +2,7 @@
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
-// | Static Pages Plugin 1.4 for Geeklog - The Ultimate Weblog                 |
+// | Static Pages Plugin 1.4.1                                                 |
 // +---------------------------------------------------------------------------+
 // | functions.inc                                                             |
 // |                                                                           |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.36 2004/07/24 13:19:53 dhaun Exp $
+// $Id: functions.inc,v 1.37 2004/08/02 18:38:51 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -469,7 +469,8 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             if (($spresult['sp_inblock'] == 1) &&
                     ($spresult['sp_format'] != 'blankpage') &&
                     !empty ($spresult['sp_title'])) {
-                $retval .= COM_startBlock ($spresult['sp_title']);
+                $retval .= COM_startBlock ($spresult['sp_title'], '',
+                    COM_getBlockTemplate ('_staticpages_centerblock', 'header'));
             }
 
             if ($_SP_CONF['allow_php'] == 1) {
@@ -496,7 +497,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
             if (($spresult['sp_inblock'] == 1) &&
                     ($spresult['sp_format'] != 'blankpage') &&
                     !empty ($spresult['sp_title'])) {
-                $retval .= COM_endBlock ();
+                $retval .= COM_endBlock (COM_getBlockTemplate ('_staticpages_centerblock', 'footer'));
             }
 
             if ($where == 0) {
