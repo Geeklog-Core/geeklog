@@ -7,9 +7,10 @@
 #
 # Translator   : Torfinn Ingolfsen <tingo@start.no>
 # Date started : 2003-03-10
-# Last updated : 2003-06-08
-# Date finished: 2003-03-30
+# Last updated : 2004-08-04
+# Date finished: 2004-08-04
 # History:
+# 2004-08-04	Update for Geeklog 1.3.8-1sr5 started and completed.
 # 2003-06-08	Corrected LANG22[15], capitalize first word
 # 2003-04-02	Corrected capitalization of MESSAGE[48].
 # 2003-03-30	Translated the last (and final) part
@@ -133,7 +134,7 @@ $LANG01 = array(
     78 => 'Kommende Begivenheter',
     79 => 'Nytt',
     80 => 'artikler de siste',
-    81 => 'historie de siste',
+    81 => 'artikkel de siste',
     82 => 'timer',
     83 => 'KOMMENTARER',
     84 => 'LENKER',
@@ -160,7 +161,11 @@ $LANG01 = array(
     105 => 'Email brukere',
     106 => 'Visninger',
     107 => 'GL Version Test',
-    108 => 'Tøm Cache'
+    108 => 'Tøm Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users'
 );
 
 ###############################################################################
@@ -174,7 +179,7 @@ $LANG02 = array(
     5 => 'Beskrivelse',
     6 => 'Legg Til En Begivenhet',
     7 => 'Kommende Begivenheter',
-    8 => 'Ved å legge denne begivenheten til din kalender, kan du raskt få et overblikk over kun\nde begivenheter du er interessert i, ved å trykke på "Min Kalender" i Brukermenyen',
+    8 => "Ved å legge denne begivenheten til din kalender, kan du raskt få et overblikk over kun\nde begivenheter du er interessert i, ved å trykke på \"Min Kalender\" i Brukermenyen",
     9 => 'Legg Til Min Kalender',
     10 => 'Fjern fra Min Kalender',
     11 => "Legger til Begivenhet til {$_USER['username']}'s Kalender",
@@ -197,12 +202,12 @@ $LANG03 = array(
     7 => 'Din siste kommentar var ',
     8 => " sekunder siden. Dette nettstedet krever minst {$_CONF['commentspeedlimit']} sekunder mellom kommentarer",
     9 => 'kommentar',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Post kommentar',
     12 => 'vennligst fyll ut Tittel- og Kommentarfeltene, de er obligatoriske for å poste en kommentar.',
     13 => 'Din Informasjon',
     14 => 'Forhåndsvisning',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Overskrift',
     17 => 'Feil',
     18 => 'Viktig',
@@ -211,7 +216,10 @@ $LANG03 = array(
     21 => 'Les øvrige kommentarer før du poster din egen, for å unngå gjentakelse av det som allerede er blitt sagt.',
     22 => 'Bruk en tydelig overskrift som forteller hva kommentaren din handler om.',
     23 => 'Emailadressen din blir IKKE offentliggjort.',
-    24 => 'Anonym Bruker'
+    24 => 'Anonym Bruker',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -240,14 +248,14 @@ $LANG04 = array(
     20 => 'Oppgitt emailadresse synes å være ugyldig',
     21 => 'Feil',
     22 => "Opprett konto på {$_CONF['site_name']}!",
-    23 => "Ved å opprette en konto på {$_CONF['site_name']} vil du få mulighet til å skrive artikler og kommentarer i dit eget navn. hvis du ikke har en konto, vil du kun delta som anonym. emailadressendu oppgir vil <b><i>aldri</i></b> bli offentlig vist på dette nettstedet.",
+    23 => "Ved å opprette en konto på {$_CONF['site_name']} vil du få mulighet til å skrive artikler og kommentarer i ditt eget navn. Hvis du ikke har en konto, vil du kun delta som anonym. Emailadressen du oppgir vil <b><i>aldri</i></b> bli offentlig vist på dette nettstedet.",
     24 => 'Passordet ditt blir sendt til den emailadressen du oppgir.',
     25 => 'Har du glemt passordet ditt?',
-    26 => 'skriv inn brukernavnet ditt og trykk på Email Passord, og et nytt passord blir sendt til mailadressen som er registrert for brukeren din.',
+    26 => 'Skriv inn <em>enten</em> brukernavnet ditt eller emailadressen du brukte når du registrerte deg og trykk på Email Passord. Opllysing om hvordan du lager et nytt passord blir sendt til mailadressen som er registrert i databasen.',
     27 => 'Opprett Konto Nå!',
     28 => 'Email Passord',
-    29 => 'logged out from',
-    30 => 'logged in from',
+    29 => 'logget ut fra',
+    30 => 'logged inn fra',
     31 => 'Denne funksjonen krever at du er logget inn',
     32 => 'Signatur',
     33 => 'Blir aldri vist offentlig',
@@ -258,7 +266,7 @@ $LANG04 = array(
     38 => 'Alt om deg! Alle kan lese dette',
     39 => 'Din offentlige PGP nøkkel',
     40 => 'Ingen Emneikoner',
-    41 => 'Willing to Moderate',
+    41 => 'Villig til å være Moderator',
     42 => 'Datoformat',
     43 => 'Maksimum Antall Artikler',
     44 => 'Ingen Rammer',
@@ -272,7 +280,7 @@ $LANG04 = array(
     52 => 'Standardverdien er',
     53 => 'Motta dagens artikler hver natt',
     54 => 'Kryss av for de emner og forfattere du ikke ønsker å se.',
-    55 => 'Dersom ingen er avkrysset, så får du standardvalget. Hvis dy begynner å krysse av bokser, husk å krysse av for alle du ønsker å se, fordi standardvalget blir ignorert. Standardvalg vises med <b>uthevet</b> skrift.',
+    55 => 'Dersom ingen er avkrysset, så får du standardvalget. Hvis du begynner å krysse av bokser, husk å krysse av for alle du ønsker å se, fordi standardvalget blir ignorert. Standardvalg vises med <b>uthevet</b> skrift.',
     56 => 'Forfattere',
     57 => 'Visningsmodus',
     58 => 'Rekkefølge for sortering',
@@ -296,33 +304,33 @@ $LANG04 = array(
     76 => 'Hvis du velger et eller flere emner fra listen under, så vil du motta alle nye artikler for det enkelte emne ved dagens slutt. Velg kun emner som interesserer deg!',
     77 => 'Foto',
     78 => 'Legg inn et bilde av deg selv!',
-    79 => 'Kryss av here for å slette dette bildet',
-    80 => 'Login',
+    79 => 'Kryss av her for å slette dette bildet',
+    80 => 'Loginn',
     81 => 'Send Email',
     82 => 'Siste 10 artikler av bruker',
     83 => 'Skrivestatistikk for bruker',
     84 => 'Totalt antall artikler:',
     85 => 'Totalt antall kommentarer:',
     86 => 'Finn alt skrevet av',
-    87 => 'Your login name',
-    88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
-    89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
-    90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
-    91 => 'Set New Password',
-    92 => 'Enter New Password',
-    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
-    94 => 'Delete Account "%s"',
-    95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    96 => 'delete account',
-    97 => 'Confirm Account Deletion',
-    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
+    87 => 'Ditt login-navn',
+    88 => "Noen (kanskje du) har bedt om et nytt passord for din konto \"%s\" på {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nHvis du virkelig ønsker å utføre dette, vennligst trykk på lenken under:\n\n",
+    89 => "Hvis du ikke ønsker å utføre dette, bare ignorer denne meldingen (passordet ditt vil ikke bli endret).\n\n",
+    90 => 'du kan skrive inn et nytt passord for kontoen din under. Vennligst merk at ditt gmle passord vil være gyldig helt til du bekrefter dette skjemaet.',
+    91 => 'Sett Nytt Passord',
+    92 => 'Skriv inn Nytt Passord',
+    93 => 'din siste forespørsel om nytt passord var %d for sekunder siden. Dette nettstedet krever minst %d sekunder mellom passord endringer.',
+    94 => 'Slett Konto "%s"',
+    95 => 'Trykk på  "slett konto" knappen under for å fjerne kontoen din fra vår database. Vennligst legg merke til at artikler og kommentarer du har skrevet med denne kontoen <strong>ikke</strong> vil bli slettet, men vil vises som skrevet av "Anonym".',
+    96 => 'slett konto',
+    97 => 'Bekreft Sletting av Konto',
+    98 => 'er du sikker på at du ønsker å slettekontoen din? Hvis du sletter kontoen din vil du ikke kunne logge inn på dette nettstedet igjen (dersom du ikke lager en ny konto). Hvis du er sikker, trykk "slett konto" igjen på skjemaet under.',
     99 => 'Privacy Options for',
-    100 => 'Email from Admin',
-    101 => 'Allow email from Site Admins',
-    102 => 'Email from Users',
-    103 => 'Allow email from other users',
-    104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    100 => 'Email fra Admin',
+    101 => 'Tillat email fra Administratorer',
+    102 => 'Email fra Brukere',
+    103 => 'Tillat email fra andre brukere',
+    104 => 'Vis Online Status',
+    105 => 'Vises i Online nå blokk'
 );
 
 ###############################################################################
@@ -334,7 +342,9 @@ $LANG05 = array(
     3 => " for emne {$topic}",
     4 => 'Dagens Hovedoppslag',
     5 => 'Neste',
-    6 => 'Forrige'
+    6 => 'Forrige',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -355,7 +365,7 @@ $LANG07 = array(
     3 => 'Stem',
     4 => 'Avstemninger i systemet',
     5 => 'Stemmer',
-    6 => 'View other poll questions'
+    6 => 'Vis andre spørsmål'
 );
 
 ###############################################################################
@@ -396,7 +406,7 @@ $LANG08 = array(
     32 => 'Dato',
     33 => 'les hele artikkelen på',
     34 => 'Slutt på Melding',
-    35 => 'Sorry, this user prefers not to receive any emails.'
+    35 => 'Beklager, denne brukeren ønsker ikke å motta noen emailer.'
 );
 
 ###############################################################################
@@ -426,14 +436,14 @@ $LANG09 = array(
     21 => 'til',
     22 => '(Datoformat YYYY-MM-DD)',
     23 => 'Treff',
-    24 => 'Fant',
-    25 => 'treff av',
-    26 => 'mulige på',
+    24 => 'Fant %d treff',
+    25 => 'søkte etter',
+    26 => 'treff ',
     27 => 'sekunder',
     28 => 'Ingen treff i artikler eller kommentarer for ditt søk',
     29 => 'Resultater fra Artikler og Kommentarer',
     30 => 'Ingen lenker svarte til ditt søk',
-    31 => 'This plug-in returned no matches',
+    31 => 'Denne plug-in returnerte ingen treff',
     32 => 'Begivenhet',
     33 => 'URL',
     34 => 'Sted',
@@ -445,19 +455,19 @@ $LANG09 = array(
     40 => 'Begivenheter',
     41 => 'Søkestrengen din må inneholde minst 3 tegn.',
     42 => 'Datoer må angis på formatet YYYY-MM-DD (år-måned-dag).',
-    43 => 'exact phrase',
-    44 => 'all of these words',
-    45 => 'any of these words',
-    46 => 'Next',
-    47 => 'Previous',
-    48 => 'Author',
-    49 => 'Date',
-    50 => 'Hits',
-    51 => 'Link',
-    52 => 'Location',
-    53 => 'Story Results',
-    54 => 'Comment Results',
-    55 => 'the phrase',
+    43 => 'eksakt frase',
+    44 => 'alle ordene',
+    45 => 'et eller flere ord',
+    46 => 'Neste',
+    47 => 'Forrige',
+    48 => 'Forfatter',
+    49 => 'Dato',
+    50 => 'Treff',
+    51 => 'Lenke',
+    52 => 'Sted',
+    53 => 'Resultater fra Artikler',
+    54 => 'Resultater fra Kommentarer',
+    55 => 'frase',
     56 => 'AND',
     57 => 'OR'
 );
@@ -499,7 +509,8 @@ $LANG11 = array(
     1 => 'Relatert',
     2 => 'Send  artikkelen til en venn',
     3 => 'utskriftsvennlig format',
-    4 => 'Valg'
+    4 => 'Valg',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -611,7 +622,7 @@ $LANG21 = array(
     27 => 'PHP Blokk',
     28 => 'PHP Blokk Opsjoner',
     29 => 'Blokk Funksjon',
-    30 => 'Hvis du vil bruke PHP kode i en blokk, skriv inn navnet på funksjonen over.  Navnet på funksjonen må starte med prefikset "phpblock_" (feks. phpblock_getweather).  Dersom navnet ikke har dette prefikset, så vil funksjonen IKKE bli kalt.  Vi gjør dette for å forhindre hackere fra å bruke vilkårlige funksjoner (som kan skade systemet), dersom de skulle klare å gjøre innbrudd i Geeklog installasjonen din. forsikre deg om at det ike er tomme paranteser "()" etter navnet på funksjonen. Til slutt anbefaler vi at du legger all kode til PHP Blokker i /path/to/geeklog/system/lib-custom.php.  Da unngår du at koden blir overskrevet ved oppgraderinger av Geeklog.',
+    30 => 'Hvis du vil bruke PHP kode i en blokk, skriv inn navnet på funksjonen over.  Navnet på funksjonen må starte med prefikset "phpblock_" (feks. phpblock_getweather).  Dersom navnet ikke har dette prefikset, så vil funksjonen IKKE bli kalt.  Vi gjør dette for å forhindre hackere fra å bruke vilkårlige funksjoner (som kan skade systemet), dersom de skulle klare å gjøre innbrudd i Geeklog installasjonen din. forsikre deg om at det ikke er tomme paranteser "()" etter navnet på funksjonen. Til slutt anbefaler vi at du legger all kode til PHP Blokker i /path/to/geeklog/system/lib-custom.php.  Da unngår du at koden blir overskrevet ved oppgraderinger av Geeklog.',
     31 => 'Feil i PHP Blokk. Funksjonen $function eksisterer ikke.',
     32 => 'Feil Felt(er) mangler',
     33 => 'Du må skrive inn URLen til .rdf filen for portal blokker',
@@ -649,7 +660,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Begivenhet Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Begivenhet Overskrift',
     4 => 'Begivenhet URL',
     5 => 'Begivenhet Start Dato',
@@ -669,7 +680,10 @@ $LANG22 = array(
     19 => 'Admin Hovedside',
     20 => 'lagre',
     21 => 'avbryt',
-    22 => 'slett'
+    22 => 'slett',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -734,7 +748,7 @@ $LANG24 = array(
     27 => '',
     28 => '',
     29 => '',
-    30 => 'File Upload Errors',
+    30 => 'Feil ved opplasting av fil',
     31 => 'Vennligst fyll ut feltene Forfatter, Tittel og introduksjonstekst',
     32 => 'Hovedoppslag',
     33 => 'Det kan kun være ett hovedoppslag',
@@ -761,7 +775,12 @@ $LANG24 = array(
     54 => 'Vedlagte bilder ikke brukt',
     55 => 'følgende feil oppsto under forsøk på å lagre artikkelen din. Vennligst rett opp disse feilene før du lagrer',
     56 => 'Vis Emneikon',
-    57 => 'View unscaled image'
+    57 => 'Vis bilde i original størrelse',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -784,7 +803,7 @@ $LANG25 = array(
     14 => 'lagre',
     15 => 'avbryt',
     16 => 'slett',
-    17 => 'Please enter a Poll ID',
+    17 => 'Vennligst skriv inn en Avstemnins ID',
     18 => 'Avstemning Liste',
     19 => 'For å redigere eller slette en avstemning, klikk på den. For å lage en ny avstemning klikk på ny avstemning over.',
     20 => 'Velgere',
@@ -821,9 +840,11 @@ $LANG27 = array(
     19 => 'lagre',
     20 => 'avbryt',
     21 => 'slett',
-    22 => 'Default',
-    23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    22 => 'Standard',
+    23 => 'Gjør dette til standard emne for nye artikler',
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -864,8 +885,8 @@ $LANG28 = array(
     32 => 'Prosessering ferdig. Importerte $successes og $failures feil oppsto',
     33 => 'start',
     34 => 'Feil: Du må angi en importfil.',
-    35 => 'Last Login',
-    36 => '(never)'
+    35 => 'Sist innlogget',
+    36 => '(aldri)'
 );
 
 ###############################################################################
@@ -906,7 +927,7 @@ $LANG30 = array(
     6 => 'Fredag',
     7 => 'Lørdag',
     8 => 'Legg til Begivenhet',
-    9 => 'Geeklog Begivenhet',
+    9 => '%s Begivenhet',
     10 => 'Begivenheter for',
     11 => 'Master Kalender',
     12 => 'Min Kalender',
@@ -926,7 +947,7 @@ $LANG30 = array(
     26 => 'Hele Dagen',
     27 => 'uke',
     28 => 'Personlig Kalender for',
-    29 => 'offentlig Kalender',
+    29 => 'Offentlig Kalender',
     30 => 'slett begivenhet',
     31 => 'Legg til',
     32 => 'Begivenhet',
@@ -961,9 +982,9 @@ $LANG31 = array(
     14 => 'Ignorer brukerinstillinger',
     15 => 'Feil ved sending til: ',
     16 => 'Meldinger ble sendt til: ',
-    17 => "<a href={$_CONF['site_admin_url']}/mail.php>Send another message</a>",
+    17 => "<a href={$_CONF['site_admin_url']}/mail.php>Send en melding til</a>",
     18 => 'Til',
-    19 => 'MERK: hvis du vil sende en melding til alle medlemmene, velg gruppen innloggede brukere fra nedtrekksmenyen.',
+    19 => 'MERK: hvis du vil sende en melding til alle medlemmene, velg gruppen innloggede brukere (LOGGEDIN) fra nedtrekksmenyen.',
     20 => "<successcount> meldinger ble sendt og <failcount> meldinger feilet.  Detaljene for meldingene som feilet er nedenfor hvis du trenger dem. i motsatt fall kan du  <a href=\"{$_CONF['site_admin_url']}/mail.php\">sende en melding til</a> eller <a href=\"{$_CONF['site_admin_url']}/moderation.php\">gå tilbake til administrasjonssiden</a>.",
     21 => 'Feil',
     22 => 'Vellykkede',
@@ -1107,13 +1128,13 @@ $MESSAGE = array(
     48 => "Takk for din søknad om medlemsskap hos {$_CONF['site_name']}. Teamet vårt vil vurdere søknaden din. Hvis søknaden din blir godkjent, blir passordet ditt sendt til mailadressen du nettopp oppga.",
     49 => 'Gruppen ble lagret.',
     50 => 'Gruppen ble slettet.',
-    51 => 'This username is already in use. Please choose another one.',
-    52 => 'The email address provided does not appear to be a valid email address.',
-    53 => 'Your new password has been accepted. Please use your new password below to log in now.',
-    54 => 'Your request for a new password has expired. Please try again below.',
-    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
-    56 => 'The email address provided is already in use for another account.',
-    57 => 'Your account has been successfully deleted.',
+    51 => 'Dette brukernavnet er allerede i bruk. Vennligst velg et annet brukernavn.',
+    52 => 'emailadressen du har gitt ser ut til å være en ugyldig email adresse.',
+    53 => 'Ditt nye passord er akseptert. Vennligst logg inn med det nye passordet under nå.',
+    54 => 'Din forespørsel om et nytt passord er for gammel. Vennligst prøv på nytt under.',
+    55 => 'En enail er sendt til deg og burde dukke opp i innboksen din hvert øyeblikk. vennligst følg instruksjonene i meldingen for å endre passordet på kontoen din.',
+    56 => 'Den angitte emailadressen er allerede i bruk for en annen konto.',
+    57 => 'kontoen din er slettet.',
     58 => 'Your feed has been successfully saved.',
     59 => 'The feed has been successfully deleted.'
 );
@@ -1144,7 +1165,7 @@ $LANG_ACCESS = array(
     'coregroup' => 'Core gruppe',
     'yes' => 'Ja',
     'no' => 'Nei',
-    'corerightsdescr' => "Dette er en core {$_CONF['site_name']} gruppe. Rettighetene for denne gruppen kan ikke redigeres. Nedenfor er en liste over de rettigheter denne gruppen har.",
+    'corerightsdescr' => "Dette er en core (innebygd) {$_CONF['site_name']} gruppe. Rettighetene for denne gruppen kan ikke redigeres. Nedenfor er en liste over de rettigheter denne gruppen har.",
     'groupmsg' => 'Sikkerhetsgrupper på dette nettstedet er hierarkiske.  Hvis du legger denne gruppen til en av gruppene under gir du denne gruppen samme rettigheter som de gruppene har. Det anbefales at du bruker gruppene under for å gi rettigheter til en gruppe så langt det er mulig. dersom denne gruppen trenger mer spesifikke rettigheter så kan du velge disse fra \'Rettigheter\' nedenfor. For å legge denne gruppen til en av de andre gruppene under, kryss av for de gruppene du ønsker.',
     'coregroupmsg' => "Dette er en core {$_CONF['site_name']} gruppe. Gruppene som denne gruppen hører til kan ikke redigeres. Under er en liste over grupper som denne gruppen hører til.",
     'rightsdescr' => 'En rettighet kan gis direkte til gruppen, ELLER til en annen gruppe som denne gruppen er medlem av. Rettighetene under som ikke er avkrysset er de som denne gruppen har fått som medlem av en annen gruppe. Rettighetene som er avkryyset er rettigheter som er gitt direkte til denne gruppen.',
@@ -1166,9 +1187,9 @@ $LANG_ACCESS = array(
     'cancel' => 'avbryt',
     'delete' => 'slett',
     'canteditroot' => 'Du har forsøkt å redigere Root gruppen uten selv å være medlem av Root gruppen, tilgangen er derfor nektet. Vennligst kontakt administratoren til nettstedet hvis du mener dette er en feil',
-    'listusers' => 'List Users',
+    'listusers' => 'Liste Brukere',
     'listthem' => 'list',
-    'usersingroup' => 'Users in group "%s"',
+    'usersingroup' => 'Brukere i gruppe %s',
     'usergroupadmin' => 'User Group Administration',
     'add' => 'Add',
     'remove' => 'Remove',
@@ -1193,7 +1214,7 @@ $LANG_DB_BACKUP = array(
     'backup_file' => 'Backup fil',
     'size' => 'Størrelse',
     'bytes' => 'Bytes',
-    'total_number' => 'Total number of backups: %d'
+    'total_number' => 'Totalt antall backups: %d'
 );
 
 ###############################################################################
@@ -1221,12 +1242,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Innlogging påkrevd',
     2 => 'Beklager, du må være innlogget for å få adgang til dette området.',
     3 => 'Logg inn',
     4 => 'Ny Bruker'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>
