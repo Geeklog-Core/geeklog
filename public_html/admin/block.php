@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.59 2004/07/26 13:40:42 dhaun Exp $
+// $Id: block.php,v 1.60 2004/07/31 18:45:37 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -669,7 +669,7 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
         $display .= deleteBlock ($bid);
     }
 } else if (($mode == $LANG21[54]) && !empty ($LANG21[54])) { // save
-    $display .= saveblock ($bid, $HTTP_POSTVARS['name'],
+    $display .= saveblock ($bid, $HTTP_POST_VARS['name'],
                 $HTTP_POST_VARS['title'], $HTTP_POST_VARS['help'],
                 $HTTP_POST_VARS['type'], $HTTP_POST_VARS['blockorder'],
                 $HTTP_POST_VARS['content'], $HTTP_POST_VARS['tid'],
