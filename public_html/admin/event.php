@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.48 2004/07/26 09:57:35 dhaun Exp $
+// $Id: event.php,v 1.49 2004/08/04 18:44:24 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -122,8 +122,17 @@ function editevent ($mode, $A, $msg = '')
             '<input type="submit" value="' . $LANG22[22] . '" name="mode">');
     }
 
-    if ($A['eid'] == '') { 
-        $A['eid'] = COM_makesid(); 
+    if (empty ($A['eid'])) { // new event
+        $A['eid'] = COM_makesid ();
+
+        // in case a start date/time has been passed from the calendar,
+        // pick it up for the end date/time
+        if (empty ($A['dateend'])) {
+            $A['dateend'] = $A['datestart'];
+        }
+        if (empty ($A['timeend'])) {
+            $A['timeend'] = $A['timestart'];
+        }
     }
 
     $event_templates->set_var('event_id', $A['eid']);
@@ -159,7 +168,7 @@ function editevent ($mode, $A, $msg = '')
     $start_month = date('m', $start_stamp);
     $start_day = date('d', $start_stamp);
     $start_year = date('Y', $start_stamp);
-    $end_month= date('m', $end_stamp);
+    $end_month = date('m', $end_stamp);
     $end_day = date('d', $end_stamp);
     $end_year = date('Y', $end_stamp);
     $start_ampm = '';
@@ -626,8 +635,14 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
     $eid = COM_applyFilter ($http_input_vars['eid']);
-    $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
-    $A = DB_fetchArray ($result);
+    if (empty ($eid)) {
+        $A = array ();
+        $A['datestart'] = COM_applyFilter ($http_input_vars['datestart']);
+        $A['timestart'] = COM_applyFilter ($http_input_vars['timestart']);
+    } else {
+        $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
+        $A = DB_fetchArray ($result);
+    }
     $display .= COM_siteHeader ('menu');
     $display .= editevent ($mode, $A);
     $display .= COM_siteFooter ();

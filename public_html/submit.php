@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.67 2004/05/31 19:23:48 vinny Exp $
+// $Id: submit.php,v 1.68 2004/08/04 18:44:23 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -727,7 +727,21 @@ if ($mode == $LANG12[8]) { // submit
             break;
         case 'event':
             if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
-                echo COM_refresh($_CONF['site_admin_url'] . '/event.php?mode=edit');
+                $year = COM_applyFilter ($http_vars['year'], true);
+                $month = COM_applyFilter ($http_vars['month'], true);
+                $day = COM_applyFilter ($http_vars['day'], true);
+                $hour = COM_applyFilter ($http_vars['hour'], true);
+                $startat = '';
+                if ($year > 0) {
+                    $startat = '&datestart='
+                             . urlencode (sprintf ('%04d-%02d-%02d', $year,
+                                                   $month, $day))
+                             . '&timestart=' . urlencode (sprintf ('%02d:00:00',
+                                                                   $hour));
+                }
+
+                echo COM_refresh ($_CONF['site_admin_url']
+                                  . '/event.php?mode=edit' . $startat);
                 exit;
             }
             break;
