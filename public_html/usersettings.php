@@ -142,7 +142,7 @@ function editpreferences()
     } else if ($A['maxstories'] < 5) {
         $A['maxstories'] = 5;
     }
-
+	
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
         . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
@@ -176,14 +176,13 @@ function editpreferences()
 	. '<td align=right><b>Theme: </b><br><small>Change what this site looks like!</small></td>' . LB
 	. '<td><select name="theme">'.LB;
 
-	$themes = COM_getThemes();
     if (empty($_USER['theme'])) {
         $usertheme = $_CONF['theme'];
     } else {
         $usertheme = $_USER['theme'];
     }
-
-	for ($i = 1; $i <= count($themes); $i++) {
+    $themes = COM_getThemes();
+    for ($i = 1; $i <= count($themes); $i++) {
         $retval .= '<option value="' . current($themes) . '"';
         if ($usertheme == current($themes)) {
             $retval .= ' SELECTED';
@@ -191,7 +190,6 @@ function editpreferences()
         $retval .= '>' . current($themes) . '</option>' . LB;
         next($themes);
     }
-
     $retval .= '</select>' . LB . '</td></tr>' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
@@ -241,6 +239,7 @@ function editpreferences()
         . '</tr>' . LB
         . '</table>'
         . COM_endBlock();
+	
     $retval .= COM_startBlock($LANG04[46] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">'.LB
         . '<tr>' . LB
@@ -249,6 +248,7 @@ function editpreferences()
         . '<tr valign="top">' . LB
         . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic','',$A['tids']) . '</td>' . LB
         . '<td><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="40" height="1"></td>' . LB;
+		
     if ($_CONF['contributedbyline'] == 1) {
         $retval .= '<td><b>' . $LANG04[56] . '</b><br>';
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
@@ -263,7 +263,18 @@ function editpreferences()
     }
 	
     $retval .= '</tr>' . LB . '</table>' . COM_endBlock();
-		
+
+    if ($_CONF['emailstories'] == 1) {
+        $user_etids = DB_getItem($_TABLES['userindex'],'etids',"uid = {$_USER['uid']}");
+    	$retval .= COM_startBlock("Emailed Topics for  {$_USER['username']}");
+    	$retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
+    	$retval .= "<tr valign=\"top\"><td>If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!<br>";
+    	$tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
+        $retval .= str_replace('topics','etids',$tmp);
+    	$retval .= '</td></tr></table>';
+   	$retval .= COM_endBlock();	
+    }
+	
     $retval .= COM_startBlock($LANG04[47] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
         . '<tr>' . LB
@@ -386,10 +397,12 @@ function savepreferences($A)
     unset($tids);
     unset($aids);
     unset($boxes);
+    unset($etids);
 
     $TIDS = @array_values($A[$_TABLES['topics']]);
     $AIDS = @array_values($A[$_TABLES['users']]);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
+    $ETIDS = @array_values($A['etids']);
 
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
@@ -406,7 +419,11 @@ function savepreferences($A)
             $boxes .= $BOXES[$i] . ' ';
         }
     } 
-
+    if (sizeof($ETIDS) > 0) {
+        for ($i = 0; $i < sizeof($ETIDS); $i++) {
+            $etids .= $ETIDS[$i] . " ";
+        }
+    }
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
     setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']);	
@@ -414,7 +431,7 @@ function savepreferences($A)
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories","'{$_USER['uid']}','$tids','$aids','$boxes','{$A['noboxes']}','{$A['maxstories']}'","usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$boxes','{$A['noboxes']}','{$A['maxstories']}','$etids'","usersettings.php?mode=preferences&msg=6");
 
 }
 
