@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.11 2002/01/11 18:56:38 tony_bibbs Exp $
+// $Id: calendar_event.php,v 1.12 2002/01/11 21:01:37 tony_bibbs Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -448,10 +448,20 @@ default:
                     $cal_templates->parse('addremove_event','addremove');
                 }
                 $cal_templates->set_var('lang_when', $LANG02[3]);
-                $thedatetime = COM_getUserDateTimeFormat($A['start']);
-                $cal_templates->set_var('event_start', $thedatetime[0]);
-                $thedatetime = COM_getUserDateTimeFormat($A['end']);
-                $cal_templates->set_var('event_end', $thedatetime[0]);
+                if ($A['allday'] == 0 OR ($A['allday'] == 1 AND $A['start'] <> $A['end'])) {
+                    $thedatetime = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
+                    $cal_templates->set_var('event_start', $thedatetime[0]);
+                    $thedatetime = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
+                    $cal_templates->set_var('event_end', $thedatetime[0]);
+                } else {
+                    $thedatetime = strftime('%A, %B %e %Y',strtotime($A['start'] . ' ' . $A['timestart']));
+                    $cal_templates->set_var('event_start', $thedatetime);
+                    $cal_templates->set_var('event_end', $LANG30[26]);
+                }
+                #$thedatetime = COM_getUserDateTimeFormat($A['start']);
+                #$cal_templates->set_var('event_start', $thedatetime[0]);
+                #$thedatetime = COM_getUserDateTimeFormat($A['end']);
+                #$cal_templates->set_var('event_end', $thedatetime[0]);
                 $cal_templates->set_var('lang_where', $LANG02[4]);
                 if (!empty($A['address1'])) {
                     $cal_templates->set_var('event_address1', $A['address1']); 
