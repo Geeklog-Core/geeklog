@@ -221,11 +221,11 @@ function DB_query($sql, $ignore_errors=0, $ttl=0)
 * @param        string      $return_page    URL to send user to when done
 *
 */
-function DB_save($table,$fields,$values,$return_page='') 
+function DB_save($table,$fields,$values,$key_field='',$key_value='',$return_page='') 
 {
     global $_DB,$_TABLES,$_CONF;
 
-    $_DB->dbSave($table,$fields,$values);
+    $_DB->dbSave($table, $fields, $values, $key_field, $key_value);
 
     if ($table == $_TABLES['stories']) {
        COM_exportRDF();
