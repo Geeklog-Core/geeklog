@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.131 2002/08/05 20:18:28 dhaun Exp $
+// $Id: lib-common.php,v 1.132 2002/08/07 08:47:21 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1076,7 +1076,7 @@ function COM_pollVote($qid)
 
     if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
         if ($nquestion == 1) {
-            $answers = DB_query("SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid'");
+            $answers = DB_query("SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
             $nanswers = DB_numRows($answers);
 
             if ($nanswers > 0) {
@@ -1190,7 +1190,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
         if ($_CONF['answerorder'] == 'voteorder') {
             $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC");
         } else {
-            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid'");
+            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
         }
 		$nanswers = DB_numRows($answers);
         if ($_COM_VERBOSE) {

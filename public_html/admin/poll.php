@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.21 2002/08/03 16:54:51 dhaun Exp $
+// $Id: poll.php,v 1.22 2002/08/07 08:47:21 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -159,7 +159,7 @@ function editpoll($qid='')
 
     if (!empty($qid)) {
         $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
-        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid'");
+        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid' ORDER BY aid");
         $Q = DB_fetchArray($question);
 
         // Get permissions for poll
