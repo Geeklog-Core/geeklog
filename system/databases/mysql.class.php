@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.5 2001/12/11 19:03:54 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.6 2002/01/03 21:23:00 tony_bibbs Exp $
 
 class database {
 
@@ -598,7 +598,7 @@ class database {
     {
         if (mysql_errno()) {
             $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . " SQL in question: $sql");        
-            return  @mysql_errno . ': ' . @mysql_error();
+            return  @mysql_errno() . ': ' . @mysql_error();
         }
 	
 	return;
