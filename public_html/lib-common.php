@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.365 2004/08/23 19:36:33 dhaun Exp $
+// $Id: lib-common.php,v 1.366 2004/08/25 08:41:33 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -144,9 +144,9 @@ if( !$_CONF['have_pear'] )
 * Setup the SESSIONS Class and start SESSIONS and restore any SESSION Based Variables
 */
 
-require_once ('HTTP/Session.php');
-HTTP_Session::useCookies ($_CONF['sessions_usecookie']);
-HTTP_Session::start ($_CONF['sessionid'], uniqid ($_CONF['sessionid_prefex']));
+require_once( 'HTTP/Session.php' );
+HTTP_Session::useCookies( $_CONF['sessions_usecookie'] );
+HTTP_Session::start( $_CONF['sessionid'], uniqid( $_CONF['sessionid_prefix'] ));
 
 /**
 * Include page time -- used to time how fast each page was created

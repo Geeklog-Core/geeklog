@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.130 2004/08/15 19:57:48 blaine Exp $
+// $Id: config.php,v 1.131 2004/08/25 08:41:31 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -308,9 +308,11 @@ $_CONF['lastlogin']                     = true;
 // will use cookies to store the session id on the client side
 $_CONF['sessions_usecookie']            = true;
 $_CONF['sessionid']                     = 'SessionID';
-// The prefix can be useful for instance if you generate identifiers simultaneously on several hosts 
-// and there is the extream chance to generate the identifier at the same microsecond.
-$_CONF['sessionid_prefex']              = 'gl';
+
+// The prefix can be useful for instance if you generate identifiers
+// simultaneously on several hosts and there is the extreme chance to generate
+// the identifier at the same microsecond.
+$_CONF['sessionid_prefix']              = 'gl';
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |
