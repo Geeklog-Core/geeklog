@@ -24,22 +24,6 @@
 #
 ###############################################################################
 
-###############################################################################
-#
-# NAPOMENA:
-# U config.php morate charset takoðer podesiti iso-8859-2 da bi vam ispravno
-# prikazivalo hrvatska slova.
-#
-# Ukoliko primjetite da ne¹to nije dobro prevedeno, ili da ima bolja rijeè
-# javite na spprh@spph.org pa budemo to ispravili
-#
-# U prevaðanju sudjelovali: Kristina Jordan, Roberto Biliæ
-#
-# File je preveden za potrebe sitea www.spph.org ali se mo¾e i drugdje
-# BESPLATNO koristiti u skladu s GNU/GPL licencom.
-#
-###############################################################################
-
 $LANG_CHARSET = 'iso-8859-2';
 
 ###############################################################################
@@ -66,7 +50,7 @@ $LANG01 = array(
     7 => 'Rezultati ankete',
     8 => 'glasova',
     9 => 'Administracijske Funkcije:',
-    10 => 'Submissions',
+    10 => 'Zahtjevi',
     11 => 'Tekstovi',
     12 => 'Blokovi',
     13 => 'Teme',
@@ -82,7 +66,7 @@ $LANG01 = array(
     23 => 'Sigurnosna razina',
     24 => 'Anonimac',
     25 => 'Odgovori',
-    26 => 'Sljedeæi komentari su vlasni¹tvo onog koji ih je napisao. Web site nije odgovoran na bilo koji naèin u vezi onoga ¹to autor u njima ka¾e.',
+    26 => 'Sljedeæi komentari su vlasni¹tvo onog koji ih je napisao. Mi nismo odgovorni na bilo koji naèin u vezi onoga ¹to autor u njima ka¾e.',
     27 => 'Najnoviji tekst',
     28 => 'Obrisati',
     29 => 'Nema korisnièkih komentara.',
@@ -94,7 +78,7 @@ $LANG01 = array(
     35 => 'Odjava',
     36 => 'on',
     37 => 'Nema korisnièkih tekstova',
-    38 => 'Content Syndication',
+    38 => 'Razmjena sadr¾aja',
     39 => 'Osvje¾i',
     40 => 'Imate <tt>register_globals = Off</tt> u va¹em <tt>php.ini</tt>. Site zahtjeva da <tt>register_globals</tt> bude <strong>on</strong>. Prije nego ¹to nastavite, molim postavite to na <strong>on</strong> i restartajte web server.',
     41 => 'Gosti',
@@ -109,11 +93,11 @@ $LANG01 = array(
     50 => 'Error with SQL statement',
     51 => 'pomoæ',
     52 => 'Novi',
-    53 => 'Admin poèetna stranica',
+    53 => 'Administracija',
     54 => 'Ne mogu otvoriti datoteku.',
     55 => 'Gre¹ka na',
     56 => 'Glasaj',
-    57 => 'Zaporka',
+    57 => 'lozinka',
     58 => 'Prijava',
     59 => "Nemate jo¹ korisnièki raèun? Kreirajte ga besplatno <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Ovdje</a>",
     60 => 'Po¹aljite komentar',
@@ -123,7 +107,7 @@ $LANG01 = array(
     64 => 'Po¹alji tekst mailom.',
     65 => 'Pogledaj verziju za printanje',
     66 => 'Moj Kalendar',
-    67 => 'Dobrodo¹li na stranice ',
+    67 => ' ',
     68 => 'poèetna stranica',
     69 => 'kontakt',
     70 => 'tra¾i',
@@ -136,8 +120,8 @@ $LANG01 = array(
     77 => 'Plugins',
     78 => 'Nadolazeæa dogaðanja',
     79 => '©to je novo',
-    80 => 'tekstovi u posljednih',
-    81 => 'tekstova u zadnjih',
+    80 => 'tekst(ovi) u posljednih',
+    81 => 'tekst(ova) u zadnjih',
     82 => 'sati',
     83 => 'KOMENTARI',
     84 => 'LINKOVI',
@@ -164,7 +148,11 @@ $LANG01 = array(
     105 => '©alji email',
     106 => 'Pregledano',
     107 => 'Test',
-    108 => 'Bri¹i Cache'
+    108 => 'Bri¹i Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users'
 );
 
 ###############################################################################
@@ -201,21 +189,24 @@ $LANG03 = array(
     7 => 'Va¹ posljedni komentar je ',
     8 => " sekundi.  Stranice zahtjevaju da proðe vi¹e od {$_CONF['commentspeedlimit']} sekundi meðu slanjem komentara",
     9 => 'Komentar',
-    10 => '',
+    10 => 'Send Report',
     11 => '©alji komentar',
     12 => 'Molim popunite Naziv teksta i Komentar da bi bilo poslano, jer je to neophodno za slanje.',
     13 => 'Va¹e informacije',
     14 => 'Pregled',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Naslov',
     17 => 'Gre¹ka',
     18 => 'Va¾no',
     19 => 'Molimo Vas da se va¹i komentari pridr¾avaju teme.',
     20 => 'Molimo Vas da odgovarate na vec objavljene komentare umjesto da zapocinjete nove teme.',
     21 => 'Prije nego po¹aljete komentar, molim proèitajte komentare ostalih korisnika da bi se izbjeglo ponavljanje.',
-    22 => 'Koristite jednostavni naziv teksta da bi bilo jasno o èemu je rijeæ u va¹em tekstu.',
-    23 => 'Va¹ email neèe biti javno dostupan.',
-    24 => 'Anonimni korisnik'
+    22 => 'Koristite jednostavni naziv teksta da bi bilo jasno o èemu je rijeè u va¹em tekstu.',
+    23 => 'Va¹ email neæe biti javno dostupan.',
+    24 => 'Anonimni korisnik',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -225,7 +216,7 @@ $LANG04 = array(
     1 => 'Korisnièki profil za',
     2 => 'Korisnièko ime',
     3 => 'Puno ime',
-    4 => 'Zaporka',
+    4 => 'lozinka',
     5 => 'Email',
     6 => 'Web stranica',
     7 => 'Bio',
@@ -240,16 +231,16 @@ $LANG04 = array(
     16 => 'Informacije o va¹em korisnièkom raèunu',
     17 => 'Korisnièki raèun ne postoji',
     18 => 'The email address provided does not appear to be a valid email address',
-    19 => 'Korisnièko ime ili email adresa koju ste unijeli veè postoji u bazi.',
+    19 => 'Korisnièko ime ili email adresa koju ste unijeli veæ postoji u bazi.',
     20 => 'Email adresu koju ste unijeli ne mo¾emo prihvatiti jer nije odgovarajuæe forme',
     21 => 'Gre¹ka',
     22 => "Registriran na {$_CONF['site_name']}!",
     23 => "Creating a user account will give you all the benefits of {$_CONF['site_name']} membership and it will allow you to post comments and submit items as yourself. If you don't have an account, you will only be able to post anonymously. Please note that your email address will <b><i>never</i></b> be publicly displayed on this site.",
-    24 => 'Zaporka æe biti poslana na email adresu koju ste unijeli.',
+    24 => 'lozinka æe biti poslana na email adresu koju ste unijeli.',
     25 => 'Zabopravili ste zaporku?',
     26 => 'Enter <em>either</em> your username <em>or</em> the email address you used to register and click Email Password. Instructions on how to set a new password will be mailed to the email address on record.',
     27 => 'Registriraj se sada!',
-    28 => 'Zaporka poslana emailom',
+    28 => 'lozinka poslana emailom',
     29 => 'logged out from',
     30 => 'logged in from',
     31 => 'The function you have selected requires you to be logged in',
@@ -308,9 +299,9 @@ $LANG04 = array(
     84 => 'Ukupan broj tekstova:',
     85 => 'Ukupan broj komentara:',
     86 => 'Pronaði sve tekstove od',
-    87 => 'Tvoje korisnièko ime',
+    87 => 'Va¹e korisnièko ime',
     88 => "Netko (vjerojatno vi) je zatra¾io novu zaporku za va¹ korisnièki raèun \"%s\" na {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nAko ste to zaista htjeli molim kliknite na ovaj link za potvrdu:\n\n",
-    89 => "Ako ne ¾elite to napraviti, jednostavno ignorirajte poruku (zaporka æe ostati nepromijenjena).\n\n",
+    89 => "Ako ne ¾elite to napraviti, jednostavno ignorirajte poruku (lozinka æe ostati nepromijenjena).\n\n",
     90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'Postavi novu zaporku',
     92 => 'Unesi novu zaporku',
@@ -338,14 +329,16 @@ $LANG05 = array(
     3 => " za temu {$topic}",
     4 => 'Dana¹nji va¾niji tekstovi',
     5 => 'Iduæi',
-    6 => 'Prija¹nji'
+    6 => 'Prija¹nji',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
 # links.php
 
 $LANG06 = array(
-    1 => 'Web izvori',
+    1 => 'Linkovi',
     2 => 'Nema linkova za prikazati.',
     3 => 'Dodaj link'
 );
@@ -355,7 +348,7 @@ $LANG06 = array(
 
 $LANG07 = array(
     1 => 'Va¹ glas je uspje¹no zaprimljen',
-    2 => 'Va¹ glas je poslan u abketu.',
+    2 => 'Va¹ glas je zapisan.',
     3 => 'Glas',
     4 => 'Anketa na stranicama',
     5 => 'Glasa',
@@ -377,7 +370,7 @@ $LANG08 = array(
     9 => 'Korisnièki URL',
     10 => '©alji email',
     11 => 'Va¹e ime:',
-    12 => '©aljete (kome):',
+    12 => 'Va¹ email:',
     13 => 'Naziv maila:',
     14 => 'Poruka:',
     15 => 'HTML kod neæe biti prikazan.',
@@ -390,7 +383,7 @@ $LANG08 = array(
     22 => 'Potrebno je sve popuniti',
     23 => "Ovaj email vam je poslan od {$from} sa {$fromemail} zato jer je mislio da æe vas zanimati tekst s web stranice {$_CONF['site_url']}.  Ovo NIJE SPAM, i va¹e email adrese nisu saèuvane i neæe se koristiti za daljnju uporabu.",
     24 => 'Comment on this story at',
-    25 => 'Morate biti prijavljeni da bi mogli koristiti ovaj.  By having you log in, it helps us prevent misuse of the system',
+    25 => 'Morate biti prijavljeni da bi mogli koristiti ovu postavku.',
     26 => 'Ovaj formular vam dozvoljava slanje emailova odreðenim korisnicima. Potrebno je popuniti sve podatke.',
     27 => 'Kratka poruka',
     28 => "{$from} pi¹e: {$shortmsg}",
@@ -447,7 +440,7 @@ $LANG09 = array(
     38 => 'Rezultati linkova',
     39 => 'Linkovi',
     40 => 'Dogaðaji',
-    41 => 'Your query string should have at least 3 characters.',
+    41 => 'Va¹ upit mora sadr¾avati vi¹e od 3 znaka.',
     42 => 'Molim koristite format datuma GGGG-MM-DD (godina-mjesec-dan).',
     43 => 'toèan izraz',
     44 => 'sve rijeèi',
@@ -491,7 +484,7 @@ $LANG10 = array(
     19 => 'Linkovi',
     20 => 'Hits',
     21 => 'Na stranicama nema niti jednog linka ili nema linka na koji je kliknuto bar jedanput.',
-    22 => 'Prvih deset prièa poslanih emailom',
+    22 => 'Prvih deset tekstova poslanih emailom',
     23 => 'Emailovi',
     24 => 'Nitko nije poslao tekst emailom s ovih stranica.'
 );
@@ -500,24 +493,25 @@ $LANG10 = array(
 # article.php
 
 $LANG11 = array(
-    1 => 'What\'s Related',
+    1 => 'Linkovi u tekstu',
     2 => 'Po¹alji tekst emailom',
     3 => 'Tekst za printanje',
-    4 => 'Opcije teksta'
+    4 => 'Opcije teksta',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "To submit a {$type} you are required to be logged in as a user.",
+    1 => "Za prijavljivanje {$type} potrebno je biti ulogiran.",
     2 => 'Prijava',
     3 => 'Novi korisnik',
-    4 => 'Submit a Event',
-    5 => 'Submit a Link',
-    6 => 'Submit a Story',
-    7 => 'Login is Required',
-    8 => 'Submit',
+    4 => 'Po¹aljite info o dogaðaju',
+    5 => 'Po¹aljite Link',
+    6 => 'Po¹aljite tekst',
+    7 => 'Login je potreban',
+    8 => 'Potvrdi',
     9 => 'When submitting information for use on this site we ask that you follow the following suggestions...<ul><li>Fill in all the fields, they\'re required<li>Provide complete and accurate information<li>Double check those URLs</ul>',
     10 => 'Naziv',
     11 => 'Link',
@@ -575,9 +569,9 @@ $LANG12 = array(
 $LANG20 = array(
     1 => 'Autorizacija potrebna',
     2 => 'Odbijeno! Neispravne prijavne informacije.',
-    3 => 'Neispravna zaporka za korisnika',
+    3 => 'Neispravna lozinka za korisnika',
     4 => 'Korisnièko ime:',
-    5 => 'Zaporka:',
+    5 => 'lozinka:',
     6 => 'Svaki pokusaj pristupanja administratorskom dijelu bit æe logiran i provjeren.<br>Ovi djelovi su SAMO za OVLA©TENE osobe Svaka zloporaba æe biti sankcionirana.',
     7 => 'prijava'
 );
@@ -624,15 +618,15 @@ $LANG21 = array(
     36 => 'You must enter the content for layout blocks',
     37 => 'Bad PHP block function name',
     38 => 'Functions for PHP Blocks must have the prefix \'phpblock_\' (e.g. phpblock_getweather).  The \'phpblock_\' prefix is required for security reasons to prevent the execution of arbitrary code.',
-    39 => 'Side',
-    40 => 'Left',
-    41 => 'Right',
+    39 => 'Strana',
+    40 => 'Lijevo',
+    41 => 'Desno',
     42 => 'You must enter the block title and block order for Geeklog default blocks.',
     43 => 'Homepage Only',
-    44 => 'Access Denied',
+    44 => 'Pristup odbijen',
     45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/block.php\">go back to the block administration screen</a>.",
     46 => 'New Block',
-    47 => 'Admin Home',
+    47 => 'Administracija',
     48 => 'Block Name',
     49 => ' (no spaces and must be unique)',
     50 => 'Help File URL',
@@ -652,8 +646,8 @@ $LANG21 = array(
 # admin/event.php
 
 $LANG22 = array(
-    1 => 'Event Editor',
-    2 => '',
+    1 => 'Editiranje dogaðaja',
+    2 => 'Error',
     3 => 'Event Title',
     4 => 'Event URL',
     5 => 'Event Start Date',
@@ -664,45 +658,48 @@ $LANG22 = array(
     10 => 'You must provide the dates/times, description and event location!',
     11 => 'Event Manager',
     12 => 'To modify or delete an event, click on that event below.  To create a new event click on new event above. Click on [C] to create a copy of an existing event.',
-    13 => 'Event Title',
-    14 => 'Start Date',
-    15 => 'End Date',
-    16 => 'Access Denied',
+    13 => 'Naziv dogaðaja',
+    14 => 'Poèetak (datum)',
+    15 => 'Kraj (datum)',
+    16 => 'Pristup Odbijen',
     17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/event.php\">go back to the event administration screen</a>.",
     18 => 'New Event',
     19 => 'Admin Home',
-    20 => 'save',
-    21 => 'cancel',
-    22 => 'delete'
+    20 => 'snimi',
+    21 => 'poni¹ti',
+    22 => 'obri¹i',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
 # admin/link.php
 
 $LANG23 = array(
-    1 => 'Link Editor',
+    1 => 'Ureðivanje linkova',
     2 => '',
-    3 => 'Link Title',
-    4 => 'Link URL',
-    5 => 'Category',
-    6 => '(include http://)',
-    7 => 'Other',
-    8 => 'Link Hits',
-    9 => 'Link Description',
-    10 => 'You need to provide a link Title, URL and Description.',
+    3 => 'Naziv linka',
+    4 => 'URL linka',
+    5 => 'Kategorija',
+    6 => '(ukljuèujuèi http://)',
+    7 => 'Nova kategorija',
+    8 => 'Link Klik',
+    9 => 'Opis linka',
+    10 => 'Potrebno je unijeti Naziv linka, URL i Opis.',
     11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link below.  To create a new link click new link above.',
-    13 => 'Link Title',
-    14 => 'Link Category',
-    15 => 'Link URL',
-    16 => 'Access Denied',
+    12 => 'Ako ¾elite modificirati ili obrisati link, kliknite dolje na ¾eljeni link. Ako ¾elite dodati novi link kliknite iznad na Novi link.',
+    13 => 'Naziv linka',
+    14 => 'Kategorija linka',
+    15 => 'URL linka',
+    16 => 'Pristup odbijen',
     17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/link.php\">go back to the link administration screen</a>.",
-    18 => 'New Link',
-    19 => 'Admin Home',
-    20 => 'If other, specify',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete'
+    18 => 'Novi link',
+    19 => 'Administracija',
+    20 => 'Ako je Nova kategorija, molimo unesite naziv nove kategorije.',
+    21 => 'snimi',
+    22 => 'poni¹ti',
+    23 => 'obri¹i'
 );
 
 ###############################################################################
@@ -717,15 +714,15 @@ $LANG24 = array(
     6 => 'Nema teksta u sistemu.',
     7 => 'Autor',
     8 => 'snimi',
-    9 => 'preview',
+    9 => 'pregled',
     10 => 'poni¹ti',
     11 => 'obri¹i',
     12 => '',
     13 => 'Naslov',
     14 => 'Tema',
     15 => 'Datum',
-    16 => 'Intro Text',
-    17 => 'Body Text',
+    16 => 'Uvodni tekst',
+    17 => 'Tijelo teksta',
     18 => 'Posjeta',
     19 => 'Komentari',
     20 => '',
@@ -734,7 +731,7 @@ $LANG24 = array(
     23 => 'To modify or delete a story, click on that story\'s number below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
     24 => '',
     25 => '',
-    26 => 'Story Preview',
+    26 => 'Pregled teksta',
     27 => '',
     28 => '',
     29 => '',
@@ -746,12 +743,12 @@ $LANG24 = array(
     35 => 'Da',
     36 => 'Ne',
     37 => 'Vi¹e od',
-    38 => 'More from',
+    38 => 'Vi¹e sa',
     39 => 'Emailovi',
     40 => 'Pristup odbijen',
     41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a> when you are done.",
     42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF['site_admin_url']}/story.php\">go back to the story administration screen</a>.",
-    43 => 'New Story',
+    43 => 'Novi tekst',
     44 => 'Admin Home',
     45 => 'Pristup',
     46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RSS headline feed and it will be ignored by the search and statistics pages.',
@@ -765,7 +762,12 @@ $LANG24 = array(
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
     56 => 'Prika¾i ikonu teme',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -773,29 +775,29 @@ $LANG24 = array(
 
 $LANG25 = array(
     1 => 'Mode',
-    2 => 'Please enter a question and at least one answer.',
-    3 => 'Poll Created',
-    4 => "Poll {$qid} saved",
-    5 => 'Edit Poll',
-    6 => 'Poll ID',
-    7 => '(do not use spaces)',
-    8 => 'Appears on Homepage',
-    9 => 'Question',
-    10 => 'Answers / Votes',
+    2 => 'Molimo unesite pitanje i najmanje dva odgovora..',
+    3 => 'Anketa kreirana',
+    4 => "Ankete {$qid} snimljena",
+    5 => 'Ureðivanje ankete',
+    6 => 'ID Ankete',
+    7 => '(ne koristite prazan prostor)',
+    8 => 'Prika¾i na poèetnoj strani',
+    9 => 'Pitanje ankete',
+    10 => 'Odgovora / Glasova',
     11 => "There was an error getting poll answer data about the poll {$qid}",
     12 => "There was an error getting poll question data about the poll {$qid}",
-    13 => 'Create Poll',
+    13 => 'Kreirajte anketu.',
     14 => 'snimi',
     15 => 'poni¹ti',
     16 => 'obri¹i',
-    17 => 'Please enter a Poll ID',
+    17 => 'Molim unesite ID ankete.',
     18 => 'Poll List',
     19 => 'To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.',
     20 => 'Voters',
-    21 => 'Access Denied',
-    22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/poll.php\">go back to the poll administration screen</a>.",
-    23 => 'New Poll',
-    24 => 'Admin Home',
+    21 => 'Pristup odbijen',
+    22 => "Poku¹ali ste pristupiti anketi ali nemate potrebna odobrenja. Ovaj poku¹aj je logiran. Molim <a href=\"{$_CONF['site_admin_url']}/poll.php\">vratite se natrag na administraciju anketa</a>.",
+    23 => 'Nova anketa',
+    24 => 'Administracija',
     25 => 'Da',
     26 => 'Ne'
 );
@@ -813,21 +815,23 @@ $LANG27 = array(
     7 => 'Please fill in the Topic ID and Topic Name fields',
     8 => 'Topic Manager',
     9 => 'To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left. You will find your access level for each topic in parenthesis. The asterisk(*) denotes the default topic.',
-    10 => 'Sort Order',
+    10 => 'Sortirano po',
     11 => 'Stories/Page',
-    12 => 'Access Denied',
+    12 => 'Pristup odbijen.',
     13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/topic.php\">go back to the topic administration screen</a>.",
-    14 => 'Sort Method',
-    15 => 'alphabetical',
+    14 => 'Metode sortiranja',
+    15 => 'abecedno',
     16 => 'default is',
-    17 => 'New Topic',
+    17 => 'Nova tema',
     18 => 'Admin Home',
-    19 => 'save',
-    20 => 'cancel',
-    21 => 'delete',
+    19 => 'snimi',
+    20 => 'poni¹ti',
+    21 => 'obri¹i',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -838,7 +842,7 @@ $LANG28 = array(
     2 => 'Korisnièki ID',
     3 => 'Korisnièko ime',
     4 => 'Ime i prezime',
-    5 => 'Zaporka',
+    5 => 'lozinka',
     6 => 'Sigurnosna razina',
     7 => 'Email adresa',
     8 => 'Poèetna stranica',
@@ -876,26 +880,26 @@ $LANG28 = array(
 # admin/moderation.php
 
 $LANG29 = array(
-    1 => 'Approve',
-    2 => 'Delete',
-    3 => 'Edit',
-    4 => 'Profile',
-    10 => 'Title',
-    11 => 'Start Date',
+    1 => 'Prihvati',
+    2 => 'Obri¹i',
+    3 => 'A¾uriraj',
+    4 => 'Profil',
+    10 => 'Naziv',
+    11 => 'Poèinje dana',
     12 => 'URL',
-    13 => 'Category',
-    14 => 'Date',
-    15 => 'Topic',
+    13 => 'Kategorija',
+    14 => 'Datum',
+    15 => 'Tema',
     16 => 'User name',
     17 => 'Full name',
     18 => 'Email',
     34 => 'Command and Control',
-    35 => 'Story Submissions',
-    36 => 'Link Submissions',
-    37 => 'Event Submissions',
-    38 => 'Submit',
-    39 => 'There are no submissions to moderate at this time',
-    40 => 'User Submissions'
+    35 => 'Zahtjev za postavljanje teksta.',
+    36 => 'Zahtjev za postavljanje linka.',
+    37 => 'Zahtjev za postavljanje dogaðaja.',
+    38 => 'Potvrdi',
+    39 => 'Trenutaèno nema zahtjeva za administraciju-',
+    40 => 'Zahtjev za reg. novih korisnika'
 );
 
 ###############################################################################
@@ -930,15 +934,15 @@ $LANG30 = array(
     26 => 'Cijeli dan',
     27 => 'Tjedan',
     28 => 'Osobni kalendar za',
-    29 => 'Public Calendar',
-    30 => 'delete event',
+    29 => 'Javni kalendar',
+    30 => 'obri¹i dogaðaj',
     31 => 'Dodaj',
     32 => 'Event',
     33 => 'Datum',
     34 => 'Vrijeme',
     35 => 'Brzo dodavanje',
     36 => 'Potvrdi',
-    37 => 'Sorry, the personal calendar feature is not enabled on this site',
+    37 => '®ao mi je. Moguènost uporabe osobnog kalendara na ovim stranicama nije dozvoljena.',
     38 => 'Personal Event Editor',
     39 => 'Dan',
     40 => 'Tjedan',
@@ -994,8 +998,8 @@ $LANG32 = array(
     11 => 'To modify or delete a plug-in, click on that plug-in\'s number below. To learn more about a plug-in, click the plug-in name and you will be directed to that plug-in\'s website. To install or upgrade a plug-in please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
     13 => 'Plugin Editor',
-    14 => 'New Plug-in',
-    15 => 'Admin Home',
+    14 => 'Novi plugin',
+    15 => 'Administracija',
     16 => 'Plug-in Name',
     17 => 'Plug-in Version',
     18 => 'Geeklog Version',
@@ -1006,11 +1010,11 @@ $LANG32 = array(
     23 => 'Snimi',
     24 => 'Poni¹ti',
     25 => 'Obri¹i',
-    26 => 'Plug-in Name',
-    27 => 'Plug-in Homepage',
-    28 => 'Plug-in Version',
+    26 => 'Ime plugina',
+    27 => 'Web stranica plugina',
+    28 => 'Verzija plugina',
     29 => 'Geeklog Version',
-    30 => 'Delete Plug-in?',
+    30 => 'Obrisati plugin?',
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
 );
 
@@ -1022,7 +1026,7 @@ $LANG33 = array(
     2 => 'snimi',
     3 => 'obri¹i',
     4 => 'poni¹ti',
-    10 => 'Content Syndication',
+    10 => 'Razmjena sadr¾aja',
     11 => 'New Feed',
     12 => 'Administracija',
     13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
@@ -1061,10 +1065,10 @@ $LANG33 = array(
 # confirmation and error messages
 
 $MESSAGE = array(
-    1 => "Va¹a zaporka vam je poslana emailom. Molimo slijedite upute u tekstu i zahvaljujemo vam ¹to koristite {$_CONF['site_name']}",
+    1 => "Va¹a lozinka vam je poslana emailom. Molimo slijedite upute u tekstu i zahvaljujemo vam ¹to koristite {$_CONF['site_name']}",
     2 => "Hvala ¹to ste poslali tekst na {$_CONF['site_name']}. Tekst æe prvo biti proèitan od strane admina. Ako tekst bude prihvaèen uskoro æe biti javno dostupan na na¹im stranicama.",
     3 => "Hvala ¹to ste poslali link na {$_CONF['site_name']}. Link æe prvo biti provjeren od admina. Ukoliko bude prihvaèen bit æe dostupan u sekciji <a href={$_CONF['site_url']}/links.php>Linkovi</a>.",
-    4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href={$_CONF['site_url']}/calendar.php>calendar</a> section.",
+    4 => "Hvala ¹to ste poslali dogaðaj na {$_CONF['site_name']}. Nakon ¹to ga administratori odobre bit æe javno dostupan u <a href={$_CONF['site_url']}/calendar.php>kalendaru</a>.",
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
     7 => 'Your comment preferences have been successfully saved.',
@@ -1153,11 +1157,11 @@ $LANG_ACCESS = array(
     'coregroupmsg' => "This group is a core {$_CONF['site_name']} Group.  Therefore the groups that this groups belongs to cannot be edited.  Below is a read-only list of the groups this group belongs to.",
     'rightsdescr' => 'A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights that can be given directly to this group.',
     'lock' => 'Lock',
-    'members' => 'èlanovi',
+    'members' => 'Èlanovi',
     'anonymous' => 'Anonimac',
     'permissions' => 'Prava',
-    'permissionskey' => 'R = Èita, E = Editira, pravo editiranja ukljuèuje i pravo èitanja',
-    'edit' => 'Edit',
+    'permissionskey' => 'R = èita, E = Editira, pravo editiranja ukljuèuje i pravo èitanja',
+    'edit' => 'Editiraj',
     'none' => 'None',
     'accessdenied' => 'Pristup odbijen',
     'storydenialmsg' => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF['site_name']}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF['site_name']} to receive full membership access!",
@@ -1185,15 +1189,15 @@ $LANG_ACCESS = array(
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Last 10 Back-ups',
-    'do_backup' => 'Do Backup',
-    'backup_successful' => 'Database back up was successful.',
-    'no_backups' => 'No backups in the system',
-    'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
+    'last_ten_backups' => 'Posljednih 10 backupova.',
+    'do_backup' => 'Napravi sigurnosnu kopiju',
+    'backup_successful' => 'Backup baze podataka je uspje¹no napravljen.',
+    'no_backups' => 'Nema backupova.',
+    'db_explanation' => 'Da bi napravili sigurnosu kopiju kliknite ovdje dole.',
     'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
-    'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
+    'no_access' => "GRE©KA: Direktorij {$_CONF['backup_path']} nije dostupan.",
     'backup_file' => 'Backup file',
     'size' => 'Velièina',
     'bytes' => 'Bytes',
@@ -1225,12 +1229,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Potrebna prijava',
-    2 => 'Sorry, to access this area you need to be logged in as a user.',
+    2 => '®ao mi je. Da bi pristupili ovdje morate biti registrirani korisnik..',
     3 => 'Prijava',
     4 => 'Novi korisnik'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>
