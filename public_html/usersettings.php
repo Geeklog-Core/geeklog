@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.86 2004/01/31 09:22:48 dhaun Exp $
+// $Id: usersettings.php,v 1.87 2004/01/31 19:51:53 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -643,7 +643,7 @@ function saveuser($A)
     }
 
     if ($_CONF['allow_username_change'] == 1) {
-        $A['new_username'] = strip_tags (COM_stripslashes ($A['new_username']));
+        $A['new_username'] = COM_applyFilter ($A['new_username']);
         if (!empty ($A['new_username']) &&
                 ($A['new_username'] != $_USER['username'])) {
             $A['new_username'] = addslashes ($A['new_username']);
@@ -657,14 +657,17 @@ function saveuser($A)
         }
     }
 
-    if (!empty($A['passwd'])) {
-        $passwd = md5($A['passwd']);
-        DB_change($_TABLES['users'],'passwd',"$passwd","uid",$_USER['uid']);
+    // no need to filter the password as it's md5 encoded anyway
+    if (!empty ($A['passwd'])) {
+        $passwd = md5 ($A['passwd']);
+        DB_change($_TABLES['users'], 'passwd', "$passwd", "uid", $_USER['uid']);
     }
 
+    $A['email'] = COM_applyFilter ($A['email']);
+    $A['homepage'] = COM_applyFilter ($A['homepage']);
+
+    // basic filtering only
     $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
-    $A['email'] = strip_tags (COM_stripslashes ($A['email']));
-    $A['homepage'] = COM_killJS(strip_tags (COM_stripslashes ($A['homepage'])));
     $A['sig'] = strip_tags (COM_stripslashes ($A['sig']));
     $A['about'] = strip_tags (COM_stripslashes ($A['about']));
     $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
@@ -680,6 +683,7 @@ function saveuser($A)
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }
 
+        $A['cooktime'] = COM_applyFilter ($A['cooktime']);
         if ($A['cooktime'] <= 0) {
             $A['cooktime'] = 'NULL';
             $cooktime = 1000;
@@ -707,12 +711,18 @@ function saveuser($A)
                     $upload->setGDLib ();
                 }
                 $upload->setAutomaticResize(true);
-                if (isset ($_CONF['debug_image_upload']) && $_CONF['debug_image_upload']) {
+                if (isset ($_CONF['debug_image_upload']) &&
+                        $_CONF['debug_image_upload']) {
                     $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
                     $upload->setDebug (true);
                 }
             }
-            $upload->setAllowedMimeTypes(array('image/gif'=>'.gif','image/jpeg'=>'.jpg,.jpeg','image/pjpeg'=>'.jpg,.jpeg','image/x-png'=>'.png','image/png'=>'.png'));
+            $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
+                                                 'image/jpeg'  => '.jpg,.jpeg',
+                                                 'image/pjpeg' => '.jpg,.jpeg',
+                                                 'image/x-png' => '.png',
+                                                 'image/png'   => '.png'
+                                         )      );
             if (!$upload->setPath($_CONF['path_images'] . 'userphotos')) {
                 print 'File Upload Errors:<BR>' . $upload->printErrors();
                 exit;
@@ -741,7 +751,7 @@ function saveuser($A)
                     reset($HTTP_POST_FILES);
                     $upload->uploadFiles();
                     if ($upload->areErrors()) {
-                       print "ERRORS<BR>";
+                       print "ERRORS<br>";
                        $upload->printErrors();
                        exit; 
                     }
@@ -749,10 +759,12 @@ function saveuser($A)
                     $filename = '';
                 }
             } else {
-                $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
+                $curphoto = DB_getItem ($_TABLES['users'], 'photo',
+                                        "uid = {$_USER['uid']}");
                 if (!empty($curphoto) AND isset ($A['delete_photo']) AND
                         $A['delete_photo'] == 'on') {
-                    $filetodelete = $_CONF['path_images'] . 'userphotos/' . $curphoto;
+                    $filetodelete = $_CONF['path_images'] . 'userphotos/'
+                                  . $curphoto;
                     if (file_exists ($filetodelete)) {
                         if (!@unlink ($filetodelete)) {
                             $display = COM_siteHeader ('menu');
@@ -788,8 +800,14 @@ function saveuser($A)
         $A['about'] = addslashes ($A['about']);
         $A['pgpkey'] = addslashes ($A['pgpkey']);
 
-        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . $A["pgpkey"] . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
+        if (!empty ($filename)) {
+            if (!file_exists ($_CONF['path_images'] . 'userphotos/' . $filename)) {
+                $filename = '';
+            }
+        }
+
+        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',email='{$A['email']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
         if ($_CONF['custom_registration'] AND (function_exists(custom_saveuser))) {
@@ -801,7 +819,8 @@ function saveuser($A)
         }
 
         return COM_refresh ($_CONF['site_url']
-                . '/usersettings.php?mode=edit&msg=5');
+    //            . '/usersettings.php?mode=edit&msg=5');
+                . '/users.php?mode=profile&uid=' . $_USER['uid'] . '&msg=5');
     }
 }
 
