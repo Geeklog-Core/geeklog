@@ -155,7 +155,8 @@ $LANG01 = array(
     109 => 'Beitrag melden',
     110 => 'Site-Admin auf diesen Beitrag hinweisen',
     111 => 'Als PDF anzeigen',
-    112 => 'Registrierte User'
+    112 => 'Registrierte User',
+    113 => 'Dokumentation'
 );
 
 ###############################################################################

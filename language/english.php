@@ -108,15 +108,15 @@ $LANG01 = array(
     65 => 'View Printable Version',
     66 => 'My Calendar',
     67 => 'Welcome to ',
-    68 => 'home',
-    69 => 'contact',
-    70 => 'search',
-    71 => 'contribute',
-    72 => 'web resources',
-    73 => 'past polls',
-    74 => 'calendar',
-    75 => 'advanced search',
-    76 => 'site statistics',
+    68 => 'Home',
+    69 => 'Contact',
+    70 => 'Search',
+    71 => 'Contribute',
+    72 => 'Web Resources',
+    73 => 'Past Polls',
+    74 => 'Calendar',
+    75 => 'Advanced Search',
+    76 => 'Site Statistics',
     77 => 'Plugins',
     78 => 'Upcoming Events',
     79 => 'What\'s New',
@@ -152,7 +152,8 @@ $LANG01 = array(
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
-    112 => 'Registered Users'
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################

@@ -155,8 +155,9 @@ $LANG01 = array(
     108 => 'Cache löschen',
     109 => 'Beitrag melden',
     110 => 'Site-Admin auf diesen Beitrag hinweisen',
-    111 => 'View PDF Version',
-    112 => 'Registered Users'
+    111 => 'Als PDF anzeigen',
+    112 => 'Registrierte User',
+    113 => 'Dokumentation'
 );
 
 ###############################################################################
