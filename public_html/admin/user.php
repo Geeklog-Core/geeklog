@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.78 2004/07/02 15:53:55 dhaun Exp $
+// $Id: user.php,v 1.79 2004/07/24 13:05:06 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -418,9 +418,9 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     $offset = (($curpage - 1) * $limit);
 
     if (!empty($query)) {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') LIMIT $offset,$limit";
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY uid LIMIT $offset,$limit";
     } else {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 LIMIT $offset,$limit";
+        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY uid LIMIT $offset,$limit";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
