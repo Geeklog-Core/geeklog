@@ -520,6 +520,25 @@ if ($mode == $LANG12[8]) {
         DB_delete($_TABLES['personal_events'], 'eid',$eid,'calendar.php?mode=personal');
     }  
 } else {
+    switch($type) {
+        case 'link':
+            if (SEC_hasRights('link.edit')) {
+                echo COM_refresh($_CONF['site_url'] . '/admin/link.php?mode=edit');
+            }
+            break;
+        case 'event':
+            if (SEC_hasRights('event.edit')) {
+                echo COM_refresh($_CONF['site_url'] . '/admin/event.php?mode=edit');
+            }
+            break;
+        default:
+            if (empty($type)) {
+                if (SEC_hasRights('story.edit')) {
+                    echo COM_refresh($_CONF['site_url'] . '/admin/story.php?mode=edit');
+                }
+            }
+            break;
+    }
     $display .= COM_siteHeader();
     $display .= submissionform($type, $mode, $month, $day, $year, $hour); 
     $display .= COM_siteFooter();	
