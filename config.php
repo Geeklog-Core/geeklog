@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.118 2004/06/07 19:09:53 tony Exp $
+// $Id: config.php,v 1.119 2004/06/07 20:49:02 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -314,6 +314,20 @@ $_CONF['pdf_enabled'] = 0;
 $_CONF['pdf_adhoc_enabled'] = 0;
 // Absolute path to the htmldoc binary
 $_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
+// When enabled, this will pump any HTML through HTML tidy in an attempt to make the
+// page XHTML compliant prior to usign htmldoc.  NOTE: this tends to improve the
+// chance that the PDF will be generated.  Producing PDF's from Geeklog's print
+// mode should work fine as that is generally XHTML complieant. This is disabled by
+// default because it requires you to install HTML tidy for your platform:
+// http://tidy.sf.net and you need to get the library (see
+// http://tidy.sourceforge.net/libintro.html) and then install the PHP PECL by
+// doing "pear -v install tidy"
+$_CONF['use_html_tidy'] = 1;
+// See PHP manual for full list of config options
+$_CONF['tidy_config_options'] = array(
+                                    'output-xhtml' => true,
+                                    'hide-comments' => true
+                                    );
 // Path where we will store the generated PDF's
 $_CONF['path_pdf'] = $_CONF['path'] . 'pdfs/';
 // If you want a logo added to the top of your PDF's, provide the full file
