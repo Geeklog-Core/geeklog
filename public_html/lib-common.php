@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.174 2002/10/27 13:37:09 dhaun Exp $
+// $Id: lib-common.php,v 1.175 2002/10/29 15:14:38 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2575,7 +2575,7 @@ function COM_checkWords( $Message )
 *  Essentially this will cause onBlur to become inBlur, onFocus to be inFocus
 *  These are not valid javascript events and the browser will ignore them.
 * @param    string  $Message    Text to filter
-* @return   string  $Message with java filtered
+* @return   string  $Message with javascript filtered
 * @see  COM_checkWords
 * @see  COM_checkHTML
 *
@@ -2586,6 +2586,15 @@ function COM_killJS( $Message )
     return( preg_replace( '/(\s)+[oO][nN](\w*) ?=/', '\1in\2=', $Message ));
 }
 
+/**
+* Handles the part within a [code] ... [/code] section, i.e. escapes all
+* special characters.
+*
+* @param   string  $str  the code section to encode
+* @return  string  $str with the special characters encoded
+* @see     COM_checkHTML
+*
+*/
 function COM_handleCode( $str )
 {
     $str = str_replace( '\\', '&#092;', $str );
@@ -4458,6 +4467,22 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
     $related = COM_checkHTML( COM_checkWords( COM_makeList( $rel )));
 
     return( $related );
+}
+
+/**
+* Strip slashes from a string only when magic_quotes_gpc = on.
+*
+* @param   string  $text  The text
+* @return  string  The text, possibly without slashes.
+*/
+function COM_stripslashes( $text )
+{
+    if( get_magic_quotes_gpc() == 1 )
+    {
+        return( stripslashes( $text ));
+    }
+
+    return( $text );
 }
 
 
