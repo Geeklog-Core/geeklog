@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.141 2004/12/15 14:58:41 dhaun Exp $
+// $Id: story.php,v 1.142 2004/12/17 12:04:46 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -159,6 +159,12 @@ function storyeditor($sid = '', $mode = '')
             $A['show_topic_icon'] = 1;
             $A['commentcode'] = $_CONF['comment_code'];
             $A['featured'] = 0;
+            if (DB_getItem ($_TABLES['topics'], 'archive_flag',
+                    "tid = '{$A['tid']}'") == 1) {
+                $A['frontpage'] = 0;
+            } else {
+                $A['frontpage'] = 1;
+            }
             $A['statuscode'] = 0;
             $A['owner_id'] = $A['uid'];
             $access = 3;
