@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.46 2003/05/08 17:23:10 dhaun Exp $
+// $Id: index.php,v 1.47 2003/05/15 15:25:21 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -181,7 +181,7 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
-$sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
+$sql = "FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
 
 // if a topic was provided only select those stories.
 if (!empty($topic)) {
@@ -190,19 +190,7 @@ if (!empty($topic)) {
     $sql .= " AND frontpage = 1 ";
 }
 
-$sql .= " AND (";
-if (!empty ($_USER['uid'])) {
-    $groupList = '';
-    foreach ($_GROUPS as $grp) {
-        $groupList .= $grp . ',';
-    }
-    $groupList = substr ($groupList, 0, -1);
-    $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-    $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-    $sql .= "(perm_members >= 2))";
-} else {
-    $sql .= "perm_anon >= 2)";
-}
+$sql .= COM_getPermSQL ('AND');
 
 if (!empty($U['aids'])) {
     $sql .= ' ';
@@ -220,40 +208,33 @@ if (!empty($U['tids'])) {
     }
 }
 
+$tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL());
+$trows = DB_numRows ($tresult);
+if ($trows > 0) {
+    $tids = array ();
+    for ($i = 0; $i < $trows; $i++) {
+        $T = DB_fetchArray ($tresult);
+        $tids[] = $T['tid'];
+    }
+    if (sizeof ($tids) > 0) {
+        $sql .= "AND (tid IN ('" . implode ("','", $tids) . "')) ";
+    }
+}
+
 if ($newstories) {
     $sql .= "AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) ";
 }
 
 $offset = ($page - 1) * $limit;
-$sql .= "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
+$sql .= "ORDER BY featured DESC, date DESC";
 
-$result = DB_query($sql);
-$nrows = DB_numRows($result);
+$result = DB_query ("SELECT *,unix_timestamp(date) AS day " . $sql
+        . " LIMIT $offset, $limit");
+$nrows = DB_numRows ($result);
 
-$countsql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
-if (!empty($topic)) {
-    $countsql = $countsql . " AND tid='$topic'";
-} elseif (!$newstories) {
-    $countsql = $countsql . ' AND frontpage = 1';
-}
-
-$countsql .= " AND (";
-if (!empty ($_USER['uid'])) {
-    // Note: $groupList re-used from above
-    $countsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-    $countsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-    $countsql .= "(perm_members >= 2))";
-} else {
-    $countsql .= "perm_anon >= 2)";
-}
-
-if ($newstories) {
-    $countsql .= " AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND))";
-}
-
-$data = DB_query($countsql);
-$D = DB_fetchArray($data);
-$num_pages = ceil($D['count'] / $limit);
+$data = DB_query ("SELECT count(*) AS count " . $sql);
+$D = DB_fetchArray ($data);
+$num_pages = ceil ($D['count'] / $limit);
 
 if ($nrows > 0) {
     for ($x = 1; $x <= $nrows; $x++) {
