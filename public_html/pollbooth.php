@@ -8,11 +8,11 @@
 // | This is the pollbooth page.                                               |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.16 2002/09/13 18:21:00 dhaun Exp $
+// $Id: pollbooth.php,v 1.17 2003/04/09 17:44:51 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -58,7 +58,9 @@ function pollsave()
     // This always does an insert so no need to provide key_field and key_value args
     DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'$REMOTE_ADDR'," . time() . ",'$qid'");
     $retval .= COM_startBlock($LANG07[1])
-        . $LANG07[2] . ' ' . $qid
+        . $LANG07[2] . ' "'
+        . DB_getItem ($_TABLES['pollquestions'], 'question', "qid = '{$qid}'")
+        . '"'
         . COM_endBlock()
         . COM_pollResults($qid);
 
