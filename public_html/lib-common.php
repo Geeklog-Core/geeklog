@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.299 2004/03/05 17:29:45 dhaun Exp $
+// $Id: lib-common.php,v 1.300 2004/03/06 09:26:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3182,7 +3182,7 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
 
     if( function_exists( 'CUSTOM_mail' ))
     {
-        CUSTOM_mail( $to, $subject, $message, $from, $html, $priority );
+        return CUSTOM_mail( $to, $subject, $message, $from, $html, $priority );
     }
 
     include_once( 'Mail.php' );
