@@ -8,11 +8,12 @@
 // | Geeklog group administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.23 2002/09/20 20:54:15 dhaun Exp $
+// $Id: group.php,v 1.24 2003/03/21 17:15:21 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -108,7 +109,7 @@ function editgroup($grp_id = '')
 		// this is the one instance where we default the group
 		// most topics should belong to the normal user group 
 		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
-		$A['grp_gl_core'] == 0;
+		$A['grp_gl_core'] = 0;
 	}
 
 	if (!empty($grp_id)) {
@@ -200,9 +201,61 @@ function editgroup($grp_id = '')
 	return $retval;
 }
 
+
 /**
-* Prints the features a group has access.  Please follow the comments in the code
-* closely if you need to modify this function. Also right is synonymous with feature
+* Get the indirect features for a group, i.e. a list of all the features
+* that this group inherited from other groups.
+*
+* @param    int      $grp_id   ID of group
+* @return   string   comma-separated list of feature names
+*
+*/
+function getIndirectFeatures ($grp_id)
+{
+    global $_TABLES;
+
+    $checked = array ();
+    $tocheck = array ($grp_id);
+
+    do {
+        $grp = array_pop ($tocheck);
+
+        $result = DB_query ("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp AND ug_uid IS NULL");
+        $numrows = DB_numRows ($result);
+
+        $checked[] = $grp;
+
+        for ($j = 0; $j < $numrows; $j++) {
+            $A = DB_fetchArray ($result);
+            if (!in_array ($A['ug_main_grp_id'], $checked) &&
+                !in_array ($A['ug_main_grp_id'], $tocheck)) {
+                $tocheck[] = $A['ug_main_grp_id'];
+            }
+        }
+    }
+    while (sizeof ($tocheck) > 0);
+
+    // get features for all groups in $checked
+    $glist = join (',', $checked);
+    $result = DB_query("SELECT DISTINCT ft_name FROM {$_TABLES['access']},{$_TABLES['features']} WHERE ft_id = acc_ft_id AND acc_grp_id IN ($glist)");
+    $nrows = DB_numRows ($result);
+
+    $retval = '';
+    for ($j = 1; $j <= $nrows; $j++) {
+        $A = DB_fetchArray ($result);
+        $retval .= $A['ft_name'];
+        if ($j < $nrows) {
+            $retval .= ',';
+        }
+    }
+
+    return $retval;
+}
+
+/**
+* Prints the features a group has access.  Please follow the comments in the
+* code closely if you need to modify this function. Also right is synonymous
+* with feature.
 *
 * @param    mixed       $grp_id     ID to print rights for
 * @param    boolean     $core       indicates if group is a core Geeklog group
@@ -212,8 +265,8 @@ function editgroup($grp_id = '')
 function printrights($grp_id='', $core=0) 
 {
 	global $_TABLES, $VERBOSE, $_USER, $LANG_ACCESS;
-
-	// this gets a bit complicated so bare with the comments
+$VERBOSE = true;
+	// this gets a bit complicated so bear with the comments
 	// first query for all available features
 	$features = DB_query("SELECT * FROM {$_TABLES['features']} ORDER BY ft_name");
 	$nfeatures = DB_numRows($features);
@@ -222,10 +275,10 @@ function printrights($grp_id='', $core=0)
 		// now get all the feature this group gets directly
  		$directfeatures = DB_query("SELECT acc_ft_id,ft_name FROM {$_TABLES['access']},{$_TABLES['features']} WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
 
-		// now in many cases the features will be give to this user indirectly via membership
-		// to another group.  These are not editable and must, instead, be removed from that group
-		// directly
-		$indirectfeatures = SEC_getUserPermissions($grp_id);
+        // now in many cases the features will be given to this user indirectly
+        // via membership to another group.  These are not editable and must,
+        // instead, be removed from that group directly
+		$indirectfeatures = getIndirectFeatures ($grp_id);
 		$indirectfeatures = explode(',',$indirectfeatures);
 
 		// Build an array of indirect features
