@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.112 2004/01/23 20:44:44 dhaun Exp $
+// $Id: story.php,v 1.113 2004/02/10 19:22:23 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -1063,7 +1063,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
         echo COM_refresh ($_CONF['site_admin_url'] . '/story.php');
     } else if ($type == 'submission') {
         $tid = DB_getItem ($_TABLES['storysubmission'], 'tid', "sid = '$sid'");
-        if (hasTopicAccess ($tid) < 3) {
+        if (SEC_hasTopicAccess ($tid) < 3) {
             COM_accessLog ("User {$_USER['username']} tried to illegally delete story submission $sid.");
             return COM_refresh ($_CONF['site_admin_url'] . '/index.php');
         } else {
