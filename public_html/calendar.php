@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.12 2002/01/04 22:30:32 tony_bibbs Exp $
+// $Id: calendar.php,v 1.13 2002/01/22 12:49:13 dreamscape Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -636,7 +636,7 @@ for ($i = 1; $i <= 6; $i++) {
                 $curday->daynumber = '0' . $curday->daynumber;
             }
 
-            $cal_templates->set_var('cal_day_anchortags', '<a href="/calendar.php?view=day&mode=' . $mode . '&day=' . $curday->daynumber. '&month=' . $month
+            $cal_templates->set_var('cal_day_anchortags', '<a href="calendar.php?view=day&mode=' . $mode . '&day=' . $curday->daynumber. '&month=' . $month
                 . '&year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
 
             // NEED TO CHANGE TO GET ENTRIES
