@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.86 2003/04/10 14:32:00 dhaun Exp $
+// $Id: story.php,v 1.87 2003/04/10 17:23:07 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -877,7 +877,13 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", $_CONF['site_admin_url'] . '/story.php?msg=9');
+
+        if ($type = 'submission') {
+            $return_to = $_CONF['site_admin_url'] . '/moderation.php?msg=9';
+        } else {
+            $return_to = $_CONF['site_admin_url'] . '/story.php?msg=9';
+        }
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", $return_to);
         
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
@@ -956,10 +962,15 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon);
 } else { // 'cancel' or no mode at all
-    $display .= COM_siteHeader('menu');
-    $display .= COM_showMessage($msg);
-    $display .= liststories($page);
-    $display .= COM_siteFooter();
+    if (($mode == $LANG24[10]) && !empty ($LANG24[10]) &&
+            ($type == 'submission')) {
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
+    } else {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_showMessage($msg);
+        $display .= liststories($page);
+        $display .= COM_siteFooter();
+    }
     echo $display;
 }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.33 2003/03/21 14:58:49 dhaun Exp $
+// $Id: moderation.php,v 1.34 2003/04/10 17:23:07 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -482,8 +482,8 @@ function moderateusers ($uid, $action, $count) {
 // MAIN
 
 $display = '';
-
 $display .= COM_siteHeader();
+$display .= COM_showMessage($msg);
 
 switch ($mode) {
 case 'moderation':
