@@ -25,7 +25,8 @@ if (!empty($CONF["pagetitle"])) {
 </table>
 
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
-<tr align=center valign=middle bgcolor=DDDDDD><td height=20><a href=<?php echo $CONF["base"]; ?>/submit.php?type=story><?php print $LANG01[71];?></a> 
+<tr align=center valign=middle bgcolor=DDDDDD><td height=20>
+<a href=<?php echo $CONF["base"]; ?>/submit.php?type=story><?php print $LANG01[71];?></a> 
 &#149; <a href=<?php echo $CONF["base"]; ?>/links.php><?php print $LANG01[72];?></a> 
 &#149; <a href=<?php echo $CONF["base"]; ?>/pollbooth.php><?php print $LANG01[73];?></a> 
 &#149; <a href=<?php echo $CONF["base"]; ?>/calendar.php><?php print $LANG01[74];?></a> 
@@ -39,13 +40,16 @@ if (!empty($CONF["pagetitle"])) {
 <table border=0 cellspacing=0 cellpadding=0 width="100%">
 <tr><td bgcolor=FFFFFF colspan=2><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=1></td></tr>
 <tr bgcolor=DDDDDD><td height=20>&nbsp;<b><?php print $LANG01[67] . $CONF["sitename"]; ?>
-<?php if (!empty($USER["name"])) echo " {$USER["name"]}"; ?>!</b></td><td align=right><b><?php echo date("D M j"); ?></b>&nbsp;</td></tr>
+<?php if (!empty($USER["username"])) echo " {$USER["username"]}"; ?>!</b></td><td align=right><b><?php echo date("D M j"); ?></b>&nbsp;</td></tr>
 <tr><td bgcolor=AAAAAA colspan=2><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=1></td></tr>
 <tr><td bgcolor=FFFFFF colspan=2><img src=<?php echo $CONF["base"]; ?>/images/speck.gif width=1 height=15></td></tr>
 </table>
 
 <!-- feature block -->
 <table bgcolor=ffffff border=0 cellspacing=0 cellpadding=5 width="100%">
+<tr>
+
+<?php AddPluginLeftColumns($CONF["curplugin"]); ?>
 
 <!-- story block -->
 <td width="100%" valign=top>
