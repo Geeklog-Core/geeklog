@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.252 2003/09/04 21:32:57 dhaun Exp $
+// $Id: lib-common.php,v 1.253 2003/09/06 15:41:44 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3508,14 +3508,14 @@ function COM_rdfImport( $bid, $rdfurl )
 /**
 * Returns what HTML is allows in content
 *
-* Returns what HTML tags the system allows to be used inside content
-* you can modify this by changing $_CONF['allowablehtml'] in
-* config.php
+* Returns what HTML tags the system allows to be used inside content.
+* You can modify this by changing $_CONF['allowablehtml'] in config.php
+* (for admins, see also $_CONF['adminhtml']).
 *
 * @return   string  HTML <span> enclosed string
 */
 
-function COM_allowedhtml()
+function COM_allowedHTML()
 {
     global $_CONF, $LANG01;
 
@@ -3530,6 +3530,7 @@ function COM_allowedhtml()
         $retval .= htmlspecialchars( $_CONF['adminhtml'] );
     }
 
+    $retval .= ',[code]';
     $retval .= '</span>';
 
     return $retval;
