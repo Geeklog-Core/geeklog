@@ -22,6 +22,8 @@
 $VERSION="1.3";
 ###############################################################################
 
+$VERBOSE = false; #turn this on go get various debug messages
+
 ##/ DATABASE SETTINGS /########################################################
 #
 #	These settings must suit your server environment.
@@ -82,6 +84,9 @@ else {
 // set cookie.
 setcookie("LastVisitTemp", $temptime ,$expiredate2, $CONF["cookie_path"], $CONF["site_url"], $CONF["cookiesecure"]);
 
+## Get user permissions
+$RIGHTS = explode(',',getuserpermissions());
+
 ###############################################################################
 # BLOCK LOADER - Load all definable HTML blocks in to memory
 ###############################################################################
@@ -111,7 +116,7 @@ function dbquery($sql,$ignore_errors=0) {
 	if (mysql_errno() == 0 && !empty($result)) {
 		return $result;
 	} else {
-		if ($ignore_errors == 1) return;
+		if ($ignore_errors == 1) return -1;
 		$errortxt = "{$LANG01[50]} $sql\n";
 		$errortxt .= " - {$LANG01[45]}: " . mysql_errno() . "\n";
 		$errortxt .= " - {$LANG01[46]}: " . mysql_error();
@@ -286,7 +291,7 @@ function article($A,$index="") {
 		}
 		print "<a href={$CONF["site_url"]}/profiles.php?sid={$A["sid"]}&what=emailstory><img src={$CONF["site_url"]}/images/mail.gif alt=\"{$LANG01[64]}\" border=0></a>&nbsp;<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}&mode=print><img border=0 src={$CONF["site_url"]}/images/print.gif alt=\"{$LANG01[65]}\"></a>";
 	}
-	if ($USER["seclev"] >= $CONF["sec_story"]) {
+	if (hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"])) {
 		print "<br><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>{$LANG01[4]}</a>";
 	}
 	print "</div></td>\n</tr>\n";
@@ -389,15 +394,21 @@ function checklist($table,$selection,$where="",$selected="") {
 	$nrows = mysql_num_rows($result);
 	if (!empty($selected)) $S = explode(" ",$selected);
 	for ($i=0;$i<$nrows;$i++) {
+		$access = true;
 		$A = mysql_fetch_array($result);
-		print "<input type=checkbox name={$table}[] value=\"{$A[0]}\"";
-		for ($x=0; $x<sizeof($S); $x++) {
-			if ($A[0] == $S[$x]) print " checked";
+		if ($table == 'topics' AND hastopicaccess($A['tid']) == 0) {
+			$access = false;
 		}
-		if ($A[2]<10 && $A[2]>0) {
-			print "><b>{$A[1]}</b><br>\n";
-		} else {
-			print ">{$A[1]}<br>\n";
+		if ($access) {
+			print "<input type=checkbox name={$table}[] value=\"{$A[0]}\"";
+			for ($x=0; $x<sizeof($S); $x++) {
+				if ($A[0] == $S[$x]) print " checked";
+			}
+			if ($A[2]<10 && $A[2]>0) {
+				print "><b>{$A[1]}</b><br>\n";
+			} else {
+				print ">{$A[1]}<br>\n";
+			}
 		}
 	}
 }
@@ -588,7 +599,7 @@ function showpoll($size,$qid="") {
 function pollresults($qid,$scale=400,$order="",$mode="") {
 	global $LANG01,$CONF;
 	$question = dbquery("select * from pollquestions WHERE qid='$qid'");
-	$nquesion = mysql_num_rows($question);
+	$nquestion = mysql_num_rows($question);
 	if ($nquestion = 1) {
 		$answers = dbquery("select * from pollanswers WHERE qid='$qid' ORDER BY votes DESC");
 		$nanswers = mysql_num_rows($answers);
@@ -625,7 +636,7 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 			print "</span>\n";
 			endblock();
 			if ($scale > 399 && $Q["commentcode"] >= 0) {
-				usercomments($qid,$Q["question"],1,$order,$mode);
+				usercomments($qid,$Q["question"],'poll',$order,$mode);
 			}
 		}
 	}
@@ -652,36 +663,38 @@ function showtopics($topic="") {
 
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		if ($A["tid"]==$topic) {
-			print $A["topic"];
-			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
-				print " (";
-				if ($CONF["showstorycount"]) {
-					print dbcount("stories","tid",$A["tid"]);
-                		}
+		if (hastopicaccess($A["tid"]) > 0) {
+			if ($A["tid"]==$topic) {
+				print $A["topic"];
+				if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
+					print " (";
+					if ($CONF["showstorycount"]) {
+						print dbcount("stories","tid",$A["tid"]);
+                			}
 
-             			if ($CONF["showstorycount"]) {
-					if ($CONF["showstorycount"]) print "/";
-					print dbcount("storysubmission","tid",$A["tid"]);
+             				if ($CONF["showstorycount"]) {
+						if ($CONF["showstorycount"]) print "/";
+						print dbcount("storysubmission","tid",$A["tid"]);
+					}
+					print ")";
 				}
-				print ")";
-			}
-			print "<br>\n";
-		} else {
-			print "<a href={$CONF["site_url"]}/index.php?topic={$A["tid"]}><b>{$A["topic"]}</b></a> ";
-			if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
-				print "(";
-				if ($CONF["showstorycount"])
-					print dbcount("stories","tid",$A["tid"]);
-				if ($CONF["showsubmissioncount"]) {
+				print "<br>\n";
+			} else {
+				print "<a href={$CONF["site_url"]}/index.php?topic={$A["tid"]}><b>{$A["topic"]}</b></a> ";
+				if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
+					print "(";
 					if ($CONF["showstorycount"])
-						print "/";
-					print dbcount("storysubmission","tid",$A["tid"]);
+						print dbcount("stories","tid",$A["tid"]);
+					if ($CONF["showsubmissioncount"]) {
+						if ($CONF["showstorycount"])
+							print "/";
+						print dbcount("storysubmission","tid",$A["tid"]);
+					}
+					print ")";
 				}
-				print ")";
+				print "<br>\n";
 			}
-			print "<br>\n";
-		}
+		} #end
 	}
 }
 
@@ -717,30 +730,50 @@ function usermenu() {
 function adminmenu() {
 	global $USER,$CONF,$LANG01, $VERSION;
 
-	if ($USER["seclev"] >= $CONF["sec_lowest"]) {
+	if (ismoderator() OR hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
 		startblock($LANG01[9]);
 
-		if ($USER["seclev"] >= $CONF["sec_mod"]) {
+		if (ismoderator()) {
 			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
 			//now handle submissions for plugins
 			$num = $num + GetPluginSubmissionCounts();
 			print "<a href=\"{$CONF["site_url"]}/admin/moderation.php\">{$LANG01[10]}</a> ($num)<br>\n";
 		}
-
-		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href=\"{$CONF["site_url"]}/admin/story.php\">{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href=\"{$CONF["site_url"]}/admin/block.php\">{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href=\"{$CONF["site_url"]}/admin/topic.php\">{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href=\"{$CONF["site_url"]}/admin/link.php\">{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href=\"{$CONF["site_url"]}/admin/event.php\">{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href=\"{$CONF["site_url"]}/admin/poll.php\">{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href=\"{$CONF["site_url"]}/admin/user.php\">{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href=\"{$CONF["site_url"]}/admin/plugins.php\">{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
+		if (hasrights('story.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/story.php\">{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
+		}
+		if (hasrights('block.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/block.php\">{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
+		}
+		if (hasrights('topic.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/topic.php\">{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
+		}
+		if (hasrights('link.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/link.php\">{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
+		}
+		if (hasrights('event.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/event.php\">{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
+		}
+		if (hasrights('poll.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/poll.php\">{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
+		}
+		if (hasrights('user.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/user.php\">{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
+		}
+		if (hasrights('group.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/group.php\">{$LANG01[96]}</a> (" . dbcount("groups") . ")<br>\n";
+		}
+		if (hasrights('plugin.edit')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/plugins.php\">{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
+		}
 
 		// This function wil show the admin options for all installed plugins (if any)
 
 		ShowPluginAdminOptions();
 
-		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href=\"{$CONF["site_url"]}/admin/mail.phpi\">Mail</a><br>\n";
+		if (hasrights('user.mail')) {
+			print "<a href=\"{$CONF["site_url"]}/admin/mail.php\">Mail</a><br>\n";
+		}
 
 		print "<a href=\"http://geeklog.sourceforge.net/versionchecker.php?version=" . $VERSION . "\" target=\"_new\">GL Version Test</a><br>\n";
 		endblock();
@@ -939,7 +972,7 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 				print "| <a href={$CONF["site_url"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . rawurlencode($P["title"]) . "&type=$type&order=$order&pid={$P["pid"]}>{$LANG01[44]}</a> ";
 			}
 
-			if ($USER["seclev"] >= $CONF["sec_delstory"]) {
+			if (hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]) > 0) {
 				print "| <a href={$CONF["site_url"]}/comment.php?mode={$LANG01[28]}&cid={$A["cid"]}&sid={$A["sid"]}&type=$type>{$LANG01[28]}</a> ";
 			}
 			print "]<p>";
@@ -1520,15 +1553,10 @@ function whatsnewblock() {
 #
 ###############################################################################
 function showmessage($msg) {
-	global $MESSAGE, $MESSAGE_HEADER;
+	global $MESSAGE;
 
-	if ($msg > 0){
-	   $timestamp = strftime("%c");
-
-       startblock("{$MESSAGE_HEADER[1]} - $timestamp");
-       print $MESSAGE[$msg] . "<BR><BR>";
-	   endblock();
-    }
+	if ($msg > 0)
+		print $MESSAGE[$msg] . "<BR><BR>";
 }
 
 ###############################################################################
@@ -1631,6 +1659,223 @@ function getuserdatetimeformat($date="") {
         return array($date, $stamp);
 }
 
+function getusergroups($uid='',$usergroups='',$cur_grp_id='') {
+	global $USER,$VERBOSE;
+
+	if ($VERBOSE) errorlog("****************in getusergroups(uid=$uid,usergroups=$usergroups,cur_grp_id=$cur_grp_id)***************",1);
+	if (empty($uid)) $uid = $USER['uid'];
+	if (empty($cur_grp_id)) {
+                $result = dbquery("SELECT ug_main_grp_id,grp_name FROM group_assignments,groups WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
+	} else {
+                $result = dbquery("SELECT ug_main_grp_id,grp_name FROM group_assignments,groups WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id",1);
+        }
+	if ($result == -1) return $usergroups;
+	$nrows = mysql_num_rows($result);
+	if ($VERBOSE) errorlog("got $nrows rows",1);
+	for ($i=1;$i<=$nrows;$i++) {
+		$A = mysql_fetch_array($result);
+		if ($VERBOSE) errorlog('user is in group ' . $A['grp_name'],1);
+		$usergroups[$A['grp_name']] = $A['ug_main_grp_id'];
+		$usergroups = getusergroups($uid,$usergroups,$A["ug_main_grp_id"]);
+	}
+	if (is_array($usergroups)) ksort($usergroups);
+	if ($VERBOSE) errorlog("****************leaving getusergroups(uid=$uid)***************",1);
+	return $usergroups;
+}
+
+function ingroup($grp_to_verify,$uid="",$cur_grp_id="") {
+	global $USER,$VERBOSE;
+
+	if (empty($uid)) {
+		if (empty($USER['uid'])) {
+			$uid = 1;
+		} else {
+			$uid = $USER['uid'];
+		}
+	}
+
+	if (is_numeric($grp_to_verify)) {
+		$result = dbquery("SELECT grp_name FROM groups WHERE grp_id = $grp_to_verify",1);
+		if ($result < 0) return false;
+		$A = mysql_fetch_array($result);
+		$grp_to_verify = $A["grp_name"];
+	} else {
+		if (dbcount('groups','grp_name',$grp_to_verify) == 0) {
+			return false;
+		}
+	}
+
+	if (empty($cur_grp_id)) {
+		$result = dbquery("SELECT ug_main_grp_id,grp_name FROM group_assignments,groups WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
+	} else {
+		$sql = "SELECT ug_main_grp_id,grp_name FROM group_assignments,groups WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id";
+		$result = dbquery($sql,1);
+	}
+
+	if ($result == -1) return false;
+	$nrows = mysql_num_rows($result);
+	for ($i=1;$i<=$nrows;$i++) {
+		$A = mysql_fetch_array($result);
+		if ($A["grp_name"] == $grp_to_verify) {
+			return true;
+		} else {
+			if (ingroup($grp_to_verify,$uid,$A["ug_main_grp_id"])) {
+				return true;
+			}
+		} 
+	}
+	return false;
+}
+	
+function ismoderator() {
+	global $USER,$RIGHTS;
+
+	#loop through GL core rights.
+	for ($i=0;$i<count($RIGHTS);$i++) {
+		if (stristr($RIGHTS[$i],'.moderate')) {
+			return true;
+		}
+	}
+
+	#if we get this far they are not a Geeklog moderator
+	#see if they are a plugin moderator
+	return IsPluginModerator();
+		
+}
+
+#checks to see if user has access to view a topic
+function hastopicaccess($tid) {
+	if (empty($tid)) return 0;
+
+	$result = dbquery("SELECT owner_id,group_id,private_flag FROM topics WHERE tid = '$tid'");
+	$A = mysql_fetch_array($result);
+
+	return hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+}
+
+#this function takes the access info from a Geeklog object 
+#and let's us know if the have access to the object
+#returns 1 if owner (or god), 2 if user has access via the 
+#group and 0 otherwise
+function hasaccess($private_flag,$owner_id,$group_id) {
+	global $USER;
+
+	#if user is owner then return 1 now 
+	if ($USER['uid'] == $owner_id) return 1;
+
+	#if user is in Root group then return 1 now 
+	if (ingroup('Root')) return 1;
+
+	#Now, if this is private then return false
+	if ($private_flag == 1) return 0;
+
+	#Not private, if user is in group then give access
+	if (ingroup($group_id)) {
+		return 2;
+	} else {
+		return 0;
+	}
+}
+	
+#takes either a single feature or an array of features and returns
+#an array of wheather the user has those rights 
+function hasrights($features,$operator="AND") {
+	global $USER,$RIGHTS,$VERBOSE;
+
+	if (strstr($features,',')) {
+		$features = explode(',',$features);
+	}
+	
+	if (is_array($features)) {
+		#check all values passed
+		for ($i=0;$i<count($features);$i++) {
+			if ($operator == "OR") {
+				#OR operator, return as soon as we find a true one
+				if (in_array($features[$i],$RIGHTS)) {
+					if ($VERBOSE) {
+						errorlog("SECURITY: user has access to " . $features[$i],1);
+					}
+					return true;
+				}
+			} else {
+				#this is an "AND" operator, bail if we find a false one
+				if (!in_array($features[$i],$RIGHTS)) {
+					if ($VERBOSE) {
+						errorlog("SECURITY: user does not have access to " . $features[$i],1);
+					}
+					return false;
+				}
+			}
+		}
+		if ($operator == "OR") {
+			if ($VERBOSE) {
+				errorlog("SECURITY: user does not have access to " . $features[$i],1);
+			}
+			return false;
+		} else {
+			if ($VERBOSE) {
+				errorlog("SECURITY: user has access to " . $features[$i],1);
+			}
+			return true;
+		}
+	} else {
+		#check the one value
+		if ($VERBOSE) {
+			if (in_array($features,$RIGHTS)) {
+				errorlog("SECURITY: user has access to " . $features,1);
+			} else {
+				errorlog("SECURITY: user does not have access to " . $features,1);
+			}
+		}
+		return in_array($features,$RIGHTS);
+	}
+}
+
+#recursively called to get permissions
+function getuserpermissions($grp_id="") {
+	global $USER,$VERBOSE;
+
+	if ($VERBOSE) errorlog("**********inside getuserpermissions(grp_id=$grp_id)**********",1);
+	if (empty($grp_id)) {
+		#ok, this was the first time this function was called. Let's get all the groups this user belongs to
+		#and get the permissions for each group.  NOTE: permissions are given to groups and NOT individuals
+		$result = dbquery("SELECT ug_main_grp_id FROM group_assignments WHERE ug_uid = {$USER["uid"]}",1);
+		if ($result <> -1) {
+			$nrows = mysql_num_rows($result);
+			if ($VERBOSE) errorlog("got $nrows row(s) in getuserpermissions",1);
+			for ($i=1;$i<=$nrows;$i++) {
+				$A = mysql_fetch_array($result);
+				$rights .= getuserpermissions($A["ug_main_grp_id"]);	
+			}
+		}
+	} else {
+		#in this case we are going up the group tree for this user building a list of rights 
+		#along the way.  First, get the rights for this group. 
+		$result = dbquery("SELECT ft_name FROM access,features WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
+		$nrows = mysql_num_rows($result);
+		if ($VERBOSE) errorlog("got $nrows rights for group $grp_id in getuserpermissions",1);
+		for ($j=1;$j<=$nrows;$j++) {
+			$A = mysql_fetch_array($result);
+			if ($VERBOSE) errorlog("Adding right " . $A["ft_name"] . " in getuserpermissions",1);
+			$rights .= $A["ft_name"] . ",";
+		}
+
+		#now see if there are any groups tied to this one further up the tree.  If so
+		#see if they have additional rights
+		$result = dbquery("SELECT ug_main_grp_id FROM group_assignments WHERE ug_grp_id = $grp_id",1);
+		$nrows = mysql_num_rows($result);
+		if ($VERBOSE) errorlog("got $nrows groups tied to group $grp_id in getuserpermissions",1);
+		for ($i=1;$i<=$nrows;$i++) {
+			#now for each group, see if there are any rights assigned to it. If so, add to our 
+			#comma delimited string
+			$A = mysql_fetch_array($result);
+			$rights .= getuserpermissions($A["ug_main_grp_id"]);
+		}
+	}
+	if ($VERBOSE) errorlog("**********leaving getuserpermissions(grp_id=$grp_id)**********",1);
+	return $rights;
+}
+
 # Now include all plugin functions
 $result = dbquery('SELECT * from plugins WHERE pi_enabled = 1');
 $nrows = mysql_num_rows($result);
@@ -1638,5 +1883,4 @@ for ($i = 1; $i <= $nrows; $i++) {
 	$A = mysql_fetch_array($result);
 	include_once($CONF["path"] . "plugins/" . $A['pi_name'] . "/functions.inc");
 }
-
 ?>
