@@ -86,6 +86,7 @@ function storyeditor($sid,$mode="") {
 		$A["statuscode"] = 0;
 		$A["featured"] = 0;
 		$A["owner_id"] = $USER["uid"];
+		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Story Admin'");
 		$A["perm_owner"] = 3;
                 $A["perm_group"] = 3;
                 $A["perm_members"] = 2;
