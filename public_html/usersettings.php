@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.58 2003/05/14 10:48:52 dhaun Exp $
+// $Id: usersettings.php,v 1.59 2003/05/20 08:55:54 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -445,6 +445,31 @@ function editpreferences()
 }
 
 /**
+* Check if an email address already exists in the database
+*
+* @param   email   string   email address to check
+* @param   uid     int      user id of current user
+* @return          bool     true = exists, false = does not exist
+*
+*/
+function emailAddressExists ($email, $uid)
+{
+    global $_TABLES;
+
+    $result = DB_query ("SELECT uid FROM {$_TABLES['users']} WHERE email = '{$email}'");
+    $numrows = DB_numRows ($result);
+    for ($i = 0; $i < $numrows; $i++) {
+        $A = DB_fetchArray ($result);
+        if ($A['uid'] != $uid) {
+            // email address is already in use for another account
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
 * Saves the user's information back to the database
 *
 * @A        array       User's data
@@ -485,7 +510,13 @@ function saveuser($A)
     $A['about'] = strip_tags (COM_stripslashes ($A['about']));
     $A['pgpkey'] = strip_tags (COM_stripslashes ($A['pgpkey']));
 
-    if (COM_isEmail ($A['email'])) {
+    if (!COM_isEmail ($A['email'])) {
+        return COM_refresh ($_CONF['site_url']
+                . '/usersettings.php?mode=edit&msg=52');
+    } else if (emailAddressExists ($A['email'], $_USER['uid'])) {
+        return COM_refresh ($_CONF['site_url']
+                . '/usersettings.php?mode=edit&msg=56');
+    } else {
         if ($_US_VERBOSE) {
             COM_errorLog('cooktime = ' . $A['cooktime'],1);
         }
@@ -601,9 +632,6 @@ function saveuser($A)
 
         return COM_refresh ($_CONF['site_url']
                 . '/usersettings.php?mode=edit&msg=5');
-    } else {
-        return COM_refresh ($_CONF['site_url']
-                . '/usersettings.php?mode=edit&msg=52');
     }
 }
 
