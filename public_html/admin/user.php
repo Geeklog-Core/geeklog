@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.42 2002/09/20 20:54:15 dhaun Exp $
+// $Id: user.php,v 1.43 2002/10/26 17:55:22 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -83,7 +83,7 @@ function edituser($uid = '', $msg = '')
 		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
 			// the current admin user isn't Root but is trying to change
 			// a root account.  Deny them and log it.
-			$retval .= $LANG_ACCESS[editrootmsg];
+			$retval .= $LANG_ACCESS['editrootmsg'];
 			COM_errorLog("User {$_USER['username']} tried to edit a root account with insufficient privileges",1);
 			$retval .= COM_endBlock();
 			return $retval;
@@ -136,8 +136,8 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
 
 	if (SEC_inGroup('Group Admin')) {
-        $user_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
-        $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS[securitygroupsmsg]);
+        $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
+        $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
         
         if (!empty($uid)) { 
 		    $usergroups = SEC_getUserGroups($uid);
@@ -248,7 +248,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 			echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
 		} else {
 			$retval .= COM_siteHeader('menu');
-            $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/users.php');
+            $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/user.php');
 			$retval .= COM_siteFooter();
             echo $retval;
             exit;
