@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.390 2004/10/23 10:25:51 dhaun Exp $
+// $Id: lib-common.php,v 1.391 2004/10/23 18:23:12 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3650,7 +3650,7 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     $retval = '';
 
     // Get user preferences on blocks
-    if( isset( $_USER['noboxes'] ) || isset( $_USER['boxes'] ))
+    if( !isset( $_USER['noboxes'] ) || !isset( $_USER['boxes'] ))
     {
         if( !empty( $_USER['uid'] ))
         {
