@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.14 2001/12/14 16:01:40 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.15 2001/12/14 16:20:42 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1388,7 +1388,7 @@ function COM_userComments($sid,$title,$type='article',$order='',$mode='',$pid=0)
 * @level        int         How deep in comment thread we are
 *
 */
-function COM_commentchildren($sid,$pid,$order,$mode,$type,$level=0) 
+function COM_commentChildren($sid,$pid,$order,$mode,$type,$level=0) 
 {
     global $_TABLES,$_CONF;
 	
@@ -1424,6 +1424,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
         $A['nice_date'] = time(); 
     }
 
+    $A['title'] = stripslashes($A['title']);
     if ($mode == 'threaded' && $level > 0) {
         $retval .= '<li><b><a href="' . $_CONF['site_url'] . '/comment.php?mode=display&sid=' . $A['sid']
             . '&title=' . urlencode($A['title']) . '&type=' . $type . '&order=' . $order . '&pid=' . $A['pid'].'">'
