@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.66 2003/06/25 08:39:02 dhaun Exp $
+// $Id: users.php,v 1.67 2003/07/25 08:11:28 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -200,14 +200,15 @@ function userprofile($user)
                 $user_templates->set_var('comment_begin_href',
                     '<a href="' . $_CONF['site_url'] .
                     '/comment.php?mode=display&amp;sid=' . $C['sid'] .
-                    '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
-                    $C['pid'] . '">');
+                    '&amp;type=' . $C['type'] . '&amp;title=' .
+                    urlencode($C['title']) . '&amp;pid=' .  $C['pid'] . '">');
             } else {
                 $user_templates->set_var('comment_begin_href',
                     '<a href="' . $_CONF['site_url'] .
                     '/comment.php?mode=display&amp;sid=' . $C['sid'] .
-                    '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
-                    $C['pid'] . '&amp;qid=' . $C['sid'] . '">');
+                    '&amp;type=' . $C['type'] . '&amp;title=' .
+                    urlencode($C['title']) . '&amp;pid=' .  $C['pid'] .
+                    '&amp;qid=' . $C['sid'] . '">');
             }
             $C['title'] = str_replace('$','&#36;',$C['title']);
             $user_templates->set_var('comment_title', stripslashes($C['title']));
@@ -274,12 +275,12 @@ function emailpassword($username,$msg=0)
         $passwd2 = md5($passwd);
         DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$username);
-        $mailtext = "{$LANG04[15]}\r\n\r\n";
-        $mailtext .= "{$LANG04[2]}: $username\r\n";
-        $mailtext .= "{$LANG04[4]}: $passwd\r\n\r\n";
-        $mailtext .= "{$LANG04[14]}\r\n\r\n";
-        $mailtext .= "{$_CONF["site_name"]}\r\n";
-        $mailtext .= "{$_CONF['site_url']}\r\n";
+        $mailtext = "{$LANG04[15]}\n\n";
+        $mailtext .= "{$LANG04[2]}: $username\n";
+        $mailtext .= "{$LANG04[4]}: $passwd\n\n";
+        $mailtext .= "{$LANG04[14]}\n\n";
+        $mailtext .= "{$_CONF["site_name"]}\n";
+        $mailtext .= "{$_CONF['site_url']}\n";
         if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
             if (empty ($charset)) {
@@ -412,17 +413,17 @@ function sendNotification ($username, $email, $uid, $queued = false)
     global $_CONF, $_TABLES, $LANG_CHARSET, $LANG01, $LANG04, $LANG08, $LANG28,
            $LANG29;
 
-    $mailbody = "$LANG04[2]: $username\r\n"
-              . "$LANG04[5]: $email\r\n"
-              . "$LANG28[14]: " . strftime ($_CONF['date']) . "\r\n\r\n";
+    $mailbody = "$LANG04[2]: $username\n"
+              . "$LANG04[5]: $email\n"
+              . "$LANG28[14]: " . strftime ($_CONF['date']) . "\n\n";
     if ($queued) {
-        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\r\n\r\n";
+        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
     } else {
-        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\r\n\r\n";
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
     }
-    $mailbody .= "\r\n------------------------------\r\n";
-    $mailbody .= "\r\n$LANG08[34]\r\n";
-    $mailbody .= "\r\n------------------------------\r\n";
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
 
     $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
 
