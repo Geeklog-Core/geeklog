@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.9 2001/12/18 21:31:42 tony_bibbs Exp $
+// $Id: group.php,v 1.10 2002/01/03 21:45:11 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -347,6 +347,7 @@ function listgroups()
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file(array('list'=>'grouplist.thtml','row'=>'listitem.thtml'));
     $group_templates->set_var('site_url', $_CONF['site_url']);
+    $group_templates->set_var('layout_url', $_CONF['layout_url']);
     $group_templates->set_var('lang_newgroup', $LANG_ACCESS[newgroup]);
     $group_templates->set_var('lang_adminhome', $LANG_ACCESS[adminhome]);
     $group_templates->set_var('lang_instructions', $LANG_ACCESS[newgroupmsg]); 
