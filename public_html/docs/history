@@ -1,5 +1,32 @@
 GeekLog History/Changes:
 
+Nov ??, 2004 (1.3.10rc3)
+------------
+
+- Overhauled handling of personal events [Dirk]:
+  + Fixed deleting personal events (again).
+  + The upcoming events block now links to the event details of personal
+    events (just like it already did for site events).
+  + Added stricter checks for permissions, user IDs, and the personal calendars
+    being activated in the first place.
+- Added a check for allow_url_fopen if reading a (RSS) feed fails and report it
+  in error.log if it is off [Dirk]
+- When deleting a story (automatically), make sure we're only deleting comments
+  belonging to that story (i.e. added a check for type = 'article') [Dirk]
+- Added {event_type}, {lang_event_type}, and {edit_icon} in all the theme's
+  calendar/eventdetails.thtml template file [Dirk]
+- Fixed some URLs in the calendar (missing slash) [Dirk]
+- Comment IDs don't have to be numeric (in comment.php) [Vinny]
+- The Static Pages plugin now takes $_CONF['showfirstasfeatured'] into account
+  when displaying static pages in center blocks (reported by eyecravedvd) [Dirk]
+- Forgot to declare $_CONF as global when fixing bug #301 (bug #302) [Dirk]
+
+- Updated Chinese language files (all 4 of them), provided by Samuel M. Stone
+- Updated Japanese language files (euc-jp and UTF-8), provided by Yusuke Sakata
+- Updated Polish language file, provided by Robert Stadnik
+- Updated Slovenian language file, provided by gape
+
+
 Oct 24, 2004 (1.3.10rc2)
 ------------
 
