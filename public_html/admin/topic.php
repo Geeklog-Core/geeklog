@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.31 2003/01/10 14:21:28 dhaun Exp $
+// $Id: topic.php,v 1.32 2003/02/02 19:46:47 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -158,10 +158,14 @@ function edittopic($tid='')
 
 ###############################################################################
 # Saves $tid to the database
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
-	global $_TABLES, $_CONF, $LANG27, $MESSAGE;
+function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon)
+{
+    global $_TABLES, $_CONF, $LANG27, $MESSAGE;
 
-	$access = 0;
+    //Convert array values to numeric permission values
+    list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
+    $access = 0;
     if (DB_count ($_TABLES['topics'], 'tid', $tid) > 0) {
         $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$tid}'");
         $A = DB_fetchArray ($result);
@@ -186,8 +190,6 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 			$imageurl = ''; 
 		}	
         $topic = addslashes ($topic);
-		//Convert array values to numeric permission values
-        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",$_CONF['site_admin_url'] . "/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');

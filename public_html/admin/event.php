@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.35 2003/01/10 14:21:28 dhaun Exp $
+// $Id: event.php,v 1.36 2003/02/02 19:46:47 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -399,7 +399,10 @@ function editevent($mode, $A)
 */
 function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode) 
 {
-	global $_TABLES, $_CONF, $LANG22;
+    global $_TABLES, $_CONF, $LANG22;
+
+    // Convert array values to numeric permission values
+    list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     $access = 0;
     if (DB_count ($_TABLES['events'], 'eid', $eid) > 0) {
@@ -486,9 +489,6 @@ t story $sid",1);
 	if (!empty($eid) AND !empty($description) AND !empty($title)) {
 		DB_delete($_TABLES['eventsubmission'],'eid',$eid);
         
-		// Convert array values to numeric permission values
-        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-
         DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         if (DB_count ($_TABLES['personal_events'], 'eid', $eid) > 0) {
             $result = DB_query ("SELECT uid FROM {$_TABLES['personal_events']} WHERE eid = '{$eid}'");

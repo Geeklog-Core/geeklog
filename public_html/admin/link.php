@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.30 2003/01/10 14:21:28 dhaun Exp $
+// $Id: link.php,v 1.31 2003/02/02 19:46:47 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -192,6 +192,11 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 {
     global $_TABLES, $_CONF, $LANG23, $MESSAGE, $_USER; 
 
+    // Convert array values to numeric permission values
+    if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
+        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+    }
+
     // clean 'em up 
     $description = addslashes (COM_checkHTML (COM_checkWords ($description)));
     $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
@@ -239,10 +244,6 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 			echo COM_refresh($_CONF['site_admin_url'] . '/link.php');
 		}
 
-		// Convert array values to numeric permission values
-        if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
-            list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        }
         DB_delete($_TABLES['linksubmission'],'lid',$lid);
         DB_delete($_TABLES['links'],'lid',$lid);
 

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.28 2003/01/10 14:21:28 dhaun Exp $
+// $Id: poll.php,v 1.29 2003/02/02 19:46:47 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -82,6 +82,9 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 { 
     global $_TABLES, $LANG25, $_CONF, $MESSAGE, $_POLL_VERBOSE;
 
+    // Convert array values to numeric permission values
+    list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
     $question = COM_stripslashes ($question);
     for ($i = 0; $i < sizeof($A); $i++) {
         $A[$i] = COM_stripslashes ($A[$i]);
@@ -116,9 +119,6 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     if (empty($voters)) { 
         $voters = '0'; 
     }
-
-    // Convert array values to numeric permission values
-    list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
     if ($_POLL_VERBOSE) {
         COM_errorLog('owner permissions: ' . $perm_owner, 1);
