@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.93 2002/05/13 15:37:53 dhaun Exp $
+// $Id: lib-common.php,v 1.94 2002/05/14 12:30:20 mlimburg Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -417,6 +417,7 @@ function COM_siteHeader($what = 'menu')
     $header->set_var('layout_url', $_CONF['layout_url']);
     $header->set_var('site_mail', "mailto:{$_CONF['site_mail']}");
     $header->set_var('site_name', $_CONF['site_name']);
+    $header->set_var('site_slogan', $_CONF['site_slogan']);
     $msg = '&nbsp;'.$LANG01[67].' '.$_CONF['site_name'];
     if (!empty($_USER['username'])) {
         $msg .= ', '.$_USER['username'];
