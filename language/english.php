@@ -152,7 +152,7 @@ $LANG02 = array(
 	5 => "Description",
 	6 => "Add A Event",
 	7 => "Upcoming Events",
-	8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the Members Only area.',
+	8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "My Calendar" from the User Functions area.',
 	9 => "Add to My Calendar",
 	10 => "Remove from My Calendar",
 	11 => "Adding Event to {$_USER['username']}'s Calendar",
@@ -463,7 +463,8 @@ $LANG12 = array(
     48 => 'Zip Code',
     49 => 'Event Type',
     50 => 'Edit Event Types',
-    51 => 'Location'
+    51 => 'Location',
+    52 => 'Delete'
 );
 
 
@@ -777,7 +778,15 @@ $LANG30 = array(
     27 => "Week",
     28 => "Personal Calendar for",
     29 => "Public Calendar",
-    30 => "delete event"
+    30 => "delete event",
+    31 => "Add",
+    32 => "Event",
+    33 => "Date",
+    34 => "Time",
+    35 => "Quick Add",
+    36 => "Submit",
+    37 => "Sorry, the personal calendar feature is not enabled on this site",
+    38 => "Personal Event Editor"
 );
 
 ###############################################################################
