@@ -2,7 +2,7 @@
 
 require_once ('../../lib-common.php');
 
-$display = COM_siteHeader ();
+$display = COM_siteHeader ('menu', 'Installation complete');
 $display .= COM_startBlock ('Installation complete');
 $display .= '<h2>Installation of Geeklog ' . VERSION . ' complete!</h2>';
 
