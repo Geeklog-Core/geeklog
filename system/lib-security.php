@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.22 2004/09/29 17:43:43 dhaun Exp $
+// $Id: lib-security.php,v 1.23 2004/12/18 15:25:50 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -606,6 +606,8 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 {
     global $_GROUPS, $_TABLES, $_USER;
 
+    $ugroups = array ();
+
     if (empty ($uid)) {
         if (empty ($_USER['uid'])) {
             $uid = 1;
@@ -615,15 +617,16 @@ function SEC_getFeatureGroup ($feature, $uid = '')
         if (empty ($_GROUPS)) {
             $_GROUPS = SEC_getUserGroups ($uid);
         }
+        $ugroups = $_GROUPS;
     } else {
-        $_GROUPS = SEC_getUserGroups ($uid);
+        $ugroups = SEC_getUserGroups ($uid);
     }
 
     $group = 0;
 
     $ft_id = DB_getItem ($_TABLES['features'], 'ft_id', "ft_name = '$feature'");
-    if (($ft_id > 0) && (sizeof ($_GROUPS) > 0)) {
-        $grouplist = implode (',', $_GROUPS);
+    if (($ft_id > 0) && (sizeof ($ugroups) > 0)) {
+        $grouplist = implode (',', $ugroups);
         $result = DB_query ("SELECT acc_grp_id FROM {$_TABLES['access']} WHERE (acc_ft_id = $ft_id) AND (acc_grp_id IN ($grouplist)) ORDER BY acc_grp_id LIMIT 1");
         $A = DB_fetchArray ($result);
         if (isset ($A['acc_grp_id'])) {
