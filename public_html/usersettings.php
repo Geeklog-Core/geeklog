@@ -157,12 +157,12 @@ function editpreferences()
     } else if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
     }
-	
+
+    $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">';
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
-        . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
     . '<tr>' . LB
-    . '<td align="right"><b>' . $LANG04[73] . ':</td>' . LB
+    . '<td align="right"><b>' . $LANG04[73] . ':</b></td>' . LB
     . '<td><select name="language">' . LB;
 
     if (empty($_USER['language'])) {
