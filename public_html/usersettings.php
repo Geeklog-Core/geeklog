@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.74 2003/09/07 23:51:35 blaine Exp $
+// $Id: usersettings.php,v 1.75 2003/09/14 22:40:56 blaine Exp $
 
 include_once('lib-common.php');
 
@@ -505,17 +505,8 @@ function editpreferences()
 
     if (($_CONF['contributedbyline'] == 1) &&
         ($_CONF['hide_author_exclusion'] == 0)) {
-        $result = DB_query ("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
-        $nrows = DB_numRows ($result);
-        $where = '';
-        for ($i = 0; $i < $nrows; $i++) {
-            $W = DB_fetchArray ($result);
-            $where .= "uid = '$W[0]' OR ";
-        }
-        $where .= "uid = '1'";
         $preferences->set_var ('lang_authors', $LANG04[56]);
-
-        $query = DB_query( "SELECT uid,username FROM {$_TABLES['users']} ORDER BY username" );
+        $query = DB_query ("SELECT DISTINCT story.uid, user.username FROM {$_TABLES['stories']} story, {$_TABLES['users']} user WHERE story.uid = user.uid ORDER BY user.username");
         $nrows = DB_numRows($query );
         $authors = explode(" ",$A['aids']);
 
