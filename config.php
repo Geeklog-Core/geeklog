@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.115 2004/05/29 15:46:55 dhaun Exp $
+// $Id: config.php,v 1.116 2004/06/04 21:51:14 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -297,6 +297,30 @@ $_CONF['lastlogin']                     = true;
 // +---------------------------------------------------------------------------+
 
 $_CONF['ostype']    = PHP_OS;
+
+// +---------------------------------------------------------------------------+
+// | PDF SETTINGS                                                              |
+// +---------------------------------------------------------------------------+
+
+// Your system must have htmldoc installed.  If you don't have it, you may
+// download it from http://www.easysw.com/htmldoc/ and yes, it runs on windows
+// and *nix
+
+// Enables the PDF generator feature.  
+$_CONF['pdf_enabled'] = false;
+// Absolute path to the htmldoc binary
+$_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
+// Path where we will store the generated PDF's
+$_CONF['path_pdf'] = $_CONF['path'] . 'pdfs/';
+// If you want a logo added to the top of your PDF's, provide the full file
+// system path here.
+$_CONF['pdf_logo'] = '';
+// Font point size (sorry no customization of font type yet)
+$_CONF['pdf_font_size'] = 9;
+// PDF's are generated and kept however many days you specify below.  If this
+// is left blank or set to 0 it will default back to 1
+$_CONF['days_to_keep'] = 1;
+
 
 // +---------------------------------------------------------------------------+
 // | SEARCH SETTINGS                                                           |
