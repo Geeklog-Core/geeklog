@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.235 2003/06/28 17:50:41 dhaun Exp $
+// $Id: lib-common.php,v 1.236 2003/07/02 12:37:05 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3993,10 +3993,31 @@ function COM_whatsNewBlock( $help='', $title='' )
     $retval .= COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
+    $topicsql = '';
+    if(( $_CONF['hidenewstories'] == 0 ) || ( $_CONF['hidenewcomments'] == 0 ))
+    {
+        $tresult = DB_query( "SELECT tid FROM {$_TABLES['topics']}"
+                             . COM_getPermSQL() );
+        $trows = DB_numRows( $tresult );
+        if( $trows > 0 )
+        {
+            $tids = array();
+            for( $i = 0; $i < $trows; $i++ )
+            {
+                $T = DB_fetchArray( $tresult );
+                $tids[] = $T['tid'];
+            }
+            if( sizeof( $tids ) > 0 )
+            {
+                $topicsql = " AND (tid IN ('" . implode( "','", $tids ) . "'))";
+            }
+        }
+    }
+
     if( $_CONF['hidenewstories'] == 0 )
     {
         // Find the newest stories
-        $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSQL( 'AND' );
+        $sql = "SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSQL( 'AND' ) . $topicsql;
         $result = DB_query( $sql );
         $A = DB_fetchArray( $result );
         $nrows = $A['count'];
@@ -4079,7 +4100,7 @@ function COM_whatsNewBlock( $help='', $title='' )
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
         }
 
-        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
+        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . $topicsql . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
 
         $result = DB_query( $sql );
 
@@ -4696,6 +4717,8 @@ function COM_makeList( $listofitems )
 
     $list = new Template( $_CONF['path_layout'] );
     $list->set_file( array( 'list' => 'list.thtml','listitem'=>'listitem.thtml' ));
+    $list->set_var( 'layout_url', $_CONF['layout_url'] );
+    $list->set_var( 'site_url', $_CONF['site_url'] );
 
     foreach( $listofitems as $oneitem )
     {
