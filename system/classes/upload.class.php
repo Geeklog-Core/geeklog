@@ -1,580 +1,633 @@
 <?php
-/**
-* Upload.class.php - File Upload Class v1.1 - 02 July 2001
-* Copyright Darren Beale <mail@bealers.com>
-*
-* The contents of this file remain the intellectual property of Darren Beale.
-* It is free for Personal and non-profit use as long as this 
-* entire comment block remains as-is. (Yes all of it)
-*
-* If you're using it commercially, please mail <mail@bealers.com> for a postal 
-* address. You can then get your boss to send me a measly £10 UKP so you can 
-* have unlimited use. 
-*
-* Either way, If you modify or extend it, please Fw: me on a copy with a 
-* small note on what you've done and why.
-*
-* TODO: 
-*	Check that source_dir is writeable
-*	Allow for auto-rename option on overwrite
-*	Handle exceptions and notices better
-*	Extend Pear/HTML/Form??
-* 	Fix Macintosh Upload issues (it won't work)
-*	100% Pear Compliant
-*	PHPDoc commenting and bundled docs 
-*
-* ChangeLog 
-* v1.0 - 	Initial Release 						01/07/01
-* v1.1 - 	Allowed for Multiple File uploads 		02/07/01
-*
-* I WILL PROVIDE SUPPORT FOR THIS SCRIPT!
-* This script *should* be able to handle the uploading of any file, if it
-* doesn't as a first port of call please change the settings 
-* UPLOAD_DEBUG_OUTPUT and UPLOAD_ENV_OUTPUT to see what is happening. 
-* If you still have problems, mail
-* me and I'll see what I can do. Don't expect me to code your app though!
-* BTW You Need PHP > 4.0.2
-*
-* Useage: (bare bones)
-*
-<?php
-require_once("Upload.class.php");
 
-$upload = new Upload();
-$upload->printFormStart("index.php");
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | upload.class.php                                                          |
+// | Geeklog file upload class library.                                        |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2002 by the following authors:                              |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            | 	
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: upload.class.php,v 1.2 2002/04/06 04:11:46 tony_bibbs Exp $
 
-// put as many of these in as you want, 
-// pass a string filename, else a default is used.
-$upload->printFormField();
-print"<br />";
-$upload->printFormField();
-
-$upload->printFormSubmit();
-$upload->printFormEnd();
-
-if ($submit) {
-	$upload->setAllowedMimeTypes(array("image/bmp","image/gif","image/pjpeg","image/jpeg","image/x-png"));
-	$upload->setUploadPath("c:\apache\htdocs");
-	
-	if ($upload->doUpload()) {
-		print "Files Uploaded!";
-	} else {
-		$errors = $upload->getUploadErrors();
-		print "<strong>::Errors occured::</strong><br />\n";
-		while(list($filename,$values) = each($errors)) {
-			"File: " . print $filename . "<br />";
-			$count = count($values);
-			for($i=0; $i<$count; $i++) {
-				print "==>" . $values[$i] . "<br />";
-			}
-		}
-	}
-}
-?>
-*
-* This class is complete re-write of my original code that I used
-* as a basis for one of my PHPBuilder.com articles.
-* http://www.phpbuilder.com/columns/bealers20000904.php3
-*
-* @author   Darren Beale <mail@bealers.com>
-*/
-
-// CONSTANTS ///////////////////////////////////////////////////////////////////
-
-/*
-*	Funny one this, during testing I couldn't assertain the dimensions of certain images.
-*	Until I can figure out why, you can set this flag to allow the images
-*	that don't return anything.
-*/
-if (!defined('UPLOAD_ALLOW_DUBIOUS_IMAGES')) {
-	define('UPLOAD_ALLOW_DUBIOUS_IMAGES', true);
-}
-
-/*
-*	Defaults only, they can be overridden using methods.
-*/
-if (!defined('UPLOAD_MAX_FILE_SIZE')) {
-   define('UPLOAD_MAX_FILE_SIZE', 1048576); // 1MB = 1048576
-}
-if (!defined('UPLOAD_IMAGE_MAX_WIDTH')) {
-    define('UPLOAD_IMAGE_MAX_WIDTH', 300);
-}
-if (!defined('UPLOAD_IMAGE_MAX_HEIGHT')) {
-    define('UPLOAD_IMAGE_MAX_HEIGHT', 300);
-}
-if (!defined('UPLOAD_FIELD_NAME')) {
-    define('UPLOAD_FIELD_NAME', "uploadFile");
-}
-
-
-/*
-* un-essential, only change if in development and you are having problems
-*/
-if (!defined('UPLOAD_DEBUG_OUTPUT')) {
-    define('UPLOAD_DEBUG_OUTPUT', false);
-}
-if (!defined('UPLOAD_ENV_OUTPUT')) {
-    define('UPLOAD_ENV_OUTPUT', false);
-}
-if (!defined('UPLOAD_LINE_BREAK')) {
-    define('UPLOAD_LINE_BREAK',"<br />"); // markup specific
-}
-
-class Upload
+class upload
 {
+    // Private Properties
+    var $_errors;               // Array
+    var $_warnings;             // Array
+    var $_debugMessages;        // Array
+    var $_allowedMimeTypes;     // Array
+    var $_availableMimeTypes;   // Array
+    var $_filesToUpload;        // Array
+    var $_currentFile;          // Array
+    var $_allowedIPS;           // Array
+    var $_maxImageWidth;        // Pixels
+    var $_maxImageHeight;       // Pixels
+    var $_maxFileSize;          // Long, in bytes
+    var $_fileUploadDirectory;  // String
+    var $_fileNames;            // String
+    var $_logFile;              // String
+    var $_doLogging;            // Boolean
+    var $_continueOnError;      // Boolean
+    var $_debug;                // Boolean
+    var $_limitByIP;            // Boolean
+    var $_numSuccessfulUploads; // Integer
+    var $_imageIndex;           // Integer
+    
+    /**
+    * Constructor
+    *
+    */
+    function upload()
+    {
+        $this->_errors = array();
+        $this->_warnings = array();
+        $this->_debugMessages = array();
+        $this->_allowedMimeTypes = array();
+        $this->_availableMimeTypes = array();
+        $this->_currentFile = array();
+        $this->_maxImageWidth = 300;
+        $this->_maxImageHeight = 300;
+        $this->_maxFileSize = 1048576; // 1MB = 1048576
+        $this->_fileUploadDirectory = '';
+        $this->_fileNames = '';
+        $this->_logFile = '';
+        $this->_doLogging = false;
+        $this->_continueOnError = false;
+        $this->_numSuccessfulUploads = 0;
+        $this->_imageIndex = 0;
+        $this->_maxFileUploadsPerForm = 5;
+        $this->_limitByIP = false;
+        
+        $this->_setAvailableMimeTypes();
+    }
+    
+    // PRIVATE METHODS
 
-	// {{{ properties
+    /**
+    * Adds a warning that was encountered
+    *
+    * @warningText  string  Text of warning
+    *
+    */
+    function _addWarning($warningText)
+	{
+        $nwarnings = count($this->_warnings);
+        $nwarnings = $nwarnings + 1;
+        $this->_warnings[$nwarnings] = $warningText;
+        if ($this->loggingEnabled()) {
+            $this->_logItem('Warning',$warningText);
+        }
+	}
 	
-	// array
-	var $uploadErrors;
-	var $registeredMimeTypes;
-	var $allowedMimeTypes;
-	
-	// int
-	var $maxImageWidth;
-	var $maxImageHeight;
-	var $maxFileSize;
-	
-	/*
-	*	used to track the number of fields created and name them accordingly 
+	/**
+	* Adds an error that was encountered
+	*
+	* @errorText    string  Text of error
+	*
 	*/
-	var $fieldCounter;
-	
-	// string
-	var $uploadPath;
-	var $uploadFieldName;
-	var $fieldName;
-	var $errorType;
-	
-	// bool
-	var $imageSizeOk;
-	var $uploadValidated;
-	var $uploadFail;
-	
-	//}}}
-	//{{{ constructor
-	
-	function Upload()
+	function _addError($errorText)
 	{
-		$this->uploadErrors 		= array();
-		$this->registeredMimeTypes 	= array();
-		$this->allowedMimeTypes 	= array();
-		
-		$this->maxImageWidth		= 0;
-		$this->maxImageHeight		= 0;
-		$this->maxFileSize			= 0;
-		$this->fieldCounter			= 0;
-		
-		$this->uploadFieldName 		= "";
-		$this->uploadPath			= "";
-		
-		$this->imageSizeOk			= false;
-		$this->uploadValidated		= false;
-		$this->uploadFail			= false;
-		
-		/* 
-		* set defaults
-		*/
-		if(!$this->registeredMimeTypes) {
-			$this->setRegisteredMimeTypes();
-		}
-		
-		if(!$this->maxImageWidth || !$this->maxImageHeight) {
-			$this->setMaxImageSize();
-		}
-		
-		if(!$this->maxFileSize) {
-			$this->setMaxFileSize();
-		}
-		
-		/*
-		*	check to see what our environment is like, nothing happens unless
-		*	UPLOAD_ENV_OUTPUT == true
-		*/
-		$this->checkLocalEnv();
+        $nerrors = count($this->_errors);
+        $nerrors = $nerrors + 1;
+        $this->_errors[$nerrors] = $errorText;
+        if ($this->loggingEnabled()) {
+            $this->_logItem('Error',$errorText);
+        }
+	}
+
+    /**
+    * Adds a debug message
+    *
+    * @debugText    string  Text of debug message
+    *
+    */
+    function _addDebugMsg($debugText)
+    {
+        $nmsgs = count($this->_debugMessages);
+        $nmsgs = $nmsgs + 1;
+        $this->_debugMessages[$nmsgs] = $debugText;
+        if ($this->loggingEnabled()) {
+            $this->_logItem('Debug',$debugText);
+        }
+    }
+    
+    /**
+    * Logs an item to the log file
+    *
+    * @logtype  string  can be 'warning' or 'error'
+    * @text     string  Text to log to log file
+    *
+    */
+	function _logItem($logtype, $text)
+	{
+        $timestamp = strftime("%c");
+        if (!$file = fopen($this->_logFile,a)) {
+            // couldn't open log file for writing so let's disable logging and add an error
+            $this->setLogging(false);
+            $this->_addError('Error writing to log file: ' . $this->_logFile . '.  Logging has been disabled');
+            return false;
+        }
+        fputs ($file, "$timestamp - $logtype: $text \n");
+        fclose($file);
+        return true;
 	}
 	
-	//}}}
-	
-	/* 
-	* public methods ///////////////////////////////////////////////////////////
-	*/
-	
-	//{{{ setImageSize()
-	
-	function setMaxImageSize($maxImageWidth = UPLOAD_IMAGE_MAX_WIDTH, $maxImageHeight = UPLOAD_IMAGE_MAX_HEIGHT)
-	{
-		$this->maxImageWidth 	= $maxImageWidth;
-		$this->maxImageHeight 	= $maxImageHeight;
-	}
-	
-	//}}}
-	//{{{ setUploadPath()
-	
-	function setUploadPath($uploadPath)
-	{
-		$this->uploadPath 	= $uploadPath;
-	}
-	
-	//}}}
-	//{{{ setDestinationFileName()
-	
-	function setDestinationFileName($destinationFileName = "uploadedFile.file")
-	{
-		$this->uploadFieldName = $destinationFileName; //+++
-	}
-	
-	//}}}
-	//{{{ setRegisteredMimeTypes()
-	
-	function setRegisteredMimeTypes($registeredMimeTypes = array())
-	{
-		if (sizeof($registeredMimeTypes) == 0) {
-			$this->registeredMimeTypes = 
+    /**
+    * Defines superset of available Mime types.
+    *
+    * @mimeTypes    array   string array of valid mime types this object will accept
+    *
+    */
+    function _setAvailableMimeTypes($mimeTypes = array())
+    {
+		if (sizeof($mimeTypes) == 0) {
+			$this->_availableMimeTypes = 
 				array(
-					"application/x-gzip-compressed" 	=> ".tar.gz, .tgz",
-					"application/x-zip-compressed" 		=> ".zip",
-					"application/x-tar"					=> ".tar",
-					"text/plain"						=> ".php, .txt, .inc (etc)",
-					"text/html"							=> ".html, .htm (etc)",
-					"image/bmp" 						=> ".bmp, .ico",
-					"image/gif" 						=> ".gif",
-					"image/pjpeg"						=> ".jpg, .jpeg",
-					"image/jpeg"						=> ".jpg, .jpeg",
-					"image/x-png"						=> ".png",
-					"audio/mpeg"						=> ".mp3 etc",
-					"audio/wav"							=> ".wav",
-					"application/pdf"					=> ".pdf",
-					"application/x-shockwave-flash" 	=> ".swf",
-					"application/msword"				=> ".doc",
-					"application/vnd.ms-excel"			=> ".xls",
-					"application/octet-stream"			=> ".exe, .fla, .psd (etc)"
+					'application/x-gzip-compressed' 	=> '.tar.gz, .tgz',
+					'application/x-zip-compressed' 		=> '.zip',
+					'application/x-tar'					=> '.tar',
+					'text/plain'						=> '.php, .txt, .inc (etc)',
+					'text/html'							=> '.html, .htm (etc)',
+					'image/bmp' 						=> '.bmp, .ico',
+					'image/gif' 						=> '.gif',
+					'image/pjpeg'						=> '.jpg, .jpeg',
+					'image/jpeg'						=> '.jpg, .jpeg',
+					'image/x-png'						=> '.png',
+					'audio/mpeg'						=> '.mp3 etc',
+					'audio/wav'							=> '.wav',
+					'application/pdf'					=> '.pdf',
+					'application/x-shockwave-flash' 	=> '.swf',
+					'application/msword'				=> '.doc',
+					'application/vnd.ms-excel'			=> '.xls',
+					'application/octet-stream'			=> '.exe, .fla, .psd (etc)'
 				);
 		} else {
-			$this->registeredMimeTypes = $registeredMimeTypes;
+			$this->_availableMimeTypes = $mimeTypes;
 		}
-	}
-	
-	//}}}
-	//{{{ setAllowedMimeTypes()
-	
-	function setAllowedMimeTypes($allowedMimeTypes = array())
-	{
-		$this->allowedMimeTypes = $allowedMimeTypes;
-	}
-	
-	//}}}
-	//{{{ setMaxFileSize()
-	
-	function setMaxFileSize($maxFileSize = UPLOAD_MAX_FILE_SIZE)
-	{
-		$this->maxFileSize = $maxFileSize;
-	}
-	
-	//}}}
-	//{{{ getUploadErrors()
-	
-	function getUploadErrors()
-	{
-		return $this->uploadErrors; // array
-	}
-	
-	//}}}
-	//{{{ printFormStart() 	TODO Extend HTML/Form ??
-	
-	function printFormStart($formAction = "./", $formMethod = "POST", $formName = "uploadForm", $formTarget = "_self", $formInlineJavaScript="")
-	{
-		print "<FORM ACTION='" 	. $formAction . 
-				"' METHOD='" 	. $formMethod . 
-				"' TARGET='" 	. $formTarget . 
-				"' NAME='" 		. $formName . 
-				"' ENCTYPE='multipart/form-data'" . $formInlineJavaScript . ">\n";
-	}
-	
-	//}}}
-	//{{{ printFormField()
-	
-	function printFormField($fieldName = "") //+++
-	{
-		if(!$fieldName) {
-			$fieldName = UPLOAD_FIELD_NAME . "_" . $this->fieldCounter;
-		}
-		print "<INPUT TYPE='FILE' NAME='" . $fieldName . "'>\n";
-		print "<INPUT TYPE='HIDDEN' NAME='uploadFileName[" . 
-				$this->fieldCounter . "]' VALUE='" . $fieldName . "'>\n";
-		$this->fieldCounter++;
-	}
-	
-	//}}}
-	//{{{ printFormSubmit()
-	
-	function printFormSubmit($name="submit", $value="Upload", $formInlineJavaScript="")
-	{
-		print "<INPUT TYPE='HIDDEN' NAME='fieldCounter' VALUE='" . 
-				$this->fieldCounter . "'>\n";
-		print "<INPUT TYPE='SUBMIT' 
-				NAME='" . $name . "' VALUE='" . $value . "'" . $formInlineJavaScript . ">\n";
-	}
-		
-	//}}}
-	//{{{ printFormEnd()
-	
-	function printFormEnd()
-	{
-		print "</FORM>\n";
-	}
-
-	//}}}
-	
-	/* 
-	* private methods //////////////////////////////////////////////////////////
+    }
+    
+    /**
+    * Checks if current file is an image
+    *
+    */    
+    function _isImage()
+    {
+        if (ereg("image",$this->_currentFile['type'])) {
+            $isImage = true;
+        } else {
+            $isImage = false;
+        }
+        
+        if ($this->_debug) {
+            $msg = 'File, ' . $this->_currentFile['name'] . ' is of mime type '
+                . $this->_currentFile['type'];
+            if (!$isImage) {
+                $msg .= ' and is NOT an image file.';
+            } else {
+                $msg .= ' and IS an image file.';
+            }
+            $this->_addDebugMsg($msg);
+        }
+        
+        return $isImage;
+    }
+    
+    /**
+	* Verifies the file size meets specified size limitations
+	*
 	*/
-	
-	//{{{ checkLocalEnv()
-	
-	function checkLocalEnv()
+	function _fileSizeOk()
 	{
-		/*
-		*	this is a developer helper method and a pre-emptive strike
-		*	towards any support emails ;)
-		*/
-		if (UPLOAD_ENV_OUTPUT) {
-			print UPLOAD_LINE_BREAK . "::PHP Environment - php.ini settings::" . UPLOAD_LINE_BREAK; 
-			
-			print UPLOAD_LINE_BREAK . "(php.ini variable: file_uploads)" . UPLOAD_LINE_BREAK;
-			print "HTTP File Uploads are ";
-			if (ini_get("file_uploads")) {
-				print "[ On ]";
-			} else {
-				print "[ Off ] - This is a *major* issue. This script WILL NOT WORK!";
-				print UPLOAD_LINE_BREAK . "Please check php.ini if you have access to it, if not you cannot use this Script, sorry.";
-			}
-			print UPLOAD_LINE_BREAK . UPLOAD_LINE_BREAK . "(php.ini variable: upload_tmp_dir)";
-			print UPLOAD_LINE_BREAK . "Temp Upload Directory is set to [ " . ini_get("upload_tmp_dir") . " ]";
-			print UPLOAD_LINE_BREAK . "Note, this is a fully qualified path on the *server*";
-			
-			print UPLOAD_LINE_BREAK . UPLOAD_LINE_BREAK . "(php.ini variable: upload_max_filesize)";
-			print UPLOAD_LINE_BREAK . "Maximum allowed file size is set to [ " . ini_get("upload_max_filesize") . " ]";
-			
-			print UPLOAD_LINE_BREAK . UPLOAD_LINE_BREAK . "(php.ini variable: safe_mode)" . UPLOAD_LINE_BREAK;
-			print "Safe mode is ";
-			if (!ini_get("safe_mode")) {
-				print "[ Off ]";
-			} else {
-				print "[ On ] - This script will almost certainly not work!";
-				print UPLOAD_LINE_BREAK . "Please check php.ini if you have access to it, if not you cannot use this Script, sorry.";
-			}
+        if ($this->_debug) {
+            $this->_addDebugMsg('File size for ' . $this->_currentFile['name'] . ' is ' . $this->_currentFile['size'] . ' bytes');
+        }
+        
+        if ($this->_currentFile['size'] > $this->_maxFileSize) {
+			return false;
+		} else {
+			return true;
 		}
 	}
-	
-	//}}}	
-	//{{{ setError()
-	
-	function setError($errorType)
-	{
-		$this->uploadErrors[$this->HTTP_POST_FILES[$this->uploadFieldName]['name']][] = $errorType; //+++
-	}
 
-	//}}}
-	//{{{ getAllowedMimeTypes()
+    /**
+    * Checks to see if file is an image and, if so, whether or not
+    * it meets width and height limitations
+    *
+    */
+	function _imageSizeOK()
+	{
+        if (!$this->_isImage()) {
+            return true;
+        }
+        
+        $imageInfo = $this->_getImageDimensions($this->_currentFile['tmp_name']);
+		   
+		$sizeOK = true;
+		
+		if ($this->imageInfo['width'] > $this->maxImageWidth) {
+			$sizeOK = false;
+			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations');
+		}
+
+		if ($this->imageInfo['height'] > $this->maxImageHeight) {
+			$sizeOK= false;
+			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations');
+		}
+        
+        if ($this->_debug) {
+            $this->_addDebugMsg('File, ' . $this->_currentFile['name'] . ' has a width of '
+                . $imageInfo['width'] . ' and a height of ' . $imageInfo['height']);
+		}
+        
+		return $sizeOK;
+	}
 	
+	/**
+	* Gets the width and height of an image
+	*
+	*/
+	function _getImageDimensions()
+	{
+		$dimensions = GetImageSize($this->_currentFile['tmp_name']);
+		
+		return array('width' => $dimensions[0], 'height' => $dimensions[1]);
+	}
+	
+	/**
+	* Gets destination file name for current image
+	*
+	*/
+	function _getDestinationName()
+	{
+        if (is_array($this->_fileNames)) {
+            $name = $this->_fileNames[$this->_imageIndex];
+        } else {
+            $name = $this->_fileNames;
+        }
+        
+        if (empty($name)) {
+            $name = $this->_currentFile['name'];
+        }
+        
+        return $name;
+	}
+	
+	/**
+	* This function actually completes the upload of a file
+	*
+	*/
+	function _copyFile()
+	{
+        if (!is_writable($this->_fileUploadDirectory)) {
+            // Developer didn't check return value of setPath() method which would
+            // have told them the upload directory was not writable.  Error out now
+            $this->_addError('Specified upload directory, ' . $this->_fileUploadDirectory . ' exists but is not writable');
+            return false;
+        }        
+        return move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+	}
+	
+    // Public Methods
+    
+    /**
+    * Extra security option that forces all attempts to upload a file to be done
+    * so from a set of VERY specific IP's.  This is only good for those who are
+    * paranoid
+    *
+    * @validIPS     array   Array of valid IP addresses to allow file uploads from
+    *
+    */
+    function limitByIP($validIPS = array('127.0.0.1'))
+    {
+        if (is_array($validIPS)) {
+            $this->_limitByIP = true;
+            $this->_allowedIPS = $valid_IPS;
+            return true;
+        } else {
+            $this->_addError('Bad call to method limitByIP(), must pass array of valid IP addresses');
+            return false;
+        }
+    }
+    
+    /**
+    * Allows you to specify whether or not to continue processing other files
+    * when an error occurs or exit immediately. Default is to exit immediately
+    *
+    * NOTE: this only effects the actual file upload process.
+    *
+    * @switch   boolean     true or false
+    *
+    */
+    function setContinueOnError($switch)
+    {
+        if ($switch) {
+            $this->_continueOnError = $true;
+        } else {
+            $this->_continueOnError = $false;
+        }
+    }
+    
+    /**
+    * Sets log file
+    *
+    * @fileName     string      fully qualified path to log files
+    *
+    */
+    function setLogFile($logFile = '')
+    {
+        if (empty($logFile) OR !file_exists($logFile)) {
+            // Log file doesn't exist, produce warning
+            $this->_addWarning('Log file, ' . $logFile . ' does not exists, setLogFile() method failed');
+            $this->_doLogging = false;
+            return false;
+        }
+        $this->_logFile = $logFile;
+        return true;
+    }
+    
+    /**
+    * Enables/disables logging of errors and warnings
+    *
+    * $switch   boolean     flag, true or false
+    *
+    */
+    function setLogging($switch)
+    {
+        if ($switch AND !empty($this->_logFile)) {
+            $this->_doLogging = true;
+        } else {
+            if ($switch AND empty($this->_logFile)) {
+                $this->_addWarning('Unable to enable logging because no log file was set.  Use setLogFile() method');
+            }
+            $this->_doLogging = false;
+        }
+    }
+
+    /**
+    * Returns whether or not logging is enabled
+    *
+    */
+    function loggingEnabled()
+    {
+        return $this->_doLogging;
+    }
+
+    /**
+    * Will force the debug messages in this class to be
+    * printed
+    *
+    * @switch   boolean     flag, true or false
+    *
+    */
+    function setDebug($switch)
+    {
+        if ($switch) {
+            $this->_debug = true;
+            // setting debugs implies logging is on too
+            $this->setLogging(true);
+        } else {
+            $this->_debug = false;
+        }
+    }
+    
+    /**
+    * This function will print any errors out.  This is useful in debugging
+    *
+    */
+    function printErrors()
+    {
+        if (isset($this->_errors) AND is_array($this->_errors)) {
+            reset($this->_errors);
+            $nerrors = count($this->_errors);
+            for ($i = 1; $i <= $nerrors; $i++) {
+                print current($this->_errors) . "<BR>\n";
+                next($this->_errors);
+            }
+        }
+    }
+    
+    /**
+    * This function will print any warnings out.  This is useful in debugging
+    *
+    */
+    function printWarnings()
+    {
+        if (isset($this->_warnings) AND is_array($this->_warnings)) {
+            reset($this->_warnings);
+            $nwarnings = count($this->_warnings);
+            for ($i = 1; $i <= $nwarnings; $i++) {
+                print current($this->_warnings) . "<BR>\n";
+                next($this->_warnings);
+            }
+        }
+    }
+    
+    /**
+    * This function will print any debmug messages out.
+    *
+    */
+    function printDebugMsgs()
+    {
+        if (isset($this->_debugMessages) AND is_array($this->_debugMessages)) {
+            reset($this->_debugMessages);
+            $nmsgs = count($this->_debugMessages);
+            for ($i = 1; $i <= $nmsgs; $i++) {
+                print current($this->_debugMessages) . "<BR>\n";
+                next($this->_debugMessages);
+            }
+        }
+    }
+    
+    /**
+    * Returns if any errors have been encountered thus far
+    *
+    */
+    function areErrors()
+    {
+        if (count($this->_errors) > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    /**
+    * Sets allowed mime types for this instance
+    *
+    * @allowedMimeTypes     array   Array of allowed mime types
+    *
+    */
+    function setAllowedMimeTypes($mimeTypes = array())
+	{
+		$this->_allowedMimeTypes = $mimeTypes;
+	}
+	
+	/**
+	* Gets allowed mime types for this instance
+	*
+	*/
 	function getAllowedMimeTypes()
 	{
-		return $this->allowedMimeTypes;
+		return $this->_allowedMimeTypes;
 	}
 	
-	//}}}
-	//{{{ getUploadImageSize()
-	
-	function getUploadImageSize()
-	{
-		$dimensions = GetImageSize($this->uploadFile); //+++
-		
-		/*
-		*	I've been having some issues when uploading images with regards 
-		*	to the array passed back (i.e. No values)
-		*/
-		if (UPLOAD_DEBUG_OUTPUT) {
-			print "WIDTH: " . $dimensions[0] . UPLOAD_LINE_BREAK . "HEIGHT: " . 
-					$dimensions[1] . UPLOAD_LINE_BREAK;
-		}
-		
-		if (!UPLOAD_ALLOW_DUBIOUS_IMAGES) {
-			$this->setError("cannotGetImageSize");
-		}
-		return array($dimensions[0],$dimensions[1]);
-	}
-	
-	//}}}
-	//{{{ checkMimeType()
-	
-	function checkMimeType()
-	{
-		if (!in_array($this->HTTP_POST_FILES[$this->uploadFieldName]['type'],$this->getAllowedMimeTypes())) {
-			$this->setError("mimeException");
+    /**
+    * Checks to see that mime type for current file is allowed for upload
+    *
+    */
+    function checkMimeType()
+    {
+        if (!in_array($this->_currentFile['type'],$this->getAllowedMimeTypes())) {
+			$this->_addError('Mime type, ' . $this->_currentFile['type'] . ', not in list of allowed mime types');
 			return false;
 		} else {
 			return true;
 		}
-	}
-	
-	//}}}
-	//{{{ checkImageSize()
-	
-	function checkImageSize()
+    }
+    
+    /**
+    * Sets file upload path
+    *
+    * @uploadDir    string  Directory on server to store uploaded files
+    *
+    */
+    function setPath($uploadDir)
 	{
-		$this->imageSize = $this->getUploadImageSize($this->uploadFile); //+++
-		
-		$imageSizeOK = true;
-		
-		if ($this->imageSize[0] > $this->maxImageWidth) {
-			$imageSizeOK = false;
-			$this->setError("imageWidthException");
-		}
-
-		if ($this->imageSize[1] > $this->maxImageHeight) {
-			$imageSizeOK= false;
-			$this->setError("imageHeightException");
-		}
-		return $imageSizeOK;
+        if (!is_dir($uploadDir)) {
+            $this->_addError('Specified upload directory, ' . $uploadDir . ' is not a valid directory');
+            return false;
+        }
+        
+        if (!is_writable($uploadDir)) {
+            $this->_addError('Specified upload directory, ' . $uploadDir . ' exists but is not writable');
+            return false;
+        }
+        
+        $this->_fileUploadDirectory = $uploadDir;
+        
+        return true;
 	}
-	
-	//}}}
-	//{{{ copyFile()
-
-	
-	function copyFile() // TODO check for is_writeable()
+    
+    /**
+    * Sets file name(s) for files
+    *
+    * This function will set the name of any files uploaded.  If the
+    * number of file names sent doesn't match the number of uploaded
+    * files a warning will be generated but processing will continue
+    *
+    * @fileNames    string/Array    A string or string array of file names
+    *
+    */
+    function setFileNames($fileNames = 'geeklog_uploadedfile')
 	{
-		return move_uploaded_file($this->uploadFile, $this->uploadPath . "/" . $this->HTTP_POST_FILES[$this->uploadFieldName]['name']); //+++
-		
+        if (isset($fileNames) AND is_array($fileNames)) {
+            // this is an array of file names, set them
+            $this->_fileNames = $fileNames;
+        } else {
+            $this->_fileNames = array($fileNames);
+        }
 	}
 	
-	//}}}
-	//{{{ checkMaxFileSize()
-	
-	function checkMaxFileSize()
+	/**
+	* Uploads any posted files. If form has more than one file field, this will
+	* return false if any errors were encountered.
+	*
+	*/
+	function uploadFiles()
 	{
-		if ($this->HTTP_POST_FILES[$this->uploadFieldName]['size'] > $this->maxFileSize) { 		//+++ ISSUE
-			return false;
-		} else {
-			return true;
+        // Before we do anything, let's see if we are limiting file uploads by IP
+        // address and, if so, verify the poster is originating from one of those
+        // places
+        if ($this->_limitByIP) {
+            if (!in_array($GLOBALS['REMOTE_ADDR'], $this->_allowedIPS)) {
+                $this->_addError('The IP, ' . $GLOBALS['REMOTE_ADDR'] . ' is not in the list of '
+                    . 'accepted IP addresses.  Refusing to allow file upload(s)');
+                return false;
+            }
+        }
+        
+		$this->_filesToUpload = $GLOBALS['HTTP_POST_FILES'];
+		$numFiles = count($this->_filesToUpload);
+        
+        // For security sake, check to make sure a DOS isn't happening by making sure
+        // there is a limit of the number of files being uploaded
+        if ($numFiles > $this->_maxFileUploadsPerForm) {
+            $this->_addError('Max. number of files you can upload from a form is '
+                . $this->_maxFileUploadsPerForm . ' and you sent ' . $numFiles);
+            return false;
+        }
+
+        // Verify upload directory is valid
+        if (!$this->_fileUploadDirectory) {
+            $this->_addError('No Upload Directory Specified, use setPath() method');
+        }
+        
+        // Verify allowed mime types exist
+        if (!$this->_allowedMimeTypes) {
+            $this->_addError('No allowed mime types specified, use setAllowedMimeTypes() method');
+        }
+        
+		for ($i = 1; $i <= $numFiles; $i++) {
+		
+            $this->_currentFile = current($GLOBALS['HTTP_POST_FILES']);
+            
+            // Make sure file field on HTML form wasn't empty before proceeding
+            if (!empty($this->_currentFile['name'])) {
+                // Verify file meets size limitations
+                if (!$this->_fileSizeOk()) {
+                    $this->_addError('File, ' . $this->_currentFile['name'] . ', is bigger than the ' . $this->_maxFileSize . ' byte limit');
+                }
+                
+                // If all systems check, do the upload
+                if ($this->checkMimeType() AND $this->_imageSizeOK() AND !$this->areErrors()) {
+                    if (!$this->_copyFile()) {
+                        $this->_addError('Upload of ' . $this->_currentFile['name'] . ' failed.');
+                    }
+                }
+                
+                $this->_currentFile = array();
+                
+                if ($this->areErrors() AND !$this->_continueOnError) {
+                    return false;
+                }
+                
+                $this->_imageIndex++;
+            } else {
+                // No file name specified...send as warning.
+                $this->_addWarning('File #' . $i . ' on the HTML form was empty...ignoring it and continuing');
+            }
+            next($GLOBALS['HTTP_POST_FILES']);
 		}
+		
+		// This function returns false if any errors were encountered
+        if ($this->areErrors()) {
+            return false;
+    	} else {
+            return true;
+    	}
 	}
-	
-	//}}}
-	//{{{ setDefaults()
-	
-	function setDefaults()
-	{
-		if(!$this->registeredMimeTypes) {
-			$this->setRegisteredMimeTypes();
-		}
-		
-		if(!$this->maxImageWidth || !$this->maxImageHeight) {
-			$this->setMaxImageSize();
-		}
-		
-		if(!$this->maxFileSize) {
-			$this->setMaxFileSize();
-		}
-	}
-	
-	//}}}
-	//{{{ processUpload()
-	
-	function processUpload() { //+++
-		
-		/*
-		*	Some MIME types seem to be rather randomly set, I'm assuming that this
-		*	is an OS issue. For example M$ Word documents have been, in my experience,
-		*	application/octet-stream, text/richtext or application/msword
-		*	<shrug> if UPLOAD_DEBUG_OUTPUT == true, echo the MIME type.
-		*	This is arguably useful for a development environment.
-		*	Disabled by default.
-		*/
-		if (UPLOAD_DEBUG_OUTPUT) {
-			print UPLOAD_LINE_BREAK . "::DEBUG::" . UPLOAD_LINE_BREAK  .
-				"Field Name: " . $this->uploadFieldName .
-				UPLOAD_LINE_BREAK .
-				"Mime Type: " . $this->HTTP_POST_FILES[$this->uploadFieldName]['type'] . 
-				UPLOAD_LINE_BREAK .
-				"File Name: " . $this->HTTP_POST_FILES[$this->uploadFieldName]['name'] . 
-				UPLOAD_LINE_BREAK .
-				"File Size: " . $this->HTTP_POST_FILES[$this->uploadFieldName]['size'] . 
-				UPLOAD_LINE_BREAK .
-				"Temp Name: " . $this->HTTP_POST_FILES[$this->uploadFieldName]['tmp_name'] . 
-				UPLOAD_LINE_BREAK;
-		}
-		
-		$this->uploadFile = $this->HTTP_POST_FILES[$this->uploadFieldName]['tmp_name'];
-		$this->setDefaults();
-
-		if (!$this->uploadPath) {
-			$this->setError("noUploadPathException");
-			$this->uploadFail = true;
-		}
-
-		if (!$this->allowedMimeTypes) {
-			$this->setError("noAllowedTypesException");
-			$this->uploadFail = true;
-		}
-
-		if ($this->uploadFile == "none") {
-			$this->setError("noFileException");
-			$this->uploadFail = true;
-		}
-		
-		if (!$this->checkMaxFileSize()) {
-			$this->setError("fileTooBigException");
-			$this->uploadFail = true;
-		} elseif(in_array("cannotGetImageSize",$this->getUploadErrors())) {
-			// no dimensions special case, see definitions @ top
-			$this->uploadFail = true;
-		}
-		
-		if (!$this->uploadFail) {
-			if (ereg("image",$this->HTTP_POST_FILES[$this->uploadFieldName]['type'])) {
-				$this->imageSizeOk = $this->checkImageSize();
-			} else {
-				$this->imageSizeOk = true;
-			}
-		}
-		
-		if($this->checkMimeType() && $this->imageSizeOk && !$this->uploadFail) {
-			if (!$this->copyFile()) {
-				$this->setError("fileCopyException");
-			}
-		}
-		
-		if (sizeof($this->uploadErrors) == 0)
-		{
-			$this->uploadValidated = true;
-		}
-		return $this->uploadValidated;
-	}
-	
-	function doUpload() {
-	
-		$this->HTTP_POST_FILES 	= $GLOBALS['HTTP_POST_FILES']; 	//array
-		$this->fieldCounter 	= $GLOBALS['fieldCounter'];		//int
-
-		for ($i=0; $i<$this->fieldCounter; $i++) {
-		
-			$this->uploadFieldName	= $GLOBALS['uploadFileName'][$i];
-			$currentUpload = $this->processUpload();
-
-			if (!$currentUpload) {
-				$errorsOccured = true;
-			}
-		}
-		
-		if ($errorsOccured) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-	
-	///}}}
 }
+
 ?>
