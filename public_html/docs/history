@@ -1,5 +1,9 @@
 GeekLog History/Changes:
 
+- Fixed "Google paging" on the Admin's list of stories when the current user
+  didn't have access to all the topics (paging was only introduced in 1.3.8rc1).
+- Try to prevent "illegal access" messages in error.log, caused by the plugin
+  page looking for uninstalled plugins.
 - Upcoming events (in the block of the same name) are now sorted by start date
   and start time, which makes more sense than the old start date, end date
   sort order (reported by Peter Sieradzki).
@@ -35,6 +39,7 @@ GeekLog History/Changes:
 - New Japanese language file for the Static Pages plugin, provided by Yusuke
   Sakata.
 - New Italian language file for the Static Pages plugin, provided by quess65.
+- New formal German language file for the Static Pages plugin.
 
 
 June 29, 2003 (1.3.8rc1)
