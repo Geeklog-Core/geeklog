@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.73 2002/04/22 16:49:56 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.74 2002/04/22 20:14:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1743,12 +1743,17 @@ function COM_olderstuff()
                 $daycheck = strftime("%A",$A['day']);
                 if ($day != $daycheck) {
                     $day2 = strftime("%m/%d",$A['day']);
-                    $day = $daycheck;
                     $string .= '<br><b>' . $day . '</b> <small>' . $day2 . '</small><br>' . LB;
+                    if ($day != 'noday') {
+                        $string .= COM_makeList ($oldnews);
+                    }
+                    $oldnews = array ();
+                    $day = $daycheck;
                 }
-                $string .= '<li><a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                    . '">' . $A['title'] . '</a> (' . $A['comments'] . ')' . LB;
+                $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
+                    . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
             }
+            $string .= COM_makeList ($oldnews);
 
             $string = addslashes($string);
             DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
@@ -1874,7 +1879,7 @@ function COM_showBlocks($side, $topic='', $name='all')
                 }
             }
             if (!empty($A['content']) && !$U['noboxes']) {
-                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . '<br>' . LB
+                $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . LB
                     . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
             }
         }
@@ -1912,7 +1917,7 @@ function COM_rdfCheck($bid,$rdfurl,$date)
 * @rdfurl       string      URL to get content from
 *
 */
-function COM_rdfimport($bid,$rdfurl) 
+function COM_rdfImport($bid,$rdfurl) 
 {
     global $_TABLES;
 
@@ -1947,12 +1952,13 @@ function COM_rdfimport($bid,$rdfurl)
                 }
             }
 
-            $blockcontent = '';
-
+            $headlines = array ();
             for ($i = 1; $i <= $di; $i++) {
-                $blockcontent .= '<li><a href="' . addslashes($channel_data_link[$i]) . '">' 
-                    . addslashes($channel_data_title[$i]) . '</a></li>';
+                $headlines[] .= '<a href="' . addslashes($channel_data_link[$i]) . '">' 
+                    . addslashes($channel_data_title[$i]) . '</a>';
             }
+            $blockcontent = COM_makeList ($headlines);
+            $blockcontent = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $blockcontent);
 
             $result = DB_change($_TABLES['blocks'],'content',"$blockcontent",'bid',$bid);
         }
@@ -2253,6 +2259,7 @@ function COM_whatsNewBlock($help='',$title='')
     // Cap max displayed at 15
     if ($nrows > 15) $nrows = 15;
     if ($nrows > 0) {
+        $newcomments = array ();
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
@@ -2269,22 +2276,22 @@ function COM_whatsNewBlock($help='',$title='')
                 // Trim the length if over 20 characters
 			
                 if ($itemlen > 20) {
-                    //$retval .= '<li class="storyclose">' . $urlstart . substr($A['title'],0,26) . '... ';
-                    $retval .= '<li class="storyclose">' . $urlstart . substr($titletouse,0,26) . '... ';
+                    $acomment = $urlstart . substr($titletouse,0,26) . '... ';
                     if ($A['dups'] > 1) {
-                        $retval .= '[+' . $A['dups'] . ']';
+                        $acomment .= '[+' . $A['dups'] . ']';
                     }
-                    $retval .= '</a></li>' . LB;  
+                    $acomment .= '</a>';
                 } else {
-                    //$retval .= '<li class="storyclose">' . $urlstart . $A['title'];
-                    $retval .= '<li class="storyclose">' . $urlstart . $titletouse;
+                    $acomment .= $urlstart . $titletouse;
                     if ($A['dups'] > 1) {
-                        $retval .= '[+' . $A['dups'] . ']';
+                        $acomment .= '[+' . $A['dups'] . ']';
                     }
-                    $retval .= '</a></li>' . LB;
+                    $acomment .= '</a>';
                 }
+                $newcomments[] = $acomment;
             }
         }
+        $retval .= COM_makeList ($newcomments);
     } else {
         $retval .= $LANG01[86] . '<br>' . LB;
     }
@@ -2305,6 +2312,7 @@ function COM_whatsNewBlock($help='',$title='')
     // Cap max displayed at 15
     if ($nrows > 15) $nrows = 15;
     if ($nrows > 0) {
+        $newlinks = array();
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
 		    if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {	
@@ -2325,17 +2333,20 @@ function COM_whatsNewBlock($help='',$title='')
                     $foundone = 1;
 
                     if ($itemlen > 16) {
-                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">' 
-                            . substr($A['title'],0,16) . '...</a></li>' . LB;
+                        $newlinks []= '<a href="' . $A['url'] . '" target="_blank">' 
+                            . substr($A['title'],0,16) . '...</a>' . LB;
                     } else {
-                        $retval .= '<li class="storyclose"><a href="' . $A['url'] . '" target="_blank">'
-                            . substr($A['title'],0,$itemlen) . '</a></li>' . LB;
+                        $newlinks[] = '<a href="' . $A['url'] . '" target="_blank">'
+                            . substr($A['title'],0,$itemlen) . '</a>' . LB;
                     }
                 }
             }
         }
         if ($foundone == 0) {
             $retval .= $LANG01[88] . '<br>' . LB;
+        }
+        else {
+            $retval .= COM_makeList ($newlinks);
         }
     }
 
@@ -2625,4 +2636,25 @@ function COM_getMinuteOptions($selected = '')
     }
     return $minute_options;
 }
+
+/**
+* Creates a list from the given array (one list item per array element),
+* using the list.thtml and listitem.thtml templates.
+*
+*/
+function COM_makeList ($listofitems) {
+    global $_CONF;
+
+    $list = new Template($_CONF['path_layout']);
+    $list->set_file(array('list'=>'list.thtml','listitem'=>'listitem.thtml'));
+
+    foreach ($listofitems as $oneitem) {
+        $list->set_var('list_item', $oneitem);
+        $list->parse('list_items', 'listitem', true);
+    }
+    $list->parse ('newlist', 'list', true);
+
+    return $list->finish($list->get_var('newlist'));
+}
+
 ?>
