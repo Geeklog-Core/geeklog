@@ -96,4 +96,7 @@ $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD ipaddress varchar(15) NOT NULL
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_lft(lft)";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD INDEX comments_rht(rht)";
 
+// make sure the older_stories block is of type "gldefault"
+$_SQL[] = "UPDATE {$_TABLES['blocks']} SET type = 'gldefault' WHERE name = 'older_stories'";
+
 ?>
