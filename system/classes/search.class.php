@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.28 2004/08/23 19:36:36 dhaun Exp $
+// $Id: search.class.php,v 1.29 2005/01/01 15:44:19 dhaun Exp $
 
 if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -537,7 +537,7 @@ class Search {
     */
     function _searchEvents()
     {
-        global $LANG09, $_CONF, $_TABLES;
+        global $_CONF, $_TABLES, $LANG09, $LANG12;
     
         if (($this->_type == 'events') OR
             (($this->_type == 'all') AND empty($this->_author))) {
@@ -599,12 +599,10 @@ class Search {
             $event_results = new Plugin();
             $event_results->searchresults = array();
             $event_results->searchlabel = $LANG09[37];
-            if (!$_CONF['expanded_search_results']) 
-            {
-                $event_results->addSearchHeading($LANG09[16]);
-                $event_results->addSearchHeading($LANG09[37]);
-                $event_results->addSearchHeading($LANG09[34]);
-            }
+            $event_results->addSearchHeading($LANG09[16]);
+            $event_results->addSearchHeading($LANG09[49]);
+            $event_results->addSearchHeading($LANG09[34]);
+            $event_results->addSearchHeading($LANG12[15]);
             $event_results->num_searchresults = 0;
             $event_results->num_itemssearched = DB_count($_TABLES['events']);
     
@@ -776,7 +774,7 @@ class Search {
         reset($result_plugins);
         $totalfound = 0;
         foreach ($result_plugins as $key) {
-            $totalfound .= $key->num_searchresults;
+            $totalfound += $key->num_searchresults;
         }
         if ( $totalfound == 0) {
             $searchObj = new Search();
