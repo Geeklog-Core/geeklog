@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.297 2004/03/02 19:59:37 dhaun Exp $
+// $Id: lib-common.php,v 1.298 2004/03/05 08:36:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5276,6 +5276,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
         $pa = explode( '"', $pa[0] );
         $pa = explode( '`', $pa[0] );
         $pa = explode( ';', $pa[0] );
+        $pa = explode( '\\', $pa[0] );
         $p = $pa[0];
     }
 
