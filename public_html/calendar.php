@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.31 2003/08/02 17:04:50 dhaun Exp $
+// $Id: calendar.php,v 1.32 2004/01/04 22:13:50 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -301,6 +301,15 @@ if ($mode == 'personal' AND $_CONF['personalcalendars'] == 0) {
     $display .= COM_siteFooter();
     echo $display;
     exit;
+}
+
+if (isset ($HTTP_POST_VARS['msg'])) {
+    $msg = COM_applyFilter ($HTTP_POST_VARS['msg'], true);
+} else {
+    $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+}
+if ($msg > 0) {
+    $display .= COM_showMessage ($msg);
 }
 
 // Create new calendar object
