@@ -149,6 +149,28 @@ CREATE TABLE commentspeedlimit (
 # Dumping data for table 'commentspeedlimit'
 #
 
+#
+# Table structure for table 'cookiecodes'
+#
+
+CREATE TABLE cookiecodes (
+  cc_value int(8) unsigned DEFAULT '0' NOT NULL,
+  cc_descr varchar(20) DEFAULT '' NOT NULL,
+  PRIMARY KEY (cc_value)
+) TYPE=MyISAM;
+
+#
+# Dumping data for table 'cookiecodes'
+#
+
+INSERT INTO cookiecodes VALUES (3600,'1 Hour');
+INSERT INTO cookiecodes VALUES (7200,'2 Hours');
+INSERT INTO cookiecodes VALUES (10800,'3 Hours');
+INSERT INTO cookiecodes VALUES (28800,'8 Hours');
+INSERT INTO cookiecodes VALUES (86400,'1 Day');
+INSERT INTO cookiecodes VALUES (604800,'1 Week');
+INSERT INTO cookiecodes VALUES (2678400,'1 Month');
+INSERT INTO cookiecodes VALUES (31536000,'1 Year');
 
 #
 # Table structure for table 'dateformats'
@@ -165,6 +187,24 @@ CREATE TABLE dateformats (
 # Dumping data for table 'dateformats'
 #
 
+INSERT INTO dateformats VALUES (0,'','System Default');
+INSERT INTO dateformats VALUES (1,'%A %B %d, %Y @%I:%M%p','Sunday March 21, 1999 @10:00PM');
+INSERT INTO dateformats VALUES (2,'%A %b %d, %Y @%H:%M','Sunday March 21, 1999 @22:00');
+INSERT INTO dateformats VALUES (4,'%A %b %d @%H:%M','Sunday March 21 @22:00');
+INSERT INTO dateformats VALUES (5,'%H:%M %d %B %Y','22:00 21 March 1999');
+INSERT INTO dateformats VALUES (6,'%H:%M %A %d %B %Y','22:00 Sunday 21 March 1999');
+INSERT INTO dateformats VALUES (7,'%I:%M%p - %A %B %d %Y','10:00PM -- Sunday March 21 1999');
+INSERT INTO dateformats VALUES (8,'%a %B %d, %I:%M%p','Sun March 21, 10:00PM');
+INSERT INTO dateformats VALUES (9,'%a %B %d, %H:%M','Sun March 21, 22:00');
+INSERT INTO dateformats VALUES (10,'%m-%d-%y %H:%M','3-21-99 22:00');
+INSERT INTO dateformats VALUES (11,'%d-%m-%y %H:%M','21-3-99 22:00');
+INSERT INTO dateformats VALUES (12,'%m-%d-%y %I:%M%p','3-21-99 10:00PM');
+INSERT INTO dateformats VALUES (13,'%I:%M%p  %B %D, %Y','10:00PM  March 21st, 1999');
+INSERT INTO dateformats VALUES (14,'%a %b %d, \'%y %I:%M%p','Sun Mar 21, \'99 10:00PM');
+INSERT INTO dateformats VALUES (15,'Day %j, %I ish','Day 80, 10 ish');
+INSERT INTO dateformats VALUES (16,'%y-%m-%d %I:%M','99-03-21 10:00');
+INSERT INTO dateformats VALUES (17,'%d/%m/%y %H:%M','21/03/99 22:00');
+INSERT INTO dateformats VALUES (18,'%a %d %b %I:%M%p','Sun 21 Mar 10:00PM');
 
 #
 # Table structure for table 'events'
@@ -523,8 +563,6 @@ CREATE TABLE sessions (
 #
 # Dumping data for table 'sessions'
 #
-
-INSERT INTO sessions VALUES (1391178416,1001551396,'24.19.28.30',2,'105d911336bb721597d7689ae99d2eb9');
 
 #
 # Table structure for table 'sortcodes'
@@ -889,6 +927,7 @@ CREATE TABLE users (
   homepage varchar(96) default NULL,
   sig varchar(160) NOT NULL default '',
   regdate datetime NOT NULL default '0000-00-00 00:00:00',
+  cookietimeout int(8) unsigned DEFAULT 'NULL',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username)
 ) TYPE=MyISAM;
@@ -914,7 +953,7 @@ CREATE TABLE vars (
 # Dumping data for table 'vars'
 #
 
-INSERT INTO vars VALUES ('totalhits','17');
+INSERT INTO vars VALUES ('totalhits','0');
 INSERT INTO vars VALUES ('lastemailedstories','2001-09-26 19:17:13');
 
 #
