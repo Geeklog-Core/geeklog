@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.24 2003/03/29 20:51:17 dhaun Exp $
+// $Id: calendar_event.php,v 1.25 2003/06/16 09:11:22 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -407,7 +407,12 @@ default:
             break;
         } else {
             $display .= COM_siteHeader('menu');
-            $display .= COM_startBlock($LANG30[9]);
+            if (strpos ($LANG30[9], '%') === false) {
+                $display .= COM_startBlock ($LANG30[9]);
+            } else {
+                $display .= COM_startBlock (sprintf ($LANG30[9],
+                                                     $_CONF['site_name']));
+            }
             $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
     } else {
