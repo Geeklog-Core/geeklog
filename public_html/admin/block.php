@@ -31,14 +31,30 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.30 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: block.php,v 1.31 2002/05/22 13:31:52 tony_bibbs Exp $
+
+/**
+* This is the block administration page for Geeklog
+*
+* @author   Tony Bibbs <tony@tonyibbs.com>
+* @author   Mark Limburg <mlimburg@users.sourceforge.net>
+* @author   Jason Whittenburg
+*
+*/
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 // COM_debug($HTTP_POST_VARS);
 
+/**
+* Geeklog common function library
+*/
 include('../lib-common.php');
+
+/**
+* Admin authenticator
+*/
 include('auth.inc.php');
 
 if (!SEC_hasrights('block.edit')) {
@@ -58,8 +74,10 @@ if (!SEC_hasrights('block.edit')) {
 * properly.  Because of their special role, they have restricted
 * edit properties so this form shows that.
 *
-* @A        array       Array of data to show on form
-* @access   int         Permissions this user has
+* @param    array       $A          Array of data to show on form
+* @param    int         $access     Permissions this user has
+* @return   string      HTML for form
+* @see function editblock
 *
 */ 
 function editdefaultblock($A,$access) 
@@ -129,7 +147,8 @@ function editdefaultblock($A,$access)
 * This will show a block edit form.  If this is a Geeklog default block it will
 * send it off to editdefaultblock.
 *
-* @bid      string      ID of block to edit
+* @param    string      $bid        ID of block to edit
+* @return   string      HTML for form
 *
 */
 function editblock($bid='') 
@@ -277,23 +296,23 @@ function editblock($bid='')
 /**
 * Saves a block
 *
-* @bid          string      Block ID
-* @title        string      Block title
-* @type         string      Type of block
-* @blockorder   int         Order block appears relative to the others
-* @content      string      Content of block
-* @tid          string      Topic block should appear in
-* @rdfurl       string      URL to headline feed for portal blocks
-* @rdfupdated   string      Date RSS/RDF feed was last updated
-* @phpblockfn   string      Name of php function to call to get content
-* @onleft       int         Flag indicates if block shows up on left or right
-* @owner_id     int         ID of owner
-* @group_id     int         ID of group block belongs to
-* @perm_owner   array       Permissions the owner has on the object
-* @perm_group   array       Permissions the group has on the object
-* @perm_members array       Permissions the logged in members have
-* @perm_anon    array       Permissinos anonymous users have
-* @is_enabled   int         Flag, indicates if block is enabled or not
+* @param    string      $bid            Block ID
+* @param    string      $title          Block title
+* @param    string      $type           Type of block
+* @param    int         $blockorder     Order block appears relative to the others
+* @param    string      $content        Content of block
+* @param    string      $tid            Topic block should appear in
+* @param    string      $rdfurl         URL to headline feed for portal blocks
+* @param    string      $rdfupdated     Date RSS/RDF feed was last updated
+* @param    string      $phpblockfn     Name of php function to call to get content
+* @param    int         $onleft         Flag indicates if block shows up on left or right
+* @param    int         $owner_id       ID of owner
+* @param    int         $group_id       ID of group block belongs to
+* @param    array       $perm_owner     Permissions the owner has on the object
+* @param    array       $perm_group     Permissions the group has on the object
+* @param    array       $perm_members   Permissions the logged in members have
+* @param    array       $perm_anon      Permissinos anonymous users have
+* @param    int         $is_enabled     Flag, indicates if block is enabled or not
 *
 */
 function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled) 
@@ -349,7 +368,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled","admin/block.php?msg=11");
+        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled",'bid',$bid,'admin/block.php?msg=11');
 
 
     } else {
@@ -381,6 +400,8 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
 
 /**
 * Lists all block in the system
+*
+* @return   string      HTML for block listing
 *
 */
 function listblocks() 
