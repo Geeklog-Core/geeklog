@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.363 2004/08/23 12:38:50 dhaun Exp $
+// $Id: lib-common.php,v 1.364 2004/08/23 14:30:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4413,64 +4413,42 @@ function COM_whatsNewBlock( $help='', $title='' )
         // Get newest links
         $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
 
-        $sql = "SELECT lid,title,url FROM {$_TABLES['links']}"
-             . COM_getPermSQL() . ' ORDER BY lid DESC LIMIT 15';
-        $foundone = 0;
-        $now = time();
-        $desired = $now - $_CONF['newlinksinterval'];
+        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
         $result = DB_query( $sql );
         $nrows = DB_numRows( $result );
 
         if( $nrows > 0 )
         {
             $newlinks = array();
-            for( $x = 1; $x <= $nrows; $x++ )
+            for( $x = 0; $x < $nrows; $x++ )
             {
                 $A = DB_fetchArray( $result );
                 $A['title'] = stripslashes( $A['title'] );
 
-                // Need to reparse the date from the link id
-                $myyear = substr( $A['lid'], 0, 4 );
-                $mymonth = substr( $A['lid'], 4, 2 );
-                $myday = substr( $A['lid'], 6, 2 );
-                $myhour = substr( $A['lid'], 8, 2 );
-                $mymin = substr( $A['lid'], 10, 2 );
-                $mysec = substr( $A['lid'], 12, 2 );
-                $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-                $convtime = strtotime( $newtime );
+                // redirect link via portal.php so we can count the clicks
+                $lcount = $_CONF['site_url']
+                        . '/portal.php?what=link&amp;item=' . $A['lid'];
 
-                if( $convtime > $desired )
+                // Trim the length if over 16 characters
+                $itemlen = strlen( $A['title'] );
+                if( $itemlen > 16 )
                 {
-                    $foundone = 1;
-
-                    // redirect link via portal.php so we can count the clicks
-                    $lcount = $_CONF['site_url']
-                            . '/portal.php?what=link&amp;item=' . $A['lid'];
-
-                    // Trim the length if over 16 characters
-                    $itemlen = strlen( $A['title'] );
-                    if( $itemlen > 16 )
-                    {
-                        $newlinks [] = '<a href="' . $lcount . '" title="'
-                            . $A['title'] . '">' . substr( $A['title'], 0, 16 )
-                            . '...</a>' . LB;
-                    }
-                    else
-                    {
-                        $newlinks[] = '<a href="' . $lcount . '">'
-                            . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
-                    }
+                    $newlinks [] = '<a href="' . $lcount . '" title="'
+                        . $A['title'] . '">' . substr( $A['title'], 0, 16 )
+                        . '...</a>' . LB;
+                }
+                else
+                {
+                    $newlinks[] = '<a href="' . $lcount . '">'
+                        . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
                 }
             }
-        }
 
-        if( $foundone == 0 )
-        {
-            $retval .= $LANG01[88] . '<br>' . LB;
+            $retval .= COM_makeList( $newlinks, 'list-new-links' );
         }
         else
         {
-            $retval .= COM_makeList( $newlinks, 'list-new-links' );
+            $retval .= $LANG01[88] . '<br>' . LB;
         }
     }
 
