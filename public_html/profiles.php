@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.9 2001/12/18 21:40:34 tony_bibbs Exp $
+// $Id: profiles.php,v 1.10 2002/04/14 16:47:47 dhaun Exp $
 
 include('lib-common.php');
 
@@ -94,8 +94,8 @@ function contactform($uid, $subject='', $message='')
 	$result = DB_query("SELECT username FROM {$_TABLES['users']} WHERE uid = $uid");
 	$A = DB_fetchArray($result);
 	
-	$retval .= '<form action="'.$_CONF['site_url'].'/profiles.php" method="POST" name="contact">'.LB
-		.COM_startBlock($LANG08[10].' '.$A['username'])
+	$retval .= COM_startBlock($LANG08[10].' '.$A['username'])
+    .'<form action="'.$_CONF['site_url'].'/profiles.php" method="POST" name="contact">'.LB
 		.'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
 		.'<tr><td colspan="2">'.$LANG08[26].'</td></tr>'.LB
 		.'<tr><td>'.$LANG08[11].'</td><td><input type="text" name="author" size="32" value="'.$_USER[0].'" maxlength="32"></td></tr>'.LB
@@ -105,8 +105,8 @@ function contactform($uid, $subject='', $message='')
 		.'<tr><td colspan="2" class="warning">'.$LANG08[15].'<br><input type="hidden" name="what" value="contact">'
 		.'<input type="hidden" name="uid" value="'.$uid.'"><input type="submit" value="'.$LANG08[16].'"></td></tr>'.LB
 		.'</table>'
-		.COM_endBlock()
-		.'</form>';
+		.'</form>'
+		.COM_endBlock();
 	
 	return $retval;
 }
