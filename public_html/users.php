@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.55 2003/04/11 08:19:10 dhaun Exp $
+// $Id: users.php,v 1.56 2003/04/16 13:20:27 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -192,7 +192,7 @@ function userprofile($user)
 
     for ($i = 1; $i <= $numqids; $i++) {
         $Q = DB_fetchArray ($result);
-        $sidArray[] = $S['sid'];
+        $sidArray[] = $Q['qid'];
     }
 
     $sidList = implode("', '",$sidArray);

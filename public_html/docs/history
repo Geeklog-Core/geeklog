@@ -3,6 +3,8 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Fixed "Last 10 comments by user" in the user's profile which was missing the
+  comments to polls.
 - Fixed a bug that prevented certain right blocks from showing up when there
   where no stories for a topic.
 - When a new user registeres, we need to check for a valid email address
