@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.5 2003/12/28 18:48:05 dhaun Exp $
+// $Id: lib-syndication.php,v 1.6 2004/01/21 20:49:29 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -237,6 +237,7 @@ function SYND_feedUpdateCheckEvents( $update_info, $limit )
     }
 
     $result = DB_query( "SELECT eid FROM {$_TABLES['events']} WHERE perm_anon > 0 AND dateend >= NOW()$where ORDER BY datestart,timestart $limitsql" );
+    $nrows = DB_numRows( $result );
 
     $eids = array();
     for( $i = 0; $i < $nrows; $i++ )
