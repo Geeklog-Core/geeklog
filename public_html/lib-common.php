@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.172 2002/10/22 15:25:36 dhaun Exp $
+// $Id: lib-common.php,v 1.173 2002/10/23 20:11:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -424,35 +424,39 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
-        if( $A['commentcode'] >= 0 && $A['comments'] > 0 )
+        if( $A['commentcode'] >= 0 )
         {
-            $article->set_var( 'comments_url', $_CONF['site_url']
-                    . '/article.php?story=' . $A['sid'] . '#comments' );
-            $article->set_var( 'comments_text', $A['comments'] . ' '
-                    . $LANG01[3] );
-            $article->set_var( 'comments_count', $A['comments'] );
-            $article->set_var( 'lang_comments', $LANG01[3] );
+            if( $A['comments'] > 0 )
+            {
+                $article->set_var( 'comments_url', $_CONF['site_url']
+                        . '/article.php?story=' . $A['sid'] . '#comments' );
+                $article->set_var( 'comments_text', $A['comments'] . ' '
+                        . $LANG01[3] );
+                $article->set_var( 'comments_count', $A['comments'] );
+                $article->set_var( 'lang_comments', $LANG01[3] );
 
-            $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
-            $C = DB_fetchArray( $result );
+                $result = DB_query( "SELECT UNIX_TIMESTAMP(date) AS day,username FROM {$_TABLES['comments']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['comments']}.uid AND sid = '{$A['sid']}' ORDER BY date desc LIMIT 1" );
+                $C = DB_fetchArray( $result );
 
-            $recent_post_anchortag = '<span class="storybyline">' . $LANG01[27]
-                    . ': '. strftime( $_CONF['daytime'], $C['day'] ) . ' '
-                    . $LANG01[104] . ' ' . $C['username'] . '</span>';
-            $article->set_var( 'start_comments_anchortag', '<a href="'
-                    . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                    . '#comments">' );
-            $article->set_var( 'end_comments_anchortag', '</a>' );
+                $recent_post_anchortag = '<span class="storybyline">'
+                        . $LANG01[27] . ': '
+                        . strftime( $_CONF['daytime'], $C['day'] ) . ' '
+                        . $LANG01[104] . ' ' . $C['username'] . '</span>';
+                $article->set_var( 'start_comments_anchortag', '<a href="'
+                        . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
+                        . '#comments">' );
+                $article->set_var( 'end_comments_anchortag', '</a>' );
+            }
+            else
+            {
+                $recent_post_anchortag = ' <a href="' . $_CONF['site_url']
+                        . '/comment.php?sid=' . $A['sid']
+                        . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
+            }
+            $article->set_var( 'post_comment_link',' <a href="'
+                    . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid']
+                    . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>' );
         }
-        elseif( $A['commentcode'] >= 0 )
-        {
-            $recent_post_anchortag = ' <a href="' . $_CONF['site_url']
-                    . '/comment.php?sid=' . $A['sid']
-                    . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>';
-        }
-        $article->set_var( 'post_comment_link',' <a href="' . $_CONF['site_url']
-                . '/comment.php?sid=' . $A['sid']
-                . '&amp;pid=0&amp;type=article">' . $LANG01[60] . '</a>' );
 
         if( $_CONF['hideemailicon'] == 1 )
         {
@@ -1731,15 +1735,16 @@ function COM_showTopics( $topic='' )
 {
     global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page;
 
+    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} ";
     if( $_CONF['sortmethod'] == 'alpha' )
     {
-        $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC" );
+        $sql .= "ORDER BY topic ASC";
     }
     else
     {
-        $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY sortnum" );
+        $sql .= "ORDER BY sortnum";
     }
-
+    $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
     // Give a link to the homepage here since a lot of people use this for
