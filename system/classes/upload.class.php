@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.36 2004/10/11 18:30:25 dhaun Exp $
+// $Id: upload.class.php,v 1.37 2004/10/12 09:41:11 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -583,48 +583,6 @@ class upload
                 $filename = $this->_fileUploadDirectory . '/'
                           . $this->_getDestinationName();
 
-                // Detect filetype
-                if ($this->_currentFile['type'] == 'image/gif') {
-                    if (!function_exists ('imagecreatefromgif')) {
-                        $this->_addError ('Sorry, this version of the GD library does not support GIF images.');
-                        $this->printErrors ();
-                        exit;
-                    }
-                    // If file is GIF do a quick PNG conversion first
-                    $this->_addDebugMsg ('converting GIF to PNG');
-                    $image_size = getimagesize ($filename);
-                    $image_source = imagecreatefromgif ($filename);
-                    $image_dest = imagecreatetruecolor ($image_size[0],
-                                                        $image_size[1]);
-                    imagecopy ($image_dest, $image_source, 0, 0, 0, 0,
-                               $image_size[0], $image_size[1]);
-                    $png_filename = $this->_fileUploadDirectory . '/'
-                                  . eregi_replace ("\.gif", ".png",
-                                    $this->_getDestinationName ());
-                    if (!imagepng ($image_dest, $png_filename)) {
-                        $this->_addError ('Error creating PNG from GIF: '
-                                          . $png_filename);
-                        $this->printErrors ();
-                        exit;
-                    } else {
-                        // GIF converted to PNG, delete original file
-                        $this->_addDebugMsg ('Deleting GIF: ' . $filename);
-                        if (!unlink ($filename)) {
-                            $this->_addError ('Unable to delete original GIF: '
-                                              . $filename);
-                            $this->printErrors ();
-                            exit;
-                        }
-                    }
-                    // change file type to PNG
-                    $this->_currentFile['type'] = 'image/png';
-
-                    // change file name to .png
-                    $filename = $this->_fileUploadDirectory . '/'
-                              . eregi_replace ("\.gif", ".png",
-                                $this->_getDestinationName ());
-                }
-
                 if (!$this->_keepOriginalFile ($filename)) {
                     exit;
                 }
@@ -651,6 +609,18 @@ class upload
                     }
                     if (!$image_source = imagecreatefromjpeg ($filename)) {
                         $this->_addError ('Could not create image from JPEG: '
+                                          . $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                } elseif ($this->_currentFile['type'] == 'image/gif') {
+                    if (!function_exists ('imagecreatefromgif')) {
+                        $this->_addError ('Sorry, this version of the GD library does not support GIF images.');
+                        $this->printErrors ();
+                        exit;
+                    }
+                    if (!$image_source = imagecreatefromgif ($filename)) {
+                        $this->_addError ('Could not create image from GIF: '
                                           . $filename);
                         $this->printErrors ();
                         exit;
@@ -684,6 +654,12 @@ class upload
                           ($this->_currentFile['type'] == 'image/pjpeg')) {
                     if (!imagejpeg ($image_dest, $filename)) {
                         $this->_addError ('Could not create JPEG: '. $filename);
+                        $this->printErrors ();
+                        exit;
+                    }
+                } elseif ($this->_currentFile['type'] == 'image/gif') {
+                    if (!imagegif ($image_dest, $filename)) {
+                        $this->_addError ('Could not create GIF: ' . $filename);
                         $this->printErrors ();
                         exit;
                     }
