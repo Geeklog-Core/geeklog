@@ -29,13 +29,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.14 2003/01/21 03:34:02 blaine Exp $
+// $Id: mysql.class.php,v 1.15 2003/10/03 12:03:10 dhaun Exp $
 
 /**
-* This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
-* the Geeklog abstraction layer isn't 100% abstract because a key few functions use
-* MySQL's REPLACE INTO syntax which is not a SQL standard.  Those issue will be resolved
-* in the near future
+* This file is the mysql implementation of the Geeklog abstraction layer.
+* Unfortunately the Geeklog abstraction layer isn't 100% abstract because a few
+* key functions use MySQL's REPLACE INTO syntax which is not a SQL standard.
+* This issue will need to be resolved some time ...
 *
 */
 class database {
@@ -62,6 +62,10 @@ class database {
     * @access private
     */
     var $_verbose = false;
+    /**
+    * @access private
+    */
+    var $_display_error = false;
     /**
     * @access private
     */
@@ -158,6 +162,22 @@ class database {
     function setVerbose($flag)
     {
         $this->_verbose = $flag;
+    }
+
+    /**
+    * Turns detailed error reporting on
+    *
+    * If set to true, this will display detailed error messages on the site.
+    * Otherwise, it will only that state an error occured without going into
+    * details. The complete error message (including the offending SQL request)
+    * is always available from error.log.
+    *
+    * @param    boolean     $flag   true or false
+    *
+    */
+    function setDisplayError($flag)
+    {
+        $this->_display_error = $flag;
     }
 
     /**
@@ -638,8 +658,12 @@ class database {
     function dbError($sql='')
     {
         if (mysql_errno()) {
-            $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . " SQL in question: $sql");        
-            return  @mysql_errno() . ': ' . @mysql_error();
+            $this->_errorlog(@mysql_errno() . ': ' . @mysql_error() . ". SQL in question: $sql");        
+            if ($this->_display_error) {
+                return  @mysql_errno() . ': ' . @mysql_error();
+            } else {
+                return 'An SQL error has occured. Please see error.log for details.';
+            }
         }
 	
 	return;
