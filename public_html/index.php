@@ -31,16 +31,22 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.24 2002/04/23 04:22:02 mlimburg Exp $
+// $Id: index.php,v 1.25 2002/05/01 17:29:12 dhaun Exp $
 
 require_once('lib-common.php');
 
 $display .= COM_siteHeader();
 
 $maxstories = 0;
+if (isset ($HTTP_GET_VARS['page'])) {
+    $page = $HTTP_GET_VARS['page'];
+}
 if (empty($page)) {
     // If no page sent then assume the first.
     $page = 1;
+}
+if (isset ($HTTP_GET_VARS['topic'])) {
+    $topic = $HTTP_GET_VARS['topic'];
 }
 
 if (!empty($_USER['uid'])) {
@@ -66,7 +72,7 @@ if (!empty($_USER['uid'])) {
 
 $limit = $U['maxstories'];
 
-$display .= COM_showMessage($msg);
+$display .= COM_showMessage($HTTP_GET_VARS['msg']);
 
 // Geeklog now allows for articles to be published in the future.  Because of this, we need to check
 // to see if we need to rebuild the RDF file in the case that any such articles have now been published

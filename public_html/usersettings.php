@@ -518,26 +518,31 @@ function savepreferences($A)
 }
 
 // MAIN
-
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = $HTTP_POST_VARS['mode'];
+}
+else if (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = $HTTP_GET_VARS['mode'];
+}
 $display = '';
 
 if (!empty($_USER['username']) && !empty($mode)) {
     switch ($mode) {
     case 'preferences':
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($msg);
+        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
         $display .= editpreferences();
         $display .= COM_siteFooter();
         break;
     case 'comments':
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($msg);
+        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
         $display .= editcommentprefs();
         $display .= COM_siteFooter();
         break;
     case 'edit':
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($msg);
+        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
         $display .= edituser();
         $display .= COM_siteFooter();
         break;
@@ -548,7 +553,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         savepreferences($HTTP_POST_VARS);
         break;
     case 'savecomments':
-        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','$commentmode','$commentorder','$commentlimit'","usersettings.php?mode=comments&msg=7");
+        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'","usersettings.php?mode=comments&msg=7");
         break;
     }
 } else {
