@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.12 2003/03/05 14:34:44 dhaun Exp $
+// $Id: lib-security.php,v 1.13 2003/03/27 21:07:16 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -218,7 +218,7 @@ function SEC_isModerator()
 * Checks to see if current user has access to view a topic
 *
 * @param        string      $tid        ID for topic to check on
-* @return       boolean     true if user has access to topic, otherwise false
+* @return       int 	returns 3 for read/edit 2 for read only 0 for no access
 *
 */
 function SEC_hasTopicAccess($tid)
