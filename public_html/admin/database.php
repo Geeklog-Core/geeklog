@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.18 2004/05/29 11:42:27 dhaun Exp $
+// $Id: database.php,v 1.19 2004/07/18 22:47:59 blaine Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -99,9 +99,10 @@ if (isset ($HTTP_POST_VARS['mode']) &&
         } else {
             $canExec = file_exists ($_DB_mysqldump_path);
         }
-		if ($canExec) {
-			exec($command);
-			if (file_exists ($backupfile) && filesize ($backupfile) > 0) {
+        if ($canExec) {
+            exec($command);
+            if (file_exists ($backupfile) && filesize ($backupfile) > 0) {
+                @chmod($backupfile, 0644);
                 $timestamp = strftime ($_CONF['daytime']);
                 $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp,
                               '', COM_getBlockTemplate ('_msg_block', 'header'))
@@ -109,16 +110,16 @@ if (isset ($HTTP_POST_VARS['mode']) &&
                          . 'sysmessage.gif" border="0" align="top" alt="">'
                          . $LANG_DB_BACKUP['backup_successful'] . '<br><br>'
                          . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-			} else {
+            } else {
                 $display .= COM_startBlock ($LANG08[06], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
                 $display .= $LANG_DB_BACKUP['zero_size'];
                 $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
                                                                 'footer'));
-                COM_errorLog ("Backup Filesize was 0 bytes", 1);	
+                COM_errorLog ("Backup Filesize was 0 bytes", 1);    
                 COM_errorLog ("Command used for mysqldump: $command", 1);
             }
-		} else {
+        } else {
             $display .= COM_startBlock ($LANG08[06], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
             $display .= $LANG_DB_BACKUP['not_found'];
@@ -126,14 +127,14 @@ if (isset ($HTTP_POST_VARS['mode']) &&
                                                             'footer'));
             COM_errorLog ("Backup Error: Bad path or mysqldump does not exist", 1);
             COM_errorLog ("Command used for mysqldump: $command", 1);
-		}
-	} else {
+        }
+    } else {
         $display .= COM_startBlock ($MESSAGE[30], '',
                             COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $LANG_DB_BACKUP['path_not_found'];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         COM_errorLog ("Backup directory '" . $_CONF['backup_path'] . "' does not exist or is not a directory", 1);
-	}
+    }
 }
 
 // Show last ten backups
@@ -150,7 +151,7 @@ if(is_writable($_CONF['backup_path'])) {
             $index++;
             clearstatcache();
             $backups[] = $file;
-    	}
+        }
     }
     if (is_array($backups) AND $index > 0) {
         // AS, 2004-03-29 - Sort backup files by date, newest first.
@@ -183,7 +184,7 @@ if(is_writable($_CONF['backup_path'])) {
         $display .= '<p>' . $LANG_DB_BACKUP['no_backups'] . '</p>';
     }
 
-	// Show backup form
+    // Show backup form
     $display .= $LANG_DB_BACKUP['db_explanation'];
     $display .= '<form name="dobackup" method="POST" action="'
              . $_CONF['site_admin_url'] . '/database.php">';
