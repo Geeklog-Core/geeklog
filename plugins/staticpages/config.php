@@ -1,6 +1,6 @@
 <?php
 
-$_SP_CONF['version'] = '1.3';
+$_SP_CONF['version'] = '1.4';
 
 // If you have more than one static page that is to be displayed in Geeklog's 
 // center area, you can specify how to sort them:

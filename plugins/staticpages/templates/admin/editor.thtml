@@ -61,6 +61,10 @@
               <td colspan="2"><hr></td>
           </tr>
           <tr>
+              <td align="right" valign="top">{inblock_msg}</td>
+              <td valign="top"><input type="checkbox" name="sp_inblock" value="1" {inblock_checked}>&nbsp;&nbsp;{inblock_info}</td>
+          </tr>
+          <tr>
               <td align="right" valign="top">{php_msg}</td>
               <td valign="top"><input type="{php_type}" name="sp_php" value="1" {php_checked}>&nbsp;&nbsp;{php_warn}</td>
           </tr>
@@ -112,6 +116,7 @@
           <tr>
               <td colspan="2">
                   <input type="submit" value="{lang_save}" name="mode"> 
+                  <input type="submit" value="{lang_cancel}" name="mode"> 
                   {delete_option}
                   <input type="hidden" name="sp_old_id" value="{sp_old_id}">
               </td>

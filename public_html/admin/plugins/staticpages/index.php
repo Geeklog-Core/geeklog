@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.26 2003/09/01 19:01:06 dhaun Exp $
+// $Id: index.php,v 1.27 2003/12/28 18:54:00 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -57,7 +57,7 @@ if (!SEC_hasRights('staticpages.edit')) {
 */ 
 function form ($A, $error = false) 
 {
-	global $_TABLES, $PHP_SELF, $_CONF, $HTTP_POST_VARS, $_USER, $LANG_STATIC,$_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
+	global $_TABLES, $PHP_SELF, $_CONF, $HTTP_POST_VARS, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
 
 	if (!empty($sp_id) && $mode=='edit') {
     	$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -68,11 +68,12 @@ function form ($A, $error = false)
 		$A['perm_group'] = 2;
 		$A['perm_members'] = 2;
 		$A['perm_anon'] = 2;
+        $A['sp_inblock'] = $_SP_CONF['in_block'];
 		$access = 3;
 	}
     $retval = '';
 
-    if (empty($A['owner_id'])) {
+    if (empty ($A['owner_id'])) {
 	    $error = COM_startBlock($LANG_ACCESS['accessdenied']);
     	$error .= $LANG_STATIC['deny_msg'];
 	    $error .= COM_endBlock();
@@ -120,9 +121,10 @@ function form ($A, $error = false)
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
         $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC['staticpageeditor']));
         $sp_template->set_var('lang_save', $LANG_STATIC['save']);
+        $sp_template->set_var('lang_cancel', $LANG_STATIC['cancel']);
         $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
         if (SEC_hasRights('staticpages.delete')) {
-            $sp_template->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_STATIC['delete']}\" name=\"mode\">");
+            $sp_template->set_var ('delete_option', '<input type="submit" value="' . $LANG_STATIC['delete'] . '" name="mode">');
         } else {
             $sp_template->set_var('delete_option','');
         }
@@ -202,13 +204,22 @@ function form ($A, $error = false)
             $sp_template->set_var('php_msg','');
             $sp_template->set_var('php_checked','');
         }
-        $sp_template->set_var('exit_msg',$LANG_STATIC['exit_msg']);
+
         if ($A['sp_nf'] == 1) {
             $sp_template->set_var('exit_checked','checked');
         } else {
             $sp_template->set_var('exit_checked','');
         }
+        $sp_template->set_var('exit_msg',$LANG_STATIC['exit_msg']);
         $sp_template->set_var('exit_info',$LANG_STATIC['exit_info']);
+
+        if ($A['sp_inblock'] == 1) {
+            $sp_template->set_var ('inblock_checked', 'checked');
+        } else {
+            $sp_template->set_var ('inblock_checked', '');
+        }
+        $sp_template->set_var ('inblock_msg', $LANG_STATIC['inblock_msg']);
+        $sp_template->set_var ('inblock_info', $LANG_STATIC['inblock_info']);
 
         $curtime = COM_getUserDateTimeFormat();
 
@@ -283,11 +294,7 @@ function staticpageeditor ($sp_id, $mode = '')
     global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
 
     if (!empty ($sp_id) && $mode == 'edit') {
-        $perms = SP_getPerms ('', '3');
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . $perms);
+        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL ('AND', 0, 3));
         $A = DB_fetchArray ($result);
         $A['sp_old_id'] = $A['sp_id'];
     } elseif ($mode == 'edit') {
@@ -297,11 +304,7 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['sp_old_id'] = '';
         $A['sp_where'] = 1; // default new pages to "top of page"
     } elseif (!empty ($sp_id) && $mode == 'clone') {
-        $perms = SP_getPerms ('', '3');
-        if (!empty ($perms)) {
-            $perms = ' AND ' . $perms;
-        }
-        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . $perms);
+        $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL ('AND', 0, 3));
         $A = DB_fetchArray ($result);
         $A['sp_id'] = COM_makesid ();
         $A['sp_uid'] = $_USER['uid'];
@@ -347,11 +350,7 @@ function liststaticpages ($page = 1)
         $page = 1;
     }
 
-    $perms = SP_getPerms ('', '3');
-    if (!empty ($perms)) {
-       $perms = ' WHERE ' . $perms;
-    }
-
+    $perms = COM_getPermSQL ('WHERE', 0, 3);
     $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['staticpage']}" . $perms);
     $C = DB_fetchArray ($result);
     $numpages = ceil ($C['count'] / $perpage);
@@ -449,9 +448,10 @@ function liststaticpages ($page = 1)
 * @param sp_centerblock  int     Flag to indicate display as a center block
 * @param sp_tid          string  topid id (for center block)
 * @param sp_where        int     position of center block
+* @param sp_inblock      int     Flag: wrap page in a block (or not)
 *
 */
-function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where)
+function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php, $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock)
 {
     global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
@@ -522,7 +522,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
         }
 
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where");
+		DB_save ($_TABLES['staticpage'], 'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,sp_php,sp_nf,sp_centerblock,sp_tid,sp_where,sp_inblock', "'$sp_id',$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,'$sp_php','$sp_nf',$sp_centerblock,'$sp_tid',$sp_where,'$sp_inblock'");
         if ($delete_old_page && !empty ($sp_old_id)) {
             DB_delete ($_TABLES['staticpage'], 'sp_id', $sp_old_id);
         }
@@ -564,7 +564,7 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate,
             $sp_hits, $sp_format, $sp_onmenu, $sp_label, $owner_id, $group_id,
             $perm_owner, $perm_group, $perm_members, $perm_anon, $sp_php,
-            $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where);
+            $sp_nf, $sp_old_id, $sp_centerblock, $sp_tid, $sp_where, $sp_inblock);
 } else {
     $display .= COM_siteHeader ('menu');
     $display .= liststaticpages ($page);

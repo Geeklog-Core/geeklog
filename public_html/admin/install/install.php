@@ -31,11 +31,11 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | You don't need to change anything in this file.
+// | You don't need to change anything in this file.                           |
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.58 2003/12/11 20:49:32 dhaun Exp $
+// $Id: install.php,v 1.59 2003/12/28 18:54:00 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -231,7 +231,7 @@ function INST_createDatabaseStructures()
 /*
 * Checks for Static Pages Version
 *
-* @return   0 = not installed, 1 = original plugin, 2 = plugin by Phill or Tom, 3 = v1.3
+* @return   0 = not installed, 1 = original plugin, 2 = plugin by Phill or Tom, 3 = v1.3 (center block, etc.), 4 = 1.4 ('in block' flag)
 *
 */
 function get_SP_Ver()
@@ -250,9 +250,11 @@ function get_SP_Ver()
             $A = DB_fetchArray ($result);
             if ($A[0] == 'sp_nf') {
                 $retval = 3; // v1.3
-                break;
             } elseif ($A[0] == 'sp_pos') {
                 $retval = 2; // v1.2
+            } elseif ($A[0] == 'sp_inblock') {
+                $retval = 4; // v1.4
+                break;
             }
         }
     }
@@ -262,7 +264,7 @@ function get_SP_Ver()
 
 function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 {
-    global $_TABLES, $_CONF, $_DB, $_DB_dbms, $_DB_table_prefix;
+    global $_TABLES, $_CONF, $_SP_CONF, $_DB, $_DB_dbms, $_DB_table_prefix;
 
     $_DB->setDisplayError (true);
 
@@ -496,6 +498,20 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
             $pos = strrpos ($_CONF['rdf_file'], '/');
             $filename = substr ($_CONF['rdf_file'], $pos + 1);
             DB_query ("INSERT INTO {$_TABLES['syndication']} (title, description, limits, content_length, filename, charset, language, is_enabled, updated, update_info) VALUES ('{$_CONF['site_name']}', '{$_CONF['site_slogan']}', '{$_CONF['rdf_limit']}', {$_CONF['rdf_storytext']}, '{$filename}', '{$_CONF['default_charset']}', '{$_CONF['rdf_language']}', {$_CONF['backend']}, '0000-00-00 00:00:00', NULL)");
+
+            // upgrade static pages plugin
+            $spversion = get_SP_ver ();
+            if ($spversion < 4) {
+                if (!isset ($_SP_CONF['in_block'])) {
+                    $_SP_CONF['in_block'] = 1;
+                } else if ($_SP_CONF['in_block'] > 1) {
+                    $_SP_CONF['in_block'] = 1;
+                } else if ($_SP_CONF['in_block'] < 0) {
+                    $_SP_CONF['in_block'] = 0;
+                }
+                DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD COLUMN sp_inblock tinyint(1) unsigned DEFAULT '{$_SP_CONF['in_block']}'");
+            }
+            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4', pi_gl_version = '1.3.9' WHERE pi_name = 'staticpages'");
 
             // recreate 'date' field for old links
             $result = DB_query ("SELECT lid FROM {$_TABLES['links']} WHERE date IS NULL");

@@ -95,7 +95,9 @@ $LANG_STATIC= array(
     centerblock_top => 'oben',
     centerblock_feat => 'Hauptartikel',
     centerblock_bottom => 'unten',
-    centerblock_entire => 'Ganze Seite'
+    centerblock_entire => 'Ganze Seite',
+    'inblock_msg' => 'Im Block: ',
+    'inblock_info' => 'Seite in einen Block packen.'
 );
 
 ?>
