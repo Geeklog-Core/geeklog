@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.22 2002/12/02 13:40:09 dhaun Exp $
+// $Id: upload.class.php,v 1.23 2003/01/01 18:56:21 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -345,14 +345,14 @@ class upload
             if ($imageInfo['width'] > $this->_maxImageWidth) {
                 $sizeOK = false;
                 if ($doResizeCheck) {
-                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations');
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations (is: ' . $imageInfo['width'] . ', max: ' . $this->_maxImageWidth . ')');
                 }
             }
 
             if ($imageInfo['height'] > $this->_maxImageHeight) {
                 $sizeOK= false;
                 if ($doResizeCheck) {
-                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations');
+                    $this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations (is: ' . $imageInfo['height'] . ', max: ' . $this->_maxImageHeight . ')');
                 }
             }
         }
