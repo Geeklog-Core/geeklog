@@ -5,10 +5,10 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | pollbooth.php                                                            |
-// | This is the pollbooth page.                                               |
 // |                                                                           |
+// | This is the pollbooth page.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.21 2003/10/11 13:57:57 dhaun Exp $
+// $Id: pollbooth.php,v 1.22 2004/02/28 21:23:11 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -141,18 +141,24 @@ if ($reply == $LANG01[25]) {
     exit;			
 }
 
-if (isset ($HTTP_POST_VARS['qid'])) { // assume we came here through a POST
+if (isset ($HTTP_POST_VARS['qid'])) {
     $qid = COM_applyFilter ($HTTP_POST_VARS['qid']);
     $aid = COM_applyFilter ($HTTP_POST_VARS['aid'], true);
-    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
 } else {
     $qid = COM_applyFilter ($HTTP_GET_VARS['qid']);
     $aid = COM_applyFilter ($HTTP_GET_VARS['aid']);
     if ($aid > 0) { // you can't vote with a GET request
         $aid = -1;
     }
+}
+if (isset ($HTTP_POST_VARS['order'])) {
+    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+} else {
     $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+}
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+} else {
     $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
 }
 
