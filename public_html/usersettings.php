@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.78 2004/01/02 20:58:26 blaine Exp $
+// $Id: usersettings.php,v 1.79 2004/01/07 04:42:34 tony Exp $
 
 include_once('lib-common.php');
 
@@ -121,6 +121,10 @@ function edituser()
     $preferences->set_var ('signature_value', $A['sig']);
 
     if ($_CONF['allow_user_photo'] == 1) {
+        $stdLoc = true;
+        if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+            $stdLoc = false;
+        }
         $photo = '';
         if (!empty ($A['photo'])) {
             if (!empty ($A['fullname'])) {
@@ -128,10 +132,17 @@ function edituser()
             } else {
                 $alt = '[' . $A['username'] . ']';
             }
-            $photo .= '<br><img src="' . $_CONF['site_url']
+            if ($stdLoc) {
+                $photo .= '<br><img src="' . $_CONF['site_url']
                    . '/images/userphotos/' . $A['photo'] . '" alt="' . $alt
                    . '">' . LB . '<br>' . $LANG04[79]
                    . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+            } else {
+                $photo .= '<br><img src="' . $_CONF['site_url']
+                   . '/getimage.php?mode=userphotos&image=' . $A['photo'] . '" alt="' . $alt
+                   . '">' . LB . '<br>' . $LANG04[79]
+                   . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+            }
             $preferences->set_var ('display_photo', $photo);
         }
         $preferences->parse ('userphoto_option', 'photo', true);
@@ -705,7 +716,7 @@ function saveuser($A)
                 }
             }
             $upload->setAllowedMimeTypes(array('image/gif'=>'.gif','image/jpeg'=>'.jpg,.jpeg','image/pjpeg'=>'.jpg,.jpeg','image/x-png'=>'.png','image/png'=>'.png'));
-            if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {
+            if (!$upload->setPath($_CONF['path_images'] . 'userphotos')) {
                 print 'File Upload Errors:<BR>' . $upload->printErrors();
                 exit;
             }
@@ -744,7 +755,7 @@ function saveuser($A)
                 $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
                 if (!empty($curphoto) AND isset ($A['delete_photo']) AND
                         $A['delete_photo'] == 'on') {
-                    $filetodelete = $_CONF['path_html'] . 'images/userphotos/' . $curphoto;
+                    $filetodelete = $_CONF['path_images'] . 'userphotos/' . $curphoto;
                     if (!unlink($filetodelete)) {
                         echo COM_errorLog("Unable to remove file $filetodelete");
                         exit;
