@@ -374,6 +374,16 @@ The function should return the complete HTML for the block (including header and
         <td valign="top" class="code">Plugins may add additional lines to the site's <code>&lt;head&gt;</code> tag by implementing this function, e.g. Javascript functions or additional Meta tags.<br>
 The function should return a concatenated string of all its extra header code.</td>
       </tr>
+    <tr>
+        <td valign="top" class="codeheader">plugin_whatsnewsupported_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">Plugins can add their own section to Geeklog's What's New block by implementing this and the following function.<br>
+        The function should return an array of 2 strings. The first string is used as the headline for the plugin's section in What's New and the second string is used to indicate the timespan that the entries in this section cover (e.g. "last 2 weeks").</td>
+    </tr>
+    <tr>
+        <td valign="top" class="codeheader">plugin_getwhatsnew_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function should return the actual new entries to be listed in the What's New block (as an array) or a string to be displayed in case there are no new entries.</td>
+
+    </tr>
   </table>
 
 
@@ -384,9 +394,9 @@ write all your plugin code yourself.&nbsp; We have put stubs in place   to
 link to you Admin Interface.&nbsp; You admin page(s) will be in 
 http://yourgeeklogdomain/admin/plugins/&lt;plugin name&gt;/
 
-<p>The first page of your administration interface must be named &lt;plugin 
-name&gt;.php and it must be in the above directory.&nbsp; Whether or not 
-you use more that one page for you Admin interface is completely up to you.
+<p>The first page of your administration interface must be named  
+index.php and it must be in the above directory.&nbsp; Whether or not 
+you use more than one page for your Admin interface is completely up to you.
 
 <p>Please note that the location of your admin page isn't optional.&nbsp; For  
 organizational purposes it is important that you follow the standards 
@@ -396,7 +406,7 @@ outlined  in this document.
 
 <h3>The plugin tarfile</h3>
 
-<p>All Geeklog plugin tarfiles <em>must</em> use the following naming convention:
+<p>All Geeklog plugin tarfiles should use the following naming convention:
 
 <blockquote>
 &lt;plugin name&gt;_&lt;plugin version&gt;_&lt;geeklog version&gt;.tar.gz
@@ -420,9 +430,9 @@ outlined  in this document.
 
 <dt>&lt;plugin version&gt;:</dt><dd>used during the installation process
    to determine  if you are attempting to upgrade a plugin or do a new installation.
-   It is  also check to verify that you aren't trying to install and old
+   It is  also checked to verify that you aren't trying to install and old
 version    of  the plugin when a new installation already exists.</dd>
-<dt>&lt;geeklog version&gt;:</dt><dd>this is the geeklog version the plugin
+<dt>&lt;geeklog version&gt;:</dt><dd>this is the Geeklog version the plugin
   works under.</dd>
 </dl>
 
@@ -439,10 +449,15 @@ there   you will have the following:
 <dt>functions.inc:</dt><dd>this is the file where you implement the Geeklog
    API and where your plugin code should reside.&nbsp; It MUST be named this
    because we automatically include all enabled plugins function.inc files
- at  the bottom of common.php.&nbsp; Note that this means you have access
-to all  the functions in common.php in your plugin code.</dd>
-<dt>lang.php:</dt><dd>the language file for your plugin.&nbsp; You should
-   include this  file in your functions.inc.</dd>
+ at  the bottom of lib-common.php.&nbsp; Note that this means you have access
+to all  the functions in lib-common.php in your plugin code.</dd>
+<dt>lang.php or language/ directory:</dt><dd>the language file(s) for your
+   plugin.&nbsp; You should include this file in your functions.inc.<br>We
+   recommend that you use a language directory and have a seperate language
+   file for each supported language (english.php, etc.), mirroring Geeklog's
+   behaviour and selecting the language file based on the user's preferred
+   language (falling back to english.php if you can't find a language file for
+   the selected language).</dd>
 <dt>table.sql</dt><dd>the DDL needed to modify the Geeklog database so that 
   your plugin  will work.<br>
   <strong>Note:</strong> you must provide an entry in the plugin table in your 

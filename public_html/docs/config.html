@@ -53,14 +53,14 @@ that are defined below:
     <td valign="top">Allows you to change the default table names for Geeklog</td></tr>
 <tr><td valign="top">_DB_mysqldump_path</td>
     <td valign="top">/usr/bin/mysqldump</td>
-    <td valign="top">Complete path to the mysqldump utility (part of MySQL) for making 
+    <td valign="top">Complete path to the <a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> utility (part of MySQL) for making 
       backups of your Geeklog database</td></tr>
 <tr><td valign="top"><a name="desc_allow_mysqldump">allow_mysqldump</a></td>
     <td valign="top">1</td>
     <td valign="top">Enable or disable the backup functionality (1 = on, 0 = off)</td></tr>
 <tr><td valign="top"><a name="desc_mysqldump_options">mysqldump_options</a></td>
     <td valign="top">-Q</td>
-    <td valign="top">Here you can include additional options for the mysqldump call that Geeklog uses to create a backup from your database.</td></tr>
+    <td valign="top">Here you can include additional options for the <a href="http://www.mysql.com/doc/en/mysqldump.html">mysqldump</a> call that Geeklog uses to create a backup from your database.</td></tr>
 </table>
 
 
@@ -79,6 +79,10 @@ that are defined below:
 <tr><td valign="top"><a name="desc_path_html">path_html</a></td>
     <td valign="top">/path/to/geeklog/public_html/</td>
     <td valign="top">Path to your web tree directory for your site (trailing slash necessary).  This directory holds all the web pages used by Geeklog.</td></tr>
+<tr><td valign="top"><a name="desc_path_images">path_images</a></td>
+    <td valign="top">/path/to/geeklog//public_html/images/</td>
+    <td valing="top">Path where Geeklog expects to find its images, including
+        user photos and images for stories.</td>
 <tr><td valign="top"><a name="desc_path_log">path_log</a></td>
     <td valign="top">/path/to/geeklog/logs/</td>
     <td valign="top">File system path for the log files</td></tr>
@@ -223,8 +227,8 @@ that are defined below:
   <td valign="top">Session ID to contain IP address of user as well as random number. This is more secure but will more than likely require dialed up users to login each and every time. (0=no, 1=yes)</td></tr>
 <tr>
   <td valign="top"><a name="desc_default_perm_cookie_timeout">default_perm_cookie_timeout</a></td>
-  <td valign="top">604800</td>
-  <td valign="top">Permanent cookie timeout in seconds (604800 = 1 week).</td></tr>
+  <td valign="top">28800</td>
+  <td valign="top">Permanent cookie timeout in seconds (28800 = 8 hours).</td></tr>
 <tr>
   <td valign="top"><a name="desc_session_cookie_timeout">session_cookie_timeout</a></td>
   <td valign="top">7200</td>
@@ -279,6 +283,55 @@ that are defined below:
   <td valign="top"><a name="desc_cookie_lastvisittemp">cookie_lastvisittemp</a></td>
   <td valign="top">LastVisitTemp</td>
   <td valign="top">Name of a temporary cookie that stores the time of the last visit (used in session handling).</td></tr>
+</table>
+
+<h3><a name="email">E-Mail settings</a></h3>
+
+<p>Starting with Geeklog 1.3.9, Geeklog uses the PEAR::Mail class to send all
+emails. You can then select whether emails should be sent through SMTP,
+sendmail, or PHP's <code>mail()</code> function.</p>
+
+<p>Within <code>$_CONF['mail_settings']</code> you have the following
+options:</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_backend">backend</a></td>
+    <td valign="top">mail</td>
+    <td valign="top">Used to select how to send email. Can be one of 'smtp',
+        'sendmail', or 'mail'.</td></tr>
+<tr><td valign="top"><a name="desc_sendmail_path">sendmail_path</a></td>
+    <td valign="top"><tt>/usr/bin/sendmail</tt></td>
+    <td valign="top">If you chose 'sendmail' for the backend setting, this
+        specifies the complete path to the sendmail binary.</td></tr>
+<tr><td valign="top"><a name="desc_sendmail_args">sendmail_args</a></td>
+    <td valign="top"><tt>''</tt> <i>(empty)</i></td>
+    <td valign="top">If you chose 'sendmail' for the backend setting, this
+        variable can be used to pass additional parameters to the sendmail
+        binary.</td></tr>
+<tr><td valign="top"><a name="desc_host">host</a></td>
+    <td valign="top">smtp.example.com</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        SMTP server to use.</td></tr>
+<tr><td valign="top"><a name="desc_port">port</a></td>
+    <td valign="top">25</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        port number to talk to on the SMTP server.</td></tr>
+<tr><td valign="top"><a name="desc_auth">auth</a></td>
+    <td valign="top">false</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, set this to
+        <code>true</code> if your SMTP server requires authorization, and
+        <code>false</code> if it doesn't.</td></tr>
+<tr><td valign="top"><a name="desc_username">username</a></td>
+    <td valign="top">smtp-username</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        name of your SMTP account.</td></tr>
+<tr><td valign="top"><a name="desc_password">password</a></td>
+    <td valign="top">smtp-password</td>
+    <td valign="top">If you chose 'smtp' for the backend setting, this is the
+        password for your SMTP account.</td></tr>
 </table>
 
 <h3><a name="login">Login settings</a></h3>
@@ -645,16 +698,16 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 <tr>
   <td valign="top"><a name="desc_image_lib">image_lib</a></td>
   <td valign="top">'' <i>(empty string)</i></td>
-  <td valign="top">Set this to either 'imagemagick' or 'netpbm' if images should be
-    resized during upload. Leave as '' if you don't want images to be
-    resized or if you don't have those packages available.</td>
+  <td valign="top">Set this to either 'imagemagick', 'netpbm', or 'gdlib' if
+    images should be resized during upload. Leave as '' if you don't want
+    images to be resized or if you don't have those packages available.</td>
 </tr>
 <tr>
   <td valign="top"><a name="desc_path_to_mogrify">path_to_mogrify</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'imagemagick' for $_CONF['image_lib'] above, then this
-    should hold the complete path to the mogrify binary (from the ImageMagick
-    package), e.g. '/usr/bin/mogrify'.<br>
+  <td valign="top">If you chose 'imagemagick' for $_CONF['image_lib'] above,
+    then this should hold the <strong>complete path</strong> to the mogrify
+    binary (from the ImageMagick package), e.g. '/usr/bin/mogrify'.<br>
     You will need a fairly recent version of <a
     href="http://www.imagemagick.org/">ImageMagick</a> for this to work
     (version 5.4.9 or newer is recommended).</td>
@@ -662,10 +715,10 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 <tr>
   <td valign="top"><a name="desc_path_to_netpbm">path_to_netpbm</a></td>
   <td valign="top"><i>(commented out)</i></td>
-  <td valign="top">If you chose 'netpbm' for $_CONF['image_lib'] above, then this should
-    hold the complete path to the <em>directory</em> where the binaries from
-    the netpbm package are kept, e.g. '/usr/bin/netpbm/'. Note that the path
-    must end in a slash.<br>
+  <td valign="top">If you chose 'netpbm' for $_CONF['image_lib'] above, then
+    this should hold the complete path to the <em>directory</em> where the
+    binaries from the netpbm package are kept, e.g. '/usr/bin/netpbm/'. Note
+    that the path must end in a slash.<br>
     Precompiled binaries of the netpbm package for various platforms can be
     downloaded from the <a
     href="http://sourceforge.net/projects/gallery/">Homepage of the Gallery
@@ -725,6 +778,11 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 
 <p>Geeklog can export its headlines to a so-called RSS feed (also known as an RDF feed). This will let you share your news with other sites (Hint: Create a Portal block from Geeklog's Block menu to import RSS/RDF news feeds from other sites).</p>
 
+<p>Starting with Geeklog 1.3.9, RSS feeds can be created and configured from
+Geeklog's Admin menu ("Content Syndication"). The following settings will only
+be used as the default settings for any new feeds that you create from the
+admin panel.</p>
+
 <table border="1" width="100%">
 <tr><th width="8%">Variable</th>
     <th width="29%">Default Value</th>
@@ -780,6 +838,34 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
   <td valign="top"><a name="desc_censorlist">censorlist</a></td>
   <td valign="top">array("fuck", "cunt", "fucker", "fucking", "pussy", "cock", "c0ck", "cum", "twat", "clit", "bitch", "fuk", "fuking", "motherfucker")</td>
   <td valign="top">An array of censored words</td></tr>
+</table>
+
+<h3><a name="url-rewrite">URL Rewriting</a></h3>
+
+<p>Geeklog includes a simple but useful URL rewriting feature which can help
+make your site more crawler friendly (i.e. the URLs of your site are more
+likely to be picked up by the search engine's indexing bots). Currently, this
+feature is only supported for URLs to stories and by the Static Pages
+plugin.</p>
+<p>URL rewriting means that your URLs will look like this</p>
+<p align="center"><tt>http://www.geeklog.net/article.php/20021022234959146</tt></p>
+<p>instead of like this</p>
+<p align="center"><tt>http://www.geeklog.net/article.php?story=20021022234959146</tt></p>
+<p>While some search engines will pick up the second form, Google seems to
+prefer the first format and completely ignores the second format.</p>
+<p><strong>Note:</strong> This feature may not work with all web servers. It
+is known to work with Apache (all versions) and known <em>not</em> to work
+with IIS (at least some versions). Please try it out before you go public
+with your site.</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr>
+  <td valign="top"><a name="desc_url_rewrite">url_rewrite</a></td>
+  <td valign="top">false</td>
+  <td valign="top">Enable (true) or disable (false) URL rewriting.</td>
 </table>
 
 

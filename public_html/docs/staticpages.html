@@ -135,6 +135,19 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <p>The Static Pages plugin is currently the only plugin known to make use of this feature.</p>
 
+<h3><a name="delete">Deleting pages with their owner</a></h3>
+
+<p>As all objects in Geeklog, static pages have an owner (the user that created
+the static page). When that user's account is deleted for some reason, any
+static pages owned by that user can either be deleted as well or they can be
+assigned to another user in Geeklog's Root group. The <tt>config.php</tt> file
+for the Static Pages plugin has the following option:</p>
+<p align="center"><code>$_SP_CONF['delete_pages'] = 0;</code></p>
+<p>If set to 0 (which is the default), static pages will not be deleted with
+their owner, but assigned to a member of the Root group instead (the user with
+the lowest user ID, most likely the Admin). If you change this to 1, static
+pages will be deleted when their owner's account is deleted.</p>
+
 <table border="0" width="100%" class="footer">
 <tr valign="top">
   <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>

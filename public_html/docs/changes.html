@@ -42,9 +42,8 @@ of files that have been changed since the last release.</p>
     JavaScript).</li>
 <li>Users in the Group Admin group can now only assign other users to groups
     of which they themselves are a member.</li>
-<li>Image upload can now use the GD library to scale images.</li>
+<li>Image upload can now also use the GD library to scale images.</li>
 <li>Comments now use templates.</li>
-<li>Admins can now edit links directly from the links section.</li>
 <li>To accomodate strict webhosts who don't allow file uploads to the standard
     image directory, you can now set a new configuration variable,
     <code>$_CONF['path_images']</code> to point to a directory outside of your
@@ -52,6 +51,8 @@ of files that have been changed since the last release.</p>
 <li>Geeklog now supports URL rewriting for story URLs, i.e. you can have URLs
     like <tt>http://www.geeklog.net/article.php/20031229225326631</tt> which
     are known to be picked up by Google.</li>
+<li>Plugins can add their own section to Geeklog's What's New block.</li>
+<li>All URL fields can now hold up to 255 characters (requires theme updates).</li>
 </ul>
 
 <p>Please see the <a href="theme.html#changes">themes documentation</a> for a
@@ -65,18 +66,95 @@ static pages without having to use the PHP <code>return</code> statement.</p>
 <h3>Bugfixes</h3>
 
 <ul>
-<li>Words from a search query are now properly highlighted in comments.</li>
+<li>Words from a search query are now properly highlighted in comments. Also
+    fixed a problem with highlighting when the search query contained '*'
+    characters.</li>
+<li>Various fixes in the search class.</li>
 <li>Fixed a bug that let users register with an empty username.</li>
 <li>When batch-importing users, those users were all subscribed to the
     Daily Digest automatically (uses the $_CONF['emailstoriesperdefault']
     setting instead now).</li>
 <li>Fixed option to delete comments, which previously was only available to
-    users in the Root group (e.g. Admin). Now users that have story.edit
+    users in the Root group (e.g. Admin). Now those users that have story.edit
     permissions for the actual story can delete comments.</li>
 <li>Deleting a group may have left orphaned entries in the group_assignments
     table (this has been fixed now). When upgrading to 1.3.9, the install
     script will remove any orphaned entries from the database.</li>
 </ul>
+
+<p>There have also been a lot of changes to improve security, especially
+against SQL injections.</p>
+
+
+<h2><a name="changes138-1sr4">Geeklog 1.3.8-1sr4</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>It was possible for users in the Group Admin and User Admin groups to
+    become a member of the Root group (reported by Samuel M. Stone,
+    bug #135).</li>
+<li>Being admin for a certain area (e.g. Story Admin for stories) made it
+    possible to delete all objects in that area (e.g. stories) even if the user
+    was not supposed to have access to them, provided the id of the object was
+    known.</li>
+<li>It was possible to delete other people's personal events if you knew the
+    event ID.</li>
+<li>It was possible to browse through the comments of a story even if the user
+    did not have access to the actual story (reported by Peter Roozemaal).</li>
+<li>Due to an XSS issue, it was possible to change someone's account settings
+    (including the password) if you got them to click on a specially crafted
+    link (reported by Jelmer, fix suggested by Vincent Furia).</li>
+<li>The comment display suffered from the possibility of an SQL injection
+    (reported by Jelmer).</li>
+<li>It was possible to inject Javascript code in the calendar (reported by
+    Jelmer).</li>
+<li>It was possible to execute (but not save) Javascript code in the comment
+    preview (reported by Jelmer).</li>
+</ol>
+
+
+<h2><a name="changes138-1sr3">Geeklog 1.3.8-1sr3</a></h2>
+<p>This release addresses the following security-related issues:</p>
+
+<ol>
+<li>As "dr.wh0" pointed out, the category field for link submissions was not
+    filtered at all. Although you probably can't cause too much harm with
+    those 32 characters, this has now been fixed.</li>
+<li>Vincent Furia found that the restrictions for the form to email users
+    could be circumvented and could even be used to spam users. 
+    In addition to fixing theses issues, there is now also a speed limit
+    on that form (defaults to the speed limit for story submissions).</li>
+<li>There was a way to post comments anonymously even when posting for
+    anonymous users had been disabled.</li>
+<li>It was possible to post comments under someone else's username.</li>
+</ol>
+
+
+<h2><a name="changes138-1sr2">Geeklog 1.3.8-1sr2</a></h2>
+
+<p>Jouko Pynnonen found a way to trick the new "forgot password" feature, introduced in 1.3.8, into letting an attacker change the password for <em>any</em> account. This release addresses this issue - there were no other changes.</p>
+
+<p>Obviously, we strongly recommend to upgrade as soon as possible.</p>
+
+
+<h2><a name="changes138-1sr1">Geeklog 1.3.8-1sr1</a></h2>
+
+<p>The purpose of this release is to address some of the security issues reported in September and early October 2003. We strongly recommend upgrading to this version.</p>
+
+<h3>Security issues</h3>
+<ol>
+<li>By including Ulf Harnhammar's <a href="http://sourceforge.net/projects/kses/" title="kses homepage">kses</a> HTML filter, this release addresses a variety of possible Javascript injection and CSS defacement issues.</li>
+<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).
+</ol>
+
+<p>Please note that at the moment we do <strong>not</strong> recommend to use Geeklog with MySQL 4.1 (which, at the time of this writing, is in alpha state and should not be used on production sites anyway). An upcoming release of Geeklog will include more thorough filtering of SQL injections attempts, thus also fixing the problems with MySQL 4.1.</p>
+
+<h3>Other fixes</h3>
+<ul>
+<li>Fixed the auto-detection of the value for the <code>$_CONF['cookiedomain']</code> variable if the URL included a port number (such as <tt>example.com:8080</tt>). This will fix the login problems some users were reporting.</li>
+<li>The full 1.3.8-1sr1 tarball also includes updated French (Canada) and Turkish language files.</li>
+</ul>
+
 
 <h2><a name="changes138-1">Geeklog 1.3.8-1</a></h2>
 
@@ -164,6 +242,62 @@ href="staticpages.html">Static Pages documentation</a> for details.</p>
     even supported by MySQL AB any more and MySQL installs older than 3.23.54
     are having security issues.
 </ul>
+
+
+<h2><a name="changes137sr5">Geeklog 1.3.7sr5</a></h2>
+<p>This release addresses the following security issues:</p>
+
+<ol>
+<li>It was possible for users in the Group Admin and User Admin groups to
+    become a member of the Root group (reported by Samuel M. Stone,
+    bug #135).</li>
+<li>Being admin for a certain area (e.g. Story Admin for stories) made it
+    possible to delete all objects in that area (e.g. stories) even if the user
+    was not supposed to have access to them, provided the id of the object was
+    known.</li>
+<li>It was possible to delete other people's personal events if you knew the
+    event ID.</li>
+<li>It was possible to browse through the comments of a story even if the user
+    did not have access to the actual story (reported by Peter Roozemaal).</li>
+<li>Due to an XSS issue, it was possible to change someone's account settings
+    (including the password) if you got them to click on a specially crafted
+    link (reported by Jelmer, fix suggested by Vincent Furia).</li>
+<li>The comment display suffered from the possibility of an SQL injection
+    (reported by Jelmer).</li>
+<li>It was possible to inject Javascript code in the calendar (reported by
+    Jelmer).</li>
+<li>It was possible to execute (but not save) Javascript code in the comment
+    preview (reported by Jelmer).</li>
+</ol>
+
+
+<h2><a name="changes137sr4">Geeklog 1.3.7sr4</a></h2>
+<p>This release addresses the following security-related issues:</p>
+
+<ol>
+<li>As "dr.wh0" pointed out, the category field for link submissions was not
+    filtered at all. Although you probably can't cause too much harm with
+    those 32 characters, this has now been fixed.</li>
+<li>Vincent Furia found that the restrictions for the form to email users
+    could be circumvented and could even be used to spam users.</li>
+<li>There was a way to post comments anonymously even when posting for
+    anonymous users had been disabled.</li>
+<li>It was possible to post comments under someone else's username.</li>
+</ol>
+
+
+<h2><a name="changes137sr3">Geeklog 1.3.7sr3</a></h2>
+
+<p>The purpose of this release is to address some of the security issues reported in September and early October 2003. If you don't plan to upgrade to the latest version of Geeklog (1.3.8-1sr1, at the time of this writing), we strongly suggest you upgrade to at least 1.3.7sr3 instead.</p>
+
+<h3>Security issues</h3>
+<ol>
+<li>By including Ulf Harnhammar's <a href="http://sourceforge.net/projects/kses/" title="kses homepage">kses</a> HTML filter, this release addresses a variety of possible Javascript injection and CSS defacement issues.</li>
+<li>Details of SQL errors will not be reported in the browser any more (but only in Geeklog's error.log file). This will avoid disclosing any sensitive information as part of the error message (which is so far the only problem we have found with the alleged SQL injection issues that have been reported).
+</ol>
+
+<p>Please note that at the moment we do <strong>not</strong> recommend to use Geeklog with MySQL 4.1 (which, at the time of this writing, is in alpha state and should not be used on production sites anyway). An upcoming release of Geeklog will include more thorough filtering of SQL injections attempts, thus also fixing the problems with MySQL 4.1.</p>
+
 
 <h2><a name="changes137sr2">Geeklog 1.3.7sr2</a></h2>
 
