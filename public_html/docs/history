@@ -3,6 +3,17 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added a check (and a warning message) for PHP 4.1.0 to the install script,
+  as that is our new minimum requirement [Dirk]
+- Rewrote install/success.php and added a link to install/check.php [Dirk]
+- Added the 'data' and 'pdfs' directory to install/check.php [Dirk]
+- Integrated the "welcome email hack": If the file 'welcome_email.txt' exists
+  in the 'data' directory, the contents of that file are sent out as the
+  welcome email to new users (instead of the hard-coded welcome message) [Dirk]
+- Introduced a 'data' directory ($_CONF['path_data'], defaulting to
+  /path/to/geeklog/data) and use it for the batch user import, as Geeklog's
+  base directory may not be writable on some setups (bug #77) [Dirk]
+- Sort list of older polls by date (newest first) and added paging [Dirk]
 - Make sure the old userphoto is deleted when uploading a new one (bug #228).
   So far, the old photo was not removed when the file type changed (e.g. from
   .gif to .jpg) [Dirk]
