@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.77 2004/09/25 20:16:14 vinny Exp $
+// $Id: comment.php,v 1.78 2004/10/03 18:39:31 blaine Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -240,7 +240,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
 * @param        int         $pid        ID of parent comment
 * @param        string      $type       Type of comment this is (article, poll, etc)
 * @param        string      $postmode   Indicates if text is HTML or plain text
-* @param		string		$prepocessed Indicates that preprocessing by another plugin
+* @param        string        $prepocessed Indicates that preprocessing by another plugin
 *                                        i.e. Spamx has already occured
 * @return       string      either nothing or HTML formated error
 *
@@ -277,12 +277,19 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         return $retval;
     }
 
+    // Let plugins have a chance to check for SPAM
+    $result = PLG_checkforSpam($comment, $_CONF['spamx']);
+    // Now check the result and redirect to index.php if spam action was taken
+    if ($result > 0) {
+        echo COM_refresh($_CONF['site_url'] . '/index.php?msg='.$result.'&amp;plugin=spamx');
+        exit;
+    }
     // Let plugins have a chance to decide what to do before saving the comment.
     $someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode);
     
     // If a plugin returned an error, return it
     if ($someError) {
-    	return $someError;
+        return $someError;
     }
     
     $commentcode = 0;

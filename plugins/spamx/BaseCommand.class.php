@@ -1,53 +1,44 @@
 <?php
 
 /**
-* Basic Command Abstract class
-*
-* @author	Tom Willett	tomw AT pigstye DOT net
-*
-*/
+ * Basic Command Abstract class
+ * 
+ * @author Tom Willett	tomw AT pigstye DOT net 
+ */
 class BaseCommand {
-	/**
-	* @access public
-	*/
-	
-	var $comment;   //Comment array
-	
-	var $result = null;    //Result of execute command
-	
-	/**
-	* Constructor
-	*
-	* @access public
-	*
-	*/
-	function BaseCommand()
-	{	
-		global $comment;
-		
-		$comment = array();
-	}
-	
-	function execute()
-	{
-		return 0;
-	}
-	
-	function init($comm) {
-		global $comment;
-		
-		$comment = $comm;
-	}
+    /**
+     * 
+     * @access public 
+     */
 
-	function getComment() {
-		global $comment;
-		return $comment;
-	}
-	function result()
-	{
-		global $result;
-		
-		return $result;
-	}
-}
+    var $result = null; //Result of execute command
+    var $num = 0; // Action Number	
+    /**
+     * Constructor
+     * 
+     * @access public 
+     */
+    function BaseCommand()
+    {
+    } 
+
+    function execute($comment)
+    {
+        return 0;
+    } 
+
+    function result()
+    {
+        global $result;
+
+        return $result;
+    } 
+    function number()
+    {
+        global $num;
+
+        return $num;
+    } 
+} 
+
 ?>
