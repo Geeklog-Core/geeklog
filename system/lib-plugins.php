@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.58 2005/03/26 03:03:06 blaine Exp $
+// $Id: lib-plugins.php,v 1.59 2005/04/03 21:52:22 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -921,6 +921,10 @@ function PLG_templateSetVars ($templatename, &$template)
 {
     global $_PLUGINS;
 
+    if (function_exists(CUSTOM_templatesetvars)) {
+        CUSTOM_templatesetvars($templatename, $template);
+    }
+
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_templatesetvars_' . $pi_name;
         if (function_exists($function)) {
@@ -1340,14 +1344,16 @@ function PLG_handlePingComment ($type, $id, $operation)
 * Check if plugins have a scheduled task they want to run
 * The interval between runs is determined by $_CONF['cron_schedule_interval']
 */
-function PLG_runScheduledJob ()
+function PLG_runScheduledTask ()
 {
     global $_PLUGINS;
 
+    if (function_exists(CUSTOM_runSheduledTask)) {
+        CUSTOM_runSheduledTask();
+    }
     foreach ($_PLUGINS as $pi_name) {
-        $function = 'plugin_runScheduledJob_' . $pi_name;
+        $function = 'plugin_runScheduledTask_' . $pi_name;
         if (function_exists ($function)) {
-            echo " ... Exists";
             $function ();
         }
     }

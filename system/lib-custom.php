@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.15 2005/03/26 03:03:06 blaine Exp $
+// $Id: lib-custom.php,v 1.16 2005/04/03 21:52:22 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -140,11 +140,23 @@ function phpblock_getBent()
 
 
 /**
-* Include any code in this function that will be called by the GL internal CRON Process
+* Include any code in this function that will be called by the internal CRON API
 * The interval between runs is determined by $_CONF['cron_schedule_interval']
 */
-function CUSTOM_runSheduledJob() {
+function CUSTOM_runSheduledTask() {
 
+}
+
+
+/**
+* Include any code in this function that will be called by Plugin API to set template variables
+* Initially this API is only called in the COM_siteHeader function to set header.thtml variables
+*/
+function CUSTOM_templatesetvars($templatename, &$template) {
+
+    if ($type == 'header') {
+        $template->set_var( 'myvar', $mycontent );
+    }
 }
 
 

@@ -2,8 +2,10 @@ GeekLog History/Changes:
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Modified PLG_templateSetVars API to also check for a custom function [Blaine]
+  Users can now set header template using CUSTOM_templatesetvars()
 - Added new CSS declarations as recommened CSS for plugins   [Blaine]
-- Added a basic scheduler Plugin API plugin_runScheduledJob  [Blaine]
+- Added a basic scheduler Plugin API plugin_runScheduledTask  [Blaine]
   Interval is set in config.php - $_CONF['cron_schedule_interval']
 - Enhanced the Group Admin interface display [Blaine]
 - Enhanced the User Admin display and made the headings sortable [Blaine]
