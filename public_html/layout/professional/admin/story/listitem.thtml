@@ -3,7 +3,7 @@
                                         <a href="{site_admin_url}/story.php?mode=edit&amp;sid={story_id}">{row_num}</a>
                                     </td>
                                     <td align="left">
-                                        <a href="{site_url}/article.php?story={story_id}">{story_title}</a>
+                                        <a href="{article_url}">{story_title}</a>
                                     </td>
                                     <td align="center">{story_access}</td>
                                     <td>{story_draft}</td>
