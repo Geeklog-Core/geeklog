@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Nov 21, 2004 (1.3.10rc3)
 ------------
 
+- Changed wording of the error message if the "backups" directory is not
+  writable [Dirk]
 - Fixed comments for the DB_result (in lib-database.php) and dbResult
   (in mysql.class.php) functions (bug #320) [Dirk]
 - Display a success message when using the "changepw" option in admin/user.php
