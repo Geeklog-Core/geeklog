@@ -1,5 +1,18 @@
 GeekLog History/Changes:
 
+- Fixed a typo in lib-sessions.php that caused the creation of unnecessary
+  sessions (pointed out by Kobaz).
+- Fixed malformed cookie (used $_CONF['site_url'] instead of
+  $_CONF['cookiedomain']), found & fixed by Jon Evans.
+- Fixed mixing of comments from different plugins, found & fixed by Alan McKay.
+- A theme can provide it's own functions to render the site header and footer
+  (this is not a new feature). Geeklog now expects those functions to be named
+  <themename>_siteHeader and <themename>_siteFoote, respectively. Until now,
+  it was, however, looking for the wrong function names ...
+- Added the piece of code that is needed to make the Theme Tester work to
+  lib-common.php (won't do anything without the Theme Tester block).
+- Fixed SQL query for displaying new comments in the What's New block, provided
+  by Marc Von Ahn (with some help from Rob Griffiths).
 - Changes to make Geeklog install and work again on old version of MySQL
   (e.g. MySQL 3.22). Special thanks to Markus Guske for providing the fixes
   for the What's New block and for testing the new install.
