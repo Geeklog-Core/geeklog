@@ -26,7 +26,7 @@
 
 <h2><a name="history">History</a></h2>
 
-<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.4. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version allows the use of PHP in Static Pages and also supports proper Geeklog permissions.</p>
+<p>The plugin was originally written by Tony Bibbs and is included with Geeklog as a pre-installed plugin since Geeklog 1.3.5. An extended version of the plugin was started by Phill Gillespie and later supported by Tom Willet. The extended version allows the use of PHP in Static Pages and also supports proper Geeklog permissions.</p>
 
 <p>With Geeklog 1.3.8 and Static Pages 1.3 these two versions have now been merged again. Static Pages 1.3 also includes some new features that were not included in either of its predecessors.</p>
 
@@ -104,27 +104,18 @@
 
 <h2><a name="frontpage">Using Static Pages on the index page</a></h2>
 
-<p>Sometimes, you may want to display the contents of a Static Page on your site's front page. To do that, create a Static Page and give it the title "frontpage" (without the quotes). The contents of this Static Page will then be displayed above the stories on Geeklog's index page.</p>
+<p>Geeklog 1.3.8 introduces a new concept for use by plugins, called Center Blocks. Basically, this means that any plugin can place blocks in the center area of a Geeklog site, i.e. among the stories.</p>
 
-<p>You can even take this one step further and make the Static Page replace the index page entirely when you also set the page's label to "nonews".</p>
+<p>When you check the "Centerblock" option for a Static Page, you can use the "Position" and "Topic" drop-downs to chose where this Static Page will be displayed. For "Position", the options are "Top Of Page", "After Featured Story", "Bottom Of Page" (which should be self-explanatory) and "Entire Page". That last option, "Entire Page" will tell Geeklog that this Static Page will replace the entire index page - it will not display any stories, but only the contents of this Static Page. This is useful e.g. for "Splash" screens or Welcome pages.</p>
 
-<p>By setting the permissions accordingly, you can also create Static Pages that are only displayed for anonymous users (e.g. to tell them what they can expect when they register with your site) or logged-in users.</p>
+<p>The second drop-down, "Topic", lets you restrict the display of a Static Page to only a certain topic (similar to the option you have for blocks). "None" means that this page will be displayed independent of any topics.</p>
 
-
-<h2><a name="topic">Using Static Pages on topic pages</a></h2>
-
-<p>In addition to being used on the frontpage, you can also create Static Pages that are displayed on top of a topic page (i.e. <tt>index.php?topic=SomeTopic</tt>).</p>
-
-<p>To make use of this feature, create a new Static Page and give it a title consisting of the word "topic:" followed by the topic's ID, e.g. "topic:GeekLog" (without the quotes). The page will then be displayed above the list of stories from that topic.</p>
-
-<p>Make sure you use the topic ID (i.e. the word you see in the URL for that topic), not the topic name (the topic name is what is displayed in Geeklog's Section block).</p>
+<p><strong>Tip:</strong> You can combine these options with the permission settings. This will let you, for example, create a Welcome page that is only displayed to anonymous users.</p>
 
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
 <p>Static Pages will be wrapped in a block when <code>$_SP_CONF['in_block']</code> is set to <code>1</code> (in the plugin's <tt>config.php</tt> file). The title of the Static Page is then used as the block title.</p>
-
-<p>However, when using a Static Page on the frontpage or on a topic page, the page's <em>label</em> is used as the block title. A Static Page that is used as a splash screen (with "nonews" as a label) can not be wrapped in a block - you would need to include some PHP code that calls <code>COM_startBlock</code> and <code>COM_endBlock</code> in that case.</p>
 
 
 <h2><a name="cloning">Cloning Static Pages</a></h2>
