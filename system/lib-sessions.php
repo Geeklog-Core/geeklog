@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.19 2003/05/26 10:33:30 dhaun Exp $
+// $Id: lib-sessions.php,v 1.20 2003/06/06 17:11:11 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -46,7 +46,14 @@ if (empty ($_CONF['cookiedomain'])) {
     if (substr ($server[1], 0, 4) == 'www.') {
         $_CONF['cookiedomain'] = substr ($server[1], 3);
     } else {
-        $_CONF['cookiedomain'] = '.' . $server[1];
+        if ($server[1] == 'localhost') {
+            $_CONF['cookiedomain'] = '';
+        } else {
+            $_CONF['cookiedomain'] = '.' . $server[1];
+        }
+    }
+    if ($_SESS_VERBOSE) {
+        COM_errorLog ("Setting cookiedomain='" . $_CONF['cookiedomain'] . "'", 1);
     }
 }
 
