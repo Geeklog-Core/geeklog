@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.9 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: topic.php,v 1.10 2002/01/03 21:48:24 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -183,6 +183,7 @@ function listtopics() {
     $topic_templates = new Template($_CONF['path_layout'] . 'admin/topic');
     $topic_templates->set_file(array('list'=>'topiclist.thtml', 'item'=>'listitem.thtml'));
     $topic_templates->set_var('site_url', $_CONF['site_url']);
+    $topic_templates->set_var('layout_url', $_CONF['layout_url']);
     $topic_templates->set_var('lang_newtopic', $LANG27[17]);
     $topic_templates->set_var('lang_adminhome', $LANG27[18]);
     $topic_templates->set_var('lang_instructions', $LANG27[9]); 
