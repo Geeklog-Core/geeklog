@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.10 2004/07/31 21:21:12 dhaun Exp $
+// $Id: pdfgenerator.php,v 1.11 2004/10/11 01:37:08 vinny Exp $
 
 require_once 'lib-common.php';
 
@@ -49,7 +49,6 @@ if ($_CONF['pdf_enabled'] == 0 OR
         $is_exec = file_exists($_CONF['path_to_htmldoc']);
     }
     if (!$is_exec) {
-        print 'here'; exit;
         echo COM_siteHeader();
         echo $LANG_PDF[8];
         echo COM_siteFooter();
@@ -88,7 +87,11 @@ function PDF_servePDF($pdfFileName)
     // try to use relative pathing (e.g. ../../some.pdf)
     if ((dirname(realpath($fileToGet)) == strtolower(realpath($_CONF['path_pdf']))) AND
        (is_file($fileToGet))) {
-        $downloader->downloadFile($pdfFileName);
+        if (!$downloader->downloadFile($pdfFileName)) {
+            echo COM_siteHeader();
+            $downloader->printErrors();
+            echo COM_siteFooter();
+        }
     } else {
         echo COM_siteHeader();
         echo $LANG_PDF[14];
