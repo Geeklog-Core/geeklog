@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.197 2003/01/18 18:07:12 dhaun Exp $
+// $Id: lib-common.php,v 1.198 2003/01/19 17:18:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -3701,7 +3701,7 @@ function COM_whatsNewBlock( $help='', $title='' )
 
         if( empty( $title ))
         {
-            $title = DB_getItem( $_TABLES['block'], 'title', "name='whats_new_block'" );
+            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='whats_new_block'" );
         }
 
         // Any late breaking news stories?
