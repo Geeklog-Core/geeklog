@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.37 2003/04/25 09:07:02 dhaun Exp $
+// $Id: moderation.php,v 1.38 2003/06/16 18:00:31 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -57,7 +57,8 @@ function commandcontrol()
     $admin_templates->set_file(array('cc'=>'moderation.thtml',
                                         'ccitem' => 'ccitem.thtml'));
     
-    $retval .= COM_startBlock($LANG29[34]);
+    $retval .= COM_startBlock ($LANG29[34], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (SEC_hasRights('story.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/story.php');
@@ -135,7 +136,7 @@ function commandcontrol()
 
     $retval .= $admin_templates->parse('output','cc');
 
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 		
     if (SEC_hasRights('story.moderate')) {
         $retval .= itemlist('story');
@@ -178,12 +179,14 @@ function itemlist($type)
 
     switch ($type) {
     case 'event':
-        $retval .= COM_startBlock($LANG29[37],'cceventsubmission.html');
+        $retval .= COM_startBlock ($LANG29[37], 'cceventsubmission.html',
+                COM_getBlockTemplate ('_admin_block', 'header'));
         $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
         $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
         break;
     case 'link':
-        $retval .= COM_startBlock($LANG29[36],'cclinksubmission.html');
+        $retval .= COM_startBlock ($LANG29[36], 'cclinksubmission.html',
+                COM_getBlockTemplate ('_admin_block', 'header'));
         $sql = "SELECT lid AS id,title,category,url FROM {$_TABLES['linksubmission']} ORDER BY title ASC";
         $H = array($LANG29[10],$LANG29[13],$LANG29[12]);
         break;
@@ -195,9 +198,12 @@ function itemlist($type)
                 $plugin = new Plugin();
                 $plugin = $function();
                 if (!empty($plugin->submissionhelpfile)) {
-                    $retval .= COM_startBlock($plugin->submissionlabel, $plugin->submissionhelpfile);
+                    $retval .= COM_startBlock ($plugin->submissionlabel,
+                            $plugin->submissionhelpfile,
+                            COM_getBlockTemplate ('_admin_block', 'header'));
                 } else {
-                    $retval .= COM_startBlock($plugin->submissionlabel);
+                    $retval .= COM_startBlock ($plugin->submissionlabel, '',
+                            COM_getBlockTemplate ('_admin_block', 'header'));
                 }
                 $sql = $plugin->getsubmissionssql;
                 $H = $plugin->submissionheading;
@@ -205,7 +211,8 @@ function itemlist($type)
                 break;
             }
         } else {
-            $retval .= COM_startBlock($LANG29[35],'ccstorysubmission.html');
+            $retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
+                    COM_getBlockTemplate ('_admin_block', 'header'));
             $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']} ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             break;
@@ -275,7 +282,7 @@ function itemlist($type)
         }
     }
 
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -292,7 +299,8 @@ function userlist ()
 {
     global $_TABLES, $_CONF, $LANG29;
 
-    $retval .= COM_startBlock ($LANG29[40]);
+    $retval .= COM_startBlock ($LANG29[40], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
     $emptypwd = md5('');
     $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE passwd = '$emptypwd'");
     $nrows = DB_numRows($result);
@@ -329,7 +337,7 @@ function userlist ()
             $retval .= $LANG29[39];
         }
     }
-    $retval .= COM_endBlock ();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -346,7 +354,8 @@ function draftlist ()
 {
     global $_TABLES, $_CONF, $LANG24, $LANG29;
 
-    $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')');
+    $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
+            COM_getBlockTemplate ('_admin_block', 'header'));
     $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
@@ -383,7 +392,7 @@ function draftlist ()
             $retval .= $LANG29[39];
         }
     }
-    $retval .= COM_endBlock ();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
