@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.13 2002/03/16 18:44:48 dhaun Exp $
+// $Id: calendar_event.php,v 1.14 2002/03/30 20:23:52 dhaun Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -64,7 +64,7 @@ function adduserevent($eid)
         $cal_template->set_var('event_title',stripslashes($A['title']));
 
         if (!empty($A['url'])) {
-            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . ' target="_blank">');
+            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . '" target="_blank">');
             $cal_template->set_var('event_end_anchortag', '</a>');
         } else {
             $cal_template->set_var('event_begin_anchortag', '');
