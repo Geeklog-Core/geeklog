@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.119 2002/07/07 12:58:27 dreamscape Exp $
+// $Id: lib-common.php,v 1.120 2002/07/08 14:17:17 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2693,7 +2693,7 @@ function COM_showMessage($msg)
     $retval = '';
 	
     if ($msg > 0) {
-        $timestamp = strftime("%c");
+        $timestamp = strftime($_CONF['daytime']);
         $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
             . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top" alt="">'
             . $MESSAGE[$msg] . '<BR><BR>' . COM_endBlock();
