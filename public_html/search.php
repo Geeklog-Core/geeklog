@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.23 2002/06/29 15:07:23 dhaun Exp $
+// $Id: search.php,v 1.24 2002/07/10 08:50:11 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -388,12 +388,17 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
             $searchresults->parse('headings','headingcolumn',true);
         }
         $searchresults->set_var('results','');
-        $columns = current($link_results->searchresults);
-        if (is_array($columns)) {
-            for ($x = 1; $x <= count($columns); $x++) {
-                $searchresults->set_var('data', current($columns));
-                $searchresults->parse('data_cols','resultcolumn',true);
-                next($columns);
+        if ($link_results->num_searchresults > 0) {
+            for ($j = 1; $j <= $link_results->num_searchresults; $j++) {
+                $columns = current ($link_results->searchresults);
+                for ($x = 1; $x <= count($columns); $x++) {
+                    $searchresults->set_var('data', current($columns));
+                    $searchresults->parse('data_cols','resultcolumn',true);
+                    next($columns);
+                }
+                $searchresults->parse('results','resultrow',true);
+                $searchresults->set_var('data_cols','');
+                next($link_results->searchresults);
             }
         } else {
             $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[30] . '</td></tr>');
