@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.3 2001/12/06 21:52:05 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.4 2002/01/04 17:02:48 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -198,6 +198,10 @@ function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0)
             die("Delete failed in new_session()");
         }
     }
+    // Remove the anonymous sesssion for this user
+    DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND remote_ip = '$remote_ip'");
+
+    // Create new session
     $sql = "INSERT INTO {$_TABLES['sessions']} (sess_id, md5_sess_id, uid, start_time, remote_ip) VALUES ($sessid, '$md5_sessid', $userid, $currtime, '$remote_ip')";
     $result = DB_query($sql);
     if ($result) {
@@ -343,9 +347,9 @@ function SESS_getUserData($username)
 {
     global $_TABLES;
 
-    $sql = "SELECT {$_TABLES["users"]}.uid, username, username name, email, homepage,theme, sig, noicons, dfid "
-        . "FROM {$_TABLES['users']}, {$_TABLES['userprefs']} "
-        . "WHERE {$_TABLES["userprefs"]}.uid = {$_TABLES["users"]}.uid AND username = '$username'";
+    $sql = "SELECT *,format FROM {$_TABLES['users']}, {$_TABLES['userprefs']}, {$_TABLES['dateformats']} "
+        . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
+        . "{$_TABLES["userprefs"]}.uid = {$_TABLES["users"]}.uid AND username = '$username'";
 
     if(!$result = DB_query($sql)) {
         COM_errorLog("error in get_userdata");
@@ -370,7 +374,10 @@ function SESS_getUserDataFromId($userid)
 {
     global $_TABLES;
 
-    $sql = "SELECT * FROM {$_TABLES["users"]} WHERE uid = $userid";
+    $sql = "SELECT *,format FROM {$_TABLES['dateformats']},{$_TABLES["users"]},{$_TABLES['userprefs']} "
+     . "WHERE {$_TABLES['dateformats']}.dfid = {$_TABLES['userprefs']}.dfid AND "
+     . "{$_TABLES['userprefs']}.uid = $userid AND {$_TABLES['users']}.uid = $userid";
+
     if(!$result = DB_query($sql)) {
         $userdata = array("error" => "1");
         return ($userdata);
