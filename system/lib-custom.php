@@ -17,11 +17,11 @@
 // | follows then that you should not include lib-common.php in this file      |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Blaine Lang      - blaine@portalparts.com                        |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Blaine Lang      - blaine AT portalparts DOT com                 |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.11 2004/11/03 14:54:43 blaine Exp $
+// $Id: lib-custom.php,v 1.12 2005/01/17 09:22:12 dhaun Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -54,7 +54,8 @@ $_CST_VERBOSE = false;
 * a user has in the "What you have access to" block.
 *
 */
-function phpblock_showrights() {
+function phpblock_showrights()
+{
     global $_RIGHTS, $_CST_VERBOSE;
 
     if ($_CST_VERBOSE) {
@@ -85,6 +86,7 @@ function phpblock_showrights() {
 function phpblock_getBent()
 {
     global $_CONF, $_TABLES;
+
     $secure = true;
 
     $retval = '';
@@ -157,34 +159,38 @@ function phpblock_getBent()
 /* Create any new records in additional tables you may have added  */
 /* Update any fields in the core GL tables for this user as needed */
 /* Called when user is first created */
-function custom_usercreate($uid) {
-    global $_CONF,$_TABLES,$HTTP_POST_VARS;
+function custom_usercreate($uid)
+{
+    global $_CONF, $_TABLES;
 
     // Ensure all data is prepared correctly before inserts, quotes may need to be escaped with addslashes()
-    DB_query("UPDATE {$_TABLES['users']} SET email='{$HTTP_POST_VARS['email']}',homepage='{$HTTP_POST_VARS['homepage']}', fullname='{$HTTP_POST_VARS['fullname']}' WHERE uid=$uid");
-    return true;
+    DB_query("UPDATE {$_TABLES['users']} SET email='{$_POST['email']}',homepage='{$_POST['homepage']}', fullname='{$_POST['fullname']}' WHERE uid=$uid");
 
+    return true;
 }
 
 // Delete any records from custom tables you may have used
-function custom_userdelete($uid) {
+function custom_userdelete($uid)
+{
     return true;
-
 }
+
 /* Called from users.php - when user is displaying a member profile  */
 /* This function can now return any extra fields that need to be shown */
 /* Output is then replaced in {customfields) -- This variable needs to be added to your templates */
 /* Template: path_layout/users/profile/profile.thtml */
 
-function custom_userdisplay($uid) {
-    global $_CONF,$_TABLES;
+function custom_userdisplay($uid)
+{
+    global $_CONF, $_TABLES;
+
     $var = "Value from custom table";
     $retval .= '<tr>
         <td align="right"><b>Custom Fields:</b></td>
         <td>' . $var .'</td>
      </tr>';
-    return $retval;
 
+    return $retval;
 }
 
 
@@ -199,8 +205,10 @@ function custom_userdisplay($uid) {
 /* As noted: You need to add the {customfields} template variable. */
 /* For the edituser.thtml - maybe it would be added about the {group_edit} variable. */
 
-function custom_useredit($uid) {
-    global $_TABLES,$_CONF;
+function custom_useredit($uid)
+{
+    global $_CONF, $_TABLES;
+
     $var = "Value from custom table";
     $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout' ,$uid);
     $selection = '<select name="cooktime">' . LB;
@@ -215,21 +223,35 @@ function custom_useredit($uid) {
         <td><input type="text" name="custom1" size="50" value="' . $var .'"></td>
      </tr>';
     $retval .= '<tr><td colspan="2"><hr></td></tr>';
-   return $retval;
+
+    return $retval;
 }
 
 /* Function called when saving the user profile. */
 /* This function can now update any extra fields  */
-function custom_usersave($uid) {
-    global $_TABLES,$_CONF, $HTTP_POST_VARS;
-    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$HTTP_POST_VARS["cooktime"]}'");
+function custom_usersave($uid)
+{
+    global $_CONF, $_TABLES;
+
+    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$_POST["cooktime"]}'");
 }
 
 
-/* Main Form used for Custom membership when member is registering */
-function custom_userform($uid="",$msg="") {
-    global $_CONF,$_TABLES, $LANG04;
-    if (!empty($msg)) {
+/**
+* Main Form used for Custom membership when member is registering
+*
+* Note: Requires a file custom/memberdetail.thtml in every theme that is
+*       installed on the site!
+*
+* @param    string  $msg    an error message to display or the word 'new'
+* @return   string          HTML for the registration form
+*
+*/
+function custom_userform ($msg = '')
+{
+    global $_CONF, $_TABLES, $LANG04;
+
+    if (!empty ($msg) && ($msg != 'new')) {
         $retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
     }
 
@@ -238,7 +260,8 @@ function custom_userform($uid="",$msg="") {
     $submitbutton = '<input type="submit" value="Register Now!">';
     $passwd_input = "";
     $message = "<br><font color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font>";
-    $A=array();
+
+    $A = $_POST;
 
     $user_templates = new Template ($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
@@ -266,6 +289,29 @@ function custom_userform($uid="",$msg="") {
     return $retval;
 }
 
+/**
+* Check if it's okay to create a new user.
+*
+* Geeklog is about to create a new user with the given username and email
+* address. This is the custom code's last chance to prevent that,
+* e.g. to check if all required data has been entered.
+*
+* @param    string  $username   username that Geeklog would use for the new user* @param    string  $email      email address of that user
+* @return   string              an error message or an empty string for "OK"
+*
+*/
+function custom_usercheck ($username, $email)
+{
+    $msg = '';
+
+    // for exmaple, require the full name to be entered
+    // and complain if it's missing
+    if (empty ($_POST['fullname'])) {
+        $msg = 'Please enter your full name!';
+    }
+
+    return $msg;
+}
 
 
 /**
@@ -284,8 +330,10 @@ function custom_userform($uid="",$msg="") {
 * @param   array   $showblocks    An array of block names to retrieve and format
 * @return  string                 Formated HTML containing site footer and optionally right blocks
 */
-function custom_showBlocks($showblocks) {
+function custom_showBlocks($showblocks)
+{
     global $_CONF, $_TABLES;
+
     $retval = '';
     foreach($showblocks as $block) {
         $sql = "SELECT bid, name,type,title,content,rdfurl,phpblockfn,help FROM {$_TABLES['blocks']} WHERE name='$block'";
@@ -295,6 +343,7 @@ function custom_showBlocks($showblocks) {
             $retval .= COM_formatBlock($A);
         }
     }
+
     return $retval;
 }
 
