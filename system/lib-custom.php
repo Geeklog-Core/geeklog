@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.12 2005/01/17 09:22:12 dhaun Exp $
+// $Id: lib-custom.php,v 1.13 2005/02/14 05:17:08 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -146,14 +146,14 @@ function phpblock_getBent()
 
     Note2: This example requries a template file called memberdetail.thtml to be
     located under the theme_dir/custom directory. 
-    Sample is located in under /system with the distribution.
+    Sample is provided under /system with the distribution.
 
     Functions have been provided that are called from the Core Geeklog user and admin functions
     - This works with User Moderation as well
     - Admin will see the new registration info when checking a members profile only
     - All other users will see the standard User profile with the optional extended custom information
-    - Customization requries changes to a few of the core template files to add {customfields} variable
-    - See notes below in the custom functuion about the template changes 
+    - Customization requires changes to a few of the core template files to add {customfields} variable
+    - See notes below in the custom function about the template changes 
 */
 
 /* Create any new records in additional tables you may have added  */
@@ -258,27 +258,23 @@ function custom_userform ($msg = '')
     $post_url = $_CONF['site_url']."/users.php";
     $postmode = "create";
     $submitbutton = '<input type="submit" value="Register Now!">';
-    $passwd_input = "";
-    $message = "<br><font color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font>";
-
-    $A = $_POST;
+    $message = "<blockquote style=\"padding-top:10px;\"><font color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font></blockquote>";
 
     $user_templates = new Template ($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('post_url', $post_url);
     $user_templates->set_var('startblock', COM_startBlock("Custom Registration Example"));
-    $user_templates->set_var('message', $message);    
+    $user_templates->set_var('message', $message);
     $user_templates->set_var('USERNAME', "Username");
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
-    $user_templates->set_var('username', $A['username']);
-    $user_templates->set_var('passwd_input', $passwd_input);
+    $user_templates->set_var('username', '']);
     $user_templates->set_var('EMAIL', "Email Address");
     $user_templates->set_var('EMAIL_HELP', "");
-    $user_templates->set_var('email', $A['email']);
+    $user_templates->set_var('email', '');
     $user_templates->set_var('FULLNAME', "Full Name");
     $user_templates->set_var('FULLNAME_HELP', "");
-    $user_templates->set_var('fullname', $A['fullname']);
+    $user_templates->set_var('fullname', '');
     $user_templates->set_var('user_id', $user);
     $user_templates->set_var('postmode', $postmode);
     $user_templates->set_var('submitbutton', $submitbutton);
@@ -304,7 +300,7 @@ function custom_usercheck ($username, $email)
 {
     $msg = '';
 
-    // for exmaple, require the full name to be entered
+    // Example, check that the full name has been entered
     // and complain if it's missing
     if (empty ($_POST['fullname'])) {
         $msg = 'Please enter your full name!';
