@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.44 2003/03/12 19:02:01 dhaun Exp $
+// $Id: index.php,v 1.45 2003/04/13 17:14:56 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -295,12 +295,8 @@ if ($nrows > 0) {
 } else {
     $display .= COM_startBlock($LANG05[1]) . $LANG05[2];
     if (!empty($topic)) {
-        $result = DB_query ("SELECT topic FROM {$_TABLES['topics']} WHERE tid='$topic'");
-        $A = DB_fetchArray ($result);
-        if (!empty ($A['topic'])) {
-            $topic = $A['topic'];
-        }
-        $display .= $LANG05[3];
+        $topicname = DB_getItem ($_TABLES['topics'], 'topic', "tid='{$topic}'");
+        $display .= sprintf ($LANG05[3], $topicname);
     }
     $display .= COM_endBlock();
 }
