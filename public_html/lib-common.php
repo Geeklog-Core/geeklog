@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.49 2002/03/31 20:33:32 dhaun Exp $
+// $Id: lib-common.php,v 1.50 2002/04/03 21:57:14 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1224,6 +1224,12 @@ function COM_adminMenu($help='',$title='')
             $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/group.php');
             $adminmenu->set_var('option_label', $LANG01[96]);
             $adminmenu->set_var('option_count', DB_count($_TABLES['groups']));
+            $retval .= $adminmenu->parse('item', 'option');
+        }
+        if (SEC_hasrights('user.mail')) {
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/mail.php');
+            $adminmenu->set_var('option_label', $LANG01[105]);
+            $adminmenu->set_var('option_count', 'N/A');
             $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('plugin.edit')) {
