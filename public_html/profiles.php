@@ -9,11 +9,12 @@
 // | their email address being intercepted by spammers.                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.20 2003/01/05 21:23:51 dhaun Exp $
+// $Id: profiles.php,v 1.21 2003/02/07 18:34:56 dhaun Exp $
 
 include('lib-common.php');
 
@@ -48,7 +49,7 @@ include('lib-common.php');
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
-    global $_TABLES, $_CONF, $LANG08, $LANG_CHARSET;
+    global $_TABLES, $_CONF, $_USER, $LANG08, $LANG_CHARSET;
 
     if (!empty($author) && !empty($subject) && !empty($message)) {
         if (COM_isemail($authoremail)) {
@@ -62,10 +63,21 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
             } else {
                 $charset = $LANG_CHARSET;
             }
+
+            // Append the user's signature to the message
+            $sig = '';
+            if ($_USER['uid'] > 1) {
+                $sig = DB_getItem ($_TABLES['users'], 'sig', "uid={$_USER['uid']}");
+                if (!empty ($sig)) {
+                    $sig = strip_tags (COM_stripslashes ($sig));
+                    $sig = "\r\n\r\n-- \r\n" . $sig;
+                }
+            }
+
             $subject = strip_tags (stripslashes ($subject));
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
             $RET = @mail($A['username'] . ' <' . $A['email'] . '>', $subject,
-                strip_tags(stripslashes($message)),
+                strip_tags(stripslashes($message)) . $sig,
                 "From: $author <$authoremail>\r\n" .
                 "Return-Path: <$authoremail>\r\n" .
                 "Content-Type: text/plain; charset=$charset\r\n" .
