@@ -2,7 +2,18 @@ GeekLog History/Changes:
 
 XXX XX, 2004 (1.3.10)
 ------------
+
+- Make sure the old userphoto is deleted when uploading a new one (bug #228).
+  So far, the old photo was not removed when the file type changed (e.g. from
+  .gif to .jpg) [Dirk]
+- Don't assume the uploaded file in usersettings.php is always the userphoto -
+  it may in fact belong to a plugin (bug #179). This bug prevented plugins from
+  uploading their own files through the plugin API [Dirk]
 - Added support for PHP SESSIONS [Blaine]
+- Fixed repeating events in the personal calendar's day view (bug #232) [Dirk]
+- COM_siteHeader() now accepts a page title (to go between the page's
+  <title>...</title> tags) as the second parameter, replacing the
+  $_CONF['pagetitle'] hack (which still works but should be avoided) [Dirk]
 - In the site's page title, replace the site slogan with more meaningful
   information, where possible, e.g. "Submit a Story" on the story submission
   form, "Search Results", etc. (feature request #95) [Dirk]
@@ -77,7 +88,7 @@ XXX XX, 2004 (1.3.10)
   mysql.class.php: The functions take a resource, describing the opened link to
   the database, not a record set (pointed out by lgonze on IRC). [Dirk]
 - Plugins are now getting the key type passed to their search function, so that
-  they can perform a search for the "exact phrase", "all of these words", or
+  they can perform a search for "exact phrase", "all of these words", or
   "any of these words" as selected from the search form. [Dirk]
 - Use URL rewriting for the link to a story's printer-friendly version, when
   activated (bug #201) [Dirk]
@@ -181,6 +192,13 @@ XXX XX, 2004 (1.3.10)
   check for a user's topic access [Dirk]
   (This was actually introduced in 1.3.9sr1 but missing from the changelog)
 
+Language files
+--------------
+- New Bosnian language file, provided by Kenan Hodzic
+- Updated Croatian language file, provided by Roberto Bilic
+- New Indonesian language file, provided by Piotr Sobis
+- Updated Norwegian language file, provided by Torfinn Ingolfsen
+
 Static Pages Plugin 1.4.1
 -------------------------
 - Added a printable version for static pages (based on a concept by
@@ -191,9 +209,15 @@ Static Pages Plugin 1.4.1
 - The block templates used to wrap a static page in a block can now be
   overridden, using '_staticpages_block' and '_staticpages_centerblock' as the
   index for the $_BLOCK_TEMPLATE array [Dirk]
+- The plugin now checks for template files in the current theme's directory
+  (layout/THEMENAME/staticpages) first before using the default template files
+  from plugin/staticpages/templates [Dirk]
+- For center blocks, ignore the "blank page" setting, unless it's for a page
+  that is supposed to replace the entire frontpage (bug #234) [Dirk]
 - The static pages editor doesn't display a "delete" button for new and
   cloned pages any more (since, obviously, you can't delete what hasn't been
   saved yet ...). [Dirk]
+- New Portuguese (Brazil) language file, provided by Alcides Soares Filho.
 
 
 Jun 1, 2004 (1.3.9sr1)
