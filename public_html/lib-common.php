@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.249 2003/09/01 12:53:06 dhaun Exp $
+// $Id: lib-common.php,v 1.250 2003/09/01 19:11:57 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1099,6 +1099,8 @@ function COM_endBlock( $template='blockfooter.thtml' )
 */
 function COM_optionList( $table, $selection, $selected='', $sortcol=1 )
 {
+    $retval = '';
+
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',', $tmp );
 
@@ -1139,6 +1141,8 @@ function COM_optionList( $table, $selection, $selected='', $sortcol=1 )
 function COM_topicList( $selection, $selected='', $sortcol=1 )
 {
     global $_TABLES;
+
+    $retval = '';
 
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',',$tmp );
@@ -1181,6 +1185,8 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
 {
     global $_TABLES, $_COM_VERBOSE;
 
+    $retval = '';
+
     $sql = "SELECT $selection FROM $table";
 
     if( !empty( $where ))
@@ -1206,6 +1212,8 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
         {
             COM_errorLog( 'selected string was empty COM_checkList', 1 );
         }
+
+        $S = array();
     }
 
     for( $i = 0; $i < $nrows; $i++ )
@@ -1230,7 +1238,7 @@ function COM_checkList( $table, $selection, $where='', $selected='' )
                 }
             }
 
-            if( $A[2] < 10 && $A[2] > 0 )
+            if( isset( $A[2] ) && ( $A[2] < 10 && $A[2] > 0 ))
             {
                 $retval .= '><b>' . stripslashes( $A[1] ) . '</b><br>' . LB;
             }
@@ -1375,7 +1383,7 @@ function COM_errorLog($logentry, $actionid = '')
             case 1:
                 $logfile = $_CONF['path_log'] . 'error.log';
 
-                if( !$file = fopen( $logfile, a ))
+                if( !$file = fopen( $logfile, 'a' ))
                 {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
                 }
@@ -1396,7 +1404,7 @@ function COM_errorLog($logentry, $actionid = '')
             default:
                 $logfile = $_CONF['path_log'] . 'error.log';
 
-                if( !$file = fopen( $logfile, a ))
+                if( !$file = fopen( $logfile, 'a' ))
                 {
                     $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
                 }
@@ -1434,7 +1442,7 @@ function COM_accesslog( $logentry )
     $timestamp = strftime( "%c" );
     $logfile = $_CONF['path_log'] . 'access.log';
 
-    if( !$file = fopen( $logfile, a ))
+    if( !$file = fopen( $logfile, 'a' ))
     {
         $retval .= $LANG01[33] . $logfile . ' (' . $timestamp . ')<br>' . LB;
     }
@@ -1872,6 +1880,8 @@ function COM_showTopics( $topic='' )
 function COM_userMenu( $help='', $title='' )
 {
     global $_TABLES, $_USER, $_CONF, $LANG01, $HTTP_SERVER_VARS;
+
+    $retval = '';
 
     if( $_USER['uid'] > 1 )
     {
@@ -2938,6 +2948,20 @@ function COM_isemail( $email )
     }
 }
 
+/**
+* Send an email.
+*
+* All emails sent by Geeklog are sent through this function now.
+*
+* @param    to         string   recipients name and email address
+* @param    subject    string   subject of the email
+* @param    message    string   the text of the email
+* @param    from       string   (optional) sender of the the email
+* @param    html       bool     true if to be sent as an HTML email
+* @param    priority   int      add X-Priority header, if > 0
+* @return   boolean             true if successful,  otherwise false
+*
+*/
 function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority = 0 )
 {
     global $_CONF, $LANG_CHARSET;
@@ -3073,6 +3097,8 @@ function COM_showBlock( $name, $help='', $title='' )
 {
     global $_CONF, $topic, $_TABLES, $_USER;
 
+    $retval = '';
+
     if( !empty( $_USER['uid'] ))
     {
         $U['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
@@ -3137,6 +3163,8 @@ function COM_showBlock( $name, $help='', $title='' )
 function COM_showBlocks( $side, $topic='', $name='all' )
 {
     global $_TABLES, $_CONF, $_USER, $LANG21, $HTTP_SERVER_VARS, $topic, $page, $newstories;
+
+    $retval = '';
 
     // Get user preferences on blocks
 
@@ -3537,7 +3565,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
         $title = DB_getItem( $_TABLES['blocks'], 'title', "name = 'events_block'" );
     }
 
-    $retval .= COM_startBlock( $title, '',
+    $retval = COM_startBlock( $title, '',
                        COM_getBlockTemplate( 'events_block', 'header' ));
 
     $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
@@ -3835,7 +3863,7 @@ function COM_whatsNewBlock( $help='', $title='' )
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS, $page, $newstories;
 
-    $retval .= COM_startBlock( $title, $help,
+    $retval = COM_startBlock( $title, $help,
                        COM_getBlockTemplate( 'whats_new_block', 'header' ));
 
     $topicsql = '';
