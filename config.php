@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.123 2004/07/26 15:30:57 dhaun Exp $
+// $Id: config.php,v 1.124 2004/07/31 03:30:29 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -501,6 +501,7 @@ $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
+$_CONF['archivetopic']          = '';   // Topic ID to Auto-Archived topics after expire date
 
 // When set to 1, this will render the first story on any page using the
 // templates for featured stories - even if that story is not featured.

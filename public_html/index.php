@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.59 2004/05/31 08:45:08 dhaun Exp $
+// $Id: index.php,v 1.60 2004/07/31 03:30:35 blaine Exp $
 
 require_once('lib-common.php');
 
@@ -124,6 +124,24 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
+// Scan for any stories that have expired and should be deleted
+$expiresql = DB_query("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']}"
+                            . " WHERE tid != '{$_CONF['archivetopic']}'"
+                            . " AND (expire <= NOW()) AND (statuscode >= 10)");
+while (list ($sid,$expiretopic,$title,$expire,$statuscode) = DB_fetchArray($expiresql)) {
+    if ($statuscode == 10) {
+        if (DB_COUNT($_TABLES['topics'],"tid", $_CONF['archivetopic']) > 0) {
+            COM_errorLOG("Archive Story: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
+            DB_query("UPDATE {$_TABLES['stories']} SET tid = '{$_CONF['archivetopic']}' WHERE sid='{$sid}'");
+        } else {
+            COM_errorLOG("ERROR: Archive Topic does not exist. Attempt to archive Story: $sid");
+        }
+    } else {
+        COM_errorLOG("Delete Story and comments: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
+        DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
+        DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}'");
+    }
+}
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 // if a topic was provided only select those stories.
@@ -131,6 +149,9 @@ if (!empty($topic)) {
     $sql .= " AND s.tid = '$topic' ";
 } elseif (!$newstories) {
     $sql .= " AND frontpage = 1 ";
+}
+if ($topic != $_CONF['archivetopic']) {
+    $sql .= " AND s.tid != '{$_CONF['archivetopic']}' ";
 }
 
 $sql .= COM_getPermSQL ('AND', 0, 2, 's');

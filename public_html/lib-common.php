@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.346 2004/07/27 18:37:16 vinny Exp $
+// $Id: lib-common.php,v 1.347 2004/07/31 03:30:35 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -399,7 +399,9 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             'article'          => $storytpl,
             'bodytext'         => 'storybodytext.thtml',
             'featuredarticle'  => 'featuredstorytext.thtml',
-            'featuredbodytext' => 'featuredstorybodytext.thtml'
+            'featuredbodytext'=>'featuredstorybodytext.thtml',
+            'archivearticle'=>'archivestorytext.thtml',
+            'archivebodytext'=>'archivestorybodytext.thtml'
             ));
 
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
@@ -605,6 +607,11 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'lang_todays_featured_article', $LANG05[4] );
         $article->parse( 'story_bodyhtml', 'featuredbodytext', true );
         $article->parse( 'finalstory', 'featuredarticle' );
+    }
+    elseif ($A['statuscode'] == 10)
+    {
+        $article->parse( 'story_bodyhtml', 'archivestorybodytext', true );
+        $article->parse( 'finalstory', 'archivearticle' );
     }
     else
     {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.120 2004/07/26 15:30:57 dhaun Exp $
+// $Id: story.php,v 1.121 2004/07/31 03:30:33 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -119,7 +119,7 @@ function storyeditor($sid = '', $mode = '')
 
     if (!empty($sid) && $mode == 'edit') {
         $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
-         . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl, UNIX_TIMESTAMP(s.expire) AS expiredate "
          . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         $A = DB_fetchArray($result);
@@ -166,6 +166,7 @@ function storyeditor($sid = '', $mode = '')
         $A['show_topic_icon'] = 1;
         $A['uid'] = $_USER['uid'];
         $A['unixdate'] = time();
+        $A['expiredate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
         $A['postmode'] = $_CONF['postmode'];
         $A['statuscode'] = 0;
@@ -337,6 +338,52 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('publish_date_explanation', $LANG24[46]);
 
     $story_templates->set_var('story_unixstamp', $A['unixdate']); 
+    /* Auto Story Arhive or Delete Feature */
+    if ($A['expiredate'] == 0) {
+        $A['expiredate'] = time();
+    }
+    $expire_month = date('m', $A['expiredate']);
+    $expire_day = date('d', $A['expiredate']);
+    $expire_year = date('Y', $A['expiredate']);
+    $expire_hour = date('H', $A['expiredate']);
+    $expire_minute = date('i', $A['expiredate']);
+    $expire_second = date('s', $A['expiredate']);
+    $story_templates->set_var('expire_second', $expire_second);
+    $expire_ampm = '';
+    if ($expire_hour >= 12) {
+        if ($expire_hour > 12) {
+            $expire_hour = $expire_hour - 12;
+        }
+        $ampm = 'pm';
+    } else {
+        $ampm = 'am';
+    }
+    if ($ampm == 'pm') {
+        $story_templates->set_var ('expirepm_selected', 'selected="selected"');
+    } else {
+        $story_templates->set_var ('expiream_selected', 'selected="selected"');
+    }
+    $month_options = COM_getMonthFormOptions($expire_month);
+    $story_templates->set_var('expire_month_options', $month_options);
+    $day_options = COM_getDayFormOptions($expire_day);
+    $story_templates->set_var('expire_day_options', $day_options);
+    $year_options = COM_getYearFormOptions($expire_year);
+    $story_templates->set_var('expire_year_options', $year_options);
+    $hour_options = COM_getHourFormOptions($expire_hour);
+    $story_templates->set_var('expire_hour_options', $hour_options);   
+    $minute_options = COM_getMinuteOptions($expire_minute);
+    $story_templates->set_var('expire_minute_options', $minute_options);
+    $story_templates->set_var('expire_date_explanation', $LANG24[46]);
+    $story_templates->set_var('story_unixstamp', $A['expiredate']); 
+    if ($A['statuscode'] == 10) {
+        $story_templates->set_var('is_checked2', 'checked="checked"');
+        $story_templates->set_var('is_checked3', 'checked="checked"');
+    } elseif ($A['statuscode'] == 11) {
+        $story_templates->set_var('is_checked2', 'checked="checked"');
+        $story_templates->set_var('is_checked4', 'checked="checked"');
+    } else {
+        $story_templates->set_var('archivedisabled', 'disabled');
+    }
     $story_templates->set_var('lang_title', $LANG24[13]);
     if ($A['postmode'] == 'plaintext') {
         $A['title'] = str_replace('$','&#36;',$A['title']);
@@ -787,7 +834,7 @@ function insert_images($sid, $intro, $body)
 * @param    int         $delete         String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
 
@@ -817,6 +864,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         exit;
     } elseif (!empty($title) && !empty($introtext)) {
         $date = date("Y-m-d H:i:s",$unixdate);
+        $expire = date("Y-m-d H:i:s",$expiredate);
 
         if (empty($hits)) {
             $hits = 0;
@@ -1007,7 +1055,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             }
         }
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode','$expire','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
 
         // If this is done as part of the moderation then delete the submission
         DB_delete ($_TABLES['storysubmission'], 'sid', $sid);
@@ -1145,6 +1193,31 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
     $publish_month = COM_applyFilter ($HTTP_POST_VARS['publish_month'], true);
     $publish_day = COM_applyFilter ($HTTP_POST_VARS['publish_day'], true);
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
+    if ($archiveflag != 1) {
+        $statuscode = 0;
+    }
+
+    $expire_ampm = COM_applyFilter ($HTTP_POST_VARS['expire_ampm']);
+    $expire_hour = COM_applyFilter ($HTTP_POST_VARS['expire_hour'], true);
+    $expire_minute = COM_applyFilter ($HTTP_POST_VARS['expire_minute'], true);
+    $expire_second = COM_applyFilter ($HTTP_POST_VARS['expire_second'], true);
+    $expire_year = COM_applyFilter ($HTTP_POST_VARS['expire_year'], true);
+    $expire_month = COM_applyFilter ($HTTP_POST_VARS['expire_month'], true);
+    $expire_day = COM_applyFilter ($HTTP_POST_VARS['expire_day'], true);
+
+    if (isset($expire_hour))  {
+        if ($expire_ampm == 'pm') {
+            if ($expire_hour < 12) {
+                $expire_hour = $expire_hour + 12;
+            }
+        }
+        if ($expire_ampm == 'am' AND $expire_hour == 12) {
+            $expire_hour = '00';
+        }
+        $expiredate = strtotime("$expire_month/$expire_day/$expire_year $expire_hour:$expire_minute:$expire_second");
+    } else {
+        $expiredate = time();
+    }
     $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
 
     submitstory (COM_applyFilter ($HTTP_POST_VARS['type']),
@@ -1152,7 +1225,7 @@ if (($mode == $LANG24[11]) && !empty ($LANG24[11])) { // delete
                  COM_applyFilter ($HTTP_POST_VARS['tid']),
                  $HTTP_POST_VARS['title'],
                  $HTTP_POST_VARS['introtext'], $HTTP_POST_VARS['bodytext'],
-                 COM_applyFilter ($HTTP_POST_VARS['hits'], true), $unixdate,
+                 COM_applyFilter ($HTTP_POST_VARS['hits'], true), $unixdate,$expiredate,
                  COM_applyFilter ($HTTP_POST_VARS['comments'], true),
                  COM_applyFilter ($HTTP_POST_VARS['featured'], true),
                  COM_applyFilter ($HTTP_POST_VARS['commentcode']),

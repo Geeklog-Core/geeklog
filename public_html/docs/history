@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added the Auto-Archive Management feature. Optionally allows the Story Editor
+  to archive or delete a story when the expire date is reached [Blaine]
 - Improved the commentbar to logically support comments viewed from comment.php
   [Vinny]
 - Removed a bug in comment.php that allowed a story/comment mismatch during 
