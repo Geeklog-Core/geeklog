@@ -711,14 +711,17 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
     <th width="29%">Default Value</th>
     <th width="63%">Description</th></tr>
 <tr>
-  <td valign="top"><a name="desc_allowablehtml">allowablehtml</a></td>
-  <td valign="top">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;li&gt;,&lt;ol&gt;,<br>
-      &lt;div&gt;,&lt;ul&gt;</td>
-  <td valign="top">Allowed HTML in stories submissions and comments.</td></tr>
+  <td valign="top"><a name="desc_user_html">user_html</a></td>
+  <td valign="top">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;ol&gt;,&lt;ul&gt;,<br>
+      &lt;li&gt;,&lt;code&gt;,&lt;pre&gt;</td>
+  <td valign="top">HTML tags and attributes that normal users are allowed to
+      use in story submissions and comments.</td></tr>
 <tr>
-  <td valign="top"><a name="desc_adminhtml">adminhtml</a></td>
-  <td valign="top">the values from allowablehtml (above) plus HTML tags for tables</td>
-  <td valign="top">Allowed HTML that only admin users can use</td></tr>
+  <td valign="top"><a name="desc_admin_html">admin_html</a></td>
+  <td valign="top">additional HTML tags, e.g. for tables</td>
+  <td valign="top">HTML tags and attributes that admin users are allowed to
+      use (in addition to those from user_html). Redefining a tag with
+      additional attributes will overwrite the definition from user_html.</td></tr>
 <tr>
   <td valign="top"><a name="desc_censormode">censormode</a></td>
   <td valign="top">1</td>
