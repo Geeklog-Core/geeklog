@@ -33,15 +33,13 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.98 2003/09/05 17:18:15 dhaun Exp $
+// $Id: config.php,v 1.99 2003/09/06 17:28:06 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
-// settings in the following 5 sections are correct:
+// settings in the following 3 sections are correct:
 // (1) Database Settings
 // (2) Paths
 // (3) Site Settings
-// (4) PEAR Settings
-// (5) Email Settings
 // You can adjust the other settings once your site is up and running.
 
 // +---------------------------------------------------------------------------+
@@ -98,46 +96,6 @@ $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 
 
-// +---------------------------------------------------------------------------+
-// | (4) PEAR Settings                                                         |
-// +---------------------------------------------------------------------------+
-
-// If your server is running PHP 4.3.0 (or newer) then chances are that PEAR
-// is already installed and you can leave this as "true".
-$_CONF['have_pear'] = true;
-
-// Geeklog comes with the necessary PEAR packages, so if you don't have PEAR
-// installed, set $_CONF['have_pear'] = false (above). The following path
-// points to those packages (leave as is unless you know what your're doing).
-$_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
-
-
-// +---------------------------------------------------------------------------+
-// | (5) Email Settings                                                        |
-// +---------------------------------------------------------------------------+
-
-// To send email from Geeklog, you will need to select one of the following
-// email backends:
-// - 'mail', i.e. use PHP's built-in mail() function
-// - 'sendmail', i.e. use the sendmail utility
-// - 'smtp', i.e. talk directly to your SMTP server
-
-$_CONF['mail_settings'] = array (  
-    'backend' => 'mail', // can be one of 'mail', 'sendmail', 'smtp'
-
-    // sendmail parameters
-    'sendmail_path' => '/usr/bin/sendmail',
-    'sendmail_args' => '',
-
-    // SMTP parameters
-    'host'     => 'smtp.example.com',
-    'port'     => '25',
-    'auth'     => false,
-    'username' => 'smtp-username',
-    'password' => 'smtp-password'
-);
-
-
 // ****************************************************************************
 // * If you set up Geeklog for the first time, you shouldn't need to change   *
 // * anything below this line. Come back here once the site is up and running.*
@@ -145,19 +103,6 @@ $_CONF['mail_settings'] = array (
 
 
 // Note: See the file docs/config.html for more information on the settings.
-
-// +---------------------------------------------------------------------------+
-// | OTHER DATABASE SETTINGS                                                   |
-// |                                                                           |
-// | These settings tell Geeklog about your database and how to connect to it. |
-// +---------------------------------------------------------------------------+
-
-$_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
-
-// optional settings for making database backups from within Geeklog
-$_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
-$_DB_mysqldump_path         = '/usr/bin/mysqldump'; // path to mysqldump binary
-$_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
 
 // +---------------------------------------------------------------------------+
 // | OTHER PATH SETTINGS                                                       |
@@ -171,8 +116,63 @@ $_CONF['path_log']        = $_CONF['path'] . 'logs/';
 $_CONF['path_language']   = $_CONF['path'] . 'language/';
 $_CONF['backup_path']     = $_CONF['path'] . 'backups/';
 
-// path to your site's RSS/RDF feed
-$_CONF['rdf_file']        = $_CONF['path_html'] . 'backend/geeklog.rdf';
+// +---------------------------------------------------------------------------+
+// | PEAR Settings                                                             |
+// |                                                                           |
+// | Geeklog uses PEAR to send emails (see "Email Settings" below). Here you   |
+// | can Geeklog wether to use the PEAR packages installed on your server or   |
+// | to use the included packages.                                             |
+// +---------------------------------------------------------------------------+
+
+// If your server is running PHP 4.3.0 (or newer) then chances are that PEAR
+// is already installed and you can change this to: $_CONF['have_pear'] = true;
+$_CONF['have_pear'] = false;
+
+// Geeklog comes with the necessary PEAR packages and will pick them up from
+// the following directory if $_CONF['have_pear'] = false (above).
+$_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
+
+// +---------------------------------------------------------------------------+
+// | Email Settings                                                            |
+// |                                                                           |
+// | Configure how Geeklog sends email: Via PHP's mail() function, sendmail,   |
+// | or via an SMTP server.                                                    |
+// +---------------------------------------------------------------------------+
+
+// To send email from Geeklog, you will need to select one of the following
+// email backends:
+// - 'mail', i.e. use PHP's built-in mail() function
+// - 'sendmail', i.e. use the sendmail utility
+// - 'smtp', i.e. talk directly to your SMTP server
+// The default is 'mail' and will work in most environments.
+
+$_CONF['mail_settings'] = array (  
+    'backend' => 'mail', // can be one of 'mail', 'sendmail', 'smtp'
+
+    // sendmail parameters (for 'backend' => 'sendmail')
+    'sendmail_path' => '/usr/bin/sendmail',
+    'sendmail_args' => '',
+
+    // SMTP parameters (for 'backend' => 'smtp')
+    'host'     => 'smtp.example.com',
+    'port'     => '25',
+    'auth'     => false,
+    'username' => 'smtp-username',
+    'password' => 'smtp-password'
+);
+
+// +---------------------------------------------------------------------------+
+// | OTHER DATABASE SETTINGS                                                   |
+// |                                                                           |
+// | Database type and database backup settings.                               |
+// +---------------------------------------------------------------------------+
+
+$_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
+
+// optional settings for making database backups from within Geeklog
+$_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
+$_DB_mysqldump_path         = '/usr/bin/mysqldump'; // path to mysqldump binary
+$_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
@@ -186,10 +186,10 @@ $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
 
-// optional settings
+// optional settings (1 = on, 0 = off)
 $_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
-$_CONF['allow_user_photo']    = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
+$_CONF['allow_user_photo']    = 1; // allow users to upload self-photo
 
 // hides the list of authors from the preferences
 $_CONF['hide_author_exclusion'] = 0;
@@ -214,9 +214,8 @@ $_CONF['shortdate'] = '%x';
 $_CONF['dateonly']  = '%d-%b';
 $_CONF['timeonly']  = '%I:%M %p %Z';
 $_CONF['default_charset'] = 'iso-8859-1';
-$_CONF['rdf_language']    = 'en-gb'; // may have to be different than the locale
 
-// ----------------------------------------------------------------------------+
+// +---------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
 // |                                                                           |
 // | To disable your Geeklog site quickly, simply set this flag to false       |
@@ -389,14 +388,14 @@ $_CONF['emailstoriesperdefault'] = 0;
 $_CONF['allow_domains'] = ''; // e.g. 'mycompany.com,myothercompany.com'
 
 // Following times are in seconds
-$_CONF['newstoriesinterval']  = 86400;
-$_CONF['newcommentsinterval'] = 172800;
-$_CONF['newlinksinterval']    = 1209600;
+$_CONF['newstoriesinterval']  =   86400; // = 24 hours
+$_CONF['newcommentsinterval'] =  172800; // = 48 hours
+$_CONF['newlinksinterval']    = 1209600; // = 14 days
 
 // Set to 1 to hide a section from the What's New block:
-$_CONF['hidenewstories'] = 0;
+$_CONF['hidenewstories']  = 0;
 $_CONF['hidenewcomments'] = 0;
-$_CONF['hidenewlinks'] = 0;
+$_CONF['hidenewlinks']    = 0;
 
 // Calendar Settings
 $_CONF['personalcalendars']     = 1;
@@ -417,16 +416,32 @@ $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 // templates for featured stories - even if that story is not featured.
 $_CONF['showfirstasfeatured']   = 0;
 
-// RSS/RDF feed settings
-$_CONF['backend']               = 1;    // 1 = active, 0 = off
-// This allows a person to limit the rdf feed to a certain number of stories
-// (e.g. 10 or 12) or else limit the rdf feed to all stories within a certain
+// +---------------------------------------------------------------------------+
+// | RSS feed settings                                                         |
+// |                                                                           |
+// | Settings for RSS feeds (aka RDF feeds). Please note that most of these    |
+// | are merely default settings for the feeds created from the "Content       |
+// | Syndication" entry in the Admin's menu.                                   |
+// +---------------------------------------------------------------------------+
+
+$_CONF['backend']       = 1;    // 1 = activate feeds, 0 = off
+
+// path to your site's default RSS feed
+$_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
+
+// This allows a person to limit the rss feed to a certain number of stories
+// (e.g. 10 or 12) or else limit the rss feed to all stories within a certain
 // period of time in hours (e.g. 24h or 168h). 
-$_CONF['rdf_limit']             = 10;   // number of stories (10) or hours (24h)
+$_CONF['rdf_limit']     = 10;   // number of stories (10) or hours (24h)
+
 // Include the story's entire intro text in the feed (= 1) or limit the number
 // of characters from the intro text (any number > 1) or don't include the text
 // at all (= 0).
-$_CONF['rdf_storytext']         = 0;
+$_CONF['rdf_storytext'] = 0;
+
+// Default language for the feed - may have to be different than the locale
+$_CONF['rdf_language']  = 'en-gb';
+
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.
