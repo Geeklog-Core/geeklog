@@ -33,6 +33,7 @@
 ##/ DATABASE SETTINGS /########################################################
 #
 #	These settings must suit your server environment.
+#	If you are smart, username will not be root
 
 $CONF["db_name"]		= "geeklog";
 $CONF["db_host"]		= "localhost";
@@ -72,18 +73,27 @@ $CONF["shortdate"]		= "%x";
 
 ##/ SESSION SETTINGS /#########################################################
 #
-# 	cookie_timeout is the same for admin and non-admins (Note: 3600 = 1 hour)
 # 	cookie_ip will store md5(remoteip + randomnum) as the session ID in the 
 #	cookie. This is more secure but will more than likely require dialed up 
 #	users to login each and every time.  If	ipbasedsessid is turned off 
 #	(which it is by default) it will just store	a random number as the 
 #	session ID in the cookie.
+#
+#	default_perm_cookie_timeout is how long you want the permanent cookie
+#	to persist for.  This can be overridden by the user in their user prefs
+#	if they want.  If you don't want to allow permanent cookies set the
+#	value to an empty string ''.
+#
+#	session_cookie_time is how long you want the session cookie to persist
+# 	for.  Only really useful in scenarios where you don't want to allow
+#	permanent cookies
 
-$CONF["cookie_ip"]		= 1;
-$CONF["cookie_timeout"]		= "7200";
-$CONF["cookie_session"]		= "gl_session";
-$CONF["cookie_name"]		= "geeklog";
-$CONF["cookie_path"]		= "/";
+$CONF["cookie_ip"]			= 1;
+$CONF["default_perm_cookie_timeout"]	= 3600 * 9;
+$CONF["session_cookie_timeout"]		= "7200";
+$CONF["cookie_session"]			= "gl_session";
+$CONF["cookie_name"]			= "geeklog";
+$CONF["cookie_path"]			= "/";
 
 
 ##/ PLUGIN SETTINGS /##########################################################
