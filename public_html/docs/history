@@ -1,5 +1,16 @@
 GeekLog History/Changes:
 
+February 21, 2002
+-----------------
+- Added missing help field to block table
+- Added block to usersettings where user can pick topics to receive articles for in an
+  email digest
+- Fixed bug with the contact link in the header of some themes
+- Fixed bug that caused the admin block to disappear
+- Fixed bug that caused save of story as admin to go to http://someurl/draft_flag
+- Fixed bad relative paths in calendar
+- block type now defaults properly when showing prepopulated data
+
 January 11, 2001
 -----------------
 - Two security fixes, one major one.  This release addes a users MD5 password to a cookie that is checked when using the permanent cookie.  Prior to this you could change the permanent cookie to any user and get their access rights.  Second security fix addresses an orphaned group_assignments record that, one new Geeklog installations, would give the very first user to register with the site access to the GroupAdmin and UserAdmin groups
