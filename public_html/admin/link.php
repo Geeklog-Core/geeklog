@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.37 2003/11/30 19:45:39 dhaun Exp $
+// $Id: link.php,v 1.38 2003/12/11 21:05:28 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -107,7 +107,8 @@ function editlink($mode, $lid = '')
         $link_templates->set_var ('delete_option', '<input type="submit" value="' . $LANG23[23] . '" name="mode">');
     }
     $link_templates->set_var('lang_linktitle', $LANG23[3]);
-    $link_templates->set_var('link_title', stripslashes($A['title']));
+    $link_templates->set_var('link_title',
+                             htmlspecialchars (stripslashes ($A['title'])));
     $link_templates->set_var('lang_linkurl', $LANG23[4]);
     $link_templates->set_var('link_url', $A['url']);
     $link_templates->set_var('lang_includehttp', $LANG23[6]);
