@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.61 2004/02/19 12:31:34 dhaun Exp $
+// $Id: install.php,v 1.62 2004/03/22 15:20:47 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -502,17 +502,19 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
 
             // upgrade static pages plugin
             $spversion = get_SP_ver ();
-            if ($spversion < 4) {
-                if (!isset ($_SP_CONF['in_block'])) {
-                    $_SP_CONF['in_block'] = 1;
-                } else if ($_SP_CONF['in_block'] > 1) {
-                    $_SP_CONF['in_block'] = 1;
-                } else if ($_SP_CONF['in_block'] < 0) {
-                    $_SP_CONF['in_block'] = 0;
+            if ($spversion > 0) {
+                if ($spversion < 4) {
+                    if (!isset ($_SP_CONF['in_block'])) {
+                        $_SP_CONF['in_block'] = 1;
+                    } else if ($_SP_CONF['in_block'] > 1) {
+                        $_SP_CONF['in_block'] = 1;
+                    } else if ($_SP_CONF['in_block'] < 0) {
+                        $_SP_CONF['in_block'] = 0;
+                    }
+                    DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD COLUMN sp_inblock tinyint(1) unsigned DEFAULT '{$_SP_CONF['in_block']}'");
                 }
-                DB_query ("ALTER TABLE {$_TABLES['staticpage']} ADD COLUMN sp_inblock tinyint(1) unsigned DEFAULT '{$_SP_CONF['in_block']}'");
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4', pi_gl_version = '1.3.9' WHERE pi_name = 'staticpages'");
             }
-            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.4', pi_gl_version = '1.3.9' WHERE pi_name = 'staticpages'");
 
             // recreate 'date' field for old links
             $result = DB_query ("SELECT lid FROM {$_TABLES['links']} WHERE date IS NULL");
