@@ -5,12 +5,13 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | config.php                                                                |
-// | Geeklog configuration file.                                               |
 // |                                                                           |
+// | Geeklog configuration file.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001 by the following authors:                              |
+// | Copyright (C) 2001-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs - tony@tonybibbs.com                                  |
+// |          Dirk Haun  - dirk@haun-online.de                                 |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,75 +30,112 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // | See the docs/install.html and docs/config.html files for more information |
-// | on configuration                                                          |
+// | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.86 2003/06/12 19:45:08 dhaun Exp $
+// $Id: config.php,v 1.87 2003/06/17 10:30:26 dhaun Exp $
 
-// To get Geeklog up and running, you need to make sure the settings in the
-// following sections are correct:
-// + DATABASE SETTINGS
-// + SERVER SETTINGS
-// + SITE SETTINGS
+// When setting up Geeklog for the first time, you only need to make sure the
+// settings in the following 3 sections are correct:
+// (1) Database Settings
+// (2) Paths
+// (3) Site Settings
 // You can adjust the other settings once your site is up and running.
 
 // +---------------------------------------------------------------------------+
-// | DATABASE SETTINGS                                                         |
-// |                                                                           |
-// | These settings tell Geeklog about your database and how to connect to it. |
+// | (1) Database Settings                                                     |
 // +---------------------------------------------------------------------------+
-$_DB_dbms         = 'mysql';        // Do not change (currently, only MySQL is supported)
-$_DB_host         = 'localhost';
-$_DB_name         = 'geeklog';      // Yes, your DB must exist before running the installer!
-$_DB_user         = 'username';
-$_DB_pass         = 'password';
-$_DB_table_prefix = 'gl_';          // e.g. 'gl_'
 
-// optional settings for making database backups from within Geeklog
-$_DB_mysqldump_path = '/usr/bin/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
-$_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
-$_CONF['mysqldump_options'] = '-Q'; // additional options for mysqldump
+$_DB_host         = 'localhost';   // host name or IP address of your DB server
+$_DB_name         = 'geeklog';     // name of your databasei,
+                                   // must exist before running the installer!
+$_DB_user         = 'username';    // MySQL user name
+$_DB_pass         = 'password';    // MySQL password
+
+// The table prefix is prepended to each table used be Geeklog to avoid name
+// collisions with other tables that may already exist in your database.
+$_DB_table_prefix = 'gl_';         // e.g. 'gl_'
+
 
 // +---------------------------------------------------------------------------+
-// | SERVER SETTINGS                                                           |
-// |                                                                           |
-// | All paths must have a trailing slash ('/').  If you're on Windows, they   |
-// | must also start with a drive letter (e.g. 'C:/').                         |
-// | The 'path' value signifies where the config.php (this file) resides       |
+// | (2) Paths                                                                 |
 // +---------------------------------------------------------------------------+
-$_CONF['path']            = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog/
+
+// Note for Windows users: It's safe to use the forward slash '/' instead of
+// the backslash '\' in paths. Make sure each path starts with a drive letter!
+
+// This should point to the directory where your config.php file resides.
+$_CONF['path']            = '/path/to/geeklog/'; // should end in a slash
 
 // You only need to change this if you moved or renamed the public_html
 // directory. In that case, you should specify the complete path to the
-// directory like this (i.e. without the $_CONF['path']):
-// $_CONF['path_html']    = '/path/to/your/public_html/';
-$_CONF['path_html']       = $_CONF['path'] . 'public_html/';
-
-// you shouldn't need to edit the following
-$_CONF['path_system']     = $_CONF['path'] . 'system/';
-$_CONF['path_log']        = $_CONF['path'] . 'logs/';
-$_CONF['path_language']   = $_CONF['path'] . 'language/';
-$_CONF['rdf_file']        = $_CONF['path_html'] . 'backend/geeklog.rdf';
-$_CONF['backup_path']     = $_CONF['path'] . 'backups/';
-
-// +---------------------------------------------------------------------------+
-// | SITE SETTINGS                                                             |
-// |                                                                           |
-// | These settings help define your Geeklog site.                             |
-// +---------------------------------------------------------------------------+
-// make sure this is the correct URL to your site (no trailing slash)
-$_CONF['site_url']          = 'http://www.example.com';
-
-$_CONF['site_name']         = 'Geeklog Site';
-$_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
-$_CONF['site_mail']         = 'admin@example.com';
-$_CONF['theme']             = 'XSilver';  // default theme
+// directory (i.e. without the $_CONF['path']) like this:
+// $_CONF['path_html']      = '/path/to/your/public_html/';
+$_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
 // Some hosting services have a preconfigured admin directory. In that case,
 // you need to rename Geeklog's admin directory to something like "myadmin"
 // and change the following URL as well. Leave as is until you experience any
 // problems accessing Geeklog's admin menu.
 $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
+
+
+// +---------------------------------------------------------------------------+
+// | (3) Site Settings                                                         |
+// +---------------------------------------------------------------------------+
+
+// Make sure this is the correct URL to your site, i.e. to where Geeklog's
+// index.php file resides (no trailing slash).
+$_CONF['site_url']          = 'http://www.example.com';
+
+// This is the return address for all email sent by Geeklog:
+$_CONF['site_mail']         = 'admin@example.com';
+
+$_CONF['site_name']         = 'Geeklog Site';
+$_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
+
+// ****************************************************************************
+// * If you set up Geeklog for the first time, you shouldn't need to change   *
+// * anything below this line. Come back here once the site is up and running.*
+// ****************************************************************************
+
+
+// Note: See the file docs/config.html for more information on the settings.
+
+// +---------------------------------------------------------------------------+
+// | OTHER DATABASE SETTINGS                                                   |
+// |                                                                           |
+// | These settings tell Geeklog about your database and how to connect to it. |
+// +---------------------------------------------------------------------------+
+
+$_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
+
+// optional settings for making database backups from within Geeklog
+$_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
+$_DB_mysqldump_path         = '/usr/bin/mysqldump'; // path to mysqldump binary
+$_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
+
+// +---------------------------------------------------------------------------+
+// | OTHER PATH SETTINGS                                                       |
+// |                                                                           |
+// | All paths must have a trailing slash ('/').                               |
+// +---------------------------------------------------------------------------+
+
+// you shouldn't need to edit theses
+$_CONF['path_system']     = $_CONF['path'] . 'system/';
+$_CONF['path_log']        = $_CONF['path'] . 'logs/';
+$_CONF['path_language']   = $_CONF['path'] . 'language/';
+$_CONF['backup_path']     = $_CONF['path'] . 'backups/';
+
+// path to your site's RSS/RDF feed
+$_CONF['rdf_file']        = $_CONF['path_html'] . 'backend/geeklog.rdf';
+
+// +---------------------------------------------------------------------------+
+// | SITE SETTINGS                                                             |
+// |                                                                           |
+// | These settings help define your Geeklog site.                             |
+// +---------------------------------------------------------------------------+
+$_CONF['theme']             = 'XSilver';  // default theme
 
 // you shouldn't need to edit the following
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
@@ -109,17 +147,13 @@ $_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
 $_CONF['allow_user_photo']    = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
 
-// ****************************************************************************
-// * Support for custom user registration form and account details            *
-// * Requires custom functions to be written that can be placed in lib-custom *
-// * Function hooks are in users.php, usersettings.php and admin/user.php     *
-// ****************************************************************************
+// +---------------------------------------------------------------------------+
+// | Support for custom user registration form and account details             |
+// | Requires custom functions to be written that can be placed in lib-custom  |
+// | Function hooks are in users.php, usersettings.php and admin/user.php      |
+// +---------------------------------------------------------------------------+
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
-// ****************************************************************************
-// * If you set up Geeklog for the first time, you shouldn't need to change   *
-// * anything below this line. Come back here once the site is up and running.*
-// ****************************************************************************
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
@@ -257,7 +291,7 @@ $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and storie
 $_CONF['allow_username_change'] = 0;
 
 // Allow users to delete their account (if set to 1).
-$_CONF['allow_account_delete'] = 0;
+$_CONF['allow_account_delete']  = 0;
 
 
 // Topic Settings
@@ -325,7 +359,7 @@ $_CONF['maximagesperarticle']   = 5;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
-$_CONF['article_image_align']   = 'right'; 	// Options are left or right.
+$_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 
@@ -346,7 +380,7 @@ $_CONF['rdf_storytext']         = 0;
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.
-// $_CONF['copyrightyear'] = 2003;
+// $_CONF['copyrightyear'] = '2003';
 
 
 // Optional Image Settings
@@ -425,12 +459,12 @@ $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
 
-// EXPERIMENTAL!  This feature when fully implemented, will make your site crawler friendly.
+// EXPERIMENTAL!
+// This feature when fully implemented, will make your site crawler friendly.
+// Only works with staticpages right now.
 //
 // Note: Works with Apache (Linux and Windows successfully tested).
-//       Only works with staticpages right now.
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
-
 $_CONF['url_rewrite']       = false; // false = off, true = on
 
 // Define a few useful things for GL
