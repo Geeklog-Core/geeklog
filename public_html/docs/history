@@ -3,6 +3,13 @@ GeekLog History/Changes:
 Nov ??, 2004 (1.3.10rc3)
 ------------
 
+- When changing a username, make sure to change the name of the user's photo,
+  too (bug #321) [Dirk]
+- Links in "plain text" stories and comments are now made clickable (i.e.
+  enclosed in <a> tags) when the post is saved instead of when it's displayed,
+  as in the previous release candidates. This also fixes bug #308. [Dirk]
+- Added $_CONF['disable_autolinks'] config option to disable autolinks [Dirk]
+- Removed ViewBlacklist.Admin.class.php from the SpamX plugin [Tom Willet]
 - Overhauled handling of personal events [Dirk]:
   + Fixed deleting personal events (again).
   + The upcoming events block now links to the event details of personal
@@ -13,7 +20,7 @@ Nov ??, 2004 (1.3.10rc3)
   in error.log if it is off [Dirk]
 - When deleting a story (automatically), make sure we're only deleting comments
   belonging to that story (i.e. added a check for type = 'article') [Dirk]
-- Added {event_type}, {lang_event_type}, and {edit_icon} in all the theme's
+- Added {event_type}, {lang_event_type}, and {edit_icon} in all the themes'
   calendar/eventdetails.thtml template file [Dirk]
 - Fixed some URLs in the calendar (missing slash) [Dirk]
 - Comment IDs don't have to be numeric (in comment.php) [Vinny]
