@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.18 2002/05/11 15:07:31 dhaun Exp $
+// $Id: calendar.php,v 1.19 2002/05/11 16:30:31 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -81,6 +81,47 @@ function getDayViewData($result, $cur_time = '')
 
 }
 
+function setCalendarLanguage (&$aCalendar) {
+    global $LANG30;
+
+    $lang_days = array('sunday'=>$LANG30[1],
+                        'monday'=>$LANG30[2],
+                        'tuesday'=>$LANG30[3],
+                        'wednesday'=>$LANG30[4],
+                        'thursday'=>$LANG30[5],
+                        'friday'=>$LANG30[6],
+                        'saturday'=>$LANG30[7]);
+    $lang_months = array('january'=>$LANG30[13],
+                         'february'=>$LANG30[14],
+                         'march'=>$LANG30[15],
+                         'april'=>$LANG30[16],
+                         'may'=>$LANG30[17],
+                         'june'=>$LANG30[18],
+                         'july'=>$LANG30[19],
+                         'august'=>$LANG30[20],
+                         'september'=>$LANG30[21],
+                         'october'=>$LANG30[22],
+                         'november'=>$LANG30[23],
+                         'december'=>$LANG30[24]);
+
+    $aCalendar->setLanguage($lang_days, $lang_months);
+}
+
+function makeDaysHeadline () {
+    global $LANG30;
+
+    $retval = '<tr><th>'
+            . substr ($LANG30[1], 0, 2) . '</th><th>'
+            . substr ($LANG30[2], 0, 2) . '</th><th>'
+            . substr ($LANG30[3], 0, 2) . '</th><th>'
+            . substr ($LANG30[4], 0, 2) . '</th><th>'
+            . substr ($LANG30[5], 0, 2) . '</th><th>'
+            . substr ($LANG30[6], 0, 2) . '</th><th>'
+            . substr ($LANG30[7], 0, 2) . '</th></tr>';
+
+    return $retval;
+}
+
 /**
 * Gets a small, text-only version of a calendar
 *
@@ -90,11 +131,11 @@ function getDayViewData($result, $cur_time = '')
 */
 function getSmallCalendar($m, $y, $mode='')
 {
-    global $_CONF;
+    global $_CONF, $LANG30;
 
     $retval = '';
     $mycal = new Calendar();
-
+    setCalendarLanguage ($mycal);
     $mycal->setCalendarMatrix($m,$y);
 
     if (!empty($mode)) {
@@ -104,12 +145,12 @@ function getSmallCalendar($m, $y, $mode='')
     $retval .= '<font size=-2>' . LB . '<table>' . LB 
         . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&amp;year=' . $y . $mode . '">' 
         . $mycal->getMonthName($m) . '</a></td></tr>'
-        . '<tr><th>S</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>S</th></tr>'.LB;
+        . makeDaysHeadline() . LB;
 
     for ($i = 1; $i <= 6; $i++) {
         $retval .= '<tr>' . LB;
         for ($j = 1; $j <= 7; $j++) {
-            $retval .= '<td>' . LB;
+            $retval .= '<td align="right">' . LB;
             $curday = $mycal->getDayData($i, $j);
             if (!empty($curday)) {
                 $retval .= $curday->daynumber;
@@ -285,27 +326,7 @@ if ($nextmonth == 13) {
     $nextyear = $year;
 }
 
-$lang_days = array('sunday'=>$LANG30[1],
-                    'monday'=>$LANG30[2],
-                    'tuesday'=>$LANG30[3],
-                    'wednesday'=>$LANG30[4],
-                    'thursday'=>$LANG30[5],
-                    'friday'=>$LANG30[6],
-                    'saturday'=>$LANG30[7]);
-$lang_months = array('january'=>$LANG30[13],
-                     'february'=>$LANG30[14],
-                     'march'=>$LANG30[15],
-                     'april'=>$LANG30[16],
-                     'may'=>$LANG30[17],
-                     'june'=>$LANG30[18],
-                     'july'=>$LANG30[19],
-                     'august'=>$LANG30[20],
-                     'september'=>$LANG30[21],
-                     'october'=>$LANG30[22],
-                     'november'=>$LANG30[23],
-                     'december'=>$LANG30[24]);
-
-$cal->setLanguage($lang_days, $lang_months);
+setCalendarLanguage ($cal);
 
 // Build calendar matrix
 $cal->setCalendarMatrix($month,$year);
