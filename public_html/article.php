@@ -51,7 +51,7 @@ if ($A["count"] > 0) {
 		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
 		$A = mysql_fetch_array($result);
 		print "<html><title>{$CONF["sitename"]} : {$A["title"]}</title><body>\n";
-		print "<H1>{$A["title"]}</H1>\n";
+		print "<H1>" . stripslashes($A["title"]) . "</H1>\n";
 		print "<H3>" . strftime($CONF["date"],$A["day"]) . "</H3>";
 		if ($CONF["contributedbyline"] == 1) {
 			print "<BR><H3>$LANG01[1] " . getitem("users","username","uid = {$A["uid"]}") . "</H3>\n";
