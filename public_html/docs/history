@@ -1,5 +1,14 @@
 GeekLog History/Changes:
 
+- New strings in english.php (and german.php):
+  $LANG02: 15 (moved from calendar_event.php)
+  $LANG04: 74, 75, 76 (moved from usersettings.php)
+  $LANG08: 31, 32, 33, 34 (moved from lib-common.php)
+  These strings need to be added to the other language files!
+- Fixed user selection of emailed topics (usersettings.php) and removed the
+  hard coded texts for the daily digest from lib-common.php (again).
+- Slightly changed display of event block: The type of event is no longer
+  underlined and the event date is displayed as 03-Apr etc.
 - Added Russion Translation
 - Fixed bug #531483 where $_CONF['commentsloginrequired'] was set to 'on' or
   'off' instead of '1' or '0'.
