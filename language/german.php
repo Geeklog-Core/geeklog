@@ -283,7 +283,10 @@ $LANG04 = array(
     73 => "Sprache",
     74 => "&Auml;ndere das Aussehen dieser Site",
     75 => "Artikel per E-Mail f&uuml;r",
-    76 => "W&auml;hle Kategorien aus der folgenden Liste und Du bekommst einmal pro Tag eine E-Mail mit einer &Uuml;bersicht aller neuen Artikel in den ausgew&auml;hlten Kategorien. Du brauchst nur die Kategorien anzukreuzen, die Dich interessieren."
+    76 => "W&auml;hle Kategorien aus der folgenden Liste und Du bekommst einmal pro Tag eine E-Mail mit einer &Uuml;bersicht aller neuen Artikel in den ausgew&auml;hlten Kategorien. Du brauchst nur die Kategorien anzukreuzen, die Dich interessieren.",
+    77 => "Photo",
+    78 => "Add a picture of yourself!",
+    79 => "Check here to delete this picture"
 );
 
 ###############################################################################
@@ -769,7 +772,8 @@ $LANG28 = array(
     24 => 'Mehrfach-Import von Usern',
     25 => 'Hier k&ouml;nnen Userdaten aus einer Datei in Geeklog importiert werden. Die Import-Datei muss ein Textfile sein, bei dem die Datens&auml;tze durch Tabs getrennt sind. Zudem m&uuml;ssen die Felder in der Reihenfolge Richtiger Name - Username - E-Mail-Adresse vorliegen. Jeder so importierte User bekommt eine E-Mail mit einem Zufallspasswort zugeschickt. Pro Zeile darf nur ein User stehen. Wenn sich die Importdatei nicht an dieses Format h&auml;lt, kann es zu Problemen kommen, die nur in m&uuml;hseliger Handarbeit behoben werden k&ouml;nnen. Also die Eintr&auml;ge lieber zweimal &uuml;berpr&uuml;fen ...',
     26 => 'Suche',
-    27 => 'Anzahl Treffer'
+    27 => 'Anzahl Treffer',
+    28 => 'Check here to delete this picture'
 );
 
 
