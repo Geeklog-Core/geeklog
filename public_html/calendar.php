@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.50 2004/09/26 09:09:51 dhaun Exp $
+// $Id: calendar.php,v 1.51 2004/10/25 18:34:40 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -812,7 +812,7 @@ for ($i = 1; $i <= 6; $i++) {
             }
 
             $cal_templates->set_var ('cal_day_anchortags', '<a href="'
-                . $_CONF['site_url'] . 'calendar.php?view=day&amp;'
+                . $_CONF['site_url'] . '/calendar.php?view=day&amp;'
                 . addMode ($mode) . 'day=' . $curday->daynumber. '&amp;month='
                 . $month . '&amp;year=' . $year . '" class="cal-date">'
                 . $curday->daynumber. '</a><hr>');
