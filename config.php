@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.43 2002/07/23 08:51:40 dhaun Exp $
+// $Id: config.php,v 1.44 2002/07/23 12:58:48 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -205,7 +205,7 @@ $_CONF['usersubmission'] = 0;
 
 // When user submission is activated, allow users from these domains to
 // register without having to go through the submission queue.
-$_CONF['allow_domains] = ''; // NOT YET IMPLEMENTED
+$_CONF['allow_domains'] = ''; // NOT YET IMPLEMENTED
 
 // Following times are in seconds
 $_CONF['newstoriesinterval']  = 86400;
