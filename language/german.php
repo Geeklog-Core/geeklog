@@ -91,7 +91,7 @@ $LANG01 = array(
 	44 => "vorherige",
 	45 => "MySQL Fehlernummer",
 	46 => "MySQL Fehlermeldung",
-	47 => "User-Funktionen",
+	47 => "Anmelden",
 	48 => "Userprofil &auml;ndern",
 	49 => "Anzeige-Einstellungen",
 	50 => "Fehler im SQL-Befehl",
@@ -297,8 +297,8 @@ $LANG05 = array(
 	2 => "Es gibt keine Artikel, die angezeigt werden k&ouml;nnten. Entweder gibt es f&uuml;r diese Kategorie keine Artikel oder Deine Einstellungen sind zu restriktiv",
 	3 => " f&uuml;r die Kategorie $topic.",
 	4 => "Hauptartikel",
-	5 => "N&auml;chster",
-	6 => "Vorheriger"
+	5 => "weiter",
+	6 => "zur&uuml;ck"
 );
 
 ###############################################################################
