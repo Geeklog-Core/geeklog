@@ -12,7 +12,8 @@
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Phill Gillespie  - phill@mediaaustralia.com.au                   |
-// |          Tom Willett      - twillett@users.sourceforge.net
+// |          Tom Willett      - twillett@users.sourceforge.net                |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.19 2003/03/11 17:00:57 dhaun Exp $
+// $Id: index.php,v 1.20 2003/03/12 11:34:05 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -287,51 +288,65 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
     $sp_templates->set_var('lang_url', $LANG_STATIC['url']);
 
-	//if (empty($page)) $page = 1;
-	//$limit = (50 * $page) - 50;
-	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC LIMIT $limit,50");
-        $perms = SP_getPerms ('', '3');
-        if (!empty ($perms)) {
-            $perms = ' WHERE ' . $perms;
-        }
-	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']}" . $perms . " ORDER BY sp_date DESC");
-	$nrows = DB_numRows($result);
-	if ($nrows > 0) {
- 		for ($i = 1; $i <= $nrows; $i++) {
-			//$scount = (50 * $page) - 50 + $i;
-			$A = DB_fetchArray($result);
-            $sp_templates->set_var('sp_id', $A['sp_id']);
-            $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $A['sp_id']));
-            $sp_templates->set_var('row_number', $i);
-            $sp_templates->set_var('page_display_url',COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
-            $sp_templates->set_var ('page_clone_url', COM_buildURL ($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=clone&amp;sp_id=' . $A['sp_id']));
-            $sp_templates->set_var('sp_title', stripslashes ($A['sp_title']));
-            $sp_templates->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
-			$curtime = COM_getUserDateTimeFormat($A['unixdate']);
-            $sp_templates->set_var('sp_date', $curtime[0]);
-            $sp_templates->parse('list_item', 'row', true);
-		}
-        $sp_templates->set_var('lang_nopages_msg', '');
-        /*
-		$retval .= "<tr><td colspan=6>";
-		if (DB_count($_TABLES['staticpage']) > 50) {
-			$prevpage = $page - 1; 
-			$nextpage = $page + 1;
-			$num_pages = DB_count($_TABLES['staticpage']) / 50;
-			if ($page > 1) {
-				$retval .= "<a href={$_CONF["site_admin_url"]}/plugins/staticpages/index.php?mode=list&page=$prevpage>{$LANG50[1]}</a>&nbsp;&nbsp";
-			}
-			if ($page < $num_pages) {
-				$retval .= "<a href={$_CONF["site_admin_url"]}/plugins/staticpages/index.php?mode=list&page=$nextpage>{$LANG50[2]}</a> ";
-			}
-		}
-		$retval .= "</td></tr>
-        */
-	} else {
-        $sp_templates->set_var('lang_nopages_msg', $LANG_STATIC['nopages']);
-        $sp_templates->set_var('list_item', '');
+    $perpage = 50;
+    if ($page <= 0) {
+        $page = 1;
     }
-	$sp_templates->set_var('end_block', COM_endBlock());	
+
+    $perms = SP_getPerms ('', '3');
+    if (!empty ($perms)) {
+       $perms = ' WHERE ' . $perms;
+    }
+
+    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['staticpage']}" . $perms);
+    $C = DB_fetchArray ($result);
+    $numpages = ceil ($C['count'] / $perpage);
+
+    if ($page > $numpages) {
+        $page = 1;
+    }
+    $start = ($page - 1) * $perpage;
+
+    $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']}" . $perms . " ORDER BY sp_date DESC LIMIT $start,$perpage");
+    $nrows = DB_numRows ($result);
+    if ($nrows > 0) {
+        for ($i = 1; $i <= $nrows; $i++) {
+            $A = DB_fetchArray($result);
+            $sp_templates->set_var ('sp_id', $A['sp_id']);
+            $sp_templates->set_var ('page_edit_url',
+                    COM_buildURL ($_CONF['site_admin_url']
+                    . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
+                    . $A['sp_id']));
+            $sp_templates->set_var ('row_number', $i + $start);
+            $sp_templates->set_var ('page_display_url',
+                    COM_buildURL ($_CONF['site_url']
+                    . '/staticpages/index.php?page=' . $A['sp_id']));
+            $sp_templates->set_var ('page_clone_url',
+                    COM_buildURL ($_CONF['site_admin_url']
+                    . '/plugins/staticpages/index.php?mode=clone&amp;sp_id='
+                    . $A['sp_id']));
+            $sp_templates->set_var ('sp_title', stripslashes ($A['sp_title']));
+            $sp_templates->set_var ('username', DB_getItem ($_TABLES['users'],
+                    'username', "uid = {$A["sp_uid"]}"));
+            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
+            $sp_templates->set_var ('sp_date', $curtime[0]);
+            $sp_templates->parse ('list_item', 'row', true);
+        }
+        $sp_templates->set_var ('lang_nopages_msg', '');
+
+        $baseurl = $_CONF['site_admin_url'] . '/plugins/staticpages/index.php';
+        if ($numpages > 1) {
+            $sp_templates->set_var ('google_paging',
+                    COM_printPageNavigation ($baseurl, $page, $numpages));
+        } else {
+            $sp_templates->set_var ('google_paging', '');
+        }
+    } else {
+        $sp_templates->set_var ('lang_nopages_msg', $LANG_STATIC['nopages']);
+        $sp_templates->set_var ('list_item', '');
+        $sp_templates->set_var ('google_paging', '');
+    }
+    $sp_templates->set_var ('end_block', COM_endBlock ());	
 
     $retval .= $sp_templates->parse('output', 'list');
 

@@ -20,5 +20,6 @@
                                     {list_item} 
                                     <tr><td colspan="4">{lang_nopages_msg}</td></tr>
                                 </table>
+                                {google_paging}
                                 {end_block}
 
