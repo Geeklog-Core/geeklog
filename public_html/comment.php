@@ -14,6 +14,7 @@
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // |          Dirk Haun         - dirk@haun-online.de                          |
+// |          Vincent Furia     - vinny01@users.sourceforge.net                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.56 2004/04/05 19:22:03 vinny Exp $
+// $Id: comment.php,v 1.57 2004/04/10 02:24:52 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -301,9 +302,9 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 	    $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid");
 	    list($rht, $indent) = DB_fetchArray($result);
             DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
-                   . "WHERE lft >= $rht");
+                   . "WHERE sid = '$sid' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
-                   . "WHERE rht >= $rht");
+                   . "WHERE sid = '$sid' AND rht >= $rht");
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type'");            
         } else {
@@ -379,11 +380,11 @@ function deletecomment ($cid, $sid, $type)
                 DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
                 DB_delete ($_TABLES['comments'], 'cid', $cid);
                 DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
-		   . "WHERE lft BETWEEN $lft AND $rht");
+		   . "WHERE sid = '$sid' AND lft BETWEEN $lft AND $rht");
                 DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
-                   . "WHERE lft >= $rht");
+                   . "WHERE sid = '$sid' AND lft >= $rht");
                 DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
-                   . "WHERE rht >= $rht");
+                   . "WHERE sid = '$sid' AND rht >= $rht");
 
                 if ($type == 'poll') {
                     $retval .= COM_refresh ($_CONF['site_url']
