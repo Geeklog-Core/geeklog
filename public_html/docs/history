@@ -1,8 +1,13 @@
 GeekLog History/Changes:
 
-??? ??, 2004
+??? ??, 2004 (1.3.10)
 ------------
 
+- Added {topic_image} variable (available in the topicoption.thtml and
+  topicoption_off.thtml template files) so that you can use topic images in
+  the Sections block (feature request #152) [Dirk]
+- COM_undoSpecialChars() now also handles &nbsp; (bug #192) [Dirk]
+- Fixed handling of HTML entities in [code] sections (bug #159) [Dirk]
 - It's now possible to change the author of a story (feature request #204) -
   requires a change in the admin/story/storyeditor.thtml template file. [Dirk]
 - Added an option to look up IP addresses (new variable $_CONF['ip_lookup'] in
@@ -31,7 +36,7 @@ GeekLog History/Changes:
 - Changed the comment insert, delete, display algorithms for improved 
   efficiency. They now use a modified preorder tree traversal method. [Vinny]
 - Comment limit now applies to all the comments displayed, not just the top
-  level level comments. [Vinny]
+  level comments. [Vinny]
 - Added pagination ability to comments ({pagenav} template variable in
   startcomment.thtml). [Vinny]
 - Fixed minor security issue with the Daily Digest, where users still got

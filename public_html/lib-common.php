@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.321 2004/05/11 17:12:56 dhaun Exp $
+// $Id: lib-common.php,v 1.322 2004/05/13 18:50:55 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1896,15 +1896,15 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 function COM_showTopics( $topic='' )
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
-           $page, $newstories;
+           $_THEME_URL, $page, $newstories;
 
-    $sql = "SELECT tid, topic FROM {$_TABLES['topics']}";
+    $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
     if( $_USER['uid'] > 1 ) {
         $tids = DB_getItem( $_TABLES['userindex'], 'tids',
                             "uid = '{$_USER['uid']}'" );
         if (!empty ($tids)) {
             $sql .= " WHERE (tid NOT IN ('" . str_replace( ' ', "','", $tids )
-                 . "'))" . COM_getPermSQL( 'AND ');
+                 . "'))" . COM_getPermSQL( 'AND' );
         }
         else
         {
@@ -1917,17 +1917,17 @@ function COM_showTopics( $topic='' )
     }
     if( $_CONF['sortmethod'] == 'alpha' )
     {
-        $sql .= " ORDER BY topic ASC";
+        $sql .= ' ORDER BY topic ASC';
     }
     else
     {
-        $sql .= " ORDER BY sortnum";
+        $sql .= ' ORDER BY sortnum';
     }
     $result = DB_query( $sql );
 
     $retval = '';
     $sections = new Template( $_CONF['path_layout'] );
-    $sections->set_file( array( 'option' => 'topicoption.thtml',
+    $sections->set_file( array( 'option'   => 'topicoption.thtml',
                                 'inactive' => 'topicoption_off.thtml' ));
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
@@ -1959,31 +1959,36 @@ function COM_showTopics( $topic='' )
         }
     }
 
-    if( $_CONF['showstorycount'] ) {
+    if( $_CONF['showstorycount'] )
+    {
         $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['stories']} "
              . 'WHERE (draft_flag = 0) AND (date <= NOW()) '
              . COM_getPermSQL( 'AND' )
              . ' GROUP BY tid';
-        $rcount = DB_query($sql);
-        while ( $C = DB_fetchArray($rcount) ) {
+        $rcount = DB_query( $sql );
+        while ( $C = DB_fetchArray( $rcount ))
+        {
             $storycount[$C['tid']] = $C['count'];
         }
     }
 
-    if( $_CONF['showsubmissioncount'] ) {
+    if( $_CONF['showsubmissioncount'] )
+    {
         $sql = "SELECT tid, count(*) AS count FROM {$_TABLES['storysubmission']} "
              . ' GROUP BY tid';
-        $rcount = DB_query($sql);
-        while ( $C = DB_fetchArray($rcount) ) {
+        $rcount = DB_query( $sql );
+        while ( $C = DB_fetchArray( $rcount ))
+        {
             $submissioncount[$C['tid']] = $C['count'];
         }
     }
 
     while ( $A = DB_fetchArray( $result ) )
     {
+        $topicname = stripslashes( $A['topic'] );
         $sections->set_var( 'option_url', $_CONF['site_url']
                             . '/index.php?topic=' . $A['tid'] );
-        $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
+        $sections->set_var( 'option_label', $topicname );
 
         $countstring = '';
         if( $_CONF['showstorycount'] || $_CONF['showsubmissioncount'] )
@@ -2015,6 +2020,22 @@ function COM_showTopics( $topic='' )
             $countstring .= ')';
         }
         $sections->set_var( 'option_count', $countstring );
+
+        $topicimage = '';
+        if( !empty( $A['imageurl'] ))
+        {
+            if( isset( $_THEME_URL ))
+            {
+                $imagebase = $_THEME_URL;
+            }
+            else
+            {
+                $imagebase = $_CONF['site_url'];
+            }
+            $topicimage = '<img src="' . $imagebase . $A['imageurl'] . '" alt="'
+                        . $topicname . '" title="' . $topicname . '">';
+        }
+        $sections->set_var( 'topic_image', $topicimage );
 
         if(( $A['tid'] == $topic ) && ( $page == 1 ))
         {
@@ -3107,6 +3128,7 @@ function COM_killJS( $Message )
 */
 function COM_handleCode( $str )
 {
+    $str = str_replace( '&', '&amp;', $str );
     $str = str_replace( '\\', '&#092;', $str );
     $str = str_replace( '<', '&lt;', $str );
     $str = str_replace( '>', '&gt;', $str );
@@ -3209,13 +3231,14 @@ function COM_checkHTML( $str )
 */
 function COM_undoSpecialChars( $string )
 {
-    $string = ereg_replace( '&#36;', '$', $string );
-    $string = ereg_replace( '&#123;', '{', $string );
-    $string = ereg_replace( '&#125;', '}', $string );
-    $string = ereg_replace( '&gt;', '>', $string );
-    $string = ereg_replace( '&lt;', '<', $string );
-    $string = ereg_replace( '&quot;', "\"", $string );
-    $string = ereg_replace( '&amp;', '&', $string );
+    $string = str_replace( '&#36;',  '$', $string );
+    $string = str_replace( '&#123;', '{', $string );
+    $string = str_replace( '&#125;', '}', $string );
+    $string = str_replace( '&gt;',   '>', $string );
+    $string = str_replace( '&lt;',   '<', $string );
+    $string = str_replace( '&quot;', '"', $string );
+    $string = str_replace( '&nbsp;', ' ', $string );
+    $string = str_replace( '&amp;',  '&', $string );
 
     return( $string );
 }
