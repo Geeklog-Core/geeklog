@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.36 2002/08/04 09:48:58 dhaun Exp $
+// $Id: users.php,v 1.37 2002/08/10 14:33:36 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -64,7 +64,7 @@ require_once('lib-common.php');
 */
 function userprofile($user) 
 {
-    global $_TABLES, $_CONF, $_USER, $LANG04, $LANG01, $LANG_LOGIN;
+    global $_TABLES, $_CONF, $_USER, $LANG04, $LANG01, $LANG_LOGIN, $_GROUPS;
 
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['profileloginrequired'] == 1))) {
@@ -131,7 +131,18 @@ function userprofile($user)
     $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
     // list of last 10 stories by this user
-    $result = DB_query("SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) ORDER BY unixdate desc LIMIT 10");
+    $groupList = '';
+    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    }
+    $sql .= "(perm_anon >= 2)) ORDER BY unixdate DESC LIMIT 10";
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
@@ -150,7 +161,24 @@ function userprofile($user)
     }
 
     // list of last 10 comments by this user
-    $result = DB_query("SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE uid = $user ORDER BY unixdate desc LIMIT 10");
+    $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (";
+    if (!empty ($_USER['uid'])) {
+        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    }
+    $sql .= "(perm_anon >= 2))";
+    $result = DB_query($sql);
+    $numsids = DB_numRows($result);
+    $sidList = '';
+    for ($i = 1; $i <= $numsids; $i++) {
+        $S = DB_fetchArray ($result);
+        $sidList .= $S['sid'];
+        if ($i != $numsids) {
+            $sidList .= ',';
+        }
+    }
+    $sql = "SELECT sid,title,pid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList)) ORDER BY unixdate DESC LIMIT 10";
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
@@ -173,13 +201,20 @@ function userprofile($user)
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
-    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())");
-    $nrows = DB_numRows($result);
-    $user_templates->set_var('number_stories', $nrows);
+    $sql = "SELECT count(*) count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
+    if (!empty ($_USER['uid'])) {
+        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    }
+    $sql .= "(perm_anon >= 2))";
+    $result = DB_query($sql);
+    $N = DB_fetchArray ($result);
+    $user_templates->set_var('number_stories', $N['count']);
     $user_templates->set_var ('lang_number_comments', $LANG04[85]);
-    $result = DB_query("SELECT sid FROM {$_TABLES['comments']} WHERE uid = $user");
-    $nrows = DB_numRows($result);
-    $user_templates->set_var('number_comments', $nrows);
+    $sql = "SELECT count(*) count FROM {$_TABLES['comments']} WHERE (uid = $user) AND (sid in ($sidList))";
+    $result = DB_query($sql);
+    $N = DB_fetchArray ($result);
+    $user_templates->set_var('number_comments', $N['count']);
     $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
 
     $user_templates->parse('output', 'profile');
