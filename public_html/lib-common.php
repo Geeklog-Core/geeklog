@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.116 2002/06/30 19:26:02 dhaun Exp $
+// $Id: lib-common.php,v 1.117 2002/07/06 11:21:21 dreamscape Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -3064,6 +3064,56 @@ function COM_getArgument($name)
     global $_URL;
     
     return $_URL->getArgument($name);
+}
+
+/**
+* Occurences / time
+*
+* This will take a number of occurrences, and number of seconds for the time span and return
+* the smallest #/time interval
+*
+* @param	int		$occurrences		how many occurrences during time interval
+* @param	int		$timespan			time interval
+*/
+function COM_getRate($occurrences, $timespan)
+{
+	// want to define some common time words (yes, dirk, i need to put this in LANG)
+	// time words and there value in seconds
+	// week is 7 * day, month is 30 * day, year is 365.25 * day
+	$common_time = array(
+		"second" => 1,
+		"minute" => 60,
+		"hour"   => 3600,
+		"day"    => 86400,
+		"week"   => 604800,
+		"month"  => 2592000,
+		"year"   => 31557600
+	);
+
+	if ($occurrences != 0) {
+		$rate = (int)($timespan/$occurrences);
+		$adjustedRate = $occurrences + 1;
+		$time_unit = 'second';
+	
+		$found_one = false;
+		foreach ($common_time as $unit=>$seconds) {
+			if ($rate > $seconds) {
+				$foo = (int)(($rate/$seconds)+.5);
+				if (($foo < $occurrences) && ($foo > 0)) {
+					$adjustedRate = $foo;
+					$time_unit = $unit;
+				}
+			}
+		}
+	
+		$singular = '1 shout every ' . $adjustedRate . ' ' . $time_unit;
+		if ($adjustedRate > 1) {
+			$singular .= 's';
+		}
+	} else {
+		$singular = 'No events';
+	}
+	return $singular;
 }
 
 ?>
