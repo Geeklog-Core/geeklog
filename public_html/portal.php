@@ -1,34 +1,51 @@
 <?php
-###############################################################################
-# portal.php
-# This is the portal page that counts linksx
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
-include('lib-common.php');
-###############################################################################
-# MAIN
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | portal.php                                                                |
+// | Geeklog portal page that tracks link click throughs.                      |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id
+
+include_once('lib-common.php');
+
+// MAIN
+
+$display = '';
+
 if (!empty($url) && !empty($item)) {
-	dbchange("links","hits","hits + 1","lid",$item);
-	$display .= refresh($url);
+	DB_change($_TABLES['links','hits','hits + 1','lid',$item);
+	$display .= COM_refresh($url);
 } else {
-	$display .= refresh($CONF['site_url']);
+	$display .= COM_refresh($_CONF['site_url']);
 }
+
 echo $display;
+
 ?>
