@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.13 2002/04/14 20:16:08 dhaun Exp $
+// $Id: poll.php,v 1.14 2002/05/04 19:57:22 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -176,7 +176,7 @@ function editpoll($qid='')
     }
 
     if (!empty($qid) AND $access == 3) {
-        $poll_templates->set_var('delete_option', '<input type="submit" name="mode" value="delete">');
+        $poll_templates->set_var('delete_option', "<input type=\"submit\" name=\"mode\" value=\"$LANG25[16]\">");
     } else {
         $Q['owner_id'] = $_USER['uid'];
 	    $Q['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Poll Admin'");
@@ -234,6 +234,8 @@ function editpoll($qid='')
     $poll_templates->set_var('permissions_editor', SEC_getPermissionsHTML($Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']));
     $poll_templates->set_var('lang_permissions_msg', $LANG_ACCESS[permmsg]);
     $poll_templates->set_var('lang_answersvotes', $LANG25[10]);   
+    $poll_templates->set_var('lang_save', $LANG25[14]);   
+    $poll_templates->set_var('lang_cancel', $LANG25[15]);   
  
     for ($i = 0; $i < $_CONF['maxanswers']; $i++) {
         $A = DB_fetchArray($answers);
@@ -321,7 +323,7 @@ case 'edit':
     $display .= editpoll($qid);
     $display .= COM_siteFooter();
     break;
-case 'save':
+case "$LANG25[14]":
     //if (!empty($A[0])) {
     if (!empty($qid)) {
         $voters = 0;
@@ -331,13 +333,13 @@ case 'save':
         savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     }
     break;
-case 'delete':
+case "$LANG25[16]":
     if (!empty($qid)) {
         DB_delete($_TABLES['pollquestions'],'qid',$qid);
         DB_delete($_TABLES['pollanswers'],'qid',$qid);
         echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
     }
-case cancel:
+case "$LANG25[15]":
 default:
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
