@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.37 2004/07/26 14:32:42 dhaun Exp $
+// $Id: calendar.php,v 1.38 2004/08/02 19:43:56 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -158,48 +158,59 @@ function makeDaysHeadline ()
 /**
 * Gets a small, text-only version of a calendar
 *
-* $m        int        Month to display
-* $y        int        Year to display
+* @param    int     $m  Month to display
+* @param    int     $y  Year to display
+* @return   string      HTML for small calendar
 *
 */
-function getSmallCalendar($m, $y, $mode='')
+function getSmallCalendar ($m, $y, $mode = '')
 {
     global $_CONF, $LANG30;
 
     $retval = '';
-    $mycal = new Calendar();
+    $mycal = new Calendar ();
     setCalendarLanguage ($mycal);
-    $mycal->setCalendarMatrix($m,$y);
+    $mycal->setCalendarMatrix ($m, $y);
 
-    if (!empty($mode)) {
+    if (!empty ($mode)) {
         $mode = '&amp;mode=' . $mode;
     }
 
-    $retval .= '<font size="-2">' . LB . '<table>' . LB 
-        . '<tr><td align="center" colspan="7"><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&amp;year=' . $y . $mode . '">' 
-        . $mycal->getMonthName($m) . '</a></td></tr>'
-        . makeDaysHeadline() . LB;
+    $retval .= '<table class="smallcal">' . LB 
+            . '<tr class="smallcal-headline"><td align="center" colspan="7">'
+            . '<a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m
+            . '&amp;year=' . $y . $mode . '">' . $mycal->getMonthName ($m)
+            . '</a></td></tr>' . makeDaysHeadline () . LB;
 
     for ($i = 1; $i <= 6; $i++) {
-        $retval .= '<tr>' . LB;
+        if ($i % 2 == 0) {
+            $retval .= '<tr class="smallcal-week-even">' . LB;
+        } else {
+            $retval .= '<tr class="smallcal-week-odd">' . LB;
+        }
         for ($j = 1; $j <= 7; $j++) {
-            $retval .= '<td align="right">' . LB;
-            $curday = $mycal->getDayData($i, $j);
-            if (!empty($curday)) {
+            $retval .= '<td align="right"';
+            $curday = $mycal->getDayData ($i, $j);
+            if (!empty ($curday)) {
+                if ($j % 2 == 0) {
+                    $retval .= ' class="smallcal-day-even">' . LB;
+                } else {
+                    $retval .= ' class="smallcal-day-odd">' . LB;
+                }
                 $retval .= $curday->daynumber;
             } else {
                 if ($i > 1) {
                     $i = 7;
                     $j = 8;
                 }
-                $retval .= "&nbsp;";
+                $retval .= '>&nbsp;';
             }
-            $retval .= "</td>".LB;
+            $retval .= '</td>' . LB;
         }
-        $retval .= "</tr>".LB;
+        $retval .= '</tr>' . LB;
     }
 
-    $retval .= '</table></font>'.LB;
+    $retval .= '</table>' . LB;
     
     return $retval;
 }
@@ -447,9 +458,9 @@ case 'day':
     $thedate = COM_getUserDateTimeFormat(mktime(0,0,0,$month,$day,$year));
     $cal_templates->set_var('week_num',strftime('%V',$thedate[1]));
     if ($mode == 'personal') {
-        $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
+        $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
     } else {
-        $calsql = "SELECT * FROM {$_TABLES["events"]} WHERE ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
+        $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$year-$month-$day\") OR (datestart >= \"$year-$month-$day 00:00:00\" AND datestart <= \"$year-$month-$day 23:59:59\") OR (dateend >= \"$year-$month-$day 00:00:00\" AND dateend <= \"$year-$month-$day 23:59:59\") OR (\"$year-$month-$day\" between datestart and dateend)) ORDER BY datestart,timestart";
     }
     $result = DB_query($calsql);
     $nrows = DB_numRows($result);
@@ -512,8 +523,9 @@ case 'day':
             $cal_templates->parse('event_entry','event',true);
             $colsleft = $colsleft - 1;
             next($thedata);
-        } 
-        $cal_templates->set_var ($i . '_time', strftime ($_CONF['timeonly'], mktime ($i, 0)));
+        }
+        $cal_templates->set_var ($i . '_hour',
+                strftime ($_CONF['timeonly'], mktime ($i, 0)));
         $cal_templates->parse($i.'_cols','column',true);
         if ($nrows > 0) {
             next($hourcols);
@@ -614,12 +626,12 @@ case 'week':
             $cal_templates->set_var('class'.$i,'weekview-offday');
         }
         $monthname = $cal->getMonthName($monthnum);
-        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ("%x", $thedate[1]) . '</a>');
+        $cal_templates->set_var('day'.$i,$dayname . ", <a href=\"{$_CONF['site_url']}/calendar.php?mode=$mode&amp;view=day&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum\">" . strftime ('%x', $thedate[1]) . '</a>');
         $cal_templates->set_var('langlink_addevent'.$i, '<a href="' . $_CONF['site_url'] . "/submit.php?type=event&amp;mode=$mode&amp;day=$daynum&amp;month=$monthnum&amp;year=$yearnum" . '">' . $LANG30[8] . '</a>');
         if ($mode == 'personal') {
-            $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
+            $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         } else {
-            $calsql = "SELECT * FROM {$_TABLES["events"]} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
+            $calsql = "SELECT * FROM {$_TABLES['events']} WHERE ((allday=1 AND datestart = \"$yearnum-$monthnum-$daynum\") OR (datestart >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND datestart <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (dateend >= \"$yearnum-$monthnum-$daynum 00:00:00\" AND dateend <= \"$yearnum-$monthnum-$daynum 23:59:59\") OR (\"$yearnum-$monthnum-$daynum\" between datestart and dateend)) ORDER BY datestart,timestart";
         }
         $result = DB_query($calsql);
         $nrows = DB_numRows($result);
@@ -688,14 +700,23 @@ $cal_templates->set_var('site_url', $_CONF['site_url']);
 $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
 $cal_templates->set_var('mode', $mode);
 if ($mode == 'personal') {
-        $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[12]));
-        $cal_templates->set_var ('end_block', COM_endBlock ());
+    $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[12]));
+    $cal_templates->set_var ('end_block', COM_endBlock ());
 } else {
-        $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[11]));
-        $cal_templates->set_var ('end_block', COM_endBlock ());
+    $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[11]));
+    $cal_templates->set_var ('end_block', COM_endBlock ());
 }
-$cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear, $mode));
-$cal_templates->set_var('next_months_cal',getSmallCalendar($nextmonth, $nextyear, $mode));
+
+$smallcal_prev = getSmallCalendar ($prevmonth, $prevyear, $mode);
+$cal_templates->set_var ('previous_months_calendar', $smallcal_prev);
+$cal_templates->set_var ('previous_months_cal',
+                         '<font size="-2">' . LB . $smallcal_prev . '</font>');
+
+$smallcal_next = getSmallCalendar ($nextmonth, $nextyear, $mode);
+$cal_templates->set_var ('next_months_calendar', $smallcal_next);
+$cal_templates->set_var ('next_months_cal',
+                         '<font size="-2">' . LB . $smallcal_next . '</font>');
+
 $cal_templates->set_var('cal_prevmo_num', $prevmonth);
 $cal_templates->set_var('cal_prevyr_num', $prevyear);
 $cal_templates->set_var('cal_month_and_year', $cal->getMonthName($month) . ' ' . $year);
@@ -798,12 +819,12 @@ for ($i = 1; $i <= 6; $i++) {
                 if (strlen($month) == 1) {
                     $month = '0' . $month;
                 }
-                $calsql = "SELECT * FROM {$_TABLES["personal_events"]} WHERE (uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
+                $calsql = "SELECT * FROM {$_TABLES['personal_events']} WHERE (uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart,timestart";
             } else {
                 if (strlen($month) == 1) {
                     $month = '0' . $month;
                 }
-                $calsql = "SELECT * FROM {$_TABLES["events"]} WHERE (datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend) ORDER BY datestart,timestart";
+                $calsql = "SELECT * FROM {$_TABLES['events']} WHERE (datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend) ORDER BY datestart,timestart";
             }
             
             $query2 = DB_query($calsql);
