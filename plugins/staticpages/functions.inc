@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.48 2005/01/04 14:21:57 dhaun Exp $
+// $Id: functions.inc,v 1.49 2005/01/31 11:17:58 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -574,7 +574,7 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
         $url = COM_buildUrl ($_CONF['site_url'] . '/staticpages/index.php?page='
                              . $sp_id);
         if (empty ($autotag['parm2'])) {
-            $linktext = stripslashes (DB_getItem ($_TABLES['staticpages'],
+            $linktext = stripslashes (DB_getItem ($_TABLES['staticpage'],
                                       'sp_title', "sp_id = '$sp_id'"));
         } else {
             $linktext = $autotag['parm2'];
