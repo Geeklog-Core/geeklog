@@ -3,6 +3,11 @@
 	include ("common.php");
 	include ("custom_code.php");
 	site_header("");
+	if ($mode == "personal" && ($CONF["personalcalendars"] == 0)) {
+		showmessage(29);
+		site_footer();
+		exit;
+	}
 	if (($mode == "personal") && (empty($USER["uid"]))) { 
 		showmessage(25);
 		$mode = "";
@@ -61,7 +66,7 @@
                 	<input type=submit name=action value=\"$LANG30[8]\">
                 	<input type=hidden name=month value=$month>
                 	<input type=hidden name=year value=$year></form></td>";
-		if (!empty($USER["uid"])) {
+		if (!empty($USER["uid"]) && ($CONF["personalcalendars"] == 1)) {
 			echo "<td><form method=post action=calendar.php?mode=personal>
 		      	      <input type=submit name=action value=\"$LANG30[12]\">
 		      	      </form></td>";
@@ -207,7 +212,7 @@
                 	<input type=submit name=action value=\"$LANG30[8]\">
                 	<input type=hidden name=month value=$month>
                 	<input type=hidden name=year value=$year></form></td>";
-		if (!empty($USER["uid"])) {
+		if (!empty($USER["uid"]) && ($CONF["personalcalendars"] == 1)) {
 			echo "<td><form method=post action=calendar.php?mode=personal>
 		              <input type=submit name=action value=\"$LANG30[12]\">
 		              </form></td>";
@@ -222,5 +227,5 @@
 		<input type=hidden name=month value=$nextmonth>
 		<input type=hidden name=year value=$nextyear></form></td></tr></table>";
 
-	include ("layout/footer.php");
+	site_footer();
 ?>
