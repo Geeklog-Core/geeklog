@@ -1,0 +1,53 @@
+Last Updated: November 15, 2001
+
+Creating a Theme for Geeklog
+----------------------------
+
+Creating a theme for Geeklog is easy and quite fast.  If you can manipulate HTML files then you can create a theme!
+There's no need to learn HTML.
+
+First, let me preface this by saying the theme support, though usable, isn't complete yet. We plan to make is so that
+Geeklog admins can upload themes via a Geeklog web administration page.  This will be available in a later beta release.
+
+Until then people will have to learn how to install themes manuall (covered at the bottom of this document).
+
+Creating a theme
+-----------------
+First, copy an existing theme that is most similar to what you want to implement (if one exists).  If what you will do is
+radically different (and we hope so!) then copying any one will do.  Copy the existing theme to the name you want your theme
+to have (please, NO spaces in the theme name):
+
+cp -R /path/to/geeklog/public_html/layout/Yahoo /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces
+
+Change into your new theme directory:
+
+cd /path/to/geeklog/public_html/layout/My_Theme_Name_No_Spaces
+
+Now edit the templates to suit your needs.  Keep in mind that templates, generally are partial HTML files.  The directory you
+just created holds ALL templates Geeklog needs but you will only need to modify a small few to make a huge impact on the look.
+
+In particular these are the templates you will undoubtedly want to change:
+
+header.thtml
+footer.thtml
+blockheader.thtml
+blockfooter.thtml
+menuitem.thtml
+storybody.thtml
+storybodytext.thtml
+style.css
+
+After you have edited your themes, you are now ready to test it out.  Simply go to http://mygeeklogsite/users.php?mode=peferences 
+in the theme drop-down select your newly created theme (note the name of your theme is the SAME name as the directory for your 
+theme.
+
+Finally, you may want to update the logo and other images in your theme's images directory.
+
+For the template system we are using PHPLib's template class (http://phplib.sourceforge.net/projects).  Read their documentation 
+and, optionall, look at /path/to/geeklog/system/classes/template.class.php to see how it is implemented.  Even with this
+knowledge it may not be clear which templates are used in conjunction with one another (i.e. storybody.thtml and storybodytext.thtml
+together make up the complete format of a *single* story).  If you have questions join our mailing list at our SourceForge site
+at http://sourceforge.net/projects/geeklog or check us out in IRC at irc.openprojects.net in #geeklog.
+
+--Tony Bibbs
+
