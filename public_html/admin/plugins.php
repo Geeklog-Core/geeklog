@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.42 2004/10/23 21:31:38 blaine Exp $
+// $Id: plugins.php,v 1.43 2005/04/03 22:47:08 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -210,6 +210,7 @@ function listplugins ($page = 1)
             }
             $plg_templates->set_var('pi_name', $A['pi_name']);
             $plg_templates->set_var('row_num', $pcount);
+            $plg_templates->set_var ('cssid', $i%2 + 1);
             $plg_templates->set_var('pi_url', $A['pi_homepage']);
             $plg_templates->set_var('pi_installed_version', $A['pi_version']);
             $plg_templates->set_var('pi_code_version', $plugin_code_version);
@@ -357,6 +358,7 @@ function show_newplugins ()
                 $newtemplate->set_var ('lang_install', $LANG32[22]);
                 $newtemplate->set_var ('pi_name', $newplugins[$i]);
                 $newtemplate->set_var ('row_num', $i + 1);
+                $newtemplate->set_var ('cssid', $i%2 + 1);
                 $newtemplate->set_var ('start_install_anchortag', '<a href="'
                     . $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
                     . '/install.php?action=install">');

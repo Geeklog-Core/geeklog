@@ -1,11 +1,9 @@
 {start_block_newlist}
-  <table border="0" cellspacing="0" cellpadding="2" width="100%">
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
   <tr>
-    <th align="left">#</th>
-    <th align="left">{lang_pluginname}</th>
+    <th align="left" width="5%">#</th>
+    <th colspan="2" align="left">{lang_pluginname}</th>
   </tr>
-  <tr>
     {plugin_list}
-  <tr>
 </table>
 {end_block}

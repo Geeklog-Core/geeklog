@@ -1,7 +1,7 @@
-									<tr align="center">
+                                    <tr class="pluginRow{cssid}"  align="center">
                                         <td align="left">{row_num}</a> 
                                         </td>
-                                        <td align="left">
+                                        <td align="left" style="padding-left:5px;">
                                             <a href="{site_admin_url}/plugins.php?mode=edit&amp;pi_name={pi_name}">{pi_name}</a>
                                         </td>
                                         <td>{pi_installed_version}&nbsp;/&nbsp;{pi_code_version}</td>
