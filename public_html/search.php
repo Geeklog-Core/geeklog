@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.34 2002/08/15 13:02:48 dhaun Exp $
+// $Id: search.php,v 1.35 2002/08/17 14:56:13 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -239,13 +239,22 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
 
 function searchstories($query,$topic,$datestart,$dateend, $author, $type='all') 
 {
-    global $LANG09, $_CONF, $_TABLES;
+    global $LANG09, $_CONF, $_TABLES, $_USER, $_GROUPS;
 
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
     $searchtimer = new timerobject();
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
+
+    $groupList = '';
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+    }
+
 	if ($type == 'all' OR $type == 'stories') {
 		$sql = "SELECT sid,title,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) ";
         if (!empty ($query)) {
@@ -267,36 +276,77 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 		if (!empty($author)) {
 			$sql .= "AND (uid = '$author') ";
 		}
+        $permsql .= 'AND (';
+        if (!empty ($_USER['uid'])) {
+            $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+            $permsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+            $permsql .= "(perm_members >= 2) OR ";
+        }
+        $permsql .= "(perm_anon >= 2)) ";
+        $sql .= $permsql;
 		$sql .= "ORDER BY date desc";
 
 		$result_stories = DB_query($sql);
 		$nrows_stories = DB_numRows($result_stories);
-		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())");
+		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $permsql);
 		$B = DB_fetchArray($result_count);
 		$total_stories = $B[0];
 		$A = DB_fetchArray($result_stories);
 	}
 
 	if ($type == 'all' OR $type == 'comments') {
-		$sql = "SELECT sid,title,comment,pid,uid,type as comment_type,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
+
+        $stsql = '';
+        $stwhere = '';
+        if (!empty ($_USER['uid'])) {
+            $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
+            $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
+            $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
+            $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
+            $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+            $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
+        }
+        $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
+        $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
+
+        $posql = '';
+        $powhere = '';
+        if (!empty ($_USER['uid'])) {
+            $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
+            $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
+            $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
+            $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
+        }
+        $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
+        $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
+
+		$sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
+        $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) ";
+        $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) ";
+        $sql .= "WHERE ";
 		$sql .= " (comment like '%$query%' ";
-		$sql .= "OR title like '%$query%') ";
+		$sql .= "OR {$_TABLES['comments']}.title like '%$query%') ";
 		if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
 			$DE = explode($delim,$dateend);
 			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
 			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
-			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
+			$sql .= "AND (UNIX_TIMESTAMP({$_TABLES['comments']}.date) BETWEEN '$startdate' AND '$enddate') ";
 		}
-
 		if (!empty($author)) {
 			$sql .= "AND (uid = '$author') ";
 		}
-		$sql .= "ORDER BY date desc";
+        $sql .= "AND ((" .  $stwhere . ") OR (" . $powhere . ")) ";
+		$sql .= "ORDER BY {$_TABLES['comments']}.date DESC";
 		$result_comments = DB_query($sql);
 		$nrows_comments  = DB_numRows($result_comments);
-		$total_comments = DB_count($_TABLES['comments']);
+        $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
+        $result_count = DB_query ($sql);
+        $B = DB_fetchArray ($result_count);
+        $total_comments = $B[0];
 		$C = DB_fetchArray($result_comments);
 	}
 
