@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Added theme variable story_link to commentbar.thtml to link back to original
+  story the comments are derived from. [Vinny]
 - Introduced new file system/lib-story.php for story-related functions and
   moved COM_article, COM_whatsRelated, COM_extractLinks, as well as the code
   to delete article images into that file (functions were renamed accordingly:

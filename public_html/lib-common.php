@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.361 2004/08/16 10:44:44 dhaun Exp $
+// $Id: lib-common.php,v 1.362 2004/08/16 21:09:22 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -67,7 +67,8 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-require_once( '/path/to/geeklog/config.php' );
+//require_once( '/path/to/geeklog/config.php' );
+require_once( '/home/vmf/work/geeklog-1.3/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -2486,6 +2487,15 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'story_title', stripslashes( $title ));
     $commentbar->set_var( 'num_comments', $nrows );
     $commentbar->set_var( 'comment_type', $type );
+
+    if ( $type == 'poll' )
+    {
+        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/pollbooth.php?scale=400&qid=$sid&aid=-1" );
+    }
+    else
+    {
+        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/article.php?story=$sid" );
+    }
 
     if( $_USER['uid'] > 1)
     {
