@@ -1132,7 +1132,8 @@ $MESSAGE = array(
     57 => 'Ihr Account wurde gelöscht.',
     58 => 'Der Feed wurde gespeichert.',
     59 => 'Der Feed wurde gelöscht.',
-    60 => 'Das Plugin wurde erfolgreich aktualisiert.'
+    60 => 'Das Plugin wurde erfolgreich aktualisiert.',
+    61 => 'Plugin %s: Unbekannter Text-Platzhalter'
 );
 
 ###############################################################################
