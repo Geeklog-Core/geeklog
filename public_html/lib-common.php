@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.275 2004/01/18 14:43:31 dhaun Exp $
+// $Id: lib-common.php,v 1.276 2004/01/31 14:16:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -469,6 +469,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     $A['introtext'] = str_replace( '$', '&#36;', $A['introtext'] );
     $A['bodytext'] = str_replace( '$', '&#36;', $A['bodytext'] );
 
+    $recent_post_anchortag = '';
     if( $index == 'n' )
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
@@ -480,6 +481,9 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
         $article->set_var( 'story_introtext', stripslashes( $A['introtext'] ));
 
+        $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                    . $A['sid'] );
+        $article->set_var( 'article_url', $articleUrl );
         if( !empty( $A['bodytext'] ))
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
@@ -487,12 +491,11 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $numwords = sizeof( explode( ' ', $A['bodytext'] ));
             $article->set_var( 'readmore_words', $numwords );
 
-            $article->set_var( 'readmore_link', '<a href="' . $_CONF['site_url']
-                    . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2]
-                    . '</a> (' . $numwords . ' ' . $LANG01[62] . ') ' );
+            $article->set_var( 'readmore_link', '<a href="' . $articleUrl . '">'
+                    . $LANG01[2] . '</a> (' . $numwords . ' ' . $LANG01[62]
+                    . ') ' );
             $article->set_var( 'start_readmore_anchortag', '<a href="'
-                    . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                    . '">' );
+                    . $articleUrl . '">' );
             $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
@@ -500,8 +503,9 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         {
             if( $A['comments'] > 0 )
             {
-                $article->set_var( 'comments_url', $_CONF['site_url']
+                $commentsUrl = COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] . '#comments' );
+                $article->set_var( 'comments_url', $commentsUrl );
                 $article->set_var( 'comments_text', $A['comments'] . ' '
                         . $LANG01[3] );
                 $article->set_var( 'comments_count', $A['comments'] );
@@ -515,8 +519,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                         . strftime( $_CONF['daytime'], $C['day'] ) . ' '
                         . $LANG01[104] . ' ' . $C['username'] . '</span>';
                 $article->set_var( 'start_comments_anchortag', '<a href="'
-                        . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
-                        . '#comments">' );
+                        . $commentsUrl . '">' );
                 $article->set_var( 'end_comments_anchortag', '</a>' );
             }
             else
@@ -549,10 +552,10 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
         else
         {
             $article->set_var( 'print_icon', '<a href="' . $_CONF['site_url']
-                . '/article.php?story=' . $A['sid']
-                . '&amp;mode=print"><img border="0" src="'
-                . $_CONF['layout_url'] . '/images/print.gif" alt="'
-                . $LANG01[65] . '" title="' . $LANG11[3] . '"></a>' );
+                . '/article.php?story=' . $A['sid'] . '&amp;mode=print">'
+                . '<img border="0" src="' . $_CONF['layout_url']
+                . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
+                . $LANG11[3] . '"></a>' );
         }
     }
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
@@ -775,7 +778,10 @@ function COM_siteHeader( $what = 'menu' )
         'leftblocks'=>'leftblocks.thtml'
         ));
 
-    $pagetitle = $_CONF['pagetitle'];
+    if( isset( $_CONF['pagetitle'] ))
+    {
+        $pagetitle = $_CONF['pagetitle'];
+    }
     if( empty( $pagetitle ))
     {
         $pagetitle = $_CONF['site_slogan'];
@@ -3188,8 +3194,8 @@ function COM_olderStuff()
                     $day = $daycheck;
                 }
 
-                $oldnews[] = '<a href="' . $_CONF['site_url']
-                    . '/article.php?story=' . $A['sid'] . '">' . $A['title']
+                $oldnews[] = '<a href="' . COM_buildUrl( $_CONF['site_url']
+                    . '/article.php?story=' . $A['sid'] ) . '">' . $A['title']
                     . '</a> (' . $A['comments'] . ')';
             }
         }
@@ -3229,6 +3235,10 @@ function COM_showBlock( $name, $help='', $title='' )
     if( !empty( $_USER['uid'] ))
     {
         $U['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+    }
+    else
+    {
+        $U['noboxes'] = 0;
     }
 
     switch( $name )
@@ -3299,6 +3309,11 @@ function COM_showBlocks( $side, $topic='', $name='all' )
     {
         $result = DB_query( "SELECT boxes,noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'" );
         $U = DB_fetchArray( $result );
+    }
+    else
+    {
+        $U['boxes'] = '';
+        $U['noboxes'] = 0;
     }
 
     if( $side == 'left' )
@@ -3984,7 +3999,8 @@ function COM_emailUserTopics()
                 $mailtext .= $storytext . "\n\n";
             }
 
-            $mailtext .= "$LANG08[33] {$_CONF['site_url']}/article.php?story={$S['sid']}\n";
+            $mailtext .= $LANG08[33] . ' ' . COM_buildUrl( $_CONF['site_url']
+                      . '/article.php?story=' . $S['sid'] ) . "\n";
         }
 
         $mailtext .= "\n------------------------------\n";
@@ -4142,7 +4158,8 @@ function COM_whatsNewBlock( $help='', $title='' )
                 {
                     $itemlen = strlen( $A['title'] );
                     $titletouse = stripslashes( $A['title'] );
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
+                    $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
+                        . '/article.php?story=' . $A['sid'] . '#comments' ) . '"';
                 }
                 else if( $A['type'] == 'poll' )
                 {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.39 2003/12/12 21:58:10 dhaun Exp $
+// $Id: article.php,v 1.40 2004/01/31 14:16:25 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -54,10 +54,10 @@ require_once('lib-common.php');
 
 // MAIN
 
+COM_setArgNames (array ('story'));
+$story = COM_applyFilter (COM_getArgument ('story'));
 if (isset ($HTTP_POST_VARS['story'])) {
     $story = COM_applyFilter($HTTP_POST_VARS['story']);
-} else {
-    $story = COM_applyFilter($HTTP_GET_VARS['story']);
 }
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -165,8 +165,8 @@ if ($A['count'] > 0) {
             }
             if ($_CONF['hideprintericon'] == 0) {
                 $story_options[] = '<a href="' . $_CONF['site_url']
-                    . '/article.php?story=' . $story .  '&amp;mode=print">'
-                    . $LANG11[3] . '</a>';
+                    . '/article.php?story=' . $story .  '&amp;mode=print'
+                    . '">' . $LANG11[3] . '</a>';
             }
             $related = COM_whatsRelated ($A['introtext'] . ' ' . $A['bodytext'],
                                          $A['uid'], $A['tid']);
