@@ -105,6 +105,26 @@ endblock();
 	}
 endblock();
 
+$result = dbquery("SELECT sid,title,numemails FROM stories WHERE numemails > 0 ORDER BY numemails desc LIMIT 10");
+$nrows = mysql_num_rows($result);
+startblock($LANG10[22]);
+if ($nrows>0) {
+	print "<table cellpadding=0 cellspacing=1 border=0 width=\"99%\">\n";
+        print "<tr align=center><th align=left width=\"100%\">" . $LANG10[8] . "</th><th>" . $LANG10[23] . "</th></tr>";
+        for ($i=0;$i<$nrows;$i++) {
+	        $A      = mysql_fetch_array($result);
+                print "<tr align=center>\n";
+                print "\t<td align=left><a href=\"article.php?story=" . $A["sid"] . "\">" . $A["title"] . "</a></td>\n";
+                print "\t<td>" . $A["numemails"] . "</td>\n";
+                print "</tr>\n";
+        }
+        print "</table>\n";
+} else {
+        print $LANG10[24];
+}
+endblock();
+
+
 	$result = dbquery("SELECT qid,question,voters from pollquestions WHERE voters > 0 ORDER BY voters desc LIMIT 10");
 	$nrows  = mysql_num_rows($result);
 	startblock($LANG10[14]);
