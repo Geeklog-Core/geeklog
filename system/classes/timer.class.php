@@ -8,7 +8,7 @@
 // | Geeklog timer class.  Use this to do performance testing.                 |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2002 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
 // +---------------------------------------------------------------------------+
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: timer.class.php,v 1.5 2001/10/18 17:48:02 tony_bibbs Exp $
+// $Id: timer.class.php,v 1.6 2002/05/08 18:32:25 tony_bibbs Exp $
 
 /* EXAMPLE  USAGE
 
@@ -48,14 +48,33 @@
 
 */
 
+/**
+* This class is used to time program execution. This is particularly handy for
+* performance trouble shooting.
+*
+* @author Tony Bibbs
+*
+*/
 class timerobject {
 
     // PRIVATE PROPERTIES
 
-    var $_starttime;
-    var $_endtime;
-    var $_elapsedtime;
-    var $_percision;
+    /**
+    * @access private
+    */
+    var $_starttime = '';
+    /**
+    * @access private
+    */
+    var $_endtime = '';
+    /**
+    * @access private
+    */
+    var $_elapsedtime = '';
+    /**
+    * @access private
+    */
+    var $_percision = 2;
 
     // PUBLIC METHODS
 
@@ -68,12 +87,6 @@ class timerobject {
     */
     function timerobject()
     {
-        $this->_starttime = '';
-        $this->_endtime = '';
-        $this->_elapsedtime = '';
-
-        // Default to 2 significant digits
-        $this->setPercision(2);
     }
 
     /**
@@ -82,7 +95,7 @@ class timerobject {
     * This sets how many significant digits get
     * sent back when elapsedTime is called
     *
-    * @num_dec_places       int     Number of significant digits
+    * @param    int     $num_dec_places     Number of significant digits
     *
     */
     function setPercision($num_dec_places)
@@ -104,6 +117,8 @@ class timerobject {
 
     /**
     * Stops the timer
+    *
+    * @return   float   elapsed time to degree of percision specified
     *
     */
     function stopTimer()
@@ -139,6 +154,8 @@ class timerobject {
     * This returns the elapsed time with the proper number of 
     * significant digits
     *
+    * @return   float   Elasped time in seconds formatted to degree of percision specified
+    *
     */
     function getElapsedTime()
     {
@@ -153,6 +170,7 @@ class timerobject {
     * once stop timer is called this gets called to calculate
     * the elapsed time for later retrieval
     *
+    * @access private
     */
     function _setElapsedTime()
     {
