@@ -1,84 +1,33 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head class="usual">
-  <!-- Configuration docs put into GeekLog template by Baba -->
-  <title>Geeklog Configuration</title>
-                
-  <style type="text/css">
-<!--
-.usual {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt}
-.sectiontitle {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12pt}
-.chaptertitle {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 14pt}
--->
-</style> <base class="usual">
+  <title>Geeklog Developers Documentation</title>
+                                                                        
+                                                                       
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+                <base class="usual">
 </head>
-  <body background="images/bg.gif" marginwidth="0" marginheight="0" topmargin="0" leftmargin="0" alink="#444444" vlink="#444444" link="#444444">
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
+  <body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
   <tbody>
-    <tr valign="center" align="Right">
-      <td height="18">
-      <div align="Left"><img src="images/logo.gif" width="350" height="84">
-      </div>
+    <tr>
+      <td valign="Top" background="images/bg.gif"><img src="file:///C:/cvshome/geeklog-1.3/docs/images/logo.gif" alt="Geeklog Documentation" width="350" height="84" border="0">
+      <br>
       </td>
     </tr>
     <tr>
-      <td bgcolor="#000000"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="6" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#ffffff"><img height="1" src="images/speck.gif" width="1">
+      <td valign="Top" class="menu"><a href="index.html">Developer Documentation</a>
+  - Configuration<br>
       </td>
     </tr>
   </tbody>
 </table>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-  <tbody>
-    <tr valign="center" align="Center" bgcolor="#dddddd">
-      <td height="20">
-      <div align="Center">configuration &#8226; <a href="CUSTOMIZATION.HTML">customization</a>
-           &#8226; <a href="INSTALL.HTML">installation</a>
-      </div>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="10" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-  </tbody>
-</table>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-  <tbody>
-    <tr>
-      <td bgcolor="#ffffff" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr bgcolor="#dddddd">
-      <td height="20">&nbsp;<b>GeekLog       Configuration</b></td>
-      <td align="Right"><b>Last Updated: 20 September 2001</b></td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#ffffff" colspan="2"><img height="15" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-  </tbody>
-</table>
+<br>
 <table cellspacing="0" cellpadding="5" width="100%" bgcolor="#ffffff" border="0" class="usual">
   <tbody>
     <tr>
       <td valign="Top" rowspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="5"><b>
-  GeekLog       Configuration Guide</b></font>
+     GeekLog       Configuration Guide</b></font>
       <ul>
         <li><b><a href="#overview">Overview</a>
           </b></li>
@@ -94,20 +43,20 @@
           </b></li>
       </ul>
       <p><font class="chaptertitle"><b><a name="overview"></a>
-  Overview</b></font></p>
-      <p>GeekLog was developed for the Security Geeks web         site and
- has been released under the GNU GPL for use by others.&nbsp;         Configuring
- GeekLog is meant to be an easy process though it will require         you
- to have access to several components of your system.  </p>
-      <p>This document is still evolving, so there may be         unintended
- omissions or various steps may be over or under explained.         It's
-assumed  that you have some working experience with some form of&nbsp;Apache,
+     Overview</b></font></p>
+      <p>GeekLog was developed for the Security Geeks web         site and 
+  has been released under the GNU GPL for use by others.&nbsp;         Configuring 
+  GeekLog is meant to be an easy process though it will require         you 
+  to have access to several components of your system.  </p>
+      <p>This document is still evolving, so there may be         unintended 
+  omissions or various steps may be over or under explained.         It's 
+assumed  that you have some working experience with some form of&nbsp;Apache, 
         SQL databases, and PHP. You are also expected to like cats.</p>
       <p><font class="chaptertitle"><b><a name="config.php"></a>
-  Setting up config.php</b></font></p>
-      <p>GeekLog's setting are configured in a text file called         config.php.&nbsp;
- It is necessary to edit this file to get your system         running as
-well  as configuring it to your preferences.&nbsp; This file         contains
+     Setting up config.php</b></font></p>
+      <p>GeekLog's setting are configured in a text file called         config.php.&nbsp; 
+  It is necessary to edit this file to get your system         running as 
+well  as configuring it to your preferences.&nbsp; This file         contains 
 a  set of variables that are defined below: </p>
 <!---Database Settings --->
       <p><font class="sectiontitle"><b>Database Settings<br>
@@ -117,11 +66,11 @@ a  set of variables that are defined below: </p>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="9%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="78%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="9%">db_name</td>
@@ -148,8 +97,8 @@ the form: <i>hostname:port:unixsocket</i>). In most cases you won't
           <tr class="usual">
             <td width="9%">db_prefix</td>
             <td width="13%">null</td>
-            <td width="78%">Allows you to change the default table names for
-geeklog</td>
+            <td width="78%">Allows you to change the default table names
+for geeklog</td>
           </tr>
         </tbody>
       </table>
@@ -161,11 +110,11 @@ geeklog</td>
         <tbody>
           <tr bgcolor="#000000">
             <td bgcolor="#000000" width="8%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></td>
+     Variable</font></b></td>
             <th width="29%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="63%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="8%">path</td>
@@ -199,11 +148,11 @@ geeklog</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="8%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="29%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="63%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="8%">site_name</td>
@@ -247,18 +196,18 @@ added to the HTML title field</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="10%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="17%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="73%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="10%">languagefile</td>
             <td width="17%">/english.php</td>
             <td width="73%">Name of your language file.&nbsp;            
-Additional language files are avaiable for download at http://www.geeklog.org.&nbsp; 
-             If you translate a language file, please send it to us.</td>
+Additional language files are avaiable for download at http://www.geeklog.org.&nbsp;
+               If you translate a language file, please send it to us.</td>
           </tr>
           <tr>
             <td width="10%">locale</td>
@@ -274,7 +223,7 @@ including story displays. See date formats below.</td>
           <tr>
             <td width="10%">daytime</td>
             <td width="17%">%m/%d %I:%M%p</td>
-            <td width="73%">Date format used when a shorter             date
+            <td width="73%">Date format used when a shorter             date 
  is needed. See date formats below.</td>
           </tr>
           <tr>
@@ -291,11 +240,11 @@ See date formats below.</td>
         <tbody>
           <tr bgcolor="#000000">
             <th width="14%" bgcolor="#000000"><font color="#ffffff" class="usual"><b>
- Variable</b></font></th>
+    Variable</b></font></th>
             <th width="13%" bgcolor="#000000"><font color="#ffffff" class="usual"><b>
- Default Value</b></font></th>
+    Default Value</b></font></th>
             <th width="73%" bgcolor="#000000"><font color="#ffffff" size="2" face="Verdana, Arial, Helvetica, sans-serif"><b>
-  Description</b></font></th>
+     Description</b></font></th>
           </tr>
           <tr>
             <td width="14%" class="usual">sec_mod</td>
@@ -350,7 +299,7 @@ See date formats below.</td>
           <tr>
             <td width="14%" class="usual">sec_lowest</td>
             <td width="13%" class="usual">150</td>
-            <td width="73%" class="usual">This value should be equal to the
+            <td width="73%" class="usual">This value should be equal to the 
  lowest             value above.</td>
           </tr>
         </tbody>
@@ -360,11 +309,11 @@ See date formats below.</td>
         <tbody>
           <tr bgcolor="#000000">
             <th width="16%" bgcolor="#000000"><font class="usual" color="#ffffff"><b>
- Variable</b></font></th>
+    Variable</b></font></th>
             <th width="13%" bgcolor="#000000"><font class="usual" color="#ffffff"><b>
- Default Value</b></font></th>
+    Default Value</b></font></th>
             <th width="71%" bgcolor="#000000"><font class="usual" color="#ffffff"><b>
- Description</b></font></th>
+    Description</b></font></th>
           </tr>
           <tr>
             <td width="16%">cookie_ip</td>
@@ -402,28 +351,28 @@ the cookie.</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="12%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="75%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="12%">unzipcommand</td>
             <td width="13%">unix command<br>
             </td>
-            <td width="75%">2 commands for unzcopressing plugins. &nbsp;The 
-first one is for Unix based OS's, and the second is for Windows. &nbsp;Comment 
-as appropriate</td>
+            <td width="75%">2 commands for unzcopressing plugins. &nbsp;The
+  first one is for Unix based OS's, and the second is for Windows. &nbsp;Comment
+  as appropriate</td>
           </tr>
           <tr>
             <td width="12%">rmcommand<br>
             </td>
             <td width="13%">unix command<br>
             </td>
-            <td width="75%">2 commands for removing directories during plugin 
-install. &nbsp;First command is for Unix based OS, the second is for Windows. 
-&nbsp;Comment as appropriate.<br>
+            <td width="75%">2 commands for removing directories during plugin
+  install. &nbsp;First command is for Unix based OS, the second is for Windows.
+  &nbsp;Comment as appropriate.<br>
             </td>
           </tr>
           <tr>
@@ -432,7 +381,7 @@ install. &nbsp;First command is for Unix based OS, the second is for Windows.
             <td valign="Top">PHP_OS<br>
             </td>
             <td valign="Top">Redundant, but require variable for making sure 
-plugins are OS-compatable.<br>
+ plugins are OS-compatable.<br>
             </td>
           </tr>
         </tbody>
@@ -444,11 +393,11 @@ plugins are OS-compatable.<br>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="12%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="75%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="12%">loginrequired</td>
@@ -472,43 +421,43 @@ plugins are OS-compatable.<br>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="19%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="68%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td class="usual" width="19%">sortmethod</td>
             <td class="usual" width="13%">sortnum</td>
-            <td class="usual" width="68%">alpha = Sort topics in topic list
- alphabetically<br>
-               sortnum = Sort topics in topic list by sort number</td>
+            <td class="usual" width="68%">alpha = Sort topics in topic list 
+  alphabetically<br>
+                  sortnum = Sort topics in topic list by sort number</td>
           </tr>
           <tr>
             <td class="usual" width="19%">showstorycount</td>
             <td class="usual" width="13%">1</td>
-            <td class="usual" width="68%">Show the number of stories in a
+            <td class="usual" width="68%">Show the number of stories in a 
  topic             in the Section block (0=no, 1=yes)</td>
           </tr>
           <tr>
             <td class="usual" width="19%">showsubmissioncount</td>
             <td class="usual" width="13%">1</td>
-            <td class="usual" width="68%">Show the number of story submissions
- for             a topic in the Section block (0=no, 1=yes)</td>
+            <td class="usual" width="68%">Show the number of story submissions 
+  for             a topic in the Section block (0=no, 1=yes)</td>
           </tr>
           <tr>
             <td class="usual" width="19%">whatsnewbox</td>
             <td class="usual" width="13%">1</td>
-            <td class="usual" width="68%">Show any new articles, comments
- and links             in a "What's New" block (0=no, 1=yes)</td>
+            <td class="usual" width="68%">Show any new articles, comments 
+  and links             in a "What's New" block (0=no, 1=yes)</td>
           </tr>
           <tr>
             <td class="usual" width="19%">emailstories</td>
             <td class="usual" width="13%">1</td>
-            <td class="usual" width="68%">Let users get stories e-mailed to
-them             (0=no, 1=yes). Please note that this requires cron and the
-use of             PHP as a shell script.</td>
+            <td class="usual" width="68%">Let users get stories e-mailed
+to them             (0=no, 1=yes). Please note that this requires cron and
+the use of             PHP as a shell script.</td>
           </tr>
           <tr>
             <td class="usual" width="19%">newstoriesinterval</td>
@@ -519,8 +468,8 @@ use of             PHP as a shell script.</td>
           <tr>
             <td class="usual" width="19%">newcommentsinterval</td>
             <td class="usual" width="13%">172800</td>
-            <td class="usual" width="68%">Comments are "new" if they are 
-           this many seconds old.</td>
+            <td class="usual" width="68%">Comments are "new" if they are
+            this many seconds old.</td>
           </tr>
           <tr>
             <td class="usual" width="19%">newlinksinterval</td>
@@ -538,11 +487,11 @@ use of             PHP as a shell script.</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="19%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="68%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td valign="Top">personalcalendars<br>
@@ -577,19 +526,19 @@ use of             PHP as a shell script.</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="15%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="12%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="73%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td valign="Top">pagetitle<br>
             </td>
             <td valign="Top">null<br>
             </td>
-            <td valign="Top">This is to allow the page title to be change 
-between stories, and should be left empty,<br>
+            <td valign="Top">This is to allow the page title to be change
+  between stories, and should be left empty,<br>
             </td>
           </tr>
           <tr>
@@ -610,7 +559,7 @@ between stories, and should be left empty,<br>
             <td valign="Top">1<br>
             </td>
             <td valign="Top">Minimum numbers of stories than can appear on 
-a topic page<br>
+ a topic page<br>
             </td>
           </tr>
           <tr>
@@ -627,8 +576,8 @@ a topic page<br>
           <tr>
             <td width="15%" class="usual">contributedbyline</td>
             <td width="12%" class="usual">1</td>
-            <td width="73%" class="usual">Show author username to public,
- and enable             search by username (0=no, 1=yes)</td>
+            <td width="73%" class="usual">Show author username to public, 
+  and enable             search by username (0=no, 1=yes)</td>
           </tr>
         </tbody>
       </table>
@@ -640,11 +589,11 @@ a topic page<br>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="12%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="75%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="12%">speedlimit2</td>
@@ -655,7 +604,7 @@ comment for the user</td>
           <tr>
             <td width="12%">loginrequired2</td>
             <td width="13%">0</td>
-            <td width="75%">Login required to post comments             (0=no,
+            <td width="75%">Login required to post comments             (0=no, 
  1=yes)</td>
           </tr>
         </tbody>
@@ -668,11 +617,11 @@ comment for the user</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="13%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="13%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="74%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="13%">maxanswers</td>
@@ -683,13 +632,13 @@ comment for the user</td>
           <tr>
             <td width="13%">pollcookietime</td>
             <td width="13%">86400</td>
-            <td width="74%">Number of seconds to set a poll             answer
+            <td width="74%">Number of seconds to set a poll             answer 
  cookie to time out on</td>
           </tr>
           <tr>
             <td width="13%">polladdresstime</td>
             <td width="13%">604800</td>
-            <td width="74%">Number of seconds to set a poll             answer
+            <td width="74%">Number of seconds to set a poll             answer 
  IP address to time out on</td>
           </tr>
           <tr>
@@ -708,23 +657,23 @@ comment for the user</td>
         <tbody>
           <tr bgcolor="#000000">
             <th bgcolor="#000000" width="11%"><b><font color="#ffffff" class="usual">
-  Variable</font></b></th>
+     Variable</font></b></th>
             <th width="41%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Default Value</font></b></th>
+    Default Value</font></b></th>
             <th width="48%" bgcolor="#000000"><b><font color="#ffffff" class="usual">
- Description</font></b></th>
+    Description</font></b></th>
           </tr>
           <tr>
             <td width="11%">allowablehtml</td>
             <td width="41%">&lt;p&gt;,&lt;b&gt;,&lt;i&gt;,&lt;a&gt;,&lt;em&gt;,&lt;br&gt;,&lt;tt&gt;,&lt;hr&gt;,&lt;li&gt;,&lt;ol&gt;,<br>
-               &lt;div&gt;,&lt;ul&gt;</td>
+                  &lt;div&gt;,&lt;ul&gt;</td>
             <td width="48%">Allowed HTML in stories submissions          
   and comments.</td>
           </tr>
           <tr>
             <td width="11%">censormode</td>
             <td width="41%">1</td>
-            <td width="48%">Censor submissions and comments             (0=no,
+            <td width="48%">Censor submissions and comments             (0=no, 
  1=yes)</td>
           </tr>
           <tr>
@@ -734,166 +683,149 @@ comment for the user</td>
           </tr>
           <tr>
             <td width="11%">censorlist</td>
-            <td width="41%">array("fuck","cunt","fucker","fucking","pussy","cock", 
-             <br>
-               "c0ck","cum","twat","clit","bitch","fuk","fuking", <br>
-               "motherfucker")</td>
+            <td width="41%">array("fuck","cunt","fucker","fucking","pussy","cock",
+               <br>
+                  "c0ck","cum","twat","clit","bitch","fuk","fuking", <br>
+                  "motherfucker")</td>
             <td width="48%">An array of censored words</td>
           </tr>
         </tbody>
       </table>
       </p>
       <p><font class="chaptertitle"><b><a name="localization"></a>
-  Localization</b></font></p>
-      <p>Localizing GeekLog is now fairly easy. All strings         are contained
- in a language file, the default file that ships with the         tar ball
- is english.php.&nbsp; As people translate the file, local versions     
-   will be posted on the <a href="http://geeklog.sf.net/download.php">GeekLog 
-         Download Page</a>
-  .&nbsp; If you translate a language file for GeekLog         please forward
- me a copy at <a href="mailto:tane@zopegeeks.org">tane@zopegeeks.org</a>
-.       </p>
+     Localization</b></font></p>
+      <p>Localizing GeekLog is now fairly easy. All strings         are contained 
+  in a language file, the default file that ships with the         tar ball 
+  is english.php.&nbsp; As people translate the file, local versions     
+   will be posted on the <a href="http://geeklog.sf.net/download.php">GeekLog
+           Download Page</a>
+     .&nbsp; If you translate a language file for GeekLog         please
+forward   me a copy at <a href="mailto:tane@zopegeeks.org">tane@zopegeeks.org</a>
+   .       </p>
       <p><font class="chaptertitle"><b><a name="locale"></a>
-  Locale and Date Formats</b></font></p>
-      <p>You can set the locale and date format in the config.php       
- file.&nbsp; To set the locale, set the variable to the proper string or
-        if you leave it blank it will pull the default locale from the operating 
-         system.&nbsp; The date formats are handled by your locale. Isn't
- that         smart? Locale names are OS dependent. On most UNIX hosts, you
- can find         locale codes in the <i>/usr/share/locale/locale.alias</i>
-   file and on         some systems the command <i>locale -a</i> will display
- all available locales         on a system. If a local doesn't exist you
-can  create it using the <i>localedef</i>         command.  </p>
+     Locale and Date Formats</b></font></p>
+      <p>You can set the locale and date format in the config.php        
+file.&nbsp; To set the locale, set the variable to the proper string or 
+       if you leave it blank it will pull the default locale from the operating
+           system.&nbsp; The date formats are handled by your locale. Isn't 
+  that         smart? Locale names are OS dependent. On most UNIX hosts, you
+  can find         locale codes in the <i>/usr/share/locale/locale.alias</i>
+      file and on         some systems the command <i>locale -a</i> will
+display   all available locales         on a system. If a local doesn't exist
+you can  create it using the <i>localedef</i>         command.  </p>
       <p>More info on locale: <a href="http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html">
-  http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>
+     http://www.opengroup.org/onlinepubs/7908799/xbd/locale.html</a>
       <br>
-           More info on localdef: <a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">
-  http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
+              More info on localdef: <a href="http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html">
+     http://www.opengroup.org/onlinepubs/7908799/xcu/localedef.html</a>
       </p>
-      <font face="Verdana, Arial, Helvetica, sans-serif" size="3"><b>Date
- Format       Syntax:</b></font>
+      <font face="Verdana, Arial, Helvetica, sans-serif" size="3"><b>Date 
+  Format       Syntax:</b></font>
       <ul>
         <li><tt>%a - abbreviated weekday name according to the current locale</tt></li>
         <li><tt>%A - full weekday name according to the current locale</tt></li>
         <li><tt>%b - abbreviated month name according to the current locale</tt></li>
         <li><tt>%B - full month name according to the current locale</tt></li>
-        <li><tt>%c - preferred date and time representation for the current
- locale</tt></li>
-        <li><tt>%C - century number (the year divided by 100 and truncated
- to           an integer, range 00 to 99)</tt></li>
+        <li><tt>%c - preferred date and time representation for the current 
+  locale</tt></li>
+        <li><tt>%C - century number (the year divided by 100 and truncated 
+  to           an integer, range 00 to 99)</tt></li>
         <li><tt>%d - day of the month as a decimal number (range 00 to 31)</tt></li>
         <li><tt>%D - same as %m/%d/%y</tt></li>
-        <li><tt>%e - day of the month as a decimal number, a single digit
- is           preceded by a space (range ' 1' to '31')</tt></li>
+        <li><tt>%e - day of the month as a decimal number, a single digit 
+  is           preceded by a space (range ' 1' to '31')</tt></li>
         <li><tt>%h - same as %b</tt></li>
-        <li><tt>%H - hour as a decimal number using a 24-hour clock (range
- 00           to 23)</tt></li>
-        <li><tt>%I - hour as a decimal number using a 12-hour clock (range
- 01           to 12)</tt></li>
+        <li><tt>%H - hour as a decimal number using a 24-hour clock (range 
+  00           to 23)</tt></li>
+        <li><tt>%I - hour as a decimal number using a 12-hour clock (range 
+  01           to 12)</tt></li>
         <li><tt>%j - day of the year as a decimal number (range 001 to 366)</tt></li>
         <li><tt>%m - month as a decimal number (range 1 to 12)</tt></li>
         <li><tt>%M - minute as a decimal number</tt></li>
         <li><tt>%n - newline character</tt></li>
-        <li><tt>%p - either `am' or `pm' according to the given time value,
- or           the corresponding strings for the current locale</tt></li>
+        <li><tt>%p - either `am' or `pm' according to the given time value, 
+  or           the corresponding strings for the current locale</tt></li>
         <li><tt>%r - time in a.m. and p.m. notation</tt></li>
         <li><tt>%R - time in 24 hour notation</tt></li>
         <li><tt>%S - second as a decimal number</tt></li>
         <li><tt>%t - tab character</tt></li>
         <li><tt>%T - current time, equal to %H:%M:%S</tt></li>
-        <li><tt>%u - weekday as a decimal number [1,7], with 1 representing
- Monday</tt></li>
-        <li><tt>%U - week number of the current year as a decimal number,
- starting           with the first Sunday as the first day of the first week</tt></li>
-        <li><tt>%V - The ISO 8601:1988 week number of the current year as
- a decimal           number, range 01 to 53, where week 1 is the first week
- that has at least           4 days in the current year, and with Monday
+        <li><tt>%u - weekday as a decimal number [1,7], with 1 representing 
+  Monday</tt></li>
+        <li><tt>%U - week number of the current year as a decimal number, 
+  starting           with the first Sunday as the first day of the first week</tt></li>
+        <li><tt>%V - The ISO 8601:1988 week number of the current year as 
+  a decimal           number, range 01 to 53, where week 1 is the first week 
+  that has at least           4 days in the current year, and with Monday 
 as  the first day of the           week.</tt></li>
-        <li><tt>%W - week number of the current year as a decimal number,
- starting           with the first Monday as the first day of the first week</tt></li>
+        <li><tt>%W - week number of the current year as a decimal number, 
+  starting           with the first Monday as the first day of the first week</tt></li>
         <li><tt>%w - day of the week as a decimal, Sunday being 0</tt></li>
-        <li><tt>%x - preferred date representation for the current locale
- without           the time</tt></li>
-        <li><tt>%X - preferred time representation for the current locale
- without           the date</tt></li>
-        <li><tt>%y - year as a decimal number without a century (range 00
- to           99)</tt></li>
+        <li><tt>%x - preferred date representation for the current locale 
+  without           the time</tt></li>
+        <li><tt>%X - preferred time representation for the current locale 
+  without           the date</tt></li>
+        <li><tt>%y - year as a decimal number without a century (range 00 
+  to           99)</tt></li>
         <li><tt>%Y - year as a decimal number including the century</tt></li>
         <li><tt>%Z - time zone or name or abbreviation</tt></li>
         <li><tt>%% - a literal `%' character</tt></li>
       </ul>
       <font class="chaptertitle"><b><a name="support"></a>
-  Support</b></font>
+     Support</b></font>
       <ul>
-        <li><b>Webpage </b>- The <a href="http://geeklog.sf.net">Geeklog
+        <li><b>Webpage </b>- The <a href="http://geeklog.sf.net">Geeklog 
 website</a>
- is the best place for the latest news and updates<br>
+    is the best place for the latest news and updates<br>
         </li>
         <li><b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  SourceForge</a>
-  .</li>
+     SourceForge</a>
+     .</li>
         <li><b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  .</li>
+     mailing           list</a>
+     .</li>
         <li><b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">
-  SourceForge</a>
-  .</li>
-        <li><b>General Help</b> - A better place for general           "I
- can't do it!" help is the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  . Stuff that may be of more general interest is welcome here;         
- but you will probably get better help on the lists.</li>
+     SourceForge</a>
+     .</li>
+        <li><b>General Help</b> - A better place for general           "I 
+  can't do it!" help is the <a href="http://sourceforge.net/mail/?group_id=7371">
+     mailing           list</a>
+     . Stuff that may be of more general interest is welcome here;      
+    but you will probably get better help on the lists.</li>
         <li><b>Link submissions</b> - Use the <a href="http://geeklog.sf.net/submit.php?type=link">
-  contribute           link</a>
-   link to tell us about your new site running GeekLog.</li>
+     contribute           link</a>
+      link to tell us about your new site running GeekLog.</li>
         <li><b>Story submissions</b> - Use the <a href="http://geeklog.sf.net/submit.php?type=story">
-  contribute           news</a>
-   link to tell us your ideas for the GeekLog site and questions.       
-   DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  bug           reports</a>
-  . Also try not to use it for general "I can't do this!" help;         
- you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  .</li>
-        <li><b>Feature requests</b> - Where to send feature           requests
- depends a bit on what the request is. In general, the mailing          
+     contribute           news</a>
+      link to tell us your ideas for the GeekLog site and questions.    
+      DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
+     bug           reports</a>
+     . Also try not to use it for general "I can't do this!" help;      
+    you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">
+     mailing           list</a>
+     .</li>
+        <li><b>Feature requests</b> - Where to send feature           requests 
+  depends a bit on what the request is. In general, the mailing          
 list  is a decent place, and if it is something significant, you may    
       want to send it in as a story submission. You may also want to go over
           to SourceForge and submit it as a <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  bug           report</a>
-   (make sure you select "Feature Request" for the "Group"),           so 
-we can have it filed and we can track it easily.</li>
+     bug           report</a>
+      (make sure you select "Feature Request" for the "Group"),         
+ so  we can have it filed and we can track it easily.</li>
       </ul>
       </td>
     </tr>
   </tbody>
 </table>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
+<table border="0" width="100%">
   <tbody>
-    <tr>
-      <td bgcolor="#000000" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa" colspan="2"><img height="6" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#eeeeee" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
     <tr valign="Top" bgcolor="#dddddd">
-      <td height="20"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><a href="http://geeklog.sf.net">
- The Geeklog Documentation Project</a>
+      <td height="20" colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><a href="http://geeklog.sf.net">
+     The Geeklog Documentation Project</a>
       <br>
-         All trademarks and copyrights on this page are owned by their respective 
-       owners. GeekLog is copyleft.</font></td>
-      <td align="Right"><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
-  GeekLog       v1.3</font></td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
+             All trademarks and copyrights on this page are owned by their
+ respective         owners. GeekLog is copyleft.</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+   &nbsp;</font></td>
     </tr>
   </tbody>
 </table>

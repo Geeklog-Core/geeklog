@@ -1,428 +1,298 @@
-<!DOCTYPE html PUBLIC "-//w3c//dtd html 4.0 transitional//en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
-<head>
-                
-  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-                
-  <meta name="GENERATOR" content="Mozilla/4.75 [en] (Win95; U) [Netscape]">
-  <title>GeekLog Installation Guide</title>
-    
+<head class="usual">
+  <title>Geeklog Developers Documentation</title>
+                                                                        
+                                                                        
+            
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+                  <base class="usual">
 </head>
- <body>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-  <tbody>
-    <tr valign="center" align="Right">
-      <td height="18">
-      <div align="Left"><img src="images/logo.gif" width="350" height="84">
-      </div>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#000000"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="6" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#ffffff"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-  </tbody>
-</table>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
-  <tbody>
-    <tr valign="center" align="Center" bgcolor="#dddddd">
-      <td height="20">
-      <div align="Center"><a href="CONFIG.HTML">configuration</a>
-    &#8226; <a href="CUSTOMIZATION.HTML">customization</a>
-              &#8226; installation</div>
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa"><img height="10" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-  </tbody>
-</table>
-<table cellspacing="0" cellpadding="0" width="100%" border="0">
+  <body marginwidth="0" marginheight="0" topmargin="0" leftmargin="0">
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
   <tbody>
     <tr>
-      <td bgcolor="#ffffff" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr bgcolor="#dddddd">
-      <td height="20">&nbsp;<b>GeekLog       Configuration</b></td>
-      <td align="Right"><b>Last Updated: 20 September 2001</b></td>
-    </tr>
-    <tr>
-      <td bgcolor="#aaaaaa" colspan="2"><img height="1" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-    <tr>
-      <td bgcolor="#ffffff" colspan="2"><img height="15" src="images/speck.gif" width="1">
-      </td>
-    </tr>
-  </tbody>
-</table>
-<h1> GeekLog Installation Guide</h1>
-<ul>
-  <li><a href="#overview">Overview</a>
-  </li>
-  <li><a href="#software_requirements">Software Requirements</a>
-  </li>
-  <li><a href="#latest_code">Latest Code</a>
-  </li>
-  <li><a href="#installation_and_setup">Installation And Configuration</a>
-  </li>
-  <ul>
-    <li><a href="#installation_unix">UNIX Installation</a>
-    </li>
-    <li><a href="#installation_windows">Windows Installation</a>
-    </li>
-    <li><a href="#configuration">Configuration</a>
-    </li>
-  </ul>
-  <li><a href="#upgrade_to_latest">Upgrading</a>
-  </li>
-  <ul>
-    <li><a href="#database_upgrading">Database Upgrading</a>
-    </li>
-  </ul>
-  <li><a href="#support">Support</a>
-  </li>
-</ul>
-<h2><a name="overview"></a>
-   Overview</h2>
-    GeekLog was developed for the Security Geeks web site and has been released
-  under the GNU GPL for use by others.&nbsp; Installing GeekLog is meant
-to  be an easy process though it will require you to have access to several 
-components  of your system.&nbsp; Development of GeekLog is performed on a
-Red Hat Linux  system using Apache 1.3.12, PHP 4.0.4 and MySQL 3.23.32.&nbsp; 
-Other configurations  may work, but nothing is promised.&nbsp; Here are some 
-important notes:    
-<ul>
-  <li> You must use a release version of PHP 4, preferably 4.0.4.&nbsp; Beta 
- versions of PHP 4 will not be supported, and may not work as expected!</li>
-</ul>
-    This document is still evolving, so there may be unintended omissions 
-or  various steps may be over or under explained. It's assumed that you have
- some working experience with some form of&nbsp; Apache, SQL databases, and
- PHP.    
-<h2><a name="software_requirements"></a>
-   Software Requirements</h2>
-    GeekLog is meant to run under Apache using PHP on a UNIX system or IIS
- using PHP on a Windows system.    
-<p>Whatever versions listed are the versions recommended. You can try a newer 
- version, and it should work, but it is not guaranteed, then again, nothing 
- in here is guaranteed anyway.&nbsp; I wouldn't try to use anything older 
-than these listed versions. </p>
-<h3><a name="requirments_table"></a>
-   Requirements Table</h3>
-<table border="1" cols="3" width="100%">
-  <tbody>
-    <tr bgcolor="#000000">
-      <th><br>
-      </th>
-      <td><font color="#ffffff">Supported</font></td>
-      <td><font color="#ffffff">User Successes *</font></td>
-    </tr>
-    <tr>
-      <td>Operating Systems</td>
-      <td>Red Hat 7.1 <br>
-   Windows 2000</td>
-      <td>Red Hat 6.2&nbsp; <br>
-   BSDI 4.0.1&nbsp; <br>
-   Debian 2.2&nbsp; <br>
-   FreeBSD 4.1&nbsp; <br>
-   Mandrake 7.1&nbsp; <br>
-   OpenBSD 2.7&nbsp; <br>
-   Slackware 7.1&nbsp; <br>
-   SuSE 6.4&nbsp; <br>
-   Windows 98<br>
-Windows ME<br>
-      </td>
-    </tr>
-    <tr>
-      <td>Web Servers</td>
-      <td>Apache 1.3.18 <br>
-   IIS 5.0</td>
-      <td>Apache 1.3.12&nbsp; <br>
-   Apache 1.3.9&nbsp; <br>
-   Apache 1.3.6&nbsp; <br>
-   PWS 5.0</td>
-    </tr>
-    <tr>
-      <td>Database</td>
-      <td>MySQL 3.23.32 <br>
-   MySQL 3.22.32 for Win32</td>
-      <td><br>
-      </td>
-    </tr>
-    <tr>
-      <td>PHP Version**</td>
-      <td>4.0.4</td>
-      <td>4.0.2 <br>
-   4.0.0 <br>
-   4.0.1 <br>
-   4.0.1pl2</td>
-    </tr>
-    <tr>
-      <td>Mail Transport Agents ***</td>
-      <td>Sendmail 8.11.2-14</td>
-      <td>Postfix Beta 19991231</td>
-    </tr>
-  </tbody>
-</table>
-<p>* If you have a success story to add here, please submit them to me at
-<a href="mailto:tane@zopegeeks.org">tane@zopegeeks.org</a>
-   . <br>
-   ** Beta versions of PHP4 are not supported. <br>
-   *** An MTA is not used in the Windows environment. </p>
-<h2><a name="latest_code"></a>
-   Latest Code</h2>
-    You can get the GeekLog code in these locations:    
-<ul>
-  <li> HTTP</li>
-  <ul>
-    <li><a href="http://sourceforge.net/projects/geeklog/">http://sourceforge.net/projects/geeklog/</a>
-    </li>
-    <li><a href="*%20http://geeklog.sf.net">http://geeklog.sf.net</a>
+      <td valign="Top" background="images/bg.gif"><img src="file:///C:/cvshome/geeklog-1.3/docs/images/logo.gif" alt="Geeklog Documentation" width="350" height="84" border="0">
       <br>
-    </li>
-  </ul>
-  <li> CVS</li>
-  <ul>
-    <li><a href="http://sourceforge.net/cvs/?group_id=7371">cvs -z3 -d:pserver:anonymous@cvs.geeklog.sourceforge.net:/cvsroot/geeklog
-  co geeklog-1.3</a>
-    </li>
-  </ul>
-  <li> FTP</li>
-  <ul>
-    <li><a href="ftp://geeklog.sourceforge.net/pub/geeklog/">ftp://geeklog.sourceforge.net/pub/geeklog/</a>
-    </li>
-  </ul>
-</ul>
-<h2><a name="installation_and_setup"></a>
-   Installation And Configuration</h2>
-    These guidelines should help you install GeekLog.&nbsp; However, this 
-does  require you to have some knowledge of Apache, MySQL, PHP and their installation
- and configuration.    
-<ul>
-  <i>NOTE: You will most likely have to perform some of these tasks as root 
- or have your administrator help you.</i>
-  <p><i>NOTE: For security's sake, you may wish to add the web server user
-  (e.g., 'nobody') to the group who owns the GeekLog directory, and then
-set  your permissions so that all the files have write access by user and
-group  and not world to keep other users on the system from modifying the
-files.</i></p>
-</ul>
-<h3><a name="installation_unix"></a>
-   Installation UNIX</h3>
-<ul>
-  <li> Unpack the GeekLog tar ball in your directory in which you are going 
- to run GeekLog form.</li>
-  <li> chown everything in this tree as an appropriate user and group.</li>
-  <ul>
-    <pre>chown -R user:group /path/to/geeklog</pre>
-  </ul>
-  <li> chmod the main directory to be readable and executable by all</li>
-  <ul>
-    <pre>chmod a+rx /path/to/geeklog</pre>
-  </ul>
-  <li> Set permissions on /path/to/geeklog/public_html/backend.</li>
-  <br>
-   If rdf_export is enabled, a RDF/RSS formatted XML file is written to backend/geeklog.rdf 
- as the stories get modified. Before this will work, you must make sure that 
- this file has the proper permissions. This means that the owner of the httpd 
- process must be able to write to this file. The raw and be-all way to ensure 
- anyone can write to it:          
-  <ul>
-    <pre>chmod -R 777 /path/to/geeklog/public_html/backend</pre>
-  </ul>
-  <li> Set permissions on /path/to/geeklog/logs. The raw and be-all way to 
- ensure anyone can write to it:</li>
-  <ul>
-    <pre>chmod -R 777 /path/to/geeklog/logs</pre>
-  </ul>
-  <li> Install and configure MySQL. Please refer to MySQL documentation for 
- compilation and/or installation notes for any questions with this.</li>
-  <li> Install and configure Apache. Please refer to Apache documentation 
- for compilation and/or installation notes for any questions with this.</li>
-  <li> Install and configure PHP as a DSO module. Please refer to PHP documentation
-  for compilation and/or installation notes for any questions with this.</li>
-  <li> Create the GeekLog MySQL database.</li>
-  <ul>
-    <pre>/path/to/mysql/mysqladmin -uUSERNAME -pPASSWORD create MYDATABASE</pre>
-  </ul>
-  <li> Create the GeekLog MySQL user and permissions (this requires Perl).&nbsp;
-  You can also set permissions manually or not at all.&nbsp; But for security's
-  sake set your permissions!</li>
-  <ul>
-    <pre>/path/to/mysql/setpermissions</pre>
-  </ul>
-  <li> Import the GeekLog tables.</li>
-  <ul>
-    <pre>/path/to/mysql/mysql -uUSERNAME -pPASSWORD MYDATABASE &lt; /path/to/geeklog/etc/table.sql</pre>
-  </ul>
-  <li> import data (only for fresh install).</li>
-  <ul>
-    <pre>/path/to/mysql/mysql -uUSERNAME -pPASSWORD MYDATABASE &lt; /path/to/geeklog/etc/dump.sql</pre>
-  </ul>
-</ul>
-<h3><a name="installation_windows"></a>
-   Installation Windows</h3>
-<ul>
-  <li> Unzip the GeekLog tar ball in your directory in which you are going 
- to run GeekLog form.</li>
-  <li> Set the properties on the directory and sub directories as an appropriate
-  user and group.</li>
-  <li> Set permissions on /path/to/geeklog/public_html/backend to be writeable
-  by the web server.</li>
-  <li> Set permissions on /path/to/geeklog/logs&nbsp; to be writeable by the
-web server.</li>
-  <li> Install and configure MySQL. Please refer to MySQL documentation for 
- compilation and/or installation notes for any questions with this.</li>
-  <li> Install and configure IIS. Please refer to IIS documentation for compilation
-  and/or installation notes for any questions with this.</li>
-  <li> Install and configure PHP as an ISAPI module. Please refer to PHP documentation
-for compilation and/or installation notes for any questions with this.</li>
-  <li> Create the GeekLog MySQL database.</li>
-  <ul>
-    <pre>/path/to/mysql/mysqladmin -uUSERNAME -pPASSWORD create MYDATABASE</pre>
-  </ul>
-  <li> Create the GeekLog MySQL user and permissions (this requires Perl).&nbsp;
-  You can also set permissions manually or not at all.&nbsp; But for security's
-  sake set your permissions!</li>
-  <ul>
-    <pre>/path/to/mysql/setpermissions</pre>
-  </ul>
-  <li> Import the GeekLog tables.</li>
-  <ul>
-    <pre>/path/to/mysql/mysql -uUSERNAME -pPASSWORD MYDATABASE &lt; /path/to/geeklog/etc/table.sql</pre>
-  </ul>
-  <li> import data (only for fresh install).</li>
-  <ul>
-    <pre>/path/to/mysql/mysql -uUSERNAME -pPASSWORD MYDATABASE &lt; /path/to/geeklog/etc/dump.sql</pre>
-  </ul>
-</ul>
-<h3><a name="configuration"></a>
-   Configuration</h3>
-<ul>
-  <li> Edit /path/to/geeklog/config.php.&nbsp; These are the setting for the
-entire site, take time to edit this file very carefully. For imformation on
-localization, see the localization section of CONFIG.HTML.</li>
-  <li> edit /path/to/geeklog/public_html/common.php.</li>
-  <ul>
-    <li> The only thing you need to change here is the config.php file path.</li>
-  </ul>
-  <li> Log into the server administration. (http://whateveryoursiteiscalled.com/admin/)</li>
-  <ul>
-    <li> The admin user name is 'Admin'</li>
-    <li> The admin password is 'password'</li>
-    <li> This page allows you to approve submissions to be run as stories, 
- add new stories, edit stories, edit the blocks, user and topics, etc...</li>
-  </ul>
-</ul>
-    See CONFIG.HTML for more details.    
-<h2><a name="upgrading"></a>
-   Upgrading</h2>
-    Upgrading is only possible from release to release.&nbsp; Procedures
-are   not provided for upgrading from development releases to production
-releases.     
-<p>The following procedure will upgrade your system.&nbsp; Please note that 
- you will lose any customizations to your site using this procedure. </p>
-<ul>
-  <li> Backup all data, this is an often overlooked step but very, very important.</li>
-  <li> Copy all the *php files from the tar ball in to their proper directories.</li>
-  <li> Copy all the *inc files from the tar ball in to their proper directories.</li>
-  <li> Edit the config.php and configure it for your site.</li>
-</ul>
-<h3><a name="database_upgrading"></a>
-   Database Upgrading</h3>
-    If updating from pre-1.0, updating will lose all author data for stories
-  and comments.&nbsp; This can't be helped with the move to integrated user
-  accounts.    
-<p><b>From pre-1.0 do:</b></p>
-<ul>
-  <li> Your admin account should be user id 1.&nbsp; To check this, in MySQL 
- type:</li>
-  <pre>SELECT uid,name FROM users;</pre>
-  <li> If your admin account is not uid 1 type in MySQL (? is whatever uid 
- admin is currently):</li>
-  <pre>UPDATE users SET uid = 1 WHERE uid = ?;</pre>
-  <li> Run the necessary SQL update script located in /sql/updates depending 
- on your current version you may need to run several scripts.</li>
-  <pre>mysql -u(username) -p(password) (database_name) &lt; 0.1_to_0.2.sql</pre>
-</ul>
-<pre><b>From post-1.0 do:</b></pre>
-<ul>
-  <li> Run the necessary SQL update script located in /sql/updates depending 
- on your current version you may need to run several scripts.</li>
-  <pre>mysql -u(username) -p(password) (database_name) &lt; 1.1_to_1.2.sql</pre>
-</ul>
-<pre><b>Making your pre-1.2 database MySQL 3.23 compatible</b></pre>
-<ul>
-  <li> After running the upgrade scripts described above you <b>MUST</b> run
-one last script from your web browser:<br>
-    <br>
-    http://yourgeeklogdomain/anonymous_user_cleanup.php<br>
-    <br>
-    This script will fix a problem that can occur when having negative uid's 
- in the user table when the uid field is auto incremented.  It is imperative 
- you back your database up prior to running this script. Email bugs with this
- script immediately to <a href="mailto:tony@tonybibbs.com">tony@tonybibbs.com</a>
-   .                 
-    <h2><a name="support"></a>
-   Support</h2>
-    <ul>
-      <li><br>
-      </li>
-      <li><b>Webpage </b>- The <a href="http://geeklog.sf.net">Geeklog website</a>
- is the best place for the latest news and updates<br>
-      </li>
-      <li><b>Bug reports</b> - Submit bug reports at <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  SourceForge</a>
-  .</li>
-      <li><b>Mailing lists</b> - Join the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  .</li>
-      <li><b>Patches</b> - Please submit patches at <a href="http://sourceforge.net/patch/?group_id=7371">
-  SourceForge</a>
-  .</li>
-      <li><b>General Help</b> - A better place for general           "I  can't
-do it!" help is the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  . Stuff that may be of more general interest is welcome here;         
- but you will probably get better help on the lists.</li>
-      <li><b>Link submissions</b> - Use the <a href="http://geeklog.sf.net/submit.php?type=link">
-  contribute           link</a>
-   link to tell us about your new site running GeekLog.</li>
-      <li><b>Story submissions</b> - Use the <a href="http://geeklog.sf.net/submit.php?type=story">
-  contribute           news</a>
-   link to tell us your ideas for the GeekLog site and questions.       
-   DO NOT use this for bug reports. Use SourceForge for <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  bug           reports</a>
-  . Also try not to use it for general "I can't do this!" help;         
- you'll get a much better response for those on the <a href="http://sourceforge.net/mail/?group_id=7371">
-  mailing           list</a>
-  .</li>
-      <li><b>Feature requests</b> - Where to send feature           requests
- depends a bit on what the request is. In general, the mailing          
-list  is a decent place, and if it is something significant, you may    
-      want to send it in as a story submission. You may also want to go over
-          to SourceForge and submit it as a <a href="http://sourceforge.net/bugs/?func=addbug&amp;group_id=7371">
-  bug           report</a>
-   (make sure you select "Feature Request" for the "Group"),           so 
-we can have it filed and we can track it easily.</li>
-    </ul>
-    <a href="http://sourceforge.net/bugs/?group_id=7371"></a>
- </li>
-</ul>
+      </td>
+    </tr>
+    <tr>
+      <td valign="Top" class="menu"><a href="index.html">Developer Documentation</a>
+            - How to install Geeklog<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<table cellpadding="5" cellspacing="2" border="0" width="100%">
+  <tbody>
+    <tr>
+      <td class="usual" valign="Top">
+      <ul>
+        <li><a href="#overview">Overview</a>
+        </li>
+        <li><a href="#requirements">System Requirements</a>
+        </li>
+        <li><a href="#download">Download the latest code</a>
+        </li>
+        <li><a href="#install">Install</a>
+        </li>
+        <ul>
+          <li><a href="#install_unix">Unix</a>
+            <br>
+          </li>
+        </ul>
+      </ul>
+      <hr width="100%" size="2"><br>
+      <font class="chaptertitle"><a name="overview">Overview</a>
+      </font><br>
+      <br>
+          Installing Geeklog has been made easier and easier every time.
+&nbsp;As     of 1.3, if you follow this guide you can't go far wrong. &nbsp;In
+some  cases   things might not work, and for these situations we know of,
+we have  some  solutions. &nbsp;But overall things should run smothly.<br>
+          If you do run into problems, PLEASE read the documentation first. 
+ &nbsp;If    these so not help you, then query the mailing list (see <a href="support.html">
+ Support</a>
+ ).<br>
+      <br>
+      <font class="chaptertitle"><a name="requirements">System Requirements</a>
+      </font><br>
+          Geeklog has been designed to use PHP with MySQL. &nbsp;Whatever 
+webserver     you use (Apache, IIS, etc) PHP and MySQL MUST be installed. 
+&nbsp;We always     recommend you use the latest STABLE version of all software. 
+&nbsp;If the    software is Beta, we cannot provide support for this!<br>
+      <br>
+          Below is a list of official recommended versions of software, and 
+ other    versions that users have had success with. &nbsp;We cannot guarentee 
+ all   envorionments below will work for you, due to the nature of no computer 
+ ever  being the same. &nbsp;If you have success with a version of software 
+ below,  please email me and I'll add it to the list.<br>
+      <br>
+      <table cellpadding="2" cellspacing="2" border="1" width="80%" align="Center" class="usual">
+        <caption>Table 1. List of Recommended Software versions</caption><tbody>
+          <tr>
+            <th valign="Top" text="white" class="">Type of Software<br>
+            </th>
+            <th valign="Top">Supported<br>
+            </th>
+            <th valign="Top">User Success<br>
+            </th>
+          </tr>
+          <tr>
+            <td valign="Top">Operating Systems<br>
+            </td>
+            <td valign="Top">Red Hat 7.1 <br>
+         Windows 2000<br>
+            </td>
+            <td valign="Top">Red Hat 6.2&nbsp; <br>
+         BSDI 4.0.1&nbsp; <br>
+         Debian 2.2&nbsp; <br>
+         FreeBSD 4.1&nbsp; <br>
+         Mandrake 7.1&nbsp; <br>
+         OpenBSD 2.7&nbsp; <br>
+         Slackware 7.1&nbsp; <br>
+         SuSE 6.4&nbsp; <br>
+         Windows 98<br>
+         Windows ME</td>
+          </tr>
+          <tr>
+            <td valign="Top">Web Servers</td>
+            <td valign="Top">Apache 1.3.18 <br>
+         IIS 5.0<br>
+            </td>
+            <td valign="Top">Apache 1.3.12&nbsp; <br>
+         Apache 1.3.9&nbsp; <br>
+         Apache 1.3.6&nbsp; <br>
+         PWS 5.0<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="Top">Database<br>
+            </td>
+            <td valign="Top">MySQL 3.23.32 <br>
+         MySQL 3.22.32 for Win32<br>
+            </td>
+            <td valign="Top"><br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="Top">PHP Version<br>
+            </td>
+            <td valign="Top">4.0.4<br>
+            </td>
+            <td valign="Top">4.0.2 <br>
+         4.0.0 <br>
+         4.0.1 <br>
+         4.0.1pl2<br>
+            </td>
+          </tr>
+          <tr>
+            <td valign="Top">Mail Transport Agents*<br>
+            </td>
+            <td valign="Top">Sendmail 8.11.2-14<br>
+            </td>
+            <td valign="Top">Postfix Beta 19991231<br>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br>
+      <font class="comment">* Mail Transport Agents are only used in Unix
+    Environments</font><br>
+      <br>
+      <font class="chaptertitle"><a name="download">Download the latest code</a>
+      </font><br>
+      <br>
+        As of the writing of these documents, the latest version of Geeklog 
+ is  Version  1.3. &nbsp;With this version, there are a lot of new features,
+  and  it is recommended you get this version. &nbsp;The latest versions
+are   avalible  here:<br>
+      <br>
+      <ul>
+        <li>HTTP</li>
+        <ul>
+          <li><a href="*%20%20http://www.sourceforge.net/project/geeklog">
+ http://www.sourceforge.net/project/geeklog</a>
+          </li>
+        </ul>
+        <ul>
+          <li><a href="http://geeklog.sourceforge.net">http://geeklog.sourceforge.net</a>
+          </li>
+        </ul>
+        <li>FTP</li>
+        <ul>
+          <li><a href="ftp://geeklog.sourceforge.net/pub/geeklog">ftp://geeklog.sourceforge.net/pub/geeklog</a>
+          </li>
+        </ul>
+        <li>CVS</li>
+        <ul>
+          <li>cvs -z3 -d:pserver:anonymous@cvs.geeklog.sourceforge.net:/cvsroot/geeklog
+    co geeklog-1.3&nbsp;</li>
+        </ul>
+      </ul>
+        The CVS version is always the latest, but only has limited support
+ since    work may be in progress on bug fixes or new features. &nbsp;If
+you  wish  to  get it, you need CVS (unix) or <a href="http://www.wincvs.org">
+ WinCVS</a>
+  (Windows).<br>
+      <br>
+      <font class="chaptertitle"><a name="install">Installation</a>
+      </font><br>
+      <br>
+      <font class="selectiontitle"><a name="install_unix">Unix</a>
+      </font><br>
+        The below install procedure is for installing Geeklog under a Unix-based
+    system (Linux, BSD, etc), with Apache as the webserver. &nbsp;If you
+run    another web server, you need to to look at the documents for how to
+do certain   things in this list.<br>
+      <br>
+      <ol>
+        <li>Unpack Geeklog into the directory that you are going to run it
+ from.<br>
+          <br>
+          <font class="comment">If you have Shell access to your account, 
+   you can do all of the below. &nbsp;If not, you can skip the first part 
+(chown),   but the second part can be done from most FTP clients. &nbsp;It 
+is recommended   you set your directory permissions, as this makes thing much
+more secure,   and some functions of Geeklog require this. &nbsp; If you
+cannot do the first  part of this, it doesn't matter too much, as it is most
+likely set up - just  remember never give access to Geeklog anyone who your
+don't fully trust. &nbsp;The first thing you need to do is set the user and
+group:<br>
+          <br>
+          <ul>
+            <li>chown -R user:group /path/to/geeklog</li>
+          </ul>
+          <br>
+        Next you need to set your geeklog dir to be readable and executable 
+ by  all<br>
+          <br>
+          <ul>
+            <li>chmod a+rx /path/to/geeklog</li>
+          </ul>
+          <br>
+        Set permissions on /path/to/geeklog/public_html/backend.<br>
+          <br>
+        If rdf_export is enabled, a RDF/RSS formatted XML file is written 
+to  backend/geeklog.rdf   as the stories get modified. Before this will work,
+  you must make sure that   this file has the proper permissions. This means
+  that the owner of the httpd   process must be able to write to this file.
+  The raw and be-all way to ensure   anyone can write to it: <br>
+          <br>
+          <ul>
+            <li>chmod -R 777 /path/to/geeklog/public_html/backend</li>
+          </ul>
+          <br>
+        Set permissions on /path/to/geeklog/logs. The raw and be-all way
+to  ensure   anyone can write to it: <br>
+          <br>
+          <ul>
+            <li>chmod -R 777 /path/to/geeklog/logs<br>
+              <br>
+            </li>
+          </ul>
+          </font></li>
+        <li>Next you need to install your MySQL database. &nbsp;There are 
+   2 ways of doing this. These are explained below.<br>
+          <br>
+          <font class="comment">  The first (and easiest) way is to download
+   phpMyAdmin. &nbsp;This allows you to use a Graphical User Interface to
+run   the SQL scripts. &nbsp;You will NEED to do the setup this way if you
+do not  have Shell access to your MySQL database, and some companies already
+ have  this set up for you to use. &nbsp;Consult your hosting provider to
+ask about  this.<br>
+          <br>
+       After you have installed phpMyAdmin, create a database called 'geeklog'. 
+   &nbsp;Next, find the section for running SQL commands, and look for the 
+ 'browse'  box. &nbsp;Click this, and locate the 'table.sql' file, and then 
+ click 'Go'.  &nbsp;Do the same for 'data.sql'<br>
+          <br>
+       Your database is now set up.<br>
+          <br>
+       If you have shell access, you may wish to set up your database via 
+command    line. &nbsp;If so, then follow the instructions below. &nbsp;The 
+assume  you  have some MySQL knowledge.<br>
+          <br>
+       First create your 'geeklog' database<br>
+          <br>
+       /path/to/mysql/mysqladmin -u USERNAME -p PASSWORD create geeklog<br>
+          <br>
+       Next, create a geeklog user. &nbsp;You can also set permissions manually 
+   or not at all.&nbsp; But for security's sake set your permissions! Next 
+ you  need to import 'table.sql', then 'data.sql'<br>
+          <br>
+       /path/to/mysql/mysql -u USERNAME -p PASSWORD geeklog &lt; /path/to/geeklog/sql/table.sql<br>
+       /path/to/mysql/mysql -u USERNAME -p PASSWORD geeklog &lt; /path/to/geeklog/sql/dump.sql<br>
+          <br>
+          </font></li>
+        <li>Next you need to configure your site via the 'config.php' file 
+   . &nbsp;See the Configuration Document on how to do this.</li>
+        <li>Next, edit 'common.php' to point to the location of 'config.php' 
+   .<br>
+        </li>
+        <li>You now should have a fully functioning Geeklog powered website! 
+   &nbsp;Now login with the username and password displayed on the first story
+   and set up your site! &nbsp;REMEMBER to change the default password of
+the   god user, or you will allow anyone to change your site!<br>
+          <br>
+        </li>
+      </ol>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<table border="0" width="100%">
+  <tbody>
+    <tr valign="Top" bgcolor="#dddddd">
+      <td height="20" colspan="2"><font face="Verdana, Arial, Helvetica, sans-serif" size="1"><a href="http://geeklog.sf.net">
+   The Geeklog Documentation Project</a>
+      <br>
+           All trademarks and copyrights on this page are owned by their
+respective         owners. GeekLog is copyleft.</font><font face="Verdana, Arial, Helvetica, sans-serif" size="1">
+ &nbsp;</font></td>
+    </tr>
+  </tbody>
+</table>
 </body>
 </html>
