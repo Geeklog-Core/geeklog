@@ -1,0 +1,48 @@
+<!-- sample template for a custom registration form - see lib-custom.php -->
+{startblock}
+{message}
+<form action="{post_url}" method="post">
+	<table border="0" cellspacing="0" cellpadding="2" bgcolor='#f6f6ff' width=550>
+		<tr>
+			<td align="right" valign=middle><font color='#000000'><b>{USERNAME}</b></font><br><font color=#676767 size=1>{USERNAME_HELP}</font></td>
+			<td align=left valign=middle><input type="text" name="username" size="25" maxlength="16" value="{username}"></td> 
+			<td><img src='/images/speck.gif' width=30 height=1></td>
+		</tr>
+		{passwd_input} 
+		<tr> 
+			<td align="right" valign=middle><font color='#000000'><b>{EMAIL}</b></font><br><font color=#676767 size=1>{EMAIL_HELP}</font></td> 
+			<td align=left valign=middle><input type="text" name="email" size="25" maxlength="100" value="{email}"></td> 
+		        <td><img src='/images/speck.gif' width=30 height=1></td>
+		</tr> 
+		<tr>
+ 	 		<td align="right" valign=middle><font color='#000000'><b>{WEBSITE}</b></font><br><font color=#676767 size=1>{WEBSITE_HELP}</font></td>
+			<td align=left valign=middle><input type="text" name="homepage" size="25" maxlength="255" value="{website}"></td> 
+		    <td><img src='/images/speck.gif' width=30 height=1></td>
+		</tr> 		
+		<tr>
+			<td align="right" valign=middle><font color='#000000'><b>{FIRSTNAME}</b></font><br><font color=#676767 size=1>{FIRSTNAME_HELP}</font></td>
+			<td align=left valign=middle><input type="text" name="firstname" size="25" maxlength="40" value="{firstname}"></td> 
+		       <td><img src='/images/speck.gif' width=30 height=1></td>
+	       </tr> 
+		<tr>
+			<td align="right" valign=middle><font color='#000000'><b>{LASTNAME}</b></font><br><font color=#676767 size=1>{LASTNAME_HELP}</font></td>
+			<td><input type="text" name="lastname" size="25" maxlength="40" value="{lastname}"></td> 
+		       <td><img src='/images/speck.gif' width=30 height=1></td>
+   	        </tr> 
+		<tr>
+			<td align="right" valign=middle><font color='#000000'><b>{COUNTRY}</b></font><br><font color=#676767 size=1>{COUNTRY_HELP}</font></td>
+			<td align=left valign=middle><input type="text" name="country" size="25" maxlength="30" value="{country}"></td> 
+			<td><img src='/images/speck.gif' width=30 height=1></td>
+		</tr> 
+		<tr>
+			<td align="right" valign=middle><font color='#000000'><b>{COMPANY}</b></font><br><font color=#676767 size=1>{COMPANY_HELP}</font></td> 
+			<td align=left valign=middle><input type="text" name="company" size="25" maxlength="80" value="{company}"></td> 
+	               <td><img src='/images/speck.gif' width=30 height=1></td>
+		</tr> 
+		<tr> 
+			<td align="center" colspan="2"><input type="hidden" name="uid" value="{user_id}"><HR><BR>
+			<input type="hidden" name="mode" value="{postmode}">{submitbutton}</td> 
+		</tr> 
+	</table>
+</form>
+{endblock}
