@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.19 2002/11/29 16:05:02 dhaun Exp $
+// $Id: stats.php,v 1.20 2002/12/01 20:43:00 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -91,6 +91,9 @@ $result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TAB
 $A = DB_fetchArray($result);
 $total_stories = $A['count'];
 $comments = $A['ccount'];
+if (empty ($comments)) {
+    $comments = 0;
+}
 $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
 $stat_templates->set_var('total_stories',$total_stories);
 $stat_templates->set_var('total_comments',$comments);
@@ -123,6 +126,9 @@ $result = DB_query ("SELECT count(*) AS count,SUM(hits) AS clicks FROM {$_TABLES
 $A = DB_fetchArray($result);
 $total_links = $A['count'];
 $total_clicks = $A['clicks'];
+if (empty ($total_clicks)) {
+    $total_clicks = 0;
+}
 $stat_templates->set_var('lang_links_clicks',$LANG10[5]);
 $stat_templates->set_var('total_links',$total_links);
 $stat_templates->set_var('total_clicks',$total_clicks);
