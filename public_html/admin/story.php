@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.94 2003/07/01 14:52:56 dhaun Exp $
+// $Id: story.php,v 1.95 2003/07/05 21:01:00 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -440,21 +440,17 @@ function liststories($page = 1)
 
     $excludetopics = '';
     $topicsql = "SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL ();
-    $tresult = DB_query( $topicsql );
-    $trows = DB_numRows( $tresult );     
-    if( $trows > 0 )
-    {
-        $excludetopics .= "WHERE (";
-        for( $i = 1; $i <= $trows; $i++ ) 
-        {
-            $T = DB_fetchArray ($tresult);     
-            if ($i > 1)
-            {   
-                $excludetopics .= " OR ";
-            }
-            $excludetopics .= "tid = '{$T['tid']}'";
+    $tresult = DB_query ($topicsql);
+    $trows = DB_numRows ($tresult);     
+    if ($trows > 0) {
+        $tids = array ();
+        for ($i = 0; $i < $trows; $i++) {
+            $T = DB_fetchArray ($tresult);
+            $tids[] = $T['tid'];
         }
-        $excludetopics .= ") ";
+        if (sizeof ($tids) > 0) {
+            $excludetopics = " WHERE (tid IN ('" . implode ("','", $tids) . "'))";
+        }
     }
 
     $limit = (50 * $page) - 50;
@@ -497,7 +493,9 @@ function liststories($page = 1)
         }
 
         // Print prev/next page links if needed
-        $numstories = DB_count ($_TABLES['stories']);
+        $nresult = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']}" . $excludetopics);
+        $N = DB_fetchArray ($nresult);
+        $numstories = $N['count'];
         if ($numstories > 50) {
             $prevpage = $page - 1;
             $nextpage = $page + 1;
