@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.49 2004/08/04 18:44:24 dhaun Exp $
+// $Id: event.php,v 1.50 2004/09/04 19:34:33 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -516,21 +516,19 @@ function listevents ($page = 1)
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
 
     $limit = (EVENTS_PER_PAGE * ($page - 1));
-    $result = DB_query("SELECT * FROM {$_TABLES['events']} ORDER BY datestart DESC LIMIT $limit," . EVENTS_PER_PAGE);
-    $nrows = DB_numRows($result);
+    $result = DB_query ("SELECT * FROM {$_TABLES['events']}" . COM_getPermSQL () . " ORDER BY datestart DESC LIMIT $limit," . EVENTS_PER_PAGE);
+    $nrows = DB_numRows ($result);
     for ($i = 0; $i < $nrows; $i++) {
-        $ecount = (EVENTS_PER_PAGE * ($page - 1)) + $i + 1;
-        $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access > 0) {
-            if ($access == 3) {
-                $access = $LANG_ACCESS['edit'];
-            } else {
-                $access = $LANG_ACCESS['readonly'];
-            }
+        $A = DB_fetchArray ($result);
+        $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                                 $A['perm_owner'], $A['perm_group'],
+                                 $A['perm_members'], $A['perm_anon']);
+        if ($access == 3) {
+            $access = $LANG_ACCESS['edit'];
         } else {
-                $access = $LANG_ACCESS['none'];
+            $access = $LANG_ACCESS['readonly'];
         }
+        $ecount = (EVENTS_PER_PAGE * ($page - 1)) + $i + 1;
         $event_templates->set_var('event_id', $A['eid']);
         $event_templates->set_var('event_title', stripslashes ($A['title']));
         $event_templates->set_var('event_access', $access);

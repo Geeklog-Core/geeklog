@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.131 2004/09/02 18:38:40 dhaun Exp $
+// $Id: story.php,v 1.132 2004/09/04 19:34:33 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -576,32 +576,30 @@ function liststories($page = 1)
     $story_templates->set_var ('topic_selection', '<select name="tid" style="width: 125px" onchange="this.form.submit()">' . $alltopics . $seltopics . '</select>');
 
     $limit = (50 * $page) - 50;
-    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} " . $excludetopics . "ORDER BY date DESC LIMIT $limit,50");
+    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} " . $excludetopics . COM_getPermSQL ('AND') . "ORDER BY date DESC LIMIT $limit,50");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
-            $scount = (50 * $page) - 50 + $i;
-            $A = DB_fetchArray($result);
-            $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-            if ($access > 0) {
-                if ($access == 3) {
-                    if (SEC_hasTopicAccess ($A['tid']) == 3) {
-                        $access = $LANG_ACCESS['edit'];
-                    } else {
-                        $access = $LANG_ACCESS['readonly'];
-                    }
+            $A = DB_fetchArray ($result);
+            $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                                     $A['perm_owner'], $A['perm_group'],
+                                     $A['perm_members'], $A['perm_anon']);
+            if ($access == 3) {
+                if (SEC_hasTopicAccess ($A['tid']) == 3) {
+                    $access = $LANG_ACCESS['edit'];
                 } else {
                     $access = $LANG_ACCESS['readonly'];
                 }
             } else {
-                $access = $LANG_ACCESS['none'];
+                $access = $LANG_ACCESS['readonly'];
             }
-            $curtime = COM_getUserDateTimeFormat($A['unixdate']);
-            $story_templates->set_var('story_id', $A['sid']);
+            $scount = (50 * $page) - 50 + $i;
+            $curtime = COM_getUserDateTimeFormat ($A['unixdate']);
+            $story_templates->set_var ('story_id', $A['sid']);
             $story_templates->set_var ('article_url',
                     COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                   . $A['sid']));
-            $story_templates->set_var('row_num', $scount);
+            $story_templates->set_var ('row_num', $scount);
             $A['title'] = str_replace('$', '&#36;', $A['title']);
             $story_templates->set_var('story_title', stripslashes($A['title']));
             $story_templates->set_var('story_access', $access);
