@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.348 2004/08/01 09:27:26 dhaun Exp $
+// $Id: lib-common.php,v 1.349 2004/08/01 19:16:23 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -486,20 +486,25 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     $A['bodytext'] = str_replace( '$', '&#36;', $A['bodytext'] );
 
     $recent_post_anchortag = '';
+    $introtext = stripslashes( $A['introtext'] );
     if( $index == 'n' )
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
-        $article->set_var( 'story_introtext', stripslashes( $A['introtext'] )
-                . '<br><br>' . stripslashes( $A['bodytext'] ));
+        if( empty( $A['bodytext'] ))
+        {
+            $article->set_var( 'story_introtext', $introtext );
+        }
+        else
+        {
+            $article->set_var( 'story_introtext', $introtext . '<br><br>'
+                               . stripslashes( $A['bodytext'] ));
+        }
     }
     else
     {
         $article->set_var( 'story_title', stripslashes( $A['title'] ));
-        $article->set_var( 'story_introtext', stripslashes( $A['introtext'] ));
+        $article->set_var( 'story_introtext', $introtext );
 
-        $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                                    . $A['sid'] );
-        $article->set_var( 'article_url', $articleUrl );
         if( !empty( $A['bodytext'] ))
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
@@ -586,6 +591,9 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'pdf_icon', '' );
         }
     }
+    $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                . $A['sid'] );
+    $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
     if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 AND SEC_hasrights( 'story.edit' ))

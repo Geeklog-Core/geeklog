@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Don't emit the <br><br> in article.php when the story's body text is empty
+  (based on patch #147, provided by Andy Maloney) [Dirk]
+- Set {article_url} variable when displaying the story in article.php [Dirk]
 - Fixed missing </select> tags for the comment display mode and sort order
   drop-down menus in usersettings.php (patch #255, provided by machinari) [Dirk]
 - Hard-coded the names of the pseudo image tags in story.php, i.e. they are
