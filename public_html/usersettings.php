@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.89 2004/02/01 17:34:25 dhaun Exp $
+// $Id: usersettings.php,v 1.90 2004/02/02 19:04:47 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -962,6 +962,7 @@ function savepreferences($A)
 }
 
 // MAIN
+$mode = '';
 if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
 }
@@ -970,7 +971,7 @@ else if (isset ($HTTP_GET_VARS['mode'])) {
 }
 $display = '';
 
-if (!empty($_USER['username']) && !empty($mode)) {
+if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
     switch ($mode) {
     case 'preferences':
     case 'comments':
