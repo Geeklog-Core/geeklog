@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.10 2002/01/03 21:45:11 tony_bibbs Exp $
+// $Id: group.php,v 1.11 2002/01/03 22:19:23 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -138,7 +138,7 @@ function editgroup($grp_id = '')
 
 		if (!empty($selected)) {
             $inclause = str_replace(' ',',',$selected);
-			$result= DB_query("SELECT grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause) ORDER BY grp_name");
+			$result= DB_query("SELECT grp_id,grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($inclause) ORDER BY grp_name");
 		    $nrows = DB_numRows($result);
 		} else {
 			$nrows = 0;
@@ -151,7 +151,7 @@ function editgroup($grp_id = '')
             $groupoptions = '';
             for ($i = 1; $i <= $nrows; $i++) {
                 $GRPS = DB_fetchArray($result);
-                $groupoptions .= $GRPS['grp_name'] . '<br>' .LB;
+                $groupoptions .= $GRPS['grp_name'] . '<input type="hidden" name="groups[]" value="' . $GRPS['grp_id'] . '"><br>' .LB;
             }
             $group_templates->set_var('group_options', $groupoptions);
         }
@@ -250,7 +250,7 @@ function printrights($grp_id='', $core=0)
 
 		if ((($grpftarray[$A['ft_name']] == 'direct') OR empty($grpftarray[$A['ft_name']])) AND ($core == 0)) {
 			$ftcount++;
-			$retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
+			$retval .= '<td><input type="checkbox" name="features[]" value="'. $A['acc_ft_id'] . '"';
 			if ($grpftarray[$A['ft_name']] == 'direct') {
 				$retval .= ' CHECKED';
 			} 
@@ -259,7 +259,7 @@ function printrights($grp_id='', $core=0)
 			// either this is an indirect right OR this is a core feature
 			if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core == 0)) {
 				$ftcount++;
-				$retval .= '<td>' . $A['ft_name'] . '</td>';
+				$retval .= '<td><input type="hidden" name="features[]" value="' . $A['ft_id'] . '">' . $A['ft_name'] . '</td>';
 			}
 		}
 	}
@@ -289,6 +289,10 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 	global $_TABLES, $_CONF, $LANG_ACCESS;
 
     if (!empty($grp_name) && !empty($grp_descr)) {
+        if ($grp_gl_core == 1 AND !is_array($features)) {
+            print COM_errorLog("sorry, no valid features were passed to this core group and saving could cause problem...bailing");
+            exit;
+        }
         if (empty($grp_id)) {
             DB_query("REPLACE INTO {$_TABLES['groups']} (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
         } else {
