@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.1 2001/12/06 22:07:34 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.2 2001/12/07 16:23:40 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -543,7 +543,6 @@ function COM_checkList($table,$selection,$where='',$selected='')
     global $_TABLES, $_COM_VERBOSE;
 
     $sql = "SELECT $selection FROM $table";
-    if ($table == $_TABLES['groups']) $table = $_TABLES['groups'] . '[]';
 
     if (!empty($where)) {
         $sql .= " WHERE $where";
