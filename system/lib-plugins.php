@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.18 2003/05/11 18:28:55 dhaun Exp $
+// $Id: lib-plugins.php,v 1.19 2003/05/22 21:05:46 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -39,6 +39,11 @@
 */
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
+
+// buffer for function names for the center block API
+$PLG_bufferCenterAPI = array ();
+$PLG_buffered = false;
+
 
 /**
 * Calls a function for all enabled plugins
@@ -589,24 +594,41 @@ function PLG_showSubmitForm($type)
 * It will be display before any news and after any defined staticpage content.
 * The plugin is responsible to format the output correctly.
 *
+* @param   where   int      1 = top, 2 = after feat. story, 3 = bottom of page
+* @param   page    int      page number (1, ...)
+* @param   topic   string   topic ID or empty string == front page
 * @return  Formatted center block content
 *
 */
-function PLG_showCenterblock() 
+function PLG_showCenterblock($where = 1, $page = 1, $topic = '') 
 {
-    global $_TABLES;
+    global $_TABLES, $PLG_bufferCenterAPI, $PLG_buffered;
 
-    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
-    $nrows = DB_numRows($result);
-    $plugin = new Plugin();
-    $counter = 0;
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $function = 'plugin_centerblock_' . $A['pi_name'];
-        if (function_exists($function)) {
-		   $retval .= $function();
+    $retval = '';
+
+    // buffer function names since we're coming back for them two more times
+    if (!$PLG_buffered) {
+        $result = DB_query("SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+        $nrows = DB_numRows($result);
+        $PLG_bufferCenterAPI = array ();
+        for ($i = 0; $i < $nrows; $i++) {
+            $A = DB_fetchArray ($result);
+            $function = 'plugin_centerblock_' . $A['pi_name'];
+            if (function_exists ($function)) {
+                $PLG_bufferCenterAPI[$A['pi_name']] = $function;
+            }
+        }
+        $PLG_buffered = true;
+    }
+
+    foreach ($PLG_bufferCenterAPI as $function) {
+        $retval .= $function ($where, $page, $topic);
+
+        if (($where == 0) && !empty ($retval)) {
+            break;
         }
     }
+
     return $retval;
 }
 
