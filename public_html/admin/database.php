@@ -10,9 +10,10 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Blaine Lang      - langmail@sympatico.ca                         |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs         - tony@tonybibbs.com                          |
+// |          Blaine Lang        - langmail@sympatico.ca                       |
+// |          Dirk Haun          - dirk@haun-online.de                         |
+// |          Alexander Schmacks - Alexander.Schmacks@gmx.de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.15 2004/03/21 18:34:29 dhaun Exp $
+// $Id: database.php,v 1.16 2004/03/29 18:59:25 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -42,6 +43,26 @@ allow the removal of past backups.  It's pretty simple actually.  The admin
 clicks a button, we do a mysqldump to a file in the following format:
 geeklog_db_backup_YYYY_MM_DD.sql  That's it.
 */
+
+/**
+* Sort backup files with newest first, oldest last.
+* For use with usort() function. 
+* This is needed because the sort order of the backup files, coming from the
+* 'readdir' function, might not be that way.
+**/
+function compareBackupFiles ($pFileA, $pFileB)
+{
+    global $_CONF;
+
+    $lFiletimeA = filemtime ($_CONF['backup_path'] . $pFileA);
+    $lFiletimeB = filemtime ($_CONF['backup_path'] . $pFileB);
+    if ($lFiletimeA == $lFiletimeB) {
+       return 0;
+    }
+
+    return ($lFiletimeA > $lFiletimeB) ? -1 : 1;
+}
+
 
 $display = '';
 $display .= COM_siteHeader();
@@ -59,7 +80,6 @@ if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
 }
 
 // Perform the backup if asked
-
 if (isset ($HTTP_POST_VARS['mode']) &&
         ($HTTP_POST_VARS['mode'] == $LANG_DB_BACKUP['do_backup'])) {
     if (is_dir ($_CONF['backup_path'])) {
@@ -131,13 +151,15 @@ if(is_writable($_CONF['backup_path'])) {
     	}
     }
     if (is_array($backups) AND $index > 0) {
-        krsort($backups);
+        // AS, 2004-03-29 - Sort backup files by date, newest first.
+        // Order given by 'readdir' might not be correct.
+        usort ($backups, 'compareBackupFiles');
         $backups = array_slice ($backups, 0, 10);
         reset($backups);
 
         $database = new Template ($_CONF['path_layout'] . 'admin/database');
         $database->set_file (array ('list' => 'listbackups.thtml',
-                                    'row' => 'listitem.thtml'));
+                                    'row'  => 'listitem.thtml'));
         $database->set_var ('site_url', $_CONF['site_url']);
         $database->set_var ('layout_url', $_CONF['layout_url']);
         $database->set_var ('lang_backupfile', $LANG_DB_BACKUP['backup_file']);
@@ -174,6 +196,7 @@ if(is_writable($_CONF['backup_path'])) {
     COM_errorLog ($_CONF['backup_path'] . ' is not accessible.', 1);
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 }
+
 $display .= COM_siteFooter ();
 
 echo $display; 
