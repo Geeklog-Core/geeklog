@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | block.php                                                                 |
-// | Geeklog block administration.                                             |
 // |                                                                           |
+// | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.47 2003/02/04 20:33:32 dhaun Exp $
+// $Id: block.php,v 1.48 2003/03/11 10:14:49 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -397,6 +397,9 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         $title = addslashes (COM_stripslashes ($title));
         DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled",$_CONF['site_admin_url'] . "/block.php?msg=11");
 
+        if (($type == 'gldefault') && ($name == 'older_stories')) {
+            COM_olderStuff ();
+        }
 
     } else {
         $retval .= COM_siteHeader()

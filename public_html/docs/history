@@ -3,6 +3,8 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Fixed problem with the Older Stories block disappearing when it was edited
+  (e.g. moved from left to right), bug #670673.
 - Fixed "late" update of portal blocks (bug #681855).
 - You can now "clone" static pages, i.e. make a copy of an existing page.
 - You can now edit the ID of a static page to create more readable URLs like
