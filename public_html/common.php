@@ -1466,7 +1466,7 @@ function showmessage($msg) {
 # Baba                  19 Aug 2001     Bug fix - declared $CONF as global
 #
 ###############################################################################
-function PrintPageNavigation ($page, $num_pages) {
+function PrintPageNavigation ($page, $num_pages, $topic="") {
 	global $CONF,$LANG05;
 
 	//Bail if there is only one page...makes no sense
