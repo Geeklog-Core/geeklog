@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.13 2002/08/20 13:09:00 dhaun Exp $
+// $Id: lib-sessions.php,v 1.14 2002/09/05 19:38:46 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -99,16 +99,21 @@ function SESS_sessionCheck()
             // Session probably expired, now check permanent cookie
             if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
                 $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-                $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
-                $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
-                if ($cookie_password <> $userpass) {
-                    //User may have modified their UID in cookie, ignore them
+                if (empty ($userid) || ($userid == 'deleted')) {
+                    unset ($userid);
                 } else {
-                    if ($userid) {
-                        $user_logged_in = 1;
-                        $sess_id = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
-                        SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);                        $userdata = SESS_getUserDataFromId($userid);
-                        $_USER = $userdata;
+                    $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
+                    $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
+                    if ($cookie_password <> $userpass) {
+                        //User may have modified their UID in cookie, ignore them
+                    } else {
+                        if ($userid) {
+                            $user_logged_in = 1;
+                            $sess_id = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                            SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                            $userdata = SESS_getUserDataFromId($userid);
+                            $_USER = $userdata;
+                        }
                     }
                 }
             }
