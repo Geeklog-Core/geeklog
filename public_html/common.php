@@ -1506,6 +1506,42 @@ function PrintPageNavigation ($page, $num_pages, $topic="") {
         print "<br>";
 }
 
+#This function takes a date in either unixtimestamp or in english and 
+#formats it to the users preference.  If the user didn't specify a format
+#the format in the config file is used.  This returns array where array[0]
+# is the formated date and array[1] is the unixtimestamp
+function getuserdatetimeformat($date="") {
+        global $USER,$CONF;
+
+        #Get display format for time
+        if ($USER["uid"] > 1) {
+                $result = dbquery("SELECT format FROM dateformats, userprefs WHERE dateformats.dfid = userprefs.dfid AND uid = {$USER["uid"]}");
+                $nrows = mysql_num_rows($result);
+                $A = mysql_fetch_array($result);
+                if (empty($A["format"])) {
+                        $dateformat = $CONF["date"];
+                } else {
+                        $dateformat = $A["format"];
+                }
+        } else {
+                $dateformat = $CONF["date"];
+        }
+
+        if (empty($date)) {
+                #date is empty, get current date/time
+                $stamp = time();
+        } else if (is_numeric($date)) {
+                #this is a timestamp
+                $stamp = $date;
+        } else {
+                #this is a string representation of a date/time
+                $stamp = strtotime($date);
+        }
+
+        # Actuall format the date
+        $date = strftime($dateformat,$stamp);
+        return array($date, $stamp);
+}
 
 # Now include all plugin functions
 $result = dbquery('SELECT * from plugins WHERE pi_enabled = 1');
