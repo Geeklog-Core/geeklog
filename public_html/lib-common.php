@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.322 2004/05/13 18:50:55 dhaun Exp $
+// $Id: lib-common.php,v 1.323 2004/05/15 16:11:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2709,8 +2709,8 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 */
 function COM_getComment( &$comments, $mode, $type, $order, $delete_option = false, $preview = false )
 {
-    global $_CONF, $_TABLES, $LANG01, $query;
-    
+    global $_CONF, $_TABLES, $_USER, $LANG01, $query;
+
     $indent = 0;  // begin with 0 indent
     $level = array(); // used to track depth
     $retval = ''; // initialize return value
@@ -2718,7 +2718,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'comment' => 'comment.thtml',
                                 'thread'  => 'thread.thtml'  ));
-                                
+
     // generic template variables
     $template->set_var( 'site_url', $_CONF['site_url'] );
     $template->set_var( 'layout_url', $_CONF['layout_url'] );
@@ -2727,13 +2727,13 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     $template->set_var( 'lang_authoredby', $LANG01[42] );
     $template->set_var( 'lang_on', $LANG01[36] );
     $template->set_var( 'order', $order );    
-    
+
     // Make sure we have a default value for comment indentation
     if( !isset( $_CONF['comment_indent'] ))
     {
         $_CONF['comment_indent'] = 25;
     }
-    
+
     if ( $preview )
     {
         $A = $comments;   
@@ -2743,12 +2743,12 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     {
         $A = DB_fetchArray($comments);
     }
-    
+
     if ( empty( $A ) )
     {
         return '';
     }
-    
+
     do
     {
         // determines indentation for current comment
@@ -2756,12 +2756,12 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
-        
+
         // comment variables
         $template->set_var( 'indent', $indent );
         $template->set_var( 'author', $A['username'] );
         $template->set_var( 'author_id', $A['uid'] );
-        
+
         if( $A['uid'] > 1 )
         {
             if( empty( $A['fullname'] ))
@@ -2774,7 +2774,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 $template->set_var( 'author_fullname', $A['fullname'] );
                 $alttext = $A['fullname'];
             }
-            
+
             if( !empty( $A['photo'] ))
             {
                 $template->set_var( 'author_photo', '<img src="'
@@ -2786,7 +2786,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             {
                 $template->set_var( 'author_photo', '' );
             }
-            
+
             $template->set_var( 'start_author_anchortag', '<a href="'
                     . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
                     . $A['uid'] . '">' );
@@ -2799,9 +2799,16 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'start_author_anchortag', '' );
             $template->set_var( 'end_author_anchortag', '' );
         }
-    
+
+        // hide reply link from anonymous users if they can't post replies
+        $hidefromanon = false;
+        if( empty( $_USER['username'] ) && (( $_CONF['loginrequired'] == 1 ) || ( $_CONF['commentsloginrequired'] == 1 )))
+        {
+            $hidefromanon = true;
+        }
+
         // this will hide HTML that should not be viewed in preview mode
-        if( $preview )
+        if( $preview || $hidefromanon )
         {
             $template->set_var( 'hide_if_preview', 'style="display:none"' );
         }
@@ -2809,7 +2816,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         {
             $template->set_var( 'hide_if_preview', '' );
         }
-    
+
         // for threaded mode, add a link to comment parent
         if( $mode == 'threaded' && $A['pid'] != 0 )
         {
@@ -2817,7 +2824,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $P = DB_fetchArray( $result );
             $plink = $_CONF['site_url'] . '/comment.php?mode=display&amp;sid='
                    . $A['sid'] . '&amp;title=' . rawurlencode( $P['title'] )
-                   . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid=' 
+                   . '&amp;type=' . $type . '&amp;order=' . $order . '&amp;pid='
                    . $P['pid'];
             $template->set_var( 'parent_link', "| <a href=\"$plink\">{$LANG01[44]}</a>");
         }
@@ -2825,7 +2832,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         {
             $template->set_var( 'parent_link', '');
         }
-    
+
         $template->set_var( 'date', strftime( $_CONF['date'], $A['nice_date'] ));
         $template->set_var( 'sid', $A['sid'] );
         $template->set_var( 'type', $A['type'] );
@@ -2867,7 +2874,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         {
             $A['comment'] = nl2br( COM_makeClickableLinks( $A['comment'] ));
         }
-    
+
         // highlight search terms if specified
         if( !empty( $query ))
         {
@@ -2878,7 +2885,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 $A['comment'] = preg_replace( "/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['comment'] . "<x>" );
             }
         }
-        
+
         $A['comment'] = str_replace( '$', '&#36;', $A['comment'] );
         $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
         $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
@@ -2898,7 +2905,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $retval .= $template->parse( 'output', 'comment' ); 
         }
     } while ($A = DB_fetchArray($comments));
-    
+
     return $retval;
 }
 
