@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.23 2001/12/19 21:46:33 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.24 2002/01/04 16:17:38 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -91,12 +91,31 @@ if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
         $_CONF['language'] = $_USER['language'];
     }
 }
+
+// Handle Who's online hack if desired
+if ($_CONF['whosonline'] == 1) {
+    if (empty($_USER['uid']) OR $_USER['uid'] == 1) {
+        // The following code handles anonymous users so they show up properly
+        DB_query("DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1");
+        // Build a useless sess_id (needed for insert to work properly)
+        mt_srand((double)microtime()*1000000);
+        $sess_id = mt_rand();
+        $curtime = time();
+        // Insert anonymous user session
+        DB_query("INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)");
+    } else {
+        // Clear out any expired sessions
+        DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . (time() - $_CONF['whosonline_threshold']));
+    }
+}
+
 include_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 
 setlocale(LC_ALL, $_CONF['locale']);
 
 // Get user permissions
 $_RIGHTS = explode(',',SEC_getUserPermissions());
+$_GROUPS = $_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
 // | BLOCK LOADER: Load all definable HTML blocks in to memory                 | 
@@ -1742,17 +1761,19 @@ function COM_showBlocks($side, $topic='', $name='all')
 
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['type'] == 'phpblock' && !$U['noboxes']) {
-                $function = $A['phpblockfn'];
-                $retval .= COM_startBlock($A['title']);
+                if (!($A['name'] == 'whosonline_block' && $_CONF['whosonline'] == 0)) {
+                    $function = $A['phpblockfn'];
+                    $retval .= COM_startBlock($A['title']);
 
-                if (function_exists($function)) {
-                    // great, call it
-                    $retval .= $function();
-                } else {
-                    // show friendly error message
-                    $retval .= $LANG21[31];
+                    if (function_exists($function)) {
+                        // great, call it
+                        $retval .= $function();
+                    } else {
+                        // show friendly error message
+                        $retval .= $LANG21[31];
+                    }
+                    $retval .= COM_endBlock();
                 }
-                $retval .= COM_endBlock();
             }
             if (!empty($A['content']) && !$U['noboxes']) {
                 $retval .= COM_startBlock($A['title'],'',COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . '<br>' . LB
@@ -2394,6 +2415,31 @@ function COM_getUserCookieTimeout()
     }
 
     return $timeoutvalue;
+}
+
+/**
+* Shows a who is online
+*
+*/
+function phpblock_whosonline()
+{
+    global $_CONF,$_TABLES;
+
+    $expire_time = time() - $_CONF['whosonline_threshold'];
+
+    $result = DB_query("SELECT DISTINCT {$_TABLES['sessions']}.uid, username FROM {$_TABLES['sessions']},{$_TABLES['users']} WHERE {$_TABLES['users']}.uid = {$_TABLES['sessions']}.uid AND start_time >= $expire_time AND {$_TABLES['sessions']}.uid <> 1 ORDER BY username");
+
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $retval .= '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&uid=' . $A['uid'] . '">' . $A['username'] . '</a><br>';
+    }
+    $num_anon = DB_query("SELECT DISTINCT uid,remote_ip FROM {$_TABLES['sessions']} WHERE uid = 1");
+    $num_anon = DB_numRows($num_anon);
+    if ($num_anon > 0) {
+        $retval .= 'Guest Users: ' . $num_anon . '<br>';
+    }
+    return $retval;
 }
 
 // Now include all plugin functions
