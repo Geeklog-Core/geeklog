@@ -80,7 +80,7 @@ $LANG01 = array(
 	33 => "Fehler: Konnte nicht ins Logfile schreiben",
 	34 => "Fehler",
 	35 => "Abmelden",
-	36 => "um",
+	36 => "am",
 	37 => "",
 	38 => "",
 	39 => "Neuladen",
@@ -141,7 +141,7 @@ $LANG01 = array(
 	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
 	95 => "Powered By",
 	96 => "Gruppen",
-        97 => "Wortliste",
+	97 => "Wortliste",
 	98 => "Plug-ins",
 	99 => "ARTIKEL",
     100 => "Keine neuen Artikel",
@@ -149,7 +149,7 @@ $LANG01 = array(
     102 => 'Allgemeine Termine',
     103 => 'DB Backups',
     104 => 'von',
-    105 => 'Mail Users'
+    105 => 'Mail an User'
 );
 
 ###############################################################################
@@ -835,29 +835,29 @@ $LANG30 = array(
 # admin/mail.php
 $LANG31 = array(
  	1 => $_CONF['site_name'] . " Mail Utility",
- 	2 => "From",
+ 	2 => "Von",
  	3 => "Reply-to",
- 	4 => "Subject",
- 	5 => "Body",
- 	6 => "Send to:",
- 	7 => "All users",
+ 	4 => "Betreff",
+ 	5 => "Text",
+ 	6 => "Senden",
+ 	7 => "Alle User",
  	8 => "Admin",
-	9 => "Options",
+	9 => "Optionen",
 	10 => "HTML",
- 	11 => "Urgent message!",
- 	12 => "Send",
+ 	11 => "Wichtige Nachricht!",
+ 	12 => "Abschicken",
  	13 => "Reset",
- 	14 => "Ignore user settings",
- 	15 => "Error when sending to: ",
-	16 => "Successfully sent messages to: ",
-  17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Send another message</a>",
-  18 => "To",
-  19 => "NOTE: if you wish to send a message to all site members, select the Logged-in Users group from the drop down.",
-  20 => "Successfully sent <successcount> messages and unsuccessfully sent <failcount> messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Send another message</a> or you can <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">go back to the administration page</a>.",
-  21 => 'Failures',
-  22 => 'Successes',
-  23 => 'No failures',
-  24 => 'No successes'
+ 	14 => "User Einstellungen ignorieren",
+ 	15 => "Fehler beim Senden an: ",
+	16 => "E-Mail erfolgreich gesendet an: ",
+  17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Noch eine Nachricht schreiben</a>",
+  18 => "An",
+  19 => "HINWEIS: Wenn Du eine Nachricht an alle eingetragenen Benutzer schicken willst, musst Du die Gruppe Logged-in Users ausw&auml;hlen.",
+  20 => "<successcount> Nachrichten erfolgreich verschickt, bei <failcount> Nachrichten traten Fehler auf. Details k&ouml;nnen der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">zur&uuml;ck zum Admin-Men&uuml; gehen</a>.",
+  21 => 'Fehler',
+  22 => 'erfolgreich',
+  23 => 'Keine Fehler',
+  24 => 'Keine erfolgreich'
 );
 
 
