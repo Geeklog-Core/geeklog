@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.175 2002/10/29 15:14:38 dhaun Exp $
+// $Id: lib-common.php,v 1.176 2002/11/06 20:47:07 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -470,7 +470,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 . '/images/mail.gif" alt="' . $LANG01[64]
                 . '" border="0"></a>' );
         }
-        if( $_CONF['hideprinticon'] == 1 )
+        if( $_CONF['hideprintericon'] == 1 )
         {
             $article->set_var( 'print_icon', '' );
         }
