@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.67 2003/07/02 14:18:42 dhaun Exp $
+// $Id: usersettings.php,v 1.68 2003/07/22 18:46:16 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -144,7 +144,7 @@ function edituser()
 
     $preferences->set_var ('about_value', $A['about']);
     $preferences->set_var ('pgpkey_value', $A['pgpkey']);
-    $preferences->set_var ('uid_value', $user);
+    $preferences->set_var ('uid_value', $_USER['uid']);
     $preferences->set_var ('username_value', $_USER['username']);
 
     if ($_CONF['allow_account_delete'] == 1) {
