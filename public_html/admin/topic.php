@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.36 2003/06/20 21:30:56 dhaun Exp $
+// $Id: topic.php,v 1.37 2003/06/28 11:29:03 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -133,7 +133,6 @@ function edittopic($tid='')
     $topic_templates->set_var('lang_permissions', $LANG_ACCESS['permissions']);
     $topic_templates->set_var('lang_permissions_key', $LANG_ACCESS['permissionskey']);
     $topic_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
-    $topic_templates->set_var('lang_lockmsg', $LANG_ACCESS['lockmsg']);
 
 	// show sort order only if they specified sortnum as the sort method
 	if ($_CONF["sortmethod"] <> 'alpha') {
