@@ -1237,7 +1237,7 @@ $LANG_PDF = array(
     5 => 'Loading your document.',
     6 => 'Please wait while your document is loaded.',
     7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid.  Please contact the site administrator if this problem
+    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem
           persists.',
     9 => 'PDF Generator',
     10 => 'This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This
