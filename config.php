@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.75 2003/03/21 13:55:38 dhaun Exp $
+// $Id: config.php,v 1.76 2003/03/22 14:04:53 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -131,6 +131,7 @@ $_CONF['shortdate'] = '%x';
 $_CONF['dateonly']  = '%d-%b';
 $_CONF['timeonly']  = '%I:%M %p %Z';
 $_CONF['default_charset'] = 'iso-8859-1';
+$_CONF['rdf_language']    = 'en-gb'; // may have to be different than the locale
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -317,7 +318,11 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
 
-// RDF feed settings
+// When set to 1, this will render the first story on any page using the
+// templates for featured stories - even if that story is not featured.
+$_CONF['showfirstasfeatured']   = 0;
+
+// RSS/RDF feed settings
 $_CONF['backend']               = 1;    // 1 = active, 0 = off
 // This allows a person to limit the rdf feed to a certain number of stories
 // (e.g. 10 or 12) or else limit the rdf feed to all stories within a certain
@@ -327,10 +332,6 @@ $_CONF['rdf_limit']             = 10;   // number of stories (10) or hours (24h)
 // of characters from the intro text (any number > 1) or don't include the text
 // at all (= 0).
 $_CONF['rdf_storytext']         = 0;
-
-// When set to 1, this will render the first story on any page using the
-// templates for featured stories - even if that story is not featured.
-$_CONF['showfirstasfeatured']   = 0;
 
 // Uncomment the following line to set the copyright year in the site's footer
 // to a specific year. Otherwise, the current year will be used.

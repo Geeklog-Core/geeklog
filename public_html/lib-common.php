@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.208 2003/03/21 13:55:39 dhaun Exp $
+// $Id: lib-common.php,v 1.209 2003/03/22 14:04:53 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1286,11 +1286,25 @@ function COM_exportRDF()
     if( $_CONF['backend'] > 0 )
     {
         $outputfile = $_CONF['rdf_file'];
-        $rdencoding = 'UTF-8';
+        if( !empty( $_CONF['default_charset'] ))
+        {
+            $rdencoding = $_CONF['default_charset'];
+        }
+        else
+        {
+            $rdencoding = 'UTF-8';
+        }
         $rdtitle = htmlspecialchars( $_CONF['site_name'] );
         $rdlink = $_CONF['site_url'];
         $rddescr = htmlspecialchars( $_CONF['site_slogan'] );
-        $rdlang = $_CONF['locale'];
+        if( !empty( $_CONF['rdf_language'] ))
+        {
+            $rdlang = $_CONF['rdf_language'];
+        }
+        else
+        {
+            $rdlang = $_CONF['locale'];
+        }
 
         $where = '';
         if( !empty( $_CONF['rdf_limit'] ))
