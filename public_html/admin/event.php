@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.13 2002/01/11 21:06:17 tony_bibbs Exp $
+// $Id: event.php,v 1.14 2002/02/05 17:02:53 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -417,6 +417,12 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 {
 	global $_TABLES, $_CONF, $LANG22;
 
+    if ($allday == 'on') {
+        $allday = 1;
+    } else {
+        $allday = 0;
+    }
+
     // Make sure start date is before end date
     if (checkdate($start_month, $start_day, $start_year)) {
         $datestart = $start_year . '-' . $start_month . '-' . $start_day;
@@ -431,10 +437,16 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
         return COM_errorLog("Bad end date", 2);
     }
     if ($allday == 0) {
-        if ($enddate < $startdate) {
+        if ($dateend < $datestart) {
             return COM_errorLog("End date is before start date");
         }
+    } else {
+        if ($dateend < $datestart) {
+            // Force end date to be same as start date
+            $dateend = $datestart;
+        }
     }
+
 	// clean 'em up 
 	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
 	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
