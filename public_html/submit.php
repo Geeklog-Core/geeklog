@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.63 2004/02/08 19:00:48 dhaun Exp $
+// $Id: submit.php,v 1.64 2004/02/15 09:44:05 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -153,7 +153,6 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     $eventform->set_var('max_url_length', 255);
     $eventform->set_var('lang_startdate', $LANG12[12]);
     $eventform->set_var('lang_starttime', $LANG12[42]);
-    $month_options = '';
     if (empty($month)) {
         $month = date('m',time());
     }
@@ -163,34 +162,8 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     if (empty($year)) {
         $year = date('Y',time());
     } 
-    for ($i = 1; $i <= 12; $i++) {
-        if ($i < 10) {
-            $mval = '0' . $i;
-        } else {
-            $mval = $i;
-        }
-        $month_options .= '<option value="' . $mval . '" ';
-        if ($i == $month) {
-            $month_options .= 'selected="selected"';
-        }
-        $month_options .= '>' . $LANG30[$mval+12] . '</option>';
-    }
-    $eventform->set_var('month_options', $month_options);
-    $day_options = '';
-    for ($i = 1; $i <= 31; $i++) {
-        if ($i < 10) {
-            $dval = '0' . $i;
-        } else {
-            $dval = $i;
-        }
-        $day_options .= '<option value="' . $dval . '" ';
-        if ($i == $day) {
-            $day_options .= 'selected="selected"';
-        }
-        $day_options .= '>' . $dval . '</option>';
-    }
-    $eventform->set_var('day_options', $day_options);
-    $year_options = '';
+    $eventform->set_var ('month_options', COM_getMonthFormOptions ($month));
+    $eventform->set_var ('day_options', COM_getDayFormOptions ($day));
     $cur_year = date('Y',time());
     if (!empty($hour)) {
         $cur_hour = $hour;
@@ -200,41 +173,16 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
     if (empty($year)) {
         $year = $cur_year;
     }
-    for ($i = $cur_year; $i <= $cur_year + 5; $i++) {
-        $year_options .= '<option value="' . $i . '" ';
-        if ($i == $year) {
-            $year_options .= 'selected="selected"';
-        }
-        $year_options .= '>' . $i . '</option>';
+    $eventform->set_var ('year_options', COM_getYearFormOptions ($year));
+    if ($cur_hour > 12) {
+        $cur_hour = $cur_hour-12;
     }
-    $eventform->set_var('year_options', $year_options);
-    $hour_options = '';
-    if ($cur_hour > 12) $cur_hour = $cur_hour-12;
-    for ($i = 1; $i <= 11; $i++) {
-        if ($i < 10) {
-            $hval = '0' . $i;
-        } else {
-            $hval = $i;
-        }
-        if ($i == 1 ) {
-            $hour_options .= '<option value="12" ';
-            if ($cur_hour == 12) {
-                $hour_options .= 'selected="selected"';
-            }
-            $hour_options .= '>12</option>';
-        }
-        $hour_options .= '<option value="' . $hval . '" ';
-        if ($cur_hour == $i) {
-            $hour_options .= 'selected="selected"';
-        }
-        $hour_options .= '>' . $i . '</option>';
-    }
+    $eventform->set_var ('hour_options', COM_getHourFormOptions ($cur_hour));
     if ($hour >= 12) {
         $eventform->set_var('pm_selected','selected="selected"');
     } else {
         $eventform->set_var('am_selected','selected="selected"');
     }
-    $eventform->set_var('hour_options', $hour_options);
     $eventform->set_var('lang_enddate', $LANG12[13]);
     $eventform->set_var('lang_endtime', $LANG12[41]);
     $eventform->set_var('lang_alldayevent',$LANG12[43]);

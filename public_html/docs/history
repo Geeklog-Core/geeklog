@@ -3,6 +3,8 @@ GeekLog History/Changes:
 Feb ??, 2004 (1.3.9rc1)
 ------------
 
+- Use COM_getYearFormOptions() etc. for the event submission form in
+  submit.php, thus avoiding duplicated code.
 - Plugins can now add their new entries to the What's New block by implementing
   the new plugin_whatsnewsupported and plugin_getwhatsnew API functions.
   This section can be enabled/disabled with the new $_CONF['hidenewplugins']
