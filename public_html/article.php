@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.46 2004/06/17 19:34:32 dhaun Exp $
+// $Id: article.php,v 1.47 2004/07/10 18:50:04 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -54,16 +54,21 @@ require_once('lib-common.php');
 
 // MAIN
 
-COM_setArgNames (array ('story'));
+COM_setArgNames (array ('story', 'mode'));
 $story = COM_applyFilter (COM_getArgument ('story'));
-if (isset ($HTTP_POST_VARS['story'])) {
-    $story = COM_applyFilter($HTTP_POST_VARS['story']);
-}
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
 }
-$order = COM_applyFilter ($order);
+$mode = COM_applyFilter (COM_getArgument ('mode'));
+if ($mode != 'print') {
+    $mode = '';
+}
+if (!empty ($HTTP_GET_VARS['order'])) {
+    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+} else {
+    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+}
 if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
     $order = '';
 }
@@ -170,10 +175,16 @@ if ($A['count'] > 0) {
                     . '/profiles.php?sid=' . $story . '&amp;what=emailstory">'
                     . $LANG11[2] . '</a>';
             }
+            $printUrl = COM_buildUrl ($_CONF['site_url']
+                    . '/article.php?story=' . $story .  '&amp;mode=print');
             if ($_CONF['hideprintericon'] == 0) {
+                $story_options[] = '<a href="' . $printUrl . '">' . $LANG11[3]
+                                 . '</a>';
+            }
+            if ($_CONF['pdf_enabled'] == 1) {
                 $story_options[] = '<a href="' . $_CONF['site_url']
-                    . '/article.php?story=' . $story .  '&amp;mode=print'
-                    . '">' . $LANG11[3] . '</a>';
+                        . '/pdfgenerator.php?pageType=2&amp;pageData='
+                        . urlencode ($printUrl) . '">' . $LANG11[5] . '</a>';
             }
             $related = COM_whatsRelated ($A['introtext'] . ' ' . $A['bodytext'],
                                          $A['uid'], $A['tid']);

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.336 2004/07/08 20:11:32 dhaun Exp $
+// $Id: lib-common.php,v 1.337 2004/07/10 18:50:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -558,8 +558,9 @@ function COM_article( &$A, $index='', $storytpl='storytext.thtml' )
         }
         else
         {
-            $article->set_var( 'print_icon', '<a href="' . $_CONF['site_url']
-                . '/article.php?story=' . $A['sid'] . '&amp;mode=print">'
+            $printUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                      . $A['sid'] . '&amp;mode=print' );
+            $article->set_var( 'print_icon', '<a href="' . $printUrl . '">'
                 . '<img border="0" src="' . $_CONF['layout_url']
                 . '/images/print.gif" alt="' . $LANG01[65] . '" title="'
                 . $LANG11[3] . '"></a>' );

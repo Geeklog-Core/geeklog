@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Use URL rewriting for the link to a story's printer-friendly version, when
+  activated (bug #201) [Dirk]
 - Resizing an image didn't work when the image height exceeded the max. height
   but the image width was still below the max. width (bug #242) [Dirk]
 - Keeping the unscaled image when using GDlib didn't work (bug #197) [Dirk]
