@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.40 2002/08/14 11:42:37 dhaun Exp $
+// $Id: users.php,v 1.41 2002/08/16 15:34:18 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -140,6 +140,7 @@ function userprofile($user)
         $groupList = substr ($groupList, 0, -1);
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $sql .= "(perm_members >= 2) OR ";
     }
     $sql .= "(perm_anon >= 2)) ORDER BY unixdate DESC LIMIT 10";
     $result = DB_query($sql);
@@ -166,6 +167,7 @@ function userprofile($user)
     if (!empty ($_USER['uid'])) {
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $sql .= "(perm_members >= 2) OR ";
     }
     $sql .= "(perm_anon >= 2))";
     $result = DB_query($sql);
@@ -183,6 +185,7 @@ function userprofile($user)
     if (!empty ($_USER['uid'])) {
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $sql .= "(perm_members >= 2) OR ";
     }
     $sql .= "(perm_anon >= 2)";
     $result = DB_query($sql);
@@ -234,6 +237,7 @@ function userprofile($user)
     if (!empty ($_USER['uid'])) {
         $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
         $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $sql .= "(perm_members >= 2) OR ";
     }
     $sql .= "(perm_anon >= 2))";
     $result = DB_query($sql);

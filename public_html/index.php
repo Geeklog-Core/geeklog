@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.32 2002/08/13 20:11:08 dhaun Exp $
+// $Id: index.php,v 1.33 2002/08/16 15:34:18 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -104,6 +104,7 @@ if (!empty ($_USER['uid'])) {
     $groupList = substr ($groupList, 0, -1);
     $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
     $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    $sql .= "(perm_members >= 2) OR ";
 }
 $sql .= "(perm_anon >= 2))";
 
@@ -139,6 +140,7 @@ if (!empty ($_USER['uid'])) {
     // Note: $groupList re-used from above
     $countsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
     $countsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+    $countsql .= "(perm_members >= 2) OR ";
 }
 $countsql .= "(perm_anon >= 2))";
 
