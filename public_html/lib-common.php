@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.371 2004/09/04 19:45:24 dhaun Exp $
+// $Id: lib-common.php,v 1.372 2004/09/05 08:49:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -138,15 +138,6 @@ if( !$_CONF['have_pear'] )
         COM_errorLog( 'ini_set failed - there may be problems using the PEAR classes.', 1);
     }
 }
-
-/**
-* Include the PEAR Class to support PHP SESSIONS
-* Setup the SESSIONS Class and start SESSIONS and restore any SESSION Based Variables
-*/
-
-require_once( 'HTTP/Session.php' );
-HTTP_Session::useCookies( $_CONF['sessions_usecookie'] );
-HTTP_Session::start( $_CONF['sessionid'], uniqid( $_CONF['sessionid_prefix'] ));
 
 /**
 * Include page time -- used to time how fast each page was created
