@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.11 2003/05/30 12:24:32 dhaun Exp $
+// $Id: install.php,v 1.12 2003/12/29 10:07:53 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -88,6 +88,7 @@ function plugin_install_staticpages()
         . "sp_where tinyint(1) unsigned NOT NULL default '1',"
         . "sp_php tinyint(1) unsigned NOT NULL default '0',"
         . "sp_nf tinyint(1) unsigned default '0',"
+        . "sp_inblock tinyint(1) unsigned default '1',"
         . "PRIMARY KEY (sp_id),"
         . "KEY staticpage_sp_uid (sp_uid),"
         . "KEY staticpage_sp_date (sp_date),"
