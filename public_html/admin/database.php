@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.6 2002/07/29 13:49:03 dhaun Exp $
+// $Id: database.php,v 1.7 2003/01/12 09:42:38 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -67,7 +67,12 @@ if ($mode == $LANG_DB_BACKUP['do_backup']) {
 	    } else {
 	        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user $_DB_name > {$backupfile}"; 
 	    }
-		if (is_executable($_DB_mysqldump_path)) {
+        if (function_exists ('is_executable')) {
+            $canExec = is_executable($_DB_mysqldump_path);
+        } else {
+            $canExec = true;
+        }
+		if ($canExec) {
 			exec($command);
 			if(file_exists($backupfile) && filesize($backupfile) > 0) {
 				$display .= '<font color="red">' . $LANG_DB_BACKUP['backup_successful'] . '</font><br>';
