@@ -1,11 +1,9 @@
 <?php
 
-// NOTE:  This is not a complete German file.  Please feel free to use this as a
-// starting point and submit a complete one to the Geeklog developers!
-
 ###############################################################################
 # german.php
-# This is an *incomplete* german language page for GeekLog.
+#
+# This is an *incomplete* german language file for GeekLog.
 # Please contact Dirk Haun <dirk@haun-online.de> if you want to help
 # in making it complete ...
 #
@@ -61,7 +59,7 @@ $LANG01 = array(
 	12 => "Bl&ouml;cke",
 	13 => "Kategorien",
 	14 => "Links",
-	15 => "Events",
+	15 => "Termine",
 	16 => "Umfragen",
 	17 => "User",
 	18 => "SQL-Query",
@@ -124,7 +122,7 @@ $LANG01 = array(
 	75 => "Erweiterte Suche",
 	76 => "Site-Statistik",
 	77 => "Plugins",
-	78 => "Anstehende Events",
+	78 => "Anstehende Termine",
 	79 => "Was ist neu",
 	80 => "Artikel in den letzten",
 	81 => "Artikel in den letzten",
@@ -135,7 +133,7 @@ $LANG01 = array(
 	86 => "Keine neuen Kommentare",
 	87 => "der letzten 2 Wochen",
 	88 => "Keine neuen Links",
-	89 => "Es stehen keine Events an",
+	89 => "Es stehen keine Termine an",
 	90 => "Home",
 	91 => "Seite erzeugt in",
 	92 => "Sekunden",
@@ -147,8 +145,8 @@ $LANG01 = array(
 	98 => "Plug-ins",
 	99 => "ARTIKEL",
     100 => "Keine neuen Artikel",
-    101 => 'Meine Events',
-    102 => 'Site-Events',
+    101 => 'Meine Termine',
+    102 => 'Allgemeine Termine',
     103 => 'DB Backups',
     104 => 'von'
 );
@@ -157,18 +155,18 @@ $LANG01 = array(
 # calendar.php
 
 $LANG02 = array(
-	1 => "Event-Kalender",
-	2 => "Sorry, es gibt keine Events anzuzeigen.",
+	1 => "Terminkalender",
+	2 => "Sorry, es gibt keine Termine anzuzeigen.",
 	3 => "Wann",
 	4 => "Wo",
 	5 => "Beschreibung",
-	6 => "Event hinzuf&uuml;gen",
-	7 => "Anstehende Events",
-	8 => 'By adding this event to your calendar you can quickly view only the events you are interested in by clicking "Mein Kalender" from the User Functions area.',
+	6 => "Termin hinzuf&uuml;gen",
+	7 => "Anstehende Termine",
+	8 => 'Wenn Du diesen Termin zu Deinem Kalender hinzuf&uuml;gst, kannst Du Dir schneller einen &Uuml;berlick &uuml;ber die Termine verschaffen, die Dich interessieren, indem Du einfach auf "Mein Kalender" klickst.',
 	9 => "Zu Meinem Kalender hinzuf&uuml;gen",
 	10 => "Aus Meinem Kalender entfernen",
-	11 => "Event wird zum Kalender von {$_USER['username']} hinzugef&uuml;gt",
-	12 => "Event",
+	11 => "Termin wird zum Kalender von {$_USER['username']} hinzugef&uuml;gt",
+	12 => "Termin",
 	13 => "Beginnt",
 	14 => "Endet"
 );
@@ -390,11 +388,11 @@ $LANG09 = array(
 
 $LANG10 = array(
 	1 => "Site-Statistik",
-	2 => "Total Hits to the System",
+	2 => "Gesamtzahl der Seitenabrufe",
 	3 => "Artikel (Kommentare) im System",
 	4 => "Umfragen (Stimmen) im System",
 	5 => "Links (Klicks) im System",
-	6 => "Events im System",
+	6 => "Termine im System",
 	7 => "Top Ten der Artikel",
 	8 => "Artikel-&Uuml;berschrift",
 	9 => "angezeigt",
@@ -419,10 +417,10 @@ $LANG10 = array(
 # article.php
 
 $LANG11 = array(
-	1 => "Verwandte Kategorien",
+	1 => "Weiterf&uuml;hrende Links",
 	2 => "Artikel an einen Freund schicken",
 	3 => "Druckf&auml;hige Version",
-	4 => "Story Options"
+	4 => "Artikel-Optionen"
 );
 
 ###############################################################################
@@ -432,7 +430,7 @@ $LANG12 = array(
 	1 => "To submit a $type you are required to be logged in as a user.",
 	2 => "Login",
 	3 => "Neuer User",
-	4 => "Einen Event einreichen",
+	4 => "Einen Termin einreichen",
 	5 => "Einen Link einreichen",
 	6 => "Einen Artikel einreichen",
 	7 => "Login is Required",
@@ -465,20 +463,20 @@ $LANG12 = array(
 	34 => "Abmelden",
 	35 => "HTML-Tags sind nicht erlaubt",
 	36 => "Modus",
-	37 => "Submitting an event to {$_CONF["site_name"]} will put your event on the master calendar where users can optionally add your event to their personal calendar. This feature is <b>NOT</b> meant to store your personal events such as birthdays and anniversaries.<br><br>Once you submit your event it will be sent to our administrators and if approved, your event will appear on the master calendar.",
-    38 => "Add Event To",
+	37 => "Wenn Du einen Termin bei {$_CONF["site_name"]} einreichst, wird er in den Master-Kalender aufgenommen, von wo aus ihn andere User in ihren pers&ouml;nlichen Kalender &uuml;bernehmen k&ouml;nnen. Dies ist <b>NICHT</b> dazu gedacht, private Termine und Ereignisse wie etwa Geburtstage zu verwalten.<br><br>Wenn Du einen Termin einreichst, wird er an die Administratoren weitergeleitet und sobald er von diesen akzeptiert wird, wird er im Master-Kalender erscheinen.",
+    38 => "Termin hinzuf&uuml;gen zu",
     39 => "Master-Kalender",
     40 => "Pers&ouml;nlicher Kalender",
     41 => "Endzeit",
     42 => "Startzeit",
-    43 => "Ganzt&auml;giger Event",
+    43 => "Ganzt&auml;giger Termin",
     44 => 'Addresse, Zeile 1',
-    45 => 'Address, Zeile 2',
+    45 => 'Addresse, Zeile 2',
     46 => 'Stadt',
     47 => 'Bundesland',
     48 => 'Postleitzahl',
-    49 => 'Art des Events',
-    50 => 'Edit Event Types',
+    49 => 'Art des Termins',
+    50 => 'Edit Termin Types',
     51 => 'Ort',
     52 => 'L&ouml;schen'
 );
@@ -563,24 +561,24 @@ $LANG21 = array(
 # event.php
 
 $LANG22 = array(
-	1 => "Event Editor",
+	1 => "Termin-Editor",
 	2 => "",
-	3 => "Event Title",
-	4 => "Event URL",
-	5 => "Event Start Date",
-	6 => "Event End Date",
-	7 => "Event Location",
-	8 => "Event Description",
-	9 => "(include http://)",
+	3 => "Titel",
+	4 => "URL",
+	5 => "Startdatum",
+	6 => "Enddatum",
+	7 => "Ort",
+	8 => "Beschreibung",
+	9 => "(mit http://)",
 	10 => "You need to fill in all fields in this form!",
-	11 => "Event Manager",
+	11 => "Termin-Manager",
 	12 => "To modify or delete a event, click on that event below.  To create a new event click on new event above.",
-	13 => "Event Title",
-	14 => "Start Date",
-	15 => "End Date",
+	13 => "Titel",
+	14 => "Startdatum",
+	15 => "Enddatum",
 	16 => "Access Denied",
 	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>.",
-	18 => 'New Event',
+	18 => 'Neuer Termin',
 	19 => 'Admin Home'
 );
 
@@ -650,8 +648,8 @@ $LANG24 = array(
 	34 => "Draft",
 	35 => "Yes",
 	36 => "No",
-	37 => "More by",
-	38 => "More from",
+	37 => "Mehr von",
+	38 => "Mehr aus",
 	39 => "E-Mails",
 	40 => "Access Denied",
 	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$_CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done.",
@@ -757,12 +755,12 @@ $LANG29 = array(
 	1 => "Akzeptieren",
 	2 => "L&ouml;schen",
 	3 => "Editieren",
-	34 => "Command and Control",
-	35 => "Story Submissions",
-	36 => "Link Submissions",
-	37 => "Event Submissions",
-	38 => "Submit",
-	39 => "There are no submissions to moderate at this time"
+	34 => "Kommandozentrale",
+	35 => "Beitr&auml;ge: Artikel",
+	36 => "Beitr&auml;ge: Links",
+	37 => "Beitr&auml;ge: Termine",
+	38 => "Abschicken",
+	39 => "Derzeit gibt es keine Beitr&auml;ge zu moderieren."
 );
 
 ###############################################################################
@@ -776,9 +774,9 @@ $LANG30 = array(
 	5 => "Donnerstag",
 	6 => "Freitag",
 	7 => "Samstag",
-	8 => "Add Event",
-	9 => "Geeklog Event",
-	10 => "Events for",
+	8 => "Neuer Termin",
+	9 => "Geeklog-Termin",
+	10 => "Termine f&uuml;r",
 	11 => "Master-Kalender",
 	12 => "Mein Kalender",
 	13 => "Januar",
@@ -793,20 +791,20 @@ $LANG30 = array(
 	22 => "Oktober",
 	23 => "November",
 	24 => "Dezember",
-	25 => "Zur&uuml;ck zu ",
+	25 => "Zur&uuml;ck zum ",
     26 => "All Day",
     27 => "Woche",
     28 => "Pers&ouml;nlicher Kalender f&uuml;r",
     29 => "&Ouml;ffentlicher Kalender",
-    30 => "Event l&ouml;schen",
+    30 => "Termin l&ouml;schen",
     31 => "Add",
-    32 => "Event",
+    32 => "Termin",
     33 => "Datum",
     34 => "Uhrzeit",
     35 => "Quick Add",
     36 => "Submit",
     37 => "Sorry, the personal calendar feature is not enabled on this site",
-    38 => "Personal Event Editor"
+    38 => "Pers&ouml;nlicher Termin-Editor"
 );
 
 ###############################################################################
@@ -839,7 +837,7 @@ $MESSAGE = array (
 	1 => "Dein Passwort sollte in K&uuml;rze per E-Mail bei Dir eintreffen. Bitte beachte die Hinweise in der E-Mail. Danke, dass Du Dich bei " . $_CONF["site_name"] . " angemeldet hast.",
 	2 => "Danke f&uuml;r Deinen Beitrag zu {$_CONF["site_name"]}. Dein Artikel wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald auf dieser Website f&uuml;r alle Besucher zu lesen sein.",
 	3 => "Danke f&uuml;r Deinen Beitrag zu {$_CONF["site_name"]}. Dein Link wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald unter den <a href=\"{$_CONF["site_url"]}/links.php\">Links</a> aufgelistet werden.",
-	4 => "Danke f&uuml;r Deinen Beitrag zu {$_CONF["site_name"]}. Dein Event wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF["site_url"]}/calendar.php\">Kalender</a> erscheinen.",
+	4 => "Danke f&uuml;r Deinen Beitrag zu {$_CONF["site_name"]}. Dein Termin wurde an unser Team weitergeleitet. Wenn er akzeptiert wird, wird er bald in unserem <a href=\"{$_CONF["site_url"]}/calendar.php\">Kalender</a> erscheinen.",
 	5 => "Dein User-Profil wurde gespeichert.",
 	6 => "Deine Anzeige-Einstellungen wurden gespeichert.",
 	7 => "Deine Kommentar-Einstellungen wurden gespeichert.",
@@ -852,16 +850,16 @@ $MESSAGE = array (
 	14 => "The topic and all it's stories an blocks have been successfully deleted.",
 	15 => "Dein Link wurde gespeichert.",
 	16 => "Der Link wurde gel&ouml;scht.",
-	17 => "Dein Event wurde gespeichert.",
-	18 => "Der Event wurde gel&ouml;scht.",
+	17 => "Dein Termin wurde gespeichert.",
+	18 => "Der Termin wurde gel&ouml;scht.",
 	19 => "Deine Umfrage wurde gespeichert.",
 	20 => "Die Umfrage wurde gel&ouml;scht.",
 	21 => "Der neue User wurde angelegt.",
 	22 => "Der User wurde gel&ouml;scht.",
 	23 => "Error trying to add an event to your calendar. There was no event id passed.",
-	24 => "Der Event wurde in Deinen Kalender eingetragen.",
+	24 => "Der Termin wurde in Deinen Kalender eingetragen.",
 	25 => "Cannot open your personal calendar until you login",
-	26 => "Event was successfully removed from your personal calendar",
+	26 => "Der Termin wurde aus Deinem pers&ouml;nlichen Kalender entfernt",
 	27 => "Nachricht wurde verschickt.",
 	28 => "Das Plugin wurde gespeichert.",
 	29 => "Sorry, personal calendars are not enabled on this site",
