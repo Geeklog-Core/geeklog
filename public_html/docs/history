@@ -1,5 +1,31 @@
 GeekLog History/Changes:
 
+??? ??, 200? (1.3.10-1)
+------------
+
+- Fixed "quick add form" for personal events, so that it stores the new event
+  directly now [Dirk]
+- Fixed handling of 12am/pm in events, event submissions, and when passing the
+  time from the calendar to the event submission forms [Dirk]
+- Improved handling of personal events / personal calendar, especially for
+  (Event) Admins [Dirk]
+- Fixed What's Related links when magic_quotes_qpc = on [Vinny, Dirk]
+- Fixed use of an undefined variable $U in COM_showBlocks and warning messages
+  for undefined array indexes in COM_getCurrentURL (reported by irawen) [Dirk]
+- Allow empty search query strings so that the "More by <author>" and "More
+  from <topic>" options work again [Dirk]
+- When deleting a poll, also delete any comments to that poll [Dirk]
+- Delete comments and story images when deleting stories from a deleted topic
+  (bug #339) [Dirk]
+- When deleting a story, added an extra check for type='article' when deleting
+  the story's comments [Dirk]
+- Set current user as the owner when cloning an event (bug #338) [Dirk]
+- Start time, end time, and event location weren't copied over when adding a
+  site event to the personal calendar (bug #336) [Dirk]
+- Fixed wrong use of htmlentities() on comment title (bug #335) [Dirk]
+- Changed "read more" word count so that it ignores HTML tags (bug #333) [Dirk]
+
+
 Nov 28, 2004 (1.3.10)
 ------------
 
