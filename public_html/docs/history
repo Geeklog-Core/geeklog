@@ -1,5 +1,8 @@
 GeekLog History/Changes:
 
+- The static pages plugin can now be uninstalled using the "delete" option
+  from the plugin editor. Note that this will only remove the plugin's tables
+  and data from the database, not remove any files.
 - Added a simple email notification when a new story, link, or event has been
   submitted or a new user has registered. See $_CONF['notification'] for details
 - Added a separate set of config variables for the max. dimensions of user

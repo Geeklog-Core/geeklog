@@ -28,19 +28,25 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <ul>
   <li>A notification email can now be sent when a new story, link, or event
     has been submitted or a new user has registered with the site (see the
-    <a href="config.html#submission">submission settings</a> for details).</li>
+    <a href="config.html#submission">submission settings</a> for details).<br>
+    Please note that this feature doesn't tie in with Geeklog's security
+    features - it's really more of a hack, since many people asked for this
+    functionality.</li>
   <li>Following the "X stories in last 24 hours" link in the What's New block
     will now display just those new stories.</li>
   <li>User photos are now resized, just like images in stories (if the use
-    of an image library is configured).</li>
+    of an image library is configured). The max. dimensions for user photos
+    can be set with a separate set of config variables in
+    <tt>config.php</tt>.</li>
   <li>The plugin menu now lists all plugins which exist in the file system
     but haven't been installed yet. It also provides a link to the install
     script of those plugins for easy installation.</li>
-  <li>Several new config variables have been added to config.php
-    (showfirstasfeatured, dateonly, timeonly, skip_preview, upcomingeventsrange,
+  <li>Several new config variables have been added to config.php (notification,
+    showfirstasfeatured, dateonly, timeonly, skip_preview, upcomingeventsrange,
     emailstoryloginrequired, hideemailicon, hideprintericon, hidenewstories,
-    hidenewcomments, hidenewlinks). Please see the <a href="config.php">config
-    documentation</a> for details.</li>
+    hidenewcomments, hidenewlinks, max_photo_width, max_photo_height,
+    max_photo_size).  Please see the <a 
+    href="config.php">config documentation</a> for details.</li>
   <li>Theme changes: Please consult the <a href="theme.html#changes">themes 
     documentation</a> for a list of changes.</li>
 </ul>
@@ -67,6 +73,25 @@ and / or obvious changes. For a detailed list of changes, please consult the
 
 <p><strong>Contributors:</strong> Blaine Lang, Vincent Furia, and Kenn Osborne
 have contributed to this release. Thank you!</p>
+
+<h3><a name="addindex">Speeding up Geeklog (a bit)</a></h3>
+
+<p>If you're upgrading from 1.3.6 or older versions, you may want to run the
+script called <tt>addindex.php</tt> that you will find in the <tt>install</tt>
+directory. This script adds index fields to some of Geeklog's database tables
+which should improve overall access times a bit.</p>
+
+<p>This has been implemented as a separate script (and not as part of the
+upgrade process of the install script) since it may take some time to run,
+depending on how many users / stories / etc. you have in your database. Some
+people may even run into timeouts, e.g. when their hosting service limits the
+execution time of PHP scripts. If that happens to you - <strong>Don't 
+Panic</strong>. Simply run the script again (and again and ...) until it
+reports that it didn't add any fields to any tables.</p>
+
+<p>Please note that you do <em>not</em> need to run this script if you're doing
+a fresh install of Geeklog 1.3.7. A fresh install already has the new index
+fields.</p>
 
 
 <h2>Geeklog 1.3.6</h2>
