@@ -31,14 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.55 2004/10/25 15:55:44 blaine Exp $
+// $Id: search.php,v 1.56 2004/12/10 10:33:30 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/search.class.php');
 
 $searchObj = new Search();
 
-if ($HTTP_GET_VARS['mode'] == 'search' AND $searchObj->_query != '') {
+if ($_GET['mode'] == 'search') {
     $display = COM_siteHeader('menu', $LANG09[11]);
     $display .= $searchObj->doSearch();
 } else {
