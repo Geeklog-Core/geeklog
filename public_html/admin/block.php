@@ -227,7 +227,7 @@ function listblocks() {
 			$A[5] = "-";
 		}
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A[5]}</td></tr>";
+		print "<td>{$A["seclev"]}</td><td>{$A["type"]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A["tid"]}</td></tr>";
 	}
 	print "</table>";
 	endblock();
