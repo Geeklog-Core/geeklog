@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.19 2002/11/28 12:43:55 dhaun Exp $
+// $Id: profiles.php,v 1.20 2003/01/05 21:23:51 dhaun Exp $
 
 include('lib-common.php');
 
@@ -257,7 +257,14 @@ function mailstoryform($sid)
 # MAIN
 switch ($what) {
 	case 'contact':
-		$display .= contactemail($uid,$author,$authoremail,$subject,$message);
+        $uid = strip_tags ($HTTP_POST_VARS['uid']);
+        if (is_numeric ($uid)) {
+		    $display .= contactemail ($uid, $HTTP_POST_VARS['author'],
+                    $HTTP_POST_VARS['authoremail'], $HTTP_POST_VARS['subject'],
+                    $HTTP_POST_VARS['message']);
+        } else {
+            $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
 		break;
 	case 'emailstory':
         if ($_CONF['hideemailicon'] == 1) {
@@ -270,7 +277,8 @@ switch ($what) {
 		$display .= mailstory($sid,$to,$toemail,$from,$fromemail,$sid,$shortmsg);
 		break;
 	default:
-		if (!empty($uid)) {
+        $uid = strip_tags ($uid);
+		if (!empty($uid) && is_numeric ($uid)) {
 			$display .= COM_siteHeader()
 				.contactform($uid)
 				.COM_siteFooter();
