@@ -32,11 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.43 2003/09/01 19:01:06 dhaun Exp $
+// $Id: moderation.php,v 1.44 2003/09/09 14:06:24 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
-require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -49,7 +48,7 @@ require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 */
 function commandcontrol() 
 {
-    global $_CONF,$_TABLES,$LANG01,$LANG29;
+    global $_CONF, $_TABLES, $LANG01, $LANG29;
 
     $retval = '';
 
@@ -137,7 +136,7 @@ function commandcontrol()
     $retval .= $admin_templates->parse('output','cc');
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-		
+
     if (SEC_hasRights('story.moderate')) {
         $retval .= itemlist('story');
 
@@ -158,7 +157,7 @@ function commandcontrol()
     }
 
     $retval .= PLG_showModerationList();
-	
+
     return $retval;
 }
 
@@ -324,7 +323,7 @@ function itemlist($type)
 */
 function userlist ()
 {
-    global $_TABLES, $_CONF, $LANG29;
+    global $_CONF, $_TABLES, $LANG29;
 
     $retval .= COM_startBlock ($LANG29[40], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -379,7 +378,7 @@ function userlist ()
 */
 function draftlist ()
 {
-    global $_TABLES, $_CONF, $LANG24, $LANG29;
+    global $_CONF, $_TABLES, $LANG24, $LANG29;
 
     $retval = COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
             COM_getBlockTemplate ('_admin_block', 'header'));
@@ -484,7 +483,7 @@ function deletestory ($sid)
 */
 function moderation($mid,$action,$type,$count) 
 {
-    global $_TABLES, $_CONF;
+    global $_CONF, $_TABLES;
 
     $retval = '';
 
@@ -578,10 +577,17 @@ function moderation($mid,$action,$type,$count)
 *
 * Note: The code for sending the password is coped&pasted from users.php
 *
+* @param    uid      int      array of items
+* @param    action   string   action to perform ('delete', 'approve')
+* @param    count    int      number of items
+* @return            string   HTML for "command and control" page
+*
 */
 function moderateusers ($uid, $action, $count)
 {
-    global $_TABLES, $_CONF, $LANG_CHARSET, $LANG04;
+    global $_CONF, $_TABLES, $LANG04;
+
+    $retval = '';
 
     for ($i = 1; $i <= $count; $i++) {
         switch ($action[$i]) {
@@ -606,7 +612,10 @@ function moderateusers ($uid, $action, $count)
                     $passwd = md5($passwd);
                     $passwd = substr($passwd,1,8);
                     $passwd2 = md5($passwd);
-                    DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$A['username']);
+                    DB_change ($_TABLES['users'], 'passwd', "$passwd2",
+                               'username', $A['username']);
+                    DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
+                               'username', $A['username']);
 
                     $mailtext = "{$LANG04[15]}\n\n";
                     $mailtext .= "{$LANG04[2]}: {$A['username']}\n";
@@ -614,18 +623,9 @@ function moderateusers ($uid, $action, $count)
                     $mailtext .= "{$LANG04[14]}\n\n";
                     $mailtext .= "{$_CONF["site_name"]}\n";
                     $mailtext .= "{$_CONF['site_url']}\n";
-                    if (empty ($LANG_CHARSET)) {
-                        $charset = $_CONF['default_charset'];
-                        if (empty ($charset)) {
-                            $charset = "iso-8859-1";
-                        }
-                    }
-                    else {
-                        $charset = $LANG_CHARSET;
-                    }
-                    mail($A["email"], "{$_CONF["site_name"]}: {$LANG04[16]}",
-                        $mailtext,
-                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}");
+
+                    $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+                    COM_mail ($A['email'], $subject, $mailtext);
                 }
                 break;
         }
@@ -641,15 +641,18 @@ function moderateusers ($uid, $action, $count)
 
 $display = '';
 $display .= COM_siteHeader();
-if (isset ($msg)) {
-    $display .= COM_showMessage($msg);
+if (isset ($HTTP_GET_VARS['msg'])) {
+    $display .= COM_showMessage ($HTTP_GET_VARS['msg']);
 }
 
 if (isset ($HTTP_POST_VARS['mode']) && ($HTTP_POST_VARS['mode'] == 'moderation')) {
-    if ($type == 'user') {
-        $display .= moderateusers($id,$action,$count);
+    if ($HTTP_POST_VARS['type'] == 'user') {
+        $display .= moderateusers ($HTTP_POST_VARS['id'],
+                $HTTP_POST_VARS['action'], $HTTP_POST_VARS['count']);
     } else {
-        $display .= moderation($id,$action,$type,$count);
+        $display .= moderation ($HTTP_POST_VARS['id'],
+                $HTTP_POST_VARS['action'], $HTTP_POST_VARS['type'],
+                $HTTP_POST_VARS['count']);
     }
 } else {
     $display .= commandcontrol();
