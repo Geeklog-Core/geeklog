@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# This is the spanish language page for GeekLog!
+# This is the Spanish language page for GeekLog!
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -40,10 +40,10 @@ $LANG_CHARSET = 'iso-8859-1';
 
 $LANG01 = array(
     1 => 'Autor:',
-    2 => 'leer artículo completo',
+    2 => 'lectura del artículo completo',
     3 => 'comentarios',
-    4 => 'Editar',
-    5 => 'Votar',
+    4 => 'Edición',
+    5 => 'Vota',
     6 => 'Resultados',
     7 => 'Resultados de la encuesta',
     8 => 'votos',
@@ -57,7 +57,7 @@ $LANG01 = array(
     16 => 'Encuestas',
     17 => 'Usuarios(as)',
     18 => 'Búsqueda SQL',
-    19 => 'Salir',
+    19 => 'Salida',
     20 => 'Información del(a) usuario(a):',
     21 => 'Nombre del(a) usuario(a)',
     22 => 'Identidad (ID) del(a) usuario(a)',
@@ -76,40 +76,40 @@ $LANG01 = array(
     35 => 'Salir',
     36 => 'sobre',
     37 => 'No hay noticias del(a) usuario(a)',
-    38 => 'Content Syndication',
-    39 => 'Actualizar',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
-    41 => 'Usuarios Invitados',
+    38 => 'Sindicación del contenido',
+    39 => 'Actualización',
+    40 => 'Tienes <tt>register_globals = Off</tt> en tu <tt>php.ini</tt>. Sin embargo, Geeklog requiere que <tt>register_globals</tt> esté <strong>on</strong>. Antes de continuar, por favor set it to <strong>on</strong> y restart your web server.',
+    41 => 'Usuarios invitados',
     42 => 'Escrito por:',
-    43 => 'Responder a',
-    44 => 'Retornar',
+    43 => 'Responde a',
+    44 => 'Regresa',
     45 => 'Número de Error MySQL',
     46 => 'Mensaje de Error MySQL',
     47 => 'Funciones del(a) usuario(a)',
     48 => 'Mi cuenta',
     49 => 'Mis Preferencias',
-    50 => 'Error en una sentencia SQL',
+    50 => 'Error en una frase SQL',
     51 => 'ayuda',
     52 => 'Nuevo',
     53 => 'Sección de Administración',
     54 => 'No se ha podido abrir el archivo.',
     55 => 'Error en',
-    56 => 'Votar',
+    56 => 'Vota',
     57 => 'Contraseña',
     58 => 'Identificación',
     59 => "¿No tienes una cuenta todavía? <a href=\"{$_CONF['site_url']}/users.php?mode=new\">Inscríbete</a>",
-    60 => 'Agregar un comentario',
-    61 => 'Crear una Nueva Cuenta',
+    60 => 'Agrega un comentario',
+    61 => 'Crea una cuenta nueva',
     62 => 'palabras',
     63 => 'Preferencias de Noticias',
-    64 => 'Enviar a un(a) amigo(a)',
+    64 => 'Envíala a un(a) amigo(a)',
     65 => 'Ver la versión para imprimir',
     66 => 'Mi Calendario',
     67 => 'Bienvenido(a) a ',
     68 => 'Página Inicial',
     69 => 'contacto',
     70 => 'buscar',
-    71 => 'enviar noticia',
+    71 => 'envia la noticia',
     72 => 'enlaces a otras webs',
     73 => 'encuestas anteriores',
     74 => 'calendario',
@@ -124,9 +124,9 @@ $LANG01 = array(
     83 => 'COMENTARIOS',
     84 => 'ENLACES',
     85 => 'últimas 48 horas',
-    86 => 'No hay nuevos comentarios',
+    86 => 'No hay comentarios nuevos',
     87 => 'últimas 2 semanas',
-    88 => 'No hay nuevos enlaces',
+    88 => 'No hay enlaces nuevos',
     89 => 'No hay próximos eventos',
     90 => 'Página Inicial',
     91 => 'Esta página fue creada en',
@@ -141,17 +141,17 @@ $LANG01 = array(
     100 => 'No hay noticias nuevas',
     101 => 'Mis Eventos',
     102 => 'Eventos del sitio',
-    103 => 'Copias de seguridad de la Base de Datos',
+    103 => 'Copias de seguridad de la base de datos',
     104 => 'por',
     105 => 'Usuarios del Correo',
-    106 => 'Vistas',
+    106 => 'Lecturas',
     107 => 'Comprobación de la versión de GL',
-    108 => 'Limpiar copia de visitas (Caché)',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    108 => 'Limpia la copia de visitas (Caché)',
+    109 => 'Denuncia los abusos',
+    110 => 'Denuncia este mensaje al administrador de este sitio',
+    111 => 'Ver la versión PDF',
+    112 => 'Usuarios inscritos',
+    113 => 'Documentación'
 );
 
 ###############################################################################
@@ -163,8 +163,8 @@ $LANG02 = array(
     3 => 'Cuando',
     4 => 'Donde',
     5 => 'Descripción',
-    6 => 'Agregar un Evento',
-    7 => 'Próximos Eventos',
+    6 => 'Agrega un evento',
+    7 => 'Próximos eventos',
     8 => 'Al agregar este evento a tu calendario podrás ver rápidamente los eventos que te interesen. Para ello elije "Mi Calendario" en el área de Funciones del(a) usuario(a).',
     9 => 'Agregar a Mi Calendario',
     10 => 'Sacar de Mi Calendario',
@@ -179,33 +179,33 @@ $LANG02 = array(
 # comment.php
 
 $LANG03 = array(
-    1 => 'Agregar un Comentario',
+    1 => 'Agrega un Comentario',
     2 => 'Tipo de envio',
-    3 => 'Salir',
-    4 => 'Crear una Cuenta',
+    3 => 'Salida',
+    4 => 'Crea una cuenta',
     5 => 'Nombre del(a) usuario(a)',
     6 => 'Este sitio requiere que tengas una cuenta para enviar un comentario. Si ya la tienes, ingresa el nombre de usuario y la contraseña. Si no tienes una cuenta, puedes crear una nueva en el formulario de abajo',
     7 => 'Tu último comentario fue hace ',
     8 => " segundos. Este sitio requiere al menos {$_CONF['commentspeedlimit']} segundos entre comentarios",
     9 => 'Comentario',
-    10 => 'Send Report',
-    11 => 'Enviar el Comentario',
+    10 => 'Envia la denuncia',
+    11 => 'Envia el comentario',
     12 => 'Por favor completa el Título y Comentario, ya que son datos necesarios para enviar un comentario.',
     13 => 'Tu Información',
-    14 => 'Vista Previa',
-    15 => 'Report this post',
+    14 => 'Lectura Previa',
+    15 => 'Denuncia este mensaje',
     16 => 'Título',
     17 => 'Error',
     18 => 'Cosas Importantes',
     19 => 'Por favor intenta mantener el tema de la noticia.',
     20 => 'Intenta responder a los comentarios de los demás en lugar de comenzar una nueva discusión.',
-    21 => 'Lee los comentarios enviados para evitar comentarios duplicados.',
+    21 => 'Lée los comentarios enviados para evitar comentarios duplicados.',
     22 => 'Utiliza un título claro que describa el contenido de tu mensaje.',
     23 => 'Tu dirección de correo electrónico NO será divulgada.',
     24 => 'Usuario Anónimo',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => '¿Estas seguro(a) que quieres denunciar este mensaje al administrador del sitio?',
+    26 => '%s ha denunciado el siguiente comentario abusivo:',
+    27 => 'Denuncia de abuso'
 );
 
 ###############################################################################
@@ -234,7 +234,7 @@ $LANG04 = array(
     20 => 'La dirección de correo electrónico ingresada no parece ser válida.',
     21 => 'Error',
     22 => "Inscríbete en {$_CONF['site_name']}!",
-    23 => "Crear una cuenta te dará los beneficios de los usuarios de {$_CONF['site_name']} y te permitirá enviar noticias, comentarios, etc. Si no tienes una cuenta sólo lo podrás hacer anónimamente. Queremos remarcar que tu dirección de correo electrónico <b><i>nunca</i></b> será publicada en este sitio.",
+    23 => "La creación de una cuenta te dará las ventajas de los usuarios de {$_CONF['site_name']} y te permitirá enviar noticias, comentarios, etc. Si no tienes una cuenta sólo lo podrás hacer anónimamente. Queremos remarcar que tu dirección de correo electrónico <b><i>nunca</i></b> será publicada en este sitio.",
     24 => 'Tu Contraseña se enviará a la dirección de correo electrónico que ingreses.',
     25 => '¿Olvidaste tu contraseña?',
     26 => 'Ingresa <em>o</em> tu nombre de usuario <em>o</em> la dirección de correo electrónico que utilizaste para inscribirte y pulsa Enviar Contraseña. Te llegarán por correo electrónico las instrucciones para crear una contraseña nueva a la dirección que figura en el archivo,.',
@@ -264,7 +264,7 @@ $LANG04 = array(
     50 => 'No selecciones esto si no estás interesado',
     51 => 'Sólo las noticias nuevas',
     52 => 'El valor por defecto es',
-    53 => 'Recibir cada noche las noticias del día',
+    53 => 'Recepción cada noche las noticias del día',
     54 => 'Selecciona las Secciones y Autores que no quieres ver.',
     55 => 'Si no seleccionas ninguna significa que quieres la selección por defecto. De seleccionar, selecciona todas las de tu interés ya que las opciones por defecto ya no serán tomadas en cuenta. Las opciones por defecto se muestran resaltadas.',
     56 => 'Autores',
@@ -292,7 +292,7 @@ $LANG04 = array(
     78 => '¡Añade una foto tuya!',
     79 => 'Activa esto para borrar esta imagen',
     80 => 'Identificación',
-    81 => 'Enviar correo electrónico',
+    81 => 'Envia  por correo electrónico',
     82 => 'Últimas 10 noticias para el(la) usuario(a)',
     83 => 'Estadísticas de noticias para el(la) usuario(a)',
     84 => 'Número total de artículos:',
@@ -302,23 +302,23 @@ $LANG04 = array(
     88 => "Alguien (posiblemente tú mismo(a)) ha solicitado una contraseña nueva para tu cuenta  \"%s\" en {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nSi quieres de verdad que se lleve a cabo esta acción, por favor pulsa en el enlace siguiente:\n\n",
     89 => "si no quieres que se lleve a cabo esta acción, simplemente ignora este mensaje y la petición sera desatendida (tu contraseña no se modificará).\n\n",
     90 => 'Puedes ingresar abajo una contraseña nueva para tu cuenta. Por favor, toma nota que la contraseña antigua seguirá siendo válida hasta que envies este formulario.',
-    91 => 'Crear Contraseña Nueva',
-    92 => 'Ingresar Contraseña Nueva',
+    91 => 'Crea una contraseña nueva',
+    92 => 'Ingresa una contraseña nueva',
     93 => 'Tu última petición de una contraseña nueva fue hace %d segundos. Este sitio requiere como mínimo %d segundos entre peticiones de contraseñas.',
-    94 => 'Borrar la cuenta "%s"',
-    95 => 'Pulsar abajo el botón "borrar la cuenta" para retirar tu cuenta de nuestra base de datos. Por favor, toma nota que cualquier noticia o comentario que hayas contribuído bajo esta cuenta <strong>no</strong> se borrará, sino que aparecerá como "Anónimo".',
-    96 => 'borrar la cuenta',
-    97 => 'Confirmar el borrado de la Cuenta',
+    94 => 'Borra la cuenta "%s"',
+    95 => 'Pulsa abajo el botón "borrar la cuenta" para retirar tu cuenta de nuestra base de datos. Por favor, toma nota que cualquier noticia o comentario que hayas contribuído bajo esta cuenta <strong>no</strong> se borrará, sino que aparecerá como "Anónimo".',
+    96 => 'Borra la cuenta',
+    97 => 'Confirma el borrado de la Cuenta',
     98 => '¿Estás seguro(a) que quieres borrar tu cuenta? Al hacerlo así, no podrás acceder a este sitio otra vez (a no ser que crees una cuenta nueva). Si estás seguro(a), pulsa "borrar cuenta" de nuevo en el formulario de abajo.',
     99 => 'Opciones de privacidad para',
     100 => 'Correo del(a) Administrador(a)',
-    101 => 'Permitir correo de los(as) Administradores(as) del sitio',
+    101 => 'Permite el correo de los(as) Administradores(as) del sitio',
     102 => 'Correo de los usuarios',
-    103 => 'Permitir correo de otros usuarios',
-    104 => 'Mostrar el estado de quien está conectado(a)',
-    105 => 'Mostrar en el bloque Who\'s Online (usuarios conectados)',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    103 => 'Permite el correo de otros usuarios',
+    104 => 'Muestra el estado de quien está conectado(a)',
+    105 => 'Muestra en el bloque Who\'s Online (usuarios conectados)',
+    106 => 'Ubicación',
+    107 => 'Mostrado en tu perfil público'
 );
 
 ###############################################################################
@@ -331,8 +331,8 @@ $LANG05 = array(
     4 => 'Noticia del Día',
     5 => 'Siguiente',
     6 => 'Anterior',
-    7 => 'First',
-    8 => 'Last'
+    7 => 'Primero',
+    8 => 'Ultimo'
 );
 
 ###############################################################################
@@ -341,7 +341,7 @@ $LANG05 = array(
 $LANG06 = array(
     1 => 'Enlaces',
     2 => 'No hay enlaces para mostrar.',
-    3 => 'Agregar un enlace'
+    3 => 'Agrega un enlace'
 );
 
 ###############################################################################
@@ -369,18 +369,18 @@ $LANG08 = array(
     7 => 'Perfil de usuario(a) de',
     8 => 'Nombre del(a) usuario(a)',
     9 => 'URL del(a) usuario(a)',
-    10 => 'Enviar mensaje a',
+    10 => 'Envia un mensaje a',
     11 => 'Remitente:',
-    12 => 'Responder a:',
+    12 => 'Responde a:',
     13 => 'Título:',
     14 => 'Mensaje:',
     15 => 'No se traducirá el código HTML.',
-    16 => 'Enviar el mensaje',
+    16 => 'Envia el mensaje',
     17 => 'Enviar a un(a) amigo(a)',
     18 => 'Destinatario(a)',
     19 => 'Dirección de correo electrónico de destino',
     20 => 'Remitente',
-    21 => 'Responder a',
+    21 => 'Responde a',
     22 => 'Es necesario rellenar todos los campos',
     23 => "Este correo electrónico te lo envió %s en %s porque pensó que podría interesarte esta noticia en  {$_CONF['site_url']}. Esto no es SPAM (correo basura) y las direcciones de correo electrónico involucradas en este envío no se han guardado para su uso posterior.",
     24 => 'Comentario sobre esta noticia en',
@@ -410,25 +410,25 @@ $LANG09 = array(
     7 => 'Comentarios',
     8 => 'Autores',
     9 => 'Todo',
-    10 => 'Buscar',
+    10 => 'Búsqueda',
     11 => 'Resultados de la búsqueda',
     12 => 'resultados',
-    13 => 'Búsqueda de noticias: No hubo coincidencias',
-    14 => 'No se encontraron coincidencias al buscar: ',
+    13 => 'Búsqueda de noticias: No ha habido coincidencias',
+    14 => 'No se han encontrado coincidencias al buscar: ',
     15 => 'Por favor inténtalo de nuevo.',
     16 => 'Título',
     17 => 'Fecha',
     18 => 'Autor',
-    19 => "Buscar en toda la base de datos de <B>{$_CONF['site_name']}</B>",
+    19 => "Busca en toda la base de datos de <B>{$_CONF['site_name']}</B>",
     20 => 'Fecha',
     21 => 'a',
     22 => '(Formato de fecha DD-MM-YYYY)',
-    23 => 'Vistas',
+    23 => 'Lecturas',
     24 => 'Encontrados %d elementos',
     25 => 'coincidencias con',
     26 => 'elementos en ',
     27 => 'segundos',
-    28 => 'No se encontraron coincidencias en Noticias y Comentarios',
+    28 => 'No se han encontrado coincidencias en Noticias y Comentarios',
     29 => 'Resultados de las Noticias y Comentarios',
     30 => 'Ningún enlace coincide con tu búsqueda',
     31 => 'Este plug-in no ha dado resultados',
@@ -450,7 +450,7 @@ $LANG09 = array(
     47 => 'Anterior',
     48 => 'Autor(a)',
     49 => 'Fecha',
-    50 => 'Vistas',
+    50 => 'Lecturas',
     51 => 'Enlace',
     52 => 'Ubicación',
     53 => 'Resultados de la noticia',
@@ -470,7 +470,7 @@ $LANG10 = array(
     4 => 'Encuestas(Respuestas) en el sistema',
     5 => 'Enlaces(Visitados) en el sistema',
     6 => 'Eventos en el sistema',
-    7 => 'Las 10 Noticias más vistas',
+    7 => 'Las 10 Noticias más leídas',
     8 => 'Título de la Noticia',
     9 => 'Accesos',
     10 => 'Parece que no hay noticias en este sitio o que nadie las ha visto todavía.',
@@ -495,10 +495,10 @@ $LANG10 = array(
 
 $LANG11 = array(
     1 => 'Relacionado con esto...',
-    2 => 'Enviar a un(a) amigo(a)',
+    2 => 'Envíalo a un(a) amigo(a)',
     3 => 'Versión para imprimir',
     4 => 'Opciones de la Noticia',
-    5 => 'PDF Story Format'
+    5 => 'Formato de noticia en PDF'
 );
 
 ###############################################################################
@@ -506,13 +506,13 @@ $LANG11 = array(
 
 $LANG12 = array(
     1 => 'Para enviar %s tienes que estar conectado(a) como usuario(a).',
-    2 => 'Ingresar',
+    2 => 'Ingresa',
     3 => 'Usuario(a) Nuevo(a)',
-    4 => 'Agregar un Evento',
-    5 => 'Agregar un Enlace',
-    6 => 'Agregar una noticia',
+    4 => 'Agrega un Evento',
+    5 => 'Agrega un Enlace',
+    6 => 'Agrega una noticia',
     7 => 'Tienes que conectarte',
-    8 => 'Enviar colaboraciones',
+    8 => 'Envío de colaboraciones',
     9 => 'Cuando envias información a este sitio te pedimos que tomes en cuenta los siguientes consejos: <ul><li>Completa todos los campos requeridos<li>Comprueba bien los URL\'s<li>Facilita información completa y precisa</ul>',
     10 => 'Título',
     11 => 'Enlace',
@@ -523,7 +523,7 @@ $LANG12 = array(
     16 => 'Si es otra, especifica',
     17 => 'Categoría',
     18 => 'Otra',
-    19 => 'Leer antes',
+    19 => 'Léelo antes',
     20 => 'Error: Falta la Categoría',
     21 => 'Por favor, cuando selecciones \'Otra\' completa el nombre de la categoría',
     22 => 'Error: Faltan Campos',
@@ -536,17 +536,17 @@ $LANG12 = array(
     29 => 'Noticia',
     30 => 'Tu última colaboración fue hace ',
     31 => " segundos.  Este sitio requiere como mínimo {$_CONF['speedlimit']} segundos entre envíos",
-    32 => 'Vista Previa',
-    33 => 'Vista previa de la noticia',
-    34 => 'Salir',
+    32 => 'Lectura Previa',
+    33 => 'Lectura previa de la noticia',
+    34 => 'Salida',
     35 => 'No se permiten etiquetas de HTML',
     36 => 'Formato del texto',
-    37 => "Los Eventos enviados a {$_CONF['site_name']} se agregan al Calendario Público, donde el resto de los usuarios pueden agregarlo a su Calendario Personal. Esta función <b>NO</b> está pensada para que guardes tus eventos personales como cumpleaños, citas, etc.<br><br>Una vez enviado, el evento será evaluado por los Administradores. De ser aprobado, se mostrará en el Calendario Público",
-    38 => 'Agregar un Evento a',
+    37 => "Los eventos enviados a {$_CONF['site_name']} se agregan al Calendario Público, donde el resto de los usuarios pueden agregarlo a su Calendario Personal. Esta función <b>NO</b> está pensada para que guardes tus eventos personales como cumpleaños, citas, etc.<br><br>Una vez enviado, el evento será evaluado por los Administradores. De ser aprobado, se mostrará en el Calendario Público",
+    38 => 'Agrega un evento a',
     39 => 'Calendario Público',
     40 => 'Calendario Personal',
-    41 => 'Hora de Finalización',
-    42 => 'Hora de Inicio',
+    41 => 'Hora de finalización',
+    42 => 'Hora de inicio',
     43 => 'Evento que dura todo el día',
     44 => 'Dirección, línea 1',
     45 => 'Dirección, línea 2',
@@ -554,10 +554,10 @@ $LANG12 = array(
     47 => 'Provincia/Estado',
     48 => 'Código Postal',
     49 => 'Tipo de Evento',
-    50 => 'Editar los Tipos de Eventos',
+    50 => 'Edita los tipos de eventos',
     51 => 'Lugar',
     52 => 'Borrar',
-    53 => 'Crear una Cuenta'
+    53 => 'Crea una cuenta'
 );
 
 ###############################################################################
@@ -584,7 +584,7 @@ $LANG21 = array(
     1 => 'No tienes derechos de Administrador(a)',
     2 => 'No tienes los derechos suficientes para editar este bloque.',
     3 => 'Editor de Bloques',
-    4 => 'There was a problem reading this feed (see error.log for details).',
+    4 => 'Ha habido un problema con la lectura deesta transmisión (ver error.log para más detalles).',
     5 => 'Título del Bloque',
     6 => 'Sección',
     7 => 'Todo',
@@ -631,16 +631,16 @@ $LANG21 = array(
     48 => 'Nombre del Bloque',
     49 => ' (sin espacios y tiene que ser único)',
     50 => 'URL del archivo de ayuda',
-    51 => 'incluir http://',
+    51 => 'incluye http://',
     52 => 'Si dejas este campo en blanco no se mostrará el ícono de ayuda',
     53 => 'Habilitado',
     54 => 'guardar',
     55 => 'cancelar',
     56 => 'borrar',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => 'Mueve el bloque abajo',
+    58 => 'Mueve el bloque arriba',
+    59 => 'Mueve el bloque a la derecha',
+    60 => 'Mueve el bloque a la izquierda'
 );
 
 ###############################################################################
@@ -655,7 +655,7 @@ $LANG22 = array(
     6 => 'Fecha de Finalización',
     7 => 'Lugar',
     8 => 'Descripción',
-    9 => '(incluir http://)',
+    9 => '(incluye http://)',
     10 => 'Tienes que completar todos los campos de este formulario.',
     11 => 'Administrador del Evento',
     12 => 'Para modificar o borrar un evento, pulsa en ese evento abajo. Para crear un Nuevo Evento pulsa sobre Evento Nuevo arriba. Pulsa sobre [C] para crear una copia de un evento ya existente.',
@@ -669,9 +669,9 @@ $LANG22 = array(
     20 => 'guardar',
     21 => 'cancelar',
     22 => 'borrar',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Fecha de inicio incorecta.',
+    24 => 'Fecha de terminación incorrecta.',
+    25 => 'La fecha de terminación es anterior a la de inicio.'
 );
 
 ###############################################################################
@@ -715,7 +715,7 @@ $LANG24 = array(
     6 => 'No hay Noticias en el sistema',
     7 => 'Autor',
     8 => 'guardar',
-    9 => 'vista previa',
+    9 => 'Lectura previa',
     10 => 'cancelar',
     11 => 'borrar',
     12 => 'ID',
@@ -730,9 +730,9 @@ $LANG24 = array(
     21 => '',
     22 => 'Listado de Noticias',
     23 => 'Para modificar o borrar una Noticia selecciona el número de Noticia más abajo. Para ver la Noticia selecciona el título de la misma. Para crear una nueva Noticia selecciona \'Enviar Noticia\' más arriba.',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
+    24 => 'La ID que has elegido para este tema ya está siendo utilizada. Por favor, utiliza otra ID.',
     25 => '',
-    26 => 'Vista Previa',
+    26 => 'Lectura Previa',
     27 => '',
     28 => '',
     29 => '',
@@ -764,11 +764,11 @@ $LANG24 = array(
     55 => 'Los siguientes errores ocurrieron al querer guardar tu Noticia. Por favor corrije los errores antes de guardar.',
     56 => 'Mostrar icono de Tema',
     57 => 'Ver imagen sin proporción',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => 'Gestión de las noticias',
+    59 => 'Opción',
+    60 => 'Habilitado',
+    61 => 'Auto archivo',
+    62 => 'Auto borrado'
 );
 
 ###############################################################################
@@ -829,10 +829,10 @@ $LANG27 = array(
     20 => 'cancelar',
     21 => 'borrar',
     22 => 'Por defecto',
-    23 => 'convertir en el tema por defecto para nuevas colaboraciones',
+    23 => 'conviértelo en el tema por defecto para nuevas colaboraciones',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'Archiva el tema',
+    26 => 'conviértelo en el tema por defecto para noticias archivadas. Sólo se permite un tema.'
 );
 
 ###############################################################################
@@ -855,7 +855,7 @@ $LANG28 = array(
     14 => 'Fecha de Inscripción',
     15 => 'Nuevo Usuario',
     16 => 'Página de Inicio - Administrador',
-    17 => 'Cambiar-Contraseña',
+    17 => 'Cambia la contraseña',
     18 => 'Cancelar',
     19 => 'Borrar',
     20 => 'Guardar',
@@ -864,13 +864,13 @@ $LANG28 = array(
     23 => 'Importación Masiva',
     24 => 'Importación masiva de Usuarios',
     25 => "Puedes importar una lista de Usuarios(as) a {$_CONF['site_name']}. El archivo con la lista de usuarios(as) tiene que tener un registro por línea y los campos separados por TAB (tabulador). Los campos tienen que estar en el siguiente orden: Nombre Completo, Nombre de Usuario, Dirección de Correo electrónico. A cada usuario añadido se le enviará por correo electrónico una contraseña generada al azar, que podrán cambiar al ingresar al sitio. Por favor, ccomprueba bien el archivo de importación ya que los errores encontrados pueden llegar a requerir arreglos manuales.",
-    26 => 'Buscar',
-    27 => 'Limitar los resultados',
-    28 => 'Marcar la casilla para borrar esta imagen',
+    26 => 'Busca',
+    27 => 'Limita los resultados',
+    28 => 'Marca la casilla para borrar esta imagen',
     29 => 'Ruta',
-    30 => 'Importar',
+    30 => 'Importación',
     31 => 'Nuevos Usuarios',
-    32 => 'Proceso finalizado. Se importaron %d y hubieron %d fallos',
+    32 => 'Proceso finalizado. Se han importado %d y ha habido %d fallos',
     33 => 'enviar',
     34 => 'Error: Tienes que especificar el archivo que quieres subir.',
     35 => 'Ultimo acceso',
@@ -914,7 +914,7 @@ $LANG30 = array(
     5 => 'Jueves',
     6 => 'Viernes',
     7 => 'Sábado',
-    8 => 'Agregar un Evento',
+    8 => 'Agrega un evento',
     9 => 'Evento de %s',
     10 => 'Eventos para',
     11 => 'Calendario Maestro',
@@ -936,13 +936,13 @@ $LANG30 = array(
     27 => 'Semana',
     28 => 'Calendario Personal para',
     29 => 'Calendario Público',
-    30 => 'borrar evento',
-    31 => 'Agregar',
+    30 => 'borra el evento',
+    31 => 'Agrega',
     32 => 'Evento',
     33 => 'Fecha',
     34 => 'Hora',
     35 => 'Agregado rápido',
-    36 => 'Enviar',
+    36 => 'Envía',
     37 => 'Disculpa, la opción de calendario personal no se encuentra habilitada en este sitio',
     38 => 'Editor Personal de Eventos',
     39 => 'Día',
@@ -956,7 +956,7 @@ $LANG30 = array(
 $LANG31 = array(
     1 => "{$_CONF['site_name']}Utilidad de correo electrónico",
     2 => 'De',
-    3 => 'Responder a',
+    3 => 'Responde a',
     4 => 'Título',
     5 => 'Mensaje',
     6 => 'Enviar a:',
@@ -965,8 +965,8 @@ $LANG31 = array(
     9 => 'Opciones',
     10 => 'HTML',
     11 => '¡Mensaje Urgente!',
-    12 => 'Enviar',
-    13 => 'Reiniciar',
+    12 => 'Envío',
+    13 => 'Reinicio',
     14 => 'Ignorar las preferencias del(a) usuario(a)',
     15 => 'Error al mandar a: ',
     16 => 'Se ha enviado satisfactoriamente a: ',
@@ -978,7 +978,7 @@ $LANG31 = array(
     22 => 'Exitosos',
     23 => 'No ha habido envíos fallidos',
     24 => 'No ha habido envíos satisfactorios',
-    25 => '-- Selecciona Grupo --',
+    25 => '-- Selecciona el Grupo --',
     26 => 'Por favor, rellena todos los campos del formulario y selecciona un grupo de usuarios de la lista desplegable.'
 );
 
@@ -986,8 +986,8 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Instalar Plug-in(s) puede dañar tu instalación de Geeklog y, posiblemente, tu sistema. Es importante que sólo instales Plug-in(s) obtenidos de <a href="http://www.geeklog.net" target="_blank">Geeklog</a> ya que han sido comprobados en varios entornos. Es también importante que entiendas que la instalación del Plug-in requiere la ejecución de instrucciones del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garantizamos el éxito de la instalación del Plug-in ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instala el Plug-in a tu propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada Plug-in.',
-    2 => 'Advertencia de la Instalación del Plug-in',
+    1 => 'La instalación de Plug-in(s) puede dañar tu instalación de Geeklog y, posiblemente, tu sistema. Es importante que sólo instales Plug-in(s) obtenidos de <a href="http://www.geeklog.net" target="_blank">Geeklog</a> ya que han sido comprobados en varios entornos. Es también importante que entiendas que la instalación del Plug-in requiere la ejecución de instrucciones del sistema que pueden traer problemas de seguridad. Aún con esta advertencia, no garantizamos el éxito de la instalación del Plug-in ni nos hacemos responsables por cualquier daño causado durante la instalación (o posterior a la misma). En otras palabras, instala el Plug-in a tu propio riesgo. Las instrucciones particulares de instalación vienen dentro de cada Plug-in.',
+    2 => 'Advertencia de la instalación del Plug-in',
     3 => 'Formulario de instalación del Plug-in',
     4 => 'Archivo del Plug-in',
     5 => 'Listado de(los) Plug-in(s)',
@@ -1001,13 +1001,13 @@ $LANG32 = array(
     13 => 'Editor de Plugins',
     14 => 'Nuevo Plug-in',
     15 => 'Página de Inicio - Administrador',
-    16 => 'Plug-in Name',
+    16 => 'Nombre del Plug-in',
     17 => 'Versión',
     18 => 'Versión de Geeklog',
     19 => 'Habilitado',
     20 => 'Sí',
     21 => 'No',
-    22 => 'Instalar',
+    22 => 'Instalación',
     23 => 'Guardar',
     24 => 'Cancelar',
     25 => 'Borrar',
@@ -1015,54 +1015,54 @@ $LANG32 = array(
     27 => 'Portada',
     28 => 'Versión',
     29 => 'Versión de Geeklog',
-    30 => 'Borrar el Plug-in?',
+    30 => '¿Quieres borrar el Plug-in?',
     31 => '¿Estás seguro(a) que quieres borrar este Plug-in? Al hacerlo borrarás todos los archivos, estructuras y datos asociados. Si estás seguro/a selecciona "Borrar" en el formulario de abajo.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update'
+    32 => '<p><b>Error, la etiqueta AutoLink no tiene el formato correcto</b></p>',
+    33 => 'Versión del código',
+    34 => 'Actualización'
 );
 
 ###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
-    10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
-    17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
+    1 => 'Creación de la transmisión',
+    2 => 'guardar',
+    3 => 'borrar',
+    4 => 'cancelar',
+    10 => 'Sindicación del contenido',
+    11 => 'Transmisión nueva',
+    12 => 'Sede del Administrador',
+    13 => 'Para modificar o borrar una transmisión, pulsa sobre el título de la transmisión abajo. Para crear una transmisión nueva, pulsa sobre Transmisión nueva arriba.',
+    14 => 'Título',
+    15 => 'Teclea',
+    16 => 'Nombre del archivo',
+    17 => 'Formato',
+    18 => 'última actualización',
+    19 => 'Habilitado',
+    20 => 'Sí',
     21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
-    26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
-    34 => 'Entries',
-    35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links',
-    42 => 'Events'
+    22 => '<i>(no hay transmisiones)</i>',
+    23 => 'todos los Temas',
+    24 => 'Editor de transmisiones',
+    25 => 'Título de la transmisión',
+    26 => 'Límite',
+    27 => 'Duración de las noticias',
+    28 => '(0 = sin texto, 1 = text completo, otro = limita a ese número de caracteres.)',
+    29 => 'Descripción',
+    30 => 'Actualización más reciente',
+    31 => 'Conjunto de caracteres',
+    32 => 'Idioma',
+    33 => 'Contenidos',
+    34 => 'Entradas',
+    35 => 'Horas',
+    36 => 'Selecciona el tipo de transmisión',
+    37 => 'Tienes como mínimo un plugin instalado que favorece la sindicación de contenido. Abajo tendrás que seleccionar so quieres una transmisión de Geeklog o una transmisión de uno de los plugins.',
+    38 => 'Error: Faltan campos',
+    39 => 'Por favor, rellena el Título, Descripción y Nombre del archivo de la transmisión.',
+    40 => 'Por favor incluye el número de entradas o número de horas.',
+    41 => 'Enlaces',
+    42 => 'Eventos'
 );
 
 ###############################################################################
@@ -1126,10 +1126,10 @@ $MESSAGE = array(
     55 => 'El sistema te han enviado un correo electrónico y te llegará en breve. Por favor, sigue las instrucciones del mensaje para crear una contraseña nueva para tu cuenta.',
     56 => 'La dirección de correo electrónico facilitada ya está en uso en otra cuenta.',
     57 => 'Tu cuenta se ha borrado satisfactoriamente.',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    58 => 'Tu transmisión se ha guardado satisfactoriamente.',
+    59 => 'Tu transmisión se ha borrado satisfactoriamente.',
+    60 => 'El plugin se ha actualizado satisfactoriamente',
+    61 => 'Plugin %s: marcador de mensaje desconocido'
 );
 
 ###############################################################################
@@ -1141,7 +1141,7 @@ $LANG_ACCESS = array(
     'readonly' => 'Sólo-Lectura',
     'accessrights' => 'Derechos de acceso',
     'owner' => 'Propietario',
-    'grantgrouplabel' => 'Establecer los derechos del Grupo',
+    'grantgrouplabel' => 'Establece los derechos del Grupo',
     'permmsg' => 'NOTA: miembros son todos los miembros conectados y los usuarios anónimos que están en el sitio.',
     'securitygroups' => 'Grupos de Seguridad',
     'editrootmsg' => "Aunque seas un(a) Administrador(a) de Usuarios(as), no puedes editar a un usuario de raíz sin que te hayas dado de alta antes como usuario de raíz.  Puedes editar a todos los demás usuarios excepto los usuarios de raíz. Por favor, toma nota que cualquier intento de editar ilegalmente a los usuarios de raíz quedará registrado.  Por favor vuelve a <a href=\"{$_CONF['site_admin_url']}/users.php\">la página de Administración de usuarios</a>.",
@@ -1178,18 +1178,18 @@ $LANG_ACCESS = array(
     'adminhome' => 'Página de Administración',
     'save' => 'Guardar',
     'cancel' => 'Cancelar',
-    'delete' => 'borrar',
+    'delete' => 'Borrar',
     'canteditroot' => 'Has intentado editar el grupo Root (Raíz) pero no perteneces al grupo Root por lo que se te ha denegado el acceso.  Por favor, contacta con el(la) administrador(a) del sistema si crees que se trata de un errror',
     'listusers' => 'Listado de Usuarios',
     'listthem' => 'listado',
     'usersingroup' => 'Usuarios en el grupo %s',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'usergroupadmin' => 'Administración del grupo de usuarios',
+    'add' => 'Añadir',
+    'remove' => 'Borrar',
+    'availmembers' => 'Miembros disponibles',
+    'groupmembers' => 'Miembros del grupo',
+    'canteditgroup' => 'Para editar este grupo, tienes que ser un miembro del grupo. Por favor, contacta con el administrador del sistema si crees que esto es un error.',
+    'cantlistgroup' => 'Para ver los miembros de este grupo, tienes que ser un miembro tú mismo(a). Por favor contacta con el administrador del sistema i crees que esto es un error.'
 );
 
 ###############################################################################
@@ -1221,9 +1221,9 @@ $LANG_BUTTONS = array(
     5 => 'Encuestas',
     6 => 'Calendario',
     7 => 'Estadísticas',
-    8 => 'Personalizar',
-    9 => 'Buscar',
-    10 => 'búsqueda avanzada'
+    8 => 'Personalización',
+    9 => 'Búsqueda',
+    10 => 'Búsqueda avanzada'
 );
 
 ###############################################################################
@@ -1241,28 +1241,28 @@ $LANG_404 = array(
 $LANG_LOGIN = array(
     1 => 'se requiere ingresar',
     2 => 'Lo siento, para acceder a esta área tienes que estar verificado(a) como usuario(a).',
-    3 => 'ingresar',
-    4 => 'Nuevo(a) Usuario(a)'
+    3 => 'ingresa',
+    4 => 'Usuario (a) nuevo(a)'
 );
 
 ###############################################################################
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    1 => 'La función PDF está inhabilitada',
+    2 => 'El document facilitado no se ha reproducido. Se ha recibidido el documento pero no se ha procesado. Por favor, asegúrate que sólo se envíen documentos formateados en html con el estandar xHTML. Por favor, toma nota que los documentos muy complejos en html es posible que no se reproduzcan correctamente o que no aparezcan. El documento resultante de tu intento tiene 0 bytes de extensión, y ha sido borrado. Si no estas seguro(a) que tu documento se reproduzca bien, por favor, vuelve a enviarlo.',
+    3 => 'Error desconocido durante la generación de PDF',
+    4 => "No has dado datos de la página o quieres utilizar la herramienta de generación ad-hoc de PDF. Si crees que estas recibiendo esta página\n          por error entonces por favor contacta con el administrador del sistema.  De otro modo, puedes utilizar el formulario que hay abajo para generar PDFs.",
+    5 => 'Cargando tu documento.',
+    6 => 'Por favor, espera mientras se carga tu documento.',
+    7 => 'Puedes pulsar a la derecha el botón de abajo y elegir \'save target...\' o \'save link location...\' para guardar una copia de tu documento.',
+    8 => "La ruta dada por el archivo de configuración al HTMLDoc binario no es válida o este sistema no lo puede ejecutar.  Por favor contacta con el administrador del sistema si este problema\n          continúa.",
+    9 => 'Creador de PDF',
+    10 => "Esta es la herramienta ad-hoc de creación de PDF. Intentará convertir cualquier URL que le dés en un PDF.  Por favor, toma nota que algunas páginas de la red (Web) no se generarán correctamente con esta función.  Este\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => '¡Crea un PDF!',
+    13 => 'La configuración PHP en este servidor no permite que los URL se utilicen con la instrucción fopen.  El administrador del sistema tiene que editar el archivo php.ini y que esté conectado allow_url_fopen',
+    14 => 'El PDF que has solicitado o no existe o has intentado acceder a un archivo ilegalmente.'
 );
 
 ?>
