@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.54 2003/02/23 20:45:09 dhaun Exp $
+// $Id: users.php,v 1.55 2003/04/11 08:19:10 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -390,18 +390,19 @@ function sendNotification ($username, $email, $uid, $queued = false)
 function createuser($username,$email) 
 {
     global $_TABLES, $LANG04, $_CONF;
-	
-    $ucount = DB_count($_TABLES['users'],'username',$username);
-    $ecount = DB_count($_TABLES['users'],'email',$email);
-	
-    if ($ucount == 0 AND $ecount == 0) {
-        if (COM_isEmail($email)) {
+
+    if (COM_isEmail($email)) {
+
+        $ucount = DB_count($_TABLES['users'],'username',$username);
+        $ecount = DB_count($_TABLES['users'],'email',$email);
+
+        if ($ucount == 0 AND $ecount == 0) {
             $regdate = strftime('%Y-%m-%d %H:%M:$S',time());
             DB_save($_TABLES['users'],'username,email,regdate',"'$username','$email','$regdate'");
             $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
 
-            // Add user to Logged-in group (i.e. members) and the All Users group (which includes
-            // anonymous users
+            // Add user to Logged-in group (i.e. members) and the All Users
+            // group (which includes anonymous users
             $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
             $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
             DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
@@ -445,20 +446,26 @@ function createuser($username,$email)
             DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
             DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
 
-			// Call custom registration and account record create function if enabled and exists
+            // Call custom registration and account record create function
+            // if enabled and exists
   	        if ($_CONF['custom_registration'] AND (function_exists(custom_usercreate))) {
-			    custom_usercreate($uid);
+                custom_usercreate($uid);
 			}
 
             PLG_createUser ($uid);
 
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
-            $retval .= COM_siteHeader('Menu') . newuserform($LANG04[18]) . COM_siteFooter();
+            $retval .= COM_siteHeader ('Menu')
+                    . newuserform ($LANG04[19])
+                    . COM_siteFooter ();
         }
     } else {
-        $retval .= COM_siteHeader('Menu') . newuserform($LANG04[19]) . COM_siteFooter();
+        $retval .= COM_siteHeader ('Menu')
+                . newuserform ($LANG04[18])
+                . COM_siteFooter();
     }
+
     return $retval;
 }
 
