@@ -9,7 +9,7 @@
 // | their email address being intercepted by spammers.                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -33,19 +33,19 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.29 2004/05/29 11:44:31 dhaun Exp $
+// $Id: profiles.php,v 1.30 2004/06/08 09:42:14 dhaun Exp $
 
-include('lib-common.php');
+require_once ('lib-common.php');
 
 /**
-* Mails the contents of the author contact form to that author
+* Mails the contents of the contact form to that user
 *
-* @uid          int         User ID of person to send email to
-* @author       string      The name of the person sending the email
-* @authoremail  string      Email address of person sending the email
-* @subject      string      Subject of email
-* @message      string      Text of message to send
-*
+* @param    int     $uid            User ID of person to send email to
+* @param    string  $author         The name of the person sending the email
+* @param    string  $authoremail    Email address of person sending the email
+* @param    string  $subject        Subject of email
+* @param    string  $message        Text of message to send
+* @return   string                  Meta redirect or HTML for the contact form
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
@@ -101,13 +101,13 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
-			$retval .= COM_siteHeader("menu")
+			$retval .= COM_siteHeader('menu')
 				.COM_errorLog($LANG08[3],2)
 				.contactform($uid,$subject,$message)
 				.COM_siteFooter();
 		}
 	} else {
-		$retval .= COM_siteHeader("menu")
+		$retval .= COM_siteHeader('menu')
 			.COM_errorLog($LANG08[4],2)
 			.contactform($uid,$subject,$message)
 			.COM_siteFooter();
@@ -117,16 +117,17 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 }
 
 /**
-* Shows the email author form
+* Displays the contact form
 *
-* @uid          int         User ID of article author
-* @subject      string      Subject of email
-* @message      string      Text of message to send
+* @param    int     $uid        User ID of article author
+* @param    string  $subject    Subject of email
+* @param    string  $message    Text of message to send
+* @return   string              HTML for the contact form
 *
 */
 function contactform($uid, $subject='', $message='') 
 {
-    global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $LANG_LOGIN, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG08, $LANG_LOGIN, HTTP_COOKIE_VARS;
 
     $retval = '';
 
@@ -189,19 +190,27 @@ function contactform($uid, $subject='', $message='')
     return $retval;
 }
 
-###############################################################################
-# Sends the contents of the contact form to the author
-#
-# Modification History
-#
-# Date		Author		Description
-# ----		------		-----------
-# 4/17/01	Tony Bibbs	Code now allows anonymous users to send email
-#				and it allows user to input a message as well
-#				Thanks to Yngve Wassvik Bergheim for some of
-#				this code
-#
-
+/**
+* Email story to a friend
+*
+* @param    string  $sid        id of story to email
+* @param    string  $to         name of person / friend to email
+* @param    string  $toemail    friend's email address
+* @param    string  $from       name of person sending the email
+* @param    string  $fromemail  sender's email address
+* @param    string  $shortmsg   short intro text to send with the story
+* @return   string              Meta refresh
+*
+* Modification History
+*
+* Date		Author		Description
+* ----		------		-----------
+* 4/17/01	Tony Bibbs	Code now allows anonymous users to send email
+*				and it allows user to input a message as well
+*				Thanks to Yngve Wassvik Bergheim for some of
+*				this code
+*
+*/
 function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg) 
 {
  	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
@@ -209,6 +218,11 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     // check for correct $_CONF permission
     if (empty ($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
+        return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
+    }
+
+    // check if emailing of stories is disabled
+    if ($_CONF['hideemailicon'] == 1) {
         return COM_refresh ($_CONF['site_url'] . '/article.php?story=' . $sid);
     }
 
@@ -257,17 +271,18 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 }
 
 /**
-* Sends the contents of the contact form to the author
+* Display form to email a story to someone.
 *
-* @sid      string      ID of article to email
+* @param    string  $sid    ID of article to email
+* @return   string          HTML for email story form
 *
 */
-function mailstoryform($sid) 
+function mailstoryform($sid)
 {
     global $_TABLES, $HTTP_COOKIE_VARS, $_CONF, $LANG08, $_USER, $LANG_LOGIN;
 
     $retval = '';
-	
+
     if (empty($_USER['username']) &&
         (($_CONF['loginrequired'] == 1) || ($_CONF['emailstoryloginrequired'] == 1))) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
