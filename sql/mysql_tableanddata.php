@@ -543,13 +543,6 @@ $_DATA[30] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('neste
 $_DATA[31] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('threaded','Threaded') ";
 $_DATA[32] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('nocomment','No Comments') ";
 
-$_DATA[33] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (21,'geeklogpollquestion','2001-07-19 14:44:54','I love Geeklog!','I can\'t make up my mind...I love it all!',0,0,0,1) ";
-$_DATA[34] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (22,'geeklogpollquestion','2001-07-19 14:48:23','We are glad you like it!','We are happy you like Geeklog.  Please be sure to join the <a   href=http://lists.sourceforge.net/lists/listinfo/geeklog-devel target=_new>geeklog mailing</a> list!',0,0,21,2) ";
-$_DATA[35] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (23,'20010719095630103','2001-07-19 15:02:57','Other Admin accounts','Remember, the admin accounts that come with a fresh Geeklog installation are for demonstration purposes only.  You should delete them if you don\'t plan on using them or at least change their passwords.',0,0,0,2) ";
-$_DATA[36] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (24,'20011115154118159','2001-11-15 16:50:09','test comment','will this work?',0,0,0,2) ";
-$_DATA[37] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (25,'20011115154118159','2001-11-15 16:51:13','test comment','will this work?',0,0,0,2) ";
-$_DATA[38] = "INSERT INTO {$_TABLES['comments']} (cid, sid, date, title, comment, score, reason, pid, uid) VALUES (26,'20011029162602450','2001-12-03 14:36:21','Test','Test',0,0,0,2) ";
-
 $_DATA[39] = "INSERT INTO {$_TABLES['commentspeedlimit']} (id, ipaddress, date) VALUES (3,'127.0.0.1',1007411781) ";
 
 $_DATA[40] = "INSERT INTO {$_TABLES['cookiecodes']} (cc_value, cc_descr) VALUES (3600,'1 Hour') ";
@@ -681,8 +674,6 @@ $_DATA[162] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, gr
 $_DATA[163] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All users except anonymous should belong to this group',1) ";
 
 $_DATA[164] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095147683','Geeklog Sites','http://geeklog.sourceforge.net','The source for stuff...nifty stuff','Geeklog Project',52,NULL,5,2,3,3,2,2) ";
-$_DATA[165] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20010719095621775','Geeklog Sites','http://www.devgeek.org','The place to talk about and contribute to the development of Geeklog','DevGeek',78,NULL,5,2,3,3,2,2) ";
-$_DATA[166] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('2001071910450356','Geeklog Sites','http://www.iowaoutdoors.org','Your source for hunting and fishing information in Iowa.','Iowa Outdoors',10,NULL,5,2,3,3,2,2) ";
 
 $_DATA[168] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (0,'Don\'t Email') ";
 $_DATA[169] = "INSERT INTO {$_TABLES['maillist']} (code, name) VALUES (1,'Email Headlines Each Night') ";
