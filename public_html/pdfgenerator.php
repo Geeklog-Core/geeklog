@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.6 2004/06/07 20:47:28 tony Exp $
+// $Id: pdfgenerator.php,v 1.7 2004/06/09 13:53:22 tony Exp $
 
 require_once 'lib-common.php';
 
@@ -43,7 +43,12 @@ if ($_CONF['pdf_enabled'] == 0 OR
     exit;
 } else {
     // Ensure we got a handle to a valid HTMLDoc binary
-    if (!is_file($_CONF['path_to_htmldoc']) OR !is_executable($_CONF['path_to_htmldoc'])) {
+    if (function_exists('is_executable')) {
+        $is_exec = is_executable($_CONF['path_to_htmldoc']);
+    } else {
+        $is_exec = file_exists($_CONF['path_to_htmldoc']);
+    }
+    if ($is_exec) {
         echo COM_siteHeader();
         echo $LANG_PDF[8];
         echo COM_siteFooter();
