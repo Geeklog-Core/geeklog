@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.20 2002/05/02 18:24:09 tony_bibbs Exp $
+// $Id: event.php,v 1.21 2002/05/04 17:19:14 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -39,7 +39,7 @@ include('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// COM_debug($HTTP_POST_VARS);
 
 $display = '';
 
@@ -104,8 +104,8 @@ function editevent($mode, $A)
 		$A['eid'] = COM_makesid(); 
 	}
 
-    if (!empty($eid) && SEC_hasRights('event.edit')) {
-        $event_templates->set_var('delete_option', '<input type="submit" value="delete" name="mode">');
+    if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
+        $event_templates->set_var('delete_option', "<input type=\"submit\" value=\"$LANG22[22]\" name=\"mode\">");
     }
 
     $event_templates->set_var('event_id', $A['eid']);
@@ -341,6 +341,8 @@ function editevent($mode, $A)
     $event_templates->set_var('event_location', $A['location']);
     $event_templates->set_var('lang_eventdescription', $LANG22[8]);
     $event_templates->set_var('event_description', $A['description']); 
+    $event_templates->set_var('lang_save', $LANG22[20]);
+    $event_templates->set_var('lang_cancel', $LANG22[21]);
 
 	// user access info
     $event_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
@@ -528,11 +530,11 @@ function listevents()
 // MAIN
 
 switch ($mode) {
-	case 'delete':
+	case "$LANG21[21]":
 		DB_delete($_TABLES['events'],'eid',$eid);
         echo COM_refresh($_CONF['site_admin_url'] . '/event.php?msg=18');
 		break;
-	case 'save':
+	case "$LANG22[20]":
 		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode);
 		break;
 	case 'editsubmission':
@@ -549,7 +551,7 @@ switch ($mode) {
 		$display .= editevent($mode,$A);
 		$display .= COM_siteFooter();
 		break;
-	case 'cancel':
+	case "$LANG22[22]":
 	default:
 		$display .= COM_siteHeader('menu');
 		$display .= COM_showMessage($msg);
