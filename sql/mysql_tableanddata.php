@@ -500,9 +500,9 @@ $_SQL[40] = "
 CREATE TABLE {$_TABLES['article_images']} (
   ai_sid varchar(20) NOT NULL,
   ai_img_num tinyint(2) unsigned NOT NULL,
-  ai_img_path varchar(128) NOT NULL,
+  ai_filename varchar(128) NOT NULL,
   PRIMARY KEY (ai_sid,ai_img_num)
-); TYPE=MyISAM
+) TYPE=MyISAM
 ";
  
 $_DATA[1] = "INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES (1,3) ";
