@@ -1,0 +1,4 @@
+To use the files from this directory with the static pages plugin, simply
+rename the language file you want to use to 'lang.php'. Then copy that
+renamed file over the original (english) lang.php.
+

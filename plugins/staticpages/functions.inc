@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.5 2002/04/23 04:22:02 mlimburg Exp $
+// $Id: functions.inc,v 1.6 2002/04/28 13:42:50 dhaun Exp $
 
 include($_CONF['path'] . 'plugins/staticpages/lang.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
@@ -94,7 +94,9 @@ function plugin_showstats_staticpages($showsitestats)
 */
 function plugin_searchtypes_staticpages() 
 {
-    $tmp['staticpages'] = 'Static Pages';
+    global $LANG_STATIC;
+
+    $tmp['staticpages'] = $LANG_STATIC['staticpages'];
     return $tmp;
 }
 
@@ -113,7 +115,7 @@ function plugin_searchtypes_staticpages()
 */
 function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic, $type, $author) 
 {
-	global $_TABLES, $_CONF;
+	global $_TABLES, $_CONF, $LANG_STATIC;
 
     if (empty($type)) {
         $type = 'all';
@@ -123,7 +125,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if ($type <> 'all' AND $type <> 'staticpages') {
         $plugin_results = new Plugin();
         $plugin_results->plugin_name = 'staticpages';
-        $plugin_results->searchlabel = 'Static Pages Results';
+        $plugin_results->searchlabel = $LANG_STATIC['results'];
         return $plugin_results;
     }
 
@@ -153,11 +155,11 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'staticpages';
-    $plugin_results->searchlabel = 'Static Pages Results';
-    $plugin_results->addSearchHeading('Title');
-    $plugin_results->addSearchHeading('Last Updated');
-    $plugin_results->addSearchHeading('Author');
-    $plugin_results->addSearchHeading('Hits');
+    $plugin_results->searchlabel = $LANG_STATIC['results'];
+    $plugin_results->addSearchHeading($LANG_STATIC['title']);
+    $plugin_results->addSearchHeading($LANG_STATIC['date']);
+    $plugin_results->addSearchHeading($LANG_STATIC['author']);
+    $plugin_results->addSearchHeading($LANG_STATIC['hits']);
     $plugin_results->num_searchresults = DB_numRows($result);
 
     // NOTE if any of your data items need to be links then add them here! 
@@ -186,7 +188,6 @@ function plugin_cclabel_staticpages()
 {
     global $LANG_STATIC, $_CONF;
 
-    // Need to change to not hardcode the language
     return array($LANG_STATIC['staticpages'],$_CONF['site_admin_url'] . '/plugins/staticpages/index.php',$_CONF['site_url'] . '/staticpages/images/staticpages.gif');
 }
 

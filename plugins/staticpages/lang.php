@@ -70,7 +70,9 @@ $LANG_STATIC= array(
     uninstall_complete_msg => 'The datastructures for the Static Pages plugin have been successfully removed from your Geeklog database.',
     uninstall_failed => 'Uninstall Failed',
     uninstall_failed_msg => 'The uninstall of the Static Pages plugin failed.  Please see your Geeklog error.log file for diagnostic information',
-    all_html_allowed => 'All HTML is allowed'
+    all_html_allowed => 'All HTML is allowed',
+    results => 'Static Pages Results',
+    author => 'Author'
 );
 
 ?>
