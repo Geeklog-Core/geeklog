@@ -3,6 +3,7 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- mysql.class.php now only runs mysql_connect once per page load.  [Vinny]
 - Fixed Bug #183: COM_extractLinks will now ignore anchor tags that do not
   contain "href". [Vinny]
 - The "Google paging" now has additional links to jump to the first and last
