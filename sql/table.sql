@@ -936,8 +936,8 @@ CREATE TABLE users (
 # Dumping data for table 'users'
 #
 
-INSERT INTO users VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2001-09-18 13:58:56');
-INSERT INTO users VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost.com','http://www.geeklog.org','','0000-00-00 00:00:00');
+INSERT INTO users VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'',NOW(),NULL);
+INSERT INTO users VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost.com','http://www.geeklog.org','',NOW(),NULL);
 
 #
 # Table structure for table 'vars'
