@@ -1,5 +1,7 @@
 GeekLog History/Changes:
 
+- Added new config variable 'showfirstasfeatured' which, when set to 1, will
+  render the first story on _any_ page like it was a featured story.
 - Added admin/plugins/newpluginlist.thtml and newlistitem.thml template files
   for the list of plugins not installed yet. These files are optional, i.e.
   the list will be formatted using hard-coded HTML when they don't exist.

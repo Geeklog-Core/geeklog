@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.36 2002/11/08 11:18:46 dhaun Exp $
+// $Id: index.php,v 1.37 2002/11/18 14:31:56 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -229,6 +229,9 @@ if ($nrows > 0) {
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['featured'] == 1) {
                 $feature = 'true';
+            } elseif (($x == 1) && ($_CONF['showfirstasfeatured'] == 1)) {
+                $feature = 'true';
+                $A['featured'] = 1;
             }
             $display .= COM_article($A,'y');
         }

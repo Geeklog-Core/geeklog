@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.60 2002/10/28 17:32:26 dhaun Exp $
+// $Id: config.php,v 1.61 2002/11/18 14:31:47 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -269,6 +269,10 @@ $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
+
+// When set to 1, this will render the first story on any page using the
+// templates for featured stories - even if that story is not featured.
+$_CONF['showfirstasfeatured']   = 0;
 
 // Optional Image Settings
 
