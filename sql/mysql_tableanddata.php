@@ -526,7 +526,7 @@ CREATE TABLE {$_TABLES['users']} (
   sig varchar(160) NOT NULL default '',
   regdate datetime NOT NULL default '0000-00-00 00:00:00',
   photo varchar(128) DEFAULT NULL,
-  cookietimeout int(8) unsigned default '0',
+  cookietimeout int(8) unsigned default '28800',
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
   pwrequestid varchar(16) default NULL,
@@ -653,7 +653,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VA
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (17,'%d/%m/%y %H:%M','21/03/99 22:00') ";
 $_DATA[] = "INSERT INTO {$_TABLES['dateformats']} (dfid, format, description) VALUES (18,'%a %d %b %I:%M%p','Sun 21 Mar 10:00PM') ";
 
-$_DATA[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2001110114064662','Test event','test','Test','2001-11-02','2001-11-03','http://www.tonybibbs.com',0,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['eventsubmission']} (eid, title, description, location, datestart, dateend, url, allday, zipcode, state, city, address2, address1, event_type, timestart, timeend) VALUES ('2003110114064662','Test event','test','Test','2003-11-02','2003-11-03','http://www.tonybibbs.com',0,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (0,'Not Featured') ";
 $_DATA[] = "INSERT INTO {$_TABLES['featurecodes']} (code, name) VALUES (1,'Featured') ";
@@ -858,8 +858,8 @@ $_DATA[] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid, tz
 #
 
 $_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2004-01-01 00:00:01',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2004-01-01 00:00:02',0,NULL) ";
-$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2004-01-01 00:00:03',NULL,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://www.geeklog.net','','2004-01-01 00:00:02',28800,NULL) ";
+$_DATA[] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'Moderator','Moderator','5f4dcc3b5aa765d61d8327deb882cf99','moderator','http://www.geeklog.net','','2004-01-01 00:00:03',28800,NULL) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('totalhits','0') ";
 $_DATA[] = "INSERT INTO {$_TABLES['vars']} (name, value) VALUES ('lastemailedstories','') ";
