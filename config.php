@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.95 2003/08/09 11:47:40 dhaun Exp $
+// $Id: config.php,v 1.96 2003/08/31 08:18:01 dhaun Exp $
 
 // When setting up Geeklog for the first time, you only need to make sure the
 // settings in the following 3 sections are correct:
@@ -303,19 +303,19 @@ $_CONF['allow_account_delete']  = 0;
 // Topic Settings
 
 // Topics can be assigned a sort number so that you can control what order they
-// appear in the 'Sections' block on the homepage.  If you prefer you can also
+// appear in the 'Topics' block on the homepage.  If you prefer you can also
 // have this sort alphabetically by changing the value to 'alpha' (default is
 // by 'sortnum'
 
 $_CONF['sortmethod'] = 'sortnum'; // or 'alpha'
 
-// Show the number of stories in a topic in Section Block
+// Show the number of stories in a topic in Topics Block
 $_CONF['showstorycount'] = 1;
 
-// Show the number of story submissions for a topic in Section Block
+// Show the number of story submissions for a topic in Topics Block
 $_CONF['showsubmissioncount'] = 1;
 
-// Hide 'Home' link from Sections block (if set to 1)
+// Hide 'Home' link from Topics block (if set to 1)
 $_CONF['hide_home_link'] = 0;
 
 // Show blocks for empty search results
