@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.15 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: moderation.php,v 1.16 2001/12/07 05:25:46 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -318,11 +318,10 @@ function moderation($mid,$action,$type,$count)
             DB_delete($_TABLES["{$type}submission"],"$id",$mid[$i]);
             break;
         case 'approve':
-            if ((strlen($type) > 0) && ($type <> 'story')) {
-                //This is called in case this is a plugin. There may be some plugin specific processing that needs to happen first.
-                $retval .= PLG_approveSubmission($type,$mid[$i]);
-                DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
-            }
+            // This is called in case this is a plugin. There may be some plugin specific 
+            // processing that needs to happen first.
+            $retval .= PLG_approveSubmission($type,$mid[$i]);
+            DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
             break;
         }
     }
