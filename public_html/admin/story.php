@@ -193,6 +193,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 		while($check != $reg[0]) {
 			$check = $reg[0];
 			eregi("<a([^<]|(<[^/])|(</[^a])|(</a[^>]))*</a>",$fulltext,$reg);
+			if(stristr($fulltext,"<img ")) {
+				#this is a linked images tag, ignore
+				$reg[0] = "";
+			}
 			if ($reg[0] != "") {
 				$fulltext = eregi_replace($reg[0],"",$fulltext);
 			}
