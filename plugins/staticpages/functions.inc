@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.44 2004/10/23 09:40:17 dhaun Exp $
+// $Id: functions.inc,v 1.45 2004/10/25 08:59:52 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -410,7 +410,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
     // So, if asked to display pages for the top of the page, check if we
     // have pages to be displayed after the featured story and if there is
     // no featured story, display those pages as well.
-    if ($where == 1) {
+    if (($where == 1) && ($_CONF['showfirstasfeatured'] == 0)) {
         if (DB_count ($_TABLES['stories'], 'featured', 1) == 0) {
             // no featured story found - redefine $moresql
             $moresql = "(sp_where = 1 OR sp_where = 2) AND ";
