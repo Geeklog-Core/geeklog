@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.6 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: profiles.php,v 1.7 2001/12/14 15:29:37 tony_bibbs Exp $
 
 include('lib-common.php');
 
@@ -140,10 +140,10 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
 		.$A['title'].LB
 		.strftime($_CONF['date'],$A['day']).LB
 		.$LANG01[1].' '.$A['author'].LB.LB
-		.stripslashes(strip_tags($A['introtext'])).LB
+		.stripslashes(strip_tags($A['introtext'])).LB.LB
 		.stripslashes(strip_tags($A['bodytext'])).LB.LB
 		.'------------------------------------------------------------'.LB
-		.$LANG08[24].' '.$_CONF['site_url'].'/article.php?story=$sid#comments';
+		.$LANG08[24].' '.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
 	
  	$mailto = $to.' <'.$toemail.'>';
  	$mailfrom = 'From: '.$from.' <'.$fromemail.'>';
@@ -192,6 +192,7 @@ function mailstoryform($sid)
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
     $mail_template->set_var('lang_warning', $LANG08[22]);
     $mail_template->set_var('lang_sendmessage', $LANG08[16]);
+    $mail_template->set_var('story_id',$sid);
     $mail_template->set_var('end_block', COM_endBlock());
     $mail_template->parse('output', 'form');
     $retval .= $mail_template->finish($mail_template->get_var('output'));
