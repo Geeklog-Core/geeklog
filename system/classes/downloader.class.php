@@ -5,12 +5,12 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | downloader.class.php                                                      |
-// | Geeklog file download class library.                                      |
 // |                                                                           |
+// | Geeklog file download class library.                                      |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2002 by the following authors:                              |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            | 	
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.2 2002/05/13 18:53:07 tony_bibbs Exp $
+// $Id: downloader.class.php,v 1.3 2003/06/24 09:50:15 dhaun Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -101,6 +101,9 @@ class downloader
         $this->_logFile = '';
         $this->_doLogging = false;
         $this->_limitByIP = false;
+
+        $this->_setAvailableExtensions ();
+
     }
     
     // PRIVATE METHODS
@@ -190,7 +193,6 @@ class downloader
 		if (sizeof($extensions) == 0) {
 			$this->_availableMimeTypes = 
 				array(
-                    
 					'tgz' => 'application/x-gzip-compressed',
                     'gz' =>  'application/x-gzip-compressed',
 					'zip' => 'application/x-zip-compresseed',
@@ -217,6 +219,11 @@ class downloader
 		} else {
 			$this->_availableMimeTypes = $extensions;
 		}
+
+        $this->_availableExtensions = array ();
+        foreach ($this->_availableMimeTypes as $ext => $mime) {
+            $this->_availableExtensions[] = $ext;
+        }
     }
     
     // Public Methods
@@ -421,7 +428,7 @@ class downloader
     */
     function checkExtension($extension)
     {
-        if (!in_array($extensions,$this->getAllowedExtensions())) {
+        if (!in_array($extension,$this->getAllowedExtensions())) {
 			$this->_addError('File type, .' . $extension . ', not in list of allowed file types available for download');
 			return false;
 		} else {
@@ -496,6 +503,7 @@ class downloader
             header('Content-type: ' . $this->_availableMimeTypes[$fextension] . "\n");
             header('Content-transfer-encoding: binary' . "\n");
             header('Content-length: ' . filesize($this->_sourceDirectory . $fileName) . "\n");
+            header('Content-Disposition: attachment; filename="' . $fileName . '"');
 
             // Send file contents.
             $fp = fopen($this->_sourceDirectory . $fileName, 'rb');
