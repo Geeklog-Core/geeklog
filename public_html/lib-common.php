@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.372 2004/09/05 08:49:17 dhaun Exp $
+// $Id: lib-common.php,v 1.373 2004/09/08 09:41:15 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1015,12 +1015,6 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
     $footer->set_var( 'geeklog_url', 'http://www.geeklog.net/' );
     $footer->set_var( 'geeklog_version', VERSION );
 
-    $exectime = $_PAGE_TIMER->stopTimer();
-    $exectext = $LANG01[91] . ' ' . $exectime . ' ' . $LANG01[92];
-
-    $footer->set_var( 'execution_time', $exectime );
-    $footer->set_var( 'execution_textandtime', $exectext );
-
     /* Check if an array has been passed that includes the name of a plugin
      * function or custom function
      * This can be used to take control over what blocks are then displayed
@@ -1053,6 +1047,12 @@ function COM_siteFooter( $rightblock = false, $custom = '' )
     {
         $footer->set_var( 'centerblockfooter-span', '</td></tr></table>' );
     }
+
+    $exectime = $_PAGE_TIMER->stopTimer();
+    $exectext = $LANG01[91] . ' ' . $exectime . ' ' . $LANG01[92];
+
+    $footer->set_var( 'execution_time', $exectime );
+    $footer->set_var( 'execution_textandtime', $exectext );
 
     // Actually parse the template and make variable substitutions
     $footer->parse( 'index_footer', 'footer' );
