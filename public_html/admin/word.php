@@ -53,8 +53,8 @@ function editword($wid="") {
     $result = dbquery("SELECT * FROM {$CONF["db_prefix"]}wordlist where wid ='$wid'");
 	$A = mysql_fetch_array($result);
 
-    	if (!empty($wid)) $wid = $A["wid"];
-
+    	if (empty($wid))
+               $wid = $A["wid"];
 
 	startblock($LANG_WORDS[editor]);
     print "<form action={$CONF["site_url"]}/admin/word.php method=post>";
@@ -66,7 +66,6 @@ function editword($wid="") {
   	print "<tr><td align=right>{$LANG_WORDS[replacmentword]}:</td><td><input type=text size=20 name=replaceword value=\"{$A["replaceword"]}\"></td></tr>";
     print "</form>";
 endblock();
-
 }
 ###############################################################################
 # Saves $grp_id to the database
