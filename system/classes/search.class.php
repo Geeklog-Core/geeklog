@@ -30,9 +30,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.23 2004/07/11 18:18:05 dhaun Exp $
+// $Id: search.class.php,v 1.24 2004/08/09 07:56:22 dhaun Exp $
 
-if (eregi ('search.class.php', $PHP_SELF)) {
+if (eregi ('search.class.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 
@@ -366,7 +366,7 @@ class Search {
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
     
             $mysearchterm = addslashes ($this->_query);
-            $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
+            $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,cid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
@@ -408,12 +408,13 @@ class Search {
                 } else {
                     $querystring = '';
                 }
-                if ($A['comment_type'] == 'article') {
+                $A['title'] = '<a href="' . $_CONF['site_url'] . '/comment.php?mode=view&amp;cid=' . $A['cid'] . '">' . stripslashes ($A['title']) . '</a>';
+                /*if ($A['comment_type'] == 'article') {
                     $A['title'] = '<a href="' .$_CONF['site_url'] .'/article.php?story=' . $A['sid'] . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
                 } else {
                     $A['title'] = '<a href="' .$_CONF['site_url'] .'/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1' . $querystring . '#comments">' . stripslashes($A['title']) . '</a>';
-                }
-                
+                }*/
+
                 $thetime = COM_getUserDateTimeFormat($A['day']);
                 $row = array($A['title'], $thetime[0],DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
                 $comment_results->addSearchResult($row);

@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | auth.inc.php                                                              |
-// | Geeklog admin authentication module                                       |
 // |                                                                           |
+// | Geeklog admin authentication module                                       |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.19 2004/06/17 11:15:29 dhaun Exp $
+// $Id: auth.inc.php,v 1.20 2004/08/09 07:56:22 dhaun Exp $
 
 // this file can't be used on its own
-if (eregi ('auth.inc.php', $PHP_SELF))
+if (eregi ('auth.inc.php', $HTTP_SERVER_VARS['PHP_SELF']))
 {
     die ('This file can not be used on its own.');
 }
@@ -88,10 +88,11 @@ if (!empty ($passwd) && !empty ($mypasswd) && ($mypasswd == md5 ($passwd))) {
     if (!empty($warn)) {
         $display .= $LANG20[02]
         .'<br><br>'
-        .COM_accessLog($LANG20[03]);
+        .COM_accessLog($LANG20[03] . ' ' . $loginname);
     }
 	
-    $display .= '<form action="'.$PHP_SELF.'" method="POST">'
+    $display .= '<form action="' . $HTTP_SERVER_VARS['PHP_SELF']
+             . '" method="POST">'
         .'<table cellspacing="0" cellpadding="0" border="0" width="100%">'.LB
         .'<tr><td align="right">'.$LANG20[04].'&nbsp;</td>'.LB
         .'<td><input type="text" name="loginname" size="16" maxlength="16"></td>'.LB

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.22 2004/07/14 18:34:57 dhaun Exp $
+// $Id: mail.php,v 1.23 2004/08/09 07:56:22 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -59,7 +59,7 @@ if (!SEC_inGroup ('Mail Admin') && !SEC_hasrights ('user.mail')) {
 */
 function display_form ()
 {
-    global $_CONF, $_TABLES, $_USER, $LANG31, $PHP_SELF;
+    global $_CONF, $_TABLES, $_USER, $LANG31, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -69,7 +69,7 @@ function display_form ()
     $mail_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $mail_templates->set_var ('startblock_email', COM_startBlock ($LANG31[1],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
-    $mail_templates->set_var ('php_self', $PHP_SELF);
+    $mail_templates->set_var ('php_self', $HTTP_SERVER_VARS['PHP_SELF']);
     $mail_templates->set_var ('lang_note', $LANG31[19]);
     $mail_templates->set_var ('lang_to', $LANG31[18]);
     $mail_templates->set_var ('lang_selectgroup', $LANG31[25]);

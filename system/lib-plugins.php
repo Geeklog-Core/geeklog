@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.30 2004/07/18 10:14:41 dhaun Exp $
+// $Id: lib-plugins.php,v 1.31 2004/08/09 07:56:22 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -40,7 +40,7 @@
 *
 */
 
-if (eregi ('lib-plugins.php', $PHP_SELF)) {
+if (eregi ('lib-plugins.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

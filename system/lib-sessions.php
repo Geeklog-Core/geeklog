@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | lib-sessions.php                                                          |
-// | Geeklog session library.                                                  |
 // |                                                                           |
+// | Geeklog session library.                                                  |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.29 2004/08/08 17:00:13 blaine Exp $
+// $Id: lib-sessions.php,v 1.30 2004/08/09 07:56:22 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -41,7 +41,7 @@
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
 
-if (eregi ('lib-sessions.php', $PHP_SELF)) {
+if (eregi ('lib-sessions.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

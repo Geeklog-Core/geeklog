@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.30 2004/07/13 19:00:03 dhaun Exp $
+// $Id: lib-database.php,v 1.31 2004/08/09 07:56:22 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -100,7 +100,7 @@ $_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-if (eregi ('lib-database.php', $PHP_SELF)) {
+if (eregi ('lib-database.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
 

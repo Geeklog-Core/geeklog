@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.355 2004/08/08 17:00:12 blaine Exp $
+// $Id: lib-common.php,v 1.356 2004/08/09 07:56:21 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -95,7 +95,7 @@ if( isset( $_CONF['site_enabled'] ) && !$_CONF['site_enabled'] )
 }
 
 // this file can't be used on its own - redirect to index.php
-if( eregi( 'lib-common.php', $PHP_SELF ))
+if( eregi( 'lib-common.php', $HTTP_SERVER_VARS['PHP_SELF'] ))
 {
     echo COM_refresh( $_CONF['site_url'] . '/index.php' );
     exit;
@@ -2731,9 +2731,9 @@ function COM_refresh( $url )
 */
 function COM_commentBar( $sid, $title, $type, $order, $mode )
 {
-    global $_TABLES, $LANG01, $_USER, $_CONF, $_REQUEST, $HTTP_SERVER_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_REQUEST, $HTTP_SERVER_VARS;
 
-    $page = array_pop(explode('/', $HTTP_SERVER_VARS['PHP_SELF']));
+    $page = array_pop( explode( '/', $HTTP_SERVER_VARS['PHP_SELF'] ));
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
 
     $commentbar = new Template( $_CONF['path_layout'] . 'comment' );

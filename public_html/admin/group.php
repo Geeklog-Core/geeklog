@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.37 2004/07/24 18:26:32 dhaun Exp $
+// $Id: group.php,v 1.38 2004/08/09 07:56:22 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -673,7 +673,7 @@ function grp_selectUsers ($group_id = '0', $allusers = false)
 
 function editusers ($group)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $HTTP_SERVER_VARS;
 
     $thisUsersGroups = SEC_getUserGroups ();
     if (!empty ($group) && ($group > 0) &&
@@ -697,7 +697,7 @@ function editusers ($group)
     $groupmembers = new Template($_CONF['path_layout'] . 'admin/group');
     $groupmembers->set_file (array ('groupmembers'=>'groupmembers.thtml'));
     $groupmembers->set_var ('site_url',$_CONF['site_url']);
-    $groupmembers->set_var ('phpself',$PHP_SELF);
+    $groupmembers->set_var ('phpself', $HTTP_SERVER_VARS['PHP_SELF']);
     $groupmembers->set_var ('LANG_sitemembers',$LANG_ACCESS['availmembers']);
     $groupmembers->set_var ('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
     $groupmembers->set_var ('sitemembers', grp_selectUsers($group,true) );
