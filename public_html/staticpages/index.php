@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2003/09/07 20:50:13 dhaun Exp $
+// $Id: index.php,v 1.13 2003/12/29 13:21:45 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -62,7 +62,7 @@ if ($count == 0 || $count > 1) {
 
 if (!($error)) {
     $A = DB_fetchArray ($result);
-    $_CONF["pagetitle"] = stripslashes ($A['sp_title']);
+    $_CONF['pagetitle'] = stripslashes ($A['sp_title']);
     if ($A['sp_format'] == 'allblocks' OR $A['sp_format'] == 'leftblocks') {
         $retval .= COM_siteHeader ('menu');
     } else {
@@ -70,7 +70,7 @@ if (!($error)) {
             $retval .= COM_siteHeader ('none');
         }
     }
-    if (($_SP_CONF['in_block'] == 1) && ($A['sp_format'] != 'blankpage')) {
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_startBlock (stripslashes ($A['sp_title']));
     }
     //Check for type (ie html or php)
@@ -83,7 +83,9 @@ if (!($error)) {
         $curtime = COM_getUserDateTimeFormat ($A['sp_date']);
         $retval .= '<p align="center"><br>' . $LANG_STATIC['lastupdated']
                 . ' ' . $curtime[0]; 
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) {
+        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
+                SEC_hasRights ('staticpages.edit')) {
             $retval .= '<br><a href="' . COM_buildURL ($_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
                     . $page) . '">';
@@ -91,7 +93,7 @@ if (!($error)) {
         }
         $retval .= '</p>';
     }
-    if (($_SP_CONF['in_block'] == 1) && ($A['sp_format'] != 'blankpage')) {
+    if (($A['sp_inblock'] == 1) && ($A['sp_format'] != 'blankpage')) {
         $retval .= COM_endBlock ();
     }
 
