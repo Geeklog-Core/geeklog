@@ -22,11 +22,14 @@
   <li><a href="#Functions_for_writing">Functions for writing Plugins</a>
     <ul>
       <li><a href="#mod_functions">Moderation Functions</a></li>
-      <li><a href="#admin_user_functions">Admin and User Functions</a></li>
+      <li><a href="#admin_user_functions">Admin and User Menu Functions</a></li>
       <li><a href="#Search_Functions">Search Functions</a></li>
       <li><a href="#Comment_Functions">Comment Functions</a></li>
       <li><a href="#Stats_Function">Stats Function</a></li>
       <li><a href="#Uninstall_Function">Uninstall Function</a></li>
+      <li><a href="#User_Functions">User Functions</a></li>
+      <li><a href="#Profile_Functions">Profile Functions</a></li>
+      <li><a href="#Misc_Functions">Misc. Functions</a></li>
     </ul></li>
   <li><a href="#Implementing_your_Admin_Interface">Implementing your Admin Interface</a></li>
   <li><a href="#Preparing_your_Geeklog_Plugin">Preparing your Geeklog Plugin Distribution</a></li>
@@ -148,7 +151,7 @@ and links then you must implement these functions.</p>
   </tr>
 </table>
 
-<h2><a name="admin_user_functions">Admin and User functions</a></h2>
+<h2><a name="admin_user_functions">Admin and User Menu functions</a></h2>
 
 <p>If you want your plugin to effect the Admin and User Function blocks    
 that show up on every Geeklog page then you must implement these 
@@ -237,9 +240,9 @@ functions.inc file:</p>
     This function does not take any parameters but simply returns true if this plugin supports comments. This call is made in Geeklog code (example: article.php) to determine if it should redirect handling to the plugin.</td>
   </tr>
   <tr>
-    <td valign="top" class="codeheader">plugin_commentsave_&lt;plugin name&gt;</td>
+    <td valign="top" class="codeheader">plugin_handlecomment_&lt;plugin name&gt;</td>
     <td valign="top" class="code">
-    This function expects the comment id (primary index in the comment table) and will update the plugin record with the total number of comments for this plugin item. It then handles the refresh or redirection of the user back to the plugin instead of the main site page.</td>
+    This function expects the comment id (primary index in the comment table) and and type of operation (either 'save' or 'delete') to perform on the comment. It will update the plugin record with the total number of comments for this plugin item. It then handles the refresh or redirection of the user back to the plugin instead of the main site page.</td>
   </tr>
   <tr>
     <td valign="top" class="codeheader">plugin_commentform_&lt;plugin name&gt;</td>
@@ -294,6 +297,86 @@ Top  Ten Commented  Stories).</td>
 The function should return <code>true</code> if the uninstall succeeded and <code>false</code> if it failed.</td>
           </tr>
       </table>
+
+<h2><a name="User_Functions">User Functions</a></h2>
+
+<p>For some plugins, it may be necessary to track creation and deletion of user accounts.</p>
+
+  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="Center">
+    <caption align="bottom">Table 7. User functions</caption>
+      <tr>
+        <th valign="top">Function</th>
+        <th valign="top">Description of Function</th>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_user_create_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when a new user account has been created. The only parameter passed is the user id.<br>
+This function does not have a return value.</td>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_user_delete_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when a user account has been deleted. The only parameter passed is the user id.<br>
+This function does not have a return value.</td>
+      </tr>
+  </table>
+
+<h2><a name="Profile_Functions">Profile Functions</a></h2>
+
+<p>Plugins can add blocks or individual items to the user profile.</p>
+
+  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
+    <caption align="bottom">Table 9. Misc. functions</caption>
+      <tr>
+        <th valign="top">Function</th>
+        <th valign="top">Description of Function</th>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_profilevariablesedit_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when Geeklog is about to display the edit form for a user's profile. The plugin is given the user id and a reference to the template of the edit form. It can now add its own variables and input fields to the form.<br>
+This function does not return anything. The plugin should use the template functions (<code>set_var</code> etc.) to add things to the template.</td>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_profileblocksedit_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when Geeklog is about to display the edit form for a user's profile. The user id is passed as a parameter to this function. The plugin can return the HTML for a block (including block header and footer) that it wants to be displayed on the profile edit form. When a plugin asks for several items, it may make more sense to group the items this way. Otherwise, you may want to use <code>plugin_profilevariablesedit_&lt;plugin name&gt;</code> (see above) instead.<br>
+The function is expected to return the HTML for a block or an empty string.</td>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_profilevariablesdisplay_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when Geeklog is about to display a user's profile. The plugin is given the user id and a reference to the template of the profile. It can now add its own variables to the profile.<br>
+This function does not return anything. The plugin should use the template functions (<code>set_var</code> etc.) to add things to the template.</td>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_profileblocksdisplay_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">This function is called when Geeklog is about to display a user's profile. The plugin is given the user id and can now return the HTML for any additional blocks that it wants to be displayed on the profile page.<br>
+The function is expected to return the HTML for a block or an empty string.</td>
+      </tr>
+    </table>
+
+<h2><a name="Misc_Functions">Misc. Functions</a></h2>
+
+<p>The following is a list of (optional) functions for misc. purposes.</p>
+
+  <table cellpadding="2" cellspacing="2" border="1" width="90%" align="center">
+    <caption align="bottom">Table 9. Misc. functions</caption>
+      <tr>
+        <th valign="top">Function</th>
+        <th valign="top">Description of Function</th>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_centerblock_&lt;plugin name&gt;</td>
+        <td valign="top" class="code">Plugins can display a block in the site's center area, i.e. among the stories. This function is called several times during rendering of the site's index page. The parameters will tell the plugin where on the index page the block would appear.<br>
+Parameters are <code>where</code> (1 = top of page, 2 = after the featured story, 3 = bottom of page), <code>page number</code> and the <code>topic id</code>. <code>where</code> can also be 0 which means that the plugin can take over the entire page if it wants to (in this case, it will have to return the HTML for the <em>entire page</em>, i.e. including site header and footer).<br>
+The function should return the complete HTML for the block (including header and footer) or an empty string.</td>
+      </tr>
+      <tr>
+        <td valign="top" class="codeheader">plugin_getheadercode_&lt;plugin 
+     name&gt;</td>
+        <td valign="top" class="code">Plugins may add additional lines to the site's <code>&lt;head&gt;</code> tag by implementing this function, e.g. Javascript functions or additional Meta tags.<br>
+The function should return a concatenated string of all its extra header code.</td>
+      </tr>
+  </table>
+
+
 <h2><a name="Implementing_your_Admin_Interface">Implementing your Admin Interface</a></h2>
 
 <p>The Geeklog Plugin API is just that an API.&nbsp; You obviously have   to  
