@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.37 2002/08/08 13:08:16 dhaun Exp $
+// $Id: block.php,v 1.38 2002/08/29 14:43:01 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -266,7 +266,7 @@ function editblock($bid='')
     $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);
     $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
     $block_templates->set_var('lang_blockcontent', $LANG21[17]);
-    $block_templates->set_var('block_content', $A['content']);
+    $block_templates->set_var('block_content', htmlspecialchars (stripslashes ($A['content'])));
     $block_templates->set_var('end_block', COM_endBlock());
     $block_templates->parse('output', 'editor');
     $retval .= $block_templates->finish($block_templates->get_var('output')); 
