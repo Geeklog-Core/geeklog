@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.7 2002/04/19 21:40:48 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.8 2002/04/22 21:56:16 tony_bibbs Exp $
 
 class upload
 {
@@ -203,7 +203,6 @@ class upload
         } else {
             $isImage = false;
         }
-        
         if ($this->_debug) {
             $msg = 'File, ' . $this->_currentFile['name'] . ' is of mime type '
                 . $this->_currentFile['type'];
@@ -250,12 +249,17 @@ class upload
 		   
 		$sizeOK = true;
 		
-		if ($this->imageInfo['width'] > $this->maxImageWidth) {
+		if ($this->_debug) {
+            $this->_addDebugMsg('Max allowed width = ' . $this->_maxImageWidth . ', Image width = ' . $imageInfo['width']);
+            $this->_addDebugMsg('Max allowed height = ' . $this->_maxImageHeight . ', Image height = ' . $imageInfo['height']);
+		}
+                        
+		if ($imageInfo['width'] > $this->_maxImageWidth) {
 			$sizeOK = false;
 			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet width limitations');
 		}
 
-		if ($this->imageInfo['height'] > $this->maxImageHeight) {
+		if ($imageInfo['height'] > $this->_maxImageHeight) {
 			$sizeOK= false;
 			$this->_addError('Image, ' . $this->_currentFile['name'] . ' does not meet height limitations');
 		}
@@ -275,7 +279,9 @@ class upload
 	function _getImageDimensions()
 	{
 		$dimensions = GetImageSize($this->_currentFile['tmp_name']);
-		
+        if ($this->_debug) {
+            $this->_addDebugMsg('in _getImageDimensions I got a width of ' . $dimensions[0] . ', and a height of ' . $dimensions[1]);
+        }
 		return array('width' => $dimensions[0], 'height' => $dimensions[1]);
 	}
 	
@@ -467,15 +473,21 @@ class upload
     * This function will print any errors out.  This is useful in debugging
     *
     */
-    function printErrors()
+    function printErrors($verbose=true)
     {
         if (isset($this->_errors) AND is_array($this->_errors)) {
+            $retval = '';
             reset($this->_errors);
             $nerrors = count($this->_errors);
             for ($i = 1; $i <= $nerrors; $i++) {
-                print current($this->_errors) . "<BR>\n";
+                if ($verbose) {
+                    print current($this->_errors) . "<BR>\n";
+                } else {
+                    $retval .= current($this->_errors) . "<BR>\n";
+                }
                 next($this->_errors);
             }
+            return $retval;
         }
     }
     
