@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.59 2002/08/03 16:54:51 dhaun Exp $
+// $Id: story.php,v 1.60 2002/08/14 16:41:15 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -135,6 +135,9 @@ function storyeditor($sid = '', $mode = '')
         $access = 3;
     } else {
         $A = $HTTP_POST_VARS;
+        if (empty ($A['ampm'])) {
+            $A['ampm'] = $A['publish_ampm'];
+        }
         if ($A['draft_flag'] == 'on') {
             $A['draft_flag'] = 1;
         } else {
