@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.39 2004/09/25 18:38:17 dhaun Exp $
+// $Id: poll.php,v 1.40 2004/09/29 13:15:27 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -201,7 +201,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
 */
 function editpoll ($qid = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG25, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS;
 
     $retval = '';
 
@@ -239,8 +239,11 @@ function editpoll ($qid = '')
             '<input type="submit" name="mode" value="' . $LANG25[16] . '">');
     } else {
         $Q['owner_id'] = $_USER['uid'];
-        $Q['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                     "grp_name = 'Poll Admin'");
+        if (isset ($_GROUPS['Poll Admin'])) {
+            $Q['group_id'] = $_GROUPS['Poll Admin'];
+        } else {
+            $Q['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $Q['perm_owner'] = 3;
         $Q['perm_group'] = 2;
         $Q['perm_members'] = 2;

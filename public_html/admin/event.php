@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.50 2004/09/04 19:34:33 dhaun Exp $
+// $Id: event.php,v 1.51 2004/09/29 13:15:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -75,7 +75,8 @@ if (!SEC_hasRights('event.edit')) {
 */
 function editevent ($mode, $A, $msg = '') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12, $LANG22, $LANG30, $LANG_ACCESS, $_STATES;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG12, $LANG22, $LANG30,
+           $LANG_ACCESS, $_STATES;
 
     $retval = '';
 
@@ -106,7 +107,11 @@ function editevent ($mode, $A, $msg = '')
         }
     } else {
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Event Admin'");
+        if (isset ($_GROUPS['Event Admin'])) {
+            $A['group_id'] = $_GROUPS['Topic Admin'];
+        } else {
+            $A['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.43 2004/07/26 07:51:36 dhaun Exp $
+// $Id: link.php,v 1.44 2004/09/29 13:15:27 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -69,7 +69,7 @@ if (!SEC_hasRights ('link.edit')) {
 */
 function editlink ($mode, $lid = '') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG23, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG23, $LANG_ACCESS;
 
     $retval = '';
 
@@ -97,7 +97,11 @@ function editlink ($mode, $lid = '')
         }
         $A['hits'] = 0;
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
+        if (isset ($_GROUPS['Link Admin'])) {
+            $A['group_id'] = $_GROUPS['Link Admin'];
+        } else {
+            $A['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;
@@ -200,7 +204,7 @@ function editlink ($mode, $lid = '')
 */
 function savelink ($lid, $category, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG23, $MESSAGE;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG23, $MESSAGE;
 
     // Convert array values to numeric permission values
     if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
@@ -217,12 +221,15 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
         $lid = COM_makesid ();
         if (empty ($owner_id)) {
             $owner_id = $_USER['uid'];
-            $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                    "grp_name = 'Link Admin'");
+            if (isset ($_GROUPS['Link Admin'])) {
+                $group_id = $_GROUPS['Link Admin'];
+            } else {
+                $group_id = $_GROUPS['Logged-in Users'];
+            }
             $perm_owner = 3;
             $perm_group = 2;
             $perm_members = 2;
-            $perm_anon = 2;        
+            $perm_anon = 2;
         }
     }
 

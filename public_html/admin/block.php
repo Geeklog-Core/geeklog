@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.61 2004/08/11 09:22:34 dhaun Exp $
+// $Id: block.php,v 1.62 2004/09/29 13:15:27 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -161,7 +161,7 @@ function editdefaultblock ($A, $access)
 */
 function editblock ($bid = '') 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG21, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG21, $LANG_ACCESS;
 
     $retval = '';
 
@@ -186,8 +186,11 @@ function editblock ($bid = '')
         $A['bid'] = 0;
         $A['blockorder'] = 0;
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                     "grp_name = 'Block Admin'");
+        if (isset ($_GROUPS['Block Admin'])) {
+            $A['group_id'] = $_GROUPS['Block Admin'];
+        } else {
+            $A['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;

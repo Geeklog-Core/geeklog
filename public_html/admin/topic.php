@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.46 2004/09/28 08:28:49 dhaun Exp $
+// $Id: topic.php,v 1.47 2004/09/29 13:15:27 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -63,7 +63,7 @@ if (!SEC_hasRights('topic.edit')) {
 */ 
 function edittopic ($tid = '')
 {
-    global $_CONF, $_TABLES, $_USER, $LANG27, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG27, $LANG_ACCESS;
 
     if (!empty($tid)) {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} WHERE tid ='$tid'");
@@ -86,8 +86,11 @@ function edittopic ($tid = '')
 
         // this is the one instance where we default the group
         // most topics should belong to the Topic Admin group 
-        // and the private flag should be turned OFF
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Topic Admin'");
+        if (isset ($_GROUPS['Topic Admin'])) {
+            $A['group_id'] = $_GROUPS['Topic Admin'];
+        } else {
+            $A['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;

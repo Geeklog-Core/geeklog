@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.134 2004/09/25 18:38:17 dhaun Exp $
+// $Id: story.php,v 1.135 2004/09/29 13:15:27 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -115,7 +115,8 @@ function userlist ($uid = 0)
 */
 function storyeditor($sid = '', $mode = '') 
 {
-    global $_TABLES, $HTTP_POST_VARS, $_USER, $_CONF, $LANG24, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS,
+           $HTTP_POST_VARS;
 
     $display = '';
 
@@ -177,8 +178,11 @@ function storyeditor($sid = '', $mode = '')
         $A['statuscode'] = 0;
         $A['featured'] = 0;
         $A['owner_id'] = $_USER['uid'];
-        $A['group_id'] = DB_getItem ($_TABLES['groups'], 'grp_id',
-                                     "grp_name = 'Story Admin'");
+        if (isset ($_GROUPS['Story Admin'])) {
+            $A['group_id'] = $_GROUPS['Story Admin'];
+        } else {
+            $A['group_id'] = $_GROUPS['Logged-in Users'];
+        }
         $A['perm_owner'] = 3;
         $A['perm_group'] = 2;
         $A['perm_members'] = 2;
@@ -505,7 +509,8 @@ function storyeditor($sid = '', $mode = '')
 */
 function liststories($page = 1) 
 {
-    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $LANG09, $_USER, $_GROUPS,$HTTP_POST_VARS,$HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
+           $HTTP_POST_VARS, $HTTP_GET_VARS;
 
     $display = '';
 
