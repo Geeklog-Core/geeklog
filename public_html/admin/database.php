@@ -12,6 +12,7 @@
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Blaine Lang      - langmail@sympatico.ca                         |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.11 2003/06/17 09:40:15 dhaun Exp $
+// $Id: database.php,v 1.12 2003/06/19 17:37:37 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -46,11 +47,12 @@ $display = '';
 $display .= COM_siteHeader();
 
 // If user isn't a root user or if the backup feature is disabled, bail.
-if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
-    $display .= COM_startBlock($MESSAGE[30]);
+if (!SEC_inGroup ('Root') OR $_CONF['allow_mysqldump'] == 0) {
+    $display .= COM_startBlock($MESSAGE[30], '',
+                    COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[46];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     COM_errorLog("User {$_USER['username']} tried to illegally access the database backup screen",1);
     echo $display;
     exit;
@@ -80,31 +82,34 @@ if ($mode == $LANG_DB_BACKUP['do_backup']) {
 			exec($command);
 			if (file_exists ($backupfile) && filesize ($backupfile) > 0) {
                 $timestamp = strftime ($_CONF['daytime']);
-                $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp)
-                         . '<img src="' . $_CONF['layout_url']
-                         . '/images/sysmessage.gif" border="0" align="top" '
-                         . 'alt="">' . $LANG_DB_BACKUP['backup_successful']
-                         . '<br><br>' . COM_endBlock ();
+                $display .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp,
+                              '', COM_getBlockTemplate ('_msg_block', 'header'))
+                         . '<img src="' . $_CONF['layout_url'] . '/images/'
+                         . 'sysmessage.gif" border="0" align="top" alt="">'
+                         . $LANG_DB_BACKUP['backup_successful'] . '<br><br>'
+                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 			} else {
-				$display .= COM_startBlock($LANG08[06]);
-				$display .= $LANG_DB_BACKUP['zero_size'];
-		    	$display .= COM_endBlock();
-		    	$display .= COM_siteFooter();
-				COM_errorLog("Backup Filesize was 0 bytes",1);	
-	    	}
+                $display .= COM_startBlock ($LANG08[06], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+                $display .= $LANG_DB_BACKUP['zero_size'];
+                $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                                'footer'));
+                COM_errorLog ("Backup Filesize was 0 bytes", 1);	
+            }
 		} else {
-			$display .= COM_startBlock($LANG08[06]);
-			$display .= $LANG_DB_BACKUP['not_found'];
-		    $display .= COM_endBlock();
-    		$display .= COM_siteFooter();
-			COM_errorLog("Backup Error: Bad path or mysqldump does not exist",1);
+            $display .= COM_startBlock ($LANG08[06], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
+            $display .= $LANG_DB_BACKUP['not_found'];
+            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                            'footer'));
+            COM_errorLog("Backup Error: Bad path or mysqldump does not exist",1);
 		}
 	} else {
-		$display .= COM_startBlock($MESSAGE[30]);
-    	$display .= $LANG_DB_BACKUP['path_not_found'];
-	    $display .= COM_endBlock();
-    	$display .= COM_siteFooter();
-		COM_errorLog($_CONF['backup_path'] . " does not exist or is not a directory",1);
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $LANG_DB_BACKUP['path_not_found'];
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        COM_errorLog($_CONF['backup_path'] . " does not exist or is not a directory",1);
 	}
 }
 
@@ -112,7 +117,8 @@ if ($mode == $LANG_DB_BACKUP['do_backup']) {
 
 if(is_writable($_CONF['backup_path'])) {
     $backups = array();
-    $display .= COM_startBlock($LANG_DB_BACKUP['last_ten_backups']);
+    $display .= COM_startBlock ($LANG_DB_BACKUP['last_ten_backups'], '',
+                        COM_getBlockTemplate ('_admin_block', 'header'));
     $fd = opendir($_CONF['backup_path']);
     $index = 0;
     while ((false !== ($file = @readdir ($fd)))) {
@@ -149,22 +155,25 @@ if(is_writable($_CONF['backup_path'])) {
                 sprintf ($LANG_DB_BACKUP['total_number'], $index));
         $display .= $database->parse ('output', 'list');
     } else {
-        $display .= $LANG_DB_BACKUP['no_backups'];
+        $display .= '<p>' . $LANG_DB_BACKUP['no_backups'] . '</p>';
     }
-    $display .= COM_endBlock();
 
 	// Show backup form
     $display .= $LANG_DB_BACKUP['db_explanation'];
-    $display .= '<form name="dobackup" method="post" action="' . $_CONF['site_admin_url'] . '/database.php">';
-    $display .= '<input type="submit" name="mode" value="' . $LANG_DB_BACKUP['do_backup'] . '"></form>';
-    $display .= COM_siteFooter();
+    $display .= '<form name="dobackup" method="POST" action="'
+             . $_CONF['site_admin_url'] . '/database.php">';
+    $display .= '<input type="submit" name="mode" value="'
+             . $LANG_DB_BACKUP['do_backup'] . '"></form>';
+
+    $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 } else {
-    $display .= COM_startBlock($LANG08[06]);
+    $display .= COM_startBlock ($LANG08[06], '',
+                        COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $LANG_DB_BACKUP['no_access'];
-    COM_errorLog($_CONF['backup_path'] . " is not accessible.",1);
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    COM_errorLog ($_CONF['backup_path'] . ' is not accessible.', 1);
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 }
+$display .= COM_siteFooter ();
 
 echo $display; 
 
