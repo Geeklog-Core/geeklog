@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.33 2003/06/20 15:15:40 dhaun Exp $
+// $Id: plugins.php,v 1.34 2003/07/05 16:37:58 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -245,7 +245,19 @@ function show_newplugins()
                 if (file_exists ($plugins_dir . $dir . '/functions.inc')) {
                     // and finally, since we're going to link to it, check if
                     // an install script exists
-                    $fh = @fopen ($_CONF['site_admin_url'] . '/plugins/' . $dir
+                    $adminurl = $_CONF['site_admin_url'];
+                    if (strrpos ($adminurl, '/') == strlen ($adminurl)) {
+                        $adminurl = substr ($adminurl, 0, -1);
+                    }
+                    $pos = strrpos ($adminurl, '/');
+                    if ($pos === false) {
+                        // didn't work out - use the URL
+                        $admindir = $_CONF['site_admin_url'];
+                    } else {
+                        $admindir = $_CONF['path_html']
+                                  . substr ($adminurl, $pos + 1);
+                    }
+                    $fh = @fopen ($admindir . '/plugins/' . $dir
                         . '/install.php', 'r');
                     if ($fh) {
                         fclose ($fh);
