@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.3 2003/06/24 09:50:15 dhaun Exp $
+// $Id: downloader.class.php,v 1.4 2003/12/31 05:41:51 tony Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -399,7 +399,7 @@ class downloader
         // all the mime types passed to this function are in the
         // available list
         for ($i = 1; $i <= count($validExtensions); $i++) {
-            if (!in_array(current($validExtensions),$this->_availableExtensions)) {
+            if (!in_array(current($validExtensions),$this->_availableMimeTypes)) {
                 $this->_addError('extension, ' .current($validExtensions) . ' is not in the list of available file types for download');
                 return;
             }
@@ -428,7 +428,7 @@ class downloader
     */
     function checkExtension($extension)
     {
-        if (!in_array($extension,$this->getAllowedExtensions())) {
+        if (!in_array($extension,array_keys($this->getAllowedExtensions()))) {
 			$this->_addError('File type, .' . $extension . ', not in list of allowed file types available for download');
 			return false;
 		} else {
