@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.286 2004/02/19 13:47:30 dhaun Exp $
+// $Id: lib-common.php,v 1.287 2004/02/19 14:48:43 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2676,7 +2676,6 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     // comment variables
     $template->set_var( 'indent', $indent );
     $template->set_var( 'order', $order );
-    $template->set_var( 'pid', $A['cid'] );
     $template->set_var( 'author', $A['username'] );
     $template->set_var( 'author_id', $A['uid'] );
     if( $A['uid'] > 1 )
@@ -2769,10 +2768,12 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
 
     if( $mode == 'threaded' && $indent > 0 )
     {
+        $template->set_var( 'pid', $A['pid'] );
         $retval = $template->parse( 'output', 'thread' );	
     }
     else
     {
+        $template->set_var( 'pid', $A['cid'] );
         $retval = $template->parse( 'output', 'comment' ); 
     }
 
