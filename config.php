@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.133 2004/09/26 10:04:10 dhaun Exp $
+// $Id: config.php,v 1.134 2004/09/28 08:25:56 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -598,7 +598,7 @@ $_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 // uncompress the file which will create a netpbm directory.  If you plan to
 // only use netpbm with Geeklog, put that entire folder in /path/to/geeklog and
 // adjust the path below.  The only programs you need from netpbm are giftopnm,
-// jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
+// jpegtopnm, pngtopnm, ppmtogif, pnmtojpeg, pnmtopng and pnmscale
 //$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
 
 // Uncomment the following line if you experience problems with the image
