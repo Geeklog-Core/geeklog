@@ -647,7 +647,8 @@ $LANG24 = array(
 	42 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  Please <a href=\"{$_CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a>.",
 	43 => 'New Story',
 	44 => 'Admin Home',
-	45 => 'Access'
+	45 => 'Access',
+    46 => '<b>NOTE:</b> if you modify this date to be in the future, this article will not be published until that date.  That also means the story will not be included in your RDF headline feed and it will be ignored by the search and statistics pages.'
 );
 
 ###############################################################################
