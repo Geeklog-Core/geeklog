@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.263 2003/10/03 13:00:24 dhaun Exp $
+// $Id: lib-common.php,v 1.264 2003/10/11 11:21:46 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -173,6 +173,12 @@ require_once( $_CONF['path_system'] . 'lib-plugins.php' );
 */
 
 require_once( $_CONF['path_system'] . 'lib-sessions.php' );
+
+/**
+* Ulf Harnhammar's kses class
+*
+*/
+require_once( $_CONF['path_system'] . 'classes/kses.class.php' );
 
 /**
 * If needed, add our PEAR path to the list of include paths
@@ -2921,16 +2927,24 @@ function COM_checkHTML( $str )
     // strip_tags() gets confused by HTML comments ...
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
-    if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['adminhtml'] ))
+    $filter = new kses;
+    $filter->Protocols( array( "http:", "https:", "ftp:" ));
+
+    if( !SEC_hasRights( 'story.edit' ) || empty ( $_CONF['admin_html'] ))       
     {
-        $str = strip_tags( $str, $_CONF['allowablehtml'] );
+        $html = $_CONF['user_html'];
     }
     else
     {
-        $str = strip_tags( $str, $_CONF['adminhtml'] );
+        $html = array_merge( $_CONF['user_html'], $_CONF['admin_html'] );
     }
 
-    return COM_killJS( $str );
+    foreach( $html as $tag => $attr )
+    {
+        $filter->AddHTML( $tag, $attr );
+    }
+
+    return $filter->Parse( $str );
 }
 
 /** undo function for htmlspecialchars()
@@ -3556,8 +3570,8 @@ function COM_rdfImport( $bid, $rdfurl )
 * Returns what HTML is allows in content
 *
 * Returns what HTML tags the system allows to be used inside content.
-* You can modify this by changing $_CONF['allowablehtml'] in config.php
-* (for admins, see also $_CONF['adminhtml']).
+* You can modify this by changing $_CONF['user_html'] in config.php
+* (for admins, see also $_CONF['admin_html']).
 *
 * @return   string  HTML <span> enclosed string
 */
@@ -3570,14 +3584,19 @@ function COM_allowedHTML()
 
     if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['adminhtml'] ))
     {
-        $retval .= htmlspecialchars( $_CONF['allowablehtml'] );
+        $html = $_CONF['user_html'];
     }
     else
     {
-        $retval .= htmlspecialchars( $_CONF['adminhtml'] );
+        $html = array_merge( $_CONF['user_html'], $_CONF['admin_html'] );
     }
 
-    $retval .= ',[code]';
+    foreach( $html as $tag => $attr )
+    {
+        $retval .= '&lt;' . $tag . '&gt;,';
+    }
+
+    $retval .= '[code]';
     $retval .= '</span>';
 
     return $retval;
