@@ -10,12 +10,12 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Tom Willett      - twillett@users.sourceforge.net                |
-// |          Blaine Lang      - langmail@sympatico.ca                         |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
+// |          Blaine Lang      - langmail AT sympatico DOT ca                  |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.47 2004/12/22 17:13:45 dhaun Exp $
+// $Id: functions.inc,v 1.48 2005/01/04 14:21:57 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -206,7 +206,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     // Build search SQL - exclude static PHP pages from search.
-    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != 1)";
+    $sql = "SELECT u.username,u.fullname,sp.sp_id,sp.sp_title,sp.sp_hits,sp.sp_uid,UNIX_TIMESTAMP(sp.sp_date) AS day FROM {$_TABLES['staticpage']} AS sp,{$_TABLES['users']} AS u WHERE (sp.sp_uid = u.uid) AND (sp_php != 1)" . COM_getPermSQL ('AND');
 
     if (!empty ($query)) {
         if ($keyType == 'phrase') {
@@ -258,12 +258,12 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     if (!empty ($author)) {
         $sql .= "AND (sp_uid = '$author')";
     }
-    $sql    .= " ORDER BY sp_date desc";
+    $sql    .= " ORDER BY sp_date DESC";
 
     // Perform search
     $result = DB_query ($sql);
 
-    // OK, now return coma delmited string of table header labels
+    // OK, now return table header labels
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'staticpages';
     $plugin_results->searchlabel = $LANG_STATIC['results'];
@@ -276,21 +276,28 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     // NOTE if any of your data items need to be links then add them here! 
     // make sure data elements are in an array and in the same order as your
     // headings above!
-    for ($i = 1; $i <= $mycount; $i++) {
+    for ($i = 0; $i < $mycount; $i++) {
         $A = DB_fetchArray ($result);
 
-        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
-            $rcnt++;
-            $thetime = COM_getUserDateTimeFormat ($A['day']);
-            $A['sp_title'] = stripslashes ($A['sp_title']);
-            $row = array ('<a href="' . COM_buildURL ($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']) . '">' . $A['sp_title'] . '</a>',
-                    $thetime[0],
-                    '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['sp_uid'] . '">' . DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['sp_uid']}'") . '</a>',
-                    $A['sp_hits']);
-            $plugin_results->addSearchResult ($row);
+        $thetime = COM_getUserDateTimeFormat ($A['day']);
+        $A['sp_title'] = stripslashes ($A['sp_title']);
+        $pageurl = COM_buildURL ($_CONF['site_url']
+                        . '/staticpages/index.php?page=' . $A['sp_id']);
+        if (isset ($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1) &&
+                !empty ($A['fullname'])) {
+            $author = $A['fullname'];
+        } else {
+            $author = $A['username'];
         }
+        $profile = $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                 . $A['sp_uid'];
+        $row = array ('<a href="' . $pageurl . '">' . $A['sp_title'] . '</a>',
+                      $thetime[0],
+                      '<a href="' . $profile . '">' . $author . '</a>',
+                      $A['sp_hits']);
+        $plugin_results->addSearchResult ($row);
     }
-    $plugin_results->num_searchresults = $rcnt;
+    $plugin_results->num_searchresults = $mycount;
     $plugin_results->num_itemssearched = DB_count ($_TABLES['staticpage']);
 
     return $plugin_results;
