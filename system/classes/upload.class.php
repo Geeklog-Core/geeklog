@@ -29,8 +29,16 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.10 2002/05/07 22:00:41 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.11 2002/05/08 18:26:21 tony_bibbs Exp $
 
+/**
+* This class will allow you to securely upload one or more files from a form
+* submitted via POST method.  Please read documentation as there are a number of
+* security related features that will come in handy for you.
+*
+* @author       Tony Bibbs <tony@tonybibbs.com>
+*
+*/
 class upload
 {
     /**
