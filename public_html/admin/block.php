@@ -43,7 +43,7 @@ if (!hasrights('block.edit')) {
 
 #debug($HTTP_POST_VARS);
 
-function editdefaultblock($A) {
+function editdefaultblock($A,$access) {
 	global $USER,$LANG21,$CONF,$LANG_ACCESS;
 
 	startblock($LANG21[3]);
@@ -72,28 +72,35 @@ function editdefaultblock($A) {
 	print "<tr><td align=right>{$LANG21[10]}:</td><td>gldefault</td></tr>";
 	print "<input type=hidden name=type value=gldefault>";
 
-	#user access stuff
 	print "<tr><td colspan=2><hr></td></tr>";
-	print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
-	        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
+        print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+                print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
         print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
-        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td><SELECT name=group_id>";
+        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-        for ($i=0;$i<count($usergroups);$i++) {
-                print "<option value=" . $usergroups[key($usergroups)];
-                if ($A["group_id"] == $usergroups[key($usergroups)]) {
-                        print " SELECTED";
+        if ($access == 3) {
+                print "<SELECT name=group_id>";
+                for ($i=0;$i<count($usergroups);$i++) {
+                        print "<option value=" . $usergroups[key($usergroups)];
+                        if ($A["group_id"] == $usergroups[key($usergroups)]) {
+                                print " SELECTED";
+                        }
+                        print ">" . key($usergroups) . "</option>";
+                        next($usergroups);
                 }
-                print ">" . key($usergroups) . "</option>";
-                next($usergroups);
+                print "</SELECT>";
+        } else {
+                #they can't set the group then
+                print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+                print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
         }
-        print "</SELECT></td></tr>";
-        print "<tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
+        print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+        print $html;
+        print "</td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}<td></tr>";
+	
 	print "</form></table>";
         endblock();
 }
@@ -115,7 +122,7 @@ function editblock($bid="") {
                 } 
 
 		if ($A["type"] == "gldefault") {
-			editdefaultblock($A);
+			editdefaultblock($A,$access);
 			return;
 		}
 	} else {
@@ -202,7 +209,7 @@ function editblock($bid="") {
         $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
         print $html;
         print "</td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}<td></tr>";
 	print "<tr><td colspan=2><hr></td></tr>";
 
 	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
