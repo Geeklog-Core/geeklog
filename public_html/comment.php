@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.89 2005/01/28 04:49:09 vinny Exp $
+// $Id: comment.php,v 1.90 2005/02/05 05:04:18 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -233,15 +233,19 @@ function handleView($view = true) {
 
     switch ( $type ) {
         case 'article':
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . COM_getTopicSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
+            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
+                 . 'AND (draft_flag = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
+                 . COM_getTopicSQL('AND') . 'GROUP BY sid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
 
             if ( $allowed == 1 ) {
                 $delete_option = ( SEC_hasRights( 'story.edit' ) &&
-                    ( SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon'] ) == 3 ) );
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
                 $display .= CMT_userComments ($sid, $title, $type, 
                         COM_applyFilter ($_REQUEST['order']), $format, $cid,
                         COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
@@ -254,15 +258,18 @@ function handleView($view = true) {
             break;
 
         case 'poll':
-            $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid')" . COM_getPermSQL ('AND'));
-            $A = DB_fetchArray ($result);
-            $allowed = $A['count'];
+            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
+                 . COM_getPermSQL('AND') . 'GROUP BY qid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
 
             if ( $allowed == 1 ) {
                 $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
-                    ( SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                        $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                        $A['perm_anon'] ) == 3 ) );
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
                 $display .= CMT_userComments ($sid, $title, $type, 
                         COM_applyFilter ($_REQUEST['order']), $format, $cid,
                         COM_applyFilter ($_REQUEST['page'], true), $view, $delete_option);
@@ -284,6 +291,96 @@ function handleView($view = true) {
     }
 
     return COM_siteHeader() . $display . COM_siteFooter();
+}
+
+/**
+ * Hanldes a comment view request for dynamic comments
+ *
+ * @copyright Vincent Furia 2005
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @return string HTML
+ */
+function handleFetch() {
+    global $_REQUEST, $_TABLES, $_USER, $_CONF;
+
+    if ( COM_applyFilter($_REQUEST['full']) == 'true' ) {
+        $full = true;
+    } else {
+        $full = false;
+    }
+    $cid = COM_applyFilter ($_REQUEST['cid'], true);
+    if ($cid <= 0) {
+        return "ERROR ACCESS DENIED";
+    }
+    
+    $sql = "SELECT c.*, u.username, u.fullname, u.photo, " 
+         . "unix_timestamp(c.date) AS nice_date "
+         . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+         . "WHERE c.uid = u.uid AND c.cid = $cid";
+    $A = DB_fetchArray( DB_query($sql) );
+    $sid  = $A['sid'];
+    $type = $A['type'];
+
+    switch ( $type ) {
+        case 'article':
+            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['stories']} WHERE (sid = '$sid') "
+                 . 'AND (draft_flag = 0) AND (date <= NOW())' . COM_getPermSQL('AND') 
+                 . COM_getTopicSQL('AND') . 'GROUP BY sid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'story.edit' ) &&
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
+                if ( $full ) {
+                    $display .= CMT_getComment($A, 'dynamic_comment', 'article', 
+                                               'ASC', $delete_option);
+                } else {
+                    $display .= CMT_getComment($A, 'dynamic_thread', 'article', 
+                                               'ASC', $delete_option);
+                }
+            } else {
+                $display .= 'ERROR ACCESS DENIED';
+            }
+            break;
+
+        case 'poll':
+            $sql = 'SELECT COUNT(*) AS count, owner_id, group_id, perm_owner, perm_group, '
+                 . "perm_members, perm_anon FROM {$_TABLES['pollquestions']} WHERE (qid = '$sid') "
+                 . COM_getPermSQL('AND') . 'GROUP BY qid';
+            $result = DB_query ($sql);
+            $B = DB_fetchArray ($result);
+            $allowed = $B['count'];
+
+            if ( $allowed == 1 ) {
+                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
+                    ( SEC_hasAccess( $B['owner_id'], $B['group_id'],
+                        $B['perm_owner'], $B['perm_group'], $B['perm_members'],
+                        $B['perm_anon'] ) == 3 ) );
+                if ( $full ) {
+                    $display .= CMT_getComment($A, 'dynamic_comment', 'poll', 
+                                               'ASC', $delete_option);
+                } else {
+                    $display .= CMT_getComment($A, 'dynamic_thread', 'poll', 
+                                               'ASC', $delete_option);
+                }
+            } else {
+                $display .= 'ERROR ACCESS DENIED';
+            }
+            break;
+
+        default: // assume comment
+            if ( !($display = PLG_fetchComment($type, $A, $full)) ) {
+                return 'ERROR ACCESS DENIED';
+            }
+            break;
+    }
+
+    return $display;
 }
 
 // MAIN
@@ -318,6 +415,14 @@ case 'view':
 
 case 'display':
     $display .= handleView(false);  // moved to function for readibility
+    break;
+
+case 'fetch':
+    if ( $_CONF['dynamic_comments'] ) {
+        $display .= handleFetch();
+    } else {
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
     break;
 
 case 'report':

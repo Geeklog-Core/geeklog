@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.156 2005/02/03 19:57:39 dhaun Exp $
+// $Id: config.php,v 1.157 2005/02/05 05:04:18 vinny Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -605,11 +605,13 @@ $_CONF['max_photo_height']      = 128; // In pixels
 $_CONF['max_photo_size']        = 65536; // 65536 = 64KB
 
 // Comment Settings
-$_CONF['commentspeedlimit']     = 45;
+$_CONF['commentspeedlimit']     = 45;         // minimum time between comment posts, in seconds
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
-$_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested','nocomments',and 'flat'
+$_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'threaded','nested',                                                  // 'dynamic', 'nocomments', or 'flat'
+$_CONF['dynamic_comments']      = true;       // true to enable dynamic comment display, false to 
+                                              // disable.  (enabling may affect performance)
 // Allow / disallow comments to stories by default (can be changed individually for every story)
-$_CONF['comment_code']          = 0; // 0 = comments enabled, -1 = disabled
+$_CONF['comment_code']          = 0;          // 0 = comments enabled, -1 = disabled
 
 // Poll Settings
 $_CONF['maxanswers']        = 10; // max. number of options in a poll

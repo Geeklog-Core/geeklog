@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.7 2005/01/28 13:12:06 vinny Exp $
+// $Id: lib-comment.php,v 1.8 2005/02/05 05:04:17 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -51,7 +51,7 @@
 *
 */
 function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
-    global $_CONF, $_TABLES, $_USER, $LANG01;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $_REQUEST;
 
     $page = array_pop( explode( '/', $_SERVER['PHP_SELF'] ));
     $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
@@ -155,8 +155,12 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
     } else {
         $selector = '<select name="mode">';
     }
+    $where = '';
+    if( !$_CONF['dynamic_comments'] ) {
+        $where = 'mode != \'dynamic\'';
+    }
     $selector .= LB
-               . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode )
+               . COM_optionList( $_TABLES['commentmodes'], 'mode,name', $mode, 1, $where )
                . LB . '</select>';
     $commentbar->set_var( 'mode_selector', $selector);
 
@@ -186,7 +190,8 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
     $template = new Template( $_CONF['path_layout'] . 'comment' );
     $template->set_file( array( 'comment' => 'comment.thtml',
-                                'thread'  => 'thread.thtml'  ));
+                                'thread'  => 'thread.thtml',
+                                'wrap'    => 'commentwrap.thtml' ));
 
     // generic template variables
     $template->set_var( 'site_url', $_CONF['site_url'] );
@@ -202,13 +207,14 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $_CONF['comment_indent'] = 25;
     }
 
-    if( $preview ) {
+    if( $preview || $mode == 'dynamic_thread' || $mode == 'dynamic_comment' ) {
         $A = $comments;   
-        if( empty( $A['nice_date'] ))
-        {
+        if( empty( $A['nice_date'] )) {
             $A['nice_date'] = time();
         }
-        $mode = 'flat';
+        if ( $preview ) {
+            $mode = 'flat';
+        }
     } else {
         $A = DB_fetchArray($comments);
     }
@@ -219,7 +225,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
 
     do {
         // determines indentation for current comment
-        if( $mode == 'threaded' || $mode == 'nested' ) {
+        if( $mode == 'threaded' || $mode == 'nested' || $mode == 'dynamic' ) {
             $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
 
@@ -227,6 +233,7 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'indent', $indent );
         $template->set_var( 'author', $A['username'] );
         $template->set_var( 'author_id', $A['uid'] );
+        $template->set_var( 'cid', $A['cid'] );
 
         if( $A['uid'] > 1 ) {
             if( empty( $A['fullname'] )) {
@@ -276,6 +283,13 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
             $template->set_var( 'hide_if_preview', 'style="display:none"' );
         } else {
             $template->set_var( 'hide_if_preview', '' );
+        }
+
+        // Display ability to expand comments only in dynamic mode
+        if( $mode != 'dynamic' && $mode != 'dynamic_thread' && $mode != 'dynamic_comment' ) {
+            $template->set_var( 'dynamic_hide', 'style="display:none"' );
+        } else {
+            $template->set_var( 'dynamic_hide', '' );
         }
 
         // for threaded mode, add a link to comment parent
@@ -355,12 +369,20 @@ function CMT_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $template->set_var( 'comments', $A['comment'] );
 
         // parse the templates
-        if( $mode == 'threaded' && $indent > 0 ) {
+        if( $mode == 'dynamic_thread' ) {
             $template->set_var( 'pid', $A['pid'] );
             $retval .= $template->parse( 'output', 'thread' );   
+        } else if( $mode == 'dynamic_comment') {
+            $template->set_var( 'pid', $A['cid'] );
+            $retval .= $template->parse( 'output', 'comment' );   
+        } else if( (($mode == 'threaded' || $mode == 'dynamic') && $indent > 0 )) {
+            $template->set_var( 'pid', $A['pid'] );
+            $template->set_var( 'comment_content', $template->parse( 'output', 'thread' ) );
+            $retval .= $template->parse( 'output', 'wrap' );   
         } else {
             $template->set_var( 'pid', $A['cid'] );
-            $retval .= $template->parse( 'output', 'comment' ); 
+            $template->set_var( 'comment_content', $template->parse( 'output', 'comment' ) );
+            $retval .= $template->parse( 'output', 'wrap' );   
         }
     } while( $A = DB_fetchArray( $comments ));
 
@@ -410,6 +432,11 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $mode = $_CONF['comment_mode'];
     }
 
+    // if dynamic comment mode is disabled and selected, use threaded instead
+    if ( ($mode == 'dynamic') && (!$_CONF['dynamic_comments']) ) {
+        $mode = 'threaded';
+    }
+
     if( empty( $limit )) {
         $limit = $_CONF['comment_limit'];
     }
@@ -427,7 +454,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
     $template->set_var( 'commentbar',
                         CMT_commentBar( $sid, $title, $type, $order, $mode));
     
-    if( $mode == 'nested' or $mode == 'threaded' or $mode == 'flat' ) {
+    if( $mode == 'nested' || $mode == 'threaded' || $mode == 'flat' || $mode == 'dynamic' ) {
         // build query
         switch( $mode ) {
             case 'flat':
@@ -451,6 +478,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 
             case 'nested':
             case 'threaded':
+            case 'dynamic':
             default:
                 if( $order == 'DESC' ) {
                     $cOrder = 'c.rht DESC';

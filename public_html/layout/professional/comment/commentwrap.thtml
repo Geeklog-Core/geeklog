@@ -1,0 +1,3 @@
+<div id="{cid}" class="comment" style="padding-left: {indent}px; padding-top: 4px">
+{comment_content}
+</div>

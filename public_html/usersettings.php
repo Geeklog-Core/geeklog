@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.109 2004/12/15 15:08:21 dhaun Exp $
+// $Id: usersettings.php,v 1.110 2005/02/05 05:04:18 vinny Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -598,9 +598,13 @@ function editpreferences()
     if (empty ($A['commentorder'])) $A['commentorder'] = 0;
     if (empty ($A['commentlimit'])) $A['commentlimit'] = 100;
 
+    $where = '';
+    if( $_CONF['dynamic_comments'] ) {
+        $where = 'mode != \'dynamic\'';
+    }
     $selection = '<select name="commentmode">';
     $selection .= COM_optionList ($_TABLES['commentmodes'], 'mode,name',
-                                  $A['commentmode']);
+                                  $A['commentmode'], 1, $where);
     $selection .= '</select>';
     $preferences->set_var ('displaymode_selector', $selection);
 
