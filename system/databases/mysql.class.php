@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.7 2002/05/13 20:09:36 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.8 2002/05/20 16:43:55 tony_bibbs Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -197,10 +197,11 @@ class database {
     *
     * @param    string      $sql            SQL to be executed
     * @param    boolean     $ignore_error   If 1 this function supresses any error messages
+    * @param    int         $ttl            Time-to-live (caching feature, not used in this library)
     * @return   object      Returns results of query
     *
     */
-    function dbQuery($sql,$ignore_errors=0)
+    function dbQuery($sql,$ignore_errors=0,$ttl=0)
     {
         if ($this->isVerbose()) {
             $this->_errorlog("\n***inside database->dbQuery***<br>");
