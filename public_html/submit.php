@@ -382,8 +382,8 @@ function submitstory()
 */
 function savesubmission($type,$A) 
 {
-    global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR;
-	
+    global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR, $_CONF;
+
     switch ($type) {
     case 'link':
         if (!empty($A['title']) && !empty($A['description']) && !empty($A['url'])) {
