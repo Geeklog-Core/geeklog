@@ -433,6 +433,7 @@ CREATE TABLE {$_TABLES['syndication']} (
   update_info text,
   PRIMARY KEY (fid),
   INDEX syndication_type(type),
+  INDEX syndication_topic(topic),
   INDEX syndication_is_enabled(is_enabled),
   INDEX syndication_updated(updated)
 ) TYPE=MyISAM
