@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.24 2002/01/22 13:00:49 dreamscape Exp $
+// $Id: block.php,v 1.25 2002/01/24 19:07:53 dreamscape Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -198,11 +198,11 @@ function editblock($bid='')
     $block_templates->set_var('lang_phpblock', $LANG21[27]);
     $block_templates->set_var('lang_portalblock', $LANG21[11]);
     if ($A['type'] == 'normal') {
-        $block_templates->set_var('normal_selected', 'selectd="selected"');
+        $block_templates->set_var('normal_selected', 'selected="selected"');
     } else if ($A['type'] == 'phpblock') {
-        $block_templates->set_var('php_selected', 'selectd="selected"');
+        $block_templates->set_var('php_selected', 'selected="selected"');
     } else if ($A['type'] == 'portal') {
-        $block_templates->set_var('portal_selected', 'selectd="selected"');
+        $block_templates->set_var('portal_selected', 'selected="selected"');
     } 
     $block_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
     $block_templates->set_var('lang_owner', $LANG_ACCESS['owner']);
@@ -397,7 +397,7 @@ function listblocks()
             $access = $LANG_ACCESS[none];
         }
         $block_templates->set_var('block_access', $access);
-        $block_templates->set_var('block_type'.$A['type']);
+        $block_templates->set_var('block_type',$A['type']);
 
         if ($A['onleft'] == 1) {
             $side = $LANG21[40];
