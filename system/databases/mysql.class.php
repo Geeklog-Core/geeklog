@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.1 2001/10/17 23:20:47 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.2 2001/10/29 17:35:50 tony_bibbs Exp $
 
 class database {
 
@@ -272,9 +272,9 @@ class database {
             }
         }
 
-        if ($this->isVerbose()) {
-            #print "dbDelete sql = $sql<BR>";
-        }
+        // if ($this->isVerbose()) {
+        //     print "dbDelete sql = $sql<BR>";
+        // }
 
         $this->dbQuery($sql);
 

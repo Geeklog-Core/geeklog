@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.1 2001/10/17 23:37:50 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.2 2001/10/29 17:35:49 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -40,22 +40,37 @@ $_COM_VERBOSE = false;
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
 
-include_once('/path/to/geeklog/config.php');
+include_once('/var/www/livestockworld/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
 // +---------------------------------------------------------------------------+
 
+// Instantiate page timer that times how fast each page is created
+include_once($_CONF['path_system'] . 'classes/timer.class.php');
+$_PAGE_TIMER = new timerobject();
+$_PAGE_TIMER->startTimer();
+
+include_once($_CONF['path_system'] . 'classes/template.class.php');
 include_once($_CONF['path_system'] . 'lib-database.php');
 include_once($_CONF['path_system'] . 'lib-security.php');
 include_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 include_once($_CONF['path_system'] . 'lib-custom.php');
 include_once($_CONF['path_system'] . 'lib-plugins.php');
 include_once($_CONF['path_system'] . 'lib-sessions.php');
-include_once($_CONF['path_html'] . 'layout/' . $_CONF['layout'] . '/index.php');
+
+
+// Set theme
+if (!empty($_USER['theme'])) {
+    $_CONF['theme'] = $_USER['theme'];
+    $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+    $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+    if (file_exists($_CONF['path_layout'] . 'functions.php')) {
+       include_once($_CONF['path_layout'] . 'functions.php');
+   }
+} 
 
 setlocale(LC_ALL, $_CONF['locale']);
-
 
 // Get user permissions
 $_RIGHTS = explode(',',SEC_getUserPermissions());
@@ -99,64 +114,266 @@ function COM_article($A,$index='')
 
 	$curtime = COM_getUserDateTimeFormat($A['day']);
 	$A['day'] = $curtime[0];
-	
-    $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">'.LB
-        .'<tr><td class="storytitle">'.stripslashes($A['title']).'</td></tr>'.LB
-        .'<tr><td class="storyunderline"><img src='.$_CONF['site_url'].'/images/speck.gif" width="1" height="1"></td></tr>'.LB
-        .'<tr><td class="storybyline">'.$A['day'];
-		
+
+    $article = new Template($_CONF['path_layout']);
+    $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
+    $article->set_var('story_title',$A['title']);
+    $article->set_var('site_url',$_CONF['site_url']);
+    $article->set_var('story_date',$A['day']);
+
     if ($_CONF['contributedbyline'] == 1) {
         if ($A['uid'] > 1) {
-            $retval .= '<br>'.$LANG01[1].' <a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&uid='.$A['uid'].'">'.DB_getItem('users','username',"uid = '{$A['uid']}'").'</a></td></tr>'.LB;
+            $article->set_var('lang_contributed_by',$LANG01[1]);
+            $article->set_var('start_contributedby_anchortag', '<a class="storybyline" href="'.$_CONF['site_url'].'/users.php?mode=profile&uid='.$A['uid'].'">');
+            $article->set_var('contributedby_user', DB_getItem('users','username',"uid = '{$A['uid']}'"));
+            $article->set_var('end_contributedby_anchortag', '</a>');
         } else {
-            $retval .= '<br>'.$LANG01[1].' '.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'").'</td></tr>'.LB;
+            $article->set_var('contrributedby_user', $LANG01[1].' '.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
         }
     }
-	
-    $retval .= '<tr><td>';
 	
     if ($_USER['noicons'] != 1) {
         $top = DB_getItem($_TABLES['topics'],'imageurl',"tid = '{$A['tid']}'");
-        if (!empty($top)) {
-        $retval .= '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_align'].'" src="'.$_CONF['site_url'].$top.'" alt="'.$A['tid'].'" border="0"></a>';
+        if (!empty($top)) { 
+            $article->set_var('story_anchortag_and_image', '<a href="'.$_CONF['site_url'].'/index.php?topic='.$A['tid'].'"><img align="'.$_CONF['article_image_align'].'" src="'.$_CONF['site_url'].$top.'" alt="'.$A['tid'].'" border="0"></a>');
         }
     }
-    
-    $retval .= nl2br(stripslashes($A['introtext']));
-	
+   
     if ($index == 'n') {
-        $retval .= '<br><br>'.nl2br(stripslashes($A['bodytext']));
+        $article->set_var('story_introtext', stripslashes($A['introtext']) . '<br><br>'.nl2br(stripslashes($A['bodytext'])));
     } else {
-        $retval .= LB.'</td>'.LB.'</tr>'.LB.'<tr>'.LB.'<td><div align="right">';
+        $article->set_var('story_introtext', stripslashes($A['introtext'])); 
         if (!empty($A['bodytext'])) {
-            $retval .= '<a href="'.$_CONF['site_url'].'/article.php?story='.$A['sid'].'">'.$LANG01[2].'</a> ('.sizeof(explode(' ',$A['bodytext'])).' '.$LANG01[62].') '.LB;
+            $article->set_var('story_bodyhtml', '<a href="' .  $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof(explode(' ',$A['bodytext'])) . ' ' . $LANG01[62] . ') ');
         }
         if ($A['commentcode'] >= 0 && $A['comments'] > 0) {
-            $retval .= '<a href="'.$_CONF['site_url'].'/article.php?story='.$A['sid'].'#comments"> '.$A['comments'].' '.$LANG01[3].'</a>'.LB;
+            $article->set_var('comments_url',$_CONF['site_url'].'/article.php?story='.$A['sid'].'#comments');
+            $article->set_var('comments_text', $A['comments'] . ' ' . $LANG01[3]);
+
             $result = DB_query("SELECT UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['comments']} WHERE sid = '{$A['sid']}' ORDER BY date desc LIMIT 1");
             $C = DB_fetchArray($result);
-            $retval .= '<br><span class="storybyline">'.$LANG01[27].': '.strftime($_CONF['daytime'],$C['day']).'</span>'.LB;
+            $recent_post_anchortag = '<span class="storybyline">'.$LANG01[27].': '.strftime($_CONF['daytime'],$C['day']).'</span>';
         } else if ($A['commentcode'] >= 0) {
-            $retval .= ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>'.LB;
+            $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>';
         }
-        $retval .= '<a href="'.$_CONF['site_url'].'/profiles.php?sid='.$A['sid'].'&what=emailstory"><img src="'.$_CONF['site_url'].'/images/mail.gif" alt="'.$LANG01[64].'" border="0"></a>&nbsp;<a href="'.$_CONF['site_url'].'/article.php?story='.$A['sid'].'&mode=print"><img border="0" src="'.$_CONF['site_url'].'/images/print.gif" alt="'.$LANG01[65].'"></a>';
+        $recent_post_anchortag .= ' <a href="'.$_CONF['site_url'].'/profiles.php?sid='.$A['sid'].'&what=emailstory"><img src="'.$_CONF['site_url'].'/images/mail.gif" alt="'.$LANG01[64].'" border="0"></a>&nbsp;<a href="'.$_CONF['site_url'].'/article.php?story='.$A['sid'].'&mode=print"><img border="0" src="'.$_CONF['site_url'].'/images/print.gif" alt="'.$LANG01[65].'"></a>';
     }
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND SEC_hasrights('story.edit')) {
-        $retval .= '<br><a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>';
+        $recent_post_anchortag .= '<br><a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>';
     }
 
-    $retval .= '</div></td>'.LB.'</tr>'.LB
-        .'</table><br>'.LB;
-		
-    return $retval;
+    $article->set_var('recent_post_anchortag', $recent_post_anchortag);
+	
+    $article->parse('story_bodyhtml','bodytext',true);
+    $article->parse('finalstory','article');
+
+    return $article->finish($article->get_var('finalstory'));
 }
 
 // +---------------------------------------------------------------------------+
 // | HTML WIDGETS                                                              |
 // +---------------------------------------------------------------------------+
+
+/**
+* Return the file to use for a block template
+*
+* This returns the template needed to build the HTML for a block
+*
+* @blockname        string      block name to get template for
+* @which            string      indicates whether to return header template or footer template
+*
+*/
+function COM_getBlockTemplate($blockname,$which)
+{
+    global $_BLOCK_TEMPLATE, $_COM_VERBOSE;
+
+    if ($_COM_VERBOSE) {
+        COM_errorLog("_BLOCK_TEMPLATE[$blockname] = " . $_BLOCK_TEMPLATE[$blockname], 1);
+    }
+
+    if (!empty($_BLOCK_TEMPLATE[$blockname])) {
+        $templates = explode(',',$_BLOCK_TEMPLATE[$blockname]);
+        if ($which == 'header') {
+            if (!empty($templates[0])) {
+                $template = $templates[0];
+            } else {
+                $template = 'blockheader.thtml';
+            }
+        } else {
+            if (!empty($templates[1])) {
+                $template = $templates[1];
+            } else {
+                $template = 'blockfooter.thtml';
+            }
+        }
+    } else {
+        if ($which == 'header') {
+            $template = 'blockheader.thtml';
+        } else {
+            $template = 'blockfooter.thtml';
+        }
+    }
+
+    if ($_COM_VERBOSE) {
+        COM_errorLog("Block template for the $which of $blockname is: $template", 1);
+    }
+
+    return $template;
+
+}
+
+/**
+* Gets all installed themes
+*
+* Gets all directory names in /path/to/geeklog/themes/ and returns all the 
+* directories
+*
+*/
+function COM_getThemes()
+{
+    global $_CONF;
+
+    $themes = array();
+
+    COM_errorLog("THEMEDIR: " . $_CONF['path_themes'], 1);
+
+    $fd = opendir($_CONF['path_themes']); 
+
+    while (($dir = @readdir($fd)) == TRUE) {
+        if (is_dir($_CONF['path_themes'].$dir) && $dir <> '.' && $dir <> '..') {
+            clearstatcache();
+            $themes[] = $dir;
+        }
+    }
+    return $themes;
+}
+
+/**
+* Returns the site header
+*
+* This loads the proper templates, does variable substitution and returns the 
+* HTML for the site header.
+*
+*/
+function COM_siteHeader()
+{
+    global $_CONF, $_USER, $LANG01;
+
+    // If the theme implemented this for us then call their version
+    // instead.
+    $function = $_CONF['layout'] . '_siteHeader';
+    if (function_exists($function)) {
+        return $function();
+    }
+  
+    // If we reach here then either we have the default theme OR
+    // the current theme only needs the default variable substitutions 
+    $header = new Template($_CONF['path_layout']);
+    $header->set_file(array('header'=>'header.thtml','menuitem'=>'menuitem.thtml'));
+    $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
+    $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
+    $header->set_var('site_url', $_CONF['site_url'].'/');
+    $header->set_var('layout_url', $_CONF['layout_url']);
+    $header->set_var('site_email', $_CONF['site_mail']);
+    $header->set_var('site_name', $_CONF['site_name']);
+    $msg = '&nbsp;<b>'.$LANG01[67].' '.$_CONF['site_name'];
+    if (!empty($_USER['username'])) {
+        $msg .= ', '.$_USER['username'];
+    }
+    $header->set_var('welcome_msg', $msg); 
+    $curtime =  COM_getUserDateTimeFormat();
+    $header->set_var('datetime', $curtime[0]);
+    $header->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.gif' );
+    $header->set_var('css_url', $_CONF['layout_url'] . '/style.css');
+    $header->set_var('theme', $_CONF['theme']);
+    // Now add nested template for menu items
+
+    // contribute link
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/submit.php?type=story');
+    $header->set_var('menuitem_text', $LANG01[71]);
+    $header->parse('menu_elements', 'menuitem', true);
+    
+    // links link
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/links.php');
+    $header->set_var('menuitem_text', $LANG01[72]);
+    $header->parse('menu_elements', 'menuitem', true);
+
+    // polls link
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/pollbooth.php');
+    $header->set_var('menuitem_text', $LANG01[73]);
+    $header->parse('menu_elements', 'menuitem', true);
+
+    // calendar link
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/calendar.php');
+    $header->set_var('menuitem_text', $LANG01[74]);
+    $header->parse('menu_elements', 'menuitem', true);
+
+    // Get plugin menu options
+    $plugin_menu = PrintPluginHeaderMenuItems();
+    
+    for ($i = 1; $i <= count($plugin_menu); $i++) {
+        $header->set_var('menuitem_url', key($plugin_menu));
+        $header->set_var('menuitem_text', current($plugin_menu));
+        $header->parse('menu_elements', 'menuitem', true);
+    }
+
+    // Search link 
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/search.php');
+    $header->set_var('menuitem_text', $LANG01[75]);
+    $header->parse('menu_elements', 'menuitem', true);
+
+    // Stats link 
+    $header->set_var('menuitem_url', $_CONF['site_url'] . '/stats.php');
+    $header->set_var('menuitem_text', $LANG01[76]);
+    $header->parse('menu_elements', 'menuitem', true);
+    
+    // Now show any blocks
+    $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
+    $header->parse('index_header','header');
+
+    return $header->finish($header->get_var('index_header'));
+}
+
+/**
+* Returns the site footer 
+*
+* This loads the proper templates, does variable substitution and returns the 
+* HTML for the site footer.
+*
+*/
+function COM_siteFooter()
+{
+    global $_CONF, $LANG01, $_PAGE_TIMER;
+
+    // If the theme implemented this for us then call their version
+    // instead.
+    $function = $_CONF['layout'] . '_siteFooter';
+    if (function_exists($function)) {
+        return $function();
+    }
+
+    // Set template directory   
+    $footer = new Template($_CONF['path_layout']);
+
+    // Set template file
+    $footer->set_file('footer','footer.thtml');
+
+    // Do variable assignments
+    $footer->set_var('site_url', $_CONF['site_url']);
+    $footer->set_var('copyright_notice', '&nbsp;'.$LANG01[93].' &copy; 2001 '.$_CONF['site_name'].'<br>&nbsp;'.$LANG01[94]);
+    $footer->set_var('geeklog_version', VERSION);
+    $footer->set_var('execution_time', $_PAGE_TIMER->stopTimer());
+
+    // Actually parse the template and make variable substitutions
+    $footer->parse('index_footer','footer');
+
+    // Return resulting HTML
+    return $footer->finish($footer->get_var('index_footer'));
+
+}
 
 /**
 * Prints out standard block header
@@ -168,22 +385,24 @@ function COM_article($A,$index='')
 * @help         string      Help file, if one exists
 *
 */
-function COM_startBlock($title='',$helpfile='') 
+function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml') 
 {
     global $BLOCK,$LANG01,$_CONF;
-	
-    $retval = $BLOCK['blockheader'];
-	
-    if (!empty($helpfile)) {
-        $help = '<a class="blocktitle" href="'.$_CONF['site_url'].'/help/'.$helpfile.'" target="_blank"><img src="'.$_CONF['site_url'].'/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
-    } else {
-        $help = "&nbsp;";
-    }
-	
-    $retval = str_replace("%title",$title,$retval);
-    $retval = str_replace("%help",$help,$retval);
 
-    return $retval;
+    $block = new Template($_CONF['path_layout']);
+    $block->set_file('block', $template);
+    $block->set_var('layout_url', $_CONF['layout_url']);
+    $block->set_var('block_title',$title);
+    if (!empty($helpfile)) {
+        $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
+            . '" target="_blank"><img src="' . $_CONF['site_url'] 
+            . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
+        $block->set_var('block_help',$help); 
+    }
+
+    $block->parse("startHTML",'block'); 
+
+    return $block->finish($block->get_var('startHTML')); 
 }
 
 /**
@@ -192,11 +411,15 @@ function COM_startBlock($title='',$helpfile='')
 * THIS IS GOING AWAY SOON - WILL BE REPLACED BY NEW BLOCK/TEMPLATE FUNCTIONS
 *
 */
-function COM_endBlock() 
+function COM_endBlock($template='blockfooter.thtml') 
 {
-    global $BLOCK;
+    global $_CONF, $BLOCK;
 
-    return $BLOCK['blockfooter'];
+    $block = new Template($_CONF['path_layout']);
+    $block->set_file('block', $template);
+    $block->parse("endHTML",'block');                               
+
+    return $block->finish($block->get_var('endHTML'));
 }
 
 /**
@@ -252,7 +475,9 @@ function COM_startComment()
 */
 function COM_optionList($table,$selection,$selected='',$sortcol=1) 
 {
-    $select_set = explode(',', $selection);
+    $tmp = str_replace('DISTINCT ', '', $selection);
+    $select_set = explode(',',$tmp);
+    
     $result = DB_query("SELECT $selection FROM $table ORDER BY $select_set[$sortcol]");
     $nrows = DB_numRows($result);
 
@@ -281,7 +506,11 @@ function COM_optionList($table,$selection,$selected='',$sortcol=1)
 */ 
 function COM_checkList($table,$selection,$where='',$selected='') 
 {
+    global $_TABLES;
+
     $sql = "SELECT $selection FROM $table";
+    if ($table == $_TABLES['groups']) $table = $_TABLES['groups'] . '[]';
+
     if (!empty($where)) {
         $sql .= " WHERE $where";
     }
@@ -297,7 +526,7 @@ function COM_checkList($table,$selection,$where='',$selected='')
         $access = true;
         $A = DB_fetchArray($result);
 
-        if ($table == 'topics' AND hastopicaccess($A['tid']) == 0) {
+        if ($table == 'topics' AND SEC_hasTopicAccess($A['tid']) == 0) {
             $access = false;
         }
 
@@ -399,9 +628,11 @@ function COM_exportRDF()
 * @actionid     int     (1) write to log (2) write to screen (default) both
 *
 */
-function COM_errorLog($logentry,$actionid='') 
+function COM_errorLog($logentry, $actionid = '') 
 {
-    global $_CONF,$LANG01;
+    global $_CONF, $LANG01;
+
+    $retval = '';
 	
     if (!empty($logentry)) {
         $timestamp = strftime("%c");
@@ -466,7 +697,7 @@ function COM_accesslog($logentry)
 * @qid      string      ID for poll question
 *
 */
-function COM_pollvote($qid) 
+function COM_pollVote($qid) 
 {
     global $_TABLES,$HTTP_COOKIE_VARS,$REMOTE_ADDR,$LANG01,$_CONF;
 	
@@ -487,7 +718,7 @@ function COM_pollvote($qid)
 
             if ($nanswers > 0) {
                 $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="GET">' . LB
-                    . COM_startBlock($LANG01[5])
+                    . COM_startBlock($LANG01[5],'',COM_getBlockTemplate('poll_block', 'header'))
                     . '<input type="hidden" name="qid" value="' . $qid . '">' . LB
                     . '<h2>' . $Q['question'] . '</h2>' . LB;
 					
@@ -506,7 +737,7 @@ function COM_pollvote($qid)
                 }
 				
                 $retval .= '</span>'
-                    . COM_endBlock()
+                    . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer'))
                     . '</form>'.LB;
             }
         }
@@ -592,7 +823,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 		$nanswers = DB_numRows($answers);
 
 		if ($nanswers > 0) {
-			$retval .= COM_startBlock($LANG01[7])
+			$retval .= COM_startBlock($LANG01[7], '', COM_getBlockTemplate('poll_block', 'header'))
 				. '<h2>' . $Q['question'] . '</h2>'
 				.'<table border="0" cellpadding="3" cellspacing="0" align="center">' . LB;
 
@@ -628,7 +859,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
                     . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
 			}
 
-			$retval .= '</div>'. LB . COM_endBlock();
+			$retval .= '</div>'. LB . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer'));
 				
 			if ($scale > 399 && $Q['commentcode'] >= 0) {
 				$retval .= COM_userComments($qid,$Q['question'],'poll',$order,$mode);
@@ -721,7 +952,7 @@ function COM_userMenu()
     global $_USER,$_CONF,$LANG01;
 	
     if ($_USER['uid'] > 1) {
-        $retval .= COM_startBlock($LANG01[47]);
+        $retval .= COM_startBlock($LANG01[47],'',COM_getBlockTemplate('user_block', 'header'));
 			
         if ($_CONF['personalcalendars'] == 1) {
             $retval .= '<a href="' . $_CONF['site_url'] . '/calendar.php?mode=personal">' . $LANG01[66]
@@ -732,7 +963,7 @@ function COM_userMenu()
             . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=preferences">' . $LANG01[49] . '</a><br>' . LB
             . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=comments">' .$LANG01[63] . '</a><br>' . LB
             . '<a href="' . $_CONF['site_url'] . '/users.php?mode=logout">' . $LANG01[19] . '</a>'
-            . COM_endBlock();
+            . COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
     } else {
         $retval .= COM_startBlock($LANG01[47])
             . '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
@@ -742,9 +973,11 @@ function COM_userMenu()
             . '<input type="password" size="10" name="passwd"><br>' . LB
             . '<input type="submit" value="' . $LANG01[58] . '">' . LB
             . '</form>' . $LANG01[59] . LB
-            . COM_endBlock();
+            . COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
     }
+
     return $retval;
+
 }
 
 /**
@@ -759,7 +992,7 @@ function COM_adminMenu()
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
     if (SEC_isModerator() OR SEC_hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
-	    $retval .= COM_startBlock($LANG01[9]);
+	    $retval .= COM_startBlock($LANG01[9],'',COM_getBlockTemplate('admin_block', 'header'));
         if (SEC_isModerator()) {
             $num = DB_count($_TABLES['storysubmission'],'uid',0) + 
                     DB_count($_TABLES['eventsubmission'],'eid',0) + 
@@ -819,7 +1052,7 @@ function COM_adminMenu()
         }
 
         $retval .= '<a href="http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION 
-            . '" target="_new">GL Version Test</a><br>' . LB . COM_endBlock();
+            . '" target="_new">GL Version Test</a><br>' . LB . COM_endBlock(COM_getBlockTemplate('admin_block', 'footer'));
     }
     return $retval;
 }
@@ -1255,6 +1488,50 @@ function COM_olderstuff()
     }
 }
 
+/** 
+* Shows a single Geeklog block
+*
+* This shows a single block and is typically called from
+* COM_showBlocks OR from plugin code
+*
+* @name     string      Logical name of block (not same as title)
+*
+*/
+function COM_showBlock($name)
+{
+    global $_CONF;
+
+    switch ($name) {
+    case 'user_block':
+        $retval .= COM_userMenu();
+        break;
+    case 'admin_block':
+        $retval .= COM_adminMenu();
+        break;
+    case 'section_block':
+        $retval .= COM_startBlock('Sections','', COM_getBlockTemplate($name,'header')) 
+            . COM_showTopics($topic) 
+            . COM_endBlock(COM_getBlockTemplate($name,'footer'));
+        break;
+    case 'events_block':
+        if (!$U['noboxes'] && $_CONF['showupcomingevents']) {
+            $retval .= COM_printUpcomingEvents();
+        } 
+        break;
+    case 'poll_block':
+        $retval .= COM_showPoll(60);
+        break;
+    case 'whats_new_block':
+        if (!$U['noboxes']) {
+            $retval .= COM_whatsNewBlock();
+        }
+        break;
+    }
+
+    return $retval;
+
+}
+
 /**
 * Shows Geeklog blocks
 *
@@ -1265,7 +1542,7 @@ function COM_olderstuff()
 * @topic    string      Only get blocks for this topic
 *
 */
-function COM_showblock($side,$topic='') 
+function COM_showBlocks($side, $name='all', $topic='') 
 {
     global $_TABLES, $_CONF, $_USER, $LANG21;
 	
@@ -1322,30 +1599,7 @@ function COM_showblock($side,$topic='')
         }
 
         if ($A['type'] == 'gldefault') {
-            switch ($A['title']) {
-			case "User Block":
-                $retval .= COM_userMenu();
-                break;
-            case 'Admin Block':
-                $retval .= COM_adminMenu();
-                break;
-            case 'Section Block':
-                $retval .= COM_startBlock('Sections') . COM_showTopics($topic) . COM_endBlock();
-                break;
-            case "Events Block":
-                if (!$U['noboxes'] && $_CONF['showupcomingevents']) {
-                    $retval .= COM_printUpcomingEvents();
-                }
-                break;
-            case "Poll Block":
-                $retval .= COM_showPoll(60);
-                break;
-            case "Whats New Block":
-                if (!$U['noboxes']) {
-                    $retval .= COM_whatsNewBlock();
-                }
-                break;
-            }
+            $retval .= COM_showBlock($A['name']);
         }
 
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
@@ -1521,11 +1775,11 @@ function COM_hit()
 * Returns the HTML for any upcoming events in the calendar
 *
 */
-function COM_PrintUpcomingEvents() 
+function COM_printUpcomingEvents() 
 {
     global $_TABLES, $LANG01,$_CONF;
 	
-    $retval .= COM_startBlock($LANG01[78]);
+    $retval .= COM_startBlock($LANG01[78], '', COM_getBlockTemplate('events_block', 'header'));
     $eventSql = "SELECT eid, title, url, datestart, dateend FROM events WHERE dateend >= NOW() AND " 
         . "(TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) ORDER BY datestart, dateend";
     $allEvents = DB_query($eventSql);
@@ -1581,7 +1835,7 @@ function COM_PrintUpcomingEvents()
         $theRow ++ ;  
     }
 
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 	
     return $retval;
 }
@@ -1667,7 +1921,7 @@ function COM_emailusertopics()
 * Return the HTML that shows any new stories, comments, etc
 *
 */
-function COM_whatsnewblock() 
+function COM_whatsNewBlock() 
 {
     global $_TABLES, $_CONF, $LANG01;
 	
@@ -1686,7 +1940,7 @@ function COM_whatsnewblock()
     $sql .= " AND draft_flag = 0";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
-    $retval .= COM_startBlock($LANG01[79]);
+    $retval .= COM_startBlock($LANG01[79], '', COM_getBlockTemplate('whats_new_block', 'header'));
 
     // Any late breaking news stories?
     $retval .= '<b>' . $LANG01[98] . '</b><br>';
@@ -1799,7 +2053,7 @@ function COM_whatsnewblock()
         }
     }
 
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer'));
 	
     return $retval;
 } 

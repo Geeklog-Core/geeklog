@@ -1,309 +1,405 @@
 <?php
-###############################################################################
-# group.php
-# This is the admin groups interface!
-#
-# Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com 
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
-include("../lib-common.php");
-include("../custom_code.php");
-include("auth.inc.php");
-#Make sure user has rights to this feature
-if (!hasrights('group.edit')) {
-        site_header("menu");
-        startblock($MESSAGE[30]);
-        print $MESSAGE[32];
-        endblock();
-        site_footer();
-        exit;
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | group.php                                                                 |
+// | Geeklog group administration page.                                        |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: group.php,v 1.6 2001/10/29 17:35:50 tony_bibbs Exp $
+
+include_once('../lib-common.php');
+include_once('auth.inc.php');
+
+// Uncomment the line below if you need to debug the HTTP variables being passed
+// to the script.  This will sometimes cause errors but it will allow you to see
+// the data being passed in a POST operation
+// debug($HTTP_POST_VARS);
+
+$display = '';
+
+// Make sure user has rights to access this page 
+if (!SEC_hasRights('group.edit')) {
+    $display .= COM_siteHeader("menu");
+    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= $MESSAGE[32];
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+    echo $display;
+    exit;
 }
 
-###############################################################################
-# Uncomment the line below if you need to debug the HTTP variables being passed
-# to the script.  This will sometimes cause errors but it will allow you to see
-# the data being passed in a POST operation
-#debug($HTTP_POST_VARS);
-###############################################################################
-# Displays the topic editor
-function editgroup($grp_id="") {
-	global $CONF,$USER,$LANG_ACCESS;
-	startblock($LANG_ACCESS[groupeditor]);
+/**
+* Shows the group editor form
+*
+* @grp_id           string      ID of group to edit
+*
+*/
+function editgroup($grp_id = '') 
+{
+	global $_TABLES, $_CONF, $_USER, $LANG_ACCESS;
+
+    $retval = '';
+
+	$retval .= COM_startBlock($LANG_ACCESS[groupeditor]);
+
+    $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
+    $group_templates->set_file('editor','groupeditor.thtml');
+    $group_templates->set_var('site_url', $_CONF['site_url']);
+    $group_templates->set_var('lang_save', $LANG_ACCESS[save]);
+    $group_templates->set_var('lang_cancel', $LANG_ACCESS[cancel]);
+
 	if (!empty($grp_id)) {
-		$result = dbquery("SELECT * FROM {$CONF['db_prefix']}groups where grp_id ='$grp_id'");
-		$A = mysql_fetch_array($result);
+		$result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
+		$A = DB_fetchArray($result);
+
+	    // If this is a not Root user (e.g. Group Admin) and they are editing the 
+	    // Root root then bail...they can't change groups
+		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == "Root")) {
+            $retval .= $LANG_ACCESS[canteditroot];
+			$retval .= COM_endBlock();
+			return $retval;
+		}
 	} else {
-		$A['owner_id'] = $USER['uid'];
-		#this is the one instance where we default the group
-		#most topics should belong to the normal user group 
-		$A['group_id'] = getitem('groups','grp_id',"grp_name = 'Normal User'");
-		$A["grp_gl_core"] == 0;
+		$A['owner_id'] = $_USER['uid'];
+
+		// this is the one instance where we default the group
+		// most topics should belong to the normal user group 
+		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
+		$A['grp_gl_core'] == 0;
 	}
-	print "<form action={$CONF['site_url']}/admin/group.php method=post>";
-	print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
-	print "<tr><td colspan="2"><input type="submit" value=save name=mode> ";
-	print "<input type="submit" value=cancel name=mode> ";
+
 	if (!empty($grp_id)) {
-		if ($A["grp_gl_core"] == 0) {
-			#Groups tied to Geeklogs functionality shouldn't be deleted
-			print "<input type="submit" value=delete name=mode>";
-			print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"1\">";
+		if ($A['grp_gl_core'] == 0) {
+			// Groups tied to Geeklogs functionality shouldn't be deleted
+            $group_templates->set_var('delete_option', '<input type="submit" value="delete" name="mode">');
+            $group_templates->set_var('group_core', 0);
 		} else {
-			print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"0\">";
+            $group_templates->set_var('group_core', 1);
 		}
-		print "<input type="hidden" name=\"grp_id\" value=\"{$A["grp_id"]}\">";
+		$group_templates->set_var('group_id', $A['grp_id']);
 	} else {
-		print "<input type=\"hidden\" name=\"grp_gl_core\" value=\"0\">";
+        $group_templates->set_var('group_core', 0);
 	}
-		print "<tr></td>";
-	if ($A["grp_gl_core"] == 0) {	
-		print "<tr><td align=\"right\">{$LANG_ACCESS[groupname]}:</td><td><input type=\"text\" size=\"20\" maxlength=\"50\" name=\"grp_name\" value=\"{$A["grp_name"]}\"></td></tr>";
+
+    $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
+    
+	if ($A['grp_gl_core'] == 0) {	
+        $group_templates->set_var('groupname_inputtype', 'text');
 	} else {
-		print "<tr><td align=\"right\">{$LANG_ACCESS[groupname]}:</td><td>{$A["grp_name"]}</td><input type=\"hidden\" name=\"grp_name\" value=\"{$A["grp_name"]}\"></tr>";
+        $group_templates->set_var('groupname_inputtype', 'hidden');
 	}
-	print "<tr><td align=\"right\">{$LANG_ACCESS[description]}:</td><td><input type=\"text\" size=\"40\" maxlength=\"255\" name=\"grp_descr\" value=\"{$A["grp_descr"]}\"></td></tr>";
+    $group_templates->set_var('group_name', $A['grp_name']);
+
+    $group_templates->set_var('lang_description', $LANG_ACCESS[description]);
+    $group_templates->set_var('group_description', $A['grp_descr']);
+    $group_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
 	
-	#If this is a not Root user (e.g. Group Admin) and they are editing the 
-	#Root root then bail...they can't change groups
-	if (!empty($grp_id)) {
-		if (!ingroup('Root') AND (getitem('groups','grp_name',"grp_id = $grp_id") == "Root")) {
-			print "</tr></tr>";
-			print "</table></form>";
-			endblock();
-			return;
-		}
-	}
-	print "<tr><td colspan=\"2\"><hr></td></tr>";
-	print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr>";
-	$groups = getusergroups('','',$grp_id);
-	if ($A["grp_gl_core"] == 1) {
+	//$groups = SEC_getUserGroups('','',$grp_id);
+    $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
+    $num_groups = DB_numRows($tmp);
+    for ($x = 1; $x <= $num_groups; $x++) {
+        $G = DB_fetchArray($tmp);
+        if ($x > 1) {
+            $selected .= ',' . $G['ug_main_grp_id'];
+        } else {
+            $selected .= $G['ug_main_grp_id'];
+        }
+    }
+	if ($A['grp_gl_core'] == 1) {
+        /*
 		if (is_array($groups)) {
-                    	$selected = implode(',',$groups);
-               	} else {
-                     	$selected = '';
-               	}
-		print "<tr><td colspan=\"2\">{$LANG_ACCESS[coregroupmsg]}</td></tr>";
+            $selected = implode(',',$groups);
+        } else {
+            $selected = '';
+        }
+        */
+
+        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[coregroupmsg]);
+
 		if (!empty($selected)) {
-			$result= dbquery("SELECT grp_name FROM groups WHERE grp_id <> $grp_id AND grp_id in ($selected) ORDER BY grp_name");
-		$nrows = mysql_num_rows($result);
+			$result= DB_query("SELECT grp_name FROM {$_TABLES['groups']} WHERE grp_id <> $grp_id AND grp_id in ($selected) ORDER BY grp_name");
+		    $nrows = DB_numRows($result);
 		} else {
 			$nrows = 0;
 		}
-		print "<tr><td colspan=\"2\">&nbsp;</td></tr>";
-		for ($i=1;$i<=$nrows;$i++) {
-			$GRPS = mysql_fetch_array($result);
-			print "<tr><td colspan=\"2\">{$GRPS["grp_name"]}</td></tr>";	
-		}
+
 		if ($nrows == 0) {
-			#this group doesn't belong to anything...give a friendly message
-			print "<tr><td colspan=\"2\">{$LANG_ACCESS["nogroupsforcoregroup"]}</td></tr>";
-		} 	
+			// this group doesn't belong to anything...give a friendly message
+            $group_templates->set_var('group_options', $LANG_ACCESS[nogroupsforcoregroup]);
+		} else {
+            $groupoptions = '';
+            for ($i = 1; $i <= $nrows; $i++) {
+                $GRPS = DB_fetchArray($result);
+                $groupoptions .= $GRPS['grp_name'] . '<br>' .LB;
+            }
+            $group_templates->set_var('group_options', $groupoptions);
+        }
 	} else {
+        /*
 		if (is_array($groups)) {
-                      	$selected = implode(' ',$groups);
-               	} else {
-                    	$selected = '';
-               	}
-		print "<tr><td colspan=\"2\">{$LANG_ACCESS[groupmsg]}</td></tr>";
-		print "<tr><td colspan=\"2\" width=\"100%\">";
-		#Only Root users can give rights to Root
-		if (ingroup('Root')) {
+            $selected = implode(' ',$groups);
+        } else {
+            $selected = '';
+        }
+        */
+
+        $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS[groupmsg]);
+        COM_errorLog("SELECTED: $selected");
+		// Only Root users can give rights to Root
+		if (SEC_inGroup('Root')) {
 			if (!empty($grp_id)) {
-				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id",$selected);
+				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id",$selected));
 			} else {
-				checklist('groups','grp_id,grp_name','','');
+				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name','',''));
 			}
 		} else {
 			if (!empty($grp_id)) {
-				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected);
+				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected));
 			} else {
-				checklist('groups','grp_id,grp_name',"grp_name <> 'Root'",'');
+				$group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_name <> 'Root'",''));
 			}
 		}
 	}
-        print "<tr><td colspan=\"2\"><hr></td></tr>";
-	print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[rights]}</b></td></tr>";
-	if ($A["grp_gl_core"] == 1) {
-		print "<tr><td colspan=\"2\">{$LANG_ACCESS[corerightsdescr]}</td></tr>";
+    $group_templates->set_var('lang_rights', $LANG_ACCESS[rights]);
+
+	if ($A['grp_gl_core'] == 1) {
+        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS[corerightsdescr]);
 	} else {
-		print "<tr><td colspan=\"2\">{$LANG_ACCESS[rightsdescr]}</td></tr>";
+        $group_templates->set_var('lang_rightsmsg', $LANG_ACCESS[rightsdescr]);
 	}
-	print "<tr><td colspan=\"2\" width=\"100%\">";
-	printrights($grp_id,$A["grp_gl_core"]);
-	print "</tr></tr>";
-	print "</table></form>";
-	endblock();
-	return;
+
+	$group_templates->set_var('rights_options', printrights($grp_id, $A['grp_gl_core']));
+    $group_templates->parse('output','editor');
+    $retval .= $group_templates->finish($group_templates->get_var('output'));
+	$retval .= COM_endBlock();
+	return $retval;
 }
 
-function printrights($grp_id="",$core=0) {
-	global $VERBOSE,$USER,$LANG_ACCESS;
-	# this gets a bit complicated so bare with the comments
-	#first query for all available features
-	$features = dbquery("SELECT * FROM features ORDER BY ft_name");
-	$nfeatures = mysql_num_rows($features);
+function printrights($grp_id='', $core=0) 
+{
+	global $_TABLES, $VERBOSE, $_USER, $LANG_ACCESS;
+
+	// this gets a bit complicated so bare with the comments
+	// first query for all available features
+	$features = DB_query("SELECT * FROM {$_TABLES['features']} ORDER BY ft_name");
+	$nfeatures = DB_numRows($features);
+
 	if (!empty($grp_id)) {
-		#now get all the feature this group gets directly
- 		$directfeatures = dbquery("SELECT acc_ft_id,ft_name FROM access,features WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
-		#now in many cases the features will be give to this user indirectly via membership
-		#to another group.  These are not editable and must, instead, be removed from that group
-		# directly
-		$indirectfeatures = getuserpermissions($grp_id);
-		$indirectfeatures = explode(",",$indirectfeatures);
-		#Build an array of indirect features
-		for ($i=0;$i<sizeof($indirectfeatures);$i++) {		
+		// now get all the feature this group gets directly
+ 		$directfeatures = DB_query("SELECT acc_ft_id,ft_name FROM {$_TABLES['access']},{$_TABLES['features']} WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
+
+		// now in many cases the features will be give to this user indirectly via membership
+		// to another group.  These are not editable and must, instead, be removed from that group
+		// directly
+		$indirectfeatures = SEC_getUserPermissions($grp_id);
+		$indirectfeatures = explode(',',$indirectfeatures);
+
+		// Build an array of indirect features
+		for ($i = 0; $i < sizeof($indirectfeatures); $i++) {		
 			$grpftarray[current($indirectfeatures)] = 'indirect'; 
 			next($indirectfeatures);
 		}
-		#Build an arrray of direct features	
-		$ndirect = mysql_num_rows($directfeatures);
-		for ($i=1;$i<=$ndirect;$i++) {
-			$A = mysql_fetch_array($directfeatures);
-			$grpftarray1[$A["ft_name"]] = 'direct'; 
+
+		// Build an arrray of direct features	
+		$ndirect = DB_numRows($directfeatures);
+		for ($i = 1; $i <= $ndirect; $i++) {
+			$A = DB_fetchArray($directfeatures);
+			$grpftarray1[$A['ft_name']] = 'direct'; 
 		}
-		#Now merge the two	
+
+		// Now merge the two arrays	
 		$grpftarray = array_merge($grpftarray,$grpftarray1);
 		if ($VERBOSE) {
-			#this is for debugging purposes
-			for ($i=1;$i<sizeof($grpftarray);$i++) {
-				errorlog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
+			// this is for debugging purposes
+			for ($i = 1; $i < sizeof($grpftarray); $i++) {
+				COM_errorLog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
 				next($grpftarray); 
 			}
 		}
 	} 
-	#OK, now loop through and print all the features giving edit rights to only the ones that
-	#are direct features
+
+	// OK, now loop through and print all the features giving edit rights to only the ones that
+	// are direct features
 	$ftcount = 0;
-	print "\n\n<table border=\"0\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr>";	
-	for ($i=1;$i<=$nfeatures;$i++) {		
+    $retval = '<tr>' . LB;
+	for ($i = 1; $i <= $nfeatures; $i++) {		
 		if ($i > 0 AND ($i % 3 == 1)) {
-			print "</tr>\n<tr>";
+			$retval .= "</tr>\n<tr>";
 		}
-		$A = mysql_fetch_array($features);
-		if ((($grpftarray[$A["ft_name"]] == 'direct') OR empty($grpftarray[$A["ft_name"]])) AND ($core == 0)) {
+		$A = DB_fetchArray($features);
+
+		if ((($grpftarray[$A['ft_name']] == 'direct') OR empty($grpftarray[$A['ft_name']])) AND ($core == 0)) {
 			$ftcount++;
-			print "\n<td><input type=\"checkbox\" name=\"features[]\" value=\"{$A["ft_id"]}\"";
-			if ($grpftarray[$A["ft_name"]] == 'direct') {
-				print " CHECKED";
+			$retval .= '<td><input type="checkbox" name="features[]" value="'. $A['ft_id'] . '"';
+			if ($grpftarray[$A['ft_name']] == 'direct') {
+				$retval .= ' CHECKED';
 			} 
-			print "> {$A["ft_name"]}</td>";
+			$retval .= '>' . $A['ft_name'] . '</td>';
 		} else {
-			#either this is an indirect right OR this is a core feature
-			if ((($core == 1) AND ($grpftarray[$A["ft_name"]] == 'indirect' OR $grpftarray[$A["ft_name"]] == 'direct')) OR ($core == 0)) {
+			// either this is an indirect right OR this is a core feature
+			if ((($core == 1) AND ($grpftarray[$A['ft_name']] == 'indirect' OR $grpftarray[$A['ft_name']] == 'direct')) OR ($core == 0)) {
 				$ftcount++;
-				print "<td>{$A["ft_name"]}</td>";
+				$retval .= '<td>' . $A['ft_name'] . '</td>';
 			}
 		}
 	}
 	if ($ftcount == 0) {
-		#This group doesn't have rights to any features
-		print "\n<tr><td colspan=\"3\">{$LANG_ACCESS["grouphasnorights"]}</td>";
+		// This group doesn't have rights to any features
+		$retval .= '<td colspan="3">' . $LANG_ACCESS[grouphasnorights] . '</td>';
 	}
-	print "</tr>\n</table>";
+    
+	$retval .= '</tr>' . LB;
+
+    return $retval;
 }
 
-###############################################################################
-# Saves $grp_id to the database
-function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) {
-	global $CONF,$LANG_ACCESS;
-	if (!empty($grp_name) && !empty($grp_descr)) {
-		if (empty($grp_id)) {
-			dbquery("REPLACE INTO groups (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
-		} else {
-			dbquery("REPLACE INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
-		}
-		if (empty($grp_id)) {
-			$grp_id = getitem('groups','grp_id',"grp_name = '$grp_name'");
-		}
-		#now save the features
-		dbquery("DELETE FROM access WHERE acc_grp_id = $grp_id");
-		for ($i=1;$i<=sizeof($features);$i++) {
-			dbquery("INSERT INTO access (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
-			next($features);
-		}
-		if (is_array($groups)) {
-                        if ($VERBOSE) errorlog("deleting all group_assignments for group $grp_id/$grp_name",1);
-                        dbquery("DELETE FROM group_assignments WHERE ug_grp_id = $grp_id");
-                        if (!empty($groups)) {
-                                for ($i=1;$i<=sizeof($groups);$i++) {
-                                        if ($VERBOSE) errorlog("adding group_assignment " . current($groups) . " for $grp_name",1);
-                                        $sql = "INSERT INTO group_assignments (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
-                                        dbquery($sql);
-                                        next($groups);
-                                }
-                        }
-                }
-		refresh($CONF['site_url'] . '/admin/group.php?msg=13');
-	} else {
-		site_header('menu');
-		startblock($LANG_ACCESS[missingfields]);
-		print $LANG_ACCESS[missingfieldsmsg];
-		endblock();
-		editgroup($grp_id);
-		site_footer();
-	}
-}
+/**
+* Save a group to the database
+*
+* @grp_id           string      ID of group to save
+* @grp_name         string      Group Name
+* @grp_descr        string      Description of group
+* @grp_gl_core      int         Flag that indicates if this is a core Geeklog group
+* @features         array       Features the group has access to
+* @groups           array       Groups this group will belong to
+*
+*/
+function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
+{
+	global $_TABLES, $_CONF, $LANG_ACCESS;
 
-###############################################################################
-# Displays a list of topics
-function listgroups() {
-	global $CONF,$LANG_ACCESS;
-        startblock($LANG_ACCESS[groupmanager]);
-        adminedit("group",$LANG_ACCESS[newgroupmsg]);
-        print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
-        print "<tr><th align="left">{$LANG_ACCESS[groupname]}</th><th>{$LANG_ACCESS[description]}</th><th>{$LANG_ACCESS[coregroup]}</th></tr>";
-        $result = dbquery("SELECT * FROM {$CONF['db_prefix']}groups");
-        $nrows = mysql_num_rows($result);
-        for ($i=0;$i<$nrows;$i++) {
-                $A = mysql_fetch_array($result);
-		if ($A["grp_gl_core"] == 1) {
-			$core = $LANG_ACCESS[yes];
-		} else {
-			$core = $LANG_ACCESS[no];
-		}
-                print "<tr align="center"><td align="left"><a href={$CONF['site_url']}/admin/group.php?mode=edit&grp_id={$A["grp_id"]}>" . stripslashes($A["grp_name"]) . "</a></td>";
-                print "<td>" . stripslashes($A["grp_descr"]) . "</td><td>$core</td></tr>";
+    if (!empty($grp_name) && !empty($grp_descr)) {
+        if (empty($grp_id)) {
+            DB_query("REPLACE INTO {$_TABLES['groups']} (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
+        } else {
+            DB_query("REPLACE INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
         }
-        print "</table></form>";
-        endblock();
+        if (empty($grp_id)) {
+            $grp_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = '$grp_name'");
+        }
+
+        // now save the features
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_grp_id = $grp_id");
+        for ($i = 1; $i <= sizeof($features); $i++) {
+            DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
+            next($features);
+        }
+        if (is_array($groups)) {
+            if ($VERBOSE) COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
+            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
+            if (!empty($groups)) {
+                for ($i = 1; $i <= sizeof($groups); $i++) {
+                    if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
+                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
+                    DB_query($sql);
+                    next($groups);
+                }
+            }
+        }
+		echo COM_refresh($_CONF['site_url'] . '/admin/group.php?msg=13');
+	} else {
+		$retval .= COM_siteHeader('menu');
+		$retval .= COM_startBlock($LANG_ACCESS[missingfields]);
+		$retval .= $LANG_ACCESS[missingfieldsmsg];
+		$retval .= COM_endBlock();
+		$retval .= editgroup($grp_id);
+		$retval .= COM_siteFooter();
+        return $retval;
+	}   
+}
+
+/**
+* Lists all the groups in the system
+*
+*/
+function listgroups() 
+{
+	global $_TABLES, $_CONF, $LANG_ACCESS;
+
+    $retval .= COM_startBlock($LANG_ACCESS[groupmanager]);
+
+    $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
+    $group_templates->set_file(array('list'=>'grouplist.thtml','row'=>'listitem.thtml'));
+    $group_templates->set_var('site_url', $_CONF['site_url']);
+    $group_templates->set_var('lang_newgroup', $LANG_ACCESS[newgroup]);
+    $group_templates->set_var('lang_adminhome', $LANG_ACCESS[adminhome]);
+    $group_templates->set_var('lang_instructions', $LANG_ACCESS[newgroupmsg]); 
+    $group_templates->set_var('lang_groupname', $LANG_ACCESS[groupname]);
+    $group_templates->set_var('lang_description', $LANG_ACCESS[description]);
+    $group_templates->set_var('lang_coregroup', $LANG_ACCESS[coregroup]);
+
+    $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
+    $nrows = DB_numRows($result);
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        if ($A['grp_gl_core'] == 1) {
+            $core = $LANG_ACCESS[yes];
+        } else {
+            $core = $LANG_ACCESS[no];
+        }
+        $group_templates->set_var('group_id', $A['grp_id']);
+        $group_templates->set_var('group_name', $A['grp_name']);
+        $group_templates->set_var('group_description', $A['grp_descr']);
+        $group_templates->set_var('group_core', $core);
+        $group_templates->parse('group_row', 'row', true);
+    }
+    $group_templates->parse('output', 'list');
+    $retval .= $group_templates->finish($group_templates->get_var('output'));
+    $retval .= COM_endBlock();
+
+    return $retval;
 }
 
 ###############################################################################
 # MAIN
 switch ($mode) {
 	case "delete":
-		dbdelete("access","acc_grp_id",$grp_id);
-		dbdelete("groups","grp_id",$grp_id,"/admin/group.php?msg=14");
+		DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
+		DB_delete($_TABLES['groups'],'grp_id',$grp_id,'/admin/group.php?msg=14');
 		break;
 	case "save":
-		savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups);
+		$display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups);
 		break;
 	case "edit":
-		site_header("menu");
-		editgroup($grp_id);
-		site_footer();
+		$display .= COM_siteHeader('menu');
+		$display .= editgroup($grp_id);
+		$display .= COM_siteFooter();
 		break;
 	case "cancel":
 	default:
-		site_header("menu");
-		showmessage($msg);
-		listgroups();
-		site_footer();
+		$display .= COM_siteHeader('menu');
+		$display .= COM_showMessage($msg);
+		$display .= listgroups();
+		$display .= COM_siteFooter();
 		break;
 }
+
+echo $display;
+
 ?>

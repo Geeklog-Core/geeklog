@@ -31,9 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.6 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: calendar_event.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include_once('lib-common.php');
+include_once($_CONF['path_system'] . 'classes/calendar.class.php');
 
 /**
 * Adds an event to the user's calendar
@@ -47,47 +48,46 @@ include_once('lib-common.php');
 */
 function adduserevent($eid) 
 {
-    global $_USER, $LANG02;
+    global $_USER, $LANG02, $_CONF, $_TABLES;
 	
-    $retval .= COM_startBlock("Adding Event to {$_USER['username']}'s Calendar");
-    $eventsql = "SELECT *, datestart AS start, dateend AS end FROM {$_CONF['db_prefix']}events where eid='$eid'";
+    $retval .= COM_startBlock($LANG02[11]);
+    $eventsql = "SELECT *, datestart AS start, dateend AS end FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
         $A = DB_fetchArray($result);
-        $retval .= '<table border="0">' . LB
-            . '<tr>' . LB . '<td colspan="2">' . $LANG02[8] . '</td>' . LB . '</tr>' . LB
-            . '<tr valign="top">' . LB
-            . '<td><b>Event:</b></td>' . LB
-            . '<td><a href="' . $A["url"] . ' target="_new">' . $A['title'] . '</a></td>' . LB
-            . '</tr>' . LB
-            . '<tr valign="top">' . LB 
-            . '<td><b>Starts:</b></td>' . LB 
-            . '<td>' . $A['start'] . '</td>' . LB
-            . '</tr>' . LB
-            . '<tr valign="top">' . LB
-            . '<td><b>Ends:</b></td>' . LB
-            . '<td>' . $A['end'] . '</td>' . LB
-            . '</tr>' . LB
-            . '<tr valign="top">' . LB
-            . '<td><b>Location:</b></td>' . LB
-            . '<td>' . $A['location'] . '</td>' . LB
-            . '</tr>' . LB
-            . '<tr valign="top">' . LB
-            .'<td><b>Description:</b></td>' . LB
-            .'<td>' . $A['description'] . '</td>' . LB
-            .'</tr>' . LB
-            .'</table>' . LB;
+        $cal_template = new Template($_CONF['path_layout'] . 'calendar');
+        $cal_template->set_file(array('addevent'=>'addevent.thtml'));
+        $cal_template->set_var('intro_msg', $LANG02[8]);
+        $cal_template->set_var('lang_event', $LANG02[12]);
+        $cal_template->set_var('event_title',$A['title']);
+
+        if (!empty($A['url'])) {
+            $cal_template->set_var('event_begin_anchortag', '<a href="' . $A['url'] . ' target="_blank">');
+            $cal_template->set_var('event_end_anchortag', '</a>');
+        } else {
+            $cal_template->set_var('event_begin_anchortag', '');
+            $cal_template->set_var('event_end_anchortag', '');
+        }
+
+        $cal_template->set_var('lang_starts', $LANG02[13]);
+        $cal_template->set_var('event_start', $A['start']);
+        $cal_template->set_var('lang_ends', $LANG02[14]);
+        $cal_template->set_var('event_end', $A['end']);
+        $cal_template->set_var('lang_where',$LANG02[4]);
+        $cal_template->set_var('event_location', $A['location']);
+        $cal_template->set_var('lang_description', $LANG02[5]);
+        $cal_template->set_var('event_description', $A['description']);
+        $cal_template->set_var('event_id', $eid);
+        $cal_template->set_var('lang_addtomycalendar', $LANG02[9]);
+        $cal_template->parse('output','addevent'); 	
+        $retval .= $cal_template->finish($cal_template->get_var('output'));
     } else {
         $retval .= COM_showMessage(23);
-        return $retval;
     }	
-    $retval .= '<form name="userevent" method="post" action="'.$_CONF['site_url'].'/calendar_event.php">'
-        . '<input type="hidden" name="mode" value="saveuserevent">'
-        . '<input type="hidden" name="eid" value="' . $eid . '">'
-        . '<input type="submit" value="' . $LANG02[9] . '"></form>';
-		
+	
     return $retval;
+
 }
 
 /**
@@ -114,7 +114,7 @@ function saveuserevent($eid, $reminder, $emailreminder)
 	
     $savesql = "Insert into {$_TABLES["userevent"]} (uid, eid) values ('{$_USER['uid']}', '{$eid}')";
     DB_query($savesql);
-    return $COM_refresh("{$_CONF['site_url']}/calendar.php?msg=24");
+    return COM_refresh("{$_CONF['site_url']}/calendar.php?msg=24");
 }
 
 // MAIN
@@ -123,7 +123,7 @@ $display = '';
 
 switch ($mode) {
 case 'addevent':
-    $display .= site_header();
+    $display .= COM_siteHeader();
 
     if (!empty($eid)) {
         $display .= adduserevent($eid);
@@ -131,13 +131,15 @@ case 'addevent':
         $display .= COM_showMessage(23);
     }   
 
-    $display .= COM_endBlock() . site_footer();
+    $display .= COM_endBlock() . COM_siteFooter();
     break;
 case 'saveuserevent':
     if (!empty($eid)) {
         $display .= saveuserevent($eid,$remind,$emailreminder);
     } else {
+        $display .= COM_siteHeader();
         $display .= COM_showMessage(23);
+        $display .= COM_siteFooter();
     }
     break;
 case 'deleteevent':
@@ -145,7 +147,7 @@ case 'deleteevent':
     $display .= COM_refresh($_CONF['site_url'] . '/calendar.php?msg=26');
     break;
 default:
-    $display .= site_header('menu');
+    $display .= COM_siteHeader('menu');
     if (!empty($eid)) {
         $display .= COM_startBlock($LANG30[9]);
         $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
@@ -154,35 +156,74 @@ default:
         $thedate= $year . "-". $month . "-" . $day;
         $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN datestart and dateend ORDER BY datestart asc,title";
     }
-    $display .= "[ <a href={$_CONF['site_url']}/submit.php?type=event>{$LANG02[6]}</a> ][ <a href={$_CONF['site_url']}/calendar.php>Back to Calendar</a> ]<br>";
+    $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+    $cal_templates->set_file(array('events'=>'events.thtml'
+                                    ,'details'=>'eventdetails.thtml'
+                                    ,'addremove'=>'addremoveevent.thtml'));
+    $cal_templates->set_var('lang_addevent', $LANG02[6]);
+    $cal_templates->set_var('lang_backtocalendar', 'Back to Calendar');
+
     $result = DB_query($datesql);
     $nrows = DB_numRows($result);
     if ($nrows==0) {
+        $cal_templates->set_var('lang_month','');
+        $cal_templates->set_var('event_year','');
+        $cal_templates->set_var('event_details','');
+        $cal_templates->parse('output','events');
+        $display .= $cal_templates->finish($cal_templates->get_var('output'));
         $display .= $LANG02[1];
     } else {
-        for($i = 0; $i < $nrows; $i++) {
+        $cal = new Calendar();
+
+        for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                 if (strftime("%B",strtotime($A["start"])) != $currentmonth) {
-                    $display .= '<br><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
+                    $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
+                    $cal_templates->set_var('lang_month', $str_month);
+                    $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
+                    //$display .= '<br><h1>' . strftime("%B %Y",strtotime($A["start"])) . '</h1>' . LB;
                     $currentmonth = strftime("%B",strtotime($A["start"]));
                 }
-                $display .= '<table cellspacing="0" cellpadding="3" border="0" width="100%">' . LB
-                    .'<tr><td colspan="2"><h2><a href="'.$A['url'].'">'.$A['title'].'</a>&nbsp;';
-						
+                $cal_templates->set_var('event_title', $A['title']);
+                $cal_templates->set_var('site_url', $_CONF['site_url']);
+                if (!empty($A['url'])) {
+                    $cal_templates->set_var('event_begin_anchortag', '<a href="'.$A['url'].'">');
+                    $cal_templates->set_var('event_title', $A['title']);
+                    $cal_templates->set_var('event_end_anchortag', '</a>');
+                } else {
+                    $cal_templates->set_var('event_begin_anchortag', '');
+                    $cal_templates->set_var('event_title', $A['title']);
+                    $cal_templates->set_var('event_end_anchortag', '');
+                }
+
+
                 if (!empty($_USER['uid'])) {
                     $tmpresult = DB_query("SELECT * FROM {$_TABLES["userevent"]} WHERE eid='{$A["eid"]}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
-                        $display .= '<font size="-2">[<a href="'.$_CONF['site_url'].'/calendar_event.php?eid='.$A['eid'].'&mode=deleteevent">'.$LANG02[10].'</a>]</font></h2></td></tr>' . LB;
+                        $cal_templates->set_var('addremove_begin_anchortag','<a href="'
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&mode=deleteevent">');
+                        $cal_templates->set_var('lang_addremovefromcal',$LANG02[10]);
+                        $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     } else {
-                        $display .= '<font size="-2">[<a href="'.$_CONF['site_url'].'/calendar_event.php?eid='.$A['eid'].'&mode=addevent">'.$LANG02[9].'</a>]</font></h2></td></tr>' . LB;
+                        $cal_templates->set_var('addremove_begin_anchortag','<a href="'
+                            . $_CONF['site_url'] . '/calendar_event.php?eid=' . $A['eid'] . '&mode=addevent">');
+                        $cal_templates->set_var('lang_addremovefromcal',$LANG02[9]);
+                        $cal_templates->set_var('addremove_end_anchortag', '</a>');
                     }
+                    $cal_templates->parse('addremove_event','addremove',true);
                 }
-                $display .= '<tr valign="top"><td align="right"><b>'.$LANG02[3].'</b></td><td width="100%">'.strftime("%A %e",strtotime($A["start"])).' - '.strftime("%A %d",strtotime($A["end"])).'</td></tr>' . LB
-                    .'<tr valign="top"><td align="right"><b>'.$LANG02[4].'</b></td><td width="100%">'.$A['location'].'</td></tr>' . LB
-                    .'<tr valign="top"><td align="right"><b>'.$LANG02[5].'</b></td><td width="100%">'.$A['description'].'</td></tr>' . LB
-                    .'</table>';
+                $cal_templates->set_var('lang_when', $LANG02[3]);
+                $cal_templates->set_var('event_start', strftime("%A %e",strtotime($A["start"])));
+                $cal_templates->set_var('event_end', '- ' . strftime("%A %d",strtotime($A["end"])));
+                $cal_templates->set_var('lang_where', $LANG02[4]);
+                $cal_templates->set_var('event_location', $A['location']);
+                $cal_templates->set_var('lang_description', $LANG02[5]);
+                $cal_templates->set_var('event_description', $A['description']);
+                $cal_templates->parse('event_details', 'details', true); 
+                $cal_templates->parse('output','events');
+                $display .= $cal_templates->finish($cal_templates->get_var('output')); 
             } else {
                 $display .= '<br><b>'.$LANG_ACCESS['accessdenied'].'</b>'
                     .'<p>'.$LANG_ACCESS['eventdenialmsg'];
@@ -190,7 +231,7 @@ default:
         } 
     }
 	
-    $display .= COM_endBlock() . site_footer();
+    $display .= COM_endBlock() . COM_siteFooter();
 		
 } // end switch
 

@@ -31,222 +31,253 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.6 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: calendar.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include('lib-common.php');
+include($_CONF['path_system'] . 'classes/calendar.class.php');
+
+function getSmallCalendar($m, $y)
+{
+    $retval = '';
+    $mycal = new Calendar();
+
+    $mycal->setCalendarMatrix($m,$y);
+
+    $retval .= '<font size=-2>' . LB . '<table>' . LB 
+        . '<tr><td align=center colspan=7><a href="' . $_CONF['site_url'] . '/calendar.php?month=' . $m . '&year=' . $y . '">' 
+        . $mycal->getMonthName($m) . '<a></td></tr>'
+        . '<tr><th>S</th><th>M</th><th>T</th><th>W</th><th>Th</th><th>F</th><th>S</th></tr>'.LB;
+
+    for ($i = 1; $i <= 6; $i++) {
+        $retval .= '<tr>' . LB;
+        for ($j = 1; $j <= 7; $j++) {
+            $retval .= '<td>' . LB;
+            $curday = $mycal->getDayData($i, $j);
+            if (!empty($curday)) {
+                $retval .= $curday->daynumber;
+            } else {
+                if ($i > 1) {
+                    $i = 7;
+                    $j = 8;
+                }
+                $retval .= "&nbsp;";
+            }
+            $retval .= "</td>".LB;
+        }
+        $retval .= "</tr>".LB;
+    }
+
+    $retval .= '</table></font>'.LB;
+    
+    return $retval;
+}
 		
-$display .= site_header('');
+$display .= COM_siteHeader('');
+
+// Create new calendar object
+$cal = new Calendar();
+
+// Get current month
+$currentmonth = date('m', time());
+if (empty($month)) {
+    $month = $currentmonth;
+}
+
+// Get current year
+$currentyear = date('Y', time());
+if (empty($year)) {
+    $year = $currentyear;
+}
+
+// Get current day
+$currentday =  date("j", time());
+
+// Get previous month and year
+$prevmonth = $month - 1;
+if ($prevmonth == 0) {
+    $prevmonth = 12;
+    $prevyear = $year - 1;
+} else {
+    $prevyear = $year;
+}
+
+// Get next month and year
+$nextmonth = $month + 1;
+if ($nextmonth == 13) {
+    $nextmonth = 1;
+    $nextyear = $year + 1;
+} else {
+    $nextyear = $year;
+}
+
+$cal->setLanguage('',$lang_months);
+
+// Build calendar matrix
+$cal->setCalendarMatrix($month,$year);
+
+// Load templates
+$cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+$cal_templates->set_file(array('calendar'=>'calendar.thtml',
+                                'week' => 'calendarweek.thtml',
+                                'day' => 'calendarday.thtml',
+                                'event' => 'calendarevent.thtml',
+				'mastercal'=>'mastercalendaroption.thtml',
+				'personalcal'=>'personalcalendaroption.thtml',
+				'addevent'=>'addeventoption.thtml'));
+
+$cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear));
+$cal_templates->set_var('next_months_cal',getSmallCalendar($nextmonth, $nextyear));
+$cal_templates->set_var('cal_prevmo_num', $prevmonth);
+$cal_templates->set_var('cal_prevyr_num', $prevyear);
+$cal_templates->set_var('cal_month_and_year', $cal->getMonthName($month) . ' ' . $year);
+$cal_templates->set_var('cal_nextmo_num', $nextmonth);
+$cal_templates->set_var('cal_nextyr_num', $nextyear);
+
+$cal_templates->set_var('lang_sunday', $LANG30[1]);
+$cal_templates->set_var('lang_monday', $LANG30[2]);
+$cal_templates->set_var('lang_tuesday', $LANG30[3]);
+$cal_templates->set_var('lang_wednesday', $LANG30[4]);
+$cal_templates->set_var('lang_thursday', $LANG30[5]);
+$cal_templates->set_var('lang_friday', $LANG30[6]);
+$cal_templates->set_var('lang_saturday', $LANG30[7]);
+
+$cal_templates->set_var('lang_january', $LANG30[13]);
+if ($month == 1) $cal_templates->set_var('selected_jan','SELECTED');
+$cal_templates->set_var('lang_february', $LANG30[14]);
+if ($month == 2) $cal_templates->set_var('selected_feb','SELECTED');
+$cal_templates->set_var('lang_march', $LANG30[15]);
+if ($month == 3) $cal_templates->set_var('selected_mar','SELECTED');
+$cal_templates->set_var('lang_april', $LANG30[16]);
+if ($month == 4) $cal_templates->set_var('selected_apr','SELECTED');
+$cal_templates->set_var('lang_may', $LANG30[17]);
+if ($month == 5) $cal_templates->set_var('selected_may','SELECTED');
+$cal_templates->set_var('lang_june', $LANG30[18]);
+if ($month == 6) $cal_templates->set_var('selected_jun','SELECTED');
+$cal_templates->set_var('lang_july', $LANG30[19]);
+if ($month == 7) $cal_templates->set_var('selected_jul','SELECTED');
+$cal_templates->set_var('lang_august', $LANG30[20]);
+if ($month == 8) $cal_templates->set_var('selected_aug','SELECTED');
+$cal_templates->set_var('lang_september', $LANG30[21]);
+if ($month == 9) $cal_templates->set_var('selected_sep','SELECTED');
+$cal_templates->set_var('lang_october', $LANG30[22]);
+if ($month == 10) $cal_templates->set_var('selected_oct','SELECTED');
+$cal_templates->set_var('lang_november', $LANG30[23]);
+if ($month == 11) $cal_templates->set_var('selected_nov','SELECTED');
+$cal_templates->set_var('lang_december', $LANG30[24]);
+if ($month == 12) $cal_templates->set_var('selected_dec','SELECTED');
+
+for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
+    $yroptions .= '<option value="' . $y . '" ';
+    if ($y == $year) {
+        $yroptions .= 'SELECTED';
+    }
+    $yroptions .= '>' . $y . '</option>'.LB;
+}
+$cal_templates->set_var('year_options', $yroptions);
+
+for ($i = 1; $i <= 6; $i++) {
+    for ($j = 1; $j <= 7; $j++) {
+        $curday = $cal->getDayData($i, $j);
+        if (!empty($curday)) {
+            if (($currentyear > $year) OR
+                ($currentmonth > $month && $currentyear == $year) OR
+                ($currentmonth == $month && $currentday > $curday->daynumber && $currentyear == $year)) {
+                $cal_templates->set_var('cal_day_style', 'cal_oldday'); 
+            } else {
+                $cal_templates->set_var('cal_day_style', 'cal_newday');
+            }
+
+            if (strlen($curday->daynumber) == 1) {
+                $curday->daynumber = '0' . $curday->daynumber;
+            }
+
+            if ($curday->daynumber == 30) {
+                COM_errorLog("30th IS NOT NULL");
+            }
+
+            $cal_templates->set_var('cal_day_anchortags', '<a href="/calendar_event.php?day=' . $curday->daynumber. '&month=' . $month
+                . '&year=' . $year . '" class="cal_date">' . $curday->daynumber. '</a><hr>');
+
+            // NEED TO CHANGE TO GET ENTRIES
+            if ($mode == 'personal') {
+                $calsql = "SELECT {$_TABLES["events"]}.* FROM {$_TABLES["events"]}, {$_TABLES["userevent"]} WHERE ({$_TABLES["events"]}.eid = {$_TABLES["userevent"]}.eid) AND ({$_TABLES["userevent"]}.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend)) ORDER BY datestart";
+            } else {
+                $calsql = "SELECT * FROM {$_TABLES["events"]} WHERE (datestart >= \"$year-$month-$curday->daynumber 00:00:00\" AND datestart <= \"$year-$month-$curday->daynumber 23:59:59\") OR (dateend >= \"$year-$month-$curday->daynumber 00:00:00\" AND dateend <= \"$year-$month-$curday->daynumber 23:59:59\") OR (\"$year-$month-$curday->daynumber\" between datestart and dateend) ORDER BY datestart";
+            }
+            
+            $query2 = DB_query($calsql);
+
+            $q2_numrows = DB_numRows($query2);
+
+            if ($q2_numrows > 0) {
+                for ($z = 1; $z <= $q2_numrows; $z++) {
+                    $results = DB_fetchArray($query2);
+                    if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                        if ($results['title']) {
+                            $cal_templates->set_var('cal_day_entries','');
+                            $entries = '<a href="calendar_event.php?&eid=' . $results['eid'] . '" class="cal_event">' 
+                                . $results['title'] . '</a><hr>';
+                        }
+                    } 
+                }
+                for ($z=$z;$z<=4;$z++) {
+                    $entries .= '<br>';
+                }
+
+                $cal_templates->set_var('event_anchortags', $entries);
+
+            } else {
+                if ($q2_numrows < 4) {
+                    for ($t=0; $t < (4 - $q2_numrows); $t++) {
+                        $cal_templates->set_var('cal_day_entries','<br><br><br><br>');
+                    }
+                }
+            }
+
+            $cal_templates->parse('cal_day_entries', 'event', true);
+            $cal_templates->set_var('event_anchortags','');
+        } else {
+            if ($i > 1) {
+                // Close out calendar if needed
+                for ($k = $j; $k <= 7; $k++) {
+                    $cal_templates->set_var('cal_day_style','cal_nullday');
+                    $cal_templates->set_var('cal_day_anchortags', '');
+                    $cal_templates->set_var('cal_day_entries','&nbsp;');
+                    if ($k < 7) $cal_templates->parse('cal_days', 'day', true);
+                }
+                // for looping to stop...we are done now
+                $i = 7;
+                $j = 8;
+            } else {
+                // Print empty box for any day in the first week that occur before the first day
+                $cal_templates->set_var('cal_day_style','cal_nullday');
+                $cal_templates->set_var('cal_day_anchortags', '');
+                $cal_templates->set_var('cal_day_entries','&nbsp;');
+            }
+        }
+        $cal_templates->parse('cal_days','day',true);
+    }
+    $cal_templates->parse('cal_week', 'week',true);
+    $cal_templates->set_var('cal_days','');
+}
+
+if ($mode == 'personal') {
+    $cal_templates->set_var('lang_mastercal', $LANG30[25] . $LANG30[11]);
+    $cal_templates->parse('master_calendar_option','mastercal',true); 
+} else {
+    $cal_templates->set_var('lang_mycalendar', $LANG30[12]);
+    $cal_templates->parse('personal_calendar_option','personalcal',true); 
+}
+$cal_templates->set_var('lang_addevent', $LANG30[8]);
+$cal_templates->set_var('cal_curmo_num', $currentmonth);
+$cal_templates->set_var('cal_curyr_num', $currentyear);
+$cal_templates->parse('add_event_option','addevent',true);
+
+$cal_templates->parse('output','calendar');
+$display .= $cal_templates->finish($cal_templates->get_var('output'));
 	
-	if ($mode == 'personal' && ($_CONF['personalcalendars'] == 0)) {
-		$display .= COM_showMessage(29)
-			.site_footer();
-		echo $display;
-		exit;
-	}
+$display .= COM_siteFooter();
 	
-	if (($mode == 'personal') && (empty($_USER['uid']))) { 
-		$display .= COM_showMessage(25);
-		$mode = '';
-	}
-	$currentday = date("j", time());
-	$currentmonth = date("m", time());
-	$currentyear = date("Y", time());
-	$lastday = "01";
-	
-	if (strlen($currentday) == 1) {
-		$currentday = '0'.$currentday;
-	}
-	
-	if (strlen($currentmonth) == 1) {
-		$currentmonth = '0'.$currentmonth;
-	}
-	if (!$month) {
-		$month = date("m", time());
-		$year = date("Y", time());
-	}
-	//mysql_select_db($mysql_database, $database);
-	if ($msg > 0) {
-		$display .= COM_showMessage($msg);
-	}
-	
-	$firstday = date('w',mktime(0,0,0,$month,1,$year));
-	while (checkdate($month,$lastday,$year)) {
-		$lastday++;
-	}      
-	
-	$nextmonth = $month+1;
-	$nextyear = $year;
-	if ($nextmonth == 13) {
-		$nextmonth = 1;
-		$nextyear = $year + 1;
-	}
-	
-	$lastmonth = $month-1;
-	$lastyear = $year;
-	if ($lastmonth == 0) {
-		$lastmonth = 12;
-		$lastyear = $year-1;
-	}
-	
-	if (strlen($lastmonth) == 1) {
-		$lastmonth = '0'.$lastmonth;
-	}
-	
-	if (strlen($nextmonth) == 1) {
-		$nextmonth = '0'.$nextmonth;
-	}
-	
-	// Beginning of Monthly Display	
-	
-	$display .= '<table width="100%" cellpadding="5" cellspacing="0" border="2" class="cal_body">'.LB
-		.'<tr align="center">'.LB
-		.'<td colspan="7" class="cal_month"><table border="0" width="100%">'
-		.'<tr>'.LB
-		.'<td class="cal_month"><form method="post" action="calendar.php">'
-		.'<input type="submit" value="<<" title="Previous Month">'
-		.'<input type="hidden" name="month" value="'.$lastmonth.'">'
-		.'<input type="hidden" name="year" value="'.$lastyear.'"></form></td>'.LB
-		.'<td width="100%" class="cal_month" align="center">'.date('F',mktime(0,0,0,$month,1,$year)).' '.$year.'</td>'.LB
-		.'<td class="cal_month"><form method="post" action="calendar.php"><input type="submit" value=">>" title="Next Month">'
-		.'<input type="hidden" name="month" value="'.$nextmonth.'>'
-		.'<input type="hidden" name="year" value="'.$nextyear.'"></form></td>'.LB
-		.'</tr>'.LB
-		.'</table></td>'.LB
-		.'</tr>'.LB
-		.'<tr>'.LB
-		.'<td width="15%" class="cal_day">'.$LANG30[1].'</td>'.LB
-		.'<td width="14%" class="cal_day">'.$LANG30[2].'</td>'.LB
-		.'<td width="14%" class="cal_day">'.$LANG30[3].'</td>'.LB
-		.'<td width="14%" class="cal_day">'.$LANG30[4].'</td>'.LB
-		.'<td width="14%" class="cal_day">'.$LANG30[5].'</td>'.LB
-		.'<td width="14%" class="cal_day">'.$LANG30[6].'</td>'.LB
-		.'<td width="15%" class="cal_day">'.$LANG30[7].'</td>'.LB
-		.'</tr>'.LB;
-		
-	for ($i=0; $i<7; $i++) {
-		if ($i < $firstday) {
-			// These are NULL calendar days, at the top of the month display
-			$display .= '<td class="cal_nullday">&nbsp;</td>';
-		} else {
-			$thisday = ($i+1)-$firstday;
-			if ($currentyear > $year) {
-				$display .= '<td valign="top" class="cal_oldday">';
-			} else if ($currentmonth > $month && $currentyear == $year) {
-				$display .= '<td valign="top" class="cal_oldday">';
-			} else if ($currentmonth == $month && $currentday > $thisday && $currentyear == $year) {
-				$display .= '<td valign="top" class="cal_oldday">';
-			} else {
-				$display .= '<td valign="top" class="cal_newday">';
-			}
-			
-			if (strlen($thisday) == 1) {
-				$thisday = '0'.$thisday;
-			}
-			
-			$display .= '<a href="calendar_event.php?day='.$thisday.'&month='.$month.'&year='.$year.'" class="cal_date">'.$thisday.'</a><hr>';
-			
-			if ($mode == 'personal') {
-				$calsql = "SELECT {$_CONF["db_prefix"]}events.* FROM {$_CONF["db_prefix"]}events, {$_CONF["db_prefix"]}userevent WHERE ({$_CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend)) ORDER BY datestart";
-			} else {
-				$calsql = "SELECT * FROM {$_CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$thisday 00:00:00\" AND datestart <= \"$year-$month-$thisday 23:59:59\") OR (dateend >= \"$year-$month-$thisday 00:00:00\" AND dateend <= \"$year-$month-$thisday 23:59:59\") OR (\"$year-$month-$thisday\" between datestart and dateend) ORDER BY datestart";
-			}
-			
-			$query2 = DB_query($calsql);
-			
-			for ($j = 0; $j<DB_numRows($query2); $j++) {
-				$results = DB_fetchArray($query2);
-				if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-					if ($results['title']) {
-						$display .= '<a href="calendar_event.php?&eid='.$results[eid].'" class="cal_event">'.$results[title].'</a><hr>';
-					}
-				} else {
-					$display .= '<br>';
-				}
-			}
-			if (DB_numRows($query2) < 4) {
-				for ($j=0; $j<(4-DB_numRows($query2)); $j++) {
-					$display .= '<br>';
-				}
-			}
-			$display .= '</td>';
-		}
-	}
-	$display .= '</tr>'.LB;
-	
-	$nextday = ($i+1)-$firstday;
-	for ($j = 0; $j<5; $j++) {
-		$display .= "<tr>";
-		for ($k = 0; $k<7; $k++) {
-			if ($nextday < $lastday) {
-				if ($currentyear > $year) {       
-					$display .= '<td valign="top" class="cal_oldday">';
-				} else if ($currentmonth > $month && $currentyear == $year) {       
-					$display .= '<td valign="top" class="cal_oldday">';
-				} else if ($currentmonth == $month && $currentday > $nextday && $currentyear == $year) {
-					$display .= '<td valign="top" class="cal_oldday">';
-				} else {
-					$display .= '<td valign="top" class="cal_newday">';
-				}
-				
-				if (strlen($nextday) == 1) {
-					$nextday = "0" . $nextday;
-				}
-				
-				$display .= '<a href="calendar_event.php?day='.$nextday.'&month='.$month.'&year='.$year.'" class="cal_date">'.$nextday.'</a><hr>';
-				if ($mode == 'personal') {
-					$query3 = DB_query("SELECT {$_CONF["db_prefix"]}events.* FROM {$_CONF["db_prefix"]}events,userevent WHERE ({$_CONF["db_prefix"]}events.eid = userevent.eid) AND (userevent.uid = {$_USER["uid"]}) AND ((datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend)) ORDER BY datestart");
-				} else {
-					$query3 = DB_query("SELECT * FROM {$_CONF["db_prefix"]}events WHERE (datestart >= \"$year-$month-$nextday 00:00:00\" AND datestart <= \"$year-$month-$nextday 23:59:59\") OR (dateend >= \"$year-$month-$nextday 00:00:00\" AND dateend <= \"$year-$month-$nextday 23:59:59\") OR (\"$year-$month-$nextday\" between datestart and dateend) ORDER BY datestart");
-				}
-				
-				for ($i = 0; $i<DB_numRows($query3)+4; $i++) {
-					$results2 = DB_fetchArray($query3);
-					if (SEC_hasAccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
-						if ($results2["title"]) {
-							$display .= '<a href="calendar_event.php?eid='.$results2[eid].'" class="cal_event">'.$results2[title].'</a><hr>';
-						} else if ($i < 4) {
-							$display .= '<br>';
-						}
-					} else {
-						$display .= '<br>';
-					}
-				}
-				$display .= '</td>';
-				$nextday++;
-			}
-		}
-		$display .= '</tr>'.LB;
-	}
-	$display .= '</table>'.LB;
-	// Let's display that Menu Line again
-	
-	$display .= '<table align="center">'.LB
-		.'<tr>'.LB
-		.'<td><form method="post" action="calendar.php">'
-		.'<input type="submit" value="<<">'
-		.'<input type="hidden" name="month" value="'.$lastmonth.'">'
-		.'<input type="hidden" name="year" value="'.$lastyear.'"></form></td>'.LB;
-		
-	if ($mode <> 'personal') {
-		$display .= '<td><form method="post" action="submit.php?type=event">'
-			.'<input type="submit" name="action" value="'.$LANG30[8].'">'
-			.'<input type="hidden" name="month" value="'.$month.'">'
-			.'<input type="hidden" name="year" value="'.$year.'"></form></td>'.LB;
-			
-		if (!empty($_USER["uid"]) && ($_CONF["personalcalendars"] == 1)) {
-			$display .= '<td><form method="post" action="calendar.php?mode=personal">'
-				.'<input type="submit" name="action" value="'.$LANG30[12].'"></form></td>'.LB;
-		}
-	} else {
-		$display .= '<td><form method="post" action="calendar.php">'
-			.'<input type="submit" name="action" value="'.$LANG30[11].'"></form></td>'.LB;
-	}
-	$display .= '<td><form method="post" action="calendar.php"><input type="submit" value=">>">'
-		.'<input type="hidden" name="month" value="'.$nextmonth.'>'
-		.'<input type="hidden" name="year" value="'.$nextyear.'"></form></td>'.LB
-		.'</tr>'.LB
-		.'</table>'.LB;
-	$display .= site_footer();
-	
-	echo $display;
+echo $display;
+
 ?>

@@ -10,8 +10,8 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs	- tony@tonybibbs.com                           |
-// |          Mark Limburg	- mlimburg@dingoblue.net.au                    |
+// | Authors: Tony Bibbs	- tony@tonybibbs.com                               |
+// |          Mark Limburg	- mlimburg@dingoblue.net.au                        |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    | 
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.14 2001/10/18 14:04:57 tony_bibbs Exp $
+// $Id: config.php,v 1.15 2001/10/29 17:35:49 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -43,12 +43,12 @@
 // | where the config.php (this file) resides                                  | 
 // +---------------------------------------------------------------------------+
 
-$_CONF['path']          = '/path/to/geeklog/';
+$_CONF['path']          = '/var/www/livestockworld/';
 $_CONF['path_system']   = $_CONF['path'] . 'system/';
 $_CONF['path_html']     = $_CONF['path'] . 'public_html/';
-$_CONF['path_log']		= $_CONF['path'] . 'logs/';
-$_CONF['path_language']	= $_CONF['path'] . 'language/';
-$_CONF['rdf_file']		= $_CONF['path_html'] . 'backend/geeklog.rdf';
+$_CONF['path_log']	    = $_CONF['path'] . 'logs/';
+$_CONF['path_language'] = $_CONF['path'] . 'language/';
+$_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
@@ -57,21 +57,23 @@ $_CONF['rdf_file']		= $_CONF['path_html'] . 'backend/geeklog.rdf';
 // +---------------------------------------------------------------------------+
 
 $_CONF['site_name']     = 'Geeklog Site';
-$_CONF['site_slogan']   = 'Another Nifty GeekLog Site';
+$_CONF['site_slogan']   = 'Theme Demo';
 $_CONF['site_mail']     = 'admin@example.com';
-$_CONF['site_url']      = 'http://www.example.com';
-$_CONF['layout']        = 'classic';
-$_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['layout'];
+$_CONF['site_url']      = 'http://tbibbs';
+$_CONF['theme']         = 'Classic';
+$_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+$_CONF['path_themes']   = $_CONF['path_html'] . 'layout/';
+$_CONF['path_layout']   = $_CONF['path_themes'] . $_CONF['theme'] . '/';
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
 // +---------------------------------------------------------------------------+
 
-$_CONF['language']      = 'english';
-$_CONF['locale']        = 'en-gb';
-$_CONF['date']          = '%A, %B %d %Y @ %I:%M %p %Z';
-$_CONF['daytime']		= '%m/%d %I:%M%p';
-$_CONF['shortdate']		= '%x';
+$_CONF['language']  = 'english';
+$_CONF['locale']    = 'en-gb';
+$_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
+$_CONF['daytime']   = '%m/%d %I:%M%p';
+$_CONF['shortdate'] = '%x';
 
 // +---------------------------------------------------------------------------+
 // | SESSION SETTINGS                                                          | 
@@ -112,7 +114,7 @@ $_CONF['cookie_path']                   = '/';
 // +---------------------------------------------------------------------------+
 
 $_CONF['unzipcommand']      = '/bin/tar -C ' . $_CONF['path'] . 'plugins/ -xzf ';
-// $_CONF['unzipcommand']    = 'filzip.exe -e -r ';
+// $_CONF['unzipcommand']   = 'filzip.exe -e -r ';
 
 // +---------------------------------------------------------------------------+
 // | Command needed to remove a directory recursively and quietly              |
@@ -120,8 +122,8 @@ $_CONF['unzipcommand']      = '/bin/tar -C ' . $_CONF['path'] . 'plugins/ -xzf '
 // | windows machines.                                                         |
 // +---------------------------------------------------------------------------+
 
-$_CONF['rmcommand'] 		= '/bin/rm -Rf ';
-// $_CONF['rmcommand'] 		= 'rmdir /S /Q ';
+$_CONF['rmcommand']     = '/bin/rm -Rf ';
+// $_CONF['rmcommand']  = 'rmdir /S /Q ';
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |
@@ -132,7 +134,7 @@ $_CONF['rmcommand'] 		= '/bin/rm -Rf ';
 // | distro isn't running the right OS. Do not modify this value               |
 // +---------------------------------------------------------------------------+
 
-$_CONF['ostype'] 		= PHP_OS;
+$_CONF['ostype']    = PHP_OS;
 
 // +---------------------------------------------------------------------------+
 // | MISCELLANEOUS SETTINGS                                                    |
@@ -153,16 +155,16 @@ $_CONF['speedlimit']    = 300; // in seconds
 // have this sort alphabetically by changing the value to 'alpha' (default is
 // by 'sortnum'
 
-$_CONF['sortmethod'] = 'sortnum';
+$_CONF['sortmethod']    = 'sortnum';
 
 // Show the number of stories in a topic in Section Block
-$_CONF['showstorycount'] = 1;
+$_CONF['showstorycount']    = 1;
 
 // Show the number of story submissions for a topic in Section Block
-$_CONF["showsubmissioncount"] = 1;
+$_CONF['showsubmissioncount']   = 1;
 
 // Show any new articles, comments and links
-$_CONF['whatsnewbox'] = 1;
+$_CONF['whatsnewbox']   = 1;
 
 // Let users get stories emailed to them
 // Requires cron and the use of php as a shell script
@@ -178,14 +180,14 @@ $_CONF['personalcalendars']     = 0;
 $_CONF['showupcomingevents']    = 1;
 
 // Story Settings
-$_CONF['pagetitle']         = '';
-$_CONF['backend']           = 1;
-$_CONF['limitnews']         = 10;
-$_CONF['minnews']           = 1;		// minimum number of stories per page
-$_CONF['olderstuff']        = 1;
-$_CONF['olderstufforder']	= 2;
-$_CONF['contributedbyline']	= 1;		// If 1, show contributed by line
-$_CONF['article_align']		= 'left'; 	// Options are left or right.
+$_CONF['pagetitle']             = '';
+$_CONF['backend']               = 1;
+$_CONF['limitnews']             = 10;
+$_CONF['minnews']               = 1;		// minimum number of stories per page
+$_CONF['olderstuff']            = 1;
+$_CONF['olderstufforder']	    = 2;
+$_CONF['contributedbyline']	    = 1;		// If 1, show contributed by line
+$_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 	
 // Comment Settings
 $_CONF['speedlimit2']       = 60;
@@ -194,10 +196,10 @@ $_CONF['comment_limit']     = 100;        // Default Number of Comments under St
 $_CONF['comment_mode']      = 'threaded'; // Default Comment Mode; from 'threaded','nestde','nocomments',and 'flat'
 
 // Poll Settings
-$_CONF['maxanswers'] 		= '10';
-$_CONF['pollcookietime'] 	= '86400';
-$_CONF['polladdresstime'] 	= '604800';
-$_CONF['pollorder'] 		= 1;
+$_CONF['maxanswers']        = '10';
+$_CONF['pollcookietime']    = '86400';
+$_CONF['polladdresstime']   = '604800';
+$_CONF['pollorder']         = 1;
 
 // Parameters for checking words and HTML tags
 

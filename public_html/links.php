@@ -31,39 +31,52 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.7 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: links.php,v 1.8 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
 // MAIN
 
-$display .= site_header()
-    .COM_startBlock($LANG06[1])
-    .'[ <a href="'.$_CONF['site_url'].'/submit.php?type=link">'.$LANG06[3].'</a> ]';
-	
-$result = DB_query("SELECT * from links ORDER BY category asc,title");
+$display .= COM_siteHeader();
+$linklist = new Template($_CONF['path_layout'] . 'links');
+$linklist->set_file(array('linklist'=>'links.thtml','catlinks'=>'categorylinks.thtml','link'=>'linkdetails.thtml'));
+
+$display .= COM_startBlock($LANG06[1]);
+$linklist->set_var('site_url', $_CONF['site_url']);
+$linklist->set_var('lang_addalink', $LANG06[3]);
+
+$result = DB_query("SELECT * from {$_TABLES['links']} ORDER BY category asc,title");
 $nrows = DB_numRows($result);
 if ($nrows==0) {
     $display .= $LANG06[2].'<br>';
 } else {
-    for($i=0;$i<$nrows;$i++) {
+
+    for($i = 0; $i < $nrows; $i++) {
         $A	= DB_fetchArray($result);
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
             if ($A['category']!=$currentcat) {
-                $display .= sprintf("<h3>%s</h3>\n<ul>",$A['category']);
+                if ($i > 0) {
+                    $linklist->parse('category_links','catlinks',true);
+                }
+                $linklist->set_var('link_category',$A['category']);
             }
-            $display .= '<li><b><a target="_new" '
-                .sprintf("href=\"{$_CONF['site_url']}/portal.php?url=%s&what=link&item=%s\">%s</a></b> (%s)"
-                ,urlencode($A['url']),$A['lid'],$A['title'],$A['hits'])
-                .'<br>'.stripslashes($A['description']).'</li>'.LB;
+            $linklist->set_var('link_url', $_CONF['site_url'] . '/portal.php?url=' . urlencode($A['url'])
+                . '&what=link&item=' . $A['lid']);
+            $linklist->set_var('link_name', $A['title']);
+            $linklist->set_var('link_hits', $A['hits']);
+            $linklist->set_var('link_description', $A['description']);
+            $linklist->parse('link_details', 'link', true);
 				
             $currentcat	= $A['category'];
         }
     } 
-    $display .= '</ul>'.LB;
+    if ($nrows > 0) $linklist->parse('category_links','catlinks',true);
 }
 
-$display .= '<br>' . COM_endBlock() . site_footer();
+$linklist->parse('output', 'linklist');
+$display .= $linklist->finish($linklist->get_var('output'));
+
+$display .= COM_endBlock() . COM_siteFooter();
 
 echo $display;
 

@@ -1,219 +1,302 @@
 <?php
-###############################################################################
-# user.php
-# This is the admin users interface!
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
-include("../lib-common.php");
-include("../custom_code.php");
-include("auth.inc.php");
-# Make sure user has access to this feature
-if (!hasrights('user.edit')) {
-        site_header('menu');
-        startblock($MESSAGE[30]);
-        print $MESSAGE[37];
-        endblock();
-        site_footer();
-        errorlog("User {$USER['username']} tried to illegally access the user administration screen",1);
-        exit;
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | lib-user.php                                                              |
+// | Geeklog user administration page.                                         |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: user.php,v 1.9 2001/10/29 17:35:50 tony_bibbs Exp $
+
+// Set this to true to get various debug messages from this script
+$_USER_VERBOSE = false;
+
+include('../lib-common.php');
+include('auth.inc.php');
+
+$display = '';
+
+// Make sure user has access to this page  
+if (!SEC_hasRights('user.edit')) {
+    $retval .= COM_siteHeader('menu');
+    $retval .= COM_startBlock($MESSAGE[30]);
+    $retval .= $MESSAGE[37];
+    $retval .= COM_endBlock();
+    $retval .= COM_siteFooter();
+    COM_errorLog("User {$_USER['username']} tried to illegally access the user administration screen",1);
+    echo $retval;
+    exit;
 }
 
-###############################################################################
-# Displays the user editor
-function edituser($uid="") {
-	global $LANG28,$CONF,$LANG_ACCESS,$USER;
-	startblock($LANG28[1]);
+/**
+* Shows the user edit form
+*
+* @uid          int         User to edit
+*
+*/
+function edituser($uid = '') 
+{
+	global $_TABLES, $LANG28, $_CONF, $LANG_ACCESS, $_USER;
+
+    $retval = '';
+
+	$retval .= COM_startBlock($LANG28[1]);
+
 	if (!empty($uid)) {
-		$result = dbquery("SELECT * FROM {$CONF['db_prefix']}users where uid ='$uid'");
-		$A = mysql_fetch_array($result);
+		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
+		$A = DB_fetchArray($result);
 		
-		if (ingroup('Root',$uid) AND !ingroup('Root')) {
-			#the current admin user isn't Root but is trying to change
-			#a root account.  Deny them and log it.
-			print $LANG_ACCESS[editrootmsg];
-			errorlog("User {$USER['username']} tried to edit a root account with insufficient privileges",1);
-			endblock();
-			return;
+		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
+			// the current admin user isn't Root but is trying to change
+			// a root account.  Deny them and log it.
+			$retval .= $LANG_ACCESS[editrootmsg];
+			COM_errorLog("User {$_USER['username']} tried to edit a root account with insufficient privileges",1);
+			$retval .= COM_endBlock();
+			return $retval;
 		}
-		$curtime = getuserdatetimeformat($A["regdate"]);
+		$curtime = COM_getUserDateTimeFormat($A['regdate']);
+	} else {
+        $tmp = DB_query("SELECT MAX(uid) AS max FROM {$_TABLES['users']}");
+        $T = DB_fetchArray($tmp);
+        $A['uid'] = $T['max'] + 1;
+		$curtime =  COM_getUserDateTimeFormat();
+    }
+
+	$A['regdate'] = $curtime[0];
+
+    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
+    $user_templates->set_file(array('form'=>'edituser.thtml','groupedit'=>'groupedit.thtml'));
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('lang_save', $LANG28[20]);
+	if ($A['uid'] > 1) { 
+        $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
+    }
+	if (!empty($uid) && SEC_hasRights('user.delete')) {
+        $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG28[19] . '" name="mode">');
 	}
-	if ($A['uid'] == "") {
-                $tmp = dbquery("SELECT MAX(uid) AS max FROM {$CONF['db_prefix']}users");
-                $T = mysql_fetch_array($tmp);
-                $A['uid'] = $T["max"] + 1;
-		$curtime =  getuserdatetimeformat();
-        }
-	$A["regdate"] = $curtime[0];
-	print "<form action={$CONF['site_url']}/admin/user.php name=storyeditor method=post>";
-	print "<table border="0" cellspacing="0" cellpadding=3>";
-	print "<tr><td colspan="2"><input type="submit" value=save name=mode> ";
-	if ($A['uid'] > 1) { print "<input type="submit" value=changepw name=mode> "; }
-	print "<input type="submit" value=cancel name=mode> ";
-	if (!empty($uid) && hasrights('user.delete')) {
-		print "<input type="submit" value=delete name=mode>";
-	}
-	print "<tr></td>";
-	print "<tr><td align="right">{$LANG28[2]}:</td><td>{$A['uid']}<input type="hidden" name=uid value={$A['uid']}></td></tr>";
-	print "<tr><td align=\"right\">{$LANG28[14]}:</td><td><input type="hidden" name=regdate value=\"{$A["regdate"]}\">{$A["regdate"]}</td></tr>";
-	print "<tr><td align="right">{$LANG28[3]}:</td><td><input type=text size=16 name=username value=\"{$A["username"]}\"> {$LANG28[9]}</td></tr>";
-	print "<tr><td align="right">{$LANG28[4]}:</td><td><input type=text size=48 maxlength=80 name=fullname value=\"{$A["fullname"]}\"></td></tr>";
-	print "<tr><td align="right">{$LANG28[5]}:</td><td><input type=password size=16 name=passwd value=\"{$A["password"]}\"></td></tr>";
-	print "<tr><td align="right">{$LANG28[7]}:</td><td><input type=text size=48 maxlength=255 name=email value=\"{$A["email"]}\"></td></tr>";
-	print "<tr><td align="right">{$LANG28[8]}:</td><td><input type=text size=48 maxlength=255 name=homepage value=\"{$A["homepage"]}\"></td></tr>";
-	if (ingroup('Group Admin')) {
-		print "<tr><td colspan="2"><hr></td></tr>";
-		print "<tr><td colspan="2"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr><tr><td colspan="2">";
-		print "<P>$LANG_ACCESS[securitygroupsmsg]</P>";
-		$usergroups = getusergroups($uid);
+    $user_templates->set_var('lang_cancel', $LANG28[18]);
+
+    $user_templates->set_var('lang_userid', $LANG28[2]);
+    $user_templates->set_var('user_id', $A['uid']);
+    $user_templates->set_var('lang_regdate', $LANG28[14]);
+    $user_templates->set_var('user_regdate', $A['regdate']);
+    $user_templates->set_var('lang_username', $LANG28[3]);
+    $user_templates->set_var('username', $A['username']);
+    $user_templates->set_var('lang_fullname', $LANG28[4]);
+    $user_templates->set_var('user_fullname', $A['fullname']);
+    $user_templates->set_var('lang_password', $LANG28[5]); 
+    $user_templates->set_var('lang_emailaddress', $LANG28[7]);
+    $user_templates->set_var('user_email', $A['email']);
+    $user_templates->set_var('lang_homepage', $LANG28[8]);
+    $user_templates->set_var('user_homepage', $A['homepage']);
+
+	if (SEC_inGroup('Group Admin')) {
+        $user_templates->set_var('lang_securitygroups', $LANG_ACCESS[securitygroups]);
+        $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS[securitygroupsmsg]);
+         
+		$usergroups = SEC_getUserGroups($uid);
 		if (is_array($usergroups) && !empty($uid)) {
 			$selected = implode(' ',$usergroups);
 		} else {
 			$selected = '';
 		}
-		checklist('groups','grp_id,grp_name','',$selected);
+		$user_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name','',$selected));
+        $user_templates->parse('group_edit', 'groupedit', true);
 	} else {
-		#user doesn't have the rights to edit a user's groups so set to -1 so we know not to
-		#handle the groups array when we save
-		print "<input type="hidden" name=groups value=\"-1\">";
+		// user doesn't have the rights to edit a user's groups so set to -1 so we know not to
+		// handle the groups array when we save
+		$user_templates->set_var('group_edit', '<input type="hidden" name="groups" value="-1">');
 	}
-	print "</table></form>";
-	endblock();
+    $user_templates->parse('output', 'form');
+    $retval .= $user_templates->finish($user_templates->get_var('output')); 
+	$retval .= COM_endBlock();
+
+    return $retval;
 }
 
-###############################################################################
-# Changes $uid's password
-function changepw($uid,$passwd) {
-	global $CONF; 
+/**
+* Changes a user's password
+*
+* @uid      int     ID of user to change password for
+* @passwd   int     New password
+*
+*/
+function changepw($uid,$passwd) 
+{
+	global $_TABLES; 
+
+    $retval = '';
+
 	if (!empty($passwd) && !empty($uid)) {
 		$passwd = md5($passwd);
-		$result = dbchange("users","passwd","'$passwd'","uid",$uid,"admin/user.php?mode=none");	
+		$result = DB_change($_TABLES['users'],'passwd',"'$passwd'",'uid',$uid,'admin/user.php?mode=none');	
 	} else {
-		site_header("menu");
-		errorlog("CHANGEPW ERROR: There was nothing to do!",3);
-		site_footer();
+		$retval .= COM_siteHeader('menu');
+		COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
+		$retval .= COM_siteFooter();
 	}
 }
 
 ###############################################################################
 # Saves $uid to the database
-function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups) {
-	global $CONF,$LANG28,$VERBOSE;
-	if ($VERBOSE) errorlog("***************entering saveusers*****************",1);	
-	if ($VERBOSE) errorlog("group size at beggining = " . sizeof($groups),1);	
+function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups) 
+{
+	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE;
+
+	if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);	
+	if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);	
+
 	if (!empty($username) && !empty($email)) {
 		if (($uid == 1) or !empty($passwd)) { 
 			$passwd = md5($passwd);
-			$sql = "REPLACE INTO {$CONF['db_prefix']}users (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','$passwd','$email','$homepage')";
+			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','$passwd','$email','$homepage')";
 		} else {
-			$sql = "SELECT passwd FROM {$CONF['db_prefix']}users WHERE uid = $uid";
-			$result = dbquery($sql);
-			$A = mysql_fetch_array($result);
-			$sql = "REPLACE INTO {$CONF['db_prefix']}users (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$email','$homepage')";
+			$sql = "SELECT passwd FROM {$_TABLES['users']} WHERE uid = $uid";
+			$result = DB_query($sql);
+			$A = DB_fetchArray($result);
+			$sql = "REPLACE INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,homepage) VALUES ($uid,'$username','$fullname','" . $A["passwd"] . "','$email','$homepage')";
 		} 
-		$result = dbquery($sql);
-		#if groups is -1 then this user isn't allowed to change any groups so ignore
+		$result = DB_query($sql);
+
+		// if groups is -1 then this user isn't allowed to change any groups so ignore
 		if (is_array($groups)) {
-			if ($VERBOSE) errorlog("deleting all group_assignments for user $uid/$username",1);
-			dbquery("DELETE FROM group_assignments WHERE ug_uid = $uid");
+			if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
+			DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_uid = $uid");
 			if (!empty($groups)) {
-				for ($i=1;$i<=sizeof($groups);$i++) {
-					if ($VERBOSE) errorlog("adding group_assignment " . current($groups) . " for $username",1);
-					$sql = "INSERT INTO group_assignments (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
-					dbquery($sql);
+				for ($i = 1; $i <= sizeof($groups); $i++) {
+					if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
+					$sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
+					DB_query($sql);
 					next($groups);		
 				}
 			}
 		}
-		dbsave("userprefs","uid",$uid);
-		dbsave("usercomment","uid",$uid);
-		dbsave("userindex","uid",$uid);
-		dbsave("userinfo","uid",$uid);
-		$tmp = mysql_errno();
-		if ($tmp == 0) { 
-			refresh("{$CONF['site_url']}/admin/user.php?msg=21");
+		DB_save($_TABLES['userprefs'],'uid',$uid);
+		DB_save($_TABLES['usercomment'],'uid',$uid);
+		DB_save($_TABLES['userindex'],'uid',$uid);
+		DB_save($_TABLES['userinfo'],'uid',$uid);
+        $errors = DB_error();
+		if (empty($errors)) { 
+			COM_refresh($_CONF['site_url'] . '/admin/user.php?msg=21');
 		} else {
-			site_header("menu");
-			$tmp = "SAVEUSERS ERROR <BR>" . $sql . " <BR> " . mysql_error();
-			errorlog($tmp,3);
-			site_footer();
+			$retval .= COM_siteHeader('menu');
+            $retval .= COM_errorLog('Error in saveusers in admin/users.php');
+			$retval .= COM_siteFooter();
 		}
 	} else {
-		site_header("menu");
-		errorlog($LANG28[10],2);
-		edituser($uid);
-		site_footer();
+		$retval .= COM_siteHeader('menu');
+		$retval .= COM_errorLog($LANG28[10]);
+		$retval .= edituser($uid);
+		$retval .= COM_siteFooter();
 	}
-	if ($VERBOSE) errorlog("***************leaving saveusers*****************",1);	
+
+	if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);	
+
+    return $retval;
 }
 
-###############################################################################
-# Displays a list of users
-function listusers() {
-	global $LANG28,$CONF;
-	startblock($LANG28[11]);
-	adminedit("user",$LANG28[12]);
-	print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
-	print "<tr><th align="left">{$LANG28[3]}</th><th>{$LANG28[4]}</th><th>{$LANG28[7]}</th></tr>";
-	$result = dbquery("SELECT uid,username,fullname,email FROM {$CONF['db_prefix']}users WHERE uid > 1");
-	$nrows = mysql_num_rows($result);
-	for ($i=0;$i<$nrows;$i++) {
-		$A = mysql_fetch_array($result);
-		print "<tr align="center"><td align="left"><a href={$CONF['site_url']}/admin/user.php?mode=edit&uid={$A['uid']}>{$A["username"]}</a></td>";
-		print "<td>{$A["fullname"]}</td><td>{$A["email"]}</td></tr>";
+/**
+* Lists all users in the system
+*
+*/
+function listusers() 
+{
+	global $_TABLES, $LANG28, $_CONF;
+
+    $retval = '';
+
+	$retval .= COM_startBlock($LANG28[11]);
+
+    $user_templates = new Template($_CONF['path_layout'] . 'admin/user');
+    $user_templates->set_file(array('list'=>'userslist.thtml','row'=>'listitem.thtml'));
+    $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('lang_newuser', $LANG28[15]);
+    $user_templates->set_var('lang_adminhome', $LANG28[16]);
+    $user_templates->set_var('lang_instructions', $LANG28[12]); 
+    $user_templates->set_var('lang_username', $LANG28[3]);
+    $user_templates->set_var('lang_fullname', $LANG28[4]);
+    $user_templates->set_var('lang_emailaddress', $LANG28[7]);
+
+	$result = DB_query("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1");
+	$nrows = DB_numRows($result);
+
+	for ($i = 0; $i < $nrows; $i++) {
+		$A = DB_fetchArray($result);
+        $user_templates->set_var('user_id', $A['uid']);
+        $user_templates->set_var('username', $A['username']);
+        $user_templates->set_var('user_fullname', $A['fullname']);
+        $user_templates->set_var('user_email', $A['email']);
+        $user_templates->parse('user_row', 'row', true);
 	}
-	print "</table></form>";
-	endblock();
+    
+    $user_templates->parse('output', 'list');
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
+
+	$retval .= COM_endBlock();
+
+    return $retval;
+
 }
 
 ###############################################################################
 # MAIN
 switch ($mode) {
-	case "delete":
-		#Ok, delete everything related to this user
+case $LANG28[19]:
+    // Ok, delete everything related to this user
 		
-		#first, remove from all security groups
-		dbdelete('group_assignments','ug_uid',$uid);
+    #first, remove from all security groups
+    DB_delete($_TABLES['group_assignments'],'ug_uid',$uid);
 	
-		#what to do with orphan stories/comments?
+    // what to do with orphan stories/comments?
 	
-		#now move delete the user itself
-		dbdelete("users","uid",$uid,"admin/user.php?msg=22");
-		break;
-	case "save":
-		saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups);
-		break;
-	case "changepw":
-		errorlog("user id = " . $uid . " pass = " . $passwd);
-		changepw($uid,$passwd);
-		break;
-	case "edit":
-		site_header("menu");
-		edituser($uid);
-		site_footer();
-		break;
-	case "cancel":
-	default:
-		site_header("menu");
-		showmessage($msg);
-		listusers();
-		site_footer();
-		break;
+    // now move delete the user itself
+    DB_delete($_TABLES['users'],'uid',$uid,'admin/user.php?msg=22');
+    break;
+case $LANG28[20]:
+    $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups);
+    break;
+case $LANG28[17]:
+    changepw($uid,$passwd);
+    break;
+case 'edit':
+    $display .= COM_siteHeader('menu');
+    $display .= edituser($uid);
+    $display .= COM_siteFooter();
+    break;
+case $LANG28[18]:
+default:
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listusers();
+    $display .= COM_siteFooter();
+    break;
 }
+
+echo $display;
+
 ?>

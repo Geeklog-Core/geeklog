@@ -1,176 +1,232 @@
 <?php
-###############################################################################
-# plugins.php
-# This is the admin story moderation and editing file.
-#
-# Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
-include("../lib-common.php");
-include("../custom_code.php");
-include("auth.inc.php");
-if (!ingroup('Root')) {
-	site_header('menu');
-        startblock($MESSAGE[30]);
-        print $MESSAGE[38];
-        endblock();
-        site_footer();
-        errorlog("User {$USER['username']} tried to illegally access the poll administration screen",1);
-        exit;
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | plugins.php                                                               |
+// | Geeklog plugin administration page.                                       |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: plugins.php,v 1.10 2001/10/29 17:35:50 tony_bibbs Exp $
+
+include('../lib-common.php');
+include('auth.inc.php');
+
+// Uncomment the line below if you need to debug the HTTP variables being passed
+// to the script.  This will sometimes cause errors but it will allow you to see
+// the data being passed in a POST operation
+// debug($HTTP_POST_VARS);
+
+$display = '';
+
+if (!SEC_inGroup('Root')) {
+    $display .= COM_siteHeader('menu');
+    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= $MESSAGE[38];
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+    COM_errorLog("User {$_USER['username']} tried to illegally access the poll administration screen",1);
+    echo $display;
+    exit;
 }
 
-###############################################################################
-# Uncomment the line below if you need to debug the HTTP variables being passed
-# to the script.  This will sometimes cause errors but it will allow you to see
-# the data being passed in a POST operation
-#debug($HTTP_POST_VARS);
-###############################################################################
-# Displays the Plugin Editor
-function plugineditor($pi_name,$confirmed=0) {
-	global $HTTP_POST_VARS,$USER,$CONF;
+/**
+* Shows the plugin editor form
+*
+* @pi_name          string          Plugin name
+* @confirmed        int             Flag indicated the user has confirmed an action
+*
+*/ 
+function plugineditor($pi_name, $confirmed = 0) 
+{
+	global $HTTP_POST_VARS,$_USER,$_CONF, $LANG32;
 	
 	if (empty($pi_name)) {
-		errorlog("no plugin name provided to plugineditor()");
-		return;
+		return (COM_errorLog($LANG32[12]));
 	}
-	$result = dbquery("SELECT * FROM {$CONF['db_prefix']}plugins WHERE pi_name = '$pi_name'");
-	$A = mysql_fetch_array($result);
-	startblock("Plugin Editor");
-	print "<form action={$CONF['site_url']}/admin/plugins.php method=post>";
-	print "<table border="0" cellspacing="0" cellpadding=3>";
-	print "<tr><td colspan="2" align="left"><input type="submit" value=save name=mode> ";
-	print "<input type="submit" value=cancel name=mode> ";
+	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'");
+	$A = DB_fetchArray($result);
+	$retval .= COM_startBlock($LANG32[13]);
+	$retval .= "<form action={$_CONF['site_url']}/admin/plugins.php method=post>";
+	$retval .= '<table border="0" cellspacing="0" cellpadding=3>';
+	$retval .= '<tr><td colspan="2" align="left"><input type="submit" value=save name=mode> ';
+	$retval .= '<input type="submit" value=cancel name=mode> ';
 	if (!empty($pi_name)) {
-		print "<input type="submit" value=delete name=mode> ";
+		$retval .= '<input type="submit" value=delete name=mode> ';
 	}
-	print "<tr></td>";
-	print "<tr><td align="right"><b>Plug-in Name:</b></td><td>{$A["pi_name"]}";
-	print "<input type="hidden" name=pi_name value={$A["pi_name"]}>";
-	print "<input type="hidden" name=confirmed value=$confirmed></td></tr>";
-	print "<tr><td align="right"><b>Plug-in Homepage:</b></td><td><a href={$A["pi_homepage"]}>{$A["pi_homepage"]}</a>";
-	print "<input type="hidden" name=pi_homepage value={$A["pi_homepage"]}></td></tr>";
-	print "<tr><td align="right"><b>Plug-in Version:</b></td><td>{$A["pi_version"]}";
-	print "<input type="hidden" name=pi_version value={$A["pi_version"]}></td></tr>";
-	print "<tr><td align="right"><b>Geeklog Version:</b></td><td>{$A["pi_gl_version"]}";
-	print "<input type="hidden" name=pi_gl_version value={$A["pi_gl_version"]}></td></tr>";
-	print "<tr><td align="right"><b>Enabled:</b></td><td><input type=checkbox name=enabled";
+	$retval .= "<tr></td>";
+	$retval .= "<tr><td align=right><b>Plug-in Name:</b></td><td>{$A["pi_name"]}";
+	$retval .= "<input type=hidden name=pi_name value={$A["pi_name"]}>";
+	$retval .= "<input type=hidden name=confirmed value=$confirmed></td></tr>";
+	$retval .= "<tr><td align=right><b>Plug-in Homepage:</b></td><td><a href={$A["pi_homepage"]}>{$A["pi_homepage"]}</a>";
+	$retval .= "<input type=hidden name=pi_homepage value={$A["pi_homepage"]}></td></tr>";
+	$retval .= "<tr><td align=right><b>Plug-in Version:</b></td><td>{$A["pi_version"]}";
+	$retval .= "<input type=hidden name=pi_version value={$A["pi_version"]}></td></tr>";
+	$retval .= "<tr><td align=right><b>Geeklog Version:</b></td><td>{$A["pi_gl_version"]}";
+	$retval .= "<input type=hidden name=pi_gl_version value={$A["pi_gl_version"]}></td></tr>";
+	$retval .= "<tr><td align=right><b>Enabled:</b></td><td><input type=checkbox name=enabled";
 	if ($A['pi_enabled'] == 1) {
-		print " checked";
+		$retval .= " checked";
 	}
-	print "></table>";
-	print "</form>";
-	endblock();
+	$retval .= "></table>";
+	$retval .= "</form>";
+	$retval .= COM_endBlock();
+    return $retval;
 }
 
-###############################################################################
-# Displays a list of plugins
-function listplugins($page="1") {
-	global $LANG32,$CONF;
-	startblock($LANG32[5]);
-	adminedit("plugins",$LANG32[11]);
+/**
+* Shows all installed Geeklog plugins
+*
+* @page         int         Page number to show
+*
+*/
+function listplugins($page = 1) 
+{
+	global $_TABLES, $LANG32, $_CONF;
+
+    $retval = '';
+
+	$retval .= COM_startBlock($LANG32[5]);
+
+	COM_adminEdit("plugins",$LANG32[11]);
+
 	if (empty($page)) $page = 1;
 	$limit = (50 * $page) - 50;
-	$result = dbquery("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$CONF['db_prefix']}plugins");
-	$nrows = mysql_num_rows($result);
+	$result = DB_query("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']}");
+	$nrows = DB_numRows($result);
 	if ($nrows > 0) {
-		print "<table cellpadding="0" cellspacing=3 border="0" width="100%">\n";
-		print "<tr><th align="left">#</th><th align="left">Plug-in Name</th><th>Plug-in Version</th><th>Geeklog Version</th><th>Enabled</th></tr>";
- 		for ($i=1; $i<=$nrows; $i++) {
+		$retval .= '<table cellpadding="0" cellspacing=3 border="0" width="100%">\n';
+		$retval .= '<tr><th align="left">#</th><th align="left">Plug-in Name</th><th>Plug-in Version</th><th>Geeklog Version</th><th>Enabled</th></tr>';
+ 		for ($i = 1; $i <= $nrows; $i++) {
 			$scount = (50 * $page) - 50 + $i;
-			$A = mysql_fetch_array($result);
-			print "<tr align="center"><td align="left"><a href={$CONF['site_url']}/admin/plugins.php?mode=edit&pi_name={$A["pi_name"]}>$scount</a></td>";
-			print "<td align="left"><a href={$A["pi_homepage"]} target=_new>{$A["pi_name"]}</a></td>";
-			print "<td>{$A["pi_version"]}</td><td>{$A["pi_gl_version"]}</td>";
-			if ($A["pi_enabled"] == 1)
-				print "<td>Yes</td>";
-			else
-				print "<td>No</td>";
+			$A = DB_fetchArray($result);
+			$retval .= "<tr align=center><td align=left><a href={$_CONF['site_url']}/admin/plugins.php?mode=edit&pi_name={$A["pi_name"]}>$scount</a></td>";
+			$retval .= "<td align=left><a href={$A["pi_homepage"]} target=_blank>{$A["pi_name"]}</a></td>";
+			$retval .= "<td>{$A["pi_version"]}</td><td>{$A["pi_gl_version"]}</td>";
+			if ($A["pi_enabled"] == 1) {
+				$retval .= "<td>Yes</td>";
+			} else {
+				$retval .= "<td>No</td>";
+            }
 		}
-		print "<tr><td clospan=6>";
+		$retval .= "<tr><td clospan=6>";
 		if (dbcount("plugins") > 50) {
 			$prevpage = $page - 1; 
 			$nextpage = $page + 1; 
 			if ($pagestart >= 50) {
-				print "<a href={$CONF['site_url']}/admin/plugins.php?mode=list&page=$prevpage>Prev</a> ";
+				$retval .= "<a href={$_CONF['site_url']}/admin/plugins.php?mode=list&page=$prevpage>Prev</a> ";
 			}
 			if ($pagestart <= (dbcount("plugins") - 50)) {
-				print "<a href={$CONF['site_url']}/admin/plugins.php?mode=list&page=$nextpage>Next</a> ";
+				$retval .= "<a href={$_CONF['site_url']}/admin/plugins.php?mode=list&page=$nextpage>Next</a> ";
 			}
 		}
-		print "</td></tr></table>\n";
+		$retval .= "</td></tr></table>\n";
 	} else {
-		#no plug-ins installed, gave a message that says as much
-		print $LANG32[10];
+		// no plug-ins installed, gave a message that says as much
+		$retval .= $LANG32[10];
 	}
-	endblock();	
+	$retval .= COM_endBlock();	
+    return $retval;
 }
 
-###############################################################################
-# Saves plugin 
-function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage) {
-	global $CONF;
+/**
+* Saves a plugin
+*
+* @pi_name          string  Plugin name
+* @pi_version       string  Plugin version number
+* @pi_gl_version    string  Last Geeklog version plugin is compatible with
+* @enabled          int     Flag that indicates if plugin in enabled or not
+* @pi_homepage      string  URL to homepage for plugin
+*
+*/ 
+function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage) 
+{
+	global $_TABLES, $_CONF;
+
 	if (!empty($pi_name)) {
 		if ($enabled == 'on') {
 			$enabled = 1;
 		} else {
 			$enabled = 0;
 		}
-		dbsave("plugins","pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage","'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'","admin/plugins.php?msg=28");
+		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'admin/plugins.php?msg=28');
 	} else {
-		site_header("menu");
-		errorlog("error saving plugin, no pi_name provided",1);
-		plugineditor($pi_name);
-		site_footer();
+        $retval = '';
+		$retval .= COM_siteHeader('menu');
+		COM_errorLog("error saving plugin, no pi_name provided",1);
+		$retval .= plugineditor($pi_name);
+		$retval .= COM_siteFooter();
+        return $retval;
 	}
 }
 
-###############################################################################
-# Shows plugin installation form 
-function installpluginform() {
-	global $LANG32, $CONF;
-        startblock($LANG32[2]);
-        print $LANG32[1];
-        endblock();
-        startblock($LANG32[3]);
-        /* new stuff */
-        require_once($CONF["path"] . "/include/upload.class.php");
-        $upload = new Upload();
-        $upload->printFormStart($CONF['site_url'] . "/admin/plugins.php");
-        print "<table border="0" cellspacing="0" cellpadding=3>";
-        print "<tr><td><b>{$LANG32[4]}:</b><td>";
-        $upload->printFormField("plugin_file");
-        print "</td></tr>";
-        print "<tr><td colspan="2" align="center">";
-        $upload->printFormSubmit();
-        print "<input type="hidden" name=mode value=install></td></tr>";
-        print "</table></form>";
-        endblock();
+/**
+* Shows the plugin installation form
+*
+*/
+function installpluginform() 
+{
+	global $LANG32, $_CONF;
+
+    $retval .= COM_startBlock($LANG32[2]);
+    $retval .= $LANG32[1];
+    $retval .= COM_endBlock();
+    $retval .= COM_startBlock($LANG32[3]);
+
+    /* new stuff */
+    require_once($_CONF["path"] . "/include/upload.class.php");
+    $upload = new Upload();
+    $upload->printFormStart($_CONF['site_url'] . "/admin/plugins.php");
+    $retval .= '<table border="0" cellspacing="0" cellpadding=3>';
+    $retval .= "<tr><td><b>{$LANG32[4]}:</b><td>";
+    $upload->printFormField("plugin_file");
+    $retval .= '</td></tr>';
+    $retval .= '<tr><td colspan="2" align="center">';
+    $upload->printFormSubmit();
+    $retval .= '<input type="hidden" name=mode value=install></td></tr>';
+    $retval .= "</table></form>";
+    $retval .= COM_endBlock();
+
+    return $retval;
 }
 
-###############################################################################
-# Uploads and installs the plugin
+/**
+* Actually installs a plugin
+*
+*/
 function installplugin() {
-	global $CONF, $HTTP_POST_FILES, $LANG32, $LANG01, $VERSION;
-	require_once($CONF["path"] . "/include/upload.class.php");
+	global $_TABLES, $_CONF, $HTTP_POST_FILES, $LANG32, $LANG01;
+
+	require_once($_CONF["path"] . "/include/upload.class.php");
+
 	$upload = new Upload();
-       	$upload->setAllowedMimeTypes(array("application/x-tar", "application/x-gzip-compressed","application/x-zip-compressed"));
-       	$upload->setUploadPath($CONF["path"] .  "/plugins");
-       	if ($upload->doUpload()) {
+  	$upload->setAllowedMimeTypes(array("application/x-tar", "application/x-gzip-compressed","application/x-zip-compressed"));
+   	$upload->setUploadPath($_CONF["path"] .  "/plugins");
+   	if ($upload->doUpload()) {
 		//Good, file got uploaded, now install everything
 		$filename =  $HTTP_POST_FILES[$upload->uploadFieldName][name];
 		$index = strpos(strtolower($filename), '.tar.gz');
@@ -186,163 +242,186 @@ function installplugin() {
 		$plugin_version = $file_attrs[1];
 		$plugin_geeklog_version = $file_attrs[2];
 	
-		#first verify that this plug-in is even compatible with this version of GL
-		if ($plugin_geeklog_version > $VERSION) {
-			#remove the tarball and show an error message
-			include('../layout/header.php');
-			# this plugin isn't compatible with this version of Geeklog
-			startblock($LANG32[8]);	
-			print $LANG32[9];
-			endblock();
-			if (!unlink($CONF['path'] . 'plugins/' . $filename)) {
-				errorlog('unable to remove ' . $CONF['path'] . 'plugins/' . $filename);
+		// first verify that this plug-in is even compatible with this version of GL
+		if ($plugin_geeklog_version > VERSION) {
+			// remove the tarball and show an error message
+			$retval .= COM_siteHeader('menu');
+			// this plugin isn't compatible with this version of Geeklog
+			$retval .= COM_startBlock($LANG32[8]);	
+			$retval .= $LANG32[9];
+			$retval .= COM_endBlock();
+			if (!unlink($_CONF['path'] . 'plugins/' . $filename)) {
+				$retval .= COM_errorLog('unable to remove ' . $_CONF['path'] . 'plugins/' . $filename);
 			}
-			include('../layout/footer.php');
-			return;
+            $retval .= COM_siteFooter();
+
+			return $retval;
 		}
-		#See if we need to upgrade
-		$result = dbquery("select pi_version from plugins where pi_name = '" . $plugin_name . "'");
+
+		// See if we need to upgrade
+		$result = DB_query("select pi_version from {$_TABLES['plugins']} WHERE pi_name = '$plugin_name'");
 		$isupgrade = false;
-		if (mysql_num_rows($result) > 0) {
-			$A = mysql_fetch_array($result);
-			if ($A["pi_version"] < $plugin_version) {
-				# this is an upgrade
+		if (DB_numRows($result) > 0) {
+			$A = DB_fetchArray($result);
+			if ($A['pi_version'] < $plugin_version) {
+				// this is an upgrade
 				$isgrade = true;
 			} else if ($A["pi_version"] == $plugin_version) {
-				# they are trying to install on that exists already, give an error 
-				include('../layout/header.php');
-				startblock($LANG32[6]);
-				print $LANG32[7];
-				endblock();
-				if (!unlink($CONF['path'] . 'plugins/' . $filename)) {
-					errorlog('unable to remove ' . $CONF['path'] . 'plugins/' . $filename);
+				// they are trying to install on that exists already, give an error 
+                $retval .= COM_siteHeader('menu');
+				$retval .= COM_startBlock($LANG32[6]);
+				$retval .= $LANG32[7];
+				$retval .= COM_endBlock();
+				if (!unlink($_CONF['path'] . 'plugins/' . $filename)) {
+					$retval .= COM_errorLog('unable to remove ' . $_CONF['path'] . 'plugins/' . $filename);
 				}
-				include('../layout/footer.php');
-				return;
+                $retval .= COM_siteFooter();
+
+				return $retval;
 			}
 		} 
-		# Extract the compressed plugin
-		#$command = $CONF['unzipcommand'] . $CONF['path'] . 'plugins/' . $filename;
-		$command = $CONF['unzipcommand'] . $CONF['path'] . 'plugins/' . $filename;
-		errorlog ('command = ' . $command,1);
+
+		// Extract the compressed plugin
+		$command = $_CONF['unzipcommand'] . $_CONF['path'] . 'plugins/' . $filename;
+		COM_errorLog ('command = ' . $command,1);
 		exec($command);
-		#move the main web pages to the Geeklog web tree
-		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $CONF['path_html'] . $plugin_name . '/')) {
-			#error doing the copy
-			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $CONF['path_html'/g] . $plugin_name . '/');
-			return;
+
+		// Move the main web pages to the Geeklog web tree
+		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $_CONF['path_html'] . $plugin_name . '/')) {
+			// error doing the copy
+			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $_CONF['path_html'/g] . $plugin_name . '/');
+			return $retval;
 		}
-		#move the admin pages to the plugin directory in admin tree
-		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/')) {
-			#error doing the copy
-			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/');
-			return;
+
+		// Move the admin pages to the plugin directory in admin tree
+		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/')) {
+			// Error doing the copy
+			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/');
+			return $retval;
 		}
-		#almost home free, load table structures and import the data
+
+		// Almost home free, load table structures and import the data
 		if ($isupgrade) {
-			#do upgrade stuff
-			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/updates/update_' . $A["pi_version"] . '.sql')) {	
-			#great, found and upgrade script for this plugin, run it  
-			exec('mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/updates/update_' . $plugin_version . '.sql');
-			errorlog("just ran update sql",1);
+			// do upgrade stuff
+			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/updates/update_' . $A["pi_version"] . '.sql')) {	
+			    // great, found and upgrade script for this plugin, run it  
+			    exec('mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/updates/update_' . $plugin_version . '.sql');
+			    COM_errorLog("just ran update sql",1);
 			}
 		} else { 
-			#fresh install
-			#load table structures, if any
-			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/table.sql')) {
-				#found table.sql, run it
-				if (strlen($CONF['db_pass']) == 0) {
-					$command = 'mysql -u' . $CONF['db_user'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
+			// fresh install
+			// load table structures, if any
+			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql')) {
+				// found table.sql, run it
+				if (strlen($_CONF['db_pass']) == 0) {
+					$command = 'mysql -u' . $_CONF['db_user'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
 				} else {
-					$command = 'mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
+					$command = 'mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
 				}
-				errorlog('command = ' . $command,1);
+				COM_errorLog('command = ' . $command,1);
 				exec($command);
-			errorlog("just ran table.sql",1);
+			    COM_errorLog("just ran table.sql",1);
 			} else {
-				errorlog("table.sql for $plugin_name plugin doesn't exist");
+				$retval .= COM_errorLog("table.sql for $plugin_name plugin doesn't exist");
 			}
-			#load data
-			if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/data.sql')) {
-				#found data.sql, import it
-				if (strlen($CONF['db_pass']) == 0) {
-					$command = 'mysql -u' . $CONF['db_user'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
+
+			// Load data
+			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql')) {
+				// found data.sql, import it
+				if (strlen($_CONF['db_pass']) == 0) {
+					$command = 'mysql -u' . $_CONF['db_user'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
 				} else {
-					$command = 'mysql -u' . $CONF['db_user'] . ' -p'. $CONF['db_pass'] . ' ' . $CONF['db_name'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
+					$command = 'mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
 				}
-				errorlog('command = ' . $command,1);
+				COM_errorLog('command = ' . $command,1);
 				exec($command);
-			errorlog("just ran data.sql",1);
+			    COM_errorLog("just ran data.sql",1);
 			
-			#if we got here then we are done, refresh the plugin page
 			} else {
-				errorlog("data.sql for $plugin_name plugin doesn't exist",1);
+				COM_errorLog("data.sql for $plugin_name plugin doesn't exist",1);
 			}
-			#now remove the tarball
-			$command = $CONF["rmcommand"] . $CONF["path"] . "plugins/" . $filename;
-			errorlog('command = ' . $command,1);
+			// Now remove the tarball
+			$command = $_CONF["rmcommand"] . $_CONF["path"] . "plugins/" . $filename;
+			COM_errorLog('command = ' . $command,1);
 			exec($command);
-			refresh($CONF['sit_url'] . '/admin/plugins.php');
+
+			// If we got here then we are done, refresh the plugin page
+			COM_refresh($_CONF['sit_url'] . '/admin/plugins.php');
 		}
-       	} else {
-               	$errors = $upload->getUploadErrors();
-               	print "<strong>::Errors occured::</strong><br />\n";
-               	while(list($filename,$values) = each($errors)) {
-                       	"File: " . print $filename . "<br />";
-                       	$count = count($values);
-                       	for($i=0; $i<$count; $i++) {
-                               	print "==>" . $values[$i] . "<br />";
-                       	}
-               	}
-       	}
+    } else {
+        $errors = $upload->getUploadErrors();
+        $retval .= "<strong>::Errors occured::</strong><br />\n";
+        while (list($filename,$values) = each($errors)) {
+            "File: " . $retval .= $filename . "<br />";
+            $count = count($values);
+            for($i=0; $i<$count; $i++) {
+                $retval .= "==>" . $values[$i] . "<br />";
+            }
+        }
+    }
+    return $retval;
 }
 
-function removeplugin($plugin_name) {
-	global $CONF;
-	$result = dbquery("SELECT * FROM {$CONF['db_prefix']}plugins WHERE pi_name = '$plugin_name'");
-	if (mysql_num_rows($result) == 1) {
-		#good, found the row
-		$A = mysql_fetch_array($result);
+/** 
+* This uninstalls a plugin
+*
+*/
+function removeplugin($plugin_name) 
+{
+	global $_CONF, $_TABLES;
+
+    $retval = '';
+
+	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$plugin_name'");
+
+	if (DB_numRows($result) == 1) {
+		// good, found the row
+		$A = DB_fetchArray($result);
 	} else {
-		#couldn't find plugin...bail
-		include($CONF['path_html'] . 'layout/header.php');
-		startblock("Can't find plugin: $plugin_name");
-		print("couldn't find plugin $plugin_name in table plugins...exiting");
-		endblock();
-		include($CONF['path_html'] . 'layout/footer.php');
-		errorlog("couldn't find plugin $plugin_name in table plugins...exiting", 1);
-		exit;	
+		// couldn't find plugin...bail
+        $retval .= COM_siteHeader('menu'); 
+		$retval .= COM_startBlock("Can't find plugin: $plugin_name");
+		$retval .= "couldn't find plugin $plugin_name in table plugins...exiting";
+		$retval .= COM_endBlock();
+        $retval .= COM_siteFooter();
+		COM_errorLog("couldn't find plugin $plugin_name in table plugins...exiting", 1);
+        return $retval;
 	}
-	#first undo any schema changes
-	if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql')) {
-        	#found undo.sql, execute it
-                if (strlen($CONF['dbpass']) == 0) {
-                	$command = 'mysql -u' . $CONF['dbuser'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
+
+	// First undo any schema changes
+	if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql')) {
+        	// found undo.sql, execute it
+                if (strlen($_CONF['dbpass']) == 0) {
+                	$command = 'mysql -u' . $_CONF['dbuser'] . ' ' . $_CONF['dbname'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
                 } else {
-                        $command = 'mysql -u' . $CONF['dbuser'] . ' -p'. $CONF['dbpass'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
+                        $command = 'mysql -u' . $_CONF['dbuser'] . ' -p'. $_CONF['dbpass'] . ' ' . $_CONF['dbname'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
                 }
-                errorlog('command = ' . $command,1);
+                COM_errorLog('command = ' . $command,1);
                 exec($command);
-                errorlog("just ran undo.sql",1);
+                COM_errorLog("just ran undo.sql",1);
 	} else {
-		#undo.sql not found...log this (note, may not necessary mean an error
-		errorlog($CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql not found!',1);
+		// undo.sql not found...log this (note, may not necessary mean an error
+		COM_errorLog($_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql not found!',1);
 	}
-	#Now remove any file associated with the plugin	
-	#remove the /path/to/geeklog/plugins/<plugin_name> directory
-	$command = $CONF['rmcommand'] . $CONF['path'] . 'plugins/' . $plugin_name;
-	errorlog('executing the following: ' . $command,1);
+
+	// Now remove any file associated with the plugin	
+	// remove the /path/to/geeklog/plugins/<plugin_name> directory
+	$command = $_CONF['rmcommand'] . $_CONF['path'] . 'plugins/' . $plugin_name;
+	COM_errorLog('executing the following: ' . $command,1);
 	exec($command);
-	#remove the path/to/geeklog/public_html/<plugin_name> directory
-	$command = $CONF['rmcommand'] . $CONF['path_html'] . $plugin_name;
-	errorlog('executing the following: ' . $command,1);
+
+	// remove the path/to/geeklog/public_html/<plugin_name> directory
+	$command = $_CONF['rmcommand'] . $_CONF['path_html'] . $plugin_name;
+	COM_errorLog('executing the following: ' . $command,1);
 	exec($command);
-	#remove the /path/to/geeklog/public_html/admin/plugins/<plugin_name> directory
-	$command = $CONF['rmcommand'] . $CONF['path_html'] . 'admin/plugins/' . $plugin_name;
-	errorlog('executing the following: ' . $command,1);
+
+	// remove the /path/to/geeklog/public_html/admin/plugins/<plugin_name> directory
+	$command = $_CONF['rmcommand'] . $_CONF['path_html'] . 'admin/plugins/' . $plugin_name;
+	COM_errorLog('executing the following: ' . $command,1);
 	exec($command);
-	#sweet, uninstall complete
-	refresh($CONF['site_url'] . '/index.php?msg=29');			
+
+	// sweet, uninstall complete
+	return COM_refresh($_CONF['site_url'] . '/index.php?msg=29');			
 }
 
 ###############################################################################
@@ -352,35 +431,38 @@ switch ($mode) {
 		if ($confirmed == 1) {
 			removeplugin($pi_name);
 		} else {
-			site_header("menu");
-			startblock($LANG32[13]);
-			print $LANG32[12];
-			endblock();
-			plugineditor($pi_name,1);
-			site_footer();
+			$display .= COM_siteHeader("menu");
+			$display .= COM_startBlock($LANG32[13]);
+			$display .= $LANG32[12];
+			$display .= COM_endBlock();
+			$display .= plugineditor($pi_name,1);
+			$display .= COM_siteFooter();
 		}	
 		break;
 	case "edit":
-		site_header("menu");
+		$display .= COM_siteHeader("menu");
 		if (empty($pi_name)) {
-			installpluginform();
+			$display .= installpluginform();
 		} else {
-			plugineditor($pi_name);
+			$display .= plugineditor($pi_name);
 		}
-		site_footer();
+		$display .= COM_siteFooter();
 		break;
 	case "save":
-		saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
+		$display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
 		break;
   	case "install":
-		installplugin($plugin_file);
+		$display .= installplugin($plugin_file);
 		break;
 	case "cancel":
 	default:
-		site_header("menu");
-		showmessage($msg);
-		listplugins($page);
-		site_footer();
+		$display .= COM_siteHeader("menu");
+		$display .= COM_showMessage($msg);
+		$display .= listplugins($page);
+		$display .= COM_siteFooter();
 		break;
 }
+
+echo $display;
+
 ?>

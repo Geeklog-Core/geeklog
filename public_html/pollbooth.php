@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.5 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: pollbooth.php,v 1.6 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -67,27 +67,29 @@ function polllist()
 {
     global $_TABLES, $_CONF, $LANG07;
 	
-    $result = DB_query("SELECT qid FROM {$_TABLES['pollquestions']}");
+    $result = DB_query("SELECT qid,question,voters FROM {$_TABLES['pollquestions']}");
     $nrows = DB_numRows($result);
-    $counter = 0;
-	
-    $retval .= '<table border="0" cellspacing="0" cellpadding="2" width="100%">'.LB
-        .'<tr align="center" valign="top">'.LB;
-		
+    $retval = '';
+    $retval .= COM_startBlock($LANG07[4]);
+    $pollitem = new Template($_CONF['path_layout'] . 'pollbooth');
+    $pollitem->set_file('pollitem', 'polllist.thtml');
     for ($i = 1; $i <= $nrows; $i++) {
-        if ($counter == 3) {
-            $retval .= '</tr><tr align="center" valign="top">';
-            $counter = 1;
-        } else {
-            $counter = $counter + 1;
-        }
-        $retval .= '<td>';
         $Q = DB_fetchArray($result);
-	COM_errorLog("pollResults HTML:\n " . COM_pollResults($Q['qid'],'119'),1);
-        $retval .= COM_pollResults($Q['qid'],'119')
-            .'[ <a href="'.$_CONF['site_url'].'/pollbooth.php?qid='.$Q['qid'].'">'.$LANG07[3].'</a> ]</td>'.LB;
+        $pollitem->set_var('item_num', $i);
+        $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&aid=-1');
+        $pollitem->set_var('poll_question', $Q['question']);
+        $pollitem->set_var('poll_votes', $Q['voters']);
+        $pollitem->set_var('lang_votes', $LANG07[5]);
+        if ($i == $nrows) {
+            $pollitem->set_var('ending_br', '<br><br>');
+        } else {
+            $pollitem->set_var('ending_br', '');
+        }
+        $pollitem->parse('output', 'pollitem');
+        $retval .= $pollitem->finish($pollitem->get_var('output'));
     }
-    $retval .= '</table>'.LB;
+
+    $retval .= COM_endBlock();
 	
 	return $retval;
 }
@@ -105,9 +107,9 @@ if ($reply == $LANG01[25]) {
 	exit;			
 }
 if (empty($qid)) {
-	$display .= site_header() . polllist();
+	$display .= COM_siteHeader() . polllist();
 } else if (empty($aid)) {
-	$display .= site_header();
+	$display .= COM_siteHeader();
 	if (empty($HTTP_COOKIE_VARS[$qid])) {
 		$display .= COM_pollVote($qid);
 	} else {
@@ -115,12 +117,12 @@ if (empty($qid)) {
 	}
 } else if ($aid  > 0  and empty($HTTP_COOKIE_VARS[$qid])) {
 	setcookie($qid,$aid,time()+$_CONF['pollcookietime']);
-	$display .= site_header()
+	$display .= COM_siteHeader()
 		.pollsave();
 } else {
-	$display .= site_header()
+	$display .= COM_siteHeader()
 		.COM_pollResults($qid,400,$order,$mode);
 }
-$display .= site_footer();
+$display .= COM_siteFooter();
 echo $display;
 ?>

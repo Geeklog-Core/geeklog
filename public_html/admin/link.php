@@ -1,226 +1,308 @@
 <?php
-###############################################################################
-# link.php
-# This is the admin links interface!
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | link.php                                                                  |
+// | Geeklog links administration page.                                        |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000,2001 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: link.php,v 1.9 2001/10/29 17:35:50 tony_bibbs Exp $
+
 include('../lib-common.php');
 include('auth.inc.php');
-if (!hasrights('link.edit')) {
-        site_header('menu');
-        startblock($MESSAGE[30]);
-        print $MESSAGE[34];
-        endblock();
-        site_footer();
-	errorlog("User {$USER['username']} tried to illegally access the link administration screen",1);
-        exit;
+
+// Uncomment the line below if you need to debug the HTTP variables being passed
+// to the script.  This will sometimes cause errors but it will allow you to see
+// the data being passed in a POST operation
+// debug($HTTP_POST_VARS);
+
+$display = '';
+
+if (!SEC_hasRights('link.edit')) {
+    $display .= COM_siteHeader('menu');
+    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= $MESSAGE[34];
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();
+	$display .= COM_errorLog("User {$_USER['username']} tried to illegally access the link administration screen",1);
+    echo $display;
+    exit;
 }
 
-###############################################################################
-# Uncomment the line below if you need to debug the HTTP variables being passed
-# to the script.  This will sometimes cause errors but it will allow you to see
-# the data being passed in a POST operation
-#debug($HTTP_POST_VARS);
-###############################################################################
-# Displays the link editor form
-function editlink($mode,$lid="") {
-	global $LANG23,$CONF,$USER,$LANG_ACCESS;
-	startblock($LANG23[1]);
+/**
+* Shows the link editor
+*
+* $mode     string      Used to see if we are moderating a link or simply editing one 
+* $lid      string      ID of link to edit
+*
+*/
+function editlink($mode, $lid = '') 
+{
+	global $_TABLES, $LANG23, $_CONF, $_USER, $LANG_ACCESS;
+
+    $retval = '';
+
+	$retval .= COM_startBlock($LANG23[1]);
+
+    $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
+    $link_templates->set_file('editor','linkeditor.thtml');
+    $link_templates->set_var('site_url', $_CONF['site_url']);
 	if ($mode <> 'editsubmission' AND !empty($lid)) {
-		$result = dbquery("SELECT * FROM {$CONF['db_prefix']}links where lid ='$lid'");
-		$A = mysql_fetch_array($result);
-		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-                if ($access == 0 OR $access == 2) {
-                        startblock($LANG24[16]);
-                        print $LANG23[17];
-                        endblock();
-                        return;
-                }
+		$result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
+		$A = DB_fetchArray($result);
+		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+        if ($access == 0 OR $access == 2) {
+            $retval .= COM_startBlock($LANG24[16]);
+            $retval .= $LANG23[17];
+            $retval .= COM_endBlock();
+            return;
+        }
 	} else {
 		if ($mode == 'editsubmission') {
-			$result = dbquery ("SELECT * FROM {$CONF['db_prefix']}linksubmission where lid = '$lid'");
-			$A = mysql_fetch_array($result);
+			$result = DB_query ("SELECT * FROM {$_TABLES['linksubmission']}linksubmission WHERE lid = '$lid'");
+			$A = DB_fetchArray($result);
 		}
-		$A["hits"] = 0;
-		$A['owner_id'] = $USER['uid'];
+		$A['hits'] = 0;
+		$A['owner_id'] = $_USER['uid'];
 		$A['group_id'] = getitem('groups','grp_id',"grp_name = 'Link Admin'");
 		$A['perm_owner'] = 3;
-                $A['perm_group'] = 3;
-                $A['perm_members'] = 2;
-                $A['perm_anon'] = 2;
+        $A['perm_group'] = 3;
+        $A['perm_members'] = 2;
+        $A['perm_anon'] = 2;
 		$access = 3;
 	}
-	print "<form action={$CONF['site_url']}/admin/link.php method=post>";
-	print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
-	print "<tr><td colspan="2"><input type="submit" value=save name=mode> ";
-	if ($A["lid"] == "") { 
-		$A["lid"] = 0; 
-	}
-	print "<input type="submit" value=cancel name=mode> ";
-	if (!empty($lid) && hasrights('link.edit'))
-		print "<input type="submit" value=delete name=mode>";
-	print "<input type="hidden" name=lid value={$A["lid"]}><tr></td>";
-	print "<tr><td align="right">{$LANG23[3]}:</td><td><input type=text size=48 maxlength=96 name=title value=\"{$A['title']}\"></td></tr>";
-	print "<tr><td align="right">{$LANG23[4]}:</td><td><input type=text size=48  maxlength=96 name=url value=\"{$A["url"]}\"> {$LANG23[6]}</td></tr>";
-	print "<tr><td align="right">{$LANG23[5]}:</td><td>";
-	$result	= mysql_query("SELECT distinct category from links");
-	$nrows	= mysql_num_rows($result);
+    $link_templates->set_var('link_id', $A['lid']);
+	if (!empty($lid) && SEC_hasRights('link.edit')) {
+		$link_templates->set_var('delete_option','<input type="submit" value="delete" name="mode">');
+    }
+    $link_templates->set_var('lang_linktitle', $LANG23[3]);
+    $link_templates->set_var('link_title', $A['title']);
+    $link_templates->set_var('lang_linkurl', $LANG23[4]);
+    $link_templates->set_var('link_url', $A['url']);
+    $link_templates->set_var('lang_category', $LANG23[5]);
+	$result	= DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}");
+	$nrows	= DB_numRows($result);
 	if ($nrows>0) {
-		print "<select name=categorydd>\n";
-		print "<option>{$LANG23[7]}</option>\n";
-		for ($i=0;$i<$nrows;$i++) {
-			$category = mysql_result($result,$i);
-			print "<option value=\"$category\"";
-			if ($A["category"] == $category) { print " selected"; }
-			print ">$category</option>\n";
+		$catdd = '<option value="' . $LANG23[7] . '">' . $LANG23[7] . '</option>';
+		for ($i = 1; $i <= $nrows; $i++) {
+            $C = DB_fetchArray($result);
+            $category = $C['category'];
+			$catdd .= '<option value="' . $category . '"';
+			if ($A["category"] == $category) {
+                $catdd .= ' selected="selected"'; 
+            }
+			$catdd .= '>' . $category . '</option>';
 		}
-		print "</select>\n";
-		print "If other, specify: ";
+        $link_templates->set_var('category_options', $catdd); 
+        $link_templates->set_var('lang_ifotherspecify', $LANG23[20]);
 	}
-	print "<input type=text name=category size=12 maxlength=32>\n</td></tr>";
-	print "<tr><td align="right">{$LANG23[8]}:</td><td><input type=text size=11 name=hits value={$A["hits"]}></td></tr>";
-	print "<tr><td align="right">{$LANG23[9]}:</td><td><textarea name=description cols=50 rows=6 wrap=virtual>" . stripslashes($A["description"]) . "</textarea></td></tr>";
-	#user access info
-        print "<tr><td colspan="2"><hr><td></tr>";
-        print "<tr><td colspan="2"><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
-        print "<tr><td align="right">{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A['owner_id']}");
-        print "<input type="hidden" name=owner_id value={$A['owner_id']}>" . "</td></tr>";
-        print "<tr><td align="right">{$LANG_ACCESS[group]}:</td><td>";
-        $usergroups = getusergroups();
-	if ($access == 3) {
-		print "<SELECT name=group_id>";
-        	for ($i=0;$i<count($usergroups);$i++) {
-                	print "<option value=" . $usergroups[key($usergroups)];
-                	if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                       		print " SELECTED";
-                	}
-                	print ">" . key($usergroups) . "</option>";
-                	next($usergroups);
-        	}
-        	print "</SELECT>";
+    $link_templates->set_var('lang_linkhits', $LANG23[8]); 
+    $link_templates->set_var('link_hits', $A['hits']);
+    $link_templates->set_var('lang_linkdescription', $LANG23[9]);
+    $link_templates->set_var('link_description', $A['description']);
+
+	// user access info
+    $link_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
+    $link_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $link_templates->set_var('owner_username', DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}")); 
+    $link_templates->set_var('link_ownerid', $A['owner_id']);
+    $link_templates->set_var('lang_group', $LANG_ACCESS[group]);
+
+    $usergroups = SEC_getUserGroups();
+    if ($access == 3) {
+        $groupdd = '<select name="group_id">' . LB;
+        for ($i = 0; $i < count($usergroups); $i++) {
+            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
+            if ($A['group_id'] == $usergroups[key($usergroups)]) {
+               $groupdd .= ' selected="selected"';
+            }
+            $groupdd.= '>' . key($usergroups) . '</option>' . LB;
+            next($usergroups);
+        }
+        $groupdd .= '</select>' . LB;
 	} else {
-		#they can't set the group then
-                print getitem("groups","grp_name","grp_id = {$A['group_id']}");
-		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A['group_id']}\">";
+		// they can't set the group then
+        $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
+		$groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
 	}
-        print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan="2">";
-        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan="2">";
-        $html = getpermissionshtml($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        print $html;
-	print "</td></tr>";
-        print "<tr><td colspan="2">{$LANG_ACCESS[lockmsg]}<td></tr>";
-	print "</table></form>";
-	endblock();
+    $link_templates->set_var('group_dropdown', $groupdd);
+    $link_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
+    $link_templates->set_var('lang_permissionskey', $LANG_ACCESS[permissionskey]);
+    $link_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    $link_templates->set_var('lang_lockmsg', $LANG_ACCESS[lockmsg]);
+    $link_templates->parse('output', 'editor');
+    $retval .= $link_templates->finish($link_templates->get_var('output'));
+
+	$retval .= COM_endBlock();
+
+    return $retval;
 }
 
 ###############################################################################
 # Svaes the links to the database
-function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
-	global $CONF,$LANG23; 
-	# clean 'em up 
-	$description = addslashes(checkhtml(checkwords($description)));
-	$title = addslashes(checkhtml(checkwords($title)));
+/**
+* Saves link to the database
+*
+* $lid          string          ID for link
+* $category     string          Category link belongs to
+* $categorydd   string          Category links belong to
+* $url          string          URL of link to save
+* $description  string          Description of link
+* $title        string          Title of link
+* $hits         int             Number of hits for link
+* $owner_id     string          ID of owner
+* $group_id     string          ID of group link belongs to
+* $perm_owner   string          Permissions the owner has
+* $perm_group   string          Permissions the group has
+* $perm_members string          Permissions members have
+* $perm_anon    string          Permissions anonymous users have
+*
+*/
+function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+{
+	global $_TABLES, $_CONF, $LANG23; 
+
+	// clean 'em up 
+	$description = addslashes(COM_checkHTML(COM_checkWords($description)));
+	$title = addslashes(COM_checkHTML(COM_checkWords($title)));
 	if (!empty($title) && !empty($description) && !empty($url)) {
 		if (!empty($lid)) {
-			dbdelete("linksubmission","lid",$lid);
-			dbdelete("links","lid",$lid);
+			DB_delete($_TABLES['linksubmission'],'lid',$lid);
+			DB_delete($_TABLES['links'],'lid',$lid);
 		} else {
-			#this is a submission, set default values
-			$lid = makesid();
-			$owner_id = $USER['uid'];
-			$group_id = getitem('groups','grp_id',"grp_name = 'Link Admin'");
-                	$perm_owner = 3;
-                	$perm_group = 3;
-                	$perm_members = 2;
-                	$perm_anon = 2;		
+			// this is a submission, set default values
+			$lid = COM_makesid();
+			$owner_id = $_USER['uid'];
+			$group_id = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Link Admin'");
+            $perm_owner = 3;
+            $perm_group = 3;
+            $perm_members = 2;
+            $perm_anon = 2;		
 		}
-		if ($categorydd!="Other" && !empty($categorydd)) {
+
+		if ($categorydd != $LANG23[7] && !empty($categorydd)) {
 			$category = $categorydd;
-		} else if ($categorydd!="Other") {
-			refresh("{$CONF['site_url']}/admin/link.php");
+		} else if ($categorydd != $LANG23[7]) {
+			echo COM_refresh($_CONF['site_url'] . '/admin/link.php');
 		}
-		#Convert array values to numeric permission values
-                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		dbsave("links","lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/link.php?msg=15");
+
+		// Convert array values to numeric permission values
+        list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/link.php?msg=15');
 	} else {
-		site_header('menu');
-		errorlog($LANG23[10],2);
+		$retval .= COM_siteHeader('menu');
+		$retval .= COM_errorLog($LANG23[10],2);
 		editlink($mode,$lid);
-		site_footer();
+		$retval .= COM_siteFooter();
+        return $retval;
 	}
 }
 
-###############################################################################
-# Displays the list of links
-function listlinks() {
-	global $LANG23,$LANG_ACCESS,$CONF;
-	startblock($LANG23[11]);
-	adminedit("link",$LANG23[12]);
-	print "<table border="0" cellspacing="0" cellpadding=2 width="100%">";
-	print "<tr><th align="left">{$LANG23[13]}</th><th>{$LANG_ACCESS[access]}</th><th>{$LANG23[14]}</th><th>{$LANG23[15]}</th></tr>";
-	$result = dbquery("SELECT * FROM {$CONF['db_prefix']}links ORDER BY category asc,title");
-	$nrows = mysql_num_rows($result);
-	for ($i=0;$i<$nrows;$i++) {
-		$A = mysql_fetch_array($result);
-		$access = hasaccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-                if ($access > 0) {
-                	if ($access == 3) {
-                        	$access = $LANG_ACCESS[edit];
-                        } else {
-                                $access = $LANG_ACCESS[readonly];
-                        }
-                } else {
-                        $access = $LANG_ACCESS[none];
-                }	
-		print "<tr align="center"><td align="left"><a href={$CONF['site_url']}/admin/link.php?mode=edit&lid={$A["lid"]}>" . stripslashes($A['title']) . "</a></td>";
-		print "<td>$access</td><td>{$A["category"]}</td><td>{$A["url"]}</td></tr>";
+/**
+* Lists all the links in the database
+*
+*/
+function listlinks() 
+{
+	global $_TABLES, $LANG23, $LANG_ACCESS, $_CONF;
+
+    $retavl .= '';
+
+	$retval .= COM_startBlock($LANG23[11]);
+
+    $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
+    $link_templates->set_file(array('list'=>'linklist.thtml', 'row'=>'listitem.thtml'));
+    $link_templates->set_var('site_url', $_CONF['site_url']);
+    $link_templates->set_var('lang_newlink', $LANG23[18]);
+    $link_templates->set_var('lang_adminhome', $LANG23[19]);
+    $link_templates->set_var('lang_instructions', $LANG23[12]);
+    $link_templates->set_var('lang_linktitle', $LANG23[13]);
+    $link_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $link_templates->set_var('lang_linkcategory', $LANG23[14]);
+    $link_templates->set_var('lang_linkurl', $LANG23[15]); 
+
+	$result = DB_query("SELECT * FROM {$_TABLES['links']} ORDER BY category ASC,title");
+	$nrows = DB_numRows($result);
+	for ($i = 0; $i < $nrows; $i++) {
+		$A = DB_fetchArray($result);
+		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+        if ($access > 0) {
+            if ($access == 3) {
+               $access = $LANG_ACCESS[edit];
+            } else {
+               $access = $LANG_ACCESS[readonly];
+            }
+        } else {
+            $access = $LANG_ACCESS[none];
+        }	
+        $link_templates->set_var('link_id', $A['lid']);
+        $link_templates->set_var('link_name', $A['title']);
+        $link_templates->set_var('link_access', $access);
+        $link_templates->set_var('link_category', $A['category']);
+        $link_templates->set_var('link_url', $A['url']);
+        $link_templates->parse('link_row', 'row', true);
 	}
-	print "</table></form>";
-	endblock();
+    $link_templates->parse('output','list');
+    $retval .= $link_templates->finish($link_templates->get_var('output'));
+
+	$retval .= COM_endBlock();
+
+    return $retval;
 }
 
-###############################################################################
-# MAIN
+// MAIN
+
 switch ($mode) {
 	case 'delete':
-		dbdelete('links','lid',$lid,'/admin/link.php?msg=16');
+		DB_delete($_TABLES['links'],'lid',$lid,'/admin/link.php?msg=16');
 		break;
 	case 'save':
-		savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case 'editsubmission':
-		site_header('menu');
-		editlink($mode,$id);
-		site_footer();
+		$display .= COM_siteHeader('menu');
+		$display .= editlink($mode,$id);
+		$display .= COM_siteFooter();
 		break;
 	case 'edit':
-		site_header('menu');
-		editlink($mode,$lid);
-		site_footer();
+		$display .= COM_siteHeader('menu');
+		$display .= editlink($mode,$lid);
+		$display .= COM_siteFooter();
 		break;
 	case 'cancel':
 	default:
-		site_header('menu');
-		showmessage($msg);
-		listlinks();
-		site_footer();
+		$display .= COM_siteHeader('menu');
+		$display .= COM_showMessage($msg);
+		$display .= listlinks();
+		$display .= COM_siteFooter();
 		break;
 }
+
+echo $display;
+
 ?>

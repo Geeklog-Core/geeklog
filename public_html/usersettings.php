@@ -142,6 +142,27 @@ function editpreferences()
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
         . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
         . '<table border="0" cellspacing="0" cellpadding="3">' . LB
+	. '<tr valign="top">' . LB
+	. '<td align=right><b>Theme: </b><br><small>Change what this site looks like!</small></td>' . LB
+	. '<td><select name="theme">'.LB;
+
+	$themes = COM_getThemes();
+        if (empty($_USER['theme'])) {
+            $usertheme = $_CONF['path_layout'];
+        } else {
+            $usertheme = $_USER['theme'];
+        }
+
+	for ($i = 1; $i <= count($themes); $i++) {
+            $retval .= '<option value="' . current($themes) . '"';
+            if ($usertheme == current($themes)) {
+                $retval .= ' SELECTED';
+            }
+            $retval .= '>' . current($themes) . '</option>' . LB;
+            next($themes);
+        }
+
+        $retval .= '<select>' . LB . '</td></tr>' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
         . '<td><input type="checkbox" name="noicons"';
@@ -357,6 +378,8 @@ function savepreferences($A)
             $boxes .= $BOXES[$i] . ' ';
         }
     }
+
+    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}' WHERE uid = {$_USER['uid']}");
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
@@ -371,27 +394,28 @@ $display = '';
 if (!empty($_USER['username']) && !empty($mode)) {
     switch ($mode) {
     case 'preferences':
-        $display .= site_header('menu');
+        $display .= COM_siteHeader('menu');
         $display .= COM_showMessage($msg);
         $display .= editpreferences();
-        $display .= site_footer();
+        $display .= COM_siteFooter();
         break;
     case 'comments':
-        $display .= site_header('menu');
+        $display .= COM_siteHeader('menu');
         $display .= COM_showMessage($msg);
         $display .= editcommentprefs();
-        $display .= site_footer();
+        $display .= COM_siteFooter();
         break;
     case 'edit':
-        $display .= site_header('menu');
+        $display .= COM_siteHeader('menu');
         $display .= COM_showMessage($msg);
         $display .= edituser();
-        $display .= site_footer();
+        $display .= COM_siteFooter();
         break;
     case 'saveuser':
         $display .= saveuser($HTTP_POST_VARS);
         break;
     case 'savepreferences':
+	COM_errorLog("theme is " . $theme,1);
         savepreferences($HTTP_POST_VARS);
         break;
     case 'savecomments':

@@ -31,9 +31,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.11 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: index.php,v 1.12 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include_once('lib-common.php');
+
+$display = '';
+$display .= COM_siteHeader();
 
 $maxstories = 0;
 if (empty($page)) {
@@ -41,7 +44,7 @@ if (empty($page)) {
     $page = 1;
 }
 
-$display .= site_header('menu');
+//$display .= site_header('menu');
 
 if (!empty($_USER['uid'])) {
     $result = DB_query("SELECT noboxes,maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
@@ -143,17 +146,19 @@ for ($i = 0; $i <= 1; $i++) {
         $display .= COM_endBlock();
     }
 }
+
 # Display any blocks, polls, olderstuff configured for this page
 # </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
 if ($U['noboxes'] != 1) {
     $display .= '</td><td><img src=' . $_CONF['site_url'] . '/images/speck.gif" height="1" width="10"></td>' . LB
-        . '<td valign="top" width="180">' . LB . COM_showBlock('right',$topic)
+        . '<td valign="top" width="180">' . LB . COM_showBlocks('right',$topic)
         . '<br><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="180" height="1">' . LB;
 }
 
 // Get footer
-$display .= site_footer();
+$display .= COM_siteFooter();
 
 // Output page 
 echo $display;
+
 ?>

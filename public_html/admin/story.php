@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.16 2001/10/17 23:35:48 tony_bibbs Exp $
+// $Id: story.php,v 1.17 2001/10/29 17:35:50 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -43,11 +43,11 @@ $_STORY_VERBOSE = false;
 $display = '';
 
 if (!SEC_hasRights('story.edit')) {
-    $display .= site_header('menu');
+    $display .= COM_siteHeader('menu');
     $display .= $display .= COM_startBlock($MESSAGE[30]); 
     $display .= $MESSAGE[31];
     $display .= $display .= COM_endBlock();
-    $display .= site_footer();
+    $display .= COM_siteFooter();
     COM_errorLog("User {$_USER['username']} tried to illegally access the story administration screen",1);
     echo $display;
     exit;
@@ -127,100 +127,91 @@ function storyeditor($sid, $mode = '')
         }
         $A['title'] = strip_tags($A['title']);
     }
+
+    // Load HTML templates
+    $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
+    $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
+    $story_templates->set_var('site_url', $_CONF['site_url']);
     if (!empty($A['title'])) {
         $display .= COM_startBlock($LANG24[26]);
         $display .= COM_article($A,"n");
         $display .= COM_endBlock();
     }
+
     $display .= COM_startBlock($LANG24[5]);
-    $display .= '<form action="' . $_CONF['site_url'] . '/admin/story.php" method="post">';
-    $display .= '<table border="0" cellspacing="0" cellpadding="3" width="100%">';
-    $display .= '<tr><td colspan="2"><input type="submit" value=save name=mode> ';
-    $display .= '<input type="submit" value="preview" name="mode"> ';
-    $display .= '<input type="submit" value="cancel" name="mode"> ';
+
     if ($access == 3) {
-        $display .= '<input type="submit" value="delete" name="mode"> ';
+        $story_templates->set_var('delete_option', '<input type="submit" value="delete" name="mode">');
     }
     if ($A['type'] == 'editsubmission' || $mode == 'editsubmission') {
-        $display .= '<input type="hidden" name="type" value="submission">';
+        $story_templates->set_var('submission_option', '<input type="hidden" name="type" value="submission">');
     }
-    $display .= "<tr></td>";
-    $display .= '<tr><td align="right">' . $LANG24[7] . ':</td><td>' . DB_getItem("users","username","uid = {$A['uid']}") 
-        . '<input type="hidden" name="uid" value=' . $A['uid'] . '></td></tr>';
+    $story_templates->set_var('lang_author', $LANG24[7]);
+    $story_templates->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}"));
+    $story_templates->set_var('story_uid', $A['uid']);
 
     // user access info
-    $display .= '<tr><td colspan="2"><hr><td></tr>';
-    $display .= '<tr><td colspan="2"><b>' . $LANG_ACCESS[accessrights] . '<b></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG_ACCESS[owner] . ':</td><td>' 
-        . DB_getItem($_TABLES['users'],'username',"uid = {$A['owner_id']}");
-    $display .= '<input type="hidden" name="owner_id" value="' . $A['owner_id'] . '"></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG_ACCESS[group] . ':</td><td>';
+    $story_templates->set_var('lang_accessrights', $LANG_ACCESS[accessrights]);
+    $story_templates->set_var('lang_owner', $LANG_ACCESS[owner]);
+    $story_templates->set_var('owner_id', $A['owner_id']);
+    $story_templates->set_var('lang_group', $LANG_ACCESS[group]);
+
     $usergroups = SEC_getUserGroups();
     if ($access == 3) {
-        $display .= '<SELECT name="group_id">';
+        $groupdd .= '<SELECT name="group_id">';
         for ($i = 0; $i < count($usergroups); $i++) {
-            $display .= '<option value="' . $usergroups[key($usergroups)] . '"';
+            $groupdd .= '<option value="' . $usergroups[key($usergroups)] . '"';
             if ($A['group_id'] == $usergroups[key($usergroups)]) {
-                $display .= ' SELECTED';
+                $groupdd .= ' SELECTED';
             }
-            $display .= '>' . key($usergroups) . '</option>';
+            $groupdd .= '>' . key($usergroups) . '</option>';
             next($usergroups);
         }
-        $display .= '</SELECT>';
+        $groupdd .= '</SELECT>';
     } else {
         // they can't set the group then
-        $display .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
-        $display .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
+        $groupdd .= DB_getItem($_TABLES['groups'],'grp_name',"grp_id = {$A['group_id']}");
+        $groupdd .= '<input type="hidden" name="group_id" value="' . $A['group_id'] . '">';
     }
-    $display .= '</td><tr><tr><td colspan="2"><b>' . $LANG_ACCESS[permissions] . '</b>:</td></tr><tr><td colspan="2">';
-    $display .= '</td><tr><tr><td colspan="2">' . $LANG_ACCESS[permissionskey] . '</td></tr><tr><td colspan="2">';
-    $display .= SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-    $display .= '</td></tr>';
-    // $display .= "></td></tr>";
-    $display .= '<tr><td colspan="2">' . $LANG_ACCESS[permmsg] . '<td></tr>';
-    $display .= '<tr><td colspan="2"><hr><td></tr>';
+    $story_templates->set_var('group_dropdown', $groupdd);
+    $story_templates->set_var('lang_permissions', $LANG_ACCESS[permissions]);
+    $story_templates->set_var('lang_perm_key', $LANG_ACCESS[permissionskey]);
+    $story_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
+    $story_templates->set_var('permissions_msg', $LANG_ACCESS[permmsg]);
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
-    $display .= '<tr><td align="right">' . $LANG24[15] . ':</td><td>' . $curtime[0] . '<input type="hidden" name="unixdate" value="' . $A['unixdate'] . '"></td></tr>';
-    // $display .= "<tr><td align="right">{$LANG24[15]}:</td><td>". strftime($_CONF["date"],$A["unixdate"]) . "<input type="hidden" name=unixdate value={$A["unixdate"]}></td></tr>";
-    $display .= '<tr><td align="right">' . $LANG24[13] . ':</td><td><input type="text" size="48" maxlength="255" name="title" value="' . stripslashes($A['title']) . '"></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG24[14] . ':</td><td><select name="tid">';
-    $display .= COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]);
-    $display .= '</select></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG24[34] . ':</td><td><input type="checkbox" name="draft_flag"';
+    $story_templates->set_var('lang_date', $LANG24[15]);
+    $story_templates->set_var('story_date', $curtime[0]);
+    $story_templates->set_var('story_unixstamp', $A['unixdate']); 
+    $story_templates->set_var('lang_title', $LANG24[13]);
+    $story_templates->set_var('story_title', stripslashes($A['title']));
+    $story_templates->set_var('lang_topic', $LANG24[14]);
+    $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
+    $story_templates->set_var('lang_draft', $LANG24[34]);
     if ($A["draft_flag"] == 1) {
-        $display .= ' checked';
+        $story_templates->set_var('is_checked', 'CHECKED');
     }
-    $display .= '></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG24[3] . ':</td><td><select name="statuscode">';
-    $display .= COM_optionList($_TABLES['statuscodes'],'code,name',$A["statuscode"]);
-    $display .= '</select> <select name="commentcode">';
-    $display .= COM_optionList($_TABLES['commentcodes'],'code,name',$A["commentcode"]);
-    $display .= '</select> <select name="featured">';
-    $display .= COM_optionList($_TABLES['featurecodes'],'code,name',$A["featured"]);
-    $display .= '</select> <select name="frontpage">';
-    $display .= COM_optionList($_TABLES['frontpagecodes'],'code,name',1);
-    $display .= '</select></td></tr>';
-    $display .= '<tr><td valign="top" align="right">' . $LANG24[16] 
-        . ':</td><td><textarea name="introtext" cols="50" rows="6" wrap="virtual">' . stripslashes($A['introtext']) 
-        . '</textarea></td></tr>';
-    $display .= '<tr><td valign="top" align="right">' . $LANG24[17] 
-        . ':</td><td><textarea name="bodytext" cols="50" rows="8" wrap="virtual">' . stripslashes($A['bodytext']) 
-        . '</textarea></td></tr>';
-    $display .= '<tr valign="top"><td align="right"><b>' . $LANG24[4] . ':</b></td><td><select name="postmode">';
-    $display .= COM_optionList($_TABLES['postmodes'],'code,name',$A["postmode"]);
-    $display .= '</select><br>';
-    $dispaly .= COM_allowedHTML();
-    $display .= '</td></tr>' . LB;
-    $display .= '<tr><td align="right">' . $LANG24[18] 
-        . ':</td><td><input type="hidden" name="hits" value="' . $A['hits'] . '">' . $A['hits'] . '</td></tr>';
-    $display .= '<tr><td align="right">' . $LANG24[19] . ':</td><td>' . $A['comments'] 
-        . '<input type="hidden" name="comments" value="' . $A['comments'] . '"></td></tr>';
-    $display .= '<tr><td align="right">' . $LANG24[39] . ':</td><td>' . $A['numemails'] 
-        . '<input type="hidden" name="numemails" value="' . $A['numemails'] . '"></td></tr>';
-    $display .= '<input type="hidden" name="sid" value="' . $A['sid'] . '"></td></tr>';
-    $display .= '</table>';
+    $story_templates->set_var('lang_mode', $LANG24[3]);
+    $story_templates->set_var('status_options', COM_optionList($_TABLES['statuscodes'],'code,name',$A['statuscode']));
+    $story_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$A['commentcode']));
+    $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
+    $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',1));
+    $story_templates->set_var('lang_introtext', $LANG24[16]);
+    $story_templates->set_var('story_introtext', stripslashes($A['introtext']));
+    $story_templates->set_var('lang_bodytext', $LANG24[17]);
+    $story_templates->set_var('story_bodytext', stripslashes($A['bodytext']));
+    $story_templates->set_var('lang_postmode', $LANG24[4]);
+    $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
+    $story_templates->set_var('lang_allowed_html', COM_allowedHTML());
+    $story_templates->set_var('lang_hits', $LANG24[18]);
+    $story_templates->set_var('story_hits', $A['hits']);
+    $story_templates->set_var('lang_comments', $LANG24[19]);
+    $story_templates->set_var('story_comments', $A['comments']);
+    $story_templates->set_var('lang_emails', $LANG24[39]); 
+    $story_templates->set_var('story_emails', $A['numemails']);
+    $story_templates->set_var('story_id', $A['sid']);
+    $story_templates->parse('output','editor');
+    $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock();
-	$display .= '</form>';
 
     return $display;
 }
@@ -240,7 +231,20 @@ function liststories($page="1")
     $display = '';
 
     $display .= COM_startBlock($LANG24[22]);
-    $display .= COM_adminEdit('story',$LANG24[23]);
+    $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
+    $story_templates->set_file(array('list'=>'liststories.thtml','row'=>'listitem.thtml'));
+
+    $story_templates->set_var('site_url', $_CONF['site_url']);
+    $story_templates->set_var('lang_newstory', $LANG24[43]);
+    $story_templates->set_var('lang_adminhome', $LANG24[44]);
+    $story_templates->set_var('lang_instructions', $LANG24[23]);
+    $story_templates->set_var('lang_title', $LANG24[13]);
+    $story_templates->set_var('lang_access', $LANG_ACCESS[access]);
+    $story_templates->set_var('lang_draft', $LANG24[34]);
+    $story_templates->set_var('lang_author', $LANG24[7]);
+    $story_templates->set_var('lang_date', $LANG24[15]);
+    $story_templates->set_var('lang_topic', $LANG24[14]);
+    $story_templates->set_var('lang_featured', $LANG24[32]); 
 
     if (empty($page)) {
         $page = 1;
@@ -250,10 +254,6 @@ function liststories($page="1")
     $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_CONF['db_prefix']}stories ORDER BY date DESC LIMIT $limit,50");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
-        $display .= '<table cellpadding="0" cellspacing="3" border="0" width="100%">' . LB;
-        $display .= '<tr><th align="left">#</th><th align="left">' . $LANG24[13] . '</th><th>' . $LANG_ACCESS[access] 
-            . '</th><th>' . $LANG24[34] . '</th><th>' . $LANG24[7] . '</th><th>' . $LANG24[15] . '</th><th>' 
-            . $LANG24[14] . '</th><th>' . $LANG24[32] . '</th></tr>';
         for ($i = 1; $i <= $nrows; $i++) {
             $scount = (50 * $page) - 50 + $i;
             $A = DB_fetchArray($result);
@@ -268,48 +268,52 @@ function liststories($page="1")
                 $access = $LANG_ACCESS[none];
             }
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
-            $display .= '<tr align="center"><td align="left"><a href="' . $_CONF['site_url'] 
-                . '/admin/story.php?mode=edit&sid=' . $A['sid'] . '">' . $scount . '</a></td>';
-            $display .= '<td align="left"><a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' 
-                . stripslashes($A['title']) . '</a></td>';
-            $display .= '<td align="center">' . $access . '</td>';
+            $story_templates->set_var('story_id', $A['sid']);
+            $story_templates->set_var('row_num', $scount);
+            $story_templates->set_var('story_title', $A['title']);
+            $story_templates->set_var('story_access', $access);
             if ($A['draft_flag'] == 1) {
-                $display .= '<td>' . $LANG24[35] . '</td>';
+                $story_templates->set_var('story_draft', $LANG24[35]);
             } else {
-                $display .= '<td>' . $LANG24[36] . '</td>';
+                $story_templates->set_var('story_draft', $LANG24[36]);
             }
-            $display .= '<td>' . DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}") . '</td>';
-            // $display .="<td>" . strftime("%x %X",$A["unixdate"]) . "</td>";
-            $display .= '<td>' . $curtime[0] . '</td>';
-            $display .= '<td>' . $A['tid'] . '</td><td>';
+            $story_templates->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = {$A['uid']}"));
+            $story_templates->set_var('story_date', $curtime[0]);
+            $story_templates->set_var('story_topic', $A['tid']);
             if ($A['featured'] == 1) {
-                $display .= $LANG24[35] . '</td></tr>';
+                $story_templates->set_var('story_feature', $LANG24[35]);
             } else {
-                $display .= $LANG24[36] . '</td></tr>';
+                $story_templates->set_var('story_feature', $LANG24[36]);
             }
+            $story_templates->parse('storylist_item','row',true);
         }
-        $display .= '<tr><td colspan="6">';
+
+        // Clear out all previously appended stuff (to avoid having them show up twice)
+        $story_templates->set_var('storylist_item','');
+
+        // Print prev/next page links if needed
+
         if (DB_count($_TABLES['stories']) > 50) {
             $prevpage = $page - 1;
             $nextpage = $page + 1;
             if ($pagestart >= 50) {
-                $display .= '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page=' 
-                    . $prevpage . '">' . $LANG24[1] . '</a> ';
+                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
+                    . $prevpage . '">' . $LANG24[1] . '</a> ');
             }
             if ($pagestart <= (DB_count($_TABLES['stories']) - 50)) {
-                $display .= '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
-                    . $nextpage . '">' . $LANG24[2] . '</a> ';
+                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_url'] . '/admin/story.php?mode=list&page='
+                    . $nextpage . '">' . $LANG24[2] . '</a> ');
             }
         }
-        $display .= '</td></tr></table>' . LB;
+
+        $story_templates->parse('output','list');
+        $display .= $story_templates->finish($story_templates->get_var('output')); 
     }
     $display .= COM_endBlock();
 
     return $display;
 }
 
-###############################################################################
-# Saves a story to the database
 /** 
 * Saves story to database
 *
@@ -440,10 +444,10 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", '/admin/story.php?msg=9');
 
     } else {
-        $display .= site_header("menu");
+        $display .= COM_siteHeader('menu');
         $display .= COM_errorLog($LANG24[31],2);
         $display .= storyeditor($sid);
-        $display .= site_footer();
+        $display .= COM_siteFooter();
         echo $display;
         exit;
     }
@@ -462,21 +466,21 @@ case 'delete':
     }
     break;
 case 'preview':
-    $display .= site_header('menu');
+    $display .= COM_siteHeader('menu');
     $display .= storyeditor($sid,$mode);
-    $display .= site_footer();
+    $display .= COM_siteFooter();
     echo $display;
     break;
 case 'edit':
-    $display .= site_header("menu");
+    $display .= COM_siteHeader('menu');
     $display .= storyeditor($sid,$mode);
-    $display .= site_footer();
+    $display .= COM_siteFooter();
     echo $display;
     break;
 case 'editsubmission':
-    $display .= site_header("menu");
+    $display .= COM_siteHeader('menu');
     $display .= storyeditor($id,$mode);
-    $display .= site_footer();
+    $display .= COM_siteFooter();
     echo $display;
     break;
 case 'save':
@@ -484,10 +488,10 @@ case 'save':
     break;
 case 'cancel':
 default:
-    $display .= site_header("menu");
+    $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
     $display .= liststories($page);
-    $display .= site_footer();
+    $display .= COM_siteFooter();
     echo $display;
 	break;
 }

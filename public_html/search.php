@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.6 2001/10/17 23:35:47 tony_bibbs Exp $
+// $Id: search.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -45,54 +45,34 @@ function searchform()
 {
     global $_TABLES, $LANG09, $_CONF;
 	
-	$retval .= COM_startBlock($LANG09[1],'advancedsearch.html')
-		.$LANG09[19]
-		.'<form action="'.$_CONF['site_url'].'/search.php" method="get">'.LB
-		.'<table border="0" cellspacing="0" cellpadding="3">'.LB
-		.'<tr>'.LB
-		.'<td align="right">'.$LANG09[2].':</td>'.LB
-		.'<td><input type="text" name="query" size="35" maxlength="35"></td>'.LB
-		.'</tr>'.LB
-		.'<tr>'.LB
-		.'<td align="right">'.$LANG09[20].':</td>'.LB
-		.'<td><input type="text" name="datestart" size="10" maxlength="10"> '.$LANG09[21].' <input type="text" name="dateend" size="10" maxlength="10"> '.$LANG09[22].'</td>'.LB
-		.'</tr>'.LB
-		.'<tr>'.LB
-		.'<td align="right">'.$LANG09[3].':</td>'.LB
-		.'<td><select name="topic">'.LB
-		.'<option selected="selected" value="0">'.$LANG09[4].'</option>'.LB
-		.COM_optionList($_TABLES['topics'],'tid,topic')
-		.'</select></td>'.LB
-		.'</tr>'.LB
-		.'<tr>'.LB
-		.'<td align="right">'.$LANG09[5].':</td>'.LB
-		.'<td><select name="type">'.LB
-		.'<option selected="selected" value="all">'.$LANG09[9].'</option>'.LB
-		.'<option value="stories">'.$LANG09[6].'</option>'.LB
-		.GetPluginSearchTypes()
-		.'<option value="comments">'.$LANG09[7].'</option>'.LB
-		.'</select></td>'.LB
-		.'</tr>'.LB;
-		
+    $retval .= COM_startBlock($LANG09[1],'advancedsearch.html');
+    $searchform = new Template($_CONF['path_layout'].'search');
+    $searchform->set_file(array('searchform'=>'searchform.thtml', 'authors'=>'searchauthors.thtml'));
+    $searchform->set_var('search_intro', $LANG09[19]);
+    $searchform->set_var('site_url', $_CONF['site_url']);
+    $searchform->set_var('lang_keywords', $LANG09[2]);
+    $searchform->set_var('lang_date', $LANG09[20]);
+    $searchform->set_var('lang_to', $LANG09[21]);
+    $searchform->set_var('date_format', $LANG09[22]);	
+    $searchform->set_var('lang_topic', $LANG09[3]);
+    $searchform->set_var('lang_all', $LANG09[4]);
+    $searchform->set_var('topic_option_list', COM_optionList($_TABLES['topics'],'tid,topic'));
+    $searchform->set_var('lang_type', $LANG09[5]);
+    $searchform->set_var('lang_stories', $LANG09[6]);
+    $searchform->set_var('lang_comments', $LANG09[7]);
+    $searchform->set_var('plugin_types', GetPluginSearchTypes());
 	if ($_CONF['contributedbyline'] == 1) {
-		$retval .= '<tr>'.LB
-			.'<td align="right">'.$LANG09[8].':</td>'.LB
-			.'<td><select name="author">'.LB
-			.'<option selected="selected" value="0">'.$LANG09[9].'</option>'.LB
-			.COM_optionList($_TABLES['users'],'uid,username')
-			.'</select></td>'.LB
-			.'</tr>'.LB;
+        $searchform->set_var('lang_authors', $LANG09[8]);
+        $searchform->set_var('author_option_list', COM_optionList($_TABLES['users'],'uid,username'));
+        $searchform->parse('author_form_element', 'authors', true);
 	} else {
-		$retval .= '<input type="hidden" name="author" value="0">'.LB;
+		$searchform->set_var('author_form_element', '<input type="hidden" name="author" value="0">');
 	}
-	
-	$retval .= '<tr>'.LB
-		.'<td colspan="2"><input type="submit" value="'.$LANG09[10].'">'
-		.'<input type="hidden" name="mode" value="search"></td>'.LB
-		.'</tr>'.LB
-		.'</table>'.LB
-		.'</form>'
-		.COM_endBlock();
+    $searchform->set_var('lang_search', $LANG09[10]);	
+    $searchform->parse('output', 'searchform');
+
+    $retval .= $searchform->finish($searchform->get_var('output'));
+    $retval .= COM_endBlock();
 	
 	return $retval;
 }
@@ -100,8 +80,10 @@ function searchform()
 ###############################################################################
 # The Search!
 function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
-	global $LANG09;
+	global $LANG09, $_CONF, $_TABLES;
 	
+    $searchtimer = new timerobject();
+    $searchtimer->startTimer();
 	
 	if ($type == 'all' OR $type == 'stories') {
 		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_CONF['db_prefix']}stories WHERE (draft_flag = 0) AND ";
@@ -159,33 +141,64 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 		$total_comments = DB_count("comments");
 		$C = DB_fetchArray($result_comments);
 	}
-	// Have plugins do their searches
-	list($nrows_plugins, $total_plugins, $result_plugins) = DoPluginSearches($query, $datestart, $dateend, $topic, $author);
-	$total = $total_stories + $total_comments + $total_plugins;
-	$nrows = $nrows_stories + $nrows_comments + $nrows_plugins;
+
+    // Have plugins do their searches
+    list($nrows_plugins, $total_plugins, $result_plugins) = DoPluginSearches($query, $datestart, $dateend, $topic, $author);
+    $total = $total_stories + $total_comments + $total_plugins;
+    $nrows = $nrows_stories + $nrows_comments + $nrows_plugins;
+
+    $searchtime = $searchtimer->stopTimer();
+
 	$cur_plugin_recordset = 1;
 	$cur_plugin_index = 1;
 	if ($nrows > 0) {
-		$retval .= COM_startBlock("$for " . $LANG09[11] . ": $nrows " . $LANG09[12])
-			.'Found <b>'.$nrows.'</b> matches for <b>'.$total.'</b> items'
-			.'<table cellpadding="0" cellspacing="1" border="0" width="99%">'.LB
-			.'<tr>'.LB
-			.'<td><b>'.$LANG09[16].'</b></td>'.LB
-			.'<td align="center"><b>'.$LANG09[17].'</b></td>'.LB
-			.'<td align="center"><b>'.$LANG09[18].'</b></td>'.LB
-			.'<td align="center"><b>'.$LANG09[23].'</b></td>'.LB
-			.'</tr>'.LB;
-			
+		$retval .= COM_startBlock("$for " . $LANG09[11] . ": $nrows " . $LANG09[12]);
+        $searchresults = new Template($_CONF['path_layout'] . 'search/');
+        $searchresults->set_file(array('searchresults'=>'searchresults.thtml',
+                                        'searchheading'=>'searchresults_heading.thtml',
+                                        'searchrows'=>'searchresults_rows.thtml'));
+        $searchresults->set_var('lang_found', $LANG09[24]);
+        $searchresults->set_var('num_matches', $nrows);
+        $searchresults->set_var('lang_matchesfor', $LANG09[25]);
+        $searchresults->set_var('num_items_searched', $total);
+        $searchresults->set_var('lang_itemsin', $LANG09[26]);
+        $searchresults->set_var('search_time', $searchtime);
+        $searchresults->set_var('lang_seconds', $LANG09[27]);
+
+        // Print heading for story/comment results
+        $heading = '<td><b>'.$LANG09[16].'</b></td>'.LB 
+            .'<td align="center"><b>'.$LANG09[17].'</b></td>'.LB
+            .'<td align="center"><b>'.$LANG09[18].'</b></td>'.LB
+            .'<td align="center"><b>'.$LANG09[23].'</b></td>'.LB;
+        $searchresults->set_var('heading_columns',$heading); 
+        $searchresults->parse('results', 'searchheading', true);
+
 		for ($i=1; $i <= $nrows; $i++) {
 			if ($A['day'] > $C['day']) {
-				$retval .= searchresults($A);
+                // print row
+                $data_columns = '<td align="left"><a href="article.php?story='.$A['sid'].'">'.stripslashes($A['title']).'</a></td>'.LB
+		            .'<td>'.strftime($_CONF['shortdate'],$A['day']).'</td>'.LB
+		            .'<td>'.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'").'</td>'.LB
+		            .'<td>'.$A['hits'].'</td>'.LB;
+                $searchresults->set_var('results_columns',$data_columns);
+                $searchresults->parse('results', 'searchrows', true);
+	
+				// $retval .= searchresults($A);
 				$A = DB_fetchArray($result_stories);
 			} else if (strlen($C['day']) > 0) {
-				$retval .= searchresults($C);
+                // print row
+                $data_columns = '<td align="left"><a href="article.php?story='.$C['sid'].'">'.stripslashes($C['title']).'</a></td>'.LB
+		            .'<td>'.strftime($_CONF['shortdate'],$C['day']).'</td>'.LB
+		            .'<td>'.DB_getItem($_TABLES['users'],'username',"uid = '{$C['uid']}'").'</td>'.LB
+		            .'<td>'.$C['hits'].'</td>'.LB;
+                $searchresults->set_var('results_columns',$data_columns);
+                $searchresults->parse('results', 'results_columns', true);
+	
+				//$retval .= searchresults($C);
 				$C = DB_fetchArray($result_comments);
 			} else {
 				if ($cur_plugin_index <= $nrows_plugins) {
-					print $result_plugins[$cur_plugin_recordset][$cur_plugin_index];
+					$searchresults->parse('results',$result_plugins[$cur_plugin_recordset][$cur_plugin_index],true);
 					$cur_plugin_index++;
 					if ($cur_plugin_index > count($result_plugins[$cur_plugin_recordset])) {
 						$cur_plugin_index = 1;
@@ -194,15 +207,15 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 				}
 			}
 		}
-		$retval .= '</table>'
-			.COM_endBlock();
+        $searchresults->parse('output','searchresults');
+        $retval .= $searchresults->finish($searchresults->get_var('output'));
+        $retval .= COM_endBlock();	
 			
 	} else {
 		$retval .= COM_startBlock($LANG09[13])
-			.$LANG09[14].' <b>'.$query.'</b> '.$LANG09[15]
-			.COM_endBlock();
+                    . $LANG09[14].' <b>'.$query.'</b> '.$LANG09[15]
+			        . COM_endBlock();
 	}
-	
 	return $retval;
 }
 
@@ -230,12 +243,12 @@ function searchresults($A)
 
 ###############################################################################
 # MAIN
-$display .= site_header();
+$display .= COM_siteHeader();
 if ($mode == 'search') {
 	$display .= searchstories($query,$topic,$datestart,$dateend,$author,$type);
 } else {
 	$display .= searchform();
 }
-$display .= site_footer();
+$display .= COM_siteFooter();
 echo $display;
 ?>

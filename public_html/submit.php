@@ -72,10 +72,16 @@ function submissionform($type='story')
             . COM_endBlock();
     } else {
         if ($_CONF['loginrequired'] == 1 && empty($_USER['username'])) {
-            $retval .= COM_startBlock($LANG12[7])
-                . $LANG12[1]
-                . '<br>[ <a href="' . $_CONF['site_url'] . '">' . $LANG12[2] . '</a> | <a href="' 
-                . $_CONF['site_url'] . '/users.php">' . $LANG12[3] . '</a> ]';
+            $retval .= COM_startBlock($LANG12[7]);
+            $loginreq = new Template($_CONF['path_layout'] . 'submit');
+            $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
+            $loginreq->set_var('login_message', $LANG12[1]);
+            $loginreq->set_var('site_url', $_CONF['site_url']);
+            $loginreq->set_var('lang_login', $LANG12[2]);
+            $loginreq->set_var('lang_newuser', $LANG12[3]);
+            $loginreq->parse('errormsg', 'loginreq');
+            $retval .= $loginreq->finish($loginreq->get_var('errormsg'));
+            $retval .= COM_endBlock();
             return $retval;
         } else {
             $retval .= COM_startBlock($LANG12[19])
@@ -113,44 +119,23 @@ function submitevent()
     global $_CONF,$LANG12;
 
     $retval = '';
-	
-    $retval .= COM_startBlock($LANG12[4],'submitevent.html')
-        . $LANG12[37]
-        .'<form action="' . $_CONF['site_url'] . '/submit.php" method="post">'
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[10] . ':</b></td>' . LB
-        . '<td><input type="text" size="36" maxlength="96" name="title"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[11] . ':</b></td>' . LB
-        . '<td><input type="text" size="36" maxlength="96" name="url" value="http://"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[12] . ':</b></td>' . LB
-        . '<td><input type="text" size="10" maxlength="10" name="datestart" value="yyyy-mm-dd"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[13]. ' :</b></td>' . LB
-        . '<td><input type="text" size="10" maxlength="10" name="dateend" value="yyyy-mm-dd"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[14] . ':</b></td>' . LB
-        . '<td><textarea name="location" cols=45 rows=3 wrap=virtual></textarea></td></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[15] . ':</b></td>' . LB
-        . '<td><textarea name="description" cols="45" rows="6" wrap="virtual"></textarea></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="center" colspan="2">' . $LANG12[35] . '</td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="center" colspan="2"><input type="hidden" name="mode" value="' . $LANG12[8] . '">'
-        . '<input type="hidden" name="type" value="event"><input type="submit" value="' . $LANG12[8] . '"></td>' . LB
-        . '</tr>' . LB
-        . '</table></form>'
-        . COM_endBlock();
+
+    $retval .= COM_startBlock($LANG12[4],'submitevent.html');
+    $eventform = new Template($_CONF['path_layout'] . 'submit');
+    $eventform->set_file('eventform', 'submitevent.thtml');
+    $eventform->set_var('explanation', $LANG12[37]);
+    $eventform->set_var('site_url', $_CONF['site_url']);
+    $eventform->set_var('lang_title', $LANG12[10]); 
+    $eventform->set_var('lang_link', $LANG12[11]);
+    $eventform->set_var('lang_startdate', $LANG12[12]);
+    $eventform->set_var('lang_enddate', $LANG12[13]);
+    $eventform->set_var('lang_location', $LANG12[14]);
+    $eventform->set_var('lang_description', $LANG12[15]);
+    $eventform->set_var('lang_htmnotallowed', $LANG12[35]);
+    $eventform->set_var('lang_submit', $LANG12[8]);
+    $eventform->parse('theform', 'eventform');
+    $retval .= $eventform->finish($eventform->get_var('theform'));
+    $retval .= COM_endBlock();
 		
     return $retval;
 }
@@ -162,45 +147,24 @@ function submitevent()
 function submitlink() 
 {
     global $_TABLES, $_CONF, $LANG12;
-	
-    $retval .= COM_startBlock($LANG12[5],'submitlink.html')
-        . '<form action="' . $_CONF['site_url'] . '/submit.php" method="post">'
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[10] . ':</b></td>' . LB
-        . '<td><input type="text" size="36" maxlength="96" name="title"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[11] . ':</b></td>' . LB
-        . '<td><input type="text" size="36" maxlength="96" name="url" value="http://"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[17] . ':</b></td>' . LB
-        . '<td><select name="categorydd">' . LB;
-		
-    $result = DB_query("SELECT DISTINCT category FROM {$_CONF['db_prefix']}links");
-    $nrows = DB_numRows($result);
-    if ($nrows > 0) {
-        for ($i = 0; $i < $nrows; $i++) {
-            $CAT = DB_fetchArray($result);
-            $retval .= '<option value="' . $CAT['category'] . '">' . $CAT['category'] . '</option>' . LB;
-        }
-    }
-	
-    $retval .= '<option>' . $LANG12[18] . '</option>' . LB
-        . '</select>'
-        . ' <b>' . $LANG12[16] . ':</b> <input type="text" name="category" size="12" maxlength="32"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[15] . ':</b></td>' . LB
-        . '<td><textarea name="description" cols="45" rows="6" wrap="virtual"></textarea></td>' . LB
-        . '</tr>' . LB
-        . '<tr><td align="center" colspan="2">' . $LANG12[35] . '</td></tr>' . LB
-        . '<tr><td align="center" colspan="2"><input type="hidden" name="mode" value="' . $LANG12[8] . '">'
-        . '<input type="hidden" name="type" value="link"><input type="submit" value="' . $LANG12[8] . '"></td>' . LB
-        . '</tr>' . LB
-        . '</table></form>'
-        . COM_endBlock();
+
+    $retval .= COM_startBlock($LANG12[5],'submitlink.html');
+
+    $linkform = new Template($_CONF['path_layout'] . 'submit');
+    $linkform->set_file('linkform', 'submitlink.thtml');
+    $linkform->set_var('site_url', $_CONF['site_url']);
+    $linkform->set_var('lang_title', $LANG12[10]);	
+    $linkform->set_var('lang_link', $LANG12[11]);
+    $linkform->set_var('lang_category', $LANG12[17]);
+    $linkform->set_var('link_category_options',  COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
+    $linkform->set_var('lang_other', $LANG12[18]);
+    $linkform->set_var('lang_ifother', $LANG12[16]);
+    $linkform->set_var('lang_description', $LANG12[15]);
+    $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
+    $linkform->set_var('lang_submit', $LANG12[8]);
+    $linkform->parse('theform', 'linkform');
+    $retval .= $linkform->finish($linkform->get_var('theform'));
+    $retval .= COM_endBlock();
 	
     return $retval;
 }
@@ -233,58 +197,45 @@ function submitstory()
             . COM_endBlock();
     }
 	
-    $retval .= COM_startBlock($LANG12[6],'submitstory.html')
-        . '<form action="' . $_CONF['site_url'] . '/submit.php" method="post">'
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB;
+    $retval .= COM_startBlock($LANG12[6],'submitstory.html');
+
+    $storyform = new Template($_CONF['path_layout'] . 'submit');
+    $storyform->set_file('storyform','submitstory.thtml');
+    $storyform->set_var('site_url', $_CONF['site_url']);
+    $storyform->set_var('lang_username', $LANG12[27]);
 		
     if (!empty($_USER['username'])) {
-        $retval .= '<tr>' . LB
-            . '<td align="right"><b>' . $LANG12[27] . ':</b></td>' . LB
-            . '<td>' . $_USER['username'] . ' [ <a href="' . $_CONF['site_url'] . '/users.php?mode=logout">' 
-            . $LANG12[34] . '</a> ]</td>' . LB
-            . '</tr>' . LB;
+        $storyform->set_var('story_username', $_USER['username']);
+        $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php?mode=logout');
+        $storyform->set_var('lang_loginout', $LANG12[34]);
     } else {
-        $retval .= '<tr>' . LB
-            . '<td align="right"><b>' . $LANG12[27] . ':</b></td>' . LB
-            . '<td>[ <a href="' . $_CONF['site_url'] . '/users.php">Log In</a> | <a href="' . $_CONF['site_url'] . '/users.php?mode=new">Create Account</a> ]</td>' . LB
-            . '</tr>' . LB;
+        $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php');
+        $storyform->set_var('lang_loginout', 'Log In');
+        $storyform->set_var('seperator', ' | ');
+        $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new">Create Account</a>');
     }
-	
-    $retval .= '<tr>'
-        . '<td align="right"><b>' . $LANG12[10] . ':</b></td>' . LB
-        . '<td><input type="text" size="36" maxlength="96" name="title" value="' . $A['title'] . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr>' . LB
-        . '<td align="right"><b>' . $LANG12[28] . ':</b></td>' . LB
-        . '<td><select name=tid>' . LB
-        . COM_optionList($_TABLES['topics'],'tid,topic',$A['tid'])
-        . '</select></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG12[29] . ':</b></td>' . LB
-        . '<td><textarea name="introtext" cols="45" rows="12" wrap="virtual">' . stripslashes($A['introtext']) 
-        . '</textarea></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG12[36] . ':</b></td>' . LB
-        . '<td><select name="postmode">'
-        . COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode'])
-        . '</select><br>' . COM_allowedHTML() . '</td>' . LB
-        . '</tr>' .LB
-        . '<tr>' . LB
-        . '<td align="center" colspan="2"><input type="hidden" name="type" value=story>'
-        . '<input type="hidden" name="uid" value="'.$A['uid'] . '">'
-        . '<input type="hidden" name="sid" value="'.$A['sid'] . '">'
-        . '<input type="hidden" name="date" value="'.$A['unixdate'] . '">';
+
+    $storyform->set_var('lang_title', $LANG12[10]);
+    $storyform->set_var('story_title', $A['title']);	
+    $storyform->set_var('lang_topic', $LANG12[28]);
+    $storyform->set_var('story_topic_options',  COM_optionList($_TABLES['topics'],'tid,topic',$A['tid']));
+    $storyform->set_var('lang_story', $LANG12[29]);
+    $storyform->set_var('story_introtext', stripslashes($A['introtext']));
+    $storyform->set_var('lang_postmode', $LANG12[36]);
+    $storyform->set_var('story_postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
+    $storyform->set_var('allowed_html', COM_allowedHTML());
+    $storyform->set_var('story_uid', $A['uid']);
+    $storyform->set_var('story_sid', $A['sid']);
+    $storyform->set_var('story_date', $A['unixdate']);
 
     if ($A['mode'] == $LANG12[32]) {
-        $retval .= '<input name="mode" type="submit" value="' . $LANG12[8] . '">';
+        $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
     }
 	
-    $retval .= ' <input name="mode" type="submit" value="' . $LANG12[32] . '"></td>' . LB
-        . '</tr>' . LB
-        . '</table></form>'
-        . COM_endBlock();
+    $storyform->set_var('lang_preview', $LANG12[32]);
+    $storyform->parse('theform', 'storyform');
+    $retval .= $storyform->finish($storyform->get_var('theform'));
+    $retval .= COM_endBlock();
 
     return $retval;
 }
@@ -384,7 +335,7 @@ function savesubmission($type,$A)
 
 $display = '';
 
-$display .= site_header();
+$display .= COM_siteHeader();
 	
 if ($mode == $LANG12[8]) { 
     $display .= savesubmission($type,$HTTP_POST_VARS);
@@ -392,7 +343,7 @@ if ($mode == $LANG12[8]) {
     $display .= submissionform($type); 
 }
 	
-$display .= site_footer();	
+$display .= COM_siteFooter();	
 	
 echo $display;
 
