@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.9 2001/12/10 16:16:47 tony_bibbs Exp $
+// $Id: calendar_event.php,v 1.10 2001/12/11 19:02:46 tony_bibbs Exp $
 
 include_once('lib-common.php');
 include_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -51,7 +51,7 @@ function adduserevent($eid)
     global $_USER, $LANG02, $_CONF, $_TABLES;
 	
     $retval .= COM_startBlock($LANG02[11]);
-    $eventsql = "SELECT *, datestart AS start, dateend AS end FROM {$_TABLES['events']} WHERE eid='$eid'";
+    $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
@@ -71,11 +71,20 @@ function adduserevent($eid)
         }
 
         $cal_template->set_var('lang_starts', $LANG02[13]);
-        $cal_template->set_var('event_start', $A['start']);
         $cal_template->set_var('lang_ends', $LANG02[14]);
-        $cal_template->set_var('event_end', $A['end']);
+
+        $thestart = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
+        $theend = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
+        if ($A['allday'] == 0) {
+            $cal_template->set_var('event_start', $thestart[0]);
+            $cal_template->set_var('event_end', $theend[0]);
+        } else {
+            $cal_template->set_var('event_start', strftime($_CONF['shortdate'], $thestart[1]));
+            $cal_template->set_var('event_end', strftime($_CONF['shortdate'], $theend[1]));
+        }
+
         $cal_template->set_var('lang_where',$LANG02[4]);
-	$location = stripslashes($A['location']) . '<br>'
+        $location = stripslashes($A['location']) . '<br>'
 		. $A['address1'] . '<br>'
 		. $A['address2'] . '<br>'
 		. $A['city'] . ', ' . $A['state'] . ' ' . $A['zipcode'];
@@ -129,6 +138,205 @@ function saveuserevent($eid, $reminder, $emailreminder, $mode)
     return COM_refresh("{$_CONF['site_url']}/calendar.php?mode=$mode&msg=24");
 }
 
+/**
+* Allows user to edit a personal calendar event
+*
+* @A        array       Record to display
+*
+*/
+function editpersonalevent($A)
+{
+    global $_CONF, $LANG12, $_STATES;
+
+    $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
+    $cal_templates->set_file('form','editpersonalevent.thtml');
+    $cal_templates->set_var('site_url', $_CONF['site_url']);
+    $cal_templates->set_var('lang_title', $LANG12[10]);
+    $cal_templates->set_var('event_title',$A['title']);
+    $cal_templates->set_var('lang_eventtype', $LANG12[49]);
+    $etypes = explode(',',$_CONF['event_types']);
+    $type_options = '';
+    for ($i = 1; $i <= count($etypes); $i++) {
+        $type_options .= '<option value="' . current($etypes) . '"';
+        if (current($etypes) == $A['event_type']) {
+            $type_options .= ' selected="selected"';
+        }
+        $type_options .= '>' . current($etypes) . '</option>';
+        next($etypes);
+    }
+    $cal_templates->set_var('type_options', $type_options);
+
+    // Handle start date/time
+    $cal_templates->set_var('lang_startdate', $LANG12[12]);
+    $cal_templates->set_var('lang_starttime', $LANG12[42]);
+    $A['startdate'] = $A['datestart'] . ' ' . $A['timestart'];
+    $month_options = '';
+    for ($i = 1; $i <= 12; $i++) {
+        $month_options .= '<option value="' . $i . '"';
+        if ($i == date('n',strtotime($A['startdate']))) {
+            $month_options .= ' selected="SELECTED"';
+        }
+        $month_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('startmonth_options', $month_options);
+    
+    $day_options = '';
+    for ($i = 1; $i <= 31; $i++) {
+        $day_options .= '<option value="' . $i . '"';
+        if ($i == date('j',strtotime($A['startdate']))) {
+            $day_options .= ' selected="SELECTED"';
+        }
+        $day_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('startday_options', $day_options);
+
+    $year_options = '';
+    for ($i = date('Y',strtotime($A['startdate'])); $i <= (date('Y',time()) + 5); $i++) {
+        $year_options .= '<option value="' .$i .'"';
+        if ($i == date('Y',strtotime($A['startdate']))) {
+            $year_options .= ' selected="SELECTED"';
+        }
+        $year_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('startyear_options', $year_options);
+
+    $hour_options = '';
+    for ($i = 1; $i <= 12; $i++) {
+        $hour_options .= '<option value="' . $i . '"';
+        if ($i == date('g',strtotime($A['startdate']))) {
+            $hour_options .= ' selected="SELECTED"';
+        }
+        $hour_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('starthour_options', $hour_options);
+    
+    $startmin = date('i',strtotime($A['startdate']));
+    $cal_templates->set_var('start00_selected','');
+    $cal_templates->set_var('start15_selected','');
+    $cal_templates->set_var('start30_selected','');
+    $cal_templates->set_var('start45_selected','');
+    $cal_templates->set_var('start' . $startmin . '_selected', 'selected="SELECTED"');
+    if (date('a',strtotime($A['startdate'])) == 'am') {
+        $cal_templates->set_var('startam_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('startpm_selected', '');
+    } else {
+        $cal_templates->set_var('startam_selected', '');
+        $cal_templates->set_var('startpm_selected', 'selected="SELECTED"');
+    }
+
+    // Handle end date/time
+    $cal_templates->set_var('lang_enddate', $LANG12[13]);
+    $cal_templates->set_var('lang_endtime', $LANG12[41]);
+    $A['enddate'] = $A['dateend'] . ' ' . $A['timeend'];
+    $month_options = '';
+    for ($i = 1; $i <= 12; $i++) {
+        $month_options .= '<option value="' . $i . '"';
+        if ($i == date('n',strtotime($A['enddate']))) {
+            $month_options .= ' selected="SELECTED"';
+        }
+        $month_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('endmonth_options', $month_options);
+    
+    $day_options = '';
+    for ($i = 1; $i <= 31; $i++) {
+        $day_options .= '<option value="' . $i . '"';
+        if ($i == date('j',strtotime($A['enddate']))) {
+            $day_options .= ' selected="SELECTED"';
+        }
+        $day_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('endday_options', $day_options);
+
+    $year_options = '';
+    for ($i = date('Y',strtotime($A['enddate'])); $i <= (date('Y',time()) + 5); $i++) {
+        $year_options .= '<option value="' .$i .'"';
+        if ($i == date('Y',strtotime($A['enddate']))) {
+            $year_options .= ' selected="SELECTED"';
+        }
+        $year_options .= '>' . $i . '</option>';
+    }
+    $cal_templates->set_var('endyear_options', $year_options);
+
+    $hour_options = '';
+    for ($i = 0; $i <= 11; $i++) {
+        if ($i == 0) {
+            $i = 12;
+        }
+        $hour_options .= '<option value="' . $i . '"';
+        if ($i == date('g',strtotime($A['enddate']))) {
+            $hour_options .= ' selected="SELECTED"';
+        }
+        $hour_options .= '>' . $i . '</option>';
+        if ($i == 12) { 
+            $i = 0;
+        } 
+    }
+    $cal_templates->set_var('endhour_options', $hour_options);
+    
+    $endmin = date('i',strtotime($A['enddate']));
+    $cal_templates->set_var('end00_selected','');
+    $cal_templates->set_var('end15_selected','');
+    $cal_templates->set_var('end30_selected','');
+    $cal_templates->set_var('end45_selected','');
+    $cal_templates->set_var('end' . $endmin . '_selected', 'selected="SELECTED"');
+    if (date('a',strtotime($A['enddate'])) == 'am') {
+        $cal_templates->set_var('endam_selected', 'selected="SELECTED"');
+        $cal_templates->set_var('endpm_selected', '');
+    } else {
+        $cal_templates->set_var('endam_selected', '');
+        $cal_templates->set_var('endpm_selected', 'selected="SELECTED"');
+    }
+  
+    $cal_templates->set_var('lang_alldayevent',$LANG12[43]);
+    if ($A['allday'] == 1) {
+        $cal_templates->set_var('allday_checked', 'checked="CHECKED"');
+    } else { 
+        $cal_templates->set_var('allday_checked', '');
+    }
+
+    $cal_templates->set_var('lang_location',$LANG12[14]);
+    $cal_templates->set_var('event_location', $A['location']);
+    
+    $cal_templates->set_var('lang_addressline1', $LANG12[44]);
+    $cal_templates->set_var('event_address1', $A['address1']);
+    $cal_templates->set_var('lang_addressline2', $LANG12[45]);
+    $cal_templates->set_var('event_address2', $A['address2']);
+
+    $cal_templates->set_var('lang_city', $LANG12[46]);
+    $cal_templates->set_var('event_city',$A['city']);
+
+    $state_options = '';
+    reset($_STATES);
+    for ($i = 1; $i <= count($_STATES); $i++) {
+        $state_options .= '<option value="' . key($_STATES) . '"';
+        if ($A['state'] == key($_STATES)) {
+            $state_options .= ' selected="SELECTED"';
+        }
+        $state_options .= '>' . current($_STATES) . '</option>';
+        next($_STATES);
+    }
+    $cal_templates->set_var('lang_state', $LANG12[47]);
+    $cal_templates->set_var('state_options', $state_options);
+
+    $cal_templates->set_var('lang_zipcode', $LANG12[48]);
+    $cal_templates->set_var('event_zipcode', $A['zipcode']);
+    
+    $cal_templates->set_var('lang_link', $LANG12[11]);
+    $cal_templates->set_var('event_url', $A['url']);
+
+    $cal_templates->set_var('lang_description', $LANG12[15]);
+    $cal_templates->set_var('event_description', $A['description']);
+    
+    $cal_templates->set_var('lang_htmlnotallowed', $LANG12[35]);
+    $cal_templates->set_var('lang_submit', $LANG12[8]);
+    $cal_templates->set_var('lang_delete', $LANG12[52]);
+    $cal_templates->set_var('eid', $A['eid']);
+    $cal_templates->set_var('uid', $A['uid']);
+
+    return $cal_templates->parse('output','form'); 
+}
+
 // MAIN
 
 $display = '';
@@ -147,7 +355,7 @@ case 'addevent':
     break;
 case 'saveuserevent':
     if (!empty($eid)) {
-        $display .= saveuserevent($eid,$remind,$emailreminder);
+        $display .= saveuserevent($eid,$remind,$emailreminder,$mode);
     } else {
         $display .= COM_siteHeader();
         $display .= COM_showMessage(23);
@@ -159,12 +367,20 @@ case 'deleteevent':
     $display .= COM_refresh($_CONF['site_url'] . '/calendar.php?mode=personal&msg=26');
     break;
 default:
-    $display .= COM_siteHeader('menu');
     if (!empty($eid)) {
-        $display .= COM_startBlock($LANG30[9]);
-        if ($mode == 'personal') {
-            $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['personal_events']} WHERE eid = '$eid'";
+        if ($mode == 'personal' AND DB_count($_TABLES['events'],'eid',$eid) == 0) {
+            $display .= COM_siteHeader('menu');
+            $display .= COM_startBlock($LANG30[38]);
+            $datesql = "SELECT * FROM {$_TABLES['personal_events']} WHERE eid = '$eid'";
+            $result = DB_query($datesql);
+            $A = DB_fetchArray($result);
+            $display .= editpersonalevent($A);
+            $display .= COM_endBlock();
+            $display .= COM_siteFooter();
+            break;
         } else {
+            $display .= COM_siteHeader('menu');
+            $display .= COM_startBlock($LANG30[9]);
             $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
     } else {
@@ -181,8 +397,6 @@ default:
 
     $result = DB_query($datesql);
     $nrows = DB_numRows($result);
-    COM_errorLog('sql = ' . $datesql,1);
-    COM_errorLog('numrows = ' . $nrows,1);
     if ($nrows == 0) {
         $cal_templates->set_var('lang_month','');
         $cal_templates->set_var('event_year','');
