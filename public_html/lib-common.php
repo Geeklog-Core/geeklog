@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.418 2005/02/23 18:48:17 vinny Exp $
+// $Id: lib-common.php,v 1.419 2005/03/26 03:03:05 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5540,6 +5540,16 @@ function COM_convertDate2Timestamp( $date, $time = '' )
 foreach( $_PLUGINS as $pi_name )
 {
     require_once( $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc' );
+}
+
+/* Check and see if any plugins (or custom function) have scheduled tasks to perform */
+if ( (DB_getItem($_TABLES['vars'], 'value', "name='last_scheduled_run'") 
+        + $_CONF['cron_schedule_interval'] ) <= time() ) {
+    if (function_exists(CUSTOM_runSheduledJob)) {
+        CUSTOM_runSheduledJob();
+    }
+    PLG_runScheduledJob();
+    DB_query("UPDATE {$_TABLES['vars']} SET value=UNIX_TIMESTAMP() WHERE name='last_scheduled_run'");
 }
 
 ?>

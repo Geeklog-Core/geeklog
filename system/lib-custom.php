@@ -40,7 +40,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.14 2005/02/15 10:02:17 dhaun Exp $
+// $Id: lib-custom.php,v 1.15 2005/03/26 03:03:06 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -136,6 +136,15 @@ function phpblock_getBent()
     $retval = wordwrap($retval,20,' ',1);
 
     return $retval;
+}
+
+
+/**
+* Include any code in this function that will be called by the GL internal CRON Process
+* The interval between runs is determined by $_CONF['cron_schedule_interval']
+*/
+function CUSTOM_runSheduledJob() {
+
 }
 
 

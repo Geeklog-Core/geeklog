@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.57 2005/01/29 17:52:55 dhaun Exp $
+// $Id: lib-plugins.php,v 1.58 2005/03/26 03:03:06 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1333,6 +1333,24 @@ function PLG_handlePingComment ($type, $id, $operation)
     $function = 'plugin_handlepingoperation_' . $type;
 
     return PLG_callFunctionForOnePlugin ($function, $args);
+}
+
+
+/**
+* Check if plugins have a scheduled task they want to run
+* The interval between runs is determined by $_CONF['cron_schedule_interval']
+*/
+function PLG_runScheduledJob ()
+{
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_runScheduledJob_' . $pi_name;
+        if (function_exists ($function)) {
+            echo " ... Exists";
+            $function ();
+        }
+    }
 }
 
 ?>
