@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.113 2004/05/11 17:12:56 dhaun Exp $
+// $Id: config.php,v 1.114 2004/05/13 07:21:20 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -583,15 +583,14 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 
 // IP lookup support
 //
-// Remove the comment markers from ONE of the lines below to enable IP lookup
-// support (lets you click on IP addresses so that you can find out where a
-// visitor came from).
+// If $_CONF['ip_lookup'] contains the URL to a web-based service for IP
+// address lookups, Geeklog will let you click on IP addresses so that you
+// can find out where a visitor came from. This can either be a remote
+// service or a plugin like Tom Willet's Nettools.
 // The '*' in the URL will be replaced with the IP address to look up.
 //
-// ***** Please do not abuse these free services! *****
-// $_CONF['ip_lookup'] = 'http://www.dnsstuff.com/tools/whois.ch?ip=*';
-// $_CONF['ip_lookup'] = 'http://drwhois.com/cgi-bin/scripts/whois.cgi?domain=*';
-// $_CONF['ip_lookup'] = 'http://www.whois.sc/*';
+// uncomment this line if you have Tom Willet's Nettools installed
+// $_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';
 
 
 // EXPERIMENTAL!
