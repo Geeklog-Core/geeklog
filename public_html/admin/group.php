@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.30 2003/09/20 15:35:12 dhaun Exp $
+// $Id: group.php,v 1.31 2003/09/20 16:36:05 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -182,7 +182,9 @@ function editgroup($grp_id = '')
         }
 	} else {
         $group_templates->set_var('lang_securitygroupmsg', $LANG_ACCESS['groupmsg']);
-        COM_errorLog("SELECTED: $selected");
+        if ($VERBOSE) {
+            COM_errorLog("SELECTED: $selected");
+        }
 		// You can no longer give access to the Root group....it's pointless and doesn't
         // make any sense
         if (!empty($grp_id)) {
@@ -366,7 +368,7 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
     if (!empty($grp_name) && !empty($grp_descr)) {
         if ($grp_gl_core == 1 AND !is_array($features)) {
             print COM_errorLog("sorry, no valid features were passed to this core group and saving could cause problem...bailing");
-            exit;
+            return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
         }
         $grp_descr = COM_stripslashes ($grp_descr);
         $grp_descr = addslashes ($grp_descr);
@@ -385,8 +387,10 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
             DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
             next($features);
         }
-        COM_errorLog('groups = ' . $groups);
-        if ($VERBOSE) COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
+        if ($VERBOSE) {
+            COM_errorLog('groups = ' . $groups);
+            COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
+        }
         DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
         if (!empty($groups)) {
             for ($i = 1; $i <= sizeof($groups); $i++) {
