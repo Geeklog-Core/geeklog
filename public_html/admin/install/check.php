@@ -1,13 +1,14 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | check.php                                                                 |
-// | Geeklog check installation script                                         |
 // |                                                                           |
+// | Geeklog check installation script                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2002 by the following authors:                              |
+// | Copyright (C) 2002-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
@@ -28,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: check.php,v 1.4 2003/06/17 09:53:18 dhaun Exp $
+// $Id: check.php,v 1.5 2004/08/11 18:35:15 dhaun Exp $
 
 /**
 * This script tests the file and directory permissions, thus addressing the
@@ -40,10 +41,10 @@
 
 require_once ('../../lib-common.php');
 
-$numTests = 4;    // total number of tests to perform
+$numTests   = 6;  // total number of tests to perform
 $successful = 0;  // number of successful tests
-$failed = 0;      // number of failed tests
-$notTested = 0;   // number of tests that were skipped (for disabled features)
+$failed     = 0;  // number of failed tests
+$notTested  = 0;  // number of tests that were skipped (for disabled features)
 
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
 echo '<html>' . LB;
@@ -71,9 +72,9 @@ if (!$errfile || !$accfile) {
         echo '<b>access.log</b> ';
     }
     echo 'for writing.</font><br>Please check that you have set the <b>logs</b> directory <em>and</em> the files <b>error.log</b> and <b>access.log</b> in that directory to <b>chmod 775</b>.' . LB;
-    $logPerms = sprintf ("%3o", fileperms ($_CONF['path_log']) & 0777);
-    $errPerms = sprintf ("%3o", fileperms ($_CONF['path_log'] . 'error.log') & 0777);
-    $accPerms = sprintf ("%3o", fileperms ($_CONF['path_log'] . 'access.log') & 0777);
+    $logPerms = sprintf ("%3o", @fileperms ($_CONF['path_log']) & 0777);
+    $errPerms = sprintf ("%3o", @fileperms ($_CONF['path_log'] . 'error.log') & 0777);
+    $accPerms = sprintf ("%3o", @fileperms ($_CONF['path_log'] . 'access.log') & 0777);
     echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
     echo "<tr><td>Current permissions for <b>logs</b>:&nbsp;</td><td>$logPerms</td></tr>" . LB;
     echo "<tr><td>Current permissions for <b>error.log</b>:&nbsp;</td><td>$errPerms</td></tr>" . LB;
@@ -89,8 +90,8 @@ echo '<p>Testing <b>backend</b> directory ' . $_CONF['path_html'] . 'backend/ ..
 if ($_CONF['backend'] > 0) {
     if (!$file = @fopen ($_CONF['rdf_file'], 'w')) {
         echo '<font color="#ff0000">Could not open the RDF file ' . $_CONF['rdf_file'] . ' for writing.</font><br>Please check that you have set both the <b>backend</b> directory <em>and</em> the <b>geeklog.rdf</b> file in that directory to <b>chmod 775</b>.' . LB;
-        $endPerms = sprintf ("%3o", fileperms ($_CONF['path_html'] . 'backend/') & 0777);
-        $rdfPerms = sprintf ("%3o", fileperms ($_CONF['rdf_file']) & 0777);
+        $endPerms = sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'backend/') & 0777);
+        $rdfPerms = sprintf ("%3o", @fileperms ($_CONF['rdf_file']) & 0777);
         echo '<table cellspacing="0" cellpadding="0" border="0">' . LB;
         echo "<tr><td>Current permissions for <b>backend</b>:&nbsp;</td><td>$endPerms</td></tr>" . LB;
         echo "<tr><td>Current permissions for <b>geeklog.rdf</b>:&nbsp;</td><td>$rdfPerms</td></tr>" . LB;
@@ -110,7 +111,7 @@ if ($_CONF['allow_user_photo'] > 0) {
     echo '<p>Testing <b>userphotos</b> directory ' . $_CONF['path_html'] . 'images/userphotos/ ...<br>' . LB;
     if (!$file = @fopen ($_CONF['path_html'] . 'images/userphotos/test.gif', 'w')) {
         echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/userphotos/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
-        echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", fileperms ($_CONF['path_html'] . 'images/userphotos/') & 0777);
+        echo 'Current permissions for <b>userphotos</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'images/userphotos/') & 0777);
         $failed++;
     } else {
         fclose ($file);
@@ -127,7 +128,7 @@ if ($_CONF['maximagesperarticle'] > 0) {
     echo '<p>Testing <b>articles</b> directory ' . $_CONF['path_html'] . 'images/articles/ ...<br>' . LB;
     if (!$file = @fopen ($_CONF['path_html'] . 'images/articles/test.gif', 'w')) {
         echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_html'] . 'images/articles/</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
-        echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", fileperms ($_CONF['path_html'] . 'images/articles/') & 0777);
+        echo 'Current permissions for <b>articles</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_html'] . 'images/articles/') & 0777);
         $failed++;
     } else {
         fclose ($file);
@@ -138,6 +139,35 @@ if ($_CONF['maximagesperarticle'] > 0) {
 } else {
     echo '<p>Images in articles are disabled - <b>articles</b> directory not tested.' . LB;
     $notTested++;
+}
+
+if ($_CONF['pdf_enabled'] != 0) {
+    echo '<p>Testing <b>pdfs</b> directory ' . $_CONF['path_pdf'] . ' ...<br>' . LB;
+    if (!$file = @fopen ($_CONF['path_pdf'] . 'test.pdf', 'w')) {
+        echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_pdf'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+        echo 'Current permissions for <b>pdfs</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_pdf']) & 0777);
+        $failed++;
+    } else {
+        fclose ($file);
+        unlink ($_CONF['path_pdf'] . 'test.pdf');
+        echo '<b>pdfs</b> directory is okay.' . LB;
+        $successful++;
+    }
+} else {
+    echo '<p>PDF support is disabled - <b>pdfs</b> directory not tested.' . LB;
+    $notTested++;
+}
+
+echo '<p>Testing <b>data</b> directory ' . $_CONF['path_data'] . ' ...<br>' . LB;
+if (!$file = @fopen ($_CONF['path_data'] . 'test.txt', 'w')) {
+    echo '<font color="#ff0000">Could not write to <b>' . $_CONF['path_data'] . '</b>.</font><br>Please make sure this directory exists and is set to <b>chmod 775</b>.<br>' . LB; 
+    echo 'Current permissions for <b>data</b>: ' . sprintf ("%3o", @fileperms ($_CONF['path_data']) & 0777);
+    $failed++;
+} else {
+    fclose ($file);
+    unlink ($_CONF['path_data'] . 'test.txt');
+    echo '<b>data</b> directory is okay.' . LB;
+    $successful++;
 }
 
 echo "<p><strong>Results:</strong> " . ($numTests - $notTested) . " of $numTests tests performed: $successful successful, ";
