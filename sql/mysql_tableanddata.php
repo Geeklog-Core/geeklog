@@ -831,7 +831,7 @@ $_DATA[313] = "INSERT INTO {$_TABLES['userprefs']} (uid, noicons, willing, dfid,
 #
 
 $_DATA[319] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (1,'Anonymous','Anonymous','',NULL,NULL,'','2001-09-28 13:36:52',0,NULL) ";
-$_DATA[320] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://geekog.sourceforge.net','','0000-00-00 00:00:00',0,NULL) ";
+$_DATA[320] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (2,'Admin','Geeklog SuperUser','5f4dcc3b5aa765d61d8327deb882cf99','root@localhost','http://geeklog.sourceforge.net','','0000-00-00 00:00:00',0,NULL) ";
 $_DATA[321] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (3,'StoryAdmin','Story Admin','5f4dcc3b5aa765d61d8327deb882cf99','root','http://geeklog.sourceforge.net','','2001-09-28 13:36:56',NULL,NULL) ";
 $_DATA[322] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (5,'PollAdmin','Poll Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL) ";
 $_DATA[323] = "INSERT INTO {$_TABLES['users']} (uid, username, fullname, passwd, email, homepage, sig, regdate, cookietimeout, theme) VALUES (6,'TopicAdmin','Topic Administrator','5f4dcc3b5aa765d61d8327deb882cf99','root','','','2001-09-28 13:36:56',NULL,NULL) ";
