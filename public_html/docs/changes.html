@@ -55,8 +55,9 @@ and / or obvious changes. For a detailed list of changes, please consult the
 <h3>Bugfixes</h3>
 
 <ul>
-  <li>Added sanity checks in the Admin story editor to prevent loss of all
-    stories with incomplete language files (or when manipulating the URL).</li>
+  <li>Added sanity checks in the Admin story editor to prevent the loss of all
+    stories when using an incomplete language file (or when manipulating the
+    URL).</li>
   <li>Fixed a nasty bug in lib-security.php that let any user with UserAdmin
     permissions change the Root user's password, thus effectively becoming
     root.</li>
@@ -90,8 +91,8 @@ Panic</strong>. Simply run the script again (and again and ...) until it
 reports that it didn't add any fields to any tables.</p>
 
 <p>Please note that you do <em>not</em> need to run this script if you're doing
-a fresh install of Geeklog 1.3.7. A fresh install already has the new index
-fields.</p>
+a fresh install of Geeklog 1.3.7. A database created during a fresh install
+already has the new index fields.</p>
 
 
 <h2>Geeklog 1.3.6</h2>

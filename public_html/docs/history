@@ -1,12 +1,33 @@
 GeekLog History/Changes:
 
+December ??, 2002 (1.3.7rc1)
+-----------------
+
+- Added a redirect in index.php when the site was called up with the "wrong"
+  URL (i.e. not the one that has been set in $_CONF['site_url']), thus
+  fixing the "www vs. non-www" problem where people showed up in Who's Online
+  but did not get the User Functions block.
+- The topic selection in the daily digest now defaults to "on" for all topics,
+  i.e. when the daily digest is activated ($_CONF['emailstories'] = 1) and
+  a user has not selected any topics yet, s/he will receive a digest for all
+  topics. This ensures that new topics are automatically added to the daily
+  digest (bug #573305).
+- Fixed a permission problem with the daily digest where users could get a
+  digested version of a story they didn't have access to.
+- Fixed permission problems in the statistics where story titles, links, and
+  events where listed even when the current user did not have access to them.
+- Added the Top Ten Links to the links page (only when links are displayed
+  per category).
+- When sending emails, Geeklog now uses \r\n in the mail headers which should
+  resolve problems under Windows.
+- Resolved a couple of stripslashes() issues.
 - The static pages plugin can now be uninstalled using the "delete" option
   from the plugin editor. Note that this will only remove the plugin's tables
   and data from the database, not remove any files.
 - Added a simple email notification when a new story, link, or event has been
   submitted or a new user has registered. See $_CONF['notification'] for details
 - Added a separate set of config variables for the max. dimensions of user
-  photos.
+  photos ($_CONF['max_photo_width'] etc.).
 - Fixed a problem when resizing GIF images using the netpbm tools.
 - Check the topic permissions when presenting a list of topics in the Admin
   story editor (i.e. the StoryAdmin may not have access to all topics).
@@ -18,8 +39,8 @@ GeekLog History/Changes:
   (including confusing error messages and wrong speed limit alerts).
 - Changed the way how Geeklog checks if it's currently displaying the site's
   front page, thus fixing the problem with disappearing "homeonly" blocks.
-- Fixed double line spacing in HTML-formatted comments (and [code] sections)
-  when running on PHP 4.2.0 and up.
+- Fixed double line spacing in HTML-formatted comments and [code] sections when
+  running on PHP 4.2.0 and up.
 - Fixed problems with slashes and HTML entities in emails sent out by Geeklog
   (Send story to friend, daily digest, Admin mail utility).
 - Added new config variable 'showfirstasfeatured' which, when set to 1, will
@@ -31,8 +52,8 @@ GeekLog History/Changes:
 - The plugin menu will now list all plugins which exist in the file system
   but haven't been installed (yet) with a link to their install script for
   easy installation (based on code provided by Blaine Lang).
-- New plugin API function PLG_callCommentForm() and improvements to the use of
-  comments from plugins, provided by Blaine Lang.
+- New plugin API function PLG_callCommentForm() and improvements for the use of
+  comments in plugins, provided by Blaine Lang.
 - The Older Stories block did not take stories into account which were to be
   published in the future. Therefore, the block sometimes listed stories that
   were still on the first index page.
@@ -40,7 +61,7 @@ GeekLog History/Changes:
   story templates.
 - Users couldn't disable display of the Older Stories block in their preferences
 - The contents of the Older Stories block was deleted whenever you changed it
-  (e.g. moving from the left to the right column).
+  (e.g. moving it from the left to the right column).
 - The static pages editor displayed a blank page when the title and/or content
   field of a new static page were not filled in (will display an error message
   now).
@@ -61,7 +82,7 @@ GeekLog History/Changes:
   admin change the password of a root user, so that effectively every user
   admin could become a root user ...
 - Topics are now sorted alphabetically by the topic name instead of by topic id.
-- Added new variables that can be used in the story template files.
+- Added several new variables which can be used in the story template files.
 - New config options $_CONF['dateonly'] and $_CONF['timeonly'] which hold the
   format string for day + month (to be used in the Upcoming Events and Older
   Stories blocks) and the time (to be used for event details).
@@ -83,13 +104,14 @@ GeekLog History/Changes:
   plugin_cclabel_<plugin-name> so that the plugin's icon does not show up
   in moderation.php if the user does not have the proper access rights for the
   plugin. Changed the Static Pages plugin to do exactly that.
-- Fixed the use of multiple [code] ... [/code] sections.
+- Fixed problems when using multiple [code] ... [/code] sections.
 - PHP blocks which return an empty string are not displayed any more. This
-  enables PHP blocks to "hide" themselves.
+  allows PHP blocks to "hide" themselves.
 - Searching for links caused an SQL error on installs that were upgraded
   from Geeklog 1.1 (missing "date" field in links table). However, links don't
-  use that field anyway, so searching by date was removed. Also, the results
-  are now sorted by link title.
+  use that field anyway, so searching by date was removed (the "date" field
+  will be added when upgrading the database to 1.3.7).
+  Also, the search results are now sorted by link title.
 - The calendar displayed an empty last week (in month view) for some months,
   e.g. November 2002.
 - COM_pollResults() will not use the side block templates when called from
@@ -97,13 +119,9 @@ GeekLog History/Changes:
   in a side block and in pollbooth.php).
 - Allow for theme-based topic icons by using the $_THEME_URL variable as the
   base directory for topic icons (if that variable is set).
-- Fixed display (or lack thereof) of $ signs in portal blocks
-- New Chinese language file (Big 5 encoding), provided by Jacky Chan
-- New Swedish language file, provided by Markus Berg
-- Updated Dutch language file, provided by R.F. van der Veen
-- Updated French language file, provided by Florent Guiliani
+- Fixed display (or lack thereof) of $ signs in portal blocks.
 - lib-common.php didn't use $_CONF['path_language'] to include the default
-  language file
+  language file.
 - What's Related block
   + content is now set for all user submitted stories (previously, links where
     only added in stories submitted by the Admin or user submissions edited by
@@ -140,6 +158,16 @@ GeekLog History/Changes:
   for the static page.
 - The "userevent" table is back in lib-database.php. Geeklog doesn't use this
   table any more, but the name is needed when upgrading from old versions.
+
+Localisation:
+- New Polish language file for the Static Pages plugin, provided by Robert Stadnik
+- New Spanish language file for the Static Pages Plugin, provided by gorka
+- New Chinese language file (Big 5 encoding), provided by Jacky Chan
+- New Swedish language file, provided by Markus Berg
+- Updated Dutch language file, provided by R.F. van der Veen
+- Updated French language file, provided by Florent Guiliani
+- The German language file now uses the proper national special characters
+  (umlauts) instead of HTML entities.
 
 
 September 20, 2002 (1.3.6)
