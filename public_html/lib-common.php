@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.138 2002/08/16 15:32:54 dhaun Exp $
+// $Id: lib-common.php,v 1.139 2002/08/16 19:28:31 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2593,14 +2593,27 @@ function COM_whatsNewBlock($help='',$title='')
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS;
 
+    $groupList = '';
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+    }
+
     // Find the newest stories
-    $sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE ";
-    $now = time();
-    $desired = $now - $_CONF['newstoriesinterval'];
-    $sql .= "UNIX_TIMESTAMP(date) > {$desired}"; // ORDER BY day DESC"
-    $sql .= " AND draft_flag = 0 AND date <= NOW()";
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $nesql = '';
+    if (!empty ($_USER['uid'])) {
+        $nesql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $nesql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $nesql .= "(perm_members >= 2) OR ";
+    }
+    $nesql .= "(perm_anon >= 2)";
+    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) AND (date <= NOW()) AND (draft_flag = 0) AND (" . $nesql . ")";
+    $result = DB_query ($sql);
+    $A = DB_fetchArray ($result);
+    $nrows = $A['count'];
+
     if (empty($title)) {
         $title = DB_getItem($_TABLES['block'],'title',"name='whats_new_block'");
     }
@@ -2629,11 +2642,6 @@ function COM_whatsNewBlock($help='',$title='')
     $stsql = '';
     $stwhere = '';
     if (!empty ($_USER['uid'])) {
-        $groupList = '';
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
         $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
         $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
         $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
@@ -2650,8 +2658,8 @@ function COM_whatsNewBlock($help='',$title='')
         $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
         $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
         $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
-        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
         $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
     }
     $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
@@ -2706,11 +2714,18 @@ function COM_whatsNewBlock($help='',$title='')
 
     $retval .= '<br>';
     // Get newest links
-    // Change 1209600 to desired interval in seconds
-	
     $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
-	
-    $sql = "SELECT * FROM {$_TABLES['links']} ORDER BY lid DESC LIMIT 15";
+
+    $lisql = '';
+    if (!empty ($_USER['uid'])) {
+        $lisql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
+        $lisql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
+        $lisql .= "(perm_members >= 2) OR ";
+    }
+    $lisql .= "(perm_anon >= 2)";
+
+    $sql = "SELECT lid,title,url FROM {$_TABLES['links']} WHERE ". $lisql
+         . " ORDER BY lid DESC LIMIT 15";
     $foundone = 0;
     $now = time();
     $desired = $now - $_CONF['newlinksinterval'];
@@ -2721,41 +2736,37 @@ function COM_whatsNewBlock($help='',$title='')
         $newlinks = array();
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-		    if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {	
-                // Need to reparse the date from the link id
-                $myyear  = substr($A['lid'],0,4);
-                $mymonth = substr($A['lid'],4,2);
-                $myday   = substr($A['lid'],6,2);
-                $myhour  = substr($A['lid'],8,2);
-                $mymin   = substr($A['lid'],10,2);
-                $mysec   = substr($A['lid'],12,2);
-                $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
-                $convtime = strtotime($newtime);
+            // Need to reparse the date from the link id
+            $myyear  = substr($A['lid'],0,4);
+            $mymonth = substr($A['lid'],4,2);
+            $myday   = substr($A['lid'],6,2);
+            $myhour  = substr($A['lid'],8,2);
+            $mymin   = substr($A['lid'],10,2);
+            $mysec   = substr($A['lid'],12,2);
+            $newtime = "{$mymonth}/{$myday}/{$myyear} {$myhour}:{$mymin}:{$mysec}";
+            $convtime = strtotime($newtime);
 
-                if ($convtime > $desired) {
-                    $itemlen = strlen($A['title']);
-
-                    // Trim the length if over 16 characters, and strip the 'http://'
-                    $foundone = 1;
-
-                    $lcount = $_CONF['site_url'] . '/portal.php?url='
-                            . urlencode ($A['url']) . '&amp;what=link&amp;item='
-                            . $A['lid'];
-                    if ($itemlen > 16) {
-                        $newlinks [] = '<a href="' . $lcount . '" title="'
-                            . $A['title'] . '">' . substr($A['title'],0,16)
-                            . '...</a>' . LB;
-                    } else {
-                        $newlinks[] = '<a href="' . $lcount . '">'
-                            . substr($A['title'],0,$itemlen) . '</a>' . LB;
-                    }
+            if ($convtime > $desired) {
+                $foundone = 1;
+                // redirect link via portal.php so we can count the clicks
+                $lcount = $_CONF['site_url'] . '/portal.php?url='
+                        . urlencode ($A['url']) . '&amp;what=link&amp;item='
+                        . $A['lid'];
+                // Trim the length if over 16 characters
+                $itemlen = strlen($A['title']);
+                if ($itemlen > 16) {
+                    $newlinks [] = '<a href="' . $lcount . '" title="'
+                        . $A['title'] . '">' . substr($A['title'],0,16)
+                        . '...</a>' . LB;
+                } else {
+                    $newlinks[] = '<a href="' . $lcount . '">'
+                        . substr($A['title'],0,$itemlen) . '</a>' . LB;
                 }
             }
         }
         if ($foundone == 0) {
             $retval .= $LANG01[88] . '<br>' . LB;
-        }
-        else {
+        } else {
             $retval .= COM_makeList ($newlinks);
         }
     }
