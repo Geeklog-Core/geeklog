@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.18 2002/09/20 08:56:23 dhaun Exp $
+// $Id: upload.class.php,v 1.19 2002/10/21 16:51:53 dhaun Exp $
 
 /**
 * This class will allow you to securely upload one or more files from a form
@@ -491,13 +491,13 @@ class upload
                 // Move tmp file to actual file
                 if (!copy($tmpfile,$filename)) {
                     $this->_addError("Couldn't copy $tmpfile to $filename.  You'll need remove both files");
-                    $this->printErrorMsgs();
+                    $this->printErrors();
                     exit;
                 } else {
                     // resize with netpbm worked, now remove tmpfile
                     if (!unlink($tmpfile)) {
                         $this->_addError("Couldn't delete $tmpfile.  You'll need to remove it manually");
-                        $this->printErrorMsgs();
+                        $this->printErrors();
                         exit;
                     }
                 }
@@ -509,7 +509,7 @@ class upload
                 } else {
                     $this->_addError('Image, ' . $this->_currentFile['name'] . ' had trouble being resized: ' . $netpbm_output[0]);
                 }
-                $this->printErrorMsgs();
+                $this->printErrors();
                 exit;
             } else {
                     $this->_addDebugMsg('Image, ' . $this->_currentFile['name'] . ' was resized from ' . $imageInfo['width'] . 'x' . $imageInfo['height'] . ' to ' . $newsize);
