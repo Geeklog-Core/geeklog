@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.15 2002/08/21 19:54:07 dhaun Exp $
+// $Id: pollbooth.php,v 1.16 2002/09/13 18:21:00 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -155,10 +155,11 @@ if (empty($qid)) {
 	} else {
 		$display .= COM_pollResults($qid,400,$order,$mode);
 	}
-} else if ($aid  > 0  and empty($HTTP_COOKIE_VARS[$qid])) {
-	setcookie($qid,$aid,time()+$_CONF['pollcookietime']);
-	$display .= COM_siteHeader()
-		.pollsave();
+} else if (isset ($HTTP_POST_VARS['aid']) && ($HTTP_POST_VARS['aid'] > 0) &&
+        empty($HTTP_COOKIE_VARS[$qid])) {
+    $aid = $HTTP_POST_VARS['aid'];
+    setcookie($qid,$aid,time()+$_CONF['pollcookietime']);
+    $display .= COM_siteHeader() . pollsave();
 } else {
 	$display .= COM_siteHeader()
 		.COM_pollResults($qid,400,$order,$mode);

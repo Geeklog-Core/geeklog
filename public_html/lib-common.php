@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.157 2002/09/13 06:26:59 mlimburg Exp $
+// $Id: lib-common.php,v 1.158 2002/09/13 18:21:00 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -62,7 +62,8 @@ $_COM_VERBOSE = false;
 * Leave the rest of this file intact!
 */
 
-require_once( 'c:/webdev/geeklog/config.php' );
+require_once( '/path/to/geeklog/config.php' );
+
 
 // Before we do anything else, check to ensure site is enabled
 
@@ -1410,7 +1411,7 @@ function COM_pollVote( $qid )
             {
                 $retval .= COM_startBlock( $LANG01[5], '', COM_getBlockTemplate( 'poll_block', 'header' ))
                     . '<h2>' . $Q['question'] . '</h2>' . LB
-                    . '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="GET">' . LB
+                    . '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="POST">' . LB
                     . '<input type="hidden" name="qid" value="' . $qid . '">' 
                     . LB;
 					
@@ -3070,7 +3071,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
     $retval .= COM_startBlock( $title, '', COM_getBlockTemplate( 'events_block', 'header' ));
 
     $eventSql = 'SELECT eid,title,url,datestart,dateend,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon '
-        . "FROM {$_TABLES['events']}"
+        . "FROM {$_TABLES['events']} "
         . "WHERE dateend >= NOW() AND (TO_DAYS(datestart) - TO_DAYS(NOW()) < 14) "
         . 'ORDER BY datestart,dateend';
         
