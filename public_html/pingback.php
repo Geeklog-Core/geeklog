@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.1 2005/01/28 10:04:14 dhaun Exp $
+// $Id: pingback.php,v 1.2 2005/01/29 17:52:54 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -241,7 +241,7 @@ function PNB_receivePing ($params)
     if ($type == 'article') {
         $id = PNB_getSid ($targetURI);
     } else {
-        $id = PLG_acceptPingback ($type, $sourceURI, $targetURI);
+        $id = PLG_handlePingComment ($type, $targetURI, 'acceptByURI');
     }
     if (empty ($id)) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['no_access']);

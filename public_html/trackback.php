@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.2 2005/01/18 13:15:52 dhaun Exp $
+// $Id: trackback.php,v 1.3 2005/01/29 17:52:54 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -91,8 +91,7 @@ function sendNotification ($id, $type)
         $commenturl = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
                                     . $id) . '#trackback';
     } else {
-        list ($commenturl, $dummy1, $dummy2)
-                = PLG_handleTrackbackComment ($type, $id, 'info');
+        $commenturl = PLG_getItemInfo ($type, $id, 'url');
     }
 
     $mailbody .= $LANG08[33] . ' <' . $commenturl . ">\n\n";
@@ -142,7 +141,7 @@ if ($type == 'article') {
         TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
         exit;
     }
-} else if (PLG_acceptTrackbackPing ($type, $id) === true) {
+} else if (PLG_handlePingComment ($type, $id, 'acceptByID') === true) {
     if (TRB_handleTrackbackPing ($id, $type)) {
         if (isset ($_CONF['notification']) &&
                 in_array ('trackback', $_CONF['notification'])) {

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.4 2005/01/28 08:38:41 dhaun Exp $
+// $Id: lib-trackback.php,v 1.5 2005/01/29 17:52:55 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -179,7 +179,7 @@ function TRB_allowDelete ($sid, $type)
             $allowed = false;
         }
     } else {
-        $allowed = PLG_handleTrackbackComment ($type, $sid, 'delete');
+        $allowed = PLG_handlePingComment ($type, $sid, 'delete');
     }
 
     return $allowed;

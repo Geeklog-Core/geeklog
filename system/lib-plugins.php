@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.56 2005/01/28 23:14:29 vinny Exp $
+// $Id: lib-plugins.php,v 1.57 2005/01/29 17:52:55 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1270,54 +1270,67 @@ function PLG_checkforSpam($content, $action = -1)
 }
 
 /**
-* Ask plugins to handle a trackback comment operation.
-*
-* Operations:
-* 'accept' - does the plugin accept a trackback comment for its entry $id,
-*            returns: true or false
-* 'delete' - does the user have permission to delete comments on entry $id,
-*            returns: true or false
-* 'info'   - plugin is asked to provide information on entry $id,
-*            returns: array (url, title, excerpt)
+* Ask plugin for information about one of its items
 *
 * @param    string  $type       plugin type
-* @param    string  $id         ID of an entry under the plugin's control
-* @param    string  $operation  operation to perform
-* @return   mixed               depends on the operation (see above)
+* @param    string  $id         ID of an item under the plugin's control
+* @param    string  $what       comma-separated list of item properties
+* @return   mixed               string or array of strings with the information
+*
+* Item properties that can be requested:
+* 'url'         - URL of the item
+* 'title'       - title of the item
+* 'excerpt'     - short description of the item
+* 'description' - full description of the item
+*
+* 'excerpt' and 'description' may return the same value. Properties should be
+* returned in the order they are listed in $what. Properties that are not
+* available should return an empty string.
+* Return false for errors (e.g. access denied, item does not exist, etc.).
+*
+* Note: This API function has not been finalized yet ...
 *
 */
-function PLG_handleTrackbackComment ($type, $id, $operation)
+function PLG_getItemInfo ($type, $id, $what)
 {
     $args[1] = $id;
-    $args[2] = $operation;
+    $args[2] = $what;
 
-    $function = 'plugin_handletrackbackcomment_' . $type;
+    $function = 'plugin_getiteminfo_' . $type;
 
     return PLG_callFunctionForOnePlugin ($function, $args);
 }
 
 /**
-* Ask plugin if it accepts a pingback for the item at URL $targetURI
+* Geeklog is about to perform an operation on a trackback or pingback comment
+* to one of the items under the plugin's control and asks for the plugin's
+* permission to continue.
 *
-* Pingback only sends the URL of the item it's pinging. Geeklog has determined
-* that the URL belongs to a plugin and is now asking that plugin if it will
-* accept pingbacks for it. The plugin is expected to return a unique ID for
-* the entry if it accepts the ping or an empty string to reject it.
-*
-* Note: This API function is subject to change ...
+* Geeklog handles receiving and deleting trackback comments and pingbacks
+* for the plugin but since it doesn't know about the plugin's access control,
+* it has to ask the plugin to approve / reject such an operation.
 *
 * @param    string  $type       plugin type
-* @param    string  $sourceURI  URL the ping came from (FYI only)
-* @param    string  $targetURI  URL being pinged
-* @return   string              ID of the pinged item or empty string = rejected
+* @param    string  $id         an ID or URL, depending on the operation
+* @param    string  $operation  operation to perform
+*
+* $operation can be one of the following:
+* 'acceptByID'  - accept a trackback comment on item with ID $id
+*                 returns: true for accept, false for reject
+* 'acceptByURI' - accept a pingback comment on item at URL $id
+*                 returns: the item's ID for accept, false for reject
+* 'delete'      - is the current user allowed to delete item with ID $id?
+*                 returns: true for accept, false for reject
+*
+* Note: This API function has not been finalized yet ...
 *
 */
-function PLG_acceptPingback ($type, $sourceURI, $targetURI)
+function PLG_handlePingComment ($type, $id, $operation)
 {
-    $args[1] = $sourceURI;
-    $args[2] = $targetURI;
+    $args[1] = $id;
+    $args[2] = $operation;
 
-    $function = 'plugin_acceptpingback_' . $type;
+    $function = 'plugin_handlepingoperation_' . $type;
 
     return PLG_callFunctionForOnePlugin ($function, $args);
 }

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.17 2005/01/29 09:02:11 dhaun Exp $
+// $Id: lib-story.php,v 1.18 2005/01/29 17:52:55 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -506,6 +506,71 @@ function STORY_deleteImages ($sid)
         STORY_deleteImage ($A['ai_filename']);
     }
     DB_delete ($_TABLES['article_images'], 'ai_sid', $sid);
+}
+
+/**
+*
+*/
+function STORY_getItemInfo ($sid, $what)
+{
+    global $_CONF, $_TABLES;
+
+    $properties = explode (',', $what);
+    $fields = array ();
+    foreach ($properties as $p) {
+        switch ($p) {
+            case 'description':
+                $fields[] = 'introtext';
+                $fields[] = 'bodytext';
+                break;
+            case 'excerpt':
+                $fields[] = 'introtext';
+                break;
+            case 'title':
+                $fields[] = 'title';
+                break;
+            default: // including 'url'
+                // nothing to do
+                break;
+        }
+    }
+
+    if (count ($fields) > 0) {
+        $result = DB_query ("SELECT " . implode (',', $fields)
+                    . " FROM {$_TABLES['stories']} WHERE sid = '$sid'"
+                    . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
+        $A = DB_fetchArray ($result);
+    } else {
+        $A = array ();
+    }
+
+    $retval = array ();
+    foreach ($properties as $p) {
+        switch ($p) {
+            case 'description':
+                $retval[] = trim ($A['introtext'] . ' ' . $A['bodytext']);
+                break;
+            case 'excerpt':
+                $retval[] = trim ($A['introtext']);
+                break;
+            case 'title':
+                $retval[] = stripslashes ($A['title']);
+                break;
+            case 'url':
+                $retval[] = COM_buildUrl ($_CONF['site_url']
+                                          . '/article.php?story=' . $sid);
+                break;
+            default:
+                $retval[] = ''; // return empty string for unknown properties
+                break;
+        }
+    }
+
+    if (count ($retval) == 1) {
+        $retval = $retval[0];
+    }
+
+    return $retval;
 }
 
 ?>

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.3 2005/01/29 09:02:11 dhaun Exp $
+// $Id: trackback.php,v 1.4 2005/01/29 17:52:55 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -38,7 +38,7 @@ require_once ('../lib-common.php');
 */
 require_once ('auth.inc.php');
 
-if (!$_CONF['trackback_enabled']) {
+if (!$_CONF['trackback_enabled'] && !$_CONF['pingback_enabled']) {
     echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     exit;
 }
@@ -58,6 +58,8 @@ if (!SEC_hasRights ('story.ping')) {
 }
 
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
+require_once ($_CONF['path_system'] . 'lib-pingback.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 /**
 * Display trackback comment submission form.
@@ -141,40 +143,6 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
-}
-
-/**
-* Get information for an entry
-*
-* Retrieves the information (URL, title, excerpt) for an entry, so that we
-* can populate the input fields in the trackback comment editor.
-*
-* @param    string  $sid    ID of the entry
-* @param    string  $type   type of the entry ('article' = story)
-* @retrun   array           array (URL, title, excerpt)
-*
-*/
-function getinfo ($sid, $type = 'article')
-{
-    global $_CONF, $_TABLES;
-
-    if ($type == 'article') {
-        $story = addslashes ($sid);
-        $result = DB_query ("SELECT title, introtext FROM {$_TABLES['stories']} WHERE (sid = '$story') AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
-        list ($title, $excerpt) = DB_fetchArray ($result);
-
-        if (!empty ($title) && !empty ($excerpt)) {
-            $url = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                 . $sid);
-            return array ($url,
-                          stripslashes ($title),
-                          TRB_filterExcerpt ($excerpt));
-        }
-    } else {
-        return PLG_handleTrackbackComment ($type, $sid, 'info');
-    }
-
-    return array ('', '', '');
 }
 
 /**
@@ -300,7 +268,14 @@ if ($mode == 'delete') {
     }
     $id = COM_applyFilter ($_REQUEST['id']);
     if (!empty ($id)) {
-        list ($url, $title, $excerpt) = getinfo ($id, $type);
+        if ($type == 'article') {
+            list ($url, $title, $excerpt) = STORY_getItemInfo ($id,
+                                                'url,title,excerpt');
+        } else {
+            list ($url, $title, $excerpt) = PLG_getItemInfo ($type, $id,
+                                                'url,title,excerpt');
+        }
+        $excerpt = trim (strip_tags ($excerpt));
         $blog = TRB_filterBlogname ($_CONF['site_name']);
 
         $display .= COM_siteHeader ('menu')
@@ -329,7 +304,14 @@ if ($mode == 'delete') {
         $id = COM_applyFilter ($_REQUEST['id']);
         $type = COM_applyFilter ($_REQUEST['type']);
         if (!empty ($id) && !empty ($type)) {
-            list ($newurl, $newtitle, $newexcerpt) = getinfo ($id, $type);
+            if ($type == 'article') {
+                list ($newurl, $newtitle, $newexcerpt) =
+                        STORY_getItemInfo ($id, 'url,title,excerpt');
+            } else {
+                list ($newurl, $newtitle, $newexcerpt) =
+                        PLG_getItemInfo ($type, $id, 'url,title,excerpt');
+            }
+            $newexcerpt = trim (strip_tags ($newexcerpt));
 
             if (empty ($url) && !empty ($newurl)) {
                 $url = $newurl;
