@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.45 2002/11/26 19:44:32 dhaun Exp $
+// $Id: usersettings.php,v 1.46 2002/11/28 20:22:39 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -207,7 +207,13 @@ function editpreferences()
             if ($usertheme == current($themes)) {
                 $retval .= ' SELECTED';
             }
-            $retval .= '>' . str_replace('_',' ',current($themes)) . '</option>' . LB;
+            // some theme name beautifying ...
+            $th = str_replace ('_', ' ', current ($themes));
+            if ((strtolower ($th{0}) == $th{0}) &&
+                (strtolower ($th{1}) == $th{1})) {
+                $th = strtoupper ($th{0}) . substr ($th, 1);
+            }
+            $retval .= '>' . $th . '</option>' . LB;
             next($themes);
         }
         $retval .= '</select>' . LB . '</td></tr>' . LB;
