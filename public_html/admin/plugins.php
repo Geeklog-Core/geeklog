@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.39 2004/09/25 03:03:10 blaine Exp $
+// $Id: plugins.php,v 1.40 2004/10/03 15:03:39 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -408,10 +408,14 @@ function do_update ($pi_name)
 
         return $retval;
     }
-
-    if (PLG_upgrade ($pi_name)) {
-        $retval .= COM_showMessage (60);
-    } else {
+    $result = PLG_upgrade ($pi_name);
+    if ($result > 0 ) {
+        if ($result === TRUE) { // Catch returns that are just true/false
+            $retval .= COM_showMessage (60);
+        } else {  // Plugin returned a message number
+            $retval = COM_refresh($_CONF['site_url'] .'/index.php?msg='.$result.'&amp;plugin='.$pi_name);
+        }
+    } else {  // Plugin function returned a false
         $timestamp = strftime ($_CONF['daytime']);
         $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
