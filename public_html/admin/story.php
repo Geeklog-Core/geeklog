@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.121 2004/07/31 03:30:33 blaine Exp $
+// $Id: story.php,v 1.122 2004/07/31 13:19:06 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -45,11 +45,12 @@
 /**
 * Geeklog commong function library
 */
-require_once('../lib-common.php');
+require_once ('../lib-common.php');
+
 /**
 * Security check to ensure user even belongs on this page
 */
-require_once('auth.inc.php');
+require_once ('auth.inc.php');
 
 // Set this to true if you want to have this code output debug messages to 
 // the error log
@@ -244,7 +245,7 @@ function storyeditor($sid = '', $mode = '')
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
         }
-        $display .= COM_article($A,"n");
+        $display .= COM_article ($A, 'n');
         $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     }
 
@@ -386,7 +387,7 @@ function storyeditor($sid = '', $mode = '')
     }
     $story_templates->set_var('lang_title', $LANG24[13]);
     if ($A['postmode'] == 'plaintext') {
-        $A['title'] = str_replace('$','&#36;',$A['title']);
+        $A['title'] = str_replace ('$', '&#36;', $A['title']);
     }
     
     $A['title'] = str_replace('{','&#123;',$A['title']);
@@ -448,7 +449,7 @@ function storyeditor($sid = '', $mode = '')
             $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '{$A['sid']}'");
             for ($z = 1; $z <= $icount; $z++) {
                 $I = DB_fetchArray($result_articles);
-                $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '" target="_blank">' . $I['ai_filename'] . '</a>';
+                $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '">' . $I['ai_filename'] . '</a>';
                 $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
             }
         }
@@ -536,11 +537,11 @@ function liststories($page = 1)
         $trows = DB_numRows( $tresult );     
         if( $trows > 0 )
         {
-            $excludetopics .= " WHERE (";
+            $excludetopics .= ' WHERE (';
             for( $i = 1; $i <= $trows; $i++ )  {
                 $T = DB_fetchArray ($tresult);
                 if ($i > 1)  {
-                    $excludetopics .= " OR ";
+                    $excludetopics .= ' OR ';
                 }
                 $excludetopics .= "tid = '{$T['tid']}'";
                 $seltopics .= '<option value="' .$T['tid']. '"';
@@ -549,7 +550,7 @@ function liststories($page = 1)
                 }
                 $seltopics .= '>' . $T['topic'] . '</option>' . LB;
             }
-            $excludetopics .= ") ";
+            $excludetopics .= ') ';
         } 
     } else {
         $excludetopics = " WHERE tid = '$current_topic' ";
@@ -628,9 +629,9 @@ function liststories($page = 1)
                     . '/story.php?mode=list&amp;page=' . $nextpage . '">'
                     . $LANG24[2] . '</a> ');
             } else {
-	        $story_templates->set_var('nextpage_link','');
+                $story_templates->set_var('nextpage_link','');
             }
-            $baseurl = $_CONF['site_admin_url'] . '/story.php?mode=list&tid=' .$current_topic;
+            $baseurl = $_CONF['site_admin_url'] . '/story.php?mode=list&amp;tid=' .$current_topic;
             $numpages = ceil ($numstories / 50);
             $story_templates->set_var ('google_paging',
                     COM_printPageNavigation ($baseurl, $page, $numpages));
@@ -676,6 +677,11 @@ function replace_images($sid, $intro, $body)
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
+
+        $imageX       = '[image' . $i . ']';
+        $imageX_left  = '[image' . $i . '_left]';
+        $imageX_right = '[image' . $i . '_right]';
+
         $dimensions = GetImageSize($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
         if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
             $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
@@ -694,7 +700,7 @@ function replace_images($sid, $intro, $body)
                 $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
                                  . $lFilename_large;
             } else {
-                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&image='
+                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&amp;image='
                                  . $lFilename_large;
             }
             if (file_exists ($lFilename_large_complete)) {
@@ -707,19 +713,19 @@ function replace_images($sid, $intro, $body)
         if ($stdImageLoc) {
             $imgSrc = $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'];
         } else {
-            $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&image=' . $A['ai_filename'];
+            $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
         }
         $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $fulltext = $intro . ' ' . $body;
         $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
-        $intro = str_replace($norm, '[' . $LANG24[48] . $i . ']', $intro);
-        $body = str_replace($norm, '[' . $LANG24[48] . $i . ']', $body);
-        $intro = str_replace($left, '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']', $intro);
-        $body = str_replace($left, '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']', $body);
-        $intro = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $intro);
-        $body = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $body);
+        $intro = str_replace ($norm,  $imageX,       $intro);
+        $body  = str_replace ($norm,  $imageX,       $body);
+        $intro = str_replace ($left,  $imageX_left,  $intro);
+        $body  = str_replace ($left,  $imageX_left,  $body);
+        $intro = str_replace ($right, $imageX_right, $intro);
+        $body  = str_replace ($right, $imageX_right, $body);
     }
 
     return array($intro, $body);
@@ -766,7 +772,7 @@ function insert_images($sid, $intro, $body)
                 $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
                                  . $lFilename_large;
             } else {
-                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&image='
+                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&amp;image='
                                  . $lFilename_large;
             }
             if (file_exists ($lFilename_large_complete)) {
@@ -776,9 +782,10 @@ function insert_images($sid, $intro, $body)
             }
         }
 
-        $norm = '[' . $LANG24[48] . $i . ']';
-        $left = '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']';
-        $right = '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']';
+        $norm  = '[image' . $i . ']';
+        $left  = '[image' . $i . '_left]';
+        $right = '[image' . $i . '_right]';
+
         $fulltext = $intro . ' ' . $body;
         $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         if ($icount == 0) {
@@ -790,7 +797,7 @@ function insert_images($sid, $intro, $body)
                 if ($stdImageLoc) {
                     $imgSrc = $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'];
                 } else {
-                    $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&image=' . $A['ai_filename'];
+                    $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                 }
                 $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
                 $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
@@ -863,8 +870,8 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         echo $display;
         exit;
     } elseif (!empty($title) && !empty($introtext)) {
-        $date = date("Y-m-d H:i:s",$unixdate);
-        $expire = date("Y-m-d H:i:s",$expiredate);
+        $date = date ('Y-m-d H:i:s', $unixdate);
+        $expire = date ('Y-m-d H:i:s', $expiredate);
 
         if (empty($hits)) {
             $hits = 0;
@@ -914,7 +921,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $related = addslashes (COM_whatsRelated ("$introtext $bodytext", $uid, $tid));
 
         // Clean up the text
-        if ($postmode == "html") {
+        if ($postmode == 'html') {
             $introtext = addslashes(COM_checkHTML(COM_checkWords($introtext)));
             $bodytext = addslashes(COM_checkHTML(COM_checkWords($bodytext)));
         } else {
