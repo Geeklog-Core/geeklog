@@ -69,7 +69,7 @@ builds the right column of blocks (variable {right_blocks}, file
 <tt>right_blocks.thtml</tt>) and the site's footer. Blocks themselves consist 
 of the <tt>blockheader.thtml</tt> and <tt>blockfooter.thtml</tt> files.
 
-<p>The above only described how Geeklog's main page and stories are rendered.
+<p>The above only describes how Geeklog's main page and stories are rendered.
 More templates exist for the various editors and lists you will see in Geeklog,
 as well as for the calendar and almost every other part of Geeklog.</p>
 
@@ -167,7 +167,28 @@ recommended to leave the <code>$_CONF</code> variable unchanged in
 instead. That way, you can even leave your users a choice between, for example,
 a "normal" theme and one with the blocks on the right.</p>
 
-<h2><a name="changes">Theme changes in Geeklog 1.3.10</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.3.11</a></h2>
+
+<p>There are no mandatory theme changes in Geeklog 1.3.11, so themes made for Geeklog 1.3.10 will work just fine without any modifications.</p>
+
+<p>A few minor additions / new options have been introduced:</p>
+<ul>
+<li>A new variable, <code>{camera_icon}</code>, can now be used in the story
+    and comment template files to display the small camera icon (the same as in
+    the Who's Online block) to link to the author's user profile (only if they
+    uploaded a userphoto).</li>
+<li>The <code>{layout_url}</code> variable is now available in the templates
+    for the story, link, and event submission forms.</li>
+<li>Also in the submission forms, a variable <code>{separator}</code> is now
+    available in addition to the misspelled <code>{seperator}</code>
+    variable.</li>
+<li>A new variable, <code>{calendar_mode}</code>, can be used in the
+    <tt>calendar/events.thtml</tt> template file to ensure that the "add event"
+    link will take the user to the proper event submission form for either the
+    site calendar or the personal calendar.</li>
+</ul>
+
+<h2><a name="changes#1310">Theme changes in Geeklog 1.3.10</a></h2>
 
 <p>General note: To upgrade your custom theme for use with Geeklog 1.3.10, you can simply copy over any new template files from the Geeklog default theme.</p>
 

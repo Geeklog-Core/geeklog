@@ -1,8 +1,26 @@
 GeekLog History/Changes:
 
-??? ??, 200? (1.3.10-1)
+Dec 22, 2004 (1.3.11rc1)
 ------------
 
+- Fixed size of the 'sid' field in the gl_comments table. It should be 40
+  characters, to be able to hold the long story IDs introduced in 1.3.10
+  (reported by Douglas Santos) [Dirk]
+- When using mogrify (ImageMagick) to resize uploaded images, the name of the
+  image is now enclosed in double quotes instead of single quotes, which
+  caused the command to fail on Windows [Dirk]
+- Added French language files for the SpamX plugin, provided by Alain Ponton.
+- The emails sent from the SpamX plugin's MailAdmin action now also include
+  the IP address of the spam poster [Dirk]
+- SEC_getFeatureGroup() should not overwrite $_GROUPS if not operating on the
+  current user (bug #331) [Dirk]
+- Introduced a {camera_icon} variable in story and comment templates that
+  displays the little camera icon if the author has uploaded a user photo, just
+  like in the Who's Online block (suggested by Laurence Whitworth) [Dirk]
+- The parent link in top-level comments took the user to the homepage rather
+  than to the article page (bug #346) [Vinny]
+- Stories submitted for the archive topic will automatically be saved with
+  frontpage = 0 when approved, i.e. only be displayed in the topic [Dirk]
 - Avoid emitting an extra <br> tag after the last section in the What's New
   block (bug #330) [Dirk]
 - Update comment count in Older Stories block when a new comment is posted
@@ -12,9 +30,9 @@ GeekLog History/Changes:
   visible for the current user (bug #268) [Dirk]
 - (Event) Admins can now delete events directly from the calendar's day and
   week views (just like events in the personal calendar) [Dirk]
-- Fixed usersettings.php so that it displays the "benefits" message again
-  when called up by an anonymous user. Also made it go to the user's
-  preferences when called without a 'mode' parameter [Dirk]
+- Fixed usersettings.php so that it displays the "benefits" message again when
+  called up by an anonymous user. Also made it go to the user's preferences
+  when called without a 'mode' parameter [Dirk]
 - Added {layout_url} to the available theme variables in the submission forms.
   Also added {separator} for those who prefer correct spelling ;-) [Dirk]
 - More parameter filtering and permission checks in submit.php [Dirk]
