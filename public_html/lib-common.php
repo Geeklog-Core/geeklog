@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.55 2002/04/10 20:36:19 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.56 2002/04/11 16:14:18 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1793,7 +1793,9 @@ function COM_showBlocks($side, $topic='', $name='all')
         }
 
         if ($A['type'] == 'gldefault') {
-            $retval .= COM_showBlock($A['name'],$A['help'],$A['title']);
+            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+                $retval .= COM_showBlock($A['name'],$A['help'],$A['title']);
+            }
         }
 
         if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
