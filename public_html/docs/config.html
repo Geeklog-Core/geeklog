@@ -82,9 +82,6 @@ that are defined below:
 <tr><td valign="top"><a name="desc_path_language">path_language</a></td>
     <td valign="top">/path/to/geeklog/language/</td>
     <td valign="top">location of the Geeklog language files</td></tr>
-<tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
-    <td valign="top">HTML path with "/backend/geeklog.rdf" suffix</td>
-    <td valign="top">File system path for the RDF file. This file allows you to share your site's headlines with others</td></tr>
 <tr><td valign="top"><a name="desc_backup_path">backup_path</a></td>
     <td valign="top">Base path with "/backups/" suffix</td>
     <td valign="top">location where mysqldump (see above) will store database backups</td></tr>
@@ -461,10 +458,6 @@ that are defined below:
   <td valign="top">5</td>
   <td valign="top">max. number of images you can have in a story</td></tr>
 <tr>
-  <td valign="top"><a name="desc_backend">backend</a></td>
-  <td valign="top">1</td>
-  <td valign="top">Create an RSS/RDF file for the stories in rdfpath (0=no, 1=yes)</td></tr>
-<tr>
   <td valign="top"><a name="desc_limitnews">limitnews</a></td>
   <td valign="top">10</td>
   <td valign="top">Number of stories to limit the index page to, this same number will appear in the older stuff block</td></tr>
@@ -653,6 +646,33 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
     above).
 </tr>
 </table>
+
+
+<h3><a name="rdf">RSS/RDF Feed Settings</a></h3>
+
+<p>Geeklog can export its headlines to a so-called RSS feed (also known as an RDF feed). This will let you share your news with other sites (Hint: Create a Portal block from Geeklog's Block menu to import RSS/RDF news feeds from other sites).</p>
+
+<table border="1" width="100%">
+<tr><th width="8%">Variable</th>
+    <th width="29%">Default Value</th>
+    <th width="63%">Description</th></tr>
+<tr><td valign="top"><a name="desc_backend">backend</a></td>
+    <td valign="top">1</td>
+    <td valign="top">Create an RSS/RDF file for the stories in rdf_file (0=no, 1=yes)</td></tr>
+<tr><td valign="top"><a name="desc_rdf_file">rdf_file</a></td>
+    <td valign="top">HTML path with "/backend/geeklog.rdf" suffix</td>
+    <td valign="top">File system path for the RDF file. This file allows you to share your site's headlines with others</td></tr>
+<tr><td valign="top"><a name="desc_rdf_language">rdf_language</a></td>
+    <td valign="top">en-gb</td>
+    <td valign="top">Value for the feed's language tag. Depending on your site's language and operating system, this may differ from the language setting in the locale (see above).<br><strong>Example:</strong> The PHP locale setting for German is 'de_DE' while the correct language setting for a German RSS feed would be 'de-DE' (note the dash instead of the underscore).</td></tr>
+<tr><td valign="top"><a name="desc_rdf_limit">rdf_limit</a></td>
+    <td valign="top">10</td>
+    <td valign="top">Limit the number of stories in the RSS feed. If the value for this setting is a number, the feed will hold this many stories. If the number is followed by a lower-case 'h' (e.g. 24h) it denotes the number of hours from which to chose the stories.</td></tr>
+<tr><td valign="top"><a name="desc_rdf_storytext">rdf_storytext</a></td>
+    <td valign="top">0</td>
+    <td valign="top">If this value is 1, then the entire introtext of the stories will be included in the RSS feed. Any number greater than one limits the introtext to that many characters (e.g. a value of 80 would only include the first 80 characters from the introtext in the feed). If set to 0, the introtext is not included in the feed.</td></tr>
+</table>
+
 
 <h3><a name="content">Content Control Settings</a></h3>
 
