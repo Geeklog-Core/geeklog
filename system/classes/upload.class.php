@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: upload.class.php,v 1.4 2002/04/08 21:44:13 tony_bibbs Exp $
+// $Id: upload.class.php,v 1.5 2002/04/10 16:11:25 tony_bibbs Exp $
 
 class upload
 {
@@ -42,11 +42,13 @@ class upload
     var $_filesToUpload;        // Array
     var $_currentFile;          // Array
     var $_allowedIPS;           // Array
+    var $_uploadedFiles;        // Array
     var $_maxImageWidth;        // Pixels
     var $_maxImageHeight;       // Pixels
     var $_maxFileSize;          // Long, in bytes
     var $_fileUploadDirectory;  // String
     var $_fileNames;            // String
+    var $_permissions;          // String
     var $_logFile;              // String
     var $_doLogging;            // Boolean
     var $_continueOnError;      // Boolean
@@ -67,11 +69,13 @@ class upload
         $this->_allowedMimeTypes = array();
         $this->_availableMimeTypes = array();
         $this->_currentFile = array();
+        $this->_uploadedFiles = array();
         $this->_maxImageWidth = 300;
         $this->_maxImageHeight = 300;
         $this->_maxFileSize = 1048576; // 1MB = 1048576
         $this->_fileUploadDirectory = '';
         $this->_fileNames = '';
+        $this->_permissions = '';
         $this->_logFile = '';
         $this->_doLogging = false;
         $this->_continueOnError = false;
@@ -276,15 +280,13 @@ class upload
 	}
 	
 	/**
-	* Gets destination file name for current image
+	* Gets destination file name for current file
 	*
 	*/
 	function _getDestinationName()
 	{
         if (is_array($this->_fileNames)) {
             $name = $this->_fileNames[$this->_imageIndex];
-        } else {
-            $name = $this->_fileNames;
         }
         
         if (empty($name)) {
@@ -292,6 +294,27 @@ class upload
         }
         
         return $name;
+	}
+
+    /**
+    * Gets permissions for a file.  This is used to do a chmod
+    *
+    */
+	function _getPermissions()
+	{
+        if (is_array($this->_permissions)) {
+            if (count($this->_permissions > 1)) {
+                $perms = $this->_permissions[$this->_imageIndex];
+            } else {
+                $perms = $this->_permissions;
+            }
+        }
+        
+        if (empty($perms)) {
+            $perms = '';
+        }
+        
+        return $perms;
 	}
 	
 	/**
@@ -306,7 +329,26 @@ class upload
             $this->_addError('Specified upload directory, ' . $this->_fileUploadDirectory . ' exists but is not writable');
             return false;
         }        
-        return move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        $returnMove = move_uploaded_file($this->_currentFile['tmp_name'], $this->_fileUploadDirectory . '/' . $this->_getDestinationName());
+        $returnChmod = true;
+        $perms = $this->_getPermissions();
+        if (!empty($perms)) {
+            $returnChmod = chmod($this->_fileUploadDirectory . '/' . $this->_getDestinationName(), octdec($perms));
+        }
+        
+        if ($returnMove AND $returnChmod) {
+            return true;
+        } else {
+            if (!$returnMove) {
+                $this->_addError('Upload of ' . $this->_currentFile['name'] . ' failed.');
+            }
+            
+            if (!$returnChmod) {
+                $this->_addError('Chmod of ' . $this->_currentFile['name'] . ' to ' . $perms . ' failed');
+            }
+            
+            return false;
+        }
 	}
 	
     // Public Methods
@@ -558,6 +600,27 @@ class upload
             $this->_fileNames = array($fileNames);
         }
 	}
+
+    /**
+    * Changes permissions for uploaded files.  If only one set of perms is
+    * sent then they are applied to all uploaded files.  If more then one set
+    * of perms is sent (i.e. $perms is an array) then permissions are applied
+    * one by one.  Any files not having an associated permissions will be
+    * left alone.  NOTE: this is meant to be called BEFORE you do the upload
+    * and ideally is called right after setFileNames()
+    *
+    * $perms    String/Array    A string or string array of file permissions
+    *
+    */
+    function setPerms($perms)
+    {
+        if (isset($perms) AND is_array($perms)) {
+            // this is an array of file names, set them
+            $this->_permissions = $perms;
+        } else {
+            $this->_permissions = array($perms);
+        }
+    }
     
     /**
     * Returns how many actual files were sent for upload.  NOTE: this will
@@ -636,8 +699,8 @@ class upload
                 
                 // If all systems check, do the upload
                 if ($this->checkMimeType() AND $this->_imageSizeOK() AND !$this->areErrors()) {
-                    if (!$this->_copyFile()) {
-                        $this->_addError('Upload of ' . $this->_currentFile['name'] . ' failed.');
+                    if ($this->_copyFile()) {
+                        $this->_uploadedFiles[] = $this->_fileUploadDirectory . '/' . $this->_getDestinationName();
                     }
                 }
                 
