@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.31 2005/01/24 10:35:55 dhaun Exp $
+// $Id: search.class.php,v 1.32 2005/02/01 19:20:31 dhaun Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -327,7 +327,7 @@ class Search {
             } else {
                 $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
                 $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
-                $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
+                $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL)";
             }
 
             $posql = COM_getPermSQL ('AND', 0, 2, $_TABLES['pollquestions']);
@@ -337,7 +337,7 @@ class Search {
             } else {
                 $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-                $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
+                $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
             }
 
             $mysearchterm = addslashes ($this->_query);
