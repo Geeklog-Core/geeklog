@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.12 2004/08/23 19:36:34 dhaun Exp $
+// $Id: portal.php,v 1.13 2004/09/19 09:44:49 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -59,6 +59,8 @@ if (empty ($url)) {
     $url = $_CONF['site_url'];
 }
 
+header ('HTTP/1.1 301 Moved');
 header ('Location: ' . $url);
+header ('Connection: close');
 
 ?>
