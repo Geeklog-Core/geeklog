@@ -8,7 +8,7 @@
 // | Geeklog mail administration page.                                         |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001,2002 by the following authors:                         | 
+// | Copyright (C) 2001,2002 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.8 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: mail.php,v 1.9 2002/04/27 21:42:17 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -71,6 +71,7 @@ function display_form()
     $mail_templates->set_var('php_self', $PHP_SELF);
     $mail_templates->set_var('lang_note', $LANG31[19]);
     $mail_templates->set_var('lang_to', $LANG31[18]);
+    $mail_templates->set_var('lang_selectgroup', $LANG31[25]);
     $group_options = '';
     $result = DB_query("SELECT grp_id, grp_name FROM {$_TABLES['groups']} WHERE grp_name <> 'All Users'");
     $nrows = DB_numRows($result);

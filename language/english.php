@@ -144,7 +144,8 @@ $LANG01 = array(
     103 => 'DB Backups',
     104 => 'by',
     105 => 'Mail Users',
-    106 => 'Views'
+    106 => 'Views',
+    107 => 'GL Version Test'
 );
 
 ###############################################################################
@@ -874,7 +875,8 @@ $LANG31 = array(
     21 => 'Failures',
     22 => 'Successes',
     23 => 'No failures',
-    24 => 'No successes'
+    24 => 'No successes',
+    25 => '-- Select Group --'
 );
 
 

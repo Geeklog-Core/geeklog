@@ -150,7 +150,8 @@ $LANG01 = array(
     103 => 'DB Backups',
     104 => 'von',
     105 => 'Mail an User',
-    106 => 'Angezeigt'
+    106 => 'Angezeigt',
+    107 => 'GL Version Test'
 );
 
 ###############################################################################
@@ -876,11 +877,12 @@ $LANG31 = array(
   17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Noch eine Nachricht schreiben</a>",
   18 => "An",
   19 => "HINWEIS: Wenn Du eine Nachricht an alle eingetragenen Benutzer schicken willst, musst Du die Gruppe Logged-in Users ausw&auml;hlen.",
-  20 => "<successcount> Nachrichten erfolgreich verschickt, bei <failcount> Nachrichten traten Fehler auf. Details k&ouml;nnen der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">zur&uuml;ck zum Admin-Men&uuml; gehen</a>.",
+  20 => "<successcount> Nachrichten erfolgreich verschickt, bei <failcount> Nachrichten traten Fehler auf. Details k&ouml;nnen der folgenden Liste entnommen werden. Du kannst jetzt <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">noch eine Nachricht schicken</a> oder <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">zur&uuml;ck zum Admin-Men&uuml; gehen</a>.",
   21 => 'Fehler',
-  22 => 'erfolgreich',
+  22 => 'Erfolgreich',
   23 => 'Keine Fehler',
-  24 => 'Keine erfolgreich'
+  24 => 'Keine erfolgreich',
+  25 => '-- Gruppe w&auml;hlen --'
 );
 
 
