@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.21 2002/11/24 11:47:11 dhaun Exp $
+// $Id: links.php,v 1.22 2002/11/27 14:45:01 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -112,12 +112,12 @@ if (empty ($_USER['username']) &&
     $linklist->set_var('site_url', $_CONF['site_url']);
     $linklist->set_var('lang_addalink', $LANG06[3]);
 
-    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} ";
+    $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']} WHERE ";
     if ($_CONF['linkcols'] > 0) {
         $cat = addslashes ($category);
-        $sql .= "WHERE category = '$cat' ";
+        $sql .= "category = '$cat' AND ";
     }
-    $sql .= "AND {$permsql} ";
+    $sql .= "{$permsql} ";
     $sql .= "ORDER BY category asc,title";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
