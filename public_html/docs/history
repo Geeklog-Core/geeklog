@@ -3,8 +3,15 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.9rc1)
 ------------
 
+- Access to admin/mail.php is now granted to all users with 'user.mail'
+  permissions (previously, users with that permission without being in the
+  'Mail Admin' group would see the "Mail Users" entry in the Admin block but
+  were refused access to it).
+- The list of groups names in the Mail Users form is now sorted alphabetically.
 - Any unauthorized attempts to access the admin pages are now properly logged
   in access.log.
+- Fixed problems when resizing userphotos for user names that have spaces in
+  them (reported by Per on geeklog-users).
 - Now accomodate strict webhosts who don't allow file uploads to the standard
   image directory, you can now set a new configuration variable,
   $_CONF['path_images'] to point to a directory outside of your webtree where
@@ -109,7 +116,7 @@ GeekLog History/Changes:
 Static Pages Plugin 1.4
 -----------------------
 
-- It's now possible to disable the use of PHP in static pages entirely by
+- It is now possible to disable the use of PHP in static pages entirely by
   setting $_SP_CONF['allow_php'] = 0 in the static pages' config.php file.
   If you don't plan on using PHP in static pages, it is recommended that you
   do that as an additional security measure.
@@ -131,6 +138,10 @@ Static Pages Plugin 1.4
   displayed for users without them having edit permissions for the static page.
   It wasn't possible to edit the page, though, but the link shouldn't have
   been there in the first place.
+- For security reasons, the Static Page Admin group does not include
+  'staticpages.PHP' permissions by default any more.
+
+Please see docs/staticpages.html for details.
 
 
 December 5, 2003 (1.3.8-1sr3)
