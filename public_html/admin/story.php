@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.84 2003/03/27 20:20:00 dhaun Exp $
+// $Id: story.php,v 1.85 2003/03/27 21:03:11 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -665,7 +665,7 @@ function insert_images($sid, $intro, $body)
 */
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon) 
 {
-    global $_TABLES, $_CONF, $LANG24, $MESSAGE, $HTTP_POST_FILES;
+    global $_TABLES, $_CONF, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
