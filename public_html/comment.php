@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.90 2005/02/05 05:04:18 vinny Exp $
+// $Id: comment.php,v 1.91 2005/02/07 05:17:45 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -80,9 +80,9 @@ function handleSubmit() {
                 return COM_refresh ($_CONF['site_url'] . '/index.php');
             }
 
-            CMT_saveComment ( strip_tags ($_POST['title']), $_POST['comment'], 
-                $sid, COM_applyFilter ($_POST['pid'], true), 'article',
-                COM_applyFilter ($_POST['postmode']));
+            $ret = CMT_saveComment ( strip_tags ($_POST['title']), 
+                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
+                'article', COM_applyFilter ($_POST['postmode']));
 
             if ( $ret > 0 ) { // failure
                 $display .= COM_siteHeader()
@@ -105,9 +105,9 @@ function handleSubmit() {
                 return COM_refresh ($_CONF['site_url'] . '/index.php');
             }
 
-            CMT_saveComment (strip_tags ($_POST['title']), $_POST['comment'], 
-                $sid, COM_applyFilter ($_POST['pid'], true), 'poll',
-                COM_applyFilter ($_POST['postmode']));
+            $ret = CMT_saveComment (strip_tags ($_POST['title']), 
+                $_POST['comment'], $sid, COM_applyFilter ($_POST['pid'], true), 
+                'poll', COM_applyFilter ($_POST['postmode']));
 
             if ( $ret > 0 ) { // failure
                 $display .= COM_siteHeader()
