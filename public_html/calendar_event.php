@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.33 2004/08/09 18:36:29 dhaun Exp $
+// $Id: calendar_event.php,v 1.34 2004/08/31 19:00:22 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -48,7 +48,7 @@ require_once($_CONF['path_system'] . 'classes/calendar.class.php');
 */
 function adduserevent($eid) 
 {
-    global $_CONF, $_TABLES, $_USER, $_STATES, $LANG01, $LANG02;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG02;
 
     $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
     $result = DB_query($eventsql);
@@ -533,83 +533,83 @@ default:
                 }
                 $cal_templates->set_var('lang_when', $LANG02[3]);
                 if ($A['allday'] == 0 OR ($A['allday'] == 1 AND $A['start'] <> $A['end'])) {
-                    $thedatetime = COM_getUserDateTimeFormat($A['start'] . ' ' . $A['timestart']);
-                    $cal_templates->set_var('event_start', $thedatetime[0]);
+                    $thedatetime = COM_getUserDateTimeFormat ($A['start'] . ' '
+                                                            . $A['timestart']);
+                    $cal_templates->set_var ('event_start', $thedatetime[0]);
 
-                    if( $A['start'] == $A['end'] )
-                    {
-                        $thedatetime[0] = strftime( $_CONF['timeonly'], strtotime($A['dateend'].' '.$A['timeend']) );
+                    if ($A['start'] == $A['end']) {
+                        $thedatetime[0] = strftime ($_CONF['timeonly'],
+                            strtotime ($A['dateend'] . ' ' . $A['timeend']));
+                    } else {
+                        $thedatetime = COM_getUserDateTimeFormat ($A['end']
+                                                        . ' ' . $A['timeend']);
                     }
-                    else
-                    {
-                        $thedatetime = COM_getUserDateTimeFormat($A['end'] . ' ' . $A['timeend']);
-                    }
-                    
+                    $cal_templates->set_var ('event_end', $thedatetime[0]);
+                } else {
+                    $thedatetime = strftime ('%A, ' . $_CONF['shortdate'],
+                                             strtotime ($A['start']));
+                    $cal_templates->set_var ('event_start', $thedatetime);
+                    $cal_templates->set_var ('event_end', $LANG30[26]);
+                }
 
-                    $cal_templates->set_var('event_end', $thedatetime[0]);
+                // set the location variables
+                $cal_templates->set_var ('lang_where', $LANG02[4]);
+                $cal_templates->set_var ('event_location',
+                                         stripslashes ($A['location']));
+                $cal_templates->set_var ('event_address1',
+                                         stripslashes ($A['address1']));
+                $cal_templates->set_var ('event_address2',
+                                         stripslashes ($A['address2']));
+                $cal_templates->set_var ('event_zip', $A['zipcode']);
+                $cal_templates->set_var ('event_city',
+                                         stripslashes ($A['city']));
+                $cal_templates->set_var ('event_state_only', $A['state']);
+                if (empty ($A['state']) || ($A['state'] == '--')) {
+                    $cal_templates->set_var ('event_state', '');
+                    $cal_templates->set_var ('event_state_name', '');
+                    $cal_templates->set_var ('event_state_name_only', '');
+                } else {
+                    $cal_templates->set_var ('event_state', ', ' . $A['state']);
+                    $cal_templates->set_var ('event_state_name',
+                                             ', ' . $_STATES[$A['state']]);
+                    $cal_templates->set_var ('event_state_name_only',
+                                             $_STATES[$A['state']]);
+                }
 
-                    
-                    
-                } else {
-                    $thedatetime = strftime('%A, ' . $_CONF['shortdate'],strtotime($A['start']));
-                    $cal_templates->set_var('event_start', $thedatetime);
-                    $cal_templates->set_var('event_end', $LANG30[26]);
-                }
-                $cal_templates->set_var('lang_where', $LANG02[4]);
-                if (!empty($A['address1'])) {
-                    $cal_templates->set_var('event_address1', stripslashes ($A['address1']));
-                } else {
-                    $cal_templates->set_var('event_address1','');
-                }
-                if (!empty($A['address2'])) {
-                    $cal_templates->set_var('br1', '<br>');
-                    $cal_templates->set_var('event_address2', stripslashes ($A['address2']));
-                } else {
-                    $cal_templates->set_var('br1', '');
-                    $cal_templates->set_var('event_address2','');
-                }
-                if (empty($A['city']) && empty($A['state']) && empty($A['zip'])) {
-                    $cal_templates->set_var('br2','');
-                } else {
-                    $cal_templates->set_var('br2','<br>');
-                }
-                $cal_templates->set_var('event_city', stripslashes($A['city']));
-                if (empty($A['state']) or ($A['state'] == '--')) 
-                {
-                    $cal_templates->set_var('event_state', '');
-                    $cal_templates->set_var('event_state_name', '');
-                    $cal_templates->set_var('event_state_only', '');
-                    $cal_templates->set_var('event_state_name_only', '');
-                }
-                else
-                {
-                    $cal_templates->set_var('event_state', ', ' . $A['state']);
-                    $cal_templates->set_var('event_state_name',
-                                            ', ' . $_STATES[$A['state']]);
-                    $cal_templates->set_var('event_state_only', $A['state']);
-                    $cal_templates->set_var('event_state_name_only',
-                                            $_STATES[$A['state']]);
-                }
-                $cal_templates->set_var('event_zip', $A['zipcode']);
-                if (!empty ($A['location']) && (!empty ($A['address1']) ||
-                    !empty ($A['address2']) || !empty ($A['city']) ||
-                    !empty ($A['state']) || !empty($A['zip']))) {
-                    $cal_templates->set_var ('br0', '<br>');
-                } else {
+                // now figure out which of the {brX} variables to set ...
+                $hasCityEtc = (!empty ($A['city']) || !empty ($A['zip']) ||
+                               !empty ($A['state']));
+                if (empty ($A['location']) && empty ($A['address1']) &&
+                        empty ($A['address2']) && !$hasCityEtc) {
                     $cal_templates->set_var ('br0', '');
+                    $cal_templates->set_var ('br1', '');
+                    $cal_templates->set_var ('br2', '');
+                } else {
+                    if (empty ($A['location']) || (empty ($A['address1']) &&
+                                    empty ($A['address2']) && !$hasCityEtc)) {
+                        $cal_templates->set_var ('br0', '');
+                    } else {
+                        $cal_templates->set_var ('br0', '<br>');
+                    }
+                    if (empty ($A['address1']) || (empty ($A['address2']) &&
+                                                   !$hasCityEtc)) {
+                        $cal_templates->set_var ('br1', '');
+                    } else {
+                        $cal_templates->set_var ('br1', '<br>');
+                    }
+                    if (empty ($A['address2']) || !$hasCityEtc) {
+                        $cal_templates->set_var ('br2', '');
+                    } else {
+                        $cal_templates->set_var ('br2', '<br>');
+                    }
                 }
-                $cal_templates->set_var('event_location', stripslashes ($A['location']));
-                $cal_templates->set_var('lang_description', $LANG02[5]);
-                $cal_templates->set_var('event_description',
+
+                $cal_templates->set_var ('lang_description', $LANG02[5]);
+                $cal_templates->set_var ('event_description',
                         nl2br (stripslashes ($A['description'])));
-                $cal_templates->set_var('lang_event_type', $LANG12[49]);
-                $cal_templates->set_var('event_type', $A['event_type']);
-                $cal_templates->parse('event_details', 'details', true); 
-                //$cal_templates->parse('output','events');
-                //$display .= $cal_templates->finish($cal_templates->get_var('output')); 
-            } else {
-                //$display .= '<br><b>'.$LANG_ACCESS['accessdenied'].'</b>'
-                //    .'<p>'.$LANG_ACCESS['eventdenialmsg'] . COM_endBlock() . COM_siteFooter();
+                $cal_templates->set_var ('lang_event_type', $LANG12[49]);
+                $cal_templates->set_var ('event_type', $A['event_type']);
+                $cal_templates->parse ('event_details', 'details', true); 
             }
         }
 
@@ -629,14 +629,14 @@ default:
             $cal_templates->set_var ('edit_icon', '');
         }
 
-        $cal_templates->parse('output','events');
-        $display .= $cal_templates->finish($cal_templates->get_var('output')); 
+        $cal_templates->parse ('output', 'events');
+        $display .= $cal_templates->finish ($cal_templates->get_var ('output'));
     }
 
     $display .= COM_endBlock() . COM_siteFooter();
 
 } // end switch
 
-echo $display
+echo $display;
 
 ?>
