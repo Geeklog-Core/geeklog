@@ -27,8 +27,8 @@ $VERSION = "1.3";
 
 include("/path/to/geeklog/config.php");
 include($CONF['path'] . $CONF["languagefile"]);
-include($CONF['html'] . 'sessions.php');
-include($CONF['html'] . 'plugins.php');
+include($CONF['path_html'] . 'sessions.php');
+include($CONF['path_html'] . 'plugins.php');
 setlocale(LC_ALL, $CONF["locale"]);
 
 ###############################################################################
@@ -1012,7 +1012,7 @@ function olderstuff() {
 # Shows blocks based on order and topic
 
 function showblock($topic="") {
-	global $CONF,$USER;
+	global $CONF,$USER,$LANG21;
 	if (!empty($USER["uid"])) {
 		$result = dbquery("SELECT boxes FROM userindex WHERE uid = '{$USER["uid"]}'");
 		$U = mysql_fetch_array($result);
@@ -1045,6 +1045,18 @@ function showblock($topic="") {
 			showpoll(60);
 			$pollshown = 1;
 		}
+		if ($A["type"] == "phpblock") {
+                        $function = $A["phpblockfn"];
+                        startblock($A["title"]);
+                        if (function_exists($function)) {
+                                #great, call it
+                                $function();
+                        } else {
+                                #show friendly error message
+                                print $LANG21[31];
+                        }
+                        endblock();
+                }
 		if (!empty($A["content"])) {
 			startblock($A["title"]);
 			print nl2br(stripslashes($A["content"])) . "<br>\n";
