@@ -170,6 +170,7 @@ CREATE TABLE {$_TABLES['group_assignments']} (
   ug_main_grp_id mediumint(8) NOT NULL default '0',
   ug_uid mediumint(8) unsigned default NULL,
   ug_grp_id mediumint(8) unsigned default NULL,
+  INDEX group_assignments_ug_grp_id ON group_assignments(ug_grp_id),
   KEY ug_main_grp_id (ug_main_grp_id)
 ) TYPE=MyISAM
 ";
@@ -367,6 +368,7 @@ CREATE TABLE {$_TABLES['stories']} (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX stories_tid ON stories(tid),
   PRIMARY KEY  (sid)
 ) TYPE=MyISAM
 ";
