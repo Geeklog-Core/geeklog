@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.43 2003/03/09 11:47:22 dhaun Exp $
+// $Id: install.php,v 1.44 2003/03/09 18:10:26 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -214,23 +214,30 @@ function INST_createDatabaseStructures() {
 /*
 * Checks for Static Pages Version
 *
-* @return   1 if Static Pages 1.1 by Phill or 1.2 by Tom, 0 if original Static Pages
+* @return   0 = not installed, 1 = original plugin, 2 = plugin by Phill or Tom, 3 = v1.3
 *
 */
 function get_SP_Ver()
 {
     global $_TABLES;
 
-    $result = DB_query ("SELECT * FROM {$_TABLES['staticpage']}");
-    $A = DB_fetchArray ($result);
-    $fields = array ();
-    foreach ($A as $name => $value) {
-        $fields[] = $name;
-    }
-    if (in_array ('sp_pos',$fields,true)) {  
-        $retval = 1;
-    } else {
-        $retval = 0;
+    $retval = 0;
+
+    if (DB_count ($_TABLES['plugins'], 'pi_name', 'staticpages') > 0) {
+        $result = DB_query ("DESCRIBE {$_TABLES['staticpage']}");
+        $numrows = DB_numRows ($result);
+
+        $retval = 1; // assume v1.1 for now ...
+
+        for ($i = 0; $i < $numrows; $i++) {
+            $A = DB_fetchArray ($result);
+            if ($A[0] == 'sp_nf') {
+                $retval = 3; // v1.3
+                break;
+            } elseif ($A[0] == 'sp_pos') {
+                $retval = 2; // v1.2
+            }
+        }
     }
 
     return $retval;
@@ -391,7 +398,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
         case '1.3.7':
             // upgrade Static Pages plugin
             $spversion = get_SP_ver ();
-            if ($spversion == 0) { // original version
+            if ($spversion == 1) { // original version
                 DB_query ("ALTER TABLE {$_TABLES['staticpage']} "
                     . "ADD COLUMN group_id mediumint(8) unsigned DEFAULT '1',"
                     . "ADD COLUMN owner_id mediumint(8) unsigned DEFAULT '1',"
@@ -401,23 +408,27 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     . "ADD COLUMN perm_anon tinyint(1) unsigned DEFAULT '2',"
                     . "ADD COLUMN sp_php tinyint(1) unsigned DEFAULT '0',"
                     . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0'");
-                DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) VALUES ('staticpages.php','Ability to use PHP in static pages')");
+                DB_query ("INSERT INTO {$_TABLES['features']} (ft_name, ft_descr) VALUES ('staticpages.PHP','Ability to use PHP in static pages')");
                 $php_id = DB_insertId ();
                 $group_id = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = 'Static Page Admin'");
                 DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($php_id, $group_id)");
-            } else { // extended version by Phill or Tom
+            } elseif ($spversion == 2) { // extended version by Phill or Tom
                 DB_query ("ALTER TABLE {$_TABLES['staticpage']} "
                     . "DROP COLUMN sp_pos,"
                     . "DROP COLUMN sp_search_keywords,"
                     . "ADD COLUMN sp_nf tinyint(1) unsigned DEFAULT '0'");
             }
-            DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.3' WHERE pi_name = 'staticpages'");
 
-            // remove Static Pages 'lock' flag
-            DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'staticpages'");
+            if ($spversion > 0) {
+                // update plugin version number
+                DB_query ("UPDATE {$_TABLES['plugins']} SET pi_version = '1.3' WHERE pi_name = 'staticpages'");
 
-            // remove Static Pages Admin group id
-            DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'sp_group_id'");
+                // remove Static Pages 'lock' flag
+                DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'staticpages'");
+
+                // remove Static Pages Admin group id
+                DB_query ("DELETE FROM {$_TABLES['vars']} WHERE name = 'sp_group_id'");
+            }
 
             $current_gl_version = '1.3.8';
             $_SQL = '';
