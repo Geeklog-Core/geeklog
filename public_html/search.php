@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.14 2002/04/12 14:59:20 tony_bibbs Exp $
+// $Id: search.php,v 1.15 2002/04/16 15:40:28 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -250,7 +250,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
             }
             $searchresults->set_var('results','');
             for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
-                $columns = $cur_plugin->searchresults[$j];
+                $columns = current($cur_plugin->searchresults);//[$j];
                 for ($x = 1; $x <= count($columns); $x++) {
                     COM_errorLog('column val = ' . current($columns),1);
                     $searchresults->set_var('data', current($columns));
@@ -258,6 +258,8 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
                     next($columns);
                 }
                 $searchresults->parse('results','resultrow',true);
+                $searchresults->set_var('data_cols','');
+                next($cur_plugin->searchresults);
             }
             $searchresults->set_var('end_block', COM_endBlock());
             $searchresults->parse('search_blocks','searchblock',true);
