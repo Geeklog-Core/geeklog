@@ -1,1 +1,75 @@
-                            {start_block_userprofile} <table border="0" cellspacing="0" cellpadding="3"> <tr valign="top"> <td align="right"><b>{lang_username}:</b></td> <td>{username} ({user_fullname})<br> {user_photo}</td> </tr> <tr valign="top"> <td align="right"><b>{lang_membersince}:</b></td> <td>{user_regdate}</td> </tr> <tr valign="top"> <td align="right"><b>{lang_email}:</b></td> <td><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></td> </tr> <tr valign="top"> <td align="right"><b>{lang_homepage}:</b></td> <td><a href="{user_homepage}">{user_homepage}</a></td> </tr><tr valign="top"> <td align="right"><b>{lang_location}:</b></td> <td>{user_location}</td> </tr><tr valign="top"> <td align="right"><b>{lang_bio}:</b></td> <td>{user_bio}</td> </tr> <tr valign="top"> <td align="right"><b>{lang_pgpkey}:</b></td> <td>{user_pgp}</td> </tr> </table> {end_block} {start_block_last10stories} <table border="0" cellpadding="3" cellspacing="0" width="100%"> <tr> <td> <table border="0" cellspacing="0" cellpadding="3"> {story_row} </table> </td> </tr> </table> {end_block} {start_block_last10comments} <table border="0" cellpadding="3" cellspacing="0" width="100%"> <tr> <td> <table border="0" cellspacing="0" cellpadding="3"> {comment_row} </table> </td> </tr> </table> {end_block} {start_block_postingstats} <table border="0" cellpadding="3" cellspacing="0" width="100%"> <tr> <td> <table border="0" cellspacing="0" cellpadding="3" width="100%"> <tr> <td>{lang_number_stories}</td><td>{number_stories}</td> </tr> <tr> <td>{lang_number_comments}</td><td>{number_comments}</td> </tr> <tr> <td colspan="2"><a href="{site_url}/search.php?query=&amp;datestart=&amp;dateend=&amp;topic=0&amp;type=all&amp;author={user_id}&amp;mode=search">{lang_all_postings_by}</a></td> </tr> </table> </td> </tr> </table> {end_block} 
+{start_block_userprofile}
+    <table border="0" cellspacing="0" cellpadding="3">
+        <tr valign="top">
+            <td align="right"><b>{lang_username}:</b></td>
+            <td>{username} ({user_fullname})<br> {user_photo}</td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_membersince}:</b></td>
+            <td>{user_regdate}</td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_email}:</b></td>
+            <td><a href="{site_url}/profiles.php?uid={user_id}">{lang_sendemail}</a></td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_homepage}:</b></td>
+            <td><a href="{user_homepage}">{user_homepage}</a></td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_location}:</b></td>
+            <td>{user_location}</td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_bio}:</b></td>
+            <td>{user_bio}</td>
+        </tr>
+        <tr valign="top">
+            <td align="right"><b>{lang_pgpkey}:</b></td>
+            <td>{user_pgp}</td>
+        </tr>
+    </table>
+{end_block}
+{start_block_last10stories}
+    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <table border="0" cellspacing="0" cellpadding="3">
+                    {story_row}
+                </table>
+            </td>
+        </tr>
+    </table>
+{end_block}
+{start_block_last10comments}
+    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <table border="0" cellspacing="0" cellpadding="3">
+                    {comment_row}
+                </table>
+            </td>
+        </tr>
+    </table>
+{end_block}
+{start_block_postingstats}
+    <table border="0" cellpadding="3" cellspacing="0" width="100%">
+        <tr>
+            <td>
+                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                    <tr>
+                        <td>{lang_number_stories}</td>
+                        <td>{number_stories}</td>
+                    </tr>
+                    <tr>
+                        <td>{lang_number_comments}</td>
+                        <td>{number_comments}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><a href="{site_url}/search.php?query=&amp;datestart=&amp;dateend=&amp;topic=0&amp;type=all&amp;author={user_id}&amp;mode=search">{lang_all_postings_by}</a></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+{end_block} 
