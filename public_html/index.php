@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.64 2004/08/25 21:25:46 blaine Exp $
+// $Id: index.php,v 1.65 2004/09/23 14:20:59 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -125,23 +125,29 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
-// Scan for any stories that have expired and should be deleted
-// Retrieve the archive topic - currently only one supported
-$archivetid = DB_getItem($_TABLES['topics'],'tid',"archive_flag='1'");
-$expiresql = DB_query("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']}"
-            . " WHERE (expire <= NOW()) AND "
-            . " ( statuscode = " .STORY_ARCHIVE_ON_EXPIRE." OR statuscode = ".STORY_DELETE_ON_EXPIRE." )");
-while (list ($sid,$expiretopic,$title,$expire,$statuscode) = DB_fetchArray($expiresql)) {
-    if ( $archivetid != '' AND $statuscode == STORY_ARCHIVE_ON_EXPIRE ) {
-        COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
-        DB_query("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
-    } elseif ($statuscode == STORY_DELETE_ON_EXPIRE) {
+$archivetid = ' '; // this would be invalid as a topic id
+
+// Scan for any stories that have expired and should be archived or deleted
+$expiresql = DB_query ("SELECT sid,tid,title,expire,statuscode FROM {$_TABLES['stories']} WHERE (expire <= NOW()) AND (statuscode = " . STORY_ARCHIVE_ON_EXPIRE . " OR statuscode = " . STORY_DELETE_ON_EXPIRE . ")");
+while (list ($sid, $expiretopic, $title, $expire, $statuscode) = DB_fetchArray ($expiresql)) {
+    if ($statuscode == STORY_ARCHIVE_ON_EXPIRE) {
+        if ($archivetid == ' ') {
+            // Retrieve the archive topic - currently only one supported
+            $archivetid = DB_getItem ($_TABLES['topics'], 'tid',
+                                      "archive_flag='1'");
+        }
+        if (!empty ($archivetid)) {
+            COM_errorLOG("Archive Story: $sid, Topic:$archivetid, Title: $title. Expired :$expire");
+            DB_query ("UPDATE {$_TABLES['stories']} SET tid = '$archivetid' WHERE sid='{$sid}'");
+        }
+    } else if ($statuscode == STORY_DELETE_ON_EXPIRE) {
         COM_errorLOG("Delete Story and comments: $sid, Topic:$expiretopic, Title: $title. Expired :$expire");
         STORY_deleteImages ($sid);
         DB_query("DELETE FROM {$_TABLES['comments']} WHERE sid='{$sid}'");
         DB_query("DELETE FROM {$_TABLES['stories']} WHERE sid='{$sid}'");
     }
 }
+
 $sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 // if a topic was provided only select those stories.
