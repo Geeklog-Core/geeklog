@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.37 2003/04/09 18:43:48 dhaun Exp $
+// $Id: event.php,v 1.38 2003/04/24 15:50:33 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -536,7 +536,7 @@ function listevents()
 
 	$result = DB_query("SELECT * FROM {$_TABLES['events']} ORDER BY datestart");
 	$nrows = DB_numRows($result);
-	for ($i = 0;$i < $nrows; $i++) {
+	for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {
@@ -549,7 +549,7 @@ function listevents()
                 $access = $LANG_ACCESS['none'];
         }
         $event_templates->set_var('event_id', $A['eid']);
-        $event_templates->set_var('event_title', $A['title']);
+        $event_templates->set_var('event_title', stripslashes ($A['title']));
         $event_templates->set_var('event_access', $access);
         $event_templates->set_var('event_startdate', $A['datestart']);
         $event_templates->set_var('event_enddate', $A['dateend']); 
@@ -585,6 +585,14 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $display .= COM_siteHeader('menu');
     $display .= editevent($mode,$A);
     $display .= COM_siteFooter();
+} else if ($mode == 'clone') {
+    $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
+    $A = DB_fetchArray ($result);
+    $A['eid'] = COM_makesid ();
+    $eid = $A['eid'];
+    $display .= COM_siteHeader ('menu');
+    $display .= editevent ($mode, $A);
+    $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
     $result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
     $A = DB_fetchArray($result);

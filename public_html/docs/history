@@ -3,6 +3,10 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- You can now "clone" events, i.e. make a copy of an existing event. This comes
+  in handy if you have a lot of similar events (e.g. repeating events).
+  Template files admin/event/eventlist.thtml and admin/event/listitem.thtml
+  need to be updated or the "clone" option will not show up ...
 - Fixed a bug in the Admin's poll editor which let you enter more than
   $_CONF['maxanswers'] answers for a poll. You may need to adjust your setting
   of $_CONF['maxanswers'] or you may lose an answer when editing such a poll
