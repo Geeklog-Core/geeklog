@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.149 2002/09/03 16:44:35 dhaun Exp $
+// $Id: lib-common.php,v 1.150 2002/09/11 11:47:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2282,6 +2282,13 @@ function COM_showBlocks($side, $topic='', $name='all')
                 }
             }
             if (!empty($A['content']) && !$U['noboxes']) {
+                $blockcontent = stripslashes($A['content']);
+                // Hack: If the block content starts with a '<' assume it
+                // contains HTML and do not call nl2br() which would only add
+                // unwanted <br> tags.
+                if (substr ($blockcontent, 0, 1) != '<') {
+                    $blockcontent = nl2br ($blockcontent);
+                }
                 $retval .= COM_startBlock($A['title'],$A['help'],COM_getBlockTemplate($A['name'],'header')) . nl2br(stripslashes($A['content'])) . LB
                     . COM_endBlock(COM_getBlockTemplate($A['name'],'footer'));
             }
