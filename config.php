@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.138 2004/10/15 18:19:12 dhaun Exp $
+// $Id: config.php,v 1.139 2004/10/16 17:59:59 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -177,8 +177,14 @@ $_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
 
 // optional settings for making database backups from within Geeklog
 $_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
-$_DB_mysqldump_path = '/usr/bin/mysqldump'; // full path to mysqldump executable
-$_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
+
+// full path to mysqldump executable (Windows users: add ".exe"!)
+$_DB_mysqldump_path = '/usr/bin/mysqldump';
+
+// additional options for mysqldump
+// If you're using InnoDB tables, include the '--single-transaction' or you
+// may end up with inconsistent backups!
+$_CONF['mysqldump_options'] = '-Q';
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
@@ -670,7 +676,7 @@ $_CONF['url_rewrite'] = false; // false = off, true = on
 
 // Define a few useful things for GL
 
-/* Story Record Options for the STATUS Field */
+// Story Record Options for the STATUS Field
 define('STORY_ARCHIVE_ON_EXPIRE', '10');
 define('STORY_DELETE_ON_EXPIRE', '11');
 
