@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.25 2002/04/17 19:57:24 tony_bibbs Exp $
+// $Id: install.php,v 1.26 2002/04/17 20:41:05 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -105,15 +105,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     } else {
         // This is a fresh installation, let them change their table settings
         $db_templates->set_var('upgrade',0);
-        //reset($_TABLES);
-        //for ($i = 1; $i <= count($_TABLES); $i++) {
-        //    $db_templates->set_var('orig_tablename', key($_TABLES));
-        //    $db_templates->set_var('new_tablename', current($_TABLES));
-        //    $db_templates->parse('TABLE_ENTRY', 'tableentry', true);
-        //    next($_TABLES);
-        //}
         $db_templates->set_var('UPGRADE_OPTIONS','');
-        //$db_templates->parse('DB_TABLE_OPTIONS', 'tables'); 
     }
 
     return $db_templates->parse('output','db');
@@ -139,14 +131,7 @@ function INST_createDatabaseStructures() {
     $progress = '';
 
     for ($i = 1; $i <= count($_SQL); $i++) {
-        //DB_query(current($_SQL));
-        //$progress .= "executing " . current($_SQL) . "<br>\n";
         DB_query(current($_SQL));
-        //$error = $instDB->dbError(current($_SQL));
-        //if (!empty($error)) {
-        //    echo $progress . $error;
-        //    return false;
-        //}
         next($_SQL);
     }
 
@@ -154,11 +139,6 @@ function INST_createDatabaseStructures() {
     for ($i = 1; $i <= count($_DATA); $i++) {
         $progress .= "executing " . current($_DATA) . "<br>\n";
         DB_query(current($_DATA));
-        //$error = $instDB->dbError(current($_DATA));
-        //if (!empty($error)) {
-        //    echo $progress . $error;
-        //    return false;
-        //}
         next($_DATA);
     }
 
@@ -182,12 +162,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.2.5-1_to_1.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                DB_query(current($_SQL),1);
-                //$error = DB_error(current($_SQL));
-                //if (!empty($error)) {
-                //    echo $progress . $error;
-                //    return false;
-                //}
+                DB_query(current($_SQL));
                 next($_SQL);
             }
             // OK, now we need to add all users except anonymous to the All Users group and Logged in users group
@@ -217,12 +192,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                DB_query(current($_SQL),1);
-                //$error = $instDB->dbError(current($_SQL));
-                //if (!empty($error)) {
-                //    echo $progress . $error;
-                //    return false;
-                //}
+                DB_query(current($_SQL));
                 next($_SQL);
             }
             $current_gl_version = '1.3.1';
@@ -232,12 +202,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php');
              for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                DB_query(current($_SQL),1);
-                //$error = $instDB->dbError(current($_SQL));
-                //if (!empty($error)) {
-                //    echo $progress . $error;
-                //    return false;
-                //}
+                DB_query(current($_SQL));
                 next($_SQL);
             }
             $current_gl_version = '1.3.2-1';
@@ -248,12 +213,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.2-1_to_1.3.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
-                DB_query(current($_SQL),1);
-                //$error = $instDB->dbError(current($_SQL));
-                //if (!empty($error)) {
-                //    echo $progress . $error;
-                //    return false;
-                //}
+                DB_query(current($_SQL));
                 next($_SQL);
             }
             // Now we need to switch how user blocks are stored.  Right now we only store the blocks the
@@ -283,13 +243,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
         case '1.3.3':
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
-                $progress .= "executing " . current($_SQL) . "<br>\n";
-                DB_query(current($_SQL),1);
-                //$error = $instDB->dbError(current($_SQL));
-                //if (!empty($error)) {
-                //    echo $progress . $error;
-                //    return false;
-                //}
+                DB_query(current($_SQL));
                 next($_SQL);
             }
 
@@ -298,6 +252,10 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             break;
 	case '1.3.4':
             include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.4_to_1.3.5.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
             $result = DB_query("SELECT ft_id FROM {$_TABLES['features']} WHERE ft_name = 'user.mail'");
             $row = DB_fetchArray($result);            
             $mail_ft = $row['ft_id'];
