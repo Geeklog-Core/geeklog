@@ -113,23 +113,23 @@ $_SECURITY_TTL = HOUR * 2;
 **/
 $_ttl_default = HOUR;
 $_TBL_TTL[$_TABLES['access']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['article_images']]      = $_ttl_default;
+$_TBL_TTL[$_TABLES['article_images']]      = 0;
 $_TBL_TTL[$_TABLES['blocks']]              = $_ttl_default;
 $_TBL_TTL[$_TABLES['commentcodes']]        = $_ttl_default;
 $_TBL_TTL[$_TABLES['commentmodes']]        = $_ttl_default;
 $_TBL_TTL[$_TABLES['comments']]            = HOUR / 4;
-$_TBL_TTL[$_TABLES['commentspeedlimit']]   = $_ttl_default;
+$_TBL_TTL[$_TABLES['commentspeedlimit']]   = 0;
 $_TBL_TTL[$_TABLES['cookiecodes']]         = $_ttl_default;
 $_TBL_TTL[$_TABLES['dateformats']]         = $_ttl_default;
 $_TBL_TTL[$_TABLES['events']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['eventsubmission']]     = $_ttl_default;
+$_TBL_TTL[$_TABLES['eventsubmission']]     = 0;
 $_TBL_TTL[$_TABLES['featurecodes']]        = $_ttl_default;
 $_TBL_TTL[$_TABLES['features']]            = $_ttl_default;
 $_TBL_TTL[$_TABLES['frontpagecodes']]      = $_ttl_default;
 $_TBL_TTL[$_TABLES['group_assignments']]   = $_ttl_default;
 $_TBL_TTL[$_TABLES['groups']]              = HOUR / 2;
 $_TBL_TTL[$_TABLES['links']]               = $_ttl_default;
-$_TBL_TTL[$_TABLES['linksubmission']]      = HOUR / 4;
+$_TBL_TTL[$_TABLES['linksubmission']]      = 0;
 $_TBL_TTL[$_TABLES['maillist']]            = $_ttl_default;
 $_TBL_TTL[$_TABLES['personal_events']]     = 0;
 $_TBL_TTL[$_TABLES['plugins']]             = $_ttl_default;
@@ -141,8 +141,8 @@ $_TBL_TTL[$_TABLES['sessions']]            = 0;
 $_TBL_TTL[$_TABLES['sortcodes']]           = $_ttl_default;
 $_TBL_TTL[$_TABLES['statuscodes']]         = $_ttl_default;
 $_TBL_TTL[$_TABLES['stories']]             = HOUR / 4;
-$_TBL_TTL[$_TABLES['storysubmission']]     = HOUR / 4;
-$_TBL_TTL[$_TABLES['submitspeedlimit']]    = $_ttl_default;
+$_TBL_TTL[$_TABLES['storysubmission']]     = 0;
+$_TBL_TTL[$_TABLES['submitspeedlimit']]    = 0;
 $_TBL_TTL[$_TABLES['topics']]              = $_ttl_default;
 $_TBL_TTL[$_TABLES['tzcodes']]             = $_ttl_default;
 $_TBL_TTL[$_TABLES['usercomment']]         = 0;
@@ -225,7 +225,11 @@ function DB_save($table,$fields,$values,$key_field='',$key_value='',$return_page
 {
     global $_DB,$_TABLES,$_CONF;
 
-    $_DB->dbSave($table, $fields, $values, $key_field, $key_value);
+    if (empty($key_field)) {
+        $_DB->dbSave($table, $fields, $values);
+    } else {
+        $_DB->dbSave($table, $fields, $values, $key_field, $key_value);
+    }
 
     if ($table == $_TABLES['stories']) {
        COM_exportRDF();
@@ -544,4 +548,8 @@ function DB_numQueries()
     return $_DB->dbNumQueries();
 }
 
+function DB_datetime($tmp)
+{
+    return false;      
+}
 ?>
