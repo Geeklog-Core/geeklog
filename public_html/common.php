@@ -606,13 +606,21 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 # Creates the list of topics and the number of stories in each topic
 
 function showtopics($topic="") {
-	global $CONF, $USER;
+	global $CONF, $USER, $LANG01;
 	if ($CONF["sortmethod"] == 'alpha')
 		$result = dbquery("SELECT tid,topic FROM topics ORDER BY tid ASC");
 	else
 		$result = dbquery("SELECT tid,topic FROM topics ORDER BY sortnum");
 
 	$nrows = mysql_num_rows($result);
+	#Give a link to the hompage here since a lot of people use this
+	#for navigating the site
+	if (!empty($topic)) {
+                print "<a href={$CONF["base"]}/index.php><b>{$LANG01[90]}</b></a><br>";
+        } else {
+                print "{$LANG01[90]}<br>";
+        }
+
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
 		if ($A["tid"]==$topic) {
