@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.392 2004/10/23 19:12:46 dhaun Exp $
+// $Id: lib-common.php,v 1.393 2004/10/25 08:04:19 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3900,7 +3900,7 @@ function COM_rdfCharacterData( $parser, $data )
 
 function COM_rdfImport( $bid, $rdfurl )
 {
-    global $_TABLES, $LANG21,
+    global $_CONF, $_TABLES, $LANG21,
            $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
     $RDFinsideitem = false;
