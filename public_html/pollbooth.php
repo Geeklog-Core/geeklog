@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.12 2002/05/20 19:39:47 dhaun Exp $
+// $Id: pollbooth.php,v 1.13 2002/05/21 21:13:11 tony_bibbs Exp $
 
 require_once('lib-common.php');
 
@@ -40,6 +40,8 @@ require_once('lib-common.php');
 *
 * Saves the users vote, if allowed for the poll $qid.  NOTE
 * all data comes from form post
+*
+* @return   string  HTML for poll results
 *
 */
 function pollsave() 
@@ -53,7 +55,8 @@ function pollsave()
     $value[2] = $aid;
     // This call to DB-change will properly supress the insertion of quoes around $value in the sql
     DB_change($_TABLES['pollanswers'],'votes',"votes + 1",$id,$value, '', true);
-    DB_save($_TABLES['pollvoters'],'ipaddress, date, qid',"'$REMOTE_ADDR',unix_timestamp(),'$qid'");
+    // This always does an insert so no need to provide key_field and key_value args
+    DB_save($_TABLES['pollvoters'],'ipaddress,date,qid',"'$REMOTE_ADDR'," . time() . ",'$qid'");
     $retval .= COM_startBlock($LANG07[1])
         . $LANG07[2] . ' ' . $qid
         . COM_endBlock()
@@ -66,6 +69,8 @@ function pollsave()
 * Shows all polls in system
 *
 * List all the polls on the system if no $qid is provided
+*
+* @return   string  HTML for poll listing
 *
 */
 function polllist() 
@@ -130,4 +135,5 @@ if (empty($qid)) {
 }
 $display .= COM_siteFooter();
 echo $display;
+
 ?>
