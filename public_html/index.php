@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.34 2002/09/09 06:50:24 mlimburg Exp $
+// $Id: index.php,v 1.35 2002/09/23 10:27:18 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -41,33 +41,64 @@ else {
 }
 require_once('lib-common.php');
 
-$display .= COM_siteHeader();
 
 /*
-    Staticpage on Frontpage Addon (Hacked together by MLimburg)
-    
-    If a staticpage with the title 'frontpage' exists, then it is shown before the news messages.  
-    If this staticpage has the label 'nonews', then it is shown INSTEAD of news messages.
-    This will only occur on the basic index.php page, and not on the $topic pages.
-*/
+ *  Staticpage on Frontpage Addon (Hacked together by MLimburg)
+ *
+ *  If a staticpage with the title 'frontpage' exists, then it is shown before
+ *  the news messages.  If this staticpage has the label 'nonews', then it is
+ *  shown INSTEAD of news messages.
+ *  This will only occur on the basic index.php page, and not on the $topic
+ *  pages.
+ */
 
-$shownews = 'yes';
+$shownews = true;
 
-if( empty($topic) )
-{
-    $spsql = "SELECT sp_content,sp_label FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'";
-    $spresult = DB_fetchArray( DB_query( $spsql ));
+if (empty ($topic)) {
 
-    if( $spresult['sp_label'] == 'nonews' )
-    {
-        $shownews = 'no';
+    // check if static pages plugin is installed and enabled
+    if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
+
+        $spsql = "SELECT sp_content,sp_label,sp_format FROM {$_TABLES['staticpage']} WHERE sp_title = 'frontpage'";
+        $spresult = DB_fetchArray (DB_query ($spsql));
+
+        if ($spresult['sp_label'] == 'nonews') { // replace news entirely
+            $shownews = false;
+            switch ($spresult['sp_format']) {
+                case 'noblocks':
+                    $display .= COM_siteHeader ('none');
+                    break;
+                case 'allblocks':
+                case 'leftblocks':
+                    $display .= COM_siteHeader ('menu');
+                    break;
+            }
+
+            $display .= stripslashes ($spresult['sp_content']);
+
+            if ($spresult['sp_format'] == 'allblocks') {
+                $display .= COM_siteFooter (true);
+            } else if ($spresult['sp_format'] != 'blankpage') {
+                $display .= COM_siteFooter ();
+            }
+        } else { // display static page content before the news
+            $display .= COM_siteHeader();
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                $display .= COM_startBlock ($spresult['sp_label']);
+            }
+            $display .= stripslashes ($spresult['sp_content']);
+            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
+                $display .= COM_endBlock ();
+            }
+        }
+    } else {
+        $display .= COM_siteHeader();
     }
-
-    $display .= $spresult['sp_content'];
+} else {
+    $display .= COM_siteHeader();
 }
 
-if( $shownews == 'yes' )
-{
+if ($shownews) {
 
 $maxstories = 0;
 
@@ -105,13 +136,15 @@ $limit = $U['maxstories'];
 
 $display .= COM_showMessage($HTTP_GET_VARS['msg']);
 
-// Geeklog now allows for articles to be published in the future.  Because of this, we need to check
-// to see if we need to rebuild the RDF file in the case that any such articles have now been published
+// Geeklog now allows for articles to be published in the future.  Because of
+// this, we need to check to see if we need to rebuild the RDF file in the case
+// that any such articles have now been published
 COM_rdfUpToDateCheck();
 
-// For similar reasons, we need to see if there are currently two featured articles.  Can only have one
-// but you can have one current featured article and one for the future...this check will set the latest
-// one as featured solely
+// For similar reasons, we need to see if there are currently two featured
+// articles.  Can only have one but you can have one current featured article
+// and one for the future...this check will set the latest one as featured
+// solely
 COM_featuredCheck();
 
 $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
@@ -206,9 +239,10 @@ if ($nrows > 0) {
     }
     $display .= COM_endBlock();
 }
-}
 
 $display .= COM_siteFooter(true); // The true value enables right hand blocks.
+
+}
 
 // Output page 
 echo $display;
