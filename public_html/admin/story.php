@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.71 2002/10/10 10:48:09 dhaun Exp $
+// $Id: story.php,v 1.72 2002/11/26 16:48:15 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -157,7 +157,7 @@ function storyeditor($sid = '', $mode = '')
         if ($A["postmode"] == "html") {
             $A["introtext"] = COM_checkHTML(COM_checkWords($A["introtext"]));
             $A["bodytext"] = COM_checkHTML(COM_checkWords($A["bodytext"]));
-            $A["title"] = COM_checkHTML(COM_checkWords($A["title"]));
+            $A["title"] = COM_checkHTML(htmlspecialchars(COM_checkWords($A["title"])));
         } else {
             $A["introtext"] = htmlspecialchars(COM_checkWords($A["introtext"]));
             $A["bodytext"] = htmlspecialchars(COM_checkWords($A["bodytext"]));
@@ -285,8 +285,7 @@ function storyeditor($sid = '', $mode = '')
     
     $A['title'] = str_replace('{','&#123;',$A['title']);
     $A['title'] = str_replace('}','&#125;',$A['title']);
-    $story_templates->set_var('story_title',
-            htmlspecialchars (stripslashes($A['title'])));
+    $story_templates->set_var('story_title', stripslashes($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
     $story_templates->set_var('topic_options', COM_optionList($_TABLES['topics'],'tid,topic',$A["tid"]));
     $story_templates->set_var('lang_show_topic_icon', $LANG24[56]);
