@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.13 2002/03/09 23:56:54 dhaun Exp $
+// $Id: search.php,v 1.14 2002/04/12 14:59:20 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -122,7 +122,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
 	}
 	
 	if ($type == 'all' OR $type == 'comments') {
-		$sql = "SELECT sid,title,comment,pid,uid,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
+		$sql = "SELECT sid,title,comment,pid,uid,type as comment_type,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
 		$sql .= "((comment like '%$query%' OR comment like '$query%' OR comment like '%$query') ";
 		$sql .= "OR (title like '%$query%' OR title like '$query%' OR title like '%$query')) ";
 		if (!empty($datestart) && !empty($dateend)) {
@@ -206,8 +206,11 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
 	
                     $A = DB_fetchArray($result_stories);
                 } else if (strlen($C['day']) > 0) {
-                    // print row
-                    $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
+                    if ($C['comment_type'] == 'article') {
+                        $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
+                    } else {
+                        $searchresults->set_var('data', '<a href="pollbooth.php?qid=' . $C['sid'] . '&amp;aid=-1#comments">' . stripslashes($C['title']) . '</a>');
+                    }
                     $searchresults->parse('data_cols','resultcolumn',true);
 
                     $thetime = COM_getUserDateTimeFormat($C['day']);
