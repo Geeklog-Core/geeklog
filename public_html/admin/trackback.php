@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.10 2005/02/05 18:48:39 dhaun Exp $
+// $Id: trackback.php,v 1.11 2005/02/11 20:10:31 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -994,7 +994,7 @@ if ($mode == 'delete') {
     }
     $display .= trackback_editor ($trackbackUrl, $url, $title, $excerpt, $blog)
              . COM_siteFooter ();
-} else if ($mode == 'fresh') {
+} else if (($mode == 'fresh') || ($mode == 'preview')) {
     $display .= COM_siteHeader ('menu');
 
     if (isset ($_REQUEST['msg'])) {
