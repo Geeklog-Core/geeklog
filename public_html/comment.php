@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.51 2004/01/21 20:23:33 dhaun Exp $
+// $Id: comment.php,v 1.52 2004/01/23 16:56:22 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -254,7 +254,7 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
     if ($postmode == 'html') {
         $comment = COM_checkWords (COM_checkHTML (addslashes (COM_stripslashes ($comment))));
     } else {
-        $comment = $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
+        $comment = htmlspecialchars (COM_checkWords (COM_stripslashes ($comment)));
     }
 
     // Get signature
@@ -280,6 +280,7 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 
     if (!empty ($title) && !empty ($comment)) {
         COM_updateSpeedlimit ('comment');
+        $title = addslashes ($title);
         $comment = addslashes ($comment);
         DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,type',
                 "'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
