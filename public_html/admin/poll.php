@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.29 2003/02/02 19:46:47 dhaun Exp $
+// $Id: poll.php,v 1.30 2003/04/22 16:59:35 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -264,11 +264,13 @@ function editpoll($qid='')
     $poll_templates->set_var('lang_save', $LANG25[14]);   
     $poll_templates->set_var('lang_cancel', $LANG25[15]);   
  
-    for ($i = 0; $i < $_CONF['maxanswers']; $i++) {
+    for ($i = 1; $i <= $_CONF['maxanswers']; $i++) {
         $A = DB_fetchArray($answers);
         $poll_templates->set_var('answer_text', htmlentities ($A['answer']));
         $poll_templates->set_var('answer_votes', $A['votes']);
-        $poll_templates->parse('answer_option','answer',true);
+        if ($i < $_CONF['maxanswers']) {
+            $poll_templates->parse('answer_option','answer',true);
+        }
     }
 
     $poll_templates->parse('output','editor');
