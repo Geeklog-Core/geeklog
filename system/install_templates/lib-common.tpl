@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.38 2002/03/27 20:35:30 dhaun Exp $
+// $Id: lib-common.tpl,v 1.39 2002/03/28 07:49:43 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2375,9 +2375,9 @@ function COM_PrintPageNavigation ($page, $num_pages, $topic='')
     } else {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
         if (!empty($topic)) {
-            $retval .= '?topic=' . $topic . '&amp;page=' . ($page+1) . '>' . $LANG05[5] . '</a>';
+            $retval .= '?topic=' . $topic . '&amp;page=' . ($page+1) . '">' . $LANG05[5] . '</a>';
         } else {
-            $retval .= '?page=' . ($page+1) . '>' . $LANG05[5] . '</a>';
+            $retval .= '?page=' . ($page+1) . '">' . $LANG05[5] . '</a>';
         }
     }
 
