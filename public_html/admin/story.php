@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.49 2002/05/14 19:52:46 tony_bibbs Exp $
+// $Id: story.php,v 1.50 2002/05/14 20:22:25 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -96,13 +96,6 @@ function storyeditor($sid = '', $mode = '')
             $display .= COM_startBlock($LANG24[40]);
             $display .= $LANG24[41];
             $display .= COM_endBlock();
-            $A['title'] = str_replace('{','&#123;',$A['title']);
-            $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
-            $A['bodytext'] = str_replace('{','&#123;',$A['bodytext']);
-            $A['title'] = str_replace('}','&#125;',$A['title']);
-            $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
-            $A['bodytext'] = str_replace('}','&#125;',$A['bodytext']);
-            $str = str_replace('}','&#125;',$str);
             $display .= COM_article($A,n);
             return;
         } else if ($access == 0) {
@@ -168,16 +161,10 @@ function storyeditor($sid = '', $mode = '')
         $A['unixdate'] = strtotime($A['publish_year'] . '-' . $A['publish_month'] . '-' . $A['publish_day']
             . ' ' . $A['publish_hour'] . ':' . $A['publish_minute'] . ':00');
     }
+    
     if (!empty($A['title'])) {
         $display .= COM_startBlock($LANG24[26]);
         $A['day'] = $A['unixdate'];
-        $A['title'] = str_replace('{','&#123;',$A['title']);
-        $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
-        $A['bodytext'] = str_replace('{','&#123;',$A['bodytext']);
-        $A['title'] = str_replace('}','&#125;',$A['title']);
-        $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
-        $A['bodytext'] = str_replace('}','&#125;',$A['bodytext']);
-        $str = str_replace('}','&#125;',$str);
         $display .= COM_article($A,"n");
         $display .= COM_endBlock();
     }
@@ -293,11 +280,16 @@ function storyeditor($sid = '', $mode = '')
         $newintro = str_replace('</pre></code>','[/code]',$newintro);
         $newbody = str_replace('</pre></code>','[/code]',$newbody);
     }
+    $newintro = str_replace('{','&#123;',$newintro);
+    $newintro = str_replace('}','&#125;',$newintro);
     $story_templates->set_var('story_introtext', $newintro);
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
     if ($A['postmode'] == 'plaintext') {
         $newbody = str_replace('$','&#36;',$newbody);
     }
+    
+    $newbody = str_replace('{','&#123;',$newbody);
+    $newbody = str_replace('}','&#125;',$newbody);
     $story_templates->set_var('story_bodytext', $newbody);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
