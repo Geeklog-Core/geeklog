@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.72 2004/01/02 20:58:26 blaine Exp $
+// $Id: users.php,v 1.73 2004/01/07 04:48:11 tony Exp $
 
 /**
 * This file handles user authentication
@@ -105,7 +105,11 @@ function userprofile($user)
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
     if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
-        $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
+        if (strstr($_CONF['path_images'], $_CONF['path_html'])) {
+            $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
+        } else {
+            $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&image=' . $A['photo'] . '" alt="">');
+        }
     } else {
         $user_templates->set_var('user_photo','');
     }
