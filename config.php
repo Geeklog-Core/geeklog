@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.56 2002/09/19 04:37:50 tony_bibbs Exp $
+// $Id: config.php,v 1.57 2002/09/19 21:50:00 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -60,11 +60,13 @@ $_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
 // |                                                                           |
-// | All paths must have a trailing slash ('/') or, if you're on Windows, they |
-// | must starts with a drive letter (e.g. 'C:/').                             |
+// | All paths must have a trailing slash ('/').  If you're on Windows, they   |
+// | must also start with a drive letter (e.g. 'C:/').                         |
 // | The 'path' value signifies where the config.php (this file) resides       |
 // +---------------------------------------------------------------------------+
 $_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
+
+// you only need to change this if you moved or renamed the public_html directory
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 
 // you shouldn't need to edit the following
@@ -258,23 +260,27 @@ $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 
 // Optional Image Settings
 
-// If you set $_CONF['image_lib'] below, you must supply a path for the library you will use.  Setting this
-// also assumes that if a photo is uploaded that is  too big either by the image sizes below or by overriding
-// them using the upload object then the library you choose will attempt to resize the image.  Leaving this
-// value empty disables this feature
+// If you set $_CONF['image_lib'] below, you must supply a path for the library
+// you will use.  Setting this also assumes that if a photo is uploaded that is
+// too big either by the image sizes below or by overriding them using the
+// upload object then the library you choose will attempt to resize the image.
+// Leaving this value empty disables this feature
 $_CONF['image_lib']             = ''; // can be netpbm, imagemagick
 
 // If you set image_lib to imagemagick give this path otherwise comment it out
+// NOTE: you will need a fairly recent version of ImageMagick for this to work.
+// ImageMagick version 5.4.9 (or newer) is recommended.
 //$_CONF['path_to_mogrify']       = '/path/to/mogrify';
 
 // If you set image_lib to netpbm give the path to the netpbm directory, you
 // need the trailing slash here.
-// NOTE: if you use NETPBM, use the latest package from the Gallery package for your
-// operating system found at http://sourceforge.net/projects/gallery in the download
-// section.  You need to take the netpbm tarball from them and uncompress the file which
-// will create a netpbm directory.  If you plan to only use netpbm with Geeklog, put that 
-// entire folder in /path/to/geeklog and adjust the path below.  The only programs you need
-// from netpbm is giftopnm, jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
+// NOTE: if you use NETPBM, use the latest package from the Gallery package for
+// your operating system found at http://sourceforge.net/projects/gallery in
+// the download section.  You need to take the netpbm tarball from them and
+// uncompress the file which will create a netpbm directory.  If you plan to
+// only use netpbm with Geeklog, put that entire folder in /path/to/geeklog and
+// adjust the path below.  The only programs you need from netpbm are giftopnm,
+// jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
 //$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
 
 // Image settings
@@ -308,7 +314,7 @@ $_CONF['linksperpage'] = 10; // links per page
 // Parameters for checking words and HTML tags
 
 $_CONF['allowablehtml'] = '<p>,<b>,<i>,<a>,<em>,<br>,<tt>,<hr>,<li>,<ol>,<ul>,<code>,<pre>';
-$_CONF['adminhtml'] = $_CONF['allowablehtml'] . ',<div>,<table>,<tr>,<td>,<th>';
+$_CONF['adminhtml'] = $_CONF['allowablehtml'] . ', <div>,<table>,<tr>,<td>,<th>';
 $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
@@ -326,7 +332,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.6rc1');
+    define('VERSION', '1.3.6');
 }
 
 $_STATES = array(
