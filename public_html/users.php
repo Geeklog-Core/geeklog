@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.49 2003/01/05 21:28:08 dhaun Exp $
+// $Id: users.php,v 1.50 2003/01/09 19:33:02 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -173,13 +173,10 @@ function userprofile($user)
     $sql .= "(perm_anon >= 2))";
     $result = DB_query($sql);
     $numsids = DB_numRows($result);
-    $sidList = '';
+    $sidArray = array();
     for ($i = 1; $i <= $numsids; $i++) {
         $S = DB_fetchArray ($result);
-        $sidList .= $S['sid'];
-        if ($i != $numsids) {
-            $sidList .= ',';
-        }
+        $sidArray[] = $S['sid'];
     }
     // add all polls the current visitor has access to
     $sql = "SELECT qid FROM {$_TABLES['pollquestions']} WHERE ";
@@ -191,22 +188,28 @@ function userprofile($user)
     $sql .= "(perm_anon >= 2)";
     $result = DB_query($sql);
     $numqids = DB_numRows($result);
-    if (($numqids > 0) && !empty ($sidList)) {
-        $sidList .= ',';
-    }
+
     for ($i = 1; $i <= $numqids; $i++) {
         $Q = DB_fetchArray ($result);
-        $sidList .= "'" . $Q['qid'] . "'";
-        if ($i != $numqids) {
-            $sidList .= ',';
-        }
+        $sidArray[] = $S['sid'];
     }
+
+    $sidList = implode("', '",$sidArray);
+    $sidList = "'$sidList'";
+
     // then, find all comments by the user in those stories and polls
-    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user) ";
+    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user)";
+
+    // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
+    // field is part of the select
+    // if (!empty ($sidList)) {
+    //     $sql .= " AND (sid in ($sidList))";
+    // }
     if (!empty ($sidList)) {
-        $sql .= " AND (sid in ($sidList))";
+        $sql .= " HAVING sid in ($sidList)";
     }
     $sql .= " ORDER BY unixdate DESC LIMIT 10";
+
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
