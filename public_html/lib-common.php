@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.68 2002/04/18 14:37:13 dhaun Exp $
+// $Id: lib-common.php,v 1.69 2002/04/19 03:25:24 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -408,6 +408,7 @@ function COM_siteHeader($what = 'menu')
     return $header->finish($header->get_var('index_header'));
 }
 
+
 /**
 * Returns the site footer 
 *
@@ -415,9 +416,9 @@ function COM_siteHeader($what = 'menu')
 * HTML for the site footer.
 *
 */
-function COM_siteFooter()
+function COM_siteFooter($rightblock = false)
 {
-    global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES;
+    global $_CONF, $LANG01, $_PAGE_TIMER, $_TABLES, $topic;
 
     // If the theme implemented this for us then call their version
     // instead.
@@ -430,7 +431,7 @@ function COM_siteFooter()
     $footer = new Template($_CONF['path_layout']);
 
     // Set template file
-    $footer->set_file('footer','footer.thtml');
+    $footer->set_file(array('footer'=>'footer.thtml','rightblocks'=>'rightblocks.thtml'));
 
     // Do variable assignments
     DB_change($_TABLES['vars'],'value','value + 1','name','totalhits','',true);
@@ -441,6 +442,15 @@ function COM_siteFooter()
     $footer->set_var('geeklog_version', VERSION);
     $footer->set_var('execution_time', $_PAGE_TIMER->stopTimer());
 
+    if ($rightblock) { 
+        // Now show any blocks
+        $footer->set_var('geeklog_blocks',COM_showBlocks('right', $topic));
+        $footer->parse('right_blocks','rightblocks',true);
+    } else {
+        $footer->set_var('geeklog_blocks', '');
+        $footer->set_var('right_blocks', '');
+    }
+    
     // Actually parse the template and make variable substitutions
     $footer->parse('index_footer','footer');
 
@@ -448,6 +458,7 @@ function COM_siteFooter()
     return $footer->finish($footer->get_var('index_footer'));
 
 }
+
 
 /**
 * Prints out standard block header

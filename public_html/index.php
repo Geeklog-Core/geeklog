@@ -31,11 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.21 2002/04/16 20:27:03 tony_bibbs Exp $
+// $Id: index.php,v 1.22 2002/04/19 03:25:24 mlimburg Exp $
 
 include_once('lib-common.php');
 
-$display = '';
 $display .= COM_siteHeader();
 
 $maxstories = 0;
@@ -67,7 +66,6 @@ if (!empty($_USER['uid'])) {
 
 $limit = $U['maxstories'];
 
-// Show any messages that may need to be displayed
 $display .= COM_showMessage($msg);
 
 // Geeklog now allows for articles to be published in the future.  Because of this, we need to check
@@ -78,7 +76,6 @@ COM_rdfUpToDateCheck();
 // but you can have one current featured article and one for the future...this check will set the latest
 // one as featured solely
 COM_featuredCheck();
-
 
 $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
 
@@ -147,16 +144,7 @@ if ($nrows > 0) {
     $display .= COM_endBlock();
 }
 
-// Display any blocks, polls, olderstuff configured for this page
-// </td> removed from lines 136 and 138, since closing </td> already exists in footer.php
-if ($U['noboxes'] != 1) {
-    $display .= '</td><td><img src="' . $_CONF['site_url'] . '/images/speck.gif" height="1" width="10" alt=""></td>' . LB
-        . '<td valign="top" width="180">' . LB . COM_showBlocks('right',$topic)
-        . '<br><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="180" height="1" alt="">' . LB;
-}
-
-// Get footer
-$display .= COM_siteFooter();
+$display .= COM_siteFooter(true); // The true value enables right hand blocks.
 
 // Output page 
 echo $display;
