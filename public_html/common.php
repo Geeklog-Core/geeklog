@@ -179,7 +179,8 @@ function dbcount($table,$id="",$value="",$id2="",$value2="") {
 	$sql = "SELECT COUNT(*) FROM $table";
 	if (!empty($id) && !empty($value)) {
 		$sql .= " WHERE $id = '$value'";
-		if (!empty($id2) && !empty($value2)) {
+		#if (!empty($id2) && !empty($value2)) {
+		if (strlen($id2) && strlen($value2)) {
 			$sql .= " AND $id2 = '$value2'";
 		}
 	}
