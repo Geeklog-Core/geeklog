@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.50 2003/01/17 15:42:57 dhaun Exp $
+// $Id: usersettings.php,v 1.51 2003/01/18 18:07:12 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -189,6 +189,7 @@ function editpreferences()
                                    'exclude' => 'excludeblock.thtml',
                                    'digest' => 'digestblock.thtml',
                                    'boxes' => 'boxesblock.thtml',
+                                   'comment' => 'commentblock.thtml',
                                    'language' => 'language.thtml',
                                    'theme' => 'theme.thtml'
                                   ));
@@ -217,6 +218,12 @@ function editpreferences()
     $preferences->set_var ('lang_authors', $LANG04[56]);
     $preferences->set_var ('lang_emailedtopics', $LANG04[76]);
     $preferences->set_var ('lang_boxes', $LANG04[55]);
+    $preferences->set_var ('lang_displaymode', $LANG04[57]);
+    $preferences->set_var ('lang_displaymode_text', $LANG04[60]);
+    $preferences->set_var ('lang_sortorder', $LANG04[58]);
+    $preferences->set_var ('lang_sortorder_text', $LANG04[61]);
+    $preferences->set_var ('lang_commentlimit', $LANG04[59]);
+    $preferences->set_var ('lang_commentlimit_text', $LANG04[62]);
     $preferences->set_var ('lang_submit', $LANG04[9]);
 
     $preferences->set_var ('start_block_display',
@@ -227,8 +234,22 @@ function editpreferences()
             COM_startBlock ($LANG04[75] . ' ' . $_USER['username']));
     $preferences->set_var ('start_block_boxes',
             COM_startBlock ($LANG04[47] . ' ' . $_USER['username']));
+    $preferences->set_var ('start_block_comment',
+            COM_startBlock ($LANG04[64] . ' ' . $_USER['username']));
     $preferences->set_var ('end_block', COM_endBlock ());
 
+    $preferences->set_var ('display_headline',
+                           $LANG04[45] . ' ' . $_USER['username'])
+    $preferences->set_var ('exclude_headline',
+                           $LANG04[46] . ' ' . $_USER['username'])
+    $preferences->set_var ('digest_headline',
+                           $LANG04[75] . ' ' . $_USER['username'])
+    $preferences->set_var ('boxes_headline',
+                           $LANG04[47] . ' ' . $_USER['username'])
+    $preferences->set_var ('comment_headline',
+                           $LANG04[64] . ' ' . $_USER['username'])
+
+    // display preferences block
     if ($_CONF['allow_user_language'] == 1) {
         $selection = '<select name="language">' . LB;
 
@@ -317,9 +338,10 @@ function editpreferences()
     $selection = '<select name="dfid">' . LB
                . COM_optionList ($_TABLES['dateformats'], 'dfid,description',
                                  $A['dfid']) . '</select>';
-    $preferences->set_var ('dateformat_selection', $selection);
+    $preferences->set_var ('dateformat_selector', $selection);
     $preferences->parse ('display_block', 'display', true);
 
+    // excluded items block
     $groupList = '';
     if (!empty ($_USER['uid'])) {
         foreach ($_GROUPS as $grp) {
@@ -355,6 +377,7 @@ function editpreferences()
     }
     $preferences->parse ('exclude_block', 'exclude', true);
 
+    // daily digest block
     if ($_CONF['emailstories'] == 1) {
         $user_etids = DB_getItem ($_TABLES['userindex'], 'etids',
                                   "uid = {$_USER['uid']}");
@@ -372,6 +395,7 @@ function editpreferences()
         $preferences->set_var ('digest_block', '');
     }
 
+    // boxes block
     $selectedblock = '';
     if (strlen($A['boxes']) > 0) {
         $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ',',',$A['boxes']) . ")");
@@ -388,47 +412,29 @@ function editpreferences()
             'bid,title,blockorder', $whereblock, $selectedblocks));
     $preferences->parse ('boxes_block', 'boxes', true);
 
-    return $preferences->finish ($preferences->parse ('output', 'prefs'));
-}
-
-/**
-* Shows comment preferences form
-*
-*/
-function editcommentprefs() 
-{
-    global $_TABLES, $_CONF, $LANG04, $_USER;
-
-    $retval = ''; 
+    // comment preferences block
     $result = DB_query("SELECT commentmode,commentorder,commentlimit FROM {$_TABLES['usercomment']} WHERE uid = {$_USER['uid']}");
-    $A = DB_fetchArray($result);
+    $A = DB_fetchArray ($result);
 
-    if (empty($A["commentmode"])) {
-        $A["commentmode"] = $_CONF['comment_mode'];
-    }       
-    if (empty($A["commentorder"])) $A["commentorder"] = 0;
-    if (empty($A["commentlimit"])) $A["commentlimit"] = 100;
-    $retval .= COM_startBlock($LANG04[64] . ' ' . $_USER['username']);
-    $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">' . LB;
-    $retval .= '<table border="0" cellspacing="0" cellpadding=3>' . LB;
-    $retval .= '<tr valign="top"><td align="right"><b>' . $LANG04[57] . ':</b><br><small>' . $LANG04[60] 
-        . '</small></td><td><select name="commentmode">';
-    $retval .= COM_optionList($_TABLES['commentmodes'],'mode,name',$A['commentmode']);
-    $retval .= '</select></td></tr>';
-    $retval .= '<tr valign="top"><td align="right"><b>' . $LANG04[58] . ':</b><br><small>' . $LANG04[61]
-        . '</small></td><td><select name="commentorder">';
-    $retval .= COM_optionList($_TABLES['sortcodes'],'code,name',$A['commentorder']);
-    $retval .= '</select></td></tr>';
-    $retval .= '<tr valign="top"><td align="right"><b>' . $LANG04[59] . ':</b><br><small>'
-        . $LANG04[62] . '</small></td><td>';
-    $retval .= '<input type="text" size="5" maxlength="5" name="commentlimit" value="' . $A['commentlimit']
-        . '"></td></tr>' . LB;
-    $retval .= '<tr><td align="right" colspan="2"><input type="hidden" name="mode" value="savecomments">';
-    $retval .= '<input type="submit" value="' . $LANG04[9] . '"></td></tr>' . LB;
-    $retval .= '</table></form>';
-    $retval .= COM_endBlock();
+    if (empty ($A['commentmode'])) {
+        $A['commentmode'] = $_CONF['comment_mode'];
+    }
+    if (empty ($A['commentorder'])) $A['commentorder'] = 0;
+    if (empty ($A['commentlimit'])) $A['commentlimit'] = 100;
 
-    return $retval;
+    $selection = '<select name="commentmode">';
+    $selection .= COM_optionList ($_TABLES['commentmodes'], 'mode,name',
+                                  $A['commentmode']);
+    $preferences->set_var ('displaymode_selector', $selection);
+
+    $selection = '<select name="commentorder">';
+    $selection .= COM_optionList ($_TABLES['sortcodes'], 'code,name',
+                                  $A['commentorder']);
+    $preferences->set_var ('sortorder_selector', $selection);
+    $preferences->set_var ('commentlimit_value', $A['commentlimit']);
+    $preferences->parse ('comment_block', 'comment', true);
+
+    return $preferences->finish ($preferences->parse ('output', 'prefs'));
 }
 
 /**
@@ -578,9 +584,7 @@ function savepreferences($A)
     if ($A['noicons'] == 'on') $A['noicons'] = 1;
     if ($A["willing"] == 'on') $A["willing"] = 1;
     if ($A['noboxes'] == 'on') $A['noboxes'] = 1;
-    /*echo 'user max = ' . $A['maxstories'] . '<br>';
-    echo 'conf min = ' . $_CONF['minnews'] . '<br>';
-    exit;*/
+
     if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
     }
@@ -594,7 +598,7 @@ function savepreferences($A)
     $AIDS = @array_values($A[$_TABLES['users']]);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
     $ETIDS = @array_values($A['etids']);
-    
+
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
             $tids .= $TIDS[$i] . ' ';
@@ -631,7 +635,7 @@ function savepreferences($A)
             $etids .= $ETIDS[$i] . " ";
         }
     }
-    
+
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
     setcookie($_CONF['cookie_theme'],$A['theme'],time() + 31536000,$_CONF['cookie_path']); 
@@ -642,8 +646,9 @@ function savepreferences($A)
     if (empty ($etids)) {
         $etids = '-';
     }
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",$_CONF['site_url'] . "/usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'");
 
+    DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$A['commentmode']}','{$A['commentorder']}','{$A['commentlimit']}'");
 }
 
 // MAIN
@@ -658,15 +663,10 @@ $display = '';
 if (!empty($_USER['username']) && !empty($mode)) {
     switch ($mode) {
     case 'preferences':
-        $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
-        $display .= editpreferences();
-        $display .= COM_siteFooter();
-        break;
     case 'comments':
         $display .= COM_siteHeader('menu');
         $display .= COM_showMessage($HTTP_GET_VARS['msg']);
-        $display .= editcommentprefs();
+        $display .= editpreferences();
         $display .= COM_siteFooter();
         break;
     case 'edit':
@@ -679,10 +679,9 @@ if (!empty($_USER['username']) && !empty($mode)) {
         $display .= saveuser($HTTP_POST_VARS);
         break;
     case 'savepreferences':
-        savepreferences($HTTP_POST_VARS);
-        break;
-    case 'savecomments':
-        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'",$_CONF['site_url'] . "/usersettings.php?mode=comments&msg=7");
+        savepreferences ($HTTP_POST_VARS);
+        $display .= COM_refresh ($_CONF['site_url']
+                                 . '/usersettings.php?mode=preferences&msg=6');
         break;
     }
 } else {
@@ -691,7 +690,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         $display .= COM_startBlock($LANG04[70] . '!');
         $display .= '<br>' . $LANG04[71] . '<br><br>';
         $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+        $display .= COM_siteFooter();
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
