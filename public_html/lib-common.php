@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.69 2002/04/19 03:25:24 mlimburg Exp $
+// $Id: lib-common.php,v 1.70 2002/04/20 12:45:26 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -315,7 +315,7 @@ function COM_getThemes()
 */
 function COM_siteHeader($what = 'menu')
 {
-    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic;
+    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS;
   
     // If the theme implemented this for us then call their version
     // instead.
@@ -344,6 +344,19 @@ function COM_siteHeader($what = 'menu')
     $header->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.gif' );
     $header->set_var('css_url', $_CONF['layout_url'] . '/style.css');
     $header->set_var('theme', $_CONF['theme']);
+
+    // Now add variables for buttons like e.g. those used by the Yahoo theme   
+    $header->set_var('button_home', $LANG_BUTTONS[1]);
+    $header->set_var('button_contact', $LANG_BUTTONS[2]);
+    $header->set_var('button_contribute', $LANG_BUTTONS[3]);
+    $header->set_var('button_links', $LANG_BUTTONS[4]);
+    $header->set_var('button_polls', $LANG_BUTTONS[5]);
+    $header->set_var('button_calendar', $LANG_BUTTONS[6]);
+    $header->set_var('button_sitestats', $LANG_BUTTONS[7]); 
+    $header->set_var('button_personalize', $LANG_BUTTONS[8]);
+    $header->set_var('button_search', $LANG_BUTTONS[9]);
+    $header->set_var('button_advsearch', $LANG_BUTTONS[10]);
+
     // Now add nested template for menu items
 
     // contribute link
@@ -2207,14 +2220,14 @@ function COM_whatsNewBlock($help='',$title='')
     if ($nrows > 0) {
         $hours = (($_CONF['newstoriesinterval']/60)/60);
         if ($nrows == 1) {
-            $retval .= '<li class="storyclose"><a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' '
-                . $hours . ' ' . $LANG01[82] . '</a></li>';
+            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' '
+                . $hours . ' ' . $LANG01[82] . '</a><br>';
         } else {
-            $retval .= '<li class="storyclose"><a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80]
-                . ' ' . $hours . ' ' . $LANG01[82] . '</a></li>';
+            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80]
+                . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
         }
     } else {
-        $retval .= '<li class="storyclose">' . $LANG01[100] . '</li>';
+        $retval .= $LANG01[100] . '<br>';
     }
     $retval .= '<br>';
 
@@ -2269,7 +2282,7 @@ function COM_whatsNewBlock($help='',$title='')
             }
         }
     } else {
-        $retval .= '<li class="storyclose">' . $LANG01[86] . '</li>' . LB;
+        $retval .= $LANG01[86] . '<br>' . LB;
     }
 
     $retval .= '<br>';
@@ -2318,7 +2331,7 @@ function COM_whatsNewBlock($help='',$title='')
             }
         }
         if ($foundone == 0) {
-            $retval .= '<li class="storyclose">' . $LANG01[88] . '</li>' . LB;
+            $retval .= $LANG01[88] . '<br>' . LB;
         }
     }
 
