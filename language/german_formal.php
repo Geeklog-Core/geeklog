@@ -632,7 +632,11 @@ $LANG21 = array(
     53 => 'Aktiv',
     54 => 'Speichern',
     55 => 'Abbruch',
-    56 => 'Löschen'
+    56 => 'Löschen',
+    57 => 'Move Block Down',
+    58 => 'Move Block Up',
+    59 => 'Move block to the right side',
+    60 => 'Move block to the left side'
 );
 
 ###############################################################################
@@ -1156,7 +1160,15 @@ $LANG_ACCESS = array(
     'save' => 'Speichern',
     'cancel' => 'Abbruch',
     'delete' => 'Löschen',
-    'canteditroot' => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.'	
+    'canteditroot' => 'Sie haben versucht die Gruppe Root zu ändern, obwohl Sie selbst nicht Mitglied dieser Gruppe sind. Der Zugriff wurde daher verweigert. Wende Dich bitte an den Systemadministrator wenn Sie der Meinung sind, dass das ein Fehler wäre.',
+    'listusers' => 'User',
+    'listthem' => 'anzeigen',
+    'usersingroup' => 'User in Gruppe "%s"',
+    'usergroupadmin' => 'User Group Administration',
+    'add'         => 'Add',
+    'remove'      => 'Remove',
+    'availmembers'  => 'Available Members',
+    'groupmembers' => 'Group Members'
 );
 
 $LANG_DB_BACKUP = array(
