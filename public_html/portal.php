@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: portal.php,v 1.9 2002/12/02 17:52:25 dhaun Exp $
+// $Id: portal.php,v 1.10 2002/12/03 13:45:26 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -40,7 +40,7 @@ require_once('lib-common.php');
 $display = '';
 
 if (!empty($item)) {
-    $url = DB_getItem ($_TABLES['links'], 'url', "lid=$item");
+    $url = DB_getItem ($_TABLES['links'], 'url', "lid = '{$item}'");
     DB_change($_TABLES['links'],'hits','hits + 1','lid',$item,'',true);
     $display .= COM_refresh($url);
 } else {
