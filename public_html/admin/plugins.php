@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.28 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: plugins.php,v 1.29 2002/09/08 18:42:57 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -39,7 +39,7 @@ include('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 $display = '';
 
@@ -201,12 +201,31 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 	}
 }
 
+function removeplugin ($pi_name) {
+    if (PLG_uninstall ($pi_name)) {
+    } else {
+    }
+
+    return $retval;
+}
+
 ###############################################################################
 # MAIN
 switch ($mode) {
 	case $LANG32[25]: // Delete
 		if ($confirmed == 1) {
-			removeplugin($pi_name);
+            $display .= COM_siteHeader('menu');
+            if (PLG_uninstall ($pi_name)) {
+                $display .= COM_showMessage(45);
+            } else {
+                $timestamp = strftime($_CONF['daytime']);
+                $display .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
+                    . '<img src="' . $_CONF['layout_url']
+                    . '/images/sysmessage.gif" border="0" align="top" alt="">'
+                    . $LANG08[6] . '<br><br>' . COM_endBlock ();
+            }
+            $display .= listplugins($page);
+            $display .= COM_siteFooter();
 		} else {
 			$display .= COM_siteHeader('menu');
 			$display .= COM_startBlock($LANG32[30]);
