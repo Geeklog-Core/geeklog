@@ -4,11 +4,16 @@
   <tr><td align="center" class="commentbar1"><b><a href="{story_link}" class="non-ul">{story_title}</a></b> | {num_comments} {lang_comments} | {user_nullname} <a href="{login_logout_url}" class="commentbar1">{lang_login_logout}</a></td></tr>
   <tr>
     <td align="center" class="commentbar2">
-      <form action="{parent_url}" method="POST">
+      <form style="display: inline" action="{parent_url}" method="POST">
         {hidden_field}
         {order_selector}
         {mode_selector}
         <input type="submit" value="{lang_refresh}">
+        <input type="hidden" name="type" value="{comment_type}">
+      </form>
+      <form style="display: inline" action="{site_url}/comment.php" method="POST">
+        <input type="hidden" name="sid" value="{sid}">
+        <input type="hidden" name="pid" value="0">
         <input type="hidden" name="type" value="{comment_type}">
         <input type="submit" name="reply" value="{lang_reply}">
       </form>

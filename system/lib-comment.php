@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.2 2005/01/24 06:00:09 vinny Exp $
+// $Id: lib-comment.php,v 1.3 2005/01/25 04:04:13 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -50,8 +50,7 @@
 * @return     string   HTML Formated comment bar
 *
 */
-function CMT_commentBar( $sid, $title, $type, $order, $mode )
-{
+function CMT_commentBar( $sid, $title, $type, $order, $mode ) {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
     $page = array_pop( explode( '/', $_SERVER['PHP_SELF'] ));
@@ -70,96 +69,78 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'story_title', stripslashes( $title ));
     $commentbar->set_var( 'num_comments', $nrows );
     $commentbar->set_var( 'comment_type', $type );
+    $commentbar->set_Var( 'sid', $sid );
 
-    if( $type == 'poll' )
-    {
+    if( $type == 'poll' ) {
         $commentbar->set_var( 'story_link', $_CONF['site_url']
                 . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
-    }
-    else if( $type == 'article' )
-    {
-        $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                                    . $sid );
+    } else if( $type == 'article' ) {
+        $articleUrl = COM_buildUrl( $_CONF['site_url'] . "/article.php?story=$sid" );
         $commentbar->set_var( 'story_link', $articleUrl );
         $commentbar->set_var( 'article_url', $articleUrl );
-    }
-    else
-    {
-        $commentbar->set_var( 'story_link', $_CONF['site_url']
-                . "/comment.php?type=$type&amp;cid=$sid" );
+    } else { // for a plugin
+        // Link to generic link the plugin should support (hopefully)
+        $commentbar->set_var( 'story_link', $_CONF['site_url'] . "/$type/index.php?id=$sid" );
     }
 
-    if( $_USER['uid'] > 1 )
-    {
+    if( $_USER['uid'] > 1 ) {
         $username = $_USER['username'];
         $fullname = DB_getItem( $_TABLES['users'], 'fullname',
                                 "uid = '{$_USER['uid']}'" ); 
-    }
-    else
-    {
+    } else {
         $result = DB_query( "SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = 1" );
         $N = DB_fetchArray( $result );
         $username = $N['username'];
         $fullname = $N['fullname'];
     }
-    if( empty( $fullname ))
-    {
+    if( empty( $fullname )) {
         $fullname = $username;
     }
     $commentbar->set_var( 'user_name', $username );   
     $commentbar->set_var( 'user_fullname', $fullname );    
 
-    if( !empty( $_USER['username'] ))
-    {
+    if( !empty( $_USER['username'] )) {
         $commentbar->set_var( 'user_nullname', $username );
         $commentbar->set_var( 'login_logout_url',
                               $_CONF['site_url'] . '/users.php?mode=logout' );
         $commentbar->set_var( 'lang_login_logout', $LANG01[35] );
-    }
-    else
-    {
+    } else {
         $commentbar->set_var( 'user_nullname', '' );
         $commentbar->set_var( 'login_logout_url',
                               $_CONF['site_url'] . '/users.php?mode=new' );
         $commentbar->set_var( 'lang_login_logout', $LANG01[61] );
     }
 
-    if( $page == 'comment.php' ) 
-    {
+    if( $page == 'comment.php' ) {
         $commentbar->set_var( 'parent_url', 
                               $_CONF['site_url'] . '/comment.php' );
         $hidden = '';
-        if( $_REQUEST['mode'] == 'view' )
-        {
+        if( $_REQUEST['mode'] == 'view' ) {
             $hidden .= '<input type="hidden" name="cid" value="' . $_REQUEST['cid'] . '">';
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['cid'] . '">';
         }
-        else if( $_REQUEST['mode'] == 'display' )
-        {
+        else if( $_REQUEST['mode'] == 'display' ) {
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
-        }
-        else /* This is likely a plugin (or a mistake) */
-        {
-            $hidden .= '<input type="hidden" name="cid" value="' . $sid . '">';
         }
         $commentbar->set_var( 'hidden_field', $hidden . 
                 '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
-    }
-    else if( $type == 'poll' )
-    {
+    } else if( $type == 'poll' ) {
         $commentbar->set_var( 'parent_url', 
                               $_CONF['site_url'] . '/pollbooth.php' );
         $commentbar->set_var( 'hidden_field',         
                 '<input type="hidden" name="scale" value="400">' .
                 '<input type="hidden" name="qid" value="' . $sid . '">' .
                 '<input type="hidden" name="aid" value="-1">' );
-    }
-    else
-    {
+    } else if( $type == 'article' ) {
         $commentbar->set_var( 'parent_url',
                               $_CONF['site_url'] . '/article.php' );
         $commentbar->set_var( 'hidden_field',
                 '<input type="hidden" name="story" value="' . $sid . '">' );
+    } else { // plugin
+        // Direct plugins to a generic location and hope it exists
+        $commentbar->set_var( 'parent_url', $_CONF['site_url'] . "/$type/index.php" );
+        $commentbar->set_var( 'hidden_field',
+                '<input type="hidden" name="id" value="' . $sid . '">' );
     }
 
     // Order
@@ -169,12 +150,9 @@ function CMT_commentBar( $sid, $title, $type, $order, $mode )
     $commentbar->set_var( 'order_selector', $selector);
 
     // Mode
-    if( $page == 'comment.php' ) 
-    {
+    if( $page == 'comment.php' ) {
         $selector = '<select name="format">';
-    }
-    else
-    {
+    } else {
         $selector = '<select name="mode">';
     }
     $selector .= LB
@@ -606,7 +584,6 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 /**
 * Displays the comment form
 *
-* @param    int     $uid        User ID
 * @param    string  $title      Title of comment
 * @param    string  $comment    Text of comment
 * @param    string  $sid        ID of object comment belongs to
@@ -617,7 +594,7 @@ function CMT_userComments( $sid, $title, $type='article', $order='', $mode='', $
 * @return   string  HTML for comment form
 *
 */
-function CMT_commentForm($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
+function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
 
@@ -1091,7 +1068,7 @@ function CMT_reportAbusiveComment ($cid, $type)
     $A['indent'] = 0;
     $A['pindent'] = 0;
 
-    $thecomment = COM_getComment ($A, 'flat', $type, 'ASC', false, true);
+    $thecomment = CMT_getComment ($A, 'flat', $type, 'ASC', false, true);
     $start->set_var ('comment', $thecomment);
     $retval .= COM_startBlock ($LANG03[15])
             . $start->finish ($start->parse ('output', 'report'))

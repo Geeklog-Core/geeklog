@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.87 2005/01/24 06:00:09 vinny Exp $
+// $Id: comment.php,v 1.88 2005/01/25 04:04:15 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -59,28 +59,16 @@ require_once( $_CONF['path_system'] . 'lib-comment.php' );
 // the data being passed in a POST operation
 // echo COM_debug($_POST);
 
+/**
+ * Hanldes a comment submission
+ *
+ * @copyright Vincent Furia 2005
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @return string HTML (possibly a refresh)
+ */
+function handleSubmit() {
+    global $_POST, $_TABLES, $_CONF, $LANG03;
 
-
-// MAIN
-$display = '';
-
-if (isset ($_REQUEST['reply'])) {
-    $_REQUEST['mode'] = '';
-}
-
-switch ( $_REQUEST['mode'] ) {
-case $LANG03[14]: // Preview
-    $display .= COM_siteHeader()
-        . CMT_commentForm (COM_applyFilter ($_POST['uid'], true),
-            strip_tags ($_POST['title']), $_POST['comment'],
-            COM_applyFilter ($_POST['sid']),
-            COM_applyFilter ($_POST['pid'], true),
-            COM_applyFilter ($_POST['type']), COM_applyFilter ($_POST['mode']),
-            COM_applyFilter ($_POST['postmode']))
-        . COM_siteFooter(); 
-    break;
-
-case $LANG03[11]: // Submit Comment
     $type = COM_applyFilter ($_POST['type']);
     $sid = COM_applyFilter ($_POST['sid']);
     switch ( $type ) {
@@ -137,9 +125,20 @@ case $LANG03[11]: // Submit Comment
             }
             break;
     }
-    break;
 
-case 'delete':
+    return $display;
+}
+
+/**
+ * Hanldes a comment submission
+ *
+ * @copyright Vincent Furia 2005
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @return string HTML (possibly a refresh)
+ */
+function handleDelete() {
+    global $_REQUEST, $_TABLES, $_CONF;
+
     $type = COM_applyFilter ($_REQUEST['type']);
     $sid = COM_applyFilter ($_REQUEST['sid']);
     switch ( $type ) {
@@ -162,7 +161,6 @@ case 'delete':
                             . "tried to illegally delete comment $cid from $type $sid");
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
-
             break;
 
         case 'poll':
@@ -180,7 +178,6 @@ case 'delete':
                             . "tried to illegally delete comment $cid from $type $sid");
                 $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
             }
-
             break;
 
         default: //assume plugin
@@ -190,6 +187,34 @@ case 'delete':
             }
             break;
     }
+
+    return $display;
+}
+
+
+// MAIN
+$display = '';
+
+if (isset ($_REQUEST['reply'])) {
+    $_REQUEST['mode'] = '';
+}
+
+switch ( $_REQUEST['mode'] ) {
+case $LANG03[14]: // Preview
+    $display .= COM_siteHeader()
+        . CMT_commentForm ( strip_tags ($_POST['title']), $_POST['comment'],
+            COM_applyFilter ($_POST['sid']), COM_applyFilter ($_POST['pid'], true),
+            COM_applyFilter ($_POST['type']), COM_applyFilter ($_POST['mode']),
+            COM_applyFilter ($_POST['postmode']))
+        . COM_siteFooter(); 
+    break;
+
+case $LANG03[11]: // Submit Comment
+    $display = handleSubmit();  // moved to function for readibility
+    break;
+
+case 'delete':
+    $display = handleDelete();  // moved to function for readibility
     break;
 
 case 'view':
@@ -313,15 +338,12 @@ case 'sendreport':
                                COM_applyFilter ($_POST['type']));
     break;
 
-default:
+default:  // New Comment
     $sid = COM_applyFilter ($_REQUEST['sid']);
     $type = COM_applyFilter ($_REQUEST['type']);
     $title = strip_tags ($_REQUEST['title']);
-    $pid = COM_applyFilter ($_REQUEST['pid'], true);
-    $mode = COM_applyFilter ($_REQUEST['mode']);
-    $postmode = COM_applyFilter ($_REQUEST['postmode']);
 
-    if (!empty ($sid)) {
+    if (!empty ($sid) && !empty ($type)) { 
         if (empty ($title)) {
             if ($type == 'article') {
                 $title = DB_getItem ($_TABLES['stories'], 'title',
@@ -332,29 +354,14 @@ default:
             }
             $title = str_replace ('$', '&#36;', $title);
         }
-        if (!empty ($type)) {
-            $display .= COM_siteHeader('menu', $LANG03[1])
-                . CMT_commentForm ($_USER['uid'], $title, '', $sid, $pid, $type,
-                               $mode, $postmode)
-                . COM_siteFooter();
-        } else {
-            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-        }
+        $display .= COM_siteHeader('menu', $LANG03[1])
+            . CMT_commentForm ($title, '', $sid, COM_applyFilter ($_REQUEST['pid'], true),
+                $type, COM_applyFilter ($_REQUEST['mode']), COM_applyFilter ($_REQUEST['postmode']))
+            . COM_siteFooter();
     } else {
-        // This could still be a plugin wanting comments
-        $cid = COM_applyFilter ($_REQUEST['cid'], true);
-        $format = COM_applyFilter ($_REQUEST['format']);
-        $order = COM_applyFilter ($_REQUEST['order']);
-        $reply = COM_applyFilter ($_REQUEST['reply']);
-        $type = COM_applyFilter ($_REQUEST['type']);
-
-        if (!empty ($type) && !empty ($cid)) {
-            $display .= PLG_callCommentForm ($type, $cid, $format, $order, $reply);
-        } else {
-            // must be a mistake at this point
-            $display .= COM_refresh($_CONF['site_url'] . '/index.php');
-        }
+        $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
+    break;
 }
 
 echo $display;
