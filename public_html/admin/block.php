@@ -8,11 +8,12 @@
 // | Geeklog block administration.                                             |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.46 2003/02/02 19:46:47 dhaun Exp $
+// $Id: block.php,v 1.47 2003/02/04 20:33:32 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -430,7 +431,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
 */
 function listblocks() 
 {
-    global $_TABLES, $LANG21, $_CONF, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG21, $LANG32, $LANG_ACCESS;
 
     $retval = '';
 
@@ -450,6 +451,7 @@ function listblocks()
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_blockorder', $LANG21[23]);
     $block_templates->set_var('lang_blocktopic', $LANG21[24]);
+    $block_templates->set_var('lang_enabled', $LANG21[53]);
  
     $result = DB_query("SELECT * FROM {$_TABLES['blocks']} ORDER BY onleft DESC,blockorder");
     $nrows = DB_numRows($result);
@@ -469,12 +471,18 @@ function listblocks()
             $block_templates->set_var('block_id', $A['bid']);
             $block_templates->set_var('block_title', stripslashes ($A['title']));
 
+            if ($A['is_enabled'] == 1) {
+                $enabled = $LANG32[20];
+            } else {
+                $enabled = $LANG32[21];
+            }
+            $block_templates->set_var ('block_enabled', $enabled);
+
             if ($A['onleft'] == 1) {
                 $side = $LANG21[40];
             } else {
                 $side = $LANG21[41];
             }
-    
             $block_templates->set_var('block_side', $side);
             $block_templates->set_var('block_order', $A['blockorder']);
             $block_templates->set_var('block_topic', $A['tid']); 
