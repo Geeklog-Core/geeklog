@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.41 2002/10/28 17:19:44 dhaun Exp $
+// $Id: search.php,v 1.42 2002/10/30 21:59:35 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -79,7 +79,7 @@ function searchform()
             $A = DB_fetchArray($result);
             $searchusers[$A['uid']] = $A['uid'];
         }
-        $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
+        $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)");
         for ($i = 1; $i <= DB_numRows($result); $i++) {
             $A = DB_fetchArray($result);
             $searchusers[$A['uid']] = $A['uid'];
