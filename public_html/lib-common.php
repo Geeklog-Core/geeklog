@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.84 2002/05/02 16:16:50 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.85 2002/05/02 20:47:28 tony_bibbs Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -40,12 +40,12 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 $_COM_VERBOSE = false; 
 
 // +---------------------------------------------------------------------------+
-// | Configuration Include: You shoud only have to modify this include         |
+// | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
 require_once('/path/to/geeklog/config.php');
 
 // +---------------------------------------------------------------------------+
-// | Library Includes: You shouldn't have to touch anything below here         |
+// | Library Includes: You shouldn't have to touch anything below here         | 
 // +---------------------------------------------------------------------------+
 
 // Instantiate page timer that times how fast each page is created
@@ -125,7 +125,7 @@ $_RIGHTS = explode(',',SEC_getUserPermissions());
 $_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
-// | BLOCK LOADER: Load all definable HTML blocks in to memory                 |
+// | BLOCK LOADER: Load all definable HTML blocks in to memory                 | 
 // +---------------------------------------------------------------------------+
 
 $result = DB_query("SELECT title,content FROM {$_TABLES['blocks']} WHERE type = 'layout'");
@@ -136,7 +136,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 }
 
 // +---------------------------------------------------------------------------+
-// | STORY FUNCTIONS                                                           |
+// | STORY FUNCTIONS                                                           | 
 // +---------------------------------------------------------------------------+
 
 /**
@@ -333,7 +333,7 @@ function COM_getThemes()
 */
 function COM_siteHeader($what = 'menu')
 {
-    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS, $LANG_CHARSET;
+    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS;
   
     // If the theme implemented this for us then call their version
     // instead.
@@ -357,21 +357,11 @@ function COM_siteHeader($what = 'menu')
         $msg .= ', '.$_USER['username'];
     }
     $header->set_var('welcome_msg', $msg); 
-    $curtime = COM_getUserDateTimeFormat();
+    $curtime =  COM_getUserDateTimeFormat();
     $header->set_var('datetime', $curtime[0]);
     $header->set_var('site_logo', $_CONF['layout_url'] . '/images/logo.gif' );
     $header->set_var('css_url', $_CONF['layout_url'] . '/style.css');
     $header->set_var('theme', $_CONF['theme']);
-    if (empty ($LANG_CHARSET)) {
-        $charset = $_CONF['default_charset'];
-        if (empty ($charset)) {
-            $charset = "iso-8859-1";
-        }
-    }
-    else {
-        $charset = $LANG_CHARSET;
-    }
-    $header->set_var('charset', $charset);
 
     // Now add variables for buttons like e.g. those used by the Yahoo theme   
     $header->set_var('button_home', $LANG_BUTTONS[1]);
@@ -730,7 +720,7 @@ function COM_exportRDF()
         $rdlink	= $_CONF['site_url'];
         $rddescr = $_CONF['site_slogan'];
         $rdlang	= $_CONF['locale'];
-        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10");
+        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 20");
 
         if (!$file = @fopen($outputfile,w)) {
             COM_errorLog("{LANG01[54]} $outputfile",1);
@@ -745,22 +735,28 @@ function COM_exportRDF()
             fputs ( $file, "<language>$rdlang</language>\n\n");
             $sids = '';
             $nrows = DB_numRows($result);
-            for ($i = 1; $i <= $nrows; $i++) {
+            $actualcount = 0;
+            for ($i = 1; $i <= $nrows AND $actualcount < 10; $i++) {
                 $row = DB_fetchArray($result);
-                $sids .= $row['sid'];
-                if ($i <> $nrows) {
-                    $sids .= ',';
+                $topic_anon = DB_getItem($_TABLES['topics'],'perm_anon',"tid='{$row['tid']}'");
+                // Only add to RDF feed if anonymous has access to it
+                if ($row['perm_anon'] == 2 AND $topic_anon == 2) {
+                    $sids .= $row['sid'];
+                    if ($i <> $nrows) {
+                        $sids .= ',';
+                    }
+                    $title = 'title';
+                    $link = 'sid';
+                    $author = 'author';
+                    fputs ( $file, "<item>\n" );
+                    $title = "<title>" . htmlspecialchars(stripslashes($row[$title])) . "</title>\n";
+                    $author = "<author>" . htmlspecialchars(stripslashes($row[$author])) . "</author>\n";
+                    $link  = "<link>{$_CONF['site_url']}/article.php?story={$row[$link]}</link>\n";
+                    fputs ( $file,  $title );
+                    fputs ( $file,  $link );
+                    fputs ( $file, "</item>\n\n" );
+                    $actualcount++;
                 }
-                $title = 'title';
-                $link = 'sid';
-                $author = 'author';
-                fputs ( $file, "<item>\n" );
-                $title = "<title>" . htmlspecialchars(stripslashes($row[$title])) . "</title>\n";
-                $author = "<author>" . htmlspecialchars(stripslashes($row[$author])) . "</author>\n";
-                $link  = "<link>{$_CONF['site_url']}/article.php?story={$row[$link]}</link>\n";
-                fputs ( $file,  $title );
-                fputs ( $file,  $link );
-                fputs ( $file, "</item>\n\n" );
             }
             DB_query("UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'");
             fputs ( $file, "</channel>\n");
@@ -2176,7 +2172,7 @@ function COM_printUpcomingEvents($help='',$title='')
 */
 function COM_emailUserTopics() 
 {
-    global $_TABLES, $LANG08, $_CONF, $LANG_CHARSET;
+    global $_TABLES, $LANG08, $_CONF;
 
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
@@ -2226,9 +2222,6 @@ function COM_emailUserTopics()
         $toemail = $U['email'];
         $mailto = "{$U['username']} <{$toemail}>";
         $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
-        if (!empty ($LANG_CHARSET)) {
-            $mailfrom .= "\nContent-Type: text/plain; charset={$LANG_CHARSET}";
-        }
         $subject = strip_tags(stripslashes($_CONF['site_name'] . $LANG08[30] . strftime('%Y-%m-%d',time())));
         @mail($toemail,$subject,$mailtext,$mailfrom);
     }
