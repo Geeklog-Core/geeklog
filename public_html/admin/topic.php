@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.24 2002/08/08 12:11:58 dhaun Exp $
+// $Id: topic.php,v 1.25 2002/09/12 14:32:49 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -247,27 +247,26 @@ function listtopics() {
 # MAIN
 $display = '';
 
-switch ($mode) {
-	case "$LANG27[21]":
-		DB_delete($_TABLES['stories'],'tid',$tid);
-		DB_delete($_TABLES['blocks'],'tid',$tid);
-		DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
-		break;
-	case "$LANG27[19]":
-		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
-		break;
-	case 'edit':
-		$display .= COM_siteHeader('menu');
-		$display .= edittopic($tid);
-		$display .= COM_siteFooter();
-		break;
-	case "$LANG27[20]":
-	default:
-		$display .= COM_siteHeader('menu');
-		$display .= COM_showMessage($msg);
-		$display .= listtopics();
-		$display .= COM_siteFooter();
-		break;
+if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
+    if (!isset ($tid) || empty ($tid) || ($tid == 0)) {
+        COM_errorLog ('Attempted to delete topic tid=' . $tid);
+    } else {
+        DB_delete($_TABLES['stories'],'tid',$tid);
+        DB_delete($_TABLES['blocks'],'tid',$tid);
+        DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
+    }
+} else if (($mode == $LANG27[19]) && !empty ($LANG27[19])) { // save
+    savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,
+            $perm_owner,$perm_group,$perm_members,$perm_anon);
+} else if ($mode == 'edit') {
+    $display .= COM_siteHeader('menu');
+    $display .= edittopic($tid);
+    $display .= COM_siteFooter();
+} else { // 'cancel' or no mode at all
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listtopics();
+    $display .= COM_siteFooter();
 }
 
 echo $display;

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.40 2002/08/15 13:21:15 dhaun Exp $
+// $Id: user.php,v 1.41 2002/09/12 14:32:49 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -516,23 +516,25 @@ function display_form()
 }
 
 // MAIN
-switch ($mode) {
-case $LANG28[19]:
-    // Ok, delete everything related to this user
-		
-    #first, remove from all security groups
-    DB_delete($_TABLES['group_assignments'],'ug_uid',$uid);
-    DB_delete($_TABLES['userprefs'],'uid',$uid);
-    DB_delete($_TABLES['userindex'],'uid',$uid);
-    DB_delete($_TABLES['usercomment'],'uid',$uid);
-    DB_delete($_TABLES['userinfo'],'uid',$uid);
-	
-    // what to do with orphan stories/comments?
-	
-    // now move delete the user itself
-    DB_delete($_TABLES['users'],'uid',$uid,$_CONF['site_admin_url'] . '/user.php?msg=22');
-    break;
-case $LANG28[20]:
+if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
+    if (!isset ($uid) || empty ($uid) || ($uid == 0)) {
+        OM_errorLog ('Attempted to delete user uid=' . $uid);
+    } else {
+        // Ok, delete everything related to this user
+
+        // first, remove from all security groups
+        DB_delete($_TABLES['group_assignments'],'ug_uid',$uid);
+        DB_delete($_TABLES['userprefs'],'uid',$uid);
+        DB_delete($_TABLES['userindex'],'uid',$uid);
+        DB_delete($_TABLES['usercomment'],'uid',$uid);
+        DB_delete($_TABLES['userinfo'],'uid',$uid);
+
+        // what to do with orphan stories/comments?
+
+        // now move delete the user itself
+        DB_delete($_TABLES['users'],'uid',$uid,$_CONF['site_admin_url'] . '/user.php?msg=22');
+    }
+} else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
     $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']],$delete_photo);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
@@ -540,32 +542,26 @@ case $LANG28[20]:
         $tmp .= COM_siteFooter('menu');
         $display = $tmp;
     }
-    break;
-case $LANG28[17]:
+} else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
     changepw($uid,$passwd);
-    break;
-case 'edit':
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= edituser($uid);
     $display .= COM_siteFooter();
-    break;
-case 'import':
+} else if ($mode == 'import') {
     $display .= COM_siteHeader('menu');
-	$display .= COM_startBlock($LANG28[31]);
-	$display .= importusers($file);
-	$display .= COM_endBlock();
-	$display .= COM_siteFooter();  
-	break;
-case 'importform':
-	$display .= COM_siteHeader('menu');
-	$display .= COM_startBlock($LANG28[24]);
-	$display .= $LANG28[25] . '<br><br>';
-	$display .= display_form();
-	$display .= COM_endBlock();
-	$display .= COM_siteFooter();  
-	break;
-case $LANG28[18]:
-default:
+    $display .= COM_startBlock($LANG28[31]);
+    $display .= importusers($file);
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();  
+} else if ($mode == 'importform') {
+    $display .= COM_siteHeader('menu');
+    $display .= COM_startBlock($LANG28[24]);
+    $display .= $LANG28[25] . '<br><br>';
+    $display .= display_form();
+    $display .= COM_endBlock();
+    $display .= COM_siteFooter();  
+} else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
     if (empty($offset)) {
@@ -576,7 +572,6 @@ default:
     }
     $display .= listusers($offset,$page,$q,$query_limit);
     $display .= COM_siteFooter();
-    break;
 }
 
 echo $display;

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.21 2002/08/18 18:20:28 dhaun Exp $
+// $Id: group.php,v 1.22 2002/09/12 14:32:49 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -400,19 +400,22 @@ function listgroups()
 
 // MAIN
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
-    DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
-    DB_delete($_TABLES['groups'],'grp_id',$grp_id);
-    $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
-}
-else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
-    $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);
-}
-else if ($mode == 'edit') {
+    if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
+        COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
+    } else {
+        DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
+        DB_delete($_TABLES['groups'],'grp_id',$grp_id);
+        $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
+    }
+} else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
+    $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,
+            $HTTP_POST_VARS[$_TABLES['groups']]);
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= editgroup($grp_id);
     $display .= COM_siteFooter();
 }
-else {
+else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
     $display .= listgroups();

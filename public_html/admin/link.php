@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.25 2002/08/08 12:11:58 dhaun Exp $
+// $Id: link.php,v 1.26 2002/09/12 14:32:49 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -290,30 +290,29 @@ function listlinks()
 
 // MAIN
 
-switch ($mode) {
-	case "$LANG23[23]":
-		DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
-		break;
-	case "$LANG23[21]":
-		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
-		break;
-	case 'editsubmission':
-		$display .= COM_siteHeader('menu');
-		$display .= editlink($mode,$id);
-		$display .= COM_siteFooter();
-		break;
-	case 'edit':
-		$display .= COM_siteHeader('menu');
-		$display .= editlink($mode,$lid);
-		$display .= COM_siteFooter();
-		break;
-	case "$LANG23[22]":
-	default:
-		$display .= COM_siteHeader('menu');
-		$display .= COM_showMessage($msg);
-		$display .= listlinks();
-		$display .= COM_siteFooter();
-		break;
+if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
+    if (!isset ($lid) || empty ($lid) || ($lid == 0)) {
+        COM_errorLog ('Attempted to delete link lid=' . $lid);
+    } else {
+        DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
+    }
+} else if (($mode == $LANG23[21]) && !empty ($LANG23[21])) { // save
+    $display .= savelink($lid,$category,$categorydd,$url,$description,$title,
+        $hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,
+        $perm_anon);
+} else if ($mode == 'editsubmission') {
+    $display .= COM_siteHeader('menu');
+    $display .= editlink($mode,$id);
+    $display .= COM_siteFooter();
+} else if ($mode == 'edit') {
+    $display .= COM_siteHeader('menu');
+    $display .= editlink($mode,$lid);
+    $display .= COM_siteFooter();
+} else { // 'cancel' or no mode at all
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listlinks();
+    $display .= COM_siteFooter();
 }
 
 echo $display;

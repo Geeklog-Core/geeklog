@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.29 2002/09/09 03:06:47 mlimburg Exp $
+// $Id: event.php,v 1.30 2002/09/12 14:32:49 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -529,35 +529,37 @@ function listevents()
 
 // MAIN
 
-switch ($mode) {
-	case "$LANG22[22]":
+if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
+    if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
+        COM_errorLog ('Attempted to delete event eid=' . $eid);
+    } else {
 		DB_delete($_TABLES['events'],'eid',$eid);
         echo COM_refresh($_CONF['site_admin_url'] . '/event.php?msg=18');
-		break;
-	case "$LANG22[20]":
-		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode);
-		break;
-	case 'editsubmission':
-        $result = DB_query("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
-		$A = DB_fetchArray($result);
-		$display .= COM_siteHeader('menu');
-		$display .= editevent($mode,$A);
-		$display .= COM_siteFooter();
-		break;
-	case 'edit':
-        $result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
-		$A = DB_fetchArray($result);
-		$display .= COM_siteHeader('menu');
-		$display .= editevent($mode,$A);
-		$display .= COM_siteFooter();
-		break;
-	case "$LANG22[22]":
-	default:
-		$display .= COM_siteHeader('menu');
-		$display .= COM_showMessage($msg);
-		$display .= listevents();
-		$display .= COM_siteFooter();
-		break;
+    }
+} else if (($mode == $LANG22[20]) && !empty ($LANG22[20])) { // save
+    $display .= saveevent ($eid, $title, $event_type, $url, $allday,
+        $start_month, $start_day, $start_year, $start_hour, $start_minute,
+        $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute,
+        $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,
+        $description, $owner_id,$group_id,$perm_owner,$perm_group,$perm_members,
+        $perm_anon, $mode);
+} else if ($mode == 'editsubmission') {
+    $result = DB_query("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
+    $A = DB_fetchArray($result);
+    $display .= COM_siteHeader('menu');
+    $display .= editevent($mode,$A);
+    $display .= COM_siteFooter();
+} else if ($mode == 'edit') {
+    $result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
+    $A = DB_fetchArray($result);
+    $display .= COM_siteHeader('menu');
+    $display .= editevent($mode,$A);
+    $display .= COM_siteFooter();
+} else { // 'cancel' or no mode at all
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listevents();
+    $display .= COM_siteFooter();
 }
 
 echo $display;

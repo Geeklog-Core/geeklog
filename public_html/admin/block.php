@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.39 2002/09/03 16:44:36 dhaun Exp $
+// $Id: block.php,v 1.40 2002/09/12 14:32:49 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -298,7 +298,7 @@ function editblock($bid='')
 */
 function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled) 
 {
-	global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
+    global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
     if (($type == 'normal' && !empty($title) && !empty($content)) OR ($type == 'portal' && !empty($title) && !empty($rdfurl)) OR ($type == 'layout' && !empty($content)) OR ($type == 'gldefault' && (strlen($blockorder)>0)) OR ($type == 'phpblock' && !empty($phpblockfn) && !empty($title))) {
         if ($is_enabled == 'on') {
@@ -462,25 +462,26 @@ if (isset ($HTTP_POST_VARS['bid'])) {
 elseif (isset ($HTTP_GET_VARS['bid'])) {
     $bid = $HTTP_GET_VARS['bid'];
 }
-switch ($mode) {
-case "$LANG21[56]":
-    $display .= DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
-        break;
-case "$LANG21[54]":
-	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled);
-    break;
-case 'edit':
+
+if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
+    if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
+        COM_errorLog ('Attempted to delete block bid=' . $bid);
+    } else {
+        $display .= DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
+    }
+} else if (($mode == $LANG21[54]) && !empty ($LANG21[54])) { // save
+    $display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,
+        $tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,
+        $perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled);
+} else if ($mode == 'edit') {
     $display .= COM_siteHeader()
         .editblock($bid)
         .COM_siteFooter();
-	break;
-case "$LANG21[55]":
-default:
+} else { // 'cancel' or no mode at all
     $display .= COM_siteHeader()
         .COM_showMessage($msg)
         .listblocks()
         .COM_siteFooter();
-    break;
 }
 
 echo $display;

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.29 2002/09/08 18:42:57 dhaun Exp $
+// $Id: plugins.php,v 1.30 2002/09/12 14:32:49 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -211,45 +211,39 @@ function removeplugin ($pi_name) {
 
 ###############################################################################
 # MAIN
-switch ($mode) {
-	case $LANG32[25]: // Delete
-		if ($confirmed == 1) {
-            $display .= COM_siteHeader('menu');
-            if (PLG_uninstall ($pi_name)) {
-                $display .= COM_showMessage(45);
-            } else {
-                $timestamp = strftime($_CONF['daytime']);
-                $display .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
+if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
+    if ($confirmed == 1) {
+        $display .= COM_siteHeader('menu');
+        if (PLG_uninstall ($pi_name)) {
+            $display .= COM_showMessage(45);
+        } else {
+            $timestamp = strftime($_CONF['daytime']);
+            $display .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
                     . '<img src="' . $_CONF['layout_url']
                     . '/images/sysmessage.gif" border="0" align="top" alt="">'
                     . $LANG08[6] . '<br><br>' . COM_endBlock ();
-            }
-            $display .= listplugins($page);
-            $display .= COM_siteFooter();
-		} else {
-			$display .= COM_siteHeader('menu');
-			$display .= COM_startBlock($LANG32[30]);
-			$display .= $LANG32[31];
-			$display .= COM_endBlock();
-			$display .= plugineditor($pi_name,1);
-			$display .= COM_siteFooter();
-		}	
-		break;
-    case 'edit':
-        $display .= COM_siteHeader('menu');
-        $display .= plugineditor($pi_name);
+        }
+        $display .= listplugins($page);
         $display .= COM_siteFooter();
-        break;
-	case $LANG32[23]: // Save
-		$display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
-		break;
-	case $LANG32[24]:
-	default:
-		$display .= COM_siteHeader('menu');
-		$display .= COM_showMessage($msg);
-		$display .= listplugins($page);
-		$display .= COM_siteFooter();
-		break;
+    } else {
+        $display .= COM_siteHeader('menu');
+        $display .= COM_startBlock($LANG32[30]);
+        $display .= $LANG32[31];
+        $display .= COM_endBlock();
+        $display .= plugineditor($pi_name,1);
+        $display .= COM_siteFooter();
+    }	
+} else if ($mode == 'edit') {
+    $display .= COM_siteHeader('menu');
+    $display .= plugineditor($pi_name);
+    $display .= COM_siteFooter();
+} else if (($mode == $LANG32[23]) && !empty ($LANG32[23])) { // save
+    $display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
+} else { // 'cancel' or no mode at all
+    $display .= COM_siteHeader('menu');
+    $display .= COM_showMessage($msg);
+    $display .= listplugins($page);
+    $display .= COM_siteFooter();
 }
 
 echo $display;

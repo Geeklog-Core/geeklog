@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.23 2002/08/16 14:00:24 dhaun Exp $
+// $Id: poll.php,v 1.24 2002/09/12 14:32:49 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -315,14 +315,11 @@ function listpoll()
 
 $display = '';
 
-switch($mode) {
-case 'edit':
+if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
     $display .= editpoll($qid);
     $display .= COM_siteFooter();
-    break;
-case "$LANG25[14]":
-    //if (!empty($A[0])) {
+} else if (($mode == $LANG25[14]) && !empty ($LANG25[14])) { // save
     if (!empty($qid)) {
         $voters = 0;
         for ($i = 0; $i < sizeof($answer); $i++) {
@@ -330,15 +327,15 @@ case "$LANG25[14]":
         }
         savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     }
-    break;
-case "$LANG25[16]":
-    if (!empty($qid)) {
+} else if (($mode == $LANG25[16]) && !empty ($LANG25[16])) { // delete
+    if (!isset ($qid) || empty ($qid) || ($qid == 0)) {
+        COM_errorLog ('Attempted to delete poll qid=' . $qid);
+    } else {
         DB_delete($_TABLES['pollquestions'],'qid',$qid);
         DB_delete($_TABLES['pollanswers'],'qid',$qid);
         echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
     }
-case "$LANG25[15]":
-default:
+} else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
     $display .= COM_showMessage($msg);
     $display .= listpoll();
