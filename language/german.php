@@ -563,7 +563,8 @@ $LANG21 = array(
     49 => ' (keine Leerzeichen, muss eindeutig sein)',
     50 => 'URL zur Hilfe',
     51 => 'http:// voranstellen',
-    52 => 'Wenn das Feld leer ist, wird kein Hilfe-Icon zu diesem Block angezeigt.'
+    52 => 'Wenn das Feld leer ist, wird kein Hilfe-Icon zu diesem Block angezeigt.',
+    53 => 'Enabled'
 );
 
 ###############################################################################
@@ -749,7 +750,7 @@ $LANG28 = array(
 	9 => "(keine Leerzeichen!)",
 	10 => "Bitte die Felder Username, Name, Security Level und E-Mail-Adresse ausf&uuml;llen",
 	11 => "User-Manager",
-	12 => "Auf den Usernamen klicken, um einen User zu &auml;ndern oder zu l&ouml;schen. Ein neuer User kann mit dem Button Neuer User angelegt werden.",
+	12 => "Auf den Usernamen klicken, um einen User zu &auml;ndern oder zu l&ouml;schen. Ein neuer User kann mit dem Button Neuer User angelegt werden. Es gibt auch eine einfache Suchfunktion, mit der nach Teilen von Usernamen, E-Mail-Adressen oder richtigen Namen gesucht werden kann (z.B. *son* oder *.de).",
 	13 => "SecLev",
 	14 => "Reg. Datum",
 	15 => 'Neuer User',
@@ -763,9 +764,11 @@ $LANG28 = array(
 	20 => 'Speichern',
     21 => 'Dieser Username existiert bereits.',
     22 => 'Fehler',
-    23 => 'Batch Add',
-    24 => 'Batch Import of Users',
-    25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!'
+    23 => 'Import',
+    24 => 'Mehrfach-Import von Usern',
+    25 => 'Hier k&ouml;nnen Userdaten aus einer Datei in Geeklog importiert werden. Die Import-Datei muss ein Textfile sein, bei dem die Datens&auml;tze durch Tabs getrennt sind. Zudem m&uuml;ssen die Felder in der Reihenfolge Richtiger Name - Username - E-Mail-Adresse vorliegen. Jeder so importierte User bekommt eine E-Mail mit einem Zufallspasswort zugeschickt. Pro Zeile darf nur ein User stehen. Wenn sich die Importdatei nicht an dieses Format h&auml;lt, kann es zu Problemen kommen, die nur in m&uuml;hseliger Handarbeit behoben werden k&ouml;nnen. Also die Eintr&auml;ge lieber zweimal &uuml;berpr&uuml;fen ...',
+    26 => 'Suche',
+    27 => 'Anzahl Treffer'
 );
 
 
