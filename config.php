@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.134 2004/09/28 08:25:56 dhaun Exp $
+// $Id: config.php,v 1.135 2004/09/30 08:50:38 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -52,7 +52,7 @@ $_DB_name         = 'geeklog';     // name of your database,
 $_DB_user         = 'username';    // MySQL user name
 $_DB_pass         = 'password';    // MySQL password
 
-// The table prefix is prepended to each table used be Geeklog to avoid name
+// The table prefix is prepended to each table used by Geeklog to avoid name
 // collisions with other tables that may already exist in your database.
 $_DB_table_prefix = 'gl_';         // e.g. 'gl_'
 
@@ -155,11 +155,11 @@ $_CONF['path_pear'] = $_CONF['path_system'] . 'pear/';
 $_CONF['mail_settings'] = array (  
     'backend' => 'mail', // can be one of 'mail', 'sendmail', 'smtp'
 
-    // sendmail parameters (for 'backend' => 'sendmail')
+    // sendmail parameters (only needed for 'backend' => 'sendmail')
     'sendmail_path' => '/usr/bin/sendmail',
     'sendmail_args' => '',
 
-    // SMTP parameters (for 'backend' => 'smtp')
+    // SMTP parameters (only needed for 'backend' => 'smtp')
     'host'     => 'smtp.example.com',
     'port'     => '25',
     'auth'     => false,
@@ -177,7 +177,7 @@ $_DB_dbms = 'mysql';   // Do not change (currently, only MySQL is supported)
 
 // optional settings for making database backups from within Geeklog
 $_CONF['allow_mysqldump']   = 1;      // 1 = on, 0 = off
-$_DB_mysqldump_path         = '/usr/bin/mysqldump'; // path to mysqldump binary
+$_DB_mysqldump_path = '/usr/bin/mysqldump'; // full path to mysqldump executable
 $_CONF['mysqldump_options'] = '-Q';   // additional options for mysqldump
 
 // +---------------------------------------------------------------------------+
@@ -231,14 +231,14 @@ $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 // |                                                                           |
 // | see docs/config.html#locale for details                                   |
 // +---------------------------------------------------------------------------+
-$_CONF['language']   = 'english';
-$_CONF['locale']     = 'en-gb';
-$_CONF['date']       = '%A, %B %d %Y @ %I:%M %p %Z';
-$_CONF['daytime']    = '%m/%d %I:%M%p';
-$_CONF['shortdate']  = '%x';
-$_CONF['dateonly']   = '%d-%b';
-$_CONF['timeonly']   = '%I:%M%p';
-$_CONF['week_start'] = 'Sun'; // can be 'Sun' or 'Mon'
+$_CONF['language']        = 'english';
+$_CONF['locale']          = 'en-gb';
+$_CONF['date']            = '%A, %B %d %Y @ %I:%M %p %Z';
+$_CONF['daytime']         = '%m/%d %I:%M%p';
+$_CONF['shortdate']       = '%x';
+$_CONF['dateonly']        = '%d-%b';
+$_CONF['timeonly']        = '%I:%M%p';
+$_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // "Timezone Hack"
@@ -249,7 +249,7 @@ $_CONF['default_charset'] = 'iso-8859-1';
 // Please note that this does not work when safe_mode is on!
 //
 // For more information, see this discussion on geeklog.net:
-// http://www.geeklog.net/forum/viewtopic.php?forum=10&showtopic=21232
+// http://www.geeklog.net/forum/viewtopic.php?showtopic=21232
 // $_CONF['timezone'] = 'Etc/GMT-6'; // e.g. 6 hours behind GMT
 
 
@@ -298,21 +298,10 @@ $_CONF['cookie_path']                   = '/';
 $_CONF['cookiedomain']                  = ''; // e.g. '.example.com'
 $_CONF['cookiesecure']                  = 0;
 
-// Set to false if you don't want to store last login data and time in the userinfo table
+// Geeklog keeps track of when a user last logged in. Set this to false
+// if you don't want that.
 $_CONF['lastlogin']                     = true;
 
-// +---------------------------------------------------------------------------+
-// | PHP SESSIONS SETTINGS                                                     |
-// +---------------------------------------------------------------------------+
-
-// will use cookies to store the session id on the client side
-$_CONF['sessions_usecookie']            = true;
-$_CONF['sessionid']                     = 'SessionID';
-
-// The prefix can be useful for instance if you generate identifiers
-// simultaneously on several hosts and there is the extreme chance to generate
-// the identifier at the same microsecond.
-$_CONF['sessionid_prefix']              = 'gl';
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |
@@ -423,7 +412,7 @@ $_CONF['emailstoryloginrequired'] = 0;
 $_CONF['storysubmission'] = 1;
 $_CONF['linksubmission']  = 1;
 $_CONF['eventsubmission'] = 1;
-$_CONF['usersubmission']  = 0;
+$_CONF['usersubmission']  = 0; // 1 = new users must be approved
 
 // When set to 1, this will display an additional block on the submissions page
 // that lists all stories that have the 'draft' flag set.
@@ -437,7 +426,7 @@ $_CONF['listdraftstories'] = 0;
 $_CONF['notification'] = array ();
 
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
-$_CONF['speedlimit']    = 45;         // in seconds
+$_CONF['speedlimit']    = 45;           // in seconds
 $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and stories without previewing
 
 // Allow users to change their username (if set to 1).
@@ -610,13 +599,13 @@ $_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 $_CONF['keep_unscaled_image']   = 0; // 1 = keep original images
 
 // Story image settings
-$_CONF['max_image_width']       = 300;  // In pixels
-$_CONF['max_image_height']      = 300;  // In pixels
+$_CONF['max_image_width']       = 160;  // In pixels
+$_CONF['max_image_height']      = 120;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
 
 // User photo settings
-$_CONF['max_photo_width']       = 96;  // In pixels
-$_CONF['max_photo_height']      = 96;  // In pixels
+$_CONF['max_photo_width']       = 128; // In pixels
+$_CONF['max_photo_height']      = 128; // In pixels
 $_CONF['max_photo_size']        = 65536; // 65536 = 64KB
 
 // Comment Settings
@@ -627,9 +616,9 @@ $_CONF['comment_mode']          = 'threaded'; // Default Comment Mode; from 'thr
 $_CONF['comment_code']          = 0; // 0 = comments enabled, -1 = disabled
 
 // Poll Settings
-$_CONF['maxanswers']        = 10;
-// 'submitorder' is order answers are saved in admin/poll.php
-// 'voteorder' will list answers in order of number of votes (highest->lowest);
+$_CONF['maxanswers']        = 10; // max. number of options in a poll
+// 'submitorder' is the order in which answers are saved in admin/poll.php
+// 'voteorder' will list answers ordered by number of votes (highest->lowest);
 $_CONF['answerorder']       = 'submitorder';
 $_CONF['pollcookietime']    = 86400;
 $_CONF['polladdresstime']   = 604800;
@@ -712,13 +701,13 @@ $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock',
 // $_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';
 
 
-// EXPERIMENTAL!
-// This feature when fully implemented, will make your site crawler friendly.
-// Only works with staticpages and stories right now.
+// This feature, when activated, makes some of Geeklog's URLs more crawler
+// friendly, i.e. more likely to be picked up by search engines.
+// Only implemented for stories, static pages, and portal links right now.
 //
 // Note: Works with Apache (Linux and Windows successfully tested).
 //       Unresolvable issues with systems running IIS; known PHP CGI bug.
-$_CONF['url_rewrite']       = false; // false = off, true = on
+$_CONF['url_rewrite'] = false; // false = off, true = on
 
 // Define a few useful things for GL
 
