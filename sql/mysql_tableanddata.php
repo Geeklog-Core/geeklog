@@ -554,7 +554,12 @@ CREATE TABLE {$_TABLES['users']} (
   language varchar(64) default NULL,
   pwrequestid varchar(16) default NULL,
   PRIMARY KEY  (uid),
-  KEY LOGIN (uid,passwd,username)
+  KEY LOGIN (uid,passwd,username),
+  INDEX users_username(username),
+  INDEX users_fullname(fullname),
+  INDEX users_email(email),
+  INDEX users_passwd(passwd),
+  INDEX users_pwrequestid(pwrequestid)
 ) TYPE=MyISAM
 ";
 
