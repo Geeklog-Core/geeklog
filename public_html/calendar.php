@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.20 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: calendar.php,v 1.21 2002/05/20 19:39:47 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -560,7 +560,7 @@ case 'week':
             
         }
         if ($nrows == 0) {
-            $cal_templates->set_var('event_starttime','&nbsp');
+            $cal_templates->set_var('event_starttime','&nbsp;');
             $cal_templates->set_var('event_endtime','');
             $cal_templates->set_var('event_title_and_link','');
             $cal_templates->set_var('delete_imagelink','');

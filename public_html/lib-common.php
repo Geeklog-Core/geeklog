@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.100 2002/05/20 18:12:04 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.101 2002/05/20 19:39:47 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1545,7 +1545,7 @@ function COM_commentBar($sid,$title,$type,$order,$mode)
     $retval .= '</td></tr>' . LB . '<tr><td align="center" class="commentbar2">';
 
     if (!empty($HTTP_GET_VARS['qid'])) {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&aid=-1" method="POST">' . LB
+        $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $sid . '&amp;aid=-1" method="POST">' . LB
             . '<input type="hidden" name="scale" value="400">' . LB;
     } else {
         $retval .= '<form action="' . $_CONF['site_url'] . '/article.php" method="POST">' . LB

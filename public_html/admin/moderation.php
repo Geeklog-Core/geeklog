@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.21 2002/05/17 01:14:38 mlimburg Exp $
+// $Id: moderation.php,v 1.22 2002/05/20 19:39:47 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -233,10 +233,10 @@ function itemlist($type)
             }
             if ($isplugin)  {
                 $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/plugins/' . $type . '/' 
-                    . $type . '.php?mode=editsubmission&id=' . $A['id']);
+                    . $type . '.php?mode=editsubmission&amp;id=' . $A['id']);
             } else {
                 $mod_templates->set_var('edit_submission_url', $_CONF['site_admin_url'] . '/' .  $type
-                    . '.php?mode=editsubmission&id=' . $A['id']); 
+                    . '.php?mode=editsubmission&amp;id=' . $A['id']); 
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);
             $mod_templates->set_var('data_col1', stripslashes($A[1]));

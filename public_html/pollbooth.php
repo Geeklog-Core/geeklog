@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.11 2002/05/17 01:14:39 mlimburg Exp $
+// $Id: pollbooth.php,v 1.12 2002/05/20 19:39:47 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -81,7 +81,7 @@ function polllist()
     for ($i = 1; $i <= $nrows; $i++) {
         $Q = DB_fetchArray($result);
         $pollitem->set_var('item_num', $i);
-        $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&aid=-1');
+        $pollitem->set_var('poll_url', $_CONF['site_url'].'/pollbooth.php?qid=' . $Q['qid'] . '&amp;aid=-1');
         $pollitem->set_var('poll_question', stripslashes($Q['question']));
         $pollitem->set_var('poll_votes', $Q['voters']);
         $pollitem->set_var('lang_votes', $LANG07[5]);

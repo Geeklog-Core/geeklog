@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.15 2002/05/17 01:14:39 mlimburg Exp $
+// $Id: stats.php,v 1.16 2002/05/20 19:39:47 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -193,7 +193,7 @@ if ($nrows > 0) {
     $stat_templates->set_var('stat_name',$LANG10[20]);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', $_CONF['site_url'] . '/portal.php?url=' . $A['url'] . '&what=link&item=' . $A['lid']);
+        $stat_templates->set_var('item_url', $_CONF['site_url'] . '/portal.php?url=' . $A['url'] . '&amp;what=link&amp;item=' . $A['lid']);
         $stat_templates->set_var('item_text', $A['title']);
         $stat_templates->set_var('item_stat', $A['hits']);
         $stat_templates->parse('stat_row','statrow',true); 
