@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# english.php
+# polish.php
 # This is the english language page for GeekLog!
 # Special thanks to Robert Stadnik for his work on this project
 #
@@ -23,6 +23,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+
+$LANG_CHARSET = "iso-8859-2";
 
 ###############################################################################
 # Array Format:
@@ -79,7 +81,7 @@ $LANG01 = array(
 	38 => "",
 	39 => "Od¶wie¿",
 	40 => "",
-	41 => "",
+	41 => "Go¶æ",
 	42 => "Autor:",
 	43 => "Odpowiedz",
 	44 => "G³ówny",
@@ -139,7 +141,12 @@ $LANG01 = array(
 	99 => "ARTYKU£Y",
     100 => "Brak nowych artyku³ów",
     101 => 'Twoje Wydarzenia',
-    102 => 'Wydarzenia na Stronie'
+    102 => 'Wydarzenia na Serwisie',
+    103 => 'Kopie zapasowe bazy',
+    104 => 'przez',
+    105 => 'U¿ytkownicy Mailowi',
+    106 => 'Ods³oniêæ',
+    107 => 'Wersja GL - Test'
 );
 
 ###############################################################################
@@ -160,6 +167,7 @@ $LANG02 = array(
 	12 => "Wydarzenie",
 	13 => "Rozpoczêcie",
 	14 => "Zakoñczenie"
+	15 => "Powrót do Kalendarza"
 );
 
 ###############################################################################
@@ -177,7 +185,7 @@ $LANG03 = array(
 	9 => "Komentarz",
 	10 => '',
 	11 => "Prze¶lij Komentarz",
-	12 => "Proszê uzupe³niæ pola Nazwa, Email, Tytu³ i Komentarz. Pola te s± wymagane do zamieszczenia komentarza.",
+	12 => "Proszê uzupe³niæ pola Tytu³ i Komentarz. Pola te s± wymagane do zamieszczenia komentarza.",
 	13 => "Twoje Informacje",
 	14 => "Podgl±d",
 	15 => "",
@@ -269,6 +277,14 @@ $LANG04 = array(
 	71 => "Jedn± z extra mo¿liwo¶ci serwisu {$_CONF['site_name']} jest mo¿liwo¶æ dopasowania zawarto¶ci i wygl±du strony.  Aby skorzystaæ z tych udogodnieñ nale¿y siê najpierw <a href=\"{$_CONF['site_url']}/users.php?mode=new\">zarejestrowaæ</a> w serwisie {$_CONF['site_name']}.  Jeste¶ ju¿ cz³onkiem?  Zaloguj siê!",
         72 => "Motyw",
         73 => "Jêzyk"
+	74 => "Zmieñ wygl±d strony!",
+	75 => "Artyku³y Wysy³ane Mailem do",
+	76 => "Je¿eli zaznaczysz jak±¶ sekcjê z poni¿szej listy bêdziesz, pod koniec ka¿dego dnia, otrzymywa³ nowe artyku³y zamieszczone w tej sekcji. Zaznacz sekcje, które ciê interesuj±!",
+	77 => "Zdjêcie",
+	78 => "Dodaj swoje zdjêcie!",
+	79 => "Zaznacz tutaj aby wykasowaæ to zdjêcie",
+	80 => "Logowanie",
+        81 => "Wy¶lij Maila"
 );
 
 ###############################################################################
@@ -335,6 +351,12 @@ $LANG08 = array(
 	26 => "Ten formularz umo¿liwia wys³anie maila do wybranego u¿ytkownika.  Wymagane jest wype³nienie wszystkich pól.",
 	27 => "Krótka Wiadomo¶æ",
 	28 => "$from napisa³: $shortmsg"
+	29 => "Dzienne zestawienie artyku³ów w Serwisie {$_CONF['site_name']} dla ",
+	30 => "Codzienny Newsletter dla ",
+	31 => "Tytu³",
+	32 => "Data",
+	33 => "Ca³y artyku³ przeczytany ",
+	34 => "Koniec Wiadomo¶ci"
 );
 
 ###############################################################################
@@ -369,7 +391,18 @@ $LANG09 = array(
 	26 => "pozycji w ci±gu",
 	27 => "sekund",
         28 => 'Brak artyku³ów lub komentarzy których szukasz',
-        29 => 'Artyku³y i Komentarze - Wyniki'
+        29 => 'Artyku³y i Komentarze - Wyniki',
+	30 => "Brak linków spe³niaj±cych twoje kryteria wyszukiwania",
+	31 => "Nie znaleziono ¿adnych pluginów",
+	32 => "Wydarzenie",
+	33 => "URL",
+	34 => "Lokalizacja",
+	35 => "Ca³y Dzieñ",
+	36 => "Brak wydarzeñ spe³niaj±cych twoje kryteria wyszukiwania",
+	37 => "Wydarzenia - Wyniki",
+	38 => "Linki - Wyniki",
+	39 => "Linki",
+	40 => "Wydarzenia"
 );
 
 ###############################################################################
@@ -467,7 +500,8 @@ $LANG12 = array(
         49 => 'Kategoria Wydarzenia',
         50 => 'Edytuj Kategorie Wydarzeñ',
         51 => 'Lokalizacja',
-        52 => 'Kasuj'
+        52 => 'Kasuj',
+	53 => 'Za³ó¿ Konto'
 );
 
 
@@ -543,7 +577,11 @@ $LANG21 = array(
     49 => ' (nazwa unikalna i bez spacji)',
     50 => 'URL Pliku Pomocy',
     51 => 'uwzglêdnij http://',
-    52 => 'Je¶li zostawisz puste, ikona pomocy dla tego bloku siê nie pojawi'
+    52 => 'Je¶li zostawisz puste, ikona pomocy dla tego bloku siê nie pojawi',
+    53 => 'Aktywne',
+    54 => 'zapisz',
+    55 => 'anuluj',
+    56 => 'kasuj'
 );
 
 ###############################################################################
@@ -568,7 +606,10 @@ $LANG22 = array(
 	16 => "Odmowa Dostêpu",
 	17 => "Próbujesz wyedytowaæ wydarzenie, do którego nie masz dostêpu.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/event.php\">wróciæ do ekranu administrowania wydarzeniami</a>.",
 	18 => 'Nowe Wydarzenie',
-	19 => 'Admin Home'
+	19 => 'Admin Home',
+	20 => 'zapisz',
+	21 => 'anuluj',
+	22 => 'kasuj'
 );
 
 ###############################################################################
@@ -594,7 +635,10 @@ $LANG23 = array(
 	17 => "Próbujesz wyedytowaæ link, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF["site_url"]}/admin/link.php\">wróciæ do ekranu administrowania linkami</a>.",
 	18 => 'Nowy Link',
 	19 => 'Admin Home',
-	20 => 'Je¶li inny, podaj jaki'
+	20 => 'Je¶li inny, podaj jaki',
+	21 => 'zapisz',
+	22 => 'anuluj',
+	23 => 'kasuj'
 );
 
 ###############################################################################
@@ -606,12 +650,12 @@ $LANG24 = array(
 	3 => "Tryb",
 	4 => "Format",
 	5 => "Edytor Artyku³ów",
-	6 => "",
+	6 => "Brak artyku³ów w systemie",
 	7 => "Autor",
-	8 => "",
-	9 => "",
-	10 => "",
-	11 => "",
+	8 => "zapisz",
+	9 => "podgl±d",
+	10 => "anuluj",
+	11 => "kasuj",
 	12 => "",
 	13 => "Tytu³",
 	14 => "Sekcja",
@@ -645,7 +689,18 @@ $LANG24 = array(
 	42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF["site_url"]}/admin/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
 	43 => 'Nowy Artyku³',
 	44 => 'Admin Home',
-	45 => 'Dostêp'
+	45 => 'Dostêp',
+	46 => '<b>UWAGA:</b> je¶li przesuniesz datê do przodu, artyku³ nie zostanie opublikowany wcze¶niej. Oznacza to równie¿, ¿e artyku³ nie bêdzie uwzglêdniony w pliku RDF i zostanie pominiêty przy wyszukiwaniu.',
+	47 => 'Zdjêcia',
+	48 => 'zdjêcie',
+	49 => 'prawo',
+	50 => 'lewo',
+	51 => 'Aby dodaæ jedno ze zdjêæ, które chcesz podpi±æ do tego artyku³u musisz wstawiæ specjalnie sformatowany tekst.  Tekst jest nastêpuj±cy [imageX], [imageX_right] lub [imageX_left] gdzie X to numer obrazka, który za³±czy³e¶.  UWAGA: Musisz u¿ywaæ obrazków, które za³±czasz.  Inaczej nie bêdziesz w stanie zapisaæ swojego artyku³u.<BR><P><B>PODGL¡D</B>: Podgl±d artyku³u z za³±czonymi obrazkami dzia³a najlepiej po uprzednim zapisaniu artyku³u jako kopia ZAMIAST u¿ycia bezpo¶rednio klawisza podgl±d.  U¿ywaj klawisza podgl±d tylko gdy nie podpinasz obrazków.',
+	52 => 'Kasuj',
+	53 => 'nie zosta³ u¿yty.  Musisz umie¶ciæ ten obrazek we wstêpie lub w g³ównej czê¶ci zanim zapiszsz zmiany',
+	54 => 'Za³±czonych Obrazów Nie U¿yto',
+	55 => 'Pojawi³y siê nastêpuj±ce b³êdy podczas próby zapisu tego artyku³u.  Proszê je poprawiæ przed ponownym zapisem',
+	56 => 'Poka¿ Ikonê Artyku³u'
 );
 
 ###############################################################################
@@ -701,7 +756,10 @@ $LANG27 = array(
 	15 => "alfabetycznie",
 	16 => "domy¶lnie jest",
 	17 => "Nowa Sekcja",
-	18 => "Admin Home"
+	18 => "Admin Home",
+	19 => 'zapisz',
+        20 => 'anuluj',
+        21 => 'kasuj'
 );
 
 ###############################################################################
@@ -731,8 +789,20 @@ $LANG28 = array(
 	18 => 'anuluj',
 	19 => 'kasuj',
 	20 => 'zapisz',
-    21 => 'Login ju¿ istnieje.',
-    22 => 'B³±d'
+        21 => 'Login ju¿ istnieje.',
+	22 => 'B³±d',
+	23 => 'Dodanie Grupowe',
+        24 => 'Grupowy Import U¿ytkowników',
+        25 => 'Mo¿na zaimportowaæ grupowo u¿ytkowników do Geekloga.  Plik tekstowy musi byæ rozdzielany znakami tabulacji oraz musi mieæ nastêpuj±c± strukturê: imiê i nazwisko, login, adres email.  Ka¿dy zaimportowany u¿ytkownik dostanie mailem has³o.  W jednej linii mo¿e wystêpowaæ tylko jeden u¿ytkownik.  Nie zastosowanie do tych instrukcji spowoduje problemy, które mog± wymagaæ rêcznej obróbki dlatego sprawd¼ dwa razy zawarte informacje!',
+        26 => 'Szukaj',
+        27 => 'Zawê¿ Wyniki',
+        28 => 'Zaznacz tutaj aby usun±æ obrazek',
+        29 => '¦cie¿ka',
+        30 => 'Import',
+        31 => 'Nowi U¿ytkownicy',
+        32 => 'Przetwarzanie zakoñczone. Zaimportowano $successes i napotkano $failures b³êdów',
+        33 => 'prze¶lij',
+        34 => 'B³±d: Musisz podaæ plik do za³adowania.'
 );
 
 
@@ -743,6 +813,12 @@ $LANG29 = array(
 	1 => "Zatwierd¼",
 	2 => "Kasuj",
 	3 => "Edytuj",
+	10 => "Tytu³",
+	11 => "Data Pocz±tkowa",
+	12 => "URL",
+	13 => "Kategoria",
+	14 => "Data",
+	15 => "Sekcja",
 	34 => "Panel Sterowania",
 	35 => "Przes³ane Materia³y",
 	36 => "Przes³ane Linki",
@@ -792,7 +868,10 @@ $LANG30 = array(
     35 => "Szybkie Dodanie",
     36 => "Wy¶lij",
     37 => "Sorry, funkcja kalendarz osobisty nie jest dostêpna",
-    38 => "Edytor Osobisty"
+    38 => "Edytor Osobisty",
+    39 => 'Dzieñ',
+    40 => 'Tydzieñ',
+    41 => 'Miesi±c'
 );
 
 ###############################################################################
@@ -814,7 +893,15 @@ $LANG31 = array(
  	14 => "Ignoruj ustawienia u¿ytkownika",
  	15 => "B³±d podczas wysy³ania do: ",
 	16 => "Wiadomo¶æ wys³ana do: ",
-	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Wy¶lij nastêpn± wiadomo¶æ</a>"
+	17 => "<a href=" . $_CONF["site_url"] . "/admin/mail.php>Wy¶lij nastêpn± wiadomo¶æ</a>",
+	18 => "Do",
+        19 => "UWAGA: je¶li chcesz wys³aæ wiadomo¶æ do wszystkich u¿ytkowników, wybierz Logged-in Users z listy rozwijanej.",
+        20 => "Wys³anych <successcount> wiadomo¶ci oraz <failcount> niewys³anych wiadomo¶ci.  Poni¿ej szczegó³y dotycz±ce próby wys³ania ka¿dej wiadomo¶ci.  Mo¿esz równie¿ <a href=\"" . $_CONF['site_url'] . "/admin/mail.php\">Wys³aæ wiadomo¶æ</a> lub mo¿esz <a href=\"" . $_CONF['site_url'] . "/admin/moderation.php\">wróciæ do strony administracyjnej</a>.",
+        21 => 'B³±d',
+        22 => 'Sukces',
+        23 => 'Brak b³êdów',
+        24 => 'Bez powodzenia',
+        25 => '-- Wybierz Grupê --'
 );
 
 
@@ -866,7 +953,8 @@ $MESSAGE = array (
         42 => "S³owo zosta³o zapisane.",
 	43 => "S³owo zosta³o wykasowane.",
         44 => 'Plugin zosta³ zainstalowany!',
-        45 => 'Plugin zosta³ wykasowany.'
+        45 => 'Plugin zosta³ wykasowany.',
+	46 => "Sorry, nie masz dostêpu do opcji archiwizowania bazy danych.  Pamiêtaj, ¿e Wszelkie nieautoryzowane próby wej¶cia s± logowane"
 );
 
 // for plugins.php
@@ -907,9 +995,9 @@ $LANG32 = array (
 
 $LANG_ACCESS = array(
 	access => "Dostêp",
-    ownerroot => "W³a¶ciciel/Root",
-    group => "Grupa",
-    readonly => "Tylko-do-Odczytu",
+        ownerroot => "W³a¶ciciel/Root",
+	group => "Grupa",
+	readonly => "Tylko-do-Odczytu",
 	accessrights => "Prawa Dostêpu",
 	owner => "W³a¶ciciel",
 	grantgrouplabel => "Udziel Praw do Edycji Powy¿szej Grupie",
@@ -962,4 +1050,32 @@ $LANG_WORDS = array(
     replacmentword => "Zamiana S³owa",
     newword => "Nowe S³owo"
 );
+
+$LANG_DB_BACKUP = array(
+    last_ten_backups => 'Ostatnie 10 Backupów',
+    do_backup => 'Wykonaj Backup',
+    backup_successful => 'Backup bazy wykonany pomy¶lnie.',
+    no_backups => 'Brak backupów w systemie',
+    db_explanation => 'Aby wykonaæ nowy backup twojego systemu, kliknij poni¿szy przycisk'
+);
+		    
+$LANG_BUTTONS = array(
+    1 => "G³ówna",
+    2 => "Kontakt",
+    3 => "Prze¶lij",
+    4 => "Linki",
+    5 => "Sonda",
+    6 => "Kalendarz",
+    7 => "Statystyka",
+    8 => "Osobiste",
+    9 => "Szukaj",
+    10 => "wyszukiwanie zaawansowane"
+);
+
+$LANG_404 = array(
+    1 => "B³±d 404",
+    2 => "Kurcze, wszêdzie szuka³em ale nie mogê znale¼æ <b>http://{$HTTP_SERVER_VARS["HTTP_HOST"]}{$HTTP_SERVER_VARS["REQUEST_URI"]}</b>.",
+    3 => "<p>Przykro nam ale dany plik nie istnieje. Sprawd¼ <a href=\"{$_CONF['site_url']}/search.phpi\">stronê z wyszukiwark±</a> aby sprawdziæ czy mo¿na znale¼æ co zgubi³e¶."
+);
+							    
 ?>
