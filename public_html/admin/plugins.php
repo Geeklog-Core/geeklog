@@ -8,11 +8,12 @@
 // | Geeklog plugin administration page.                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
-// |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.31 2002/11/16 22:20:21 dhaun Exp $
+// $Id: plugins.php,v 1.32 2003/02/04 20:31:57 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -77,7 +78,7 @@ function plugineditor($pi_name, $confirmed = 0)
             . 'or there is more than one row with with same pi_name.  Bailing out to prevent trouble.');
     }
 
-	$A = DB_fetchArray($result);
+    $A = DB_fetchArray($result);
 
     $retval = '';
 
@@ -90,10 +91,19 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_save', $LANG32[23]);
     $plg_templates->set_var('lang_cancel', $LANG32[24]);
     $plg_templates->set_var('lang_delete', $LANG32[25]);
-    $plg_templates->set_var('pi_icon', $_CONF['site_url'] . "/" . $pi_name . "/images/" . $pi_name . ".gif");
-	if (!empty($pi_name)) {
-		$plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
-	}
+    $public_img = $_CONF['site_url'] . "/" . $pi_name . "/images/" . $pi_name . ".gif";
+    $fh = @fopen ($public_img, 'r');
+    if ($fh === false) {
+        $admin_img = $_CONF['site_admin_url'] . "/plugins/" . $pi_name
+                   . "/images/" . $pi_name . ".gif";
+        $plg_templates->set_var ('pi_icon', $admin_img);
+    } else {
+        fclose ($fh);
+        $plg_templates->set_var ('pi_icon', $public_img);
+    }
+    if (!empty($pi_name)) {
+        $plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
+    }
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
@@ -104,9 +114,9 @@ function plugineditor($pi_name, $confirmed = 0)
     $plg_templates->set_var('lang_geeklogversion', $LANG32[29]);
     $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
     $plg_templates->set_var('lang_enabled', $LANG32[19]);
-	if ($A['pi_enabled'] == 1) {
+    if ($A['pi_enabled'] == 1) {
         $plg_templates->set_var('enabled_checked', 'checked="checked"');
-	} else {
+    } else {
         $plg_templates->set_var('enabled_checked', '');
     }
     $plg_templates->set_var('end_block', COM_endBlock());
