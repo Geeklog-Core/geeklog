@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.38 2004/07/17 18:03:25 dhaun Exp $
+// $Id: poll.php,v 1.39 2004/09/25 18:38:17 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -90,6 +90,8 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
+    $qid = COM_sanitizeID ($qid);
 
     $question = COM_stripslashes ($question);
     for ($i = 0; $i < sizeof ($A); $i++) {

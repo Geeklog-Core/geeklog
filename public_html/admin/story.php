@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.133 2004/09/17 10:52:37 dhaun Exp $
+// $Id: story.php,v 1.134 2004/09/25 18:38:17 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -871,13 +871,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-    // some minimal sanitizing on the story id ...
-    $sid = str_replace (' ', '', $sid);
-    $sid = str_replace (array ('_', '/', '\\', ':', '+'), '-', $sid);
-    $sid = preg_replace('/[^a-zA-Z0-9\-]/', '', $sid);
-    if (empty ($sid)) {
-        $sid = COM_makesid ();
-    }
+    $sid = COM_sanitizeID ($sid);
 
     $duplicate_sid = false;
     $delete_old_story = false;

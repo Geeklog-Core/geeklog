@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.37 2004/08/08 10:18:42 dhaun Exp $
+// $Id: index.php,v 1.38 2004/09/25 18:38:17 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -480,11 +480,7 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
 {
     global $_CONF, $LANG12, $LANG_STATIC, $_SP_CONF, $_TABLES;
 
-    $sp_id = str_replace (' ', '', $sp_id);
-    $sp_id = str_replace (array ('_', '/', '\\', ':'), '-', $sp_id);
-    if (empty ($sp_id)) {
-        $sp_id = COM_makesid ();
-    }
+    $sp_id = COM_sanitizeID ($sp_id);
 
     // Check for unique page ID
     $duplicate_id = false;
