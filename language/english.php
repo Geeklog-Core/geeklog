@@ -298,7 +298,12 @@ $LANG04 = array(
     90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'Set New Password',
     92 => 'Enter New Password',
-    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.'
+    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
+    94 => 'Delete Account "%s"',
+    95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
+    96 => 'delete account',
+    97 => 'Confirm Account Deletion',
+    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.'
 );
 
 ###############################################################################
@@ -1003,7 +1008,8 @@ $MESSAGE = array (
     53 => 'Your new password has been accepted. Please use your new password below to log in now.',
     54 => 'Your request for a new password has expired. Please try again below.',
     55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
-    56 => 'The email address provided is already in use for another account.'
+    56 => 'The email address provided is already in use for another account.',
+    57 => 'You account has been successfully deleted.'
 );
 
 // for plugins.php

@@ -304,7 +304,12 @@ $LANG04 = array(
     90 => 'Du kannst hier jetzt ein neues Passwort für Deinen Account eingeben. Dein altes Passwort bleibt noch solange gültig, bis Du dieses Formular abschickst.',
     91 => 'Neues Passwort',
     92 => 'Neues Passwort eingeben',
-    93 => 'Du hast zuletzt vor %d Sekunden ein neues Passwort angefordert. Zwischen zwei Passwort-Anforderungen müssen aber mindestens %d Sekunden vergangen sein.'
+    93 => 'Du hast zuletzt vor %d Sekunden ein neues Passwort angefordert. Zwischen zwei Passwort-Anforderungen müssen aber mindestens %d Sekunden vergangen sein.',
+    94 => 'Lösche Account "%s"',
+    95 => 'Du kannst Deinen Account löschen, indem Du auf den "Account Löschen"-Button klickst. Artikel und Kommentare, die Du unter diesem Account geschrieben hast, werden <strong>nicht</strong> gelöscht, werden aber fortan als vom User "Anonymous" geschrieben erscheinen.',
+    96 => 'Account Löschen',
+    97 => 'Account Löschen bestätigen',
+    98 => 'Bist Du sicher, dass Du Deinen Account löschen willst? Du wirst Dich danach nicht mehr einloggen können (es sei denn, Du legst einen neuen Account an). Wenn Du Dir sicher bist, klicke bitte noch einmal auf "Account Löschen".'
 );
 
 ###############################################################################
@@ -997,7 +1002,8 @@ $MESSAGE = array (
     53 => 'Dein neues Passwort wurde gespeichert. Bitte melde Dich nun mit dem neuen Passwort an.',
     54 => 'Diese Anfrage für ein neues Passwort ist nicht mehr gültig. Bitte fordere erneut ein neues Passwort an.',
     55 => 'Du solltest in Kürze eine E-Mail erhalten, in der beschrieben wird, wie Du ein neues Passwort für Deinen Account eingeben kannst.',
-    56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.'
+    56 => 'Die angegebene E-Mail-Adresse wird schon für einen anderen Account verwendet.',
+    57 => 'Dein Account wurde gelöscht.'
 );
 
 // for plugins.php

@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.85 2003/05/26 12:52:44 dhaun Exp $
+// $Id: config.php,v 1.86 2003/06/12 19:45:08 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -255,6 +255,9 @@ $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and storie
 
 // Allow users to change their username (if set to 1).
 $_CONF['allow_username_change'] = 0;
+
+// Allow users to delete their account (if set to 1).
+$_CONF['allow_account_delete'] = 0;
 
 
 // Topic Settings

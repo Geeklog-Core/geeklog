@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.61 2003/06/08 15:22:50 dhaun Exp $
+// $Id: usersettings.php,v 1.62 2003/06/12 19:45:08 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -63,7 +63,8 @@ function edituser()
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
     $preferences->set_file (array ('profile' => 'profile.thtml',
                                    'photo' => 'userphoto.thtml',
-                                   'username' => 'username.thtml'));
+                                   'username' => 'username.thtml',
+                                   'deleteaccount' => 'deleteaccount.thtml'));
     $preferences->set_var ('site_url', $_CONF['site_url']);
     $preferences->set_var ('layout_url', $_CONF['layout_url']);
 
@@ -146,12 +147,114 @@ function edituser()
     $preferences->set_var ('uid_value', $user);
     $preferences->set_var ('username_value', $_USER['username']);
 
+    if ($_CONF['allow_account_delete'] == 1) {
+        $preferences->set_var ('start_block_delete_account',
+                COM_startBlock (sprintf ($LANG04[94], $_USER['username'])));
+        $preferences->set_var ('end_block_delete_account', COM_endBlock ());
+        $preferences->set_var ('delete_text', $LANG04[95]);
+        $preferences->set_var ('lang_button_delete', $LANG04[96]);
+        $preferences->set_var ('delete_mode', 'confirmdelete');
+        $preferences->set_var ('account_id', $_USER['uid']);
+        $preferences->parse ('delete_account_option', 'deleteaccount', false);
+    } else {
+        $preferences->set_var ('delete_account_option', '');
+    }
+
     PLG_profileVariablesEdit ($_USER['uid'], $preferences);
 
     $retval = $preferences->finish ($preferences->parse ('output', 'profile'));
     $retval .= PLG_profileBlocksEdit ($_USER['uid']);
 
     return $retval;
+}
+
+/**
+* Ask user for confirmation to delete his/her account.
+*
+* @param    int      account_id   uid of account to delete (must match current user's uid)
+* @return   string   confirmation form
+*
+*/
+function confirmAccountDelete ($account_id)
+{
+    global $_CONF, $_USER, $LANG04;
+
+    if ($account_id != $_USER['uid']) {
+        // now that doesn't look right - abort ...
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    $retval = '';
+
+    $confirm = new Template ($_CONF['path_layout'] . 'preferences');
+    $confirm->set_file (array ('deleteaccount' => 'deleteaccount.thtml'));
+    $confirm->set_var ('site_url', $_CONF['site_url']);
+    $confirm->set_var ('layout_url', $_CONF['layout_url']);
+
+    $confirm->set_var ('start_block_delete_account',
+            COM_startBlock (sprintf ($LANG04[94], $_USER['username'])));
+    $confirm->set_var ('end_block_delete_account', COM_endBlock ());
+    $confirm->set_var ('delete_text', $LANG04[95]);
+    $confirm->set_var ('lang_button_delete', $LANG04[96]);
+    $confirm->set_var ('delete_mode', 'deleteconfirmed');
+    $confirm->set_var ('account_id', $_USER['uid']);
+
+    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_startBlock ($LANG04[97]);
+    $retval .= $LANG04[98];
+    $retval .= COM_endBlock ();
+    $retval .= $confirm->finish ($confirm->parse ('output', 'deleteaccount'));
+    $retval .= COM_siteFooter ();
+
+    return $retval;
+}
+
+/**
+* Delete an account (keep in sync with delete_user() in admin/user.php).
+*
+* @param    uid      int   uid of account to delete
+* @return   string   redirection to main page (+ success msg)
+*
+*/
+function deleteUserAccount ($uid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    if ($uid != $_USER['uid']) {
+        // now that doesn't look right - abort ...
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    // log the user out
+    SESS_endUserSession ($_USER['uid']);
+
+    // Ok, delete everything related to this user
+
+    // first, remove from all security groups
+    DB_delete ($_TABLES['group_assignments'], 'ug_uid', $uid);
+
+    // remove user information and preferences
+    DB_delete ($_TABLES['userprefs'], 'uid', $uid);
+    DB_delete ($_TABLES['userindex'], 'uid', $uid);
+    DB_delete ($_TABLES['usercomment'], 'uid', $uid);
+    DB_delete ($_TABLES['userinfo'], 'uid', $uid);
+
+    // Call custom account profile delete function if enabled and exists
+    if ($_CONF['custom_registration'] AND function_exists (custom_userdelete)) {
+        custom_userdelete ($uid);
+    }
+
+    // let plugins update their data for this user
+    PLG_deleteUser ($uid);
+
+    // avoid having orphand stories/comments by making them anonymous posts
+    DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
+    DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
+
+    // now delete the user itself
+    DB_delete ($_TABLES['users'], 'uid', $uid);
+
+    return COM_refresh ($_CONF['site_url'] . '/index.php?msg=57');
 }
 
 /**
@@ -752,6 +855,12 @@ if (!empty($_USER['username']) && !empty($mode)) {
         savepreferences ($HTTP_POST_VARS);
         $display .= COM_refresh ($_CONF['site_url']
                                  . '/usersettings.php?mode=preferences&msg=6');
+        break;
+    case 'confirmdelete':
+        $display .= confirmAccountDelete ($HTTP_POST_VARS['account_id']);
+        break;
+    case 'deleteconfirmed':
+        $display .= deleteUserAccount ($HTTP_POST_VARS['account_id']);
         break;
     }
 } else {
