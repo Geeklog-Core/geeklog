@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.18 2002/03/07 22:28:49 tony_bibbs Exp $
+// $Id: install.php,v 1.19 2002/03/07 22:44:44 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -815,8 +815,20 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
         case '1.3.3':
-            // No DB updates needed
+            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                $progress .= "executing " . current($_SQL) . "<br>\n";
+                $instDB->dbQuery(current($_SQL),1);
+                $error = $instDB->dbError(current($_SQL));
+                if (!empty($error)) {
+                    echo $progress . $error;
+                    return false;
+                }
+                next($_SQL);
+            }
+
             $current_gl_version = '1.3.4';
+            $_SQL = '';
             break;
         default:
             $done = true;
