@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.369 2004/08/28 12:00:12 dhaun Exp $
+// $Id: lib-common.php,v 1.370 2004/08/29 03:44:03 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1841,7 +1841,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 function COM_showTopics( $topic='' )
 {
     global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
-           $_THEME_URL, $page, $newstories;
+           $_THEME_URL, $_BLOCK_TEMPLATE, $page, $newstories;
 
     $sql = "SELECT tid,topic,imageurl FROM {$_TABLES['topics']}";
     if( $_USER['uid'] > 1 ) {
@@ -1872,8 +1872,14 @@ function COM_showTopics( $topic='' )
 
     $retval = '';
     $sections = new Template( $_CONF['path_layout'] );
-    $sections->set_file( array( 'option'   => 'topicoption.thtml',
-                                'inactive' => 'topicoption_off.thtml' ));
+    if (isset($_BLOCK_TEMPLATE['topicoption']))  {
+        $templates = explode( ',', $_BLOCK_TEMPLATE['topicoption'] );
+        $sections->set_file( array( 'option' => $templates[0],
+                                     'current' => $templates[1] ));
+    } else {
+        $sections->set_file( array( 'option' => 'topicoption.thtml',
+                                    'inactive' => 'topicoption_off.thtml' ));
+    }
     $sections->set_var( 'site_url', $_CONF['site_url'] );
     $sections->set_var( 'layout_url', $_CONF['layout_url'] );
     $sections->set_var( 'block_name', str_replace( '_', '-', 'section_block' ));
@@ -2004,15 +2010,21 @@ function COM_showTopics( $topic='' )
 
 function COM_userMenu( $help='', $title='' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $HTTP_SERVER_VARS;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $HTTP_SERVER_VARS;
 
     $retval = '';
 
     if( $_USER['uid'] > 1 )
     {
         $usermenu = new Template( $_CONF['path_layout'] );
-        $usermenu->set_file( array( 'option' => 'useroption.thtml',
-                                    'current' => 'useroption_off.thtml' ));
+        if (isset($_BLOCK_TEMPLATE['useroption']))  {
+            $templates = explode( ',', $_BLOCK_TEMPLATE['useroption'] );
+            $usermenu->set_file( array( 'option' => $templates[0],
+                                        'current' => $templates[1] ));
+        } else {
+           $usermenu->set_file( array( 'option' => 'useroption.thtml',
+                                       'current' => 'useroption_off.thtml' ));
+        }
         $usermenu->set_var( 'site_url', $_CONF['site_url'] );
         $usermenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $usermenu->set_var( 'block_name', str_replace( '_', '-', 'user_block' ));
@@ -2145,7 +2157,7 @@ function COM_userMenu( $help='', $title='' )
 
 function COM_adminMenu( $help = '', $title = '' )
 {
-    global $_TABLES, $_USER, $_CONF, $LANG01, $LANG_PDF, $HTTP_SERVER_VARS;
+    global $_TABLES, $_USER, $_CONF, $LANG01, $_BLOCK_TEMPLATE, $LANG_PDF, $HTTP_SERVER_VARS;
 
     $retval = '';
 
@@ -2163,8 +2175,14 @@ function COM_adminMenu( $help = '', $title = '' )
         $thisUrl = COM_getCurrentURL();
 
         $adminmenu = new Template( $_CONF['path_layout'] );
-        $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
-                                     'current' => 'adminoption_off.thtml' ));
+        if (isset($_BLOCK_TEMPLATE['adminoption']))  {
+            $templates = explode( ',', $_BLOCK_TEMPLATE['adminoption'] );
+            $adminmenu->set_file( array( 'option' => $templates[0],
+                                         'current' => $templates[1] ));
+        } else {
+            $adminmenu->set_file( array( 'option' => 'adminoption.thtml',
+                                         'current' => 'adminoption_off.thtml' ));
+        }
         $adminmenu->set_var( 'site_url', $_CONF['site_url'] );
         $adminmenu->set_var( 'layout_url', $_CONF['layout_url'] );
         $adminmenu->set_var( 'block_name', str_replace( '_', '-', 'admin_block' ));
