@@ -33,7 +33,7 @@
 //
 // $Id
 
-require_once('lib-common.php');
+include_once('lib-common.php');
 
 // Set this to true to have this script generate various debug messages in
 // error.log
@@ -202,7 +202,7 @@ function editpreferences()
         if ($usertheme == current($themes)) {
             $retval .= ' SELECTED';
         }
-        $retval .= '>' . current($themes) . '</option>' . LB;
+        $retval .= '>' . str_replace('_',' ',current($themes)) . '</option>' . LB;
         next($themes);
     }
     $retval .= '</select>' . LB . '</td></tr>' . LB
@@ -388,7 +388,7 @@ function saveuser($A)
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
-            require_once($_CONF['path_system'] . 'classes/upload.class.php');
+            include_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {
@@ -467,7 +467,7 @@ function savepreferences($A)
     $TIDS = @array_values($A[$_TABLES['topics']]);
     $AIDS = @array_values($A[$_TABLES['users']]);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
-    $ETIDS = @array_values($A['etids']);
+    $ETIDS = @array_values($A['etids']);Change
 
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
