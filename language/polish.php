@@ -272,7 +272,7 @@ $LANG04 = array(
 	64 => "Komentarze - Preferencje U¿ytkownika",
 	65 => "Spróbuj Zalogowaæ siê Ponownie",
 	66 => "Byæ mo¿e login zosta³ b³êdnie wpisany.  Spróbuj zalogowaæ siê ponownie. Czy jeste¶ <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nowym u¿ytkownikiem</a>?",
-	67 => "Cz³onkostwo Od",
+	67 => "Cz³onkowstwo Od",
 	68 => "Pamiêtaj Mnie Przez",
 	69 => "Jak d³ugo pamiêtaæ ciê po zalogowaniu?",
 	70 => "Dostosuj wygl±d i zawarto¶æ serwisu {$_CONF['site_name']}",
@@ -410,7 +410,10 @@ $LANG09 = array(
 	37 => "Wydarzenia - Wyniki",
 	38 => "Linki - Wyniki",
 	39 => "Linki",
-	40 => "Wydarzenia"
+	40 => "Wydarzenia",
+	41 => 'Twoje zapytanie powinno zawieraæ co najmniej 3 znaki.',
+	42 => 'Proszê u¿ywaæ nastêpuj±cego formatu daty: RRRR-MM-DD (rok-miesi±c-dzieñ).'
+
 );
 
 ###############################################################################
@@ -696,14 +699,14 @@ $LANG24 = array(
 	41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF["site_admin_url"]}/story.php\">wróciæ do strony administruj±cej artyku³ami.",
 	42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF["site_admin_url"]}/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
 	43 => 'Nowy Artyku³',
-	44 => 'Admin Home',
+	44 => 'Centrum Admina',
 	45 => 'Dostêp',
 	46 => '<b>UWAGA:</b> je¶li przesuniesz datê do przodu, artyku³ nie zostanie opublikowany wcze¶niej. Oznacza to równie¿, ¿e artyku³ nie bêdzie uwzglêdniony w pliku RDF i zostanie pominiêty przy wyszukiwaniu.',
 	47 => 'Zdjêcia',
 	48 => 'zdjêcie',
 	49 => 'prawo',
 	50 => 'lewo',
-	51 => 'Aby dodaæ jedno ze zdjêæ, które chcesz podpi±æ do tego artyku³u musisz wstawiæ specjalnie sformatowany tekst.  Tekst jest nastêpuj±cy [imageX], [imageX_right] lub [imageX_left] gdzie X to numer obrazka, który za³±czy³e¶.  UWAGA: Musisz u¿ywaæ obrazków, które za³±czasz.  Inaczej nie bêdziesz w stanie zapisaæ swojego artyku³u.<BR><P><B>PODGL¡D</B>: Podgl±d artyku³u z za³±czonymi obrazkami dzia³a najlepiej po uprzednim zapisaniu artyku³u jako kopia ZAMIAST u¿ycia bezpo¶rednio klawisza podgl±d.  U¿ywaj klawisza podgl±d tylko gdy nie podpinasz obrazków.',
+	51 => 'Aby dodaæ jedno ze zdjêæ, które chcesz podpi±æ do tego artyku³u musisz wstawiæ specjalnie sformatowany tekst.  Tekst jest nastêpuj±cy [zdjêcieX], [zdjêcieX_prawo] lub [zdjêcieX_lewo] gdzie X to numer obrazka, który za³±czy³e¶.  UWAGA: Musisz u¿ywaæ obrazków, które za³±czasz.  Inaczej nie bêdziesz w stanie zapisaæ swojego artyku³u.<BR><P><B>PODGL¡D</B>: Podgl±d artyku³u z za³±czonymi obrazkami dzia³a najlepiej po uprzednim zapisaniu artyku³u jako kopia ZAMIAST u¿ycia bezpo¶rednio klawisza podgl±d.  U¿ywaj klawisza podgl±d tylko gdy nie podpinasz obrazków.',
 	52 => 'Kasuj',
 	53 => 'nie zosta³ u¿yty.  Musisz umie¶ciæ ten obrazek we wstêpie lub w g³ównej czê¶ci zanim zapiszsz zmiany',
 	54 => 'Za³±czonych Obrazów Nie U¿yto',
