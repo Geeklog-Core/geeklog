@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.77 2003/03/27 20:20:00 dhaun Exp $
+// $Id: config.php,v 1.78 2003/03/28 18:19:56 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -266,6 +266,9 @@ $_CONF['showstorycount'] = 1;
 
 // Show the number of story submissions for a topic in Section Block
 $_CONF['showsubmissioncount'] = 1;
+
+// Hide 'Home' link from Sections block (if set to 1)
+$_CONF['hide_home_link'] = 0;
 
 // Show blocks for empty search results
 $_CONF['showemptysearchresults'] = 0;

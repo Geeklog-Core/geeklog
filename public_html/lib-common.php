@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.211 2003/03/27 09:37:35 dhaun Exp $
+// $Id: lib-common.php,v 1.212 2003/03/28 18:19:56 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1853,8 +1853,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 * Shows all available topics
 *
 * Show the topics in the system the user has access to and prints them in HTML.
-* This function is used to show the topics in the sections block. Topics have
-* href and are seperated by line breaks.
+* This function is used to show the topics in the sections block.
 *
 * @param        string      $topic      TopicID of currently selected
 * @return   string    HTML formated topic list
@@ -1878,18 +1877,35 @@ function COM_showTopics( $topic='' )
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
-    // Give a link to the homepage here since a lot of people use this for
-    // navigating the site
-    // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
+    $retval = '';
+    $sections = new Template( $_CONF['path_layout'] );
+    $sections->set_file( array( 'option' => 'useroption.thtml',
+                                'inactive' => 'useroption_off.thtml' ));
 
-    preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
-    if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+    if( $_CONF['hide_home_link'] == 0 )
     {
-        $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
-    }
-    else
-    {
-        $retval .= $LANG01[90] . '<br>';
+        // Give a link to the homepage here since a lot of people use this for
+        // navigating the site
+        // Note: We can't use $PHP_SELF here since the site may not be in the
+        // DocumentRoot
+
+        preg_match( "/\/\/[^\/]*(.*)/", $_CONF['site_url'], $pathonly );
+        if(( $HTTP_SERVER_VARS['SCRIPT_NAME'] <> $pathonly[1] . "/index.php" )
+                OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
+        {
+            $sections->set_var( 'option_url',
+                                $_CONF['site_url'] . '/index.php' );
+            $sections->set_var( 'option_label', $LANG01[90] );
+            $sections->set_var( 'option_count', '' );
+            $retval .= $sections->parse( 'item', 'option' );
+        }
+        else
+        {
+            $sections->set_var( 'option_url', '' );
+            $sections->set_var( 'option_label', $LANG01[90] );
+            $sections->set_var( 'option_count', '' );
+            $retval .= $sections->parse( 'item', 'inactive' );
+        }
     }
 
     for( $i = 0; $i < $nrows; $i++ )
@@ -1898,63 +1914,68 @@ function COM_showTopics( $topic='' )
 
         if( $A['tid'] == $topic )
         {
-            $retval .= stripslashes( $A['topic'] );
+            $sections->set_var( 'option_url', '' );
+            $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
 
+            $countstring = '';
             if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
             {
-                $retval .= ' (';
+                $countstring .= '(';
 
                 if( $_CONF['showstorycount'] )
                 {
                     $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
                     $T = DB_fetchArray( $rcount );
-                    $retval .= $T['count'];
+                    $countstring .= $T['count'];
                 }
 
                 if( $_CONF['showsubmissioncount'] )
                 {
                     if( $_CONF['showstorycount'] )
                     {
-                        $retval .= '/';
+                        $countstring .= '/';
                     }
-
-                    $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
+                    $countstring .= DB_count( $_TABLES['storysubmission'],
+                                              'tid', $A['tid'] );
                 }
 
-                $retval .= ')';
+                $countstring .= ')';
             }
-
-            $retval .= '<br>' . LB;
+            $sections->set_var( 'option_count', $countstring );
+            $retval .= $sections->parse( 'item', 'inactive' );
         }
         else
         {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . stripslashes( $A['topic'] ) . '</b></a> ';
+            $sections->set_var( 'option_url', $_CONF['site_url']
+                                . '/index.php?topic=' . $A['tid'] );
+            $sections->set_var( 'option_label', stripslashes( $A['topic'] ));
 
+            $countstring = '';
             if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
             {
-                $retval .= '(';
+                $countstring .= '(';
 
                 if( $_CONF['showstorycount'] )
                 {
                     $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}')" . COM_getPermSQL( 'AND' ));
                     $T = DB_fetchArray( $rcount );
-                    $retval .= $T['count'];
+                    $countstring .= $T['count'];
                 }
 
                 if( $_CONF['showsubmissioncount'] )
                 {
                     if( $_CONF['showstorycount'] )
                     {
-                        $retval .= '/';
+                        $countstring .= '/';
                     }
-
-                    $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
+                    $countstring .= DB_count( $_TABLES['storysubmission'],
+                                              'tid', $A['tid'] );
                 }
 
-                $retval .= ')';
+                $countstring .= ')';
             }
-
-            $retval .= '<br>' . LB;
+            $sections->set_var( 'option_count', $countstring );
+            $retval .= $sections->parse( 'item', 'option' );
         }
     }
 

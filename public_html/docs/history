@@ -3,6 +3,9 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- The Sections block now uses the useroption.thtml and the new
+  useroption_off.thtml template files for the list of topics. You can also use
+  $_CONF['hide_home_link'] to hide the "Home" link from the Sections block.
 - New config option $_CONF['keep_unscaled_image'] allows you to keep the
   original, unscaled image after upload (in stories only, for now). The smaller,
   scaled image will be used as a thumbnail and link to the original image
