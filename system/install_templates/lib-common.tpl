@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.35 2002/03/17 17:56:13 dhaun Exp $
+// $Id: lib-common.tpl,v 1.36 2002/03/18 19:25:04 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -391,7 +391,7 @@ function COM_siteHeader($what = 'menu')
         $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
         $header->parse('left_blocks','leftblocks',true);
     } else {
-        //$header->set_var('geeklog_blocks', '');
+        $header->set_var('geeklog_blocks', '');
         $header->set_var('left_blocks', '');
     }
 
@@ -492,7 +492,8 @@ function COM_endBlock($template='blockfooter.thtml')
     $block = new Template($_CONF['path_layout']);
     $block->set_file('block', $template);
     $block->set_var('site_url', $_CONF['site_url']);
-    $block->parse("endHTML",'block');                               
+    $block->set_var('layout_url', $_CONF['layout_url']);
+    $block->parse("endHTML",'block');
 
     return $block->finish($block->get_var('endHTML'));
 }
