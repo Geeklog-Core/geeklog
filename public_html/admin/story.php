@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.65 2002/09/10 04:22:13 tony_bibbs Exp $
+// $Id: story.php,v 1.66 2002/09/19 04:38:48 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -732,8 +732,14 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $upload = new upload();
 
             $upload->setDebug(true);
-            if ($_CONF['path_to_mogrify']) {
-                $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+            if (!empty($_CONF['image_lib'])) {
+                if ($_CONF['image_lib'] == 'imagemagick') {
+                    // Using imagemagick
+                    $upload->_pathToMogrify = $_CONF['path_to_mogrify'];
+                } else {
+                    // must be using netPBM
+                    $upload->_pathToNetPBM= $_CONF['path_to_netpbm'];
+                }    
                 $upload->setAutomaticResize(true);
             }
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
