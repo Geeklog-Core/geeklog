@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.18 2002/07/23 15:09:21 dhaun Exp $
+// $Id: group.php,v 1.19 2002/07/30 17:21:56 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -322,24 +322,23 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
             next($features);
         }
         COM_errorLog('groups = ' . $groups);
-        if (is_array($groups)) {
-            if ($VERBOSE) COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
-            DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
-            if (!empty($groups)) {
-                for ($i = 1; $i <= sizeof($groups); $i++) {
-                    if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
-                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
-                    DB_query($sql);
-                    next($groups);
-                }
+        if ($VERBOSE) COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
+        if (!empty($groups)) {
+            for ($i = 1; $i <= sizeof($groups); $i++) {
+                if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
+                $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
+                DB_query($sql);
+                next($groups);
             }
         }
+
         // Make sure Root group belongs to any new group
         if (DB_getItem($_TABLES['group_assignments'], 'count(*)',"ug_main_grp_id = $grp_id AND ug_grp_id = 1") == 0) {
             DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($grp_id, 1)");
         }
 
-		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=13');
+		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_startBlock($LANG_ACCESS['missingfields']);
@@ -401,7 +400,7 @@ function listgroups()
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
     DB_delete($_TABLES['groups'],'grp_id',$grp_id);
-    $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=14');
+    $display = COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=50');
 }
 else if (($mode == $LANG_ACCESS['save']) && !empty ($LANG_ACCESS['save'])) {
     $display .= savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$HTTP_POST_VARS[$_TABLES['groups']]);

@@ -974,7 +974,9 @@ $MESSAGE = array (
     45 => 'The plug-in was successfully deleted.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
-    48 => 'Danke, dass Du dich bei ' . $_CONF['site_name'] . ' angemeldet hast. Dein Aufnahmeantrag wird von unserem Team gepr&uuml;ft. Sobald er akzeptiert wird, wirst Du Dein Passwort per E-Mail erhalten.'
+    48 => 'Danke, dass Du dich bei ' . $_CONF['site_name'] . ' angemeldet hast. Dein Aufnahmeantrag wird von unserem Team gepr&uuml;ft. Sobald er akzeptiert wird, wirst Du Dein Passwort per E-Mail erhalten.',
+    49 => "Deine Gruppe wurde gespeichert.",
+    50 => "Die Gruppe wurde gel&ouml;scht."
 );
 
 // for plugins.php
