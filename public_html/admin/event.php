@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.39 2003/06/19 20:01:41 dhaun Exp $
+// $Id: event.php,v 1.40 2003/08/12 10:49:24 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -103,12 +103,12 @@ function editevent($mode, $A)
 	$retval .= COM_startBlock($LANG22[1], '',
                               COM_getBlockTemplate ('_admin_block', 'header'));
 
-    if ($A['eid'] == '') { 
-		$A['eid'] = COM_makesid(); 
-	}
-
     if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
         $event_templates->set_var('delete_option', "<input type=\"submit\" value=\"$LANG22[22]\" name=\"mode\">");
+    }
+
+    if ($A['eid'] == '') { 
+        $A['eid'] = COM_makesid(); 
     }
 
     $event_templates->set_var('event_id', $A['eid']);
