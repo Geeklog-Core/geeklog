@@ -136,7 +136,7 @@ class Import extends BaseAdmin {
 
             if (file_exists ($fromfile)) {
                 $blacklist = file ($fromfile);
-                $count = _do_import ($blacklist);
+                $count = $this->_do_import ($blacklist);
 
                 if ($count > 0) {
                     $display = sprintf ($LANG_SX00['import_success'], $count);
@@ -151,6 +151,22 @@ class Import extends BaseAdmin {
                                     $_CONF['path_data']);
                 $display .= '<p><a href="' . $_SPX_CONF['mtblacklist_url']
                          . '">' . $_SPX_CONF['mtblacklist_url'] . '</a>';
+            }
+        }
+
+        // Import Personal Blacklist for existing users.
+        $fromfile = $_CONF['path_html'] . 'spamx/blacklist.php';
+        if (file_exists ($fromfile)) {
+            require_once ($fromfile);
+            $count = $this->_do_importp ($SPAMX_BLACKLIST);
+             $display .= $LANG_SX00['initial_Pimport'];
+            if ($count > 0) {
+                $display .= sprintf ($LANG_SX00['import_success'], $count);
+                SPAMX_log ($LANG_SX00['uPlist'] . $LANG_SX00['uMTlist2']
+                           . $count . $LANG_SX00['uMTlist3'] . '0'
+                           . $LANG_SX00['entries']);
+            } else {
+                $display .= $LANG_SX00['import_failure'];
             }
         }
 
@@ -182,6 +198,30 @@ class Import extends BaseAdmin {
 
         return $count;
     }
+
+    /**
+    * Import personal blacklist
+    *
+    * @param    array   $lines  The blacklist
+    * @return   int             number of lines imported
+    *
+    */
+    function _do_importp ($lines)
+    {
+        global $_TABLES;
+
+        $count = 0;
+        foreach ($lines as $entry) {
+            if (!empty ($entry)) {
+                DB_query ('INSERT INTO ' . $_TABLES['spamx']
+                          . ' VALUES ("Personal","' . $entry . '")');
+               $count++;
+            }
+        }
+
+        return $count;
+    }
+
 }
 
 ?>
