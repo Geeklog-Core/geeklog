@@ -1,44 +1,47 @@
 <?php
 
-###############################################################################
-# common.php
-# This is the main file for GeekLog which contians all the shared functions
-# for all the scripts.
+##/ COMMON.PHP /###############################################################
 #
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
+#	Copyright (C) 2000 Jason Whittenburg - jwhitten@securitygeeks.com
+#	Copyright (C) 2001 Tony Bibbs - tony@tonybibbs.com
 #
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
+#	This program is free software; you can redistribute it and/or
+#	modify it under the terms of the GNU General Public License
+#	as published by the Free Software Foundation; either version 2
+#	of the License, or (at your option) any later version.
 #
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
+#	This program is distributed in the hope that it will be useful,
+#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#	GNU General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#	You should have received a copy of the GNU General Public License
+#	along with this program; if not, write to the Free Software
+#	Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
-$VERSION = "1.3";
 ###############################################################################
 
-include("/path/to/geeklog/config.php");
-include($CONF['path'] . $CONF["languagefile"]);
-include($CONF['path_html'] . 'sessions.php');
-include($CONF['path_html'] . 'plugins.php');
+##/ DATABASE SETTINGS /########################################################
+#
+#	These settings must suit your server environment.
+
+include("/path/to/geeklog/conf-server.php");
+
+include($CONF['path'].'conf-site.php');
+include($CONF['path'].$CONF["languagefile"]);
+include($CONF['path_html'].'sessions.php');
+include($CONF['path_html'].'plugins.php');
+
 setlocale(LC_ALL, $CONF["locale"]);
 
-###############################################################################
-# USER LOADER - Check for user status, if exists load $USER
-###############################################################################
-#Portions of the code below come from phpBB.  See phpbb.org.
+##/ USER LOADER /##############################################################
 #
+#	Portions of the code below come from phpBB (www.phpbb.org).
 
 unset($USER);
+
 // We MUST do this up here, so it's set even if the cookie's not present.
+
 $user_logged_in = 0;
 $logged_in = 0;
 $userdata = Array();
