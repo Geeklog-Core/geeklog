@@ -1,7 +1,8 @@
 GeekLog History/Changes:
 
-February 21, 2002
+February 22, 2002
 -----------------
+- Fixed bug that kept front page with multiple polls from working right
 - Added missing help field to block table
 - Added block to usersettings where user can pick topics to receive articles for in an
   email digest
