@@ -1,169 +1,210 @@
 <?php
-###############################################################################
-# /admin/mail.php
-# This is the admin index page that does nothing more that login you in.
-#
-# Copyright (C) 2001 Tony Bibbs
-# tony@tonybibbs.com
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-#
-###############################################################################
-include("../lib-common.php");
-include("../custom_code.php");
-include("auth.inc.php");
-if (!hasrights('user.mail')) {
-        site_header('menu');
-        startblock($MESSAGE[30]);
-        print $MESSAGE[39];
-        endblock();
-        site_footer();
-        errorlog("User {$USER['username']} tried to illegally access the poll administration screen",1);
-        exit;
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | Geeklog 1.3                                                               |
+// +---------------------------------------------------------------------------+
+// | mail.php                                                                  |
+// | Geeklog mail administration page.                                         |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2001,2002 by the following authors:                         | 
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: mail.php,v 1.6 2002/04/03 20:49:47 tony_bibbs Exp $
+
+// Set this to true to get various debug messages from this script
+$_MAIL_VERBOSE = false;
+
+include_once('../lib-common.php');
+include_once('auth.inc.php');
+
+$display = '';
+
+// Make sure user has access to this page  
+if (!SEC_inGroup('Mail Admin')) {
+    $retval .= COM_siteHeader('menu');
+    $retval .= COM_startBlock($MESSAGE[30]);
+    $retval .= $MESSAGE[37];
+    $retval .= COM_endBlock();
+    $retval .= COM_siteFooter();
+    COM_errorLog("User {$_USER['username']} tried to illegally access the mail administration screen",1);
+    echo $retval;
+    exit;
 }
 
-//error_reporting(15);
-if (isset($mail)) {
- 	if ($fra=="" || $fraepost=="" || $subject=="" || $message=="" || $sendtil=="") {
+/**
+* Shows the form the admin uses to send Geeklog members a message. Right now
+* you can only email an entire group.
+*
+*/
+function display_form()
+{
+    global $_CONF, $_USER, $_LANG31, $PHP_SELF, $LANG31, $_TABLES;
+    
+    $retval = '';
+    
+    $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
+    $mail_templates->set_file(array('form'=>'mailform.thtml'));
+    $mail_templates->set_var('site_url', $_CONF['site_url']);
+    $mail_templates->set_var('startblock_email',COM_startBlock($LANG31[1]));
+    $mail_templates->set_var('php_self', $PHP_SELF);
+    $mail_templates->set_var('lang_note', $LANG31[19]);
+    $mail_templates->set_var('lang_to', $LANG31[18]);
+    $group_options = '';
+    $result = DB_query("SELECT grp_id, grp_name FROM {$_TABLES['groups']} WHERE grp_name <> 'All Users'");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $group_options .= '<option value="' . $A['grp_id'] . '">' . $A['grp_name'] . '</option>';
+    }
+    $mail_templates->set_var('group_options', $group_options);
+    $mail_templates->set_var('lang_from', $LANG31[2]);
+    $mail_templates->set_var('lang_replyto', $LANG31[3]);
+    $mail_templates->set_var('lang_subject', $LANG31[4]);
+    $mail_templates->set_var('lang_body', $LANG31[5]);
+    $mail_templates->set_var('lang_sendto', $LANG31[6]);
+    $mail_templates->set_var('lang_allusers', $LANG31[7]);
+    $mail_templates->set_var('lang_admin', $LANG31[8]);
+    $mail_templates->set_var('lang_options', $LANG31[9]);
+    $mail_templates->set_var('lang_HTML', $LANG31[10]);
+    $mail_templates->set_var('lang_urgent', $LANG31[11]);
+    $mail_templates->set_var('lang_ignoreusersettings', $LANG31[14]);
+    $mail_templates->set_var('lang_send', $LANG31[12]);
+    $mail_templates->set_var('end_block', COM_endBlock());
+    
+    $mail_templates->parse('output','form');
+    $retval = $mail_templates->finish($mail_templates->get_var('output'));
+    
+    return $retval;
+}
+
+/**
+* This function actually sends the messages to the specified group
+*
+* @vars     array       Is the same is $HTTP_POST_VARS and hold all the email info
+*
+*/
+function send_messages($vars)
+{
+    global $_CONF, $LANG31, $_TABLES;
+    
+    $retval = '';
+    
+ 	if (empty($vars['fra']) OR empty($vars['fraepost']) OR empty($vars['subject'])
+        OR empty($vars['message']) OR empty($vars['to_group'])) {
   		echo $LANG31[2];
   		exit;
 	}
-	/* Header information */
-	$headers = "From: $fra <$fraepost>\n";
-	$headers .= "X-Sender: <$fraepost>\n"; 
+    
+	// Header information
+	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\n";
+	$headers .= "X-Sender: <{$vars['fraepost']}>\n"; 
 	$headers .= "X-Mailer: PHP\n"; // mailer
+    
 	// Urgent message!
-	if (isset($priority)) {
+	if (isset($vars['priority'])) {
  		$headers .= "X-Priority: 1\n"; 
 	}
-	$headers .= "Return-Path: <$fraepost>\n";  // Return path for errors
-	/* If you want to send html mail */
-	if (isset($html)) { 
+    
+	$headers .= "Return-Path: <{$vars['fraepost']}>\n";  // Return path for errors
+	// If you want to send html mail
+	if (isset($vars['html'])) { 
  		$headers .= "Content-Type: text/html; charset=iso-8859-1\n"; // Mime type 
 	}
-	/* and now mail it */
-	if (!isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email,emailstories  FROM {$CONF['db_prefix']}users,{$CONF['db_prefix']}userprefs WHERE users.uid > 1";
- 		$sql .= " AND users.uid = userprefs.uid AND userprefs.emailstories = 1";
+    
+	// and now mail it
+	if (!isset($vars['overstyr'])) {
+ 		$sql = "SELECT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
+ 		$sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
+        $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id = {$vars['to_group']}";
 	}
-	if (isset($overstyr)) {
- 		$sql = "SELECT username,fullname,email  FROM {$CONF['db_prefix']}users WHERE uid > 1";
+    
+	if (isset($vars['overstyr'])) {
+ 		$sql = "SELECT username,fullname,email  FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
+        $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id = {$vars['to_group']}";
 	}
  
-	$sendttil = "";
-	$result = dbquery("$sql");
-	$nrows = mysql_num_rows($result);
-	for ($i=0;$i<$nrows;$i++) {
- 		$A = mysql_fetch_array($result);
- 
-		$til = "";
-		if (!isset($A["fullname"])) {
-  			$til .= $A["username"];
+	$sendttil = '';
+	$result = DB_query($sql);
+	$nrows = DB_numRows($result);
+    
+    // Loop through and send the messages!
+    $successes = array();
+    $failures = array();
+	for ($i = 1;$i <= $nrows; $i++) {
+ 		$A = DB_fetchArray($result);
+		$til = '';
+		if (!isset($A['fullname'])) {
+  			$til .= $A['username'];
  		} else {
-  			$til .= "{$A["fullname"]}";
+  			$til .= $A['fullname'];
  		}
- 		$til .= "<";
- 		$til .= $A["email"];
- 		$til .= ">";
- 		$sendttil .= $til . "<BR>";
- 		//echo "<B>Til</B> ".$til."<BR><B>Tittel</B> $subject<BR><B>Beskjed</B> $message<BR><B>Header</B>".$headers."<BR><BR>";
+ 		$til .= '<' . $A['email'] . '>';
+ 		$sendttil .= $til . '<BR>';
  
- 		if (!mail("$til","$subject","$message","$headers")) {
-  			echo " <b> $til</b>";
+ 		if (!mail($til, $vars['subject'], $vars['message'], $headers)) {
+            $failures[] .= $til;
+ 		} else {
+            $successes[] = $til;
  		}
 	}
+	
+	//$retval = 'Successfully sent ' . count($successes) . ' messages and unsuccessfully sent ' . count($failures) . ' messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href="' . $_CONF['site_url'] . '/admin/mail.php">Send another message</a> or you can <a href="' . $_CONF['site_url'] . '/admin/moderation.php">go back to the administration page</a>.';
+	$failcount = count($failures);
+	$successcount = count($successes);
+	$mailresult .= str_replace('<successcount>',$successcount,$LANG31[20]);
+	$retval .= str_replace('<failcount>',$failcount,$mailresult);
+	$retval .= "<H2>{$LANG31[21]}</H2>";
+	for ($i = 1; $i <= count($failures); $i++) {
+        $retval .= current($failures) . '<br>';
+        next($failures);
+	}
+	if (count($failures) == 0) {
+        $retval .= $LANG31[23];
+	}
+	$retval .= "<H2>{$LANG31[22]}</H2>";
+	for ($i = 1; $i <= count($successes); $i++) {
+        $retval .= current($successes) . '<br>';
+        next($successes);
+	}
+	if (count($successes) == 0) {
+        $retval .= $LANG31[24];
+	}
+	return $retval;
 }
-global $CONF,$LANG31;
-site_header("menu");
-if (isset($sendttil)){
- 	startblock($LANG31[16]);
-    	echo $sendttil;
-	print "<br><br>" . $LANG31[17] . "<br>";
-    	endblock();
+
+// MAIN
+
+$display .= COM_siteHeader();
+
+if ($mail == 'mail') {
+    $display .= send_messages($HTTP_POST_VARS);
 } else {
-echo "
-<form method=POST action=mail.php>
-<input type="hidden" name=mail value=mail>";
- startblock("$LANG31[1]"); 
- echo "
-  <table border="0" cellpadding="0" cellspaceing=0>
-    <tr>
-      <td>
-        <table border="0" cellpadding="0" cellspaceing=0>
-          <tr>
-	    <td align="right">$LANG31[2]:</td>
-            <td><input type=text name=fra value=\"$CONF[sitename]\" size=20></td>
-	  </tr>
-	  <tr>
-             <td align="right">$LANG31[3]:</td>
-	     <td><input type=text name=fraepost value=\"$CONF[sitemail]\" size=20></td>
-          </tr>
-          <tr>
-            <td >$LANG31[4]:</td>
-            <td ><input type=text name=subject size=20></td>
-          </tr>
-          <tr>
-            <td >$LANG31[5]:</td>
-            <td ><textarea rows=12 name=message cols=44></textarea></td>
-          </tr>
-        </table>
-      </td>
-      <td width=42% valign="top" ><BR><BR><BR><BR>
-        <table border="0" cellpadding="0" cellspaceing=0 bgcolor=lightgrey>
-          <tr>
-            <th colspan="2">$LANG31[6]</td>
-            </tr>
-          <tr>
-            <td >$LANG31[7]</td>
-            <td ><INPUT type=radio name=sendtil value=alle></td>
-          </tr>
-	  <tr>
-            <td>$LANG31[8]</td>
-            <td ><INPUT type=radio name=sendtil value=adm></td>
-          </tr>
-          <tr>
-            <td>&nbsp;</td>
-            <td >&nbsp;</td>
-          </tr>
-          <tr>
-            <th colspan="2">$LANG31[9]</td>
-            </tr> 
-          <tr>
-            <td>$LANG31[10]</td>
-            <td ><INPUT type=checkbox name=html value=ON></td>
-          </tr>
-          
-          <tr>
-            <td>$LANG31[11]</td>
-            <td ><INPUT type=checkbox name=priority value=ON></td>
-          </tr>
-          <tr>
-            <td>$LANG31[14]</td>
-            <td ><INPUT type=checkbox name=overstyr value=ON></td>
-          </tr>          
-        </table>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <p align="center"><input type="submit" value=$LANG31[12] ><input type=reset value=\"$LANG31[13]\"></td>
-      <td width=42% valign="top">&nbsp;</td>
-    </tr>
-  </table>";
-endblock();
-echo "</form>";
-}  
-site_footer();
+    $display .= display_form();
+}
+
+$display .= COM_siteFooter();
+
+echo $display;
+
 ?>
