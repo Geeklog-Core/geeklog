@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.6 2002/01/11 17:06:34 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.7 2002/01/25 17:22:13 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -91,6 +91,23 @@ function SESS_sessionCheck()
                 // COM_debug($userdata);
             }
             $_USER = $userdata;
+        } else {
+            // Session probably expired, now check permanent cookie
+            if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
+                $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
+                $cookie_password = $HTTP_COOKIE_VARS['password'];
+                $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
+                if ($cookie_password <> $userpass) {
+                    //User may have modified their UID in cookie, ignore them
+                } else {
+                    if ($userid) {
+                        $user_logged_in = 1;
+                        $sess_id = SESS_newSession($userid, $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+                        SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);                        $userdata = SESS_getUserDataFromId($userid);
+                        $_USER = $userdata;
+                    }
+                }
+            }
         }
     } else {
         if ($_SESS_VERBOSE) {
