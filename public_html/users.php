@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.25 2002/04/23 04:22:03 mlimburg Exp $
+// $Id: users.php,v 1.26 2002/04/27 19:54:24 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -51,7 +51,7 @@ require_once('lib-common.php');
 */
 function userprofile($user) 
 {
-    global $_TABLES, $_CONF, $LANG04;
+    global $_TABLES, $_CONF, $LANG04, $LANG01;
 
     $retval .= '';
 	
@@ -104,7 +104,7 @@ function userprofile($user)
             $user_templates->parse('comment_row','row',true);
         }
     } else {
-        $user_templates->set_var('comment_row','<tr><td>No user comments</td></tr>');
+        $user_templates->set_var('comment_row','<tr><td>' . $LANG01[29] . '</td></tr>');
     }
 
 	$user_templates->parse('output', 'profile');
