@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.34 2002/04/14 20:16:08 dhaun Exp $
+// $Id: story.php,v 1.35 2002/04/15 20:41:16 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -462,9 +462,9 @@ function insert_images($sid, $intro, $body)
                 $intro = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
                 $body = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
                 $intro = str_replace($left, '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($left, '<img align-"left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $body = str_replace($left, '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
                 $intro = str_replace($right, '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($right, '<img align-"right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $body = str_replace($right, '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
             }
         }
     }
