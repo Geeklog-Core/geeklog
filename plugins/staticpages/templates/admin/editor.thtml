@@ -2,14 +2,6 @@
                                 <form action="{site_admin_url}/plugins/staticpages/index.php" method="post">
                                     <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                         <tr>
-                                            <td align="right">{lang_writtenby}:</td>
-                                            <td>{username}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
-                                        </tr>
-                                        <tr>
-                                            <td align="right">{lang_lastupdated}:</td>
-                                            <td>{sp_formateddate}<input type="hidden" name="unixdate" value="{sp_date}"></td>
-                                        </tr>
-                                        <tr>
                                             <td align="right">{lang_title}:</td>
                                             <td><input type="text" size="48" maxlength="255" name="sp_title" value="{sp_title}"></td>
                                         </tr>
@@ -32,6 +24,14 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                          <td align="right">{lang_id}:</td>
+                                          <td><input type="text" name="sp_id", size="20" maxlength="20" value="{sp_id}"></td>
+                                        </tr>
+                                        <tr>
+                                          <td align="right">{lang_url}:</td>
+                                          <td>{example_url}</td>
+                                        </tr>
+                                        <tr>
                                             <td valign="top" align="right">{lang_content}:</td>
                                             <td>
                                                 <textarea name="sp_content" cols="75" rows="24" wrap="virtual">{sp_content}</textarea>
@@ -39,15 +39,23 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td align="right">{lang_writtenby}:</td>
+                                            <td>{username}<input type="hidden" name="sp_uid" value="{sp_uid}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_lastupdated}:</td>
+                                            <td>{sp_formateddate}<input type="hidden" name="unixdate" value="{sp_date}"></td>
+                                        </tr>
+                                        <tr>
                                             <td colspan="2"><hr></td>
                                         </tr>
                                         <tr>
                                             <td align="right" valign="top">{php_msg}</td>
-                                            <td><input type="{php_type}" name="sp_php" value="1" {php_checked}>&nbsp;&nbsp;{php_warn}</td>
+                                            <td valign="top"><input type="{php_type}" name="sp_php" value="1" {php_checked}>&nbsp;&nbsp;{php_warn}</td>
                                         </tr>
                                         <tr>
                                             <td align="right" valign="top">{exit_msg}</td>
-                                            <td><input type="checkbox" name="sp_nf" value="1" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
+                                            <td valign="top"><input type="checkbox" name="sp_nf" value="1" {exit_checked}>&nbsp;&nbsp;{exit_info}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="2"><hr></td>
@@ -94,7 +102,7 @@
                                             <td colspan="2">
                                                 <input type="submit" value="{lang_save}" name="mode"> 
                                                 {delete_option}
-                                                <input type="hidden" name="sp_id" value="{sp_id}">
+                                                <input type="hidden" name="sp_old_id" value="{sp_old_id}">
                                             </td>
                                         </tr>
                                     </table>

@@ -66,18 +66,20 @@ $LANG_STATIC= array(
     results => 'Gefundene Statische Seiten',
     author => 'Autor',
     no_title_or_content => 'Bitte mindestens die Felder <b>Titel</b> und <b>Inhalt</b> ausfüllen.',
-    no_such_page_logged_in => 'Sorry '.$_USER['username'].'..',
-    no_such_page_anon => 'Please log in..',
+    no_such_page_logged_in => 'Sorry, ' . $_USER['username'] . ' ...',
+    no_such_page_anon => 'Bitte einloggen.',
     no_page_access_msg => "This could be because you're not logged in, or not a member of {$_CONF["site_name"]}. Please <a href=\"{$_CONF['site_url']}/users.php?mode=new\"> become a member</a> of {$_CONF["site_name"]} to receive full membership access.",
     php_msg => 'PHP: ',
     php_warn => 'Hinweis: Wenn dieser Schalter aktiviert ist, wird in der Seite enthaltener PHP-Code ausgeführt. <em>Bitte mit Bedacht verwenden!</em>',
     exit_msg => 'Hinweistext: ',
     exit_info => 'Art des Hinweistextes, wenn kein Zugriff auf die Seite erlaubt ist: Aktiviert = "Anmeldung erforderlich", nicht aktiviert = "Zugriff verweigert".',
     deny_msg => 'Zugriff auf diese Seite ist nicht möglich. Die Seite wurde entweder umbenannt oder gelöscht oder Du hast nicht die nötigen Zugriffsrechte.',
-    stats_headline => 'Top Ten der Statische Seiten',
+    stats_headline => 'Top Ten der Statischen Seiten',
     stats_page_title => 'Titel',
     stats_hits => 'Angezeigt',
-    stats_no_hits => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.'
+    stats_no_hits => 'Es gibt keine Statischen Seiten oder sie wurden von niemandem gelesen.',
+    id => 'ID',
+    duplicate_id => 'Diese ID wird bereits für eine andere Statische Seite benutzt. Bitte wähle eine andere ID.'
 );
 
 ?>
