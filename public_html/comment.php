@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.59 2004/05/09 09:54:03 dhaun Exp $
+// $Id: comment.php,v 1.60 2004/05/09 11:27:07 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -314,6 +314,10 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         }
         DB_query('UNLOCK TABLES');
 
+        if (isset ($_CONF['notification']) &&
+                in_array ('comment', $_CONF['notification'])) {
+            sendNotification ($title, $comment, $uid, $REMOTE_ADDR, $type, $sid);
+        }
 
         if ($type == 'poll') {
             $retval = COM_refresh ($_CONF['site_url']
@@ -338,6 +342,68 @@ function savecomment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
     }
 
     return $retval;
+}
+
+/**
+* Send an email notification for a new comment submission.
+*
+* @param    $title      string      comment title
+* @param    $comment    string      text of the comment
+* @param    $uid        integer     user id
+* @param    $ipaddress  string      poster's IP address
+* @param    $type       string      type of comment ('article', 'poll', ...)
+* @param    $sid        string      id of story / poll / ...
+*
+*/
+function sendNotification ($title, $comment, $uid, $ipaddress, $type, $sid)
+{
+    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09;
+
+    // we have to undo the addslashes() call from savecomment()
+    $title = stripslashes ($title);
+    $comment = stripslashes ($comment);
+
+    // strip HTML if posted in HTML mode
+    if (preg_match ('/<.*>/', $comment) != 0) {
+        $comment = strip_tags ($comment);
+    }
+
+    $author = DB_getItem ($_TABLES['users'], 'username', "uid = $uid");
+    if ($uid <= 1) {
+        // add IP address for anonymous posters
+        $author .= ' (' . $ipaddress . ')';
+    }
+
+    $mailbody = "$LANG03[16]: $title\n"
+              . "$LANG03[5]: $author\n";
+
+    if (($type != 'article') && ($type != 'poll')) {
+        $mailbody .= "$LANG09[5]: $type\n";
+    }
+
+    if ($_CONF['emailstorieslength'] > 0) {
+        if ($_CONF['emailstorieslength'] > 1) {
+            $comment = substr ($comment, 0, $_CONF['emailstorieslength'])
+                     . '...';
+        }
+        $mailbody .= $comment .= "\n\n";
+    }
+
+    if ($type == 'article') {
+        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+                  . '/article.php?story=' . $sid  . "#comments>\n\n";
+    } else if ($type == 'poll') {
+        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+                  . '/pollbooth.php?qid=' . $sid . "&aid=-1>\n\n";
+    }
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[9];
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 /**
