@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.56 2004/01/24 21:52:02 dhaun Exp $
+// $Id: block.php,v 1.57 2004/02/08 19:00:49 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -290,7 +290,7 @@ function editblock($bid='')
     $block_templates->set_var('lang_phpblockwarning', $LANG21[30]);
     $block_templates->set_var('lang_portalblockoptions', $LANG21[13]);
     $block_templates->set_var('lang_rdfurl', $LANG21[14]);
-    $block_templates->set_var('max_url_length', 96);
+    $block_templates->set_var('max_url_length', 255);
     $block_templates->set_var('block_rdfurl', $A['rdfurl']);
     $block_templates->set_var('lang_lastrdfupdate', $LANG21[15]);
     $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);

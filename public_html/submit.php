@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.62 2004/02/02 19:45:02 dhaun Exp $
+// $Id: submit.php,v 1.63 2004/02/08 19:00:48 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -150,7 +150,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
         $eventform->set_var('personal_option', '');
     }
     $eventform->set_var('lang_link', $LANG12[11]);
-    $eventform->set_var('max_url_length', 128);
+    $eventform->set_var('max_url_length', 255);
     $eventform->set_var('lang_startdate', $LANG12[12]);
     $eventform->set_var('lang_starttime', $LANG12[42]);
     $month_options = '';
@@ -288,7 +288,7 @@ function submitlink()
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
-    $linkform->set_var('max_url_length', 96);
+    $linkform->set_var('max_url_length', 255);
     $linkform->parse('theform', 'linkform');
     $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();

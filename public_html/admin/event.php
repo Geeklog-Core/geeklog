@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.46 2004/01/24 21:52:01 dhaun Exp $
+// $Id: event.php,v 1.47 2004/02/08 19:00:49 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -132,7 +132,7 @@ function editevent($mode, $A)
     $event_templates->set_var('lang_editeventtypes', $LANG12[50]);
     $event_templates->set_var('type_options', $catdd);
     $event_templates->set_var('lang_eventurl', $LANG22[4]);
-    $event_templates->set_var('max_url_length', 128);
+    $event_templates->set_var('max_url_length', 255);
     $event_templates->set_var('event_url', $A['url']);
     $event_templates->set_var('lang_includehttp', $LANG22[9]);
     $event_templates->set_var('lang_eventstartdate', $LANG22[5]);
