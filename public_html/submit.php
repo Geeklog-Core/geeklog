@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.78 2004/12/11 14:53:36 dhaun Exp $
+// $Id: submit.php,v 1.79 2004/12/14 22:33:22 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -85,6 +85,7 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
             $loginreq->set_file('loginreq', 'submitloginrequired.thtml');
             $loginreq->set_var('login_message', $LANG_LOGIN[2]);
             $loginreq->set_var('site_url', $_CONF['site_url']);
+            $loginreq->set_var('layout_url', $_CONF['layout_url']);
             $loginreq->set_var('lang_login', $LANG_LOGIN[3]);
             $loginreq->set_var('lang_newuser', $LANG_LOGIN[4]);
             $loginreq->parse('errormsg', 'loginreq');
@@ -93,29 +94,30 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
             return $retval;
         } else {
             $retval .= COM_startBlock($LANG12[19])
-                . $LANG12[9]
-                . COM_endBlock();
+                    . $LANG12[9]
+                    . COM_endBlock();
 
             switch ($type) {
-            case 'link':
-                $retval .= submitlink();
-                break;
-            case 'event':
-                $retval .= submitevent($mode,$month,$day,$year,$hour);
-                break;
-            default:
-                if ((strlen($type) > 0) && ($type <> 'story')) {
-                    $retval .= PLG_showSubmitForm($type);
+                case 'link':
+                    $retval .= submitlink();
                     break;
-                } 
-                $retval .= submitstory($topic);
-                break;
+
+                case 'event':
+                    $retval .= submitevent($mode,$month,$day,$year,$hour);
+                    break;
+
+                default:
+                    if ((strlen($type) > 0) && ($type <> 'story')) {
+                        $retval .= PLG_showSubmitForm($type);
+                        break;
+                    }
+                    $retval .= submitstory($topic);
+                    break;
             }
         }
     }
 
     return $retval;
-
 }
 
 /**
@@ -128,12 +130,13 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour = -1)
 
     $retval = '';
 
-    $retval .= COM_startBlock($LANG12[4],'submitevent.html');
-    $eventform = new Template($_CONF['path_layout'] . 'submit');
-    $eventform->set_file('eventform', 'submitevent.thtml');
-    $eventform->set_var('explanation', $LANG12[37]);
-    $eventform->set_var('site_url', $_CONF['site_url']);
-    $eventform->set_var('lang_title', $LANG12[10]); 
+    $retval .= COM_startBlock ($LANG12[4], 'submitevent.html');
+    $eventform = new Template ($_CONF['path_layout'] . 'submit');
+    $eventform->set_file ('eventform', 'submitevent.thtml');
+    $eventform->set_var ('explanation', $LANG12[37]);
+    $eventform->set_var ('site_url', $_CONF['site_url']);
+    $eventform->set_var ('layout_url', $_CONF['layout_url']);
+    $eventform->set_var ('lang_title', $LANG12[10]); 
     $types = explode (',', $_CONF['event_types']);
     $catdd = '';
     foreach ($types as $event_type) {
@@ -143,10 +146,11 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour = -1)
     $eventform->set_var('lang_eventtype', $LANG12[49]);
     $eventform->set_var('lang_editeventtypes', $LANG12[50]);
     $eventform->set_var('type_options', $catdd);
-    $eventform->set_var('lang_addeventto',$LANG12[38]);
-    $eventform->set_var('lang_mastercalendar',$LANG12[39]);
+    $eventform->set_var('lang_addeventto', $LANG12[38]);
+    $eventform->set_var('lang_mastercalendar', $LANG12[39]);
+
     if ($_CONF['personalcalendars'] == 1 AND $_USER['uid'] > 1) {
-        $eventform->set_var('lang_personalcalendar',$LANG12[40]);
+        $eventform->set_var('lang_personalcalendar', $LANG12[40]);
         if ($mode == 'personal') {
             $eventform->set_var('personal_option', '<option value="personal" selected="selected">' . $LANG12[40] . '</option>');
         } else {
@@ -157,25 +161,22 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour = -1)
         $eventform->set_var('master_checked', 'selected="selected"');
         $eventform->set_var('personal_option', '');
     }
+
     $eventform->set_var('lang_link', $LANG12[11]);
     $eventform->set_var('max_url_length', 255);
     $eventform->set_var('lang_startdate', $LANG12[12]);
     $eventform->set_var('lang_starttime', $LANG12[42]);
-    if (empty($month)) {
-        $month = date('m',time());
+    if (empty ($month)) {
+        $month = date ('m', time ());
     }
-    if (empty($day)) {
-        $day = date('d',time());
+    if (empty ($day)) {
+        $day = date ('d', time ());
     }
-    if (empty($year)) {
-        $year = date('Y',time());
+    if (empty ($year)) {
+        $year = date ('Y', time ());
     } 
     $eventform->set_var ('month_options', COM_getMonthFormOptions ($month));
     $eventform->set_var ('day_options', COM_getDayFormOptions ($day));
-    $cur_year = date('Y',time());
-    if (empty($year)) {
-        $year = $cur_year;
-    }
     $eventform->set_var ('year_options', COM_getYearFormOptions ($year));
 
     if ($hour < 0) {
@@ -236,6 +237,7 @@ function submitlink()
     $linkform = new Template($_CONF['path_layout'] . 'submit');
     $linkform->set_file('linkform', 'submitlink.thtml');
     $linkform->set_var('site_url', $_CONF['site_url']);
+    $linkform->set_var('layout_url', $_CONF['layout_url']);
     $linkform->set_var('lang_title', $LANG12[10]);
     $linkform->set_var('lang_link', $LANG12[11]);
     $linkform->set_var('lang_category', $LANG12[17]);
@@ -268,15 +270,15 @@ function submitstory($topic = '')
         $A = $_POST;
     } else {
         $A['sid'] = COM_makeSid();
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $A['uid'] = $_USER['uid'];
-        } else {
-            $A['uid'] = 1;
-        }
         $A['unixdate'] = time();
     }
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $A['uid'] = $_USER['uid'];
+    } else {
+        $A['uid'] = 1;
+    }
 
-    if (empty($A['postmode'])) {
+    if (empty ($A['postmode'])) {
         $A['postmode'] = $_CONF['postmode'];
     }
 
@@ -327,8 +329,9 @@ function submitstory($topic = '')
     } else {
         $storyform->set_file('storyform','submitstory.thtml');
     }
-    $storyform->set_var('site_url', $_CONF['site_url']);
-    $storyform->set_var('lang_username', $LANG12[27]);
+    $storyform->set_var ('site_url', $_CONF['site_url']);
+    $storyform->set_var ('layout_url', $_CONF['layout_url']);
+    $storyform->set_var ('lang_username', $LANG12[27]);
 
     if (!empty($_USER['username'])) {
         $storyform->set_var('story_username', $_USER['username']);
@@ -337,6 +340,7 @@ function submitstory($topic = '')
     } else {
         $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php');
         $storyform->set_var('lang_loginout', $LANG12[2]);
+        $storyform->set_var('separator', ' | ');
         $storyform->set_var('seperator', ' | ');
         $storyform->set_var('create_account','<a href="' . $_CONF['site_url'] . '/users.php?mode=new">' . $LANG12[53] . '</a>');
     }
@@ -484,8 +488,8 @@ function savestory ($A)
     $A['title'] = COM_stripslashes ($A['title']);
     $A['introtext'] = COM_stripslashes ($A['introtext']);
 
-    $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
-    $A['title'] = str_replace ('$', '&#36;', $A['title']);
+    $A['title'] = strip_tags (COM_checkWords ($A['title']));
+    $A['title'] = addslashes (str_replace ('$', '&#36;', $A['title']));
 
     if ($A['postmode'] == 'html') {
         $introtext = COM_checkHTML (COM_checkWords ($A['introtext']));
@@ -501,6 +505,15 @@ function savestory ($A)
     }
     COM_updateSpeedlimit ('submit');
 
+    $A['tid'] = addslashes (COM_sanitizeID ($A['tid']));
+
+    $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'" . COM_getTopicSQL ('AND'));
+    if (DB_numRows ($result) == 0) {
+        // user doesn't have access to this topic - bail
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+    $T = DB_fetchArray ($result);
+
     if (($_CONF['storysubmission'] == 1) && !SEC_hasRights ('story.submit')) {
         $introtext = addslashes ($introtext);
         DB_save ($_TABLES['storysubmission'],
@@ -514,8 +527,6 @@ function savestory ($A)
 
         $retval .= COM_refresh ($_CONF['site_url'] . '/index.php?msg=2');
     } else { // post this story directly
-        $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid='{$A['tid']}'");
-        $T = DB_fetchArray ($result);
         $related = addslashes (implode ("\n", STORY_extractLinks ($introtext)));
 
         $introtext = addslashes ($introtext);
@@ -549,8 +560,8 @@ function savelink ($A)
 
     $retval = '';
 
-    $A['category'] = strip_tags ($A['category']);
-    $A['categorydd'] = strip_tags ($A['categorydd']);
+    $A['category'] = strip_tags (COM_stripslashes ($A['category']));
+    $A['categorydd'] = strip_tags (COM_stripslashes ($A['categorydd']));
     if ($A['categorydd'] != $LANG12[18] && !empty ($A['categorydd'])) {
         $A['category'] = $A['categorydd'];
     } else if ($A['categorydd'] != $LANG12[18]) {
@@ -573,8 +584,7 @@ function savelink ($A)
         $pos = strpos ($A['url'], ':');
         if ($pos === false) {
             $A['url'] = 'http://' . $A['url'];
-        }
-        else {
+        } else {
             $prot = substr ($A['url'], 0, $pos + 1);
             if (($prot != 'http:') && ($prot != 'https:')) {
                 $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
@@ -863,23 +873,29 @@ if (isset ($_POST['type'])) {
 
 $mode = COM_applyFilter ($_REQUEST['mode']);
 
-if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
-    $display .= savesubmission ($type, $_POST);
+if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
+    if (empty ($_USER['username']) &&
+        (($_CONF['loginrequired'] == 1) || ($_CONF['submitloginrequired'] == 1))) {
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+    } else {
+        $display .= savesubmission ($type, $_POST);
+    }
 } else if (($mode == $LANG12[52]) && !empty ($LANG12[52])) { // delete
     // this is only meant for deleting personal events
-    if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
-            ($_REQUEST['type'] == 'event')) {
+    if (($_CONF['personalcalendars'] == 1) && ($_REQUEST['type'] == 'event') &&
+            isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
         $eid = COM_applyFilter ($_REQUEST['eid']);
         if (!empty ($eid)) {
+            $eid = addslashes ($eid);
             DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
             echo COM_refresh ($_CONF['site_url']
                               . '/calendar.php?mode=personal&amp;msg=26');
             exit;
         }
     }
-
     $display = COM_refresh ($_CONF['site_url'] . '/index.php');
-} else if (($type == 'event') && isset ($_POST['calendar_type']) &&
+} else if (($_CONF['personalcalendars'] == 1) && ($type == 'event') &&
+        isset ($_POST['calendar_type']) &&
         ($_POST['calendar_type'] == 'personal')) { // quick add form
    $display = saveevent ($_POST);
 } else {
@@ -891,6 +907,7 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
                 exit;
             }
             break;
+
         case 'event':
             if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
                 if (isset ($_REQUEST['year'])) {
@@ -927,6 +944,7 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
                 exit;
             }
             break;
+
         default:
             if ((strlen ($type) > 0) && ($type <> 'story')) {
                 if (SEC_hasRights ("$type.edit") ||
@@ -957,9 +975,11 @@ if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
         case 'event':
             $pagetitle = $LANG12[4];
             break;
+
         case 'link':
             $pagetitle = $LANG12[5];
             break;
+
         default:
             $pagetitle = $LANG12[6];
             break;
