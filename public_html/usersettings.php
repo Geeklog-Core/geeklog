@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.93 2004/02/28 09:29:51 dhaun Exp $
+// $Id: usersettings.php,v 1.94 2004/03/27 20:22:30 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -921,7 +921,9 @@ function savepreferences($A)
 
     $etids = '';
     if (sizeof ($ETIDS) > 0) {
-        $etids = addslashes (implode (' ', $ETIDS));
+        $allowed_etids = buildTopicList ();
+        $AETIDS = explode (' ', $allowed_etids);
+        $etids = addslashes (implode (' ', array_intersect ($AETIDS, $ETIDS)));
     }
 
     if (!isset ($A['tzid'])) {
