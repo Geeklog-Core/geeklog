@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.311 2004/04/09 08:36:36 dhaun Exp $
+// $Id: lib-common.php,v 1.312 2004/04/09 17:16:03 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4534,14 +4534,17 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
     {
         if( $hasargs )
         {
-            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> ';
+            $retval .= '<a href="' . $base_url . '&amp;page=1">' . $LANG05[7] . '</a> | ';
+            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
         } else {
-            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a>  ';
+            $retval .= '<a href="' . $base_url . '?page=1">' . $LANG05[7] . '</a> | ';
+            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
         }
     }
     else
     {
-        $retval .= $LANG05[6] . ' ' ;
+        $retval .= $LANG05[7] . ' | ' ;
+        $retval .= $LANG05[6] . ' | ' ;
     }
 
     for( $pgcount = ( $curpage - 10 ); ( $pgcount <= ( $curpage + 9 )) AND ( $pgcount <= $num_pages ); $pgcount++ )
@@ -4570,15 +4573,18 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
 
     if( $curpage == $num_pages )
     {
-        $retval .= $LANG05[5];
+        $retval .= '| ' . $LANG05[5] . ' ';
+        $retval .= '| ' . $LANG05[8];
     }
     else
     {
         if( $hasargs )
         {
-            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a>';
+            $retval .= '| <a href="' . $base_url . '&amp;page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
+            $retval .= '| <a href="' . $base_url . '&amp;page=' . $num_pages . '">' . $LANG05[8] . '</a>';
         } else {
-            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a>';
+            $retval .= '| <a href="' . $base_url . '?page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
+            $retval .= '| <a href="' . $base_url . '?page=' . $num_pages . '">' . $LANG05[8] . '</a>';
         }
     }
 
