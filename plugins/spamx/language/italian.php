@@ -1,0 +1,116 @@
+<?php
+
+/**
+ * File: italian.php
+ * This is the Italian language page for the Geeklog SpamX Plug-in!
+ * 
+ * Copyright (C) 2004 by the following authors:
+ * Author        Tom Willett        tomw@pigstye.net
+ * Copyright (C) 2005 magomarcelo magomarcelo@gmail.com magomarcelo.blogspot.com
+ * 
+ * Licensed under GNU General Public License
+ */
+
+$LANG_SX00 = array (
+    'inst1' => '<p>Cos&igrave; facendo, poi altri ',
+    'inst2' => 'saranno in grado di visualizzare ed importare la tua blacklist personale e noi possiamo creare un pi&ugrave; efficace ',
+    'inst3' => 'database distribuito.</p><p>Se hai iscritto il tuo sito web e decidi che non desideri pi&ugrave; che esso rimanga nella lista ',
+    'inst4' => 'invia una e-mail a <a href="mailto:spamx@pigstye.net">spamx@pigstye.net</a> per dirmelo. ',
+    'inst5' => 'Saranno onorate tutte le richieste.',
+    'submit' => 'Invia',
+    'subthis' => 'questa informazione al Database Centrale SpamX',
+    'secbut' => 'Questo secondo bottone crea un feed rdf in modo che altri possano importare la tua lista.',
+    'sitename' => 'Nome Sito: ',
+    'URL' => 'URL Lista SpamX: ',
+    'RDF' => 'URL RDF: ',
+    'impinst1a' => 'Prima di utilizzare la funzionalit&agrave; di blocco commenti Spam di SpamX per visualizzare ed importare le Blacklist personali da altri',
+    'impinst1b' => ' siti, ti chiedo di premere sui due seguenti bottoni. (Devi premerne almeno uno.)',
+    'impinst2' => 'Il primo registra il tuo sito web sul sito Gplugs/SpamX in modo che possa essere aggiunto alla lista principale dei ',
+    'impinst2a' => 'siti che condividono le proprie blacklist. (Nota: se hai pi&ugrave; di un sito potresti volerne indicare uno solo come il ',
+    'impinst2b' => 'principale e registrare solo il suo nome. Ci&ograve; ti permetter&agrave; di aggiornare i tuoi siti facilmente e mantenere la lista pi&ugrave; piccola.) ',
+    'impinst2c' => 'Dope aver premuto il bottone Invia, premi [back] sul tuo browser per tornare qui.',
+    'impinst3' => 'Saranno inviati i seguenti valori: (puoi modificarli se sono errati).',
+    'availb' => 'Blacklist Disponibili',
+    'clickv' => 'Fai Clic per Visualizzare la Blacklist',
+    'clicki' => 'Fai Clic per Importare la Blacklist',
+    'ok' => 'OK',
+    'rsscreated' => 'Feed RSS Creato',
+    'add1' => 'Aggiunti ',
+    'add2' => ' elementi dalla blacklist di ',
+    'add3' => ".",
+    'adminc' => 'Comandi di Amministrazione:',
+    'mblack' => 'La Mia Blacklist:',
+    'rlinks' => 'Collegamenti Correlati:',
+    'e3' => 'Per Aggiungere le parole presenti nella Censor List di Geeklog Premi il Bottone:',
+    'addcen' => 'Aggiungi Censor List',
+    'addentry' => 'Aggiungi Elemento',
+    'e1' => 'Per Eliminare un elemento fai clic su di esso.',
+    'e2' => 'Per Aggiungere un elemento, inseriscilo nel box e fai clic su Aggiungi. Gli elementi possono utilizzare tutti i tipi di Espressioni Regolari Perl.',
+    'pblack' => 'Blacklist Personale SpamX',
+    'conmod' => 'Configura Utilizzo Modulo SpamX',
+    'acmod' => 'Moduli Azione SpamX',
+    'exmod' => 'Moduli Analisi SpamX',
+    'actmod' => 'Moduli Attivi',
+    'avmod' => 'Moduli Disponibili',
+    'coninst' => '<hr>Fai clic su un modulo Attivo per eliminarlo, fai clic su un modulo Disponibile per aggiungerlo.<br>I moduli vengono eseguiti nell\'ordine visualizzato.',
+    'fsc' => 'Trovato Commento Spam corrispondente a ',
+    'fsc1' => ' inviato dall\'utente ',
+    'fsc2' => ' from IP ',
+    'uMTlist' => 'Aggiorna MT-Blacklist',
+    'uMTlist2' => ': Aggiunti ',
+    'uMTlist3' => ' elementi ed eliminati ',
+    'entries' => ' elementi.',
+    'uPlist' => 'Aggiorna Blacklist Personale',
+    'entriesadded' => 'Elementi Aggiunti',
+    'entriesdeleted' => 'Elementi Elminati',
+    'viewlog' => 'Visualizza Log SpamX',
+    'clearlog' => 'Cancella File di Log',
+    'logcleared' => '- File di Log di SpamX Cancellato',
+    'plugin' => 'Plugin',
+    'access_denied' => 'Accesso Negato',
+    'access_denied_msg' => 'Solo gli Utenti Root possono Accedere a questa Pagina. Il Tuo nome utente ed IP sono stati registrati.',	
+    'admin' => 'Amministrazione Plugin',
+    'install_header' => 'Installa/Disinstalla Plugin',
+    'installed' => 'Il Plugin &egrave; Installato',
+    'uninstalled' => 'Il Plugin Non &egrave; Installato',
+    'install_success' => 'Installation Successful',	
+    'install_failed' => 'Installazione Fallita -- Controlla l\'error log per scoprire il perch&egrave;.',
+    'uninstall_msg' => 'Plugin Disinstallato con Successo',	
+    'install' => 'Installa',
+    'uninstall' => 'Disinstalla',
+    'warning' => 'Attenzione! Il plugin &egrave; ancora Attivo',
+    'enabled' => 'Disattiva il plugin prima di disinstallarlo.',
+    'readme' => 'STOP! Prima di premere prego leggi il ',
+    'installdoc' => 'Installa Documento.',
+    'spamdeleted' => 'Commento Spam Eliminato',
+    'foundspam' => 'Trovato Commento Spam corrispondente a ',
+    'foundspam2' => ' inviato dall\'utente ',
+    'foundspam3' => ' dall\'IP ',
+	'deletespam' => 'Elimina Spam',
+	'numtocheck' => 'Numero Commenti da controllare',
+	'note1'		=> '<p>Nota: L\'Eliminazione in Blocco serve ad aiutarti quando sei colpito da',
+	'note2'		=> ' commenti spam e SpamX non riesce a bloccarli. <ul><li>Prima cerca il o i link o altri ',
+	'note3'		=> 'identificatori di questo commento Spam ed aggiungilo alla tua blacklist personale.</li><li>Poi ',
+	'note4'		=> 'torna qui a fai controllare a SpamX se gli ultimi commenti sono spam.</li></ul>I commenti ',
+	'note5'		=> 'vengono controllati dal pi&ugrave; recente al meno recente -- controllare pi&ugrave; commenti ',
+	'note6'		=> 'richiede pi&ugrave; tempo per il controllo</p>',
+	'masshead'	=> '<hr><center><h1>Eliminazione in Blocco Commenti Spam</h1></center>',
+	'comdel'	=> ' commenti eliminati.',
+    'initial_Pimport' => '<p>Importazione Blacklist Personale"',
+    'initial_import' => 'Importazione Iniziale MT-Blacklist',
+    'import_success' => '<p>Importati con successo %d elementi della blacklist.',
+    'import_failure' => '<p><strong>Errore:</strong> Nessun elemento trovato.',
+    'allow_url_fopen' => '<p>Spiacente, la configurazione del tuo webserver non permette la lettura di file remoti (<code>allow_url_fopen</code> &egrave; off). Please download the blacklist from the following URL and upload it into Geeklog\'s "data" directory, <tt>%s</tt>, before trying again:',
+    'documentation' => 'Documentazione Plugin SpamX',
+    'emailmsg' => "Un nuovo commento spam &egrave; stato inviato su \"%s\"\nUID utente:\"%s\"\n\nContenuto:\"%s\"",
+    'emailsubject' => 'Spam post at %s',
+    'plugin_name' => 'SpamX'
+);
+
+
+/* Define Messages that are shown when SPAMX module action is taken */
+$PLG_spamx_MESSAGE128 = 'SPAM identificato ed il Commento o Messaggio &egrave; stato eliminato.';
+$PLG_spamx_MESSAGE8   = 'SPAM identificato. E-mail inviata all\'amministratore.';
+
+
+?>
