@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.49 2002/08/11 13:19:30 dhaun Exp $
+// $Id: config.php,v 1.50 2002/08/13 21:35:46 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -247,7 +247,7 @@ $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
-	
+
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;
 $_CONF['comment_limit']         = 100;        // Default Number of Comments under Story
@@ -262,6 +262,14 @@ $_CONF['maxanswers']        = 10;
 $_CONF['answerorder']       = 'submitorder';
 $_CONF['pollcookietime']    = 86400;
 $_CONF['polladdresstime']   = 604800;
+
+// Links Settings
+// You can set both of the following to 0 to get back the old (pre-1.3.6)
+// style of the links section. Setting only linkcols to 0 will hide the
+// categories but keep the paging. Setting only linksperpage to 0 will list
+// all the links of the selected category on one page.
+$_CONF['linkcols']     =  3; // categories per column
+$_CONF['linksperpage'] = 10; // links per page
 
 // Parameters for checking words and HTML tags
 
