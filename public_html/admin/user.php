@@ -27,6 +27,7 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+# Make sure user has access to this feature
 if (!hasrights('user.edit')) {
         site_header('menu');
         startblock($MESSAGE[30]);
@@ -198,6 +199,14 @@ function listusers() {
 
 switch ($mode) {
 	case "delete":
+		#Ok, delete everything related to this user
+		
+		#first, remove from all security groups
+		dbdelete('group_assignments','ug_uid',$uid);
+	
+		#what to do with orphan stories/comments?
+	
+		#now move delete the user itself
 		dbdelete("users","uid",$uid,"admin/user.php?msg=22");
 		break;
 	case "save":
