@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.11 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: mail.php,v 1.12 2002/06/05 12:49:22 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -121,6 +121,14 @@ function send_messages($vars)
 	// Header information
 	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\n";
 	$headers .= "X-Sender: <{$vars['fraepost']}>\n"; 
+	$headers .= "X-Mailer: PHP\n"; // mailer
+    
+	// Urgent message!
+	if (isset($vars['priority'])) {
+ 		$headers .= "X-Priority: 1\n"; 
+	}
+    
+	$headers .= "Return-Path: <{$vars['fraepost']}>\n";  // Return path for errors
         if (empty ($LANG_CHARSET)) {
             $charset = $_CONF['default_charset'];
             if (empty ($charset)) {
@@ -130,18 +138,12 @@ function send_messages($vars)
         else {
             $charset = $LANG_CHARSET;
         }
-        $headers .= "Content-Type: text/plain; charset=$charset\n";
-	$headers .= "X-Mailer: PHP\n"; // mailer
-    
-	// Urgent message!
-	if (isset($vars['priority'])) {
- 		$headers .= "X-Priority: 1\n"; 
-	}
-    
-	$headers .= "Return-Path: <{$vars['fraepost']}>\n";  // Return path for errors
 	// If you want to send html mail
 	if (isset($vars['html'])) { 
- 		$headers .= "Content-Type: text/html; charset=iso-8859-1\n"; // Mime type 
+ 		$headers .= "Content-Type: text/html; charset=$charset\n"; // Mime type 
+	}
+	else {
+        $headers .= "Content-Type: text/plain; charset=$charset\n";
 	}
     
 	// and now mail it
@@ -181,12 +183,11 @@ function send_messages($vars)
  		}
 	}
 	
-	//$retval = 'Successfully sent ' . count($successes) . ' messages and unsuccessfully sent ' . count($failures) . ' messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href="' . $_CONF['site_admin_url'] . '/mail.php">Send another message</a> or you can <a href="' . $_CONF['site_admin_url'] . '/moderation.php">go back to the administration page</a>.';
 	$failcount = count($failures);
 	$successcount = count($successes);
 	$mailresult .= str_replace('<successcount>',$successcount,$LANG31[20]);
 	$retval .= str_replace('<failcount>',$failcount,$mailresult);
-	$retval .= "<H2>{$LANG31[21]}</H2>";
+	$retval .= "<h2>{$LANG31[21]}</h2>";
 	for ($i = 1; $i <= count($failures); $i++) {
         $retval .= current($failures) . '<br>';
         next($failures);
@@ -194,7 +195,7 @@ function send_messages($vars)
 	if (count($failures) == 0) {
         $retval .= $LANG31[23];
 	}
-	$retval .= "<H2>{$LANG31[22]}</H2>";
+	$retval .= "<h2>{$LANG31[22]}</h2>";
 	for ($i = 1; $i <= count($successes); $i++) {
         $retval .= current($successes) . '<br>';
         next($successes);
