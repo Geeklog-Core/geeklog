@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.140 2004/12/14 22:35:29 dhaun Exp $
+// $Id: story.php,v 1.141 2004/12/15 14:58:41 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -115,7 +115,7 @@ function userlist ($uid = 0)
 */
 function storyeditor($sid = '', $mode = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS, $_POST;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS;
 
     $display = '';
 
@@ -893,7 +893,7 @@ function insert_images($sid, $intro, $body)
 */
 function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid) 
 {
-    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE, $HTTP_POST_FILES;
+    global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
 
     // Convert array values to numeric permission values
     list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
@@ -1012,7 +1012,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $index_start = 1;
         }
 
-        if (count($HTTP_POST_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
+        if (count($_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
             require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
 
@@ -1069,16 +1069,16 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $filenames = array();
             $end_index = $index_start + $upload->numFiles() - 1;
             for ($z = $index_start; $z <= $end_index; $z++) {
-                $curfile = current($HTTP_POST_FILES);
+                $curfile = current($_FILES);
                 if (!empty($curfile['name'])) {
                     $pos = strrpos($curfile['name'],'.') + 1;
                     $fextension = substr($curfile['name'], $pos);
                     $filenames[] = $sid . '_' . $z . '.' . $fextension;
                 }
-                next($HTTP_POST_FILES);
+                next($_FILES);
             }
             $upload->setFileNames($filenames);
-            reset($HTTP_POST_FILES);
+            reset($_FILES);
             $upload->setDebug(true);
             $upload->uploadFiles();
 
