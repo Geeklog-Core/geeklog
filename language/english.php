@@ -957,7 +957,7 @@ $MESSAGE = array (
     44 => 'The plug-in was successfully installed!',
     45 => 'The plug-in was successfully deleted.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
-    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then you cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually."
+    47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually."
 );
 
 // for plugins.php
