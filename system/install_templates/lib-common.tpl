@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.46 2002/04/09 20:02:17 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.47 2002/04/10 18:04:26 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -835,10 +835,10 @@ function COM_pollVote($qid)
             $nanswers = DB_numRows($answers);
 
             if ($nanswers > 0) {
-                $retval .= '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="GET">' . LB
-                    . COM_startBlock($LANG01[5],'',COM_getBlockTemplate('poll_block', 'header'))
-                    . '<input type="hidden" name="qid" value="' . $qid . '">' . LB
-                    . '<h2>' . $Q['question'] . '</h2>' . LB;
+                $retval .= COM_startBlock($LANG01[5],'',COM_getBlockTemplate('poll_block', 'header'))
+                    . '<h2>' . $Q['question'] . '</h2>' . LB
+                    . '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="GET">' . LB
+                    . '<input type="hidden" name="qid" value="' . $qid . '">' . LB;
 					
                 for ($i=1; $i<=$nanswers; $i++) {
                     $A = DB_fetchArray($answers);
@@ -846,7 +846,8 @@ function COM_pollVote($qid)
                 }
 
                 $retval .= '<input type="submit" value="' . $LANG01[56] . '">' . LB
-                    . '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1">' . $LANG01[6] . '</a><br>'
+                    . '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1">' . $LANG01[6] . '</a>' . LB
+                    . '</form>'
                     . '<span class="storybyline">' . $Q['voters'] . ' ' . $LANG01[8];
 
                 if ($Q['commentcode'] >= 0) {
@@ -854,9 +855,8 @@ function COM_pollVote($qid)
                         . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
                 }
 				
-                $retval .= '</span>'
-                    . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer'))
-                    . '</form>'.LB;
+                $retval .= '</span><br>'
+                    . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer')) . LB;
             }
         }
     } else {
