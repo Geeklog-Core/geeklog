@@ -78,13 +78,16 @@ which the plugin ships are:</p>
     </ul></li>
 </ul>
 
-<p>Other modules can be just dropped into place.  Planned modules include:</p>
+<p>Other modules can be just dropped into place and they will become
+available to the plugin.  To remove a module just
+delete it from the spamx directory or rename it.  Planned modules include:</p>
 
 <ul>
   <li>Admin
     <ul>
       <li>Comparing MT-Blacklist and personal blacklist to eliminate
           duplications</li>
+      <li>Parsing comments and automatic adding spam links</li>
     </ul></li>
   <li>Examine
     <ul>
@@ -95,6 +98,11 @@ which the plugin ships are:</p>
       <li>Save comment for review</li>
     </ul></li>
 </ul>
+
+<p>Action modules are each assigned a number and the actions taken when a
+spam comment is found can be designated by a configuration variable.  Note:
+the spamx interface has been generalized and can be called by other modules
+and plugins.  See the developer docs for details.</p>
 
 <h2>Sharing blacklists</h2>
 
