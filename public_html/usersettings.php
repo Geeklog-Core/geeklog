@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.97 2004/07/26 10:12:32 dhaun Exp $
+// $Id: usersettings.php,v 1.98 2004/08/01 18:59:04 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -589,11 +589,13 @@ function editpreferences()
     $selection = '<select name="commentmode">';
     $selection .= COM_optionList ($_TABLES['commentmodes'], 'mode,name',
                                   $A['commentmode']);
+    $selection .= '</select>';
     $preferences->set_var ('displaymode_selector', $selection);
 
     $selection = '<select name="commentorder">';
     $selection .= COM_optionList ($_TABLES['sortcodes'], 'code,name',
                                   $A['commentorder']);
+    $selection .= '</select>';
     $preferences->set_var ('sortorder_selector', $selection);
     $preferences->set_var ('commentlimit_value', $A['commentlimit']);
     $preferences->parse ('comment_block', 'comment', true);

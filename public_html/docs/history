@@ -3,9 +3,11 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Fixed missing </select> tags for the comment display mode and sort order
+  drop-down menus in usersettings.php (patch #255, provided by machinari) [Dirk]
 - Hard-coded the names of the pseudo image tags in story.php, i.e. they are
   always [imageX], [imageX_left], and [imageX_right] now, independent of
-  the current language file (bug #xxx) [Dirk]
+  the current language file (bug #139) [Dirk]
 - Added the Auto-Archive Management feature. Optionally allows the Story Editor
   to archive or delete a story when the expire date is reached [Blaine]
 - Improved the commentbar to logically support comments viewed from comment.php
