@@ -393,7 +393,18 @@ $LANG09 = array(
 	26 => "Beitr&auml;gen in",
 	27 => "Sekunden.",
     28 => 'Keine Treffer unter den Artikeln und Kommentaren.',
-    29 => 'Gefundene Artikel und Kommentare'
+    29 => 'Gefundene Artikel und Kommentare',
+    30 => 'Keine Links f&uuml;r Deine Suche gefunden',
+    31 => 'Dieses Plugin lieferte keine Treffer',
+    32 => 'Termin',
+    33 => 'URL',
+    34 => 'Ort',
+    35 => 'Ganzt&auml;gig',
+    36 => 'Keine Termine f&uuml;r Deine Suche gefunden',
+    37 => 'Ergebnisse: Termine',
+    38 => 'Ergebnisse: Links',
+    39 => 'Links',
+    40 => 'Termine'
 );
 
 ###############################################################################
