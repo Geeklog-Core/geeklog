@@ -30,12 +30,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.2 2004/06/04 21:49:20 tony Exp $
+// $Id: pdfgenerator.php,v 1.3 2004/06/07 15:21:51 tony Exp $
 
 require_once 'lib-common.php';
 
 // Need ot add error message here from language file
-if ($_CONF['pdf_enabled'] == false) {
+if ($_CONF['pdf_enabled'] == 0) {
     exit;
 }
 
