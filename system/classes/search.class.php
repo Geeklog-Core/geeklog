@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog search class.                                                     |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony AT geeklog DOT net                       |
 // |          Dirk Haun        - dirk AT haun-online DOT de                    |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.19 2004/01/02 10:31:58 dhaun Exp $
+// $Id: search.class.php,v 1.20 2004/02/07 12:59:23 dhaun Exp $
 
 if (eregi ('search.class.php', $PHP_SELF)) {
     die ('This file can not be used on its own.');
@@ -108,7 +108,7 @@ class Search {
         global $HTTP_POST_VARS, $HTTP_GET_VARS;
         
         // This page is register_globals friendly.  Because I
-        // can't gaurantee a version of PHP > 4.1 I can't simply
+        // can't guarantee a version of PHP > 4.1 I can't simply
         // reference $_REQUEST so $input_vars simulates this.
         $input_vars = array();
         if (count($HTTP_POST_VARS) == 0) {
@@ -118,18 +118,17 @@ class Search {
         }
         
         // Set search criteria
-        $this->_query = strip_tags($input_vars['query']);
-        $this->_topic = $input_vars['topic'];
-        $this->_dateStart = $input_vars['datestart'];
-        $this->_dateEnd = $input_vars['dateend'];
-        $this->_author = $input_vars['author'];
-        if (empty($input_vars['type'])) {
+        $this->_query = strip_tags (COM_stripslashes ($input_vars['query']));
+        $this->_topic = COM_applyFilter ($input_vars['topic']);
+        $this->_dateStart = COM_applyFilter ($input_vars['datestart']);
+        $this->_dateEnd = COM_applyFilter ($input_vars['dateend']);
+        $this->_author = COM_applyFilter ($input_vars['author']);
+        $this->_type = COM_applyFilter ($input_vars['type']);
+        if (empty ($this->_type)) {
             $this->_type = 'all';
-        } else {
-            $this->_type = $input_vars['type'];
         }
-        $this->_keyType = $input_vars['keyType'];
-        $this->_page = $input_vars['page'];
+        $this->_keyType = COM_applyFilter ($input_vars['keyType']);
+        $this->_page = COM_applyFilter ($input_vars['page']);
         
         // In case we got a username instead of uid, convert it.  This should
         // make custom themes for search page easier.
@@ -147,11 +146,15 @@ class Search {
     {
         global $_TABLES;
         
-        if (is_numeric($this->_author)) {
+        if (is_numeric ($this->_author) &&
+                preg_match ('/^([0-9]+)$/', $this->_author)) {
             return;
         }
         
-        $this->_author = DB_getItem($_TABLES['users'],'uid',"username='" . $this->_author . "'");
+        if (!empty ($this->_author)) {
+            $this->_author = DB_getItem ($_TABLES['users'], 'uid',
+                    "username='" . addslashes ($this->_author) . "'");
+        }
     }
 
     /**
@@ -195,19 +198,19 @@ class Search {
     function _searchStories()
     {
         global $LANG09, $_CONF, $_TABLES, $_USER, $_GROUPS;
-    
+
         $urlQuery = urlencode($this->_query);
-    
+
         if ($_CONF['max_search_results'] > 0) {
             $resultLimit = $_CONF['max_search_results'];
         }
-                
+
         $resultPage = 1;
-        
+
         if($this->_page > 1) {
             $resultPage = $this->_page;
         }
-        
+
         $groupList = '';
         if (!empty ($_USER['uid'])) {
             foreach ($_GROUPS AS $grp) {
@@ -215,46 +218,50 @@ class Search {
             }
             $groupList = substr($groupList, 0, -1);
         }
-    
+
         if ($this->_type == 'all' OR $this->_type == 'stories') {
             $sql = "SELECT sid,title,introtext,bodytext,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $this->_checkTopicPermissions ();
             if (!empty ($this->_query)) {
                 if($this->_keyType == 'phrase') {
                     // do an exact phrase search (default)
                     $mywords[] = $this->_query;
-                    $sql .= "AND (introtext like '%$this->_query%'  ";
-                    $sql .= "OR bodytext like '%$this->_query%' ";
-                    $sql .= "OR title like '%$this->_query%')  ";
+                    $mysearchterm = addslashes ($this->_query);
+                    $sql .= "AND (introtext like '%$mysearchterm%'  ";
+                    $sql .= "OR bodytext like '%$mysearchterm%' ";
+                    $sql .= "OR title like '%$mysearchterm%')  ";
                 } elseif($this->_keyType == 'all') {
-                    //must contain ALL of the keywords
+                    // must contain ALL of the keywords
                     $mywords = explode(' ', $this->_query);
                     $sql .= 'AND ';
                     $tmp = '';
                     foreach ($mywords AS $mysearchterm) {
-                        $tmp .= "(introtext like '%" . trim($mysearchterm) . "%' OR ";
-                        $tmp .= "bodytext like '%" . trim($mysearchterm) . "%' OR ";
-                        $tmp .= "title like '%" . trim($mysearchterm) . "%') AND ";
+                        $mysearchterm = addslashes (trim ($mysearchterm));
+                        $tmp .= "(introtext like '%$mysearchterm%' OR ";
+                        $tmp .= "bodytext like '%$mysearchterm%' OR ";
+                        $tmp .= "title like '%$mysearchterm%') AND ";
                     }
                     $tmp = substr($tmp, 0, strlen($tmp) - 4);
                     $sql .= $tmp;
                 }
                 elseif($this->_keyType == 'any') {
-                    //must contain ANY of the keywords
+                    // must contain ANY of the keywords
                     $mywords = explode(' ', $this->_query);
                     $sql .= 'AND ';
                     $tmp = '';
                     foreach ($mywords AS $mysearchterm) {
-                        $tmp .= "(introtext like '%" . trim($mysearchterm) . "%' OR ";
-                        $tmp .= "bodytext like '%" . trim($mysearchterm) . "%' OR ";
-                        $tmp .= "title like '%" . trim($mysearchterm) . "%') OR ";
+                        $mysearchterm = addslashes (trim ($mysearchterm));
+                        $tmp .= "(introtext like '%$mysearchterm%' OR ";
+                        $tmp .= "bodytext like '%$mysearchterm%' OR ";
+                        $tmp .= "title like '%$mysearchterm%') OR ";
                     }
                     $tmp = substr($tmp, 0, strlen($tmp) - 3);
                     $sql .= "($tmp)";
                 } else {
                     $mywords[] = $this->_query;
-                    $sql .= "AND (introtext like '%$this->_query%'  ";
-                    $sql .= "OR bodytext like '%$this->_query%' ";
-                    $sql .= "OR title like '%$this->_query%')  ";
+                    $mysearchterm = addslashes ($this->_query);
+                    $sql .= "AND (introtext like '%$mysearchterm%'  ";
+                    $sql .= "OR bodytext like '%$mysearchterm%' ";
+                    $sql .= "OR title like '%$mysearchterm%')  ";
                 }
             }
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
@@ -268,7 +275,7 @@ class Search {
             if (!empty($this->_topic)) {
                 $sql .= "AND (tid = '$this->_topic') ";
             }
-            if (!empty($this->_author)) {
+            if (!empty($this->_author) && ($this->_author > 0)) {
                 $sql .= "AND (uid = '$this->_author') ";
             }
             $permsql = COM_getPermSQL ('AND');
@@ -277,7 +284,7 @@ class Search {
     
             $result_stories = DB_query($sql);
             $nrows_stories = DB_numRows($result_stories);
-            $result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . $permsql);
+            $result_count = DB_query("SELECT COUNT(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . $permsql);
             $B = DB_fetchArray($result_count);
             $story_results = new Plugin();
             $story_results->searchlabel = $LANG09[53];
@@ -358,13 +365,14 @@ class Search {
             }
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
     
+            $mysearchterm = addslashes ($this->_query);
             $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,{$_TABLES['comments']}.sid AS qid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
             $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
             $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
             $sql .= "({$_TABLES['stories']}.draft_flag = 0) AND ({$_TABLES['stories']}.date <= NOW()) AND ";
-            $sql .= " (comment like '%$this->_query%' ";
-            $sql .= "OR {$_TABLES['comments']}.title like '%$this->_query%') ";
+            $sql .= " (comment like '%$mysearchterm%' ";
+            $sql .= "OR {$_TABLES['comments']}.title like '%$mysearchterm%') ";
             if (!empty($this->_dateStart) && !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
                 $DS = explode($delim, $this->_dateStart);
@@ -391,8 +399,8 @@ class Search {
             $comment_results->num_itemssearched = $B[0];
     
             // NOTE if any of your data items need to be links then add them here! 
-            // make sure data elements are in an array and in the same order as your
-            // headings above!
+            // make sure data elements are in an array and in the same order as
+            // your headings above!
             while ($A = DB_fetchArray($result_comments)) {
                 $A['title'] = str_replace('$','&#36;',$A['title']);
                 if (!empty ($this->_query)) {
@@ -438,38 +446,42 @@ class Search {
             if ($this->_keyType == 'phrase') {
                 // do an exact phrase search (default)
                 $mywords[] = $this->_query;
-                $sql .= "(description like '%$this->_query%' ";
-                $sql .= "OR title like '%$this->_query%')  ";
+                $mysearchterm = addslashes ($this->_query);
+                $sql .= "(description like '%$mysearchterm%' ";
+                $sql .= "OR title like '%$mysearchterm%')  ";
             } else if ($this->_keyType == 'all')  { 
-                //must contain ALL of the keywords
-                $mywords = explode(' ' ,$this->_query);
+                // must contain ALL of the keywords
+                $mywords = explode(' ', $this->_query);
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
-                    $tmp .= "(description like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "title like '%" . trim($mysearchterm) . "%') AND ";
+                    $mysearchterm = addslashes (trim ($mysearchterm));
+                    $tmp .= "(description like '%$mysearchterm%' OR ";
+                    $tmp .= "title like '%$mysearchterm%') AND ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 4);
                 $sql .= $tmp;
             } elseif($this->_keyType == 'any') {
                 // need to do WORD searches
-                $mywords = explode(' ' ,$query);
+                $mywords = explode(' ', $this->_query);
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
-                    $tmp .= "(description like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "title like '%" . trim($mysearchterm) . "%') OR ";
+                    $mysearchterm = addslashes (trim ($mysearchterm));
+                    $tmp .= "(description like '%$mysearchterm%' OR ";
+                    $tmp .= "title like '%$mysearchterm%') OR ";
                 }
                 $tmp = substr($tmp,0,strlen($tmp)-3);
                 $sql .= "($tmp)";
             } else {
                 $mywords[] = $this->_query;
-                $sql .= "(description like '%$this->_query%' ";
-                $sql .= "OR title like '%$this->_query%')  ";
+                $mysearchterm = addslashes ($this->_query);
+                $sql .= "(description like '%$mysearchterm%' ";
+                $sql .= "OR title like '%$mysearchterm%')  ";
             }
     
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
-                $DS = explode($delim, $$this->_dateStart);
-                $DE = explode($delim, $$this->_dateEnd);
+                $DS = explode($delim, $this->_dateStart);
+                $DE = explode($delim, $this->_dateEnd);
                 $startdate = mktime(0, 0, 0, $DS[1], $DS[2], $DS[0]);
                 $enddate = mktime(23, 59, 59, $DE[1], $DE[2], $DE[0]);
                 $sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
@@ -486,8 +498,8 @@ class Search {
             $link_results->num_itemssearched = DB_count($_TABLES['links']);
     
             // NOTE if any of your data items need to be links then add them here! 
-            // make sure data elements are in an array and in the same order as your
-            // headings above!
+            // make sure data elements are in an array and in the same order as
+            // your headings above!
             while ($A = DB_fetchArray($result_links)) {
                 if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
                     $thetime = COM_getUserDateTimeFormat($A['day']);
@@ -528,18 +540,20 @@ class Search {
             if($this->_keyType == 'phrase') {
                 // do an exact phrase search (default)
                 $mywords[] = $this->_query;
-                $sql .= "(location like '%$this->_query%'  ";
-                $sql .= "OR description like '%$this->_query%' ";
-                $sql .= "OR title like '%$this->_query%')  ";
+                $mysearchterm = addslashes ($this->_query);
+                $sql .= "(location like '%$mysearchterm%'  ";
+                $sql .= "OR description like '%$mysearchterm%' ";
+                $sql .= "OR title like '%$mysearchterm%') ";
             } 
             elseif($this->_keyType == 'all') {
                 //must contain ALL of the keywords
                 $mywords = explode(' ', $this->_query);
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
-                    $tmp .= "(location like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "description like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "title like '%" . trim($mysearchterm) . "%') AND ";
+                    $mysearchterm = addslashes (trim ($mysearchterm));
+                    $tmp .= "(location like '%$mysearchterm%' OR ";
+                    $tmp .= "description like '%$mysearchterm%' OR ";
+                    $tmp .= "title like '%$mysearchterm%') AND ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 4);
                 $sql .= $tmp;
@@ -548,9 +562,10 @@ class Search {
                 $mywords = explode(' ', $this->_query);
                 $tmp = '';
                 foreach ($mywords AS $mysearchterm) {
-                    $tmp .= "(location like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "description like '%" . trim($mysearchterm) . "%' OR ";
-                    $tmp .= "title like '%" . trim($mysearchterm) . "%') OR ";
+                    $mysearchterm = addslashes (trim ($mysearchterm));
+                    $tmp .= "(location like '%$mysearchterm%' OR ";
+                    $tmp .= "description like '%$mysearchterm%' OR ";
+                    $tmp .= "title like '%$mysearchterm%') OR ";
                 }
                 $tmp = substr($tmp, 0, strlen($tmp) - 3);
                 $sql .= "($tmp)";
@@ -558,11 +573,12 @@ class Search {
             else
             {
                 $mywords[] = $this->_query;
-                $sql .= "(location like '%$this->_query%'  ";
-                $sql .= "OR description like '%$this->_query%' ";
-                $sql .= "OR title like '%$this->_query%')  ";
+                $mysearchterm = addslashes ($this->_query);
+                $sql .= "(location like '%$mysearchterm%'  ";
+                $sql .= "OR description like '%$mysearchterm%' ";
+                $sql .= "OR title like '%$mysearchterm%')  ";
             }
-     
+
             if (!empty($this->_dateStart) AND !empty($this->_dateEnd)) {
                 $delim = substr($this->_dateStart, 4, 1);
                 $DS = explode($delim, $this->_dateStart);
@@ -1034,18 +1050,18 @@ class Search {
         if (!$this->_isSearchAllowed()) {
             return $this->_getAccessDeniedMessage();
         }
-        
+
         // Start search timer
         $searchtimer = new timerobject();
         $searchtimer->setPercision(4);
         $searchtimer->startTimer();    
-                
+
         // Do searches
         $this->story_results = $this->_searchStories();
         $this->comment_results = $this->_searchComments();
         $this->link_results = $this->_searchLinks();
         $this->event_results = $this->_searchEvents();
-        
+
         // Have plugins do their searches
         list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($this->_query, $this->_dateStart, $this->_dateEnd, $this->_topic, $this->_type, $this->_author);
         
