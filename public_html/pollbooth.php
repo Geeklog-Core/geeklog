@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.22 2004/02/28 21:23:11 dhaun Exp $
+// $Id: pollbooth.php,v 1.23 2004/04/20 21:54:10 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -48,7 +48,13 @@ require_once('lib-common.php');
 */
 function pollsave($qid = '', $aid = 0) 
 {
-    global $_TABLES, $REMOTE_ADDR, $LANG07;
+    global $_TABLES, $LANG07, $REMOTE_ADDR;
+
+    $pcount = DB_count ($_TABLES['pollvoters'], array ('ipaddress', 'qid' ),
+                        array ($REMOTE_ADDR, $qid));
+    if ($pcount > 0) {
+        exit;
+    }
 
     DB_change($_TABLES['pollquestions'],'voters',"voters + 1",'qid',$qid,'',true);
     $id[1] = 'qid';
