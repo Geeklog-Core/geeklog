@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2002/07/23 10:12:35 dhaun Exp $
+// $Id: index.php,v 1.9 2002/08/14 20:00:14 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -48,64 +48,74 @@ function form($A, $error=false)
     $retval = '';
 
     if ($error) {
-        $retval .= $error . "<BR><BR>";
+        $retval .= $error . "<br><br>";
     } else {
         $sp_template = new Template($_CONF['path'] . 'plugins/staticpages/templates/admin');
         $sp_template->set_file('form','editor.thtml');
         $sp_template->set_var('site_url', $_CONF['site_url']);
         $sp_template->set_var('site_admin_url', $_CONF['site_admin_url']);
-        $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC[staticpageeditor]));
-        $sp_template->set_var('lang_save', $LANG_STATIC[save]);
-        $sp_template->set_var('lang_preview', $LANG_STATIC[preview]);
+        $sp_template->set_var('start_block_editor', COM_startBlock($LANG_STATIC['staticpageeditor']));
+        $sp_template->set_var('lang_save', $LANG_STATIC['save']);
+        $sp_template->set_var('lang_preview', $LANG_STATIC['preview']);
         if (SEC_hasRights('staticpages.delete')) {
-            $sp_template->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_STATIC[delete]}\" name=\"mode\">");
+            $sp_template->set_var('delete_option',"<input type=\"submit\" value=\"{$LANG_STATIC['delete']}\" name=\"mode\">");
         } else {
             $sp_template->set_var('delete_option','');
         }
-        $sp_template->set_var('lang_writtenby', $LANG_STATIC[writtenby]);
+        $sp_template->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
         $sp_template->set_var('username', DB_getItem($_TABLES['users'],'username',"uid = {$A["sp_uid"]}"));
         $sp_template->set_var('sp_uid', $A['sp_uid']);
-        
+
 		$curtime = COM_getUserDateTimeFormat();
 
-        $sp_template->set_var('lang_lastupdated', $LANG_STATIC[date]);
+        $sp_template->set_var('lang_lastupdated', $LANG_STATIC['date']);
         $sp_template->set_var('sp_formateddate', $curtime[0]);
         $sp_template->set_var('sp_date', $curtime[1]);
-        $sp_template->set_var('lang_title', $LANG_STATIC[title]);
+        $sp_template->set_var('lang_title', $LANG_STATIC['title']);
         $sp_template->set_var('sp_title', stripslashes($A['sp_title']));
-        $sp_template->set_var('lang_addtomenu', $LANG_STATIC[addtomenu]);
+        $sp_template->set_var('lang_addtomenu', $LANG_STATIC['addtomenu']);
         if ($A['sp_onmenu'] == 1) {
             $sp_template->set_var('onmenu_checked', 'checked="CHECKED"');
+        } else {
+            $sp_template->set_var('onmenu_checked', '');
         }
         $sp_template->set_var('lang_label', $LANG_STATIC['label']);
         $sp_template->set_var('sp_label', $A['sp_label']);
-        $sp_template->set_var('lang_pageformat', $LANG_STATIC[pageformat]);
-        $sp_template->set_var('lang_blankpage', $LANG_STATIC[blankpage]);
-        $sp_template->set_var('lang_noblocks', $LANG_STATIC[noblocks]);
-        $sp_template->set_var('lang_leftblocks', $LANG_STATIC[leftblocks]);
+        $sp_template->set_var('lang_pageformat', $LANG_STATIC['pageformat']);
+        $sp_template->set_var('lang_blankpage', $LANG_STATIC['blankpage']);
+        $sp_template->set_var('lang_noblocks', $LANG_STATIC['noblocks']);
+        $sp_template->set_var('lang_leftblocks', $LANG_STATIC['leftblocks']);
         $sp_template->set_var('lang_leftrightblocks', $LANG_STATIC['leftrightblocks']);
 		if ($A['sp_format'] == 'noblocks') {
 			$sp_template->set_var('noblock_selected', 'selected="SELECTED"');
+		} else {
+			$sp_template->set_var('noblock_selected', '');
 		}
 		if ($A['sp_format'] == 'leftblocks') {
 			$sp_template->set_var('leftblocks_selected', 'selected="SELECTED"');
+		} else {
+			$sp_template->set_var('leftblocks_selected', '');
 		}
         if ($A['sp_format'] == 'blankpage') {
             $sp_template->set_var('blankpage_selected', 'selected="SELECTED"');
+        } else {
+            $sp_template->set_var('blankpage_selected', '');
         }
 		if (($A['sp_format'] == 'allblocks') OR empty($A['sp_format'])) {
 			$sp_template->set_var('allblocks_selected', 'selected="SELECTED"');
+		} else {
+			$sp_template->set_var('allblocks_selected', '');
 		}
-        
-        $sp_template->set_var('lang_content', $LANG_STATIC[content]);
-        $sp_template->set_var('sp_content', stripslashes($A['sp_content']));
+
+        $sp_template->set_var('lang_content', $LANG_STATIC['content']);
+        $sp_template->set_var('sp_content', htmlspecialchars (stripslashes($A['sp_content'])));
         if ($_SP_CONF['filter_html'] == 1) {
             $sp_template->set_var('lang_allowedhtml', COM_allowedHTML()); 
         } else {
             $sp_template->set_var('lang_allowedhtml', $LANG_STATIC['all_html_allowed']);
         }
         $sp_template->set_var('sp_id', $A['sp_id']);
-        $sp_template->set_var('lang_hits', $LANG_STATIC[hits]);
+        $sp_template->set_var('lang_hits', $LANG_STATIC['hits']);
         if (empty($A['sp_hits'])) {
             $sp_template->set_var('sp_hits', '0');
         } else {
@@ -157,15 +167,15 @@ function liststaticpages($page = 1)
     $sp_templates->set_file(array('list'=>'list.thtml','row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC[staticpagelist]));
+    $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']));
     $sp_templates->set_var('new_page_url', COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit'));
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
-    $sp_templates->set_var('lang_title', $LANG_STATIC[title]);
-    $sp_templates->set_var('lang_writtenby', $LANG_STATIC[writtenby]);
-    $sp_templates->set_var('lang_lastupdated', $LANG_STATIC[date]);
-    $sp_templates->set_var('lang_url', $LANG_STATIC[url]);
- 
+    $sp_templates->set_var('lang_title', $LANG_STATIC['title']);
+    $sp_templates->set_var('lang_writtenby', $LANG_STATIC['writtenby']);
+    $sp_templates->set_var('lang_lastupdated', $LANG_STATIC['date']);
+    $sp_templates->set_var('lang_url', $LANG_STATIC['url']);
+
 	//if (empty($page)) $page = 1;
 	//$limit = (50 * $page) - 50;
 	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC LIMIT $limit,50");
@@ -176,7 +186,7 @@ function liststaticpages($page = 1)
 			//$scount = (50 * $page) - 50 + $i;
 			$A = DB_fetchArray($result);
             $sp_templates->set_var('sp_id', $A['sp_id']);
-            $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&sp_id=' . $A['sp_id']));
+            $sp_templates->set_var('page_edit_url',COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit&amp;sp_id=' . $A['sp_id']));
             $sp_templates->set_var('row_number', $i);
             $sp_templates->set_var('page_display_url',COM_buildURL($_CONF['site_url'] . '/staticpages/index.php?page=' . $A['sp_id']));
             $sp_templates->set_var('sp_title', $A['sp_title']);
@@ -187,7 +197,7 @@ function liststaticpages($page = 1)
 		}
         $sp_templates->set_var('lang_nopages_msg', '');
         /*
-		$retval .= "<tr><td clospan=6>";
+		$retval .= "<tr><td colspan=6>";
 		if (DB_count($_TABLES['staticpage']) > 50) {
 			$prevpage = $page - 1; 
 			$nextpage = $page + 1;
@@ -227,10 +237,10 @@ function liststaticpages($page = 1)
 function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label) 
 {
 	global $_CONF, $LANG12, $LANG50, $_SP_CONF, $_TABLES;
-	
+
 	if (!empty($sp_title) && !empty($sp_content)) {
 		$date = date("Y-m-d H:i:s",$unixdate);
-	
+
 		if (empty($sp_hits)) $sp_hits = 0;
 
         if ($sp_onmenu== 'on') {
@@ -279,7 +289,7 @@ if (empty($mode) OR empty($sp_id)) {
 }
 
 switch ($mode) {
-case $LANG_STATIC[delete]:
+case $LANG_STATIC['delete']:
     DB_delete($_TABLES['staticpage'],'sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     break;
 case 'edit':
@@ -287,7 +297,7 @@ case 'edit':
     $display .= staticpageeditor($sp_id,$mode);
     $display .= COM_siteFooter();
     break;
-case $LANG_STATIC[save]:
+case $LANG_STATIC['save']:
     submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format,$sp_onmenu,$sp_label);
     break;
 default:
