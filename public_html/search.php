@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.29 2002/07/23 18:03:53 dreamscape Exp $
+// $Id: search.php,v 1.30 2002/07/29 19:36:24 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -121,14 +121,14 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
 
     if (($type == 'links') || (($type == 'all') && empty ($author))) {
         $sql = "SELECT lid,title,url,hits,UNIX_TIMESTAMP(date) as day FROM {$_TABLES['links']} WHERE ";
-		$sql .= " title like '%$query%' ";
-		$sql .= " OR description like '%$query%' ";
+		$sql .= " (title like '%$query%' ";
+		$sql .= " OR description like '%$query%') ";
         if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
 			$DE = explode($delim,$dateend);
 			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-			$enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
 			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
 		}
         $sql .= "ORDER BY date desc";
@@ -149,9 +149,10 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
         for ($i = 1; $i <= $link_results->num_searchresults; $i++) {
             $A = DB_fetchArray($result_links);
             $thetime = COM_getUserDateTimeFormat($A['day']);
-            $row = array($A['title'],
-                        '<a href="' . $A['url'] . '">' . $A['url'] . '</a>',
-                        $A['hits']);
+            $row = array($A['title'], '<a href="' . $_CONF['site_url']
+                 . '/portal.php?url=' . urlencode ($A['url'])
+                 . '&amp;what=link&amp;item=' . $A['lid'] . '">' . $A['url']
+                 . '</a>', $A['hits']);
             $link_results->addSearchResult($row);
         }
         return $link_results;
@@ -171,15 +172,15 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
 
     if (($type == 'events') || (($type == 'all') && empty ($author))) {
 		$sql = "SELECT eid,title,datestart,dateend,timestart,timeend,UNIX_TIMESTAMP(datestart) as day FROM {$_TABLES['events']} WHERE ";
-        $sql .= "title like '%$query%'  OR ";
+        $sql .= "(title like '%$query%' OR ";
         $sql .= "location like '%$query%' ";
-		$sql .= "OR description like '%$query%' ";
+		$sql .= "OR description like '%$query%') ";
         if (!empty($datestart) && !empty($dateend)) {
             $delim = substr($datestart, 4, 1);
             $DS = explode($delim,$datestart);
             $DE = explode($delim,$dateend);
             $startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-            $enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
             $sql .= "AND (UNIX_TIMESTAMP(datestart) BETWEEN '$startdate' AND '$enddate') ";
 		}
         $sql .= "ORDER BY datestart desc";
@@ -232,16 +233,18 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
 	if ($type == 'all' OR $type == 'stories') {
-		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND ";
-		$sql .= " introtext like '%$query%'  ";
-		$sql .= "OR bodytext like '%$query%' ";
-		$sql .= "OR title like '%$query%'  ";
+		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) ";
+        if (!empty ($query)) {
+		    $sql .= "AND (introtext like '%$query%'  ";
+		    $sql .= "OR bodytext like '%$query%' ";
+		    $sql .= "OR title like '%$query%')  ";
+        }
 		if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
 			$DE = explode($delim,$dateend);
 			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-			$enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
 			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
 		}
 		if (!empty($topic)) {
@@ -251,6 +254,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 			$sql .= "AND (uid = '$author') ";
 		}
 		$sql .= "ORDER BY date desc";
+
 		$result_stories = DB_query($sql);
 		$nrows_stories = DB_numRows($result_stories);
 		$result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE draft_flag = 0");
@@ -261,19 +265,19 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 
 	if ($type == 'all' OR $type == 'comments') {
 		$sql = "SELECT sid,title,comment,pid,uid,type as comment_type,UNIX_TIMESTAMP(date) as day,'comment' as type FROM {$_TABLES['comments']} WHERE ";
-		$sql .= " comment like '%$query%' ";
-		$sql .= "OR title like '%$query%' ";
+		$sql .= " (comment like '%$query%' ";
+		$sql .= "OR title like '%$query%') ";
 		if (!empty($datestart) && !empty($dateend)) {
 			$delim = substr($datestart, 4, 1);
 			$DS = explode($delim,$datestart);
 			$DE = explode($delim,$dateend);
 			$startdate = mktime(0,0,0,$DS[1],$DS[2],$DS[0]);
-			$enddate = mktime(0,0,0,$DE[1],$DE[2],$DE[0]) + 3600;
+			$enddate = mktime(23,59,59,$DE[1],$DE[2],$DE[0]);
 			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
 		}
 
 		if (!empty($author)) {
-			$sql .= "AND (uid = '$author}') ";
+			$sql .= "AND (uid = '$author') ";
 		}
 		$sql .= "ORDER BY date desc";
 		$result_comments = DB_query($sql);
