@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.129 2002/08/04 17:31:33 dhaun Exp $
+// $Id: lib-common.php,v 1.130 2002/08/04 20:20:13 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -739,6 +739,38 @@ function COM_optionList($table,$selection,$selected='',$sortcol=1)
         $retval .= '>' . $A[1] . '</option>' . LB;
     }
 	
+    return $retval;
+}
+
+/**
+* Create and return a list of available topics
+*
+* This is a variation of COM_optionList() from lib-common.php. It will add
+* only those topics to the option list which are accessible by the current
+* user.
+*
+*/
+function COM_topicList ($selection, $selected='', $sortcol=1) {
+    global $_TABLES;
+
+    $tmp = str_replace('DISTINCT ', '', $selection);
+    $select_set = explode(',',$tmp);
+
+    $result = DB_query ("SELECT * FROM {$_TABLES['topics']} ORDER BY $select_set[$sortcol]");
+    $nrows = DB_numRows($result);
+
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+        if ($access > 0) {
+            $retval .= '<option value="' . $A[0] . '"';
+            if ($A[0] == $selected) {
+                $retval .= ' selected';
+            }
+            $retval .= '>' . $A[1] . '</option>' . LB;
+        }
+    }
+       
     return $retval;
 }
 

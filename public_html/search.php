@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.31 2002/07/30 14:17:46 dhaun Exp $
+// $Id: search.php,v 1.32 2002/08/04 20:20:13 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -56,7 +56,7 @@ function searchform()
     $searchform->set_var('date_format', $LANG09[22]);	
     $searchform->set_var('lang_topic', $LANG09[3]);
     $searchform->set_var('lang_all', $LANG09[4]);
-    $searchform->set_var('topic_option_list', COM_optionList($_TABLES['topics'],'tid,topic'));
+    $searchform->set_var('topic_option_list', COM_topicList('tid,topic'));
     $searchform->set_var('lang_type', $LANG09[5]);
     $searchform->set_var('lang_stories', $LANG09[6]);
     $searchform->set_var('lang_comments', $LANG09[7]);

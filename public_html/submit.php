@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.28 2002/07/30 21:32:28 dhaun Exp $
+// $Id: submit.php,v 1.29 2002/08/04 20:20:13 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -297,38 +297,6 @@ function submitlink()
 }
 
 /**
-* Create and return a list of available topics
-*
-* This is a variation of COM_optionList() from lib-common.php. It will add
-* only those topics to the option list which are accessible by the current
-* user.
-*
-*/
-function topiclist ($selection, $selected='', $sortcol=1) {
-    global $_TABLES;
-
-    $tmp = str_replace('DISTINCT ', '', $selection);
-    $select_set = explode(',',$tmp);
-
-    $result = DB_query ("SELECT * FROM {$_TABLES['topics']} ORDER BY $select_set[$sortcol]");
-    $nrows = DB_numRows($result);
-
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access > 0) {
-            $retval .= '<option value="' . $A[0] . '"';
-            if ($A[0] == $selected) {
-                $retval .= ' selected';
-            }
-            $retval .= '>' . $A[1] . '</option>' . LB;
-        }
-    }
-       
-    return $retval;
-}
-
-/**
 * Shows the story submission form
 *
 */
@@ -383,7 +351,7 @@ function submitstory()
     $storyform->set_var('lang_title', $LANG12[10]);
     $storyform->set_var('story_title', $A['title']);	
     $storyform->set_var('lang_topic', $LANG12[28]);
-    $storyform->set_var('story_topic_options', topiclist('tid,topic',$A['tid']));
+    $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
     $storyform->set_var('lang_story', $LANG12[29]);
     $storyform->set_var('story_introtext', stripslashes($A['introtext']));
     $storyform->set_var('lang_postmode', $LANG12[36]);
