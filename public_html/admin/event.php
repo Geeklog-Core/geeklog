@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.44 2004/01/13 19:15:51 dhaun Exp $
+// $Id: event.php,v 1.45 2004/01/18 14:41:22 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -88,7 +88,7 @@ function editevent($mode, $A)
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG22[17];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit event $eid.");
             return $retval;
         }
     } else {
@@ -343,7 +343,7 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
         $display .= $MESSAGE[31];
         $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter();
-        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit story $sid.");
+        COM_accessLog("User {$_USER['username']} tried to illegally submit or edit event $eid.");
         echo $display;
         exit;
     }
@@ -486,6 +486,29 @@ function listevents()
     return $retval;
 }
 
+/**
+* Delete an event
+*
+*/
+function deleteEvent ($eid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '$eid'");
+    $A = DB_fetchArray ($result);
+    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    if ($access < 3) {
+        COM_accessLog ("User {$_USER['username']} tried to illegally delete event $eid.");
+        return COM_refresh ($_CONF['site_admin_url'] . '/event.php');
+    }
+
+    DB_delete ($_TABLES['events'], 'eid', $eid);
+    DB_delete ($_TABLES['personal_events'], 'eid', $eid);
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=18');
+}
+
 // MAIN
 
 if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
@@ -493,9 +516,7 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
         COM_errorLog ('Attempted to delete event eid=' . $eid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/event.php');
     } else {
-        DB_delete($_TABLES['events'],'eid',$eid);
-        DB_delete($_TABLES['personal_events'],'eid',$eid);
-        $display = COM_refresh ($_CONF['site_admin_url'] . '/event.php?msg=18');
+        $display .= deleteEvent ($eid);
     }
 } else if (($mode == $LANG22[20]) && !empty ($LANG22[20])) { // save
     $display .= saveevent ($eid, $title, $event_type, $url, $allday,

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.39 2004/01/13 19:15:52 dhaun Exp $
+// $Id: link.php,v 1.40 2004/01/18 14:41:22 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -342,6 +342,28 @@ function listlinks($page = 1)
     return $retval;
 }
 
+/**
+* Delete a link
+*
+*/
+function deleteLink ($lid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid ='$lid'");
+    $A = DB_fetchArray ($result);
+    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    if ($access < 3) {
+        COM_accessLog ("User {$_USER['username']} tried to illegally delete link $lid.");
+        return COM_refresh ($_CONF['site_admin_url'] . '/link.php');
+    }
+
+    DB_delete ($_TABLES['links'], 'lid', $lid);
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/link.php?msg=16');
+}
+
 // MAIN
 
 if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
@@ -349,7 +371,7 @@ if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
         COM_errorLog ('Attempted to delete link lid=' . $lid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/link.php');
     } else {
-        DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
+        $display .= deleteLink ($lid);
     }
 } else if (($mode == $LANG23[21]) && !empty ($LANG23[21])) { // save
     $display .= savelink($lid,$category,$categorydd,$url,$description,$title,

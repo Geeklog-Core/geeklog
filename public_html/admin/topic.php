@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.39 2004/01/13 19:15:52 dhaun Exp $
+// $Id: topic.php,v 1.40 2004/01/18 14:41:22 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -303,6 +303,31 @@ function listtopics()
 	return $retval;
 }
 
+/**
+* Delete a topic
+*
+*/
+function deleteTopic ($tid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid ='$tid'");
+    $A = DB_fetchArray ($result);
+    $access = SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
+            $A['perm_group'], $A['perm_members'], $A['perm_anon']);
+    if ($access < 3) {
+        COM_accessLog ("User {$_USER['username']} tried to illegally delete topic $tid.");
+        return COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
+    }
+
+    DB_delete ($_TABLES['stories'], 'tid', $tid);
+    DB_delete ($_TABLES['storysubmission'], 'tid', $tid);
+    DB_delete ($_TABLES['blocks'], 'tid', $tid);
+    DB_delete ($_TABLES['topics'], 'tid', $tid);
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=14');
+}
+
 ###############################################################################
 # MAIN
 $display = '';
@@ -312,10 +337,7 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
         COM_errorLog ('Attempted to delete topic tid=' . $tid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
     } else {
-        DB_delete($_TABLES['stories'],'tid',$tid);
-        DB_delete($_TABLES['storysubmission'],'tid',$tid);
-        DB_delete($_TABLES['blocks'],'tid',$tid);
-        DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
+        $display .= deleteTopic ($tid);
     }
 } else if (($mode == $LANG27[19]) && !empty ($LANG27[19])) { // save
     savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,

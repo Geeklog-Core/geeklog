@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.36 2004/01/13 19:15:52 dhaun Exp $
+// $Id: poll.php,v 1.37 2004/01/18 14:41:22 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -119,7 +119,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
             $display .= COM_endBlock ();
             $display .= COM_siteFooter (COM_getBlockTemplate ('_msg_block',
                                                               'footer'));
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $qid.");
             echo $display;
             exit;
         }
@@ -205,8 +205,8 @@ function editpoll($qid='')
     $poll_templates->set_var('layout_url', $_CONF['layout_url']);
 
     if (!empty ($qid)) {
-        $question = DB_query("SELECT * FROM {$_TABLES["pollquestions"]} WHERE qid='$qid'");
-        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES["pollanswers"]} WHERE qid='$qid' ORDER BY aid");
+        $question = DB_query("SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'");
+        $answers = DB_query("SELECT answer,aid,votes FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
         $Q = DB_fetchArray($question);
 
         // Get permissions for poll
@@ -219,7 +219,7 @@ function editpoll($qid='')
                                COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG25[22];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $pid.");
+            COM_accessLog("User {$_USER['username']} tried to illegally submit or edit poll $qid.");
             return $retval;
         }
     }
@@ -368,6 +368,29 @@ function listpoll()
     return $retval;
 }
 
+/**
+* Delete a poll
+*
+*/
+function deletePoll ($qid)
+{
+    global $_CONF, $_TABLES, $_USER;
+
+    $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '$qid'");
+    $Q = DB_fetchArray ($result);
+    $access = SEC_hasAccess ($Q['owner_id'], $Q['group_id'], $Q['perm_owner'],
+            $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']);
+    if ($access < 3) {
+        COM_accessLog ("User {$_USER['username']} tried to illegally delete poll $qid.");
+        return COM_refresh ($_CONF['site_admin_url'] . '/poll.php');
+    }
+
+    DB_delete ($_TABLES['pollquestions'], 'qid', $qid);
+    DB_delete ($_TABLES['pollanswers'], 'qid', $qid);
+
+    return COM_refresh ($_CONF['site_admin_url'] . '/poll.php?msg=20');
+}
+
 // MAIN
 
 $display = '';
@@ -399,9 +422,7 @@ if ($mode == 'edit') {
         COM_errorLog ('Attempted to delete poll qid=' . $qid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/poll.php');
     } else {
-        DB_delete($_TABLES['pollquestions'],'qid',$qid);
-        DB_delete($_TABLES['pollanswers'],'qid',$qid);
-        $display .= COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
+        $display .= deletePoll ($qid);
     }
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
