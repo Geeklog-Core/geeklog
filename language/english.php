@@ -318,7 +318,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################

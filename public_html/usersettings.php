@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.105 2004/09/30 18:14:29 dhaun Exp $
+// $Id: usersettings.php,v 1.106 2004/10/09 20:18:34 blaine Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -54,7 +54,7 @@ function edituser()
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,location,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray ($result);
 
     $preferences = new Template ($_CONF['path_layout'] . 'preferences');
@@ -77,6 +77,8 @@ function edituser()
     $preferences->set_var ('lang_email_text', $LANG04[33]);
     $preferences->set_var ('lang_homepage', $LANG04[6]);
     $preferences->set_var ('lang_homepage_text', $LANG04[36]);
+    $preferences->set_var ('lang_location', $LANG04[106]);
+    $preferences->set_var ('lang_location_text', $LANG04[107]);
     $preferences->set_var ('lang_signature', $LANG04[32]);
     $preferences->set_var ('lang_signature_text', $LANG04[37]);
     $preferences->set_var ('lang_userphoto', $LANG04[77]);
@@ -118,6 +120,7 @@ function edituser()
     $preferences->set_var ('email_value', htmlspecialchars ($A['email']));
     $preferences->set_var ('homepage_value',
                            htmlspecialchars (COM_killJS ($A['homepage'])));
+    $preferences->set_var ('location_value', htmlspecialchars ($A['location']));
     $preferences->set_var ('signature_value', htmlspecialchars ($A['sig']));
 
     if ($_CONF['allow_user_photo'] == 1) {
@@ -822,6 +825,7 @@ function saveuser($A)
 
     $A['email'] = COM_applyFilter ($A['email']);
     $A['homepage'] = COM_applyFilter ($A['homepage']);
+    $A['location'] = COM_applyFilter ($A['location']);
 
     // basic filtering only
     $A['fullname'] = strip_tags (COM_stripslashes ($A['fullname']));
@@ -882,7 +886,7 @@ function saveuser($A)
         }
 
         DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A['fullname']}',email='{$A['email']}',homepage='{$A['homepage']}',sig='{$A['sig']}',cookietimeout={$A['cooktime']},photo='$filename' WHERE uid={$_USER['uid']}");
-        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}' WHERE uid={$_USER['uid']}");
+        DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}',location='{$A['location']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
         if ($_CONF['custom_registration'] AND (function_exists(custom_usersave))) {

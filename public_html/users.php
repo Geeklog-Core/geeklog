@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.90 2004/10/05 19:52:45 dhaun Exp $
+// $Id: users.php,v 1.91 2004/10/09 20:18:34 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -90,7 +90,7 @@ function userprofile ($user, $msg)
 
     $retval = '';
 
-    $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $result = DB_query("SELECT username,fullname,regdate,homepage,about,location,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $nrows = DB_numRows($result);
     if ($nrows == 0) { // no such user
         return COM_refresh ($_CONF['site_url'] . '/index.php');
@@ -134,6 +134,8 @@ function userprofile ($user, $msg)
     $user_templates->set_var('lang_sendemail', $LANG04[81]);
     $user_templates->set_var('lang_homepage', $LANG04[6]);
     $user_templates->set_var('user_homepage', COM_killJS ($A['homepage']));
+    $user_templates->set_var('lang_location', $LANG04[106]);
+    $user_templates->set_var('user_location', $A['location']);
     $user_templates->set_var('lang_bio', $LANG04[7]);
     $user_templates->set_var('user_bio', nl2br(stripslashes($A['about']))); 
     $user_templates->set_var('lang_pgpkey', $LANG04[8]);
