@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.39 2002/12/30 13:26:22 dhaun Exp $
+// $Id: index.php,v 1.40 2002/12/31 10:58:55 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -49,7 +49,7 @@ require_once('lib-common.php');
 if (isset ($HTTP_SERVER_VARS['HTTP_HOST']) &&
         !empty ($HTTP_SERVER_VARS['HTTP_HOST'])) {
     preg_match ("/\/\/([^\/]*)/", $_CONF['site_url'], $server);
-    if ($HTTP_SERVER_VARS['HTTP_HOST'] != $server[1]) {
+    if (strcasecmp ($HTTP_SERVER_VARS['HTTP_HOST'], $server[1]) != 0) {
         // this may be a case of a www. vs. non-www. URL ...
         if (!empty ($QUERY_STRING)) {
             $query = '?' . $QUERY_STRING;
