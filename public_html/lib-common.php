@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.154 2002/09/12 13:55:30 dhaun Exp $
+// $Id: lib-common.php,v 1.155 2002/09/13 04:12:01 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -60,7 +60,7 @@ $_COM_VERBOSE = false;
 * Configuration Include: You should ONLY have to modify this line.
 * Leave the rest of this file intact!
 */
-require_once('/path/to/geeklog/config.php');
+require_once('c:/webdev/geeklog/config.php');
 
 // Before we do anything else, check to ensure site is enabled
 if (!$_CONF['site_enabled']) {
@@ -459,7 +459,7 @@ function COM_getThemes()
 * $display .= "Here is your html for display";
 * $display .= COM_siteFooter(true);  // Change to COM_siteFooter() to not display right blocks
 * echo $display;
-* ?>
+* ? >
 * ---------------------------------------------------------------------------------------
 * Note that the default for the header is to display the left blocks and the default of the
 * footer is to not display the right blocks.
@@ -847,23 +847,29 @@ function COM_optionList($table,$selection,$selected='',$sortcol=1)
 * @return	string	Formated HTML of option values
 *
 */
-function COM_topicList ($selection, $selected='', $sortcol=1) {
+function COM_topicList( $selection, $selected='', $sortcol=1 )
+{
     global $_TABLES;
 
-    $tmp = str_replace('DISTINCT ', '', $selection);
-    $select_set = explode(',',$tmp);
+    $tmp = str_replace( 'DISTINCT ', '', $selection );
+    $select_set = explode( ',',$tmp );
 
-    $result = DB_query ("SELECT * FROM {$_TABLES['topics']} ORDER BY $select_set[$sortcol]");
-    $nrows = DB_numRows($result);
+    $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY $select_set[$sortcol]" );
+    $nrows = DB_numRows( $result );
 
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
-        if ($access > 0) {
+    for( $i = 0; $i < $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
+        $access = SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'] );
+        if( $access > 0 )
+        {
             $retval .= '<option value="' . $A[0] . '"';
-            if ($A[0] == $selected) {
+            
+            if( $A[0] == $selected )
+            {
                 $retval .= ' selected';
             }
+            
             $retval .= '>' . $A[1] . '</option>' . LB;
         }
     }
@@ -884,48 +890,66 @@ function COM_topicList ($selection, $selected='', $sortcol=1) {
 * @return	string	HTML with Checkbox code
 *
 */ 
-function COM_checkList($table,$selection,$where='',$selected='') 
+
+function COM_checkList( $table, $selection, $where='', $selected='' )
 {
     global $_TABLES, $_COM_VERBOSE;
 
     $sql = "SELECT $selection FROM $table";
 
-    if (!empty($where)) {
+    if( !empty( $where )) 
+    {
         $sql .= " WHERE $where";
     }
 	
-    $result = DB_query($sql);
-    $nrows = DB_numRows($result);
+    $result = DB_query( $sql );
+    $nrows = DB_numRows( $result );
 
-    if (!empty($selected)) {
-        if ($_COM_VERBOSE) {
-            COM_errorLog("exploding selected array: $selected in COM_checkList", 1);
+    if( !empty( $selected )) 
+    {
+        if( $_COM_VERBOSE )
+        {
+            COM_errorLog( "exploding selected array: $selected in COM_checkList", 1 );
         }
-        $S = explode(' ',$selected);
-    } else {
-        if ($_COM_VERBOSE) {
-            COM_errorLog("selected string was empty COM_checkList",1);
+
+        $S = explode( ' ', $selected );
+    }
+    else
+    {
+        if( $_COM_VERBOSE)
+        {
+            COM_errorLog( 'selected string was empty COM_checkList', 1 );
         }
     }
 
-    for ($i = 0; $i < $nrows; $i++) {
+    for( $i = 0; $i < $nrows; $i++ )
+    {
         $access = true;
-        $A = DB_fetchArray($result);
+        $A = DB_fetchArray( $result );
 
-        if ($table == 'topics' AND SEC_hasTopicAccess($A['tid']) == 0) {
+        if( $table == 'topics' AND SEC_hasTopicAccess( $A['tid'] ) == 0 )
+        {
             $access = false;
         }
 
-        if ($access) {
-            $retval .= '<input type="checkbox" name="'.$table.'[]" value="'.$A[0].'"';
-            for ($x = 0; $x < sizeof($S); $x++) {
-                if ($A[0] == $S[$x]) {
+        if( $access )
+        {
+            $retval .= '<input type="checkbox" name="' . $table . '[]" value="' . $A[0] . '"';
+            
+            for( $x = 0; $x < sizeof( $S ); $x++ )
+            {
+                if( $A[0] == $S[$x] ) 
+                {
                     $retval .= ' checked="CHECKED"';
                 }
             }
-            if ($A[2] < 10 && $A[2] > 0) {
+            
+            if( $A[2] < 10 && $A[2] > 0 )
+            {
                 $retval .= '><b>' . $A[1] . '</b><br>' . LB;
-            } else {
+            }
+            else
+            {
                 $retval .= '>' . $A[1] . '<br>' . LB;
             }
         }
@@ -945,14 +969,19 @@ function COM_checkList($table,$selection,$where='',$selected='')
 * @return	string	Formated HTML List
 *
 */
-function COM_debug($A) 
+
+function COM_debug( $A )
 {
-    if (!empty($A)) {
-        $retval .= "<pre><p>---- DEBUG ----\n";
-        for (reset($A); $k = key($A); next($A)) {
-            $retval .= sprintf("<li>%13s [%s]</li>\n",$k,$A[$k]);
+    if( !empty( $A ))
+    {
+        $retval .= LB . '<pre><p>---- DEBUG ----</p>';
+
+        for( reset( $A ); $k = key( $A ); next( $A ))
+        {
+            $retval .= sprintf( "<li>%13s [%s]</li>\n", $k, $A[$k] );
         }
-        $retval .= "<br>---------------\n</pre>\n";
+        
+        $retval .= '<p>---------------</p></pre>' . LB;
     }
 	
     return $retval;
@@ -967,58 +996,78 @@ function COM_debug($A)
 * @see function COM_rdfUpToDateCheck
 *
 */
+
 function COM_exportRDF() 
 {
     global $_TABLES, $_CONF, $_COM_VERBOSE;
 
-    if ($_CONF['backend']>0) {
+    if ($_CONF['backend']>0) 
+    {
         $outputfile = $_CONF['rdf_file'];
-        $rdencoding = "UTF-8";
+        $rdencoding = 'UTF-8';
         $rdtitle = $_CONF['site_name'];
         $rdlink	= $_CONF['site_url'];
         $rddescr = $_CONF['site_slogan'];
         $rdlang	= $_CONF['locale'];
-        $result = DB_query("SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 20");
+        $result = DB_query( "SELECT * FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 20" );
 
-        if (!$file = @fopen($outputfile,w)) {
-            COM_errorLog("{LANG01[54]} $outputfile",1);
-        } else {
-            fputs ( $file, "<?xml version=\"1.0\" encoding=\"$rdencoding\"?>\n\n" );
-            fputs ( $file, "<!DOCTYPE rss PUBLIC \"-//Netscape Communications//DTD RSS 0.91//EN\"\n \"http://my.netscape.com/publish/formats/rss-0.91.dtd\">\n" );
-            fputs ( $file, "<rss version=\"0.91\">\n\n" );
-            fputs ( $file, "<channel>\n" );
-            fputs ( $file, "<title>$rdtitle</title>\n ");
-            fputs ( $file, "<link>$rdlink</link>\n");
-            fputs ( $file, "<description>$rddescr</description>\n");
-            fputs ( $file, "<language>$rdlang</language>\n\n");
+        if( !$file = @fopen( $outputfile, w ))
+        {
+            COM_errorLog( "{LANG01[54]} $outputfile", 1 );
+        }
+        else
+        {
+            fputs( $file, "<?xml version=\"1.0\" encoding=\"$rdencoding\"?>\n\n" );
+            fputs( $file, "<!DOCTYPE rss PUBLIC \"-//Netscape Communications//DTD RSS 0.91//EN\"\n \"http://my.netscape.com/publish/formats/rss-0.91.dtd\">\n" );
+            fputs( $file, "<rss version=\"0.91\">\n\n" );
+            fputs( $file, "<channel>\n" );
+            fputs( $file, "<title>$rdtitle</title>\n" );
+            fputs( $file, "<link>$rdlink</link>\n" );
+            fputs( $file, "<description>$rddescr</description>\n" );
+            fputs( $file, "<language>$rdlang</language>\n\n" );
+
             $sids = '';
-            $nrows = DB_numRows($result);
+            $nrows = DB_numRows( $result );
             $actualcount = 0;
-            for ($i = 1; $i <= $nrows AND $actualcount < 10; $i++) {
-                $row = DB_fetchArray($result);
-                $topic_anon = DB_getItem($_TABLES['topics'],'perm_anon',"tid='{$row['tid']}'");
+
+            for( $i = 1; $i <= $nrows AND $actualcount < 10; $i++ )
+            {
+                $row = DB_fetchArray( $result );
+                $topic_anon = DB_getItem( $_TABLES['topics'], 'perm_anon', "tid='{$row['tid']}'" );
+
                 // Only add to RDF feed if anonymous has access to it
-                if ($row['perm_anon'] == 2 AND $topic_anon == 2) {
+
+                if( $row['perm_anon'] == 2 AND $topic_anon == 2 )
+                {
                     $sids .= $row['sid'];
-                    if ($i <> $nrows) {
+
+                    if( $i <> $nrows ) 
+                    {
                         $sids .= ',';
                     }
+                    
                     $title = 'title';
                     $link = 'sid';
                     $author = 'author';
+                    
                     fputs ( $file, "<item>\n" );
-                    $title = "<title>" . htmlspecialchars(stripslashes($row[$title])) . "</title>\n";
-                    $author = "<author>" . htmlspecialchars(stripslashes($row[$author])) . "</author>\n";
+                    
+                    $title = '<title>' . htmlspecialchars( stripslashes( $row[$title] )) . "</title>\n";
+                    $author = '<author>' . htmlspecialchars( stripslashes( $row[$author] )) . "</author>\n";
                     $link  = "<link>{$_CONF['site_url']}/article.php?story={$row[$link]}</link>\n";
-                    fputs ( $file,  $title );
-                    fputs ( $file,  $link );
-                    fputs ( $file, "</item>\n\n" );
+                    
+                    fputs( $file,  $title );
+                    fputs( $file,  $link );
+                    fputs( $file, "</item>\n\n" );
+                    
                     $actualcount++;
                 }
             }
-            DB_query("UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'");
-            fputs ( $file, "</channel>\n");
-            fputs ( $file, "</rss>\n");
+            
+            DB_query( "UPDATE {$_TABLES['vars']} SET value = '$sids' WHERE name = 'rdf_sids'" );
+            
+            fputs( $file, "</channel>\n" );
+            fputs( $file, "</rss>\n" );
             fclose( $file );
         }
     }
@@ -1034,22 +1083,30 @@ function COM_exportRDF()
 * @see function COM_exportRDF
 *
 */
+
 function COM_rdfUpToDateCheck() 
 {
     global $_TABLES;
 
-    $result = DB_query("SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10");
-    $nrows = DB_numRows($result);
+    $result = DB_query( "SELECT sid FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() ORDER BY date DESC limit 10" );
+    $nrows = DB_numRows( $result );
     $sids = '';
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
+    
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $A = DB_fetchArray( $result );
         $sids .= $A['sid'];
-        if ($i <> $nrows) {
+        
+        if( $i <> $nrows )
+        {
             $sids .= ',';
         }
     }
-    $last_rdf_sids = DB_getItem($_TABLES['vars'],'value',"name = 'rdf_sids'");
-    if ($sids <> $last_rdf_sids) {
+    
+    $last_rdf_sids = DB_getItem( $_TABLES['vars'], 'value', "name = 'rdf_sids'" );
+
+    if( $sids <> $last_rdf_sids ) 
+    {
         COM_exportRDF();
     }
 }
@@ -1062,14 +1119,19 @@ function COM_rdfUpToDateCheck()
 * if there is one) to normal
 *
 */
+
 function COM_featuredCheck()
 {
     global $_TABLES;
-    $curdate = date("Y-m-d H:i:s",time());
-    if (DB_getItem($_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'") > 1) {
+
+    $curdate = date( "Y-m-d H:i:s", time() );
+    
+    if( DB_getItem( $_TABLES['stories'], 'count(*)', "featured = 1 AND draft_flag = 0 AND date <= '$curdate'" ) > 1 )
+    {
         // OK, we have two featured stories, fix that
-        $sid = DB_getItem($_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1");
-        DB_query("UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'");
+
+        $sid = DB_getItem( $_TABLES['stories'], 'sid', "featured = 1 AND draft_flag = 0 ORDER BY date LIMIT 1" );
+        DB_query( "UPDATE {$_TABLES['stories']} SET featured = 0 WHERE sid = '$sid'" );
     }
 }
 
@@ -1086,37 +1148,45 @@ function COM_featuredCheck()
 * @return	string	If $actionid = 2 or '' then HTML formated string (wrapped in block) else nothing
 *
 */
+
 function COM_errorLog($logentry, $actionid = '') 
 {
     global $_CONF, $LANG01;
 
     $retval = '';
 	
-    if (!empty($logentry)) {
-        $timestamp = strftime("%c");
-        switch ($actionid) {
-        case 1:
-            $logfile = $_CONF['path_log'] . 'error.log';
-            if (!$file = fopen($logfile,a)) {
-                $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
-            }
-            fputs ($file, "$timestamp - $logentry \n");
-            break;
-        case 2:
-            $retval .= COM_startBlock($LANG01[55] . ' ' . $timestamp)
-                . nl2br($logentry)
-                . COM_endBlock();
+    if( !empty( $logentry ))
+    {
+        $timestamp = strftime( "%c" );
+        
+        switch( $actionid ) 
+        {
+            case 1:
+                $logfile = $_CONF['path_log'] . 'error.log';
+                
+                if( !$file = fopen( $logfile, a )) 
+                {
+                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
+                }
+                
+                fputs( $file, "$timestamp - $logentry \n" );
                 break;
-        default:
-            $logfile = $_CONF['path_log'] . 'error.log';
-            if (!$file = fopen($logfile,a)) {
-                $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
-            }
-            fputs ($file, "$timestamp - $logentry \n");
-            $retval .= COM_startBlock($LANG01[34] . ' - ' . $timestamp)
-                . nl2br($logentry)
-                . COM_endBlock();
-            break;
+                
+           case 2:
+                $retval .= COM_startBlock( $LANG01[55] . ' ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                break;
+                
+            default:
+                $logfile = $_CONF['path_log'] . 'error.log';
+                
+                if( !$file = fopen( $logfile, a )) 
+                {
+                    $retval .= $LANG01[33] . ' ' . $logfile . ' (' . $timestamp . ')<br>' . LB;
+                }
+                
+                fputs( $file, "$timestamp - $logentry \n" );
+                $retval .= COM_startBlock( $LANG01[34] . ' - ' . $timestamp ) . nl2br( $logentry ) . COM_endBlock();
+                break;
         }
     }
 
@@ -1132,18 +1202,20 @@ function COM_errorLog($logentry, $actionid = '')
 * @see COM_errorLog
 *
 */
-function COM_accesslog($logentry) 
+
+function COM_accesslog( $logentry )
 {
-    global $_CONF,$LANG01;
+    global $_CONF, $LANG01;
 	
-    $timestamp = strftime("%c");
+    $timestamp = strftime( "%c" );
     $logfile = $_CONF['path_log'] . 'access.log';
 
-    if (!$file=fopen($logfile,a)) {
+    if( !$file = fopen( $logfile, a )) 
+    {
         $retval .= $LANG01[33] . $logfile . ' (' . $timestamp . ')<br>' . LB;
     }
 
-    fputs ($file, "$timestamp - $logentry \n");
+    fputs( $file, "$timestamp - $logentry \n" );
 
     return $retval;
 }
@@ -1159,34 +1231,41 @@ function COM_accesslog($logentry)
 * @return		string	HTML Formatted Poll
 *
 */
-function COM_pollVote($qid) 
-{
-    global $_TABLES,$HTTP_COOKIE_VARS,$REMOTE_ADDR,$LANG01,$_CONF;
-	
-    $question = DB_query("SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'");
-    $Q = DB_fetchArray($question);
 
-    if (SEC_hasAccess($Q['owner_id'],$Q['group_id'],$Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']) == 0) {
+function COM_pollVote( $qid ) 
+{
+    global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $LANG01, $_CONF;
+	
+    $question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
+    $Q = DB_fetchArray( $question );
+
+    if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon'] ) == 0 )
+    {
         return $retval;
     }
 	
-    $nquestion = DB_numRows($question);
-    $fields = array('ipaddress','qid');
-    $values = array($REMOTE_ADDR,$qid);
-    $id = DB_count($_TABLES['pollvoters'], $fields, $values);
+    $nquestion = DB_numRows( $question );
+    $fields = array( 'ipaddress','qid' );
+    $values = array( $REMOTE_ADDR,$qid );
+    $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
 
-    if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
-        if ($nquestion == 1) {
-            $answers = DB_query("SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
-            $nanswers = DB_numRows($answers);
+    if( empty( $HTTP_COOKIE_VARS[$qid]) && $id == 0 )
+    {
+        if( $nquestion == 1 )
+        {
+            $answers = DB_query( "SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
+            $nanswers = DB_numRows( $answers );
 
-            if ($nanswers > 0) {
-                $retval .= COM_startBlock($LANG01[5],'',COM_getBlockTemplate('poll_block', 'header'))
+            if( $nanswers > 0 ) 
+            {
+                $retval .= COM_startBlock( $LANG01[5], '', COM_getBlockTemplate( 'poll_block', 'header' ))
                     . '<h2>' . $Q['question'] . '</h2>' . LB
                     . '<form action="' . $_CONF['site_url'] . '/pollbooth.php" name="Vote" method="GET">' . LB
-                    . '<input type="hidden" name="qid" value="' . $qid . '">' . LB;
+                    . '<input type="hidden" name="qid" value="' . $qid . '">' 
+                    . LB;
 					
-                for ($i=1; $i<=$nanswers; $i++) {
+                for( $i=1; $i<=$nanswers; $i++ )
+                {
                     $A = DB_fetchArray($answers);
                     $retval .= '<input type="radio" name="aid" value="' .$A['aid'] . '">' . $A['answer'] . '<br>' . LB;
                 }
@@ -1196,17 +1275,19 @@ function COM_pollVote($qid)
                     . '</form>'
                     . '<span class="storybyline">' . $Q['voters'] . ' ' . $LANG01[8];
 
-                if ($Q['commentcode'] >= 0) {
+                if( $Q['commentcode'] >= 0 )
+                {
                     $retval .= ' | <a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments">'
                         . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
                 }
 				
-                $retval .= '</span><br>'
-                    . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer')) . LB;
+                $retval .= '</span><br>' . COM_endBlock( COM_getBlockTemplate( 'poll_block', 'footer' )) . LB;
             }
         }
-    } else {
-        $retval .= COM_pollResults($qid);
+    }
+    else
+    {
+        $retval .= COM_pollResults( $qid );
     }
 	
     return $retval;
@@ -1225,35 +1306,48 @@ function COM_pollVote($qid)
 * @return    String  HTML Formated string of Poll
 *
 */
-function COM_showPoll($size,$qid='') 
+
+function COM_showPoll( $size, $qid='' ) 
 {
-    global $_TABLES,$HTTP_COOKIE_VARS,$REMOTE_ADDR,$_CONF;
+    global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $_CONF;
 	
-	DB_query("DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}");
+	DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}" );
 
-	if (!empty($qid)) {
-		$pcount = DB_count($_TABLES['pollvoters'],'ipaddress',$REMOTE_ADDR,'qid',$qid);
+	if( !empty( $qid )) 
+    {
+		$pcount = DB_count( $_TABLES['pollvoters'], 'ipaddress', $REMOTE_ADDR, 'qid', $qid );
 
-		if (empty($HTTP_COOKIE_VARS[$qid]) && $pcount == 0) {
-			$retval .= COM_pollVote($qid);
-		} else {
-			$retval .= COM_pollResults($qid,$size);
+		if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 ) 
+        {
+			$retval .= COM_pollVote( $qid );
+		} 
+        else 
+        {
+			$retval .= COM_pollResults( $qid, $size );
 		}
-	} else {
-		$result = DB_query("SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1");
-		$nrows = DB_numRows($result);
+	} 
+    else
+    {
+		$result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1" );
+		$nrows = DB_numRows( $result );
 
-		if ($nrows > 0) {
-			for ($i = 1; $i <= $nrows; $i++) {
-				$Q = DB_fetchArray($result);
+		if( $nrows > 0 ) 
+        {
+			for( $i = 1; $i <= $nrows; $i++ )
+            {
+				$Q = DB_fetchArray( $result );
 				$qid = $Q['qid'];
-                $id = array('ipaddress','qid');
-                $value = array($REMOTE_ADDR,$qid);
-				$pcount = DB_count($_TABLES['pollvoters'],$id, $value);
-				if (!isset($HTTP_COOKIE_VARS[$qid]) && $pcount == 0) {
-					$retval .= COM_pollVote($qid);
-				} else {
-					$retval .= COM_pollResults($qid,$size);
+                $id = array( 'ipaddress', 'qid' );
+                $value = array( $REMOTE_ADDR, $qid );
+				$pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
+                
+				if( !isset( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
+                {
+					$retval .= COM_pollVote( $qid );
+				} 
+                else 
+                {
+					$retval .= COM_pollResults( $qid, $size );
 				}
 			}
 		}
@@ -1276,41 +1370,56 @@ function COM_showPoll($size,$qid='')
 * @return     string   HTML Formated Poll Results
 *
 */
-function COM_pollResults($qid,$scale=400,$order='',$mode='') 
+function COM_pollResults( $qid, $scale=400, $order='', $mode='' ) 
 {
-	global $_TABLES,$LANG01,$_CONF, $_COM_VERBOSE;
+	global $_TABLES, $LANG01, $_CONF, $_COM_VERBOSE;
 	
-	$question = DB_query("SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'");
-	$Q = DB_fetchArray($question);
+	$question = DB_query( "SELECT * FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
+	$Q = DB_fetchArray( $question );
 
-	if (SEC_hasAccess($Q['owner_id'],$Q['group_id'],$Q['perm_owner'],$Q['perm_group'],$Q['perm_members'],$Q['perm_anon']) == 0) {
+	if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 )
+    {
 		return;
 	}
 
-	$nquestion = DB_numRows($question);
+	$nquestion = DB_numRows( $question );
 
-	if ($nquestion == 1) {
-        if ($_CONF['answerorder'] == 'voteorder') {
-            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC");
-        } else {
-            $answers = DB_query("SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid");
+	if( $nquestion == 1 )
+    {
+        if( $_CONF['answerorder'] == 'voteorder' )
+        {
+            $answers = DB_query( "SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
+        } 
+        else 
+        {
+            $answers = DB_query( "SELECT * FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
         }
-		$nanswers = DB_numRows($answers);
-        if ($_COM_VERBOSE) {
-            COM_errorLog("got $answers answers in COM_pollResults",1);
+        
+		$nanswers = DB_numRows( $answers );
+        
+        if( $_COM_VERBOSE ) 
+        {
+            COM_errorLog( "got $answers answers in COM_pollResults", 1 );
         }
-		if ($nanswers > 0) {
-            $title = DB_getItem($_TABLES['blocks'],'title',"name='poll_block'");
-			$retval .= COM_startBlock($title, '', COM_getBlockTemplate('poll_block', 'header'))
+        
+		if( $nanswers > 0 ) 
+        {
+            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
+            
+			$retval .= COM_startBlock( $title, '', COM_getBlockTemplate( 'poll_block', 'header' ))
 				. '<h2>' . $Q['question'] . '</h2>'
 				.'<table border="0" cellpadding="3" cellspacing="0" align="center">' . LB;
 
-			for ($i = 1; $i <= $nanswers; $i++) {
-				$A = DB_fetchArray($answers);
+			for( $i = 1; $i <= $nanswers; $i++ )
+            {
+				$A = DB_fetchArray( $answers );
 
-				if ($Q['voters'] == 0) {
+				if( $Q['voters'] == 0 )
+                {
 					$percent = 0;
-				} else {
+				}
+                else 
+                {
 					$percent = $A['votes'] / $Q['voters'];
 				}
 
@@ -1318,29 +1427,35 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 					. '<td align="right"><b>' . $A['answer'] . '</b></td>' . LB
 					. '<td>';
 
-				if ($scale < 120) {
-					$retval .= sprintf("%.2f", $percent * 100) . '% </td>' . LB;
-				} else {
+				if( $scale < 120 ) 
+                {
+					$retval .= sprintf( "%.2f", $percent * 100 ) . '% </td>' . LB;
+				} 
+                else 
+                {
 					$width = $percent * $scale;
 					$retval .= '<img src="' . $_CONF['layout_url'] . '/images/bar.gif" width="' . $width
                         . '" height="10" align="bottom" alt=""> '
-						. $A['votes'] . ' ' . sprintf("(%.2f)",$percent * 100) . '%' . '</td>' . LB;
+						. $A['votes'] . ' ' . sprintf( "(%.2f)", $percent * 100 ) . '%' . '</td>' . LB;
 				}
 
 				$retval .= '</tr>' . LB;
 			}
-			$retval .= '</table>' . LB . '<div class="storybyline" align="right">' . $Q['voters'] . ' '
-                . $LANG01[8] . LB;
+            
+			$retval .= '</table>' . LB . '<div class="storybyline" align="right">' 
+                . $Q['voters'] . ' ' . $LANG01[8] . LB;
 
-			if ($Q['commentcode'] >= 0) {
+			if( $Q['commentcode'] >= 0 )
+            {
 				$retval .= ' | <a href="' .$_CONF['site_url'] . '/pollbooth.php?qid=' . $qid.'&amp;aid=-1#comments">'
-                    . DB_count($_TABLES['comments'],'sid',$qid) . ' ' . $LANG01[3] . '</a>';
+                    . DB_count( $_TABLES['comments'], 'sid', $qid ) . ' ' . $LANG01[3] . '</a>';
 			}
 
-			$retval .= '</div>'. LB . COM_endBlock(COM_getBlockTemplate('poll_block', 'footer'));
+			$retval .= '</div>'. LB . COM_endBlock( COM_getBlockTemplate( 'poll_block', 'footer' ));
 				
-			if ($scale > 399 && $Q['commentcode'] >= 0) {
-				$retval .= COM_userComments($qid,$Q['question'],'poll',$order,$mode);
+			if( $scale > 399 && $Q['commentcode'] >= 0 ) 
+            {
+				$retval .= COM_userComments( $qid, $Q['question'], 'poll', $order, $mode );
 			}
 		}
 	}
@@ -1359,66 +1474,99 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 * @return	string	  HTML formated topic list
 *
 */
-function COM_showTopics($topic='') 
+
+function COM_showTopics( $topic='' ) 
 {
     global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page;
 
-    if ($_CONF['sortmethod'] == 'alpha') {
-        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC");
-    } else {
-        $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY sortnum");
+    if( $_CONF['sortmethod'] == 'alpha' )
+    {
+        $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC" );
+    } 
+    else
+    {
+        $result = DB_query( "SELECT * FROM {$_TABLES['topics']} ORDER BY sortnum" );
     }
 
-    $nrows = DB_numRows($result);
+    $nrows = DB_numRows( $result );
 
     // Give a link to the homepage here since a lot of people use this for
     // navigating the site
     // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
-    if (($HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php") OR !empty($topic) OR ($page > 1)) {
+    
+    if(( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" ) OR !empty( $topic ) OR ( $page > 1 ))
+    {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
-    } else {
+    } 
+    else 
+    {
         $retval .= $LANG01[90] . '<br>';
     }
 
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-            if ($A['tid']==$topic) {
+    for( $i = 0; $i < $nrows; $i++ ) 
+    {
+        $A = DB_fetchArray( $result );
+        
+        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+        {
+            if( $A['tid'] == $topic ) 
+            {
                 $retval .= $A['topic'];
-                if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
+                
+                if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+                {
                     $retval .= ' (';
-                    if ($_CONF['showstorycount']) {
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
-                        $T = DB_fetchArray($rcount);
+                    
+                    if( $_CONF['showstorycount'] ) 
+                    {
+                        $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'" );
+                        $T = DB_fetchArray( $rcount );
                         $retval .= $T['count'];
                     }
-                    if ($_CONF['showsubmissioncount']) {
-                        if ($_CONF['showstorycount']) {
+                    
+                    if( $_CONF['showsubmissioncount'] )
+                    {
+                        if( $_CONF['showstorycount'] )
+                        {
                             $retval .= '/';
                         }
-                        $retval .= DB_count($_TABLES['storysubmission'],'tid',$A['tid']);
+                        
+                        $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
                     }
+                    
                     $retval .= ')';
                 }
+                
                 $retval .= '<br>' . LB;
-            } else {
-                $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid']
-                    . '"><b>' . $A['topic'] . '</b></a> ';
-                if ($_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0) {
+            } 
+            else 
+            {
+                $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . $A['topic'] . '</b></a> ';
+
+                if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 ) 
+                {
                     $retval .= '(';
-                    if ($_CONF['showstorycount']) {
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
-                        $T = DB_fetchArray($rcount);
+                    
+                    if( $_CONF['showstorycount'] ) 
+                    {
+                        $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'" );
+                        $T = DB_fetchArray( $rcount );
                         $retval .= $T['count'];
                     }
-                    if ($_CONF['showsubmissioncount']) {
-                        if ($_CONF['showstorycount']) {
+                    
+                    if( $_CONF['showsubmissioncount'] )
+                    {
+                        if( $_CONF['showstorycount'] )
+                        {
                             $retval .= '/';
                         }
-                        $retval .= DB_count($_TABLES['storysubmission'],'tid',$A['tid']);
+                        
+                        $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
                     }
+                    
                     $retval .= ')';
                 }
+                
                 $retval .= '<br>' . LB;
             }
         }
@@ -1437,64 +1585,82 @@ function COM_showTopics($topic='')
 * @see function COM_adminMenu
 *
 */
-function COM_userMenu($help='',$title='') 
+
+function COM_userMenu( $help='', $title='' ) 
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
-    if ($_USER['uid'] > 1) {
-        $adminmenu = new Template($_CONF['path_layout']);
-        $adminmenu->set_file('option', 'useroption.thtml');
+    if( $_USER['uid'] > 1 )
+    {
+        $adminmenu = new Template( $_CONF['path_layout'] );
+        $adminmenu->set_file( 'option', 'useroption.thtml' );
 
-        if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'],'title',"name='user_block'");
+        if( empty( $title )) 
+        {
+            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='user_block'" );
         }
-        $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('user_block', 'header'));
+        
+        $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'user_block', 'header' ));
 			
-        if ($_CONF['personalcalendars'] == 1) {
-            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/calendar.php?mode=personal');
-            $adminmenu->set_var('option_label', $LANG01[66]);
-            $adminmenu->set_var('option_count', '');
-            $retval .= $adminmenu->parse('item', 'option');
+        if( $_CONF['personalcalendars'] == 1 ) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/calendar.php?mode=personal' );
+            $adminmenu->set_var( 'option_label', $LANG01[66] );
+            $adminmenu->set_var( 'option_count', '' );
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
         // This function will show the user options for all installed plugins (if any)
+
         $plugin_options = PLG_getUserOptions();
-        $nrows = count($plugin_options);
-        for ($i = 1; $i <= $nrows; $i++) {
-            $plg = current($plugin_options);
-            $adminmenu->set_var('option_url', $plg->adminurl);
-            $adminmenu->set_var('option_label', $plg->adminlabel);
-            if (!empty($plg->numsubmissions)) {
-                $adminmenu->set_var('option_count', '(' . $plg->numsubmissions . ')');
-            } else {
-                $adminmenu->set_var('option_count', '');
+        $nrows = count( $plugin_options );
+        
+        for( $i = 1; $i <= $nrows; $i++ )
+        {
+            $plg = current( $plugin_options );
+            $adminmenu->set_var( 'option_url', $plg->adminurl );
+            $adminmenu->set_var( 'option_label', $plg->adminlabel );
+
+            if( !empty($plg->numsubmissions )) 
+            {
+                $adminmenu->set_var( 'option_count', '(' . $plg->numsubmissions . ')' );
             }
-            $retval .= $adminmenu->parse('item', 'option');
-            next ($plugin_options);
+            else 
+            {
+                $adminmenu->set_var( 'option_count', '' );
+            }
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
+
+            next( $plugin_options );
         }
-        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=edit');
-        $adminmenu->set_var('option_label', $LANG01[48]);
-        $adminmenu->set_var('option_count', '');
-        $retval .= $adminmenu->parse('item', 'option');
+        
+        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/usersettings.php?mode=edit' );
+        $adminmenu->set_var( 'option_label', $LANG01[48] );
+        $adminmenu->set_var( 'option_count', '' );
+        $retval .= $adminmenu->parse( 'item', 'option' );
 
-        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=preferences');
-        $adminmenu->set_var('option_label', $LANG01[49]);
-        $adminmenu->set_var('option_count', '');
-        $retval .= $adminmenu->parse('item', 'option');
+        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/usersettings.php?mode=preferences' );
+        $adminmenu->set_var( 'option_label', $LANG01[49] );
+        $adminmenu->set_var( 'option_count', '' );
+        $retval .= $adminmenu->parse( 'item', 'option' );
 
-        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=comments');
-        $adminmenu->set_var('option_label', $LANG01[63]);
-        $adminmenu->set_var('option_count', '');
-        $retval .= $adminmenu->parse('item', 'option');
+        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/usersettings.php?mode=comments' );
+        $adminmenu->set_var( 'option_label', $LANG01[63] );
+        $adminmenu->set_var( 'option_count', '' );
+        $retval .= $adminmenu->parse( 'item', 'option' );
 
-        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/users.php?mode=logout');
-        $adminmenu->set_var('option_label', $LANG01[19]);
-        $adminmenu->set_var('option_count', '');
-        $retval .= $adminmenu->parse('item', 'option');
+        $adminmenu->set_var( 'option_url', $_CONF['site_url'] . '/users.php?mode=logout' );
+        $adminmenu->set_var( 'option_label', $LANG01[19] );
+        $adminmenu->set_var( 'option_count', '' );
+        $retval .= $adminmenu->parse( 'item', 'option' );
 
-        $retval .=  COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
-    } else {
-        $retval .= COM_startBlock($LANG01[47],$help,COM_getBlockTemplate('user_block', 'header'))
+        $retval .=  COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
+    } 
+    else 
+    {
+        $retval .= COM_startBlock( $LANG01[47], $help, COM_getBlockTemplate( 'user_block', 'header' ))
             . '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
             . '<b>' . $LANG01[21] . ':</b><br>' . LB
             . '<input type="text" size="10" name="loginname" value=""><br>' . LB
@@ -1502,11 +1668,10 @@ function COM_userMenu($help='',$title='')
             . '<input type="password" size="10" name="passwd"><br>' . LB
             . '<input type="submit" value="' . $LANG01[58] . '">' . LB
             . '</form>' . $LANG01[59] . LB
-            . COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
+            . COM_endBlock(COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
     return $retval;
-
 }
 
 /**
@@ -1520,131 +1685,192 @@ function COM_userMenu($help='',$title='')
 * @see function COM_userMenu
 *
 */
-function COM_adminMenu($help = '', $title = '') 
+
+function COM_adminMenu( $help = '', $title = '' ) 
 {
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
-    if (SEC_isModerator() OR SEC_hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
-        $adminmenu = new Template($_CONF['path_layout']);
-        $adminmenu->set_file('option', 'adminoption.thtml');
+    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ))
+    {
+        $adminmenu = new Template( $_CONF['path_layout'] );
+        $adminmenu->set_file( 'option', 'adminoption.thtml' );
 
-        if (empty($title)) {
-            $title = DB_getItem($_TABLES['blocks'],'title',"name='admin_block'");
+        if( empty( $title )) 
+        {
+            $title = DB_getItem( $_TABLES['blocks'],'title',"name='admin_block'" );
         }
-	    $retval .= COM_startBlock($title,$help,COM_getBlockTemplate('admin_block', 'header'));
-        if (SEC_isModerator()) {
+        
+	    $retval .= COM_startBlock( $title, $help, COM_getBlockTemplate( 'admin_block', 'header' ));
+        
+        if( SEC_isModerator() ) 
+        {
             $num = 0;
-            if (SEC_hasrights ('story.edit')) {
-                $num += DB_count ($_TABLES['storysubmission'], 'uid', 0);
+            
+            if( SEC_hasrights( 'story.edit' )) 
+            {
+                $num += DB_count( $_TABLES['storysubmission'], 'uid', 0 );
             }
-            if (SEC_hasrights ('event.edit')) { 
+            
+            if( SEC_hasrights( 'event.edit' ))
+            { 
                 $num += DB_count ($_TABLES['eventsubmission'], 'eid', 0);
             }
-            if (SEC_hasrights ('link.edit')) { 
-                $num += DB_count ($_TABLES['linksubmission'], 'lid', 0);
+            
+            if( SEC_hasrights( 'link.edit' )) 
+            { 
+                $num += DB_count( $_TABLES['linksubmission'], 'lid', 0 );
             }
-            if (SEC_hasrights('user.edit') && SEC_hasrights('user.delete')) {
-                $emptypwd = md5 ('');
-                $num += DB_count ($_TABLES['users'], 'passwd', $emptypwd);
+            
+            if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
+            {
+                $emptypwd = md5( '' );
+                $num += DB_count( $_TABLES['users'], 'passwd', $emptypwd );
             }
 
             //now handle submissions for plugins
+            
             $num = $num + PLG_getSubmissionCount();
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/moderation.php');
-            $adminmenu->set_var('option_label', $LANG01[10]);
-            $adminmenu->set_var('option_count', $num);
-            $retval .= $adminmenu->parse('item', 'option');
+            
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/moderation.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[10] );
+            $adminmenu->set_var( 'option_count', $num );
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('story.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/story.php');
-            $adminmenu->set_var('option_label', $LANG01[11]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['stories']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'story.edit' )) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/story.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[11] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['stories'] ));
+            
+            $retval .= $adminmenu->parse('item', 'option' );
         }
-        if (SEC_hasrights('block.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/block.php');
-            $adminmenu->set_var('option_label', $LANG01[12]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['blocks']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'block.edit' )) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/block.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[12] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['blocks'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('topic.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/topic.php');
-            $adminmenu->set_var('option_label', $LANG01[13]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['topics']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'topic.edit' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/topic.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[13] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['topics'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('link.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/link.php');
-            $adminmenu->set_var('option_label', $LANG01[14]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['links']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'link.edit' )) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/link.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[14] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['links'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('event.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/event.php');
-            $adminmenu->set_var('option_label', $LANG01[15]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['events']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'event.edit' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/event.php') ;
+            $adminmenu->set_var( 'option_label', $LANG01[15] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['events'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('poll.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/poll.php');
-            $adminmenu->set_var('option_label', $LANG01[16]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['pollquestions']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'poll.edit' )) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/poll.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[16] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['pollquestions'] ));
+        
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('user.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/user.php');
-            $adminmenu->set_var('option_label', $LANG01[17]);
-            $adminmenu->set_var('option_count', (DB_count($_TABLES['users'])-1));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'user.edit' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/user.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[17] );
+            $adminmenu->set_var( 'option_count', ( DB_count( $_TABLES['users'] ) -1 ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('group.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/group.php');
-            $adminmenu->set_var('option_label', $LANG01[96]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['groups']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'group.edit' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/group.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[96] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['groups'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('user.mail')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/mail.php');
-            $adminmenu->set_var('option_label', $LANG01[105]);
-            $adminmenu->set_var('option_count', 'N/A');
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'user.mail' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/mail.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[105] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
-        if (SEC_hasrights('plugin.edit')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/plugins.php');
-            $adminmenu->set_var('option_label', $LANG01[77]);
-            $adminmenu->set_var('option_count', DB_count($_TABLES['plugins']));
-            $retval .= $adminmenu->parse('item', 'option');
+        
+        if( SEC_hasrights( 'plugin.edit' ))
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/plugins.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[77] );
+            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['plugins'] ));
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
         // This function will show the admin options for all installed plugins (if any)
+        
         $plugin_options = PLG_getAdminOptions();
-        $nrows = count($plugin_options);
-        for ($i = 1; $i <= $nrows; $i++) {
-            $plg = current($plugin_options);
-            $adminmenu->set_var('option_url', $plg->adminurl);
-            $adminmenu->set_var('option_label', $plg->adminlabel);
-            if (empty($plg->numsubmissions)) {
-                $adminmenu->set_var('option_count', 'N/A');
-            } else {
-                $adminmenu->set_var('option_count', $plg->numsubmissions);
+        $nrows = count( $plugin_options );
+        
+        for( $i = 1; $i <= $nrows; $i++ )
+        {
+            $plg = current( $plugin_options );
+            
+            $adminmenu->set_var( 'option_url', $plg->adminurl );
+            $adminmenu->set_var( 'option_label', $plg->adminlabel );
+            
+            if( empty( $plg->numsubmissions ))
+            {
+                $adminmenu->set_var( 'option_count', 'N/A' );
             }
-            $retval .= $adminmenu->parse('item', 'option', true);
-            next($plugin_options);
+            else
+            {
+                $adminmenu->set_var( 'option_count', $plg->numsubmissions );
+            }
+            
+            $retval .= $adminmenu->parse( 'item', 'option', true );
+            
+            next( $plugin_options );
         }
              
-        if ($_CONF['allow_mysqldump'] == 1 AND SEC_inGroup('Root')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/database.php');
-            $adminmenu->set_var('option_label', $LANG01[103]);
-            $adminmenu->set_var('option_count', 'N/A');
-            $retval .= $adminmenu->parse('item', 'option');
+        if( $_CONF['allow_mysqldump'] == 1 AND SEC_inGroup( 'Root' )) 
+        {
+            $adminmenu->set_var( 'option_url', $_CONF['site_admin_url'] . '/database.php' );
+            $adminmenu->set_var( 'option_label', $LANG01[103] );
+            $adminmenu->set_var( 'option_count', 'N/A' );
+            
+            $retval .= $adminmenu->parse( 'item', 'option' );
         }
 
-        $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
-        $adminmenu->set_var('option_label', $LANG01[107]);
-        $adminmenu->set_var('option_count', 'N/A');
-        $retval .= $adminmenu->parse('item', 'option');
-        $retval .= COM_endBlock(COM_getBlockTemplate('admin_block', 'footer'));
+        $adminmenu->set_var( 'option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION );
+        $adminmenu->set_var( 'option_label', $LANG01[107] );
+        $adminmenu->set_var( 'option_count', 'N/A' );
+        
+        $retval .= $adminmenu->parse( 'item', 'option' );
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'admin_block', 'footer' ));
     }
+    
     return $retval;
 }
 
@@ -1658,7 +1884,8 @@ function COM_adminMenu($help = '', $title = '')
 * @param        string      $url        URL to send user to
 *
 */
-function COM_refresh($url) 
+
+function COM_refresh( $url ) 
 {
 	return "<html><head><meta http-equiv=\"refresh\" content=\"0; URL=$url\"></head></html>\n";
 }
@@ -1678,11 +1905,12 @@ function COM_refresh($url)
 * @return     string   HTML Formated comment bar
 *
 */
+
 function COM_commentBar($sid,$title,$type,$order,$mode) 
 {
     global $_TABLES, $LANG01, $_USER, $_CONF, $HTTP_GET_VARS;
 	
-    $nrows = DB_count($_TABLES['comments'],'sid',$sid);
+    $nrows = DB_count( $_TABLES['comments'], 'sid', $sid );
     $retval .= '<a name="comments"></a>';
 	
     // Build comment control bar
