@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: url.class.php,v 1.6 2003/07/14 10:10:42 dhaun Exp $
+// $Id: url.class.php,v 1.7 2003/09/01 18:23:55 dhaun Exp $
 
 /**
 * This class will allow you to use friendlier URL's, like:
@@ -130,7 +130,7 @@ class url {
     */
     function setArgNames($names)
     {
-        if (count($names) < count($this->arguments)) {
+        if (count($names) < count($this->_arguments)) {
             print "URL Class: number of names passed to setArgNames must be equal or greater than number of arguments found in URL";
             exit;
         }
