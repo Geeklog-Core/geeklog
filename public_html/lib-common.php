@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.67 2002/04/17 18:15:46 dreamscape Exp $
+// $Id: lib-common.php,v 1.68 2002/04/18 14:37:13 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -2231,7 +2231,7 @@ function COM_whatsNewBlock($help='',$title='')
                 $robtime = strftime("%D %T",$A['day']);
                 $itemlen = strlen($A['title']);
                 if ($A['type'] == 'article') {
-                    $titletouse = $A['title'];
+                    $titletouse = stripslashes ($A['title']);
                     $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
                 } else {
                     $titletouse = $A['question'];
