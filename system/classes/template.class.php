@@ -151,7 +151,13 @@ class Template {
     }
 
     $str = $this->get_var($handle);
-    $str = @preg_replace($this->varkeys, $this->varvals, $str);
+    
+    foreach ($this->varvals as $k=>$v) {
+        $this->varvalsfixed[$k] = preg_replace('/\\\\/', '\\\\\\\\', $v);
+    }
+    
+    $str = @preg_replace($this->varkeys, $this->varvalsfixed, $str);
+
     return $str;
   }
   
