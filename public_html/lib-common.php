@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.380 2004/09/30 10:00:17 dhaun Exp $
+// $Id: lib-common.php,v 1.381 2004/10/02 03:32:52 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1197,18 +1197,24 @@ function COM_endBlock( $template='blockfooter.thtml' )
 * @param        string      $selection  Comma delimited string of fields to pull The first field is the value of the option and the second is the label to be displayed.  This is used in a SQL statement and can include DISTINCT to start.
 * @param        string      $selected   Value (from $selection) to set to SELECTED or default
 * @param        int         $sortcol    Which field to sort option list by 0 (value) or 1 (label)
+* @param        string      $where      Optional WHERE clause to use in the SQL Selection
 * @see function COM_checkList
 * @return   string  Formated HTML of option values
 *
 */
-function COM_optionList( $table, $selection, $selected='', $sortcol=1 )
+function COM_optionList( $table, $selection, $selected='', $sortcol=1, $where='' )
 {
     $retval = '';
 
     $tmp = str_replace( 'DISTINCT ', '', $selection );
     $select_set = explode( ',', $tmp );
 
-    $result = DB_query( "SELECT $selection FROM $table ORDER BY $select_set[$sortcol]" );
+    $sql = "SELECT $selection FROM $table";
+    if ($where != '') {
+        $sql .= " WHERE $where";
+    }
+    $sql .= " ORDER BY {$select_set[$sortcol]}";
+    $result = DB_query($sql);
     $nrows = DB_numRows( $result );
 
     for( $i = 0; $i < $nrows; $i++ )
@@ -2902,6 +2908,8 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A['comment'] = str_replace( '$', '&#36;',  $A['comment'] );
         $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
         $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
+
+        $A['comment'] = PLG_replacetags($A['comment']);   // Replace any plugin autolink tags
 
         $template->set_var( 'title', $A['title'] );
         $template->set_var( 'comments', $A['comment'] );

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.46 2004/09/29 11:43:29 dhaun Exp $
+// $Id: lib-plugins.php,v 1.47 2004/10/02 03:32:53 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1190,6 +1190,38 @@ function PLG_getWhatsNew ()
     }
 
     return array ($newheadlines, $newbylines, $newcontent);
+}
+
+/**
+* Allows plugins and Core GL Components to filter out spam.
+* The SPAMX Plugin is now part of the Geeklog Distribution
+* This plugin API will call the main function in the SPAMX plugin
+* but can also be used to call other plugins or custom functions
+* if available for filtering spam or content.
+*
+* @param string $content   Text to be filtered or checked for spam
+* @param integer $action   what to do if comment found
+* @return an error or formatted action HTML to return to calling program
+* 
+* Note: Examples for formatted action HTML are a redirect formatted by COM_refresh
+* The spamx DeleteComment.Action does this.
+*
+*/
+function PLG_checkforSpam($content, $action = -1)
+{
+    global $_PLUGINS;
+
+    foreach ($_PLUGINS as $pi_name) {
+        $function = 'plugin_checkforSpam_' . $pi_name;
+        if (function_exists($function)) {
+            $someError = $function($content, $action);
+            if ($someError) {
+                // Plugin found a match for spam or else an error
+                return $someError;
+            }
+        }
+    }
+    return false;
 }
 
 ?>
