@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.32 2003/06/28 08:31:46 dhaun Exp $
+// $Id: poll.php,v 1.33 2003/07/14 17:02:42 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -247,7 +247,7 @@ function editpoll($qid='')
     $poll_templates->set_var('poll_id', $Q['qid']);
     $poll_templates->set_var('lang_donotusespaces', $LANG25[7]);
     $poll_templates->set_var('lang_question', $LANG25[9]);
-    $poll_templates->set_var('poll_question', htmlentities ($Q['question']));
+    $poll_templates->set_var('poll_question', htmlspecialchars ($Q['question']));
     $poll_templates->set_var('lang_mode', $LANG25[1]);
     $poll_templates->set_var('status_options', COM_optionList($_TABLES['statuscodes'],'code,name',$Q['statuscode'])); 
     $poll_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$Q['commentcode']));
@@ -293,7 +293,7 @@ function editpoll($qid='')
  
     for ($i = 1; $i <= $_CONF['maxanswers']; $i++) {
         $A = DB_fetchArray($answers);
-        $poll_templates->set_var('answer_text', htmlentities ($A['answer']));
+        $poll_templates->set_var('answer_text', htmlspecialchars ($A['answer']));
         $poll_templates->set_var('answer_votes', $A['votes']);
         if ($i < $_CONF['maxanswers']) {
             $poll_templates->parse('answer_option','answer',true);
