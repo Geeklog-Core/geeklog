@@ -60,6 +60,12 @@ $CONF["html"] = $CONF["path"] . "public_html/";
 $CONF["unzipcommand"] = '/bin/tar -C ' . $CONF['path'] . 'plugins/ -xzf ';
 #$CONF["unzipcommand"] = 'filzip.exe -e -r ';
 
+#Command needed to remove a directory recursively and quietly
+#First one is typical for *nix boxes and the second is for 
+#windows machines.
+$CONF["rmcommand"] = '/bin/rm -Rf ';
+#$CONF["rmcommand"] = 'rmdir /S /Q ';
+
 # Location of Geeklog log files (not apache)
 $CONF["logpath"] = $CONF["path"] . "/logs";
 
