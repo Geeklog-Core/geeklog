@@ -96,8 +96,11 @@ for ($i=0;$i<=1;$i++) {
 	$nrows = mysql_num_rows($result);
 
 	$countsql = "SELECT count(*) count FROM stories WHERE draft_flag = 0";
-	if (!empty($topic))
+	if (!empty($topic)) {
 		$countsql = $countsql . " AND tid='$topic'";
+	} else {
+		$countsql = $countsql . " AND frontpage = 1";
+	}
 	$data = dbquery($countsql);
 	$D = mysql_fetch_array($data);
 	$num_pages = ceil($D["count"] / $U["maxstories"]);
