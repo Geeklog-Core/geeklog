@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.38 2002/08/29 14:43:01 dhaun Exp $
+// $Id: block.php,v 1.39 2002/09/03 16:44:36 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -77,7 +77,7 @@ function editdefaultblock($A,$access)
     $block_templates->set_var('layout_url', $_CONF['layout_url']);
     $block_templates->set_var('block_id', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
-    $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
         $block_templates->set_var('is_enabled', 'checked="CHECKED"');
@@ -179,7 +179,7 @@ function editblock($bid='')
 
     $block_templates->set_var('block_bid', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
-    $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('block_title', stripslashes ($A['title']));
     $block_templates->set_var('lang_enabled', $LANG21[53]);
     if ($A['is_enabled'] == 1) {
         $block_templates->set_var('is_enabled', 'checked="CHECKED"');
@@ -350,7 +350,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
 
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-        $title = addslashes ($title);
+        //$title = addslashes ($title);
         DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled",$_CONF['site_admin_url'] . "/block.php?msg=11");
 
 
@@ -415,7 +415,7 @@ function listblocks()
         $A = DB_fetchArray($result);
 
         $block_templates->set_var('block_id', $A['bid']);
-        $block_templates->set_var('block_title', $A['title']);
+        $block_templates->set_var('block_title', stripslashes ($A['title']));
 
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access > 0) {

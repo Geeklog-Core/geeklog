@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.148 2002/09/02 15:38:38 dhaun Exp $
+// $Id: lib-common.php,v 1.149 2002/09/03 16:44:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -712,7 +712,7 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
     $block->set_file('block', $template);
     $block->set_var('site_url',$_CONF['site_url']); // not used but some custom theme may want it
     $block->set_var('layout_url', $_CONF['layout_url']);
-    $block->set_var('block_title',$title);
+    $block->set_var('block_title',stripslashes ($title));
     if (!empty($helpfile)) {
         if (!stristr($helpfile,'http://')) {
             $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
