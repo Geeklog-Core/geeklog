@@ -104,15 +104,15 @@ a lot. Here is what this is all about:<p>
 <p>Basically, a Geeklog installation consists of two parts: The part that is
 visible "to the world" - which is everything in the public_html directory.
 "public_html" is a popular name for the world-accessible directory that can be
-found on a webserver ("htdocs" is another). So if you have such a directory,
-just copy everything from Geeklog's public_html directory into that directory on
-your webserver. Then you only need to set up $_CONF['path_html'] (in config.php)
-to point to that directory.</p>
+found on a webserver ("htdocs" and "www" are other popular names). So if you
+have such a directory, just copy everything from Geeklog's public_html
+directory into that directory on your webserver. Then you only need to set up
+$_CONF['path_html'] (in config.php) to point to that directory.</p>
 
 <p>The other part of Geeklog, which is everything outside the public_html
 directory, should not be accessible via a URL since it contains sensitive
 information. So you should really put those files and directories outside of
-your document root (i.e. outside the web server's public_html or htdocs
+your document root (i.e. outside the web server's public_html, htdocs, or www 
 directory). Then you only need to set up $_CONF['path'] (again, in config.php)
 to point to the place where you put those files and directories.</p>
 
@@ -373,17 +373,15 @@ Please read the comments in config.php carefully.<br>
 			<table width="95%" border="0" cellspacing="0" cellpadding="4">
 				<tr>
 					<td bgcolor="#ffedf2">
-						<p><b>Whenever I try to do anything on my site, I get a whole list of errors like:</b></p>
+						<p><b>I've set up my site successfully, but get the following error message on the top:</b></p>
 <p><code>
-Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1318<br>
-<br>
-Warning: Supplied argument is not a valid File-Handle resource in /some/path/public_html/lib-common.php on line 1323
+Warning: fopen("/some/path/logs/error.log", "a") - Permission denied in /some/path/public_html/lib-common.php on line 1318
 </code></p>
 					</td>
 				</tr>
 				<tr>
 					<td>
-<p><small>(line numbers may vary)</small></p>
+<p><small>(line number may vary)</small></p>
 						<p><strong>Answer:</strong></p>
 						<p>Make sure that the logs/ directory AND the files in it have permissions of at least 775. You may need to make the permissions 777 if 775 isn't working for you. For good measure, make sure the public_html/backend directory and the geeklog.rdf file have the same 775 or 777 permissions.</p>
 
@@ -402,6 +400,7 @@ Warning: Supplied argument is not a valid File-Handle resource in /some/path/pub
 				</tr>
 				<tr>
 					<td>
+<p><small>(line numbers may vary)</small></p>
 						<p><strong>Answer:</strong></p>
 						<p>Make sure that your config.php file does not contain any "whitespace" after the closing <b>?&gt;</b> at the end of the file. I.e. there should not be anything (not even blanks or empty lines) after those two characters.</p>
 					</td>

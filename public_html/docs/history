@@ -1,5 +1,17 @@
 GeekLog History/Changes:
 
+- Removed the Normal / Archive / Refreshing drop down menus from the admin
+  story and poll editors since they're not used anyway.
+- In the links section, do not display link categories when the current user
+  does not have access to the links in those categories (bug #612869).
+- Fixed problems when using quotes in the title of an HTML-formatted comment
+  (including confusing error messages and wrong speed limit alerts).
+- Changed the way how Geeklog checks if it's currently displaying the site's
+  front page, thus fixing the problem with disappearing "homeonly" blocks.
+- Fixed double line spacing in HTML-formatted comments (and [code] sections)
+  when running on PHP 4.2.0 and up.
+- Fixed problems with slashes and HTML entities in emails sent out by Geeklog
+  (Send story to friend, daily digest, Admin mail utility).
 - Added new config variable 'showfirstasfeatured' which, when set to 1, will
   render the first story on _any_ page like it was a featured story.
 - Added admin/plugins/newpluginlist.thtml and newlistitem.thml template files

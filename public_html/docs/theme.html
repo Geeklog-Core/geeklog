@@ -131,7 +131,65 @@ You can give the blocks on the left and right a different look. See
 <a href="http://geeklog.sourceforge.net/article.php?story=20020429092841722">this story on the Geeklog homepage</a> for details.</p>
 
 
-<h2><a name="changes">Theme changes in Geeklog 1.3.6</a></h2>
+<h2><a name="changes">Theme changes in Geeklog 1.3.7</a></h2>
+
+<p>Please note that all the following changes are <em>optional</em>. Themes
+made for Geeklog 1.3.6 will work just fine with Geeklog 1.3.7 - no changes
+are necessary.</p>
+
+<h3>New features and improvements</h3>
+
+<ul>
+  <li>Theme-based topic icons are now supported by setting <tt>$_THEME_URL</tt>
+    in the theme's <tt>functions.php</tt> file. The variable should point to
+    a directory that has the same hierarchy as Geeklog's images directory
+    (note that the path to topic images is stored relative to Geeklog's
+    public_html directory).<br>
+    <strong>Example:</strong>
+    <code>$_THEME_URL = $_CONF['layout_url'];</code></li>
+  <li>The <code>$_BLOCK_TEMPLATE</code> "hack" can now be applied to the
+    What's Related and Story Options blocks, as well. Use
+    <tt>whats_related_block</tt> and <tt>story_options_block</tt> as the block
+    names.</li>
+  <li>The What's Related and Story Options blocks are now available as
+    separate variables using <tt>{whats_related}</tt> and
+    <tt>{story_options}</tt>, respectively
+    (the <tt>{whats_related_story_options}</tt> variable for both blocks is
+    still available).</li>
+  <li>Several new variables can now be used in the story templates, e.g.
+    <tt>{contributedby_fullname}</tt> for the full name of a story author and
+    <tt>{contributedby_photo}</tt> for his/her user photo.</li>
+  <li>When the new config variable <tt>$_CONF['showfirstasfeatured']</tt> is set
+    to 1, then the first story an <em>every</em> page is rendered using the
+    template files for featured stories, even when the story is not marked as
+    featured.</li>
+</ul>
+
+<h3>Other changes</h3>
+
+<ul>
+  <li>The template file <tt>admin/plugins/installform.thtml</tt> has been
+    removed since it isn't used any more.</li>
+  <li>Two new <em>optional</em> template files,
+    <tt>admin/plugins/newpluginlist.thtml</tt> and
+    <tt>admin/plugins/newlistitem.thml</tt> have been added to support
+    formatting of the list of plugins which haven't been installed yet. If
+    these files do not exist, hard-coded HTML is used to present the list.</li>
+  <li>The template file <tt>admin/link/listitem.thtml</tt> has been changed
+    so that all the links are clickable.</li>
+  <li><code>COM_pollResults()</code> doesn't use the side block templates any
+    more when called from <tt>pollbooth.php</tt>. Therefore, you can now use
+    different layouts whether the poll results are displayed in a side block
+    or on the separate poll results and comments page.</li>
+  <li>Removed the Normal / Archive / Refreshing drop down menus from the admin
+    story and poll editors of the themes that ship with Geeklog. The setting
+    of this dropdown isn't used in Geeklog anyway and has just confused users
+    in the past ... (files <tt>admin/story/storyeditor.thtml</tt> and
+    <tt>admin/poll/polleditor.thtml</tt>)</li>
+</ul>
+
+
+<h2><a name="changes136">Theme changes in Geeklog 1.3.6</a></h2>
 
 <p>There have been a lot of changes in the themes for 1.3.6 to get rid of the
 last pieces of hard-coded english texts so as to make localisation easier.
