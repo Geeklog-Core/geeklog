@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.412 2005/01/23 11:07:18 dhaun Exp $
+// $Id: lib-common.php,v 1.413 2005/01/26 20:52:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -836,8 +836,8 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         }
         else
         {
-            $pagetitle = DB_getItem( $_TABLES['topics'], 'topic',
-                                     "tid = '$topic'" );
+            $pagetitle = stripslashes( DB_getItem( $_TABLES['topics'], 'topic',
+                                                   "tid = '$topic'" ));
         }
     }
     if( !empty( $pagetitle ))
