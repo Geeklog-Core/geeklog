@@ -1,8 +1,32 @@
 GeekLog History/Changes:
 
+- Added admin/plugins/newpluginlist.thtml and newlistitem.thml template files
+  for the list of plugins not installed yet. These files are optional, i.e.
+  the list will be formatted using hard-coded HTML when they don't exist.
+- Removed unused template file admin/plugins/installform.thtml.
+- The plugin menu will now list all plugins which exist in the file system
+  but haven't been installed (yet) with a link to their install script for
+  easy installation (based on code provided by Blaine Lang).
+- New plugin API function PLG_callCommentForm() and improvements to the use of
+  comments from plugins, provided by Blaine Lang.
+- The Older Stories block did not take stories into account which were to be
+  published in the future. Therefore, the block sometimes listed stories that
+  were still on the first index page.
+- Added variable {contributedby_photo} (user photo of story author) for use in
+  story templates.
+- Users couldn't disable display of the Older Stories block in their preferences
+- The contents of the Older Stories block was deleted whenever you changed it
+  (e.g. moving from the left to the right column).
+- The static pages editor displayed a blank page when the title and/or content
+  field of a new static page were not filled in (will display an error message
+  now).
+- Implemented fixes for plugins using the submission queue, suggested by
+  Vincent Furia.
+- Following the link "X stories in last 24 hours" from the What's New block
+  will now display only the new stories on the index page.
 - When $_CONF['searchloginrequired'] = 2, the search is completely blocked
   for anonymous users (1 will only block the advanced search).
-- Added a simple check to test for a valid date format when searching by date.
+- Added a check to test for a valid date format when searching by date.
 - Added $_CONF['skip_preview'] to allow submission of comments and stories
   without previewing (defaults to off).
 - Search queries with less than 3 characters are now rejected to reduce server
@@ -18,7 +42,6 @@ GeekLog History/Changes:
   format string for day + month (to be used in the Upcoming Events and Older
   Stories blocks) and the time (to be used for event details).
 - Fixed calls to unknown function printErrorMsgs in the file upload class.
-- Any search is now blocked when $_CONF['searchloginrequired'] = 1
 - New options in config.php:
   $_CONF['upcomingeventsrange'] = no. of days to look ahead for upcoming events
   $_CONF['emailstoryloginrequired'] = disallow "send story be email" for
@@ -51,6 +74,7 @@ GeekLog History/Changes:
 - Allow for theme-based topic icons by using the $_THEME_URL variable as the
   base directory for topic icons (if that variable is set).
 - Fixed display (or lack thereof) of $ signs in portal blocks
+- New Chinese language file (Big 5 encoding), provided by Jacky Chan
 - New Swedish language file, provided by Markus Berg
 - Updated Dutch language file, provided by R.F. van der Veen
 - Updated French language file, provided by Florent Guiliani
