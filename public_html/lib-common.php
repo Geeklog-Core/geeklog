@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.151 2002/09/11 12:02:56 dhaun Exp $
+// $Id: lib-common.php,v 1.152 2002/09/11 14:37:48 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -263,6 +263,10 @@ function COM_article($A,$index='')
         $A['introtext'] = nl2br($A['introtext']);
         $A['bodytext'] = nl2br($A['bodytext']);
     }
+    $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
+    $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
+    $A['bodytext'] = str_replace('{','&#123;',$A['bodytext']);
+    $A['bodytext'] = str_replace('}','&#125;',$A['bodytext']);
 
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml','featuredarticle'=>'featuredstorytext.thtml','featuredbodytext'=>'featuredstorybodytext.thtml'));
@@ -1914,6 +1918,8 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 
         $A['title'] = str_replace('$','&#36;',$A['title']);
         $A['comment'] = str_replace('$','&#36;',$A['comment']);
+        $A['comment'] = str_replace('{','&#123;',$A['comment']);
+        $A['comment'] = str_replace('}','&#125;',$A['comment']);
         $retval .= '<td class="commenttitle">' . stripslashes($A['title']) . '</td></tr>' . LB
             . '<tr><td>' . $LANG01[42] . ' ';
 

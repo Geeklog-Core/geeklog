@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.36 2002/09/09 03:06:48 mlimburg Exp $
+// $Id: submit.php,v 1.37 2002/09/11 14:37:51 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -304,7 +304,7 @@ function submitstory()
 {
     global $_TABLES, $HTTP_POST_VARS, $_CONF, $LANG12, $_USER;
 
-    if ($HTTP_POST_VARS['mode'] == $LANG12[32]) {
+    if ($HTTP_POST_VARS['mode'] == $LANG12[32]) { // preview
         $A = $HTTP_POST_VARS;
     } else {
         $A['sid'] = COM_makeSid();
@@ -319,27 +319,39 @@ function submitstory()
     if (!empty($A['title'])) {
         $A['title'] = stripslashes($A['title']);
         if ($A['postmode'] == 'html') {
+            $introtext = stripslashes ($A['introtext']);
+            $introtext = str_replace('$','&#36;',$introtext);
+
             $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
             $A['title'] = addslashes(COM_checkHTML(COM_checkWords($A['title'])));
         } else {
+            $introtext = $A['introtext'];
+            $introtext = str_replace('$','&#36;',$introtext);
+
             $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
-            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
-	    $A['title'] = str_replace('$','&#36;',$A['title']);
             $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
+
+            $A['title'] = htmlspecialchars(COM_checkWords($A['title']));
+            $A['title'] = str_replace('$','&#36;',$A['title']);
         }
+        $introtext = str_replace('{','&#123;',$introtext);
+        $introtext = str_replace('}','&#125;',$introtext);
+        $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
+        $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
+
         $A['show_topic_icon'] = 1;
         $retval .= COM_startBlock($LANG12[32])
             . COM_article($A,'n')
             . COM_endBlock();
     }
-	
+
     $retval .= COM_startBlock($LANG12[6],'submitstory.html');
 
     $storyform = new Template($_CONF['path_layout'] . 'submit');
     $storyform->set_file('storyform','submitstory.thtml');
     $storyform->set_var('site_url', $_CONF['site_url']);
     $storyform->set_var('lang_username', $LANG12[27]);
-		
+
     if (!empty($_USER['username'])) {
         $storyform->set_var('story_username', $_USER['username']);
         $storyform->set_var('status_url', $_CONF['site_url'] . '/users.php?mode=logout');
@@ -356,7 +368,7 @@ function submitstory()
     $storyform->set_var('lang_topic', $LANG12[28]);
     $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
     $storyform->set_var('lang_story', $LANG12[29]);
-    $storyform->set_var('story_introtext', stripslashes($A['introtext']));
+    $storyform->set_var('story_introtext', $introtext);
     $storyform->set_var('lang_postmode', $LANG12[36]);
     $storyform->set_var('story_postmode_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     $storyform->set_var('allowed_html', COM_allowedHTML());
@@ -367,7 +379,7 @@ function submitstory()
     if ($A['mode'] == $LANG12[32]) {
         $storyform->set_var('save_button', '<input name="mode" type="submit" value="' . $LANG12[8] . '">');
     }
-	
+
     $storyform->set_var('lang_preview', $LANG12[32]);
     $storyform->parse('theform', 'storyform');
     $retval .= $storyform->finish($storyform->get_var('theform'));
@@ -418,7 +430,7 @@ function savesubmission($type,$A)
             }
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            if (($_CONF['linksubmission'] == 1) || SEC_hasRights('link.submit')) {
+            if (($_CONF['linksubmission'] == 1) && !SEC_hasRights('link.submit')) {
                 $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
             } else { // add link directly
                 if (empty ($_USER['username'])) { // anonymous user
@@ -496,7 +508,7 @@ function savesubmission($type,$A)
             }
 
             if ($A['calendar_type'] == 'master') {
-                if (($_CONF['eventsubmission'] == 1) || SEC_hasRights('event.submit')) {
+                if (($_CONF['eventsubmission'] == 1) && !SEC_hasRights('event.submit')) {
                     $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
                 } else {
                     if (empty ($_USER['username'])) { // anonymous user
@@ -534,13 +546,12 @@ function savesubmission($type,$A)
                 $retval .= COM_errorLog("Could not save your submission.  Bad type: $type");
                 return $retval;
             }
-        }			
+        }
         if (!empty($A['title']) && !empty($A['introtext'])) {
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['title'] = str_replace('$','&#36;',$A['title']);
             if ($A['postmode'] == 'html') {
                 $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
-		$A['introtext'] = str_replace('$','&#36;',$A['introtext']);
             } else {
                 $A['introtext'] = addslashes(htmlspecialchars(COM_checkWords($A['introtext'])));
             }
@@ -549,7 +560,7 @@ function savesubmission($type,$A)
                 $_USER['uid'] = 1;
             }					
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            if (($_CONF['storysubmission'] == 1) || SEC_hasRights('story.submit')) {
+            if (($_CONF['storysubmission'] == 1) && !SEC_hasRights('story.submit')) {
                 DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
             } else { // post this story directly
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
@@ -574,9 +585,9 @@ function savesubmission($type,$A)
 $display = '';
 $display .= COM_siteHeader();
 
-if ($mode == $LANG12[8]) { 
+if ($mode == $LANG12[8]) { // submit
     $display .= savesubmission($type,$HTTP_POST_VARS);
-} else if ($mode == $LANG12[52]) {
+} else if ($mode == $LANG12[52]) { // delete
     if (!empty($eid)) {
         DB_delete($_TABLES['personal_events'], 'eid',$eid,$_CONF['site_url'].'/calendar.php?mode=personal');
     }  
@@ -601,9 +612,9 @@ if ($mode == $LANG12[8]) {
             }
             break;
     }
-    
+
     $display .= submissionform($type, $mode, $month, $day, $year, $hour); 
-    
+
 }
 $display .= COM_siteFooter();		
 echo $display;
