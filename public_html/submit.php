@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.35 2002/09/02 22:10:40 dhaun Exp $
+// $Id: submit.php,v 1.36 2002/09/09 03:06:48 mlimburg Exp $
 
 require_once('lib-common.php');
 
@@ -118,7 +118,7 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
 */
 function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='') 
 {
-    global $_CONF,$LANG12, $_STATES, $_USER;
+    global $_CONF,$LANG12, $LANG30, $_STATES, $_USER;
 
     $retval = '';
 
@@ -174,7 +174,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
         if ($i == $month) {
             $month_options .= 'selected="SELECTED"';
         }
-        $month_options .= '>' . $mval . '</option>';
+        $month_options .= '>' . $LANG30[$mval+12] . '</option>';
     }
     $eventform->set_var('month_options', $month_options);
     $day_options = '';

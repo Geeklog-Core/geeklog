@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.28 2002/06/28 14:59:08 dhaun Exp $
+// $Id: event.php,v 1.29 2002/09/09 03:06:47 mlimburg Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -68,7 +68,7 @@ if (!SEC_hasRights('event.edit')) {
 */
 function editevent($mode, $A) 
 {
-	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
+	global $_TABLES, $LANG30, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
     
     $retval = '';
 
@@ -184,7 +184,7 @@ function editevent($mode, $A)
                     $month_options .= 'selected="SELECTED"';
                 }
             }
-            $month_options .= '>' . $mval . '</option>';
+            $month_options .= '>' . $LANG30[$mval+12] . '</option>';
         }
         if ($j == 1) {
             $event_templates->set_var('startmonth_options', $month_options);
