@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.379 2004/09/28 17:50:08 dhaun Exp $
+// $Id: lib-common.php,v 1.380 2004/09/30 10:00:17 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5867,8 +5867,8 @@ function COM_isFrontpage()
 function COM_sanitizeID ($id, $new_id = true)
 {
     $id = str_replace (' ', '', $id);
-    $id = str_replace (array ('_', '/', '\\', ':', '+'), '-', $id);
-    $id = preg_replace('/[^a-zA-Z0-9\-]/', '', $id);
+    $id = str_replace (array ('/', '\\', ':', '+'), '-', $id);
+    $id = preg_replace('/[^a-zA-Z0-9\-_]/', '', $id);
     if (empty ($id) && $new_id) {
         $id = COM_makesid ();
     }
