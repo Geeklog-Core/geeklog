@@ -3,34 +3,37 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
-- Fixed typo in timer.class.php that broke the ->restart() function.
+- Fixed minor security issue with the Daily Digest, where users still got
+  digests for topics from which they have been removed (bug #178) [Dirk]
+- Fixed typo in timer.class.php that broke the ->restart() function. [Vinny]
 - Make sure the database backup files are always sorted by (last modified) date 
-  (found & fixed by Alexander Schmacks).
+  (found & fixed by Alexander Schmacks). [Dirk]
 - Make sure the user's preferred comment limit is used when changing the
-  comment display via the comment bar (bug #176).
+  comment display via the comment bar (bug #176). [Vinny]
 - The static pages editor doesn't display a "delete" button for new and
   cloned pages any more (since, obviously, you can't delete what hasn't been
-  saved yet ...).
+  saved yet ...). [Dirk]
 - When URL rewriting is activated, the "rewritten" URLs are now also used
-  in all (RSS) feeds containing links to articles.
+  in all (RSS) feeds containing links to articles. [Dirk]
 - Experimental: On a fresh install, use InnoDB tables (instead of MyISAM) if
   the MySQL version running on the server supports them (usually as of
   MySQL 4.0). This should avoid locks on tables where hit counters and the
-  actual data are stored in the same table (e.g. stories).
+  actual data are stored in the same table, e.g. stories (suggested by
+  Marc Von Ahn). [Dirk]
 - Fixed bug in the install script when upgrading from 1.3.8 or earlier:
   Check to see if the static pages plugin is installed before attempting to
-  update its tables (reported by Rob Griffiths).
+  update its tables (reported by Rob Griffiths). [Dirk]
 - Implemented a change to DB_fetchArray, suggested by Niels Leenheer:
   Geeklog will now, by default, only return associative array indices. In case
   the numeric indices are needed, a new (optional) second parameter for
-  DB_fetchArray has to be set to "true".
+  DB_fetchArray has to be set to "true". [Dirk]
 - Removed extra quotes in SQL statements in admin/block.php to ensure
-  compatibility with old MySQL versions.
+  compatibility with old MySQL versions (reported by Elmer Masters). [Dirk]
 - Fixed SQL error in COM_showTopics when users tried to exclude topics in their
-  preferences.
+  preferences (reported by Rob Young). [Dirk]
 - In admin/database.php, if the is_executable function is not available (e.g.
   on Windows), do at least a file_exists to check if the mysqldump executable
-  exists in the path given in config.php.
+  exists in the path given in config.php. [Dirk]
 
 
 Mar 14, 2004 (1.3.9)

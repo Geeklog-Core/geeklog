@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.306 2004/03/29 03:44:37 vinny Exp $
+// $Id: lib-common.php,v 1.307 2004/03/31 18:56:14 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,8 +66,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-//require_once( '/path/to/geeklog/config.php' );
-require_once( '/home/vmf/cvs/geeklog-1.3/config.php' );
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
@@ -4058,31 +4057,33 @@ function COM_emailUserTopics()
             . "FROM {$_TABLES['stories']} "
             . "WHERE draft_flag = 0 AND date <= NOW() AND date >= '{$lastrun}'";
 
+        $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
+                  . COM_getPermSQL( 'WHERE', $U['uuid'] );
+        $tresult = DB_query( $topicsql );
+        $trows = DB_numRows( $tresult );
+
+        if( $trows == 0 )
+        {
+            // this user doesn't seem to have access to any topics ...
+            continue;
+        }
+
+        $TIDS = array();
+        for( $i = 1; $i <= $trows; $i++ )
+        {
+            $T = DB_fetchArray( $tresult );
+            $TIDS[] = $T['tid'];
+        }
+
         if( !empty( $U['etids'] ))
         {
             $ETIDS = explode( ' ', $U['etids'] );
-            $storysql .= " AND (tid='" . implode( "' OR tid='", $ETIDS ) . "')";
+            $TIDS = array_intersect( $TIDS, $ETIDS );
         }
-        else // get all topics this user has access to
+
+        if( sizeof( $TIDS ) > 0)
         {
-            $topicsql = "SELECT tid FROM {$_TABLES['topics']}"
-                      . COM_getPermSQL( 'WHERE', $U['uuid'] );
-            $tresult = DB_query( $topicsql );
-            $trows = DB_numRows( $tresult );
-            if( $trows > 0 )
-            {
-                $storysql .= " AND (";
-                for( $i = 1; $i <= $trows; $i++ )
-                {
-                    $T = DB_fetchArray ($tresult);
-                    if ($i > 1)
-                    {
-                        $storysql .= " OR ";
-                    }
-                    $storysql .= "tid = '{$T['tid']}'";
-                }
-                $storysql .= ")";
-            }
+            $storysql .= " AND (tid IN ('" . implode( "','", $TIDS ) . "'))";
         }
 
         $storysql .= COM_getPermSQL( 'AND', $U['uuid'] );
