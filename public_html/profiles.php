@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.26 2003/11/08 17:54:09 dhaun Exp $
+// $Id: profiles.php,v 1.27 2003/12/04 21:02:28 dhaun Exp $
 
 include('lib-common.php');
 
@@ -204,7 +204,7 @@ function contactform($uid, $subject='', $message='')
 
 function mailstory ($sid, $to, $toemail, $from, $fromemail, $sid, $shortmsg) 
 {
- 	global $_CONF, $_TABLES, $LANG01, $LANG08;
+ 	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
     // check for correct $_CONF permission
     if (empty ($_USER['username']) &&
