@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.20 2004/01/13 19:15:52 dhaun Exp $
+// $Id: mail.php,v 1.21 2004/01/17 20:38:27 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -40,7 +40,7 @@ require_once('auth.inc.php');
 $display = '';
 
 // Make sure user has access to this page  
-if (!SEC_inGroup('Mail Admin')) {
+if (!SEC_inGroup('Mail Admin') && !SEC_hasrights('user.mail')) {
     $retval .= COM_siteHeader ('menu');
     $retval .= COM_startBlock ($MESSAGE[30], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
@@ -76,9 +76,15 @@ function display_form()
     $group_options = '';
     $result = DB_query("SELECT grp_id, grp_name FROM {$_TABLES['groups']} WHERE grp_name <> 'All Users'");
     $nrows = DB_numRows($result);
-    for ($i = 1; $i <= $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $group_options .= '<option value="' . $A['grp_id'] . '">' . $A['grp_name'] . '</option>';
+    $groups = array ();
+    for ($i = 0; $i < $nrows; $i++) {
+        $A = DB_fetchArray ($result);
+        $groups[$A['grp_id']] = ucwords ($A['grp_name']);
+    }
+    asort ($groups);
+    foreach ($groups as $groupID => $groupName) {
+        $group_options .= '<option value="' . $groupID . '">' . $groupName
+                       . '</option>';
     }
     $mail_templates->set_var('group_options', $group_options);
     $mail_templates->set_var('lang_from', $LANG31[2]);
