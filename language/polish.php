@@ -3,7 +3,7 @@
 ###############################################################################
 # polish.php
 # This is the Polish language page for GeekLog!
-# Special thanks to Robert Stadnik robert_stadnik@wp.pl for his work on this project
+# Special thanks to Robert Stadnik geeklog@geeklog.now.pl for his work on this project
 #
 # Copyright (C) 2000 Jason Whittenburg
 # jwhitten@securitygeeks.com
@@ -41,7 +41,7 @@ $LANG_CHARSET = 'iso-8859-2';
 # lib-common.php
 
 $LANG01 = array(
-    1 => 'Zamie¶ci³:',
+    1 => 'Autor:',
     2 => 'czytaj dalej',
     3 => 'komentarzy',
     4 => 'Edycja',
@@ -50,7 +50,7 @@ $LANG01 = array(
     7 => 'Wyniki Sondy',
     8 => 'g³osów',
     9 => 'Menu Admina:',
-    10 => 'Do Zamieszczenia',
+    10 => 'Panel Sterowania',
     11 => 'Artyku³y',
     12 => 'Bloki',
     13 => 'Sekcje',
@@ -59,13 +59,13 @@ $LANG01 = array(
     16 => 'Sondy',
     17 => 'U¿ytkownicy',
     18 => 'Zapytanie SQL',
-    19 => 'Wylogowanie',
+    19 => 'Wyloguj',
     20 => 'Informacje U¿ytkownika:',
     21 => 'Login',
     22 => 'ID U¿ytkownika',
     23 => 'Poziom Zabezpieczeñ',
     24 => 'Gall Anonim',
-    25 => 'Odpowiedz',
+    25 => 'Komentuj',
     26 => 'Komentarze nale¿± do osób, które je zamie¶ci³y. Nie bierzemy odpowiedzialno¶ci za ich tre¶æ.',
     27 => 'Najnowsze Komentarze',
     28 => 'Kasuj',
@@ -75,10 +75,10 @@ $LANG01 = array(
     32 => 'B³±d, niew³a¶ciwy login',
     33 => 'B³±d, nie mo¿na zapisaæ w logu',
     34 => 'B³±d',
-    35 => 'Wylogowanie',
+    35 => 'Wyloguj',
     36 => 'dnia',
     37 => 'Brak artyku³ów u¿ytkownika',
-    38 => 'Syndykacja',
+    38 => 'Syndykacja Tre¶ci',
     39 => 'Od¶wie¿',
     40 => 'Masz <tt>register_globals = Off</tt> w pliku <tt>php.ini</tt>. Niestety, Geeklog wymaga <tt>register_globals</tt> aby by³y ustawione na <strong>on</strong>. Proszê zminieæ ustawienia na <strong>on</strong> i restartowaæ serwer www.',
     41 => 'Go¶æ',
@@ -89,11 +89,11 @@ $LANG01 = array(
     46 => 'Numer Komunikatu B³êdu MySQL',
     47 => 'Menu U¿ytkownika',
     48 => 'Konto - Info',
-    49 => 'Preferencje',
+    49 => 'Osobiste',
     50 => 'B³êdna sk³adnia SQL',
     51 => 'pomoc',
     52 => 'Nowy',
-    53 => 'Admin Home',
+    53 => 'Panel Sterowania',
     54 => 'Nie mo¿na otworzyæ pliku.',
     55 => 'B³±d przy',
     56 => 'G³osuj',
@@ -115,8 +115,8 @@ $LANG01 = array(
     72 => 'linki',
     73 => 'sonda',
     74 => 'kalendarz',
-    75 => 'wyszukiwanie zaawansowane',
-    76 => 'statystyka strony',
+    75 => 'zaawansowane szukanie',
+    76 => 'statystyka',
     77 => 'Pluginy',
     78 => 'Wydarzenia',
     79 => 'Co Nowego',
@@ -149,11 +149,11 @@ $LANG01 = array(
     106 => 'Ods³on',
     107 => 'Wersja GL - Test',
     108 => 'Opró¿nij Cache',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    109 => 'Zg³o¶ nadu¿ycie',
+    110 => 'Powiadom administratora o tym wpisie',
+    111 => 'Wersja PDF',
+    112 => 'Zarejestrowani U¿ytkownicy',
+    113 => 'Dokumentacja'
 );
 
 ###############################################################################
@@ -183,19 +183,19 @@ $LANG02 = array(
 $LANG03 = array(
     1 => 'Napisz Komentarz',
     2 => 'Format',
-    3 => 'Wylogowanie',
+    3 => 'Wyloguj',
     4 => 'Za³ó¿ Konto',
     5 => 'Login',
     6 => 'Aby zamie¶ciæ komentarz nale¿y siê zalogowaæ.  Je¶li nie masz jeszcze konta, za³ó¿ sobie u¿ywaj±c poni¿szego formularza.',
     7 => 'Ostatni komentarz zamie¶ci³e¶ ',
     8 => " sekund temu.  Wymagana jest przerwa równa {$_CONF['commentspeedlimit']} sekund pomiêdzy komentarzami",
     9 => 'Komentarz',
-    10 => 'Send Report',
+    10 => 'Wy¶lij Raport',
     11 => 'Wy¶lij Komentarz',
     12 => 'Proszê uzupe³niæ pola Tytu³ i Komentarz. Pola te s± wymagane do zamieszczenia komentarza.',
     13 => 'Twoje Informacje',
     14 => 'Podgl±d',
-    15 => 'Report this post',
+    15 => 'Zg³o¶ t± wiadomo¶æ',
     16 => 'Tytu³',
     17 => 'B³±d',
     18 => 'Wa¿ne Informacje',
@@ -205,9 +205,9 @@ $LANG03 = array(
     22 => 'Wpisz temat adekwatny do tre¶ci wiadomo¶ci.',
     23 => 'Twój adres email nie bêdzie ujawniony.',
     24 => 'Gall Anonim',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => 'Czy chcesz zg³osiæ administratorowi ten komentarz?',
+    26 => '%s zg³osi³ nastêpuj±cy komentarz:',
+    27 => 'Raport nadu¿yæ'
 );
 
 ###############################################################################
@@ -258,7 +258,7 @@ $LANG04 = array(
     42 => 'Format Daty',
     43 => 'Artyku³y Max Ilo¶æ',
     44 => 'Bez bloków',
-    45 => 'Wygl±d - Preferencje U¿ytkownika',
+    45 => 'Wygl±d - Ustawienia U¿ytkownika',
     46 => 'Wy³±czone Pozycje U¿ytkownika',
     47 => 'Konfiguracja Bloków z Nowo¶ciami U¿ytkownika',
     48 => 'Sekcje',
@@ -277,7 +277,7 @@ $LANG04 = array(
     61 => 'Od najnowszych czy od najstarszych?',
     62 => 'Domy¶lnie jest 100',
     63 => "Has³o zosta³o wys³ane i powinno wkrótce do ciebie dotrzeæ. Postêpuj zgodnie ze wskazówkami w wiadomo¶ci. Dziêkujemy za korzystanie z serwisu {$_CONF['site_name']}",
-    64 => 'Komentarze - Preferencje U¿ytkownika',
+    64 => 'Komentarze - Ustawienia U¿ytkownika',
     65 => 'Spróbuj Zalogowaæ siê Ponownie',
     66 => "Byæ mo¿e login zosta³ b³êdnie wpisany.  Spróbuj zalogowaæ siê ponownie. Czy jeste¶ <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nowym u¿ytkownikiem</a>?",
     67 => 'Cz³onkowstwo Od',
@@ -296,7 +296,7 @@ $LANG04 = array(
     80 => 'Logowanie',
     81 => 'Wy¶lij Maila',
     82 => '10 najnowszych artyku³ów u¿ytkownika',
-    83 => 'Statystyka zamieszczonych materia³ów u¿ytkownika',
+    83 => 'Materia³y zamieszczone przez u¿ytkownika',
     84 => 'Wszystkich artyku³ów:',
     85 => 'Wszystkich komentarzy:',
     86 => 'Znajd¼ wszystkie materia³y zamieszczone przez',
@@ -319,8 +319,8 @@ $LANG04 = array(
     103 => 'TAK na emaile od innych u¿ytkowników',
     104 => 'Poka¿ Status Online',
     105 => 'Poka¿ w bloku Who\'s Online',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    106 => 'Lokalizacja',
+    107 => 'Poka¿ w swoim publicznym profilu'
 );
 
 ###############################################################################
@@ -333,8 +333,8 @@ $LANG05 = array(
     4 => 'Dzisiejszy Artyku³ Dnia',
     5 => 'Nastêpny',
     6 => 'Poprzedni',
-    7 => 'First',
-    8 => 'Last'
+    7 => 'Pierwszy',
+    8 => 'Ostatni'
 );
 
 ###############################################################################
@@ -500,7 +500,7 @@ $LANG11 = array(
     2 => 'Wy¶lij Znajomemu',
     3 => 'Wersja Do Wydruku',
     4 => 'Opcje Artyku³u',
-    5 => 'PDF Story Format'
+    5 => 'Format PDF'
 );
 
 ###############################################################################
@@ -540,7 +540,7 @@ $LANG12 = array(
     31 => " sekund temu.  Wymagane jest co najmniej {$_CONF['speedlimit']} sekund przerwy pomiêdzy zamieszczeniami",
     32 => 'Podgl±d',
     33 => 'Podgl±d Artyku³u',
-    34 => 'Wylogowanie',
+    34 => 'Wyloguj',
     35 => 'Znaczniki HTML nie s± dozwolone',
     36 => 'Format',
     37 => "Przes³ane wydarzenie do serwisu {$_CONF['site_name']} zostanie umieszczone w Kalendarzu G³ównym, z którego u¿ytkownicy bêd± mieli mo¿liwo¶æ dodawanie wydarzeñ do kalendarzy osobistych. Ta opcja <b>NIE S£U¯Y</b> do przechowywania informacji osobistych takich jak urodziny itp.<br><br>Po przes³aniu wydarzenia, zostanie ono przes³ane do naszych administratorów i po zatwierdzeniu pojawi siê w Kalendarzu G³ównym.",
@@ -629,7 +629,7 @@ $LANG21 = array(
     44 => 'Odmowa Dostêpu',
     45 => "Próbujesz wyedytowaæ blok, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF['site_admin_url']}/block.php\">wróciæ do ekranu administrowania blokami</a>.",
     46 => 'Nowy Blok',
-    47 => 'Admin Home',
+    47 => 'Panel Sterowania',
     48 => 'Nazwa Bloku',
     49 => ' (nazwa unikalna i bez spacji)',
     50 => 'URL Pliku Pomocy',
@@ -658,7 +658,7 @@ $LANG22 = array(
     7 => 'Miejsce Wydarzenia',
     8 => 'Opis Wydarzenia',
     9 => '(uwzglêdnij http://)',
-    10 => 'Nale¿y wype³niæ wszystkie pola w tym formularzu!',
+    10 => 'Nale¿y wpisaæ datê, godzinê, tytu³ i opis wydarzenia!',
     11 => 'Menad¿er Wydarzeñ',
     12 => 'Aby zmodyfikowaæ lub wykasowaæ wydarzenie kliknij na dane wydarzenie poni¿ej.  Aby wpisaæ nowe wydarzenie kliknij na Nowe Wydarzenie powy¿ej. Kliknij [C] aby wykonaæ kopiê istniej±cego wydarzenia.',
     13 => 'Tytu³ Wydarzenia',
@@ -667,13 +667,13 @@ $LANG22 = array(
     16 => 'Odmowa Dostêpu',
     17 => "Próbujesz wyedytowaæ wydarzenie, do którego nie masz dostêpu.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF['site_admin_url']}/event.php\">wróciæ do ekranu administrowania wydarzeniami</a>.",
     18 => 'Nowe Wydarzenie',
-    19 => 'Admin Home',
+    19 => 'Panel Sterowania',
     20 => 'zapisz',
     21 => 'anuluj',
     22 => 'kasuj',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Z³a data poczatkowa.',
+    24 => 'Z³± data koñcowa.',
+    25 => 'Data koñcowa jest wcze¶niejsza od pocz±tkowej.'
 );
 
 ###############################################################################
@@ -682,23 +682,23 @@ $LANG22 = array(
 $LANG23 = array(
     1 => 'Edytor Linków',
     2 => '',
-    3 => 'Tytu³ Linka',
-    4 => 'URL Linka',
+    3 => 'Tytu³',
+    4 => 'URL',
     5 => 'Kategoria',
     6 => '(uwzglêdnij http://)',
     7 => 'Inne',
-    8 => 'Link Wej¶cia',
-    9 => 'Opis Linka',
-    10 => 'Wpisz Tytu³a linka, URL i Opis.',
+    8 => 'Ods³on',
+    9 => 'Opis',
+    10 => 'Wpisz Tytu³a, URL i Opis linka.',
     11 => 'Menad¿er Linków',
     12 => 'Aby zmodyfikowaæ lub wykasowaæ link, kliknij na dany link poni¿ej.  Aby wpisaæ nowy link kliknij Nowy Link powy¿ej.',
-    13 => 'Tytu³ Linka',
-    14 => 'Kategoria Linka',
-    15 => 'URL Linka',
+    13 => 'Tytu³',
+    14 => 'Kategoria',
+    15 => 'URL',
     16 => 'Odmowa Dostêpu',
     17 => "Próbujesz wyedytowaæ link, do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF['site_admin_url']}/link.php\">wróciæ do ekranu administrowania linkami</a>.",
     18 => 'Nowy Link',
-    19 => 'Admin Home',
+    19 => 'Panel Sterowania',
     20 => 'Je¶li inny, podaj jaki',
     21 => 'zapisz',
     22 => 'anuluj',
@@ -752,7 +752,7 @@ $LANG24 = array(
     41 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Mo¿esz podgl±dn±æ artyku³ poni¿ej. Proszê <a href=\"{$_CONF['site_admin_url']}/story.php\">wróciæ do strony administruj±cej artyku³ami.",
     42 => "Próbujesz wyedytowaæ artyku³ do którego nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu.  Proszê <a href=\"{$_CONF['site_admin_url']}/story.php\">wróciæ do strony administruj±cej artyku³ami</a>.",
     43 => 'Nowy Artyku³',
-    44 => 'Centrum Admina',
+    44 => 'Panel Sterowania',
     45 => 'Dostêp',
     46 => '<b>UWAGA:</b> je¶li przesuniesz datê do przodu, artyku³ nie zostanie opublikowany wcze¶niej. Oznacza to równie¿, ¿e artyku³ nie bêdzie uwzglêdniony w pliku RDF i zostanie pominiêty przy wyszukiwaniu.',
     47 => 'Zdjêcia',
@@ -766,11 +766,11 @@ $LANG24 = array(
     55 => 'Pojawi³y siê nastêpuj±ce b³êdy podczas próby zapisu tego artyku³u.  Proszê je poprawiæ przed ponownym zapisem',
     56 => 'Poka¿ Ikonê Artyku³u',
     57 => 'Poka¿ nieskalowalne zdjêcie',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => 'Zarz±dzanie Artyku³ami',
+    59 => 'Opcja',
+    60 => 'Aktywna',
+    61 => 'Auto Archiwizacja',
+    62 => 'Auto Kasacja'
 );
 
 ###############################################################################
@@ -800,7 +800,7 @@ $LANG25 = array(
     21 => 'Odmowa Dostêpu',
     22 => "Próbujesz wyedytowaæ sondê do której nie masz uprawnieñ.  Ta próba zosta³a zapisana w logu. Proszê <a href=\"{$_CONF['site_admin_url']}/poll.php\">wróciæ do strony administruj±cej sondami</a>.",
     23 => 'Nowa Sonda',
-    24 => 'Admin Home',
+    24 => 'Panel Sterowania',
     25 => 'Tak',
     26 => 'Nie'
 );
@@ -826,15 +826,15 @@ $LANG27 = array(
     15 => 'alfabetycznie',
     16 => 'domy¶lnie jest',
     17 => 'Nowa Sekcja',
-    18 => 'Admin Home',
+    18 => 'Panel Sterowania',
     19 => 'zapisz',
     20 => 'anuluj',
     21 => 'kasuj',
     22 => 'Domy¶lnie',
     23 => 'zrób z tego domy¶ln± sekcjê dla przesy³anych artyku³ów',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'Sekcja Archiwalna',
+    26 => 'domy¶lna sekcja dla archiwizowanych artyku³ów. Dozwolona jest tylko jedna sekcja.'
 );
 
 ###############################################################################
@@ -856,7 +856,7 @@ $LANG28 = array(
     13 => 'PozZab',
     14 => 'Data Rej.',
     15 => 'Nowy U¿ytkownik',
-    16 => 'Admin Home',
+    16 => 'Panel Sterowania',
     17 => 'zmieñ has³o',
     18 => 'anuluj',
     19 => 'kasuj',
@@ -897,7 +897,7 @@ $LANG29 = array(
     17 => 'Pe³na nazwa u¿ytkownika',
     18 => 'Email',
     34 => 'Panel Sterowania',
-    35 => 'Przes³ane Materia³y',
+    35 => 'Przes³ane Artyku³y',
     36 => 'Przes³ane Linki',
     37 => 'Przes³ane Wydarzenia',
     38 => 'Prze¶lij',
@@ -992,20 +992,20 @@ $LANG32 = array(
     2 => 'Umowa Instalacyjna Pluginów',
     3 => 'Plugin Formularz Instalacyjny',
     4 => 'Plugin Plik',
-    5 => 'Plugin Lista',
+    5 => 'Zainstalowane Pluginy',
     6 => 'Ostrze¿enie: Plugin Ju¿ Zainstalowany!',
     7 => 'Plugin, który próbujesz zainstalowaæ ju¿ istnieje.  Proszê wykasowaæ istniej±cy plugin i zainstalowaæ go ponownie',
     8 => 'Sprawdzanie Kompatybilno¶ci Pluginu Zakoñczone Niepowodzeniem',
     9 => 'Ten plugin wymaga nowszej wersji Geekloga. Albo uaktualnij swoj± kopiê <a href=http://www.geeklog.net>Geekloga</a> albo ¶ci±gnij nowsz± wersjê tego pluginu.',
     10 => '<br><b>Brak zainstalowanych pluginów.</b><br><br>',
-    11 => 'Aby zmodyfikowaæ lub wykasowaæ plugin, kliknij na numer pluginu. Wiêcej informacji na temat pluginu: kliknij nazwê pluginu i zostaniesz przekierowany na stronê autora. Aby zainstalowaæ lub uaktualniæ plugin kliknij na nowy plugin.',
+    11 => 'Aby zmodyfikowaæ lub wykasowaæ plugin, kliknij na nazwê pluginu. Zobaczysz wiêcej informacji w³±cznie z adresem strony autora. Widoczne s± wersje zainstalowana i wersja kodu. To pomo¿e stwierdziæ czy dany plugin wymaga aktualizacji. Aby zainstalowaæ lub uaktualniæ dany plugin proszê zapoznaæ siê z do³±czon± do niego instrukcj±.',
     12 => 'brak nazwy pluginu dla plugineditor()',
-    13 => 'Plugin Edytor',
+    13 => 'Edytor Pluginów',
     14 => 'Nowy Plugin',
-    15 => 'Admin Home',
-    16 => 'Plugin Nazwa',
-    17 => 'Plugin Wersja',
-    18 => 'Geeklog Wersja',
+    15 => 'Panel Sterowania',
+    16 => 'Nazwa',
+    17 => 'Wersja',
+    18 => 'Wersja GL',
     19 => 'Aktywny',
     20 => 'Tak',
     21 => 'Nie',
@@ -1013,15 +1013,15 @@ $LANG32 = array(
     23 => 'Zapisz',
     24 => 'Anuluj',
     25 => 'Kasuj',
-    26 => 'Plugin Nazwa',
-    27 => 'Plugin Strona Domowa',
-    28 => 'Plugin Wersja',
-    29 => 'Geeklog Wersja',
+    26 => 'Nazwa Pluginu',
+    27 => 'Strona Domowa Pluginu',
+    28 => 'Wersja Zainstalowana',
+    29 => 'Wersja GL',
     30 => 'Skasowaæ Plugin?',
     31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update'
+    32 => '<p><b>B³êdny format tagu AutoLink</b></p>',
+    33 => 'Wersja Kodu',
+    34 => 'Aktualizacja'
 );
 
 ###############################################################################
@@ -1034,18 +1034,18 @@ $LANG33 = array(
     4 => 'anuluj',
     10 => 'Syndykacja Tre¶ci',
     11 => 'Nowy Plik',
-    12 => 'Menu Admina',
+    12 => 'Panel Sterowania',
     13 => 'Aby zmodyfikowaæ lub usun±æ plik, kliknij na tytu³ pliku poni¿ej. Aby stworzyæ nowy plik, kliknij Nowy Plik powy¿ej.',
     14 => 'Tytu³',
     15 => 'Rodzaj',
     16 => 'Plik',
     17 => 'Format',
     18 => 'ost. aktualizacja',
-    19 => 'Aktywne',
+    19 => 'Aktywny',
     20 => 'Tak',
     21 => 'Nie',
     22 => '<i>(plików brak)</i>',
-    23 => 'wszystkie Artyku³y',
+    23 => 'Wszystkie Artyku³y',
     24 => 'Edytor Plików',
     25 => 'Tytu³ Pliku',
     26 => 'Limit',
@@ -1130,8 +1130,8 @@ $MESSAGE = array(
     57 => 'Twoje konto zosta³o pomy¶lnie usuniête.',
     58 => 'Plik zosta³ zapisany.',
     59 => 'Plik zosta³ skasowany.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    60 => 'Plugin zosta³ pomy¶lnie zaktualizowany',
+    61 => 'Plugin %s: Nieznany komunikat placeholder'
 );
 
 ###############################################################################
@@ -1177,7 +1177,7 @@ $LANG_ACCESS = array(
     'nogroupsforcoregroup' => 'Grupa nie nale¿y do pozosta³ych grup',
     'grouphasnorights' => 'Grupa nie ma dostêpu do ¿adnych funkcji administracyjnych tego serwisu',
     'newgroup' => 'Nowa Grupa',
-    'adminhome' => 'Admin Home',
+    'adminhome' => 'Panel Sterowania',
     'save' => 'zapisz',
     'cancel' => 'anuluj',
     'delete' => 'kasuj',
@@ -1191,14 +1191,14 @@ $LANG_ACCESS = array(
     'availmembers' => 'Dostêpni Cz³onkowie',
     'groupmembers' => 'Cz³onkowie Grupy',
     'canteditgroup' => 'Aby wyedytowaæ t± grupê musisz do niej nale¿eæ. Proszê skontaktowaæ siê z administratorem je¶li uwa¿asz, ¿e nast±pi³a pomy³ka.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => 'Aby zobaczyæ cz³onków tej grupy, musisz byæ jej cz³onkiem. Skontaktuj siê z administratorem je¶li uwa¿asz, ¿e to jest b³±d.'
 );
 
 ###############################################################################
 # admin/database.php
 
 $LANG_DB_BACKUP = array(
-    'last_ten_backups' => 'Ostatnie 10 Kopii Zapasowych',
+    'last_ten_backups' => '10 Kopii Zapasowych',
     'do_backup' => 'Wykonaj Kopiê Zapasow±',
     'backup_successful' => 'Kopia bazy wykonana pomy¶lnie.',
     'no_backups' => 'Brak kopii zapasowych w systemie',
@@ -1225,7 +1225,7 @@ $LANG_BUTTONS = array(
     7 => 'Statystyka',
     8 => 'Osobiste',
     9 => 'Szukaj',
-    10 => 'wyszukiwanie zaawansowane'
+    10 => 'zaawansowane szukanie'
 );
 
 ###############################################################################
@@ -1251,20 +1251,20 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    1 => 'Opcja PDF zosta³a wy³±czona',
+    2 => 'Dany dokument nie zosta³ wygenerowany. Dokument zosta³ otrzymany ale nie móg³ byæ przetworzony.  Upewnij siê, ¿e przes³ane dokumenty html zosta³y zapisane w standardowym xHTML. Proszê mieæ na uwadze, ¿e skomplikowane dokumenty html-owe mog± zostaæ przetworzone z b³êdem lub w ogóle. Dokument, który próbowa³a¶/e¶ wygenrowaæ mia³ rozmiar 0 bajtów i zosta³ usuniêty. Je¶li uwa¿asz, ¿e Twój dokument powinien zostaæ wygenerowany prawid³owo, prze¶lij go raz jeszcze.',
+    3 => 'Nieznany b³±d podczas generowania pliku PDF',
+    4 => "Nie okre¶lono ¿adnej strony albo chcesz u¿yæ poni¿szego narzêdzia do generowania PDF-a ad-hoc.  Je¶li uwa¿asz, ¿e strona to b³±d\n          skontaktuj siê z administratorem systemu.  W przeciwnym razie, u¿yj poni¿szego formularza aby wygenerowaæ PDF-a metod± ad-hoc.",
+    5 => '£adowanie dokumentu.',
+    6 => 'Proszê poczekaæ na za³adowanie dokumentu.',
+    7 => 'Kliknij prawym przyciskiem myszy i wybierz \'zapisz element docelowy jako...\' lub \'zapisz link...\' aby zachowaæ kopiê dokumentu na Twoim komputerze.',
     8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
+    9 => 'Generator PDF',
     10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => 'Generuj PDF!',
+    13 => 'Konfiguracja PHP na tym serwerze nie pozwala na u¿ycie URL z komend± fopen().  Administrator systemu musi edytowaæ plik php.ini i ustawiæ allow_url_fopen na On',
+    14 => '¯±dany PDF albo nie istnieje albo nie masz do niego uprawnieñ.'
 );
 
 ?>
