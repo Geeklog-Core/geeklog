@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.15 2002/04/12 16:20:06 tony_bibbs Exp $
+// $Id: link.php,v 1.16 2002/04/14 18:58:43 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -73,6 +73,7 @@ function editlink($mode, $lid = '')
     $link_templates->set_file('editor','linkeditor.thtml');
     $link_templates->set_var('site_url', $_CONF['site_url']);
     $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $link_templates->set_var('layout_url',$_CONF['layout_url']);
 	if ($mode <> 'editsubmission' AND !empty($lid)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['links']} WHERE lid ='$lid'");
 		$A = DB_fetchArray($result);
