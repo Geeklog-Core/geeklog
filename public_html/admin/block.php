@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.21 2002/01/03 21:44:35 tony_bibbs Exp $
+// $Id: block.php,v 1.22 2002/01/11 22:52:44 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -76,6 +76,10 @@ function editdefaultblock($A,$access)
     $block_templates->set_var('block_id', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);
+    $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
+    $block_templates->set_var('block_help', $A['help']);
+    $block_templates->set_var('lang_includehttp', $LANG21[51]);
+    $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_topic', $LANG21[6]);
@@ -163,6 +167,10 @@ function editblock($bid='')
     $block_templates->set_var('block_bid', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);	
+    $block_templates->set_var('block_help', $A['help']);
+    $block_templates->set_var('lang_blockhelpurl', $LANG21[50]);
+    $block_templates->set_var('lang_includehttp', $LANG21[51]);
+    $block_templates->set_var('lang_explanation', $LANG21[52]);
     $block_templates->set_var('block_name', $A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_nospaces', $LANG21[49]);
@@ -266,7 +274,7 @@ function editblock($bid='')
 * @perm_anon    array       Permissinos anonymous users have
 *
 */
-function saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 {
 	global $_TABLES, $_CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
@@ -313,7 +321,7 @@ function saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rd
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-        DB_save($_TABLES['blocks'],'bid,name,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$name','$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
+        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
 
     } else {
         $retval .= COM_siteHeader()
@@ -416,7 +424,7 @@ case 'delete':
     $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'admin/block.php?msg=12');
         break;
 case 'save':
-	$display .= saveblock($bid,$name,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     break;
 case 'edit':
     $display .= COM_siteHeader()
