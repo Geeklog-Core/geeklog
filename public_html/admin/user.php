@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.62 2003/09/01 19:01:06 dhaun Exp $
+// $Id: user.php,v 1.63 2003/09/07 18:51:41 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -63,14 +63,14 @@ if (!SEC_hasRights('user.edit')) {
 */
 function edituser($uid = '', $msg = '') 
 {
-    global $_TABLES, $LANG28, $_CONF, $LANG_ACCESS, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $MESSAGE;
 
     $retval = '';
 
     if (!empty ($msg)) {
         $retval .= COM_startBlock ($LANG28[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG28[$msg]
+                . $MESSAGE[$msg]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
@@ -222,14 +222,18 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                               "username = '$username' AND uid <> $uid");
         if ($ucount > 0) {
             // Admin just changed a user's username to one that already exists
-            return edituser ($uid, 21);
+            return edituser ($uid, 51);
+        }
+
+        if (!COM_isEmail ($email)) {
+            return edituser ($uid, 52);
         }
 
         $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
                               "email = '$email' AND uid <> $uid");
         if ($ucount > 0) {
             // Admin just changed a user's email to one that already exists
-            return edituser ($uid, 21);
+            return edituser ($uid, 56);
         }
 
         $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
