@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.325 2004/05/20 18:57:45 vinny Exp $
+// $Id: lib-common.php,v 1.326 2004/05/29 11:48:07 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -298,10 +298,10 @@ if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
         $curtime = time();
 
         // Insert anonymous user session
-        DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)", 1 );
+        $result = DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id, $curtime, '$REMOTE_ADDR', 1)", 1 );
         $tries++;
     }
-    while( DB_error() && ( $tries < 5 ));
+    while(( $result === false) && ( $tries < 5 ));
 }
 
 // Clear out any expired sessions
