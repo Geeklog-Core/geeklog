@@ -29,6 +29,10 @@ CREATE TABLE {$_TABLES['blocks']} (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX blocks_bid(bid),
+  INDEX blocks_is_enabled(is_enabled),
+  INDEX blocks_tid(tid),
+  INDEX blocks_type(type),
   PRIMARY KEY  (bid)
 ) TYPE=MyISAM
 ";
@@ -61,6 +65,11 @@ CREATE TABLE {$_TABLES['comments']} (
   reason tinyint(4) NOT NULL default '0',
   pid int(10) unsigned NOT NULL default '0',
   uid mediumint(8) NOT NULL default '1',
+  INDEX comments_cid(cid),
+  INDEX comments_type(type),
+  INDEX comments_sid(sid),
+  INDEX comments_date(date),
+  INDEX comments_uid(uid),
   PRIMARY KEY  (cid)
 ) TYPE=MyISAM
 ";
@@ -115,6 +124,10 @@ CREATE TABLE {$_TABLES['events']} (
   location varchar(128) default NULL,
   timestart time default NULL,
   timeend time default NULL,
+  INDEX events_eid(eid),
+  INDEX events_datestart(datestart),
+  INDEX events_dateend(dateend),
+  INDEX events_event_type(event_type),
   PRIMARY KEY  (eid)
 ) TYPE=MyISAM
 ";
@@ -173,6 +186,8 @@ CREATE TABLE {$_TABLES['group_assignments']} (
   ug_main_grp_id mediumint(8) NOT NULL default '0',
   ug_uid mediumint(8) unsigned default NULL,
   ug_grp_id mediumint(8) unsigned default NULL,
+  INDEX group_assignments_ug_main_grp_id(ug_main_grp_id),
+  INDEX group_assignments_ug_uid(ug_uid),
   INDEX group_assignments_ug_grp_id(ug_grp_id),
   KEY ug_main_grp_id (ug_main_grp_id)
 ) TYPE=MyISAM
@@ -204,6 +219,9 @@ CREATE TABLE {$_TABLES['links']} (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX links_lid(lid),
+  INDEX links_category(category),
+  INDEX links_date(date),
   PRIMARY KEY  (lid)
 ) TYPE=MyISAM
 ";
@@ -294,6 +312,11 @@ CREATE TABLE {$_TABLES['pollquestions']} (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX pollquestions_qid(qid),
+  INDEX pollquestions_date(date),
+  INDEX pollquestions_display(display),
+  INDEX pollquestions_commentcode(commentcode),
+  INDEX pollquestions_statuscode(statuscode),
   PRIMARY KEY  (qid)
 ) TYPE=MyISAM
 ";
@@ -372,7 +395,13 @@ CREATE TABLE {$_TABLES['stories']} (
   perm_group tinyint(1) unsigned NOT NULL default '3',
   perm_members tinyint(1) unsigned NOT NULL default '2',
   perm_anon tinyint(1) unsigned NOT NULL default '2',
+  INDEX stories_sid(sid),
   INDEX stories_tid(tid),
+  INDEX stories_date(date),
+  INDEX stories_uid(uid),
+  INDEX stories_frontpage(frontpage),
+  INDEX stories_featured(featured),
+  INDEX stories_hits(hits),
   PRIMARY KEY  (sid)
 ) TYPE=MyISAM
 ";
@@ -444,6 +473,9 @@ CREATE TABLE {$_TABLES['userindex']} (
   boxes varchar(255) NOT NULL default '',
   noboxes tinyint(4) NOT NULL default '0',
   maxstories tinyint(4) default NULL,
+  INDEX userindex_uid(uid),
+  INDEX userindex_noboxes(noboxes),
+  INDEX userindex_maxstories(maxstories),
   PRIMARY KEY  (uid)
 ) TYPE=MyISAM
 ";
@@ -520,6 +552,10 @@ CREATE TABLE {$_TABLES['staticpage']} (sp_id varchar(20) DEFAULT '' NOT NULL,
   sp_format varchar(20) NOT NULL,
   sp_onmenu tinyint(1) unsigned NOT NULL DEFAULT '0',
   sp_label varchar(64),
+  INDEX staticpage_sp_id(sp_id),
+  INDEX staticpage_sp_uid(sp_uid),
+  INDEX staticpage_sp_date(sp_date),
+  INDEX staticpage_sp_onmenu(sp_onmenu),
   PRIMARY KEY (sp_id)
 ) TYPE=MyISAM
 ";
