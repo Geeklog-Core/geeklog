@@ -192,7 +192,7 @@ $_CONF['showupcomingevents']    = '{cfg_showupcomingevents}';
 $_CONF['event_types']           = '{cfg_event_types}';
 
 // Story Settings
-$_CONF['maximageperarticle']    = 5;
+$_CONF['maximagesperarticle']    = 5;
 $_CONF['pagetitle']             = '';
 $_CONF['backend']               = '{cfg_backend}';
 $_CONF['limitnews']             = '{cfg_limitnews}';
