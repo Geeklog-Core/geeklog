@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.71 2003/09/05 17:18:15 dhaun Exp $
+// $Id: usersettings.php,v 1.72 2003/09/06 21:53:42 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -53,10 +53,11 @@ function edituser()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER;
 
-	// Call custom account form and edit function if enabled and exists
-	if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+    // Call custom account form and edit function if enabled and exists
+    if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
         return custom_userform('edit',$_USER['uid']);
-	} 
+    } 
+
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
     if ($A['cookietimeout'] == 0) {
@@ -107,7 +108,7 @@ function edituser()
     }
     $preferences->set_var ('fullname_value', $A['fullname']);
     $preferences->set_var ('new_username_value', $_USER['username']);
-    $preferences->set_var ('password_value', $A['passwd']);
+    $preferences->set_var ('password_value', '');
     if ($_CONF['allow_username_change'] == 1) {
         $preferences->parse ('username_option', 'username', true);
     } else {
@@ -125,6 +126,7 @@ function edituser()
     $preferences->set_var ('signature_value', $A['sig']);
 
     if ($_CONF['allow_user_photo'] == 1) {
+        $photo = '';
         if (!empty ($A['photo'])) {
             if (!empty ($A['fullname'])) {
                 $alt = '[' . $A['fullname'] . ']';
@@ -505,7 +507,7 @@ function editpreferences()
         ($_CONF['hide_author_exclusion'] == 0)) {
         $result = DB_query ("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
         $nrows = DB_numRows ($result);
-        unset ($where);
+        $where = '';
         for ($i = 0; $i < $nrows; $i++) {
             $W = DB_fetchArray ($result);
             $where .= "uid = '$W[0]' OR ";
@@ -539,7 +541,7 @@ function editpreferences()
     }
 
     // boxes block
-    $selectedblock = '';
+    $selectedblocks = '';
     if (strlen($A['boxes']) > 0) {
         $blockresult = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE bid NOT IN (" . str_replace(' ',',',$A['boxes']) . ")");
         for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
@@ -733,7 +735,8 @@ function saveuser($A)
                 }
             } else {
                 $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
-                if (!empty($curphoto) AND $A['delete_photo'] == 'on') {
+                if (!empty($curphoto) AND isset ($A['delete_photo']) AND
+                        $A['delete_photo'] == 'on') {
                     $filetodelete = $_CONF['path_html'] . 'images/userphotos/' . $curphoto;
                     if (!unlink($filetodelete)) {
                         echo COM_errorLog("Unable to remove file $filetodelete");
@@ -787,12 +790,36 @@ function savepreferences($A)
 {
     global $_TABLES, $_CONF, $_USER;
 
-    if ($A['noicons'] == 'on') $A['noicons'] = 1;
-    if ($A["willing"] == 'on') $A["willing"] = 1;
-    if ($A['noboxes'] == 'on') $A['noboxes'] = 1;
-    if ($A['emailfromadmin'] == 'on') $A['emailfromadmin'] = 1;
-    if ($A['emailfromuser'] == 'on') $A['emailfromuser'] = 1;
-    if ($A['showonline'] == 'on') $A['showonline'] = 1;
+    if (isset ($A['noicons']) && ($A['noicons'] == 'on')) {
+        $A['noicons'] = 1;
+    } else {
+        $A['noicons'] = 0;
+    }
+    if (isset ($A['willing']) && ($A['willing'] == 'on')) {
+        $A['willing'] = 1;
+    } else {
+        $A['willing'] = 0;
+    }
+    if (isset ($A['noboxes']) && ($A['noboxes'] == 'on')) {
+        $A['noboxes'] = 1;
+    } else {
+        $A['noboxes'] = 0;
+    }
+    if (isset ($A['emailfromadmin']) && ($A['emailfromadmin'] == 'on')) {
+        $A['emailfromadmin'] = 1;
+    } else {
+        $A['emailfromadmin'] = 0;
+    }
+    if (isset ($A['emailfromuser']) && ($A['emailfromuser'] == 'on')) {
+        $A['emailfromuser'] = 1;
+    } else {
+        $A['emailfromuser'] = 0;
+    }
+    if (isset ($A['showonline']) && ($A['showonline'] == 'on')) {
+        $A['showonline'] = 1;
+    } else {
+        $A['showonline'] = 0;
+    }
 
     if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
@@ -808,16 +835,20 @@ function savepreferences($A)
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
     $ETIDS = @array_values($A['etids']);
 
+    $tids = '';
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
             $tids .= $TIDS[$i] . ' ';
         }
     }
+    $aids = '';
     if (sizeof($AIDS) > 0) {
         for ($i = 0; $i < sizeof($AIDS); $i++) {
             $aids .= $AIDS[$i] . ' ';
         }
     }
+
+    $selectedblocks = '';
     if (count($BOXES) > 0) {
         for ($i = 1; $i <= count($BOXES); $i++) {
             $boxes .= current($BOXES); 
@@ -827,7 +858,6 @@ function savepreferences($A)
             next($BOXES);
         }
         $blockresult = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($boxes)");
-        $selectedblocks = '';
         for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
             $row = DB_fetchArray($blockresult);
             if ($row['name'] <> 'user_block' AND $row['name'] <> 'admin_block' AND $row['name'] <> 'section_block') {
@@ -843,6 +873,9 @@ function savepreferences($A)
         for ($i = 0; $i < sizeof($ETIDS); $i++) {
             $etids .= $ETIDS[$i] . " ";
         }
+    }
+    if (!isset ($A['tzid'])) {
+        $A['tzid'] = '';
     }
 
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
@@ -878,13 +911,17 @@ if (!empty($_USER['username']) && !empty($mode)) {
     case 'preferences':
     case 'comments':
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        if (isset ($HTTP_GET_VARS['msg'])) {
+            $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        }
         $display .= editpreferences();
         $display .= COM_siteFooter();
         break;
     case 'edit':
         $display .= COM_siteHeader('menu');
-        $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        if (isset ($HTTP_GET_VARS['msg'])) {
+            $display .= COM_showMessage($HTTP_GET_VARS['msg']);
+        }
         $display .= edituser();
         $display .= COM_siteFooter();
         break;

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.51 2003/07/01 17:48:56 dhaun Exp $
+// $Id: index.php,v 1.52 2003/09/06 21:53:42 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -71,8 +71,10 @@ if (!$newstories && !$displayall) {
     }
 }
 
-$display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
-
+$display .= COM_siteHeader();
+if (isset ($HTTP_GET_VARS['msg'])) {
+    $display .= COM_showMessage ($HTTP_GET_VARS['msg']);
+}
 
 
 // Show any Plugin formatted blocks

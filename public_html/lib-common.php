@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.253 2003/09/06 15:41:44 dhaun Exp $
+// $Id: lib-common.php,v 1.254 2003/09/06 21:53:42 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1576,6 +1576,8 @@ function COM_pollVote( $qid )
 function COM_showPoll( $size, $qid='' )
 {
     global $_TABLES, $HTTP_COOKIE_VARS, $REMOTE_ADDR, $_CONF;
+
+    $retval = '';
 
     DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}" );
 
@@ -4367,6 +4369,8 @@ function COM_getUserCookieTimeout()
 function phpblock_whosonline()
 {
     global $_CONF,$_TABLES,$LANG01;
+
+    $retval = '';
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
