@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.340 2004/07/18 03:52:44 vinny Exp $
+// $Id: lib-common.php,v 1.341 2004/07/18 12:02:31 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2432,7 +2432,7 @@ function COM_adminMenu( $help = '', $title = '' )
 
             if( SEC_hasrights( 'event.edit' ))
             {
-                $num += DB_count ($_TABLES['eventsubmission'] );
+                $num += DB_count( $_TABLES['eventsubmission'] );
             }
 
             if( SEC_hasrights( 'link.edit' ))
@@ -3070,7 +3070,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                        . "WHERE c.uid = u.uid AND c.cid = $pid";
                 } else {
-                    $count = DB_count($_TABLES['comments'], "sid", $sid);
+                    $count = DB_count( $_TABLES['comments'], 'sid', $sid );
             
                     $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
                          . "unix_timestamp(c.date) AS nice_date "
@@ -3113,7 +3113,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 } else {
                     if ( $pid == 0 ) {
                         // count the total number of applicable comments
-                        $count = DB_count($_TABLES['comments'], "sid", $sid);
+                        $count = DB_count( $_TABLES['comments'], 'sid', $sid );
 
                         $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
                              . "unix_timestamp(c.date) AS nice_date "
@@ -3414,6 +3414,11 @@ function COM_mail( $to, $subject, $message, $from = '', $html = false, $priority
     global $_CONF, $LANG_CHARSET;
 
     static $mailobj;
+
+    // According to RFC(2)822, colons can be used in email addresses to address
+    // groups - which is probably not what we have in mind here, so remove them
+    $to = str_replace( ':', '', $to );
+    $from = str_replace( ':', '', $from );
 
     if( function_exists( 'CUSTOM_mail' ))
     {
@@ -5656,22 +5661,15 @@ function COM_highlightQuery( $text, $query )
     $query = str_replace( '+', ' ', $query );
 
     // escape all the other PCRE special characters
-    $query = str_replace( '\\', '\\\\', $query );
-    $query = str_replace( '.', '\.', $query ); 
-    $query = str_replace( '*', '\*', $query );
-    $query = str_replace( '?', '\?', $query );
-    $query = str_replace( '^', '\^', $query );
-    $query = str_replace( '$', '\$', $query );
-    $query = str_replace( '(', '\(', $query );
-    $query = str_replace( ')', '\)', $query );
-    $query = str_replace( ']', '\]', $query );
-    $query = str_replace( '{', '\{', $query );
-    $query = str_replace( '}', '\}', $query );
+    $query = preg_quote( $query );
 
     $mywords = explode( ' ', $query );
     foreach( $mywords as $searchword )
     {
-        $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", '<x>' . $text . '<x>' );
+        if( !empty( $searchword ))
+        {
+            $text = preg_replace( '/(\>(((?>[^><]+)|(?R))*)\<)/ie', "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", '<x>' . $text . '<x>' );
+        }
     }
 
     return $text;

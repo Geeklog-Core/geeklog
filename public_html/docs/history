@@ -3,6 +3,11 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Remove colons from email addresses, as they have a special meaning,
+  according to RFC(2)822, that we didn't intend (bug #6) [Dirk]
+- Fixed compilation of regexp if the search query ended or started with a
+  space (the resulting error message would also expose the path to article.php),
+  (bug #251) [Dirk]
 - Sort the admin's list of polls by date (newest first). Also added paging,
   a row number and parameter filtering. Paging and the row number require
   theme changes in admin/poll/polllist.thtml and listitem.thtml [Dirk]
