@@ -106,13 +106,14 @@ function editblock($bid="") {
 	if (!empty($bid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks where bid ='$bid'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-		if ($access == 0) {
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access == 2 || $access == 0) {
                         startblock($LANG21[44]);
-                        print  $LANG21[45];
+                        print $LANG21[45];
                         endblock();
                         return;
-                }
+                } 
+
 		if ($A["type"] == "gldefault") {
 			editdefaultblock($A);
 			return;
@@ -121,8 +122,11 @@ function editblock($bid="") {
 		$A["bid"] = 0;
 		$A["blockorder"] = 0;
 		$A["owner_id"] = $USER["uid"];
-		$A["private_flag"] = 1;
-		$access = 1;
+		$A["perm_owner"] = 3;
+                $A["perm_group"] = 3;
+                $A["perm_members"] = 2;
+                $A["perm_anon"] = 2;
+		$access = 3;
 	}
 	startblock($LANG21[3]);
 	print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
@@ -177,7 +181,7 @@ function editblock($bid="") {
         print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
         print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
         	for ($i=0;$i<count($usergroups);$i++) {
                 	print "<option value=" . $usergroups[key($usergroups)];
@@ -191,12 +195,13 @@ function editblock($bid="") {
 	} else {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
+	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+        print $html;
+        print "</td></tr>";
         print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 	print "<tr><td colspan=2><hr></td></tr>";
 
@@ -216,7 +221,7 @@ function editblock($bid="") {
 ###############################################################################
 # Saves the block to the database
 
-function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$private_flag) {
+function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
 	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "gldefault" && (strlen($blockorder)>0)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
@@ -255,13 +260,11 @@ function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdat
                         $rdfupdated = "";
                         $phpblockfn = "";
                 }
+
+		#Convert array values to numeric permission values
+                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-		if ($private_flag == "on") {
-                        $private_flag = 1;
-                } else {
-                        $private_flag = 0;
-		}
-		dbsave("blocks","bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,private_flag","$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$private_flag","admin/block.php?msg=11");
+		dbsave("blocks","bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/block.php?msg=11");
 	} else {
 		site_header("menu");
                 startblock($LANG21[32]);
@@ -301,15 +304,15 @@ function listblocks() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-                if ($access) {
-                	if ($access == 1) {
-                        	$access = $LANG_ACCESS[ownerroot];
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access > 0) {
+                	if ($access == 3) {
+                        	$access = $LANG_ACCESS[edit];
                         } else {
-                                $access = $LANG_ACCESS[group];
+                                $access = $LANG_ACCESS[readonly];
                         }
                 } else {
-                	$access = $LANG_ACCESS[readonly];
+                	$access = $LANG_ACCESS[none];
                 }
 		if ($A["onleft"] == 1) {
 			$side = $LANG21[40];
@@ -337,7 +340,7 @@ switch ($mode) {
 		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
 		break;
 	case "save":
-		saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$private_flag);
+		saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case "edit":
 		site_header("menu");

@@ -52,8 +52,8 @@ function edittopic($tid="") {
 	if (!empty($tid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics where tid ='$tid'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-		if ($access == 0) {
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+		if ($access == 0 OR $access == 2) {
                         startblock($LANG27[12]);
                         print $LANG27[13]; 
                         endblock();
@@ -65,8 +65,11 @@ function edittopic($tid="") {
 		#most topics should belong to the normal user group 
 		# and the private flag should be turned OFF
 		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Normal User'");
-		$A["private_flag"] == 0;
-		$access = 1;
+		$A["perm_owner"] = 3;
+                $A["perm_group"] = 3;
+                $A["perm_members"] = 2;
+                $A["perm_anon"] = 2;
+		$access = 3;
 	}
 	print "<form action={$CONF["site_url"]}/admin/topic.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
@@ -84,7 +87,7 @@ function edittopic($tid="") {
         print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
         print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
         	for ($i=0;$i<count($usergroups);$i++) {
                 	print "<option value=" . $usergroups[key($usergroups)];
@@ -98,12 +101,13 @@ function edittopic($tid="") {
 	} else { 
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
+	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+        print $html;
+        print "</td></tr>";
         print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
         print "<tr><td colspan=2><hr><td></tr>";
 
@@ -122,7 +126,7 @@ function edittopic($tid="") {
 ###############################################################################
 # Saves $tid to the database
 
-function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$private_flag) {
+function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $CONF,$LANG27;
 
 	if (!empty($tid) && !empty($topic)) {
@@ -130,13 +134,10 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 			$imageurl = ''; 
 		}	
 
-		if ($private_flag == 'on') {
-                        $private_flag = 1;
-                } else {
-                        $private_flag = 0;
-		}
+		#Convert array values to numeric permission values
+                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-		dbsave("topics","tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, private_flag","'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$private_flag","admin/topic.php?msg=13");
+		dbsave("topics","tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon","'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_group","admin/topic.php?msg=13");
 	} else {
 		site_header('menu');
 		errorlog($LANG27[7],2);
@@ -159,15 +160,15 @@ function listtopics() {
 	$counter = 1;
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-                if ($access) {
-                        if ($access == 1) {
-                                $access = $LANG_ACCESS[ownerroot];
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access > 0) {
+                        if ($access == 3) {
+                                $access = $LANG_ACCESS[edit];
                         } else {
-                                $access = $LANG_ACCESS[group];
+                                $access = $LANG_ACCESS[readonly];
                         }
                 } else {
-                        $access = $LANG_ACCESS[readonly];
+                        $access = $LANG_ACCESS[none];
                 }        
 		if (!empty($A["imageurl"])) {
 			print "<td><a href={$CONF["site_url"]}/admin/topic.php?mode=edit&tid={$A["tid"]}><img src={$CONF["site_url"]}{$A["imageurl"]} border=0><br>{$A["topic"]}</a> ($access)</td>";
@@ -195,7 +196,7 @@ switch ($mode) {
 		dbdelete("topics","tid",$tid,"/admin/topic.php?msg=14");
 		break;
 	case "save":
-		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$private_flag);
+		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case "edit":
 		site_header("menu");

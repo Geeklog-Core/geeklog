@@ -52,13 +52,18 @@ function storyeditor($sid,$mode="") {
 	if (!empty($sid) && $mode == "edit") {
 		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}stories WHERE sid = '$sid'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-		if ($access == 0) {
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+		if ($access == 2) {
 			startblock($LANG24[40]);
 			print $LANG24[41];
 			endblock();
 			article($A,n);
 			return;
+		} else if ($access == 0) {
+			startblock($LANG24[40]);
+                        print $LANG24[42];
+                        endblock();
+                        return;
 		}
 	} elseif (!empty($sid) && $mode == "editsubmission") {
 		$result = dbquery("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$CONF["db_prefix"]}storysubmission WHERE sid = '$sid'");
@@ -66,6 +71,13 @@ function storyeditor($sid,$mode="") {
 		$A["commentcode"] = 0;
 		$A["featured"] = 0;
 		$A["statuscode"] = 0;
+		$A["owner_id"] = $USER["uid"];
+		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Story Admin'");
+		$A["perm_owner"] = 3;
+		$A["perm_group"] = 3;
+		$A["perm_members"] = 2;
+		$A["perm_anon"] = 2;
+		$access = 3;
 	} elseif ($mode == "edit") {
 		$A["sid"] = makesid();
 		$A["uid"] = $USER["uid"];
@@ -73,9 +85,12 @@ function storyeditor($sid,$mode="") {
 		$A["commentcode"] = 0;
 		$A["statuscode"] = 0;
 		$A["featured"] = 0;
-		$A["private_flag"] = 1;
 		$A["owner_id"] = $USER["uid"];
-		$access = 1;
+		$A["perm_owner"] = 3;
+                $A["perm_group"] = 3;
+                $A["perm_members"] = 2;
+                $A["perm_anon"] = 2;
+		$access = 3;
 	} else {
 		$A = $HTTP_POST_VARS;
 		if ($A["postmode"] == "html") {
@@ -98,8 +113,9 @@ function storyeditor($sid,$mode="") {
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
 	print "<input type=submit value=preview name=mode> ";
 	print "<input type=submit value=cancel name=mode> ";
-	if (!empty($sid) && hasrights('story.delete'))
+	if ($access == 3) {
 		print "<input type=submit value=delete name=mode> ";
+	}
 	if ($A["type"] == "editsubmission" || $mode == "editsubmission") {
                 print "<input type=hidden name=type value=submission>";
         }
@@ -112,7 +128,7 @@ function storyeditor($sid,$mode="") {
 	print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
 	print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
 	$usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
 		for ($i=0;$i<count($usergroups);$i++) {
 			print "<option value=" . $usergroups[key($usergroups)];
@@ -126,13 +142,15 @@ function storyeditor($sid,$mode="") {
 	} else {
 		#they can't set the group then
 		print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-	print "</td></tr><tr><td align=right>{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-	if ($A["private_flag"] == 1) {
-		print "CHECKED";
-	}
-	print "></td></tr>";
-	print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
+	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+	print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+	$html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+	print $html;
+	print "</td></tr>";
+	#print "></td></tr>";
+	print "<tr><td colspan=2>{$LANG_ACCESS[permmsg]}<td></tr>";
 	print "<tr><td colspan=2><hr><td></tr>";
 	$curtime = getuserdatetimeformat($A["unixdate"]);
 	print "<tr><td align=right>{$LANG24[15]}:</td><td>". $curtime[0] . "<input type=hidden name=unixdate value={$A["unixdate"]}></td></tr>";
@@ -188,15 +206,15 @@ function liststories($page="1") {
  		for ($i=1; $i<=$nrows; $i++) {
 			$scount = (50 * $page) - 50 + $i;
 			$A = mysql_fetch_array($result);
-			$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-			if ($access) {
-				if ($access == 1) {
-					$access = $LANG_ACCESS[ownerroot];
+			$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+			if ($access > 0) {
+				if ($access == 3) {
+					$access = $LANG_ACCESS[edit];
 				} else {
-					$access = $LANG_ACCESS[group];
+					$access = $LANG_ACCESS[readonly];
 				}
 			} else {
-				$access = $LANG_ACCESS[readonly];
+				$access = $LANG_ACCESS[none];
 			}
 			$curtime = getuserdatetimeformat($A["unixdate"]);
 			print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>$scount</a></td>";
@@ -235,7 +253,7 @@ function liststories($page="1") {
 ###############################################################################
 # Saves a story to the database
 
-function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$private_flag) {
+function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $CONF,$LANG24;
 	if (!empty($title) && !empty($introtext)) {
 		if (empty($hits)) $hits = 0;
@@ -245,10 +263,8 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 		else
 			$draft_flag = 0;
 
-		if ($private_flag == "on")
-			$private_flag = 1;
-		else
-			$private_flag = 0;
+		#Convert array values to numeric permission values
+		list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
 		if ($featured == "1") {
 			#there can only be one non-draft featured story
@@ -321,7 +337,7 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 		$title = addslashes(htmlspecialchars(strip_tags(checkwords($title))));
 		$comments = dbcount("comments","sid",$sid);
 		if ($type = "submission") dbdelete("storysubmission","sid",$sid);
-		dbsave("stories","sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,private_flag","$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$private_flag","admin/story.php?msg=9");
+		dbsave("stories","sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/story.php?msg=9");
 	} else {
 		site_header("menu");
 		errorlog($LANG24[31],2);
@@ -357,7 +373,7 @@ switch ($mode) {
 		site_footer();
 		break;
 	case "save":
-		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$private_flag);
+		submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
 		break;
 	case "cancel":
 	default:

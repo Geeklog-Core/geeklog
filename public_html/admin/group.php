@@ -95,26 +95,48 @@ function editgroup($grp_id="") {
 	} else {
 		print "<tr><td colspan=\"2\"><hr></td></tr>";
 		print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[rights]}</b></td></tr>";
-		print "<tr><td colspan=\"2\">{$LANG_ACCESS[rightsdescr]}</td></tr>";
+		if ($A["grp_gl_core"] == 1) {
+			print "<tr><td colspan=\"2\">{$LANG_ACCESS[corerightsdescr]}</td></tr>";
+		} else {
+			print "<tr><td colspan=\"2\">{$LANG_ACCESS[rightsdescr]}</td></tr>";
+		}
 		print "<tr><td colspan=\"2\" width=\"100%\">";
-		printrights($grp_id);
+		printrights($grp_id,$A["grp_gl_core"]);
 		print "</tr></tr>";
                 print "<tr><td colspan=\"2\"><hr></td></tr>";
 		print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr>";
-		print "<tr><td colspan=\"2\" width=\"100%\">";
 		$groups = getusergroups('','',$grp_id);
-		if (is_array($groups)) {
-                        $selected = implode(' ',$groups);
-                } else {
-                        $selected = '';
-                }
-
-		#Only Root users can give rights to Root
-		if (ingroup('Root')) {
-			checklist('groups','grp_id,grp_name',"grp_id <> $grp_id",$selected);
+		if ($A["grp_gl_core"] == 1) {
+			if (is_array($groups)) {
+                       		$selected = implode(',',$groups);
+               		} else {
+                       		$selected = '';
+               		}
+			print "<tr><td colspan=\"2\">{$LANG_ACCESS[coregroupmsg]}</td></tr>";
+			$result= dbquery("SELECT grp_name FROM groups WHERE grp_id <> $grp_id AND grp_id in ($selected) ORDER BY grp_name");
+			$nrows = mysql_num_rows($result);
+			print "<tr><td colspan=\"2\">&nbsp;</td></tr>";
+			for ($i=1;$i<=$nrows;$i++) {
+				$GRPS = mysql_fetch_array($result);
+				print "<tr><td colspan=\"2\">{$GRPS["grp_name"]}</td></tr>";	
+			} 	
 		} else {
-			checklist('groups','grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected);
+			if (is_array($groups)) {
+                       		$selected = implode(' ',$groups);
+               		} else {
+                       		$selected = '';
+               		}
+			print "<tr><td colspan=\"2\">{$LANG_ACCESS[groupmsg]}</td></tr>";
+			print "<tr><td colspan=\"2\" width=\"100%\">";
+
+			#Only Root users can give rights to Root
+			if (ingroup('Root')) {
+				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id",$selected);
+			} else {
+				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected);
+			}
 		}
+
 		print "</tr></tr>";
 		print "</table></form>";
 		endblock();
@@ -123,7 +145,7 @@ function editgroup($grp_id="") {
 
 }
 
-function printrights($grp_id="") {
+function printrights($grp_id="",$core=0) {
 	global $VERBOSE,$USER;
 
 	# this gets a bit complicated so bare with the comments
@@ -176,17 +198,17 @@ function printrights($grp_id="") {
 			print "</tr>\n<tr>";
 		}
 		$A = mysql_fetch_array($features);
-		#reset($grpftarray);
-		#errorlog("COMPARING " . key($grpftarray) . " to {$A["ft_name"]}",1);
-		if (($grpftarray[$A["ft_name"]] == 'direct') OR empty($grpftarray[$A["ft_name"]])) {
+		if ((($grpftarray[$A["ft_name"]] == 'direct') OR empty($grpftarray[$A["ft_name"]])) AND ($core == 0)) {
 			print "\n<td><input type=\"checkbox\" name=\"features[]\" value=\"{$A["ft_id"]}\"";
 			if ($grpftarray[$A["ft_name"]] == 'direct') {
 				print " CHECKED";
 			} 
 			print "> {$A["ft_name"]}</td>";
-			#next($grpftarray);
 		} else {
-			print "<td>{$A["ft_name"]}</td>";
+			#either this is an indirect right OR this is a core feature
+			if ((($core == 1) AND ($grpftarray[$A["ft_name"]] == 'indirect' OR $grpftarray[$A["ft_name"]] == 'direct')) OR ($core == 0)) {
+				print "<td>{$A["ft_name"]}</td>";
+			}
 		}
 	}
 	print "</tr>\n</table>";

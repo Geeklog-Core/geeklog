@@ -47,23 +47,31 @@ if (!hasrights('event.edit')) {
 ###############################################################################
 # Displays the events editor form
 
-function editevent($eid="") {
-	global $LANG22,$CONF,$LANG_ACCESS;
+function editevent($mode,$eid="") {
+	global $LANG22,$CONF,$LANG_ACCESS,$USER;
 	startblock($LANG22[1]);
-	if (!empty($eid)) {
+	if ($mode <> 'editsubmission' AND !empty($eid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}events where eid ='$eid'");
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-		if ($access == 0) {
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+		if ($access == 0 OR $access == 2) {
                         startblock($LANG22[16]);
                         print  $LANG22[17];
                         endblock();
                         return;
                 }
 	} else {
-		$A['owner_id'] = $USER['uid'];
-		$A['private_flag'] = 1;
-		$access = 1;
+		if ($mode == 'editsubmission') {
+			$result = dbquery ("SELECT * FROM {$CONF["db_prefix"]}eventsubmission where eid = '$eid'");
+                        $A = mysql_fetch_array($result);
+		}
+		$A["owner_id"] = $USER['uid'];
+		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Event Admin'");
+		$A["perm_owner"] = 3;
+                $A["perm_group"] = 3;
+                $A["perm_members"] = 2;
+                $A["perm_anon"] = 2;
+		$access = 3;
 	}
 	print "<form action={$CONF["site_url"]}/admin/event.php name=events method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3>";
@@ -78,8 +86,8 @@ function editevent($eid="") {
 	print "</td></tr>";
 	print "<tr><td align=right>{$LANG22[3]}:</td><td><input type=text size=48 maxlength=96 name=title value=\"{$A["title"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG22[4]}:</td><td><input type=text size=48  maxlength=96 name=url value=\"{$A["url"]}\"> {$LANG22[9]}</td></tr>";
-	print "<tr><td align=right>{$LANG22[5]}:</td><td><input type=text size=10 name=datestart value={$A["datestart"]}> YYYY-MM-DD</td></tr>";
-	print "<tr><td align=right>{$LANG22[6]}:</td><td><input type=text size=10 name=dateend value={$A["dateend"]}> YYYY-MM-DD</td></tr>";
+	print "<tr><td align=right>{$LANG22[5]}:</td><td><input type=text size=12 name=datestart value={$A["datestart"]}> YYYY-MM-DD</td></tr>";
+	print "<tr><td align=right>{$LANG22[6]}:</td><td><input type=text size=12 name=dateend value={$A["dateend"]}> YYYY-MM-DD</td></tr>";
 	print "<tr><td align=right>{$LANG22[7]}:</td><td><textarea name=location cols=50 rows=3 wrap=virtual>{$A["location"]}</textarea></td></tr>";
 	print "<tr><td align=right>{$LANG22[8]}:</td><td><textarea name=description cols=50 rows=6 wrap=virtual>{$A["description"]}</textarea></td></tr>";
 
@@ -90,7 +98,7 @@ function editevent($eid="") {
         print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
         print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
         $usergroups = getusergroups();
-	if ($access == 1) {
+	if ($access == 3) {
 		print "<SELECT name=group_id>";
         	for ($i=0;$i<count($usergroups);$i++) {
                 	print "<option value=" . $usergroups[key($usergroups)];
@@ -104,12 +112,13 @@ function editevent($eid="") {
 	} else {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+		print "<input type=\"hidden\" name=\"group_id\" value=\"{$A["group_id"]}\">";
 	}
-        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
-        if ($A["private_flag"] == 1) {
-                print "CHECKED";
-        }
-        print "></td></tr>";
+	print "</td><tr><tr><td colspan=\"2\"><b>{$LANG_ACCESS[permissions]}</b>:</td></tr><tr><td colspan=2>";
+        print "</td><tr><tr><td colspan=\"2\">{$LANG_ACCESS[permissionskey]}</td></tr><tr><td colspan=2>";
+        $html = getpermissionshtml($A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+        print $html;
+        print "</td></tr>";
         print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}<td></tr>";
 
 	print "</table></form>";
@@ -119,7 +128,7 @@ function editevent($eid="") {
 ###############################################################################
 # Svaes the events evente database
 
-function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$private_flag) {
+function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $CONF,$LANG22;
 
 	# clean 'em up 
@@ -127,16 +136,16 @@ function saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$
 	$title = addslashes(checkhtml(checkwords($title)));
 
 	if (!empty($eid) && !empty($description) && !empty($title)) {
-		if ($private_flag == 'on') {
-                        $private_flag = 1;
-                } else {
-                        $private_flag = 0;
-		}
-		dbsave("events","eid,title,url,datestart,dateend,location,description,owner_id,group_id,private_flag","$eid,'$title','$url','$datestart','$dateend','$location','$description',$owner_id,$group_id,$private_flag","admin/event.php?msg=17");
+		dbdelete("eventsubmission","eid",$eid);
+
+		#Convert array values to numeric permission values
+                list($perm_owner,$perm_group,$perm_members,$perm_anon) = getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon);
+
+		dbsave("events","eid,title,url,datestart,dateend,location,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon","$eid,'$title','$url','$datestart','$dateend','$location','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/event.php?msg=17");
 	} else {
 		site_header('menu');
 		errorlog($LANG22[10],2);
-		editevent($eid);
+		editevent($mode,$eid);
 		site_footer();
 	}
 }
@@ -154,15 +163,15 @@ function listevents() {
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
-                if ($access) {
-                        if ($access == 1) {
-                                $access = $LANG_ACCESS[ownerroot];
+		$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+                if ($access > 0) {
+                        if ($access == 3) {
+                                $access = $LANG_ACCESS[edit];
                         } else {
-                                $access = $LANG_ACCESS[group];
+                                $access = $LANG_ACCESS[readonly];
                         }
                 } else {
-                        $access = $LANG_ACCESS[readonly];
+                        $access = $LANG_ACCESS[none];
                 }
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/event.php?mode=edit&eid={$A["eid"]}>" . stripslashes($A["title"]) . "</a></td>";
 		print "<td>$access</td><td>{$A["datestart"]}</td><td>{$A["dateend"]}</td></tr>";
@@ -179,11 +188,16 @@ switch ($mode) {
 		dbdelete('events','eid',$eid,'/admin/event.php?msg=18');
 		break;
 	case "save":
-		saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$private_flag);
+		saveevent($eid,$title,$url,$datestart,$dateend,$location,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		break;
+	case "editsubmission":
+		site_header('menu');
+		editevent($mode,$id);
+		site_footer();
 		break;
 	case "edit":
 		site_header('menu');
-		editevent($eid);
+		editevent($mode,$eid);
 		site_footer();
 		break;
 	case "cancel":
