@@ -36,6 +36,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NO
 
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)";
 
+// for dynamic comments
+$_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('dynamic', 'Dynamic')";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
