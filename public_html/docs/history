@@ -3,6 +3,16 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Removed an extra <br> from before and between data provided by plugins in
+  the What's New block (feature request #292) [Dirk]
+- When creating a new user from admin/user.php, don't determine the uid before
+  actually creating the database entries to avoid race conditions / collisions
+  with other user accounts created at the same time (bug #243) [Dirk]
+  Also took the opportunity to refactor and move the almost identical code
+  from users.php and admin/user.php into a new function USER_createAccount in
+  system/lib-user.php.
+- usersettings.php was missing a default case for unsupported values of 'mode'
+  (bug #287). This only displayed a blank page and was not exploitable [Dirk]
 - Fixed hard-coded default group names in the Admin sections (e.g. when a user
   had story.edit permissions but was not in the Story Admin group, any new
   story created by that user would default to being owned by the Story Admin
@@ -32,12 +42,13 @@ XXX XX, 2004 (1.3.10)
   publishing date is in the future (feature request #282) [Dirk]
 - Introduced new function COM_sanitizeID() to filter special characters out of
   user-editable IDs as used for stories, polls, topics, and static pages (also
-  fixes bug #181) [Dirk]
+  fixes bug #181). Allowed characters are letters a-z (both upper and lower
+  case), digits 0-9, the dash '-', and the underscore '_' [Dirk]
 - The Upcoming Events block didn't use the help URL, even if it was set
   (reported by Wolfgang M. Schmitt) [Dirk]
 - Geeklog now comes with Tom Willet's SpamX plugin pre-installed. The plugin
   now stores the blacklists in the database and uses a new plugin API
-  function to filter comment posts [Tom Willet, Tony, Dirk]
+  function to filter comment posts [Tom Willet, Tony, Blaine, Dirk]
 - Plugins can now offer their own tags to allow easy linking to their content.
   These tags take the form [name:id link text], where 'name' is a name
   associated with the plugin, 'id' is a unique id referring to one of the
@@ -307,7 +318,7 @@ Static Pages Plugin 1.4.1
 - Added a printable version for static pages (based on a concept by
   Jannetta S Lewis). Requires a new template file, printable.thtml, located
   in the static pages' template directory [Dirk]
-- Added support for autolinks and provide a [staticpage:] autotag.
+- Added support for autolinks and provide a [staticpage:] autotag [Dirk]
 - Added an option to sort the static pages that are added to a site's menu
   (see {plg_menu_elements} in header.thtml) by id, label, title, or date [Dirk]
 - The block templates used to wrap a static page in a block can now be
@@ -316,11 +327,19 @@ Static Pages Plugin 1.4.1
 - The plugin now checks for template files in the current theme's directory
   (layout/THEMENAME/staticpages) first before using the default template files
   from plugin/staticpages/templates [Dirk]
+- When displaying a static page, the plugin no longer checks if the current
+  user is a member of the Root group, so that "Root" users shouldn't see static
+  pages that are for anonymous users only [Dirk]
+  This change was actually supposed to be in Static Pages 1.4 (Geeklog 1.3.9),
+  but somehow didn't make it ...
 - For center blocks, ignore the "blank page" setting, unless it's for a page
   that is supposed to replace the entire frontpage (bug #234) [Dirk]
 - The static pages editor doesn't display a "delete" button for new and
   cloned pages any more (since, obviously, you can't delete what hasn't been
   saved yet ...). [Dirk]
+- Bugfix: Fresh installs of Geeklog 1.3.9 only allowed 20 characters for the
+  static page ID, while installs upgraded from an earlier version allowed up
+  to 40 characters [Dirk]
 - New Portuguese (Brazil) language file, provided by Alcides Soares Filho.
 
 
