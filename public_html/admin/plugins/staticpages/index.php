@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.31 2004/01/21 19:11:01 dhaun Exp $
+// $Id: index.php,v 1.32 2004/01/31 17:13:17 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -572,20 +572,12 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
                 $_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     }
 } else if ($mode == 'edit') {
-    if (isset ($HTTP_GET_VARS['sp_id'])) {
-        $sp_id = COM_applyFilter ($HTTP_GET_VARS['sp_id']);
-        if (empty ($sp_id)) {
-            echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
-            exit;
-        }
-    } else {
-        $sp_id = '';
-    }
+    $sp_id = COM_applyFilter ($sp_id);
     $display .= COM_siteHeader ('menu');
     $display .= staticpageeditor ($sp_id, $mode);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
-    $sp_id = COM_applyFilter ($HTTP_GET_VARS['sp_id']);
+    $sp_id = COM_applyFilter ($sp_id);
     if (!empty ($sp_id)) {
         $display .= COM_siteHeader('menu');
         $display .= staticpageeditor($sp_id,$mode);
