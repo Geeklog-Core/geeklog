@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.32 2004/09/03 19:59:56 tony Exp $
+// $Id: lib-database.php,v 1.33 2004/11/20 17:55:07 dhaun Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -316,14 +316,14 @@ function DB_numRows($recordset)
 }
 
 /**
-* Retrieves the number of rows in a recordset
+* Retrieves the contents of a field
 *
-* This returns the number of rows in a recordset...is this even used?
+* This returns the contents of a field from a result set
 *
-* @param        object      $recordset      The recordset to operate one
+* @param        object      $recordset      The recordset to operate on
 * @param        int         $row            row to get data from
 * @param        string      $field          field to return
-* @return       int         Returns number of rows in a recordset
+* @return       (depends on the contents of the field)
 *
 */
 function DB_result($recordset,$row,$field)

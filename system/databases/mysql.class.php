@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.18 2004/07/13 19:00:03 dhaun Exp $
+// $Id: mysql.class.php,v 1.19 2004/11/20 17:55:07 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -547,14 +547,12 @@ class database {
     }
 
     /**
-    * Retrieves the number of rows in a recordset
+    * Returns the contents of one cell from a MySQL result set
     *
-    * This returns the number of rows in a recordset
-    *
-    * @param    object      $recordset      The recordset to operate one
+    * @param    object      $recordset      The recordset to operate on
     * @param    int         $row            row to get data from
     * @param    string      $field          field to return
-    * @return   int
+    * @return   (depends on field content)
     *
     */
     function dbResult($recordset,$row,$field=0)
