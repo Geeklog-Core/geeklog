@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.247 2003/08/18 14:34:31 dhaun Exp $
+// $Id: lib-common.php,v 1.248 2003/08/21 21:19:46 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1899,18 +1899,27 @@ function COM_userMenu( $help='', $title='' )
         }
         if( empty( $thisUrl ))
         {
+            $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
+            if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
+            {
+                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+                if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+                {
+                    $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
+                }
+            }
+
             $firstslash = strpos( $_CONF['site_url'], '/' );
             if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
             {
                 // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $HTTP_SERVER_VARS['REQUEST_URI'];
+                $thisUrl = $_CONF['site_url'] . $requestUri;
             }
             else
             {
                 // extract server name first
                 $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
-                $thisUrl = substr( $_CONF['site_url'], 0, $pos )
-                         . $HTTP_SERVER_VARS['REQUEST_URI'];
+                $thisUrl = substr( $_CONF['site_url'], 0, $pos ) . $requestUri;
             }
         }
 
@@ -2060,18 +2069,27 @@ function COM_adminMenu( $help = '', $title = '' )
         }
         if( empty( $thisUrl ))
         {
+            $requestUri = $HTTP_SERVER_VARS['REQUEST_URI'];
+            if( empty( $HTTP_SERVER_VARS['REQUEST_URI'] ))
+            {
+                $requestUri = $HTTP_SERVER_VARS['SCRIPT_NAME'];
+                if( !empty( $HTTP_SERVER_VARS['QUERY_STRING'] ))
+                {
+                    $requestUri .= '?' . $HTTP_SERVER_VARS['QUERY_STRING'];     
+                }
+            }
+
             $firstslash = strpos( $_CONF['site_url'], '/' );
             if( $firstslash + 1 == strrpos( $_CONF['site_url'], '/' ))
             {
                 // site is in the document root
-                $thisUrl = $_CONF['site_url'] . $HTTP_SERVER_VARS['REQUEST_URI'];
+                $thisUrl = $_CONF['site_url'] . $requestUri;
             }
             else
             {
                 // extract server name first
                 $pos = strpos( $_CONF['site_url'], '/', $firstslash + 2 );
-                $thisUrl = substr( $_CONF['site_url'], 0, $pos )
-                         . $HTTP_SERVER_VARS['REQUEST_URI'];
+                $thisUrl = substr( $_CONF['site_url'], 0, $pos ) . $requestUri;
             }
         }
 
