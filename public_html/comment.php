@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.80 2004/10/23 10:25:51 dhaun Exp $
+// $Id: comment.php,v 1.81 2004/10/26 02:03:13 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -879,12 +879,18 @@ default:
     } else {
         // This could still be a plugin wanting comments
         if (isset ($HTTP_POST_VARS['cid'])) {
-            $cid = COM_applyFilter ($HTTP_POST_VARS['cid'], true);
+            $cid = COM_applyFilter ($HTTP_POST_VARS['cid']);
+            $format = COM_applyFilter ($HTTP_POST_VARS['cid']);
+            $order = COM_applyFilter ($HTTP_POST_VARS['cid']);
+            $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
         } else {
-            $cid = COM_applyFilter ($HTTP_GET_VARS['cid'], true);
+            $cid = COM_applyFilter ($HTTP_GET_VARS['cid']);
+            $format = COM_applyFilter ($HTTP_POST_VARS['format']);
+            $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+            $reply = COM_applyFilter ($HTTP_POST_VARS['reply']);
         }
         if (!empty ($type) && !empty ($cid)) {
-            $display .= PLG_callCommentForm ($type, $cid);
+            $display .= PLG_callCommentForm ($type, $cid, $format, $order, $reply);
         } else {
             // must be a mistake at this point
             $display .= COM_refresh($_CONF['site_url'] . '/index.php');

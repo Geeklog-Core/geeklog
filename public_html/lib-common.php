@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.393 2004/10/25 08:04:19 dhaun Exp $
+// $Id: lib-common.php,v 1.394 2004/10/26 02:03:13 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -66,7 +66,6 @@ $_COM_VERBOSE = false;
 * Make sure to include the name of the config file,
 * i.e. the path should end in .../config.php
 */
-
 require_once( '/path/to/geeklog/config.php' );
 
 
@@ -2621,12 +2620,17 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'story_link', $_CONF['site_url']
                 . "/pollbooth.php?scale=400&amp;qid=$sid&amp;aid=-1" );
     }
-    else
+    else if ( $type == 'article' )
     {
         $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                     . $sid );
         $commentbar->set_var( 'story_link', $articleUrl );
         $commentbar->set_var( 'article_url', $articleUrl );
+    }
+    else
+    {
+        $commentbar->set_var( 'story_link', $_CONF['site_url']
+                . "/comment.php?type=$type&amp;cid=$sid" );
     }
 
     if( $_USER['uid'] > 1)
@@ -2675,6 +2679,10 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         else if( $_REQUEST['mode'] == 'display' )
         {
             $hidden .= '<input type="hidden" name="pid" value="' . $_REQUEST['pid'] . '">';
+        }
+        else 
+        {
+            $hidden .= '<input type="hidden" name="cid" value="' . $sid . '">';
         }
         $commentbar->set_var( 'hidden_field', $hidden . 
                 '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
