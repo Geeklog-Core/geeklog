@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.35 2002/09/23 10:27:18 dhaun Exp $
+// $Id: index.php,v 1.36 2002/11/08 11:18:46 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -39,8 +39,14 @@ if (isset ($HTTP_GET_VARS['topic'])) {
 else {
     $topic = '';
 }
+if (isset ($HTTP_GET_VARS['display']) && ($HTTP_GET_VARS['display'] == 'new') && empty ($topic)) {
+    $newstories = true;
+} else {
+    $newstories = false;
+}
 require_once('lib-common.php');
 
+$display = '';
 
 /*
  *  Staticpage on Frontpage Addon (Hacked together by MLimburg)
@@ -152,7 +158,7 @@ $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (d
 // if a topic was provided only select those stories.
 if (!empty($topic)) {
     $sql .= " AND tid = '$topic' ";
-} else {
+} elseif (!$newstories) {
     $sql .= " AND frontpage = 1 ";
 }
 
@@ -183,6 +189,10 @@ if (!empty($U['tids'])) {
     }
 }
 
+if ($newstories) {
+    $sql .= "AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND))";
+}
+
 $offset = ($page - 1) * $limit;
 $sql .= "ORDER BY featured DESC, date DESC LIMIT $offset, $limit";
 
@@ -192,7 +202,7 @@ $nrows = DB_numRows($result);
 $countsql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
 if (!empty($topic)) {
     $countsql = $countsql . " AND tid='$topic'";
-} else {
+} elseif (!$newstories) {
     $countsql = $countsql . ' AND frontpage = 1';
 }
 
@@ -204,6 +214,10 @@ if (!empty ($_USER['uid'])) {
     $countsql .= "(perm_members >= 2) OR ";
 }
 $countsql .= "(perm_anon >= 2))";
+
+if ($newstories) {
+    $countsql .= " AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND))";
+}
 
 $data = DB_query($countsql);
 $D = DB_fetchArray($data);
@@ -223,6 +237,9 @@ if ($nrows > 0) {
     // Print Google-like paging navigation
     if (empty($topic)) {
         $base_url = $_CONF['site_url'] . '/index.php';
+        if ($newstories) {
+            $base_url .= '?display=new';
+        }
     } else {
         $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
     }

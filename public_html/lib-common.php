@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.176 2002/11/06 20:47:07 dhaun Exp $
+// $Id: lib-common.php,v 1.177 2002/11/08 11:18:46 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1734,7 +1734,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
 function COM_showTopics( $topic='' )
 {
-    global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page;
+    global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page, $newstories;
 
     $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} ";
     if( $_CONF['sortmethod'] == 'alpha' )
@@ -1752,7 +1752,7 @@ function COM_showTopics( $topic='' )
     // navigating the site
     // Note: We can't use $PHP_SELF here since the site may not be in the DocumentRoot
 
-    if(( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" ) OR !empty( $topic ) OR ( $page > 1 ))
+    if(( $HTTP_SERVER_VARS['SCRIPT_FILENAME'] <> $_CONF['path_html'] . "index.php" ) OR !empty( $topic ) OR ( $page > 1 ) OR $newstories )
     {
         $retval .= '<a href="' . $_CONF['site_url'] . '/index.php"><b>' . $LANG01[90] . '</b></a><br>';
     }
@@ -3529,7 +3529,7 @@ function COM_emailUserTopics()
 
 function COM_whatsNewBlock( $help='', $title='' )
 {
-    global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS;
+    global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS, $page, $newstories;
 
     $groupList = '';
 
@@ -3576,11 +3576,30 @@ function COM_whatsNewBlock( $help='', $title='' )
             $hours = (( $_CONF['newstoriesinterval'] / 60 ) / 60 );
             if( $nrows == 1 )
             {
-                $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+                $newmsg = '1 ' . $LANG01[81] . ' ' . $hours . ' ' . $LANG01[82];
+                if ($newstories && ($page < 2))
+                {
+                    $retval .= $newmsg . '<br>';
+                }
+                else
+                {
+                    $retval .= '<a href="' . $_CONF['site_url']
+                        . '/index.php?display=new">' . $newmsg . '</a><br>';
+                }
             }
             else
             {
-                $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+                $newmsg = $nrows . ' ' . $LANG01[80] . ' ' . $hours . ' '
+                    . $LANG01[82];
+                if ($newstories && ($page < 2))  
+                {
+                    $retval .= $newmsg . '<br>';
+                }
+                else 
+                {
+                    $retval .= '<a href="' . $_CONF['site_url']
+                        . '/index.php?display=new">' . $newmsg . '</a><br>';
+                }
             }
         }
         else
