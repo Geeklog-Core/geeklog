@@ -1,5 +1,39 @@
 GeekLog History/Changes:
 
+- Change installation so that server configuration is manual, DB configuration is scripted
+- Search page now properly generates the right link to search comments
+- Comments to polls now show up in whats new block
+- You can now specify the order the poll results show up in in config.php.  You can either sort by
+  voteorder (highest number of votes -> lowest) or by the order they were saved in admin/poll.php
+- You can now move /admin somewhere else in web tree.  This should help out folk where ISP's use /admin
+  for their administration stuff.
+- if you go to submit.php as an admin we will try to send you to the admin/ page for the type of thing you
+  are trying to submit (e.g. story, link, event)
+- fixed calendar.php so month view now shows events spanning multiple days on months other than the current
+- admin/event.php now saves am/pm and allday properly
+- PollAdmin group can now properly add a new poll.
+- fixed SEC_getUserGroups() so that it always returns an array even if no groups are returned (e.g.
+  empty array                                                                                            
+- fixed moderation.php so post mode is saved properly from storysubmission to story table.
+- killed 1064 bug in admin/event.php
+- set error_reporting() so uninitialized variables don't show up (common in poorly configured PHP installs)
+- gldefault blocks now actually use permissions assigned to them in admin/block.php
+- Added all sorts of shit to english.php.  Translators will need to really take their time
+  with this file.
+- Added $_CONF['maximagesperarticle'] to config.php
+- install.php was reworked a bit for upcoming release
+- lib-common.php has changed.  can't even begin to note all the changes there
+- admin/user.php has a very simple batch import utility.  You can now create multiple
+  accounts by importing a tab-delimited file.  See that page for file format specs
+- story.php was reworked a bit to be simplified and to correctly do paging (old
+  paging feature had a bug where one article would never show up.                                                                            
+- admin/user.php now allows for paging and searching.  Check it out, you'll see what I mean ;-)
+- blocks can now be disabled in admin/block.php
+- added support for images in articles
+- complete overhauled upload.class.php for ease of use, better security, better logging
+  and for use in putting images in articles.
+- fixed bug in users.php that allows accounts with same email addresses yet different
+  usernames to be created.
 - New strings in english.php (and german.php):
   $LANG02: 15 (moved from calendar_event.php)
   $LANG04: 74, 75, 76 (moved from usersettings.php)
