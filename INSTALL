@@ -1,4 +1,7 @@
-The instructions for installing Geeklog are back in the docs directory.
+Installation instructions for Geeklog can be found in the docs directory,
+specifically in
 
-Please refer to docs/index.html and docs/install.html for details.
+    docs/install.html
+
+That document also includes a section on common installation problems.
 
