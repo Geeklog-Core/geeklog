@@ -183,9 +183,7 @@ function install_spamx_plugin ()
     $_SPX_ADMIN = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('spamx Admin', 'Users in this group can administer the spamx plugin',0) ";
 
     // initial data for 'spamx' table
-    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
-    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
-    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
+    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
 
     $group_id = DB_getItem ($_TABLES['groups'], 'grp_id',
                             "grp_name = 'spamx Admin'");
