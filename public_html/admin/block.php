@@ -8,12 +8,13 @@
 // |                                                                           |
 // | Geeklog block administration.                                             |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,12 +33,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.63 2004/09/29 17:43:43 dhaun Exp $
+// $Id: block.php,v 1.64 2005/01/23 11:07:18 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -166,7 +167,7 @@ function editblock ($bid = '')
     $retval = '';
 
     if (!empty($bid)) {
-        $result = DB_query("SELECT * FROM {$_TABLES['blocks']} where bid ='$bid'");
+        $result = DB_query("SELECT * FROM {$_TABLES['blocks']} WHERE bid ='$bid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 2 || $access == 0 || hasBlockTopicAccess ($A['tid']) < 3) {
@@ -299,6 +300,8 @@ function editblock ($bid = '')
     $block_templates->set_var('lang_rdfurl', $LANG21[14]);
     $block_templates->set_var('max_url_length', 255);
     $block_templates->set_var('block_rdfurl', $A['rdfurl']);
+    $block_templates->set_var('lang_rdflimit', $LANG21[62]);
+    $block_templates->set_var('block_rdflimit', $A['rdflimit']);
     $block_templates->set_var('lang_lastrdfupdate', $LANG21[15]);
     $block_templates->set_var('block_rdfupdated', $A['rdfupdated']);
     $block_templates->set_var('lang_normalblockoptions', $LANG21[16]);
@@ -323,6 +326,7 @@ function editblock ($bid = '')
 * @param    string  $tid            Topic block should appear in
 * @param    string  $rdfurl         URL to headline feed for portal blocks
 * @param    string  $rdfupdated     Date RSS/RDF feed was last updated
+* @param    string  $rdflimit       max. number of entries to import from feed
 * @param    string  $phpblockfn     Name of php function to call to get content
 * @param    int     $onleft         Flag indicates if block shows up on left or right
 * @param    int     $owner_id       ID of owner
@@ -335,9 +339,9 @@ function editblock ($bid = '')
 * @return   string                  HTML redirect or error message
 *
 */
-function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled) 
+function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $tid, $rdfurl, $rdfupdated, $rdflimit, $phpblockfn, $onleft, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon, $is_enabled) 
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $HTTP_POST_VARS;
+    global $_CONF, $_TABLES, $LANG01, $LANG21, $MESSAGE, $_POST;
 
     $retval = '';
 
@@ -383,6 +387,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             }
             $rdfurl = '';
             $rdfupdated = '';
+            $rdflimit = 0;
             $phpblockfn = '';
         }
         if ($type == 'phpblock') {
@@ -404,22 +409,22 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
             $content = '';
             $rdfurl = '';
             $rdfupdated = '';
+            $rdflimit = 0;
         }
         if ($type == 'normal') {
             $rdfurl = '';
             $rdfupdated = '';
+            $rdflimit = 0;
             $phpblockfn = '';
             $content = addslashes ($content);
         }
-        if ($type == 'layout') {
-            $rdfurl = '';
-            $rdfupdated = '';
-            $phpblockfn = '';
+        if ($rdflimit < 0) {
+            $rdflimit = 0;
         }
 
         $title = addslashes (COM_stripslashes ($title));
         $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
-        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
+        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,rdflimit,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$rdflimit','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
 
         if (($type == 'gldefault') && ($name == 'older_stories')) {
             COM_olderStuff ();
@@ -568,12 +573,12 @@ function listblocks()
 */
 function moveBlock()
 {
-    global $_CONF, $_TABLES, $LANG21, $HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $LANG21, $_GET;
 
     $retval = '';
 
-    $bid = $HTTP_GET_VARS['bid'];
-    $where = $HTTP_GET_VARS['where'];
+    $bid = $_GET['bid'];
+    $where = $_GET['where'];
 
     // if the block id exists
     if (DB_count($_TABLES['blocks'], "bid", $bid) == 1) {
@@ -648,21 +653,11 @@ function deleteBlock ($bid)
 }
 
 // MAIN
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
-}
-else {
-    $mode = $HTTP_GET_VARS['mode'];
-}
-if (isset ($HTTP_POST_VARS['bid'])) {
-    $bid = COM_applyFilter ($HTTP_POST_VARS['bid']);
-}
-else {
-    $bid = COM_applyFilter ($HTTP_GET_VARS['bid']);
-}
+$mode = $_REQUEST['mode'];
+$bid = COM_applyFilter ($_REQUEST['bid']);
 
-if (isset($HTTP_POST_VARS['blkChange'])) {
-    changeBlockStatus($HTTP_POST_VARS['blkChange']);
+if (isset ($_POST['blkChange'])) {
+    changeBlockStatus ($_POST['blkChange']);
 }
 
 if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
@@ -673,16 +668,15 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
         $display .= deleteBlock ($bid);
     }
 } else if (($mode == $LANG21[54]) && !empty ($LANG21[54])) { // save
-    $display .= saveblock ($bid, $HTTP_POST_VARS['name'],
-                $HTTP_POST_VARS['title'], $HTTP_POST_VARS['help'],
-                $HTTP_POST_VARS['type'], $HTTP_POST_VARS['blockorder'],
-                $HTTP_POST_VARS['content'], $HTTP_POST_VARS['tid'],
-                $HTTP_POST_VARS['rdfurl'], $HTTP_POST_VARS['rdfupdated'],
-                $HTTP_POST_VARS['phpblockfn'], $HTTP_POST_VARS['onleft'],
-                $HTTP_POST_VARS['owner_id'], $HTTP_POST_VARS['group_id'],
-                $HTTP_POST_VARS['perm_owner'], $HTTP_POST_VARS['perm_group'],
-                $HTTP_POST_VARS['perm_members'], $HTTP_POST_VARS['perm_anon'],
-                $HTTP_POST_VARS['is_enabled']);
+    $display .= saveblock ($bid, $_POST['name'], $_POST['title'],
+                $_POST['help'], $_POST['type'], $_POST['blockorder'],
+                $_POST['content'], $_POST['tid'], $_POST['rdfurl'],
+                $_POST['rdfupdated'],
+                COM_applyFilter ($_POST['rdflimit'], true),
+                $_POST['phpblockfn'], $_POST['onleft'],
+                $_POST['owner_id'], $_POST['group_id'], $_POST['perm_owner'],
+                $_POST['perm_group'], $_POST['perm_members'],
+                $_POST['perm_anon'], $_POST['is_enabled']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ()
              . editblock ($bid)
@@ -695,10 +689,10 @@ if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
 } else {  // 'cancel' or no mode at all
     $display .= COM_siteHeader ();
     $msg = 0;
-    if (isset ($HTTP_POST_VARS['msg'])) {
-        $msg = COM_applyFilter ($HTTP_POST_VARS['msg'], true);
-    } else if (isset ($HTTP_GET_VARS['msg'])) {
-        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+    if (isset ($_POST['msg'])) {
+        $msg = COM_applyFilter ($_POST['msg'], true);
+    } else if (isset ($_GET['msg'])) {
+        $msg = COM_applyFilter ($_GET['msg'], true);
     }
     if ($msg > 0) {
         $display .= COM_showMessage ($msg);

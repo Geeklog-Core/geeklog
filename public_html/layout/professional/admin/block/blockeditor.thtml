@@ -72,6 +72,10 @@
                                             <td><input type="text" size="50" maxlength="{max_url_length}" name="rdfurl" value="{block_rdfurl}"></td>
                                         </tr>
                                         <tr>
+                                            <td align="right">{lang_rdflimit}:</td>
+                                            <td><input type="text" size="3" maxlength="3" name="rdflimit" value="{block_rdflimit}"></td>
+                                        </tr>
+                                        <tr>
                                             <td align="right">{lang_lastrdfupdate}:</td>
                                             <td><input type="text" size="19" name="rdfupdated" value="{block_rdfupdated}"></td>
                                         </tr>

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.411 2005/01/21 23:31:44 vinny Exp $
+// $Id: lib-common.php,v 1.412 2005/01/23 11:07:18 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3247,7 +3247,7 @@ function COM_formatBlock( $A, $noboxes = false )
     $retval = '';
     if( $A['type'] == 'portal' )
     {
-        if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'] ))
+        if( COM_rdfCheck( $A['bid'], $A['rdfurl'], $A['date'], $A['rdflimit'] ))
         {
             $A['content'] = DB_getItem( $_TABLES['blocks'], 'content',
                                         "bid = '{$A['bid']}'");
@@ -3316,21 +3316,22 @@ function COM_formatBlock( $A, $noboxes = false )
 *
 * Updates RDF/RSS block if needed
 *
-* @param        string      $bid        Block ID
-* @param        string      $rdfurl     URL to get headlines from
-* @param        string      $date       Last time the headlines were imported
-* @see function COM_rdfImport
+* @param    string  $bid            Block ID
+* @param    string  $rdfurl         URL to get headlines from
+* @param    string  $date           Last time the headlines were imported
+* @param    string  $maxheadlines   max. number of headlines to import
 * @return   void
+* @see function COM_rdfImport
+*
 */
-
-function COM_rdfCheck( $bid, $rdfurl, $date )
+function COM_rdfCheck( $bid, $rdfurl, $date, $maxheadlines = 0 )
 {
     $retval = false;
     $nextupdate = $date + 3600;
 
     if( $nextupdate < time() )
     {
-        COM_rdfImport( $bid, $rdfurl );
+        COM_rdfImport( $bid, $rdfurl, $maxheadlines );
         $retval = true;
     }
 
@@ -3338,177 +3339,87 @@ function COM_rdfCheck( $bid, $rdfurl, $date )
 }
 
 /**
-* Imports an RDF/RSS block
+* Syndication import function. Imports headline data to a portal block.
 *
-* This will pull content from another site and store it in the database
-* to be shown within a portal block
+* Rewritten December 19th 2004 by Michael Jervis (mike@fuckingbrit.com). Now
+* utilises a Factory Pattern to open a URL and automaticaly retreive a feed
+* object populated with feed data. Then import it into the portal block.
 *
-* new RDF parser provided by Roger Webster
-*
-*/
-
-$RDFinsideitem = false;
-$RDFtag = '';
-$RDFtitle = '';
-$RDFlink = '';
-$RDFheadlines = array();
-
-function COM_rdfStartElement( $parser, $name, $attrs )
-{
-    global $RDFinsideitem, $RDFtag;
-
-    if( $RDFinsideitem )
-    {
-        $RDFtag = $name;
-    }
-    elseif( $name == 'ITEM' )
-    {
-        $RDFinsideitem = true;
-    }
-}
-
-function COM_rdfEndElement( $parser, $name )
-{
-    global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
-
-    if( $name == 'ITEM' )
-    {
-        $RDFtitle = str_replace( '$', '&#36;', $RDFtitle );
-        $RDFheadlines[] = '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
-        $RDFtitle = '';
-        $RDFlink = '';
-        $RDFinsideitem = false;
-    }
-}
-
-function COM_rdfCharacterData( $parser, $data )
-{
-    global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink;
-
-    if( $RDFinsideitem )
-    {
-        switch( $RDFtag )
-        {
-            case 'TITLE':
-                $RDFtitle .= $data;
-                break;
-
-            case 'LINK':
-                $RDFlink .= $data;
-                break;
-        }
-    }
-}
-
-/**
-* This is the actual RDF parser (the above are just helper functions)
-*
-* @param        string      $bid        Block ID
-* @param        string      $rdfurl     URL to get content from
+* @param    string  $bid            Block ID
+* @param    string  $rdfurl         URL to get content from
+* @param    int     $maxheadlines   Maximum number of headlines to display
+* @return   void
 * @see function COM_rdfCheck
 *
 */
-
-function COM_rdfImport( $bid, $rdfurl )
+function COM_rdfImport( $bid, $rdfurl, $maxheadlines = 0 )
 {
-    global $_CONF, $_TABLES, $LANG21,
-           $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
+    global $_CONF, $_TABLES, $LANG21;
 
-    $RDFinsideitem = false;
-    $RDFtag = '';
-    $RDFtitle = '';
-    $RDFlink = '';
-    $RDFheadlines = array();
+    // Import the feed handling classes:
+    require_once( $_CONF['path_system']
+                  . '/classes/syndication/parserfactory.class.php' );
+    require_once( $_CONF['path_system']
+                  . '/classes/syndication/feedparserbase.class.php' );
 
-    $maxheadlines = 0; // set to something > 0 to limit max. number of headlines
+    // Load the actual feed handlers:
+    $factory = new FeedParserFactory( $_CONF['path_system']
+                                      . '/classes/syndication/' );
+    $feed = $factory->reader( $rdfurl, $_CONF['default_charset'] );
 
-    $update = date( 'Y-m-d H:i:s' );
-
-    $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
-                         'bid', $bid );
-    clearstatcache();
-
-    $rdferror = false;
-    $xml_parser = xml_parser_create();
-    @xml_parser_set_option( $xml_parser, XML_OPTION_TARGET_ENCODING,
-                            $_CONF['default_charset'] );
-    xml_set_element_handler( $xml_parser, 'COM_rdfStartElement',
-                             'COM_rdfEndElement');
-    xml_set_character_data_handler( $xml_parser, 'COM_rdfCharacterData' );
-
-    if( $fp = @fopen( $rdfurl, 'r' ))
+    // Aquire a reader:
+    if( $feed )
     {
-        $startoffeed = true;
-        while( $data = fread( $fp, 4096 ))
+        /* We have located a reader, and populated it with the information from
+         * the syndication file. Now we will sort out our display, and update
+         * the block.
+         */
+        if( $maxheadlines == 0 )
         {
-            if( $startoffeed )
+            if( !empty( $_CONF['syndication_max_headlines'] ))
             {
-                $data = ltrim( $data );
-                if( empty( $data ))
-                {
-                    break;
-                }
-                $startoffeed = false;
+                $maxheadlines = $_CONF['syndication_max_headlines'];
             }
-            if( !xml_parse( $xml_parser, $data, feof( $fp )))
+            else
             {
-                $errmsg = sprintf(
-                    'Parse error in %s: %s at line %d',
-                    $rdfurl,
-                    xml_error_string( xml_get_error_code( $xml_parser )),
-                    xml_get_current_line_number( $xml_parser )
-                    );
-
-                COM_errorLog( $errmsg, 1 );
-                $rdferror = true;
-                $result = DB_change( $_TABLES['blocks'], 'content',
-                                     addslashes( $LANG21[4] ), 'bid', $bid );
-                break;
+                $maxheadlines = count( $feed->articles );
             }
         }
-        if( $startoffeed && empty( $data ))
-        {
-            $errmsg = sprintf( 'The feed at %s exists but is currently empty.',
-                               $rdfurl );
-            COM_errorLog( $errmsg, 1 );
-            $rdferror = true;
-            $result = DB_change( $_TABLES['blocks'], 'content',
-                                 addslashes( $LANG21[4] ), 'bid', $bid );
-        }
 
-        fclose( $fp );
-        xml_parser_free( $xml_parser );
+        $update = date( 'Y-m-d H:i:s' );
+        $result = DB_change( $_TABLES['blocks'], 'rdfupdated', $update,
+                                                 'bid', $bid );
 
-        if( !$rdferror )
+        // format articles for display
+        for( $i = 0; $i < $maxheadlines; $i++ )
         {
-            if( $maxheadlines > 0 )
+            if( empty( $feed->articles[$i]['title'] ))
             {
-                $RDFheadlines = array_slice( $RDFheadlines, 0, $maxheadlines );
+                $feed->articles[$i]['title'] = $LANG21[61];
             }
-            $blockcontent = COM_makeList( $RDFheadlines, 'list-feed' );
-            $RDFheadlines = array();
-            $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", '',
-                                          $blockcontent );
-            $result = DB_change( $_TABLES['blocks'], 'content', $blockcontent,
-                                 'bid', $bid);
+
+            $content = '<a href="' . $feed->articles[$i]['link'] . '">'
+                     . $feed->articles[$i]['title'] . '</a>';
+            $articles[] = $content;
         }
+
+        // build a list
+        $content = COM_makeList( $articles );
+        $content = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $content );
+
+        // Standard theme based function to put it in the block
+        $result = DB_change( $_TABLES['blocks'], 'content',
+                             addslashes( $content ), 'bid', $bid );
     }
     else
     {
-        $errmsg = sprintf( 'Geeklog can not reach the feed at %s.', $rdfurl );
-
-        if( !@ini_get( 'allow_url_fopen' ))
-        {
-            $errmsg = 'Sorry, your webserver configuration does not allow reading of remote files (allow_url_fopen = off).';
-        }
-
-        COM_errorLog( $errmsg, 1 );
-        $rdferror = true;
-
-        $result = DB_change( $_TABLES['blocks'], 'content',
-                             addslashes( $LANG21[4] ), 'bid', $bid );
+      // failed to aquire info, 0 out the block and log an error
+      COM_errorLog( "Unable to aquire feed reader for $rdfurl", 1 );
+      $result = DB_change( $_TABLES['blocks'], 'content',
+                           addslashes( $LANG21[4] ), 'bid', $bid );
     }
 }
+
 
 /**
 * Returns what HTML is allowed in content
@@ -5164,10 +5075,13 @@ function COM_getPermSQL( $type = 'WHERE', $u_id = 0, $access = 2, $table = '' )
 * Creates part of an SQL expression that can be used to only request stories
 * from topics to which the user has access to.
 *
-* @param        string      $type     part of the SQL expr. e.g. 'WHERE', 'AND'
-* @param        int         $u_id     user id or 0 = current user
-* @param        string      $table    table name if ambiguous (e.g. in JOINs)
-* @return       string      SQL expression string (may be empty)
+* Note that this function does an SQL request, so you should cache
+* the resulting SQL expression if you need it more than once.
+*
+* @param    string  $type   part of the SQL expr. e.g. 'WHERE', 'AND'
+* @param    int     $u_id   user id or 0 = current user
+* @param    string  $table  table name if ambiguous (e.g. in JOINs)
+* @return   string          SQL expression string (may be empty)
 *
 */
 function COM_getTopicSQL( $type = 'WHERE', $u_id = 0, $table = '' )

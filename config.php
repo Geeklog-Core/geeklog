@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.151 2005/01/18 13:15:53 dhaun Exp $
+// $Id: config.php,v 1.152 2005/01/23 11:07:18 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -542,6 +542,11 @@ $_CONF['rdf_storytext'] = 0;
 
 // Default language for the feed - may have to be different than the locale
 $_CONF['rdf_language']  = 'en-gb';
+
+// Upper limit for all imported feeds (0 = unlimited, i.e. import all of the
+// headlines from the feed).
+// Individual limits can be set for every feed in the portal block's settings.
+$_CONF['syndication_max_headlines'] = 0;
 
 
 // Uncomment the following line to set the copyright year in the site's footer

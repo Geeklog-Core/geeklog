@@ -8,9 +8,10 @@
 // |                                                                           |
 // | Geeklog content syndication administration                                |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003-2004 by the following authors:                         |
+// | Copyright (C) 2003-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Dirk Haun         - dirk AT haun-online DOT de                   |
+// |          Michael Jervis    - mike AT fuckingbrit DOT com                  |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.6 2004/01/13 19:15:52 dhaun Exp $
+// $Id: syndication.php,v 1.7 2005/01/23 11:07:18 dhaun Exp $
 
 
 require_once ('../lib-common.php');
@@ -76,6 +77,7 @@ function listfeeds ()
     $feed_template->set_var ('lang_type', $LANG33[15]);
     $feed_template->set_var ('lang_filename', $LANG33[16]);
     $feed_template->set_var ('lang_format', $LANG33[17]);
+    $feed_template->set_var ('lang_version', $LANG33[43]);
     $feed_template->set_var ('lang_updated', $LANG33[18]);
     $feed_template->set_var ('lang_enabled', $LANG33[19]);
 
@@ -102,6 +104,7 @@ function listfeeds ()
             $feed_template->set_var ('feed_title', $A['title']);
             $feed_template->set_var ('feed_type', ucwords ($A['type']));
             $feed_template->set_var ('feed_format', ucwords ($A['format']));
+            $feed_template->set_var ('feed_version', $A['version']);
             $feed_template->set_var ('feed_filename', $A['filename']);
             $feed_template->set_var ('feed_filename_and_link', $link);
             $feed_template->set_var ('feed_updated',
@@ -123,24 +126,21 @@ function listfeeds ()
 }
 
 /**
-* Create a list of all available feed formats. Assumes there is a class named
-* xxx.feed.class.php for every format "xxx" (in system/classes).
+* Get a list of feed formats from the feed parser factory.
 *
-* @return   array   array of names of feed formats (and classes)
+* @return   array   array of names of feed formats (and versions)
 *
 */
 function find_feedFormats ()
 {
     global $_CONF;
 
-    $formats = array ();
-    $fd = opendir ($_CONF['path_system'] . '/classes');
-    while (($file = @readdir ($fd)) !== false) {
-        if (preg_match ('/(.*)\.feed\.class\.php$/i', $file, $match)) {
-            $formats[] = $match[1];
-        }
-    }
+    // Import the feed handling classes:
+    require_once ($_CONF['path_system']
+                  . '/classes/syndication/parserfactory.class.php');
 
+    $factory = new FeedParserFactory ();
+    $formats = $factory->getFeedTypes ();
     sort ($formats);
 
     return $formats;
@@ -203,7 +203,7 @@ function editfeed ($fid = 0, $type = '')
         if (!empty ($type)) { // set defaults
             $A['fid'] = $fid;
             $A['type'] = $type;
-            $A['format'] = 'rss';
+            $A['format'] = 'rss-0.9x';
             $A['limits'] = $_CONF['rdf_limit'];
             $A['content_length'] = $_CONF['rdf_storytext'];
             $A['language'] = $_CONF['rdf_language'];
@@ -264,11 +264,13 @@ function editfeed ($fid = 0, $type = '')
     $formats = find_feedFormats ();
     $selection = '<select name="format">' . LB;
     foreach ($formats as $f) {
-        $selection .= '<option value="' . $f . '"';
-        if ($A['format'] == $f) {
+        $selection .= '<option value="' . $f['name'] . '-' . $f['version']
+                   . '"';
+        if ($A['format'] == $f['name'] . '-' . $f['version']) {
             $selection .= ' selected="selected"';
         }
-        $selection .= '>' . ucwords ($f) . '</option>' . LB;
+        $selection .= '>' . ucwords ($f['name'] . ' ' . $f['version'])
+                   . '</option>' . LB;
     }
     $selection .= '</select>' . LB;
     $feed_template->set_var ('feed_format', $selection);
@@ -479,40 +481,34 @@ function deletefeed ($fid)
 // MAIN
 $display = '';
 
-if (count ($HTTP_POST_VARS) == 0) {
-    $http_input_vars = $HTTP_GET_VARS;
-} else {
-    $http_input_vars = $HTTP_POST_VARS;
-}
-
-if ($http_input_vars['mode'] == 'edit') {
-    if ($http_input_vars['fid'] == 0) {
+if ($_REQUEST['mode'] == 'edit') {
+    if ($_REQUEST['fid'] == 0) {
         $display .= newfeed ();
     } else {
         $display .= COM_siteHeader ('menu')
-                 . editfeed ($http_input_vars['fid'])
+                 . editfeed ($_REQUEST['fid'])
                  . COM_siteFooter ();
     }
 }
-else if (($http_input_vars['mode'] == $LANG33[1]) && !empty ($LANG33[1]))
+else if (($_REQUEST['mode'] == $LANG33[1]) && !empty ($LANG33[1]))
 {
     $display .= COM_siteHeader ('menu')
-             . editfeed (0, $http_input_vars['type'])
+             . editfeed (0, $_REQUEST['type'])
              . COM_siteFooter ();
 }
-else if (($http_input_vars['mode'] == $LANG33[2]) && !empty ($LANG33[2]))
+else if (($_REQUEST['mode'] == $LANG33[2]) && !empty ($LANG33[2]))
 {
-    $display .= savefeed ($http_input_vars);
+    $display .= savefeed ($_REQUEST);
 }
-else if (($http_input_vars['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
+else if (($_REQUEST['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
 {
-    $display .= deletefeed ($http_input_vars['fid']);
+    $display .= deletefeed ($_REQUEST['fid']);
 }
 else
 {
     $display .= COM_siteHeader ('menu');
-    if (isset ($http_input_vars['msg'])) {
-        $display .= COM_showMessage ($http_input_vars['msg']);
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage ($_REQUEST['msg']);
     }
     $display .= listfeeds ()
              . COM_siteFooter ();

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +---------------------------------------------------------------------------+
@@ -8,9 +8,10 @@
 // |                                                                           |
 // | Geeklog syndication library.                                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2003 by the following authors:                              |
+// | Copyright (C) 2003-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Dirk Haun        - dirk AT haun-online DOT de                    |
+// |          Michael Jervis   - mike AT fuckingbrit DOT com                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.9 2004/08/23 19:36:35 dhaun Exp $
+// $Id: lib-syndication.php,v 1.10 2005/01/23 11:07:18 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -598,6 +599,8 @@ function SYND_getFeedContentEvents( $limit, &$link, &$update )
 
 /**
 * Update a feed.
+* Re-written by Michael Jervis (mike AT fuckingbrit DOT com)
+* to use the new architecture
 *
 * @param   int   $fid   feed id
 *
@@ -610,47 +613,85 @@ function SYND_updateFeed( $fid )
     $A = DB_fetchArray( $result );
     if( $A['is_enabled'] == 1 )
     {
-        require_once( $_CONF['path_system'] . 'classes/' . $A['format']
-                      . '.feed.class.php' );
-        $feed = new $A['format']();
-        $feed->setFeedfile( $A['filename'] );
-        $feed->setFeedformats( $A['content_length'], $A['language'],
-                               $A['charset'] );
+        // Import the feed handling classes:
+        require_once( $_CONF['path_system']
+                      . '/classes/syndication/parserfactory.class.php' );
+        require_once( $_CONF['path_system']
+                      . '/classes/syndication/feedparserbase.class.php' );
 
-        $link = '';
-        $data = '';
-        if( $A['type'] == 'geeklog' )
+        // Load the actual feed handlers:
+        $factory = new FeedParserFactory( $_CONF['path_system']
+                                          . '/classes/syndication/' );
+        $format = explode( '-', $A['format'] );
+        $feed = $factory->writer( $format[0], $format[1] );
+
+        if( $feed )
         {
-            if( $A['topic'] == '::all')
+            $feed->encoding = $A['charset'];
+            $feed->lang = $A['language'];
+
+            if( $A['type'] == 'geeklog' )
             {
-                $content = SYND_getFeedContentAll( $A['limits'], $link, $data );
+                if( $A['topic'] == '::all')
+                {
+                    $content = SYND_getFeedContentAll( $A['limits'], $link,
+                                                       $data );
+                }
+                elseif( $A['topic'] == '::links')
+                {
+                    $content = SYND_getFeedContentLinks( $A['limits'], $link,
+                                                         $data );
+                }
+                elseif( $A['topic'] == '::events')
+                {
+                    $content = SYND_getFeedContentEvents( $A['limits'], $link,
+                                                          $data );
+                }
+                else // feed for a single topic only
+                {
+                    $content = SYND_getFeedContentPerTopic( $A['topic'],
+                            $A['limits'], $link, $data );
+                }
             }
-            elseif( $A['topic'] == '::links')
+            else
             {
-                $content = SYND_getFeedContentLinks( $A['limits'], $link,
-                                                     $data );
+                $content = PLG_getFeedContent( $A['type'], $fid, $link, $data );
             }
-            elseif( $A['topic'] == '::events')
+            if( empty( $link ))
             {
-                $content = SYND_getFeedContentEvents( $A['limits'], $link,
-                                                      $data );
+                $link = $_CONF['site_url'];
             }
-            else // feed for a single topic only
+
+            $feed->title = $A['title'];
+            $feed->description = $A['description'];
+            $feed->sitelink = $link;
+            $feed->copyright = 'Copyright ' . strftime( '%Y' ) . ' '
+                             . $_CONF['site_name'];
+            $feed->sitecontact = $_CONF['site_mail'];
+            $feed->system = 'Geeklog ' . VERSION;
+            $feed->articles = $content;
+
+            if( !empty( $A['filename'] ))
             {
-                $content = SYND_getFeedContentPerTopic( $A['topic'],
-                        $A['limits'], $link, $data );
+                $filename = $A['filename'];
             }
+            else
+            {
+                $pos = strrpos( $_CONF['rdf_file'], '/' );
+                $filename = substr( $_CONF['rdf_file'], $pos + 1 );
+            }
+            $path = $_CONF['rdf_file'];
+            $pos = strrpos( $path, '/' );
+            $path = substr( $path, 0, $pos + 1 );
+            $filename = $path . $filename;
+            /*{$this->_feedurl = substr_replace ($path, $_CONF['site_url'], 0,
+                                          strlen ($_CONF['path_html']) - 1);}*/
+            $feed->createFeed( $filename );
         }
         else
         {
-            $content = PLG_getFeedContent( $A['type'], $fid, $link, $data );
+            COM_errorLog( "Unable to get a feed writer for {$format[0]} version {$format[1]}.", 1);
         }
-        if( empty( $link ))
-        {
-            $link = $_CONF['site_url'];
-        }
-        $feed->setFeedinfo( $link, $A['title'], $A['description'] );
-        $feed->write( $content );
 
         if( empty( $data ))
         {
@@ -661,7 +702,8 @@ function SYND_updateFeed( $fid )
             $data = "'" . $data . "'";
         }
 
-        if ($_SYND_DEBUG) {
+        if ($_SYND_DEBUG)
+        {
             COM_errorLog ("update_info for feed $fid is $data", 1);
         }
 
