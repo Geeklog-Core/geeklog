@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.14 2001/12/06 21:52:03 tony_bibbs Exp $
+// $Id: users.php,v 1.15 2002/01/09 17:37:06 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -197,7 +197,6 @@ function createuser($username,$email)
     } else {
         $retval .= COM_siteHeader('Menu') . newuserform($LANG04[19]) . COM_siteFooter();
     }
-	
     return $retval;
 }
 
@@ -341,9 +340,8 @@ function defaultform($msg, $referrer='')
 
 switch ($mode) {
 case 'logout':
-    if ($user_logged_in) {
-        // end_user_session($userdata[uid], $db);
-        end_user_session($_USER['uid'], $db);
+    if (!empty($_USER['uid']) AND $_USER['uid'] > 1) {
+        SESS_endUserSession($_USER['uid']);
         COM_accessLog("userid = {$HTTP_COOKIE_VARS[$_CONF["cookie_session"]]} {$LANG04[29]} $REMOTE_ADDR.");
     }
     setcookie($_CONF['cookie_session'],'',time() - 10000,$_CONF['cookie_path']);
@@ -395,6 +393,7 @@ default:
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
                 setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
+                setcookie($_CONF['password'],md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
