@@ -31,14 +31,9 @@
 //
 
 /**
-* This is the common library for Geeklog.  Through our code, you will see functions
-* with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions can be found in this
-* file.  This file provide all configuration variables needed by Geeklog with a
-* series of includes see futher down.  You only need to modify one line in this file.
-* WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
-* modified frequently by the Geeklog development team.  If you put your hacks in
-* lib-custom.php you will find upgrading much easier. NOTE: as of Geeklog 1.3.5 you
-* should not have to edit this file
+* This is the database library for Geeklog.  Through our code, you will see functions
+* with the DB_ prefix (e.g. DB_query()).  Any such functions can be found in this
+* file.  NOTE: as of Geeklog 1.3.5 you should not have to edit this file
 *
 */
 
@@ -97,6 +92,60 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // +---------------------------------------------------------------------------+
 
 /**
+* This is a general Time-To-Live array for the tables.  To start, these values will
+* only be used for calls to DB_count().  We may add references to the values more after
+* we make more concrete decisions as a team
+*
+* NOTE: this array wil be ignored by drivers that don't support SQL caching (e.g. mysql.class.php)
+*
+**/
+define(HOUR,3600);
+define(DAY, HOUR * 24);
+define(WEEK, DAY * 7);
+$_ttl_default = HOUR;
+$_TBL_TTL['access']              = $_ttl_default;
+$_TBL_TTL['article_images']      = $_ttl_default;
+$_TBL_TTL['blocks']              = $_ttl_default;
+$_TBL_TTL['commentcodes']        = $_ttl_default;
+$_TBL_TTL['commentmodes']        = $_ttl_default;
+$_TBL_TTL['comments']            = HOUR / 4;
+$_TBL_TTL['commentspeedlimit']   = $_ttl_default;
+$_TBL_TTL['cookiecodes']         = $_ttl_default;
+$_TBL_TTL['dateformats']         = $_ttl_default;
+$_TBL_TTL['events']              = $_ttl_default;
+$_TBL_TTL['eventsubmission']     = $_ttl_default;
+$_TBL_TTL['featurecodes']        = $_ttl_default;
+$_TBL_TTL['features']            = $_ttl_default;
+$_TBL_TTL['frontpagecodes']      = $_ttl_default;
+$_TBL_TTL['group_assignments']   = $_ttl_default;
+$_TBL_TTL['groups']              = HOUR / 2;
+$_TBL_TTL['links']               = $_ttl_default;
+$_TBL_TTL['linksubmission']      = HOUR / 4;
+$_TBL_TTL['maillist']            = $_ttl_default;
+$_TBL_TTL['personal_events']     = 0;
+$_TBL_TTL['plugins']             = $_ttl_default;
+$_TBL_TTL['pollanswers']         = 0;
+$_TBL_TTL['pollquestions']       = $_ttl_default;
+$_TBL_TTL['pollvoters']          = 0;
+$_TBL_TTL['postmodes']           = $_ttl_default;
+$_TBL_TTL['sessions']            = 0;
+$_TBL_TTL['sortcodes']           = $_ttl_default;
+$_TBL_TTL['statuscodes']         = $_ttl_default;
+$_TBL_TTL['stories']             = HOUR / 4;
+$_TBL_TTL['storysubmission']     = HOUR / 4;
+$_TBL_TTL['submitspeedlimit']    = $_ttl_default;
+$_TBL_TTL['topics']              = $_ttl_default;
+$_TBL_TTL['tzcodes']             = $_ttl_default;
+$_TBL_TTL['usercomment']         = 0;
+$_TBL_TTL['userevent']           = 0;
+$_TBL_TTL['userindex']           = 0;
+$_TBL_TTL['userinfo']            = 0;
+$_TBL_TTL['userprefs']           = 0;
+$_TBL_TTL['users']               = HOUR / 4;
+$_TBL_TTL['vars']                = $_ttl_default;
+$_TBL_TTL['wordlist']            = $_ttl_default;
+
+/**
 * Include appropriate DBMS object
 *
 */
@@ -139,14 +188,15 @@ function DB_setdebug($flag)
 *
 * @param        string  $sql                SQL to be executed
 * @param        int     $ignore_errors      If 1 this function supresses any error messages
+* @param        int     $ttl                If caching is supported, the TTL for the query
 * @return       object  Returns results from query
 *
 */
-function DB_query($sql, $ignore_errors=0)
+function DB_query($sql, $ignore_errors=0, $ttl=0)
 {
     global $_DB;
     
-    return $_DB->dbQuery($sql,$ignore_errors);
+    return $_DB->dbQuery($sql,$ignore_errors,$ttl);
 }
 
 /**
@@ -216,12 +266,12 @@ function DB_delete($table,$id,$value,$return_page='')
 * @return       mixed       Returns value sought
 *
 */
-function DB_getItem($table,$what,$selection='') 
+function DB_getItem($table,$what,$selection='',$ttl=0) 
 {
     if (!empty($selection)) {
-        $result = DB_query("SELECT $what FROM $table WHERE $selection");
+        $result = DB_query("SELECT $what FROM $table WHERE $selection",$ttl);
     } else {
-        $result = DB_query("SELECT $what FROM $table");
+        $result = DB_query("SELECT $what FROM $table",$ttl);
     }
     $ITEM = DB_fetchArray($result);
     return $ITEM[0];
@@ -271,11 +321,21 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 * @return       int     Returns row count from generated SQL
 *
 */
-function DB_count($table,$id='',$value='') 
+function DB_count($table,$id='',$value='',$ttl='') 
 {
-    global $_DB;
+    global $_DB, $_TBL_TTL;
 
-    return $_DB->dbCount($table,$id,$value);
+    // If no ttl given, get from $_TBL_TTL
+    if (empty($ttl)) {
+        $ttl = $_TBL_TTL[$table];
+    }
+
+    // If no ttl to this point then default to 0
+    if (empty($ttl)) {
+        $ttl = 0;
+    }
+
+    return $_DB->dbCount($table,$id,$value,$ttl);
 }
 
 /**
