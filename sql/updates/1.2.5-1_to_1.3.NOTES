@@ -1,0 +1,8 @@
+The upgrade to Geeklog 1.3 is not completely possible through a simple SQL script.  To do a manual 
+upgrade you will need to follow these steps:
+1) import the 1.2.5-1_to_1.3.sql
+2) using the your database client or via the administration interface modify the following users:
+    - Add all users EXCEPT anonymous to the group 'All Users' and 'Logged-in Users'
+    - Edit all administrators to belong to the groups you see fit
+
+If possible you should avoid doing a manual installation and, instead, use the installation script
