@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.47 2002/11/28 11:32:26 dhaun Exp $
+// $Id: users.php,v 1.48 2002/12/30 13:28:53 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -399,7 +399,11 @@ function createuser($username,$email)
             DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
             DB_query("INSERT INTO {$_TABLES["group_assignments"]} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
             DB_query("INSERT INTO {$_TABLES["userprefs"]} (uid) VALUES ($uid)");
-            DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
+            if ($_CONF['emailstoriesperdefault'] == 1) {
+                DB_query("INSERT INTO {$_TABLES["userindex"]} (uid) VALUES ($uid)");
+            } else {
+                DB_query("INSERT INTO {$_TABLES["userindex"]} (uid,etids) VALUES ($uid, '-')");
+            }
             DB_query("INSERT INTO {$_TABLES["usercomment"]} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES["userinfo"]} (uid) VALUES ($uid)");
             if ($_CONF['usersubmission'] == 1) {

@@ -375,14 +375,19 @@ that are defined below:
 <tr>
   <td>emailstories</td>
   <td>0</td>
-  <td>Let users get stories e-mailed to them (0=no, 1=yes). Please note that 
-    this requires cron and the use of PHP as a shell script.</td></tr>
+  <td>Let users get stories e-mailed to them (0=no, 1=yes), aka Daily Digest.
+    Please note that this requires cron and the use of PHP as a shell script.</td></tr>
 <tr>
   <td>emailstorieslength</td>
   <td>1</td>
   <td>When emailstories (above) is enabled, send only the title and the 
     link to the new stories (0), or send the entire introtext (1) or send 
-    the first n characters from the introtext (where n = any other number)</td></tr>
+    the first <i>n</i> characters from the introtext (where <i>n</i> = any other number)</td></tr>
+<tr>
+  <td>emailstoriesperdefault</td>
+  <td>0</td>
+  <td>When set to 1, new users will be subscribed to the daily digest
+    automatically when they register with the site.</td></tr>
 <tr>
   <td>newstoriesinterval</td>
   <td>86400</td>

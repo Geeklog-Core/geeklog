@@ -1,5 +1,9 @@
 GeekLog History/Changes:
 
+- New config option $_CONF['emailstoriesperdefault']: Set to 1 if new users
+  should be subscribed to the daily digest automatically. Defaults to 0 (no
+  automatic subscribtion), thus restoring the behaviour of Geeklog prior to
+  1.3.7.
 - Updated URLs to point to www.geeklog.net and lists.geeklog.net instead of the
   now outdated places on Sourceforge.
 - New Danish language files (for Geeklog and for the Static Pages plugin),

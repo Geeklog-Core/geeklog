@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.66 2002/12/16 08:56:15 dhaun Exp $
+// $Id: config.php,v 1.67 2002/12/30 13:28:52 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -239,6 +239,9 @@ $_CONF['showemptysearchresults'] = 0;
 // How long an anonymous (guest) user session is good for
 $_CONF['whosonline_threshold'] = 300; // in seconds
 
+
+// "Daily Digest" settings
+
 // Let users get stories emailed to them
 // Requires cron and the use of php as a shell script
 $_CONF['emailstories'] = 0;
@@ -247,6 +250,10 @@ $_CONF['emailstories'] = 0;
 // 0 = send only title + link, 1 = send entire introtext,
 // any other number = max. number of characters per story
 $_CONF['emailstorieslength'] = 1;
+
+// New users get stories emailed to them per default (= 1) or not (= 0)
+$_CONF['emailstoriesperdefault'] = 0;
+
 
 // When user submission is activated, allow users from these domains to
 // register without having to go through the submission queue.

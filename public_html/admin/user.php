@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.45 2002/12/13 19:39:56 dhaun Exp $
+// $Id: user.php,v 1.46 2002/12/30 13:28:53 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -214,8 +214,12 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
         
         if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
             DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
-			DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-            DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+            DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
+            if ($_CONF['emailstoriesperdefault'] == 1) {
+                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+            } else {
+                DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
+            }
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
         } else {
