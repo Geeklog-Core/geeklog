@@ -77,7 +77,7 @@ $LANG01 = array(
 	34 => "B³±d",
 	35 => "Wylogowanie",
 	36 => "on",
-	37 => "",
+	37 => "Brak artyku³ów u¿ytkownika",
 	38 => "",
 	39 => "Od¶wie¿",
 	40 => "",
@@ -117,6 +117,7 @@ $LANG01 = array(
 	74 => "kalendarz",
 	75 => "wyszukiwanie zaawansowane",
 	76 => "statystyka strony",
+	77 => "Pluginy",
 	78 => "Wydarzenia",
 	79 => "Co Nowego",
 	80 => "artyku³ów w ost.",
@@ -285,7 +286,13 @@ $LANG04 = array(
 	78 => "Dodaj swoje zdjêcie!",
 	79 => "Zaznacz tutaj aby wykasowaæ to zdjêcie",
 	80 => "Logowanie",
-        81 => "Wy¶lij Maila"
+        81 => "Wy¶lij Maila",
+	82 => '10 najnowszych artyku³ów u¿ytkownika',
+	83 => 'Statystyka zamieszczonych materia³ów u¿ytkownika',
+	84 => 'Wszystkich artyku³ów:',
+	85 => 'Wszystkich komentarzy:',
+	86 => 'Znajd¼ wszystkie materia³y zamieszczone przez'
+			
 );
 
 ###############################################################################
@@ -385,7 +392,7 @@ $LANG09 = array(
 	19 => "Przeszukuje ca³± bazê artyku³ów i komentarzy {$_CONF["site_name"]} ",
 	20 => "Data",
 	21 => "do",
-	22 => "(Format Daty MM-DD-RRRR)",
+	22 => "(Format Daty RRRR-MM-DD)",
 	23 => "Trafieñ",
 	24 => "Znaleziono",
 	25 => "trafieñ w¶ród",
@@ -814,18 +821,23 @@ $LANG29 = array(
 	1 => "Zatwierd¼",
 	2 => "Kasuj",
 	3 => "Edytuj",
+	4 => 'Profil',
 	10 => "Tytu³",
 	11 => "Data Pocz±tkowa",
 	12 => "URL",
 	13 => "Kategoria",
 	14 => "Data",
 	15 => "Sekcja",
+	16 => 'Nazwa u¿ytkownika', 
+	17 => 'Pe³na nazwa u¿ytkownika',
+	18 => 'Email',
 	34 => "Panel Sterowania",
 	35 => "Przes³ane Materia³y",
 	36 => "Przes³ane Linki",
 	37 => "Przes³ane Wydarzenia",
 	38 => "Prze¶lij",
-	39 => "¯adnych materia³ów do zatwierdzenia"
+	39 => "¯adnych materia³ów do zatwierdzenia",
+	40 => "Materia³y przes³ane przez u¿ytkownika"
 );
 
 ###############################################################################
@@ -902,7 +914,8 @@ $LANG31 = array(
         22 => 'Sukces',
         23 => 'Brak b³êdów',
         24 => 'Bez powodzenia',
-        25 => '-- Wybierz Grupê --'
+        25 => '-- Wybierz Grupê --',
+	26 => "Proszê uzupe³niæ wszystkie pola i wybraæ grupê z listy."
 );
 
 
@@ -956,7 +969,10 @@ $MESSAGE = array (
         44 => 'Plugin zosta³ zainstalowany!',
         45 => 'Plugin zosta³ wykasowany.',
 	46 => "Sorry, nie masz dostêpu do opcji archiwizowania bazy danych.  Pamiêtaj, ¿e Wszelkie nieautoryzowane próby wej¶cia s± logowane",
-	47 => "Ta opcja dzia³a tylko pod *nix.  Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie."
+	47 => "Ta opcja dzia³a tylko pod systemem *nix. Je¶li masz w³a¶nie taki system operacyjny to cache zosta³ wyczyszczony. Pod Windoz±, musisz poszukaæ plików adodb_*.php i usun±æ je rêcznie.",
+	48 => 'Dziekujemy za zainteresowanie cz³onkowstwem w ' .$_CONF['site_name'] . '. Zweryfikujemy twoje zg³oszenie i po zatwierdzeniu zostanie wys³ane has³o pod podany adres e-mail.',
+	49 => "Twoja grupa zosta³a zapisana.",
+        50 => "Grupa zosta³a wykasowana."
 );
 
 // for plugins.php
@@ -1039,6 +1055,7 @@ $LANG_ACCESS = array(
 	adminhome => 'Admin Home',
 	save => 'zapisz',
 	cancel => 'anuluj',
+	delete => 'kasuj',	
 	canteditroot => 'Wyst±pi³a próba edycji grupy G³ównej. Niestety nie nale¿ysz do ¿adnej z grup G³ównych dlatego nie masz dostêpu do tej grupy.  Skontaktuj siê z administratorem systemu je¶li uwa¿asz, ¿e to pomy³ka'
 );
 
@@ -1048,7 +1065,13 @@ $LANG_DB_BACKUP = array(
     backup_successful => 'Backup bazy wykonany pomy¶lnie.',
     no_backups => 'Brak backupów w systemie',
     db_explanation => 'Aby wykonaæ nowy backup twojego systemu, kliknij poni¿szy przycisk',
-    not_found => "B³±d: nie mo¿na odnale¼æ {$_DB_mysqldump_path}."
+    not_found => "Niew³a¶ciwa ¶cie¿ka lub program archiwizuj±cy nie jest wykonywalny.<br>Sprawd¼ <strong>\$_DB_mysqldump_path</strong> ustawienia w config.php.<br>Zmienna jest obecnie ustawiona na: <var>{$_DB_mysqldump_path}</var>",
+    zero_size => 'Wykonanie Kopii Nie Powiod³o Siê: Rozmiar pliku 0 bajtów',
+    path_not_found => "{$_CONF['backup_path']} nie istnieje lub nie jest katalogiem",
+    no_access => "B£¡D: Katalog {$_CONF['backup_path']} jest niedostêpny.",
+    backup_file => 'Plik kopii',
+    size => 'Rozmiar',
+    bytes => 'Bajtów'
 );
 
 $LANG_BUTTONS = array(
