@@ -1013,11 +1013,14 @@ $LANG32 = array(
     25 => 'Delete',
     26 => 'Plug-in Name',
     27 => 'Plug-in Homepage',
-    28 => 'Plug-in Version',
+    28 => 'Installed Version',
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
-    32 => '<p><b>Error AutoLink tag not correct format</b></p>'
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
+
 );
 
 ###############################################################################
@@ -1125,7 +1128,8 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated'
 );
 
 ###############################################################################

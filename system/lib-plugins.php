@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.42 2004/09/24 10:25:32 dhaun Exp $
+// $Id: lib-plugins.php,v 1.43 2004/09/25 03:03:12 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -143,6 +143,19 @@ function PLG_upgrade($type)
 {
     return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
 }
+/**
+* Calls the plugin function to return the current version of code. 
+* Used to indicate to admin if an update or upgrade is requied.
+*
+* @param        string      $type       Plugin name
+* @return       boolean     Returns true on success otherwise false
+*
+*/
+function PLG_chkVersion($type)
+{
+    return PLG_callFunctionForOnePlugin('plugin_chkVersion_' . $type);
+}
+
 
 /**
 * Tells a plugin to uninstall itself.

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.38 2004/07/17 17:16:33 dhaun Exp $
+// $Id: plugins.php,v 1.39 2004/09/25 03:03:10 blaine Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -114,7 +114,13 @@ function plugineditor ($pi_name, $confirmed = 0)
     if ($fh === false) {
         $admin_img = $_CONF['site_admin_url'] . '/plugins/' . $pi_name
                    . '/images/' . $pi_name . '.gif';
-        $plg_templates->set_var ('pi_icon', $admin_img);
+        $fh2 = @fopen ($public_img, 'r');
+        if ($fh2 === false) {
+            $default_img = $_CONF['site_url'] . '/images/icons/plugins.gif';
+            $plg_templates->set_var ('pi_icon', $default_img);
+        } else {
+            $plg_templates->set_var ('pi_icon', $admin_img);
+        }
     } else {
         fclose ($fh);
         $plg_templates->set_var ('pi_icon', $public_img);
@@ -123,15 +129,27 @@ function plugineditor ($pi_name, $confirmed = 0)
         $plg_templates->set_var ('delete_option', '<input type="submit" value="'
                                  . $LANG32[25] . '" name="mode">');
     }
+    $plugin_code_version = PLG_chkVersion($pi_name);
+    if ($plugin_code_version == '') {
+        $plugin_code_version = 'N/A';
+    }
+    if ($plugin_code_version != 'N/A' AND $plugin_code_version > $A['pi_version']) {
+        $plg_templates->set_var ('update_option', '<input type="submit" value="'
+                                 . $LANG32[34] . '" name="mode">');
+    } else {
+        $plg_templates->set_var ('update_option', '');
+    }    
     $plg_templates->set_var('confirmed', $confirmed);
     $plg_templates->set_var('lang_pluginname', $LANG32[26]);
     $plg_templates->set_var('pi_name', $pi_name);
     $plg_templates->set_var('lang_pluginhomepage', $LANG32[27]);
     $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
     $plg_templates->set_var('lang_pluginversion', $LANG32[28]);
+    $plg_templates->set_var('lang_plugincodeversion', $LANG32[33]);
     $plg_templates->set_var('pi_version', $A['pi_version']);
     $plg_templates->set_var('lang_geeklogversion', $LANG32[29]);
     $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
+    $plg_templates->set_var('pi_codeversion', $plugin_code_version );
     $plg_templates->set_var('lang_enabled', $LANG32[19]);
     if ($A['pi_enabled'] == 1) {
         $plg_templates->set_var('enabled_checked', 'checked="checked"');
@@ -186,10 +204,15 @@ function listplugins ($page = 1)
          for ($i = 0; $i < $nrows; $i++) {
             $pcount = (PLUGINS_PER_PAGE * ($page - 1)) + $i + 1;
             $A = DB_fetchArray($result);
+            $plugin_code_version = PLG_chkVersion($A['pi_name']);
+            if ($plugin_code_version == '') {
+                $plugin_code_version = 'N/A';
+            }
             $plg_templates->set_var('pi_name', $A['pi_name']);
             $plg_templates->set_var('row_num', $pcount);
             $plg_templates->set_var('pi_url', $A['pi_homepage']);
-            $plg_templates->set_var('pi_version', $A['pi_version']);
+            $plg_templates->set_var('pi_installed_version', $A['pi_version']);
+            $plg_templates->set_var('pi_code_version', $plugin_code_version);
             $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
             if ($A['pi_enabled'] == 1) {
                 $plg_templates->set_var('pi_enabled', $LANG32[20]);
@@ -365,6 +388,47 @@ function show_newplugins ()
 }
 
 /**
+* Updates a plugin (call its upgrade function).
+*
+* @param    pi_name   string   name of the plugin to uninstall
+* @return             string   HTML for error or success message
+*
+*/
+function do_update ($pi_name)
+{
+    global $_CONF, $LANG32, $LANG08, $MESSAGE;
+
+    $retval = '';
+
+    if (strlen ($pi_name) == 0) {
+        $retval .= COM_startBlock ($LANG32[13], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= COM_errorLog ($LANG32[12]);
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
+
+    if (PLG_upgrade ($pi_name)) {
+        $retval .= COM_showMessage (60);
+    } else {
+        $timestamp = strftime ($_CONF['daytime']);
+        $retval .= COM_startBlock ($MESSAGE[40] . ' - ' . $timestamp, '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+                . '<img src="' . $_CONF['layout_url']
+                . '/images/sysmessage.gif" border="0" align="top" alt="">'
+                . $LANG08[6] . '<br><br>'
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
+
+    return $retval;
+}
+
+
+
+
+
+/**
 * Uninstall a plugin (call its uninstall function).
 *
 * @param    pi_name   string   name of the plugin to uninstall
@@ -373,7 +437,7 @@ function show_newplugins ()
 */
 function do_uninstall ($pi_name)
 {
-    global $_CONF, $LANG32, $MESSAGE;
+    global $_CONF, $LANG32, $LANG08, $MESSAGE;
 
     $retval = '';
 
@@ -430,10 +494,17 @@ if (($mode == $LANG32[25]) && !empty ($LANG32[25])) { // delete
         $display .= plugineditor ($pi_name, 1);
         $display .= COM_siteFooter ();
     }
+
+} else if ($mode == $LANG32[34]) {
+        $display .= COM_siteHeader ('menu');
+        $display .= do_update ($pi_name);
+        $display .= COM_siteFooter ();
+
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader ('menu');
     $display .= plugineditor (COM_applyFilter ($HTTP_GET_VARS['pi_name']));
     $display .= COM_siteFooter ();
+
 } else if (($mode == $LANG32[23]) && !empty ($LANG32[23])) { // save
     $display .= saveplugin (COM_applyFilter ($HTTP_POST_VARS['pi_name']),
                             COM_applyFilter ($HTTP_POST_VARS['pi_version']),
