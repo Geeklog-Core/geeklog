@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.119 2004/06/07 20:49:02 tony Exp $
+// $Id: config.php,v 1.120 2004/06/09 13:55:16 tony Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -322,7 +322,7 @@ $_CONF['path_to_htmldoc'] = '/path/to/htmldoc';
 // http://tidy.sf.net and you need to get the library (see
 // http://tidy.sourceforge.net/libintro.html) and then install the PHP PECL by
 // doing "pear -v install tidy"
-$_CONF['use_html_tidy'] = 1;
+$_CONF['use_html_tidy'] = 0;
 // See PHP manual for full list of config options
 $_CONF['tidy_config_options'] = array(
                                     'output-xhtml' => true,
@@ -334,7 +334,7 @@ $_CONF['path_pdf'] = $_CONF['path'] . 'pdfs/';
 // system path here.
 $_CONF['pdf_logo'] = '';
 // Font point size (sorry no customization of font type yet)
-$_CONF['pdf_font_size'] = 9;
+$_CONF['pdf_font_size'] = 10;
 // PDF's are generated and kept however many days you specify below.  If this
 // is left blank or set to 0 it will default back to 1
 $_CONF['days_to_keep'] = 1;
