@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.43 2004/10/05 19:56:30 dhaun Exp $
+// $Id: functions.inc,v 1.44 2004/10/23 09:40:17 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -324,11 +324,7 @@ function plugin_getadminoption_staticpages()
     global $_CONF, $LANG_STATIC, $_TABLES;
 
     if (SEC_hasRights ('staticpages.edit,staticpages.delete', 'OR')) {
-        $perms = SP_getPerms ('', '3');
-        if (!empty ($perms)) {
-            $perms = ' WHERE ' . $perms;
-        }
-        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . $perms);
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ());
         $A = DB_fetchArray ($result);
         $total_pages = $A['cnt'];
         return array ($LANG_STATIC['staticpages'], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', $total_pages);
