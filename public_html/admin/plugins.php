@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.30 2002/09/12 14:32:49 dhaun Exp $
+// $Id: plugins.php,v 1.31 2002/11/16 22:20:21 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -166,6 +166,7 @@ function listplugins($page = 1)
     $plg_templates->set_var('end_block', COM_endBlock());
     $plg_templates->parse('output', 'list');
     $retval .= $plg_templates->finish($plg_templates->get_var('output'));
+	$retval .= show_newplugins();
 
     return $retval;
 }
@@ -204,6 +205,83 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 function removeplugin ($pi_name) {
     if (PLG_uninstall ($pi_name)) {
     } else {
+    }
+
+    return $retval;
+}
+
+
+function show_newplugins()
+{
+    global $_CONF, $_TABLES, $LANG32;
+
+    $plugins = array ();
+    $plugins_dir = $_CONF['path'] . 'plugins/';
+    $fd = opendir ($plugins_dir);
+    $index = 1;
+    $retval = '';
+    $newplugins = array ();
+    while (($dir = @readdir ($fd)) == TRUE) {
+        if (is_dir ($plugins_dir . $dir) && ($dir <> '.') && ($dir <> '..') &&
+                ($dir <> 'CVS') && (substr ($dir, 0 , 1) <> '.')) {
+            clearstatcache ();
+            // Check and see if this plugin is installed - if there is a record.
+            // If not then it's a new plugin
+            if (DB_count($_TABLES['plugins'],'pi_name',$dir) == 0) {
+                // additionally, check if a 'functions.inc' exists
+                if (file_exists ($plugins_dir . $dir . '/functions.inc')) {
+                    // and finally, since we're going to link to it, check if
+                    // an install script exists
+                    $fh = @fopen ($_CONF['site_admin_url'] . '/plugins/' . $dir
+                        . '/install.php', 'r');
+                    if ($fh) {
+                        fclose ($fh);
+                        $newplugins[] = $dir;
+                    }
+                }
+            }
+        }
+    }
+
+    if (sizeof ($newplugins) > 0) {
+        $templdir = $_CONF['path_layout'] . 'admin/plugins';
+        if (file_exists ($templdir . '/newpluginlist.thtml') &&
+                file_exists ($templdir . '/newlistitem.thtml')) {
+            $newtemplate = new Template ($templdir);
+            $newtemplate->set_file (array ('list'=>'newpluginlist.thtml',
+                                           'row'=>'newlistitem.thtml'));
+            $newtemplate->set_var ('site_url', $_CONF['site_url']);
+            $newtemplate->set_var ('site_admin_url', $_CONF['site_admin_url']);
+            $newtemplate->set_var ('layout_url', $_CONF['layout_url']);
+            $newtemplate->set_var ('lang_pluginname', $LANG32[16]);
+            $newtemplate->set_var ('start_block_newlist',
+                                   COM_startBlock ($LANG32[14]));
+            for ($i = 0; $i < sizeof ($newplugins); $i++) {
+                $newtemplate->set_var ('lang_install', $LANG32[22]);
+                $newtemplate->set_var ('pi_name', $newplugins[$i]);
+                $newtemplate->set_var ('row_num', $i + 1);
+                $newtemplate->set_var ('start_install_anchortag', '<a href="'
+                    . $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
+                    . '/install.php?action=install">');
+                $newtemplate->set_var ('end_install_anchortag', '</a>');
+                $newtemplate->parse ('plugin_list', 'row', true);
+            }
+            $newtemplate->set_var ('end_block', COM_endBlock ());
+            $newtemplate->parse ('output', 'list');
+            $retval .= $newtemplate->finish ($newtemplate->get_var ('output'));
+        } else {
+            $retval =  COM_startBlock ($LANG32[14]);
+            $retval .= '<table border="0">' . LB;
+            $retval .= '<tr><th align="left">' . $LANG32[16] .'</th></tr>' . LB;
+            for ($i = 0; $i < sizeof ($newplugins); $i++) {
+                $retval .= '<tr><td>' . $newplugins[$i] . '</td><td><a href="'
+                    . $_CONF['site_admin_url'] . '/plugins/' . $newplugins[$i]
+                    . '/install.php?action=install">' . $LANG32[22]
+                    . '</a></td></tr>' . LB;
+            }
+            $retval .= '</table>' . LB;
+            $retval .= COM_endBlock ();
+        }
     }
 
     return $retval;
