@@ -576,7 +576,10 @@ $LANG21 = array(
     50 => 'Help File URL',
     51 => 'include http://',
     52 => 'If you leave this blank the help icon for this block will not be displayed',
-    53 => 'Enabled'
+    53 => 'Enabled',
+    54 => 'save',
+    55 => 'cancel',
+    56 => 'delete'
 );
 
 ###############################################################################

@@ -246,7 +246,7 @@ $LANG04 = array(
 	33 => "Auf der Site nicht sichtbar!",
 	34 => "Dein richtiger Name",
 	35 => "Passwort eingeben, um es zu &auml;ndern",
-	36 => "Beginnt mit http://",
+	36 => "(mit http://)",
 	37 => "Wird an Deine Kommentare angef&uuml;gt",
 	38 => "Alles &uuml;ber Dich - f&uuml;r alle sichtbar",
 	39 => "Dein PGP-Key, wenn vorhanden",
@@ -580,9 +580,12 @@ $LANG21 = array(
     48 => 'Block-Name',
     49 => ' (keine Leerzeichen, muss eindeutig sein)',
     50 => 'URL zur Hilfe',
-    51 => 'http:// voranstellen',
+    51 => '(mit http://)',
     52 => 'Wenn das Feld leer ist, wird kein Hilfe-Icon zu diesem Block angezeigt.',
-    53 => 'Enabled'
+    53 => 'Aktiv',
+    54 => 'Speichern',
+    55 => 'Abbruch',
+    56 => 'Loeschen'
 );
 
 ###############################################################################
