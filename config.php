@@ -28,75 +28,85 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | See the INSTALL.HTML file for more information on configuration           |
-// | information                                                               |
+// | See the docs/install.html and docs/config.html files for more information |
+// | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.48 2002/08/06 17:36:38 dhaun Exp $
+// $Id: config.php,v 1.49 2002/08/11 13:19:30 dhaun Exp $
 
-// ----------------------------------------------------------------------------+
-// | SITE STATUS                                                               |
-// |                                                                           |
-// | To disable your Geeklog site quickly, simply set this flag to false       |
-// +---------------------------------------------------------------------------+
-$_CONF['site_enabled'] = true;  // true or false
-// Message shown when site is down
-$_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
+// To get Geeklog up and running, you need to make sure the settings in the
+// following sections are correct:
+// + DATABASE SETTINGS
+// + SERVER SETTINGS
+// + SITE SETTINGS
+// You can adjust the other settings once your site is up and running.
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
 // |                                                                           |
-// | All paths must have a trailing slash ('/'). The 'path' value signifies    |
-// | where the config.php (this file) resides                                  |
+// | These settings tell Geeklog about your database and how to connect to it. |
 // +---------------------------------------------------------------------------+
-$_DB_dbms           = 'mysql';              // Currently only MySQL is support, do not change
-$_DB_host           = 'localhost';  
-$_DB_name           = 'geeklog';            // Yes, your DB must exists before running installer!
-$_DB_user           = 'username';
-$_DB_pass           = 'password';
-$_DB_table_prefix   = 'gl_';                // e.g. 'gl_'
+$_DB_dbms         = 'mysql';        // Do not change (currently, only MySQL is supported)
+$_DB_host         = 'localhost';
+$_DB_name         = 'geeklog';      // Yes, your DB must exist before running the installer!
+$_DB_user         = 'username';
+$_DB_pass         = 'password';
+$_DB_table_prefix = 'gl_';          // e.g. 'gl_'
+
+// optional settings for making database backups from within Geeklog
 $_DB_mysqldump_path = '/usr/bin/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
-$_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
+$_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
 // |                                                                           |
-// | All paths must have a trailing slash ('/'). The 'path' value signifies    |
-// | where the config.php (this file) resides                                  |
+// | All paths must have a trailing slash ('/') or, if you're on Windows, they |
+// | must starts with a drive letter (e.g. 'C:/').                             |
+// | The 'path' value signifies where the config.php (this file) resides       |
 // +---------------------------------------------------------------------------+
 $_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
-$_CONF['path_system']       = $_CONF['path'] . 'system/';
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
+
+// you shouldn't need to edit the following
+$_CONF['path_system']       = $_CONF['path'] . 'system/';
 $_CONF['path_log']          = $_CONF['path'] . 'logs/';
 $_CONF['path_language']     = $_CONF['path'] . 'language/';
 $_CONF['rdf_file']          = $_CONF['path_html'] . 'backend/geeklog.rdf';
 $_CONF['backup_path']       = $_CONF['path'] . 'backups/';
-
-// Experimental, only works with staticpages right now. This feature is known
-// to have issues that are unresolvable with systems running IIS.  Have not
-// tested on windows with apache yet.  This feature when fully implemented,
-// will make your site crawler friendly.  Problems with IIS are known PHP CGI
-// bug.
-
-$_CONF['url_rewrite']       = false; // false = off, true = on
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
 // |                                                                           |
 // | These settings help define your Geeklog site.                             |
 // +---------------------------------------------------------------------------+
+// make sure this is the correct URL to your site (no trailing slash)
+$_CONF['site_url']          = 'http://www.example.com';
+
 $_CONF['site_name']         = 'Geeklog Site';
 $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']         = 'admin@example.com';
-$_CONF['site_url']          = 'http://www.example.com';
-$_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
 $_CONF['theme']             = 'XSilver';  // default theme
+
+// Some hosting services have a preconfigured admin directory. In that case,
+// you need to rename Geeklog's admin directory to something like "myadmin"
+// and change the following URL as well. Leave as is until you experience any
+// problems accessing Geeklog's admin menu.
+$_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
+
+// you shouldn't need to edit the following
 $_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
-$_CONF['allow_user_themes'] = 1;
+
+// optional settings
+$_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
-$_CONF['allow_user_photo'] = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
+$_CONF['allow_user_photo']    = 1; // 1 = on, 0 = off...flag that allows users to upload self-photo
+
+// ****************************************************************************
+// * If you set up Geeklog for the first time, you shouldn't need to change   *
+// * anything below this line. Come back here once the site is up and running.*
+// ****************************************************************************
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
@@ -107,6 +117,17 @@ $_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']   = '%m/%d %I:%M%p';
 $_CONF['shortdate'] = '%x';
 $_CONF['default_charset'] = 'iso-8859-1';
+
+// ----------------------------------------------------------------------------+
+// | SITE STATUS                                                               |
+// |                                                                           |
+// | To disable your Geeklog site quickly, simply set this flag to false       |
+// +---------------------------------------------------------------------------+
+$_CONF['site_enabled'] = true;  // true or false
+
+// Message shown when site is down
+// When this starts with 'http:' visitors are redirected to that URL
+$_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
 
 // +---------------------------------------------------------------------------+
 // | SESSION SETTINGS                                                          |
@@ -168,9 +189,9 @@ $_CONF['emailuserloginrequired'] = 0;
 
 // enable (set to 1) or disable (set to 0) submission queues:
 $_CONF['storysubmission'] = 1;
-$_CONF['linksubmission'] = 1;
+$_CONF['linksubmission']  = 1;
 $_CONF['eventsubmission'] = 1;
-$_CONF['usersubmission'] = 0;
+$_CONF['usersubmission']  = 0;
 
 $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;         // in seconds
@@ -249,6 +270,14 @@ $_CONF['adminhtml'] = $_CONF['allowablehtml'] . ',<table>,<tr>,<td>,<th>';
 $_CONF['censormode']    = 1;
 $_CONF['censorreplace'] = '*censored*';
 $_CONF['censorlist']    = array('fuck','cunt','fucker','fucking','pussy','cock','c0ck',' cum ','twat','clit','bitch','fuk','fuking','motherfucker');
+
+// Experimental, only works with staticpages right now. This feature is known
+// to have issues that are unresolvable with systems running IIS.  Have not
+// tested on windows with apache yet.  This feature when fully implemented,
+// will make your site crawler friendly.  Problems with IIS are known PHP CGI
+// bug.
+
+$_CONF['url_rewrite']       = false; // false = off, true = on
 
 // Define a few useful things for GL
 if (!defined ('LB')) {
