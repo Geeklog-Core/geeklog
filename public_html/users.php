@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.62 2003/05/08 17:23:10 dhaun Exp $
+// $Id: users.php,v 1.63 2003/05/14 10:48:52 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -132,18 +132,8 @@ function userprofile($user)
     $user_templates->set_var('headline_postingstats', $LANG04[83]);
 
     // list of last 10 stories by this user
-    $groupList = '';
-    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
-    if (!empty ($_USER['uid'])) {
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $sql .= "(perm_members >= 2) OR ";
-    }
-    $sql .= "(perm_anon >= 2)) ORDER BY unixdate DESC LIMIT 10";
+    $sql = "SELECT sid,title,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
+    $sql .= " ORDER BY unixdate DESC LIMIT 10";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
@@ -165,13 +155,7 @@ function userprofile($user)
 
     // list of last 10 comments by this user
     // first, get a list of all stories the current visitor has access to
-    $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (";
-    if (!empty ($_USER['uid'])) {
-        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $sql .= "(perm_members >= 2) OR ";
-    }
-    $sql .= "(perm_anon >= 2))";
+    $sql = "SELECT sid FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
     $result = DB_query($sql);
     $numsids = DB_numRows($result);
     $sidArray = array();
@@ -180,13 +164,7 @@ function userprofile($user)
         $sidArray[] = $S['sid'];
     }
     // add all polls the current visitor has access to
-    $sql = "SELECT qid FROM {$_TABLES['pollquestions']} WHERE ";
-    if (!empty ($_USER['uid'])) {
-        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $sql .= "(perm_members >= 2) OR ";
-    }
-    $sql .= "(perm_anon >= 2)";
+    $sql = "SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ();
     $result = DB_query($sql);
     $numqids = DB_numRows($result);
 
@@ -243,13 +221,7 @@ function userprofile($user)
 
     // posting stats for this user
     $user_templates->set_var ('lang_number_stories', $LANG04[84]);
-    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW()) AND (";
-    if (!empty ($_USER['uid'])) {
-        $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $sql .= "(perm_members >= 2) OR ";
-    }
-    $sql .= "(perm_anon >= 2))";
+    $sql = "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (uid = $user) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND');
     $result = DB_query($sql);
     $N = DB_fetchArray ($result);
     $user_templates->set_var('number_stories', $N['count']);

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.22 2003/01/19 17:22:26 dhaun Exp $
+// $Id: stats.php,v 1.23 2003/05/14 10:48:52 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -64,21 +64,6 @@ $stat_templates->set_file(array('stats'=>'stats.thtml',
                             'itemstats'=>'itemstatistics.thtml',
                             'statrow'=>'singlestat.thtml'));
 
-$groupList = '';
-if (!empty ($_USER['uid'])) {
-    foreach ($_GROUPS as $grp) {
-        $groupList .= $grp . ',';
-    }
-    $groupList = substr ($groupList, 0, -1);
-}
-$permsql = '';
-if (!empty ($_USER['uid'])) {
-    $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR "
-             . "(group_id IN ($groupList) AND perm_group >= 2) OR "
-             . "(perm_members >= 2) OR ";
-}
-$permsql .= "(perm_anon >= 2)";
-
 // Overall Site Statistics
 
 $totalhits = DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'");
@@ -87,7 +72,7 @@ $stat_templates->set_var('total_hits', $totalhits);
 
 $id = array('draft_flag','date');
 $values = array('0','NOW()');	
-$result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND ({$permsql})");
+$result = DB_query("SELECT count(*) AS count,SUM(comments) as ccount FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND'));
 $A = DB_fetchArray($result);
 $total_stories = $A['count'];
 $comments = $A['ccount'];
@@ -98,10 +83,10 @@ $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
 $stat_templates->set_var('total_stories',$total_stories);
 $stat_templates->set_var('total_comments',$comments);
 
-$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['pollquestions']} WHERE ({$permsql})");
+$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_polls = $A['count'];
-$result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']} WHERE ({$permsql})");
+$result = DB_query ("SELECT qid FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
 $nrows = DB_numRows ($result);
 if ($nrows > 0) {
     $questions = '';
@@ -122,7 +107,7 @@ $stat_templates->set_var('lang_polls_answers',$LANG10[4]);
 $stat_templates->set_var('total_polls',$total_polls);
 $stat_templates->set_var('total_answers', $total_answers);
 
-$result = DB_query ("SELECT count(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']} WHERE ({$permsql})");
+$result = DB_query ("SELECT count(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_links = $A['count'];
 $total_clicks = $A['clicks'];
@@ -133,7 +118,7 @@ $stat_templates->set_var('lang_links_clicks',$LANG10[5]);
 $stat_templates->set_var('total_links',$total_links);
 $stat_templates->set_var('total_clicks',$total_clicks);
 
-$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['events']} WHERE ({$permsql})");
+$result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_events = $A['count'];
 $stat_templates->set_var('lang_events',$LANG10[6]);
@@ -150,7 +135,7 @@ $display .= COM_endBlock();
 
 // Detailed story statistics
 
-$result = DB_query("SELECT sid,title,hits FROM {$_TABLES["stories"]} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0) AND ({$permsql}) ORDER BY Hits desc LIMIT 10");
+$result = DB_query("SELECT sid,title,hits FROM {$_TABLES["stories"]} WHERE (draft_flag = 0) AND (date <= NOW()) AND (Hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY Hits desc LIMIT 10");
 $nrows  = DB_numRows($result);
 
 $display .= COM_startBlock($LANG10[7]);
@@ -175,7 +160,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Commented Stories
 
-$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0) AND ({$permsql}) ORDER BY comments desc LIMIT 10");
+$result = DB_query("SELECT sid,title,comments from {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (comments > 0)" . COM_getPermSQL ('AND') . " ORDER BY comments desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[11]);
 if ($nrows > 0) {
@@ -198,7 +183,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Emailed Stories
 
-$result = DB_query("SELECT sid,title,numemails FROM {$_TABLES["stories"]} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW()) AND ({$permsql}) ORDER BY numemails desc LIMIT 10");
+$result = DB_query("SELECT sid,title,numemails FROM {$_TABLES["stories"]} WHERE (numemails > 0) AND (draft_flag = 0) AND (date <= NOW())" . COM_getPermSQL ('AND') . " ORDER BY numemails desc LIMIT 10");
 $nrows = DB_numRows($result);
 $display .= COM_startBlock($LANG10[22]);
 
@@ -222,7 +207,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Polls
 
-$result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0) AND ({$permsql}) ORDER BY voters desc LIMIT 10");
+$result = DB_query("SELECT qid,question,voters from {$_TABLES['pollquestions']} WHERE (voters > 0)" . COM_getPermSQL ('AND') . " ORDER BY voters desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[14]);
 if ($nrows>0) {
@@ -246,7 +231,7 @@ $stat_templates->set_var('stat_row','');
 
 // Top Ten Links
 
-$result = DB_query("SELECT lid,url,title,hits from {$_TABLES['links']} WHERE (hits > 0) AND ({$permsql}) ORDER BY hits desc LIMIT 10");
+$result = DB_query("SELECT lid,url,title,hits from {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits desc LIMIT 10");
 $nrows  = DB_numRows($result);
 $display .= COM_startBlock($LANG10[18]);
 if ($nrows > 0) {

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.57 2003/05/08 17:23:10 dhaun Exp $
+// $Id: usersettings.php,v 1.58 2003/05/14 10:48:52 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -360,22 +360,7 @@ function editpreferences()
     $preferences->parse ('display_block', 'display', true);
 
     // excluded items block
-    $groupList = '';
-    if (!empty ($_USER['uid'])) {
-        foreach ($_GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-    }
-
-    $permissions = '';
-    if (!empty ($_USER['uid'])) {
-        $permissions .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-        $permissions .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-        $permissions .= "(perm_members >= 2) OR "; 
-    }
-    $permissions .= "(perm_anon >= 2)";
-
+    $permissions = COM_getPermSQL ('');
     $preferences->set_var ('exclude_topic_checklist',
         COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']));
 
@@ -425,7 +410,11 @@ function editpreferences()
             }
         }
     }
-    $whereblock = "(" . $permissions . ") AND ((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
+    $whereblock = '';
+    if (!empty ($permissions)) {
+        $whereblock .= $permissions . ' AND ';
+    }
+    $whereblock = "((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
     $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
             'bid,title,blockorder', $whereblock, $selectedblocks));
     $preferences->parse ('boxes_block', 'boxes', true);

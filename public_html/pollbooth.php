@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.18 2003/05/08 17:23:10 dhaun Exp $
+// $Id: pollbooth.php,v 1.19 2003/05/14 10:48:52 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -91,21 +91,8 @@ function polllist()
         $login->parse ('output', 'login');
         $retval .= $login->finish ($login->get_var('output'));
     } else {
-        $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']} WHERE ";
-        if (!empty ($_USER['uid'])) {
-            $groupList = '';
-            if (!empty ($_USER['uid'])) {
-                foreach ($_GROUPS as $grp) {
-                    $groupList .= $grp . ',';
-                }
-                $groupList = substr ($groupList, 0, -1);
-            }
-            $sql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-            $sql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-            $sql .= "(perm_members >= 2) OR ";
-        }
-        $sql .= "(perm_anon >= 2)";
-
+        $sql = "SELECT qid,question,voters FROM {$_TABLES['pollquestions']}"
+             . COM_getPermSQL ();
         $result = DB_query($sql);
         $nrows = DB_numRows($result);
         $retval = COM_startBlock($LANG07[4]);
