@@ -5,13 +5,14 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | article.php                                                               |
+// |                                                                           |
 // | Shows articles in various formats.                                        |
-// |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
-// |          Jason Whitttenburg, jwhitten@securitygeeks.com                   |
+// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.31 2003/01/20 19:10:44 dhaun Exp $
+// $Id: article.php,v 1.32 2003/06/21 20:47:12 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -62,32 +63,36 @@ if (PLG_supportsComments($type)) {
 }
 
 if ($type == 'poll') {
-    $result = DB_query("SELECT count(*) as count FROM {$_TABLES['pollquestions']} WHERE qid = '$story'");
+    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE qid = '$story'");
 } else {
-    $result = DB_query("SELECT count(*) as count FROM {$_TABLES['stories']} WHERE sid = '$story'");
+    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'");
 }
 $A = DB_fetchArray($result);
 
 if ($A['count'] > 0) {
     if ($reply == $LANG01[25]) {
-        echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
+        echo COM_refresh ($_CONF['site_url']
+                . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
     } else {
-        $result = DB_query ("SELECT sid,uid,tid,title,introtext,bodytext,hits,comments,featured,show_topic_icon,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
+        $result = DB_query ("SELECT sid,uid,tid,title,introtext,bodytext,hits,comments,featured,draft_flag,show_topic_icon,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
         $A = DB_fetchArray ($result);
 
         $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']);
-        if (($access == 0) OR !SEC_hasTopicAccess ($A['tid'])) {
+        if (($access == 0) OR !SEC_hasTopicAccess ($A['tid']) OR
+            (($A['draft_flag'] == 1) AND !SEC_hasRights ('story.edit'))) {
             $display .= COM_siteHeader ('menu')
-                     . COM_startBlock ($LANG_ACCESS['accessdenied'])
+                     . COM_startBlock ($LANG_ACCESS['accessdenied'], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
                      . $LANG_ACCESS['storydenialmsg']
-                     . COM_endBlock ()
+                     . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                      . COM_siteFooter ();
-        } elseif (($mode == "print") && ($_CONF['hideprintericon'] == 0)) {
+        } elseif (($mode == 'print') && ($_CONF['hideprintericon'] == 0)) {
             $story_template = new Template($_CONF['path_layout'] . 'article');
             $story_template->set_file('article','printable.thtml');
-            $story_template->set_var('page_title',$_CONF['site_name'] . ': ' . stripslashes($A['title'])); 
+            $story_template->set_var('page_title',
+                    $_CONF['site_name'] . ': ' . stripslashes($A['title'])); 
             $story_template->set_var('story_title',stripslashes($A['title']));
             $curtime = COM_getUserDateTimeFormat($A['day']);
             $story_template->set_var('story_date', $curtime[0]);
