@@ -34,6 +34,31 @@ include("auth.inc.php");
 
 #debug($HTTP_POST_VARS);
 
+function editdefaultblock($A) {
+	global $USER,$LANG21,$CONF;
+
+	startblock($LANG21[3]);
+        print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
+        print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
+        print "<tr><td colspan=2><input type=submit value=save name=mode> ";
+        print "<input type=submit value=cancel name=mode> ";	
+	print "<input type=hidden name=bid value={$A["bid"]}></td></tr>";
+	print "<tr><td align=right>{$LANG21[5]}</td><td>{$A["title"]}</td></tr>";
+	print "<input type=hidden name=title value=\"{$A["title"]}\"></td></tr>";
+	print "<tr><td align=right>{$LANG21[6]}</td><td>all</td></tr>";
+	print "<input type=hidden name=tid value=all></td></tr>";
+	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
+	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
+        print "<option value=1>{$LANG21[40]}:</option>";
+        print "<option value=0>{$LANG21[41]}:</option>";
+        print "</SELECT>";
+	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";	
+	print "<tr><td align=right>{$LANG21[10]}:</td><td>gldefault</td></tr>";
+	print "<input type=hidden name=type value=gldefault>";
+	print "</form></table>";
+        endblock();
+}
+
 ###############################################################################
 # Displays the edit block form
 
@@ -50,6 +75,10 @@ function editblock($bid="") {
 			listblocks();
 			exit;
 		} 
+		if ($A["type"] == "gldefault") {
+			editdefaultblock($A);
+			return;
+		}
 	} else {
 		$A["bid"] = 0;
 		$A["blockorder"] = 0;
@@ -71,6 +100,10 @@ function editblock($bid="") {
 	optionlist("topics","tid,topic",$A["tid"]);
 	print "</select></td></tr>";
 	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
+	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
+	print "<option value=1>{$LANG21[40]}:</option>";
+	print "<option value=0>{$LANG21[41]}:</option>";
+	print "</SELECT>";	
 	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[10]}:</td><td><select name=type>";
 	print "<option value=portal";
@@ -102,13 +135,20 @@ function editblock($bid="") {
 ###############################################################################
 # Saves the block to the database
 
-function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn) {
+function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft) {
 	global $CONF,$LANG21,$LANG01;
-	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
+
+	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "gldefault" && !empty($seclev) && (strlen($blockorder)>0)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
 		if ($type == "portal") {
                         $content = "";
                         $phpblockfn = "";
                 }
+		if ($type == "gldefault") {
+			$content = "";
+			$rdfurl = "";
+			$rdfupdated = "";
+			$phpblockfn = "";
+		}
                 if ($type == "phpblock") {
                         if (!(stristr($phpblockfn,'phpblock_'))) {
                                 #this is a BAD function name, must have phpblock_ prefix
@@ -135,7 +175,7 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
                         $phpblockfn = "";
                 }
 
-		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn'","admin/block.php?msg=11");
+		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft","admin/block.php?msg=11");
 	} else {
 		include("../layout/header.php");
                 startblock($LANG21[32]);
@@ -148,7 +188,10 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
                 } else if ($type == "normal") {
                         #normal block is missing field
                         print $LANG21[35];
-                } else {
+                } else if ($type == "gldefault") {
+			#default geeklog field missing 
+			print $LANG21[42];
+		} else {
                         #layout block missing content
                         print $LANG21[36];
                 }
@@ -166,17 +209,25 @@ function listblocks() {
 	startblock($LANG21[19]);
 	adminedit("block",$LANG21[25]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG21[21]}</th><th>{$LANG21[22]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
-	$result = dbquery("SELECT bid,title,seclev,type,blockorder,tid FROM blocks ORDER BY type,title asc");
+	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG21[21]}</th><th>{$LANG21[22]}</th><th>{$LANG21[39]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
+	#$result = dbquery("SELECT bid,title,seclev,type,blockorder,tid,onleft FROM blocks ORDER BY type,title asc");
+	$result = dbquery("SELECT * FROM blocks ORDER BY onleft DESC,blockorder");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		if ($A[3] == "layout") {
+		if ($A["onleft"] == 1) {
+			$side = $LANG21[40];
+		} else {
+			$side = $LANG21[41];
+		}
+		if ($A["type"] == "layout") {
+			$side = "-";
+			$A["blockorder"] = "-";
 			$A[4] = "-";
 			$A[5] = "-";
 		}
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td><td>{$A[5]}</td></tr>";
+		print "<td>{$A[2]}</td><td>{$A[3]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A[5]}</td></tr>";
 	}
 	print "</table>";
 	endblock();
@@ -190,7 +241,7 @@ switch ($mode) {
 		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
 		break;
 	case "save":
-		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn);
+		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfni,$onleft);
 		break;
 	case "edit":
 		include("../layout/header.php");
