@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.21 2002/03/16 13:27:27 dhaun Exp $
+// $Id: install.php,v 1.22 2002/03/22 18:27:29 dhaun Exp $
 
 define(LB, "\n");
 
@@ -476,7 +476,6 @@ function INST_saveServerSettings($A)
         $config_template->set_var('cfg_commentsloginrequired', 0);
     }
     $config_template->set_var('cfg_commentspeedlimit', $A['commentspeedlimit']);
-    $config_template->set_var('cfg_commentsloginrequired', $A['commentsloginrequired']);
     $config_template->set_var('cfg_comment_limit', $A['comment_limit']);
     $config_template->set_var('cfg_comment_mode', $A['comment_mode']);
     $config_template->set_var('cfg_maxanswers', $A['maxanswers']);
