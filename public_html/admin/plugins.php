@@ -37,7 +37,7 @@ include("auth.inc.php");
 ###############################################################################
 # Displays the Plugin Editor
 
-function plugineditor($pi_name) {
+function plugineditor($pi_name,$confirmed=0) {
 	global $HTTP_POST_VARS,$USER,$CONF;
 	
 	if (empty($pi_name)) {
@@ -56,7 +56,8 @@ function plugineditor($pi_name) {
 	}
 	print "<tr></td>";
 	print "<tr><td align=right><b>Plug-in Name:</b></td><td>{$A["pi_name"]}";
-	print "<input type=hidden name=pi_name value={$A["pi_name"]}></td></tr>";
+	print "<input type=hidden name=pi_name value={$A["pi_name"]}>";
+	print "<input type=hidden name=confirmed value=$confirmed></td></tr>";
 	print "<tr><td align=right><b>Plug-in Homepage:</b></td><td><a href={$A["pi_homepage"]}>{$A["pi_homepage"]}</a>";
 	print "<input type=hidden name=pi_homepage value={$A["pi_homepage"]}></td></tr>";
 	print "<tr><td align=right><b>Plug-in Version:</b></td><td>{$A["pi_version"]}";
@@ -179,6 +180,9 @@ function installplugin() {
 		$index = strpos(strtolower($filename), '.tar.gz');
 		if ($index === false) {
 			$index = strpos(strtolower($filename), '.tgz');
+			if ($index === false) {
+				$index = strpos(strtolower($filename),'.zip');
+			}
 		}
 		$tmp = substr_replace($filename,'',$index);
 		$file_attrs = explode('_', $tmp);
@@ -224,7 +228,7 @@ function installplugin() {
 		} 
 
 		# Extract the compressed plugin
-		$command = $CONF['unzipcommand'] . $CONF['path'] . 'plugins/' . $filename;
+		#$command = $CONF['unzipcommand'] . $CONF['path'] . 'plugins/' . $filename;
 		$command = $CONF['unzipcommand'] . $CONF['path'] . 'plugins/' . $filename;
 		errorlog ('command = ' . $command,1);
 		exec($command);
@@ -286,6 +290,11 @@ function installplugin() {
 			} else {
 				errorlog("data.sql for $plugin_name plugin doesn't exist",1);
 			}
+
+			#now remove the tarball
+			$command = $CONF["rmcommand"] . $CONF["path"] . "plugins/" . $filename;
+			errorlog('command = ' . $command,1);
+			exec($command);
 			refresh($CONF['base'] . '/admin/plugins.php');
 		}
 
@@ -302,12 +311,75 @@ function installplugin() {
        	}
 }
 
+function removeplugin($plugin_name) {
+	global $CONF;
+
+	$result = dbquery("SELECT * FROM plugins WHERE pi_name = '$plugin_name'");
+	if (mysql_num_rows($result) == 1) {
+		#good, found the row
+		$A = mysql_fetch_array($result);
+	} else {
+		#couldn't find plugin...bail
+		include($CONF['html'] . 'layout/header.php');
+		startblock("Can't find plugin: $plugin_name");
+		print("couldn't find plugin $plugin_name in table plugins...exiting");
+		endblock();
+		include($CONF['html'] . 'layout/footer.php');
+		errorlog("couldn't find plugin $plugin_name in table plugins...exiting", 1);
+		exit;	
+	}
+
+	#first undo any schema changes
+	if (file_exists($CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql')) {
+        	#found undo.sql, execute it
+                if (strlen($CONF['dbpass']) == 0) {
+                	$command = 'mysql -u' . $CONF['dbuser'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
+                } else {
+                        $command = 'mysql -u' . $CONF['dbuser'] . ' -p'. $CONF['dbpass'] . ' ' . $CONF['dbname'] . ' < ' . $CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
+                }
+                errorlog('command = ' . $command,1);
+                exec($command);
+                errorlog("just ran undo.sql",1);
+	} else {
+		#undo.sql not found...log this (note, may not necessary mean an error
+		errorlog($CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql not found!',1);
+	}
+
+	#Now remove any file associated with the plugin	
+	#remove the /path/to/geeklog/plugins/<plugin_name> directory
+	$command = $CONF['rmcommand'] . $CONF['path'] . 'plugins/' . $plugin_name;
+	errorlog('executing the following: ' . $command,1);
+	exec($command);
+
+	#remove the path/to/geeklog/public_html/<plugin_name> directory
+	$command = $CONF['rmcommand'] . $CONF['html'] . $plugin_name;
+	errorlog('executing the following: ' . $command,1);
+	exec($command);
+
+	#remove the /path/to/geeklog/public_html/admin/plugins/<plugin_name> directory
+	$command = $CONF['rmcommand'] . $CONF['html'] . 'admin/plugins/' . $plugin_name;
+	errorlog('executing the following: ' . $command,1);
+	exec($command);
+
+	#sweet, uninstall complete
+	refresh($CONF['base'] . '/index.php?msg=29');			
+}
+
 ###############################################################################
 # MAIN
 
 switch ($mode) {
 	case "delete":
-		removeplugin($pi_name);
+		if ($confirmed == 1) {
+			removeplugin($pi_name);
+		} else {
+			include("../layout/header.php");
+			startblock($LANG32[13]);
+			print $LANG32[12];
+			endblock();
+			plugineditor($pi_name,1);
+			include("../layout/footer.php");
+		}	
 		break;
 	case "edit":
 		include("../layout/header.php");
