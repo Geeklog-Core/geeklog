@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.40 2003/03/27 09:37:35 dhaun Exp $
+// $Id: comment.php,v 1.41 2003/04/28 12:55:31 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -267,11 +267,11 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
 		
-        if ($type == 1) {
+        if ($type == 'poll') {
             if ($comments > 0) {
                 DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
             }			
-            $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid");
+            $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid&aid=-1");
         } else {
             DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
             $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
@@ -309,16 +309,16 @@ function deletecomment($cid,$sid,$type)
             DB_change($_TABLES['comments'],'pid',$A['pid'],'pid',$cid);
             DB_delete($_TABLES['comments'],'cid',$cid);
 
-		    // See if plugin will handle this to update it's records
+            // See if plugin will handle this to update it's records
             PLG_handlePluginComment($type,$sid,'delete');
 
             $comments = DB_count($_TABLES['comments'],'sid',$sid);
 
-            if ($type == 1) {
+            if ($type == 'poll') {
                 if ($comments > 0) {
                     DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
                 }
-                $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid");
+                $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid&aid=-1");
             } else {
                 DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
                 $retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");	 
