@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.339 2004/07/18 03:50:38 vinny Exp $
+// $Id: lib-common.php,v 1.340 2004/07/18 03:52:44 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -67,8 +67,7 @@ $_COM_VERBOSE = false;
 * i.e. the path should end in .../config.php
 */
 
-#require_once( '/path/to/geeklog/config.php' );
-require_once( '/home/vmf/work/geeklog-1.3/config.php');
+require_once( '/path/to/geeklog/config.php' );
 
 
 // Before we do anything else, check to ensure site is enabled
