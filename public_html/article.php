@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.56 2004/10/02 13:28:31 dhaun Exp $
+// $Id: article.php,v 1.57 2005/01/01 15:41:10 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -91,9 +91,9 @@ if (!empty ($type) && PLG_supportsComments ($type)) {
 }
 
 if ($type == 'poll') {
-    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE qid = '$story'");
+    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['pollquestions']} WHERE qid = '$story'" . COM_getPermSql ('AND'));
 } else {
-    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'");
+    $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE sid = '$story'" . COM_getPermSql ('AND'));
 }
 $A = DB_fetchArray($result);
 
@@ -130,7 +130,7 @@ if ($A['count'] > 0) {
  
             if ($_CONF['contributedbyline'] == 1) {
                 $story_template->set_var('lang_contributedby', $LANG01[1]);
-                $story_template->set_var('story_author', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+                $story_template->set_var('story_author', $A['username']);
             }
             if ($A['postmode'] == 'html') {
                 $story_template->set_var ('story_introtext',
