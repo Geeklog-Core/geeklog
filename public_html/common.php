@@ -291,7 +291,9 @@ function article($A,$index="") {
 		}
 		print "<a href={$CONF["site_url"]}/profiles.php?sid={$A["sid"]}&what=emailstory><img src={$CONF["site_url"]}/images/mail.gif alt=\"{$LANG01[64]}\" border=0></a>&nbsp;<a href={$CONF["site_url"]}/article.php?story={$A["sid"]}&mode=print><img border=0 src={$CONF["site_url"]}/images/print.gif alt=\"{$LANG01[65]}\"></a>";
 	}
-	if (hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"])) {
+	$access = hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
+	print "\n\naccess = $access";
+	if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 3 AND hasrights('story.edit')) {
 		print "<br><a href={$CONF["site_url"]}/admin/story.php?mode=edit&sid={$A["sid"]}>{$LANG01[4]}</a>";
 	}
 	print "</div></td>\n</tr>\n";
@@ -531,15 +533,18 @@ function accesslog($logentry) {
 
 function pollvote($qid) {
 	global $HTTP_COOKIE_VARS,$REMOTE_ADDR,$LANG01,$CONF;
+	$question = dbquery("select * FROM {$CONF["db_prefix"]}pollquestions WHERE qid='$qid'");
+	$Q = mysql_fetch_array($question);
+	if (hasaccess($Q["owner_id"],$Q["group_id"],$Q["perm_owner"],$Q["perm_group"],$Q["perm_members"],$Q["perm_anon"]) == 0) {
+		return;
+	}
+	$nquestion = mysql_num_rows($question);
 	$id = dbcount("pollvoters","ipaddress",$REMOTE_ADDR,"qid",$qid);
 	if (empty($HTTP_COOKIE_VARS[$qid]) && $id == 0) {
-		$question = @dbquery("select question,voters,commentcode FROM {$CONF["db_prefix"]}pollquestions WHERE qid='$qid'");
-		$nquesion = mysql_num_rows($question);
-		if ($nquestion = 1) {
+		if ($nquestion == 1) {
 			$answers	= dbquery("select answer,aid from pollanswers WHERE qid='$qid'");
 			$nanswers	= mysql_num_rows($answers);
 			if ($nanswers > 0) {
-				$Q = mysql_fetch_array($question);
 				print "<form action={$CONF["site_url"]}/pollbooth.php name=Vote method=GET>\n";
 				startblock($LANG01[5]);
 				print "<input type=hidden name=qid value=$qid>\n";
@@ -599,12 +604,15 @@ function showpoll($size,$qid="") {
 function pollresults($qid,$scale=400,$order="",$mode="") {
 	global $LANG01,$CONF;
 	$question = dbquery("select * from pollquestions WHERE qid='$qid'");
+	$Q = mysql_fetch_array($question);
+	if (hasaccess($Q["owner_id"],$Q["group_id"],$Q["perm_owner"],$Q["perm_group"],$Q["perm_members"],$Q["perm_anon"]) == 0) {
+		return;
+	}
 	$nquestion = mysql_num_rows($question);
-	if ($nquestion = 1) {
+	if ($nquestion == 1) {
 		$answers = dbquery("select * from pollanswers WHERE qid='$qid' ORDER BY votes DESC");
 		$nanswers = mysql_num_rows($answers);
 		if ($nanswers > 0) {
-			$Q = mysql_fetch_array($question);
 			startblock($LANG01[7]);
 			print "<h2>{$Q["question"]}</h2>";
 			print "<table border=0 tcellpadding=3 cellspacing=0 align=center>\n";
@@ -648,9 +656,9 @@ function pollresults($qid,$scale=400,$order="",$mode="") {
 function showtopics($topic="") {
 	global $CONF, $USER, $LANG01, $PHP_SELF;
 	if ($CONF["sortmethod"] == 'alpha')
-		$result = dbquery("SELECT tid,topic FROM {$CONF["db_prefix"]}topics ORDER BY tid ASC");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics ORDER BY tid ASC");
 	else
-		$result = dbquery("SELECT tid,topic FROM {$CONF["db_prefix"]}topics ORDER BY sortnum");
+		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}topics ORDER BY sortnum");
 
 	$nrows = mysql_num_rows($result);
 	#Give a link to the hompage here since a lot of people use this
@@ -663,7 +671,7 @@ function showtopics($topic="") {
 
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
-		if (hastopicaccess($A["tid"]) > 0) {
+		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
 			if ($A["tid"]==$topic) {
 				print $A["topic"];
 				if ($CONF["showstorycount"] + $CONF["showsubmissioncount"] > 0) {
@@ -972,7 +980,7 @@ function comment($A,$mode=0,$type,$level=0,$mode="flat") {
 				print "| <a href={$CONF["site_url"]}/comment.php?mode=display&sid={$A["sid"]}&title=" . rawurlencode($P["title"]) . "&type=$type&order=$order&pid={$P["pid"]}>{$LANG01[44]}</a> ";
 			}
 
-			if (hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]) > 0) {
+			if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) == 3) {
 				print "| <a href={$CONF["site_url"]}/comment.php?mode={$LANG01[28]}&cid={$A["cid"]}&sid={$A["sid"]}&type=$type>{$LANG01[28]}</a> ";
 			}
 			print "]<p>";
@@ -1152,23 +1160,24 @@ function showblock($side,$topic="") {
 					break;
 			}
 		}
-		if ($A["type"] == "phpblock" && !$U["noboxes"]) {
-                        $function = $A["phpblockfn"];
-                        startblock($A["title"]);
-                        if (function_exists($function)) {
-                                #great, call it
-                                $function();
-                        } else {
-                                #show friendly error message
-                                print $LANG21[31];
-                        }
-                        endblock();
-                }
-		if (!empty($A["content"]) && !$U["noboxes"]) {
-			startblock($A["title"]);
-			print nl2br(stripslashes($A["content"])) . "<br>\n";
-			# print "</td></tr>\n";
-			endblock();
+		if (hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]) > 0) {
+			if ($A["type"] == "phpblock" && !$U["noboxes"]) {
+                        	$function = $A["phpblockfn"];
+                        	startblock($A["title"]);
+                        	if (function_exists($function)) {
+                                	#great, call it
+                                	$function();
+                        	} else {
+                                	#show friendly error message
+                                	print $LANG21[31];
+                        	}
+                       		endblock();
+                	}
+			if (!empty($A["content"]) && !$U["noboxes"]) {
+				startblock($A["title"]);
+				print nl2br(stripslashes($A["content"])) . "<br>\n";
+				endblock();
+			}
 		}
 	}
 }
@@ -1553,7 +1562,7 @@ function whatsnewblock() {
 #
 ###############################################################################
 function showmessage($msg) {
-	global $MESSAGE, $CONF;
+	global $MESSAGE,$CONF;
 
 	if ($msg > 0) {
 		$timestamp = strftime("%c");
@@ -1751,33 +1760,43 @@ function ismoderator() {
 function hastopicaccess($tid) {
 	if (empty($tid)) return 0;
 
-	$result = dbquery("SELECT owner_id,group_id,private_flag FROM topics WHERE tid = '$tid'");
+	$result = dbquery("SELECT * FROM topics WHERE tid = '$tid'");
 	$A = mysql_fetch_array($result);
 
-	return hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+	return hasaccess($A["owner_id"],$A["group_id"],$A["perm_owner"],$A["perm_group"],$A["perm_members"],$A["perm_anon"]);
 }
 
 #this function takes the access info from a Geeklog object 
 #and let's us know if the have access to the object
-#returns 1 if owner (or god), 2 if user has access via the 
-#group and 0 otherwise
-function hasaccess($private_flag,$owner_id,$group_id) {
+#returns 3 for read/edit, 2 for read only and 0 for no
+#access 
+function hasaccess($owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $USER;
 
+	#cache current user id
+	if (empty($USER['uid'])) {
+		$uid = 1;
+	} else {
+		$uid = $USER['uid'];
+	}
+
+	#if user is in Root group then return full access
+	if (ingroup('Root')) return 3;
+
 	#if user is owner then return 1 now 
-	if ($USER['uid'] == $owner_id) return 1;
-
-	#if user is in Root group then return 1 now 
-	if (ingroup('Root')) return 1;
-
-	#Now, if this is private then return false
-	if ($private_flag == 1) return 0;
+	if ($uid == $owner_id) return $perm_owner;
 
 	#Not private, if user is in group then give access
 	if (ingroup($group_id)) {
-		return 2;
+		return $perm_group;
 	} else {
-		return 0;
+		if ($uid == 1) {
+			#this is an anonymous user, return it's rights
+			return $perm_anon;
+		} else { 
+			#this is a logged in memeber, return their rights
+			return $perm_members;
+		}
 	}
 }
 	
@@ -1835,6 +1854,57 @@ function hasrights($features,$operator="AND") {
 	}
 }
 
+function getpermissionshtml($perm_owner,$perm_group,$perm_members,$perm_anon) {
+	global $LANG_ACCESS;
+	$html = '';
+	#$html .= "\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" width=\"100%\">";
+	$html .= "\n<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\">";
+
+	#print the table header
+	$html .= "\n<tr><th colspan=3>{$LANG_ACCESS["owner"]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th colspan=3>{$LANG_ACCESS["group"]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th>{$LANG_ACCESS["members"]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th><th>{$LANG_ACCESS["anonymous"]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th></tr>";
+
+	#print owner permissions
+	$html .= "\n<tr><td align=center>R<br><input type=checkbox name=perm_owner[] value=2";
+	if ($perm_owner >= 2) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td><td align=center>E<br><input type=checkbox name=perm_owner[] value=1";
+	if ($perm_owner == 3) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+
+	#print group permissions
+	$html .= "<td align=center>R<br><input type=checkbox name=perm_group[] value=2";
+	if ($perm_group >= 2) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td><td align=center>E<br><input type=checkbox name=perm_group[] value=1";
+	if ($perm_group == 3) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+
+	#print member permissions
+	$html .= "<td align=center>R<br><input type=checkbox name=perm_members[] value=2";
+	if ($perm_members == 2) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td>";
+
+	#print anonymous permissions
+	$html .= "<td align=center>R<br><input type=checkbox name=perm_anon[] value=2";
+	if ($perm_anon == 2) {
+		$html .= " CHECKED";
+	}
+	$html .= "></td>";
+
+	$html .= "\n</tr>\n</table>";
+
+	#return HTML
+	return $html;
+}
+
 #recursively called to get permissions
 function getuserpermissions($grp_id="") {
 	global $USER,$VERBOSE;
@@ -1878,6 +1948,27 @@ function getuserpermissions($grp_id="") {
 	}
 	if ($VERBOSE) errorlog("**********leaving getuserpermissions(grp_id=$grp_id)**********",1);
 	return $rights;
+}
+
+function getpermissionvalues($perm_owner,$perm_group,$perm_members,$perm_anon) {
+	$perm_owner = getpermissionvalue($perm_owner);
+	$perm_group = getpermissionvalue($perm_group);
+	$perm_members = getpermissionvalue($perm_members);
+	$perm_anon = getpermissionvalue($perm_anon);
+
+	return array($perm_owner,$perm_group,$perm_members,$perm_anon);
+}
+
+function getpermissionvalue($perm_x) {
+	$value = 0;
+	for ($i=1;$i<=sizeof($perm_x);$i++) {
+        	$value = $value + current($perm_x);
+                next($perm_x);
+        }
+	#if they have edit rights, assume read rights
+	if ($value == 1) $value = 3;
+	
+	return $value;
 }
 
 # Now include all plugin functions
