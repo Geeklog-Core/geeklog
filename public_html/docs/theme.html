@@ -55,7 +55,6 @@ change:
 <li>footer.thtml
 <li>blockheader.thtml
 <li>blockfooter.thtml
-<li>menuitem.thtml
 <li>storybody.thtml
 <li>storybodytext.thtml
 <li>featuredstorybody.thtml
@@ -63,14 +62,41 @@ change:
 <li>style.css
 </ul>
 
-<p>When rendering a theme, Geeklog starts with <tt>header.thtml</tt> which builds 
-the site's header and then goes on to include the left column of blocks (look 
-for the variable {left_blocks} and the <tt>leftblocks.thtml</tt> file). The 
-middle part of a site is built of the stories (<tt>storytext.thtml</tt> 
-and <tt>storybodytext.thtml</tt>). The <tt>footer.thtml</tt> file then builds 
-the right column of blocks (variable {right_blocks}, file 
+<h3>How themes work</h3>
+
+<p>When rendering a theme, Geeklog starts with <tt>header.thtml</tt> which
+builds the site's header and then goes on to include the left column of blocks
+(look for the variable {left_blocks} and the <tt>leftblocks.thtml</tt> file).
+The middle part of a site consists of the stories which are built using the
+<tt>storytext.thtml</tt> and <tt>storybodytext.thtml</tt> (for normal stories)
+and <tt>featuredstorytext.thtml</tt> and <tt>featuredstorybodytext.thtml</tt>
+(for featured stories) template files. The <tt>footer.thtml</tt> file then
+builds the right column of blocks (variable {right_blocks}, file 
 <tt>right_blocks.thtml</tt>) and the site's footer. Blocks themselves consist 
 of the <tt>blockheader.thtml</tt> and <tt>blockfooter.thtml</tt> files.
+
+<p>The above only described how Geeklog's main page and stories are rendered.
+More templates exist for the various editors and lists you will see in Geeklog,
+as well es for the calendar and almost every other part of Geeklog.</p>
+
+<p>There is currently no complete list available that explains which template
+file is used for which part of Geeklog. However, in most cases the use should
+be obvious when you have a look at the file and directory names in your theme's
+layout directory. If you're unsure which template file is used to render a
+certain part of Geeklog, have a look at the URL. You will notice the name of
+a PHP file there, e.g. the <tt>users.php</tt> file when you view a user's
+profile. Open that file and search for '<kbd>.thtml</kbd>'. For the profile
+you will find these lines (in <code>function userprofile()</code>):</p>
+<blockquote><code>
+    $user_templates = new Template ($_CONF['path_layout'] . 'users');<br>
+    $user_templates->set_file (array ('profile'=>'profile.thtml', 'row'=>'commentrow.thtml', 'strow'=>'storyrow.thtml'));
+</code></blockquote>
+<p>You don't need to understand PHP code to see that this uses the template
+files <tt>profile.thtml</tt>, <tt>commentrow.thtml</tt>, and
+<tt>storyrow.thtml</tt>. The first line also indicates that these are taken
+from the <tt>users</tt> directory within the theme's layout directory.</p>
+
+<h3>Testing a theme and further information</h3>
 
 <p>After you have edited your themes, you are now ready to test it out.
 Simply go to http://mygeeklogsite/users.php?mode=peferences in the theme
@@ -93,7 +119,7 @@ at <a
 href="http://sourceforge.net/projects/geeklog">http://sourceforge.net/projects/geeklog</a> 
 or check us out in IRC at irc.freenode.net in #geeklog.</p>
 
-<h3>Theme changes in Geeklog 1.3.6</h3>
+<h2>Theme changes in Geeklog 1.3.6</h2>
 
 <p>There have been a lot of changes in the themes for 1.3.6 to get rid of the
 last pieces of hard-coded english texts so as to make localisation easier.
@@ -112,6 +138,14 @@ this shouldn't be too much of a hassle ...</p>
     hard-coded into Geeklog.<br>
     If you followed the above advice and copied over the <tt>admin</tt>
     directory to your theme, you got this file already.</li>
+  <li>Two new files <tt>menuitem_last.thtml</tt> and
+    <tt>menuitem_none.thtml</tt> have been added to give theme authors better
+    control over the items in menu bars ({menu_elements} and {plg_menu_elements}
+    variables in <tt>header.thtml</tt>). The template file
+    <tt>menuitem.thtml</tt> is now used to render the first and any followind
+    menu items - with the exception of the last menu item, which is rendered
+    using <tt>menuitem_last.thtml</tt>. If there are no menu elements for a
+    menu bar, <tt>menuitem_none.thtml</tt> is used.</li>
   <li>New files have been added and the existing files have been changed for
     the links section (<tt>links</tt> directory). Again, we recommend to just
     copy over those files from one of the themes that ship with Geeklog.<br>
@@ -126,6 +160,12 @@ this shouldn't be too much of a hassle ...</p>
   <li>The Classic theme has been updated to have an "Edit" link (for
     StoryAdmins) in every story now.</li>
 </ul>
+
+<p><strong>CSS changes:</strong> The underscore '_' is not a valid character in CSS. Therefore, some class names used by the Geeklog calendar have been changed to use the dash '-' instead. You may need to change your stylesheet accordingly.</p>
+
+<p>Names that changed: <b>cal-oldday</b>, <b>cal-today</b>,
+<b>cal-futureday</b>, <b>cal-nullday</b>, <b>weekview-curday</b>,
+<b>weekview-offday</b></p>.
 
 <table border="0" width="100%" class="footer">
 <tr valign="top">
