@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.14 2002/02/05 17:02:53 tony_bibbs Exp $
+// $Id: event.php,v 1.15 2002/04/11 16:41:55 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -66,21 +66,24 @@ if (!SEC_hasRights('event.edit')) {
 * $eid          string      ID of event to edit
 *
 */
-function editevent($mode, $eid='') 
+//function editevent($mode, $eid='')
+function editevent($mode, $A) 
 {
 	global $_TABLES, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
 
+    $eid = $A['eid'];
+    
     $retval = '';
 
 	$retval .= COM_startBlock($LANG22[1]);
-
+    
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file('editor','eventeditor.thtml');
     $event_templates->set_var('site_url', $_CONF['site_url']);
 
 	if ($mode <> 'editsubmission' AND !empty($eid)) {
-		$result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
-		$A = DB_fetchArray($result);
+		//$result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
+		//$A = DB_fetchArray($result);
 
         // Get what level of access user has to this object
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -118,6 +121,7 @@ function editevent($mode, $eid='')
     }
     $A['dateend'] = $thedatetime[1];
 */
+
 	if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
 	}
@@ -413,7 +417,7 @@ function editevent($mode, $eid='')
 * @perm_anon    string          Permissions anonymous users have
 *
 */
-function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode) 
 {
 	global $_TABLES, $_CONF, $LANG22;
 
@@ -478,17 +482,18 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
         $timestart = $start_hour . ':' . $start_minute . ':00';
         $timeend = $end_hour . ':' . $end_minute . ':00';
     }
-	if (!empty($eid) && !empty($description) && !empty($title)) {
+            
+	if (!empty($eid) AND !empty($description) AND !empty($title)) {
 		DB_delete($_TABLES['eventsubmission'],'eid',$eid);
-
+        
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-	DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
+        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
-		COM_errorLog($LANG22[10],2);
-		$retval .= editevent($mode,$eid);
+		$retval .= COM_errorLog($LANG22[10],2);
+		$retval .= editevent($mode,$A);
 		$retval .= COM_siteFooter();
         return $retval;
 	}
@@ -550,7 +555,7 @@ switch ($mode) {
 		DB_delete($_TABLES['events'],'eid',$eid,'/admin/event.php?msg=18');
 		break;
 	case 'save':
-		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+		$display .= saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode);
 		break;
 	case 'editsubmission':
 		$display .= COM_siteHeader('menu');
@@ -558,8 +563,10 @@ switch ($mode) {
 		$display .= COM_siteFooter();
 		break;
 	case 'edit':
+        $result = DB_query("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
+		$A = DB_fetchArray($result);
 		$display .= COM_siteHeader('menu');
-		$display .= editevent($mode,$eid);
+		$display .= editevent($mode,$A);
 		$display .= COM_siteFooter();
 		break;
 	case 'cancel':
