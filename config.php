@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.82 2003/05/08 17:23:09 dhaun Exp $
+// $Id: config.php,v 1.83 2003/05/21 15:49:04 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -56,6 +56,7 @@ $_DB_table_prefix = 'gl_';          // e.g. 'gl_'
 // optional settings for making database backups from within Geeklog
 $_DB_mysqldump_path = '/usr/bin/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
 $_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
+$_CONF['mysqldump_options'] = '-Q'; // additional options for mysqldump
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |

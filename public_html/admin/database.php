@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.9 2003/04/09 15:07:07 dhaun Exp $
+// $Id: database.php,v 1.10 2003/05/21 15:49:04 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -59,14 +59,18 @@ if (!SEC_inGroup('Root') OR $_CONF['allow_mysqldump'] == 0) {
 // Perform the backup if asked
 
 if ($mode == $LANG_DB_BACKUP['do_backup']) {
-    if(is_dir($_CONF['backup_path'])) {
-		$curdatetime = date("Y_m_d");
-		$backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
-	    if (!empty($_DB_pass)) {
-	        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user -p$_DB_pass -Q $_DB_name > {$backupfile}"; 
-	    } else {
-	        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user -Q $_DB_name > {$backupfile}"; 
-	    }
+    if (is_dir ($_CONF['backup_path'])) {
+        $curdatetime = date ("Y_m_d");
+        $backupfile = "{$_CONF['backup_path']}geeklog_db_backup_{$curdatetime}.sql";
+        $command = $_DB_mysqldump_path . " -h$_DB_host -u$_DB_user";
+        if (!empty ($_DB_pass)) {
+            $command .= " -p$_DB_pass";
+        }
+        if (!empty ($_CONF['mysqldump_options'])) {
+            $command .= ' ' . $_CONF['mysqldump_options'];
+        }
+        $command .= " $_DB_name > {$backupfile}"; 
+
         if (function_exists ('is_executable')) {
             $canExec = is_executable($_DB_mysqldump_path);
         } else {
