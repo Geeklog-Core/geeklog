@@ -13,6 +13,7 @@
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,33 +32,33 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.34 2004/08/31 19:00:22 dhaun Exp $
+// $Id: calendar_event.php,v 1.35 2004/10/30 17:13:23 dhaun Exp $
 
-require_once('lib-common.php');
-require_once($_CONF['path_system'] . 'classes/calendar.class.php');
+require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
 
 /**
 * Adds an event to the user's calendar
 *
 * The user has asked that an event be added to their personal
-* calendar.  Show a confirmation screen. NOTE: at this time 
-* user's can't add their own personal events (i.e. birthdays, etc)
+* calendar.  Show a confirmation screen.
 *
-* @eid      string      event ID to add to user's calendar
+* @param    string  $eid    event ID to add to user's calendar
+* @return   string          HTML for confirmation form
 *
 */
-function adduserevent($eid) 
+function adduserevent ($eid) 
 {
     global $_CONF, $_TABLES, $_USER, $LANG01, $LANG02;
 
-    $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'";
+    $eventsql = "SELECT *, datestart AS start, dateend AS end, timestart, timeend, allday FROM {$_TABLES['events']} WHERE eid='$eid'" . COM_getPermSql ('AND');
     $result = DB_query($eventsql);
     $nrows = DB_numRows($result);
     if ($nrows == 1) {
         $retval .= COM_startBlock($LANG02[11]);
         $A = DB_fetchArray($result);
         $cal_template = new Template($_CONF['path_layout'] . 'calendar');
-        $cal_template->set_file(array('addevent'=>'addevent.thtml'));
+        $cal_template->set_file (array ('addevent' => 'addevent.thtml'));
         $cal_template->set_var('site_url', $_CONF['site_url']);
         $cal_template->set_var('layout_url', $_CONF['layout_url']);
         $cal_template->set_var('intro_msg', $LANG02[8]);
@@ -87,23 +88,23 @@ function adduserevent($eid)
 
         $cal_template->set_var('lang_where',$LANG02[4]);
         $location = stripslashes($A['location']) . '<br>'
-		. stripslashes ($A['address1']) . '<br>'
-		. stripslashes ($A['address2']) . '<br>'
-		. stripslashes ($A['city']) . ', ' . $A['state'] . ' ' . $A['zipcode'];
-        //$cal_template->set_var('event_location', $A['location']);
+                  . stripslashes ($A['address1']) . '<br>'
+                  . stripslashes ($A['address2']) . '<br>'
+                  . stripslashes ($A['city'])
+                  . ', ' . $A['state'] . ' ' . $A['zipcode'];
         $cal_template->set_var('event_location', $location);
         $cal_template->set_var('lang_description', $LANG02[5]);
         $cal_template->set_var('event_description',
                                nl2br (stripslashes ($A['description'])));
         $cal_template->set_var('event_id', $eid);
         $cal_template->set_var('lang_addtomycalendar', $LANG02[9]);
-        $cal_template->parse('output','addevent'); 	
+        $cal_template->parse('output','addevent');     
         $retval .= $cal_template->finish($cal_template->get_var('output'));
         $retval .= COM_endBlock ();
     } else {
         $retval .= COM_showMessage(23);
-    }	
-	
+    }    
+    
     return $retval;
 
 }
@@ -112,47 +113,44 @@ function adduserevent($eid)
 * Save an event to user's personal calendar
 *
 * User has seen the confirmation screen and they still want to
-* add this event to their calendar.  Actually save it now
+* add this event to their calendar.  Actually save it now.
 *
-* @eid              string      ID of event to save
-* @reminder         string      Not used yet, for future functionality
-* @emailreminder    string      Not used yet, for future functionality
+* @param    string  $eid    ID of event to save
+* @return   string          HTML refresh
+*
 */
-function saveuserevent($eid, $reminder, $emailreminder)
+function saveuserevent ($eid)
 {
-    global $_TABLES, $MESSAGE, $_USER, $_CONF;
+    global $_CONF, $_TABLES, $_USER, $MESSAGE;
 
-    /* Below code is for future functionality
-    if (strlen($emailreminder) == 0) {
-	    $emailreminder = 0;
-    } else {
-        $emailreminder = 1; 
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+
+        // Try to delete the event first in case it has already been added
+        DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+
+        $result = DB_query ("SELECT eid FROM {$_TABLES['events']} WHERE (eid = '$eid')" . COM_getPermSql ('AND'));
+        if (DB_numRows ($result) == 1) {
+
+            $savesql = "INSERT INTO {$_TABLES['personal_events']} (eid,uid,title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," . $_USER['uid'] . ",title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'";
+
+            DB_query ($savesql);
+
+            return COM_refresh ($_CONF['site_url']
+                                . '/calendar.php?mode=personal&amp;msg=24');
+        }
     }
-    */
 
-/*	
-    $savesql = "Insert into {$_TABLES["userevent"]} (uid, eid) values ('{$_USER['uid']}', '{$eid}')";
-    DB_query($savesql);
-*/
-
-    // Try to delete the event first in case it has already been added
-    DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
-
-    $savesql = "INSERT INTO {$_TABLES['personal_events']} (eid,uid,title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon) SELECT eid," . $_USER['uid'] . ",title,event_type,datestart,dateend,allday,address1,address2,city,state,zipcode,url,description,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['events']} WHERE eid = '{$eid}'";
-
-    DB_query($savesql);
-
-    return COM_refresh ($_CONF['site_url']
-                        . '/calendar.php?mode=personal&amp;msg=24');
+    return COM_refresh ($_CONF['site_url'] . '/index.php');
 }
 
 /**
 * Allows user to edit a personal calendar event
 *
-* @A        array       Record to display
+* @param    array   $A  Record to display
+* @return   string      HTML for event editor
 *
 */
-function editpersonalevent($A)
+function editpersonalevent ($A)
 {
     global $_CONF, $LANG12, $_STATES;
 
@@ -347,29 +345,36 @@ function editpersonalevent($A)
     return $cal_templates->parse('output','form'); 
 }
 
-function setCalendarLanguage (&$aCalendar) {
+/**
+* Set localised day and month names.
+*
+* @param    object  $aCalendar  reference(!) to a Calendar object
+*
+*/
+function setCalendarLanguage (&$aCalendar)
+{ 
     global $LANG30;
 
-    $lang_days = array('sunday'=>$LANG30[1],
-                        'monday'=>$LANG30[2],
-                        'tuesday'=>$LANG30[3],
-                        'wednesday'=>$LANG30[4],
-                        'thursday'=>$LANG30[5],
-                        'friday'=>$LANG30[6],
-                        'saturday'=>$LANG30[7]);
-    $lang_months = array('january'=>$LANG30[13],
-                         'february'=>$LANG30[14],
-                         'march'=>$LANG30[15],
-                         'april'=>$LANG30[16],
-                         'may'=>$LANG30[17],
-                         'june'=>$LANG30[18],
-                         'july'=>$LANG30[19],
-                         'august'=>$LANG30[20],
-                         'september'=>$LANG30[21],
-                         'october'=>$LANG30[22],
-                         'november'=>$LANG30[23],
-                         'december'=>$LANG30[24]);
-    $aCalendar->setLanguage($lang_days, $lang_months);
+    $lang_days = array ('sunday'    => $LANG30[1],
+                        'monday'    => $LANG30[2],
+                        'tuesday'   => $LANG30[3],
+                        'wednesday' => $LANG30[4],
+                        'thursday'  => $LANG30[5],
+                        'friday'    => $LANG30[6],
+                        'saturday'  => $LANG30[7]);
+    $lang_months = array ('january'   => $LANG30[13],
+                          'february'  => $LANG30[14],
+                          'march'     => $LANG30[15],
+                          'april'     => $LANG30[16],
+                          'may'       => $LANG30[17],
+                          'june'      => $LANG30[18],
+                          'july'      => $LANG30[19],
+                          'august'    => $LANG30[20],
+                          'september' => $LANG30[21],
+                          'october'   => $LANG30[22],
+                          'november'  => $LANG30[23],
+                          'december'  => $LANG30[24]);
+    $aCalendar->setLanguage ($lang_days, $lang_months);
 }   
 
 
@@ -387,38 +392,73 @@ if (isset ($HTTP_POST_VARS['action'])) {
 
 switch ($action) {
 case 'addevent':
-    $display .= COM_siteHeader();
+    if (($_CONF['personalcalendars'] == 1) &&
+            isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+        $display .= COM_siteHeader ();
 
-    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
-    if (!empty ($eid)) {
-        $display .= adduserevent ($eid);
+        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        if (!empty ($eid)) {
+            $display .= adduserevent ($eid);
+        } else {
+            $display .= COM_showMessage (23);
+        }
+
+        $display .= COM_siteFooter ();
     } else {
-        $display .= COM_showMessage (23);
-    }   
-
-    $display .= COM_siteFooter ();
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
     break;
 
 case 'saveuserevent':
-    $eid = COM_applyFilter ($HTTP_POST_VARS['eid']);
-    if (!empty ($eid)) {
-        $display .= saveuserevent ($eid, $HTTP_POST_VARS['remind'],
-                                   $HTTP_POST_VARS['emailreminder']);
+    if ($_CONF['personalcalendars'] == 1) {
+        $eid = COM_applyFilter ($HTTP_POST_VARS['eid']);
+        if (!empty ($eid)) {
+            $display .= saveuserevent ($eid);
+        } else {
+            $display .= COM_siteHeader ();
+            $display .= COM_showMessage (23);
+            $display .= COM_siteFooter ();
+        }
     } else {
-        $display .= COM_siteHeader ();
-        $display .= COM_showMessage (23);
-        $display .= COM_siteFooter ();
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     break;
 
 case 'deleteevent':
-    $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
-    if (!empty ($eid) && ($_USER['uid'] > 1)) {
-        DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
-        $display .= COM_refresh ($_CONF['site_url']
-                                 . '/calendar.php?mode=personal&amp;msg=26');
+    if ($_CONF['personalcalendars'] == 1) {
+        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+            DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+            $display .= COM_refresh ($_CONF['site_url']
+                     . '/calendar.php?mode=personal&amp;msg=26');
+        } else {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
     } else {
-        $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+    break;
+
+case 'edit':
+    if ($_CONF['personalcalendars'] == 1) {
+        $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
+        if (!empty ($eid) && (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+            $result = DB_query ("SELECT * FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})");
+            if (DB_numRows ($result) == 1) {
+                $A = DB_fetchArray ($result);
+                $display .= COM_siteHeader ('menu', $LANG30[38])
+                         . COM_startBlock ($LANG30[38])
+                         . editpersonalevent ($A)
+                         . COM_endBlock ()
+                         . COM_siteFooter ();
+            } else {
+                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+        } else {
+            $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+        }
+    } else {
+        $display = COM_refresh ($_CONF['site_url'] . '/index.php');
     }
     break;
 
@@ -426,27 +466,22 @@ default:
     $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
     $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
     if (!empty ($eid)) {
-        if ($mode == 'personal' AND DB_count($_TABLES['events'],'eid',$eid) == 0) {
-            $display .= COM_siteHeader('menu', $LANG30[38]);
-            $display .= COM_startBlock($LANG30[38]);
-            $datesql = "SELECT * FROM {$_TABLES['personal_events']} WHERE eid = '$eid'";
-            $result = DB_query($datesql);
-            $A = DB_fetchArray($result);
-            $display .= editpersonalevent($A);
-            $display .= COM_endBlock();
-            $display .= COM_siteFooter();
-            break;
+        if (($mode == 'personal') && ($_CONF['personalcalendars'] == 1) &&
+                (isset ($_USER['uid']) && ($_USER['uid'] > 1))) {
+            $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['personal_events']} WHERE (eid = '$eid') AND (uid = {$_USER['uid']})";
+            $pagetitle = $LANG30[28] . ' ' . $_USER['username'];
         } else {
+            $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
             if (strpos ($LANG30[9], '%') === false) {
                 $pagetitle = $LANG30[9];
             } else {
                 $pagetitle = sprintf ($LANG30[9], $_CONF['site_name']);
             }
-            $display .= COM_siteHeader ('menu', $pagetitle);
-            $display .= COM_startBlock ($pagetitle);
-
-            $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
+
+        $display .= COM_siteHeader ('menu', $pagetitle);
+        $display .= COM_startBlock ($pagetitle);
+
     } else {
         $year = COM_applyFilter ($HTTP_GET_VARS['year']);
         $month = COM_applyFilter ($HTTP_GET_VARS['month']);
@@ -498,7 +533,6 @@ default:
                     $str_month = $cal->getMonthName(strftime('%m',strtotime($A['start'])));
                     $cal_templates->set_var('lang_month', $str_month);
                     $cal_templates->set_var('event_year', strftime('%Y',strtotime($A['start'])));
-                    //$display .= '<br><h1>' . strftime('%B %Y',strtotime($A['start'])) . '</h1>' . LB;
                     $currentmonth = strftime('%B',strtotime($A['start']));
                 }
                 $cal_templates->set_var('event_title', stripslashes($A['title']));
@@ -514,8 +548,8 @@ default:
                     $cal_templates->set_var('event_end_anchortag', '');
                 }
 
-
-                if (!empty($_USER['uid']) AND $_CONF['personalcalendars'] == 1) {
+                if (!empty ($_USER['uid']) && ($_USER['uid'] > 1) &&
+                        ($_CONF['personalcalendars'] == 1)) {
                     $tmpresult = DB_query("SELECT * FROM {$_TABLES['personal_events']} WHERE eid='{$A['eid']}' AND uid={$_USER['uid']}");
                     $tmpnrows = DB_numRows($tmpresult);
                     if ($tmpnrows > 0) {
@@ -613,9 +647,18 @@ default:
             }
         }
 
-        if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
-                $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
-                SEC_hasRights ('event.edit')) {
+        if ($mode == personal) {
+            $editurl = $_CONF['site_url'] . '/calendar_event.php?action=edit'
+                     . '&amp;eid=' . $eid;
+            $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'
+                    . $LANG01[4] . '</a>');
+            $cal_templates->set_var ('edit_icon', '<a href="' . $editurl
+                    . '"><img src="' . $_CONF['layout_url']
+                    . '/images/edit.gif" alt="' . $LANG01[4] . '" title="'
+                    . $LANG01[4] . '" border="0"></a>');
+        } else if ((SEC_hasAccess ($A['owner_id'], $A['group_id'],
+                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                $A['perm_anon']) == 3) && SEC_hasRights ('event.edit')) {
             $editurl = $_CONF['site_admin_url']
                      . '/event.php?mode=edit&amp;eid=' . $eid;
             $cal_templates->set_var ('event_edit', '<a href="' .$editurl . '">'

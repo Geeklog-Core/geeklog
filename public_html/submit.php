@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.75 2004/08/23 12:38:50 dhaun Exp $
+// $Id: submit.php,v 1.76 2004/10/30 17:13:23 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -47,9 +47,16 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 *
 * This is the submission it is modular to allow us to write as little as
 * possible.  It takes a type and formats a form for the user.  Currently the
-* types are link, story and event.  If no type is provided, Story is assumeda
+* types are link, story and event.  If no type is provided, Story is assumed.
 *
-* @type		string		Type of submission user is making
+* @param    string  $type   type of submission ('link', 'event', 'story')
+* @param    string  $mode   calendar mode ('personal' or empty string)
+* @param    int     $month  month (for events)
+* @param    int     $day    day (for events)
+* @param    int     $year   year (for events)
+* @param    int     $hour   hour (for events)
+* @param    string  $topic  topic (for stories)
+* @return   string          HTML for submission form
 *
 */
 function submissionform($type='story', $mode = '', $month='', $day='', $year='', $hour='', $topic = '')
@@ -462,6 +469,8 @@ function savesubmission($type,$A)
 {
     global $_CONF, $_TABLES, $_USER, $LANG12;
 
+    $retval = COM_siteHeader ();
+
     COM_clearSpeedlimit ($_CONF['speedlimit'], 'submit');
 
     $last = COM_checkSpeedlimit ('submit');
@@ -472,7 +481,9 @@ function savesubmission($type,$A)
             . $LANG12[30]
             . $last
             . $LANG12[31]
-            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+            . COM_siteFooter ();
+
         return $retval;
     }
 
@@ -487,8 +498,9 @@ function savesubmission($type,$A)
                                COM_getBlockTemplate ('_msg_block', 'header'))
                     . $LANG12[21]
                     . COM_endBlock(COM_getBlockTemplate('_msg_block', 'footer'))
-                    . submissionform($type);
-					    
+                    . submissionform($type)
+                    . COM_siteFooter ();
+
                     return $retval;
             }
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A['description'])));
@@ -531,7 +543,8 @@ function savesubmission($type,$A)
                                COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform($type);
+                . submissionform($type)
+                . COM_siteFooter ();
 
             return $retval; 
         }
@@ -608,11 +621,12 @@ function savesubmission($type,$A)
                     } else {
                         $owner_id = 1; // anonymous user
                     }
-                    $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id", $_CONF['site_url'] . '/calendar.php');
+                    $result = DB_save($_TABLES['events'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description,owner_id',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}',$owner_id");
                     if (isset ($_CONF['notification']) && in_array ('event', $_CONF['notification'])) {
                         sendNotification ($_TABLES['events'], $A);
                     }
                     COM_rdfUpToDateCheck ();
+                    $retval = COM_refresh ($_CONF['site_url'] . '/calendar.php');
                 }
             } else {
                 if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
@@ -622,17 +636,19 @@ function savesubmission($type,$A)
                     COM_accessLog ("Attempt to write to the personal calendar of user {$A['uid']}.");
                     return COM_refresh ($_CONF['site_url'] . '/calendar.php');
                 }
-                $result = DB_save($_TABLES['personal_events'],'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url'].'/calendar.php?mode=personal&msg=4');
+                $result = DB_save($_TABLES['personal_events'],'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'");
+                $retval = COM_refresh ($_CONF['site_url']
+                                       . '/calendar.php?mode=personal&msg=17');
             }
-                
         } else {
             $retval .= COM_startBlock ($LANG12[22], '',
                                COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform($type);
+                . submissionform($type)
+                . COM_siteFooter ();
 
-                return $retval;
+            return $retval;
         }
         break;
     default:
@@ -648,8 +664,7 @@ function savesubmission($type,$A)
             }	
             // plugin should include its own redirect - but in case handle
             // it here and redirect to the main page
-            $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
-            return $retval;
+            return COM_refresh ($_CONF['site_url'] . '/index.php');
         }
 
         if (!empty($A['title']) && !empty($A['introtext'])) {
@@ -692,12 +707,12 @@ function savesubmission($type,$A)
                                COM_getBlockTemplate ('_msg_block', 'header'))
                 . $LANG12[23]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform($type);
-					
-            return $retval;
+                . submissionform($type)
+                . COM_siteFooter ();
         }
         break;
     }
+
     return $retval;
 }
 
@@ -721,14 +736,28 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 
 $mode = COM_applyFilter ($http_vars['mode']);
 
-if ($mode == $LANG12[8]) { // submit
-    $display .= COM_siteHeader();
+if (($mode == $LANG12[8]) && !empty($LANG12[8])) { // submit
     $display .= savesubmission ($type, $HTTP_POST_VARS);
+} else if (($mode == $LANG12[52]) && !empty ($LANG12[52])) { // delete
+    // this is only meant for deleting personal events
+    if (isset ($_USER['uid']) && ($_USER['uid'] > 1) &&
+            ($http_vars['type'] == 'event')) {
+        $eid = COM_applyFilter ($http_vars['eid']);
+        if (!empty ($eid)) {
+            DB_query ("DELETE FROM {$_TABLES['personal_events']} WHERE uid={$_USER['uid']} AND eid='$eid'");
+            echo COM_refresh ($_CONF['site_url']
+                              . '/calendar.php?mode=personal&amp;msg=26');
+            exit;
+        }
+    }
+
+    $display = COM_refresh ($_CONF['site_url'] . '/index.php');
 } else {
     switch($type) {
         case 'link':
-            if (SEC_hasRights('link.edit')) {
-                echo COM_refresh ($_CONF['site_admin_url'] . '/link.php?mode=edit');
+            if (SEC_hasRights ('link.edit')) {
+                echo COM_refresh ($_CONF['site_admin_url']
+                                  . '/link.php?mode=edit');
                 exit;
             }
             break;
@@ -787,8 +816,8 @@ if ($mode == $LANG12[8]) { // submit
     }
     $display .= COM_siteHeader ('menu', $pagetitle);
     $display .= submissionform($type, $mode, $month, $day, $year, $hour, $topic); 
+    $display .= COM_siteFooter();
 }
-$display .= COM_siteFooter();
 echo $display;
 
 ?>
