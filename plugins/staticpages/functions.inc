@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.31 2004/01/31 17:12:33 dhaun Exp $
+// $Id: functions.inc,v 1.32 2004/02/07 13:00:13 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -188,6 +188,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     // Build search SQL - Modified to exclude static PHP pages from search.
+    $query = addslashes ($query);
     $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) as day FROM " . $_TABLES['staticpage'] . " WHERE (sp_php != '1' AND";
     $sql .= "((sp_content like '%$query%' OR sp_content like '$query%' OR sp_content like '%$query') ";
     $sql .= "OR (sp_title like '%$query%' OR sp_title like '$query%' OR sp_title like '%$query'))";
