@@ -6,18 +6,23 @@
 
 <channel>
 <title>Geeklog Site</title>
- <link>http://Superfly</link>
+ <link>http://tbibbs</link>
 <description>Another Nifty Geeklog Site</description>
 <language>en-gb</language>
 
 <item>
+<title>Test of Long Article</title>
+<link>http://tbibbs/article.php?story=20011107104501396</link>
+</item>
+
+<item>
 <title>Second Articles</title>
-<link>http://Superfly/article.php?story=20011029162602450</link>
+<link>http://tbibbs/article.php?story=20011029162602450</link>
 </item>
 
 <item>
 <title>Welcome to Geeklog!</title>
-<link>http://Superfly/article.php?story=20010719095630103</link>
+<link>http://tbibbs/article.php?story=20010719095630103</link>
 </item>
 
 </channel>

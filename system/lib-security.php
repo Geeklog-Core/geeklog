@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.1 2001/10/17 23:20:47 tony_bibbs Exp $
+// $Id: lib-security.php,v 1.2 2001/11/07 23:34:16 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_SEC_VERBOSE = false;
@@ -181,7 +181,7 @@ function SEC_isModerator()
     // If we get this far they are not a Geeklog moderator
     // So, let's return if they're a plugin moderator
 
-    return IsPluginModerator();
+    return PLG_isModerator();
 }
 
 /**

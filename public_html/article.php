@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.13 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: article.php,v 1.14 2001/11/07 23:34:15 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -43,7 +43,7 @@ include_once('lib-common.php');
 // MAIN
 
 // First see if we have a plugin that may be trying to use the Geeklog comment engine
-if (DoPluginCommentSupportCheck($type)) {
+if (PLG_supportsComments($type)) {
 	// Yes, this is a plugin wanting to be commented on...do it
 	echo COM_refresh($_CONF['site_url'] . "/comment.php?sid=$story&pid=$pid&type=$type");
 }

@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.17 2001/11/05 21:24:50 tony_bibbs Exp $
+// $Id: config.php,v 1.18 2001/11/07 23:34:11 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -60,7 +60,7 @@ $_CONF['site_name']     = 'Geeklog Site';
 $_CONF['site_slogan']   = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']     = 'admin@example.com';
 $_CONF['site_url']      = 'http://www.example.com';
-$_CONF['theme']         = 'Yahoo';
+$_CONF['theme']         = 'Classic';
 $_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']   = $_CONF['path_html'] . 'layout/';
 $_CONF['path_layout']   = $_CONF['path_themes'] . $_CONF['theme'] . '/';

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.10 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: plugins.php,v 1.11 2001/11/07 23:34:15 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -63,11 +63,12 @@ if (!SEC_inGroup('Root')) {
 */ 
 function plugineditor($pi_name, $confirmed = 0) 
 {
-	global $HTTP_POST_VARS,$_USER,$_CONF, $LANG32;
+	global $_TABLES, $HTTP_POST_VARS, $_USER, $_CONF, $LANG32;
 	
 	if (empty($pi_name)) {
 		return (COM_errorLog($LANG32[12]));
 	}
+
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'");
 	$A = DB_fetchArray($result);
 	$retval .= COM_startBlock($LANG32[13]);
@@ -110,46 +111,43 @@ function listplugins($page = 1)
 
     $retval = '';
 
-	$retval .= COM_startBlock($LANG32[5]);
+    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates->set_file(array('list'=>'pluginlist.thtml','row'=>'listitem.thtml'));
+    $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('start_block_pluginlist', COM_startBlock($LANG32[5]));
+    $plg_templates->set_var('lang_newplugin', $LANG32[14]);
+    $plg_templates->set_var('lang_adminhome', $LANG32[15]);
+    $plg_templates->set_var('lang_instructions', $LANG32[11]);
+    $plg_templates->set_var('lang_pluginname', $LANG32[16]);
+    $plg_templates->set_var('lang_pluginversion', $LANG32[17]);
+    $plg_templates->set_var('lang_geeklogversion', $LANG32[18]);
+    $plg_templates->set_var('lang_enabled', $LANG32[19]);
 
-	COM_adminEdit("plugins",$LANG32[11]);
-
-	if (empty($page)) $page = 1;
-	$limit = (50 * $page) - 50;
 	$result = DB_query("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']}");
 	$nrows = DB_numRows($result);
 	if ($nrows > 0) {
-		$retval .= '<table cellpadding="0" cellspacing=3 border="0" width="100%">\n';
-		$retval .= '<tr><th align="left">#</th><th align="left">Plug-in Name</th><th>Plug-in Version</th><th>Geeklog Version</th><th>Enabled</th></tr>';
  		for ($i = 1; $i <= $nrows; $i++) {
-			$scount = (50 * $page) - 50 + $i;
 			$A = DB_fetchArray($result);
-			$retval .= "<tr align=center><td align=left><a href={$_CONF['site_url']}/admin/plugins.php?mode=edit&pi_name={$A["pi_name"]}>$scount</a></td>";
-			$retval .= "<td align=left><a href={$A["pi_homepage"]} target=_blank>{$A["pi_name"]}</a></td>";
-			$retval .= "<td>{$A["pi_version"]}</td><td>{$A["pi_gl_version"]}</td>";
-			if ($A["pi_enabled"] == 1) {
-				$retval .= "<td>Yes</td>";
+            $plg_templates->set_var('pi_name', $A['pi_name']);
+            $plg_templates->set_var('row_num', $i);
+            $plg_templates->set_var('pi_url', $A['pi_homepage']);
+            $plg_templates->set_var('pi_version', $A['pi_version']);
+            $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
+			if ($A['pi_enabled'] == 1) {
+                $plg_templates->set_var('pi_enabled', $LANG32[20]);
 			} else {
-				$retval .= "<td>No</td>";
+                $plg_templates->set_var('pi_enabled', $LANG32[21]);
             }
+            $plg_templates->parse('plugin_list', 'row', true);
 		}
-		$retval .= "<tr><td clospan=6>";
-		if (dbcount("plugins") > 50) {
-			$prevpage = $page - 1; 
-			$nextpage = $page + 1; 
-			if ($pagestart >= 50) {
-				$retval .= "<a href={$_CONF['site_url']}/admin/plugins.php?mode=list&page=$prevpage>Prev</a> ";
-			}
-			if ($pagestart <= (dbcount("plugins") - 50)) {
-				$retval .= "<a href={$_CONF['site_url']}/admin/plugins.php?mode=list&page=$nextpage>Next</a> ";
-			}
-		}
-		$retval .= "</td></tr></table>\n";
 	} else {
-		// no plug-ins installed, gave a message that says as much
-		$retval .= $LANG32[10];
+		// no plug-ins installed, give a message that says as much
+		$plg_templates->set_var('lang_nopluginsinstalled', $LANG32[10]);
 	}
-	$retval .= COM_endBlock();	
+    $plg_templates->set_var('end_block', COM_endBlock());
+    $plg_templates->parse('output', 'list');
+    $retval .= $plg_templates->finish($plg_templates->get_var('output'));
+
     return $retval;
 }
 
@@ -192,24 +190,20 @@ function installpluginform()
 {
 	global $LANG32, $_CONF;
 
-    $retval .= COM_startBlock($LANG32[2]);
-    $retval .= $LANG32[1];
-    $retval .= COM_endBlock();
-    $retval .= COM_startBlock($LANG32[3]);
+    $retval = '';
 
-    /* new stuff */
-    require_once($_CONF["path"] . "/include/upload.class.php");
-    $upload = new Upload();
-    $upload->printFormStart($_CONF['site_url'] . "/admin/plugins.php");
-    $retval .= '<table border="0" cellspacing="0" cellpadding=3>';
-    $retval .= "<tr><td><b>{$LANG32[4]}:</b><td>";
-    $upload->printFormField("plugin_file");
-    $retval .= '</td></tr>';
-    $retval .= '<tr><td colspan="2" align="center">';
-    $upload->printFormSubmit();
-    $retval .= '<input type="hidden" name=mode value=install></td></tr>';
-    $retval .= "</table></form>";
-    $retval .= COM_endBlock();
+    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates->set_file('form', 'installform.thtml');
+    $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('start_block_disclaimer', COM_startBlock($LANG32[2]));
+    $plg_templates->set_var('lang_disclaimertext', $LANG32[1]);
+    $plg_templates->set_var('start_block_form', COM_startBlock($LANG32[3]));
+    $plg_templates->set_var('lang_pluginfile', $LANG32[4]);
+    $plg_templates->set_var('lang_install',$LANG32[22]); 
+    $plg_templates->set_var('end_block', COM_endBlock());
+    $plg_templates->parse('output', 'form');
+
+    $retval .= $plg_templates->finish($plg_templates->get_var('output'));
 
     return $retval;
 }

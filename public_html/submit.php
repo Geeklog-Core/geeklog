@@ -255,7 +255,6 @@ function savesubmission($type,$A)
 {
     global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR;
 	
-    DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
 
     switch ($type) {
     case 'link':
@@ -273,6 +272,7 @@ function savesubmission($type,$A)
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A['description'])));
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['lid'] = COM_makeSid();
+            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'","index.php?msg=3");
         } else {
             $retval .= COM_startBlock($LANG12[22])
@@ -288,6 +288,7 @@ function savesubmission($type,$A)
             $A['description'] = addslashes(htmlspecialchars(COM_checkWords($A["description"])));
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['eid'] = COM_makesid();
+            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             $result = DB_save($_TABLES['eventsubmission'],'eid,title,url,datestart,dateend,location,description',"{$A["eid"]},'{$A['title']}','{$A["url"]}','{$A["datestart"]}','{$A["dateend"]}','{$A["location"]}','{$A["description"]}'","index.php?msg=4");
         } else {
             $retval .= COM_startBlock($LANG12[22])
@@ -303,6 +304,7 @@ function savesubmission($type,$A)
             // see if this is a submission that needs to be handled by a plugin
             if (SavePluginSubmission($type, $A)) {
                 // great, it worked, lets get out of here
+    		DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
                 break;
             } else {
                 // something went wrong, exit
@@ -321,6 +323,7 @@ function savesubmission($type,$A)
             if (empty($_USER['uid'])) { 
                 $_USER['uid'] = 1;
             }					
+            DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'","index.php?msg=2");
         } else {
             $retval .= COM_startBlock($LANG12[22])

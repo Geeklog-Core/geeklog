@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.17 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: block.php,v 1.18 2001/11/07 23:34:15 tony_bibbs Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -158,7 +158,7 @@ function editblock($bid='')
         }
     }
 
-    $block_templates->set_var('block_id', $A['bid']);
+    $block_templates->set_var('block_bid', $A['bid']);
     $block_templates->set_var('lang_blocktitle', $LANG21[5]);
     $block_templates->set_var('block_title', $A['title']);	
     $block_templates->set_var('lang_topic', $LANG21[6]);

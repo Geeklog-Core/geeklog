@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.4 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.5 2001/11/07 23:34:15 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -144,7 +144,7 @@ function COM_article($A,$index='')
     } else {
         $article->set_var('story_introtext', stripslashes($A['introtext'])); 
         if (!empty($A['bodytext'])) {
-            $article->set_var('story_bodyhtml', '<a href="' .  $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof(explode(' ',$A['bodytext'])) . ' ' . $LANG01[62] . ') ');
+            $article->set_var('readmore_link', '<a href="' .  $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '">' . $LANG01[2] . '</a> (' . sizeof(explode(' ',$A['bodytext'])) . ' ' . $LANG01[62] . ') ');
         }
         if ($A['commentcode'] >= 0 && $A['comments'] > 0) {
             $article->set_var('comments_url',$_CONF['site_url'].'/article.php?story='.$A['sid'].'#comments');
@@ -260,7 +260,7 @@ function COM_getThemes()
 * HTML for the site header.
 *
 */
-function COM_siteHeader()
+function COM_siteHeader($what = 'menu')
 {
     global $_CONF, $_USER, $LANG01;
 
@@ -314,7 +314,7 @@ function COM_siteHeader()
     $header->parse('menu_elements', 'menuitem', true);
 
     // Get plugin menu options
-    $plugin_menu = PrintPluginHeaderMenuItems();
+    $plugin_menu = PLG_getMenuItems();
     
     for ($i = 1; $i <= count($plugin_menu); $i++) {
         $header->set_var('menuitem_url', key($plugin_menu));
@@ -331,9 +331,17 @@ function COM_siteHeader()
     $header->set_var('menuitem_url', $_CONF['site_url'] . '/stats.php');
     $header->set_var('menuitem_text', $LANG01[76]);
     $header->parse('menu_elements', 'menuitem', true);
-    
-    // Now show any blocks
-    $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
+   
+    if ($what <> 'none') { 
+        // Now show any blocks
+        $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
+    } else {
+        $header->set_var('geeklog_blocks', '');
+    }
+
+    // The following line allows users to embed PHP in their templates.  This
+    // is almost a contradition to the reasoning for using templates but this may
+    // prove useful at times...don't use PHP in templates if you can live without it
     $tmp = $header->parse('index_header','header');
     return eval("?>".$tmp); 
     return $header->finish($header->get_var('index_header'));
@@ -960,7 +968,7 @@ function COM_userMenu()
             $retval .= '<a href="' . $_CONF['site_url'] . '/calendar.php?mode=personal">' . $LANG01[66]
                 . '</a><br>' . LB;
         }
-        $retval .= ShowPluginUserOptions()
+        $retval .= PLG_getUserOptions()
             . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=edit">' . $LANG01[48] . '</a><br>' . LB
             . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=preferences">' . $LANG01[49] . '</a><br>' . LB
             . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=comments">' .$LANG01[63] . '</a><br>' . LB
@@ -994,6 +1002,9 @@ function COM_adminMenu()
     global $_TABLES, $_USER, $_CONF, $LANG01;
 
     if (SEC_isModerator() OR SEC_hasrights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail','OR')) {
+        $adminmenu = new Template($_CONF['path_layout']);
+        $adminmenu->set_file('option', 'adminoption.thtml');
+
 	    $retval .= COM_startBlock($LANG01[9],'',COM_getBlockTemplate('admin_block', 'header'));
         if (SEC_isModerator()) {
             $num = DB_count($_TABLES['storysubmission'],'uid',0) + 
@@ -1001,60 +1012,101 @@ function COM_adminMenu()
                     DB_count($_TABLES['linksubmission'],'lid',0);
 
             //now handle submissions for plugins
-            $num = $num + GetPluginSubmissionCounts();
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/moderation.php">' . $LANG01[10]
-                . '</a> (' . $num . ')<br>' . LB;   
+            $num = $num + PLG_getSubmissionCount();
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/moderation.php');
+            $adminmenu->set_var('option_label', $LANG01[10]);
+            $adminmenu->set_var('option_count', $num);
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('story.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/story.php">' . $LANG01[11] 
-                . '</a> (' . DB_count($_TABLES['stories']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/story.php');
+            $adminmenu->set_var('option_label', $LANG01[11]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['stories']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('block.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/block.php">' . $LANG01[12]
-                . '</a> (' . DB_count($_TABLES['blocks']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/block.php');
+            $adminmenu->set_var('option_label', $LANG01[12]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['blocks']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('topic.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/topic.php">' . $LANG01[13]
-                . '</a> (' . DB_count($_TABLES['topics']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/topic.php');
+            $adminmenu->set_var('option_label', $LANG01[13]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['topics']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('link.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/link.php">' . $LANG01[14]
-                . '</a> (' . DB_count($_TABLES['links']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/link.php');
+            $adminmenu->set_var('option_label', $LANG01[14]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['links']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('event.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/event.php">' . $LANG01[15] 
-                . '</a> (' . DB_count($_TABLES['events']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/event.php');
+            $adminmenu->set_var('option_label', $LANG01[15]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['events']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('poll.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/poll.php">' . $LANG01[16]
-                . '</a> (' . DB_count($_TABLES['pollquestions']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/poll.php');
+            $adminmenu->set_var('option_label', $LANG01[16]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['pollquestions']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('user.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/user.php">' . $LANG01[17] 
-                . '</a> (' . (DB_count($_TABLES['users'])-1) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/user.php');
+            $adminmenu->set_var('option_label', $LANG01[17]);
+            $adminmenu->set_var('option_count', (DB_count($_TABLES['users'])-1));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('group.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/group.php">' . $LANG01[96] 
-                . '</a> (' . DB_count($_TABLES['groups']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/group.php');
+            $adminmenu->set_var('option_label', $LANG01[96]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['groups']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_hasrights('plugin.edit')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/plugins.php">' . $LANG01[77]
-                . '</a> (' . DB_count($_TABLES['plugins']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/plugins.php');
+            $adminmenu->set_var('option_label', $LANG01[77]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['plugins']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
         if (SEC_inGroup('Root')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/word.php">' . $LANG01[97] 
-                . '</a> (' . DB_count($_TABLES['wordlist']) . ')<br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/word.php');
+            $adminmenu->set_var('option_label', $LANG01[97]);
+            $adminmenu->set_var('option_count', DB_count($_TABLES['wordlist']));
+            $retval .= $adminmenu->parse('item', 'option');
         }
 
-        // This function COM_wil show the admin options for all installed plugins (if any)
-        $retval .= ShowPluginAdminOptions();
+        // This function will show the admin options for all installed plugins (if any)
+        $plugin_options = PLG_getAdminOptions();
+        $nrows = count($plugin_options);
+        for ($i = 1; $i <= $nrows; $i++) {
+            $plg = current($plugin_options);
+            $adminmenu->set_var('option_url', $plg->adminurl);
+            $adminmenu->set_var('option_label', $plg->adminlabel);
+            if (empty($plg->numsubmissions)) {
+                $adminmenu->set_var('option_count', 'N/A');
+            } else {
+                $adminmenu->set_var('option_count', $plg->numsubmissions);
+            }
+            $retval .= $adminmenu->parse('item', 'option');
+        }
+             
 
         if (SEC_hasrights('user.mail')) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/admin/mail.php\">Mail</a><br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/admin/mail.php');
+            $adminmenu->set_var('option_label', 'Mail');
+            $adminmenu->set_var('option_count', 'N/A');
+            $retval .= $adminmenu->parse('item', 'option');
         }
 
-        $retval .= '<a href="http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION 
-            . '" target="_new">GL Version Test</a><br>' . LB . COM_endBlock(COM_getBlockTemplate('admin_block', 'footer'));
+        $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
+        $adminmenu->set_var('option_label', 'GL Version Test');
+        $adminmenu->set_var('option_count', 'N/A');
+        $retval .= $adminmenu->parse('item', 'option');
+        $retval .= COM_endBlock();
     }
     return $retval;
 }
@@ -2224,7 +2276,6 @@ function COM_getUserCookieTimeout()
     return $timeoutvalue;
 }
 
-/*
 // Now include all plugin functions
 $result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
 $nrows = DB_numRows($result);
@@ -2232,6 +2283,5 @@ for ($i = 1; $i <= $nrows; $i++) {
 	$A = DB_fetchArray($result);
 	include_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
 }
-*/
 
 ?>

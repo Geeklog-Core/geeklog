@@ -829,7 +829,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-	1 => "<br>Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=http://www.geeklog.org>Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.<br><br>",
+	1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system.  It is important that you only install plugins downloaded from the <a href=\"http://geeklog.sourceforge.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems.  It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites.  Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin.  In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
 	2 => "Plug-in Installation Disclaimer",
 	3 => "Plug-in Installation Form",
 	4 => "Plug-in File",
@@ -841,7 +841,16 @@ $LANG32 = array (
 	10 => "<br><b>There are no plugins currently installed.</b><br><br>",
 	11 => "To modify or delete a plug-in, click on that plug-in's number below. To learn more about a plug-in, click the plug-in name and you will be directed to that plug-in's website. To install or upgrade a plug-in click on new plug-in above.",
 	12 => 'no plugin name provided to plugineditor()',
-	13 => 'Plugin Editor'
+	13 => 'Plugin Editor',
+	14 => 'New Plug-in',
+	15 => 'Admin Home',
+	16 => 'Plug-in Name',
+	17 => 'Plug-in Version',
+	18 => 'Geeklog Version',
+	19 => 'Enabled',
+	20 => 'Yes',
+	21 => 'No',
+	22 => 'Install'
 );
 
 $LANG_ACCESS = array(
