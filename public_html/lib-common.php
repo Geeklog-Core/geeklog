@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.54 2002/04/10 18:04:26 dhaun Exp $
+// $Id: lib-common.php,v 1.55 2002/04/10 20:36:19 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2310,63 +2310,54 @@ function COM_showMessage($msg)
 }
 
 /**
-* Shows Paging control
+* Prints Google(tm)-like paging navigation
 *
-* Shows the Google-like paging navigation control
-*
-* @page         int     Current page
-* @num_pages    int     Total number of pages
-* @topic        string  Topic we are showing pages for
+* @base_url     string      base url to use for all generated links
+* @curpage      int         current page we are on
+* @num_pages    int         Total number of pages
 *
 */
-function COM_PrintPageNavigation ($page, $num_pages, $topic='') 
+function COM_printPageNavigation($base_url, $curpage, $num_pages)
 {
-    global $_CONF,$LANG05;
-
+    global $LANG05;
+    
+    $hasargs = strstr($base_url, '?');
     if ($num_pages == 1) {
-        // If there's only one page, we don't need this ..
         return;
     }
-
-    if ($page > 1) {
-        $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
-        if (!empty($topic)) {
-            $retval .= '?topic=' . $topic . '&amp;page=' . ($page-1) . '">' . $LANG05[6] . '</a> ';
+    
+    if ($curpage > 1) {
+        if ($hasargs) {
+            $retval .= '<a href="' . $base_url . '&amp;page=' . ($curpage - 1) . '">' . $LANG05[6] . '</a> ';
         } else {
-            $retval .= '?page=' . ($page-1) . '">' . $LANG05[6] . '</a> ';
-        }   
+            $retval .= '<a href="' . $base_url . '?page=' . ($curpage - 1) . '">' . $LANG05[6] . '</a>  ';
+        }
     } else {
-        $retval .= $LANG05[6] . ' ';
+        $retval .= $LANG05[6] . ' ' ;
     }
-
-    for ($pgcount=($page-10);($pgcount<=($page+9)) && ($pgcount<=$num_pages);$pgcount++) {
+    for ($pgcount = ($curpage - 10); ($pgcount <= ($curpage + 9)) AND ($pgcount <= $num_pages); $pgcount++) {
         if ($pgcount <= 0) {
             $pgcount = 1;
         }
-
-        if ($pgcount == $page) {
+        if ($pgcount == $curpage) {
             $retval .= '<b>' . $pgcount . '</b> ';
         } else {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
-            if (!empty($topic)) {
-                $retval .= '?topic=' . $topic . '&amp;page=' . $pgcount . '">' . $pgcount . '</a> ';
+            if ($hasargs) {
+                $retval .= '<a href="' . $base_url . '&amp;page=' . $pgcount . '">' . $pgcount . '</a> ';
             } else {
-                $retval .= '?page=' . $pgcount . '">' . $pgcount . '</a> ';
+                $retval .= '<a href="' . $base_url . '?page=' . $pgcount . '">' . $pgcount . '</a> ';
             }
         }
     }
-
-    if ($page == $num_pages) {
-        $retvfal .= $LANG05[5];
+    if ($curpage == $num_pages) {
+        $retval .= $LANG05[5];
     } else {
-        $retval .= '<a href="' . $_CONF['site_url'] . '/index.php';
-        if (!empty($topic)) {
-            $retval .= '?topic=' . $topic . '&amp;page=' . ($page+1) . '">' . $LANG05[5] . '</a>';
+        if ($hasargs) {
+            $retval .= '<a href="' . $base_url . '&amp;page=' . ($curpage + 1) . '">' . $LANG05[5] . '</a>';
         } else {
-            $retval .= '?page=' . ($page+1) . '">' . $LANG05[5] . '</a>';
+            $retval .= '<a href="' . $base_url . '?page=' . ($curpage + 1) . '">' . $LANG05[5] . '</a>';
         }
     }
-
     return $retval;
 }
 
