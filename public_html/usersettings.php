@@ -8,11 +8,12 @@
 // | Geeklog user settings page.                                               |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000,2001 by the following authors:                         |
+// | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
+// |          Dirk Haun        - dirk@haun-online.de                           |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.52 2003/01/18 18:12:49 dhaun Exp $
+// $Id: usersettings.php,v 1.53 2003/01/18 22:43:11 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -52,88 +53,87 @@ function edituser()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER;
 
-    $retval = '';
-
     $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
-
     $A = DB_fetchArray($result);
 
-    $retval .= COM_startBlock($LANG04[1] . ' ' . $_USER['username']);
+    $preferences = new Template ($_CONF['path_layout'] . 'preferences');
+    $preferences->set_file (array ('profile' => 'profile.thtml',
+                                   'photo' => 'userphoto.thtml'));
+    $preferences->set_var ('site_url', $_CONF['site_url']);
+    $preferences->set_var ('layout_url', $_CONF['layout_url']);
+
+    $preferences->set_var ('lang_fullname', $LANG04[3]);
+    $preferences->set_var ('lang_fullname_text', $LANG04[34]);
+    $preferences->set_var ('lang_password', $LANG04[4]);
+    $preferences->set_var ('lang_password_text', $LANG04[35]);
+    $preferences->set_var ('lang_cooktime', $LANG04[68]);
+    $preferences->set_var ('lang_cooktime_text', $LANG04[69]);
+    $preferences->set_var ('lang_email', $LANG04[5]);
+    $preferences->set_var ('lang_email_text', $LANG04[33]);
+    $preferences->set_var ('lang_homepage', $LANG04[6]);
+    $preferences->set_var ('lang_homepage_text', $LANG04[36]);
+    $preferences->set_var ('lang_signature', $LANG04[32]);
+    $preferences->set_var ('lang_signature_text', $LANG04[37]);
+    $preferences->set_var ('lang_userphoto', $LANG04[77]);
+    $preferences->set_var ('lang_userphoto_text', $LANG04[78]);
+    $preferences->set_var ('lang_about', $LANG04[7]);
+    $preferences->set_var ('lang_about_text', $LANG04[38]);
+    $preferences->set_var ('lang_pgpkey', $LANG04[8]);
+    $preferences->set_var ('lang_pgpkey_text', $LANG04[39]);
+    $preferences->set_var ('lang_submit', $LANG04[9]);
+
+    $preferences->set_var ('start_block_profile',
+            COM_startBlock ($LANG04[1] . ' ' . $_USER['username']));
+    $preferences->set_var ('end_block', COM_endBlock ());
+
+    $preferences->set_var ('profile_headline',
+                           $LANG04[1] . ' ' . $_USER['username']);
+
     if ($_CONF['allow_user_photo'] == 1) {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post" enctype="multipart/form-data">';
+        $preferences->set_var ('enctype', 'enctype="multipart/form-data"');
     } else {
-        $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">';
+        $preferences->set_var ('enctype', '');
     }
-    $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[3] . ':</b><br><small>' . $LANG04[34] . '</small></td>' . LB
-        . '<td><input type="text" name="fullname" size="60" maxlength="80" value="' . $A['fullname'] . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[4] . ':</b><br><small>' . $LANG04[35] . '</small></td>' . LB
-        . '<td><input type="password" name="passwd" size="32" maxlength="32" value="' . $A["passwd"] . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[68] . '</b><br><small>' . $LANG04[69] . ':</small></td>' . LB
-        . '<td><select name="cooktime">'
-        . COM_optionList($_TABLES['cookiecodes'],'cc_value,cc_descr',$A['cookietimeout'],0)
-        . '</select></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[5] . ':</b><br><small>' . $LANG04[33] . '</small></td>' . LB
-        . '<td><input type="text" name="email" size="60" maxlength="96" value="' . $A['email'] . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[6] . ':</b><br><small>' . $LANG04[36] . '</small></td>' . LB
-        . '<td><input type="text" name="homepage" size="60" maxlength="96" value="' . COM_killJS ($A['homepage']) . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[32] . ':</b><br><small>' . $LANG04[37] . '</small></td>' . LB
-        . '<td><textarea name="sig" cols="60" rows="4" wrap="virtual">' . $A['sig'] . '</textarea></td>' . LB
-        . '</tr>' . LB;
+    $preferences->set_var ('fullname_value', $A['fullname']);
+    $preferences->set_var ('password_value', $A['passwd']);
+
+    $selection = '<select name="cooktime">' . LB;
+    $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr',
+                                  $A['cookietimeout'], 0);
+    $selection .= '</select>';
+    $preferences->set_var ('cooktime_selector', $selection);
+
+    $preferences->set_var ('email_value', $A['email']);
+    $preferences->set_var ('homepage_value', COM_killJS ($A['homepage']));
+    $preferences->set_var ('signature_value', $A['sig']);
+
     if ($_CONF['allow_user_photo'] == 1) {
-        $retval .= '<tr valign="top">' . LB
-            . '<td align="right"><b>' . $LANG04[77] . ':</b><br><small>' . $LANG04[78] . '</small></td>' . LB
-            . '<td><input type="file" name="photo">' . LB;
-        if (!empty($A['photo'])) {
-            $retval .= '<br><img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">' . LB
-                . '<br>' . $LANG04[79] . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+        if (!empty ($A['photo'])) {
+            if (!empty ($A['fullname'])) {
+                $alt = '[' . $A['fullname'] . ']';
+            } else {
+                $alt = '[' . $A['username'] . ']';
+            }
+            $photo .= '<br><img src="' . $_CONF['site_url']
+                   . '/images/userphotos/' . $A['photo'] . '" alt="' . $alt
+                   . '">' . LB . '<br>' . $LANG04[79]
+                   . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+            $preferences->set_var ('display_photo', $photo);
         }
-        $retval .= '</td>' . LB
-            . '</tr>' . LB;
+        $preferences->parse ('userphoto_option', 'photo', true);
+    } else {
+        $preferences->set_var ('userphoto_option', '');
     }
-        
-/* Currently Not Enabled
-        
-    $retval .= '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[13] . ':</b><br><small>' . $LANG04[53] . '</small></td>' . LB
-        . '<td><select name="emailstories">'
-        . COM_optionList($_TABLES['maillist'],'code,name',$A['emailstories'])
-        . '</select></td>' .LB
-        . '</tr>' . LB;
-*/
 
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
-    $retval .= '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[7] . ':</b><br><small>' . $LANG04[38] . '</small></td>'
-        . '<td><textarea name="about" cols="60" rows="6" wrap="virtual">' . $A['about'] . '</textarea></td>'
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[8] . ':</b><br><small>' . $LANG04[39] . '</small></td>' . LB
-        . '<td><textarea name="pgpkey" cols="60" rows="6" wrap="virtual">' . $A['pgpkey'] . '</textarea></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="center" colspan="2"><input type="hidden" name="uid" value="' . $user . '">'
-        . '<input type="hidden" name="mode" value="saveuser">'
-        . '<input type="hidden" name="username" value="' . $_USER['username'] . '">'
-        . '<input type="submit" value="' . $LANG04[9] . '"></td>' . LB
-        . '</tr>' . LB
-        . '</table></form>'
-        . COM_endBlock();
-    
-    return $retval;
+    $preferences->set_var ('about_value', $A['about']);
+    $preferences->set_var ('pgpkey_value', $A['pgpkey']);
+    $preferences->set_var ('uid_value', $user);
+    $preferences->set_var ('username_value', $_USER['username']);
+
+    return $preferences->finish ($preferences->parse ('output', 'profile'));
 }
 
 /**
