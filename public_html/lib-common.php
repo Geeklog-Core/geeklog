@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.350 2004/08/02 06:04:12 dhaun Exp $
+// $Id: lib-common.php,v 1.351 2004/08/04 18:42:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1086,7 +1086,7 @@ function COM_siteHeader( $what = 'menu' )
 
         if( empty( $charset ))
         {
-            $charset = "iso-8859-1";
+            $charset = 'iso-8859-1';
         }
     }
     else
@@ -1653,7 +1653,7 @@ function COM_errorLog($logentry, $actionid = '')
 
     if( !empty( $logentry ))
     {
-        $timestamp = strftime( "%c" );
+        $timestamp = strftime( '%c' );
 
         switch( $actionid )
         {
@@ -2780,7 +2780,7 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
         $commentbar->set_var( 'hidden_field', $hidden . 
                 '<input type="hidden" name="mode" value="' . $_REQUEST['mode'] . '">' );
     }
-    else if( $type == "poll" )
+    else if( $type == 'poll' )
     {
         $commentbar->set_var( 'parent_url', 
                               $_CONF['site_url'] . '/pollbooth.php' );
@@ -3421,9 +3421,9 @@ function COM_undoSpecialChars( $string )
 
 function COM_makesid()
 {
-    $sid = date( "YmdHis" );
-    srand(( double )microtime() * 1000000 );
-    $sid .= rand( 0,999 );
+    $sid = date( 'YmdHis' );
+    srand(( double ) microtime() * 1000000 );
+    $sid .= rand( 0, 999 );
 
     return $sid;
 }
@@ -3587,14 +3587,14 @@ function COM_olderStuff()
 
             if( $topic_anon == 2 )
             {
-                $daycheck = strftime( "%A", $A['day'] );
+                $daycheck = strftime( '%A', $A['day'] );
                 if( $day != $daycheck )
                 {
                     if( $day != 'noday' )
                     {
                         $daylist = COM_makeList( $oldnews );
                         $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
-                                                 "", $daylist );
+                                                 '', $daylist );
                         $string .= $daylist . '<br>';
                     }
 
@@ -3614,7 +3614,7 @@ function COM_olderStuff()
         if( !empty( $oldnews ))
         {
             $daylist = COM_makeList( $oldnews );
-            $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
+            $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", '', $daylist );
             $string .= $daylist;
             $string = addslashes( $string );
 
@@ -3900,7 +3900,7 @@ function COM_rdfEndElement( $parser, $name )
 {
     global $RDFinsideitem, $RDFtag, $RDFtitle, $RDFlink, $RDFheadlines;
 
-    if( $name == "ITEM" )
+    if( $name == 'ITEM' )
     {
         $RDFtitle = str_replace( '$', '&#36;', $RDFtitle );
         $RDFheadlines[] .= '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
@@ -3978,7 +3978,7 @@ function COM_rdfImport( $bid, $rdfurl )
             if( !xml_parse( $xml_parser, $data, feof( $fp )))
             {
                 $errmsg = sprintf(
-                    "Parse error in %s: %s at line %d",
+                    'Parse error in %s: %s at line %d',
                     $rdfurl,
                     xml_error_string( xml_get_error_code( $xml_parser )),
                     xml_get_current_line_number( $xml_parser )
@@ -4183,8 +4183,8 @@ function COM_printUpcomingEvents( $help='', $title='' )
     {
         if( $z == 2 )
         {
-            $allEvents = DB_query($personaleventsql);
-            $numRows = DB_numRows($allEvents);
+            $allEvents = DB_query( $personaleventsql );
+            $numRows = DB_numRows( $allEvents );
             $totalrows = $totalrows + $numRows;
 
             $numDays = 0;          // Without limits, I'll force them.
@@ -4196,6 +4196,10 @@ function COM_printUpcomingEvents( $help='', $title='' )
         else
         {
             $headline = false;
+        }
+        if( $_CONF['personalcalendars'] == 0 )
+        {
+            $headline = true; // no headline needed
         }
 
         while( $theRow <= $numRows AND $numDays < $range )
@@ -4230,13 +4234,13 @@ function COM_printUpcomingEvents( $help='', $title='' )
                 // Start Date strings...
                 $startDate = $theEvent['datestart'];
                 $theTime1 = strtotime( $startDate );
-                $dayName1 = strftime( "%A", $theTime1 );
+                $dayName1 = strftime( '%A', $theTime1 );
                 $abbrDate1 = strftime( $dateonly, $theTime1 );
 
                 // End Date strings...
                 $endDate = $theEvent['dateend'];
                 $theTime2 = strtotime( $endDate );
-                $dayName2 = strftime( "%A", $theTime2 );
+                $dayName2 = strftime( '%A', $theTime2 );
                 $abbrDate2 = strftime( $dateonly, $theTime2 );
 
                 // If either of the dates [start/end] change, then display a new header.
@@ -4749,7 +4753,7 @@ function COM_showMessage( $msg, $plugin='' )
     {
         $timestamp = strftime( $_CONF['daytime'] );
         if ($plugin != '') {
-            $var = 'PLG_'.$plugin.'_MESSAGE'.$msg;
+            $var = 'PLG_' . $plugin . '_MESSAGE' . $msg;
             global $$var;
             $message = $$var;
         } else {
@@ -4759,7 +4763,7 @@ function COM_showMessage( $msg, $plugin='' )
                            COM_getBlockTemplate( '_msg_block', 'header' ))
             . '<table><tr><td><img src="' . $_CONF['layout_url']
             . '/images/sysmessage.gif" border="0" align="top" alt=""></td>'
-            . '<td style="padding:5px;">'. $message . '</td></tr></table>'
+            . '<td style="padding:5px;">' . $message . '</td></tr></table>'
             . COM_endBlock( COM_getBlockTemplate( '_msg_block', 'footer' ));
     }
 
@@ -5500,7 +5504,7 @@ function COM_whatsRelated( $fulltext, $uid, $tid )
     if( !empty( $_USER['username'] ) || (( $_CONF['loginrequired'] == 0 ) &&
            ( $_CONF['searchloginrequired'] == 0 ))) {
         // add a link to "search by author"
-        if( $_CONF["contributedbyline"] == 1 )
+        if( $_CONF['contributedbyline'] == 1 )
         {
             $author = DB_getItem( $_TABLES['users'], 'username', "uid = $uid" );
             $rel[] = "<a href=\"{$_CONF['site_url']}/search.php?mode=search&amp;type=stories&amp;author=$uid\">{$LANG24[37]} $author</a>";
@@ -5716,7 +5720,7 @@ function COM_applyFilter( $parameter, $isnumeric = false )
 
 /**
 * Detect links in a plain-ascii texts and turn them into clickable links.
-* Will detect links starting with "http:", "https:", "ftp:", and "www".
+* Will detect links starting with "http:", "https:", "ftp:", and "www.".
 *
 * Derived from a newgroup posting by Andreas Schwarz in
 * news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
@@ -5956,7 +5960,8 @@ function COM_isFrontpage()
 }
 
 // Now include all plugin functions
-foreach ($_PLUGINS as $pi_name) {
+foreach( $_PLUGINS as $pi_name )
+{
     require_once( $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc' );
 }
 
