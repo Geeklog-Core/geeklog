@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.12 2001/11/16 18:39:11 tony_bibbs Exp $
+// $Id: plugins.php,v 1.13 2001/11/18 22:09:02 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -299,7 +299,7 @@ function installplugin() {
 		exec($command);
 
 		// Move the main web pages to the Geeklog web tree
-		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $_CONF['path_html'] . $plugin_name . '/')) {
+		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/public_html', $_CONF['path_html'] . $plugin_name)) {
 			// error doing the copy
 			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $_CONF['path_html'/g] . $plugin_name . '/');
 			echo $retval;
@@ -307,7 +307,7 @@ function installplugin() {
 		}
 
 		// Move the admin pages to the plugin directory in admin tree
-		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/')) {
+		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/admin', $_CONF['path_html'] . 'admin/plugins/' . $plugin_name)) {
 			// Error doing the copy
 			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/');
 			echo $retval;
