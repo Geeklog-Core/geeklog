@@ -1,12 +1,12 @@
 <?php
 
 ###############################################################################
-# Chinese_Jan_unicode.php
+# chinese_simplified_utf-8.php
 #
-# Last Modified: 2004-02-24
-# Version: 1.3.9rc1
+# Last Modified: 2004-10-26
+# Version: 1.3.10
 #
-# This is the Chinese_UTF8 language set for GeekLog 1.3.9rc1
+# This is the Chinese Simplified (UTF-8) language set for GeekLog 1.3.10
 #
 # Copyright (C) 2003 Samuel M. Stone
 # sam@stonemicro.com
@@ -152,11 +152,11 @@ $LANG01 = array(
     106 => '观看',
     107 => 'GL 版本测试',
     108 => '清除缓冲贮存区',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    109 => '报告滥用',
+    110 => '报告此滥登文给网站管理员',
+    111 => '看PDF 版本',
+    112 => '登记用户',
+    113 => '使用说明'
 );
 
 ###############################################################################
@@ -193,12 +193,12 @@ $LANG03 = array(
     7 => '你最後发表的评论是在 ',
     8 => " 秒之前。本站限定至少 {$_CONF['commentspeedlimit']} 秒後才可再发表评论",
     9 => '评论',
-    10 => 'Send Report',
+    10 => '送出报告',
     11 => '发表评论',
     12 => '请填写标题注评论栏',
     13 => '供你参考',
     14 => '预览',
-    15 => 'Report this post',
+    15 => '报告这篇滥登文',
     16 => '标题',
     17 => '错误',
     18 => '重要的东西',
@@ -208,9 +208,9 @@ $LANG03 = array(
     22 => '请尽量用简洁的标题。',
     23 => '我们不会公开你的电邮地址。',
     24 => '匿名用户',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => '你肯定想要报告此滥登文给网站管理员否?',
+    26 => '%s 报告以下滥登的评论:',
+    27 => '滥用报告'
 );
 
 ###############################################################################
@@ -322,8 +322,8 @@ $LANG04 = array(
     103 => '准许其他用户来信',
     104 => '显示联机状况',
     105 => '让在“谁在联机”组件里显示',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    106 => '位置',
+    107 => '显示在你的公开简介'
 );
 
 ###############################################################################
@@ -336,8 +336,8 @@ $LANG05 = array(
     4 => '今天头条',
     5 => '下页',
     6 => '上页',
-    7 => 'First',
-    8 => 'Last'
+    7 => '第一',
+    8 => '最终'
 );
 
 ###############################################################################
@@ -503,7 +503,7 @@ $LANG11 = array(
     2 => '寄文章给朋友',
     3 => '可印的文章格式',
     4 => '文章选项',
-    5 => 'PDF Story Format'
+    5 => 'PDF 文章版本'
 );
 
 ###############################################################################
@@ -661,7 +661,7 @@ $LANG22 = array(
     7 => '事件地点',
     8 => '事件描述',
     9 => '(包括 http://)',
-    10 => '你必须提供日期或时间、描述和事件地点！',
+    10 => '你必须提供日期时间、事件主题、与事件描述！',
     11 => '事件管理员',
     12 => '点击下面的事件可修改或删除它，点击上面的新事件可创造一个新的。',
     13 => '事件标题',
@@ -674,9 +674,9 @@ $LANG22 = array(
     20 => '保存',
     21 => '取消',
     22 => '删除',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => '错误的开始日期.',
+    24 => '错误的结束日期.',
+    25 => '结束日期在开始日期前.'
 );
 
 ###############################################################################
@@ -735,7 +735,7 @@ $LANG24 = array(
     21 => '',
     22 => '文章清单',
     23 => '点击下面的文章编号可修改或删除它，点击下面的文章标题可观看它，点击上面的新文章可创造一个新的。',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
+    24 => '你选的用户名以有人在用。请用另一个用户名。',
     25 => '',
     26 => '文章预览',
     27 => '',
@@ -769,11 +769,11 @@ $LANG24 = array(
     55 => '保存你的文章时发生以下错误。请改正这些错误再保存',
     56 => '显示主题图示',
     57 => '看没味缩小的图像',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => '文章管理',
+    59 => '选项',
+    60 => '已启动',
+    61 => '自动保存',
+    62 => '自动删除'
 );
 
 ###############################################################################
@@ -836,8 +836,8 @@ $LANG27 = array(
     22 => '预设',
     23 => '用此主题作为新稿的预设主体',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => '保存文件的题目',
+    26 => '用此题目作保存文件的默认题目。只准许一个题目。'
 );
 
 ###############################################################################
@@ -1001,7 +1001,7 @@ $LANG32 = array(
     8 => '插件不能通过兼容性校验。',
     9 => '这插件要求一个更新版本的 Geeklog. 你可以升级你的<a href="http://www.geeklog.net">Geeklog</a>或是另找一个适合的版本。',
     10 => '<br><b>没有安装的插件。</b><br><br>',
-    11 => '点击下面插件的编号可修改或删除它，点击插件的名字会带你到那插件的网站。要安装或升级插件请咨询它是文件。',
+    11 => '若想修改或删除插件，点击以下插件的名称。这会显示插件的详细内容和制作者的网站。安装的版本和从代码中来的版本都会显出来。这会让你知道此插件是否应该更新。若要安装或升级插件请咨询它的说明文件。',
     12 => 'plugineditor() 找不到插件名',
     13 => '插件编辑器',
     14 => '新插件',
@@ -1018,13 +1018,13 @@ $LANG32 = array(
     25 => '删除',
     26 => '插件名',
     27 => '插件首页',
-    28 => '插件版本',
+    28 => '已安装的插件版本',
     29 => 'Geeklog 版本',
     30 => '删除插件？',
     31 => '你肯定要删除这个插件吗？这麽会删除所有有关这插件的文件、资料和资料结构。如果你肯定的，请再点击下面表格中的删除钮。',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update'
+    33 => '代码版本',
+    34 => '更新'
 );
 
 ###############################################################################
@@ -1133,8 +1133,8 @@ $MESSAGE = array(
     57 => '你的用户已经成功地删除了。',
     58 => '你的文流已成功的保存了.',
     59 => '你的文流已成功的删除了.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    60 => '插件已经更新成功',
+    61 => '插件 %s: 不知名的信息占位符'
 );
 
 ###############################################################################
@@ -1194,7 +1194,7 @@ $LANG_ACCESS = array(
     'availmembers' => '可用的成员',
     'groupmembers' => '小组成员',
     'canteditgroup' => '若要修改此小组, 你必要时这个小组的成员. 若你认为这是错误, 请你联络系统管理员.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => '要看此小组的会员，你必须是此小组的会员。你若认为这是错误，请联络系统管理员。'
 );
 
 ###############################################################################
@@ -1254,20 +1254,20 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    1 => 'PDF 版本的作用已被禁止',
+    2 => '所提供的文件没有呈递。文件已收到，但是无法处理。请肯定你所提交的文件是 html 格式的文件写于 xHTML 的标准。请注意过分复杂的 html 文件也可能无法正确呈递。你的文件提交的结果是 0 bytes 而且已被删除。你若肯定你的文件应该顺利的呈递，其再次提交。',
+    3 => '不知名的PDF 文件制作错误。',
+    4 => "没提供页数资料或你要用以下的特别 PDF 制作工具。若你认为你所得到的这页 page\n 是错误。 请联络系统管理员。要不然，你可用以下的表格来特别制作 PDF。",
+    5 => '正在装置你的文件。',
+    6 => '你的文件被装置时请等待。',
+    7 => '你可用右击以下的按钮，然后选 \'save target...\' or \'save link location...\' 来存续你的文件的一个拷贝。',
+    8 => "在配置档案里的 HTMLDoc二进制档案路径有错误，或此系统无法执行此档案。若此问题继续发生，请联络网站管理员\n          。",
+    9 => 'PDF 制作器',
+    10 => "这是特别的 PDF 制作工具。它会将任何 URL 转换成 PDF 版本。请注意，有些网页不会正确的被这工具处理成功。这是 HTMLDoc PDF 制作工具的有限之处，而这样的错误不需要报告给此网站的管理员。",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => '制作 PDF!',
+    13 => '此服务器的 PHP 配置不准许 fopen() 命令用在 URL 上。 系统管理员必须先修改  php.ini 档案，然后设定 allow_url_fopen 到 On',
+    14 => '你要求的 PDF 不存在或你在非法的入取一个档案。'
 );
 
 ?>

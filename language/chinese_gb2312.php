@@ -1,23 +1,15 @@
 <?php
 
 ###############################################################################
-# chinese_gb2312.php
+# chinese_simplified_gb2312.php
 #
-# Last Modified:20030312:
-# This is the Chinese (gb2312) language page for GeekLog!
+# Last Modified: 2004-10-26
+# Version: 1.3.10
 #
-# Copyright (C) 2003 Crocodile King @  Scarborough,Toronto Canada
-# Kingwangwen@hotmail.com &  @truez.com
+# This is the Chinese Simplified (GB2312) language set for GeekLog 1.3.10
 #
-# Note: I have fixed it by referral Chinese_big5.php
-#
-# Chinese punctuation used in this file
-# ；︰、！，。？：『』（）※×……％§÷、《》【】‘’“”￥＃◎！～
-#
-# Special thanks to Mischa Polivanov for his work on this project
-#
-# Copyright (C) 2000 Jason Whittenburg
-# jwhitten@securitygeeks.com
+# Copyright (C) 2003 Samuel M. Stone
+# sam@stonemicro.com
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,7 +27,7 @@
 #
 ###############################################################################
 
-$LANG_CHARSET = 'gb2312';
+$LANG_CHARSET = 'GB2312';
 
 ###############################################################################
 # Array Format:
@@ -52,8 +44,8 @@ $LANG_CHARSET = 'gb2312';
 # lib-common.php
 
 $LANG01 = array(
-    1 => '投稿者︰',
-    2 => '读多些',
+    1 => '作者︰',
+    2 => '读整文',
     3 => '个评论',
     4 => '编辑',
     5 => '投票',
@@ -62,14 +54,14 @@ $LANG01 = array(
     8 => '投票',
     9 => '管理者功能︰',
     10 => '提交物',
-    11 => '故事',
+    11 => '文章',
     12 => '组件',
     13 => '主题',
     14 => '连结',
     15 => '事件',
     16 => '投票',
     17 => '用户',
-    18 => 'SQL Query',
+    18 => 'SQL 质问',
     19 => '退出',
     20 => '用户讯息︰',
     21 => '用户名',
@@ -81,17 +73,17 @@ $LANG01 = array(
     27 => '最近发表的',
     28 => '删除',
     29 => '没有评论。',
-    30 => '旧的故事',
+    30 => '旧的文章',
     31 => '允许的 HTML 标记:',
     32 => '错误，无效的用户名',
     33 => '错误，不能写系统日志;',
     34 => '错误',
     35 => '退出',
     36 => '于',
-    37 => '没有故事',
-    38 => 'Content Syndication',
+    37 => '没有文章',
+    38 => '内容辛迪加',
     39 => '使新',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => '你的服务器的 <tt>php.ini</tt> 里设定为 <tt>register_globals = Off</tt>. 可是此软件需要将 <tt>register_globals</tt> 设定成 <strong>on</strong>. 所以在你继续以前，必须将它设定为<strong>on</strong>，然后重新开机.',
     41 => '客人',
     42 => '作者:',
     43 => '回复这个',
@@ -128,11 +120,11 @@ $LANG01 = array(
     74 => '日历',
     75 => '进阶搜索',
     76 => '本站统计数据',
-    77 => 'Plugins',
+    77 => '插件',
     78 => '即将发生的事',
     79 => '新鲜的东西',
-    80 => '个新故事(',
-    81 => '新的故事(',
+    80 => '个新文章(',
+    81 => '新的文章(',
     82 => ' 小时内)',
     83 => '评论',
     84 => '连结',
@@ -145,13 +137,13 @@ $LANG01 = array(
     91 => '载入这页用了',
     92 => '秒',
     93 => '版权',
-    94 => 'All trademarks and copyrights on this page are owned by their respective owners.',
-    95 => 'Powered By',
+    94 => '此网站所有的商标和版权属于他们各自的所有者.',
+    95 => '动力于',
     96 => '小组',
     97 => '字词单',
-    98 => 'Plug-ins',
-    99 => '故事',
-    100 => '没有新的故事',
+    98 => '插件',
+    99 => '文章',
+    100 => '没有新的文章',
     101 => '你的事件',
     102 => '本站的事件',
     103 => '资料库备份',
@@ -160,11 +152,11 @@ $LANG01 = array(
     106 => '观看',
     107 => 'GL 版本测试',
     108 => '清除缓冲贮存区',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    109 => '报告滥用',
+    110 => '报告此滥登文给网站管理员',
+    111 => '看PDF 版本',
+    112 => '登记用户',
+    113 => '使用说明'
 );
 
 ###############################################################################
@@ -201,12 +193,12 @@ $LANG03 = array(
     7 => '你最後发表的评论是在 ',
     8 => " 秒之前。本站限定至少 {$_CONF['commentspeedlimit']} 秒後才可再发表评论",
     9 => '评论',
-    10 => 'Send Report',
+    10 => '送出报告',
     11 => '发表评论',
     12 => '请填写标题注评论栏',
     13 => '供你参考',
     14 => '预览',
-    15 => 'Report this post',
+    15 => '报告这篇滥登文',
     16 => '标题',
     17 => '错误',
     18 => '重要的东西',
@@ -216,9 +208,9 @@ $LANG03 = array(
     22 => '请尽量用简洁的标题。',
     23 => '我们不会公开你的电邮地址。',
     24 => '匿名用户',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => '你肯定想要报告此滥登文给网站管理员否?',
+    26 => '%s 报告以下滥登的评论:',
+    27 => '滥用报告'
 );
 
 ###############################################################################
@@ -253,8 +245,8 @@ $LANG04 = array(
     26 => '请你输入的用户名和点击电邮密码，我们会发送一个新的密码到你的电邮信箱。',
     27 => '现在就登记！',
     28 => '电邮密码',
-    29 => 'logout at',
-    30 => 'login at',
+    29 => '退出时',
+    30 => '登入时',
     31 => '需要登入才可用',
     32 => '署名',
     33 => '绝不会公开',
@@ -267,17 +259,17 @@ $LANG04 = array(
     40 => '没有主题图示',
     41 => '愿意主持',
     42 => '日期格式',
-    43 => '故事限度',
+    43 => '文章限度',
     44 => '没有组件',
     45 => '显示设定',
     46 => '不包括的',
     47 => '新组件配置为',
     48 => '主题',
-    49 => '故事里没有图像',
+    49 => '文章里没有图像',
     50 => '不要打钩如果你不感兴趣',
-    51 => '只是新故事',
+    51 => '只是新文章',
     52 => '预设值是',
-    53 => '每晚接收当日的故事',
+    53 => '每晚接收当日的文章',
     54 => '打钩如果你不看这些主题或作者。',
     55 => '如果你没有选择，这意味你要用预设的组件。如果你选择组件，所有预设的箱将被忽略。预设的东西会用粗笔画显示。',
     56 => '作者',
@@ -300,38 +292,38 @@ $LANG04 = array(
     73 => '语言',
     74 => '改变本站外表',
     75 => '主题已电邮给',
-    76 => '请只选择你感兴趣的主题，因为所有当日新张贴的故事将会电邮到你的信箱。',
+    76 => '请只选择你感兴趣的主题，因为所有当日新张贴的文章将会电邮到你的信箱。',
     77 => '相片',
     78 => '你自己的图片',
     79 => '要删除图片，在这里打钩',
     80 => '登入',
     81 => '发送电子邮件',
-    82 => '用户最近发表的十个故事为',
+    82 => '用户最近发表的十个文章为',
     83 => '用户发表统计',
     84 => '文章总数︰',
     85 => '评论总数︰',
     86 => '寻找所有发表过的文章︰',
-    87 => 'Your login name',
-    88 => "Someone (possibly you) has requested a new password for your account \"%s\" on {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIf you really want this action to be taken, please click on the following link:\n\n",
-    89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
-    90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
-    91 => 'Set New Password',
-    92 => 'Enter New Password',
-    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.',
-    94 => 'Delete Account "%s"',
-    95 => 'Click the "delete account" button below to remove your account from our database. Please note that any stories and comments you posted under this account will <strong>not</strong> be deleted but show up as being posted by "Anonymous".',
-    96 => 'delete account',
-    97 => 'Confirm Account Deletion',
-    98 => 'Are you sure you want to delete your account? By doing so, you will not be able to log into this site again (unless you create a new account). If you are sure, click "delete account" again on the form below.',
-    99 => 'Privacy Options for',
-    100 => 'Email from Admin',
-    101 => 'Allow email from Site Admins',
-    102 => 'Email from Users',
-    103 => 'Allow email from other users',
-    104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    87 => '你的登入名',
+    88 => "有人(也许是你)要了新密码 \"%s\" 于 {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\n若你真的要这样作, 请你点击以下联结:\n\n",
+    89 => "你若不想要这样作, 请忽视这信息。这项事就将会被抛弃，而你的密码就保持原有.\n\n",
+    90 => '你可在下面输入一个新的密码。请注意你的旧密码任然有效直到你将此表提交。',
+    91 => '设定新密码',
+    92 => '输入新密码',
+    93 => '你在 %d 秒钟前刚要了一个新密码. 此站规定最少要 %d 秒钟以后才可再次要求新密码。',
+    94 => '将用户 \'%s\' 删除',
+    95 => '单据下面的 \'删除用户\' 便将你在我们资料库里的用户。请注意，你以其用户所登载过的文章和评论不会删除，可是会以无名作者的身份显示。',
+    96 => '删除用户',
+    97 => '确定用户删除',
+    98 => '你肯定要删除你的用户吗? 其后你就不在能使用此站,除非你重新设定新用户. 若你肯定的话请再次单据下面的 “删除用户”.',
+    99 => '隐私选项于',
+    100 => '管理员来信',
+    101 => '准许管理员来信',
+    102 => '用户来信',
+    103 => '准许其他用户来信',
+    104 => '显示联机状况',
+    105 => '让在“谁在联机”组件里显示',
+    106 => '位置',
+    107 => '显示在你的公开简介'
 );
 
 ###############################################################################
@@ -339,13 +331,13 @@ $LANG04 = array(
 
 $LANG05 = array(
     1 => '没有新闻可显示',
-    2 => '没有新故事可显示。',
+    2 => '没有新文章可显示。',
     3 => '这也许是真的没有新主题或是你的 %s 设定得太过限制性。',
     4 => '今天头条',
-    5 => '下一个',
-    6 => '前一个',
-    7 => 'First',
-    8 => 'Last'
+    5 => '下页',
+    6 => '上页',
+    7 => '第一',
+    8 => '最终'
 );
 
 ###############################################################################
@@ -366,7 +358,7 @@ $LANG07 = array(
     3 => '投票',
     4 => '系统中的投票',
     5 => '投票',
-    6 => 'View other poll questions'
+    6 => '看其他投票问题'
 );
 
 ###############################################################################
@@ -389,14 +381,14 @@ $LANG08 = array(
     14 => '内容：',
     15 => 'HTML 不会被翻译。',
     16 => '发送邮件',
-    17 => '把故事电邮给朋友',
+    17 => '把文章电邮给朋友',
     18 => '收件人名字',
     19 => '收件人电邮',
     20 => '寄件人名字',
     21 => '寄件人电邮',
     22 => '所有栏都要填写',
     23 => "这电子邮件是由 %s (%s) 寄给你的，他认为你也许对这篇在 {$_CONF['site_url']} 的文章感兴趣。这不是垃圾邮件(SPAM)，你的电邮地址也不会被纪录。",
-    24 => '关於这个故事的评论在',
+    24 => '关於这个文章的评论在',
     25 => '为帮助我们防止系统被滥用，你必须登入。',
     26 => '这个表格允许你送电子邮件到你选择的用户中。请填写所有的栏位。',
     27 => '短信',
@@ -407,7 +399,7 @@ $LANG08 = array(
     32 => '日期',
     33 => '完整的文章在：',
     34 => '电邮结束',
-    35 => 'Sorry, this user prefers not to receive any emails.'
+    35 => '对不起，此用户不愿意收电信.'
 );
 
 ###############################################################################
@@ -419,7 +411,7 @@ $LANG09 = array(
     3 => '主题',
     4 => '所有',
     5 => '类型',
-    6 => '故事',
+    6 => '文章',
     7 => '评论',
     8 => '作者',
     9 => '所有',
@@ -432,19 +424,19 @@ $LANG09 = array(
     16 => '主题',
     17 => '日期',
     18 => '作者',
-    19 => "搜寻整个 {$_CONF['site_name']} 的新旧故事资料库",
+    19 => "搜寻整个 {$_CONF['site_name']} 的新旧文章资料库",
     20 => '日期',
     21 => '到',
-    22 => '(日期格式 YYYY-MM-DD)',
+    22 => '(日期格式 年-月-日 YYYY-MM-DD)',
     23 => '采样数',
     24 => '找到',
     25 => '个相配在',
     26 => '个项目中，共用了',
     27 => '秒',
-    28 => '没有你所寻找的故事或评论',
-    29 => '故事和评论的结果',
+    28 => '没有你所寻找的文章或评论',
+    29 => '文章和评论的结果',
     30 => '没有你所寻找的连结',
-    31 => '没有你所寻找的 plug-in',
+    31 => '没有你所寻找的插件',
     32 => '事件',
     33 => 'URL',
     34 => '地点',
@@ -456,21 +448,21 @@ $LANG09 = array(
     40 => '事件',
     41 => '搜寻的关键词最少要有三个字。',
     42 => '请使用 YYYY-MM-DD (年-月-日) 日期格式。',
-    43 => 'exact phrase',
-    44 => 'all of these words',
-    45 => 'any of these words',
-    46 => 'Next',
-    47 => 'Previous',
-    48 => 'Author',
-    49 => 'Date',
-    50 => 'Hits',
-    51 => 'Link',
-    52 => 'Location',
-    53 => 'Story Results',
-    54 => 'Comment Results',
-    55 => 'the phrase',
-    56 => 'AND',
-    57 => 'OR'
+    43 => '整个短语',
+    44 => '所有字词',
+    45 => '其中任何字词',
+    46 => '以下',
+    47 => '以上',
+    48 => '作者',
+    49 => '日期',
+    50 => '采样数',
+    51 => '联结',
+    52 => '位置',
+    53 => '文章结果',
+    54 => '评论结果',
+    55 => '句子',
+    56 => '和',
+    57 => '或'
 );
 
 ###############################################################################
@@ -479,17 +471,17 @@ $LANG09 = array(
 $LANG10 = array(
     1 => '本站统计数据',
     2 => '系统点击总数',
-    3 => '故事(评论)总数',
+    3 => '文章(评论)总数',
     4 => '投票(获得投票)总数',
     5 => '连结(点击)总数',
     6 => '事件总数',
-    7 => '最多观看的十个故事',
-    8 => '故事标题',
+    7 => '最多观看的十个文章',
+    8 => '文章标题',
     9 => '观看',
-    10 => '看来本站没有故事或是没人观看过本站的故事。',
-    11 => '最多评论的十个故事',
+    10 => '看来本站没有文章或是没人观看过本站的文章。',
+    11 => '最多评论的十个文章',
     12 => '评论',
-    13 => '看来本站没有故事或是没人评论过本站的故事。',
+    13 => '看来本站没有文章或是没人评论过本站的文章。',
     14 => '最多人投票的十个选举',
     15 => '投票标题',
     16 => '投票',
@@ -498,9 +490,9 @@ $LANG10 = array(
     19 => '连结',
     20 => '点击',
     21 => '看来本站没有连结或是没人点击过本站的连结。',
-    22 => '最多人寄出的十个故事',
+    22 => '最多人寄出的十个文章',
     23 => '电邮',
-    24 => '看来没人寄出过本站的故事'
+    24 => '看来没人寄出过本站的文章'
 );
 
 ###############################################################################
@@ -508,10 +500,10 @@ $LANG10 = array(
 
 $LANG11 = array(
     1 => '有什麽是相关的',
-    2 => '寄故事给朋友',
-    3 => '可印的故事格式',
-    4 => '故事选项',
-    5 => 'PDF Story Format'
+    2 => '寄文章给朋友',
+    3 => '可印的文章格式',
+    4 => '文章选项',
+    5 => 'PDF 文章版本'
 );
 
 ###############################################################################
@@ -523,7 +515,7 @@ $LANG12 = array(
     3 => '新用户',
     4 => '发表一件事',
     5 => '发表一个连结',
-    6 => '发表一个故事',
+    6 => '发表一个文章',
     7 => '你需要登入',
     8 => '发表',
     9 => '在本站发表东西时请跟随以下建议...<ul><li>填写所有的栏<li>提供完全和准确的讯息<li>再三检查那些 URLs</ul>',
@@ -546,11 +538,11 @@ $LANG12 = array(
     26 => '限速',
     27 => '用户名',
     28 => '主题',
-    29 => '故事',
+    29 => '文章',
     30 => '你最後发表的是',
     31 => " 秒之前。本站限定至少 {$_CONF['speedlimit']} 秒後才可再发表",
     32 => '预览',
-    33 => '故事 预览',
+    33 => '文章 预览',
     34 => '退出',
     35 => '不准许 HTML 标记',
     36 => '发表模式',
@@ -597,7 +589,7 @@ $LANG21 = array(
     1 => '权力不足',
     2 => '你没有权去编辑这个组件。',
     3 => '组件编辑器',
-    4 => 'There was a problem reading this feed (see error.log for details).',
+    4 => '读取此文流时发现错误，请在你的错误记录档案 error.log 里看细节.',
     5 => '组件标题',
     6 => '主题',
     7 => '所有',
@@ -607,11 +599,11 @@ $LANG21 = array(
     11 => '入口组件',
     12 => '正常组件',
     13 => '入口组件选项',
-    14 => 'RDF URL',
-    15 => '最後的 RDF 更新',
+    14 => '文流 RDF 的 URL',
+    15 => '最後的文流 RDF 更新',
     16 => '正常组件选项',
     17 => '组件内容',
-    18 => '请填写组件的标题、安全水平和内容。',
+    18 => '请填写组件的标题和内容。',
     19 => '组件管理员',
     20 => '组件标题',
     21 => '组件安全水平',
@@ -624,7 +616,7 @@ $LANG21 = array(
     28 => 'PHP 组件选项',
     29 => '组件函数',
     30 => '如果你想用自己的 PHP 函数组件，请在上面输入函数的名字。为防止执行任性的编码，PHP 组件函数名必须以 "phpblock_" 作开始 (e.g. phpblock_getweather)。请不要把空的圆括号 "()" 放在函数後。最後，建议你把所有的 PHP 组件放在 /path/to/geeklog/system/lib-custom.php 里以方便系统升级。',
-    31 => 'PHP 组件错误︰函数  并不存在。',
+    31 => 'PHP 组件错误︰函数 %s 并不存在。',
     32 => '错误︰缺少栏位。',
     33 => '在入口组件你必须把 URL 输入到 .rdf 档案',
     34 => '在 PHP 组件你必须输入主题和函数',
@@ -635,7 +627,7 @@ $LANG21 = array(
     39 => '放在那边',
     40 => '左',
     41 => '右',
-    42 => '在 Geeklog 预设组件你必须输入组件次序和安全水平',
+    42 => '在本系统的预设组件你必须输入组件标题和次序',
     43 => '只可是首页',
     44 => '存取被拒绝',
     45 => "企图存取不允许的组件已被记录。请<a href=\"{$_CONF['site_admin_url']}/block.php\">反回组件管理员昼面</a>。",
@@ -650,10 +642,10 @@ $LANG21 = array(
     54 => '保存',
     55 => '取消',
     56 => '删除',
-    57 => 'Move Block Down',
-    58 => 'Move Block Up',
-    59 => 'Move block to the right side',
-    60 => 'Move block to the left side'
+    57 => '下移组件',
+    58 => '上移组件',
+    59 => '移组件到右边',
+    60 => '移组件到左边'
 );
 
 ###############################################################################
@@ -669,7 +661,7 @@ $LANG22 = array(
     7 => '事件地点',
     8 => '事件描述',
     9 => '(包括 http://)',
-    10 => '你必须提供日期或时间、描述和事件地点！',
+    10 => '你必须提供日期时间、事件主题、与事件描述！',
     11 => '事件管理员',
     12 => '点击下面的事件可修改或删除它，点击上面的新事件可创造一个新的。',
     13 => '事件标题',
@@ -682,9 +674,9 @@ $LANG22 = array(
     20 => '保存',
     21 => '取消',
     22 => '删除',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => '错误的开始日期.',
+    24 => '错误的结束日期.',
+    25 => '结束日期在开始日期前.'
 );
 
 ###############################################################################
@@ -720,12 +712,12 @@ $LANG23 = array(
 # admin/story.php
 
 $LANG24 = array(
-    1 => '上一个故事',
-    2 => '下一个故事',
+    1 => '上篇文章',
+    2 => '下篇文章',
     3 => '模式',
     4 => '发表模式',
-    5 => '故事编辑器',
-    6 => '没有故事',
+    5 => '文章编辑器',
+    6 => '没有文章',
     7 => '作者',
     8 => '保存',
     9 => '预览',
@@ -735,24 +727,24 @@ $LANG24 = array(
     13 => '标题',
     14 => '主题',
     15 => '日期',
-    16 => '故事简介',
-    17 => '故事内容',
+    16 => '文章简介',
+    17 => '文章内容',
     18 => '点击次数',
     19 => '评论',
     20 => '',
     21 => '',
-    22 => '故事清单',
-    23 => '点击下面的故事编号可修改或删除它，点击下面的故事标题可观看它，点击上面的新故事可创造一个新的。',
-    24 => 'The ID you chose for this story is already in use. Please use another ID.',
+    22 => '文章清单',
+    23 => '点击下面的文章编号可修改或删除它，点击下面的文章标题可观看它，点击上面的新文章可创造一个新的。',
+    24 => '你选的用户名以有人在用。请用另一个用户名。',
     25 => '',
-    26 => '故事预览',
+    26 => '文章预览',
     27 => '',
     28 => '',
     29 => '',
-    30 => 'File Upload Errors',
-    31 => '你需要提供作者、标题和故事简介！',
+    30 => '上载错误',
+    31 => '你需要提供作者、标题和文章简介！',
     32 => '头条的',
-    33 => '只可有一个头条故事',
+    33 => '只可有一个头条文章',
     34 => '草稿',
     35 => '是',
     36 => '否',
@@ -760,28 +752,28 @@ $LANG24 = array(
     38 => '更多发表於',
     39 => '电邮',
     40 => '存取被拒绝',
-    41 => "企图存取不允许的故事已被记录。你可以以唯读模式观看下面文章。看完後请<a href=\"{$_CONF['site_admin_url']}/story.php\">反回故事管理员昼面</a>。",
-    42 => "企图存取不允许的故事已被记录。请<a href=\"{$_CONF['site_admin_url']}/story.php\">反回故事管理员昼面</a>。",
-    43 => '新故事',
+    41 => "企图存取不允许的文章已被记录。你可以以唯读模式观看下面文章。看完後请<a href=\"{$_CONF['site_admin_url']}/story.php\">反回文章管理员昼面</a>。",
+    42 => "企图存取不允许的文章已被记录。请<a href=\"{$_CONF['site_admin_url']}/story.php\">反回文章管理员昼面</a>。",
+    43 => '新文章',
     44 => '管理员首页',
     45 => '存取权',
-    46 => '<b>注意︰</b>如果你把日期改成将来，在那个日期前这篇文章将不会被发表。并且 意味着这篇故事不会包括在你的 RDF 标题内，在搜寻和统计页中会被忽略。',
+    46 => '<b>注意︰</b>如果你把日期改成将来，在那个日期前这篇文章将不会被发表。并且 意味着这篇文章不会包括在你的 RDF 标题内，在搜寻和统计页中会被忽略。',
     47 => '图像',
-    48 => 'image',
-    49 => 'right',
-    50 => 'left',
-    51 => '请用特别格式的文字([imageX]、[imageX_right] 或 [imageX_left])来插入图像， X 是你附加图像的编号。注意︰你只可使用你附加的图像否则你将无法保存你的故事。<BR><P><B>预览</B>︰最佳预览故事的方法是把故事保存成草稿而不是直击预览按钮。只有没有附加图像时才用预览按钮。',
+    48 => '图像',
+    49 => '右',
+    50 => '左',
+    51 => '请用特别格式的文字([imageX]、[imageX_right] 或 [imageX_left])来插入图像， X 是你附加图像的编号。注意︰你只可使用你附加的图像否则你将无法保存你的文章。<BR><P><B>预览</B>︰最佳预览文章的方法是把文章保存成草稿而不是直击预览按钮。只有没有附加图像时才用预览按钮。',
     52 => '删除',
-    53 => '没有被使用。保存前，你必须把这个图像包含在故事简介或故事内容中。',
+    53 => '没有被使用。保存前，你必须把这个图像包含在文章简介或文章内容中。',
     54 => '附加图像未被使用',
-    55 => '保存你的故事时发生以下错误。请改正这些错误再保存',
+    55 => '保存你的文章时发生以下错误。请改正这些错误再保存',
     56 => '显示主题图示',
-    57 => 'View unscaled image',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    57 => '看没味缩小的图像',
+    58 => '文章管理',
+    59 => '选项',
+    60 => '已启动',
+    61 => '自动保存',
+    62 => '自动删除'
 );
 
 ###############################################################################
@@ -789,7 +781,7 @@ $LANG24 = array(
 
 $LANG25 = array(
     1 => '模式',
-    2 => 'Please enter a question and at least one answer.',
+    2 => '请输入一个问题和最少一个答案.',
     3 => '投票发起日',
     4 => '投票 %s 被保存了',
     5 => '编辑投票',
@@ -804,7 +796,7 @@ $LANG25 = array(
     14 => '保存',
     15 => '取消',
     16 => '删除',
-    17 => 'Please enter a Poll ID',
+    17 => '请输入一个投票 ID',
     18 => '投票清单',
     19 => '点击下面的投票可修改或删除它，点击上面的新投票可创造一个新的。',
     20 => '投票者',
@@ -825,12 +817,12 @@ $LANG27 = array(
     3 => '主题名',
     4 => '主题图像',
     5 => '(不可有空隔)',
-    6 => '删除主题会同时删除所有有关的故事和组件！',
+    6 => '删除主题会同时删除所有有关的文章和组件！',
     7 => '你需要提供主题编号和主题名！',
     8 => '主题管理员',
     9 => '点击下面的主题可修改或删除它，点击上面的新主题可创造一个新的。在括号里你将发现你的存取级别。',
     10 => '排序次序',
-    11 => '故事 / 页',
+    11 => '文章 / 页',
     12 => '存取被拒绝',
     13 => "企图存取不允许的主题已被记录。请<a href=\"{$_CONF['site_admin_url']}/topic.php\">反回主题管理员昼面</a>.",
     14 => '排序方法',
@@ -841,11 +833,11 @@ $LANG27 = array(
     19 => '保存',
     20 => '取消',
     21 => '删除',
-    22 => 'Default',
-    23 => 'make this the default topic for new story submissions',
+    22 => '预设',
+    23 => '用此主题作为新稿的预设主体',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => '保存文件的题目',
+    26 => '用此题目作保存文件的默认题目。只准许一个题目。'
 );
 
 ###############################################################################
@@ -886,8 +878,8 @@ $LANG28 = array(
     32 => '处理完成。输入了 %d 个；%d 个失败',
     33 => '递交',
     34 => '错误︰你必须指定上载档案。',
-    35 => 'Last Login',
-    36 => '(never)'
+    35 => '最后一次登入',
+    36 => '(从未)'
 );
 
 ###############################################################################
@@ -908,7 +900,7 @@ $LANG29 = array(
     17 => '全名',
     18 => '电子邮件',
     34 => '命令和控制',
-    35 => '已递交的故事',
+    35 => '已递交的文章',
     36 => '已递交的连结',
     37 => '已递交的事件',
     38 => '递交',
@@ -920,13 +912,13 @@ $LANG29 = array(
 # calendar.php
 
 $LANG30 = array(
-    1 => '日',
-    2 => '一',
-    3 => '二',
-    4 => '三',
-    5 => '四',
-    6 => '五',
-    7 => '六',
+    1 => 'Sunday',
+    2 => 'Monday',
+    3 => 'Tuesday',
+    4 => 'Wednesday',
+    5 => 'Thursday',
+    6 => 'Friday',
+    7 => 'Saturday',
     8 => '新增事件',
     9 => 'Geeklog 事件',
     10 => '事件给',
@@ -999,23 +991,23 @@ $LANG31 = array(
 # admin/plugins.php
 
 $LANG32 = array(
-    1 => 'Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system. It is important that you only install plugins downloaded from the <a href="http://www.geeklog.net" target="_blank">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems. It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites. Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin. In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.',
-    2 => 'Plug-in 安装声明',
-    3 => 'Plug-in 安装表格',
-    4 => 'Plug-in 档案',
-    5 => 'Plug-in 清单',
-    6 => '警告︰Plug-in 已经被安装过！',
-    7 => '你想安装的 plug-in 已经存在，请先把它删除再安装。',
-    8 => 'Plugin 不能通过兼容性校验。',
-    9 => '这 plugin 要求一个更新版本的 Geeklog. 你可以升级你的<a href="http://www.geeklog.net">Geeklog</a>或是另找一个适合的版本。',
-    10 => '<br><b>没有安装的 plugin 。</b><br><br>',
-    11 => '点击下面 plugin 的编号可修改或删除它，点击 plugin 的名字会带你到那 plugin 的网站。要安装或升级 plugin 请咨询它是文件。',
-    12 => 'plugineditor() 找不到 plugin 名',
-    13 => 'Plugin 编辑器',
-    14 => '新 Plug-in',
+    1 => '安装插件能损坏你的主系统。 必需要特别小心。 最好不要安装任何你不了解的插件。',
+    2 => '插件安装声明',
+    3 => '插件安装表格',
+    4 => '插件档案',
+    5 => '插件清单',
+    6 => '警告︰插件已经被安装过！',
+    7 => '你想安装的插件已经存在，请先把它删除再安装。',
+    8 => '插件不能通过兼容性校验。',
+    9 => '这插件要求一个更新版本的 Geeklog. 你可以升级你的<a href="http://www.geeklog.net">Geeklog</a>或是另找一个适合的版本。',
+    10 => '<br><b>没有安装的插件。</b><br><br>',
+    11 => '若想修改或删除插件，点击以下插件的名称。这会显示插件的详细内容和制作者的网站。安装的版本和从代码中来的版本都会显出来。这会让你知道此插件是否应该更新。若要安装或升级插件请咨询它的说明文件。',
+    12 => 'plugineditor() 找不到插件名',
+    13 => '插件编辑器',
+    14 => '新插件',
     15 => '管理员首页',
-    16 => 'Plug-in 名字',
-    17 => 'Plug-in 版本',
+    16 => '插件名字',
+    17 => '插件版本',
     18 => 'Geeklog 版本',
     19 => '使有效',
     20 => '是',
@@ -1024,58 +1016,58 @@ $LANG32 = array(
     23 => '保存',
     24 => '取消',
     25 => '删除',
-    26 => 'Plug-in 名字',
-    27 => 'Plug-in 首页',
-    28 => 'Plug-in 版本',
+    26 => '插件名',
+    27 => '插件首页',
+    28 => '已安装的插件版本',
     29 => 'Geeklog 版本',
-    30 => '删除 Plug-in？',
-    31 => '你肯定要删除这个 Plug-in 吗？这麽会删除所有有关这 Plug-in 的文件、资料和资料结构。如果你肯定的，请再点击下面表格中的删除钮。',
+    30 => '删除插件？',
+    31 => '你肯定要删除这个插件吗？这麽会删除所有有关这插件的文件、资料和资料结构。如果你肯定的，请再点击下面表格中的删除钮。',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
-    33 => 'Code Version',
-    34 => 'Update'
+    33 => '代码版本',
+    34 => '更新'
 );
 
 ###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
-    10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
-    15 => 'Type',
-    16 => 'Filename',
-    17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
-    21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
-    24 => 'Feed Editor',
-    25 => 'Feed Title',
-    26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
-    34 => 'Entries',
-    35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
-    41 => 'Links',
-    42 => 'Events'
+    1 => '建立文流',
+    2 => '保存',
+    3 => '删除',
+    4 => '取消',
+    10 => '内容辛迪加',
+    11 => '新文流',
+    12 => '管理处首页',
+    13 => '若要修改或删除一个文流, 再一下主题上点击. 若要建立新的文流, 点击以上的新文流.',
+    14 => '标题',
+    15 => '种类',
+    16 => '文件名',
+    17 => '格式',
+    18 => '最后一次更新',
+    19 => '启动',
+    20 => '是',
+    21 => '否',
+    22 => '<i>(无文流)</i>',
+    23 => '所有文章',
+    24 => '文流编辑',
+    25 => '文流标题',
+    26 => '限定',
+    27 => '条目长度',
+    28 => '(0 = 无内文, 1 = 整文, other = 限定于此字数.)',
+    29 => '说明',
+    30 => '最后一次更新',
+    31 => '字符集',
+    32 => '语言',
+    33 => '内容',
+    34 => '条目',
+    35 => '小时',
+    36 => '选择文流种类',
+    37 => '你有最少一个安装了的插件能配合内容辛迪加.一下你需要选择你是否要建立一个主系统文流或插件文流.',
+    38 => '错误: 缺少信息',
+    39 => '请填入文流标题, 说明, 和文件名.',
+    40 => '请输入条目数目或小时数目.',
+    41 => '连结',
+    42 => '事件'
 );
 
 ###############################################################################
@@ -1083,36 +1075,36 @@ $LANG33 = array(
 
 $MESSAGE = array(
     1 => "我们已电邮了你的密码到你的电邮信箱，请跟随邮件中的指示。多谢使用 {$_CONF['site_name']}",
-    2 => "多谢递交你的故事到 {$_CONF['site_name']} 。只要经过我们员工的核对，你的故事将出现在我们的纲页上。",
+    2 => "多谢递交你的文章到 {$_CONF['site_name']} 。只要经过我们员工的核对，你的文章将出现在我们的纲页上。",
     3 => "多谢递交连结到 {$_CONF['site_name']} 。只要经过我们员工的核对，你的连结将出现在我们的纲页上。",
     4 => "多谢递交事件到 {$_CONF['site_name']} 。只要经过我们员工的核对，你的事件将出现在我们的<a href={$_CONF['site_url']}/calendar.php>日历</a>上。",
     5 => '你的帐户设定已被保存了。',
-    6 => '你的个性界面设定已被保存了。',
+    6 => '你的个人设定已被保存了。',
     7 => '你的评论界面设定已被保存了。',
     8 => '你已退出。',
-    9 => '你的故事已被保存了。',
-    10 => '你的故事已被删除了。',
+    9 => '你的文章已被保存了。',
+    10 => '你的文章已被删除了。',
     11 => '你的组件已被保存了。',
     12 => '你的组件已被删除了。',
     13 => '你的主题已被保存了。',
-    14 => '你的主题和所有相关的故事已被删除了。',
+    14 => '你的主题和所有相关的文章已被删除了。',
     15 => '你的连结已被保存了。',
     16 => '你的连结已被删除了。',
     17 => '你的事件已被保存了。',
     18 => '你的事件已被删除了。',
     19 => '你的投票已被保存了。',
     20 => '你的投票已被删除了。',
-    21 => '新用户已被保存了。',
+    21 => '用户已被保存了。',
     22 => '用户已被删除了。',
     23 => '增加事件到你的日历时发生错误，缺少了事件编号。',
     24 => '事件已增加到你的日历中。',
     25 => '你要登入才可开启你的个人日历。',
     26 => '事件已从你的日历中移除。',
     27 => '信息已发送。',
-    28 => 'Plug-in 已被保存了。',
+    28 => '插件已被保存了。',
     29 => '抱歉，本站并不提供个人日历。',
     30 => '存取被拒绝',
-    31 => '抱歉，你不能进入故事管理的首页。请注意你的企图已被记录。',
+    31 => '抱歉，你不能进入文章管理的首页。请注意你的企图已被记录。',
     32 => '抱歉，你不能进入主题管理的首页。请注意你的企图已被记录。',
     33 => '抱歉，你不能进入组件管理的首页。请注意你的企图已被记录。',
     34 => '抱歉，你不能进入连结管理的首页。请注意你的企图已被记录。',
@@ -1125,24 +1117,24 @@ $MESSAGE = array(
     41 => '抱歉，你不能进入字词替换的首页。请注意你的企图已被记录。',
     42 => '你的字词已被保存了。',
     43 => '你的字词已被删除了。',
-    44 => 'Plug-in 已被安装了。',
-    45 => 'Plug-in 已被删除了。',
+    44 => '插件已被安装了。',
+    45 => '插件已被删除了。',
     46 => '抱歉，你不能进入资料库备份程式。请注意你的企图已被记录。',
     47 => '这只适用於 *nix 如果你的作业系统是 *nix，那麽你的缓冲器已被清除了。如果你的作业系统是 Windows，你要手动寻找文件命名为 adodb _ *.php 的档案并把它们除去。',
     48 => "感谢你申请成为 {$_CONF['site_name']} 的会员。只要经过我们员工的核对，我们会把密码寄到你所登记的电邮中。",
     49 => '你的小组已被保存了。',
     50 => '小组已被删除了。',
-    51 => 'This username is already in use. Please choose another one.',
-    52 => 'The email address provided does not appear to be a valid email address.',
-    53 => 'Your new password has been accepted. Please use your new password below to log in now.',
-    54 => 'Your request for a new password has expired. Please try again below.',
-    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
-    56 => 'The email address provided is already in use for another account.',
-    57 => 'Your account has been successfully deleted.',
-    58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    51 => '此用户名已有人在用。请选择另一个。',
+    52 => '你给的电信地址不像是有效。',
+    53 => '你的新密码已被接受。现在以下请用你的新密码来登入.',
+    54 => '你要求新密码的期限以过。请在下面从新要求。',
+    55 => '已经给你寄了一封电信。请照此信的说明来设定新密码。',
+    56 => '你供给的电信地址已有别的用户在使用。',
+    57 => '你的用户已经成功地删除了。',
+    58 => '你的文流已成功的保存了.',
+    59 => '你的文流已成功的删除了.',
+    60 => '插件已经更新成功',
+    61 => '插件 %s: 不知名的信息占位符'
 );
 
 ###############################################################################
@@ -1183,7 +1175,7 @@ $LANG_ACCESS = array(
     'edit' => '编辑',
     'none' => '没有',
     'accessdenied' => '存取被拒绝',
-    'storydenialmsg' => "因未被批准，你不可以观看这个故事。这是可能是因为你并不是 {$_CONF['site_name']} 的会员。请<a href=users.php?mode=new>成为会员</a>。",
+    'storydenialmsg' => "因未被批准，你不可以观看这个文章。这是可能是因为你并不是 {$_CONF['site_name']} 的会员。请<a href=users.php?mode=new>成为会员</a>。",
     'eventdenialmsg' => "因未被批准，你不可以观看这个事件。这是可能是因为你并不是 {$_CONF['site_name']} 的会员。请<a href=users.php?mode=new>成为会员</a>。",
     'nogroupsforcoregroup' => '这小组不属於任何其它的小组',
     'grouphasnorights' => ' 这小组没有管理权。',
@@ -1193,16 +1185,16 @@ $LANG_ACCESS = array(
     'cancel' => '取消',
     'delete' => '删除',
     'canteditroot' => '因为你不属于 Root 小组，所以你对 Root 小组的修改被拒绝了。如有问题请与系统管理员联系。',
-    'listusers' => 'List Users',
-    'listthem' => 'list',
-    'usersingroup' => 'Users in group "%s"',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'listusers' => '列出用户',
+    'listthem' => '列出',
+    'usersingroup' => '属于 "%s" 小组的用户',
+    'usergroupadmin' => '用户小组管理',
+    'add' => '加入',
+    'remove' => '免除',
+    'availmembers' => '可用的成员',
+    'groupmembers' => '小组成员',
+    'canteditgroup' => '若要修改此小组, 你必要时这个小组的成员. 若你认为这是错误, 请你联络系统管理员.',
+    'cantlistgroup' => '要看此小组的会员，你必须是此小组的会员。你若认为这是错误，请联络系统管理员。'
 );
 
 ###############################################################################
@@ -1214,14 +1206,14 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => '资料库备份完成。',
     'no_backups' => '没有备份',
     'db_explanation' => '要做新的 Geeklog 备份，点击以下的按钮',
-    'not_found' => "不正确的路径或 mysqldump 程式不可执行。<br>检查<strong>\$_DB_mysqldump_path</strong>定义在 config.php.<br>变数现在被定义为︰<var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "不正确的路径或 mysqldump 程式不可执行。<br>检查<strong>$_DB_mysqldump_path</strong>定义在 config.php.<br>变数现在被定义为︰<var>{$_DB_mysqldump_path}</var>",
     'zero_size' => '备份失败︰档案是 0 大小',
     'path_not_found' => "{$_CONF['backup_path']} 不存在或不是目录",
     'no_access' => "错误︰目录 {$_CONF['backup_path']} ，不能存取。",
     'backup_file' => '备份档案',
     'size' => '大小',
     'bytes' => '位元组',
-    'total_number' => 'Total number of backups: %d'
+    'total_number' => '总备份次数: %d'
 );
 
 ###############################################################################
@@ -1229,7 +1221,7 @@ $LANG_DB_BACKUP = array(
 $LANG_BUTTONS = array(
     1 => '首页',
     2 => '联络',
-    3 => '出版',
+    3 => '投稿',
     4 => '连结',
     5 => '投票',
     6 => '日历',
@@ -1262,20 +1254,20 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    1 => 'PDF 版本的作用已被禁止',
+    2 => '所提供的文件没有呈递。文件已收到，但是无法处理。请肯定你所提交的文件是 html 格式的文件写于 xHTML 的标准。请注意过分复杂的 html 文件也可能无法正确呈递。你的文件提交的结果是 0 bytes 而且已被删除。你若肯定你的文件应该顺利的呈递，其再次提交。',
+    3 => '不知名的PDF 文件制作错误。',
+    4 => "没提供页数资料或你要用以下的特别 PDF 制作工具。若你认为你所得到的这页 page\n 是错误。 请联络系统管理员。要不然，你可用以下的表格来特别制作 PDF。",
+    5 => '正在装置你的文件。',
+    6 => '你的文件被装置时请等待。',
+    7 => '你可用右击以下的按钮，然后选 \'save target...\' or \'save link location...\' 来存续你的文件的一个拷贝。',
+    8 => "在配置档案里的 HTMLDoc二进制档案路径有错误，或此系统无法执行此档案。若此问题继续发生，请联络网站管理员\n          。",
+    9 => 'PDF 制作器',
+    10 => "这是特别的 PDF 制作工具。它会将任何 URL 转换成 PDF 版本。请注意，有些网页不会正确的被这工具处理成功。这是 HTMLDoc PDF 制作工具的有限之处，而这样的错误不需要报告给此网站的管理员。",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => '制作 PDF!',
+    13 => '此服务器的 PHP 配置不准许 fopen() 命令用在 URL 上。 系统管理员必须先修改  php.ini 档案，然后设定 allow_url_fopen 到 On',
+    14 => '你要求的 PDF 不存在或你在非法的入取一个档案。'
 );
 
 ?>
