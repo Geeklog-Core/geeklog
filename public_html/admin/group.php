@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.34 2004/01/18 14:41:22 dhaun Exp $
+// $Id: group.php,v 1.35 2004/02/08 14:17:50 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -84,6 +84,23 @@ function editgroup($grp_id = '')
 
     $retval = '';
 
+    $thisUsersGroups = SEC_getUserGroups ();
+    if (!empty ($grp_id) && ($grp_id > 0) &&
+            !in_array ($grp_id, $thisUsersGroups)) {
+        $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'],
+                'grp_name', "grp_id = $grp_id") == 'Root')) {
+            $retval .= $LANG_ACCESS['canteditroot'];
+            COM_accessLog ("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
+        } else {
+            $retval .= $LANG_ACCESS['canteditgroup'];
+        }
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
+
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor','groupeditor.thtml');
     $group_templates->set_var('site_url', $_CONF['site_url']);
@@ -95,17 +112,6 @@ function editgroup($grp_id = '')
 	if (!empty($grp_id)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['groups']} WHERE grp_id ='$grp_id'");
 		$A = DB_fetchArray($result);
-
-        // If this is a not Root user (e.g. Group Admin) and they are editing
-        // the Root group then bail...they can't change groups
-		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == 'Root')) {
-            $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG_ACCESS['canteditroot'];
-			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-			COM_accessLog("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
-			return $retval;
-		}
 	} else {
 		$A['owner_id'] = $_USER['uid'];
 
@@ -187,12 +193,17 @@ function editgroup($grp_id = '')
         if ($VERBOSE) {
             COM_errorLog("SELECTED: $selected");
         }
-		// You can no longer give access to the Root group....it's pointless and doesn't
-        // make any sense
+
+        // make sure to list only those groups of which the Group Admin
+        // is a member
+        $whereGroups = '(grp_id IN (' . implode (',', $thisUsersGroups) . '))';
+
+        // You can no longer give access to the Root group....
+        // it's pointless and doesn't make any sense
         if (!empty($grp_id)) {
-            $group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected));
+            $group_templates->set_var ('group_options', COM_checkList ($_TABLES['groups'], 'grp_id,grp_name', "(grp_id <> $grp_id) AND (grp_name <> 'Root') AND " . $whereGroups, $selected));
         } else {
-            $group_templates->set_var('group_options', COM_checkList($_TABLES['groups'],'grp_id,grp_name',"grp_name <> 'Root'",''));
+            $group_templates->set_var ('group_options', COM_checkList ($_TABLES['groups'], 'grp_id,grp_name', "(grp_name <> 'Root') AND " . $whereGroups, ''));
         }
 	}
     $group_templates->set_var('lang_rights', $LANG_ACCESS['rights']);
@@ -272,15 +283,22 @@ function getIndirectFeatures ($grp_id)
 * @return   string      HTML for rights
 *
 */
-function printrights($grp_id='', $core=0) 
+function printrights ($grp_id = '', $core = 0) 
 {
-	global $_TABLES, $VERBOSE, $_USER, $LANG_ACCESS;
+    global $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
-	// $VERBOSE = true;
-	// this gets a bit complicated so bear with the comments
-	// first query for all available features
-	$features = DB_query("SELECT * FROM {$_TABLES['features']} ORDER BY ft_name");
-	$nfeatures = DB_numRows($features);
+    // $VERBOSE = true;
+    // this gets a bit complicated so bear with the comments
+
+    // get a list of all the features that the current user (i.e. Group Admin)
+    // has access to, so we only include these features in the list below
+    $GroupAdminFeatures = SEC_getUserPermissions ();
+    $availableFeatures = explode (',', $GroupAdminFeatures);
+    $GroupAdminFeatures = "'" . implode ("','", $availableFeatures) . "'";
+
+    // now query for all available features
+    $features = DB_query ("SELECT ft_id,ft_name FROM {$_TABLES['features']} WHERE ft_name IN ($GroupAdminFeatures) ORDER BY ft_name");
+    $nfeatures = DB_numRows($features);
 
 	if (!empty($grp_id)) {
 		// now get all the feature this group gets directly
@@ -365,16 +383,26 @@ function printrights($grp_id='', $core=0)
 */
 function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) 
 {
-	global $_TABLES, $_CONF, $LANG_ACCESS, $VERBOSE;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $VERBOSE;
 
     if (!empty($grp_name) && !empty($grp_descr)) {
-        if ($grp_gl_core == 1 AND !is_array($features)) {
-            print COM_errorLog("sorry, no valid features were passed to this core group and saving could cause problem...bailing");
+        $GroupAdminGroups = SEC_getUserGroups ();
+        if (!empty ($grp_id) && ($grp_id > 0) &&
+                !in_array ($grp_id, $GroupAdminGroups)) {
+            COM_accessLog ("User {$_USER['username']} tried to edit group '$grp_name' ($grp_id) with insufficient privileges.");
+
             return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
         }
+
+        if ($grp_gl_core == 1 AND !is_array ($features)) {
+            COM_errorLog("Sorry, no valid features were passed to this core group ($grp_id) and saving could cause problem...bailing.");
+
+            return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+        }
+
         $grp_descr = COM_stripslashes ($grp_descr);
         $grp_descr = addslashes ($grp_descr);
-        if (empty($grp_id)) {
+        if (empty ($grp_id)) {
             DB_query("REPLACE INTO {$_TABLES['groups']} (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
         } else {
             DB_query("REPLACE INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
@@ -385,27 +413,43 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 
         // now save the features
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_grp_id = $grp_id");
+        $GroupAdminFeatures = SEC_getUserPermissions ();
+        $availableFeatures = explode (',', $GroupAdminFeatures);
         for ($i = 1; $i <= sizeof($features); $i++) {
-            DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
-            next($features);
+            if (in_array (current ($features), $availableFeatures)) {
+                DB_query("INSERT INTO {$_TABLES['access']} (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
+                next($features);
+            }
         }
         if ($VERBOSE) {
             COM_errorLog('groups = ' . $groups);
             COM_errorLog("deleting all group_assignments for group $grp_id/$grp_name",1);
         }
+
         DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id");
-        if (!empty($groups)) {
-            for ($i = 1; $i <= sizeof($groups); $i++) {
-                if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
-                $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
-                DB_query($sql);
+        if (!empty ($groups)) {
+            for ($i = 1; $i <= sizeof ($groups); $i++) {
+                if (in_array ($grp_id, $GroupAdminGroups)) {
+                    if ($VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $grp_name",1);
+                    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
+                    DB_query($sql);
+                }
                 next($groups);
             }
         }
 
         // Make sure Root group belongs to any new group
-        if (DB_getItem($_TABLES['group_assignments'], 'count(*)',"ug_main_grp_id = $grp_id AND ug_grp_id = 1") == 0) {
+        if (DB_getItem ($_TABLES['group_assignments'], 'COUNT(*)',
+                "ug_main_grp_id = $grp_id AND ug_grp_id = 1") == 0) {
             DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_grp_id) VALUES ($grp_id, 1)");
+        }
+
+        // make sure this Group Admin belongs to the new group
+        if (!SEC_inGroup ('Root')) {
+            if (DB_count ($_TABLES['group_assignments'], 'ug_uid',
+            "(ug_uid = {$_USER['uid']}) AND (ug_main_grp_id = $grp_id)") == 0) {
+                DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES ($grp_id,{$_USER['uid']})");
+            }
         }
 
 		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
@@ -588,8 +632,10 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     return $retval;
 }
 
-function grp_selectUsers($group_id = "0", $allusers=false) {
-    global $_USER,$_TABLES;
+function grp_selectUsers($group_id = "0", $allusers=false)
+{
+    global $_TABLES, $_USER;
+
     $retval = '';
     if($allusers) {    // Show all site members - else users in selected group
         $result = DB_query( "SELECT uid,username from {$_TABLES['users']} ORDER BY username" );
@@ -612,8 +658,26 @@ function grp_selectUsers($group_id = "0", $allusers=false) {
 }
 
 
-function editusers($group) {
-    global $_CONF, $LANG_ACCESS;
+function editusers($group)
+{
+    global $_CONF, $_TABLES, $LANG_ACCESS;
+
+    $thisUsersGroups = SEC_getUserGroups ();
+    if (!empty ($group) && ($group > 0) &&
+            !in_array ($group, $thisUsersGroups)) {
+        $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'],
+                'grp_name', "grp_id = $group") == 'Root')) {
+            $retval .= $LANG_ACCESS['canteditroot'];
+            COM_accessLog ("User {$_USER['username']} tried to edit the Root group with insufficient privileges.");
+        } else {
+            $retval .= $LANG_ACCESS['canteditgroup'];
+        }
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
 
     $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'] , '',
                        COM_getBlockTemplate ('_admin_block', 'header'));
@@ -662,6 +726,14 @@ function deleteGroup ($grp_id)
     if (!SEC_inGroup ('Root') && (DB_getItem ($_TABLES['groups'], 'grp_name',
             "grp_id = $grp_id") == 'Root')) {
         COM_accessLog ("User {$_USER['username']} tried to delete the Root group with insufficient privileges.");
+
+        return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
+    }
+
+    $GroupAdminGroups = SEC_getUserGroups ();
+    if (!in_array ($grp_id, $GroupAdminGroups)) {
+        COM_accessLog ("User {$_USER['username']} tried to delete group $grp_id with insufficient privileges.");
+
         return COM_refresh ($_CONF['site_admin_url'] . '/group.php');
     }
 

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.68 2004/01/31 09:22:48 dhaun Exp $
+// $Id: user.php,v 1.69 2004/02/08 14:17:50 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -75,7 +75,7 @@ function edituser($uid = '', $msg = '')
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
-	if (!empty($uid)) {
+	if (!empty ($uid) && ($uid > 1)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
 		$A = DB_fetchArray($result);
         if (empty ($A['uid'])) {
@@ -156,7 +156,7 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('customfields', custom_edituser($uid) );
     }
 
-	if (SEC_inGroup('Group Admin')) {
+    if (SEC_inGroup('Group Admin')) {
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
 
@@ -171,19 +171,18 @@ function edituser($uid = '', $msg = '')
             $selected = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'") . ' ';
             $selected .= DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
         }
-        $where = '';
-        if (!SEC_inGroup ('Root')) {
-            $where = "grp_name <> 'Root'";
-        }
+        $thisUsersGroups = SEC_getUserGroups ();
+        $where = 'grp_id IN (' . implode (',', $thisUsersGroups) . ')';
 		$user_templates->set_var ('group_options',
                 COM_checkList ($_TABLES['groups'], 'grp_id,grp_name',
                                $where, $selected));
         $user_templates->parse('group_edit', 'groupedit', true);
-	} else {
-		// user doesn't have the rights to edit a user's groups so set to -1 so we know not to
-		// handle the groups array when we save
-		$user_templates->set_var('group_edit', '<input type="hidden" name="groups" value="-1">');
-	}
+    } else {
+        // user doesn't have the rights to edit a user's groups so set to -1
+        // so we know not to handle the groups array when we save
+        $user_templates->set_var ('group_edit',
+                '<input type="hidden" name="groups" value="-1">');
+    }
     $user_templates->parse('output', 'form');
     $retval .= $user_templates->finish($user_templates->get_var('output')); 
 	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -220,7 +219,7 @@ function changepw($uid,$passwd)
 */
 function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$groups,$delete_photo = '') 
 {
-	global $_TABLES, $_CONF, $LANG28, $_USER_VERBOSE, $_USER;
+    global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
 	$retval = '';
 
@@ -301,12 +300,18 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 }
             }
 			if ($_USER_VERBOSE) COM_errorLog("deleting all group_assignments for user $uid/$username",1);
-			DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_uid = $uid");
+            // remove user from all groups that the User Admin is a member of
+            $UserAdminGroups = SEC_getUserGroups ();
+            $whereGroup = 'ug_main_grp_id IN ('
+                        . implode (',', $UserAdminGroups) . ')';
+			DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_uid = $uid) AND " . $whereGroup);
 			if (!empty($groups)) {
 				for ($i = 1; $i <= sizeof($groups); $i++) {
-					if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
-					$sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
-					DB_query($sql);
+                    if (in_array (current ($groups), $UserAdminGroups)) {
+					    if ($_USER_VERBOSE) COM_errorLog("adding group_assignment " . current($groups) . " for $username",1);
+					    $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
+					    DB_query($sql);
+                    }
 					next($groups);		
 				}
 			}
