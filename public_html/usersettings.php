@@ -150,10 +150,10 @@ function editpreferences()
 
     $A = DB_fetchArray($result);
 
-    // OK, if maxstories is empty then set it to 10.  If they have somehting smaller than 5 set it
-    // to 5 because, hey, this is a news site
+    // if 'maxstories' is empty (for a new user account) set it to the
+    // default value from config.php
     if (empty($A['maxstories'])) {
-        $A['maxstories'] = 10;
+        $A['maxstories'] = $_CONF['limitnews'];
     } else if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
     }
@@ -239,7 +239,7 @@ function editpreferences()
     $retval .= '></td>' . LB
         . '</tr>' . LB
         . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[43] . ':</b><br><small>' . $LANG04[52] . '</small></td>' . LB
+        . '<td align="right"><b>' . $LANG04[43] . ':</b><br><small>' . $LANG04[52] . ' ' . $_CONF['limitnews'] . '</small></td>' . LB
         . '<td><input type="text" size="3" maxlength="3" name="maxstories" value="' . $A['maxstories'] . '"></td>' . LB
         . '</tr>' . LB
         . '<tr valign="top">' . LB
