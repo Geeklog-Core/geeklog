@@ -1,5 +1,45 @@
 GeekLog History/Changes:
 
+- Fixed a bug where the number of submissions was displayed in the sections
+  block even when that was turned off.
+- New variable $_CONF['adminhtml'] allows (Story)Admin to use a wider variety
+  of HTML tags than the ordinary user.
+- Fixed COM_exportRDF so that only articles that anonymous users have access to
+  show up.
+- Search: User drop down only shows users that have posted a comment or a story.
+- Fixed bug with double quotes in title of story submission.
+- The upcoming events block uses the list templates now.
+- Display of stories in older stories block was off by one day.
+- The batch user import didn't work.
+- The (Event)Admin could not delete events (delete button was missing).
+- The calendar class reverted to using the english day and month names as
+  soon as you called setCalendarMatrix().
+- Added {edit_link} in story templates in Classic theme.
+- The {site_admin_url} was not used in some template files (mainly Classic,
+  but also some in Yahoo/admin).
+- All admin editors have the save / cancel / delete buttons at the bottom now.
+- The link to the plugin homepage did not work from the plugin editor.
+- Added $_CONF['default_charset'] in config.php and $LANG_CHARSET in the
+  language files to specify a character set to be used for the web pages (use
+  {charset} in header.thtml) and email sent by Geeklog.
+- Changes in the themes and the admin editors, moving lots of hard-coded
+  english texts to the language files.
+  This affects most of the files in the admin and calendar directories within
+  the themes directories.
+- The static pages plugin will now pick the language automatically, based on
+  the user / default setting for the language. Currently, only English and
+  German language files are included.
+- New variables that can be used in footer.thtml: {execution_textandtime},
+  {powered_by}.
+- The field 'emailfromadmin' was missing from the userprefs table on a fesh
+  install of Geeklog 1.3.5 (it was added when upgrading from an older version,
+  though).
+- Image sizes of the XSilver theme have been reduced and some HTML errors have
+  been fixed, so that it should load faster now ...
+
+
+April 24, 2002
+--------------
 - Change installation so that server configuration is manual, DB configuration is scripted
 - Search page now properly generates the right link to search comments
 - Comments to polls now show up in whats new block
