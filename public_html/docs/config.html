@@ -207,6 +207,10 @@ that are defined below:
   <td valign="top">Format string for the time only, to be used e.g. on the Event Details
     page. See <a href="#date_formats">date formats</a> below.</td></tr>
 <tr>
+  <td valign="top"><a name="desc_week_start">week_start</a></td>
+  <td valign="top">Sun</td>
+  <td valign="top">First day of the week in the calendar. Can be either <tt>'Sun'</tt> (Sunday) or <tt>'Mon'</tt> (Monday).</td></tr>
+<tr>
   <td valign="top"><a name="desc_default_charset">default_charset</a></td>
   <td valign="top">iso-8859-1</td>
   <td valign="top">Character encoding used by Geeklog when serving HTML pages or 
@@ -477,6 +481,14 @@ options:</p>
   <td valign="top">300</td>
   <td valign="top">How long, in seconds, users can be idle before removing them from the whosonline block</td></tr>
 <tr>
+  <td valign="top"><a name="desc_whosonline_fullname">whosonline_fullname</a></td>
+  <td valign="top">0</td>
+  <td valign="top">Display the user's full names (1) or short usernames (0) in the Who's Online block. Users who didn't enter their full name will always be displayed with their username.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_whosonline_anonymous">whosonline_anonymous</a></td>
+  <td valign="top">0</td>
+  <td valign="top">If enables (i.e. set to 1), anonymous users will only see the number of registered users currently only in the Who's Online block but not their names. Only logged-in users will see the names of other users that are currently online.</td></tr>
+<tr>
   <td valign="top"><a name="desc_emailstories">emailstories</a></td>
   <td valign="top">0</td>
   <td valign="top">Let users get stories e-mailed to them (0=no, 1=yes), aka Daily Digest.
@@ -540,6 +552,11 @@ options:</p>
   <td valign="top"><a name="desc_passwordspeedlimit">passwordspeedlimit</a></td>
   <td valign="top">300</td>
   <td valign="top">Minimum delay between two requests for a new password, in seconds.</td></tr>
+<tr>
+  <td valign="top"><a name="desc_ip_lookup">ip_lookup</a></td>
+  <td valign="top"><i>not set</i></td>
+  <td valign="top">The IP addresses of comment posters are logged and displayed for admin users. When this variable is set to point to a service that can do IP address lookups, it's possible to lookup the owner of an IP address by clicking on it, making it easier to report missuse to ISPs, etc.<br>
+<code>$_CONF['ip_lookup']</code> should hold the complete URL to the lookup service, with a '<code>*</code>' marking the place where the IP address should go. It's also possible to use Tom Willet's Nettools package, in wich case the correct setting would be <code>$_CONF['ip_lookup'] = $_CONF['site_url'] . '/nettools/domain=*';</code></td></tr>
 </table>
 
 

@@ -3,6 +3,14 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Removed hard-coded am/pm formatted hours from the calendar's day view
+  (calendar/dayview/dayview.thtml) and replaced them with {xx_hour} variables,
+  where 'xx' is 0-23, which will be replaced with the hours formatted
+  according to the $_CONF['timeonly'] config variable [Dirk]
+- Themes can now use a couple of CSS class names to style the small calendar (of
+  the previous and next month) in month view: .smallcal, .smallcal-headline,
+  .smallcal-week-even, .smallcal-week-odd, .smallcal-week-empty,
+  .smallcal-day-even, .smallcal-day-odd, and .smallcal-day-empty [Dirk]
 - Improvements to the Story Archive Feature, UI tweaks, Language Extraction,
   Added new field to the topics table. Admin now sets the archive topic in 
   the Topic Editor. Only one topic can be used - logic enforced. [blaine]

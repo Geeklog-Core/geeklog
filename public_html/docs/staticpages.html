@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-  <title>Geeklog Documentation - Static Pages plugin 1.4</title>
+  <title>Geeklog Documentation - Static Pages plugin 1.4.1</title>
   <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
 </head>
 
@@ -15,7 +15,7 @@
 </tr>
 </table>
 
-<h1>Static Pages plugin 1.4</h1>
+<h1>Static Pages plugin 1.4.1</h1>
 
 <h2><a name="about">What is it?</a></h2>
 
@@ -99,7 +99,9 @@ Again, this option <em>will</em> enable execution of PHP. Only this time, the PH
 
 <h3><a name="sort">Sorting</a></h3>
 
-<p>When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
+<p><strong>Centerblocks:</strong> When you have more than one static page that would appear in the same section of the center area (e.g. two static pages that would be displayed at the top of the index page), you can chose the order in which they appear by setting the <code>$_SP_CONF['sort_by']</code> variable in the plugin's <tt>config.php</tt> file to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), or <tt>title</tt> (sort by page title). The default is to sort by page id.</p>
+
+<p><strong>Menu entries:</strong> It's also possible to sort the static pages that are displayed in the site's menu (if you're using a theme that uses the <code>{plg_menu_elements}</code> variables in its <tt>header.thtml</tt>). Set the <code>$_SP_CONF['sort_menu_by']</code> variable (again, in the plugin's <tt>config.php</tt> file) to one of <tt>id</tt> (sort by page id), <tt>date</tt> (sort by last changed date), <tt>label</tt> (sort by the menu label), or <tt>title</tt> (sort by page title).</p>
 
 <h2><a name="block">Wrapping Static Pages in a block</a></h2>
 
