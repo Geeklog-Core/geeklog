@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.44 2002/11/11 22:39:37 dhaun Exp $
+// $Id: usersettings.php,v 1.45 2002/11/26 19:44:32 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -444,9 +444,19 @@ function saveuser($A)
                     $filename = $_USER['username'] . '.' . $fextension;
                     $upload->setFileNames($filename);
                     $upload->setPerms('0644');
-                    $upload->setMaxDimensions($_CONF['max_image_width'],
-                            $_CONF['max_image_height']);
-                    $upload->setMaxFileSize($_CONF['max_image_size']);
+                    if (($_CONF['max_photo_width'] > 0) &&
+                        ($_CONF['max_photo_height'] > 0)) {
+                        $upload->setMaxDimensions ($_CONF['max_photo_width'],
+                                                   $_CONF['max_photo_height']);
+                    } else {
+                        $upload->setMaxDimensions ($_CONF['max_image_width'],
+                                                   $_CONF['max_image_height']);
+                    }
+                    if ($_CONF['max_photo_size'] > 0) {
+                        $upload->setMaxFileSize($_CONF['max_photo_size']);
+                    } else {
+                        $upload->setMaxFileSize($_CONF['max_image_size']);
+                    }
                     reset($HTTP_POST_FILES);
                     $upload->uploadFiles();
                     if ($upload->areErrors()) {

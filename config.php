@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.61 2002/11/18 14:31:47 dhaun Exp $
+// $Id: config.php,v 1.62 2002/11/26 19:44:32 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -299,10 +299,15 @@ $_CONF['image_lib']             = ''; // can be netpbm, imagemagick
 // jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
 //$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
 
-// Image settings
+// Story image settings
 $_CONF['max_image_width']       = 300;  // In pixels
 $_CONF['max_image_height']      = 300;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
+
+// User photo settings
+$_CONF['max_image_width']       = 96;  // In pixels
+$_CONF['max_image_height']      = 96;  // In pixels
+$_CONF['max_image_size']        = 65536; // 65536 = 64KB
 
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;
