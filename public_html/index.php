@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.12 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: index.php,v 1.13 2002/01/19 10:39:46 dreamscape Exp $
 
 include_once('lib-common.php');
 
@@ -88,14 +88,14 @@ for ($i = 0; $i <= 1; $i++) {
     if (!empty($U['aids'])) {
         $AIDS = explode(' ',$U['aids']);
         for ($i = 0; $i < sizeof($AIDS); $i++) {
-            $sql .= "uid != '$AIDS[$i]' AND";
+            $sql .= " uid != '$AIDS[$i]' AND ";
         }
     }
 
     if (!empty($U['tids'])) {
         $TIDS = explode(' ',$U['tids']);
         for ($i = 0; $i < sizeof($TIDS); $i++) {
-            $sql .= "tid != '$TIDS[$i]' AND";
+            $sql .= " tid != '$TIDS[$i]' AND ";
         }
     }
 
@@ -106,7 +106,7 @@ for ($i = 0; $i <= 1; $i++) {
         if ($feature == 'true') {
             $U['maxstories'] = $U['maxstories'] - 1;
         }
-        $sql .= " featured != 1 ORDER BY date desc LIMIT $limit,{$U['maxstories']}";
+        $sql .= " featured != 1 ORDER BY date desc LIMIT $limit,{$U['maxstories']} ";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
