@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.111 2002/06/27 18:43:42 dhaun Exp $
+// $Id: lib-common.php,v 1.112 2002/06/28 09:58:19 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2215,7 +2215,7 @@ function COM_rdfImport ($bid, $rdfurl) {
         fclose($fp);
         xml_parser_free($xml_parser);
 
-        if (!rdferror) {
+        if (!$rdferror) {
             $blockcontent = COM_makeList ($RDFheadlines);
             $RDFheadlines = array ();
             $blockcontent = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $blockcontent);
