@@ -690,31 +690,6 @@ function showtopics($topic="") {
 
 function usermenu() {
 	global $USER,$CONF,$LANG01, $VERSION;
-	if ($USER["seclev"] >= $CONF["sec_lowest"]) {
-		startblock($LANG01[9]);
-		if ($USER["seclev"] >= $CONF["sec_mod"]) {
-			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
-			//now handle submissions for plugins
-			$num = $num + GetPluginSubmissionCounts();
-			print "<a href={$CONF["site_url"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
-		}
-		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href={$CONF["site_url"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href={$CONF["site_url"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href={$CONF["site_url"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href={$CONF["site_url"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href={$CONF["site_url"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href={$CONF["site_url"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href={$CONF["site_url"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
-		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["site_url"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
-
-		// This function wil show the admin options
-		// for all installed plugins (if any)
-		ShowPluginAdminOptions();
-		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href={$CONF["site_url"]}/admin/mail.php>Mail</a><br>\n";
-
-		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n";
-		endblock();
-	}
 
 	if ($USER["uid"] > 1) {
 		startblock($LANG01[47]);
@@ -734,6 +709,36 @@ function usermenu() {
 		print "</form>{$LANG01[59]}\n";
 		endblock();
 	}
+
+	if ($USER["seclev"] >= $CONF["sec_lowest"]) {
+		startblock($LANG01[9]);
+
+		if ($USER["seclev"] >= $CONF["sec_mod"]) {
+			$num = dbcount("storysubmission","uid","0") + dbcount("eventsubmission","eid","0") + dbcount("linksubmission","lid","0");
+			//now handle submissions for plugins
+			$num = $num + GetPluginSubmissionCounts();
+			print "<a href={$CONF["site_url"]}/admin/moderation.php>{$LANG01[10]}</a> ($num)<br>\n";
+		}
+
+		if ($USER["seclev"] >= $CONF["sec_story"]) print "<a href={$CONF["site_url"]}/admin/story.php>{$LANG01[11]}</a> (" . dbcount("stories") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_block"]) print "<a href={$CONF["site_url"]}/admin/block.php>{$LANG01[12]}</a> (" . dbcount("blocks") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_topic"]) print "<a href={$CONF["site_url"]}/admin/topic.php>{$LANG01[13]}</a> (" . dbcount("topics") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_links"]) print "<a href={$CONF["site_url"]}/admin/link.php>{$LANG01[14]}</a> (" . dbcount("links") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_event"]) print "<a href={$CONF["site_url"]}/admin/event.php>{$LANG01[15]}</a> (" . dbcount("events") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_poll"]) print "<a href={$CONF["site_url"]}/admin/poll.php>{$LANG01[16]}</a> (" . dbcount("pollquestions") . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["sec_user"]) print "<a href={$CONF["site_url"]}/admin/user.php>{$LANG01[17]}</a> (" . (dbcount("users") - 1) . ")<br>\n";
+		if ($USER["seclev"] >= $CONF["pluginadmin"]) print "<a href={$CONF["site_url"]}/admin/plugins.php>{$LANG01[77]}</a> (" . dbcount("plugins") . ")<br>\n";
+
+		// This function wil show the admin options for all installed plugins (if any)
+
+		ShowPluginAdminOptions();
+
+		if ($USER["seclev"] >= $CONF["sec_email"]) print "<a href={$CONF["site_url"]}/admin/mail.php>Mail</a><br>\n";
+
+		print "<a href=http://www.geeklog.org/versionchecker.php?version=" . $VERSION . " target=_new>GL Version Test</a><br>\n";
+		endblock();
+	}
+
 }
 
 ###############################################################################

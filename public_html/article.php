@@ -65,35 +65,47 @@ if ($A["count"] > 0) {
 		print "<a href={$CONF["site_url"]}/article.php?story=$story>{$CONF["site_url"]}/article.php?story=$story</a>\n";
 		print "</body></html>";
 	} else {
+
 		#Set page title
-                $result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
-                $A = mysql_fetch_array($result);
-                $CONF["pagetitle"] = stripslashes($A["title"]);
+		$result = dbquery("SELECT *,unix_timestamp(date) AS day from stories WHERE sid = '$story'");
+		$A = mysql_fetch_array($result);
+		$CONF["pagetitle"] = stripslashes($A["title"]);
 
 		site_header("menu");
 		dbchange("stories","hits","hits + 1","sid",$story);
 		$sql	= "SELECT *,unix_timestamp(date) AS day from {$CONF["db_prefix"]}stories WHERE sid = '$story' ";
 		$result = dbquery($sql);
 		$A = mysql_fetch_array($result);
-		article($A,"n");
 
 		# Display whats related any polls configured for this page
-		print "</td><td><img src={$CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
-		print "<td valign=top width=180>\n";
+		
+		echo "<table border=\"0\" align=\"right\">\n"
+			."<tr>\n"
+			."<td><img src={$CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n"
+			."<td valign=\"top\">\n";
+			
 		startblock("$LANG11[1]");
 		print nl2br($A["related"]);
 		endblock();
+		
 		startblock("$LANG11[4]");
-		print "<li><a href={$CONF["site_url"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>";
-		print "<li><a href={$CONF["site_url"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
+		echo "<li><a href={$CONF["site_url"]}/profiles.php?sid=$story&what=emailstory>$LANG11[2]</a>\n"
+			."<li><a href={$CONF["site_url"]}/article.php?story=$story&mode=print>$LANG11[3]</a>";
 		endblock();
-		if (dbcount("pollquestions","qid",$story) > 0)
+
+		if (dbcount("pollquestions","qid",$story) > 0) {
 			showpoll(80,$story);
-		print "<br><img src={$CONF["site_url"]}/images/speck.gif width=180 height=1></td></tr>\n";
+		}
+		
+		echo "<br><img src={$CONF["site_url"]}/images/speck.gif width=180 height=1></td>\n"
+			."</tr>\n"
+			."</table>\n";
+
+		article($A,"n");
 
 		# Display the comments
 		if ($A["commentcode"] >= 0) {
-			print "<tr><td>&nbsp;</td><td colspan=3 valign=top>\n";
+			print "<br>\n";
 			usercomments($story,$A["title"],"article",$order,$mode);
 		}
 		site_footer();
