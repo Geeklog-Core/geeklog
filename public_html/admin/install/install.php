@@ -34,13 +34,13 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.34 2002/07/07 08:54:16 dhaun Exp $
+// $Id: install.php,v 1.35 2002/07/23 10:12:35 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.5');
+    define('VERSION', '1.3.6');
 }
 
 // Turn this on to have the install process print debug messages.  NOTE: these
@@ -122,7 +122,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
         // They already have a lib-database file...they can't change their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4','1.3.5');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         for ($j = 1; $j <= count($old_versions); $j++) {
            $versiondd .= '<option>' . current($old_versions) . '</option>';
@@ -294,6 +294,16 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             DB_query("INSERT INTO {$_TABLES['access']} (acc_grp_id, acc_ft_id) VALUES ($group_id, $mail_ft)");
 
             $current_gl_version = '1.3.5';
+            $_SQL = '';
+            break;
+        case '1.3.5':
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.5_to_1.3.6.php');
+            for ($i = 1; $i <= count($_SQL); $i++) {
+                DB_query(current($_SQL));
+                next($_SQL);
+            }
+
+            $current_gl_version = '1.3.6';
             $_SQL = '';
             break;
         default:

@@ -1,6 +1,6 @@
 <?php
 
-$_SP_CONF['version'] = '1.0';
+$_SP_CONF['version'] = '1.1';
 
 // If you experience timeout issues, you may need to set both of the
 // following values to 0 as they are intensive

@@ -511,7 +511,7 @@ CREATE TABLE {$_TABLES['article_images']} (
 ";
 
 $_SQL[41] = "
-CREATE TABLE staticpage(sp_id varchar(20) DEFAULT '' NOT NULL,
+CREATE TABLE {$_TABLES['staticpage']} (sp_id varchar(20) DEFAULT '' NOT NULL,
   sp_uid mediumint(8) DEFAULT '1' NOT NULL,
   sp_title varchar(128) DEFAULT '' NOT NULL,
   sp_content text DEFAULT '' NOT NULL,

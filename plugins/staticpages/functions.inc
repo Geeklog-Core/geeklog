@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.11 2002/07/23 01:06:14 mlimburg Exp $
+// $Id: functions.inc,v 1.12 2002/07/23 10:12:35 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -59,9 +59,9 @@ include($_CONF['path'] . 'plugins/staticpages/config.php');
 */
 function plugin_getmenuitems_staticpages()
 {
-    global $_CONF;
+    global $_CONF, $_TABLES;
 
-    $result = DB_query('SELECT sp_id, sp_label FROM staticpage WHERE sp_onmenu = 1 ORDER BY sp_label');
+    $result = DB_query("SELECT sp_id, sp_label FROM {$_TABLES['staticpage']} WHERE sp_onmenu = 1 ORDER BY sp_label");
     $nrows = DB_numRows($result);
     $menuitems = array();
     for ($i = 1; $i <= $nrows; $i++) {
@@ -140,7 +140,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     }
 
     // Build search SQL
-	$sql = "SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM staticpage WHERE ";
+	$sql = "SELECT sp_id,sp_content,sp_title,sp_hits,sp_uid,UNIX_TIMESTAMP(sp_date) as day FROM {$_TABLES['staticpage']} WHERE ";
     $sql .= "((sp_content like '%$query%' OR sp_content like '$query%' OR sp_content like '%$query') ";
     $sql .= "OR (sp_title like '%$query%' OR sp_title like '$query%' OR sp_title like '%$query')) ";
 
@@ -184,7 +184,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
                     $A['sp_hits']);
         $plugin_results->addSearchResult($row);
 	}
-    $plugin_results->num_itemssearched = DB_count('staticpage');
+    $plugin_results->num_itemssearched = DB_count($_TABLES['staticpage']);
 
     return $plugin_results;
 }
@@ -207,10 +207,10 @@ function plugin_cclabel_staticpages()
 */
 function plugin_getadminoption_staticpages() 
 {
-    global $_CONF, $LANG_STATIC;
+    global $_CONF, $LANG_STATIC, $_TABLES;
 
     if (SEC_hasRights('staticpages.edit,staticpages.delete','OR')) {
-        return array($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', DB_count(staticpage));
+        return array($LANG_STATIC[staticpages], $_CONF['site_admin_url'] . '/plugins/staticpages/index.php', DB_count($_TABLES['staticpage']));
     }	
 }
 

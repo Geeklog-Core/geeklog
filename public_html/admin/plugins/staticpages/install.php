@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.4 2002/06/07 07:25:22 dhaun Exp $
+// $Id: install.php,v 1.5 2002/07/23 10:12:35 dhaun Exp $
 
 require_once('../../../lib-common.php');
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
@@ -39,7 +39,7 @@ if (file_exists ($langfile)) {
 } else {
     require_once ($_CONF['path'] . 'plugins/yabbforum/language/english.php');
 }
-require_once($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
+require_once($_CONF['path'] . 'plugins/staticpages/config.php');
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {
@@ -66,7 +66,7 @@ function plugin_install_staticpages()
 
     // Installs the static pages plugin
 
-    $createsql = "CREATE TABLE staticpage(sp_id varchar(20) DEFAULT '' NOT NULL,"
+    $createsql = "CREATE TABLE {$_TABLES['staticpage']} (sp_id varchar(20) DEFAULT '' NOT NULL,"
         . "sp_uid mediumint(8) DEFAULT '1' NOT NULL,"
         . "sp_title varchar(128) DEFAULT '' NOT NULL,"
         . "sp_content text DEFAULT '' NOT NULL,"
@@ -220,7 +220,7 @@ function plugin_uninstall_staticpages($steps = '')
     if (empty($steps) OR $steps['createtable'] == 1) {
         // Remove the staticpage table 
         COM_errorLog('Dropping staticpage table',1);
-        DB_query('DROP TABLE staticpage');
+        DB_query('DROP TABLE {$_TABLES['staticpage']}');
         COM_errorLog('...success',1);
     }
 

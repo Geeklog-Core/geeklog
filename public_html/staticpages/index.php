@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.6 2002/06/07 07:55:50 dhaun Exp $
+// $Id: index.php,v 1.7 2002/07/23 10:12:35 dhaun Exp $
 
 require_once('../lib-common.php');
 
@@ -44,14 +44,14 @@ if (empty($page)) {
 	$error = 1;
 }
 
-$count = DB_count('staticpage','sp_id',$page);
+$count = DB_count($_TABLES['staticpage'],'sp_id',$page);
 
 if ($count == 0 || $count > 1) {
 	$error = 1;
 }
 
 if (!($error)) {
-	$result = DB_query("SELECT * FROM staticpage WHERE sp_id = '$page'");
+	$result = DB_query("SELECT * FROM {$_TABLES['staticpage']} WHERE sp_id = '$page'");
 	$A = DB_fetchArray($result);
 	$_CONF["pagetitle"] = stripslashes($A['sp_title']);
 	if ($A['sp_format'] == 'allblocks' OR $A["sp_format"] == 'leftblocks') {
@@ -92,7 +92,7 @@ if (!($error)) {
     }
    
     // increment hit counter for page...is SQL compliant?  
-    DB_query("UPDATE staticpage SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'"); 
+    DB_query("UPDATE {$_TABLES['staticpage']} SET sp_hits = sp_hits + 1 WHERE sp_id = '$page'"); 
 } else {
 	$retval .= COM_startBlock('error');
 	$retval .= 'page does not exist';

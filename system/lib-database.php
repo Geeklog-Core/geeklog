@@ -90,6 +90,10 @@ $_TABLES['userprefs']           = $_DB_table_prefix . 'userprefs';
 $_TABLES['users']               = $_DB_table_prefix . 'users';
 $_TABLES['vars']                = $_DB_table_prefix . 'vars';
 
+// the static pages plugin has become an integral part of Geeklog anyway ...
+$_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
+
+
 // +---------------------------------------------------------------------------+
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+

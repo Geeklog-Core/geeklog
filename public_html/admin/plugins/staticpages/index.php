@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.7 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: index.php,v 1.8 2002/07/23 10:12:35 dhaun Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -127,10 +127,10 @@ function form($A, $error=false)
 */
 function staticpageeditor($sp_id, $mode = '') 
 {
-	global $HTTP_POST_VARS,$_USER,$_CONF,$LANG50;
+	global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES, $LANG50;
 
 	if (!empty($sp_id) && $mode == 'edit') {
-		$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM staticpage WHERE sp_id = '$sp_id'");
+		$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'");
 		$A = DB_fetchArray($result);
 	} elseif ($mode == 'edit') {
 		$A['sp_id'] = COM_makesid();
@@ -168,8 +168,8 @@ function liststaticpages($page = 1)
  
 	//if (empty($page)) $page = 1;
 	//$limit = (50 * $page) - 50;
-	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM staticpage ORDER BY sp_date DESC LIMIT $limit,50");
-	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM staticpage ORDER BY sp_date DESC");
+	//$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC LIMIT $limit,50");
+	$result = DB_query("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} ORDER BY sp_date DESC");
 	$nrows = DB_numRows($result);
 	if ($nrows > 0) {
  		for ($i = 1; $i <= $nrows; $i++) {
@@ -188,10 +188,10 @@ function liststaticpages($page = 1)
         $sp_templates->set_var('lang_nopages_msg', '');
         /*
 		$retval .= "<tr><td clospan=6>";
-		if (DB_count('staticpage') > 50) {
+		if (DB_count($_TABLES['staticpage']) > 50) {
 			$prevpage = $page - 1; 
 			$nextpage = $page + 1;
-			$num_pages = DB_count('staticpage') / 50;
+			$num_pages = DB_count($_TABLES['staticpage']) / 50;
 			if ($page > 1) {
 				$retval .= "<a href={$_CONF["site_admin_url"]}/plugins/staticpages/index.php?mode=list&page=$prevpage>{$LANG50[1]}</a>&nbsp;&nbsp";
 			}
@@ -226,7 +226,7 @@ function liststaticpages($page = 1)
 */
 function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hits,$sp_format, $sp_onmenu, $sp_label) 
 {
-	global $_CONF,$LANG12,$LANG50,$_SP_CONF;
+	global $_CONF, $LANG12, $LANG50, $_SP_CONF, $_TABLES;
 	
 	if (!empty($sp_title) && !empty($sp_content)) {
 		$date = date("Y-m-d H:i:s",$unixdate);
@@ -258,7 +258,7 @@ function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hit
 		//$sp_title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_title))));
 		//$sp_label = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_label))));
 
-		DB_save('staticpage','sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"$sp_id,$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+		DB_save($_TABLES['staticpage'],'sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"$sp_id,$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
 
 	} else {
         $retval .= COM_siteHeader();
@@ -280,7 +280,7 @@ if (empty($mode) OR empty($sp_id)) {
 
 switch ($mode) {
 case $LANG_STATIC[delete]:
-    DB_delete('staticpage','sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
+    DB_delete($_TABLES['staticpage'],'sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     break;
 case 'edit':
     $display .= COM_siteHeader('menu');
