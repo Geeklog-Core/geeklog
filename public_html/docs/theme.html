@@ -150,7 +150,16 @@ answer.</p>
 
 <p><em>(preliminary information)</em></p>
 
+<p>Theme changes in Geeklog 1.3.8 were mostly aimed at moving as much of the
+hard-coded HTML into template files as possible. Other changes were made to
+give theme authors better control over the layout and a small portion of changes
+were done to incorporate new Geeklog features.</p>
+
 <h3>New template files</h3>
+
+<p>This is a list of the new files. You can safely copy these over from one of
+the standard themes that ship with Geeklog (most of these files contain HTML
+that was previously hard-coded into Geeklog).</p>
 
 <pre>
 adminoption_off.thtml
@@ -169,12 +178,21 @@ pollbooth/pollcomments.thtml
 pollbooth/pollresult.thtml
 pollbooth/pollvotes_bar.thtml
 pollbooth/pollvotes_num.thtml
+preferences/boxesblock.thtml
+preferences/commentblock.thtml
 preferences/deleteaccount.thtml
 preferences/displayblock.thtml
-preferences/displayprefs.thtml
+preferences/excludeblock.thtml
+preferences/language.thtml
+preferences/privacyblock.thtml
 preferences/profile.thtml
+preferences/theme.thtml
 preferences/username.thtml
 preferences/userphoto.thtml
+search/resultauthdatehits.thtml
+search/resultrowenhanced.thtml
+search/resultsummary.thtml
+search/resulttitle.thtml
 users/newpassword.thtml
 </pre>
 
@@ -183,9 +201,16 @@ users/newpassword.thtml
 
 <h3>Changed / updated template files</h3>
 
+<p>These file have changed since Geeklog 1.3.7, i.e. they may contain new
+variables, table columns, etc. If you haven't changed these files in your
+existing theme, it is probably best to simply copy them over from one of the
+themes that ship with Geeklog (with the exception of <tt>style.css</tt> and
+<tt>header.thtml</tt>, see below).</p>
+
 <pre>
-style.css
-header.thtml
+style.css <em>(see below)</em>
+header.thtml <em>(see below)</em>
+admin/block/blockeditor.thtml
 admin/block/listblocks.thtml
 admin/block/listitem.thtml
 admin/event/eventeditor.thtml
@@ -199,24 +224,36 @@ admin/topic/topiceditor.thtml
 admin/topic/topiclist.thtml
 calendar/editpersonalevent.thtml
 calendar/eventdetails.thtml
-search/resultauthdatehits.thtml
-search/resultrowenhanced.thtml
-search/resultsummary.thtml
-search/resulttitle.thtml
+search/searchform.thtml
+search/searchresults.thtml
 submit/submitevent.thtml
 users/getpasswordform.thtml
 </pre>
 
-<p>Note: The change of <tt>header.thtml</tt> does only apply for themes that do <em>not</em> use the <tt>{menu_elements}</tt> variable.</p>
+<p>In <tt>style.css</tt>, four classes have been added that are used in the
+new search code of Geeklog 1.3.8. Instead of copying over the entire file, you
+will probably only want to copy over the code for those four classes:
+<tt>searchAuth</tt>, <tt>searchDate</tt>, <tt>searchHits</tt>,
+<tt>highlight</tt>.</p>
+
+<p>If the <tt>header.thtml</tt> of your theme is using the
+<tt>{menu_elements}</tt> variable, then you do <em>not</em> need to make any
+changes to it. If it is not using that variable, then you will need to make one
+change to it. In that case, search your <tt>header.thtml</tt> for the link
+to the story submission form, i.e. something like</p>
+<pre>
+    &lt;a href="{site_url}/submit.php?type=story"&gt;
+</pre>
+<p>and change it to read</p>
+<pre>
+    &lt;a href="{site_url}/submit.php?type=story{current_topic}"&gt;
+</pre>
 
 
 <h3>Removed template files</h3>
 
-<p>This file wasn't used anywhere:</p>
-
-<pre>
-commentheader.thtml
-</pre>
+<p>If you have a file named <tt>commentheader.thtml</tt> in your theme
+directory, you can safely remove it. It isn't used at all.</p>
 
 
 <h2><a name="changes137">Theme changes in Geeklog 1.3.7</a></h2>
