@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.39 2003/06/19 17:38:41 dhaun Exp $
+// $Id: moderation.php,v 1.40 2003/07/06 09:16:14 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -351,7 +351,23 @@ function draftlist ()
 
     $retval .= COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
             COM_getBlockTemplate ('_admin_block', 'header'));
-    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
+
+    $topicsql = '';
+    $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
+                         . COM_getPermSQL ());
+    $trows = DB_numRows ($tresult);
+    if ($trows > 0) {
+        $tids = array ();
+        for ($i = 0; $i < $trows; $i++) {
+            $T = DB_fetchArray ($tresult);
+            $tids[] = $T['tid'];
+        }
+        if (sizeof ($tids) > 0) {
+            $topicsql = " AND (tid IN ('" . implode ("','", $tids) . "'))";
+        }
+    }
+
+    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . $topicsql . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
