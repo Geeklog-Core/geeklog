@@ -168,7 +168,8 @@ $LANG02 = array(
 	11 => "Termin wird zum Kalender von {$_USER['username']} hinzugef&uuml;gt",
 	12 => "Termin",
 	13 => "Beginnt",
-	14 => "Endet"
+	14 => "Endet",
+        15 => "Zur&uuml;ck zum Kalender"
 );
 
 ###############################################################################
@@ -275,9 +276,12 @@ $LANG04 = array(
 	68 => "Angemeldet f&uuml;r",
 	69 => "Wie lange soll das System Dich nach dem Anmelden erkennen?",
 	70 => "Aussehen und Inhalt von {$_CONF['site_name']} konfigurieren",
-	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these greate features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  The use the login form to the left to log in!",
+	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these great features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  Then use the login form to the left to log in!",
     72 => "Erscheinungsbild",
-    73 => "Sprache"
+    73 => "Sprache",
+    74 => "&Auml;ndere das Aussehen dieser Site",
+    75 => "Artikel per E-Mail f&uuml;r",
+    76 => "W&auml;hle Kategorien aus der folgenden Liste und Du bekommst einmal pro Tag eine E-Mail mit einer &Uuml;bersicht aller neuen Artikel in den ausgew&auml;hlten Kategorien. Du brauchst nur die Kategorien anzukreuzen, die Dich interessieren."
 );
 
 ###############################################################################
@@ -344,8 +348,12 @@ $LANG08 = array(
 	26 => "Mit diesem Formular kannst Du eine E-Mail an diesen User schicken. Alle Felder m&uuml;ssen ausgef&uuml;llt werden.",
 	27 => "Kurze Nachricht",
 	28 => "$from schrieb: $shortmsg",
-    29 => "This is the daily digest from {$_CONF['site_name']} for ",
-    30 => " Daily Newsletter for "
+    29 => "Dies sind die neuen Artikel auf {$_CONF['site_name']} vom ",
+    30 => " - Neue Artikel vom ",
+    31 => "Titel",
+    32 => "Datum",
+    33 => "Kompletter Artikel unter",
+    34 => "Ende dieser Nachricht"
 );
 
 ###############################################################################

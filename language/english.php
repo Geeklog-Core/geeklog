@@ -162,7 +162,8 @@ $LANG02 = array(
 	11 => "Adding Event to {$_USER['username']}'s Calendar",
 	12 => "Event",
 	13 => "Starts",
-	14 => "Ends"
+	14 => "Ends",
+        15 => "Back to Calendar"
 );
 
 ###############################################################################
@@ -269,9 +270,12 @@ $LANG04 = array(
 	68 => "Remember Me For",
 	69 => "How long should we remember you after logging in?",
 	70 => "Customize the layout and content of {$_CONF['site_name']}",
-	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these greate features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  The use the login form to the left to log in!",
+	71 => "One of the great features of {$_CONF['site_name']} is you can customize the content you get and you can change the overall layout of this site.  In order to take advantage of these great features you must first <a href=\"{$_CONF['site_url']}/users.php?mode=new\">register</a> with {$_CONF['site_name']}.  Are you already a member?  Then use the login form to the left to log in!",
     72 => "Theme",
-    73 => "Language"
+    73 => "Language",
+    74 => "Change what this site looks like!",
+    75 => "Emailed Topics for",
+    76 => "If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!"
 );
 
 ###############################################################################
@@ -339,7 +343,11 @@ $LANG08 = array(
 	27 => "Short message",
 	28 => "$from wrote: $shortmsg",
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
-    30 => " Daily Newsletter for "
+    30 => " Daily Newsletter for ",
+    31 => "Title",
+    32 => "Date",
+    33 => "Read the full article at",
+    34 => "End of Message"
 );
 
 ###############################################################################
