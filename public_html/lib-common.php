@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.378 2004/09/25 11:42:18 dhaun Exp $
+// $Id: lib-common.php,v 1.379 2004/09/28 17:50:08 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1460,7 +1460,7 @@ function COM_featuredCheck()
 * @param        string      $logentry       Text to log to error log
 * @param        int         $actionid       1 = write to log file, 2 = write to screen (default) both
 * @see function COM_accessLog
-* @return   string  If $actionid = 2 or '' then HTML formated string (wrapped in block) else nothing
+* @return   string  If $actionid = 2 or '' then HTML formatted string (wrapped in block) else nothing
 *
 */
 
@@ -1641,7 +1641,9 @@ function COM_pollVote( $qid )
                     $poll->set_var( 'poll_comments_url', '' );
                 }
 
-                $retval = COM_startBlock( $LANG01[5], '',
+                $title = DB_getItem( $_TABLES['blocks'], 'title',
+                                     "name='poll_block'" );
+                $retval = COM_startBlock( $title, '',
                               COM_getBlockTemplate( 'poll_block', 'header' ))
                         . $poll->finish( $poll->parse( 'output', 'block' ))
                         . COM_endBlock( COM_getBlockTemplate( 'poll_block', 'footer' )) . LB;
@@ -1879,7 +1881,7 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 * This function is used to show the topics in the sections block.
 *
 * @param        string      $topic      TopicID of currently selected
-* @return   string    HTML formated topic list
+* @return   string    HTML formatted topic list
 *
 */
 
@@ -3192,17 +3194,15 @@ function COM_handleCode( $str )
 /**
 * This function checks html tags.
 *
-* The core of this code has been lifted from phpslash which is licenced under
-* the GPL.  It checks to see that the HTML tags are on the approved list and
+* Checks to see that the HTML tags are on the approved list and
 * removes them if not.
 *
-* @param        string      $str        HTML to check
-* @see function COM_checkHTML
-* @return   string  Filtered HTML
+* @param    string  $str            HTML to check
+* @param    string  $permissions    comma-separated list of rights which identify the current user as an "Admin"
+* @return   string                  Filtered HTML
 *
 */
-
-function COM_checkHTML( $str )
+function COM_checkHTML( $str, $permissions = 'story.edit' )
 {
     global $_CONF;
 
@@ -3256,13 +3256,15 @@ function COM_checkHTML( $str )
         $filter->Protocols( array( 'http:', 'https:', 'ftp:' ));
     }
 
-    if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['admin_html'] ))       
+    if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
+            empty( $_CONF['admin_html'] ))       
     {
         $html = $_CONF['user_html'];
     }
     else
     {
-        $html = array_merge_recursive( $_CONF['user_html'], $_CONF['admin_html'] );
+        $html = array_merge_recursive( $_CONF['user_html'],
+                                       $_CONF['admin_html'] );
     }
 
     foreach( $html as $tag => $attr )
@@ -3944,59 +3946,56 @@ function COM_rdfImport( $bid, $rdfurl )
 }
 
 /**
-* Returns what HTML is allows in content
+* Returns what HTML is allowed in content
 *
 * Returns what HTML tags the system allows to be used inside content.
 * You can modify this by changing $_CONF['user_html'] in config.php
 * (for admins, see also $_CONF['admin_html']).
 *
+* @param    string  $permissions    comma-separated list of rights which identify the current user as an "Admin"
+* @param    boolean $list_only      true = return only the list of HTML tags
 * @return   string  HTML <span> enclosed string
+* @see function COM_checkHTML
 */
-
-function COM_allowedHTML()
+function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
 {
     global $_CONF, $LANG01;
 
-    $retval = '<span class="warningsmall">' . $LANG01[31] . ' ';
+    $retval = '';
+    if( !$list_only )
+    {
+        $retval .= '<span class="warningsmall">' . $LANG01[31] . ' ';
+    }
 
-    if( !SEC_hasRights( 'story.edit' ) || empty( $_CONF['admin_html'] ))
+    if( empty( $permissions ) || !SEC_hasRights( $permissions ) ||
+            empty( $_CONF['admin_html'] ))
     {
         $html = $_CONF['user_html'];
     }
     else
     {
-        $html = array_merge_recursive( $_CONF['user_html'], $_CONF['admin_html'] );
+        $html = array_merge_recursive( $_CONF['user_html'],
+                                       $_CONF['admin_html'] );
     }
 
-    $br = 0;
     foreach( $html as $tag => $attr )
     {
-        $br++;
-        $retval .= '&lt;' . $tag . '&gt;,';
-        if( $br == 10 )
-        {
-            $retval .= ' ';
-            $br = 0;
-        }
+        $retval .= '&lt;' . $tag . '&gt;, ';
     }
 
     $retval .= '[code]';
-    $br++;
 
+    // list autolink tags
     $autotags = PLG_collectTags();
     foreach( $autotags as $tag => $module )
     {
-        $retval .= ',';
-        if( $br == 10 )
-        {
-            $retval .= ' ';
-            $br = 0;
-        }
-        $br++;
-        $retval .= '[' . $tag . ':]';
+        $retval .= ', [' . $tag . ':]';
     }
 
-    $retval .= '</span>';
+    if( !$list_only )
+    {
+        $retval .= '</span>';
+    }
 
     return $retval;
 }
@@ -4056,7 +4055,7 @@ function COM_hit()
 *
 * @param        string      $help       Help file for block
 * @param        string      $title      Title to be used in block header
-* @return   string  HTML formated block containing events.
+* @return   string  HTML formatted block containing events.
 */
 
 function COM_printUpcomingEvents( $help='', $title='' )
@@ -4734,7 +4733,7 @@ function COM_showMessage( $msg, $plugin='' )
 * @param        string      $base_url       base url to use for all generated links
 * @param        int         $curpage        current page we are on
 * @param        int         $num_pages      Total number of pages
-* @return   string   HTML formated widget
+* @return   string   HTML formatted widget
 */
 
 function COM_printPageNavigation( $base_url, $curpage, $num_pages )
@@ -4817,15 +4816,15 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
 }
 
 /**
-* Returns formated date/time for user
+* Returns formatted date/time for user
 *
 * This function COM_takes a date in either unixtimestamp or in english and
 * formats it to the users preference.  If the user didn't specify a format
-* the format in the config file is used.  This returns array where array[0]
-* is the formated date and array[1] is the unixtimestamp
+* the format in the config file is used.  This returns an array where array[0]
+* is the formatted date and array[1] is the unixtimestamp
 *
 * @param        string      $date       date to format, otherwise we format current date/time
-* @return   array   array[0] is the formated date and array[1] is the unixtimestamp.
+* @return   array   array[0] is the formatted date and array[1] is the unixtimestamp.
 */
 
 function COM_getUserDateTimeFormat( $date='' )
@@ -4876,8 +4875,8 @@ function COM_getUserDateTimeFormat( $date='' )
 /**
 * Returns user-defined cookie timeout
 *
-* In account preferences users can specify when their long-term cookie expires.  This
-* function returns that value.
+* In account preferences users can specify when their long-term cookie expires.
+* This function returns that value.
 *
 * @return   int Cookie time out value in seconds
 */
@@ -5325,8 +5324,8 @@ function COM_buildURL( $url )
 *
 * This function sets the name of the arguments found in url
 *
-* @param        array       $names      Names of arguments in query string to assign to values
-* @return   boolean     True if suscessful
+* @param    array   $names  Names of arguments in query string to assign to values
+* @return   boolean         True if successful
 */
 
 function COM_setArgNames( $names )
