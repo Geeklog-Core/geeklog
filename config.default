@@ -39,7 +39,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.default,v 1.8 2002/02/22 23:19:32 tony_bibbs Exp $
+// $Id: config.default,v 1.9 2002/02/26 18:11:06 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -54,6 +54,8 @@ $_CONF['path_html']     = $_CONF['path'] . 'public_html/';
 $_CONF['path_log']	    = $_CONF['path'] . 'logs/';
 $_CONF['path_language'] = $_CONF['path'] . 'language/';
 $_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
+$_CONF['allow_mysqldump'] = '0';
+$_CONF['backup_path'] = $_CONF['path'] . 'backups/';
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
