@@ -187,7 +187,7 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
     $title = addslashes(strip_tags(COM_checkWords($title)));
 
     if (!empty($title) && !empty($comment)) {
-        DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid',"'$sid',$uid,'$comment',now(),'$title',$pid");
+        DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
 		
         // See if plugin will handle this
 		PLG_handlePluginComment($type,$sid);
