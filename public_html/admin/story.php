@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.95 2003/07/05 21:01:00 dhaun Exp $
+// $Id: story.php,v 1.96 2003/07/06 09:24:09 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -94,6 +94,7 @@ function storyeditor($sid = '', $mode = '')
         $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE sid = '$sid'");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+        $access = min ($access, SEC_hasTopicAccess ($A['tid']));
         if ($access == 2) {
             $display .= COM_startBlock($LANG24[40], '',
                                 COM_getBlockTemplate ('_msg_block', 'header'));
