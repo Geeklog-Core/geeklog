@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.352 2004/08/05 12:54:46 dhaun Exp $
+// $Id: lib-common.php,v 1.353 2004/08/06 08:55:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -1007,16 +1007,17 @@ function COM_renderMenu( &$header, $plugin_menu )
 * </td><td>Right Blocks</td></tr>
 * <tr><td colspan="3">Footer</td></table>
 *
-* @param        string      $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
+* @param    string  $what       If 'none' then no left blocks are returned, if 'menu' (default) then right blocks are returned
+* @param    string  $pagetitle  optional content for the page's <title>
+* @return   string              Formated HTML containing the site header
 * @see function COM_siteFooter
-* @return   string  This returns formated HTML containing the site header
 *
 */
 
-function COM_siteHeader( $what = 'menu' )
+function COM_siteHeader( $what = 'menu', $pagetitle = '' )
 {
-    global $_CONF, $_USER, $LANG01, $_COM_VERBOSE, $topic, $LANG_BUTTONS, $LANG_CHARSET;
-    global $_TABLES, $HTTP_POST_VARS, $HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $_USER, $LANG01, $LANG_BUTTONS, $LANG_CHARSET,
+           $topic, $_COM_VERBOSE, $HTTP_POST_VARS, $HTTP_GET_VARS;
 
     // If the theme implemented this for us then call their version instead.
 
@@ -1064,8 +1065,7 @@ function COM_siteHeader( $what = 'menu' )
         $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
     }
 
-    $pagetitle = '';
-    if( isset( $_CONF['pagetitle'] ))
+    if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
     {
         $pagetitle = $_CONF['pagetitle'];
     }

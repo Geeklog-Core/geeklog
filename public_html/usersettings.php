@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.98 2004/08/01 18:59:04 dhaun Exp $
+// $Id: usersettings.php,v 1.99 2004/08/06 08:55:36 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -446,19 +446,25 @@ function editpreferences()
         }
 
         $themeFiles = COM_getThemes ();
-        // first, some theme name beautifying ...
-        $themes = array ();
-        foreach ($themeFiles as $themeFile) {
-            $themeName = str_replace ('_', ' ', $themeFile);
-            $themes[$themeFile] = ucwords ($themeName);
-        }
-        asort ($themes);
-        foreach ($themes as $themeFile => $themeName) {
-            $selection .= '<option value="' . $themeFile . '"';
-            if ($usertheme == $themeFile) {
+        usort ($themeFiles,
+               create_function ('$a,$b', 'return strcasecmp($a,$b);'));
+
+        foreach ($themeFiles as $theme) {
+            $selection .= '<option value="' . $theme . '"';
+            if ($usertheme == $theme) {
                 $selection .= ' selected="selected"';
+            } 
+            $words = explode ('_', $theme);
+            $bwords = array ();
+            foreach ($words as $th) {
+                if ((strtolower ($th{0}) == $th{0}) &&
+                    (strtolower ($th{1}) == $th{1})) {
+                    $bwords[] = strtoupper ($th{0}) . substr ($th, 1);
+                } else {
+                    $bwords[] = $th;
+                }
             }
-            $selection .= '>' . $themeName . '</option>' . LB;
+            $selection .= '>' . implode (' ', $bwords) . '</option>' . LB;
         }
         $selection .= '</select>';
         $preferences->set_var ('theme_selector', $selection);
@@ -1009,7 +1015,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
     switch ($mode) {
     case 'preferences':
     case 'comments':
-        $display .= COM_siteHeader('menu');
+        $display .= COM_siteHeader ('menu', $LANG01[49]);
         $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
         if ($msg > 0) {
             $display .= COM_showMessage ($msg);
@@ -1018,7 +1024,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1) && !empty ($mode)) {
         $display .= COM_siteFooter();
         break;
     case 'edit':
-        $display .= COM_siteHeader('menu');
+        $display .= COM_siteHeader ('menu', $LANG04[16]);
         $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
         if ($msg > 0) {
             $display .= COM_showMessage ($msg);

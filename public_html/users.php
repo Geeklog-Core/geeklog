@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.81 2004/08/05 12:54:46 dhaun Exp $
+// $Id: users.php,v 1.82 2004/08/06 08:55:36 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -97,8 +97,7 @@ function userprofile ($user, $msg)
     }
     $A = DB_fetchArray($result);
 
-    $_CONF['pagetitle'] = $LANG04[1] . ' ' . $A['username'];
-    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_siteHeader ('menu', $LANG04[1] . ' ' . $A['username']);
     if ($msg > 0) {
         $retval .= COM_showMessage ($msg);
     }

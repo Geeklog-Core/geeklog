@@ -32,14 +32,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.33 2004/08/05 12:54:46 dhaun Exp $
+// $Id: links.php,v 1.34 2004/08/06 08:55:36 dhaun Exp $
 
-require_once('lib-common.php');
+require_once ('lib-common.php');
 
 // MAIN
 
-$_CONF['pagetitle'] = $LANG06[1];
-$display = COM_siteHeader();
+$display = COM_siteHeader ('menu', $LANG06[1]);
 
 if (empty ($_USER['username']) &&
     (($_CONF['loginrequired'] == 1) || ($_CONF['linksloginrequired'] == 1))) {

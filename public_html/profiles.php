@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.33 2004/08/05 12:54:46 dhaun Exp $
+// $Id: profiles.php,v 1.34 2004/08/06 08:55:36 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -101,18 +101,16 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
-            $_CONF['pagetitle'] = $LANG04[81];
-			$retval .= COM_siteHeader('menu')
-				.COM_errorLog($LANG08[3],2)
-				.contactform($uid,$subject,$message)
-				.COM_siteFooter();
+            $retval .= COM_siteHeader ('menu', $LANG04[81])
+                    . COM_errorLog ($LANG08[3], 2)
+                    . contactform ($uid, $subject, $message)
+                    . COM_siteFooter ();
 		}
 	} else {
-        $_CONF['pagetitle'] = $LANG04[81];
-		$retval .= COM_siteHeader('menu')
-			.COM_errorLog($LANG08[4],2)
-			.contactform($uid,$subject,$message)
-			.COM_siteFooter();
+        $retval .= COM_siteHeader ('menu', $LANG04[81])
+                . COM_errorLog ($LANG08[4], 2)
+                . contactform ($uid, $subject, $message)
+                . COM_siteFooter ();
 	}
 
 	return $retval;
@@ -357,8 +355,9 @@ switch ($what) {
             $display = COM_refresh ($_CONF['site_url']
                                     . '/article.php?story=' . $sid);
         } else {
-            $_CONF['pagetitle'] = $LANG08[17];
-            $display .= COM_siteHeader() . mailstoryform($sid) . COM_siteFooter();
+            $display .= COM_siteHeader ('menu', $LANG08[17])
+                     . mailstoryform ($sid)
+                     . COM_siteFooter ();
         }
         break;
 
@@ -376,8 +375,7 @@ switch ($what) {
     default:
         $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
         if ($uid > 1) {
-            $_CONF['pagetitle'] = $LANG04[81];
-            $display .= COM_siteHeader ()
+            $display .= COM_siteHeader ('menu', $LANG04[81])
                      . contactform ($uid)
                      . COM_siteFooter ();
         } else {

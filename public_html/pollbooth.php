@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.24 2004/08/05 12:54:46 dhaun Exp $
+// $Id: pollbooth.php,v 1.25 2004/08/06 08:55:36 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -169,8 +169,7 @@ if (isset ($HTTP_POST_VARS['mode'])) {
 }
 
 if (empty($qid)) {
-    $_CONF['pagetitle'] = $LANG07[4];
-    $display .= COM_siteHeader() . polllist();
+    $display .= COM_siteHeader ('menu', $LANG07[4]) . polllist ();
 } else if ($aid == 0) {
     $display .= COM_siteHeader();
     if (empty($HTTP_COOKIE_VARS[$qid])) {

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.70 2004/08/05 12:54:46 dhaun Exp $
+// $Id: comment.php,v 1.71 2004/08/06 08:55:35 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -810,8 +810,7 @@ default:
             $title = str_replace ('$', '&#36;', $title);
         }
         if (!empty ($type)) {
-            $_CONF['pagetitle'] = $LANG03[1];
-            $display .= COM_siteHeader()
+            $display .= COM_siteHeader('menu', $LANG03[1])
                 . commentform ($_USER['uid'], $title, '', $sid, $pid, $type,
                                $mode, $postmode)
                 . COM_siteFooter();

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.41 2004/08/05 12:54:46 dhaun Exp $
+// $Id: calendar.php,v 1.42 2004/08/06 08:55:35 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -333,11 +333,10 @@ if ($mode != 'personal') {
 }
 
 if ($mode == 'personal') {
-    $_CONF['pagetitle'] = $LANG12[40];
+    $display .= COM_siteHeader ('menu', $LANG12[40]);
 } else {
-    $_CONF['pagetitle'] = $LANG12[39];
+    $display .= COM_siteHeader ('menu', $LANG12[39]);
 }
-$display .= COM_siteHeader ('menu');
 
 // Set mode back to master if user refreshes screen after their session expires
 if (($_USER['uid'] <= 1) AND $mode == 'personal') {

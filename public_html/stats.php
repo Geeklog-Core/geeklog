@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.27 2004/08/05 12:54:46 dhaun Exp $
+// $Id: stats.php,v 1.28 2004/08/06 08:55:36 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -56,9 +56,7 @@ if (empty ($_USER['username']) &&
 
 // MAIN
 
-$_CONF['pagetitle'] = $LANG10[1];
-$display .= COM_siteHeader() . COM_startBlock($LANG10[1]);
-
+$display .= COM_siteHeader ('menu', $LANG10[1]) . COM_startBlock ($LANG10[1]);
 
 $stat_templates = new Template($_CONF['path_layout'] . 'stats');
 $stat_templates->set_file(array('stats'=>'stats.thtml',

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.69 2004/08/05 12:54:46 dhaun Exp $
+// $Id: submit.php,v 1.70 2004/08/06 08:55:36 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -769,16 +769,16 @@ if ($mode == $LANG12[8]) { // submit
 
     switch ($type) {
         case 'event':
-            $_CONF['pagetitle'] = $LANG12[4];
+            $pagetitle = $LANG12[4];
             break;
         case 'link':
-            $_CONF['pagetitle'] = $LANG12[5];
+            $pagetitle = $LANG12[5];
             break;
         default:
-            $_CONF['pagetitle'] = $LANG12[6];
+            $pagetitle = $LANG12[6];
             break;
     }
-    $display .= COM_siteHeader();
+    $display .= COM_siteHeader ('menu', $pagetitle);
     $display .= submissionform($type, $mode, $month, $day, $year, $hour, $topic); 
 }
 $display .= COM_siteFooter();

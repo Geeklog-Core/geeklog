@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.31 2004/08/05 12:54:46 dhaun Exp $
+// $Id: calendar_event.php,v 1.32 2004/08/06 08:55:35 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -425,8 +425,7 @@ default:
     $eid = COM_applyFilter ($HTTP_GET_VARS['eid']);
     if (!empty ($eid)) {
         if ($mode == 'personal' AND DB_count($_TABLES['events'],'eid',$eid) == 0) {
-            $_CONF['pagetitle'] = $LANG30[38];
-            $display .= COM_siteHeader('menu');
+            $display .= COM_siteHeader('menu', $LANG30[38]);
             $display .= COM_startBlock($LANG30[38]);
             $datesql = "SELECT * FROM {$_TABLES['personal_events']} WHERE eid = '$eid'";
             $result = DB_query($datesql);
@@ -437,12 +436,12 @@ default:
             break;
         } else {
             if (strpos ($LANG30[9], '%') === false) {
-                $_CONF['pagetitle'] = $LANG30[9];
+                $pagetitle = $LANG30[9];
             } else {
-                $_CONF['pagetitle'] = sprintf ($LANG30[9], $_CONF['site_name']);
+                $pagetitle = sprintf ($LANG30[9], $_CONF['site_name']);
             }
-            $display .= COM_siteHeader ('menu');
-            $display .= COM_startBlock ($_CONF['pagetitle']);
+            $display .= COM_siteHeader ('menu', $pagetitle);
+            $display .= COM_startBlock ($pagetitle);
 
             $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE eid = '$eid'";
         }
@@ -456,10 +455,10 @@ default:
             $day = date ('j');
         }
 
-        $_CONF['pagetitle'] = $LANG30[10] . ' ' . strftime ($_CONF['shortdate'],
-                              mktime (0, 0, 0, $month, $day, $year));
-        $display .= COM_siteHeader ('menu');
-        $display .= COM_startBlock ($_CONF['pagetitle']);
+        $pagetitle = $LANG30[10] . ' ' . strftime ($_CONF['shortdate'],
+                                         mktime (0, 0, 0, $month, $day, $year));
+        $display .= COM_siteHeader ('menu', $pagetitle);
+        $display .= COM_startBlock ($pagetitle);
 
         $thedate = sprintf ('%4d-%02d-%02d', $year, $month, $day);
         $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart ASC,title";
