@@ -1,5 +1,51 @@
 GeekLog History/Changes:
 
+- Display the search form again if the query returned no results.
+- Make sure we're not attempting to send a Daily Digest email to Anonymous.
+- Prevent admin from changing a user's email address to one that's already used
+  by someone else (bug #24). The error message you get when you try this may
+  be confusing, though ("The username you tried saving already exists.") since
+  I don't want to introduce new texts in the language file at this point. To
+  be corrected later.
+- Fixed a problem with the cookie timeout: When a user edited his/her profile,
+  the cookie timeout defaulted to 1 hour, while the default in config.php was
+  usually much longer (default: 1 week). So after editing their profile for the
+  first time, users didn't stay logged in as long as before (unless they
+  noticed that and changed the cookie timeout accordingly themselves).
+- Fixed problems in the install script when trying to find out the MySQL
+  version number.
+- Fixed a problem collecting links for the What's Related block when the article
+  contained (uploaded) images.
+- Words from a search query are now hightlighted in comments as well.
+- You can now use variables {rss_url} and {rdf_file} in both the site header
+  and footer. Both variables hold the URL to the RSS feed.
+- Fixed an occassional "call to member function of non-object" error message
+  in lib-plugins.php.
+- Make sure the RSS feed and Older Stories block are updated when a story is
+  deleted.
+- The language selection will only list files that end in .php and do not
+  start with a '.'.
+- Fixed links to a user's comments from the Last 10 Comments block in the user
+  profile.
+- Removed '&query=' from links in search results if the query was empty.
+- Anonymous users couldn't use the advanced search even if
+  $_CONF['searchloginrequired'] was not set.
+- Fix to disallow access to the extended search for anonymous users (i.e.
+  $_CONF['searchloginrequired'] works again as it did in 1.3.7)
+- Fixed search by date.
+- Template variable {uid_value} was always empty in the user's profile edit
+  form (in usersettings.php).
+
+- New French (Canada) language file, provided by Jean-Francois Allard.
+- Updated Dutch language file, provided by W. Niemans.
+- Updated Bulgarian language file, provided by Vassil Simeonov and Itso Banov.
+- Updated Spanish language file, provided by Angel Romero.
+
+- New French (Canada) language file for the Static Pages plugin, provided by
+  Jean-Francois Allard.
+- New Dutch language file for the Static Pages plugin, provided by W. Niemans.
+
+
 July 17, 2003 (1.3.8)
 -------------
 
