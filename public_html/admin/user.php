@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.37 2002/06/14 19:44:32 gene_wood Exp $
+// $Id: user.php,v 1.38 2002/07/23 17:44:42 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -216,7 +216,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
             DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
         } else {
-            $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
+            $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
             if (!empty($curphoto) AND $delete_photo == 'on') {
                 if (!unlink($_CONF['path_html'] . 'images/userphotos/' . $curphoto)) {
                     echo COM_errorLog('Unable to delete photo ' . $curphoto);
