@@ -91,12 +91,18 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
         } else {
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 if ($postmode == 'html') {
-                    $comment = stripslashes(COM_checkHTML(COM_checkWords($comment)));
-                    $commenttext = $comment;
+                    $commenttext = stripslashes($comment);
+                    $comment = str_replace('<code><pre>','[code]',$comment);
+                    $comment= str_replace('</pre></code>','[/code]',$comment);
+                    $comment = stripslashes(COM_checkHTML(COM_checkWords($comment)));      
                 } else {
                     $comment = stripslashes(htmlspecialchars(COM_checkWords($comment)));
                     $commenttext = str_replace('$','&#36;',$comment);
                 }
+                // Replace { and } with special HTML equivalents
+                $commenttext = str_replace('{','&#123;',$commenttext);
+                $commenttext = str_replace('}','&#125;',$commenttext);
+                    
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
                 $HTTP_POST_VARS['comment'] = $comment;
