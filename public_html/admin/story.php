@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.48 2002/05/14 17:55:04 tony_bibbs Exp $
+// $Id: story.php,v 1.49 2002/05/14 19:52:46 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -96,6 +96,13 @@ function storyeditor($sid = '', $mode = '')
             $display .= COM_startBlock($LANG24[40]);
             $display .= $LANG24[41];
             $display .= COM_endBlock();
+            $A['title'] = str_replace('{','&#123;',$A['title']);
+            $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
+            $A['bodytext'] = str_replace('{','&#123;',$A['bodytext']);
+            $A['title'] = str_replace('}','&#125;',$A['title']);
+            $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
+            $A['bodytext'] = str_replace('}','&#125;',$A['bodytext']);
+            $str = str_replace('}','&#125;',$str);
             $display .= COM_article($A,n);
             return;
         } else if ($access == 0) {
@@ -164,6 +171,13 @@ function storyeditor($sid = '', $mode = '')
     if (!empty($A['title'])) {
         $display .= COM_startBlock($LANG24[26]);
         $A['day'] = $A['unixdate'];
+        $A['title'] = str_replace('{','&#123;',$A['title']);
+        $A['introtext'] = str_replace('{','&#123;',$A['introtext']);
+        $A['bodytext'] = str_replace('{','&#123;',$A['bodytext']);
+        $A['title'] = str_replace('}','&#125;',$A['title']);
+        $A['introtext'] = str_replace('}','&#125;',$A['introtext']);
+        $A['bodytext'] = str_replace('}','&#125;',$A['bodytext']);
+        $str = str_replace('}','&#125;',$str);
         $display .= COM_article($A,"n");
         $display .= COM_endBlock();
     }
