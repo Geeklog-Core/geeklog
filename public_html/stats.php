@@ -13,6 +13,7 @@
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.31 2004/08/23 19:36:34 dhaun Exp $
+// $Id: stats.php,v 1.32 2004/09/05 19:19:50 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -220,7 +221,8 @@ if ($nrows>0) {
     $stat_templates->set_var('stat_name',$LANG10[16]);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', 'pollbooth.php?qid=' . $A['qid']);
+        $stat_templates->set_var ('item_url', $_CONF['site_url']
+                . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1');
         $stat_templates->set_var('item_text', $A['question']);
         $stat_templates->set_var('item_stat', $A['voters']);
         $stat_templates->parse('stat_row','statrow',true); 
@@ -229,7 +231,7 @@ if ($nrows>0) {
     $display .= $stat_templates->finish($stat_templates->get_var('output'));
 } else {
     $display .= $LANG10[17];
-}	
+}
 
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
@@ -260,7 +262,7 @@ $display .= COM_endBlock();
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);
 $display .= COM_siteFooter();
-	
+
 echo $display;
 
 ?>
