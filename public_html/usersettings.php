@@ -467,8 +467,8 @@ function savepreferences($A)
     $TIDS = @array_values($A[$_TABLES['topics']]);
     $AIDS = @array_values($A[$_TABLES['users']]);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
-    $ETIDS = @array_values($A['etids']);Change
-
+    $ETIDS = @array_values($A['etids']);
+    
     if (sizeof($TIDS) > 0) {
         for ($i = 0; $i < sizeof($TIDS); $i++) {
             $tids .= $TIDS[$i] . ' ';
