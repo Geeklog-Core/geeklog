@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.37 2002/09/11 14:37:51 dhaun Exp $
+// $Id: submit.php,v 1.38 2002/09/19 17:16:45 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -317,17 +317,15 @@ function submitstory()
     }
 
     if (!empty($A['title'])) {
-        $A['title'] = stripslashes($A['title']);
-        if ($A['postmode'] == 'html') {
-            $introtext = stripslashes ($A['introtext']);
-            $introtext = str_replace('$','&#36;',$introtext);
+        $introtext = stripslashes ($A['introtext']);
+        $introtext = str_replace('$','&#36;',$introtext);
+        $title = stripslashes ($A['title']);
+        $title = str_replace('$','&#36;',$title);
 
+        if ($A['postmode'] == 'html') {
             $A['introtext'] = addslashes(COM_checkHTML(COM_checkWords($A['introtext'])));
             $A['title'] = addslashes(COM_checkHTML(COM_checkWords($A['title'])));
         } else {
-            $introtext = $A['introtext'];
-            $introtext = str_replace('$','&#36;',$introtext);
-
             $A['introtext'] = htmlspecialchars(COM_checkWords($A['introtext']));
             $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
 
@@ -364,7 +362,7 @@ function submitstory()
     }
 
     $storyform->set_var('lang_title', $LANG12[10]);
-    $storyform->set_var('story_title', $A['title']);	
+    $storyform->set_var('story_title', $title);	
     $storyform->set_var('lang_topic', $LANG12[28]);
     $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
     $storyform->set_var('lang_story', $LANG12[29]);
