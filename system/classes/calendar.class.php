@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.class.php,v 1.1 2001/10/29 23:30:05 tony_bibbs Exp $
+// $Id: calendar.class.php,v 1.2 2001/12/11 19:03:20 tony_bibbs Exp $
 
 class CalendarDay {
     var $daynumber;
@@ -267,9 +267,6 @@ class Calendar {
     {
 	$month = $month - 1;
 	if (empty($this->_lang->months)) $this->setLanguage();
-
-	COM_errorLog("MONTH: $month");
-	COM_errorLog("lang: " . $this->_lang_months['september']);
 
         switch ($month) {
         case 0:
