@@ -52,9 +52,9 @@ function savepoll($qid,$display,$question,$voters,$statuscode,$commentcode,$A,$V
 	if (empty($voters)) { $voters = "0"; }
 
 	if ($private_flag == 'on') {
-        	$private_flag = 0;
-        } else {
         	$private_flag = 1;
+        } else {
+        	$private_flag = 0;
         }
 
 	dbdelete("pollquestions","qid",$qid);
@@ -143,12 +143,12 @@ function editpoll($qid="") {
 		#they can't set the group then
                 print getitem("groups","grp_name","grp_id = {$Q["group_id"]}");
 	}
-        print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
-        if ($Q["private_flag"] == 0) {
+        print "</td></tr><tr><td align=\"right\">{$LANG_ACCESS[lock]}:</td><td><input type=checkbox name=private_flag ";
+        if ($Q["private_flag"] == 1) {
                 print "CHECKED";
         }
         print "></td></tr>";
-        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}</td></tr>";	
+        print "<tr><td colspan=2>{$LANG_ACCESS[lockmsg]}</td></tr>";	
         print "<tr><td colspan=2><hr><td></tr>"; 
 
 	print "<tr><td align=right valign=top>{$LANG25[10]}:</td><td>\n";
@@ -184,10 +184,11 @@ function listpoll() {
                         }
                 } else {
                         $access = $LANG_ACCESS[readonly];
-                } 
+                }
+		$curtime = getuserdatetimeformat($A["date"]); 
 		if ($A[4] == 1) $A[4] = "Y";
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/poll.php?mode=edit&qid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>$access</td><td>{$A[2]}</td><td>{$A[3]}</td><td>{$A[4]}</td></tr>";
+		print "<td>$access</td><td>{$A[2]}</td><td>{$curtime[0]}</td><td>{$A[4]}</td></tr>";
 	}
 	print "</table>";
 	endblock();
