@@ -2,7 +2,7 @@
 
 ###############################################################################
 # slovenian.php
-# language file for geeklog version 1.3.9
+# language file for geeklog version 1.3.10
 #
 # This is the slovenian language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
@@ -48,11 +48,11 @@ $LANG_CHARSET = 'windows-1250';
 
 $LANG01 = array(
     1 => 'Piše:',
-    2 => 'beri dalje',
+    2 => 'Beri dalje',
     3 => 'komentarjev.',
-    4 => 'uredi',
+    4 => 'Uredi',
     5 => 'Anketa',
-    6 => 'rezultati',
+    6 => 'Rezultati',
     7 => 'Rezultati ankete',
     8 => 'glasov<br>',
     9 => 'Administracijske funkcije:',
@@ -114,15 +114,15 @@ $LANG01 = array(
     65 => 'Stran prijazna za tisk',
     66 => 'Osebni koledar',
     67 => 'Dobrodošli na ',
-    68 => 'domov',
-    69 => 'kontakt',
-    70 => 'išèi',
-    71 => 'prispevaj',
-    72 => 'spletni vir',
-    73 => 'pretekle ankete',
-    74 => 'koledar',
-    75 => 'napredno iskanje',
-    76 => 'statistika spletne strani',
+    68 => 'Domov',
+    69 => 'Kontakt',
+    70 => 'Išèi',
+    71 => 'Dodaj èlanek',
+    72 => 'Zanimive povezave',
+    73 => 'Pretekle ankete',
+    74 => 'Koledar dogodkov',
+    75 => 'Napredno iskanje',
+    76 => 'Statistika spletne strani',
     77 => 'Prikljuèeni moduli',
     78 => 'Dogodki',
     79 => 'Kaj je novega',
@@ -155,11 +155,11 @@ $LANG01 = array(
     106 => 'Ogledov',
     107 => 'GL Test verzije',
     108 => 'Izprazni cache',
-    109 => 'Report abuse',
-    110 => 'Report this post to the site admin',
-    111 => 'View PDF Version',
-    112 => 'Registered Users',
-    113 => 'Documentation'
+    109 => 'Prijavi zlorabo',
+    110 => 'Prijavi ta prispevek upravniku strani',
+    111 => 'PDF verzija',
+    112 => 'Prijavljeni uporabniki',
+    113 => 'Dokumentacija'
 );
 
 ###############################################################################
@@ -196,7 +196,7 @@ $LANG03 = array(
     7 => 'Vaš zadnji komentar je bil pred',
     8 => " sekundami.  Med posameznimi komentarji bralca mora preteèi vsaj {$_CONF['commentspeedlimit']} sekund",
     9 => 'Komentar',
-    10 => 'Send Report',
+    10 => 'Pošlji prijavo',
     11 => 'Pošlji komentar',
     12 => 'Èe želite posredovati komentar, vpišite vaše ime, e-mail naslov, naslov komentarja in vsebino komentarja.',
     13 => 'Vaše informacije',
@@ -211,9 +211,9 @@ $LANG03 = array(
     22 => 'Pazite na pravilno slovnico in se izogibajte žalitvam drugih.',
     23 => 'Vaš e-mail naslov ne bo javno objavljen.',
     24 => 'Anonimni uporabnik',
-    25 => 'Are you sure you want to report this post to the site admin?',
-    26 => '%s reported the following abusive comment post:',
-    27 => 'Abuse report'
+    25 => 'Ste preprièani da hoèete prijaviti ta orispevek upravniku strani?',
+    26 => '%s je prijavil naslednji prispevek ki zlorablja:',
+    27 => 'Prijava zlorabe'
 );
 
 ###############################################################################
@@ -319,14 +319,14 @@ $LANG04 = array(
     97 => 'Potrdi brisanje raèuna',
     98 => 'Si preprièan da želiš pobrisati svoj uporabniški raèun. Po tem prijava na naše strani ne bo veè mogoèa (razen, èe si ustvariš nov raèun). Èe si preprièan/a ponovno klikni "Izbriši raèun" v spodnjem obrazcu.',
     99 => 'Nastavitve zasebnosti za',
-    100 => 'Email od Admina',
+    100 => 'Adminov email',
     101 => 'Dovoli emaile od upravljalcev strani',
     102 => 'Email od uporabnikov',
     103 => 'Dovoli emaile od drugih uporabnikov strani',
     104 => 'Prikaži Online Status',
     105 => 'Dovoli prikaz v bloku Na liniji so',
-    106 => 'Location',
-    107 => 'Shown in your public profile'
+    106 => 'Lokacija',
+    107 => 'Prikazano v vašem javnem profilu'
 );
 
 ###############################################################################
@@ -336,11 +336,11 @@ $LANG05 = array(
     1 => 'Podroèje je trenutno prazno',
     2 => 'Trenutno v tem tematskem podroèju ni nobenega èlanka, ali pa so vaše uporabniške nastavitve takšne da nimate dostopa do tega podroèja',
     3 => '.',
-    4 => 'Današji udarni èlanek',
+    4 => 'Današnji udarni èlanek',
     5 => 'naslednja stran',
     6 => 'prejšnja stran',
-    7 => 'First',
-    8 => 'Last'
+    7 => 'Prva',
+    8 => 'Zadnja'
 );
 
 ###############################################################################
@@ -506,7 +506,7 @@ $LANG11 = array(
     2 => 'Pošlji èlanek po e-pošti',
     3 => 'Stran prijazna za tisk',
     4 => 'Dodatne možnosti',
-    5 => 'PDF Story Format'
+    5 => 'PDF format èlanka'
 );
 
 ###############################################################################
@@ -639,7 +639,7 @@ $LANG21 = array(
     48 => 'Ime bloka',
     49 => ' (Presledki niso dovoljeni. Imena blokovne smejo biti podvojena',
     50 => 'URL za pomoè',
-    51 => 'Zaèneš z http://',
+    51 => 'Zaèneš s http://',
     52 => 'Èe pustite prazno, se ikona za pomoè ne bo izpisala!',
     53 => 'Omogoèeno',
     54 => 'Shrani',
@@ -677,9 +677,9 @@ $LANG22 = array(
     20 => 'Shrani',
     21 => 'Preklièi',
     22 => 'Izbriši',
-    23 => 'Bad start date.',
-    24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    23 => 'Neveljaven zaèetni èas.',
+    24 => 'Neveljaven konèni èas.',
+    25 => 'Konèni èas je pred zaèetnim èasom.'
 );
 
 ###############################################################################
@@ -691,7 +691,7 @@ $LANG23 = array(
     3 => 'Naslov povezave',
     4 => 'URL',
     5 => 'Kategorija',
-    6 => '(Zaèneš z http://)',
+    6 => '(Zaèneš s http://)',
     7 => 'Drugo',
     8 => 'Zadetki povezave',
     9 => 'Opis povezave',
@@ -772,11 +772,11 @@ $LANG24 = array(
     55 => 'Napaka pri shranjevanju èlanka. Prosimo popravite napake na spodnjem seznamu:',
     56 => 'Prikaži ikono teme',
     57 => 'Oglej si nezmanjšano sliko',
-    58 => 'Story Management',
-    59 => 'Option',
-    60 => 'Enabled',
-    61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    58 => 'Administracija èlankov',
+    59 => 'Opcija',
+    60 => 'Omogoèeno',
+    61 => 'Samodejno arhiviranje',
+    62 => 'Samodejno brisanje'
 );
 
 ###############################################################################
@@ -839,8 +839,8 @@ $LANG27 = array(
     22 => 'Privzeto',
     23 => 'Ustvari to temo privzeto za novo oddane èlanke',
     24 => '(*)',
-    25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    25 => 'Arhiviraj temo',
+    26 => 'naredi to temo privzeto za arhivirane èlanke. Samo ena tema je dovoljena.'
 );
 
 ###############################################################################
@@ -1136,8 +1136,8 @@ $MESSAGE = array(
     57 => 'Tvoj raèun je bil uspešno pobrisan.',
     58 => '(RDF) vsebina je bila uspešno shranjena.',
     59 => '(RDF) vsebina je bila uspešno izbrisana.',
-    60 => 'The plugin was successfully updated',
-    61 => 'Plugin %s: Unknown message placeholder'
+    60 => 'Vtiènik je bil uspešno obnovljen (updated)',
+    61 => 'Vtiènik %s: Neznan okvir sporoèila (Unknown message placeholder)'
 );
 
 ###############################################################################
@@ -1257,20 +1257,20 @@ $LANG_LOGIN = array(
 # pdfgenerator.php
 
 $LANG_PDF = array(
-    1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
-    3 => 'Unknown error during PDF generation',
-    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
-    5 => 'Loading your document.',
-    6 => 'Please wait while your document is loaded.',
-    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
-    9 => 'PDF Generator',
-    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    1 => 'PDF naèin je onemogoèen',
+    2 => 'Zahtevani dokument ni bil renderiran. Dokument je bil prejte ampak ga ni bilo možno sprocesirati. Prosim preprièaj se da pošiljaš PDF procesorju samo dokumente v obliki html, ki so bili napisani po xHTML standardu. Upoštevajte da pri pre-kompleksnih dokumentih lahko pride do tega, da se sploh ne sprocesirajo. Dokument ki je nastal na vašo zahtevo je dolg 0 bytov, in je bil izbrisan. Èe ste preprièani, da bi se ta dokument moral pravilno izraèunati, ga prosimo pošljite ponovno.',
+    3 => 'Neznana napaka med izdelavo PDF dokumenta',
+    4 => "Dobil nisem nobenih podatkov o strani, ali pa želite uporabiti ad-hoc PDF generator spodaj. Èe mislite da ste dobili to stran\n          Po nesreèi prosim sporoèite to upravniku strani. Èe temu ni tako, lahko uporabite spodnjo formo in si ustvarite PDF dokumente na naèin ad-hoc.",
+    5 => 'Nalagam vaš dokument.',
+    6 => 'Prosim poèakajte, da naložim vaš dokument.',
+    7 => 'Spodnji gumb lahko kliknete z desnim miškinim gumbom in izberete \'save target...\' ali \'save link location...\' da shranite kopijo dokumenta.',
+    8 => "Pot do HTMLDoc izvršilne datoteke, ki je zapisana v nastavitvah je napaèna in sistem je ne more zagnati. Prosimo sporoèite ta problem upravniku strani\n          èe se ponavlja.",
+    9 => 'Izdelovalnik PDF',
+    10 => "To je orodje za Ad-hoc izdelavo PDF dokumentov. Orodje bo poizkusilo predelati vse URL naslove v PDF. Prosim zavedaj se, da se nekatere internetne strani NE bodo pravilno renderirale s tem naèinom (ad-hoc).  To\n           je omejitev orodja HTMLDoc in teh napak ne rabite prijavljati upravniku strani",
     11 => 'URL',
-    12 => 'Generate PDF!',
-    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
-    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+    12 => 'Naredi PDF!',
+    13 => 'PHP konfiguracija na tem serverju ne dovoli odpiranja internetnih naslovov (URL) z ukazom fopen(). Upravnik strani mora popraviti php.ini datoteko in v njej prestaviti allow_url_fopen na On',
+    14 => 'PDF ki ste ga zahtevali ali ne obstaja ali pa ste nepravilno dostopali do datoteke.'
 );
 
 ?>
