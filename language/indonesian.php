@@ -152,7 +152,8 @@ $LANG01 = array(
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
-    112 => 'Registered Users'
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -317,7 +318,9 @@ $LANG04 = array(
     102 => 'Email dari Users',
     103 => 'Izinkan email user lain',
     104 => 'Tampilkan status Online',
-    105 => 'Tampilkan siapa yang online pada Online block'
+    105 => 'Tampilkan siapa yang online pada Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -326,7 +329,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Tidak ada berita yang harus ditampilkan',
     2 => 'Belum ada bacaan atau berita yang perlu ditampilkan.',
-    3 => "untuk topic %s",
+    3 => 'untuk topic %s',
     4 => 'Artikel atau Bahan Bacaan Hari Ini',
     5 => 'Berikutnya',
     6 => 'Sebelumnya',
@@ -386,7 +389,7 @@ $LANG08 = array(
     25 => 'Anda harus Login.',
     26 => 'Form ini akan mengizinkan dan mengirim email kepada user yang anda pilih.  Semua harus diisi.',
     27 => 'Pesan singkat',
-    28 => "%s tulis: ",
+    28 => '%s tulis: ',
     29 => "Ini adalah digest harian dari{$_CONF['site_name']} untuk ",
     30 => ' Berita harian untuk ',
     31 => 'Judul',
@@ -504,7 +507,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Untuk mengirim %s anda harus login dulu.",
+    1 => 'Untuk mengirim %s anda harus login dulu.',
     2 => 'Login',
     3 => 'User Baru',
     4 => 'Kirim Even',
@@ -528,7 +531,7 @@ $LANG12 = array(
     22 => 'Error: Ada yang masih kosong',
     23 => 'Harus diisi semua.',
     24 => 'Pengiriman tersimpan',
-    25 => " %s pengiriman anda tersimpan dengan sukses.",
+    25 => ' %s pengiriman anda tersimpan dengan sukses.',
     26 => 'Limit kecepatan',
     27 => 'nama user',
     28 => 'Topik',
@@ -717,7 +720,7 @@ $LANG24 = array(
     9 => 'tampilkan',
     10 => 'batal',
     11 => 'hapus',
-    12 => '',
+    12 => 'ID',
     13 => 'Judul',
     14 => 'Topik',
     15 => 'Tanggal',
@@ -729,7 +732,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Daftar bacaan',
     23 => 'Untuk memodifikasi atau menghapus, klik yang bersangkutan dibawah ini. Untuk melihat, Klik judulnya. untuk membuat klik bacaan baru diatas.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Tampilkan bacaan',
     27 => '',
@@ -777,15 +780,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Silahkan masukkan pertanyaan dan minimal satu pertanyaan.',
     3 => 'Polling dibuat',
-    4 => "Poll %s disimpan",
+    4 => 'Poll %s disimpan',
     5 => 'Edit Polling',
     6 => 'Poll ID',
     7 => '(jangan gunakan spasi)',
     8 => 'Muncul pada Homepage',
     9 => 'Pertanyaan',
     10 => 'Jawaban / Votes',
-    11 => "There was an error getting poll answer data about the poll %s",
-    12 => "There was an error getting poll question data about the poll %s",
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
     13 => 'Buat Polling',
     14 => 'simpan',
     15 => 'batal',
@@ -1015,7 +1018,10 @@ $LANG32 = array(
     28 => 'Versi Plug-in',
     29 => 'Versi Geeklog',
     30 => 'Hapus Plug-in?',
-    31 => 'Apakah anda yakin ?  Dengan melakukan ini itu anda menghapus semua struktur dan file yang berhubungan dengan plug in yang bersangkutan.  Jika anda yakin, klik sekali lagi Hapus dibawah ini.'
+    31 => 'Apakah anda yakin ?  Dengan melakukan ini itu anda menghapus semua struktur dan file yang berhubungan dengan plug in yang bersangkutan.  Jika anda yakin, klik sekali lagi Hapus dibawah ini.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1123,7 +1129,9 @@ $MESSAGE = array(
     56 => 'Email anda telah terpakai oleh user lain.',
     57 => 'Account anda telah terhapus dengan sukses.',
     58 => 'Feed anda telah tersimpan dengan sukses.',
-    59 => 'Feed tersebut telah terhapus dengan sukses.'
+    59 => 'Feed tersebut telah terhapus dengan sukses.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1182,7 +1190,8 @@ $LANG_ACCESS = array(
     'remove' => 'Hapus',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'Untuk mengubah group, anda harus menjadi anggota group. Silahkan hubungi Administrator.'
+    'canteditgroup' => 'Untuk mengubah group, anda harus menjadi anggota group. Silahkan hubungi Administrator.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################

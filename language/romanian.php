@@ -147,7 +147,12 @@ $LANG01 = array(
     105 => 'Mail Membri',
     106 => 'Vizualizari',
     107 => 'GL Version Test',
-    108 => 'Sterge Cache'
+    108 => 'Sterge Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -184,12 +189,12 @@ $LANG03 = array(
     7 => 'Ultimul tau comentariu a fost acum',
     8 => " secunde in urma.  Asteptati cel putin {$_CONF['commentspeedlimit']} secunde pentru a introduce un nou comentariu",
     9 => 'Comentariu',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Trimite Comentariu',
     12 => 'E necesar sa completati in Titlu si Comentariu pentru a putea trimite comentariul.',
     13 => 'Informatia ta',
     14 => 'Previzualizeaza',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Titlu',
     17 => 'Eroare',
     18 => 'Material Important',
@@ -198,7 +203,10 @@ $LANG03 = array(
     21 => 'Citeste mesajele altora inainte de a trimite pentru a evita dublarea unui mesaj',
     22 => 'Alege sectiunea potrivita pentru mesajul tau.',
     23 => 'Adresa ta email nu va fi facuta publica.',
-    24 => 'Vizitator Anonim'
+    24 => 'Vizitator Anonim',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -309,7 +317,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -318,10 +328,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Nu sunt stiri de vizualizat.',
     2 => 'Nu sunt stiri de vizualizat. Pentru ca nu exista stiri noi sau preferintele tale sunt prea restrictive.',
-    3 => " pentru sectiunea %s",
+    3 => ' pentru sectiunea %s',
     4 => 'Stirea zilei',
     5 => 'Inainte',
-    6 => 'Inapoi'
+    6 => 'Inapoi',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -376,7 +388,7 @@ $LANG08 = array(
     25 => 'Trebuie sa fiti membru/utilizator inregistrat pentru a folosi aceasta facilitate.  E nevoie de inregistrare pentru a preveni o folosire incorecta a sistemului',
     26 => 'Acest formular va permite sa trimiteti un email unui membru selectat.   Toate campurile trebuie completate.',
     27 => 'Mesaj scurt',
-    28 => "%s a scris: ",
+    28 => '%s a scris: ',
     29 => "Acesta este sumarul zilnic de la {$_CONF['site_name']} pentru ",
     30 => ' Buletin informativ zilnic pentru ',
     31 => 'Titlu',
@@ -486,14 +498,15 @@ $LANG11 = array(
     1 => 'Link-uri inrudite',
     2 => 'Trimite unui prieten',
     3 => 'Pagina in format pentru imprimanta',
-    4 => 'Optiuni Stire'
+    4 => 'Optiuni Stire',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Pentru a trimite o %s e necesar sa intri ca membru/utilizator inregistrat.",
+    1 => 'Pentru a trimite o %s e necesar sa intri ca membru/utilizator inregistrat.',
     2 => 'Intra/Login',
     3 => 'Nou membru',
     4 => 'Anunta un Eveniment',
@@ -517,7 +530,7 @@ $LANG12 = array(
     22 => 'Eroare: Date necompletate',
     23 => 'Va rugam sa completati toate datele in formular. Sunt necesare toate.',
     24 => 'Datele au fost salvate',
-    25 => "%s de inregistrare a fost salvat cu succes.",
+    25 => '%s de inregistrare a fost salvat cu succes.',
     26 => 'Limita Viteza',
     27 => 'Membru',
     28 => 'Subiect',
@@ -636,7 +649,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Editor Evenimente',
-    2 => '',
+    2 => 'Error',
     3 => 'Titlu Eveniment',
     4 => 'Eveniment URL',
     5 => 'Eveniment Start Date',
@@ -656,7 +669,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'salveaza',
     21 => 'anuleaza',
-    22 => 'sterge'
+    22 => 'sterge',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -703,7 +719,7 @@ $LANG24 = array(
     9 => 'previzualizeaza',
     10 => 'anuleaza',
     11 => 'sterge',
-    12 => '',
+    12 => 'ID',
     13 => 'Titlu',
     14 => 'Subiect',
     15 => 'Data',
@@ -715,7 +731,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Stire List',
     23 => 'To modify or sterge o stire, click on that Stire\'s number below. To view o stire, click on the Titlu of the Stire you wish to view. To create a new Stire click on new Stire above.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Previzualizare Stire',
     27 => '',
@@ -748,7 +764,12 @@ $LANG24 = array(
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your stire.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -758,15 +779,15 @@ $LANG25 = array(
     1 => 'Mod',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Sondaj Creat',
-    4 => "Sondaj %s salvat",
+    4 => 'Sondaj %s salvat',
     5 => 'Editare Sondaj',
     6 => 'Sondaj ID',
     7 => '(do not use spaces)',
     8 => 'Appears on Homepage',
     9 => 'Intrebare',
     10 => 'Raspunsuri / Voturi',
-    11 => "There was an error getting Sondaj answer data about the Sondaj %s",
-    12 => "There was an error getting Sondaj intrebare data about the Sondaj %s",
+    11 => 'There was an error getting Sondaj answer data about the Sondaj %s',
+    12 => 'There was an error getting Sondaj intrebare data about the Sondaj %s',
     13 => 'Create Sondaj',
     14 => 'salveaza',
     15 => 'anuleaza',
@@ -810,7 +831,9 @@ $LANG27 = array(
     21 => 'sterge',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -994,7 +1017,10 @@ $LANG32 = array(
     28 => 'Plug-in Version',
     29 => 'Versiune Geeklog ',
     30 => 'Sterge Plug-in?',
-    31 => 'Are you sure you want to sterge this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click sterge again on the form below.'
+    31 => 'Are you sure you want to sterge this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click sterge again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1102,7 +1128,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1161,7 +1189,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1208,12 +1237,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Inregistrare necesara',
     2 => 'Ne pare rau, pentru a avea acces la aceasta zona trebuie sa fiti membru/utilizator inregistrat.',
     3 => 'Inregistrare',
     4 => 'Membru Nou'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

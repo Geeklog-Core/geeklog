@@ -147,7 +147,12 @@ $LANG01 = array(
     105 => 'Emailový démon',
     106 => 'Zhlédnuto',
     107 => 'Test Verze GL',
-    108 => 'Smazat cache'
+    108 => 'Smazat cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -184,12 +189,12 @@ $LANG03 = array(
     7 => 'Vá¹ poslední komentáø vlo¾en pøed ',
     8 => " sekundami.  Tato stránka vy¾aduje prodlevu {$_CONF['commentspeedlimit']} sekund mezi komentáøi.",
     9 => 'Komentáø',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Vlo¾it komentáø',
     12 => 'Prosím vyplòte Titulek a Komentáø, jinak nelze vlo¾it.',
     13 => 'Va¹e info',
     14 => 'Náhled',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Titulek',
     17 => 'Chyba',
     18 => 'Dùle¾ité',
@@ -198,7 +203,10 @@ $LANG03 = array(
     21 => 'Pøeètìte si prosím nejdøíve komentáøe ostatních u¾ivatelù, aby nedocházelo k duplicitì.',
     22 => 'Pou¾ijte titulek, který vlo¾il systém.',
     23 => 'Vá¹ email nebude publikován!',
-    24 => 'Anonymní host'
+    24 => 'Anonymní host',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -309,7 +317,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -318,10 +328,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Nic nového k zobrazení',
     2 => '®ádné nové èlánky k zobrazení.  Mo¾ná nejsou ¾ádné novinky, nebo jste zadali ¹patné podmínky filtrování',
-    3 => " pro sekci %s",
+    3 => ' pro sekci %s',
     4 => 'Nejnovìj¹í èlánek',
     5 => 'Dal¹í',
-    6 => 'Pøede¹lé'
+    6 => 'Pøede¹lé',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -376,7 +388,7 @@ $LANG08 = array(
     25 => 'Musíte být pøihlá¹en jako u¾ivatel pro pou¾ití této funkce weblogu.<br>  Touto restrikcí se pøedchází zneu¾ití systému k spammingu!',
     26 => 'Tento formuláø umo¾òuje zaslat email vybranému u¾ivateli.  Vyplòte prosím v¹echna pole.',
     27 => 'Krátká zpráva',
-    28 => "%s napsáno: ",
+    28 => '%s napsáno: ',
     29 => "Toto jsou denní novinky z {$_CONF['site_name']} pro ",
     30 => ' Denní novinky pro ',
     31 => 'Titulek',
@@ -486,14 +498,15 @@ $LANG11 = array(
     1 => 'Související',
     2 => 'Poslat mailem',
     3 => 'Verze pro tiskárnu',
-    4 => 'Volby èlánku'
+    4 => 'Volby èlánku',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Pro tento %s musíte být pøihlá¹en jako u¾ivatel.",
+    1 => 'Pro tento %s musíte být pøihlá¹en jako u¾ivatel.',
     2 => 'Pøihlásit',
     3 => 'Nový u¾ivatel',
     4 => 'Pøidání',
@@ -517,7 +530,7 @@ $LANG12 = array(
     22 => 'Chyba: nevyplnìná pole',
     23 => 'Prosím vyplòte v¹echna pole. V¹e je povinné.',
     24 => 'Publikace provedena',
-    25 => "Va¹e %s publikace byla provedena.",
+    25 => 'Va¹e %s publikace byla provedena.',
     26 => 'Omezení rychlosti publikování',
     27 => 'U¾ivatel',
     28 => 'Sekce',
@@ -636,7 +649,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Editor událostí',
-    2 => '',
+    2 => 'Error',
     3 => 'Titulek události',
     4 => 'URL události',
     5 => 'Datum zaèátku',
@@ -656,7 +669,10 @@ $LANG22 = array(
     19 => 'Administrace',
     20 => 'ulo¾it',
     21 => 'zru¹it akci',
-    22 => 'smazat'
+    22 => 'smazat',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -703,7 +719,7 @@ $LANG24 = array(
     9 => 'náhled',
     10 => 'zru¹it akci',
     11 => 'smazat',
-    12 => '',
+    12 => 'ID',
     13 => 'Titulek',
     14 => 'Sekce',
     15 => 'Datum publikace',
@@ -715,7 +731,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Seznam èlánkù',
     23 => 'Pro editaci nebo smazání èlánku klepnìte na jeho èíslo ní¾e. Pro zobrazení,klepnìte na titulek èlánku, který chcete vidìt. Pro vytvoøení nového èlánku klepnìte na Nový èlánek vý¹e.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Náhled',
     27 => '',
@@ -748,7 +764,12 @@ $LANG24 = array(
     54 => 'Pøidaný obrázek nepou¾it',
     55 => 'Následující chyby se vyskytly pøi publikaci va¹eho èlánku.  Prosím opravte tyto chyby pøed koneènou publikací.',
     56 => 'Ikona Sekce.',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -758,15 +779,15 @@ $LANG25 = array(
     1 => 'Re¾im',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Anketa vytvoøena',
-    4 => "Anketa %s ulo¾ena",
+    4 => 'Anketa %s ulo¾ena',
     5 => 'Editovat anketu',
     6 => 'ID ankety',
     7 => '(bez mezer)',
     8 => 'Zobrazit na Homepage',
     9 => 'Otázka',
     10 => 'Odpovìdí / Hlasujících',
-    11 => "There was an Chyba getting poll answer data about the poll %s",
-    12 => "There was an Chyba getting poll question data about the poll %s",
+    11 => 'There was an Chyba getting poll answer data about the poll %s',
+    12 => 'There was an Chyba getting poll question data about the poll %s',
     13 => 'Vytvoøit anketu',
     14 => 'ulo¾it',
     15 => 'zru¹it akci',
@@ -810,7 +831,9 @@ $LANG27 = array(
     21 => 'smazat',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -994,7 +1017,10 @@ $LANG32 = array(
     28 => 'Plug-in Version',
     29 => 'Geeklog Version',
     30 => 'smazat Plug-in?',
-    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1102,7 +1128,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1161,7 +1189,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1208,12 +1237,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Je nutné se pøihlásit',
     2 => 'Promiòte, pro pøístup je nutné být pøihlá¹en jako u¾ivatel.',
     3 => 'Pøihlásit',
     4 => 'Nový u¾ivatel'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

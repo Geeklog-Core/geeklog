@@ -148,7 +148,12 @@ $LANG01 = array(
     105 => 'Mail Users',
     106 => 'Прегледи',
     107 => 'GL Version Test',
-    108 => 'Clear cache'
+    108 => 'Clear cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -185,12 +190,12 @@ $LANG03 = array(
     7 => 'Последният ви коментар беше публикуван преди ',
     8 => " секунди.   Този сайт изисква да са изтекли най-малко\n{$_CONF['commentspeedlimit']} секунди, преди да публикувате нов коментар",
     9 => 'Коментар',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Изпрати коментар',
     12 => 'Моля попълнете полетата Title и Comment, за да изпратите вашият коментар успешно.',
     13 => 'Информация',
     14 => 'Преглед',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Заглавие',
     17 => 'Грешка',
     18 => 'Важно',
@@ -199,7 +204,10 @@ $LANG03 = array(
     21 => 'Преди да постнете ваше собствено съобщение, прочетете тези, които вече са побликувани.',
     22 => 'Изберете кратка и точна тема, от която да става ясно за какво иде реч във вашето съобщение.',
     23 => 'Вашият e-mail адрес няма да бъде публикуван.',
-    24 => 'Анонимен потребител'
+    24 => 'Анонимен потребител',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -310,7 +318,9 @@ $LANG04 = array(
     102 => 'Email от потребители',
     103 => 'Позволи email от други потребители',
     104 => 'Показвай потребителското ми име когато съм онлайн',
-    105 => 'Показвай потребителското ми име в "Кой е онлайн"'
+    105 => 'Показвай потребителското ми име в "Кой е онлайн"',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -319,10 +329,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Няма изпратени новини',
     2 => 'Няма изпратени новини.  Може би няма никакви новини в тази секция или сте забранили показването на такъв тип новини от личните ви настройки на акаунта.',
-    3 => " за тема %s",
+    3 => ' за тема %s',
     4 => 'Важно',
     5 => 'Следваща страница',
-    6 => 'Предишна страница'
+    6 => 'Предишна страница',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -377,7 +389,7 @@ $LANG08 = array(
     25 => 'Трябва да сте логнати, за да използвате тази функция.',
     26 => 'Тази форма ще ви позволи да изпратите email до избрания от вас потребител.  Всички полета са задължителни.',
     27 => 'Кратко съобщение',
-    28 => "%s wrote: ",
+    28 => '%s wrote: ',
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
     30 => ' Daily Newsletter for ',
     31 => 'Title',
@@ -487,14 +499,15 @@ $LANG11 = array(
     1 => 'Сходни връзки',
     2 => 'Изпрати на приятел',
     3 => 'Принтирай',
-    4 => 'Опции за публикацията'
+    4 => 'Опции за публикацията',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "За да създадете %s трябва да сте влезли като потребител.",
+    1 => 'За да създадете %s трябва да сте влезли като потребител.',
     2 => 'Вход',
     3 => 'Нов потребител',
     4 => 'Изпрати събитие',
@@ -518,7 +531,7 @@ $LANG12 = array(
     22 => 'Грешка: Липсват някои полета',
     23 => 'Моля попълнете всички полета.  Всички полета са задължителни.',
     24 => 'Данните са запазени',
-    25 => "Вашите %s данни бяха запазени успешно.",
+    25 => 'Вашите %s данни бяха запазени успешно.',
     26 => 'Speed Limit',
     27 => 'Име',
     28 => 'Раздел',
@@ -637,7 +650,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Редактор на събития',
-    2 => '',
+    2 => 'Error',
     3 => 'Име на събитието',
     4 => 'URL към събитието',
     5 => 'Стартова дата',
@@ -657,7 +670,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'запази',
     21 => 'откажи',
-    22 => 'изтрий'
+    22 => 'изтрий',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -704,7 +720,7 @@ $LANG24 = array(
     9 => 'преглед',
     10 => 'откажи',
     11 => 'изтрий',
-    12 => '',
+    12 => 'ID',
     13 => 'Заглавие',
     14 => 'Тема',
     15 => 'Дата',
@@ -716,7 +732,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Списък текстове',
     23 => 'За да модифицирате или изтриете дадена публикация, кликнете върху нейният номер долу. За да я видите кликнете върку нейното заглавие. За да създадете нова публикация кликнете на \'изпрати публикация\' отгоре.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Преглед',
     27 => '',
@@ -749,7 +765,12 @@ $LANG24 = array(
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
     56 => 'Show Topic Icon',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -759,15 +780,15 @@ $LANG25 = array(
     1 => 'Мод',
     2 => 'Моля напишете въпрос и поне един отговор.',
     3 => 'Анкетата е създадена',
-    4 => "Анкетата %s запазена",
+    4 => 'Анкетата %s запазена',
     5 => 'Редактирай',
     6 => 'Номер на анкетата',
     7 => '(не използвайте интервали)',
     8 => 'Появява се на стартовата страница',
     9 => 'Въпрос',
     10 => 'Отговори / Гласове',
-    11 => "Получи се грешка при разчитането на данните при отговорите за %s",
-    12 => "Получи се грешка при разчитането на данните при въпроса за %s",
+    11 => 'Получи се грешка при разчитането на данните при отговорите за %s',
+    12 => 'Получи се грешка при разчитането на данните при въпроса за %s',
     13 => 'Създай анкета',
     14 => 'запази',
     15 => 'откажи',
@@ -811,7 +832,9 @@ $LANG27 = array(
     21 => 'изтрий',
     22 => 'Default',
     23 => 'направи тази тема default за всички подчинени',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -995,7 +1018,10 @@ $LANG32 = array(
     28 => 'Plug-in Version',
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
-    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1103,7 +1129,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1162,7 +1190,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1209,12 +1238,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Login required',
     2 => 'Sorry, to access this area you need to be logged in as a user.',
     3 => 'Login',
     4 => 'New User'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

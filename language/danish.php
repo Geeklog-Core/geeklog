@@ -147,7 +147,12 @@ $LANG01 = array(
     105 => 'Email Brugere',
     106 => 'Visninger',
     107 => 'GL Version Test',
-    108 => 'Slet Cache'
+    108 => 'Slet Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -184,12 +189,12 @@ $LANG03 = array(
     7 => 'Din sidste kommentar var ',
     8 => " sekunder siden. Hjemmesiden kræver mindst {$_CONF['commentspeedlimit']} sekunder mellem kommentarer",
     9 => 'Kommentar',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Tilføj Kommentar',
     12 => 'Udfyld Titel og Kommentarfelterne, da de er obligatoriske ved tilføjelse af en kommentar.',
     13 => 'Din Information',
     14 => 'Gennemse',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Titel',
     17 => 'Fejl',
     18 => 'Vigtigt',
@@ -198,7 +203,10 @@ $LANG03 = array(
     21 => 'Læs øvrige kommentarer før du svarer, for at undgå at gentage hvad andre allerede har sagt.',
     22 => 'Brug en tydelig Titel, så det skinner igennem hvilket emne din kommentar omhandler.',
     23 => 'Din emailadresse bliver IKKE offentliggjort.',
-    24 => 'Anonym Bruger'
+    24 => 'Anonym Bruger',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -309,7 +317,9 @@ $LANG04 = array(
     102 => 'Email fra brugere',
     103 => 'Tillad email fra andre brugere',
     104 => 'Vis Online Status',
-    105 => 'Vis i Hvem er online blokken'
+    105 => 'Vis i Hvem er online blokken',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -318,10 +328,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Der er ingen nyheder at vise',
     2 => 'Der er ingen nyheder i databasen. Enten er der ikke nogen nyheder tilføjet dette emne, eller også er dine brugerpræferencer muligvis for restriktive.',
-    3 => "for emnet %s",
+    3 => 'for emnet %s',
     4 => 'Mest spændende lige nu',
     5 => 'Næste',
-    6 => 'Forrige'
+    6 => 'Forrige',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -376,7 +388,7 @@ $LANG08 = array(
     25 => 'Du skal være logget ind for at kunne anvende denne mulighed. Ved at du logger ind, hjælper det os til at undgå misbrug af systemet',
     26 => 'Denne formular lader dig afsende en email til den valgte bruger. Alle felter skal udfyldes.',
     27 => 'Kort besked',
-    28 => "%s skrev: ",
+    28 => '%s skrev: ',
     29 => "Dette er den daglige dosis fra {$_CONF['site_name']} for ",
     30 => ' Daglig Dosis for ',
     31 => 'Titel',
@@ -486,14 +498,15 @@ $LANG11 = array(
     1 => 'Relateret',
     2 => 'Send',
     3 => 'Print',
-    4 => 'Muligheder'
+    4 => 'Muligheder',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "For at tilføje en %s skal du være logget ind.",
+    1 => 'For at tilføje en %s skal du være logget ind.',
     2 => 'Log ind',
     3 => 'Ny Bruger',
     4 => 'Tilføj en Begivenhed',
@@ -517,7 +530,7 @@ $LANG12 = array(
     22 => 'Fejl: Manglende Felter',
     23 => 'Udfyld alle felter i formularen. De er alle påkrævet.',
     24 => 'Tilføjelsen er Gemt',
-    25 => "Din %s tilføjelse er gemt.",
+    25 => 'Din %s tilføjelse er gemt.',
     26 => 'Fartbegrænsning',
     27 => 'Brugernavn',
     28 => 'Emne',
@@ -636,7 +649,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Begivenhed Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Begivenhed Titel',
     4 => 'Begivenhed URL',
     5 => 'Begivenhed Start Dato',
@@ -656,7 +669,10 @@ $LANG22 = array(
     19 => 'Admin Hjem',
     20 => 'gem',
     21 => 'fortryd',
-    22 => 'slet'
+    22 => 'slet',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -703,7 +719,7 @@ $LANG24 = array(
     9 => 'gennemse',
     10 => 'fortryd',
     11 => 'slet',
-    12 => '',
+    12 => 'ID',
     13 => 'Titel',
     14 => 'Emne',
     15 => 'Dato',
@@ -715,7 +731,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Historie Liste',
     23 => 'For at redigere eller slette en historie, klik på historiens nummer herunder. For at se en historie, klik på titlen af den historie du ønsker at se. For at oprette en ny historie, klik på ny historie herover.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Gennemse Historie',
     27 => '',
@@ -748,7 +764,12 @@ $LANG24 = array(
     54 => 'Vedhæftede Billeder Blev Ikke Brugt',
     55 => 'Følgende fejl opstod ved tilføjelse af din historie. Ret disse før gemning',
     56 => 'Vis Emneikon',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -758,15 +779,15 @@ $LANG25 = array(
     1 => 'Måde',
     2 => 'Indtast et spørgsmål og mindst et svar',
     3 => 'Afstemning Lavet',
-    4 => "Afstemning %s gemt",
+    4 => 'Afstemning %s gemt',
     5 => 'Rediger Afstemning',
     6 => 'Afstemning ID',
     7 => '(brug ikke mellemrum)',
     8 => 'Vises på Siden',
     9 => 'Spørgsmål',
     10 => 'Svar/Stemmer',
-    11 => "Der er sket en fejl ved hentning af svardata til afstemning %s",
-    12 => "Der er sket en fejl ved hentning af spørgsmåldata til afstemning %s",
+    11 => 'Der er sket en fejl ved hentning af svardata til afstemning %s',
+    12 => 'Der er sket en fejl ved hentning af spørgsmåldata til afstemning %s',
     13 => 'Lav Afstemning',
     14 => 'gem',
     15 => 'fortryd',
@@ -810,7 +831,9 @@ $LANG27 = array(
     21 => 'slet',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -994,7 +1017,10 @@ $LANG32 = array(
     28 => 'Plug-in Version',
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
-    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1102,7 +1128,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1161,7 +1189,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1208,12 +1237,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Log ind nødvendig',
     2 => 'Desværre, for at få adgang til dette område, skal du være logget ind som bruger på siden.',
     3 => 'Log ind',
     4 => 'Ny Bruger'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

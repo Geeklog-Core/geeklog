@@ -58,7 +58,7 @@ $LANG01 = array(
     6 => '結果',
     7 => '投票結果',
     8 => '投票',
-    9 => '管理者功\能︰',
+    9 => '管理者功能︰',
     10 => '提交物',
     11 => '故事',
     12 => '組件',
@@ -96,7 +96,7 @@ $LANG01 = array(
     44 => '父母',
     45 => 'MySQL 錯誤號碼',
     46 => 'MySQL 錯誤資訊',
-    47 => '用戶功\能',
+    47 => '用戶功能',
     48 => '帳戶資訊',
     49 => '畫面設定',
     50 => '錯誤的 SQL statement',
@@ -157,7 +157,12 @@ $LANG01 = array(
     105 => '寄給用戶',
     106 => '觀看',
     107 => 'GL 版本測試',
-    108 => '清除緩衝貯存區'
+    108 => '清除緩衝貯存區',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -194,12 +199,12 @@ $LANG03 = array(
     7 => '你最後發表的意見是在 ',
     8 => " 秒之前。本站限定至少 {$_CONF['commentspeedlimit']} 秒後才可再發表意見",
     9 => '意見',
-    10 => '',
+    10 => 'Send Report',
     11 => '發表意見',
     12 => '請填寫標題註意見欄',
     13 => '供你參考',
     14 => '預覽',
-    15 => '',
+    15 => 'Report this post',
     16 => '標題',
     17 => '錯誤',
     18 => '重要的東西',
@@ -208,7 +213,10 @@ $LANG03 = array(
     21 => '為避免重複，發表意見之前請先讀別人所寫的。',
     22 => '請盡量用簡潔的標題。',
     23 => '我們不會公開你的電郵地址。',
-    24 => '匿名用戶'
+    24 => '匿名用戶',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -319,7 +327,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -328,10 +338,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => '沒有新聞可顯示',
     2 => '沒有新故事可顯示。',
-    3 => "這也許是真的沒有新主題或是你的 %s 設定得太過限制性。",
+    3 => '這也許是真的沒有新主題或是你的 %s 設定得太過限制性。',
     4 => '今天頭條',
     5 => '下一個',
-    6 => '前一個'
+    6 => '前一個',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -386,7 +398,7 @@ $LANG08 = array(
     25 => '為幫助我們防止系統被濫用，你必須登入。',
     26 => '這個表格允許你送電子郵件到你選擇的用戶中。請填寫所有的欄位。',
     27 => '短信',
-    28 => "%s 寫道：",
+    28 => '%s 寫道：',
     29 => "來自於 {$_CONF['site_name']} 的每日文摘，給予：",
     30 => ' 每日的時事通訊，給予：',
     31 => '標題',
@@ -496,14 +508,15 @@ $LANG11 = array(
     1 => '有什麼是相關的',
     2 => '寄故事給朋友',
     3 => '可印的故事格式',
-    4 => '故事選項'
+    4 => '故事選項',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "你需要登入才可發表 %s ",
+    1 => '你需要登入才可發表 %s ',
     2 => '登入',
     3 => '新用戶',
     4 => '發表一件事',
@@ -527,7 +540,7 @@ $LANG12 = array(
     22 => '錯誤：缺少欄位',
     23 => '請填寫所有的欄位',
     24 => '你發表的已被儲存了',
-    25 => "你的 %s 已被儲存了",
+    25 => '你的 %s 已被儲存了',
     26 => '限速',
     27 => '用戶名',
     28 => '主題',
@@ -646,7 +659,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => '事件編輯器',
-    2 => '',
+    2 => 'Error',
     3 => '事件標題',
     4 => '事件 URL',
     5 => '事件開始日期',
@@ -666,7 +679,10 @@ $LANG22 = array(
     19 => '管理員首頁',
     20 => '儲存',
     21 => '取消',
-    22 => '刪除'
+    22 => '刪除',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -713,7 +729,7 @@ $LANG24 = array(
     9 => '預覽',
     10 => '取消',
     11 => '刪除',
-    12 => '',
+    12 => 'ID',
     13 => '標題',
     14 => '主題',
     15 => '日期',
@@ -725,7 +741,7 @@ $LANG24 = array(
     21 => '',
     22 => '故事清單',
     23 => '點擊下面的故事編號可修改或刪除它，點擊下面的故事標題可觀看它，點擊上面的新故事可創造一個新的。',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => '故事預覽',
     27 => '',
@@ -758,7 +774,12 @@ $LANG24 = array(
     54 => '附加圖像未被使用',
     55 => '儲存你的故事時發生以下錯誤。請改正這些錯誤再儲存',
     56 => '顯示主題圖示',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -768,15 +789,15 @@ $LANG25 = array(
     1 => '模式',
     2 => 'Please enter a question and at least one answer.',
     3 => '投票發起日',
-    4 => "投票 %s 被儲存了",
+    4 => '投票 %s 被儲存了',
     5 => '編輯投票',
     6 => '投票編號',
     7 => '(不可有空隔)',
     8 => '出現在首頁上',
     9 => '問題',
     10 => '答案 / 投票',
-    11 => "取得投票 (%s) 答案時發生錯誤。",
-    12 => "取得投票 (%s) 問題時發生錯誤。",
+    11 => '取得投票 (%s) 答案時發生錯誤。',
+    12 => '取得投票 (%s) 問題時發生錯誤。',
     13 => '新加投票',
     14 => '儲存',
     15 => '取消',
@@ -820,7 +841,9 @@ $LANG27 = array(
     21 => '刪除',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -858,7 +881,7 @@ $LANG28 = array(
     29 => '路徑',
     30 => '輸入',
     31 => '新用戶',
-    32 => "處理完成。輸入了 %d 個；%d 個失敗",
+    32 => '處理完成。輸入了 %d 個；%d 個失敗',
     33 => '遞交',
     34 => '錯誤︰你必須指定上載檔案。',
     35 => 'Last Login',
@@ -963,8 +986,8 @@ $LANG31 = array(
     19 => '注意︰如果你希望發送訊息到本站所有的成員，請在小組選擇欄位中選擇 Logged-in Users group。',
     20 => "已發送 <successcount> 個訊息，有 <failcount> 個不能發送。發送的細節在下面。如不想看細節，你可<a href=\"{$_CONF['site_admin_url']}/mail.php\">發送其它訊息</a> 或 <a href=\"{$_CONF['site_admin_url']}/moderation.php\">反回管理員首頁</a>。",
     21 => '失敗',
-    22 => '成功\ ',
-    23 => '全部成功\ ',
+    22 => '成功 ',
+    23 => '全部成功 ',
     24 => '全部失敗',
     25 => '-- 請選小組 --',
     26 => '請填寫所有表格上的欄位和選擇一個小組。'
@@ -1004,7 +1027,10 @@ $LANG32 = array(
     28 => 'Plug-in 版本',
     29 => 'Geeklog 版本',
     30 => '刪除 Plug-in？',
-    31 => '你肯定要刪除這個 Plug-in 嗎？這麼會刪除所有有關這 Plug-in 的文件、資料和資料結構。如果你肯定的，請再點擊下面表格中的刪除鈕。'
+    31 => '你肯定要刪除這個 Plug-in 嗎？這麼會刪除所有有關這 Plug-in 的文件、資料和資料結構。如果你肯定的，請再點擊下面表格中的刪除鈕。',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1112,7 +1138,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1171,7 +1199,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1218,12 +1247,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => '要求登入',
     2 => '抱歉，要求登入才可存取這個區域。',
     3 => '登入',
     4 => '新用戶'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

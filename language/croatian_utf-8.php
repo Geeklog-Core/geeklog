@@ -26,22 +26,6 @@
 #
 ###############################################################################
 
-###############################################################################
-#
-# NAPOMENA:
-# U config.php morate charset takoðer podesiti iso-8859-2 da bi vam ispravno
-# prikazivalo hrvatska slova.
-#
-# Ukoliko primjetite da ne¹to nije dobro prevedeno, ili da ima bolja rijeè
-# javite na spprh@spph.org pa budemo to ispravili
-#
-# U prevaðanju sudjelovali: Kristina Jordan, Roberto Biliæ
-#
-# File je preveden za potrebe sitea www.spph.org ali se mo¾e i drugdje
-# BESPLATNO koristiti u skladu s GNU/GPL licencom.
-#
-###############################################################################
-
 $LANG_CHARSET = 'utf-8';
 
 ###############################################################################
@@ -166,7 +150,12 @@ $LANG01 = array(
     105 => '©alji email',
     106 => 'Pregledano',
     107 => 'Test',
-    108 => 'Bri¹i Cache'
+    108 => 'Bri¹i Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -203,12 +192,12 @@ $LANG03 = array(
     7 => 'Va¹ posljedni komentar je ',
     8 => " sekundi.  Stranice zahtjevaju da proðe vi¹e od {$_CONF['commentspeedlimit']} sekundi meðu slanjem komentara",
     9 => 'Komentar',
-    10 => '',
+    10 => 'Send Report',
     11 => '©alji komentar',
     12 => 'Molim popunite Naziv teksta i Komentar da bi bilo poslano, jer je to neophodno za slanje.',
     13 => 'Va¹e informacije',
     14 => 'Pregled',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Naslov',
     17 => 'Gre¹ka',
     18 => 'Va¾no',
@@ -217,7 +206,10 @@ $LANG03 = array(
     21 => 'Prije nego po¹aljete komentar, molim proèitajte komentare ostalih korisnika da bi se izbjeglo ponavljanje.',
     22 => 'Koristite jednostavni naziv teksta da bi bilo jasno o èemu je rijeæ u va¹em tekstu.',
     23 => 'Va¹ email neèe biti javno dostupan.',
-    24 => 'Anonimni korisnik'
+    24 => 'Anonimni korisnik',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -328,7 +320,9 @@ $LANG04 = array(
     102 => 'Email od korisnika',
     103 => 'Dozvoli primanje emailova od administratora',
     104 => 'Prika¾i online status',
-    105 => 'Poka¾i tko je online u bloku'
+    105 => 'Poka¾i tko je online u bloku',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -337,10 +331,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Nema novosti za prikazivanje.',
     2 => 'There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive',
-    3 => " za temu %s",
+    3 => ' za temu %s',
     4 => 'Dana¹nji va¾niji tekstovi',
     5 => 'Iduæi',
-    6 => 'Prija¹nji'
+    6 => 'Prija¹nji',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -395,7 +391,7 @@ $LANG08 = array(
     25 => 'Morate biti prijavljeni da bi mogli koristiti ovaj.  By having you log in, it helps us prevent misuse of the system',
     26 => 'Ovaj formular vam dozvoljava slanje emailova odreðenim korisnicima. Potrebno je popuniti sve podatke.',
     27 => 'Kratka poruka',
-    28 => "%s pi¹e: ",
+    28 => '%s pi¹e: ',
     29 => "Ovo su dnevne obavijesti sa {$_CONF['site_name']} za ",
     30 => ' Dnevne obavijesti za ',
     31 => 'Naziv',
@@ -505,14 +501,15 @@ $LANG11 = array(
     1 => 'What\'s Related',
     2 => 'Po¹alji tekst emailom',
     3 => 'Tekst za printanje',
-    4 => 'Opcije teksta'
+    4 => 'Opcije teksta',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "To submit a %s you are required to be logged in as a user.",
+    1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Prijava',
     3 => 'Novi korisnik',
     4 => 'Submit a Event',
@@ -536,7 +533,7 @@ $LANG12 = array(
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
-    25 => "Your %s submission has been saved successfully.",
+    25 => 'Your %s submission has been saved successfully.',
     26 => 'Speed Limit',
     27 => 'Korisnièko ime',
     28 => 'Topic',
@@ -655,7 +652,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Event Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Event Title',
     4 => 'Event URL',
     5 => 'Event Start Date',
@@ -675,7 +672,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'save',
     21 => 'cancel',
-    22 => 'delete'
+    22 => 'delete',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -722,7 +722,7 @@ $LANG24 = array(
     9 => 'preview',
     10 => 'poni¹ti',
     11 => 'obri¹i',
-    12 => '',
+    12 => 'ID',
     13 => 'Naslov',
     14 => 'Tema',
     15 => 'Datum',
@@ -734,7 +734,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Popis tekstova',
     23 => 'To modify or delete a story, click on that story\'s number below. To view a story, click on the title of the story you wish to view. To create a new story click on new story above.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Story Preview',
     27 => '',
@@ -767,7 +767,12 @@ $LANG24 = array(
     54 => 'Attached Images Not Used',
     55 => 'The following errors occured while trying to save your story.  Please correct these errors before saving',
     56 => 'Prika¾i ikonu teme',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -777,15 +782,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Poll Created',
-    4 => "Poll %s saved",
+    4 => 'Poll %s saved',
     5 => 'Edit Poll',
     6 => 'Poll ID',
     7 => '(do not use spaces)',
     8 => 'Appears on Homepage',
     9 => 'Question',
     10 => 'Answers / Votes',
-    11 => "There was an error getting poll answer data about the poll %s",
-    12 => "There was an error getting poll question data about the poll %s",
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
     13 => 'Create Poll',
     14 => 'snimi',
     15 => 'poni¹ti',
@@ -829,7 +834,9 @@ $LANG27 = array(
     21 => 'delete',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -1013,7 +1020,10 @@ $LANG32 = array(
     28 => 'Plug-in Version',
     29 => 'Geeklog Version',
     30 => 'Delete Plug-in?',
-    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1121,7 +1131,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1180,7 +1192,8 @@ $LANG_ACCESS = array(
     'remove' => 'Makni',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1192,7 +1205,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
@@ -1227,6 +1240,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Potrebna prijava',
@@ -1234,4 +1248,25 @@ $LANG_LOGIN = array(
     3 => 'Prijava',
     4 => 'Novi korisnik'
 );
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
 ?>

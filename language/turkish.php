@@ -150,7 +150,12 @@ $LANG01 = array(
     105 => 'Kullanýcýlara Mesaj',
     106 => 'Okunma',
     107 => 'GL Sürüm Testi',
-    108 => 'Önbelleði Temizle'
+    108 => 'Önbelleði Temizle',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -187,12 +192,12 @@ $LANG03 = array(
     7 => 'Son yorumunuz ',
     8 => " saniye önceydi.  Bu sitede iki yorum arasýnda minimum {$_CONF['commentspeedlimit']} saniye olmalýdýr.",
     9 => 'Yorum',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Yorumu Ekle',
     12 => 'Lütfen Baþlýk ve Yorum bloklarýný doldurunuz.',
     13 => 'Bilgileriniz',
     14 => 'Ön Ýzleme',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Baþlýk',
     17 => 'Hata',
     18 => 'Önemli Bilgiler',
@@ -201,7 +206,10 @@ $LANG03 = array(
     21 => 'Baþka insanlarýn yorumlarýný okuyunuz ki ayný þeyleri bir de siz söylememiþ olun.',
     22 => 'Yorumunuzun konusunu içeriðini iyi anlatan bir þekilde seçiniz.',
     23 => 'Email adresiniz diðer kullanýcýlara GÖSTERÝLMEYECEKTÝR.',
-    24 => 'Herhangi Kullanýcý'
+    24 => 'Herhangi Kullanýcý',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -312,7 +320,9 @@ $LANG04 = array(
     102 => 'Üyelerden Email',
     103 => 'Diðer üyelerden email izni',
     104 => 'Aktifliðinizin Görüntülenmesi',
-    105 => 'Aktif Kullanýcýlar Bloðunda görüntülenme'
+    105 => 'Aktif Kullanýcýlar Bloðunda görüntülenme',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -321,10 +331,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Gösterilecek hiç haber yok',
     2 => 'Gösterilecek hiç haber yazýsý yok. Bu konu hakkýnda hiç haber olmayabilir, veya belirlediðiniz ayarlar yüzünden gösterilemiyor olabilir',
-    3 => " %s için",
+    3 => ' %s için',
     4 => 'Günün Yazýsý',
     5 => 'Sonraki',
-    6 => 'Önceki'
+    6 => 'Önceki',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -379,7 +391,7 @@ $LANG08 = array(
     25 => 'Bu özelliði kullanabilmeniz için sisteme giriþ yapmanýz gerekmektedir. Sitemize giriþ yapmanýz sayesinde sitemizin kötü kullanýmýný önlemiþ olursunuz',
     26 => 'Bu form sizin seçtiðiniz kullanýcýya email yollamanýzý saðlar. Tüm alanlar mecburidir.',
     27 => 'Mesaj',
-    28 => "%s: ",
+    28 => '%s: ',
     29 => "Bu mesaj {$_CONF['site_name']} günlük özetidir. ",
     30 => ' Günlük Haber Özeti ',
     31 => 'Baþlýk',
@@ -489,14 +501,15 @@ $LANG11 = array(
     1 => 'Ýlgili',
     2 => 'Arkadaþýna Gönder',
     3 => 'Basýlmaya Uygun Þekli',
-    4 => 'Seçenekler'
+    4 => 'Seçenekler',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "%s gönderebilmek için sisteme bir kullanýcý olarak giriþ yapmýþ olmanýz gerekiyor.",
+    1 => '%s gönderebilmek için sisteme bir kullanýcý olarak giriþ yapmýþ olmanýz gerekiyor.',
     2 => 'Sisteme gir',
     3 => 'Yeni Kullanýcý',
     4 => 'Etkinlik Ekle',
@@ -520,7 +533,7 @@ $LANG12 = array(
     22 => 'Hata: Boþ alanlar var',
     23 => 'Formdaki tüm alanlarý doldurunuz. Hepsinin doldurulmasý gerekmektedir.',
     24 => 'Gönderiniz Kaydedildi',
-    25 => "%s gönderiniz baþarýyla kaydedildi.",
+    25 => '%s gönderiniz baþarýyla kaydedildi.',
     26 => 'Hýz Limiti',
     27 => 'Kullanýcý Acý',
     28 => 'Konu',
@@ -639,7 +652,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Etkinlik Düzenleyicisi',
-    2 => '',
+    2 => 'Error',
     3 => 'Etkinlik Baþlýðý',
     4 => 'Etkinlik Adresi',
     5 => 'Etkinlik Baþlangýç Tarihi',
@@ -659,7 +672,10 @@ $LANG22 = array(
     19 => 'Kontrol Ana Sayfasý',
     20 => 'Kaydet',
     21 => 'Vazgeç',
-    22 => 'Sil'
+    22 => 'Sil',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -706,7 +722,7 @@ $LANG24 = array(
     9 => 'ön izleme',
     10 => 'vazgeç',
     11 => 'sil',
-    12 => '',
+    12 => 'ID',
     13 => 'Baþlýk',
     14 => 'Konu',
     15 => 'Tarih',
@@ -718,7 +734,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Yazý Listesi',
     23 => 'Bir yazýyý deðiþtirmek veya silmek istiyorsanýz, yazýnýn numarasýna basýnýz. Bir yazýyý görüntülemek istiyorsanýz, yazýnýn baþlýðýna basýnýz. Yeni bir yazý yaratmak istiyorsanýz, yukarýdaki Yeni Yazý düðmesine basýnýz.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Yazý Ön Ýzlemi',
     27 => '',
@@ -751,7 +767,12 @@ $LANG24 = array(
     54 => 'Eklenen Resimler Kullanýlmadý',
     55 => 'Aþaðýdaki hatalar yazýnýzý kaydetmeye çalýþýrken oluþtu.  Lütfen listelenen hatalarý kontrol edip düzeltiniz',
     56 => 'Sembolü Göster',
-    57 => 'Ölçeksiz resim göster'
+    57 => 'Ölçeksiz resim göster',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -761,15 +782,15 @@ $LANG25 = array(
     1 => 'Özellikleri',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Yaratýlma Tarihi',
-    4 => "Anket %s kaydedildi",
+    4 => 'Anket %s kaydedildi',
     5 => 'Ankati Deðiþtir',
     6 => 'Anket Tanýmlayýcý',
     7 => '(boþluk kullanmayýn)',
     8 => 'Ana Sayfada Gözükecek',
     9 => 'Soru',
     10 => 'Cevaplar / Oylar',
-    11 => "%s Anket cevap verilerini alýrken bir sorun oluþtu",
-    12 => "%s Anket soru verilerini alýrken bir sorun oluþtu",
+    11 => '%s Anket cevap verilerini alýrken bir sorun oluþtu',
+    12 => '%s Anket soru verilerini alýrken bir sorun oluþtu',
     13 => 'Anket Yarat',
     14 => 'kaydet',
     15 => 'vazgeç',
@@ -813,7 +834,9 @@ $LANG27 = array(
     21 => 'sil',
     22 => 'Varsayýlan',
     23 => 'bildirilen yeni yazý için bunu varsayýlan baþlýk yap',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -997,7 +1020,10 @@ $LANG32 = array(
     28 => 'Eklenti Sürümü',
     29 => 'Geeklog Sürümü',
     30 => 'Eklentiyi Sil?',
-    31 => 'Bu eklentiyi silmek istediðinizden eminmisiniz? Bunu yaparsanýz eklentinin kullandýðý tüm veriler ve veri yapýlarý da silinecektir. Eminseniz Sil düðmesine bir daha basýnýz.'
+    31 => 'Bu eklentiyi silmek istediðinizden eminmisiniz? Bunu yaparsanýz eklentinin kullandýðý tüm veriler ve veri yapýlarý da silinecektir. Eminseniz Sil düðmesine bir daha basýnýz.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1105,7 +1131,9 @@ $MESSAGE = array(
     56 => 'Saðlanan email adresi zaten baþka bir hesap tarafýndan kullanýlýyor.',
     57 => 'Hesabýnýz baþarýyla silindi.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1164,7 +1192,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1211,12 +1240,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Sisteme giriþ yapmanýz gerekiyor',
     2 => 'Üzgünüm, bu alana giriþ yapabilmeniz için bir kullanýcý olarak giriþ yapmanýz gerekiyor.',
     3 => 'Giriþ yap',
     4 => 'Yeni Kullanýcý'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

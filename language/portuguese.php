@@ -147,7 +147,12 @@ $LANG01 = array(
     105 => 'Enviar email',
     106 => 'Visitas',
     107 => 'Teste à versão do GL',
-    108 => 'Limpar Cache'
+    108 => 'Limpar Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -184,12 +189,12 @@ $LANG03 = array(
     7 => 'O seu último comentário foi ',
     8 => " segundos atrás.  Este site a pelo menos {$_CONF['commentspeedlimit']} segundos entre comentários",
     9 => 'Comentário',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Enviar comentário',
     12 => 'Preencha os campos título e comentário. Estes campos são necessários para o envio de um comentário.',
     13 => 'A sua informação',
     14 => 'Previsualizar',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Título',
     17 => 'Erro',
     18 => 'A ter em conta',
@@ -198,7 +203,10 @@ $LANG03 = array(
     21 => 'Leia as mensagens das outras pessoas antes de fazer o seu comentário para evitar comentários em duplicado.',
     22 => 'Utilize um assunto objectivo que descreva a que se refere o seu comentário.',
     23 => 'O seu endereço de email não é tornado público.',
-    24 => 'Utilizador anónimo'
+    24 => 'Utilizador anónimo',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -309,7 +317,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -318,10 +328,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Nenhuma notícia para mostrar',
     2 => 'Não há notícias novas para mostrar.  Pode não haver notícias para este tópico ou as suas definições são demasiado restrictivas',
-    3 => " para o tópico %s",
+    3 => ' para o tópico %s',
     4 => 'Artigos do dia',
     5 => 'Próxima',
-    6 => 'Anterior'
+    6 => 'Anterior',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -376,7 +388,7 @@ $LANG08 = array(
     25 => 'Deve efectuar o login para poder utilizar esta opção.  Efectuando o login, ajuda-nos a prevenir a utilização fraudulenta do sistema',
     26 => 'Este formulário permite-lhe enviar um email para o utilizador seleccionado.  É necessário o preenchimento de todos os campos.',
     27 => 'Mensagem curta',
-    28 => "%s escreveu: ",
+    28 => '%s escreveu: ',
     29 => "Este é o envio diário automático de {$_CONF['site_name']} para ",
     30 => ' Novidades diárias para ',
     31 => 'Titulo',
@@ -486,14 +498,15 @@ $LANG11 = array(
     1 => 'Artigos relaccionados',
     2 => 'Enviar notícia a um amigo',
     3 => 'Versão para impressão',
-    4 => 'Opções da notícia'
+    4 => 'Opções da notícia',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Para enviar um %s deve efectuar o login como utilizador.",
+    1 => 'Para enviar um %s deve efectuar o login como utilizador.',
     2 => 'Login',
     3 => 'Novo utilizador',
     4 => 'Enviar um evento',
@@ -517,7 +530,7 @@ $LANG12 = array(
     22 => 'Erro: Faltam campos',
     23 => 'Preencha todos os campos do formulário.  Todos eles são necessários.',
     24 => 'Envio registado',
-    25 => "O seu envio %s foi registado com sucesso.",
+    25 => 'O seu envio %s foi registado com sucesso.',
     26 => 'Limite de velocidade',
     27 => 'Utilizador',
     28 => 'Tópico',
@@ -636,7 +649,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Editor de eventos',
-    2 => '',
+    2 => 'Error',
     3 => 'Título',
     4 => 'URL',
     5 => 'Data de início',
@@ -656,7 +669,10 @@ $LANG22 = array(
     19 => 'Administração',
     20 => 'guardar',
     21 => 'cancelar',
-    22 => 'apagar'
+    22 => 'apagar',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -703,7 +719,7 @@ $LANG24 = array(
     9 => 'previsualizar',
     10 => 'cancelar',
     11 => 'apagar',
-    12 => '',
+    12 => 'ID',
     13 => 'Título',
     14 => 'Tópico',
     15 => 'Data',
@@ -715,7 +731,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Lista de notícias',
     23 => 'Para modificar ou apagar uma notícia, clique no número da notícia a seguir. Para ver uma notícia, clique no título da notícia que pretende ver. Para introduzir uma notícia clique em Inserir notícia a seguir.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Previsualização de notícias',
     27 => '',
@@ -748,7 +764,12 @@ $LANG24 = array(
     54 => 'Imagens associadas e não utilizadas',
     55 => 'Ocorreram os seguintes erros ao tentar guardar a sua notícia.  Por favor, corrija estes erros antes de guardar',
     56 => 'Mostrar imagem de tópico',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -758,15 +779,15 @@ $LANG25 = array(
     1 => 'Modo',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Data de criação',
-    4 => "Votação %s guardada",
+    4 => 'Votação %s guardada',
     5 => 'Editar votação',
     6 => 'ID da votação',
     7 => '(não utilize espaços)',
     8 => 'Aparece na página inicial',
     9 => 'Pergunta',
     10 => 'Respostas / Votos',
-    11 => "Foi encontrado um erro ao carregar uma resposta da votação %s",
-    12 => "Foi encontrado um erro ao carregar a questão da votação %s",
+    11 => 'Foi encontrado um erro ao carregar uma resposta da votação %s',
+    12 => 'Foi encontrado um erro ao carregar a questão da votação %s',
     13 => 'Criar Votação',
     14 => 'guardar',
     15 => 'cancelar',
@@ -810,7 +831,9 @@ $LANG27 = array(
     21 => 'apagar',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -994,7 +1017,10 @@ $LANG32 = array(
     28 => 'Versão do Plug-in',
     29 => 'Versão do GL',
     30 => 'Apagar o Plug-in?',
-    31 => 'Tem a certeza que pretende apagar este plug-in?  Ao efectuar isto remove todos os dados e estructuras que este plug-in utiliza. Se tem a certeza, clique em apagar novamente.'
+    31 => 'Tem a certeza que pretende apagar este plug-in?  Ao efectuar isto remove todos os dados e estructuras que este plug-in utiliza. Se tem a certeza, clique em apagar novamente.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1102,7 +1128,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1161,7 +1189,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1208,12 +1237,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Login necessário',
     2 => 'Queira desculpar, para aceder a esta área necessita de efectuar o login como utilizador.',
     3 => 'Login',
     4 => 'Novo utilizador'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

@@ -29,13 +29,12 @@
 ###############################################################################
 
 $LANG_CHARSET = 'iso-8859-1';
-// setlocale ( LC_TIME, 'nl_NL.ISO8859-1');
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:    $LANG - variable name
-#                    XX - file id number
-#                    YY - phrase id number
+# $LANGXX[YY]:  $LANG - variable name
+#               XX    - file id number
+#               YY    - phrase id number
 ###############################################################################
 
 ###############################################################################
@@ -153,7 +152,12 @@ $LANG01 = array(
     105 => 'Email gebruikers',
     106 => 'Opgevraagd',
     107 => 'GL Versie Test',
-    108 => 'Leeg Cache'
+    108 => 'Leeg Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -190,12 +194,12 @@ $LANG03 = array(
     7 => 'Uw laatste reactie was ',
     8 => " seconden geleden. Een beveiliging vereist tenminste {$_CONF['commentspeedlimit']} seconden tussen reacties",
     9 => 'Reactie',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Verstuur reactie',
     12 => 'Vul a.u.b. de velden bij \'Titel\' en \'Reactie\' in. Deze zijn noodzakelijk voor het versturen van een reactie.',
     13 => 'Uw informatie',
     14 => 'Preview',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Titel',
     17 => 'Fout',
     18 => 'Niet vergeten',
@@ -204,7 +208,10 @@ $LANG03 = array(
     21 => 'Lees ook de andere berichten voordat u uw bericht gaat versturen. Dit, om te voorkomen dat vele identieke berichten ontstaan.',
     22 => 'Gebruik een helder onderwerp, dat uw bericht juist omschrijft.',
     23 => 'Uw email adres zal NIET worden weergegeven.',
-    24 => 'Anonieme gebruiker'
+    24 => 'Anonieme gebruiker',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -315,7 +322,9 @@ $LANG04 = array(
     102 => 'Email van Gebruikers',
     103 => 'Accepteer email van andere gebruikers',
     104 => 'Toon Online Status',
-    105 => 'Vermeld me in het blok Who\'s Online'
+    105 => 'Vermeld me in het blok Who\'s Online',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -327,7 +336,9 @@ $LANG05 = array(
     3 => 'voor thema %s',
     4 => 'Hoofdartikel',
     5 => 'Volgende',
-    6 => 'Vorige'
+    6 => 'Vorige',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -382,7 +393,7 @@ $LANG08 = array(
     25 => 'U moet ingelogd zijn, om van deze mogelijkheid gebruik te kunnen maken. Doordat u ingelogd bent, kan worden voorkomen dat er misbruik van het portaal wordt gemaakt',
     26 => 'Dit formulier geeft u de mogelijkheid om een email naar de geselekteerde gebruiker te sturen. Alle velden zijn vereist.',
     27 => 'Kort bericht',
-    28 => '%s schreef: ",
+    28 => '%s schreef: ',
     29 => "Dit is het dagelijks overzicht van {$_CONF['site_name']} voor ",
     30 => ' Dagelijkse niewsbrief voor ',
     31 => 'Titel',
@@ -492,7 +503,8 @@ $LANG11 = array(
     1 => 'Gerelateerd',
     2 => 'Email artikel naar collega',
     3 => 'Afdrukversie artikel',
-    4 => 'Artikel opties'
+    4 => 'Artikel opties',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -554,7 +566,6 @@ $LANG12 = array(
     53 => 'Aanmelden account'
 );
 
-
 ###############################################################################
 # ADMIN PHRASES - These are file phrases used in admin scripts
 ###############################################################################
@@ -573,7 +584,7 @@ $LANG20 = array(
 );
 
 ###############################################################################
-# block.php
+# admin/block.php
 
 $LANG21 = array(
     1 => 'Onvoldoende rechten',
@@ -643,7 +654,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Evenement Editor',
-    2 => '',
+    2 => 'Error',
     3 => 'Evenement Titel',
     4 => 'Evenement URL',
     5 => 'Start Datum',
@@ -663,7 +674,10 @@ $LANG22 = array(
     19 => 'Beheerder Home',
     20 => 'opslaan',
     21 => 'annuleren',
-    22 => 'verwijderen'
+    22 => 'verwijderen',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -710,7 +724,7 @@ $LANG24 = array(
     9 => 'preview',
     10 => 'annuleren',
     11 => 'verwijderen',
-    12 => '',
+    12 => 'ID',
     13 => 'Titel',
     14 => 'Thema',
     15 => 'Datum',
@@ -722,7 +736,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Artikel Lijst',
     23 => 'Om een Artikel te wijzigen of te verwijderen, klik op het betreffende artikelnummer hieronder. Om een artikel op te roepen, klik op de titel van het betreffende Artikel. Om een nieuw Artikel aan te leggen, klik op \'Nieuw Artikel\' hierboven.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Artikel Preview',
     27 => '',
@@ -755,7 +769,12 @@ $LANG24 = array(
     54 => 'Bijgesloten beelden zijn niet opgenomen in tekst',
     55 => 'De hierna volgende problemen zijn opgetreden bij het opslaan van uw artikel. Gelieve deze op te lossen en daarna opnieuw op te slaan.',
     56 => 'Toon Thema Icon',
-    57 => 'Toon beeld in originele grootte'
+    57 => 'Toon beeld in originele grootte',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -803,7 +822,7 @@ $LANG27 = array(
     7 => 'Gelieve het Thema ID en de Thema Naam in te vullen.',
     8 => 'Thema Manager',
     9 => 'Om een Thema te wijzigen of te verwijderen, klik op het betreffende Thema. Uw toegangsniveau voor ieder Thema staat daar tussen haakjes.<br>Om een nieuw Thema aan te leggen, klik op \'Nieuw Thema\' hierboven.',
-    10=> 'Sorteer Volgorde',
+    10 => 'Sorteer Volgorde',
     11 => 'Artikelen/Pagina',
     12 => 'Geen toegang',
     13 => "U heeft geprobeerd een Thema op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/topic.php\'>Terug naar de Thema administratie pagina</a>.",
@@ -817,7 +836,9 @@ $LANG27 = array(
     21 => 'verwijderen',
     22 => 'Standaard',
     23 => 'Verhef dit thema tot standaard voor nieuwe artikelen',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -861,7 +882,6 @@ $LANG28 = array(
     35 => 'Laatste Login',
     36 => '(nooit)'
 );
-
 
 ###############################################################################
 # admin/moderation.php
@@ -938,6 +958,7 @@ $LANG30 = array(
 
 ###############################################################################
 # admin/mail.php
+
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Email Utility",
     2 => 'From',
@@ -965,6 +986,46 @@ $LANG31 = array(
     24 => 'Niets verstuurd',
     25 => '-- Selekteer Group --',
     26 => 'Gelieve alle velden van het formulier in te vullen en tevens een groep gebruikers te kiezen.'
+);
+
+###############################################################################
+# admin/plugins.php
+
+$LANG32 = array(
+    1 => 'Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href=\\'http://www.geeklog.net\\' target=\\'_blank\\'>Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \\'onveilige\\' commando\\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt byzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.',
+    2 => 'Plug-in Installatie Disclaimer',
+    3 => 'Plug-in Installatie Formulier',
+    4 => 'Plug-in File',
+    5 => 'Plug-in Lijst',
+    6 => 'Waarschuwing: Deze Plug-in is al Actief!',
+    7 => 'De plug-in die u probeert te installeren is er al. gelieve eerst deze plugin te verwijderen voordat u de installatie opnieuw probeert.',
+    8 => 'Plugin Compatibility Check Failed',
+    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href=http://www.geeklog.net>Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plug-in.',
+    10 => '<br><strong>Er zijn geen plugins actief op dit moment.</strong><br><br>',
+    11 => 'Om een plug-in te wijzigen of te verwijderen, klik op het numer van deze plug-in\'s hieronder. Om een introductie over deze plug-in op te vragen, klik op de naam van de plug-in: dit brengt u naar de website van de  plug-in. Om een plug-in te installeren of te upgraden, klik op \'Nieuwe Plug-in\' hierboven.',
+    12 => 'geen Naam voor de plug-in gevonden door de plugineditor()',
+    13 => 'Plugin Editor',
+    14 => 'Nieuwe Plug-in',
+    15 => 'Beheerder Home',
+    16 => 'Plug-in Naam',
+    17 => 'Plug-in Versie',
+    18 => 'Geeklog Versie',
+    19 => 'Toestaan',
+    20 => 'Ja',
+    21 => 'Nee',
+    22 => 'Installeer',
+    23 => 'Save',
+    24 => 'annuleren',
+    25 => 'Verwijderen',
+    26 => 'Plug-in Naam',
+    27 => 'Plug-in Homepage',
+    28 => 'Plug-in Versie',
+    29 => 'Geeklog Versie',
+    30 => 'Plug-in Verwijderen?',
+    31 => 'Weet u het zeker dat deze plug-in verwijderd mag worden? Let op! Hiermee worden tevens alle bestanden, data en structuren verwijderd die deze plug-in gebruikt. Alleen als u zeker bent, klikt u nogmaals op \'Verwijderen\' in het formulier hieronder.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1011,10 +1072,9 @@ $LANG33 = array(
 );
 
 ###############################################################################
-# admin/plugins.php
 # confirmation and error messages
 
-$MESSAGE = array (
+$MESSAGE = array(
     1 => "Uw wachtwoord is naar u verstuurd, en kan elk moment in uw inbox arriveren. Volg a.u.b. de instructies in het bericht, en we bedanken u voor het gebruik maken van {$_CONF['site_name']}",
     2 => "Bedankt voor uw bijdrage aan {$_CONF['site_name']}. Het is aan een beheerder aangeboden voor plaatsing. Indien geschikt bevonden, wordt het geplaatst op het portaal.",
     3 => "Bedankt voor uw bijdrage aan {$_CONF['site_name']}. Het is aan een beheerder aangeboden voor plaatsing. Indien geschikt bevonden, zal uw link geplaatst worden in het <a href={$_CONF['site_url']}/links.php>links</a> gedeelte.",
@@ -1073,44 +1133,12 @@ $MESSAGE = array (
     56 => 'Het opgegeven email adres is reeds in gebruik bij een ander account. Dit is beveiligd.',
     57 => 'Uw account is met succes verwijderd.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
-// for plugins.php
-
-$LANG32 = array (
-    1 => "Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href=\'http://www.geeklog.net\' target=\'_blank\'>Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \'onveilige\' commando\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt byzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.",
-    2 => 'Plug-in Installatie Disclaimer',
-    3 => 'Plug-in Installatie Formulier',
-    4 => 'Plug-in File',
-    5 => 'Plug-in Lijst',
-    6 => 'Waarschuwing: Deze Plug-in is al Actief!',
-    7 => 'De plug-in die u probeert te installeren is er al. gelieve eerst deze plugin te verwijderen voordat u de installatie opnieuw probeert.',
-    8 => 'Plugin Compatibility Check Failed',
-    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href=http://www.geeklog.net>Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plug-in.',
-    10 => '<br><strong>Er zijn geen plugins actief op dit moment.</strong><br><br>',
-    11 => 'Om een plug-in te wijzigen of te verwijderen, klik op het numer van deze plug-in\'s hieronder. Om een introductie over deze plug-in op te vragen, klik op de naam van de plug-in: dit brengt u naar de website van de  plug-in. Om een plug-in te installeren of te upgraden, klik op \'Nieuwe Plug-in\' hierboven.',
-    12 => 'geen Naam voor de plug-in gevonden door de plugineditor()',
-    13 => 'Plugin Editor',
-    14 => 'Nieuwe Plug-in',
-    15 => 'Beheerder Home',
-    16 => 'Plug-in Naam',
-    17 => 'Plug-in Versie',
-    18 => 'Geeklog Versie',
-    19 => 'Toestaan',
-    20 => 'Ja',
-    21 => 'Nee',
-    22 => 'Installeer',
-    23 => 'Save',
-    24 => 'annuleren',
-    25 => 'Verwijderen',
-    26 => 'Plug-in Naam',
-    27 => 'Plug-in Homepage',
-    28 => 'Plug-in Versie',
-    29 => 'Geeklog Versie',
-    30 => 'Plug-in Verwijderen?',
-    31 => 'Weet u het zeker dat deze plug-in verwijderd mag worden? Let op! Hiermee worden tevens alle bestanden, data en structuren verwijderd die deze plug-in gebruikt. Alleen als u zeker bent, klikt u nogmaals op \'Verwijderen\' in het formulier hieronder.'
-);
+###############################################################################
 
 $LANG_ACCESS = array(
     'access' => 'Toegang',
@@ -1160,19 +1188,18 @@ $LANG_ACCESS = array(
     'canteditroot' => 'U probeert de zgn. \'Root group\' te wijzigen, maar u behoort daar niet toe: de toegang is nu geweigerd. Gelieve contact op te nemen met de Beheerder indien u dit niet terecht vindt.',
     'listusers' => 'Overzicht Gebruikers',
     'listthem' => 'lijst',
-    'usersingroup' => 'Gebruikers in groep %s'
+    'usersingroup' => 'Gebruikers in groep %s',
+    'usergroupadmin' => 'User Group Administration',
+    'add' => 'Add',
+    'remove' => 'Remove',
+    'availmembers' => 'Available Members',
+    'groupmembers' => 'Group Members',
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
-#admin/word.php
-$LANG_WORDS = array(
-    'editor' => 'Word Replacement editor',
-    'wordid' => 'Word ID',
-    'intro' => 'Om een woord te wijzigen of te verwijderen, klik dan op dat woord. Om een nieuw woord aan te leggen, klik op \'Nieuw Woord\' hierboven.',
-    'wordmanager' => 'Word Manager',
-    'word' => 'Woord',
-    'replacementword' => 'Vervangen met',
-    'newword' => 'Nieuw Woord'
-);
+###############################################################################
+# admin/database.php
 
 $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Laatste 10 Back-ups',
@@ -1180,7 +1207,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Database backup met succes uitgevoerd.',
     'no_backups' => 'Geen backups aanwezig',
     'db_explanation' => 'Om een nieuwe backup van het portaal te (laten) maken, klik op de knop hieronder',
-    'not_found' => 'Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer  de definitie voor <strong>\$_DB_mysqldump_path</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>',
+    'not_found' => "Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer  de definitie voor <strong>\\$_DB_mysqldump_path</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup stukgelopen: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} bestaat niet of is geen directory",
     'no_access' => "FOUT: Directory {$_CONF['backup_path']} is niet benaderbaar.",
@@ -1215,12 +1242,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
-$LANG_LOGIN = array (
+$LANG_LOGIN = array(
     1 => 'Login vereist',
     2 => 'Voor dit gedeelte is een login als Gebruiker vereist.',
     3 => 'Login',
     4 => 'Nieuwe Gebruiker'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

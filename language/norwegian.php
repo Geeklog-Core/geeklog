@@ -165,7 +165,8 @@ $LANG01 = array(
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
-    112 => 'Registered Users'
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -330,7 +331,9 @@ $LANG04 = array(
     102 => 'Email fra Brukere',
     103 => 'Tillat email fra andre brukere',
     104 => 'Vis Online Status',
-    105 => 'Vises i Online nå blokk'
+    105 => 'Vises i Online nå blokk',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -339,7 +342,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Det er ingen nyheter å vise',
     2 => 'Det er ingen artikler å vise. Enten er det ingen nyheter for dette emne, eller så er dine brukervalg for restriktive',
-    3 => " for emne %s",
+    3 => ' for emne %s',
     4 => 'Dagens Hovedoppslag',
     5 => 'Neste',
     6 => 'Forrige',
@@ -399,7 +402,7 @@ $LANG08 = array(
     25 => 'Du må være logget inn for å bruke denne funksjonen. Kravet om innlogging hjelper til med å hindre misbruk av systemet',
     26 => 'Dette skjemaet lar deg sende en email til valgt bruker. Alle felter må fylles ut.',
     27 => 'Kort melding',
-    28 => "%s skrev: ",
+    28 => '%s skrev: ',
     29 => "Dette er det daglige sammendraget fra {$_CONF['site_name']} for ",
     30 => ' Daglig Nyhetsbrev for ',
     31 => 'Overskrift',
@@ -517,7 +520,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Du må være logget inn for å poste en %s.",
+    1 => 'Du må være logget inn for å poste en %s.',
     2 => 'Logg inn',
     3 => 'Ny bruker',
     4 => 'Post en begivenhet',
@@ -541,7 +544,7 @@ $LANG12 = array(
     22 => 'Feil: felt mangler',
     23 => 'Vennligst fyll inn alle feltene.  Alle felt er påkrevd.',
     24 => 'Posting lagret',
-    25 => "Din posting av en %s er lagret.",
+    25 => 'Din posting av en %s er lagret.',
     26 => 'Fartsgrense',
     27 => 'Brukernavn',
     28 => 'Emne',
@@ -730,7 +733,7 @@ $LANG24 = array(
     9 => 'forhåndsvis',
     10 => 'avbryt',
     11 => 'slett',
-    12 => '',
+    12 => 'ID',
     13 => 'Tittel',
     14 => 'Emne',
     15 => 'Dato',
@@ -742,7 +745,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Artikkel Liste',
     23 => 'For å redigere eller slette en artikkel, klikk på artikkelnummeret under. For å se en artikkel, klikk på tittelen til artikkelen du ønsker å se. For å lage en ny artikkel klikk på Ny Artikkel over.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Artikkel forhåndsvisning',
     27 => '',
@@ -790,15 +793,15 @@ $LANG25 = array(
     1 => 'Modus',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Avstemning opprettet',
-    4 => "Avstemning %s lagret",
+    4 => 'Avstemning %s lagret',
     5 => 'Rediger Avstemning',
     6 => 'Avstemning ID',
     7 => '(ikke bruk mellomrom)',
     8 => 'Vises på hovedside',
     9 => 'Spørsmål',
     10 => 'Svar / Stemmer',
-    11 => "En feil oppsto under henting av svardata for avstemningen %s",
-    12 => "En feil oppsto under henting av spørsmålsdata for avstemningen %s",
+    11 => 'En feil oppsto under henting av svardata for avstemningen %s',
+    12 => 'En feil oppsto under henting av spørsmålsdata for avstemningen %s',
     13 => 'Lag Avstemning',
     14 => 'lagre',
     15 => 'avbryt',
@@ -1028,7 +1031,10 @@ $LANG32 = array(
     28 => 'Plug-in Versjon',
     29 => 'Geeklog Versjon',
     30 => 'Slett Plug-in?',
-    31 => 'Er du sikker på at du vil slette denne plug-in? Alle data og datastrukturer som brukes av denne plug-in vil også bli slettet. hvis du er sikker, klikk slett igjen nedenfor.'
+    31 => 'Er du sikker på at du vil slette denne plug-in? Alle data og datastrukturer som brukes av denne plug-in vil også bli slettet. hvis du er sikker, klikk slett igjen nedenfor.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1136,7 +1142,9 @@ $MESSAGE = array(
     56 => 'Den angitte emailadressen er allerede i bruk for en annen konto.',
     57 => 'kontoen din er slettet.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1195,7 +1203,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################

@@ -152,7 +152,12 @@ $LANG01 = array(
     105 => 'ユーザー全員にメール送信',
     106 => '閲覧件数',
     107 => 'GL Version Test',
-    108 => 'キャッシュをクリア'
+    108 => 'キャッシュをクリア',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -189,12 +194,12 @@ $LANG03 = array(
     7 => 'あなたは',
     8 => " 秒前にコメントしています。投稿と投稿の間は {$_CONF['commentspeedlimit']} 秒以上開けてください",
     9 => 'コメント',
-    10 => '',
+    10 => 'Send Report',
     11 => 'コメントの投稿',
     12 => '投稿するためには、タイトルとコメント内容が必要です。',
     13 => 'あなたの個人情報',
     14 => '表示テスト',
-    15 => '',
+    15 => 'Report this post',
     16 => 'タイトル',
     17 => 'エラーです',
     18 => '注意事項',
@@ -203,7 +208,10 @@ $LANG03 = array(
     21 => '同じ事を投稿しないようにするために他の人の投稿をよく読んでください',
     22 => '内容が分かるようなタイトルを付けてください',
     23 => 'メールアドレスは「表示されません」',
-    24 => '匿名ユーザー'
+    24 => '匿名ユーザー',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -314,7 +322,9 @@ $LANG04 = array(
     102 => '他のユーザーからのメール',
     103 => '他のユーザーからのメールを受け取る',
     104 => 'オンラインかどうかを表示する',
-    105 => '「現在のログイン状況」に名前を表示する'
+    105 => '「現在のログイン状況」に名前を表示する',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -323,10 +333,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => '表示する記事はありません',
     2 => '表示する記事はありません。このテーマに関する投稿がないのか表示設定を絞り過ぎなのかのどちらかでしょうね。',
-    3 => " %s に関するもの",
+    3 => ' %s に関するもの',
     4 => '今日の注目記事',
     5 => '次',
-    6 => '一つ前'
+    6 => '一つ前',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -381,7 +393,7 @@ $LANG08 = array(
     25 => 'この機能を使用するためにはログインしてください。',
     26 => 'このフォームは対象のユーザーにメールを送るためのものなので、すべての項目を入力してください。',
     27 => 'メッセージ',
-    28 => "%s さんからのメッセージ: ",
+    28 => '%s さんからのメッセージ: ',
     29 => "今日の{$_CONF['site_name']} に関するダイジェストです。宛先：",
     30 => ' 今日のニュースレターです。宛先： ',
     31 => 'タイトル',
@@ -491,14 +503,15 @@ $LANG11 = array(
     1 => '関連情報',
     2 => '友達にメールで教える',
     3 => '印刷用ページ',
-    4 => '記事のオプション'
+    4 => '記事のオプション',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => " %s を投稿するためにはログインしている必要があります",
+    1 => ' %s を投稿するためにはログインしている必要があります',
     2 => 'ログイン',
     3 => '新規登録',
     4 => '予定の投稿',
@@ -522,7 +535,7 @@ $LANG12 = array(
     22 => '未記入の項目があります',
     23 => 'すべての項目について記入してください。',
     24 => '投稿は受け付けられました',
-    25 => "%s に関する投稿は受け付けられました",
+    25 => '%s に関する投稿は受け付けられました',
     26 => '投稿間隔の制限',
     27 => 'ユーザー名',
     28 => '話題',
@@ -641,7 +654,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => '予定の編集',
-    2 => '',
+    2 => 'Error',
     3 => '予定名',
     4 => '関連URL',
     5 => '開始日',
@@ -661,7 +674,10 @@ $LANG22 = array(
     19 => '管理画面',
     20 => '保存',
     21 => '中止',
-    22 => '削除'
+    22 => '削除',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -708,7 +724,7 @@ $LANG24 = array(
     9 => 'プレビュー',
     10 => '中止',
     11 => '管理画面',
-    12 => '',
+    12 => 'ID',
     13 => 'タイトル',
     14 => '話題',
     15 => '日時',
@@ -720,7 +736,7 @@ $LANG24 = array(
     21 => '',
     22 => '記事の一覧',
     23 => '記事を削除・編集するには、記事の番号をクリックすること。記事を見るには、記事のタイトルをクリックする。新しい記事を作成する場合は、「新規」をクリックすること。',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => '記事のプレビュー',
     27 => '',
@@ -753,7 +769,12 @@ $LANG24 = array(
     54 => '添付された画像は使用されていません。',
     55 => '記事を保存する際に下記のエラーが発生しました。保存する前に修正してください。',
     56 => '話題用のアイコンを表示',
-    57 => '元のサイズの画像を表示'
+    57 => '元のサイズの画像を表示',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -763,15 +784,15 @@ $LANG25 = array(
     1 => 'モード',
     2 => '質問と最低一つの選択肢を入力してください',
     3 => '投票コーナーが作成された',
-    4 => "投票コーナー（ %s ）が保存された",
+    4 => '投票コーナー（ %s ）が保存された',
     5 => '投票コーナーの編集',
     6 => '投票コーナーの ID',
     7 => '(スペースを含まないこと)',
     8 => 'ホームページに表示する',
     9 => '質問すること',
     10 => '回答 ／ 投票数',
-    11 => "投票コーナー( %s )における選択肢にエラーがありました",
-    12 => "投票コーナー( %s )における質問項目にエラーがありました",
+    11 => '投票コーナー( %s )における選択肢にエラーがありました',
+    12 => '投票コーナー( %s )における質問項目にエラーがありました',
     13 => '投票コーナーの作成',
     14 => '保存',
     15 => '中止',
@@ -815,7 +836,9 @@ $LANG27 = array(
     21 => '削除',
     22 => 'デフォルト',
     23 => 'このトピックを新規記事投稿の際のデフォルトにします。',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -999,7 +1022,10 @@ $LANG32 = array(
     28 => 'プラグインのバージョン',
     29 => 'Geeklogのバージョン',
     30 => 'プラグインを削除しますか？',
-    31 => 'このプラグインを削除しますが、よろしいですか？削除する場合は関連するファイルやデータがすべて削除されます。削除する場合は「削除」ボタンをもう一度押してください。'
+    31 => 'このプラグインを削除しますが、よろしいですか？削除する場合は関連するファイルやデータがすべて削除されます。削除する場合は「削除」ボタンをもう一度押してください。',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1107,7 +1133,9 @@ $MESSAGE = array(
     56 => 'メールアドレスは別のアカウントで既に使われています。',
     57 => 'アカウントの削除が完了しました。',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1166,7 +1194,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1178,7 +1207,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'データベースのバックアップが完了しました',
     'no_backups' => 'システムにバックアップがありません',
     'db_explanation' => 'Geeklogをバックアップするには下のボタンを押してください',
-    'not_found' => "パスの指定が間違っているか、mysqldumpが実行可能になっていません。<br><strong>\$_DB_mysqldump_path</strong>の設定をconfig.phpでチェックしてください。<br>現在の設定は、\n<var>{$_DB_mysqldump_path}</var>です。",
+    'not_found' => "パスの指定が間違っているか、mysqldumpが実行可能になっていません。<br><strong>$_DB_mysqldump_path</strong>の設定をconfig.phpでチェックしてください。<br>現在の設定は、\n<var>{$_DB_mysqldump_path}</var>です。",
     'zero_size' => 'バックアップが失敗しました。ファイルの大きさが0 bytesです。',
     'path_not_found' => "{$_CONF['backup_path']} は存在しないか、ディレクトリではありません。",
     'no_access' => "エラー： {$_CONF['backup_path']} ディレクトリにアクセスできません。",
@@ -1213,6 +1242,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'ログインしてください',
@@ -1220,4 +1250,25 @@ $LANG_LOGIN = array(
     3 => 'ログイン',
     4 => '新規作成'
 );
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
+);
+
 ?>

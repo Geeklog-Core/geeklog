@@ -159,7 +159,12 @@ $LANG01 = array(
     105 => '寄给用户',
     106 => '观看',
     107 => 'GL 版本测试',
-    108 => '清除缓冲贮存区'
+    108 => '清除缓冲贮存区',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -196,12 +201,12 @@ $LANG03 = array(
     7 => '你最後发表的评论是在 ',
     8 => " 秒之前。本站限定至少 {$_CONF['commentspeedlimit']} 秒後才可再发表评论",
     9 => '评论',
-    10 => '',
+    10 => 'Send Report',
     11 => '发表评论',
     12 => '请填写标题注评论栏',
     13 => '供你参考',
     14 => '预览',
-    15 => '',
+    15 => 'Report this post',
     16 => '标题',
     17 => '错误',
     18 => '重要的东西',
@@ -210,7 +215,10 @@ $LANG03 = array(
     21 => '为避免重复，发表评论之前请先读别人所写的。',
     22 => '请尽量用简洁的标题。',
     23 => '我们不会公开你的电邮地址。',
-    24 => '匿名用户'
+    24 => '匿名用户',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -321,7 +329,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -330,10 +340,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => '没有新闻可显示',
     2 => '没有新故事可显示。',
-    3 => "这也许是真的没有新主题或是你的 %s 设定得太过限制性。",
+    3 => '这也许是真的没有新主题或是你的 %s 设定得太过限制性。',
     4 => '今天头条',
     5 => '下一个',
-    6 => '前一个'
+    6 => '前一个',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -388,7 +400,7 @@ $LANG08 = array(
     25 => '为帮助我们防止系统被滥用，你必须登入。',
     26 => '这个表格允许你送电子邮件到你选择的用户中。请填写所有的栏位。',
     27 => '短信',
-    28 => "%s 写道：",
+    28 => '%s 写道：',
     29 => "来自於 {$_CONF['site_name']} 的每日文摘，给予：",
     30 => ' 每日的时事通讯，给予：',
     31 => '标题',
@@ -498,14 +510,15 @@ $LANG11 = array(
     1 => '有什麽是相关的',
     2 => '寄故事给朋友',
     3 => '可印的故事格式',
-    4 => '故事选项'
+    4 => '故事选项',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "你需要登入才可发表 %s ",
+    1 => '你需要登入才可发表 %s ',
     2 => '登入',
     3 => '新用户',
     4 => '发表一件事',
@@ -529,7 +542,7 @@ $LANG12 = array(
     22 => '错误：缺少栏位',
     23 => '请填写所有的栏位',
     24 => '你发表的已被保存了',
-    25 => "你的 %s 已被保存了",
+    25 => '你的 %s 已被保存了',
     26 => '限速',
     27 => '用户名',
     28 => '主题',
@@ -648,7 +661,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => '事件编辑器',
-    2 => '',
+    2 => 'Error',
     3 => '事件标题',
     4 => '事件 URL',
     5 => '事件开始日期',
@@ -668,7 +681,10 @@ $LANG22 = array(
     19 => '管理员首页',
     20 => '保存',
     21 => '取消',
-    22 => '删除'
+    22 => '删除',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -715,7 +731,7 @@ $LANG24 = array(
     9 => '预览',
     10 => '取消',
     11 => '删除',
-    12 => '',
+    12 => 'ID',
     13 => '标题',
     14 => '主题',
     15 => '日期',
@@ -727,7 +743,7 @@ $LANG24 = array(
     21 => '',
     22 => '故事清单',
     23 => '点击下面的故事编号可修改或删除它，点击下面的故事标题可观看它，点击上面的新故事可创造一个新的。',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => '故事预览',
     27 => '',
@@ -760,7 +776,12 @@ $LANG24 = array(
     54 => '附加图像未被使用',
     55 => '保存你的故事时发生以下错误。请改正这些错误再保存',
     56 => '显示主题图示',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -770,15 +791,15 @@ $LANG25 = array(
     1 => '模式',
     2 => 'Please enter a question and at least one answer.',
     3 => '投票发起日',
-    4 => "投票 %s 被保存了",
+    4 => '投票 %s 被保存了',
     5 => '编辑投票',
     6 => '投票编号',
     7 => '(不可有空隔)',
     8 => '出现在首页上',
     9 => '问题',
     10 => '答案 / 投票',
-    11 => "取得投票 (%s) 答案时发生错误。",
-    12 => "取得投票 (%s) 问题时发生错误。",
+    11 => '取得投票 (%s) 答案时发生错误。',
+    12 => '取得投票 (%s) 问题时发生错误。',
     13 => '新加投票',
     14 => '保存',
     15 => '取消',
@@ -822,7 +843,9 @@ $LANG27 = array(
     21 => '删除',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -860,7 +883,7 @@ $LANG28 = array(
     29 => '路径',
     30 => '输入',
     31 => '新用户',
-    32 => "处理完成。输入了 %d 个；%d 个失败",
+    32 => '处理完成。输入了 %d 个；%d 个失败',
     33 => '递交',
     34 => '错误︰你必须指定上载档案。',
     35 => 'Last Login',
@@ -1006,7 +1029,10 @@ $LANG32 = array(
     28 => 'Plug-in 版本',
     29 => 'Geeklog 版本',
     30 => '删除 Plug-in？',
-    31 => '你肯定要删除这个 Plug-in 吗？这麽会删除所有有关这 Plug-in 的文件、资料和资料结构。如果你肯定的，请再点击下面表格中的删除钮。'
+    31 => '你肯定要删除这个 Plug-in 吗？这麽会删除所有有关这 Plug-in 的文件、资料和资料结构。如果你肯定的，请再点击下面表格中的删除钮。',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1114,7 +1140,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1173,7 +1201,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1220,12 +1249,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => '要求登入',
     2 => '抱歉，要求登入才可存取这个区域。',
     3 => '登入',
     4 => '新用户'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

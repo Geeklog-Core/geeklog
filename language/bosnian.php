@@ -156,7 +156,8 @@ $LANG01 = array(
     109 => 'Report abuse',
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
-    112 => 'Registered Users'
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -321,7 +322,9 @@ $LANG04 = array(
     102 => 'Email od korisnika',
     103 => 'Dozvoli primanje emailova od korisnika',
     104 => 'Prikazi online status',
-    105 => 'Pokazi ko je online u bloku'
+    105 => 'Pokazi ko je online u bloku',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -330,7 +333,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Nema novosti za prikazivanje.',
     2 => 'Nema novih vijesti za prikazati. Mozda nema novih vijesti za ovu vrstu ili je do necega drugog :)',
-    3 => " za temu %s",
+    3 => ' za temu %s',
     4 => 'Danasnji vazniji tekstovi',
     5 => 'Iduci',
     6 => 'Prijasnji',
@@ -390,7 +393,7 @@ $LANG08 = array(
     25 => 'Morate biti prijavljeni da bi mogli koristiti ovu postavku.',
     26 => 'Ovaj formular vam dozvoljava slanje emailova odredjenim korisnicima. Potrebno je popuniti sve podatke.',
     27 => 'Kratka poruka',
-    28 => "%s pise: ",
+    28 => '%s pise: ',
     29 => "Ovo su dnevne obavijesti sa {$_CONF['site_name']} za ",
     30 => ' Dnevne obavijesti za ',
     31 => 'Naziv',
@@ -508,7 +511,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Za prijavljivanje %s potrebno je biti ulogiran.",
+    1 => 'Za prijavljivanje %s potrebno je biti ulogiran.',
     2 => 'Prijava',
     3 => 'Novi korisnik',
     4 => 'Posaljite info o dogadjaju',
@@ -532,7 +535,7 @@ $LANG12 = array(
     22 => 'Greska: Popunite sva polja',
     23 => 'Molimo popunite sva polja. Sva polja su obavezna.',
     24 => 'Submisia spasena',
-    25 => "Vasa %s submisia je uspjesno spasena.",
+    25 => 'Vasa %s submisia je uspjesno spasena.',
     26 => 'Ogranicena brzina',
     27 => 'Korisnicko ime',
     28 => 'Topic',
@@ -721,7 +724,7 @@ $LANG24 = array(
     9 => 'pregled',
     10 => 'ponisti',
     11 => 'obrisi',
-    12 => '',
+    12 => 'ID',
     13 => 'Naslov',
     14 => 'Tema',
     15 => 'Datum',
@@ -733,7 +736,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Popis tekstova',
     23 => 'Da biste uredili ili izbrisali vijest, pritisnite an broj vijesti ispod. Da biste pregledali vijest, pritisnite na naziv vijesti koju zelite pregledati. Ako zelite napisati novu vijest izaberite opciju nova vijest iznad.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Pregled teksta',
     27 => '',
@@ -781,15 +784,15 @@ $LANG25 = array(
     1 => 'Mod',
     2 => 'Molimo unesite pitanje i najmanje dva odgovora..',
     3 => 'Anketa kreirana',
-    4 => "Ankete %s snimljena",
+    4 => 'Ankete %s snimljena',
     5 => 'Uredjivanje ankete',
     6 => 'ID Ankete',
     7 => '(ne koristite prazan prostor)',
     8 => 'Prikazi na pocetnoj strani',
     9 => 'Pitanje ankete',
     10 => 'Odgovora / Glasova',
-    11 => "Pojavila se greska prilikom prikupljanja odgovora iz ankete %s",
-    12 => "Pojavila se greska prilikom prikupljanja pitanja iz ankete %s",
+    11 => 'Pojavila se greska prilikom prikupljanja odgovora iz ankete %s',
+    12 => 'Pojavila se greska prilikom prikupljanja pitanja iz ankete %s',
     13 => 'Kreirajte anketu.',
     14 => 'snimi',
     15 => 'ponisti',
@@ -1019,7 +1022,10 @@ $LANG32 = array(
     28 => 'Verzija plugina',
     29 => 'Geeklog Version',
     30 => 'Obrisati plugin?',
-    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1127,7 +1133,9 @@ $MESSAGE = array(
     56 => 'Ovaj email je vec u upotrebi za drugi racun.',
     57 => 'Vas racun je uspjesno izbrisan.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1186,7 +1194,8 @@ $LANG_ACCESS = array(
     'remove' => 'Makni',
     'availmembers' => 'Aktivni clanovi',
     'groupmembers' => 'Clanovi grupe',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################

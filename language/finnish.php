@@ -149,7 +149,12 @@ $LANG01 = array(
     105 => 'Sähköpostia käyttäjille',
     106 => 'Katselukertoja',
     107 => 'GL versiotesti',
-    108 => 'Tyhjennä välimuisti'
+    108 => 'Tyhjennä välimuisti',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -186,12 +191,12 @@ $LANG03 = array(
     7 => 'Viimeisin kommenttisi kirjoitettiin ',
     8 => " sekuntia sitten. Sivusto vaatii vähintään {$_CONF['commentspeedlimit']} sekuntia kommenttien välillä",
     9 => 'Kommentti',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Lähetä kommentti',
     12 => 'Täytä otsikko ja kommentti -kentät, ne ovat pakollisia kommenttia lähetettäessä.',
     13 => 'Omat tietosi',
     14 => 'Esikatselu',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Otsikko',
     17 => 'Virhe',
     18 => 'Tärkeitä huomioita',
@@ -200,7 +205,10 @@ $LANG03 = array(
     21 => 'Lue muiden lähettämät viestit ennen oman kommentin postittamista toiston estämiseksi.',
     22 => 'Nimeä viesti selkeästi ja kuvaavasti.',
     23 => 'Sähköpostiosoitteesi EI tule julkisesti näkyville.',
-    24 => 'Tuntematon käyttäjä'
+    24 => 'Tuntematon käyttäjä',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -311,7 +319,9 @@ $LANG04 = array(
     102 => 'Käyttäjien viestit',
     103 => 'Salli muiden käyttäjien lähettämät sähköpostit',
     104 => 'Näytä linjalla -tila',
-    105 => 'Näy Ketä on linjalla -lohkossa'
+    105 => 'Näy Ketä on linjalla -lohkossa',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -320,10 +330,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Ei näytettäviä uutisia',
     2 => 'Ei näytettäviä uutisiä. Joko aiheesta ei ole uutisia tai asetuksesi voivat olla liian rajoittavia',
-    3 => " aiheesta %s",
+    3 => ' aiheesta %s',
     4 => 'Päivän artikkeli',
     5 => 'Seuraava',
-    6 => 'Edellinen'
+    6 => 'Edellinen',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -378,7 +390,7 @@ $LANG08 = array(
     25 => 'Sinun taytyy olla kirjautuneena sivustolle käyttääksesi ominaisuutta. Vaatimalla kirjautumista estetään järjestelmän väärinkäytökset',
     26 => 'Tällä lomakkeella voit lähettää sähköpostia valitulle käyttäjälle. Kaikki kentät ovat pakollisia täyttää.',
     27 => 'Lyhyt viesti',
-    28 => "%s kirjoitti: ",
+    28 => '%s kirjoitti: ',
     29 => "Tämä on päivittäinen kooste sivustolta {$_CONF['site_name']} käyttäjälle ",
     30 => ' Päivittäinen uutislehti ',
     31 => 'Otsikko',
@@ -488,14 +500,15 @@ $LANG11 = array(
     1 => 'Aiheeseen liittyen',
     2 => 'Lähetä artikkeli ystävälle',
     3 => 'Tulostettava versio artikkelista',
-    4 => 'Artikkelien asetukset'
+    4 => 'Artikkelien asetukset',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Lähettääksesi %s sinun täytyy olla kirjautuneena sivustolle.",
+    1 => 'Lähettääksesi %s sinun täytyy olla kirjautuneena sivustolle.',
     2 => 'Kirjaudu',
     3 => 'Uusi käyttäjä',
     4 => 'Lähetä tapahtuma',
@@ -519,7 +532,7 @@ $LANG12 = array(
     22 => 'Virhe: puuttuvia kenttiä',
     23 => 'Täytä kaikki kentät lomakkeessa. Kaikki kentät ovat pakollisia.',
     24 => 'Lähetys tallennettu',
-    25 => "%s -lähetys on tallennettu onnistuneesti.",
+    25 => '%s -lähetys on tallennettu onnistuneesti.',
     26 => 'Nopeusrajoitus',
     27 => 'Käyttäjänimi',
     28 => 'Aihe',
@@ -638,7 +651,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Tapahtumien muokkain',
-    2 => '',
+    2 => 'Error',
     3 => 'Tapahtuman otsikko',
     4 => 'Tapahtuman URL',
     5 => 'Tapahtuman aloituspäivä',
@@ -658,7 +671,10 @@ $LANG22 = array(
     19 => 'Ylläpidon etusivu',
     20 => 'tallenna',
     21 => 'peruuta',
-    22 => 'poista'
+    22 => 'poista',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -705,7 +721,7 @@ $LANG24 = array(
     9 => 'esikatselu',
     10 => 'peruuta',
     11 => 'poista',
-    12 => '',
+    12 => 'ID',
     13 => 'Otsikko',
     14 => 'Aihe',
     15 => 'Päiväys',
@@ -717,7 +733,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Lista artikkeleista',
     23 => 'Muokataksesi tai poistaaksesi artikkelin, klikkaa artikkelin numeroa. Nähdäksesi artikkelin, klikkaa haluamaasi otsikkoa. Luodaksesi uuden artikkelin, valitse uusi artikkeli.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Artikkelin esikatselu',
     27 => '',
@@ -750,7 +766,12 @@ $LANG24 = array(
     54 => 'Liitetyt kuvat joita ei käytetty',
     55 => 'Seuraavat virheet tapahtuivat tallennettaessa. Korjaa virheet ennen tallentamista',
     56 => 'Näytä aihe kuvake',
-    57 => 'Näytä skaalaamaton kuva'
+    57 => 'Näytä skaalaamaton kuva',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -760,15 +781,15 @@ $LANG25 = array(
     1 => 'Tila',
     2 => 'Syötä kysymys ja ainakin yksi vastaus.',
     3 => 'Kysely luotu',
-    4 => "Kysely %s tallennettu",
+    4 => 'Kysely %s tallennettu',
     5 => 'Muokkaa kyselyä',
     6 => 'Kyselyn ID',
     7 => '(älä käytä välilyöntejä)',
     8 => 'Näytetään etusivulla',
     9 => 'Kysymys',
     10 => 'Kysymykset / Äänet',
-    11 => "Tapahtui virhe vastauksen saamiseksi kyselyyn %s",
-    12 => "Tapahtui virhe kysymyksen saamisessa kyselyyn %s",
+    11 => 'Tapahtui virhe vastauksen saamiseksi kyselyyn %s',
+    12 => 'Tapahtui virhe kysymyksen saamisessa kyselyyn %s',
     13 => 'Luo kysely',
     14 => 'tallenna',
     15 => 'peruuta',
@@ -812,7 +833,9 @@ $LANG27 = array(
     21 => 'poista',
     22 => 'Oletus',
     23 => 'tee tästä oletus aihe uusille artikkeleille',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -996,7 +1019,10 @@ $LANG32 = array(
     28 => 'Laajennuksen versio',
     29 => 'Geeklogin versio',
     30 => 'Poista laajennus?',
-    31 => 'Oletko varma että haluat poistaa laajennuksen? Poistamalla poistat myös kaiken tiedot ja tietorakenteen jotka liittyvät tähän laajennukseen. Jos olet varma, valitse poista uudelleen alta löytyvästä lomakkeesta.'
+    31 => 'Oletko varma että haluat poistaa laajennuksen? Poistamalla poistat myös kaiken tiedot ja tietorakenteen jotka liittyvät tähän laajennukseen. Jos olet varma, valitse poista uudelleen alta löytyvästä lomakkeesta.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1104,7 +1130,9 @@ $MESSAGE = array(
     56 => 'Syöttämäsi sähköpostiosoite on jo käytössä toisella tilillä.',
     57 => 'Tilisi on poistettu.',
     58 => 'Syötteesi on tallennettu.',
-    59 => 'Syöte on poistettu.'
+    59 => 'Syöte on poistettu.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1163,7 +1191,8 @@ $LANG_ACCESS = array(
     'remove' => 'Poista',
     'availmembers' => 'Saatavilla olevat jäsenet',
     'groupmembers' => 'Ryhmän jäsenet',
-    'canteditgroup' => 'Sinun tulee olla ryhmän jäsen muokataksesi tätä ryhmää. Jos tämä tuntuu virheeltä, ota yhteyttä järjestelmän ylläpitoon.'
+    'canteditgroup' => 'Sinun tulee olla ryhmän jäsen muokataksesi tätä ryhmää. Jos tämä tuntuu virheeltä, ota yhteyttä järjestelmän ylläpitoon.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1210,12 +1239,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Kirjautuminen vaaditaan',
     2 => 'Tämä alue vaatii sisäänkirjautumisen käyttäjänä.',
     3 => 'Kirjaudu',
     4 => 'Uusi käyttäjä'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

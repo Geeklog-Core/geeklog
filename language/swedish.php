@@ -152,7 +152,12 @@ $LANG01 = array(
     105 => 'Eposta användare',
     106 => 'visningar',
     107 => 'GL versionstest',
-    108 => 'Radera buffert'
+    108 => 'Radera buffert',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -189,12 +194,12 @@ $LANG03 = array(
     7 => 'Din senaste kommentar var ',
     8 => " sekunder sedan.  På denna sajt måste man vänta minst {$_CONF['commentspeedlimit']} sekunder mellan kommentarer",
     9 => 'Kommentar',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Skicka in kommentar',
     12 => 'Du måste fylla i Titel- Kommentarsfälten.',
     13 => 'Din information',
     14 => 'Förhandsgranska',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Titel',
     17 => 'Error',
     18 => 'Att tänka på',
@@ -203,7 +208,10 @@ $LANG03 = array(
     21 => 'Läs andra personers kommentarer innan du gör ditt inlägg för att förhindra upprepning av det som redan sagts.',
     22 => 'Använd en tydlig ärenderad som beskriver vad ditt inlägg handlar om.',
     23 => 'Din epostadress kommer INTE att vara publik.',
-    24 => 'Anonym användare'
+    24 => 'Anonym användare',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -314,7 +322,9 @@ $LANG04 = array(
     102 => 'Epost från användare',
     103 => 'Tillåt epost från andra användare',
     104 => 'Visa online-status',
-    105 => 'Jag vill synas i \'Vem är här\'-blocket'
+    105 => 'Jag vill synas i \'Vem är här\'-blocket',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -323,10 +333,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Det finns inga nyheter',
     2 => 'Det finns inga artiklar att visa.  Antingen finns det inga artiklar, eller så är dina artikelinställningar för restriktiva.',
-    3 => " i ämnet %s",
+    3 => ' i ämnet %s',
     4 => 'Dagens huvudartikel',
     5 => 'Nästa',
-    6 => 'Föregående'
+    6 => 'Föregående',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -381,7 +393,7 @@ $LANG08 = array(
     25 => 'För att använda denna funktion måste du vara inloggad.  Genom att kräva inloggning förhindrar vi missbruk av detta system',
     26 => 'Detta formulär låter dig sända epost till den valda användare.  Alla fält måste fyllas i.',
     27 => 'Kort meddelande',
-    28 => "%s skrev: ",
+    28 => '%s skrev: ',
     29 => "Detta är den dagliga sammanställningen från {$_CONF['site_name']} för ",
     30 => ' Dagligt nyhetsbrev för ',
     31 => 'Titel',
@@ -491,14 +503,15 @@ $LANG11 = array(
     1 => 'Besläktad info',
     2 => 'Eposta artikel till någon',
     3 => 'Skriv ut artikel',
-    4 => 'Artikelalternativ'
+    4 => 'Artikelalternativ',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Man måste vara inloggad för att skicka in en %s.",
+    1 => 'Man måste vara inloggad för att skicka in en %s.',
     2 => 'Logga in',
     3 => 'Ny användare',
     4 => 'Skicka in en aktivitet',
@@ -506,7 +519,7 @@ $LANG12 = array(
     6 => 'Skicka in en artikel',
     7 => 'Inloggning krävs',
     8 => 'Skicka',
-    9 => 'När du skriver en artikel till den här sajten så är det bra om du följer dessa råd: <UL><LI>Samtliga fält måste fyllas i<LI>Informationen ska vara korrekt<LI>Kontrollera alla länkar en extra gång</UL>\n',
+    9 => "När du skriver en artikel till den här sajten så är det bra om du följer dessa råd: <UL><LI>Samtliga fält måste fyllas i<LI>Informationen ska vara korrekt<LI>Kontrollera alla länkar en extra gång</UL>\n",
     10 => 'Titel',
     11 => 'Länk',
     12 => 'Startdatum',
@@ -522,7 +535,7 @@ $LANG12 = array(
     22 => 'Error: Fält saknas',
     23 => 'Fyll i samtliga fält i formuläret.',
     24 => 'Sparad',
-    25 => "%s har sparats.",
+    25 => '%s har sparats.',
     26 => 'Hastighetsbegränsning',
     27 => 'Användarnamn',
     28 => 'Ämne',
@@ -641,7 +654,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Aktivitetseditor',
-    2 => '',
+    2 => 'Error',
     3 => 'Aktivitet',
     4 => 'Aktivitetslänk',
     5 => 'Startdatum för aktivitet',
@@ -661,7 +674,10 @@ $LANG22 = array(
     19 => 'Administratörsmeny',
     20 => 'spara',
     21 => 'ångra',
-    22 => 'radera'
+    22 => 'radera',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -708,7 +724,7 @@ $LANG24 = array(
     9 => 'förhandsgranska',
     10 => 'ångra',
     11 => 'radera',
-    12 => '',
+    12 => 'ID',
     13 => 'Titel',
     14 => 'Ämne',
     15 => 'Datum',
@@ -720,7 +736,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Artikellista',
     23 => 'Klicka på en artikels nummer nedan för att redigera eller radera den.  Klicka på en artikels titel för att läsa den artikeln.  Klicka på "ny artikel" ovan för att skriva en ny artikel.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Förhandsgranska artikel',
     27 => '',
@@ -753,7 +769,12 @@ $LANG24 = array(
     54 => 'Bifogade bilder användes inte',
     55 => 'Det blev fel när din artikel skulle sparas.  Rätta till dessa fel innan du sparar',
     56 => 'Visa ämnesikon',
-    57 => 'Visa oskalad bild'
+    57 => 'Visa oskalad bild',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -763,15 +784,15 @@ $LANG25 = array(
     1 => 'Läge',
     2 => 'Du måste ange en fråga och åtminstone ett alternativ.',
     3 => 'Omröstning skapades',
-    4 => "Omröstning %s sparad",
+    4 => 'Omröstning %s sparad',
     5 => 'Redigera omröstning',
     6 => 'Omröstnings-ID',
     7 => '(använd inte mellanslag)',
     8 => 'Visas på hemsidan',
     9 => 'Fråga',
     10 => 'Svar / Röster',
-    11 => "Det blev fel när data angående omröstning %s hämtades",
-    12 => "Det blev fel när frågedata angående omröstning %s hämtades",
+    11 => 'Det blev fel när data angående omröstning %s hämtades',
+    12 => 'Det blev fel när frågedata angående omröstning %s hämtades',
     13 => 'Skapa omröstning',
     14 => 'spara',
     15 => 'ångra',
@@ -815,7 +836,9 @@ $LANG27 = array(
     21 => 'radera',
     22 => 'skönsvärde',
     23 => 'Gör detta ämne till standardvärde för nya artiklar',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -999,7 +1022,10 @@ $LANG32 = array(
     28 => 'Version på insticksmodul',
     29 => 'Geeklog-version',
     30 => 'Radera insticksmodul?',
-    31 => 'Är du säker på att du vill radera denna insticksmodu?  Om du gör det så kommer du att radera alla filer, data, och datastrukturer som denna insticksmodul använder.  Om du är säker, klicka "radera" igen nedan.'
+    31 => 'Är du säker på att du vill radera denna insticksmodu?  Om du gör det så kommer du att radera alla filer, data, och datastrukturer som denna insticksmodul använder.  Om du är säker, klicka "radera" igen nedan.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1107,7 +1133,9 @@ $MESSAGE = array(
     56 => 'Epostadressen du angivit används redan av ett annat konto.',
     57 => 'Ditt konto har raderats.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1166,7 +1194,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1213,12 +1242,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Inloggning krävs',
     2 => 'För att komma åt denna sida så måste du vara inloggad.',
     3 => 'Logga in',
     4 => 'Ny användare'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

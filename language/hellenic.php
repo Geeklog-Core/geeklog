@@ -154,7 +154,12 @@ $LANG01 = array(
     105 => 'Χρήστες ηλεκτρονικού ταχυδρομείου',
     106 => 'Προβολές',
     107 => 'Υποβολή σε δοκιμή των Εκδόσεων GL',
-    108 => 'Καθαρισμός Cache'
+    108 => 'Καθαρισμός Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -191,12 +196,12 @@ $LANG03 = array(
     7 => 'Το τελευταίο σας σχόλιο ήταν ',
     8 => " δευτερόλεπτα πριν. Η ιστοσελίδα απαιτεί τουλάχιστον να περάσουν τουλάχιστον {$_CONF['commentspeedlimit']} δευτερόλεπτα μεταξύ δύο σχολίων",
     9 => 'Σχόλιο',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Καταθέστε το σχόλιο σας',
     12 => 'Παρακαλώ συμπληρώστε τα πεδία: Τίτλος και Σχόλια. Είναι αναγκαία για την αποστολή του σχόλιου σας.',
     13 => 'Η πληροφορίες σας',
     14 => 'Προεπισκόπηση',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Τίτλος',
     17 => 'Σφάλμα',
     18 => 'Σημαντικό',
@@ -205,7 +210,10 @@ $LANG03 = array(
     21 => 'Προς αποφυγήν επαναλήψεων, διαβάζετε τα σχόλια των άλλων χρηστών προτού καταθέσετε το δικό σας.',
     22 => 'Χρησιμοποιείστε ένα θέμα που διευκρινίζει το περιεχόμενο του μηνύματος σας',
     23 => 'Η ηλεκτρονική σας διεύθυνση θα παραμείνει απόρρητη',
-    24 => 'Ανώνυμος χρήστης'
+    24 => 'Ανώνυμος χρήστης',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -316,7 +324,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -325,10 +335,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Δεν υπάρχουν νέα',
     2 => 'Δεν υπάρχουν νέα άρθρα. Δεν υπάρχουν νέα για αυτό το θέμα ή οι ρυθμίσεις σας είναι πολύ αυστηρές.',
-    3 => " για το θέμα %s",
+    3 => ' για το θέμα %s',
     4 => 'Ενδιαφέρον άρθρο',
     5 => 'Επόμενο',
-    6 => 'Προηγούμενο'
+    6 => 'Προηγούμενο',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -383,7 +395,7 @@ $LANG08 = array(
     25 => 'Πρέπει να συνδεθείτε για να χρησιμοποιήσετε αυτήν την υπηρεσία. Έτσι μας βοηθάτε να αποφύγουμε την κακή χρήση του συστήματος',
     26 => 'Η παρούσα φόρμα θα σας επιτρέψει να στείλετε ένα μήνυμα ηλεκτρονικού ταχυδρομείου στον επιλεγμένο χρήστη. Όλα τα πεδία είναι αναγκαία.',
     27 => 'Σύντομο μήνυμα',
-    28 => "Ο %s έγραψε: ",
+    28 => 'Ο %s έγραψε: ',
     29 => "Η παρούσα καθημερινή ανασκόπηση από το {$_CONF['site_name']} για ",
     30 => ' Καθημερινή ειδησιογραφία από ',
     31 => 'Τίτλος',
@@ -493,14 +505,15 @@ $LANG11 = array(
     1 => 'Τι είναι σχετικό;',
     2 => 'Στείλτε το άρθρο σε έναν φίλο/φίλη μέσω ηλεκτρονικού ταχυδρομίου',
     3 => 'Διαμόρφωση άρθρου για εκτύπωση',
-    4 => 'Μενού επιλογών άρθρου'
+    4 => 'Μενού επιλογών άρθρου',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Για να αποστείλετε %s πρέπει πρώτα να έχετε συνδεθεί.",
+    1 => 'Για να αποστείλετε %s πρέπει πρώτα να έχετε συνδεθεί.',
     2 => 'Σύνδεση',
     3 => 'Νέος χρήστης',
     4 => 'Στείλτε ένα γεγονός',
@@ -524,7 +537,7 @@ $LANG12 = array(
     22 => 'Σφάλμα: Πεδία μη διαθέσιμα',
     23 => 'Παρακαλώ συμπληρώστε όλα τα πεδία της φόρμας. Κανένα δεν είναι προαιρετικό.',
     24 => 'Η αποστολή αποθηκεύτηκε ',
-    25 => "Η αποστολή σας (%s) αποθηκεύτηκε επιτυχώς",
+    25 => 'Η αποστολή σας (%s) αποθηκεύτηκε επιτυχώς',
     26 => 'Όριο ταχύτητας',
     27 => 'Όνομα χρήστη',
     28 => 'Θέμα',
@@ -643,7 +656,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Συντάκτης γεγονότων',
-    2 => '',
+    2 => 'Error',
     3 => 'Τίτλος γεγονότος',
     4 => 'URL γεγονότος',
     5 => 'Ημερομηνία έναρξης γεγονότος',
@@ -663,7 +676,10 @@ $LANG22 = array(
     19 => 'Σελίδα διαχείρισης',
     20 => 'αποθήκευση',
     21 => 'ακύρωση ',
-    22 => 'διαγραφή'
+    22 => 'διαγραφή',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -710,7 +726,7 @@ $LANG24 = array(
     9 => 'προεπισκόπηση',
     10 => 'ακύρωση',
     11 => 'διαγραφή',
-    12 => '',
+    12 => 'ID',
     13 => 'Τίτλος',
     14 => 'Θέμα',
     15 => 'Ημερομηνία',
@@ -722,7 +738,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Λίστα άρθρων',
     23 => 'Για να μετατρέψετε η να διαγράψετε ένα άρθρο διαλέξτε το απο την παρακάτω λίστα. Για να δημιουργήσετε ένα άρθρο διαλέξτε την επιλογή Νέο άρθρο παραπάνω',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Προεπισκόπηση άρθρου',
     27 => '',
@@ -755,7 +771,12 @@ $LANG24 = array(
     54 => 'Οι επισυνημμένες εικόνες δεν χρησιμοποιούνται',
     55 => 'Τα ακόλουθα σφάλματα έγιναν στην προσπάθεια να αποθηκευτεί το άρθρο σας. Διορθώστε τα και ξαναπροσπαθήσετε.',
     56 => 'Προβολή εικονιδίου θέματος',
-    57 => 'View unscaled image'
+    57 => 'View unscaled image',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -765,15 +786,15 @@ $LANG25 = array(
     1 => 'Τύπος',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Δημιουργία ψηφοφορίας',
-    4 => "Η Ψηφοφορία %s αποθηκεύτηκε",
+    4 => 'Η Ψηφοφορία %s αποθηκεύτηκε',
     5 => 'Επεξεργασία ψηφοφορίας',
     6 => 'Ταυτότητα Ψηφοφορίας',
     7 => '(μην πληκτρολογείτε κενά)',
     8 => 'Εμφανίζετε στην αρχική σελίδα',
     9 => 'Ερώτηση',
     10 => 'Απαντήσεις / Ψήφοι',
-    11 => "Υπήρξε ένα σφάλμα στην παραλαβή των αποτελεσμάτων της ψηφοφορίας 		%s",
-    12 => " Υπήρξε ένα σφάλμα στην παραλαβή της ερώτησης για την ψηφοφορία		%s ",
+    11 => 'Υπήρξε ένα σφάλμα στην παραλαβή των αποτελεσμάτων της ψηφοφορίας 		%s',
+    12 => ' Υπήρξε ένα σφάλμα στην παραλαβή της ερώτησης για την ψηφοφορία		%s ',
     13 => 'Δημιουργία Ψηφοφορίας',
     14 => 'αποθήκευση',
     15 => 'ακύρωση',
@@ -817,7 +838,9 @@ $LANG27 = array(
     21 => 'διαγραφή',
     22 => 'Default',
     23 => 'make this the default topic for new story submissions',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -848,7 +871,7 @@ $LANG28 = array(
     22 => 'Σφάλμα',
     23 => 'Πρόσθεση συνόλου',
     24 => 'Εισαγωγή συνόλου χρηστών',
-    25 => 'Υπάρχει η δυνατότητα να προσθέσετε χρήστες στο Geeklog. Το αρχείο εισαγωγής χρηστών πρέπει να είναι διαμορφωμένο ακολούθως: πλήρες όνομα, όνομα χρήστη, ηλεκτρονική διεύθυνση. Κάθε χρήστης που θα εισάγεται θα λαμβάνει ένα μήνυμα με τον τυχαίο κωδικού του. Πρέπει να έχετε έναν χρήστης σε κάθε γραμμή. \nΟποιαδήποτε παρατυπία, ίσως οδηγήσει σε προβλήματα, όπότε ελέγξτε δύο φορές τις γραμμές εισαγωγής σας.',
+    25 => "Υπάρχει η δυνατότητα να προσθέσετε χρήστες στο Geeklog. Το αρχείο εισαγωγής χρηστών πρέπει να είναι διαμορφωμένο ακολούθως: πλήρες όνομα, όνομα χρήστη, ηλεκτρονική διεύθυνση. Κάθε χρήστης που θα εισάγεται θα λαμβάνει ένα μήνυμα με τον τυχαίο κωδικού του. Πρέπει να έχετε έναν χρήστης σε κάθε γραμμή. \nΟποιαδήποτε παρατυπία, ίσως οδηγήσει σε προβλήματα, όπότε ελέγξτε δύο φορές τις γραμμές εισαγωγής σας.",
     26 => 'Αναζήτηση',
     27 => 'Περιορισμός αποτελεσμάτων',
     28 => 'Πατήστε εδώ να διαγράψετε την φωτογραφία',
@@ -1001,7 +1024,10 @@ $LANG32 = array(
     28 => 'Έκδοση Plug-in',
     29 => 'Έκδοση Geeklog',
     30 => 'Διαγραφή Plug-in;',
-    31 => 'Είστε σίγουρος/η ότι επιθυμείτε να διαγράψετε αυτό το plug-in; Αν το διαγράψετε όλα τα αρχεία, τα δεδομένα και οι δομές δεδομένων που χρησιμοποιεί το plug-in θα διαγραφούν επίσης. Εάν είστε σίγουρος/η επιλέξτε την επιλογή διαγραφή οπό την παρακάτω φόρμα.'
+    31 => 'Είστε σίγουρος/η ότι επιθυμείτε να διαγράψετε αυτό το plug-in; Αν το διαγράψετε όλα τα αρχεία, τα δεδομένα και οι δομές δεδομένων που χρησιμοποιεί το plug-in θα διαγραφούν επίσης. Εάν είστε σίγουρος/η επιλέξτε την επιλογή διαγραφή οπό την παρακάτω φόρμα.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1109,7 +1135,9 @@ $MESSAGE = array(
     56 => 'The email address provided is already in use for another account.',
     57 => 'Your account has been successfully deleted.',
     58 => 'Your feed has been successfully saved.',
-    59 => 'The feed has been successfully deleted.'
+    59 => 'The feed has been successfully deleted.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1168,7 +1196,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1215,12 +1244,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Η σύνδεσή σας είναι απαραίτητη',
     2 => 'Για να προσπελάσετε αυτήν την περιοχή πρέπει να συνδεθείτε σαν χρήστης.',
     3 => 'Σύνδεση',
     4 => 'Νέος χρήστης '
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

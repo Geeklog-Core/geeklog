@@ -154,7 +154,12 @@ $LANG01 = array(
     105 => 'Email uporabniki',
     106 => 'Ogledov',
     107 => 'GL Test verzije',
-    108 => 'Izprazni cache'
+    108 => 'Izprazni cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -191,12 +196,12 @@ $LANG03 = array(
     7 => 'Vaš zadnji komentar je bil pred',
     8 => " sekundami.  Med posameznimi komentarji bralca mora preteèi vsaj {$_CONF['commentspeedlimit']} sekund",
     9 => 'Komentar',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Pošlji komentar',
     12 => 'Èe želite posredovati komentar, vpišite vaše ime, e-mail naslov, naslov komentarja in vsebino komentarja.',
     13 => 'Vaše informacije',
     14 => 'Predogled',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Naslov',
     17 => 'Napaka',
     18 => 'Pomembno',
@@ -205,7 +210,10 @@ $LANG03 = array(
     21 => 'Preberite komentarje ostalih - morda je kdo že napisal kaj kar nameravate napisati tudi vi.',
     22 => 'Pazite na pravilno slovnico in se izogibajte žalitvam drugih.',
     23 => 'Vaš e-mail naslov ne bo javno objavljen.',
-    24 => 'Anonimni uporabnik'
+    24 => 'Anonimni uporabnik',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -316,7 +324,9 @@ $LANG04 = array(
     102 => 'Email od uporabnikov',
     103 => 'Dovoli emaile od drugih uporabnikov strani',
     104 => 'Prikaži Online Status',
-    105 => 'Dovoli prikaz v bloku Na liniji so'
+    105 => 'Dovoli prikaz v bloku Na liniji so',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -328,7 +338,9 @@ $LANG05 = array(
     3 => '.',
     4 => 'Današji udarni èlanek',
     5 => 'naslednja stran',
-    6 => 'prejšnja stran'
+    6 => 'prejšnja stran',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -383,7 +395,7 @@ $LANG08 = array(
     25 => 'Èe želite poslati èlanek po e-pošti, se morate predhodno registrirati. Registracija je potrebna da prepreèimo morebitne zlorabe sistema.',
     26 => 'S pomoèjo tega obrazca boste poslali e-mail izbranemu uporabniku. Izpolniti je potrebno vsa polja!',
     27 => 'Kratko spremno sporoèilo',
-    28 => "Obiskovalec %s je napisal sledeèe spremno sporoèilo: ",
+    28 => 'Obiskovalec %s je napisal sledeèe spremno sporoèilo: ',
     29 => "Dnevni pregled strani {$_CONF['site_name']} za ",
     30 => 'Dnevne novice za',
     31 => 'Naslov',
@@ -493,7 +505,8 @@ $LANG11 = array(
     1 => 'Sorodne povezave',
     2 => 'Pošlji èlanek po e-pošti',
     3 => 'Stran prijazna za tisk',
-    4 => 'Dodatne možnosti'
+    4 => 'Dodatne možnosti',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
@@ -524,7 +537,7 @@ $LANG12 = array(
     22 => 'Napaka: niso izpolnjena vsa polja',
     23 => 'Prosimo izpolnite vsa polja obrazca.',
     24 => 'Shranjeno!',
-    25 => "Vaš %s prispevek je bil shranjen.",
+    25 => 'Vaš %s prispevek je bil shranjen.',
     26 => 'Omejitev hitrosti',
     27 => 'Uporabniško ime',
     28 => 'Tematsko podroèje',
@@ -643,7 +656,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Urejanje dogodkov',
-    2 => '',
+    2 => 'Error',
     3 => 'Naslov dogodka',
     4 => 'URL dogodka',
     5 => 'Zaèetek dogodka',
@@ -663,7 +676,10 @@ $LANG22 = array(
     19 => 'Administratorske strani',
     20 => 'Shrani',
     21 => 'Preklièi',
-    22 => 'Izbriši'
+    22 => 'Izbriši',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -710,7 +726,7 @@ $LANG24 = array(
     9 => 'Predogled',
     10 => 'Preklièi',
     11 => 'Izbriši',
-    12 => '',
+    12 => 'ID',
     13 => 'Naslov',
     14 => 'tematsko podroèje',
     15 => 'datum',
@@ -722,7 +738,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Seznam èlankov',
     23 => 'Èe želite spreminjati ali izbrisati èlanek, kliknite na njegovo številko. Èe želite èlanek pregledati, kliknite na njegov naslov. Èe želite objaviti nov èlanek, kliknite na zgornjo povezavo.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Predogled èlanka',
     27 => '',
@@ -755,7 +771,12 @@ $LANG24 = array(
     54 => 'Priložene slike niso bile uporabljene',
     55 => 'Napaka pri shranjevanju èlanka. Prosimo popravite napake na spodnjem seznamu:',
     56 => 'Prikaži ikono teme',
-    57 => 'Oglej si nezmanjšano sliko'
+    57 => 'Oglej si nezmanjšano sliko',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -765,15 +786,15 @@ $LANG25 = array(
     1 => 'Naèin',
     2 => 'Prosim vpiši vprašanje in vsaj en odgovor.',
     3 => 'Ustvarjena anketa',
-    4 => "Anketa %s shranjena",
+    4 => 'Anketa %s shranjena',
     5 => 'Urejanje anketa',
     6 => 'ID ankete',
     7 => '(ne uporabljajte presledkov)',
     8 => 'Objavi anketo',
     9 => 'Vprašanje',
     10 => 'Odgovorov / Glasov',
-    11 => "Napaka pri odgovoru na anketo %s",
-    12 => "Napaka pri vprašanju na anketo %s",
+    11 => 'Napaka pri odgovoru na anketo %s',
+    12 => 'Napaka pri vprašanju na anketo %s',
     13 => 'Ustvari anketo',
     14 => 'Shrani',
     15 => 'Preklièi',
@@ -817,7 +838,9 @@ $LANG27 = array(
     21 => 'Izbriši',
     22 => 'Privzeto',
     23 => 'Ustvari to temo privzeto za novo oddane èlanke',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -1001,7 +1024,10 @@ $LANG32 = array(
     28 => 'Verzija Plug-in',
     29 => 'Verzija Geekloga',
     30 => 'Odstrani Plug-in?',
-    31 => 'Ali ste preprièani da želite odstraniti ta plug-in?  S tem bodo iz baze izbrisani tudi vsi podatki, ki jih uporablja ta plug-in.'
+    31 => 'Ali ste preprièani da želite odstraniti ta plug-in?  S tem bodo iz baze izbrisani tudi vsi podatki, ki jih uporablja ta plug-in.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1109,7 +1135,9 @@ $MESSAGE = array(
     56 => 'Vpisani email je že uporabljen za enega od raèunov na naši bazi podatkov.',
     57 => 'Tvoj raèun je bil uspešno pobrisan.',
     58 => '(RDF) vsebina je bila uspešno shranjena.',
-    59 => '(RDF) vsebina je bila uspešno izbrisana.'
+    59 => '(RDF) vsebina je bila uspešno izbrisana.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1168,7 +1196,8 @@ $LANG_ACCESS = array(
     'remove' => 'Odstrani',
     'availmembers' => 'Uporabniki na voljo',
     'groupmembers' => 'Èlani skupine',
-    'canteditgroup' => 'Za urejanje te skupine, morate biti njen èlan. Prosim posvetujte se z administratorjem, èe se vam zdi da je to sporoèilo napaka.'
+    'canteditgroup' => 'Za urejanje te skupine, morate biti njen èlan. Prosim posvetujte se z administratorjem, èe se vam zdi da je to sporoèilo napaka.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1215,12 +1244,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Zahtevan je vpis',
     2 => 'Žal, za ogled tega dela strani, moraš biti logiran kot uporabnik.',
     3 => 'Logiraj se',
     4 => 'Nov uporabnik'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

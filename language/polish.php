@@ -148,7 +148,12 @@ $LANG01 = array(
     105 => 'Wy¶lij Maila',
     106 => 'Ods³on',
     107 => 'Wersja GL - Test',
-    108 => 'Opró¿nij Cache'
+    108 => 'Opró¿nij Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin',
+    111 => 'View PDF Version',
+    112 => 'Registered Users',
+    113 => 'Documentation'
 );
 
 ###############################################################################
@@ -185,12 +190,12 @@ $LANG03 = array(
     7 => 'Ostatni komentarz zamie¶ci³e¶ ',
     8 => " sekund temu.  Wymagana jest przerwa równa {$_CONF['commentspeedlimit']} sekund pomiêdzy komentarzami",
     9 => 'Komentarz',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Wy¶lij Komentarz',
     12 => 'Proszê uzupe³niæ pola Tytu³ i Komentarz. Pola te s± wymagane do zamieszczenia komentarza.',
     13 => 'Twoje Informacje',
     14 => 'Podgl±d',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Tytu³',
     17 => 'B³±d',
     18 => 'Wa¿ne Informacje',
@@ -199,7 +204,10 @@ $LANG03 = array(
     21 => 'Aby unikn±æ powtarzania, zanim zamie¶cisz swój komentarz przeczytaj co napisali inni.',
     22 => 'Wpisz temat adekwatny do tre¶ci wiadomo¶ci.',
     23 => 'Twój adres email nie bêdzie ujawniony.',
-    24 => 'Gall Anonim'
+    24 => 'Gall Anonim',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -310,7 +318,9 @@ $LANG04 = array(
     102 => 'Email od U¿ytkowników',
     103 => 'TAK na emaile od innych u¿ytkowników',
     104 => 'Poka¿ Status Online',
-    105 => 'Poka¿ w bloku Who\'s Online'
+    105 => 'Poka¿ w bloku Who\'s Online',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -319,10 +329,12 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Brak Nowo¶ci',
     2 => 'Brak nowych artyku³ów.  Byæ mo¿e nie ma nowych artyku³ów w danej sekcji lub twoje ustawienia s± zbyt limituj±ce.',
-    3 => "dla sekcji %s",
+    3 => 'dla sekcji %s',
     4 => 'Dzisiejszy Artyku³ Dnia',
     5 => 'Nastêpny',
-    6 => 'Poprzedni'
+    6 => 'Poprzedni',
+    7 => 'First',
+    8 => 'Last'
 );
 
 ###############################################################################
@@ -377,7 +389,7 @@ $LANG08 = array(
     25 => 'Przed u¿yciem tej opcji musisz siê zalogowaæ.  Pozwoli nam to zabezpieczyæ system przed niew³a¶ciwym wykorzystaniem',
     26 => 'Ten formularz umo¿liwia wys³anie maila do wybranego u¿ytkownika.  Wymagane jest wype³nienie wszystkich pól.',
     27 => 'Krótka Wiadomo¶æ',
-    28 => "%s napisa³: ",
+    28 => '%s napisa³: ',
     29 => "Dzienne zestawienie artyku³ów w Serwisie {$_CONF['site_name']} z dnia ",
     30 => 'Newsletter z dnia ',
     31 => 'Tytu³',
@@ -487,14 +499,15 @@ $LANG11 = array(
     1 => 'Odno¶niki',
     2 => 'Wy¶lij Znajomemu',
     3 => 'Wersja Do Wydruku',
-    4 => 'Opcje Artyku³u'
+    4 => 'Opcje Artyku³u',
+    5 => 'PDF Story Format'
 );
 
 ###############################################################################
 # submit.php
 
 $LANG12 = array(
-    1 => "Aby przes³aæ %s musisz siê wcze¶niej zalogowaæ.",
+    1 => 'Aby przes³aæ %s musisz siê wcze¶niej zalogowaæ.',
     2 => 'Login',
     3 => 'Nowy U¿ytkownik',
     4 => 'Prze¶lij Wydarzenie',
@@ -518,7 +531,7 @@ $LANG12 = array(
     22 => 'B³±d: Puste Pola',
     23 => 'Wymagane jest wype³nienie wszystkich pól formularza.',
     24 => 'Zapisano',
-    25 => "Twój materia³ %s zosta³ zapisany.",
+    25 => 'Twój materia³ %s zosta³ zapisany.',
     26 => 'Limit Czasowy',
     27 => 'Login',
     28 => 'Sekcja',
@@ -637,7 +650,7 @@ $LANG21 = array(
 
 $LANG22 = array(
     1 => 'Edytor Wydarzeñ',
-    2 => '',
+    2 => 'Error',
     3 => 'Tytu³ Wydarzenia',
     4 => 'URL Wydarzenia',
     5 => 'Data Pocz±tkowa Wydarzenia',
@@ -657,7 +670,10 @@ $LANG22 = array(
     19 => 'Admin Home',
     20 => 'zapisz',
     21 => 'anuluj',
-    22 => 'kasuj'
+    22 => 'kasuj',
+    23 => 'Bad start date.',
+    24 => 'Bad end date.',
+    25 => 'End date is before start date.'
 );
 
 ###############################################################################
@@ -704,7 +720,7 @@ $LANG24 = array(
     9 => 'podgl±d',
     10 => 'anuluj',
     11 => 'kasuj',
-    12 => '',
+    12 => 'ID',
     13 => 'Tytu³',
     14 => 'Sekcja',
     15 => 'Data',
@@ -716,7 +732,7 @@ $LANG24 = array(
     21 => '',
     22 => 'Lista Artyku³ów',
     23 => 'Aby zmodyfikowaæ lub wykasowaæ artyku³, kliknij na numer danego artyku³u poni¿ej. Aby przegl±dn±æ artyku³ kliknij na tytu³ danego artyku³u. Aby wpisaæ nowy artyku³ kliknij na Nowy Artyku³ powy¿ej.',
-    24 => '',
+    24 => 'The ID you chose for this story is already in use. Please use another ID.',
     25 => '',
     26 => 'Podgl±d Artyku³u',
     27 => '',
@@ -749,7 +765,12 @@ $LANG24 = array(
     54 => 'Za³±czonych Obrazów Nie U¿yto',
     55 => 'Pojawi³y siê nastêpuj±ce b³êdy podczas próby zapisu tego artyku³u.  Proszê je poprawiæ przed ponownym zapisem',
     56 => 'Poka¿ Ikonê Artyku³u',
-    57 => 'Poka¿ nieskalowalne zdjêcie'
+    57 => 'Poka¿ nieskalowalne zdjêcie',
+    58 => 'Story Management',
+    59 => 'Option',
+    60 => 'Enabled',
+    61 => 'Auto Archive',
+    62 => 'Auto Delete'
 );
 
 ###############################################################################
@@ -759,15 +780,15 @@ $LANG25 = array(
     1 => 'Tryb',
     2 => 'Proszê wpisaæ pytanie i co najmniej jedn± odpowied¼.',
     3 => 'Sonda Stworzona',
-    4 => "Sonda %s zapisana",
+    4 => 'Sonda %s zapisana',
     5 => 'Edycja Sondy',
     6 => 'ID Sondy',
     7 => '(bez spacji)',
     8 => 'Pojawia siê na Stronie G³ównej',
     9 => 'Pytanie',
     10 => 'Odpowiedzi / G³osy',
-    11 => "Wyst±pi³ b³±d przy pobieraniu odpowiedzi sondy %s",
-    12 => "Wyst±pi³ b³±d przy pobieraniu pytañ sondy %s",
+    11 => 'Wyst±pi³ b³±d przy pobieraniu odpowiedzi sondy %s',
+    12 => 'Wyst±pi³ b³±d przy pobieraniu pytañ sondy %s',
     13 => 'Stwórz Sondê',
     14 => 'zapisz',
     15 => 'anuluj',
@@ -811,7 +832,9 @@ $LANG27 = array(
     21 => 'kasuj',
     22 => 'Domy¶lnie',
     23 => 'zrób z tego domy¶ln± sekcjê dla przesy³anych artyku³ów',
-    24 => '(*)'
+    24 => '(*)',
+    25 => 'Archive Topic',
+    26 => 'make this the default topic for archived stories. Only one topic allowed.'
 );
 
 ###############################################################################
@@ -995,7 +1018,10 @@ $LANG32 = array(
     28 => 'Plugin Wersja',
     29 => 'Geeklog Wersja',
     30 => 'Skasowaæ Plugin?',
-    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.'
+    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.',
+    32 => '<p><b>Error AutoLink tag not correct format</b></p>',
+    33 => 'Code Version',
+    34 => 'Update'
 );
 
 ###############################################################################
@@ -1103,7 +1129,9 @@ $MESSAGE = array(
     56 => 'Podany adres email jest ju¿ u¿ywany.',
     57 => 'Twoje konto zosta³o pomy¶lnie usuniête.',
     58 => 'Plik zosta³ zapisany.',
-    59 => 'Plik zosta³ skasowany.'
+    59 => 'Plik zosta³ skasowany.',
+    60 => 'The plugin was successfully updated',
+    61 => 'Plugin %s: Unknown message placeholder'
 );
 
 ###############################################################################
@@ -1162,7 +1190,8 @@ $LANG_ACCESS = array(
     'remove' => 'Usuñ',
     'availmembers' => 'Dostêpni Cz³onkowie',
     'groupmembers' => 'Cz³onkowie Grupy',
-    'canteditgroup' => 'Aby wyedytowaæ t± grupê musisz do niej nale¿eæ. Proszê skontaktowaæ siê z administratorem je¶li uwa¿asz, ¿e nast±pi³a pomy³ka.'
+    'canteditgroup' => 'Aby wyedytowaæ t± grupê musisz do niej nale¿eæ. Proszê skontaktowaæ siê z administratorem je¶li uwa¿asz, ¿e nast±pi³a pomy³ka.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################
@@ -1209,12 +1238,33 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Wymagany jest login',
     2 => 'Sorry, aby wej¶æ na te strony musisz byæ zalogowany.',
     3 => 'Login',
     4 => 'Nowy U¿ytkownik'
+);
+
+###############################################################################
+# pdfgenerator.php
+
+$LANG_PDF = array(
+    1 => 'The PDF feature has been disabled',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    3 => 'Unknown error during PDF generation',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
+    5 => 'Loading your document.',
+    6 => 'Please wait while your document is loaded.',
+    7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
+    9 => 'PDF Generator',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
+    14 => 'The PDF you requested either does not exist or you tried to illegally access a file.'
 );
 
 ?>

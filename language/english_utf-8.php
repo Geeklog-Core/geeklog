@@ -320,7 +320,9 @@ $LANG04 = array(
     102 => 'Email from Users',
     103 => 'Allow email from other users',
     104 => 'Show Online Status',
-    105 => 'Show up in Who\'s Online block'
+    105 => 'Show up in Who\'s Online block',
+    106 => 'Location',
+    107 => 'Shown in your public profile'
 );
 
 ###############################################################################
@@ -329,7 +331,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'No News to Display',
     2 => 'There are no news stories to display.  There may be no news for this topic or your user preferences may be too restrictive',
-    3 => " for topic %s",
+    3 => ' for topic %s',
     4 => 'Today\'s Featured Article',
     5 => 'Next',
     6 => 'Previous',
@@ -389,7 +391,7 @@ $LANG08 = array(
     25 => 'You must be logged in to user this feature.  By having you log in, it helps us prevent misuse of the system',
     26 => 'This form will allow you to send an email to the selected user.  All fields are required.',
     27 => 'Short message',
-    28 => "%s wrote: ",
+    28 => '%s wrote: ',
     29 => "This is the daily digest from {$_CONF['site_name']} for ",
     30 => ' Daily Newsletter for ',
     31 => 'Title',
@@ -507,7 +509,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "To submit a %s you are required to be logged in as a user.",
+    1 => 'To submit a %s you are required to be logged in as a user.',
     2 => 'Login',
     3 => 'New User',
     4 => 'Submit an Event',
@@ -531,7 +533,7 @@ $LANG12 = array(
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
-    25 => "Your %s submission has been saved successfully.",
+    25 => 'Your %s submission has been saved successfully.',
     26 => 'Speed Limit',
     27 => 'Username',
     28 => 'Topic',
@@ -780,15 +782,15 @@ $LANG25 = array(
     1 => 'Mode',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Poll Created',
-    4 => "Poll %s saved",
+    4 => 'Poll %s saved',
     5 => 'Edit Poll',
     6 => 'Poll ID',
     7 => '(do not use spaces)',
     8 => 'Appears on Homepage',
     9 => 'Question',
     10 => 'Answers / Votes',
-    11 => "There was an error getting poll answer data about the poll %s",
-    12 => "There was an error getting poll question data about the poll %s",
+    11 => 'There was an error getting poll answer data about the poll %s',
+    12 => 'There was an error getting poll question data about the poll %s',
     13 => 'Create Poll',
     14 => 'save',
     15 => 'cancel',
@@ -1022,7 +1024,6 @@ $LANG32 = array(
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
     34 => 'Update'
-
 );
 
 ###############################################################################
@@ -1204,7 +1205,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Database back up was successful.',
     'no_backups' => 'No backups in the system',
     'db_explanation' => 'To create a new backup of your Geeklog system, hit the button below',
-    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>\$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => "Incorrect path or mysqldump utility not executable.<br>Check <strong>$_DB_mysqldump_path</strong> definition in config.php.<br>Variable currently defined as: <var>{$_DB_mysqldump_path}</var>",
     'zero_size' => 'Backup Failed: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} does not exist or is not a directory",
     'no_access' => "ERROR: Directory {$_CONF['backup_path']} is not accessible.",
@@ -1239,6 +1240,7 @@ $LANG_404 = array(
 );
 
 ###############################################################################
+# login form
 
 $LANG_LOGIN = array(
     1 => 'Login required',
@@ -1247,22 +1249,20 @@ $LANG_LOGIN = array(
     4 => 'New User'
 );
 
+###############################################################################
+# pdfgenerator.php
+
 $LANG_PDF = array(
     1 => 'The PDF feature has been disabled',
-    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written'
-         . ' to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.'
-         . 'The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
+    2 => 'The document provided was not rendered. The document was received but could not be processed.  Please make sure to submit only html formatted documents that have been written to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
     3 => 'Unknown error during PDF generation',
-    4 => 'No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page
-          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF\'s in an ad-hoc fashion.',
+    4 => "No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page\n          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF's in an ad-hoc fashion.",
     5 => 'Loading your document.',
     6 => 'Please wait while your document is loaded.',
     7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
-    8 => 'The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem
-          persists.',
+    8 => "The path given in the configuration file to the HTMLDoc binary is invalid or this system cannot execute it.  Please contact the site administrator if this problem\n          persists.",
     9 => 'PDF Generator',
-    10 => 'This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This
-           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site',
+    10 => "This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This\n           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site",
     11 => 'URL',
     12 => 'Generate PDF!',
     13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On',
