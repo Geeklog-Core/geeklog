@@ -81,7 +81,7 @@ function editgroup($grp_id="") {
 	if ($A["grp_gl_core"] == 0) {	
 		print "<tr><td align=\"right\">{$LANG_ACCESS[groupname]}:</td><td><input type=\"text\" size=\"20\" maxlength=\"50\" name=\"grp_name\" value=\"{$A["grp_name"]}\"></td></tr>";
 	} else {
-		print "<tr><td align=\"right\">{$LANG_ACCESS[groupname]}:</td><td>{$A["grp_name"]}</td></tr>";
+		print "<tr><td align=\"right\">{$LANG_ACCESS[groupname]}:</td><td>{$A["grp_name"]}</td><input type=\"hidden\" name=\"grp_name\" value=\"{$A["grp_name"]}\"></tr>";
 	}
 	print "<tr><td align=\"right\">{$LANG_ACCESS[description]}:</td><td><input type=\"text\" size=\"40\" maxlength=\"255\" name=\"grp_descr\" value=\"{$A["grp_descr"]}\"></td></tr>";
 	
@@ -99,6 +99,23 @@ function editgroup($grp_id="") {
 		print "<tr><td colspan=\"2\" width=\"100%\">";
 		printrights($grp_id);
 		print "</tr></tr>";
+                print "<tr><td colspan=\"2\"><hr></td></tr>";
+		print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr>";
+		print "<tr><td colspan=\"2\" width=\"100%\">";
+		$groups = getusergroups('','',$grp_id);
+		if (is_array($groups)) {
+                        $selected = implode(' ',$groups);
+                } else {
+                        $selected = '';
+                }
+
+		#Only Root users can give rights to Root
+		if (ingroup('Root')) {
+			checklist('groups','grp_id,grp_name',"grp_id <> $grp_id",$selected);
+		} else {
+			checklist('groups','grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected);
+		}
+		print "</tr></tr>";
 		print "</table></form>";
 		endblock();
 		return;
@@ -111,42 +128,45 @@ function printrights($grp_id="") {
 
 	# this gets a bit complicated so bare with the comments
 
-	#first get query for all available features
+	#first query for all available features
 	$features = dbquery("SELECT * FROM features ORDER BY ft_name");
 	$nfeatures = mysql_num_rows($features);
 
-	#now get all the features this group gets directly
- 	$directfeatures = dbquery("SELECT acc_ft_id,ft_name FROM access,features WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
+	if (!empty($grp_id)) {
+		#now get all the feature this group gets directly
+ 		$directfeatures = dbquery("SELECT acc_ft_id,ft_name FROM access,features WHERE ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
 
-	#now in many cases the features will be give to this user indirectly via membership
-	#to another group.  These are not editable and must, instead, be removed from that group
-	# directly
-	$indirectfeatures = getuserpermissions($grp_id);
-	$indirectfeatures = explode(",",$indirectfeatures);
+		#now in many cases the features will be give to this user indirectly via membership
+		#to another group.  These are not editable and must, instead, be removed from that group
+		# directly
+		$indirectfeatures = getuserpermissions($grp_id);
+		$indirectfeatures = explode(",",$indirectfeatures);
 
-	#Build an array of indirect features
-	for ($i=0;$i<sizeof($indirectfeatures);$i++) {		
-		$grpftarray[current($indirectfeatures)] = 'indirect'; 
-		next($indirectfeatures);
-	}
-
-	#Build an arrray of direct features	
-	$ndirect = mysql_num_rows($directfeatures);
-	for ($i=1;$i<=$ndirect;$i++) {
-		$A = mysql_fetch_array($directfeatures);
-		$grpftarray1[$A["ft_name"]] = 'direct'; 
-	}
-
-	#Now merge the two	
-	$grpftarray = array_merge($grpftarray,$grpftarray1);
-
-	if ($VERBOSE) {
-		#this is for debugging purposes
-		for ($i=1;$i<sizeof($grpftarray);$i++) {
-			errorlog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
-			next($grpftarray); 
+		#Build an array of indirect features
+		for ($i=0;$i<sizeof($indirectfeatures);$i++) {		
+			$grpftarray[current($indirectfeatures)] = 'indirect'; 
+			next($indirectfeatures);
 		}
-	}
+
+		#Build an arrray of direct features	
+		$ndirect = mysql_num_rows($directfeatures);
+		for ($i=1;$i<=$ndirect;$i++) {
+			$A = mysql_fetch_array($directfeatures);
+			$grpftarray1[$A["ft_name"]] = 'direct'; 
+		}
+
+		#Now merge the two	
+		$grpftarray = array_merge($grpftarray,$grpftarray1);
+
+		if ($VERBOSE) {
+			#this is for debugging purposes
+			for ($i=1;$i<sizeof($grpftarray);$i++) {
+				errorlog("element $i is feature " . key($grpftarray) . " and is " . current($grpftarray),1);
+				next($grpftarray); 
+			}
+		}
+
+	} 
 
 	#OK, now loop through and print all the features giving edit rights to only the ones that
 	#are direct features
@@ -156,7 +176,7 @@ function printrights($grp_id="") {
 			print "</tr>\n<tr>";
 		}
 		$A = mysql_fetch_array($features);
-		reset($grpftarray);
+		#reset($grpftarray);
 		#errorlog("COMPARING " . key($grpftarray) . " to {$A["ft_name"]}",1);
 		if (($grpftarray[$A["ft_name"]] == 'direct') OR empty($grpftarray[$A["ft_name"]])) {
 			print "\n<td><input type=\"checkbox\" name=\"features[]\" value=\"{$A["ft_id"]}\"";
@@ -174,14 +194,18 @@ function printrights($grp_id="") {
 ###############################################################################
 # Saves $grp_id to the database
 
-function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features) {
+function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups) {
 	global $CONF,$LANG_ACCESS;
 
 	if (!empty($grp_name) && !empty($grp_descr)) {
 		if (empty($grp_id)) {
-			dbquery("INSERT INTO groups (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
+			dbquery("REPLACE INTO groups (grp_name, grp_descr,grp_gl_core) VALUES ('$grp_name', '$grp_descr',$grp_gl_core)");
 		} else {
-			dbquery("INSERT INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
+			dbquery("REPLACE INTO groups (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ($grp_id,'$grp_name', '$grp_descr',$grp_gl_core)");
+		}
+
+		if (empty($grp_id)) {
+			$grp_id = getitem('groups','grp_id',"grp_name = '$grp_name'");
 		}
 
 		#now save the features
@@ -190,13 +214,26 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features) {
 			dbquery("INSERT INTO access (acc_ft_id,acc_grp_id) VALUES (" . current($features) . ",$grp_id)");
 			next($features);
 		}
+
+		if (is_array($groups)) {
+                        if ($VERBOSE) errorlog("deleting all group_assignments for group $grp_id/$grp_name",1);
+                        dbquery("DELETE FROM group_assignments WHERE ug_grp_id = $grp_id");
+                        if (!empty($groups)) {
+                                for ($i=1;$i<=sizeof($groups);$i++) {
+                                        if ($VERBOSE) errorlog("adding group_assignment " . current($groups) . " for $grp_name",1);
+                                        $sql = "INSERT INTO group_assignments (ug_main_grp_id, ug_grp_id) VALUES (" . current($groups) . ",$grp_id)";
+                                        dbquery($sql);
+                                        next($groups);
+                                }
+                        }
+                }
 		refresh($CONF['site_url'] . '/admin/group.php?msg=13');
 	} else {
 		site_header('menu');
 		startblock($LANG_ACCESS[missingfields]);
 		print $LANG_ACCESS[missingfieldsmsg];
 		endblock();
-		edittopic($grp_id);
+		editgroup($grp_id);
 		site_footer();
 	}
 }
@@ -236,7 +273,7 @@ switch ($mode) {
 		dbdelete("groups","grp_id",$grp_id,"/admin/group.php?msg=14");
 		break;
 	case "save":
-		savegroup($grp_id,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$private_flag);
+		savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups);
 		break;
 	case "edit":
 		site_header("menu");
