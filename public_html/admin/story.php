@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.130 2004/08/29 18:52:16 dhaun Exp $
+// $Id: story.php,v 1.131 2004/09/02 18:38:40 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -893,7 +893,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
                 $A['perm_anon']);
     } else {
-        if (!empty ($old_sid) && ($sid != old_sid)) {
+        if (!empty ($old_sid) && ($sid != $old_sid)) {
             $delete_old_story = true;
         }
         $access = SEC_hasAccess ($owner_id, $group_id, $perm_owner, $perm_group,
@@ -1022,7 +1022,13 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                     $upload->keepOriginalImage (false);
                 }
             }
-            $upload->setAllowedMimeTypes(array('image/gif'=>'.gif','image/jpeg'=>'.jpg,.jpeg','image/pjpeg'=>'.jpg,.jpeg','image/x-png'=>'.png','image/png'=>'.png'));
+            $upload->setAllowedMimeTypes (array (
+                    'image/gif'   => '.gif',
+                    'image/jpeg'  => '.jpg,.jpeg',
+                    'image/pjpeg' => '.jpg,.jpeg',
+                    'image/x-png' => '.png',
+                    'image/png'   => '.png'
+                    ));
             if (!$upload->setPath($_CONF['path_images'] . 'articles')) {
                 $display = COM_siteHeader ('menu');
                 $display .= COM_startBlock ($LANG24[30], '', COM_getBlockTemplate ('_msg_block', 'header'));
@@ -1077,6 +1083,10 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
 
         if ($_CONF['maximagesperarticle'] > 0) {
+            if ($delete_old_story) {
+                // story id has changed - update article_images table first
+                DB_query ("UPDATE {$_TABLES['article_images']} SET ai_sid = '{$sid}' WHERE ai_sid = '{$old_sid}'");
+            }
             list($errors, $introtext, $bodytext) = insert_images($sid, $introtext, $bodytext);
             if (count($errors) > 0) {
                 $display = COM_siteHeader ('menu');
