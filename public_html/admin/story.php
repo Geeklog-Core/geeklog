@@ -8,7 +8,7 @@
 // | Geeklog story administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2002 by the following authors:                         |
+// | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,14 +31,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.56 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: story.php,v 1.57 2002/06/06 07:20:19 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
 *
 * @author   Jason Whittenburg
 * @author   Tony Bibbs <tony@tonybibbs.com>
-* @author   Mark Limburg <mlimburg@users.sourceforge.net>
 *
 */
 
@@ -46,7 +45,6 @@
 * Geeklog commong function library
 */
 include('../lib-common.php');
-
 /**
 * Security check to ensure user even belongs on this page
 */
@@ -775,7 +773,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 exit;
             }
         }
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon",'sid',$sid,$_CONF['site_admin_url'] . '/story.php?msg=9');
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon", 'admin/story.php?msg=9');
         
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
@@ -798,7 +796,7 @@ $display = '';
 switch ($mode) {
 case "$LANG24[11]":
     if ($type == 'submission') {
-        DB_delete($_TABLES['storysubmission'],'sid',$sid,$_CONF['site_admin_url'] . "/moderation.php");
+        DB_delete($_TABLES['storysubmission'],'sid',$sid,"admin/moderation.php");
     } else {
         $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid'");
         $nrows = DB_numRows($result);
@@ -812,7 +810,7 @@ case "$LANG24[11]":
         }
         DB_delete($_TABLES['article_images'],'ai_sid',$sid);
         DB_delete($_TABLES['comments'],'sid',$sid);
-        DB_delete($_TABLES['stories'],'sid',$sid,$_CONF['site_admin_url'] . "/story.php?msg=10");
+        DB_delete($_TABLES['stories'],'sid',$sid,"admin/story.php?msg=10");
     }
     break;
 case "$LANG24[9]":

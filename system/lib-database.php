@@ -31,9 +31,14 @@
 //
 
 /**
-* This is the database library for Geeklog.  Through our code, you will see functions
-* with the DB_ prefix (e.g. DB_query()).  Any such functions can be found in this
-* file.  NOTE: as of Geeklog 1.3.5 you should not have to edit this file
+* This is the common library for Geeklog.  Through our code, you will see functions
+* with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions can be found in this
+* file.  This file provide all configuration variables needed by Geeklog with a
+* series of includes see futher down.  You only need to modify one line in this file.
+* WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
+* modified frequently by the Geeklog development team.  If you put your hacks in
+* lib-custom.php you will find upgrading much easier. NOTE: as of Geeklog 1.3.5 you
+* should not have to edit this file
 *
 */
 
@@ -91,69 +96,6 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
 // +---------------------------------------------------------------------------+
 
-// Constants used for TTL values below
-define('MINUTE',60);
-define('HOUR',MINUTE * 60);
-define('DAY', HOUR * 24);
-define('WEEK', DAY * 7);
-
-/**
-* Lib security is a bit DB intensive with it's recursive function calls to get usre
-* rights and what not.  This is a general TTL for that entire file
-**/
-$_SECURITY_TTL = HOUR * 2;
-
-/**
-* This is a general Time-To-Live array for the tables.  To start, these values will
-* only be used for calls to DB_count().  We may add references to the values more after
-* we make more concrete decisions as a team
-*
-* NOTE: this array will be ignored by drivers that don't support SQL caching (e.g. mysql.class.php)
-*
-**/
-$_ttl_default = HOUR;
-$_TBL_TTL[$_TABLES['access']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['article_images']]      = 0;
-$_TBL_TTL[$_TABLES['blocks']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['commentcodes']]        = $_ttl_default;
-$_TBL_TTL[$_TABLES['commentmodes']]        = $_ttl_default;
-$_TBL_TTL[$_TABLES['comments']]            = HOUR / 4;
-$_TBL_TTL[$_TABLES['commentspeedlimit']]   = 0;
-$_TBL_TTL[$_TABLES['cookiecodes']]         = $_ttl_default;
-$_TBL_TTL[$_TABLES['dateformats']]         = $_ttl_default;
-$_TBL_TTL[$_TABLES['events']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['eventsubmission']]     = 0;
-$_TBL_TTL[$_TABLES['featurecodes']]        = $_ttl_default;
-$_TBL_TTL[$_TABLES['features']]            = $_ttl_default;
-$_TBL_TTL[$_TABLES['frontpagecodes']]      = $_ttl_default;
-$_TBL_TTL[$_TABLES['group_assignments']]   = $_ttl_default;
-$_TBL_TTL[$_TABLES['groups']]              = HOUR / 2;
-$_TBL_TTL[$_TABLES['links']]               = $_ttl_default;
-$_TBL_TTL[$_TABLES['linksubmission']]      = 0;
-$_TBL_TTL[$_TABLES['maillist']]            = $_ttl_default;
-$_TBL_TTL[$_TABLES['personal_events']]     = 0;
-$_TBL_TTL[$_TABLES['plugins']]             = $_ttl_default;
-$_TBL_TTL[$_TABLES['pollanswers']]         = 0;
-$_TBL_TTL[$_TABLES['pollquestions']]       = $_ttl_default;
-$_TBL_TTL[$_TABLES['pollvoters']]          = 0;
-$_TBL_TTL[$_TABLES['postmodes']]           = $_ttl_default;
-$_TBL_TTL[$_TABLES['sessions']]            = 0;
-$_TBL_TTL[$_TABLES['sortcodes']]           = $_ttl_default;
-$_TBL_TTL[$_TABLES['statuscodes']]         = $_ttl_default;
-$_TBL_TTL[$_TABLES['stories']]             = HOUR / 4;
-$_TBL_TTL[$_TABLES['storysubmission']]     = 0;
-$_TBL_TTL[$_TABLES['submitspeedlimit']]    = 0;
-$_TBL_TTL[$_TABLES['topics']]              = $_ttl_default;
-$_TBL_TTL[$_TABLES['tzcodes']]             = $_ttl_default;
-$_TBL_TTL[$_TABLES['usercomment']]         = 0;
-$_TBL_TTL[$_TABLES['userevent']]           = 0;
-$_TBL_TTL[$_TABLES['userindex']]           = 0;
-$_TBL_TTL[$_TABLES['userinfo']]            = 0;
-$_TBL_TTL[$_TABLES['userprefs']]           = 0;
-$_TBL_TTL[$_TABLES['users']]               = HOUR / 4;
-$_TBL_TTL[$_TABLES['vars']]                = $_ttl_default;
-$_TBL_TTL[$_TABLES['wordlist']]            = $_ttl_default;
-
 /**
 * Include appropriate DBMS object
 *
@@ -166,7 +108,7 @@ $_DB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'COM_errorLog');
 // +---------------------------------------------------------------------------+
 // | These are the library functions.  In all cases they turn around and make  |
 // | calls to the DBMS specific functions.  These ARE to be used directly in   |
-// | the code...do NOT use the $_DB methods directly                           |
+// | the code...do NOT use the $_DB methods directly
 // +---------------------------------------------------------------------------+
 
 /**
@@ -197,15 +139,14 @@ function DB_setdebug($flag)
 *
 * @param        string  $sql                SQL to be executed
 * @param        int     $ignore_errors      If 1 this function supresses any error messages
-* @param        int     $ttl                If caching is supported, the TTL for the query
 * @return       object  Returns results from query
 *
 */
-function DB_query($sql, $ignore_errors=0, $ttl=0)
+function DB_query($sql, $ignore_errors=0)
 {
     global $_DB;
     
-    return $_DB->dbQuery($sql,$ignore_errors,$ttl);
+    return $_DB->dbQuery($sql,$ignore_errors);
 }
 
 /**
@@ -221,15 +162,11 @@ function DB_query($sql, $ignore_errors=0, $ttl=0)
 * @param        string      $return_page    URL to send user to when done
 *
 */
-function DB_save($table,$fields,$values,$key_field='',$key_value='',$return_page='') 
+function DB_save($table,$fields,$values,$return_page='') 
 {
     global $_DB,$_TABLES,$_CONF;
 
-    if (empty($key_field)) {
-        $_DB->dbSave($table, $fields, $values);
-    } else {
-        $_DB->dbSave($table, $fields, $values, $key_field, $key_value);
-    }
+    $_DB->dbSave($table,$fields,$values);
 
     if ($table == $_TABLES['stories']) {
        COM_exportRDF();
@@ -237,7 +174,7 @@ function DB_save($table,$fields,$values,$key_field='',$key_value='',$return_page
     }
 
     if (!empty($return_page)) {
-       print COM_refresh("$return_page");
+       print COM_refresh($_CONF['site_url'] . "/$return_page");
     }
 
 }
@@ -265,7 +202,7 @@ function DB_delete($table,$id,$value,$return_page='')
     }
 
     if (!empty($return_page)) {
-        print COM_refresh("$return_page");
+        print COM_refresh($_CONF['site_url'] . "/$return_page");
     }
 
 }
@@ -279,15 +216,15 @@ function DB_delete($table,$id,$value,$return_page='')
 * @return       mixed       Returns value sought
 *
 */
-function DB_getItem($table,$what,$selection='',$ttl=0) 
+function DB_getItem($table,$what,$selection='') 
 {
     if (!empty($selection)) {
-        $result = DB_query("SELECT $what FROM $table WHERE $selection",0,$ttl);
+        $result = DB_query("SELECT $what FROM $table WHERE $selection");
     } else {
-        $result = DB_query("SELECT $what FROM $table",0,$ttl);
+        $result = DB_query("SELECT $what FROM $table");
     }
     $ITEM = DB_fetchArray($result);
-    return $ITEM[DB_fieldName($result,0)];
+    return $ITEM[0];
 }
 
 /**
@@ -317,7 +254,7 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
     }
 
     if (!empty($return_page)) {
-        print COM_refresh("$return_page");
+        print COM_refresh($_CONF['site_url'] . "/$return_page");
     }
 }
 
@@ -334,21 +271,11 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
 * @return       int     Returns row count from generated SQL
 *
 */
-function DB_count($table,$id='',$value='',$ttl='') 
+function DB_count($table,$id='',$value='') 
 {
-    global $_DB, $_TBL_TTL;
-    
-    // If no ttl given, get from $_TBL_TTL
-    if (!is_numeric($ttl)) {
-        $ttl = $_TBL_TTL[$table];
-    }
+    global $_DB;
 
-    // If no ttl to this point then default to 0
-    if (!is_numeric($ttl)) {
-        $ttl = 0;
-    }
-
-    return $_DB->dbCount($table,$id,$value,$ttl);
+    return $_DB->dbCount($table,$id,$value);
 }
 
 /**
@@ -378,7 +305,7 @@ function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
     }
 
     if (!empty($return_page)) {
-        print COM_refresh("$return_page");
+        print COM_refresh($_CONF['site_url'] . "/$return_page");
     }
 }
 
@@ -541,15 +468,4 @@ function DB_doDatabaseUpgrade($current_gl_version)
     return $_DB->dbDoDatabaseUpgrade($current_gl_version);
 }
 
-function DB_numQueries()
-{
-    global $_DB;
-    
-    return $_DB->dbNumQueries();
-}
-
-function DB_datetime($tmp)
-{
-    return false;      
-}
 ?>

@@ -8,7 +8,7 @@
 // | Geeklog links administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2002 by the following authors:                         |
+// | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,25 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.22 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: link.php,v 1.23 2002/06/06 07:20:19 dhaun Exp $
 
-/**
-* Link administration page
-*
-* @author   Tony Bibbs  <tony@tonybibbs.com>
-* @author   Mark Limburg <mlimburg@users.sourceforge.net>
-* @author   Jason Whittenburg
-*
-*/
-
-/**
-* Geeklog common function library
-*/
 include('../lib-common.php');
-
-/**
-* Geeklog admin authenticator
-*/
 include('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -73,9 +57,8 @@ if (!SEC_hasRights('link.edit')) {
 /**
 * Shows the link editor
 *
-* @param    string      $mode   Used to see if we are moderating a link or simply editing one 
-* @param    string      $lid    ID of link to edit
-* @return   string      HTML for link editor
+* $mode     string      Used to see if we are moderating a link or simply editing one 
+* $lid      string      ID of link to edit
 *
 */
 function editlink($mode, $lid = '') 
@@ -185,22 +168,24 @@ function editlink($mode, $lid = '')
     return $retval;
 }
 
+###############################################################################
+# Svaes the links to the database
 /**
 * Saves link to the database
 *
-* @param    string      $lid            ID for link
-* @param    string      $category       Category link belongs to
-* @param    string      $categorydd     Category links belong to
-* @param    string      $url            URL of link to save
-* @param    string      $description    Description of link
-* @param    string      $title          Title of link
-* @param    int         $hits           Number of hits for link
-* @param    int         $owner_id       ID of owner
-* @param    int         $group_id       ID of group link belongs to
-* @param    string      $perm_owner     Permissions the owner has
-* @param    string      $perm_group     Permissions the group has
-* @param    string      $perm_members   Permissions members have
-* @param    string      $perm_anon      Permissions anonymous users have
+* $lid          string          ID for link
+* $category     string          Category link belongs to
+* $categorydd   string          Category links belong to
+* $url          string          URL of link to save
+* $description  string          Description of link
+* $title        string          Title of link
+* $hits         int             Number of hits for link
+* $owner_id     string          ID of owner
+* $group_id     string          ID of group link belongs to
+* $perm_owner   string          Permissions the owner has
+* $perm_group   string          Permissions the group has
+* $perm_members string          Permissions members have
+* $perm_anon    string          Permissions anonymous users have
 *
 */
 function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
@@ -239,7 +224,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
         if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
-		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=15');
+		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/link.php?msg=15');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
@@ -251,8 +236,6 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 
 /**
 * Lists all the links in the database
-*
-* @return   string  HTML for link listing
 *
 */
 function listlinks() 
@@ -309,7 +292,7 @@ function listlinks()
 
 switch ($mode) {
 	case "$LANG23[23]":
-		DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
+		DB_delete($_TABLES['links'],'lid',$lid,'admin/link.php?msg=16');
 		break;
 	case "$LANG23[21]":
 		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.30 2002/05/30 14:15:22 tony_bibbs Exp $
+// $Id: install.php,v 1.31 2002/06/06 07:20:19 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -128,8 +128,7 @@ function INST_createDatabaseStructures() {
 
 
     // Get DBMS-specific create table array and data array
-    //require_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
-    require_once($_CONF['path'] . 'sql/mysql_tableanddata.php');
+    require_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
 
     $progress = '';
 

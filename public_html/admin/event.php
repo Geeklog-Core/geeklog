@@ -8,7 +8,7 @@
 // | Geeklog event administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2002 by the following authors:                         |
+// | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,25 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.25 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: event.php,v 1.26 2002/06/06 07:20:19 dhaun Exp $
 
-/**
-* The event administration page
-*
-* @author   Tony Bibbs <tony@tonybibbs.com>
-* @author   Mark Limburg <mlimburg@users.sourceforge.net>
-* @author   Jason Whittenburg
-*
-*/
-
-/**
-* Geeklog common function library
-*/
 include('../lib-common.php');
-
-/**
-* Geeklog admin authenticator
-*/
 include('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -78,9 +62,8 @@ if (!SEC_hasRights('event.edit')) {
 /**
 * Shows event editor
 *
-* @param    string      $mode       Indicates if this is a submission or an regular entry
-* @param    string      $eid        ID of event to edit
-* @return   string      HTML for event editor form
+* $mode         string      Indicates if this is a submission or an regular entry
+* $eid          string      ID of event to edit
 *
 */
 function editevent($mode, $A) 
@@ -399,19 +382,19 @@ function editevent($mode, $A)
 /**
 * Saves an event to the database
 *
-* @param    string      $eid            Event ID
-* @param    string      $title          Event Title
-* @param    string      $url            URL for the event
-* @param    string      $datestart      Date the event begins on
-* @param    string      $dateend        Date the event ends on
-* @param    string      $location       Where the event will be held at
-* @param    string      $description    Description about the event
-* @param    int         $owner_id       ID of owner
-* @param    int         $group_id       ID of group event belongs to
-* @param    string      $perm_owner     Permissions the owner has on event
-* @param    string      $perm_group     Permissions the groups has on the event
-* @param    string      $perm_members   Permisssions members have on the event
-* @param    string      $perm_anon      Permissions anonymous users have
+* @eid          string          Event ID
+* @title        string          Event Title
+* @url          string          URL for the event
+* @datestart    string          Date the event begins on
+* @dateend      string          Date the event ends on
+* @location     string          Where the event will be held at
+* @description  string          Description about the event
+* @owner_id     string          ID of owner
+* @group_id     string          ID of group event belongs to
+* @perm_owner   string          Permissions the owner has on event
+* @perm_group   string          Permissions the groups has on the event
+* @perm_members string          Permisssions members have on the event
+* @perm_anon    string          Permissions anonymous users have
 *
 */
 function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day, $start_year, $start_hour, $start_minute, $start_ampm, $end_month, $end_day, $end_year, $end_hour, $end_minute, $end_ampm, $location, $address1, $address2, $city, $state, $zipcode,$description,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$mode) 
@@ -483,7 +466,7 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 		// Convert array values to numeric permission values
         list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 
-        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'eid',$eid,$_CONF['site_admin_url'] . '/event.php?msg=17');
+        DB_save($_TABLES['events'],'eid,title,event_type,url,allday,datestart,dateend,timestart,timeend,location,address1,address2,city,state,zipcode,description,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$eid,'$title','$event_type','$url',$allday,'$datestart','$dateend','$timestart','$timeend','$location','$address1','$address2','$city','$state','$zipcode','$description',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'admin/event.php?msg=17');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG22[10],2);
@@ -494,8 +477,6 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
 }
 /**
 * lists all the events in the system
-*
-* @return   string  HTML for event listing
 *
 */
 function listevents() 

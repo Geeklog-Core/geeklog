@@ -8,7 +8,7 @@
 // | Geeklog topic administration page.                                        |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2002 by the following authors:                         |
+// | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,25 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.20 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: topic.php,v 1.21 2002/06/06 07:20:19 dhaun Exp $
 
-/**
-* Topic administration page
-*
-* @author   Tony Bibbs <tony@tonybibbs.com>
-* @author   Mark Limburg <mlimburg@users.sourceforge.net>
-* @author   Jason Whittenburg
-*
-*/
-
-/**
-* Geeklog common function library
-*/
 require_once('../lib-common.php');
-
-/**
-* admin authenticator
-*/
 require_once('auth.inc.php');
 
 if (!SEC_hasRights('topic.edit')) {
@@ -70,9 +54,8 @@ if (!SEC_hasRights('topic.edit')) {
 /**
 * Show topic administration form
 *
-* @param    string      $tid        ID of topic to edit
-* @return   string      HTML for topic editor
-*
+* @tid      string      ID of topic to edit
+* 
 */ 
 function edittopic($tid='') 
 {
@@ -171,22 +154,8 @@ function edittopic($tid='')
 	return $retval;
 }
 
-/**
-* Save a topic to the database
-*
-* @param    string      $tid            Topic ID
-* @param    string      $topic          Topic name
-* @param    string      $imageurl       URL fo topic icon or image
-* @param    int         $sortnum        Used to sort topics per admin's sort order
-* @param    int         $limitnews      Max number of stories per page for topic
-* @param    int         $owner_id       ID of user that owns topic
-* @param    int         $group_id       ID of group that topic belongs to
-* @param    array       $perm_owner     Permissions that owner has on topic
-* @param    array       $perm_group     Permissions that group has on topic
-* @param    array       $perm_members   permissions that members have on topic
-* @param    array       $perm_anon      Permissions that anonymous users have on topic
-*
-*/
+###############################################################################
+# Saves $tid to the database
 function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) {
 	global $_TABLES, $_CONF, $LANG27;
 
@@ -196,7 +165,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 		}	
 		//Convert array values to numeric permission values
                 list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'tid',$tid,$_CONF['site_admin_url'] . "/topic.php?msg=13");
+		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon","admin/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG27[7],2);
@@ -206,12 +175,8 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 	}
 }
 
-/**
-* Shows list of all topics in the system
-*
-* @return   string  HTML for topic listing
-*
-*/
+###############################################################################
+# Displays a list of topics
 function listtopics() {
 	global $_TABLES, $LANG27, $_CONF, $LANG_ACCESS;
 	
@@ -276,13 +241,15 @@ function listtopics() {
 	return $retval;
 }
 
+###############################################################################
+# MAIN
 $display = '';
 
 switch ($mode) {
 	case "$LANG27[21]":
 		DB_delete($_TABLES['stories'],'tid',$tid);
 		DB_delete($_TABLES['blocks'],'tid',$tid);
-		DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
+		DB_delete($_TABLES['topics'],'tid',$tid,'admin/topic.php?msg=14');
 		break;
 	case "$LANG27[19]":
 		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.23 2002/05/21 15:33:20 tony_bibbs Exp $
+// $Id: moderation.php,v 1.24 2002/06/06 07:20:19 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -321,8 +321,7 @@ function moderation($mid,$action,$type,$count)
             // This is called in case this is a plugin. There may be some plugin specific 
             // processing that needs to happen first.
             $retval .= PLG_approveSubmission($type,$mid[$i]);
-            DB_query("INSERT INTO $table ($fields) SELECT $fields FROM $submissiontable WHERE $id = '$mid[$i]'");
-            DB_delete($submissiontable,$id,$mid[$i]);
+            DB_copy($table,$fields,$fields,$submissiontable,$id,$mid[$i]);
             break;
         }
     }

@@ -71,7 +71,7 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
 {
     global $_TABLES, $HTTP_POST_VARS, $REMOTE_ADDR, $_CONF, $LANG03, $LANG12, $_USER;
 	
-    if ($uid > 1) {
+	if ($uid > 1) {
         $sig = DB_getItem($_TABLES['users'], 'sig', "uid='$uid'");
     }
     
@@ -80,12 +80,12 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
     } else {
         DB_query("DELETE FROM {$_TABLES['commentspeedlimit']} WHERE date < unix_timestamp() - {$_CONF['commentspeedlimit']}");
 
-        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', "$REMOTE_ADDR");
-        
+        $id = DB_count($_TABLES['commentspeedlimit'], 'ipaddress', $REMOTE_ADDR);
+
         if ($id > 0) {
             $result = DB_query("SELECT date FROM {$_TABLES['commentspeedlimit']} WHERE ipaddress = '$REMOTE_ADDR'");
             $A = DB_fetchArray($result);
-            $last = time() - $A[DB_fieldName($result,0)];
+            $last = time() - $A[0];
 			
             $retval .= COM_startBlock($LANG12[26])
                 . $LANG03[7]
@@ -110,16 +110,14 @@ function commentform($uid,$save,$anon,$title,$comment,$sid,$pid='0',$type,$mode,
                 $title = strip_tags(COM_checkWords($title));
                 $HTTP_POST_VARS['title'] = $title;
                 $newcomment = $comment;
-                if (!empty ($sig)) {
-                    if (!$postmode == 'html') {
-                        $newcomment .= LB . LB . LB . '---' . LB . $sig;
-                    } else {
-                        $newcomment .= '<p>---<br>' . $sig;
-                    }
+                if (!$postmode == 'html') {
+                    $newcomment .= LB . LB . LB . '-----' . LB . $sig;
+                } else {
+                    $newcomment .= '<p>----<br>' . $sig;
                 }
                 $HTTP_POST_VARS['comment'] = $newcomment;
-
-
+                
+				
                 $retval .= COM_startComment($LANG03[14])
                     . COM_comment($HTTP_POST_VARS,1,$type,0,'flat',true)
                     . '</td></tr></table></td></tr></table>';
@@ -207,16 +205,14 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
     if ($uid > 1) {
         $sig = DB_getItem($_TABLES['users'],'sig', "uid = '$uid'");
     }
-    if (!empty ($sig)) {
-        if ($postmode == 'html') {
-            $comment .= '<p>---<br>' . nl2br($sig);
-        } else {
-            $comment .= LB . LB . LB . '---' . LB . $sig;
-        }
+    if ($postmode == 'html') {
+        $comment .= '<p>----<br>' . nl2br($sig);
+    } else {
+        $comment .= LB . LB . LB . '-----' . LB . $sig;
     }
-
-    DB_save($_TABLES['commentspeedlimit'],'ipaddress, date', "'$REMOTE_ADDR'," . time(), 'ipaddress', "'$REMOTE_ADDR'");
     
+    DB_save($_TABLES['commentspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
+
     // Clean 'em up a bit!
     if ($postmode == 'html') {
         $comment = addslashes(COM_checkHTML(COM_checkWords($comment)));
@@ -228,18 +224,18 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
 
     if (!empty($title) && !empty($comment)) {
         DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid,type',"'$sid',$uid,'$comment',now(),'$title',$pid,'$type'");
-
+		
         // See if plugin will handle this
-        PLG_handlePluginComment($type,$sid);
-
+		PLG_handlePluginComment($type,$sid);
+		
         // If we reach here then no plugin issued a COM_refresh() so continue
 
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
-
+		
         if ($type == 1) {
             if ($comments > 0) {
                 DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);
-            }
+            }			
             $retval .= COM_refresh("{$_CONF['site_url']}/pollbooth.php?qid=$sid");
         } else {
             DB_change($_TABLES['stories'],'comments',$comments,'sid',$sid);

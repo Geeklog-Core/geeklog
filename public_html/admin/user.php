@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.35 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: user.php,v 1.36 2002/06/06 07:20:19 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -170,13 +170,13 @@ function edituser($uid = '', $msg = '')
 */
 function changepw($uid,$passwd) 
 {
-	global $_TABLES, $_CONF; 
+	global $_TABLES; 
 
     $retval = '';
 
 	if (!empty($passwd) && !empty($uid)) {
 		$passwd = md5($passwd);
-		$result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,$_CONF['site_admin_url'] . '/user.php?mode=none');	
+		$result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,'admin/user.php?mode=none');	
 	} else {
 		$retval .= COM_siteHeader('menu');
 		COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);
@@ -245,7 +245,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 			echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
 		} else {
 			$retval .= COM_siteHeader('menu');
-            $retval .= COM_errorLog('Error in saveusers in ' . $_CONF['site_admin_url'] . '/users.php');
+            $retval .= COM_errorLog('Error in saveusers in admin/users.php');
 			$retval .= COM_siteFooter();
             echo $retval;
             exit;
@@ -523,7 +523,7 @@ case $LANG28[19]:
     // what to do with orphan stories/comments?
 	
     // now move delete the user itself
-    DB_delete($_TABLES['users'],'uid',$uid,$_CONF['site_admin_url'] . '/user.php?msg=22');
+    DB_delete($_TABLES['users'],'uid',$uid,'admin/user.php?msg=22');
     break;
 case $LANG28[20]:
     $display = saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$HTTP_POST_VARS[$_TABLES['groups']],$delete_photo);

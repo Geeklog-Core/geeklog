@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php.sample,v 1.1 2002/05/20 21:51:28 tony_bibbs Exp $
+// $Id: config.php.sample,v 1.2 2002/06/06 07:20:19 dhaun Exp $
 
 // ----------------------------------------------------------------------------+
 // | SITE STATUS                                                               |
@@ -49,7 +49,7 @@ $_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
 // | All paths must have a trailing slash ('/'). The 'path' value signifies    |
 // | where the config.php (this file) resides                                  |
 // +---------------------------------------------------------------------------+
-$_DB_dbms           = 'adodb';              // Currently only mysql or adodb support
+$_DB_dbms           = 'mysql';              // Currently only mysql is supported
 $_DB_host           = 'localhost';  
 $_DB_name           = 'geeklog';            // Yes, your DB must exists before running installer!
 $_DB_user           = 'gl_user';

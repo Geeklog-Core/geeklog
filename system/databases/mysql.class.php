@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.11 2002/05/28 13:42:58 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.12 2002/06/06 07:20:20 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.  Unfortunately
@@ -66,10 +66,6 @@ class database {
     * @access private
     */
     var $_errorlog_fn = '';
-    /**
-    * @access private
-    */
-    var $_numQueries = 0;
 
     // PRIVATE METHODS
 
@@ -195,28 +191,16 @@ class database {
     }
 
     /**
-    * Returns the number of queries executed so far
-    *
-    * @return   int     Number of queries executed
-    *
-    */
-    function dbNumQueries()
-    {
-        return $this->_numQueries;
-    }
-    
-    /**
     * Executes a query on the MySQL server
     *
     * This executes the passed SQL and returns the recordset or errors out
     *
     * @param    string      $sql            SQL to be executed
     * @param    boolean     $ignore_error   If 1 this function supresses any error messages
-    * @param    int         $ttl            Time-to-live (caching feature, not used in this library)
     * @return   object      Returns results of query
     *
     */
-    function dbQuery($sql,$ignore_errors=0,$ttl=0)
+    function dbQuery($sql,$ignore_errors=0)
     {
         if ($this->isVerbose()) {
             $this->_errorlog("\n***inside database->dbQuery***<br>");
@@ -226,8 +210,6 @@ class database {
         // Connect to database server
         $db = $this->_connect();
 
-        $this->_numQueries++;
-        
         // Run query
         if ($ignore_errors == 1) {
             $result = @mysql_query($sql,$db);
@@ -257,53 +239,22 @@ class database {
     /**
     * Saves information to the database
     *
-    * This will use $key_field and $key_value to see if an UPDATE or INSERT
-    * statement is needed.  This does support concatenated keys
+    * This will use a REPLACE INTO to save a record into the
+    * database
     *
-    * @param    string          $table      The table to save to
-    * @param    string          $fields     string  Comma demlimited list of fields to save
-    * @param    string          $values     Values to save to the database table
-    * @param    string|array    $key_field  string or string array of all key fields
-    * @param    string|array    $key_value  string or string array of all key values
+    * @param    string      $table      The table to save to
+    * @param    string      $fields     string  Comma demlimited list of fields to save
+    * @param    string      $values     Values to save to the database table
     *
     */
-    function dbSave($table, $fields, $values, $key_field = '', $key_value = '')
+    function dbSave($table,$fields,$values)
     {
         if ($this->isVerbose()) {
             $this->_errorlog("\n*** Inside database->dbSave ***<BR>");
         }
-        
-        if (DB_count($table,$key_field, $key_value,0) > 0) {
-            $farray = explode(',',$fields);
-            $varray = explode(',',$values);
-            $sql = "UPDATE $table SET ";
-            for ($i = 1; $i <= count($farray); $i++) {
-                $sql .= current($farray) . '=' . current($varray);
-                if ($i < count($farray)) {
-                    $sql .= ',';
-                }
-                next($farray);
-                next($varray);
-            }
-            $where_clause = '';
-            if (is_array($key_field)) {
-                for ($i = 1; $i <= count($key_field); $i++) {
-                    $where_clause .= current($key_field) . "='" . current($key_value) . "'";
-                    if ($i < count($key_field)) {
-                        $where_clause .= ' AND ';
-                    }
-                    next($key_field);
-                    next($key_value);
-                }
-            } else {
-                $where_clause .= $key_field . '=' . "'$key_value'";
-            }
-            $sql .= " WHERE $where_clause";
-        } else {
-            
-            $sql = "INSERT INTO $table ($fields) VALUES ($values)";
-        }
-                
+
+        $sql = "REPLACE INTO $table ($fields) VALUES ($values)";
+
         $this->dbQuery($sql);
 
         if ($this->isVerbose()) {
@@ -429,7 +380,7 @@ class database {
         }
 
     }
-    
+
     /**
     * Returns the number of records for a query that meets the given criteria
     *
@@ -487,7 +438,63 @@ class database {
         return ($this->dbResult($result,0));
 
     }
-    
+
+    /**
+    * Copies a record from one table to another (can be the same table)
+    *
+    * This will use a REPLACE INTO...SELECT FROM to copy a record from one table
+    * to another table.  They can be the same table.
+    *
+    * @param    string          $table      Table to insert record into
+    * @param    string          $fields     Comma delmited list of fields to copy over
+    * @param    string          $values     Values to store in database fields
+    * @param    string          $tablefrom  Table to get record from
+    * @param    array|string    $id         field name(s) to use in where clause
+    * @param    array|string    $value      Value(s) to use in where clause
+    * @return   boolean     Returns true on success otherwise false
+    *
+    */
+    function dbCopy($table,$fields,$values,$tablefrom,$id,$value)
+    {
+        if ($this->isVerbose()) {
+            $this->_errorlog("\n*** Inside database->dbCopy ***<BR>");
+        }
+
+        $sql = "REPLACE INTO $table ($fields) SELECT $values FROM $tablefrom";
+
+        if (is_array($id) || is_array($value)) {
+            if (is_array($id) && is_array($value) && count($id) == count($value)) {
+                // they are arrays, traverse them and build sql
+                $sql .= ' WHERE ';
+                for ($i = 1; $i <= count($id); $i++) {
+                    if ($i == count($id)) {
+                        $sql .= current($id) . " = '" . current($value) . "'";
+                    } else {
+                        $sql .= current($id) . " = '" . current($value) . "' AND ";
+                    }
+                    next($id);
+                    next($value);
+                }
+            } else {
+                // error, they both have to be arrays and of the
+                // same size
+                return false;
+            }
+        } else {
+            if (!empty($id) && !empty($value)) {
+                $sql .= " WHERE $id = '$value'";
+            }
+        }
+
+        $this->dbQuery($sql);
+        $this->dbDelete($tablefrom,$id,$value);
+
+        if ($this->isVerbose()) {
+            $this->_errorlog("\n*** Leaving database->dbCopy ***<BR>");
+        }
+
+    }
+
     /**
     * Retrieves the number of rows in a recordset
     *

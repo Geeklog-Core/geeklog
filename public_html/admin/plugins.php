@@ -8,7 +8,7 @@
 // | Geeklog plugin administration page.                                       |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2002 by the following authors:                         |
+// | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
@@ -31,25 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.26 2002/06/04 13:53:37 gene_wood Exp $
+// $Id: plugins.php,v 1.27 2002/06/06 07:20:19 dhaun Exp $
 
-/**
-* Plugin administration page.  Unlike most other administration pages, you can't
-* add or remove plugins from this page.  You can only enable/disable a plugin.
-*
-* @author   Tony Bibbs  <tony@tonybibbs.com>
-* @author   Mark Limburg <mlimburg@users.sourceforge.net>
-*
-*/
-
-/**
-* Geeklog common function library
-*/
 include('../lib-common.php');
-
-/**
-* Geeklog admin authenticator
-*/
 include('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
@@ -73,9 +57,8 @@ if (!SEC_inGroup('Root')) {
 /**
 * Shows the plugin editor form
 *
-* @param    string      $pi_name    Plugin name
-* @param    int         $confirmed  Flag indicated the user has confirmed an action
-* @return   string      HTML for plugin editor
+* @pi_name          string          Plugin name
+* @confirmed        int             Flag indicated the user has confirmed an action
 *
 */ 
 function plugineditor($pi_name, $confirmed = 0) 
@@ -136,8 +119,7 @@ function plugineditor($pi_name, $confirmed = 0)
 /**
 * Shows all installed Geeklog plugins
 *
-* @param    int     $page   Page number to show
-* @return   string  HTML for plugin listing
+* @page         int         Page number to show
 *
 */
 function listplugins($page = 1) 
@@ -191,11 +173,11 @@ function listplugins($page = 1)
 /**
 * Saves a plugin
 *
-* @param    string  $pi_name        Plugin name
-* @param    string  $pi_version     Plugin version number
-* @param    string  $pi_gl_version  Last Geeklog version plugin is compatible with
-* @param    int     $enabled        Flag that indicates if plugin in enabled or not
-* @param    string  $pi_homepage    URL to homepage for plugin
+* @pi_name          string  Plugin name
+* @pi_version       string  Plugin version number
+* @pi_gl_version    string  Last Geeklog version plugin is compatible with
+* @enabled          int     Flag that indicates if plugin in enabled or not
+* @pi_homepage      string  URL to homepage for plugin
 *
 */ 
 function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage) 
@@ -208,7 +190,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 		} else {
 			$enabled = 0;
 		}
-		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'pi_name', $pi_name, $_CONF['site_admin_url'] . '/plugins.php?msg=28');
+		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'admin/plugins.php?msg=28');
 	} else {
         $retval = '';
 		$retval .= COM_siteHeader('menu');
@@ -219,6 +201,8 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 	}
 }
 
+###############################################################################
+# MAIN
 switch ($mode) {
 	case $LANG32[25]: // Delete
 		if ($confirmed == 1) {

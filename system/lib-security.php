@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.8 2002/05/20 17:24:14 tony_bibbs Exp $
+// $Id: lib-security.php,v 1.9 2002/06/06 07:20:20 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -56,7 +56,7 @@ $_SEC_VERBOSE = false;
 */
 function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE, $_SECURITY_TTL;
+    global $_TABLES, $_USER, $_SEC_VERBOSE;
 
     if (empty($usergroups)) {
         $usergroups = array();
@@ -76,10 +76,10 @@ function SEC_getUserGroups($uid='',$usergroups='',$cur_grp_id='')
 
     if (empty($cur_grp_id)) {
         $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1,$_SECURITY_TTL);
+            . " WHERE grp_id = ug_main_grp_id AND ug_uid = $uid",1);
     } else {
         $result = DB_query("SELECT ug_main_grp_id,grp_name FROM {$_TABLES["group_assignments"]},{$_TABLES["groups"]}"
-            . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id",1,$_SECURITY_TTL);
+            . " WHERE grp_id = ug_main_grp_id AND ug_grp_id = $cur_grp_id",1);
     }
 
     if ($result == -1) {
@@ -193,13 +193,13 @@ function SEC_isModerator()
 */
 function SEC_hasTopicAccess($tid)
 {
-    global $_TABLES, $_SECURITY_TTL;
+    global $_TABLES;
 
     if (empty($tid)) {
         return 0;
     }
 
-    $result = DB_query("SELECT * FROM {$_TABLES["topics"]} WHERE tid = '$tid'",0,$_SECURITY_TTL);
+    $result = DB_query("SELECT * FROM {$_TABLES["topics"]} WHERE tid = '$tid'");
     $A = DB_fetchArray($result);
 
     return SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -403,7 +403,7 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 */
 function SEC_getUserPermissions($grp_id='',$uid='')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE, $_SECURITY_TTL;
+    global $_TABLES, $_USER, $_SEC_VERBOSE;
 
     // Get user ID if we don't already have it
     if (empty($uid)) {
@@ -425,7 +425,7 @@ function SEC_getUserPermissions($grp_id='',$uid='')
 
 	// print "<BR>uid = " . $_USER[uid];
 
-        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_uid = $uid",1,$_SECURITY_TTL);
+        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_uid = $uid",1);
         if ($result <> -1) {
             $nrows = DB_numRows($result);
             if ($_SEC_VERBOSE) {
@@ -441,7 +441,7 @@ function SEC_getUserPermissions($grp_id='',$uid='')
         // along the way.  First, get the rights for this group.
 
         $result = DB_query("SELECT ft_name FROM {$_TABLES["access"]},{$_TABLES["features"]} WHERE "
-            . "ft_id = acc_ft_id AND acc_grp_id = $grp_id",1,$_SECURITY_TTL);
+            . "ft_id = acc_ft_id AND acc_grp_id = $grp_id",1);
         $nrows = DB_numRows($result);
 
         if ($_SEC_VERBOSE) COM_errorLog("got $nrows rights for group $grp_id in SEC_getUserPermissions",1);
@@ -457,7 +457,7 @@ function SEC_getUserPermissions($grp_id='',$uid='')
         // Now see if there are any groups tied to this one further up the tree.  If so
         // see if they have additional rights
 
-        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_grp_id = $grp_id",1,$_SECURITY_TTL);
+        $result = DB_query("SELECT ug_main_grp_id FROM {$_TABLES["group_assignments"]} WHERE ug_grp_id = $grp_id",1);
         $nrows = DB_numRows($result);
         if ($_SEC_VERBOSE) {
             COM_errorLog("got $nrows groups tied to group $grp_id in SEC_getUserPermissions",1);
