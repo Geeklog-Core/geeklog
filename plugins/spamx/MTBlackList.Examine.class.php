@@ -55,10 +55,16 @@ class MTBlackList extends BaseCommand {
         $result = DB_Query ("SELECT value FROM {$_TABLES['spamx']} WHERE name = 'MTBlacklist'", 1);
         $nrows = DB_numRows ($result);
 
+        // named entities
+        $comment = html_entity_decode ($comment);
+        // decimal notation
+        $comment = preg_replace ('/&#(\d+);/me', "chr(\\1)", $comment);
+        // hex notation
+        $comment = preg_replace ('/&#x([a-f0-9]+);/mei', "chr(0x\\1)", $comment);
         $ans = 0; // Found Flag
         for ($i = 1; $i <= $nrows; $i++) {
             list ($val) = DB_fetchArray ($result);
-            if (@preg_match ("#$val#i", html_entity_decode ($comment))) {
+            if (@preg_match ("#$val#i", $comment)) {
                 $ans = 1; // quit on first positive match
                 SPAMX_log ($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] .
                            $uid . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
