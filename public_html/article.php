@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.14 2001/11/07 23:34:15 tony_bibbs Exp $
+// $Id: article.php,v 1.15 2001/11/19 22:23:09 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -111,7 +111,7 @@ if ($A['count'] > 0) {
 
         // They have access...go ahead and show the article
 
-		DB_change($_TABLES['stories'],'hits',DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'"),'sid',$story);
+		DB_change($_TABLES['stories'],'hits',DB_getItem($_TABLES['stories'],'hits',"sid = '$story'") + 1,'sid',$story);
 		$sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story' ";
 		$result = DB_query($sql);
 		$A = DB_fetchArray($result);
