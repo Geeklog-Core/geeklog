@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.48 2003/01/16 22:53:15 tony Exp $
+// $Id: search.php,v 1.49 2003/02/09 21:27:01 tony Exp $
 
 require_once('lib-common.php');
 
@@ -173,7 +173,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all',
         require_once($_CONF['path_system'] . 'classes/plugin.class.php');
         $link_results = new Plugin();
         $link_results->searchlabel = $LANG09[38];
-		if (!$_CONF['expandedSearchResults']) 
+		if (!$_CONF['expanded_search_results']) 
 		{
 			$link_results->addSearchHeading($LANG09[16]);
 			$link_results->addSearchHeading($LANG09[33]);
@@ -272,7 +272,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
         $event_results = new Plugin();
         $event_results->searchresults = array();
         $event_results->searchlabel = $LANG09[37];
-		if (!$_CONF['expandedSearchResults']) 
+		if (!$_CONF['expanded_search_results']) 
 		{
 			$event_results->addSearchHeading($LANG09[16]);
 			$event_results->addSearchHeading($LANG09[37]);
@@ -323,7 +323,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 
 	$urlQuery = urlencode($query);
 
-	$resultLimit = ($_CONF['maxSearchResults'] > 0) ? $_CONF['maxSearchResults'] : $_USER['maxstories'];
+	$resultLimit = ($_CONF['max_search_results'] > 0) ? $_CONF['max_search_results'] : $_USER['maxstories'];
 	
 	if($resultLimit == 0)
 		$resultLimit = $_CONF['limitnews'];
@@ -490,7 +490,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
     $total = $total_stories + $total_comments + $total_plugins + $link_results->num_itemssearched + $event_results->num_itemssearched;
     $nrows = $nrows_stories + $nrows_comments + $nrows_plugins + $link_results->num_searchresults + $event_results->num_searchresults;
 
-	if($_CONF['maxSearchResults'] == 1)
+	if($_CONF['max_search_results'] == 1)
 		$resultLimit = $nrows;
 
 	$pages = intval($nrows/$resultLimit);
@@ -517,17 +517,17 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 	if ($nrows > 0) {
         $searchresults = new Template($_CONF['path_layout'] . 'search');
         
-        if($_CONF['expandedSearchResults'])
+        if($_CONF['expanded_search_results'])
         {
         	$searchresults->set_file(array('searchresults'=>'searchresults.thtml',
                                         'searchheading'=>'searchresults_heading.thtml',
                                         'searchrows'=>'searchresults_rows.thtml',
                                         'searchblock' => 'searchblock.thtml',
                                         'headingcolumn'=>'headingcolumn.thtml',
-                                        'resultrow'=>'resultrowEnhanced.thtml',
-                                        'resultTitle'=>'resultTitle.thtml',
-                                        'resultSummary'=>'resultSummary.thtml',
-                                        'resultAuthDateHits'=>'resultAuthDateHits.thtml'));
+                                        'resultrow'=>'resultrowenhanced.thtml',
+                                        'resulttitle'=>'resulttitle.thtml',
+                                        'resultsummary'=>'resultsummary.thtml',
+                                        'resultauthdatehits'=>'resultauthdatehits.thtml'));
         } else {
         	$searchresults->set_file(array('searchresults'=>'searchresults.thtml',
                                         'searchheading'=>'searchresults_heading.thtml',
@@ -535,7 +535,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
                                         'searchblock' => 'searchblock.thtml',
                                         'headingcolumn'=>'headingcolumn.thtml',
                                         'resultrow'=>'resultrow.thtml',
-                                        'resultTitle'=>'resultcolumn.thtml',
+                                        'resulttitle'=>'resultcolumn.thtml',
                                         'resultcolumn'=>'resultcolumn.thtml'));
         }
         $searchresults->set_var('lang_found', $LANG09[24]);
@@ -567,7 +567,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 		      $_CONF['showemptysearchresults']) {
 
             // Print heading for story/comment results
-            if (!$_CONF['expandedSearchResults']) 
+            if (!$_CONF['expanded_search_results']) 
             {
 				$searchresults->set_var('label', $LANG09[16]);
 				$searchresults->parse('headings','headingcolumn',true);
@@ -605,13 +605,13 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
                         $A['title'] = str_replace('$','&#36;',$A['title']);
                         
                         $searchresults->set_var('data', '<a href="article.php?story=' . $A['sid'] . '&query=' . $urlQuery . '">' . stripslashes($A['title']) . '</a>');
-                        $searchresults->parse('data_cols','resultTitle',true);
+                        $searchresults->parse('data_cols','resulttitle',true);
                         
-                        if($_CONF['expandedSearchResults'])
+                        if($_CONF['expanded_search_results'])
                         {
                         	$fulltext = $A['introtext'] . ' ' .$A['bodytext'];
                         	$searchresults->set_var('data',$summary = getSummary($query, $fulltext));
-                        	$searchresults->parse('data_cols','resultSummary',true);
+                        	$searchresults->parse('data_cols','resultsummary',true);
 	
 							$searchresults->set_var('data',  '<b>' . $LANG09[48] . ':</b> ' . DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
                         	
@@ -619,7 +619,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 							$searchresults->set_var('data2',  '<b>' . $LANG09[49] . ':</b> ' . $thetime[0]);
 	
 							$searchresults->set_var('data3',  '<b>' . $LANG09[50] . ':</b> ' . $A['hits']);
-							$searchresults->parse('data_cols','resultAuthDateHits',true);
+							$searchresults->parse('data_cols','resultauthdatehits',true);
                         }
                         else
                         {
@@ -697,24 +697,24 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 							list($linkTitle,$linkURL,$linkHits,$linkDescription) = $columns;
 							
 							
-							if($_CONF['expandedSearchResults'])
+							if($_CONF['expanded_search_results'])
 							{
 								$searchresults->set_var('data', "<b>$linkTitle</b>");
-								$searchresults->parse('data_cols','resultTitle',true);
+								$searchresults->parse('data_cols','resulttitle',true);
 
 								$searchresults->set_var('data',$summary = getSummary($query, $linkDescription));
-								$searchresults->parse('data_cols','resultSummary',true);
+								$searchresults->parse('data_cols','resultsummary',true);
 								
 								$searchresults->set_var('data', '<b>' . $LANG09[51] . ':</b> ' . $linkURL);
 								$searchresults->set_var('data2', '');
 								$searchresults->set_var('data3', '<b>' . $LANG09[50] . ':</b> ' . $linkHits);
 
-								$searchresults->parse('data_cols','resultAuthDateHits',true);
+								$searchresults->parse('data_cols','resultauthdatehits',true);
 							}
 							else
 							{	
 								$searchresults->set_var('data', $linkTitle);
-								$searchresults->parse('data_cols','resultTitle',true);
+								$searchresults->parse('data_cols','resulttitle',true);
 								
 								$searchresults->set_var('data', $linkURL);
 								$searchresults->parse('data_cols','resultcolumn',true);
@@ -768,18 +768,18 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all', 
 							list($eventTitle,$eventFullDate,$eventLocation,$eventDescription) = $columns;
 							
 							$searchresults->set_var('data', $eventTitle);
-							$searchresults->parse('data_cols','resultTitle',true);
+							$searchresults->parse('data_cols','resulttitle',true);
 							
-							if($_CONF['expandedSearchResults'])
+							if($_CONF['expanded_search_results'])
 							{
 								$searchresults->set_var('data',$summary = getSummary($query, $eventDescription));
-								$searchresults->parse('data_cols','resultSummary',true);
+								$searchresults->parse('data_cols','resultsummary',true);
 								
 								$searchresults->set_var('data',  '<b>' . $LANG09[52] . ':</b> ' . $eventLocation);
 								$searchresults->set_var('data2', '<b>' . $LANG09[49] . ':</b> ' . $eventFullDate);
 								$searchresults->set_var('data3', '');
 
-								$searchresults->parse('data_cols','resultAuthDateHits',true);
+								$searchresults->parse('data_cols','resultauthdatehits',true);
 							}
 							else
 							{	
@@ -996,7 +996,7 @@ function getSummary($query,$fullText)
 		if($position < 0)
 			$position = 0;
 			
-		$summary = substr( $fullText,$position,$_CONF['summaryLength']);  
+		$summary = substr( $fullText,$position,$_CONF['summary_length']);  
 		
 		//remove unnecessary tags
 		$summary = strip_tags($summary,'<ol><ul><li><br>');
@@ -1009,7 +1009,7 @@ function getSummary($query,$fullText)
 			{
 				$summary = "&hellip; $summary";
 			}
-			if($position+$_CONF['summaryLength'] < strlen($fullText))
+			if($position+$_CONF['summary_length'] < strlen($fullText))
 			{
 				$summary = "$summary &hellip;";
 			}
@@ -1023,8 +1023,8 @@ function getSummary($query,$fullText)
 	}
 	else
 	{
-		$summary = substr( $fullText,0,$_CONF['summaryLength']);
-		if(strlen($fullText) > $_CONF['summaryLength'])
+		$summary = substr( $fullText,0,$_CONF['summary_length']);
+		if(strlen($fullText) > $_CONF['summary_length'])
 		{
 			$summary = "$summary &hellip;";
 		}
