@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.81 2004/01/18 14:47:16 dhaun Exp $
+// $Id: usersettings.php,v 1.82 2004/01/21 19:58:00 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -153,9 +153,13 @@ function edituser()
     $result = DB_query("SELECT about,pgpkey FROM {$_TABLES['userinfo']} WHERE uid = {$_USER['uid']}");
     $A = DB_fetchArray($result);
 
+    $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
+    DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
+                                  'username', $username);
+
     $preferences->set_var ('about_value', $A['about']);
     $preferences->set_var ('pgpkey_value', $A['pgpkey']);
-    $preferences->set_var ('uid_value', $_USER['uid']);
+    $preferences->set_var ('uid_value', $reqid);
     $preferences->set_var ('username_value', $_USER['username']);
 
     if ($_CONF['allow_account_delete'] == 1) {
@@ -643,7 +647,16 @@ function saveuser($A)
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
-    } 
+    }
+
+    $reqid = DB_getItem ($_TABLES['users'], 'pwrequestid',
+                         "uid = {$_USER['uid']}");
+    if ($reqid != $A['uid']) {
+        DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
+                   'uid', $_USER['uid']);
+        COM_accessLog ("An attempt was made to illegally change the account information of user {$_USER['uid']}.");
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
 
     if ($_CONF['allow_username_change'] == 1) {
         $A['new_username'] = strip_tags (COM_stripslashes ($A['new_username']));
@@ -660,8 +673,8 @@ function saveuser($A)
         }
     }
 
-    if (!empty($A["passwd"])) {
-        $passwd = md5($A["passwd"]);
+    if (!empty($A['passwd'])) {
+        $passwd = md5($A['passwd']);
         DB_change($_TABLES['users'],'passwd',"$passwd","uid",$_USER['uid']);
     }
 
