@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.99 2004/08/06 08:55:36 dhaun Exp $
+// $Id: usersettings.php,v 1.100 2004/08/08 18:06:44 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -635,6 +635,132 @@ function emailAddressExists ($email, $uid)
 }
 
 /**
+* Upload new photo, delete old photo
+*
+* @param    string  $delete_photo   'on': delete old photo
+* @return   string                  filename of new photo (empty = no new photo)
+*
+*/
+function handlePhotoUpload ($delete_photo = '')
+{
+    global $_CONF, $_TABLES, $_USER, $LANG24, $HTTP_POST_FILES;
+
+    require_once ($_CONF['path_system'] . 'classes/upload.class.php');
+
+    $upload = new upload();
+    if (!empty ($_CONF['image_lib'])) {
+        if ($_CONF['image_lib'] == 'imagemagick') {
+            // Using imagemagick
+            $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+        } elseif ($_CONF['image_lib'] == 'netpbm') {
+            // using netPBM
+            $upload->setNetPBM ($_CONF['path_to_netpbm']);
+        } elseif ($_CONF['image_lib'] == 'gdlib') {
+            // using the GD library
+            $upload->setGDLib ();
+        }
+        $upload->setAutomaticResize (true);
+        if (isset ($_CONF['debug_image_upload']) &&
+                $_CONF['debug_image_upload']) {
+            $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+            $upload->setDebug (true);
+        }
+    }
+    $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
+                                         'image/jpeg'  => '.jpg,.jpeg',
+                                         'image/pjpeg' => '.jpg,.jpeg',
+                                         'image/x-png' => '.png',
+                                         'image/png'   => '.png'
+                                 )      );
+    if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
+        $display = COM_siteHeader ('menu');
+        $display .= COM_startBlock ($LANG24[30], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $upload->printErrors (false);
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                        'footer'));
+        $display .= COM_siteFooter ();
+        echo $display;
+        exit; // don't return
+    }
+
+    $filename = '';
+    if (!empty ($delete_photo) && ($delete_photo == 'on')) {
+        $delete_photo = true;
+    } else {
+        $delete_photo = false;
+    }
+
+    $curphoto = DB_getItem ($_TABLES['users'], 'photo',
+                            "uid = {$_USER['uid']}");
+    if (empty ($curphoto)) {
+        $delete_photo = false;
+    }
+
+    // see if user wants to upload a (new) photo
+    $newphoto = $HTTP_POST_FILES['photo'];
+    if (!empty ($newphoto['name'])) {
+        $pos = strrpos ($newphoto['name'], '.') + 1;
+        $fextension = substr ($newphoto['name'], $pos);
+        $filename = $_USER['username'] . '.' . $fextension;
+
+        if (!empty ($curphoto) && ($filename != $curphoto)) {
+            $delete_photo = true;
+        } else {
+            $delete_photo = false;
+        }
+    }
+
+    // delete old photo first
+    if ($delete_photo) {
+        $filetodelete = $_CONF['path_images'] . 'userphotos/' . $curphoto;
+        if (file_exists ($filetodelete)) {
+            if (!@unlink ($filetodelete)) {
+                $display = COM_siteHeader ('menu');
+                $display .= COM_errorLog("Unable to remove file $filetodelete");
+                $display .= COM_siteFooter ();
+                echo $display;
+                exit;
+            }
+        }
+    }
+
+    // now do the upload
+    if (!empty ($filename)) {
+        $upload->setFileNames ($filename);
+        $upload->setPerms ('0644');
+        if (($_CONF['max_photo_width'] > 0) &&
+            ($_CONF['max_photo_height'] > 0)) {
+            $upload->setMaxDimensions ($_CONF['max_photo_width'],
+                                       $_CONF['max_photo_height']);
+        } else {
+            $upload->setMaxDimensions ($_CONF['max_image_width'],
+                                       $_CONF['max_image_height']);
+        }
+        if ($_CONF['max_photo_size'] > 0) {
+            $upload->setMaxFileSize($_CONF['max_photo_size']);
+        } else {
+            $upload->setMaxFileSize($_CONF['max_image_size']);
+        }
+        $upload->uploadFiles ();
+
+        if ($upload->areErrors ()) {
+            $display = COM_siteHeader ('menu');
+            $display .= COM_startBlock ($LANG24[30], '',
+                    COM_getBlockTemplate ('_msg_block', 'header'));
+            $display .= $upload->printErrors (false);
+            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                            'footer'));
+            $display .= COM_siteFooter ();
+            echo $display;
+            exit; // don't return
+        }
+    }
+
+    return $filename;
+}
+
+/**
 * Saves the user's information back to the database
 *
 * @A        array       User's data
@@ -723,99 +849,7 @@ function saveuser($A)
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
-            include_once($_CONF['path_system'] . 'classes/upload.class.php');
-            $upload = new upload();
-            if (!empty($_CONF['image_lib'])) {
-                if ($_CONF['image_lib'] == 'imagemagick') {
-                    // Using imagemagick
-                    $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
-                } elseif ($_CONF['image_lib'] == 'netpbm') {
-                    // using netPBM
-                    $upload->setNetPBM ($_CONF['path_to_netpbm']);
-                } elseif ($_CONF['image_lib'] == 'gdlib') {
-                    // using the GD library
-                    $upload->setGDLib ();
-                }
-                $upload->setAutomaticResize(true);
-                if (isset ($_CONF['debug_image_upload']) &&
-                        $_CONF['debug_image_upload']) {
-                    $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
-                    $upload->setDebug (true);
-                }
-            }
-            $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
-                                                 'image/jpeg'  => '.jpg,.jpeg',
-                                                 'image/pjpeg' => '.jpg,.jpeg',
-                                                 'image/x-png' => '.png',
-                                                 'image/png'   => '.png'
-                                         )      );
-            if (!$upload->setPath ($_CONF['path_images'] . 'userphotos')) {
-                $display = COM_siteHeader ('menu');
-                $display .= COM_startBlock ($LANG24[30], '',
-                        COM_getBlockTemplate ('_msg_block', 'header'));
-                $display .= $upload->printErrors (false);
-                $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
-                                                                'footer'));
-                $display .= COM_siteFooter ();
-                echo $display;
-                exit; // don't return
-            }
-            if ($upload->numFiles() == 1) {
-                $curfile = current($HTTP_POST_FILES);
-                if (strlen($curfile['name']) > 0) {
-                    $pos = strrpos($curfile['name'],'.') + 1;
-                    $fextension = substr($curfile['name'], $pos);
-                    $filename = $_USER['username'] . '.' . $fextension;
-                    $upload->setFileNames($filename);
-                    $upload->setPerms('0644');
-                    if (($_CONF['max_photo_width'] > 0) &&
-                        ($_CONF['max_photo_height'] > 0)) {
-                        $upload->setMaxDimensions ($_CONF['max_photo_width'],
-                                                   $_CONF['max_photo_height']);
-                    } else {
-                        $upload->setMaxDimensions ($_CONF['max_image_width'],
-                                                   $_CONF['max_image_height']);
-                    }
-                    if ($_CONF['max_photo_size'] > 0) {
-                        $upload->setMaxFileSize($_CONF['max_photo_size']);
-                    } else {
-                        $upload->setMaxFileSize($_CONF['max_image_size']);
-                    }
-                    reset($HTTP_POST_FILES);
-                    $upload->uploadFiles();
-                    if ($upload->areErrors()) {
-                        $display = COM_siteHeader ('menu');
-                        $display .= COM_startBlock ($LANG24[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header'));
-                        $display .= $upload->printErrors (false);
-                        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-                        $display .= COM_siteFooter ();
-                        echo $display;
-                        exit; // don't return
-                    }
-                } else {
-                    $filename = '';
-                }
-            } else {
-                $curphoto = DB_getItem ($_TABLES['users'], 'photo',
-                                        "uid = {$_USER['uid']}");
-                if (!empty($curphoto) AND isset ($A['delete_photo']) AND
-                        $A['delete_photo'] == 'on') {
-                    $filetodelete = $_CONF['path_images'] . 'userphotos/'
-                                  . $curphoto;
-                    if (file_exists ($filetodelete)) {
-                        if (!@unlink ($filetodelete)) {
-                            $display = COM_siteHeader ('menu');
-                            $display .= COM_errorLog ("Unable to remove file $filetodelete");
-                            $display .= COM_siteFooter ();
-                            echo $display;
-                            exit;
-                        }
-                    }
-                    $curphoto = '';
-                }
-                $filename = $curphoto;
-            }
+            $filename = handlePhotoUpload ($A['delete_photo']);
         }
 
         if (!empty ($A['homepage'])) {
