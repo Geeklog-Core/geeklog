@@ -34,9 +34,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.28 2004/01/14 18:05:42 dhaun Exp $
+// $Id: functions.inc,v 1.29 2004/01/18 10:16:23 dhaun Exp $
 
-$langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
+$langfile = $_CONF['path'] . 'plugins/staticpages/language/'
+          . $_CONF['language'] . '.php';
 
 if (file_exists ($langfile)) {
     include ($langfile);
@@ -325,14 +326,8 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
     if ($uid > 1) {
         $sql .= "((owner_id = '{$uid}') AND (perm_owner >= $access)) OR ";
 
-        $groupList = '';
-        foreach ($GROUPS as $grp) {
-            $groupList .= $grp . ',';
-        }
-        $groupList = substr ($groupList, 0, -1);
-        $sql .= "((group_id IN ($groupList)) AND (perm_group >= $access)) OR ";
-
-        $sql .= "(perm_members >= $access)";
+        $sql .= "((group_id IN (" . implode (',', $GROUPS) . ")) "
+             . "AND (perm_group >= $access)) OR (perm_members >= $access)";
     } else {
         $sql .= "perm_anon >= $access";
     }
