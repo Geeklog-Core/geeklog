@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.81 2003/05/05 21:11:06 dhaun Exp $
+// $Id: config.php,v 1.82 2003/05/08 17:23:09 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -175,7 +175,7 @@ $_CONF['cookie_ip']                     = 0;
 $_CONF['default_perm_cookie_timeout']   = 604800;
 $_CONF['session_cookie_timeout']        = 7200;
 $_CONF['cookie_path']                   = '/';
-$_CONF['cookiedomain']                  = '';
+$_CONF['cookiedomain']                  = ''; // e.g. '.example.com'
 $_CONF['cookiesecure']                  = 0;
 
 // +---------------------------------------------------------------------------+

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.56 2003/02/23 20:45:09 dhaun Exp $
+// $Id: usersettings.php,v 1.57 2003/05/08 17:23:10 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -504,9 +504,13 @@ function saveuser($A)
         if ($A['cooktime'] <= 0) {
             $A['cooktime'] = 'NULL';
             $cooktime = 1000;
-            setcookie($_CONF['cookie_name'],$_USER['uid'],time() - $cooktime,$_CONF['cookie_path']);    
+            setcookie ($_CONF['cookie_name'], $_USER['uid'], time() - $cooktime,
+                       $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                       $_CONF['cookiesecure']);
         } else {
-            setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $A['cooktime'],$_CONF['cookie_path']);   
+            setcookie ($_CONF['cookie_name'], $_USER['uid'],
+                       time() + $A['cooktime'], $_CONF['cookie_path'],
+                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);   
         }
 
      	// Call custom account registration and save function if enabled and exists
@@ -681,9 +685,13 @@ function savepreferences($A)
 
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
-    setcookie($_CONF['cookie_theme'],$A['theme'],time() + 31536000,$_CONF['cookie_path']); 
-    setcookie($_CONF['cookie_language'],$A['language'],time() + 31536000,$_CONF['cookie_path']);   
-    
+    setcookie ($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
+               $_CONF['cookie_path'], $_CONF['cookiedomain'],
+               $_CONF['cookiesecure']);
+    setcookie ($_CONF['cookie_language'], $A['language'], time() + 31536000,
+               $_CONF['cookie_path'], $_CONF['cookiedomain'],
+               $_CONF['cookiesecure']);
+
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {

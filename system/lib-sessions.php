@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.15 2003/02/20 18:48:42 dhaun Exp $
+// $Id: lib-sessions.php,v 1.16 2003/05/08 17:23:10 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -40,6 +40,15 @@
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
+
+if (empty ($_CONF['cookiedomain'])) {
+    preg_match ("/\/\/([^\/]*)/", $_CONF['site_url'], $server);
+    if (substr ($server[1], 0, 4) == 'www.') {
+        $_CONF['cookiedomain'] = substr ($server[1], 3);
+    } else {
+        $_CONF['cookiedomain'] = '.' . $server[1];
+    }
+}
 
 // LOAD USER DATA. NOTE: I'm not sure why I have to set $_USER like this because
 // it's suppose to be a global variable.  I tried setting $_USER from within
@@ -270,7 +279,7 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 {
     // This sets a cookie that will persist until the user closes their browser window.
     // since session expiry is handled on the server-side, cookie expiry time isn't a big deal.
-    setcookie($cookiename,$sessid,0,$cookiepath);
+    setcookie($cookiename,$sessid,0,$cookiepath,$cookiedomain,$cookiesecure);
 }
 
 /**

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.61 2003/05/06 10:31:02 dhaun Exp $
+// $Id: users.php,v 1.62 2003/05/08 17:23:10 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -711,8 +711,11 @@ case 'logout':
         SESS_endUserSession($_USER['uid']);
         COM_accessLog("userid = {$HTTP_COOKIE_VARS[$_CONF["cookie_session"]]} {$LANG04[29]} $REMOTE_ADDR.");
     }
-    setcookie($_CONF['cookie_session'],'',time() - 10000,$_CONF['cookie_path']);
-    setcookie($_CONF['cookie_name'],'',time() - 10000,$_CONF['cookie_path']);
+    setcookie ($_CONF['cookie_session'], '', time() - 10000,
+               $_CONF['cookie_path'], $_CONF['cookiedomain'],
+               $_CONF['cookiesecure']);
+    setcookie ($_CONF['cookie_name'], '', time() - 10000, $_CONF['cookie_path'],
+               $_CONF['cookiedomain'], $_CONF['cookiesecure']);
     $display = COM_refresh($_CONF['site_url'] . '/index.php?msg=8');
     break;
 case 'profile':
@@ -866,8 +869,12 @@ default:
                 if ($VERBOSE) {
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
-                setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
-                setcookie($_CONF['cookie_password'],md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
+                setcookie ($_CONF['cookie_name'], $_USER['uid'],
+                           time() + $cooktime, $_CONF['cookie_path'],
+                           $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+                setcookie ($_CONF['cookie_password'], md5 ($passwd),
+                           time() + $cooktime, $_CONF['cookie_path'],
+                           $_CONF['cookiedomain'], $_CONF['cookiesecure']);
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
@@ -893,7 +900,8 @@ default:
         // Now that we have users data see if their theme cookie is set.
         // If not set it
         setcookie ($_CONF['cookie_theme'], $_USER['theme'], time() + 31536000,
-                   $_CONF['cookie_path']);
+                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
+                   $_CONF['cookiesecure']);
 
         if (($HTTP_REFERER) && (strstr ($HTTP_REFERER, '/users.php') === false)) {
             $indexMsg = $_CONF['site_url'] . '/index.php?msg=';

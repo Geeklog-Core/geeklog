@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.15 2002/12/31 11:45:24 dhaun Exp $
+// $Id: auth.inc.php,v 1.16 2003/05/08 17:23:10 dhaun Exp $
 
 // MAIN
 
@@ -60,7 +60,9 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
 		
             // They want their cookie to persist for some amount of time so set it now
 
-            setcookie($_CONF["cookie_name"],$_USER['uid'],time() + $cooktime,$_CONF["cookie_path"]);
+            setcookie ($_CONF['cookie_name'], $_USER['uid'],
+                       time() + $cooktime, $_CONF['cookie_path'],
+                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         }
     }
     if (!SEC_hasRights('story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit','OR')) {
