@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.60 2002/08/14 16:41:15 dhaun Exp $
+// $Id: story.php,v 1.61 2002/08/27 00:06:20 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -155,6 +155,7 @@ function storyeditor($sid = '', $mode = '')
         if ($A["postmode"] == "html") {
             $A["introtext"] = COM_checkHTML(COM_checkWords($A["introtext"]));
             $A["bodytext"] = COM_checkHTML(COM_checkWords($A["bodytext"]));
+            $A["title"] = COM_checkHTML(COM_checkWords($A["title"]));
         } else {
             $A["introtext"] = htmlspecialchars(COM_checkWords($A["introtext"]));
             $A["bodytext"] = htmlspecialchars(COM_checkWords($A["bodytext"]));
@@ -795,7 +796,6 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 // MAIN
 
 $display = '';
-
 switch ($mode) {
 case "$LANG24[11]":
     if ($type == 'submission') {
