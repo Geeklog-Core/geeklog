@@ -1,13 +1,27 @@
 GeekLog History/Changes:
 
-December ??, 2002 (1.3.7)
+December 16, 2002 (1.3.7)
 -----------------
 
+- In all Admin editors, the hard-coded default group permissions have been
+  changed from 3 (read/write) to 2 (read-only).
+- Make sure an error message is displayed when a StoryAdmin tries to edit a
+  story s/he does not have access to.
+- Hide topics from the Admin's list of stories that the current (Story)Admin
+  has no access to.
+- Tom Willet found a problem in admin/user.php that sometimes mangled user
+  names, especially on sites hosted on sourceforge.net.
+- Fixed an SQL error when using single quotes in a block title.
 - When updating events in the master calendar, make sure copies of such events
-  in the personal calendars are updated as well (including deleting them, when
+  in the personal calendars are updated as well (including deleting them when
   the original event is removed from the master calendar).
 - Fixed PRIMARY KEY for table personal_events, so that more than one user can
   add an event to his/her personal calendar.
+
+- New Hellenic (Greek) language file, provided by Access-=-Denied Networks
+- New Spanish language file, provided by LeChuck
+- Updated Italian language file, provided by quess65
+- Updated Japanese language file, provided by Yusuke Sakata
 
 
 December 3, 2002 (1.3.7rc1)
