@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.123 2004/08/01 21:37:50 blaine Exp $
+// $Id: story.php,v 1.124 2004/08/14 15:52:18 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -702,11 +702,13 @@ function replace_images($sid, $intro, $body)
             $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
                                       . $lFilename_large;
             if ($stdImageLoc) {
-                $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
-                                 . $lFilename_large;
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath
+                                     . 'articles/' . $lFilename_large;
             } else {
-                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&amp;image='
-                                 . $lFilename_large;
+                $lFilename_large_URL = $_CONF['site_url']
+                    . '/getimage.php?mode=show&amp;image=' . $lFilename_large;
             }
             if (file_exists ($lFilename_large_complete)) {
                 $lLinkPrefix = '<a href="' . $lFilename_large_URL
@@ -716,9 +718,13 @@ function replace_images($sid, $intro, $body)
         }
 
         if ($stdImageLoc) {
-            $imgSrc = $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'];
+            $imgpath = substr ($_CONF['path_images'],
+                               strlen ($_CONF['path_html']));
+            $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/'
+                    . $A['ai_filename'];
         } else {
-            $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+            $imgSrc = $_CONF['site_url']
+                . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
         }
         $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
@@ -774,11 +780,13 @@ function insert_images($sid, $intro, $body)
             $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
                                       . $lFilename_large;
             if ($stdImageLoc) {
-                $lFilename_large_URL = $_CONF['site_url'] . '/images/articles/'
-                                 . $lFilename_large;
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath
+                                     . 'articles/' . $lFilename_large;
             } else {
-                $lFilename_large_URL = $_CONF['site_url'] . '/getimage.php?mode=show&amp;image='
-                                 . $lFilename_large;
+                $lFilename_large_URL = $_CONF['site_url']
+                    . '/getimage.php?mode=show&amp;image=' . $lFilename_large;
             }
             if (file_exists ($lFilename_large_complete)) {
                 $lLinkPrefix = '<a href="' . $lFilename_large_URL
@@ -800,7 +808,10 @@ function insert_images($sid, $intro, $body)
             // Only parse if we haven't encountered any error to this point
             if (count($errors) == 0) {
                 if ($stdImageLoc) {
-                    $imgSrc = $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'];
+                    $imgpath = substr ($_CONF['path_images'],
+                                       strlen ($_CONF['path_html']));
+                    $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/'
+                            . $A['ai_filename'];
                 } else {
                     $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
                 }

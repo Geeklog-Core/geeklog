@@ -3,6 +3,8 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- Fixed URLs to userphotos and story images when $_CONF['path_images'] had been
+  changed (but was still inside of $_CONF['path_html']) [Dirk]
 - Added a script to convert an existing database to InnoDB tables (if the MySQL
   version supports them): admin/install/toinnodb.php [Dirk]
 - Added missing closing </a> tag in story search results (bug #260) [Dirk]

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.100 2004/08/08 18:06:44 dhaun Exp $
+// $Id: usersettings.php,v 1.101 2004/08/14 15:52:17 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -122,7 +122,7 @@ function edituser()
 
     if ($_CONF['allow_user_photo'] == 1) {
         $stdLoc = true;
-        if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+        if (!strstr ($_CONF['path_images'], $_CONF['path_html'])) {
             $stdLoc = false;
         }
         $photo = '';
@@ -133,14 +133,16 @@ function edituser()
                 $alt = '[' . $A['username'] . ']';
             }
             if ($stdLoc) {
-                $photo .= '<br><img src="' . $_CONF['site_url']
-                   . '/images/userphotos/' . $A['photo'] . '" alt="' . $alt
-                   . '">' . LB . '<br>' . $LANG04[79]
-                   . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $photo .= '<br><img src="' . $_CONF['site_url'] . '/' . $imgpath
+                    . 'userphotos/' . $A['photo'] . '" alt="' . $alt . '">' . LB
+                    . '<br>' . $LANG04[79]
+                    . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
             } else {
                 $photo .= '<br><img src="' . $_CONF['site_url']
-                   . '/getimage.php?mode=userphotos&image=' . $A['photo'] . '" alt="' . $alt
-                   . '">' . LB . '<br>' . $LANG04[79]
+                   . '/getimage.php?mode=userphotos&amp;image=' . $A['photo']
+                   . '" alt="' . $alt . '">' . LB . '<br>' . $LANG04[79]
                    . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
             }
             $preferences->set_var ('display_photo', $photo);

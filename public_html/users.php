@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.83 2004/08/09 18:36:29 dhaun Exp $
+// $Id: users.php,v 1.84 2004/08/14 15:52:17 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -114,10 +114,14 @@ function userprofile ($user, $msg)
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
     if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
-        if (strstr($_CONF['path_images'], $_CONF['path_html'])) {
-            $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '" alt="">');
+        if (strstr ($_CONF['path_images'], $_CONF['path_html'])) {
+            $imgpath = substr ($_CONF['path_images'],
+                               strlen ($_CONF['path_html']));
+            $user_templates->set_var ('user_photo', '<img src="'
+                . $_CONF['site_url'] . '/' . $imgpath . 'userphotos/'
+                . $A['photo'] . '" alt="">');
         } else {
-            $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&image=' . $A['photo'] . '" alt="">');
+            $user_templates->set_var ('user_photo', '<img src="' . $_CONF['site_url'] . '/getimage.php?mode=userphotos&amp;image=' . $A['photo'] . '" alt="">');
         }
     } else {
         $user_templates->set_var('user_photo','');
