@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.65 2002/12/03 12:47:38 dhaun Exp $
+// $Id: config.php,v 1.66 2002/12/16 08:56:15 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -64,19 +64,19 @@ $_CONF['allow_mysqldump'] = 1;      // 1 = on, 0 = off
 // | must also start with a drive letter (e.g. 'C:/').                         |
 // | The 'path' value signifies where the config.php (this file) resides       |
 // +---------------------------------------------------------------------------+
-$_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
+$_CONF['path']            = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog/
 
 // You only need to change this if you moved or renamed the public_html
 // directory. In that case, you should specify the complete path to the
 // directory like this: $_CONF['path_html'] = '/path/to/your/public_html/';
-$_CONF['path_html']         = $_CONF['path'] . 'public_html/';
+$_CONF['path_html']       = $_CONF['path'] . 'public_html/';
 
 // you shouldn't need to edit the following
-$_CONF['path_system']       = $_CONF['path'] . 'system/';
-$_CONF['path_log']          = $_CONF['path'] . 'logs/';
-$_CONF['path_language']     = $_CONF['path'] . 'language/';
-$_CONF['rdf_file']          = $_CONF['path_html'] . 'backend/geeklog.rdf';
-$_CONF['backup_path']       = $_CONF['path'] . 'backups/';
+$_CONF['path_system']     = $_CONF['path'] . 'system/';
+$_CONF['path_log']        = $_CONF['path'] . 'logs/';
+$_CONF['path_language']   = $_CONF['path'] . 'language/';
+$_CONF['rdf_file']        = $_CONF['path_html'] . 'backend/geeklog.rdf';
+$_CONF['backup_path']     = $_CONF['path'] . 'backups/';
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
@@ -361,7 +361,7 @@ if (!defined ('LB')) {
     define('LB',"\n");
 }
 if (!defined ('VERSION')) {
-    define('VERSION', '1.3.7rc1');
+    define('VERSION', '1.3.7');
 }
 
 $_STATES = array(
