@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.144 2004/11/13 18:08:17 dhaun Exp $
+// $Id: config.php,v 1.145 2004/11/20 12:18:37 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -219,6 +219,12 @@ $_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] . '/';
 $_CONF['allow_user_themes']   = 1;
 $_CONF['allow_user_language'] = 1;
 $_CONF['allow_user_photo']    = 1; // allow users to upload self-photo
+
+// Allow users to change their username (if set to 1).
+$_CONF['allow_username_change'] = 0;
+
+// Allow users to delete their account (if set to 1).
+$_CONF['allow_account_delete']  = 0;
 
 // hides the list of authors from the preferences
 $_CONF['hide_author_exclusion'] = 0;
@@ -406,12 +412,6 @@ $_CONF['postmode']      = 'plaintext';  // can be 'plaintext' or 'html'
 $_CONF['speedlimit']    = 45;           // in seconds
 $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and stories without previewing
 
-// Allow users to change their username (if set to 1).
-$_CONF['allow_username_change'] = 0;
-
-// Allow users to delete their account (if set to 1).
-$_CONF['allow_account_delete']  = 0;
-
 
 // Topic Settings
 
@@ -551,12 +551,12 @@ $_CONF['rdf_language']  = 'en-gb';
 // Leaving this value empty disables this feature
 $_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 
-// If you set image_lib to imagemagick give this path otherwise comment it out
-// NOTE: you will need a fairly recent version of ImageMagick for this to work.
-// ImageMagick version 5.4.9 (or newer) is recommended.
+// If you set image_lib to 'imagemagick' give the complete path to mogrify
+// here (i.e. including the name of the executable), otherwise comment it out
+// NOTE: requires ImageMagick version 5.4.9 (or newer)
 //$_CONF['path_to_mogrify']       = '/path/to/mogrify';
 
-// If you set image_lib to netpbm give the path to the netpbm directory, you
+// If you set image_lib to 'netpbm' give the path to the netpbm directory, you
 // need the trailing slash here.
 // NOTE: if you use NETPBM, use the latest package from the Gallery package for
 // your operating system found at http://sourceforge.net/projects/gallery in
