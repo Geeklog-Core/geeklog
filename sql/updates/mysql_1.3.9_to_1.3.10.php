@@ -147,6 +147,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD archive_flag tinyint(1) unsigned
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_onleft(onleft)";
 $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_name(name)";
 
+// remove unused entry (moved to 'syndication' table)
+// (this is obsolete since 1.3.9 but was still present in fresh 1.3.9 installs)
+$_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
+
 // Time to add the SpamX table
 $_SQL[] = "CREATE TABLE {$_TABLES['spamx']} ("
 	. " name varchar(20) NOT NULL default '',"
