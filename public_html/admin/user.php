@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.38 2002/07/23 17:44:42 dhaun Exp $
+// $Id: user.php,v 1.39 2002/08/02 09:59:01 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -74,9 +74,12 @@ function edituser($uid = '', $msg = '')
 	if (!empty($uid)) {
 		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
 		$A = DB_fetchArray($result);
-	
+        if (empty ($A['uid'])) {
+            return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+        }
+
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
-	
+
 		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
 			// the current admin user isn't Root but is trying to change
 			// a root account.  Deny them and log it.
