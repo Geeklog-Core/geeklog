@@ -254,7 +254,7 @@ $LANG04 = array(
 	40 => "Kategorien ohne Icons",
 	41 => "Bereit zu Moderieren",
 	42 => "Datumsformat",
-	43 => "Max. Anzahl Artikel",
+	43 => "Artikel pro Seite",
 	44 => "Keine Blöcke",
 	45 => "Anzeige-Einstellungen für",
 	46 => "Nicht anzeigen für",
@@ -358,7 +358,7 @@ $LANG08 = array(
 	20 => "Von (Name)",
 	21 => "Von (E-Mail)",
 	22 => "Alle Felder müssen ausgefüllt werden.",
-	23 => "Diese Nachricht wurde Ihnen von $from <$fromemail> geschickt, da er/sie der Meinung war, Sie würden sich vielleicht für diesen Artikel auf {$_CONF["site_url"]} interessieren. Dies ist kein SPAM und die beteiligten E-Mail-Adressen (Ihre und die des Absenders) werden nicht gespeichert oder wiederverwendet.\n",
+	23 => "Diese Nachricht wurde Ihnen von $from <$fromemail> geschickt, da er/sie der Meinung war, Sie würden sich vielleicht für diesen Artikel auf <{$_CONF['site_url']}> interessieren. Dies ist kein SPAM und die beteiligten E-Mail-Adressen (Ihre und die des Absenders) wurden nicht gespeichert.\n",
 	24 => "Schreiben Sie einen Kommentar zu diesem Artikel:",
 	25 => "Die musst Dich anmelden, um diese Funktion benutzen zu können. Dies ist leider nötig, um den Missbrauch des Systems zu verhindern",
 	26 => "Mit diesem Formular kannst Du eine E-Mail an diesen User schicken. Alle Felder müssen ausgefüllt werden.",
@@ -426,10 +426,10 @@ $LANG09 = array(
 $LANG10 = array(
 	1 => "Site-Statistik",
 	2 => "Gesamtzahl der Seitenabrufe",
-	3 => "Artikel (Kommentare) im System",
-	4 => "Umfragen (Stimmen) im System",
-	5 => "Links (Klicks) im System",
-	6 => "Termine im System",
+	3 => "Anzahl Artikel (Kommentare)",
+	4 => "Anzahl Umfragen (Stimmen)",
+	5 => "Anzahl Links (Klicks)",
+	6 => "Anzahl Termine",
 	7 => "Top Ten der Artikel",
 	8 => "Artikel-Überschrift",
 	9 => "Angezeigt",
@@ -973,8 +973,8 @@ $MESSAGE = array (
     41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
     42 => "Your word has been successfully saved.",
 	43 => "The word has been successfully deleted.",
-    44 => 'The plug-in was successfully installed!',
-    45 => 'The plug-in was successfully deleted.',
+    44 => 'Das Plugin wurde erfolgreich installiert.',
+    45 => 'Das Plugin wurde gelöscht.',
     46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged",
     47 => "This functionality only works under *nix.  If you are running *nix as your operating system then your cache has been successfully cleared. If you are on Windows, you will need to search for files name adodb_*.php and remove them manually.",
     48 => 'Danke, dass Du dich bei ' . $_CONF['site_name'] . ' angemeldet hast. Dein Aufnahmeantrag wird von unserem Team geprüft. Sobald er akzeptiert wird, wirst Du Dein Passwort per E-Mail erhalten.',
@@ -1015,7 +1015,7 @@ $LANG32 = array (
     28 => 'Plugin-Version',
     29 => 'Geeklog-Version',
     30 => 'Plugin löschen?',
-    31 => 'Bist Du sicher, dass Du dieses Plugin löschen willst? Dies wird alle Dateien, Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Du sicher bist, dann klicke jetzt bitte noch einmal auf Löschen.'
+    31 => 'Bist Du sicher, dass Du dieses Plugin löschen willst? Dies wird alle Daten und Datenstrukturen löschen, die dieses Plugin benutzt. Wenn Du sicher bist, dann klicke jetzt bitte noch einmal auf Löschen.'
 );
 
 $LANG_ACCESS = array(
@@ -1054,8 +1054,8 @@ $LANG_ACCESS = array(
     edit => "Edit",
     none => "None",
     accessdenied => "Zugriff verweigert",
-    storydenialmsg => "You do not have access to view this story.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
-    eventdenialmsg => "You do not have access to view this event.  This could be because you aren't a member of {$_CONF["site_name"]}.  Please <a href=users.php?mode=new> become a member</a> of {$_CONF["site_name"]} to receive full membership access!",
+    storydenialmsg => "Du hast nicht die nötigen Rechte, um diesen Artikel zu lesen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
+    eventdenialmsg => "Du hast nicht die nötigen Rechte, um diesen Termin abzurufen. Möglicherweise bist Du kein registrierter User von {$_CONF["site_name"]}. Bitte melde Dich als <a href=\"users.php?mode=new\">neuer User</a> von {$_CONF["site_name"]} an um vollen Zugriff auf alle Bereiche zu bekommen.",
     nogroupsforcoregroup => "Diese Gruppe gehört zu keiner anderen Gruppe.",
     grouphasnorights => "Diese Gruppe hat keine Rechte für die Administration der Website",
     newgroup => 'Neue Gruppe',
