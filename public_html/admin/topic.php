@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.10 2002/01/03 21:48:24 tony_bibbs Exp $
+// $Id: topic.php,v 1.11 2002/03/01 16:41:38 tony_bibbs Exp $
 
 include_once('../lib-common.php');
 include_once('auth.inc.php');
@@ -76,9 +76,9 @@ function edittopic($tid='')
         $A['owner_id'] = $_USER['uid'];
 
         // this is the one instance where we default the group
-        // most topics should belong to the normal user group 
+        // most topics should belong to the Topic Admin group 
         // and the private flag should be turned OFF
-        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
+        $A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Topic Admin'");
         $A['perm_owner'] = 3;
         $A['perm_group'] = 3;
         $A['perm_members'] = 2;
