@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.49 2003/01/05 21:35:07 dhaun Exp $
+// $Id: usersettings.php,v 1.50 2003/01/17 15:42:57 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -171,8 +171,6 @@ function editpreferences()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
 
-    $retval = '';
-
     $result = DB_query("SELECT noicons,willing,dfid,tzid,noboxes,maxstories,tids,aids,boxes FROM {$_TABLES['userprefs']},{$_TABLES['userindex']} WHERE {$_TABLES['userindex']}.uid = {$_USER['uid']} AND {$_TABLES['userprefs']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
@@ -185,14 +183,54 @@ function editpreferences()
         $A['maxstories'] = $_CONF['minnews'];
     }
 
-    $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">';
-    $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB;
+    $preferences = new Template ($_CONF['path_layout'] . 'preferences');
+    $preferences->set_file (array ('prefs' => 'displayprefs.thtml',
+                                   'display' => 'displayblock.thtml',
+                                   'exclude' => 'excludeblock.thtml',
+                                   'digest' => 'digestblock.thtml',
+                                   'boxes' => 'boxesblock.thtml',
+                                   'language' => 'language.thtml',
+                                   'theme' => 'theme.thtml'
+                                  ));
+    $preferences->set_var ('site_url', $_CONF['site_url']);
+    $preferences->set_var ('layout_url', $_CONF['layout_url']);
+
+    $preferences->set_var ('user_name', $_USER['username']);
+
+    $preferences->set_var ('lang_language', $LANG04[73]);
+    $preferences->set_var ('lang_theme', $LANG04[72]);
+    $preferences->set_var ('lang_theme_text', $LANG04[74]);
+    $preferences->set_var ('lang_noicons', $LANG04[40]);
+    $preferences->set_var ('lang_noicons_text', $LANG04[49]);
+    $preferences->set_var ('lang_noboxes', $LANG04[44]);
+    $preferences->set_var ('lang_noboxes_text', $LANG04[51]);
+    $preferences->set_var ('lang_maxstories', $LANG04[43]);
+    if (strpos ($LANG04[52], '%d') === false) {
+        $maxtext = $LANG04[52] . ' ' . $_CONF['limitnews'];
+    } else {
+        $maxtext = sprintf ($LANG04[52], $_CONF['limitnews']);
+    }
+    $preferences->set_var ('lang_maxstories_text', $maxtext);
+    $preferences->set_var ('lang_dateformat', $LANG04[42]);
+    $preferences->set_var ('lang_excludeditems', $LANG04[54]);
+    $preferences->set_var ('lang_topics', $LANG04[48]);
+    $preferences->set_var ('lang_authors', $LANG04[56]);
+    $preferences->set_var ('lang_emailedtopics', $LANG04[76]);
+    $preferences->set_var ('lang_boxes', $LANG04[55]);
+    $preferences->set_var ('lang_submit', $LANG04[9]);
+
+    $preferences->set_var ('start_block_display',
+            COM_startBlock ($LANG04[45] . ' ' . $_USER['username']));
+    $preferences->set_var ('start_block_exclude',
+            COM_startBlock ($LANG04[46] . ' ' . $_USER['username']));
+    $preferences->set_var ('start_block_digest',
+            COM_startBlock ($LANG04[75] . ' ' . $_USER['username']));
+    $preferences->set_var ('start_block_boxes',
+            COM_startBlock ($LANG04[47] . ' ' . $_USER['username']));
+    $preferences->set_var ('end_block', COM_endBlock ());
 
     if ($_CONF['allow_user_language'] == 1) {
-        $retval .= '<tr>' . LB
-                 . '<td align="right"><b>' . $LANG04[73] . ':</b></td>' . LB
-                 . '<td><select name="language">' . LB;
+        $selection = '<select name="language">' . LB;
 
         if (empty($_USER['language'])) {
             $userlang = $_CONF['language'];
@@ -202,14 +240,14 @@ function editpreferences()
 
         // Get available languages
         $language_options = '';
-        $fd = opendir($_CONF['path_language']);
-        while (($file = @readdir($fd)) == TRUE) {
-            if (is_file($_CONF['path_language'].$file)) {
-                clearstatcache();
-                $file = str_replace('.php', '', $file);
-                $language_options .= '<option value="' . $file . '" ';
+        $fd = opendir ($_CONF['path_language']);
+        while (($file = @readdir ($fd)) !== false) {
+            if (is_file ($_CONF['path_language'] . $file)) {
+                clearstatcache ();
+                $file = str_replace ('.php', '', $file);
+                $language_options .= '<option value="' . $file . '"';
                 if ($userlang == $file) {
-                    $language_options .= 'selected="SELECTED"';
+                    $language_options .= ' selected="SELECTED"';
                 }
                 $uscore = strpos ($file, '_');
                 if ($uscore !== false) {
@@ -224,25 +262,28 @@ function editpreferences()
                 $language_options .= '>' . $file . '</option>' . LB;
             }
         }
-        $retval .= $language_options;
-        $retval .= '</select></td></tr>';
+        $selection .= $language_options;
+        $selection .= '</select>';
+        $preferences->set_var ('language_selector', $selection);
+        $preferences->parse ('language_selection', 'language', true);
+    } else {
+        $preferences->set_var ('language_selection', '');
     }
 
     if ($_CONF['allow_user_themes'] == 1) {
-        $retval .= '<tr valign="top">' . LB
-            . "<td align=\"right\"><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
-            . '<td><select name="theme">'.LB;
+        $selection = '<select name="theme">' . LB;
 
-        if (empty($_USER['theme'])) {
+        if (empty ($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
         } else {
             $usertheme = $_USER['theme'];
         }
-        $themes = COM_getThemes();
-        for ($i = 1; $i <= count($themes); $i++) {
-            $retval .= '<option value="' . current($themes) . '"';
-            if ($usertheme == current($themes)) {
-                $retval .= ' SELECTED';
+
+        $themes = COM_getThemes ();
+        for ($i = 1; $i <= count ($themes); $i++) {
+            $selection .= '<option value="' . current ($themes) . '"';
+            if ($usertheme == current ($themes)) {
+                $selection .= ' selected="SELECTED"';
             }
             // some theme name beautifying ...
             $th = str_replace ('_', ' ', current ($themes));
@@ -250,54 +291,34 @@ function editpreferences()
                 (strtolower ($th{1}) == $th{1})) {
                 $th = strtoupper ($th{0}) . substr ($th, 1);
             }
-            $retval .= '>' . $th . '</option>' . LB;
-            next($themes);
+            $selection .= '>' . $th . '</option>' . LB;
+            next ($themes);
         }
-        $retval .= '</select>' . LB . '</td></tr>' . LB;
+        $selection .= '</select>';
+        $preferences->set_var ('theme_selector', $selection);
+        $preferences->parse ('theme_selection', 'theme', true);
+    } else {
+        $preferences->set_var ('theme_selection', '');
     }
-
-    $retval .= '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
-        . '<td><input type="checkbox" name="noicons"';
 
     if ($A['noicons'] == '1') {
-        $retval .= ' checked="checked"';
+        $preferences->set_var ('noicons_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var ('noicons_checked', '');
     }
 
-    $retval .= '></td>' . LB . '</tr>' . LB;
-
-/* Option Disabled
-    
-    $retval .= '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[41] . ':</b><br><small>' . $LANG04[50] . '</small></td>' . LB
-        . '<td><input type="checkbox" name="willing"';
-    if ($A['willing'] == 1) {
-        $retval .= ' checked="checked"';
-    }
-    $retval .= '></td>' . LB . '</tr>' . LB;
-    
-*/
-
-    $retval .= '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[44] . ':</b><br><small>' . $LANG04[51] . '</small></td>' . LB
-        . '<td><input type="checkbox" name="noboxes"';
     if ($A['noboxes'] == 1) {
-        $retval .= ' checked="checked"';
+        $preferences->set_var ('noboxes_checked', 'checked="checked"');
+    } else {
+        $preferences->set_var ('noboxes_checked', '');
     }
-    $retval .= '></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[43] . ':</b><br><small>' . $LANG04[52] . ' ' . $_CONF['limitnews'] . '</small></td>' . LB
-        . '<td><input type="text" size="3" maxlength="3" name="maxstories" value="' . $A['maxstories'] . '"></td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td align="right"><b>' . $LANG04[42] . ':</b></td>' . LB
-        . '<td><select name="dfid">' . LB
-        . COM_optionList($_TABLES['dateformats'],'dfid,description',$A['dfid'])
-        . '</select></td>' . LB
-        . '</tr>' . LB
-        . '</table>'
-        . COM_endBlock();
+
+    $preferences->set_var ('maxstories_value', $A['maxstories']);
+    $selection = '<select name="dfid">' . LB
+               . COM_optionList ($_TABLES['dateformats'], 'dfid,description',
+                                 $A['dfid']) . '</select>';
+    $preferences->set_var ('dateformat_selection', $selection);
+    $preferences->parse ('display_block', 'display', true);
 
     $groupList = '';
     if (!empty ($_USER['uid'])) {
@@ -315,45 +336,40 @@ function editpreferences()
     }
     $permissions .= "(perm_anon >= 2)";
 
-    $retval .= COM_startBlock($LANG04[46] . ' ' . $_USER['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">'.LB
-        . '<tr>' . LB
-        . '<td colspan="3">' . $LANG04[54] . '</td>' . LB
-        . '</tr>' . LB
-        . '<tr valign="top">' . LB
-        . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']) . '</td>' . LB
-        . '<td><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="40" height="1"></td>' . LB;
-        
+    $preferences->set_var ('exclude_topic_checklist',
+        COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$A['tids']));
+
     if ($_CONF['contributedbyline'] == 1) {
-        $retval .= '<td><b>' . $LANG04[56] . '</b><br>';
-        $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
-        $nrows = DB_numRows($result);
-        unset($where);
+        $result = DB_query ("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
+        $nrows = DB_numRows ($result);
+        unset ($where);
         for ($i = 0; $i < $nrows; $i++) {
-            $W = DB_fetchArray($result);
+            $W = DB_fetchArray ($result);
             $where .= "uid = '$W[0]' OR ";
         }
         $where .= "uid = '1'";
-        $retval .= COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']).'</td>'.LB;
+        $preferences->set_var ('exclude_author_checklist',
+            COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']));
+    } else {
+        $preferences->set_var ('exclude_author_checklist', '');
     }
-    
-    $retval .= '</tr>' . LB . '</table>' . COM_endBlock();
+    $preferences->parse ('exclude_block', 'exclude', true);
 
     if ($_CONF['emailstories'] == 1) {
-        $user_etids = DB_getItem($_TABLES['userindex'],'etids',"uid = {$_USER['uid']}");
+        $user_etids = DB_getItem ($_TABLES['userindex'], 'etids',
+                                  "uid = {$_USER['uid']}");
         if (empty ($user_etids)) { // an empty string now means "all topics"
             $user_etids = buildTopicList ();
         } elseif ($user_etids == '-') { // this means "no topics"
             $user_etids = '';
         }
-
-        $retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
-        $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
-        $retval .= '<tr valign="top"><td>' . $LANG04[76] . '<br>';
-        $tmp .= COM_checkList($_TABLES['topics'],'tid,topic',$permissions,$user_etids);
-        $retval .= str_replace($_TABLES['topics'],'etids',$tmp);
-        $retval .= '</td></tr></table>';
-        $retval .= COM_endBlock();  
+        $tmp = COM_checkList ($_TABLES['topics'], 'tid,topic', $permissions,
+                              $user_etids);
+        $preferences->set_var ('email_topic_checklist',
+                str_replace ($_TABLES['topics'], 'etids', $tmp));
+        $preferences->parse ('digest_block', 'digest', true);
+    } else {
+        $preferences->set_var ('digest_block', '');
     }
 
     $selectedblock = '';
@@ -368,24 +384,11 @@ function editpreferences()
         }
     }
     $whereblock = "(" . $permissions . ") AND ((type != 'layout' AND type != 'gldefault' AND is_enabled = 1) OR (type = 'gldefault' AND is_enabled = 1 AND name IN ('whats_new_block','poll_block','events_block','older_stories'))) ORDER BY onleft desc,blockorder,title";
-    $retval .= COM_startBlock($LANG04[47] . ' ' . $_USER['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
-        . '<tr>' . LB
-        . '<td>'.$LANG04[55] . '</td>' . LB
-        .' </tr>' . LB
-        . '<tr>' . LB
-        . '<td>'
-        . COM_checkList($_TABLES['blocks'],'bid,title,blockorder',$whereblock,$selectedblocks)
-        . '</td>'.LB
-        . '</tr>'.LB
-        . '</table>'
-        . COM_endBlock();
-        
-    $retval .= '<div align="center">'
-        . '<input type="hidden" name="mode" value="savepreferences"> '
-        . '<input type="submit" value="' . $LANG04[9] . '"></div></form>';
-        
-    return $retval;
+    $preferences->set_var ('boxes_checklist', COM_checkList ($_TABLES['blocks'],
+            'bid,title,blockorder', $whereblock, $selectedblocks));
+    $preferences->parse ('boxes_block', 'boxes', true);
+
+    return $preferences->finish ($preferences->parse ('output', 'prefs'));
 }
 
 /**
