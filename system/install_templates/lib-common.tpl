@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.31 2002/03/01 16:35:21 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.32 2002/03/07 15:23:24 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1674,7 +1674,7 @@ function COM_olderstuff()
 
     if ($_CONF['olderstuff'] == 1) {
         $result = DB_query("SELECT sid,title,comments,unix_timestamp(date) AS day FROM " 
-        . $_TABLES['stories'] . " WHERE draft_flag = 1 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
+        . $_TABLES['stories'] . " WHERE draft_flag = 0 ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}");
         $nrows = DB_numRows($result);
 
         if ($nrows>0) {
@@ -1690,11 +1690,10 @@ function COM_olderstuff()
                 }
                 $string .= '<li><a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
                     . '">' . $A['title'] . '</a> (' . $A['comments'] . ')' . LB;
-        }
+            }
 
-        $string = addslashes($string);
-        DB_delete($_TABLES['blocks'],'title',"'{$LANG01[30]}'");
-        DB_save($_TABLES['blocks'],'title,blockorder,content',"'{$LANG01[30]}','{$_CONF['olderstufforder']}','$string'");
+            $string = addslashes($string);
+            DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
         }
     }
 }
