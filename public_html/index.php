@@ -135,7 +135,7 @@ print "</td>\n\n";
 print "<td><img src={$CONF["site_url"]}/images/speck.gif height=1 width=10></td>\n";
 if ($U["noboxes"] != 1) {
 	print "<td valign=top width=180>\n";
-	showblock($topic);
+	showblock("right",$topic);
 	print "<br><img src={$CONF["site_url"]}/images/speck.gif width=180 height=1>\n";
 } else {
 	print "<td>&nbsp";
