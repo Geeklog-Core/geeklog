@@ -39,7 +39,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.default,v 1.11 2002/03/07 22:29:31 tony_bibbs Exp $
+// $Id: config.default,v 1.12 2002/04/06 03:54:58 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -236,7 +236,7 @@ $_CONF['censorlist']    = array("fuck","cunt","fucker","fucking","pussy","cock",
 
 // Define a few useful things for GL
 define('LB',"\n");
-define('VERSION', '1.3.4');
+define('VERSION', '1.3.5');
 
 //$_CONF['default_state_cde'] = 'IA';
 $_STATES = array(
