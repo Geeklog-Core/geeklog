@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.13 2002/02/22 23:22:23 tony_bibbs Exp $
+// $Id: install.php,v 1.14 2002/02/25 18:19:36 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -158,6 +158,12 @@ function INST_getServerSettings($gl_path,$upgrade)
     $server_template->set_var('path_log', $_CONF['path_log']);
     $server_template->set_var('path_language', $_CONF['path_language']);
     $server_template->set_var('rdf_file', $_CONF['rdf_file']);
+    if ($_CONF['allow_mysqldump'] == 1) {
+        $server_template->set_var('allow_mysqldump_checked', 'checked="CHECKED"');
+    } else {
+        $server_template->set_var('allow_mysqldump_checked', '');
+    }
+    $server_template->set_var('backup_path', $_CONF['backup_path']);
     $server_template->set_var('site_name', $_CONF['site_name']);
     $server_template->set_var('site_slogan', $_CONF['site_slogan']);
     $server_template->set_var('site_email', $_CONF['site_mail']);
@@ -361,6 +367,12 @@ function INST_saveServerSettings($A)
     $config_template->set_var('cfg_path_log', $A['path_log']);
     $config_template->set_var('cfg_path_language', $A['path_language']);
     $config_template->set_var('cfg_rdf_file', $A['rdf_file']);
+    if ($A['allow_mysqldump'] == 'on') {
+        $config_template->set_var('cfg_allow_mysqldump',1);
+    } else {
+        $config_template->set_var('cfg_allow_mysqldump',0);
+    }
+    $config_template->set_var('cfg_backup_path',$A['backup_path']);
     $config_template->set_var('cfg_site_name', $A['site_name']);
     $config_template->set_var('cfg_site_slogan', $A['site_slogan']);
     $config_template->set_var('cfg_site_mail', $A['site_mail']);
@@ -537,6 +549,7 @@ function INST_getDatabaseSettings($geeklog_path,$upgrade)
     $db_templates->set_var('dbname', $_DB_name);
     $db_templates->set_var('dbuser', $_DB_user);
     $db_templates->set_var('dbpass', $_DB_pass);
+    $db_templates->set_var('dbmysqldump', $_DB_mysqldump_path);
     $db_templates->set_var('geeklog_path', $geeklog_path);
     
     if ($upgrade == 1) {
@@ -589,6 +602,7 @@ function INST_saveDatabaseSettings($A)
     $db_template->set_var('dbuser', $A['dbuser']);
     $db_template->set_var('dbpass', $A['dbpass']);
     $db_template->set_var('dbprefix', $A['prefix']);
+    $db_template->set_var('dbmysqldump', $A['dbmysqldump']);
 
     // To make this easier to automate load, defaults and loop through those instead
     // of doing a set_var for each table
