@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.50 2003/04/25 08:51:59 dhaun Exp $
+// $Id: user.php,v 1.51 2003/04/25 09:07:02 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -506,7 +506,7 @@ function emailpassword($username)
         mail($A["email"]
             ,"{$_CONF["site_name"]}: {$LANG04[16]}"
             ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nContent-Type: text/plain; charset={$charset}\nX-Mailer: GeekLog VERSION"
+            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog " . VERSION . "\r\nContent-Type: text/plain; charset={$charset}"
             );
     }
     return $retval;
