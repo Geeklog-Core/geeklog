@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.29 2002/02/05 16:42:05 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.30 2002/02/05 17:24:53 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1732,7 +1732,7 @@ function COM_showBlocks($side, $topic='', $name='all')
             $sql .= "bid = '$BOXES[$i]' OR ";
         }
 
-        $result = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE name = 'user_block' OR name= 'section_block'");
+        $result = DB_query("SELECT bid FROM {$_TABLES['blocks']} WHERE name = 'user_block' OR name= 'section_block' OR name='admin_block'");
         $nrows = DB_numRows($result);
 
         for ($i = 1; $i <= $nrows; $i++) {
