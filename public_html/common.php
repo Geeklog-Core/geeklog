@@ -1070,10 +1070,7 @@ function showblock($side,$topic="") {
 					printupcomingevents();
 					break;
 				case "Poll Block":
-					if (($A["blockorder"] > $CONF["pollorder"]) && (empty($pollshown))) {
-                        			showpoll(60);
-                        			$pollshown = 1;
-					}
+                        		showpoll(60);
 					break;
 				case "Whats New Block":
 					whatsnewblock();
@@ -1099,9 +1096,6 @@ function showblock($side,$topic="") {
 			endblock();
 		}
 	}
-	#if ($pollshown != 1) {
-	#	showpoll(60);
-	#}
 }
 
 ###############################################################################
