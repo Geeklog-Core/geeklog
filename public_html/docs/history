@@ -3,6 +3,12 @@ GeekLog History/Changes:
 (1.3.8)
 -------
 
+- Added a speed limit for requests for a new password (defaults to 5 minutes
+  between requests).
+- The commentspeedlimit and submitspeedlimit tables have been replaced with a
+  general speedlimit table and three new functions operating on it have been
+  introduced (in lib-common.php). The new table has a 'type' field, so plugins
+  could easily implement their own speed limits.
 - Introduced new "forgot password" functionality: When requesting a new password
   for an account, the user will now receive an email with a link that s/he has
   to click on. It will take the user to a form where s/he can enter a new

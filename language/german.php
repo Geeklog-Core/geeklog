@@ -189,7 +189,7 @@ $LANG03 = array(
 	5 => "Username",
 	6 => "Um einen Kommentar abgeben zu können, musst Du angemeldet sein. Wenn Du noch keinen Account hast, benutze bitte das Formular um einen anzulegen.",
 	7 => "Dein letzter Kommentar war vor ",
-	8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF["commentspeedlimit"]} Sekunden vergangen sein",
+	8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF["commentspeedlimit"]} Sekunden vergangen sein.",
 	9 => "Kommentar",
 	10 => '',
 	11 => "Kommentar abschicken",
@@ -303,7 +303,8 @@ $LANG04 = array(
     89 => "Möchtest Du Dein Passwort nicht ändern, so kannst Du diese E-Mail einfach ignorieren (Dein bisheriges Passwort bleibt dann unverändert gültig).\n\n",
     90 => 'Du kannst hier jetzt ein neues Passwort für Deinen Account eingeben. Dein altes Passwort bleibt noch solange gültig, bis Du dieses Formular abschickst.',
     91 => 'Neues Passwort',
-    92 => 'Neues Passwort eingeben'
+    92 => 'Neues Passwort eingeben',
+    93 => 'Du hast zuletzt vor %d Sekunden ein neues Passwort angefordert. Zwischen zwei Passwort-Anforderungen müssen aber mindestens %d Sekunden vergangen sein.'
 );
 
 ###############################################################################

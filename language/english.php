@@ -297,7 +297,8 @@ $LANG04 = array(
     89 => "If you do not want this action to be taken, simply ignore this message and the request will be disregarded (your password will remain unchanged).\n\n",
     90 => 'You can enter a new password for your account below. Please note that your old password is still valid until you submit this form.',
     91 => 'Set New Password',
-    92 => 'Enter New Password'
+    92 => 'Enter New Password',
+    93 => 'Your last request for a new password was %d seconds ago. This site requires at least %d seconds between password requests.'
 );
 
 ###############################################################################

@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.80 2003/04/18 21:12:04 dhaun Exp $
+// $Id: config.php,v 1.81 2003/05/05 21:11:06 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -398,6 +398,9 @@ $_CONF['maxanswers']        = 10;
 $_CONF['answerorder']       = 'submitorder';
 $_CONF['pollcookietime']    = 86400;
 $_CONF['polladdresstime']   = 604800;
+
+// Password setting: minimum time between two requests for a new password
+$_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes
 
 // Links Settings
 // You can set both of the following to 0 to get back the old (pre-1.3.6)

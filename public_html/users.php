@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.59 2003/05/05 09:45:44 dhaun Exp $
+// $Id: users.php,v 1.60 2003/05/05 21:11:06 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -382,6 +382,7 @@ function requestpassword ($username, $msg = 0)
         } else {
             $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
         }
+        COM_updateSpeedlimit ('password');
     } else {
         $retval .= COM_siteHeader ('menu')
                 . defaultform ($LANG04[17]) . COM_siteFooter ();
@@ -746,9 +747,20 @@ case 'create':
     $display .= createuser($HTTP_POST_VARS['username'],$HTTP_POST_VARS['email']);
     break;
 case 'getpassword':
-    $display .= COM_siteHeader('menu');
-    $display .= getpasswordform();
-    $display .= COM_siteFooter();
+    $display .= COM_siteHeader ('menu');
+    if ($_CONF['passwordspeedlimit'] == 0) {
+        $_CONF['passwordspeedlimit'] = 300; // 5 minutes
+    }
+    COM_clearSpeedlimit ($_CONF['passwordspeedlimit'], 'password');
+    $last = COM_checkSpeedlimit ('password');
+    if ($last > 0) {
+        $display .= COM_startBlock ($LANG12[26])
+                 . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
+                 . COM_endBlock ();
+    } else {
+        $display .= getpasswordform ();
+    }
+    $display .= COM_siteFooter ();
     break;
 case 'newpwd':
     $uid = $HTTP_GET_VARS['uid'];
@@ -802,7 +814,20 @@ case 'setnewpwd':
     }
     break;
 case 'emailpasswd':
-    $display .= requestpassword ($HTTP_POST_VARS['username'], 1);
+    if ($_CONF['passwordspeedlimit'] == 0) {
+        $_CONF['passwordspeedlimit'] = 300; // 5 minutes
+    }
+    COM_clearSpeedlimit ($_CONF['passwordspeedlimit'], 'password');
+    $last = COM_checkSpeedlimit ('password');
+    if ($last > 0) {
+        $display .= COM_siteHeader ('menu')
+                 . COM_startBlock ($LANG12[26])
+                 . sprintf ($LANG04[93], $last, $_CONF['passwordspeedlimit'])
+                 . COM_endBlock ()
+                 . COM_siteFooter ();
+    } else {
+        $display .= requestpassword ($HTTP_POST_VARS['username'], 1);
+    }
     break;
 case 'new':
     $display .= COM_siteHeader('menu');
