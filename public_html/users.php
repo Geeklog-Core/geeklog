@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.92 2004/10/10 19:01:07 dhaun Exp $
+// $Id: users.php,v 1.93 2004/10/23 10:23:01 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -217,7 +217,7 @@ function userprofile ($user, $msg = 0)
     $sidList = "'$sidList'";
 
     // then, find all comments by the user in those stories and polls
-    $sql = "SELECT sid,title,pid,type,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user)";
+    $sql = "SELECT sid,title,cid,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['comments']} WHERE (uid = $user)";
 
     // SQL NOTE:  Using a HAVING clause is usually faster than a where if the
     // field is part of the select
@@ -235,20 +235,9 @@ function userprofile ($user, $msg = 0)
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
             $user_templates->set_var('row_number', $i . '.');
-            if ($C['type'] == 'article') {
-                $user_templates->set_var('comment_begin_href',
+            $user_templates->set_var ('comment_begin_href',
                     '<a href="' . $_CONF['site_url'] .
-                    '/comment.php?mode=display&amp;sid=' . $C['sid'] .
-                    '&amp;type=' . $C['type'] . '&amp;title=' .
-                    urlencode($C['title']) . '&amp;pid=' .  $C['pid'] . '">');
-            } else {
-                $user_templates->set_var('comment_begin_href',
-                    '<a href="' . $_CONF['site_url'] .
-                    '/comment.php?mode=display&amp;sid=' . $C['sid'] .
-                    '&amp;type=' . $C['type'] . '&amp;title=' .
-                    urlencode($C['title']) . '&amp;pid=' .  $C['pid'] .
-                    '&amp;qid=' . $C['sid'] . '">');
-            }
+                    '/comment.php?mode=view&amp;cid=' . $C['cid']. '">');
             $C['title'] = str_replace('$','&#36;',$C['title']);
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
