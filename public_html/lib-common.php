@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.77 2002/04/23 19:06:23 dhaun Exp $
+// $Id: lib-common.php,v 1.78 2002/04/23 20:48:25 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1745,7 +1745,9 @@ function COM_olderstuff()
                     $day2 = strftime("%m/%d",$A['day']);
                     $string .= '<br><b>' . $daycheck . '</b> <small>' . $day2 . '</small><br>' . LB;
                     if ($day != 'noday') {
-                        $string .= COM_makeList ($oldnews);
+                        $daylist = COM_makeList ($oldnews);
+                        $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+                        $string .= $daylist;
                     }
                     $oldnews = array ();
                     $day = $daycheck;
@@ -1753,7 +1755,9 @@ function COM_olderstuff()
                 $oldnews[] = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid']
                     . '">' . $A['title'] . '</a> (' . $A['comments'] . ')';
             }
-            $string .= COM_makeList ($oldnews);
+            $daylist = COM_makeList ($oldnews);
+            $daylist = preg_replace ("/(\015\012)|(\015)|(\012)/", "", $daylist);
+            $string .= $daylist;
 
             $string = addslashes($string);
             DB_query("UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'");
@@ -2282,7 +2286,7 @@ function COM_whatsNewBlock($help='',$title='')
                     }
                     $acomment .= '</a>';
                 } else {
-                    $acomment .= $urlstart . $titletouse;
+                    $acomment = $urlstart . $titletouse;
                     if ($A['dups'] > 1) {
                         $acomment .= '[+' . $A['dups'] . ']';
                     }
