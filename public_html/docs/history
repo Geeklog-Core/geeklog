@@ -1,8 +1,22 @@
 GeekLog History/Changes:
 
+August 21, 2001
+-----------------
+
+- Updated configuration documentation
+- Added the ability for article author's username to be hidden (via 'contributedbyline' option in config.php)
+- Fixed a bug with the Google-like paging feature where it would only work if the GeekLog site was in the root dir
+- Fixed a bug which caused slashes to appear before apostrophes in the older stuff block and in the search results
+- Fixed overlapping/bad HTML in index.php and common.php
+- Fixed the bug in the sections block that showed submission cue numbers to non-logged in people
+- Added workaround for problem where users (after following link in e-mail after registration) would still see the login page after logging in
+- Created phrase IDs for previously hard-coded English in common.php and story.php
+- Fixed a bug which caused draft stories to be counted as new stories in the What's New block
+- Fixed a bug with the upcoming events block where it would only work if the GeekLog site was in the root dir
+- Stroked the cat
 
 August 17, 2001
-----------------
+-----------------
 - Released 1.3b
 - Added in support for plugins and has been test for *nix and *should* work for windows
 - A few bug fixes
