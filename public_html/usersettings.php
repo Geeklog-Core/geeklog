@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.87 2004/01/31 19:51:53 dhaun Exp $
+// $Id: usersettings.php,v 1.88 2004/02/01 10:49:12 dhaun Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -818,9 +818,8 @@ function saveuser($A)
             COM_errorLog('**** Leaving saveuser in usersettings.php ****', 1);
         }
 
-        return COM_refresh ($_CONF['site_url']
-    //            . '/usersettings.php?mode=edit&msg=5');
-                . '/users.php?mode=profile&uid=' . $_USER['uid'] . '&msg=5');
+        return COM_refresh ($_CONF['site_url'] . '/users.php?mode=profile&uid='
+                            . $_USER['uid'] . '&msg=5');
     }
 }
 
@@ -832,7 +831,7 @@ function saveuser($A)
 */
 function savepreferences($A) 
 {
-    global $_TABLES, $_CONF, $_USER;
+    global $_CONF, $_TABLES, $_USER;
 
     if (isset ($A['noicons']) && ($A['noicons'] == 'on')) {
         $A['noicons'] = 1;
@@ -865,65 +864,67 @@ function savepreferences($A)
         $A['showonline'] = 0;
     }
 
+    $A['maxstories'] = COM_applyFilter ($A['maxstories'], true);
     if ($A['maxstories'] < $_CONF['minnews']) {
         $A['maxstories'] = $_CONF['minnews'];
     }
 
-    unset($tids);
-    unset($aids);
-    unset($boxes);
-    unset($etids);
-
-    $TIDS = @array_values($A[$_TABLES['topics']]);
-    $AIDS = @array_values($A['selauthors']);
+    $TIDS  = @array_values($A[$_TABLES['topics']]);
+    $AIDS  = @array_values($A['selauthors']);
     $BOXES = @array_values($A["{$_TABLES['blocks']}"]);
     $ETIDS = @array_values($A['etids']);
 
     $tids = '';
-    if (sizeof($TIDS) > 0) {
-        for ($i = 0; $i < sizeof($TIDS); $i++) {
-            $tids .= $TIDS[$i] . ' ';
-        }
+    if (sizeof ($TIDS) > 0) {
+        $tids = addslashes (implode (' ', $TIDS));
     }
+
     $aids = '';
-    if (sizeof($AIDS) > 0) {
-        for ($i = 0; $i < sizeof($AIDS); $i++) {
-            $aids .= $AIDS[$i] . ' ';
-        }
+    if (sizeof ($AIDS) > 0) {
+        $aids = addslashes (implode (' ', $AIDS));
     }
 
     $selectedblocks = '';
-    if (count($BOXES) > 0) {
-        for ($i = 1; $i <= count($BOXES); $i++) {
-            $boxes .= current($BOXES); 
-            if ($i <> count($BOXES)) {
-                $boxes .= ',';
-            }
-            next($BOXES);
-        }
+    if (count ($BOXES) > 0) {
+        $boxes = addslashes (implode (',', $BOXES));
+
         $blockresult = DB_query("SELECT bid,name FROM {$_TABLES['blocks']} WHERE bid NOT IN ($boxes)");
-        for ($x = 1; $x <= DB_numRows($blockresult); $x++) {
-            $row = DB_fetchArray($blockresult);
+        $numRows = DB_numRows($blockresult);
+        for ($x = 1; $x <= $numRows; $x++) {
+            $row = DB_fetchArray ($blockresult);
             if ($row['name'] <> 'user_block' AND $row['name'] <> 'admin_block' AND $row['name'] <> 'section_block') {
                 $selectedblocks .= $row['bid'];
-                if ($x <> DB_numRows($blockresult)) {
+                if ($x <> $numRows) {
                     $selectedblocks .= ' ';
                 }
             }
         }
     } 
 
-    if (sizeof($ETIDS) > 0) {
-        for ($i = 0; $i < sizeof($ETIDS); $i++) {
-            $etids .= $ETIDS[$i] . " ";
-        }
+    $etids = '';
+    if (sizeof ($ETIDS) > 0) {
+        $etids = addslashes (implode (' ', $ETIDS));
     }
+
     if (!isset ($A['tzid'])) {
         $A['tzid'] = '';
     }
 
-    // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
-    DB_query("UPDATE {$_TABLES['users']} SET theme='{$A['theme']}',language='{$A['language']}' WHERE uid = {$_USER['uid']}");
+    $A['theme'] = COM_applyFilter ($A['theme']);
+    if (empty ($A['theme'])) {
+        $A['theme'] = $_CONF['theme'];
+    }
+
+    $A['language'] = COM_applyFilter ($A['language']);
+    if (empty ($A['language'])) {
+        $A['language'] = $_CONF['language'];
+    }
+
+    // Save theme, when doing so, put in cookie so we can set the user's theme
+    // even when they aren't logged in
+    $theme = addslashes ($A['theme']);
+    $language = addslashes ($A['language']);
+    DB_query("UPDATE {$_TABLES['users']} SET theme='$theme',language='$language' WHERE uid = '{$_USER['uid']}'");
     setcookie ($_CONF['cookie_theme'], $A['theme'], time() + 31536000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
@@ -931,12 +932,31 @@ function savepreferences($A)
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
 
+    $A['dfid'] = COM_applyFilter ($A['dfid'], true);
+
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A['willing']}', dfid='{$A['dfid']}', tzid='{$A['tzid']}', emailfromadmin='{$A['emailfromadmin']}', emailfromuser='{$A['emailfromuser']}', showonline='{$A['showonline']}' WHERE uid='{$_USER['uid']}'");
 
     if (empty ($etids)) {
         $etids = '-';
     }
     DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'");
+
+    $A['commentmode'] = COM_applyFilter ($A['commentmode']);
+    if (empty ($A['commentmode'])) {
+        $A['commentmode'] = $_CONF['comment_mode'];
+    }
+    $A['commentmode'] = addslashes ($A['commentmode']);
+
+    $A['commentorder'] = COM_applyFilter ($A['commentorder']);
+    if (empty ($A['commentorder'])) {
+        $A['commentorder'] = 'ASC';
+    }
+    $A['commentorder'] = addslashes ($A['commentorder']);
+
+    $A['commentlimit'] = COM_applyFilter ($A['commentlimit'], true);
+    if ($A['commentlimit'] <= 0) {
+        $A['commentlimit'] = $_CONF['comment_limit'];
+    }
 
     DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$A['commentmode']}','{$A['commentorder']}','{$A['commentlimit']}'");
 }
