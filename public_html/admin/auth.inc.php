@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.9 2001/11/19 22:37:49 tony_bibbs Exp $
+// $Id: auth.inc.php,v 1.10 2001/12/13 20:47:17 tony_bibbs Exp $
 
 // MAIN
 
@@ -95,6 +95,8 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
         .'</table></form>'
         .COM_endBlock()
         .COM_siteFooter();
+        echo $display;
+        exit;
 }
 
 echo $display;
