@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.18 2002/06/06 07:20:19 dhaun Exp $
+// $Id: poll.php,v 1.19 2002/06/14 19:44:32 gene_wood Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -83,7 +83,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     global $_TABLES, $LANG25, $_CONF, $_POLL_VERBOSE;
 
     if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Inside savepoll() in admin/poll.php ***');
+        COM_errorLog('**** Inside savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
     }
 
     if (empty($voters)) { 
@@ -129,7 +129,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     }
 
     if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Leaving savepoll() in admin/poll.php ***');
+        COM_errorLog('**** Leaving savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
     }
 
     echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=19');

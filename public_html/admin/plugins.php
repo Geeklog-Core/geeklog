@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.27 2002/06/06 07:20:19 dhaun Exp $
+// $Id: plugins.php,v 1.28 2002/06/14 19:44:32 gene_wood Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -190,7 +190,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 		} else {
 			$enabled = 0;
 		}
-		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'admin/plugins.php?msg=28');
+		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",$_CONF['site_admin_url'] . '/plugins.php?msg=28');
 	} else {
         $retval = '';
 		$retval .= COM_siteHeader('menu');

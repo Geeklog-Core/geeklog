@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.6 2002/06/06 07:20:19 dhaun Exp $
+// $Id: index.php,v 1.7 2002/06/14 19:44:32 gene_wood Exp $
 
 require_once('../../../lib-common.php');
 require_once('../../auth.inc.php');
@@ -258,7 +258,7 @@ function submitstaticpage($sp_id,$sp_uid,$sp_title,$sp_content,$unixdate,$sp_hit
 		//$sp_title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_title))));
 		//$sp_label = addslashes(htmlspecialchars(strip_tags(COM_checkWords($sp_label))));
 
-		DB_save('staticpage','sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"$sp_id,$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",'admin/plugins/staticpages/index.php');
+		DB_save('staticpage','sp_id,sp_uid,sp_title,sp_content,sp_date,sp_hits,sp_format,sp_onmenu,sp_label',"$sp_id,$sp_uid,'$sp_title','$sp_content','$date',$sp_hits,'$sp_format',$sp_onmenu,'$sp_label'",$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
 
 	} else {
         $retval .= COM_siteHeader();
@@ -280,7 +280,7 @@ if (empty($mode) OR empty($sp_id)) {
 
 switch ($mode) {
 case $LANG_STATIC[delete]:
-    DB_delete('staticpage','sp_id',$sp_id, '/admin/plugins/staticpages/index.php');
+    DB_delete('staticpage','sp_id',$sp_id,$_CONF['site_admin_url'] . '/plugins/staticpages/index.php');
     break;
 case 'edit':
     $display .= COM_siteHeader('menu');
