@@ -3,6 +3,10 @@ GeekLog History/Changes:
 ??? ??, 2004 (1.3.10)
 ------------
 
+- Registered users can now report abusive comments to the site admin (inspired
+  by Feature Request #171, which actually requested this for the forums).
+  Requires new text strings in the language files and a new template file,
+  comment/reportcomment.thtml [Dirk]
 - Bugfix: New users created through the batch import didn't get the email with
   their password [Dirk]
 - Moved function to create and send a password to lib-user.php to avoid having

@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# English_Unicode.php
+# english.php
 # This is the english language page for GeekLog!
 # Special thanks to Mischa Polivanov for his work on this project
 #
@@ -150,7 +150,9 @@ $LANG01 = array(
     105 => 'Mail Users',
     106 => 'Views',
     107 => 'GL Version Test',
-    108 => 'Clear Cache'
+    108 => 'Clear Cache',
+    109 => 'Report abuse',
+    110 => 'Report this post to the site admin'
 );
 
 ###############################################################################
@@ -187,12 +189,12 @@ $LANG03 = array(
     7 => 'Your last comment was ',
     8 => " seconds ago.  This site requires at least {$_CONF['commentspeedlimit']} seconds between comments",
     9 => 'Comment',
-    10 => '',
+    10 => 'Send Report',
     11 => 'Submit Comment',
     12 => 'Please fill in the Title and Comment fields, as they are necessary for your submission of a comment.',
     13 => 'Your Information',
     14 => 'Preview',
-    15 => '',
+    15 => 'Report this post',
     16 => 'Title',
     17 => 'Error',
     18 => 'Important Stuff',
@@ -201,7 +203,10 @@ $LANG03 = array(
     21 => 'Read other people\'s messages before posting your own to avoid simply duplicating what has already been said.',
     22 => 'Use a clear subject that describes what your message is about.',
     23 => 'Your email address will NOT be made public.',
-    24 => 'Anonymous User'
+    24 => 'Anonymous User',
+    25 => 'Are you sure you want to report this post to the site admin?',
+    26 => '%s reported the following abusive comment post:',
+    27 => 'Abuse report'
 );
 
 ###############################################################################
@@ -1220,4 +1225,5 @@ $LANG_LOGIN = array(
     3 => 'Login',
     4 => 'New User'
 );
+
 ?>

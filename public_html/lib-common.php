@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.323 2004/05/15 16:11:26 dhaun Exp $
+// $Id: lib-common.php,v 1.324 2004/05/15 18:41:32 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2859,6 +2859,14 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
                 }
             }
             $template->set_var( 'delete_option', $deloption );
+        }
+        else if( !empty( $_USER['username'] ))
+        {
+            $reportthis = ' | <a href="' . $_CONF['site_url']
+                        . '/comment.php?mode=report&amp;cid=' . $A['cid']
+                        . '&amp;type=' . $type . '" title="' . $LANG01[110]
+                        . '">' . $LANG01[109] . '</a> ';
+            $template->set_var( 'delete_option', $reportthis );
         }
         else
         {

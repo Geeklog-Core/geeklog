@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.60 2004/05/09 11:27:07 dhaun Exp $
+// $Id: comment.php,v 1.61 2004/05/15 18:41:32 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -369,7 +369,7 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $sid)
     }
 
     $author = DB_getItem ($_TABLES['users'], 'username', "uid = $uid");
-    if ($uid <= 1) {
+    if (($uid <= 1) && !empty ($ipaddress)) {
         // add IP address for anonymous posters
         $author .= ' (' . $ipaddress . ')';
     }
@@ -386,7 +386,7 @@ function sendNotification ($title, $comment, $uid, $ipaddress, $type, $sid)
             $comment = substr ($comment, 0, $_CONF['emailstorieslength'])
                      . '...';
         }
-        $mailbody .= $comment .= "\n\n";
+        $mailbody .= $comment . "\n\n";
     }
 
     if ($type == 'article') {
@@ -485,6 +485,156 @@ function deletecomment ($cid, $sid, $type)
     return $retval;
 }
 
+function report_abusive_comment ($cid, $type)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG12, $LANG_LOGIN;
+
+    $retval = '';
+
+    if (empty ($_USER['username'])) {
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));     
+        $loginreq = new Template ($_CONF['path_layout'] . 'submit');            
+        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');          
+        $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var ('site_url', $_CONF['site_url']);                    
+        $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
+        $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $loginreq->parse ('errormsg', 'loginreq');
+        $retval .= $loginreq->finish ($loginreq->get_var ('errormsg'));
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
+
+    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
+    $last = COM_checkSpeedlimit ('mail');
+    if ($last > 0) {
+        $retval .= COM_startBlock ($LANG12[26], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG12[30] . $last . $LANG12[31]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
+
+    $start = new Template ($_CONF['path_layout'] . 'comment');
+    $start->set_file (array ('report' => 'reportcomment.thtml'));
+    $start->set_var ('site_url', $_CONF['site_url']);
+    $start->set_var ('layout_url', $_CONF['layout_url']);
+    $start->set_var ('lang_report_this', $LANG03[25]);
+    $start->set_var ('lang_send_report', $LANG03[10]);
+    $start->set_var ('cid', $cid);
+    $start->set_var ('type', $type);
+
+    $result = DB_query ("SELECT uid,sid,pid,title,comment,UNIX_TIMESTAMP(date) AS nice_date FROM {$_TABLES['comments']} WHERE cid = $cid AND type = '$type'");
+    $A = DB_fetchArray ($result);
+
+    $result = DB_query ("SELECT username,fullname,photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+    $B = DB_fetchArray ($result);
+
+    // prepare data for comment preview
+    $A['cid'] = $cid;
+    $A['type'] = $type;
+    $A['username'] = $B['username'];
+    $A['fullname'] = $B['fullname'];
+    $A['photo'] = $B['photo'];
+    $A['indent'] = 0;
+    $A['pindent'] = 0;
+
+    $thecomment = COM_getComment ($A, 'flat', $type, 'ASC', false, true);
+    $start->set_var ('comment', $thecomment);
+    $retval .= COM_startBlock ($LANG03[15])
+            . $start->finish ($start->parse ('output', 'report'))
+            . COM_endBlock ();
+
+    return $retval;
+}
+
+function send_report ($cid, $type)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG03, $LANG08, $LANG_LOGIN;
+
+    if (empty ($_USER['username'])) {
+        $retval = COM_siteHeader ('menu');
+        $retval .= COM_startBlock ($LANG_LOGIN[1], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));     
+        $loginreq = new Template ($_CONF['path_layout'] . 'submit');            
+        $loginreq->set_file ('loginreq', 'submitloginrequired.thtml');          
+        $loginreq->set_var ('login_message', $LANG_LOGIN[2]);
+        $loginreq->set_var ('site_url', $_CONF['site_url']);                    
+        $loginreq->set_var ('lang_login', $LANG_LOGIN[3]);
+        $loginreq->set_var ('lang_newuser', $LANG_LOGIN[4]);
+        $loginreq->parse ('errormsg', 'loginreq');
+        $retval .= $loginreq->finish ($loginreq->get_var ('errormsg'));
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $retval .= COM_siteFooter ();
+
+        return $retval;
+    }
+
+    COM_clearSpeedlimit ($_CONF['speedlimit'], 'mail');
+    if (COM_checkSpeedlimit ('mail') > 0) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
+    }
+
+    $username = DB_getItem ($_TABLES['users'], 'username',
+                            "uid = {$_USER['uid']}");
+    $result = DB_query ("SELECT uid,title,comment,sid,ipaddress FROM {$_TABLES['comments']} WHERE cid = $cid AND type = '$type'");
+    $A = DB_fetchArray ($result);
+
+    $title = stripslashes ($A['title']);
+    $comment = stripslashes ($A['comment']);
+
+    // strip HTML if posted in HTML mode
+    if (preg_match ('/<.*>/', $comment) != 0) {
+        $comment = strip_tags ($comment);
+    }
+
+    $author = DB_getItem ($_TABLES['users'], 'username', "uid = {$A['uid']}");
+    if (($A['uid'] <= 1) && !empty ($A['ipaddress'])) {
+        // add IP address for anonymous posters
+        $author .= ' (' . $A['ipaddress'] . ')';
+    }
+
+    $mailbody = sprintf ($LANG03[26], $username);
+    $mailbody .= "\n\n"
+              . "$LANG03[16]: $title\n"
+              . "$LANG03[5]: $author\n";
+    
+    if (($type != 'article') && ($type != 'poll')) {
+        $mailbody .= "$LANG09[5]: $type\n";
+    }
+
+    if ($_CONF['emailstorieslength'] > 0) {
+        if ($_CONF['emailstorieslength'] > 1) {
+            $comment = substr ($comment, 0, $_CONF['emailstorieslength'])
+                     . '...';
+        }
+        $mailbody .= $comment . "\n\n";
+    }
+
+    if ($type == 'article') {
+        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+                  . '/article.php?story=' . $A['sid']  . "#comments>\n\n";
+    } else if ($type == 'poll') {
+        $mailbody .= $LANG08[33] . ' <' . $_CONF['site_url']
+                  . '/pollbooth.php?qid=' . $A['sid'] . "&aid=-1>\n\n";
+    }
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG03[27];
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+    COM_updateSpeedlimit ('mail');
+
+    return COM_refresh ($_CONF['site_url'] . '/index.php?msg=27');
+}
+
+
 // MAIN
 switch ($mode) {
 case $LANG03[14]: // Preview
@@ -541,6 +691,16 @@ case 'display':
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
+    break;
+case 'report':
+    $display = COM_siteHeader ('menu')
+             . report_abusive_comment (COM_applyFilter ($HTTP_GET_VARS['cid']),
+                    COM_applyFilter ($HTTP_GET_VARS['type']))
+             . COM_siteFooter ();
+    break;
+case 'sendreport':
+    $display = send_report (COM_applyFilter ($HTTP_POST_VARS['cid']),
+                            COM_applyFilter ($HTTP_POST_VARS['type']));
     break;
 default:
     if (isset ($HTTP_POST_VARS['sid'])) {

@@ -152,7 +152,9 @@ $LANG01 = array(
     105 => 'Mail an User',
     106 => 'Angezeigt',
     107 => 'GL Version Test',
-    108 => 'Cache löschen'
+    108 => 'Cache löschen',
+    109 => 'Beitrag melden',
+    110 => 'Site-Admin auf diesen Beitrag hinweisen'
 );
 
 ###############################################################################
@@ -189,12 +191,12 @@ $LANG03 = array(
     7 => 'Ihr letzter Kommentar war vor ',
     8 => " Sekunden. Zwischen zwei Kommentaren müssen aber mindestens {$_CONF['commentspeedlimit']} Sekunden vergangen sein",
     9 => 'Kommentar',
-    10 => '',
+    10 => 'Beitrag melden',
     11 => 'Kommentar abschicken',
     12 => 'Bitte die Felder Betreff <em>und</em> Kommentar ausfüllen, um einen Kommentar zu diesem Artikel abzugeben.',
     13 => 'Ihre Information',
     14 => 'Vorschau',
-    15 => '',
+    15 => 'Diesen Beitrag melden',
     16 => 'Betreff',
     17 => 'Fehler',
     18 => 'Wichtige Hinweise:',
@@ -203,7 +205,10 @@ $LANG03 = array(
     21 => 'Lesen Sie bitte die vorhandenen Kommentare bevor Sie Ihren eigenen abgeben, um nicht noch einmal zu schreiben, was schon gesagt wurde.',
     22 => 'Benutzen Sie eine eindeutige Betreffzeile, die den Inhalt Ihres Kommentars zusammenfasst.',
     23 => 'Ihre E-Mail-Adresse wird NICHT veröffentlicht.',
-    24 => 'Anonymous'
+    24 => 'Anonymous',
+    25 => 'Sind Sie sicher, dass Sie diesen Beitrag als möglichen Missbrauch melden wollen?',
+    26 => '%s meldete den folgenden Beitrag als möglichen Missbrauch:',
+    27 => 'Hinweis auf Missbrauch'
 );
 
 ###############################################################################
