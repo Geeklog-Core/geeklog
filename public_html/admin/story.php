@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.126 2004/08/16 10:44:45 dhaun Exp $
+// $Id: story.php,v 1.127 2004/08/22 17:53:22 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -935,7 +935,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         
         // Get the related URLs
-        $related = addslashes (STORY_whatsRelated ("$introtext $bodytext", $uid, $tid));
+        $related = addslashes (implode ("\n", STORY_extractLinks ("$introtext $bodytext")));
 
         // Clean up the text
         if ($postmode == 'html') {

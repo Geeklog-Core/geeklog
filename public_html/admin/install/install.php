@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.67 2004/08/11 18:36:18 dhaun Exp $
+// $Id: install.php,v 1.68 2004/08/22 17:53:22 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -114,14 +114,14 @@ function INST_welcomePage()
         $globals_off = true;
     }
 
-    if($globals_off || $old_php) {
+    if ($globals_off || $old_php) {
         $retval .= '<h1>Important!</h1>' . LB;
 
-        if($old_php) {
+        if ($old_php) {
             $retval .= '<p><font color="red"><strong>Note:</strong> Geeklog requires PHP 4.1.0 or newer to run. Please upgrade your PHP or ask your hosting service to do it (this is actually in your own interest, as old versions of PHP have security issues).</font></p>' . LB;
         }
 
-        if($globals_off) {
+        if ($globals_off) {
             $retval .= '<p><font color="red"><strong>Warning:</strong> You have <code>register_globals = Off</code> in your <tt>php.ini</tt>. However, Geeklog requires <code>register_globals</code> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</font></p>' . LB;
         }
     }
@@ -620,6 +620,18 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
                 next($_SQL);
             }
             commentsToPreorderTree();
+
+            $result = DB_query ("SELECT sid,introtext,bodytext FROM {$_TABLES['stories']}");
+            $numStories = DB_numRows ($result);
+            for ($i = 0; $i < $numStories; $i++) {
+                $A = DB_fetchArray ($result);
+                $related = addslashes (implode ("\n", UPDATE_extractLinks ($A['introtext'] . ' ' . $A['bodytext'])));
+                if (empty ($related)) {
+                    DB_query ("UPDATE {$_TABLES['stories']} SET related = NULL WHERE sid = '{$A['sid']}'");
+                } else {
+                    DB_query ("UPDATE {$_TABLES['stories']} SET related = '$related' WHERE sid = '{$A['sid']}'");
+                }
+            }
 
             $spversion = get_SP_ver ();
             if ($spversion > 0) {

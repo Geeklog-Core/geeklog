@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.1 2004/08/16 10:44:46 dhaun Exp $
+// $Id: lib-story.php,v 1.2 2004/08/22 17:53:22 dhaun Exp $
 
 if (eregi ('lib-story.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -340,7 +340,9 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
             $matches[2][$i] = substr( $matches[2][$i], 0, $maxlength - 3 ) . '...';
         }
 
-        $rel[] = '<a href="' . $matches[1][$i] . '">' . $matches[2][$i] . '</a>';
+        $rel[] = '<a href="' . $matches[1][$i] . '">'
+               . str_replace ("/(\015\012)|(\015)|(\012)/", '', $matches[2][$i])
+               . '</a>';
     }
 
     return( $rel );
@@ -358,12 +360,15 @@ function STORY_extractLinks( $fulltext, $maxlength = 26 )
 * @return       string      HTML-formatted list of links
 */
 
-function STORY_whatsRelated( $fulltext, $uid, $tid )
+function STORY_whatsRelated( $related, $uid, $tid )
 {
     global $_CONF, $_TABLES, $_USER, $LANG24;
 
-    // collect any links from the story text
-    $rel = STORY_extractLinks( $fulltext );
+    // get the links from the story text
+    $rel = explode ("\n", $related);
+    if ((sizeof ($rel) == 1) && empty ($rel[0])) {
+        $rel = array ();
+    }
 
     if( !empty( $_USER['username'] ) || (( $_CONF['loginrequired'] == 0 ) &&
            ( $_CONF['searchloginrequired'] == 0 ))) {

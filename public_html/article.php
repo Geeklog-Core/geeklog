@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.51 2004/08/16 10:44:44 dhaun Exp $
+// $Id: article.php,v 1.52 2004/08/22 17:53:20 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -188,8 +188,7 @@ if ($A['count'] > 0) {
                         . '/pdfgenerator.php?pageType=2&amp;pageData='
                         . urlencode ($printUrl) . '">' . $LANG11[5] . '</a>';
             }
-            $related = STORY_whatsRelated ($A['introtext'] . ' '
-                                    . $A['bodytext'], $A['uid'], $A['tid']);
+            $related = STORY_whatsRelated ($A['related'], $A['uid'], $A['tid']);
             if (!empty ($related)) {
                 $related = COM_startBlock ($LANG11[1], '',
                     COM_getBlockTemplate ('whats_related_block', 'header'))

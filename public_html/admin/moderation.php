@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.51 2004/08/16 10:44:45 dhaun Exp $
+// $Id: moderation.php,v 1.52 2004/08/22 17:53:22 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -538,7 +538,7 @@ function moderation($mid,$action,$type,$count)
             if ($type == 'story') {
                 $result = DB_query ("SELECT * FROM {$_TABLES['storysubmission']} where sid = '$mid[$i]'");
                 $A = DB_fetchArray ($result);
-                $A['related'] = addslashes (STORY_whatsRelated ($A['introtext'], $A['uid'], $A['tid']));
+                $A['related'] = addslashes (implode ("\n", STORY_extractLinks ($A['introtext'])));
                 $A['owner_id'] = $A['uid'];
                 $A['title'] = addslashes ($A['title']);
                 $A['introtext'] = addslashes ($A['introtext']);

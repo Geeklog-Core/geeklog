@@ -88,6 +88,37 @@ function commentsToPreorderTree()
     }
 }
 
+
+// Note: this is the exact same function as STORY_extractLinks
+function UPDATE_extractLinks( $fulltext, $maxlength = 26 )
+{
+    $rel = array();
+
+    /* Only match anchor tags that contain 'href="<something>"'
+     */
+    preg_match_all( "/<a[^>]*href=[\"']([^\"']*)[\"'][^>]*>(.*?)<\/a>/i", $fulltext, $matches );
+    for ( $i=0; $i< count( $matches[0] ); $i++ )
+    {
+        $matches[2][$i] = strip_tags( $matches[2][$i] );
+        if ( !strlen( trim( $matches[2][$i] ) ) ) {
+            $matches[2][$i] = strip_tags( $matches[1][$i] );
+        }
+
+        // if link is too long, shorten it and add ... at the end
+        if ( ( $maxlength > 0 ) && ( strlen( $matches[2][$i] ) > $maxlength ) )
+        {
+            $matches[2][$i] = substr( $matches[2][$i], 0, $maxlength - 3 ) . '...';
+        }
+
+        $rel[] = '<a href="' . $matches[1][$i] . '">'
+               . str_replace ("/(\015\012)|(\015)|(\012)/", '', $matches[2][$i])
+               . '</a>';
+    }
+
+    return( $rel );
+}
+
+
 // modify the comments table to speed things up
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD lft mediumint(10) unsigned NOT NULL default '0' AFTER pid";
 $_SQL[] = "ALTER TABLE {$_TABLES['comments']} ADD rht mediumint(10) unsigned NOT NULL default '0' AFTER lft";

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.73 2004/08/16 10:44:44 dhaun Exp $
+// $Id: submit.php,v 1.74 2004/08/22 17:53:20 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -674,7 +674,7 @@ function savesubmission($type,$A)
             } else { // post this story directly
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} WHERE tid='{$A['tid']}'");
                 $T = DB_fetchArray ($result);
-                $related = addslashes (STORY_whatsRelated ($introtext, $A['uid'], $A['tid']));
+                $related = addslashes (implode ("\n", STORY_extractLinks ($introtext)));
                 DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,related,date,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$related}',NOW(),{$_CONF['comment_code']},'{$A['postmode']}',{$A['uid']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
 
                 COM_rdfUpToDateCheck ();
