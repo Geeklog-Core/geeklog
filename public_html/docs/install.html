@@ -187,7 +187,7 @@ Windows users, you should be able to use the Unix '/' in your paths without any 
 			
 			
 		</ol>
-<p>If you run into problems or keep getting error messages, please see the section on <a href="#installprob">common installation problems<a/> below.</p>
+<p>If you run into problems or keep getting error messages, please see the section on <a href="#installprob">common installation problems</a> below.</p>
 	</td>
 </tr>
 <tr>
@@ -287,6 +287,71 @@ Please note that only "basic" version number are listed, because, for example, G
 		</div>
                 <br>
                 <br>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr><td>
+<p>When you get an error message, please read it carefully. Even if you're not
+familiar with PHP, it will give you a hint about what is wrong. Pay special
+attention at the paths contained in the error message. Wrong paths are the
+most common cause for problems.</p>
+<p>If you get more than one error message, always start with the very first
+error - the others will often go away automatically once you've fixed the first
+one.</p>
+</td></tr></table>
+</div>
+                <br>
+                <br>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
+<td bgcolor="#ffedf2">
+<p><b>I get the following error:</b></p>
+<p><code>Parse error: parse error in /path/to/your/config.php on line 76</code></p>
+</td></tr><tr><td>
+<p><small>(line number may vary)</small></p>
+<p><strong>Answer:</strong></p>
+<p>A parse error usually hints at a typo you've made. Check the file at the
+given line (the actual error may be in the line preceding the one mentioned
+in the error message).</p>
+<p>Common problems are:</p>
+<ul>
+<li>not enclosing paths in single quotes properly</li>
+<li>missing semicolon at the end of the line</li>
+<li>using single quotes within a string (you need to write <b>Joe's Site</b> as
+    <b>Joe\'s Site</b>, escaping the extra quote)
+</ul>
+</td></tr></table>
+</div>
+                <br>
+                <br>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
+<td bgcolor="#ffedf2">
+<p><b>I get the following error:</b></p>
+<p><code>Warning: main(some/path/to/system/databases/mysql.class.php): failed to open stream: No such file or directory in /path/to/your/system/lib-database.php on line 110</code></p>
+</td></tr><tr><td>
+<p><small>(line number may vary)</small></p>
+<p><strong>Answer:</strong></p>
+<p>The path that you've entered for the <b>$_CONF['path']</b> variable in config.php is not correct. Make sure you typed it correctly. Also make sure it uses
+an <em>absolute</em> path, i.e. one that starts at the root of your file
+system (and that it starts with a / under Unix/Linux or a drive letter under
+Windows).</p>
+</td></tr></table>
+</div>
+                <br>
+                <br>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
+<td bgcolor="#ffedf2">
+<p><b>I get the following error:</b></p>
+<p><code>1050: Table 'gl_access' already exists</code></p>
+</td></tr><tr><td>
+<p><strong>Answer:</strong></p>
+<p>You must have run the install script before (possibly unsuccessfully). To
+be on the save side, drop the database and create a  new, empty database
+before trying to run the install script again.</p>
+</td></tr></table>
+</div>
+                <br>
+                <br>
 		<div align="center">
 			<table width="95%" border="0" cellspacing="0" cellpadding="4">
 				<tr>
@@ -307,6 +372,21 @@ Please note that only "basic" version number are listed, because, for example, G
 			<br>
 			<br>
 		</div>
+                <br>
+                <br>
+<div align="center">
+<table width="95%" border="0" cellspacing="0" cellpadding="4"><tr>
+<td bgcolor="#ffedf2">
+<p><b>I get the following error:</b></p>
+<p><code>Template Error: set_root: /some/path/to/public_html/layout/XSilver is not a directory.
+Halted.</code></p>
+</td></tr><tr><td>
+<p><strong>Answer:</strong></p>
+<p>This is a path problem again. Check the setting for <b>$_CONF['path_html']</b>. If you did not change or rename Geeklog's <tt>public_html</tt> directory, then there's no need to change that setting at all (restore the line to its
+original content). Otherwise, please read the comments above that line in
+config.php again carefully to understand how to change that line properly.</p>
+</td></tr></table>
+</div>
 	</td>
 </tr>
 <tr>

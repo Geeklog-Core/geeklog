@@ -1,10 +1,16 @@
 GeekLog History/Changes:
 
+- Upcoming events (in the block of the same name) are now sorted by start date
+  and start time, which makes more sense than the old start date, end date
+  sort order (reported by Peter Sieradzki).
+- Fixed description of function DB_count() in lib-database.php (reported by
+  jose on IRC).
 - Changed the "getBent" block to test the real admin directory in case it has
   been renamed (bug #762881).
 - Don't save the privacy options when saving the user profile - since they are
   part of the user's preferences and would be set to "off" that way ...
   (reported by Dwight Trumbower).
+- Check the topic permissions when doing a search on stories and comments.
 - Check the topic permissions when displaying the new stories and comments in
   the What's New block.
 - Need to use date_sub() in the SQL request for the display=new mode on the
@@ -23,9 +29,12 @@ GeekLog History/Changes:
 - Updated Polish language file, provided by Robert Stadnik.
 - Updated Japanese language file, provided by Yusuke Sakata.
 - Updated Italian language file, provided by quess65.
-- New Italian language file for the Static Pages plugin, provided by quess65.
 - New language file for formal German (addressing the user as "Sie" instead of
   "Du"), provided by Philip Sack.
+
+- New Japanese language file for the Static Pages plugin, provided by Yusuke
+  Sakata.
+- New Italian language file for the Static Pages plugin, provided by quess65.
 
 
 June 29, 2003 (1.3.8rc1)
