@@ -14,6 +14,7 @@
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
 // |          Dirk Haun         - dirk@haun-online.de                          |
+// |          Vincent Furia     - vinny01@users.sourceforge.net                |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.312 2004/04/09 17:16:03 dhaun Exp $
+// $Id: lib-common.php,v 1.313 2004/04/10 02:28:07 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2700,6 +2701,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     if ( $preview )
     {
         $A = $comments;   
+        $mode = 'flat';
     }
     else
     {
@@ -2708,7 +2710,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
     
     if ( empty( $A ) )
     {
-	return '';
+        return '';
     }
     
     do
@@ -2716,7 +2718,7 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         // determines indentation for current comment
         if ( $mode == 'threaded' || $mode = 'nested' )
         {
-            $indent = $A['indent'] * $_CONF['comment_indent'];
+            $indent = ($A['indent'] - $A['pindent']) * $_CONF['comment_indent'];
         }
         
         // comment variables
@@ -2932,14 +2934,6 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
             case 'nested':
             case 'threaded':
             default:
-                // count the total number of applicable comments
-                $q2 = "SELECT COUNT(*) "
-                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
-                    . "WHERE c.sid = '$sid' AND c.lft BETWEEN c2.lft AND c2.rht "
-                    . "AND c2.sid = '$sid' AND c2.pid = $pid";
-                $result = DB_query($q2);
-                list($count) = DB_fetchArray($result);
-
                 if( $order == 'DESC' )
                 {
                     $cOrder = 'c.rht DESC';
@@ -2948,13 +2942,39 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
                 {
                     $cOrder = 'c.lft ASC'; 
                 }                            
-                $q = "SELECT c.*, u.username, u.fullname, u.photo, " 
-                     . "unix_timestamp(c.date) AS nice_date "
-                   . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
-                     . "{$_TABLES['users']} as u "
-                   . "WHERE c.sid = '$sid' AND c.lft BETWEEN c2.lft AND c2.rht "
-                     . "AND c2.sid = '$sid' AND c2.pid = $pid AND c.uid = u.uid "
-                   . "ORDER BY $cOrder LIMIT $start, $limit";
+
+                // We can simplify the query, and hence increase performance when pid=0
+                // (when fetching all the comments for a given sid)
+                if ( $pid == 0 )
+                {
+                    // count the total number of applicable comments
+                    $count = DB_count($_TABLES['comments'], "sid", $sid);
+
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, 0 as pindent, " 
+                         . "unix_timestamp(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
+                       . "WHERE c.sid = '$sid' AND c.uid = u.uid "
+                       . "ORDER BY $cOrder LIMIT $start, $limit";
+                }
+                else
+                {
+                    // count the total number of applicable comments
+                    $q2 = "SELECT COUNT(*) "
+                        . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2 "
+                        . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                        . "AND c2.cid = $pid";
+                    $result = DB_query($q2);
+                    list($count) = DB_fetchArray($result);
+
+                    $q = "SELECT c.*, u.username, u.fullname, u.photo, c2.indent + 1 as pindent, " 
+                         . "unix_timestamp(c.date) AS nice_date "
+                       . "FROM {$_TABLES['comments']} as c, {$_TABLES['comments']} as c2, "
+                         . "{$_TABLES['users']} as u "
+                       . "WHERE c.sid = '$sid' AND (c.lft > c2.lft AND c.lft < c2.rht) "
+                         . "AND c2.cid = $pid AND c.uid = u.uid "
+                       . "ORDER BY $cOrder LIMIT $start, $limit";
+
+                }
                 break;
         }
 
@@ -4524,7 +4544,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
     $hasargs = strstr( $base_url, '?' );
 
     if( $num_pages < 2 ) 
-	{
+    {
         return;
     }
 
@@ -5163,24 +5183,23 @@ function COM_extractLinks( $fulltext, $maxlength = 26 )
 {
     $rel = array();
 
-    /* [href|name] needs to replace href below at the least, it would be better
-     * to find a method that will work in all cases however.
+    /* Only match anchor tags that contain 'href="<something>"'
      */
-    preg_match_all( "/(<a.*?href=\"(.*?)\".*?>)(.*?)(<\/a>)/i", $fulltext, $matches );
+    preg_match_all( "/<a[^>]*href=\"([^\"]*)\"[^>]*>([^<]*)<\/a>/i", $fulltext, $matches );
     for ( $i=0; $i< count( $matches[0] ); $i++ )
     {
-        $matches[3][$i] = strip_tags( $matches[3][$i] );
-        if ( !strlen( trim( $matches[3][$i] ) ) ) {
-            $matches[3][$i] = strip_tags( $matches[2][$i] );
+        $matches[2][$i] = strip_tags( $matches[2][$i] );
+        if ( !strlen( trim( $matches[2][$i] ) ) ) {
+            $matches[2][$i] = strip_tags( $matches[1][$i] );
         }
 
         // if link is too long, shorten it and add ... at the end
-        if ( ( $maxlength > 0 ) && ( strlen( $matches[3][$i] ) > $maxlength ) )
+        if ( ( $maxlength > 0 ) && ( strlen( $matches[2][$i] ) > $maxlength ) )
         {
-            $matches[3][$i] = substr( $matches[3][$i], 0, $maxlength - 3 ) . '...';
+            $matches[2][$i] = substr( $matches[2][$i], 0, $maxlength - 3 ) . '...';
         }
 
-        $rel[] = $matches[1][$i] . $matches[3][$i] . $matches[4][$i];
+	$rel[] = '<a href="' . $matches[1][$i] . '">' . $matches[2][$i] . '</a>';
     }
 
     return( $rel );
