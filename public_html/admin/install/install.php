@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.55 2003/09/08 20:49:14 dhaun Exp $
+// $Id: install.php,v 1.56 2003/09/20 17:36:20 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -511,6 +511,18 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                     DB_query ("UPDATE {$_TABLES['links']} SET date = '$date' WHERE lid = '{$A['lid']}'");
                 }
             }
+
+            // remove unused entries left over from deleted groups
+            $result = DB_query ("SELECT grp_id FROM {$_TABLES['groups']}");
+            $num = DB_numRows ($result);
+            $groups = array ();
+            for ($i = 0; $i < $num; $i++) {
+                $A = DB_fetchArray ($result);
+                $groups[] = $A['grp_id'];
+            }
+            $grouplist = '(' . implode (',', $groups) . ')';
+
+            DB_query ("DELETE FROM {$_TABLES['group_assignments']} WHERE (ug_main_grp_id NOT IN $grouplist) OR (ug_grp_id NOT IN $grouplist)");
 
             $current_gl_version = '1.3.9';
             $_SQL = '';
