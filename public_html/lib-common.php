@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.153 2002/09/12 12:15:51 dhaun Exp $
+// $Id: lib-common.php,v 1.154 2002/09/12 13:55:30 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1643,7 +1643,7 @@ function COM_adminMenu($help = '', $title = '')
         $adminmenu->set_var('option_label', $LANG01[107]);
         $adminmenu->set_var('option_count', 'N/A');
         $retval .= $adminmenu->parse('item', 'option');
-        $retval .= COM_endBlock();
+        $retval .= COM_endBlock(COM_getBlockTemplate('admin_block', 'footer'));
     }
     return $retval;
 }
