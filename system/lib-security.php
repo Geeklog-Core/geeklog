@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.16 2003/09/01 19:01:07 dhaun Exp $
+// $Id: lib-security.php,v 1.17 2003/09/28 13:20:04 dhaun Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -217,9 +217,9 @@ function SEC_isModerator()
 }
 
 /**
-* Checks to see if current user has access to view a topic
+* Checks to see if current user has access to a topic
 *
-* Checks to see if current user has access to view a topic
+* Checks to see if current user has access to a topic
 *
 * @param        string      $tid        ID for topic to check on
 * @return       int 	returns 3 for read/edit 2 for read only 0 for no access
@@ -233,7 +233,7 @@ function SEC_hasTopicAccess($tid)
         return 0;
     }
 
-    $result = DB_query("SELECT * FROM {$_TABLES["topics"]} WHERE tid = '$tid'");
+    $result = DB_query("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '$tid'");
     $A = DB_fetchArray($result);
 
     return SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
