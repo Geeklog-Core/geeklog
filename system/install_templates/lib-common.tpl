@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.21 2002/01/11 17:20:32 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.22 2002/02/05 16:43:58 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -156,7 +156,7 @@ function COM_article($A,$index='')
 
     $article = new Template($_CONF['path_layout']);
     $article->set_file(array('article'=>'storytext.thtml','bodytext'=>'storybodytext.thtml'));
-    $article->set_var('story_title',$A['title']);
+    $article->set_var('story_title',stripslashes($A['title']));
     $article->set_var('site_url',$_CONF['site_url']);
     $article->set_var('story_date',$A['day']);
 
@@ -326,7 +326,7 @@ function COM_siteHeader($what = 'menu')
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
     $header->set_var('site_url', $_CONF['site_url']);
     $header->set_var('layout_url', $_CONF['layout_url']);
-    $header->set_var('site_email', $_CONF['site_mail']);
+    $header->set_var('site_mail', "mailto:{$_CONF['site_mail']}");
     $header->set_var('site_name', $_CONF['site_name']);
     $msg = '&nbsp;'.$LANG01[67].' '.$_CONF['site_name'];
     if (!empty($_USER['username'])) {
