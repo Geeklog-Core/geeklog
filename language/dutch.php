@@ -29,12 +29,13 @@
 ###############################################################################
 
 $LANG_CHARSET = 'iso-8859-1';
+// setlocale ( LC_TIME, 'nl_NL.ISO8859-1');
 
 ###############################################################################
 # Array Format:
-# $LANGXX[YY]:  $LANG - variable name
-#               XX    - file id number
-#               YY    - phrase id number
+# $LANGXX[YY]:    $LANG - variable name
+#                    XX - file id number
+#                    YY - phrase id number
 ###############################################################################
 
 ###############################################################################
@@ -64,13 +65,13 @@ $LANG01 = array(
     17 => 'Gebruikers',
     18 => 'SQL Query',
     19 => 'Uitloggen',
-    20 => 'Uw gegevens:',
+    20 => 'myCredits',
     21 => 'Gebruikersnaam',
     22 => 'Gebruikers ID',
     23 => 'Beveiligingsniveau',
     24 => 'Anoniem',
     25 => 'Reageer',
-    26 => 'De volgende reacties zijn voor verantwoording van degene die ze heeft geplaatst. Dit portaal is niet verantwoordelijk voor de inhoud.',
+    26 => 'Reacties zijn voor verantwoording van degene die ze heeft geplaatst. Dit portaal is niet verantwoordelijk voor de inhoud.',
     27 => 'Laatste plaatsingen',
     28 => 'Verwijderen',
     29 => 'Geen reacties.',
@@ -84,7 +85,7 @@ $LANG01 = array(
     37 => 'Geen artikelen',
     38 => 'Content Syndication',
     39 => 'vernieuwen',
-    40 => 'You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.',
+    40 => 'De instelling <tt>register_globals = Off</tt> is aanwezig in <tt>php.ini</tt>. Geeklog echter vereist dat <tt>register_globals</tt> ingesteld is op <strong>on</strong>. Voordat u verder gaat, gelieve dit op <strong>on</strong> in te stellen en herstart uw web server.',
     41 => 'Gast(en)',
     42 => 'Geschreven door:',
     43 => 'Hierop reageren',
@@ -103,7 +104,7 @@ $LANG01 = array(
     56 => 'Stem',
     57 => 'Wachtwoord',
     58 => 'Inloggen',
-    59 => "Heeft u nog geen account? <br> Meld u dan <b>nu</b> aan als <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nieuwe gebruiker</a>",
+    59 => "Heeft u nog geen account? <br> Meld u dan <strong>nu</strong> aan als <a href=\'{$_CONF['site_url']}/users.php?mode=new\'>nieuwe gebruiker</a>",
     60 => 'Geef commentaar',
     61 => 'Aanmelden nieuw account',
     62 => 'woorden',
@@ -116,7 +117,7 @@ $LANG01 = array(
     69 => 'contact',
     70 => 'zoeken',
     71 => 'uw Bijdrage',
-    72 => 'Web Latijn',
+    72 => 'Links',
     73 => 'Opinie\'s',
     74 => 'Kalender',
     75 => 'gericht Zoeken',
@@ -146,7 +147,7 @@ $LANG01 = array(
     99 => 'ARTIKELEN',
     100 => 'Geen nieuwe artikelen',
     101 => 'Uw evenementen',
-    102 => 'Portaal evenementen',
+    102 => 'Evenementen',
     103 => 'DB Backups',
     104 => 'door',
     105 => 'Email gebruikers',
@@ -166,10 +167,10 @@ $LANG02 = array(
     5 => 'Omschrijving',
     6 => 'Voeg evenement toe',
     7 => 'Komende evenementen',
-    8 => 'Door evenementen aan <b>uw</b> kalender toe te voegen, kunt u de voor u interessante evenementen verzamelen en snel inzien door op \'Mijn Kalender\' te klikken in het Gebruikersmenu.',
+    8 => 'Door evenementen aan <strong>uw</strong> kalender toe te voegen, kunt u de voor u interessante evenementen verzamelen en snel inzien door op \'Mijn Kalender\' te klikken in het Gebruikersmenu.',
     9 => 'Voeg toe aan \'Mijn Kalender\'',
     10 => 'Verwijder van \'Mijn Kalender\'',
-    11 => "Voeg evenment toe aan {$_USER['username']}'s Kalender",
+    11 => "Voeg evenement toe aan {$_USER['username']}\'s Kalender",
     12 => 'Evenement',
     13 => 'Begint',
     14 => 'Eindigt',
@@ -210,7 +211,7 @@ $LANG03 = array(
 # users.php
 
 $LANG04 = array(
-    1 => 'Gebruikersprofiel voor',
+    1 => 'Profiel van',
     2 => 'GebruikersNaam',
     3 => 'Volledige Naam',
     4 => 'Wachtwoord',
@@ -222,7 +223,7 @@ $LANG04 = array(
     10 => 'Laatste 10 reacties van gebruiker',
     11 => 'Geen reacties',
     12 => 'Voorkeuren voor',
-    13 => 'Email \'s nachts verwerken',
+    13 => 'Email\'s nachts verwerken',
     14 => 'Dit wachtwoord is gegenereerd door een zgn. randomizer. Het wordt aanbevolen om dit wachtwoord meteen te wijzigen. Om het wachtwoord te wijzigen, log in en klik op \'Account informatie\' van het \'Gebruikersmenu\'.',
     15 => "Uw {$_CONF['site_name']} account is aangemaakt. Om er gebruik van te maken, dient u in te loggen met gebruik van de onderstaande informatie. Bewaar dit bericht a.u.b. voor gebruik in de toekomst.",
     16 => 'Uw account informatie',
@@ -231,11 +232,11 @@ $LANG04 = array(
     19 => 'De gebruikersnaam of email adres is al in gebruik',
     20 => 'Het email adres lijkt geen juist email adres',
     21 => 'Fout',
-    22 => "Registreren bij {$_CONF['site_name']}!",
-    23 => "Door het aanmaken van een account profiteert u van alle voordelen van {$_CONF['site_name']} portaal lidmaadschap en geeft u de mogelijkheid reacties en artikelen onder uw eigen naam te plaatsen. Indien u niet registreert, is dit alleen anoniem mogelijk. Let op, uw email adres zal <b><i>nooit</i></b> publiekelijk worden weergegeven op het portaal.",
+    22 => "Aanmelding bij {$_CONF['site_name']}",
+    23 => "Door het aanvragen van een account profiteert u van alle voordelen van {$_CONF['site_name']} portaal lidmaadschap en geeft u de mogelijkheid reacties en artikelen onder uw eigen naam te plaatsen. Indien u niet registreert, is dit alleen anoniem mogelijk. Let op, uw email adres zal <strong><i>nooit</i></strong> publiekelijk worden weergegeven op het portaal.",
     24 => 'Uw wachtwoord wordt verstuurd naar het email adres dat u invoert.',
     25 => 'Wachtwoord vergeten?',
-    26 => 'Vul uw gebruikersnaam in en klik op \'Email wachtwoord\' en een nieuw wachtwoord wordt verstuurd naar het opgeslagen email adres.',
+    26 => 'Vul uw gebruikersnaam in en klik op \'Email wachtwoord\' en een nieuw wachtwoord wordt verstuurd naar het opgeslagen email adres. Indien u uw gebruikersnaam niet meer weet, kunt u ook volstaan met het invullen van uw emailadres.',
     27 => 'Registreer Nu!',
     28 => 'Email wachtwoord',
     29 => 'Uitgelogd van',
@@ -275,12 +276,12 @@ $LANG04 = array(
     63 => "Uw wachtwoord is naar u verstuurd, en zou op dit moment moeten arriveren. Volg a.u.b. de aanwijzingen in het bericht. Het wordt gewaardeerd, dat u gebruik maakt van {$_CONF['site_name']}",
     64 => 'Voorkeurinstellingen voor Reacties van',
     65 => 'Probeer opnieuw in te loggen',
-    66 => "U heeft mischien een tikfout gemaakt bij het inloggen. Probeer het hieronder opnieuw. Bent u een <a href=\"{$_CONF['site_url']}/users.php?mode=new\">nieuwe gebruiker</a>?",
+    66 => "U heeft mischien een tikfout gemaakt bij het inloggen. Probeer het hieronder opnieuw. Bent u een <a href=\'{$_CONF['site_url']}/users.php?mode=new\'>nieuwe gebruiker</a>?",
     67 => 'Aangemeld sinds',
     68 => 'Mijn gegevens onthouden',
     69 => 'Hoe lang mogen we u onthouden nadat u bent ingelogd?',
     70 => "Pas de layout en inhoud aan van {$_CONF['site_name']}",
-    71 => "Een mogelijkheid van {$_CONF['site_name']} is dat u de inhoud en de layout van wat u ontvangt kan aanpassen. Om van deze voorzieningen gebruik te maken dient u zich eerst te <a href=\"{$_CONF['site_url']}/users.php?mode=new\">registeren</a> bij {$_CONF['site_name']}. Bent u al geregistreerd? Gebruik dan het login formulier, links om in te loggen!",
+    71 => "Een mogelijkheid van {$_CONF['site_name']} is dat u de inhoud en de layout van wat u ontvangt kan aanpassen. Om van deze voorzieningen gebruik te maken dient u zich eerst te <a href=\'{$_CONF['site_url']}/users.php?mode=new\'>registeren</a> bij {$_CONF['site_name']}. Bent u al geregistreerd? Gebruik dan het login formulier, links om in te loggen!",
     72 => 'Skin',
     73 => 'Taal',
     74 => 'Pas het portaal aan uw wensen aan!',
@@ -297,17 +298,17 @@ $LANG04 = array(
     85 => 'Totaal aantal commentaren/reacties:',
     86 => 'Vindt alle bijdragen van',
     87 => 'Uw login naam',
-    88 => "Iemand (waarschijnlijk uzelf) heeft een nieuw wachtwoord voor uw account \"%s\" aangevraagd op {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIndien u dit daadwerkelijk wilt, klik dan op de volgende link:\n\n",
+    88 => "Iemand (waarschijnlijk uzelf) heeft een nieuw wachtwoord voor uw account \'%s\' aangevraagd bij {$_CONF['site_name']}, <{$_CONF['site_url']}>.\n\nIndien u dit daadwerkelijk wilt, klik dan op de volgende link:\n\n",
     89 => 'Indien u hier niet mee accoord gaat kunt u dit bericht negeren; de aanvraag wordt weer verwijderd (uw huidige wachtwoord blijft geldig).\n\n',
     90 => 'Gelieve een nieuw wachtwoord voor uw account hieronder in te vullen. Bemerk dat uw huidige wachtwoord nog steeds geldig is totdat dit formulier verstuurd is.',
     91 => 'Geef nieuw wachtwoord op',
     92 => 'Toets nieuw wachtwoord',
     93 => 'Uw laatste aanvraag voor een nieuw wachtwoord is %d seconden geleden. Het portaal vereist dat er minimaal %d seconden tussen dergelijke aanvragen verstrijken.',
-    94 => 'Verwijder Account "%s"',
-    95 => 'Klik op "Verwijder Account" hieronder om uw account uit de database te verwijderen. Merk op dat uw gepubliceerde artikelen en uw geplaatste reacties <strong>niet</strong> verwijderd worden, maar getoond worden als "Anonymous".',
+    94 => 'Verwijder Account \'%s\'',
+    95 => 'Klik op \'Verwijder Account\' hieronder om uw account uit de database te verwijderen. Merk op dat uw gepubliceerde artikelen en uw geplaatste reacties <strong>niet</strong> verwijderd worden, maar getoond worden als \'Anonymous\'.',
     96 => 'verwijder account',
     97 => 'Bevestig het verwijderen van uw Account',
-    98 => 'Weet u zeker dat uw account verwijderd moet worden? U bent daarna niet meer in staat in te loggen op dit portaal (tenzij u zelf weer aanmeldt). Indien de gevolgen u duidelijk zijn, klik dan nogmaals op "verwijder account" in het formulier hieronder.',
+    98 => 'Weet u zeker dat uw account verwijderd moet worden? U bent daarna niet meer in staat in te loggen op dit portaal (tenzij u zelf weer aanmeldt). Indien de gevolgen u duidelijk zijn, klik dan nogmaals op \'verwijder account\' in het formulier hieronder.',
     99 => 'Privacy Opties voor',
     100 => 'Email van Beheerder',
     101 => 'Accepteer email van beheerder(s)',
@@ -323,7 +324,7 @@ $LANG04 = array(
 $LANG05 = array(
     1 => 'Geen Nieuws om weer te geven',
     2 => 'Er zijn geen nieuwe artikelen om weer te geven. Er is mischien geen nieuws onder dit thema, of u bent hier niet voor geauthoriseerd.',
-    3 => "voor thema {$topic}",
+    3 => 'voor thema {$topic}',
     4 => 'Hoofdartikel',
     5 => 'Volgende',
     6 => 'Vorige'
@@ -333,7 +334,7 @@ $LANG05 = array(
 # links.php
 
 $LANG06 = array(
-    1 => 'Web Latijn',
+    1 => 'Links',
     2 => 'Er zijn geen nieuwe Links om weer te geven.',
     3 => 'Voeg een Link toe'
 );
@@ -360,7 +361,7 @@ $LANG08 = array(
     4 => 'Vul de velden in: uw naam, antwoord naar, onderwerp, en bericht',
     5 => 'Fout: deze gebruiker bestaat niet.',
     6 => 'Er is een fout opgetreden.',
-    7 => 'Gebruikersprofiel voor',
+    7 => 'Profiel van',
     8 => 'Gebruiker Naam',
     9 => 'Gebruiker URL',
     10 => 'Stuur email naar',
@@ -381,7 +382,7 @@ $LANG08 = array(
     25 => 'U moet ingelogd zijn, om van deze mogelijkheid gebruik te kunnen maken. Doordat u ingelogd bent, kan worden voorkomen dat er misbruik van het portaal wordt gemaakt',
     26 => 'Dit formulier geeft u de mogelijkheid om een email naar de geselekteerde gebruiker te sturen. Alle velden zijn vereist.',
     27 => 'Kort bericht',
-    28 => "{$from} schreef: {$shortmsg}",
+    28 => '{$from} schreef: {$shortmsg}',
     29 => "Dit is het dagelijks overzicht van {$_CONF['site_name']} voor ",
     30 => ' Dagelijkse niewsbrief voor ',
     31 => 'Titel',
@@ -460,10 +461,10 @@ $LANG09 = array(
 $LANG10 = array(
     1 => 'Portaal statistieken',
     2 => 'Totaal aantal treffers in het portaal',
-    3 => 'Artikelen (Reacties) in het portaal',
-    4 => 'Peilingen (Stemmen) in het portaal',
-    5 => 'Links (Klikken) in het portaal',
-    6 => 'Evenementen in het portaal',
+    3 => 'Aantal Artikelen (Reacties) in het portaal',
+    4 => 'Aantal Peilingen (Stemmen) in het portaal',
+    5 => 'Aantal Links (Klikken) in het portaal',
+    6 => 'Aantal Evenementen in het portaal',
     7 => 'Top Tien opgevraagde artikelen',
     8 => 'Artikel titel',
     9 => 'Opgevraagd',
@@ -498,7 +499,7 @@ $LANG11 = array(
 # submit.php
 
 $LANG12 = array(
-    1 => "Om een {$type} voor te stellen, is het vereist om als gebruiker te zijn ingelogd.",
+    1 => 'Om een {$type} voor te stellen, is het vereist om als gebruiker te zijn ingelogd.',
     2 => 'Inloggen',
     3 => 'Nieuwe gebruiker',
     4 => 'Stel een Evenement voor',
@@ -506,7 +507,7 @@ $LANG12 = array(
     6 => 'Stel een Artikel voor',
     7 => 'Inloggen is vereist',
     8 => 'Voorstellen',
-    9 => 'Indien u informatie voorstelt voor gebruik op dit portaal, vragen we de volgende suggesties te volgen...<ul><li>Vul alle velden in. Deze zijn vereist.</li><li>Lever complete en accurate informatie</li><li>Controleer deze URLs dubbel</li></ul>',
+    9 => 'Indien u informatie voorstelt voor gebruik op dit portaal, vordt u verzocht om de volgende suggesties te volgen...<ul><li>Vul alle velden in. Deze zijn vereist.</li><li>Lever complete en accurate informatie.</li><li>Controleer de op te geven URLs dubbel.</li></ul>Dank u wel.',
     10 => 'Titel',
     11 => 'Link',
     12 => 'Start Datum',
@@ -522,7 +523,7 @@ $LANG12 = array(
     22 => 'Fout: niet alle velden Ingevuld',
     23 => 'Vul alle velden van het formulier in. Alle velden zijn vereist.',
     24 => 'Voorstel opgeslagen',
-    25 => "Uw {$type} voorstel is succesvol opgeslagen.",
+    25 => 'Uw {$type} voorstel is succesvol opgeslagen.',
     26 => 'Snelheids limiet',
     27 => 'Gebruikersnaam',
     28 => 'Thema',
@@ -534,8 +535,8 @@ $LANG12 = array(
     34 => 'Uitloggen',
     35 => 'HTML tags zijn niet toegestaan',
     36 => 'Opmaak',
-    37 => "Een voorstel voor plaatsing van een evenement op {$_CONF['site_name']}, plaatst deze in de hoofdkalender waar gebruikers de optie hebben om deze aan hun persoonlijke kalender toe te voegen. Deze voorziening is <b>NIET</b> bedoeld voor persoonlijke evenementen, zoals verjaardagen en jubilea.<br><br>Als u een voorstel voor een evenement doet, wordt deze verstuurt naar een beheerder en indien goedgekeurd, verschijnt deze in de hoofdkalender.",
-    38 => 'Voeg Evenement toe aan',
+    37 => "Een voorstel voor plaatsing van een evenement op het {$_CONF['site_name']}, wordt in de hoofdkalender geplaatst. De gebruikers hebben de optie om deze aan hun persoonlijke kalender toe te voegen. Deze voorziening is <strong>NIET</strong> bedoeld voor persoonlijke evenementen, zoals verjaardagen en jubilea.<br><br>Als u een voorstel voor een evenement doet, wordt deze eerst verstuurt naar een beheerder en indien goedgekeurd, verschijnt deze in de hoofdkalender.",
+    38 => 'Evenement toevoegen aan',
     39 => 'Hoofdkalender',
     40 => 'Persoonlijke Kalender',
     41 => 'Eind Tijd',
@@ -552,6 +553,7 @@ $LANG12 = array(
     52 => 'Verwijderen',
     53 => 'Aanmelden account'
 );
+
 
 ###############################################################################
 # ADMIN PHRASES - These are file phrases used in admin scripts
@@ -571,7 +573,7 @@ $LANG20 = array(
 );
 
 ###############################################################################
-# admin/block.php
+# block.php
 
 $LANG21 = array(
     1 => 'Onvoldoende rechten',
@@ -591,7 +593,7 @@ $LANG21 = array(
     15 => 'Laatste RDF Update',
     16 => 'Normaal Blok opties',
     17 => 'Blok Inhoud',
-    18 => 'Vult u a.u.b. de velden in bij \'Blok Titel\', \'beveiliginsniveau\' en \'Inhoud\'',
+    18 => 'Vult u a.u.b. de velden in bij \'Blok Titel\' en \'Inhoud\'',
     19 => 'Blok Manager',
     20 => 'Blok Titel',
     21 => 'Beveiliginsniveau',
@@ -603,8 +605,8 @@ $LANG21 = array(
     27 => 'PHP Blok',
     28 => 'PHP Blok opties',
     29 => 'Blok Menu',
-    30 => 'Indien u PHP code wenst te gebruiken in een van de blokken, vul dan de naam van de php-funktie hierboven in. Deze naam moet beginnen met de prefix \'phpblock_\' (e.g. phpblock_hello_world). Zonder deze prefix wordt de funktie NIET aangeroepen. Dit is een beveiligingsmaatregel om niet zomaar willekeurige kode te moeten accepteren, die wellicht de integriteit kunnen schaden.<br>Zorg er ook voor dat er \'lege haakjes\' "()" staan achter de funktienaam.<br>Tenslotte: het wordt aanbevolen dat alle PHP-blok-code in /pad/naar/geeklog/system/lib-custom.php wordt opgenomen. Bij nieuwe versies blijft de code gehandhaafd.',
-    31 => 'Fout in PHP Blok. Funktie, , bestaat niet.',
+    30 => 'Indien u PHP code wenst te gebruiken in een van de blokken, vul dan de naam van de php-funktie hierboven in. Deze naam moet beginnen met de prefix \'phpblock_\' (e.g. phpblock_hello_world). Zonder deze prefix wordt de funktie NIET aangeroepen. Dit is een beveiligingsmaatregel om niet zomaar willekeurige kode te moeten accepteren, die wellicht de integriteit kunnen schaden.<br>Zorg er ook voor dat er \'lege haakjes\' \'()\' staan achter de funktienaam in de broncode.<br>Tenslotte: het wordt aanbevolen dat alle PHP-blok-code in /pad/naar/geeklog/system/lib-custom.php wordt opgenomen. Bij nieuwe versies blijft de code gehandhaafd.',
+    31 => 'Fout in PHP Blok. Funktie, %s, bestaat niet.',
     32 => 'Fout: niet alle velden doorgegeven.',
     33 => 'Er wordt een URL gevraagd voor het .rdf bestand (portaal blokken)',
     34 => 'Gelieve de titel en de funktie voor PHP blokken op te geven.',
@@ -615,10 +617,10 @@ $LANG21 = array(
     39 => 'Zijde',
     40 => 'Links',
     41 => 'Rechts',
-    42 => 'Gelieve de blokvolgorde en het beveiligingsniveau op te geven (standaard blokken).',
+    42 => 'Gelieve de bloktitel en de blokvolgorde op te geven (standaard blokken).',
     43 => 'Alleen Homepagina',
     44 => 'Geen toegang',
-    45 => "U heeft geprobeerd een blok op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/block.php\">Terug naar de blok administratie pagina</a>.",
+    45 => "U heeft geprobeerd een blok op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/block.php\'>Terug naar de blok administratie pagina</a>.",
     46 => 'Nieuw blok',
     47 => 'Beheerder Home',
     48 => 'Blok Naam',
@@ -656,7 +658,7 @@ $LANG22 = array(
     14 => 'Start Datum',
     15 => 'Einde Datum',
     16 => 'Geen toegang',
-    17 => "U heeft geprobeerd een evenement op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/event.php\">Terug naar de evenement administratie pagina</a>.",
+    17 => "U heeft geprobeerd een evenement op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/event.php\'>Terug naar de evenement administratie pagina</a>.",
     18 => 'Nieuw Evenement',
     19 => 'Beheerder Home',
     20 => 'opslaan',
@@ -684,7 +686,7 @@ $LANG23 = array(
     14 => 'Link Categorie',
     15 => 'Link URL',
     16 => 'Geen toegang',
-    17 => "U heeft geprobeerd een link op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/link.php\">Terug naar de link administratie pagina</a>.",
+    17 => "U heeft geprobeerd een link op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/link.php\'>Terug naar de link administratie pagina</a>.",
     18 => 'Nieuwe Link',
     19 => 'Beheerder Home',
     20 => 'Indien u kiest voor \'Anders\', a.u.b. specificeren',
@@ -726,7 +728,7 @@ $LANG24 = array(
     27 => '',
     28 => '',
     29 => '',
-    30 => 'File Upload Errors',
+    30 => 'Er zijn File Upload Fouten',
     31 => 'Gelieve de Auteur, Titel en Introductie Tekst te vermelden.',
     32 => 'HoofdArtikel',
     33 => 'Er kan slechts een enkel HoofdArtikel actief zijn !!',
@@ -737,17 +739,17 @@ $LANG24 = array(
     38 => 'Meer van..',
     39 => 'Emails',
     40 => 'Geen toegang',
-    41 => "U heeft geprobeerd een artikel op te roepen zonder geldige authorisatie. De poging is vastgelegd. Het Artikel is hieronder weergegeven. <a href=\"{$_CONF['site_url']}/admin/story.php\">Terug naar de artikel administratie pagina</a>.",
-    42 => "U heeft geprobeerd een artikel op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/story.php\">Terug naar de artikel administratie pagina</a>.",
+    41 => "U heeft geprobeerd een artikel op te roepen zonder geldige authorisatie. De poging is vastgelegd. Het Artikel is hieronder weergegeven. <a href=\'{$_CONF['site_url']}/admin/story.php\'>Terug naar de artikel administratie pagina</a>.",
+    42 => "U heeft geprobeerd een artikel op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/story.php\'>Terug naar de artikel administratie pagina</a>.",
     43 => 'Nieuw Artikel',
     44 => 'Beheerder Home',
     45 => 'Toegang',
-    46 => '<b>NOTE:</b> indien de datum in de toekomst ligt, wordt het Artikel pas op die datum gepubliceerd. Dat houdt tevens in dat het artikel niet in de RDF headline feed opgenomen wordt en dat de zoek funktie het buiten beschouwing laat. Er zijn dan ook geen statistieken.',
+    46 => '<strong>NOTE:</strong> indien de datum in de toekomst ligt, wordt het Artikel pas op die datum gepubliceerd. Dat houdt tevens in dat het artikel niet in de RDF headline feed opgenomen wordt en dat de zoek funktie het buiten beschouwing laat. Er zijn dan ook geen statistieken.',
     47 => 'Beelden',
     48 => 'beeld',
     49 => 'rechts',
     50 => 'links',
-    51 => 'Om de beelden die hier ingesloten zijn, in het Artikel op te nemen is speciaal geformatteerde tekst nodig. Kies uit: [imageX], [imageX_right] or [imageX_left] en vervang de X door het nummer van het beeld dat u bijsluit. NOTE: Bijgesloten beelden MOETEN gebruikt worden. Indien u dat vergeet kan het Artikel niet opgeslagen worden.<BR><P><B>PREVIEW</B>: Het is gemakkelijker een Preview van een Artikel met beelden op te roepen NADAT het opgeslagen is in draft-vorm, IN PLAATS VAN direkt de preview knop aan te klikken. Gebruik de preview knop alleen indien er geen beelden bijgesloten zijn.',
+    51 => 'Om de beelden die hier ingesloten zijn, in het Artikel op te nemen is speciaal geformatteerde tekst nodig. Kies uit: [beeldX], [beeldX_rechts] or [beeldX_links] en vervang de X door het nummer van het beeld dat u bijsluit. NOTE: Bijgesloten beelden MOETEN gebruikt worden. Indien u dat vergeet kan het Artikel niet opgeslagen worden.<br><p><strong>PREVIEW</strong>: Het is gemakkelijker een Preview van een Artikel met beelden op te roepen NADAT het opgeslagen is in draft-vorm, IN PLAATS VAN direkt de preview knop aan te klikken. Gebruik de preview knop alleen indien er geen beelden bijgesloten zijn.',
     52 => 'Verwijderen',
     53 => 'werd niet vermeld. Dit beeld MOET opgenomen worden in de introductie of Body voordat uw werk opgeslagen kan worden.',
     54 => 'Bijgesloten beelden zijn niet opgenomen in tekst',
@@ -763,25 +765,25 @@ $LANG25 = array(
     1 => 'Opties',
     2 => 'Please enter a question and at least one answer.',
     3 => 'Peiling aangemaakt',
-    4 => "Peiling {$qid} opgeslagen",
+    4 => 'Peiling {$qid} opgeslagen',
     5 => 'Wijzigen Peiling',
     6 => 'Peiling ID',
     7 => '(zonder spaties)',
     8 => 'Verschijnt op Homepagina',
     9 => 'Vraag',
     10 => 'Reacties / Stemmen',
-    11 => "Er is een probleem opgetreden met de Peiling database {$qid} (poll answer data)",
-    12 => "Er is een probleem opgetreden met de Peiling database {$qid} (poll question data)",
+    11 => 'Er is een probleem opgetreden met de Peiling database {$qid} (poll answer data)',
+    12 => 'Er is een probleem opgetreden met de Peiling database {$qid} (poll question data)',
     13 => 'Peiling aanmaken',
     14 => 'opslaan',
     15 => 'annuleren',
     16 => 'verwijderen',
-    17 => 'Please enter a Poll ID',
+    17 => 'Gelieve een Peiling ID op te geven',
     18 => 'Peiling Lijst',
     19 => 'Om een Peilig te wijzigen of te verwijderen, klik op de betreffende Peiling. Om een nieuwe peiling aan te leggen, klik op \'Nieuwe Peiling\' hierboven.',
     20 => 'Stemmers',
     21 => 'Geen toegang',
-    22 => "U heeft geprobeerd een peiling op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/poll.php\">Terug naar de peiling administratie pagina</a>.",
+    22 => "U heeft geprobeerd een peiling op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/poll.php\'>Terug naar de peiling administratie pagina</a>.",
     23 => 'Nieuwe Peiling',
     24 => 'Beheerder Home',
     25 => 'Ja',
@@ -801,10 +803,10 @@ $LANG27 = array(
     7 => 'Gelieve het Thema ID en de Thema Naam in te vullen.',
     8 => 'Thema Manager',
     9 => 'Om een Thema te wijzigen of te verwijderen, klik op het betreffende Thema. Uw toegangsniveau voor ieder Thema staat daar tussen haakjes.<br>Om een nieuw Thema aan te leggen, klik op \'Nieuw Thema\' hierboven.',
-    10 => 'Sorteer Volgorde',
+    10=> 'Sorteer Volgorde',
     11 => 'Artikelen/Pagina',
     12 => 'Geen toegang',
-    13 => "U heeft geprobeerd een Thema op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\"{$_CONF['site_url']}/admin/topic.php\">Terug naar de Thema administratie pagina</a>.",
+    13 => "U heeft geprobeerd een Thema op te roepen zonder geldige authorisatie. De poging is vastgelegd. <a href=\'{$_CONF['site_url']}/admin/topic.php\'>Terug naar de Thema administratie pagina</a>.",
     14 => 'Sorteer Methode',
     15 => 'alphabetisch',
     16 => 'standaard is',
@@ -846,19 +848,20 @@ $LANG28 = array(
     22 => 'Fout',
     23 => 'In Batch Toevoegen',
     24 => 'Batch Import van Gebruikers',
-    25 => 'Een batch met gebruikers kan geimporteerd worden. Het import bestand is dan een tab-delimited tekst bestand en heeft de velden in de volgende layout: Volledige Naam, gebruikersnaam, email adres. Aan elke zo toegevoegde Gebruiker wordt daarna een email verstuurd met een willekeurig wachtwoord. Slechts een enkel Gebruiker per regel! Het niet volgen van deze instructies veroorzaakt problemen die uitsluitend met handwerk opgelost kunnen worden. Dubbelcheck de invullingen !!',
+    25 => 'Een batch met gebruikers kan geimporteerd worden. Het import bestand is dan een tab-delimited tekst bestand en heeft de velden in de volgende layout: Volledige Naam, gebruikersnaam, email adres. Aan elke zo toegevoegde Gebruiker wordt daarna een email verstuurd met een willekeurig wachtwoord. Slechts een enkele Gebruiker per regel! Het niet volgen van deze instructies veroorzaakt problemen die uitsluitend met handwerk opgelost kunnen worden. Dubbelcheck de invullingen !!',
     26 => 'Zoek',
     27 => 'Limiteer Resultaten',
     28 => 'Vink aan om dit beeld te verwijderen',
     29 => 'Pad',
     30 => 'Import',
     31 => 'Nieuwe Gebruiker',
-    32 => 'Klaar met verwerken. $successes geimporteerd en $failures geweigerd',
+    32 => 'Klaar met verwerken. {$successes} geimporteerd en {$failures} geweigerd',
     33 => 'submit',
     34 => 'Fout: specificeer een bestand voor upload.',
     35 => 'Laatste Login',
     36 => '(nooit)'
 );
+
 
 ###############################################################################
 # admin/moderation.php
@@ -883,7 +886,7 @@ $LANG29 = array(
     37 => 'Voorgedragen Evenement(en)',
     38 => 'Submit',
     39 => 'Er is niets te modereren op dit moment',
-    40 => 'Voorgedragen Gebruiker(s)'
+    40 => 'Nieuwe Gebruiker(s)'
 );
 
 ###############################################################################
@@ -898,7 +901,7 @@ $LANG30 = array(
     6 => 'Vrijdag',
     7 => 'Zaterdag',
     8 => 'Evenement Toevoegen',
-    9 => 'Portaal evenement',
+    9 => 'Evenement',
     10 => 'Evenementen voor',
     11 => 'Hoofdkalender',
     12 => 'Mijn Kalender',
@@ -935,7 +938,6 @@ $LANG30 = array(
 
 ###############################################################################
 # admin/mail.php
-
 $LANG31 = array(
     1 => "{$_CONF['site_name']} Email Utility",
     2 => 'From',
@@ -944,7 +946,7 @@ $LANG31 = array(
     5 => 'Body',
     6 => 'Send to:',
     7 => 'All users',
-    8 => 'Admin',
+    8 => 'Beheerder',
     9 => 'Options',
     10 => 'HTML',
     11 => 'Urgent message!',
@@ -953,10 +955,10 @@ $LANG31 = array(
     14 => 'Instellingen van de gebruiker negeren',
     15 => 'Probleem tijdens verzending naar: ',
     16 => 'Bericht met succes gezonden naar: ',
-    17 => "<a href={$_CONF['site_url']}/admin/mail.php>Stuur nog een bericht</a>",
+    17 => "<a href=\'{$_CONF['site_url']}/admin/mail.php\'>Stuur nog een bericht</a>",
     18 => 'To',
     19 => 'NOTE: Indien u een bericht wilt sturen aan alle portaal leden, kies dan de \'Logged-in\' groep.',
-    20 => "<successcount> berichten verstuurd en <failcount> fouten. Onderstaand vindt u de details van elk bericht ter contrle. U kunt nu ook <a href=\"{$_CONF['site_url']}/admin/mail.php\">nog een bericht versturen</a> of <a href=\"{$_CONF['site_url']}/admin/moderation.php\">terug gaan naar de administratie pagina</a>.",
+    20 => "<successcount> berichten verstuurd en <failcount> fouten. Onderstaand vindt u de details van elk bericht ter contrle. U kunt nu ook <a href=\'{$_CONF['site_url']}/admin/mail.php\'>nog een bericht versturen</a> of <a href=\'{$_CONF['site_url']}/admin/moderation.php\'>terug gaan naar de administratie pagina</a>.",
     21 => 'Fouten',
     22 => 'Succes',
     23 => 'Geen fouten',
@@ -966,89 +968,53 @@ $LANG31 = array(
 );
 
 ###############################################################################
-# admin/plugins.php
-
-$LANG32 = array(
-    1 => 'Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href="http://www.geeklog.net" target="_blank">Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \'onveilige\' commando\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt byzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.',
-    2 => 'Plug-in Installatie Disclaimer',
-    3 => 'Plug-in Installatie Formulier',
-    4 => 'Plug-in File',
-    5 => 'Plug-in List',
-    6 => 'Waarschuwing: Deze Plug-in is al Actief!',
-    7 => 'De plug-in die u probeert te installeren is er al. gelieve eerst deze plugin te verwijderen voordat u de installatie opnieuw probeert.',
-    8 => 'Plugin Compatibility Check Failed',
-    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href=http://www.geeklog.net>Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plug-in.',
-    10 => '<br><b>Er zijn geen plugins actief op dit moment.</b><br><br>',
-    11 => 'Om een plug-in te wijzigen of te verwijderen, klik op het numer van deze plug-in\'s hieronder. Om een introductie over deze plug-in op te vragen, klik op de naam van de plug-in: dit brengt u naar de website van de  plug-in. Om een plug-in te installeren of te upgraden, klik op \'Nieuwe Plug-in\' hierboven.',
-    12 => 'geen Naam voor de plug-in gevonden door de plugineditor()',
-    13 => 'Plugin Editor',
-    14 => 'Nieuwe Plug-in',
-    15 => 'Beheerder Home',
-    16 => 'Plug-in Naam',
-    17 => 'Plug-in Versie',
-    18 => 'Geeklog Versie',
-    19 => 'Toestaan',
-    20 => 'Ja',
-    21 => 'Nee',
-    22 => 'Installeer',
-    23 => 'Save',
-    24 => 'annuleren',
-    25 => 'Verwijderen',
-    26 => 'Plug-in Naam',
-    27 => 'Plug-in Homepage',
-    28 => 'Plug-in Versie',
-    29 => 'Geeklog Versie',
-    30 => 'Plug-in Verwijderen?',
-    31 => 'Weet u het zeker dat deze plug-in verwijderd mag worden? Let op! Hiermee worden tevens alle bestanden, data en structuren verwijderd die deze plug-in gebruikt. Alleen als u zeker bent, klikt u nogmaals op \'Verwijderen\' in het formulier hieronder.'
-);
-
-###############################################################################
 # admin/syndication.php
 
 $LANG33 = array(
-    1 => 'create feed',
-    2 => 'save',
-    3 => 'delete',
-    4 => 'cancel',
+    1 => 'aanmaaken feed',
+    2 => 'opslaan',
+    3 => 'verwijderen',
+    4 => 'annuleren',
     10 => 'Content Syndication',
-    11 => 'New Feed',
-    12 => 'Admin Home',
-    13 => 'To modify or delete a feed, click on the feed\'s title below. To create a new feed, click on New Feed above.',
-    14 => 'Title',
+    11 => 'Nieuwe Feed',
+    12 => 'Beheerder Home',
+    13 => 'Om een feed te wijzigen of te verwijderen, klikt u op de feed\'s tiel hieronder. Om een nieuwe feed aan te maken, klikt u op \'Nieuwe Feed\' hierboven.',
+    14 => 'Titel',
     15 => 'Type',
     16 => 'Filename',
-    17 => 'Format',
-    18 => 'last updated',
-    19 => 'Enabled',
-    20 => 'Yes',
-    21 => 'No',
-    22 => '<i>(no feeds)</i>',
-    23 => 'all Stories',
+    17 => 'Formaat',
+    18 => 'laatste wijziging',
+    19 => 'Actief',
+    20 => 'Ja',
+    21 => 'Nee',
+    22 => '<i>(geen feeds)</i>',
+    23 => 'alle Artikelen',
     24 => 'Feed Editor',
-    25 => 'Feed Title',
-    26 => 'Limit',
-    27 => 'Length of entries',
-    28 => '(0 = no text, 1 = full text, other = limit to that number of chars.)',
-    29 => 'Description',
-    30 => 'Last Update',
-    31 => 'Character Set',
-    32 => 'Language',
-    33 => 'Contents',
+    25 => 'Feed Titel',
+    26 => 'Limiet',
+    27 => 'Lengte van de entries',
+    28 => '(0 = geen tekst, 1 = alle tekst, anders = maximaal aanal karakters.)',
+    29 => 'Beschrijving',
+    30 => 'Laatste Wijziging',
+    31 => 'Karakter Set',
+    32 => 'Taal',
+    33 => 'Inhoud',
     34 => 'Entries',
-    35 => 'Hours',
-    36 => 'Select type of feed',
-    37 => 'You have at least one plugin installed that supports content syndication. Below you will need to select whether you want to create a Geeklog feed or a feed from one of the plugins.',
-    38 => 'Error: Missing Fields',
-    39 => 'Please fill in the Feed Title, Description, and Filename.',
-    40 => 'Please enter a  number of entries or number of hours.',
+    35 => 'Uren',
+    36 => 'Selecteer type van feed',
+    37 => 'Er is minstens een plugin actief die content syndication ondersteunt. Het is nodig dat u hieronder aangeeft of er sprake is van een Geeklog feed of van een feed uit een van de plugins.',
+    38 => 'Fout: Niet alles ingevuld',
+    39 => 'Gelieve de \'Feed Titel\', \'beschrijving\', en \'Filename\' in te vullen.',
+    40 => 'Gelieve het \'aantal entries\' of \'aantal uren\' op te geven.',
     41 => 'Links',
     42 => 'Events'
 );
 
 ###############################################################################
+# admin/plugins.php
 # confirmation and error messages
 
-$MESSAGE = array(
+$MESSAGE = array (
     1 => "Uw wachtwoord is naar u verstuurd, en kan elk moment in uw inbox arriveren. Volg a.u.b. de instructies in het bericht, en we bedanken u voor het gebruik maken van {$_CONF['site_name']}",
     2 => "Bedankt voor uw bijdrage aan {$_CONF['site_name']}. Het is aan een beheerder aangeboden voor plaatsing. Indien geschikt bevonden, wordt het geplaatst op het portaal.",
     3 => "Bedankt voor uw bijdrage aan {$_CONF['site_name']}. Het is aan een beheerder aangeboden voor plaatsing. Indien geschikt bevonden, zal uw link geplaatst worden in het <a href={$_CONF['site_url']}/links.php>links</a> gedeelte.",
@@ -1069,7 +1035,7 @@ $MESSAGE = array(
     18 => 'Het evenement is verwijderd.',
     19 => 'Uw peiling is opgeslagen.',
     20 => 'Uw peiling is verwijderd.',
-    21 => 'De nieuwe gebruiker is opgeslagen.',
+    21 => 'De gebruiker is opgeslagen.',
     22 => 'De gebruiker is verwijderd',
     23 => 'Er is een fout opgetreden bij het toevoegen van een evenement aan uw kalender. Er is geen evenement id aangemaakt.',
     24 => 'Het evenement is toegevoegd aan uw kalender',
@@ -1110,10 +1076,44 @@ $MESSAGE = array(
     59 => 'The feed has been successfully deleted.'
 );
 
-###############################################################################
+// for plugins.php
+
+$LANG32 = array (
+    1 => "Het installeren van plugins kan het portaal als geheel beschadigen en, mogelijk ook, de achterliggende databases. Het is zeer belangrijk dat u alleen plugins van <a href=\'http://www.geeklog.net\' target=\'_blank\'>Geeklog Homepage</a> instaleerd, omdat deze degelijk getest zijn. Het is ook belangrijk dat u inziet dat de installatie enige \'onveilige\' commando\'s bevat die kunnen leiden tot beveiligingsproblemen. Dit vergt byzondere aandacht voor plugins van derden. Zelfs indien u deze waarschuwing ter harte neemt, kan de veiligheid en correctheid van de installatieprocedure niet gegarandeerd worden. De verantwoordelijkheid ligt exclusief bij U! Anders gezegd: installeer op eigen risico. Wees voorzichtig en lees de installatievoorschriften die bij elke plugin meekomen. Tenslotte: volg deze op.",
+    2 => 'Plug-in Installatie Disclaimer',
+    3 => 'Plug-in Installatie Formulier',
+    4 => 'Plug-in File',
+    5 => 'Plug-in Lijst',
+    6 => 'Waarschuwing: Deze Plug-in is al Actief!',
+    7 => 'De plug-in die u probeert te installeren is er al. gelieve eerst deze plugin te verwijderen voordat u de installatie opnieuw probeert.',
+    8 => 'Plugin Compatibility Check Failed',
+    9 => 'Deze plugin vereist een latere versie van Geeklog. Gelieve deze versie van <a href=http://www.geeklog.net>Geeklog</a> te upgraden of een nieuwere versie op te halen van deze plug-in.',
+    10 => '<br><strong>Er zijn geen plugins actief op dit moment.</strong><br><br>',
+    11 => 'Om een plug-in te wijzigen of te verwijderen, klik op het numer van deze plug-in\'s hieronder. Om een introductie over deze plug-in op te vragen, klik op de naam van de plug-in: dit brengt u naar de website van de  plug-in. Om een plug-in te installeren of te upgraden, klik op \'Nieuwe Plug-in\' hierboven.',
+    12 => 'geen Naam voor de plug-in gevonden door de plugineditor()',
+    13 => 'Plugin Editor',
+    14 => 'Nieuwe Plug-in',
+    15 => 'Beheerder Home',
+    16 => 'Plug-in Naam',
+    17 => 'Plug-in Versie',
+    18 => 'Geeklog Versie',
+    19 => 'Toestaan',
+    20 => 'Ja',
+    21 => 'Nee',
+    22 => 'Installeer',
+    23 => 'Save',
+    24 => 'annuleren',
+    25 => 'Verwijderen',
+    26 => 'Plug-in Naam',
+    27 => 'Plug-in Homepage',
+    28 => 'Plug-in Versie',
+    29 => 'Geeklog Versie',
+    30 => 'Plug-in Verwijderen?',
+    31 => 'Weet u het zeker dat deze plug-in verwijderd mag worden? Let op! Hiermee worden tevens alle bestanden, data en structuren verwijderd die deze plug-in gebruikt. Alleen als u zeker bent, klikt u nogmaals op \'Verwijderen\' in het formulier hieronder.'
+);
 
 $LANG_ACCESS = array(
-    'access' => 'Access',
+    'access' => 'Toegang',
     'ownerroot' => 'Owner/Root',
     'group' => 'Group',
     'readonly' => 'Read-Only',
@@ -1122,7 +1122,7 @@ $LANG_ACCESS = array(
     'grantgrouplabel' => 'Grant Above Group Edit Rights',
     'permmsg' => 'NOTE: \'Members\': dit zijn alle ingelogde Gebruikers van het portaal -- \'Anonymous\': dit zijn alle niet-ingelogde bezoekers.',
     'securitygroups' => 'Security Groups',
-    'editrootmsg' => "Ondanks dat u een gebruikersBeheerder bent, kunt u een zgn. 'root user' niet wijzigen. Daarvoor moet u eerst als een zgn. 'root user' ingelogd zijn. U kunt wel alle andere gebruikers wijzigen. Alle pogingen om een zgn. 'root users' ongeauthoriseerd te wijzigen, worden vastgelegd. gelieve terug te gaan naar de <a href=\"{$_CONF['site_admin_url']}/user.php\">Gebruiker Administratie pagina</a>.",
+    'editrootmsg' => "Ondanks dat u een gebruikersBeheerder bent, kunt u een zgn. 'root user' niet wijzigen. Daarvoor moet u eerst als een zgn. 'root user' ingelogd zijn. U kunt wel alle andere gebruikers wijzigen. Alle pogingen om een zgn. 'root user' ongeauthoriseerd te wijzigen, worden vastgelegd. Gelieve terug te gaan naar de <a href=\"{$_CONF['site_admin_url']}/user.php\">Gebruiker Administratie pagina</a>.",
     'securitygroupsmsg' => 'Vink de groep(en) waarin de gebruiker opgenomen wordt.',
     'groupeditor' => 'Group Editor',
     'description' => 'Beschrijving',
@@ -1136,10 +1136,10 @@ $LANG_ACCESS = array(
     'coregroup' => 'Core Group',
     'yes' => 'Ja',
     'no' => 'Nee',
-    'corerightsdescr' => "Deze groep is een zgn. {$_CONF['site_name']} 'Core Group'. De rechten van de groep kunnen niet gewijzigd worden. Hieronder is een overzicht opgenomen van de rechten voor deze groep.",
+    'corerightsdescr' => "Deze groep is een zgn. {$_CONF['site_name']} \'Core Group\'. De rechten van de groep kunnen niet gewijzigd worden. Hieronder is een overzicht opgenomen van de rechten voor deze groep.",
     'groupmsg' => '\'Security Groups\' werken hierarchisch. Door het toevoegen aan andere groep(en), wordt deze groep dezelfde rechten toegekend. Het wordt aanbevolen, waar mogelijk, deze faciliteit te gebruiken. Indien u deze groep een speciale samenstelling wilt geven, kunt u de individuele rechten daarvoor in het gedeelte hieronder (extra) aanvinken, onder het hoofd \'Rechten\'. Om rechten van een andere groep aan deze groep toe te voegen, kunt u volstaan met het aanvinken van deze andere groep(en).',
-    'coregroupmsg' => "Deze groep is een zgn. {$_CONF['site_name']} 'Core Group'. De groepen die hieraan toegevoegd zijn, kunnen daarom niet gewijzigd worden. Hieronder is een overzicht opgenomen van dergelijke groepen.",
-    'rightsdescr' => 'Een groepsrecht voor een bepaalde faciliteit (zie hieronder) kan direct toegekend worden *OF* aan een andere groep waaraan deze groep eerder is toegevoegd. Wat u hieronder kunt zien aan het ontbreken van een vink-mogelijkheid, zijn de rechten van een andere groep, waaraan deze groep eerder is toegevoegd (en daarmee deze rechten verkreeg). De recten die u kunt vinken kunt u direct toekennen aan - of afmelden voor - deze groep.',
+    'coregroupmsg' => "Deze groep is een zgn. {$_CONF['site_name']} \'Core Group\'. De groepen die hieraan toegevoegd zijn, kunnen daarom niet gewijzigd worden. Hieronder is een overzicht opgenomen van dergelijke groepen.",
+    'rightsdescr' => 'Een groepsrecht voor een bepaalde faciliteit (zie hieronder) kan direct toegekend worden *OF* aan een andere groep waaraan deze groep eerder is toegevoegd. Wat u hieronder kunt zien aan het ontbreken van een vink-mogelijkheid, zijn de rechten van een andere groep, waaraan deze groep eerder is toegevoegd (en daarmee deze rechten verkreeg). De rechten die u kunt vinken kunt u direct toekennen aan - of afmelden voor - deze groep.',
     'lock' => 'Lock',
     'members' => 'Members',
     'anonymous' => 'Anonymous',
@@ -1160,17 +1160,19 @@ $LANG_ACCESS = array(
     'canteditroot' => 'U probeert de zgn. \'Root group\' te wijzigen, maar u behoort daar niet toe: de toegang is nu geweigerd. Gelieve contact op te nemen met de Beheerder indien u dit niet terecht vindt.',
     'listusers' => 'Overzicht Gebruikers',
     'listthem' => 'lijst',
-    'usersingroup' => 'Gebruikers in groep %s',
-    'usergroupadmin' => 'User Group Administration',
-    'add' => 'Add',
-    'remove' => 'Remove',
-    'availmembers' => 'Available Members',
-    'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'usersingroup' => 'Gebruikers in groep %s'
 );
 
-###############################################################################
-# admin/database.php
+#admin/word.php
+$LANG_WORDS = array(
+    'editor' => 'Word Replacement editor',
+    'wordid' => 'Word ID',
+    'intro' => 'Om een woord te wijzigen of te verwijderen, klik dan op dat woord. Om een nieuw woord aan te leggen, klik op \'Nieuw Woord\' hierboven.',
+    'wordmanager' => 'Word Manager',
+    'word' => 'Woord',
+    'replacementword' => 'Vervangen met',
+    'newword' => 'Nieuw Woord'
+);
 
 $LANG_DB_BACKUP = array(
     'last_ten_backups' => 'Laatste 10 Back-ups',
@@ -1178,7 +1180,7 @@ $LANG_DB_BACKUP = array(
     'backup_successful' => 'Database backup met succes uitgevoerd.',
     'no_backups' => 'Geen backups aanwezig',
     'db_explanation' => 'Om een nieuwe backup van het portaal te (laten) maken, klik op de knop hieronder',
-    'not_found' => "Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer  de definitei voor <strong>\$_DB_mysqldump_path</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>",
+    'not_found' => 'Incorrect pad of mysqldump utility is niet uitvoerbaar.<br>Controleer  de definitie voor <strong>\$_DB_mysqldump_path</strong> in config.php.<br>De variabele is momenteel opgenomen als: <var>{$_DB_mysqldump_path}</var>',
     'zero_size' => 'Backup stukgelopen: Filesize was 0 bytes',
     'path_not_found' => "{$_CONF['backup_path']} bestaat niet of is geen directory",
     'no_access' => "FOUT: Directory {$_CONF['backup_path']} is niet benaderbaar.",
@@ -1208,13 +1210,13 @@ $LANG_BUTTONS = array(
 
 $LANG_404 = array(
     1 => '404 Error',
-    2 => 'Ach, overal gezicht en toch <b>%s</b> niet gevonden.',
-    3 => "<p>Helaas, maar het bestand dat u opvraagt bestaat niet (meer). Kijkt u gerust nog eens op de <a href=\"{$_CONF['site_url']}\">voorpagina</a> of de <a href=\"{$_CONF['site_url']}/search.php\">zoek pagina</a>. Misschien vindt u het daar."
+    2 => 'Ach, overal gezocht en toch <strong>%s</strong> niet gevonden.',
+    3 => "<p>Helaas, maar het bestand dat u opvraagt bestaat niet (meer). Kijkt u gerust nog eens op de <a href=\'{$_CONF['site_url']}\'>voorpagina</a> of de <a href=\'{$_CONF['site_url']}/search.php\'>zoek pagina</a>. Misschien vindt u het daar."
 );
 
 ###############################################################################
 
-$LANG_LOGIN = array(
+$LANG_LOGIN = array (
     1 => 'Login vereist',
     2 => 'Voor dit gedeelte is een login als Gebruiker vereist.',
     3 => 'Login',
