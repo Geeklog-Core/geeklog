@@ -54,13 +54,17 @@ function edituser()
 
     $retval = '';
 
-    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
+    $result = DB_query("SELECT fullname,cookietimeout,email,homepage,sig,emailstories,about,pgpkey,photo FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['userinfo']} WHERE {$_TABLES['users']}.uid = {$_USER['uid']} && {$_TABLES['userprefs']}.uid = {$_USER['uid']} && {$_TABLES['userinfo']}.uid = {$_USER['uid']}");
 
     $A = DB_fetchArray($result);
 
-    $retval .= COM_startBlock($LANG04[1] . ' ' . $_USER['username'])
-        . '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">'
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
+    $retval .= COM_startBlock($LANG04[1] . ' ' . $_USER['username']);
+    if ($_CONF['allow_user_photo'] == 1) {
+        $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post" enctype="multipart/form-data">';
+    } else {
+        $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">';
+    }
+    $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB
         . '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[3] . ':</b><br><small>' . $LANG04[34] . '</small></td>' . LB
         . '<td><input type="text" name="fullname" size="60" maxlength="80" value="' . $A['fullname'] . '"></td>' . LB
@@ -87,7 +91,18 @@ function edituser()
         . '<td align="right"><b>' . $LANG04[32] . ':</b><br><small>' . $LANG04[37] . '</small></td>' . LB
         . '<td><textarea name="sig" cols="60" rows="4" wrap="virtual">' . $A['sig'] . '</textarea></td>' . LB
         . '</tr>' . LB;
-
+    if ($_CONF['allow_user_photo'] == 1) {
+        $retval .= '<tr valign="top">' . LB
+            . '<td align="right"><b>' . $LANG04[77] . ':</b><br><small>' . $LANG04[78] . '</small></td>' . LB
+            . '<td><input type="file" name="photo">' . LB;
+        if (!empty($A['photo'])) {
+            $retval .= '<br><img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">' . LB
+                . '<br>' . $LANG04[79] . '&nbsp;<input type="checkbox" name="delete_photo">' . LB;
+        }
+        $retval .= '</td>' . LB
+            . '</tr>' . LB;
+    }
+        
 /* Currently Not Enabled
 		
     $retval .= '<tr valign="top">' . LB
@@ -348,7 +363,7 @@ function editcommentprefs()
 */
 function saveuser($A) 
 {
-    global $_TABLES, $_CONF, $_USER, $_US_VERBOSE;
+    global $_TABLES, $_CONF, $_USER, $_US_VERBOSE, $HTTP_POST_FILES;
 
     if ($_US_VERBOSE) {
         COM_errorLog('**** Inside saveuser in usersettings.php ****', 1);
@@ -372,7 +387,47 @@ function saveuser($A)
             setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $A['cooktime'],$_CONF['cookie_path']);	
         }
 
-        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]} WHERE uid={$_USER['uid']}");
+        if ($_CONF['allow_user_photo'] == 1) {
+            include_once($_CONF['path_system'] . 'classes/upload.class.php');
+            $upload = new upload();
+            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
+            if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {
+                print 'File Upload Errors:<BR>' . $upload->printErrors();
+                exit;
+            }
+            if ($upload->numFiles() == 1) {
+                $curfile = current($HTTP_POST_FILES);
+                if (strlen($curfile['name']) > 0) {
+                    $pos = strrpos($curfile['name'],'.') + 1;
+                    $fextension = substr($curfile['name'], $pos);
+                    $filename = $_USER['username'] . '.' . $fextension;
+                    $upload->setFileNames($filename);
+                    $upload->setPerms('0644');
+                    $upload->setMaxFileSize(20480); //20KB
+                    reset($HTTP_POST_FILES);
+                    $upload->uploadFiles();
+                    if ($upload->areErrors()) {
+                       print "ERRORS<BR>";
+                       $upload->printErrors();
+                       exit; 
+                    }
+                } else {
+                    $filename = '';
+                }
+            } else {
+                $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = {$_USER['uid']}");
+                if (!empty($curphoto) AND $A['delete_photo'] == 'on') {
+                    $filetodelete = $_CONF['path_html'] . 'images/userphotos/' . $curphoto;
+                    if (!unlink($filetodelete)) {
+                        echo COM_errorLog("Unable to remove file $filetodelete");
+                        exit;
+                    }
+                    $curphoto = '';
+                }
+                $filename = $curphoto;
+            }
+        }
+        DB_query("UPDATE {$_TABLES['users']} SET fullname='{$A["fullname"]}',email='{$A["email"]}',homepage='{$A["homepage"]}',sig='{$A["sig"]}',cookietimeout={$A["cooktime"]},photo='$filename' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userprefs']} SET emailstories='{$A["emailstories"]}' WHERE uid={$_USER['uid']}");
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='" . strip_tags($A["pgpkey"]) . "',about='{$A["about"]}' WHERE uid={$_USER['uid']}");
 
