@@ -361,6 +361,7 @@ CREATE TABLE {$_TABLES['stories']} (
   comments mediumint(8) unsigned NOT NULL default '0',
   related text,
   featured tinyint(3) unsigned NOT NULL default '0',
+  show_topic_icon tinyint(1) unsigned NOT NULL default '1',
   commentcode tinyint(4) NOT NULL default '0',
   statuscode tinyint(4) NOT NULL default '0',
   postmode varchar(10) NOT NULL default 'html',
