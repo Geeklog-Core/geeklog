@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.1 2005/01/21 23:31:45 vinny Exp $
+// $Id: lib-comment.php,v 1.2 2005/01/24 06:00:09 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -786,77 +786,62 @@ function CMT_commentForm($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmod
 }
 
 /**
-* Save a comment
-*
-* @param        int         $uid        User ID of user making the comment
-* @param        string      $title      Title of comment
-* @param        string      $comment    Text of comment
-* @param        string      $sid        ID of object receiving comment
-* @param        int         $pid        ID of parent comment
-* @param        string      $type       Type of comment this is (article, poll, etc)
-* @param        string      $postmode   Indicates if text is HTML or plain text
-* @param        string        $prepocessed Indicates that preprocessing by another plugin
-*                                        i.e. Spamx has already occured
-* @return       string      either nothing or HTML formated error
-*
-*/
-function CMT_saveComment ($uid, $title, $comment, $sid, $pid, $type, $postmode) 
-{
-    global $_CONF, $_TABLES, $_USER, $LANG03;
-    
-    $retval = '';
+ * Save a comment
+ *
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param    string      $title      Title of comment
+ * @param    string      $comment    Text of comment
+ * @param    string      $sid        ID of object receiving comment
+ * @param    int         $pid        ID of parent comment
+ * @param    string      $type       Type of comment this is (article, poll, etc)
+ * @param    string      $postmode   Indicates if text is HTML or plain text
+ * @return   int         0 for success, > 0 indicates error
+ *
+ */
+function CMT_saveComment ($title, $comment, $sid, $pid, $type, $postmode) {
+    global $_CONF, $_TABLES, $_USER, $_SERVER, $LANG03;
 
-    // ignore $uid as it may be manipulated anyway
+    $ret = 0;
+
+    // Get a valid uid
     if (empty ($_USER['uid'])) {
         $uid = 1;
     } else {
         $uid = $_USER['uid'];
     }
 
-    if (empty ($sid) || empty ($title) || empty ($comment) || empty ($type) ||
-            (($uid == 1) && (($_CONF['loginrequired'] == 1) ||
-                ($_CONF['commentsloginrequired'] == 1)))) {
-        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
-        return $retval;
+    // Sanity check
+    if (empty ($sid) || empty ($title) || empty ($comment) || empty ($type) ) {
+        COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
+                   . 'to submit a comment with one or more missing values.');
+        return $ret = 1;
+    }
+
+    // Check that anonymous comments are allowed
+    if (($uid == 1) && (($_CONF['loginrequired'] == 1) 
+            || ($_CONF['commentsloginrequired'] == 1))) {
+        COM_errorLog("CMT_saveComment: IP address {$_SERVER['REMOTE_ADDR']} "
+                   . 'attempted to save acomment with comments diabled for site.');
+        return $ret = 2;
     }
 
     // Check for people breaking the speed limit
     COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'comment');
     $last = COM_checkSpeedlimit ('comment');
     if ($last > 0) {
-        $retval .= COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG03[7]
-                . $last
-                . $LANG03[8]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-        return $retval;
+        COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
+                   . 'to submit a comment before the speed limit expired');
+        return $ret = 3;
     }
 
     // Let plugins have a chance to check for SPAM
     $result = PLG_checkforSpam($comment, $_CONF['spamx']);
     // Now check the result and redirect to index.php if spam action was taken
     if ($result > 0) {
+        // notice no return value here to prevent spam based denail of service attack
+        // FIXME: is 'plugin=spamx' needed here?
         echo COM_refresh($_CONF['site_url'] . '/index.php?msg='.$result.'&amp;plugin=spamx');
         exit;
-    }
-    // Let plugins have a chance to decide what to do before saving the comment.
-    $someError = PLG_commentPreSave($uid, $title, $comment, $sid, $pid, $type, $postmode);
-    
-    // If a plugin returned an error, return it
-    if ($someError) {
-        return $someError;
-    }
-    
-    $commentcode = 0;
-    if ($type == 'article') {
-        $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
-                                   "sid = '$sid'");
-    } else if ($type == 'poll') {
-        $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
-                                   "qid = '$sid'");
-    }
-    if ($commentcode < 0) {
-        return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
     // Clean 'em up a bit!
@@ -870,6 +855,7 @@ function CMT_saveComment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             $postmode = 'html';
         }
     }
+    $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
 
     // Get signature
     $sig = '';
@@ -884,13 +870,11 @@ function CMT_saveComment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
         }
     }
 
-    // check again for non-int pid's
+    // check for non-int pid's
     // this should just create a top level comment that is a reply to the original item
-    if (!is_numeric($pid)) {
+    if (!is_numeric($pid) || ($pid < 0)) {
         $pid = 0;
     }
-
-    $title = htmlspecialchars (COM_checkWords (strip_tags (COM_stripslashes ($title))));
 
     if (!empty ($title) && !empty ($comment)) {
         COM_updateSpeedlimit ('comment');
@@ -903,9 +887,9 @@ function CMT_saveComment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
             $result = DB_query("SELECT rht, indent FROM {$_TABLES['comments']} WHERE cid = $pid");
             list($rht, $indent) = DB_fetchArray($result);
             DB_query("UPDATE {$_TABLES['comments']} SET lft = lft + 2 "
-                   . "WHERE sid = '$sid' AND lft >= $rht");
+                   . "WHERE sid = '$sid' AND type = '$type' AND lft >= $rht");
             DB_query("UPDATE {$_TABLES['comments']} SET rht = rht + 2 "
-                   . "WHERE sid = '$sid' AND rht >= $rht");
+                   . "WHERE sid = '$sid' AND type = '$type' AND rht >= $rht");
             DB_save ($_TABLES['comments'], 'sid,uid,comment,date,title,pid,lft,rht,indent,type,ipaddress',
                     "'$sid',$uid,'$comment',now(),'$title',$pid,$rht,$rht+1,$indent+1,'$type','{$_SERVER['REMOTE_ADDR']}'");
         } else {
@@ -918,34 +902,16 @@ function CMT_saveComment ($uid, $title, $comment, $sid, $pid, $type, $postmode)
 
         if (isset ($_CONF['notification']) &&
                 in_array ('comment', $_CONF['notification'])) {
-            sendNotification ($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
+            CMT_sendNotification ($title, $comment, $uid, $_SERVER['REMOTE_ADDR'],
                               $type, $cid);
         }
-
-        if ($type == 'poll') {
-            $retval = COM_refresh ($_CONF['site_url']
-                    . "/pollbooth.php?qid=$sid&aid=-1");
-        } elseif ($type == 'article') {
-            $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-            DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
-            COM_olderStuff (); // update comment count in Older Stories block
-            $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
-                    . "/article.php?story=$sid"));
-        } else { // assume it's a comment handled by a plugin
-            $cid = DB_getItem ($_TABLES['comments'], 'cid', "(type = '$type') AND (pid = '$pid') AND (sid = '$sid') AND (uid = '$uid')");
-            $retval = PLG_handlePluginComment ($type, $cid, 'save');
-            if (empty ($retval)) {
-                $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-        }
     } else {
-        $retval .= COM_siteHeader()
-            . commentform ($uid, $title, $comment, $sid, $pid, $type,
-                           $LANG03[14], $postmode)
-            . COM_siteFooter();
+        COM_errorLog("CMT_saveComment: $uid from {$_SERVER['REMOTE_ADDR']} tried "
+                   . 'to submit a comment with invalid $title and/or $comment.');
+        return $ret = 4;
     }
 
-    return $retval;
+    return $ret;
 }
 
 /**
@@ -1006,83 +972,58 @@ function CMT_sendNotification ($title, $comment, $uid, $ipaddress, $type, $cid)
 }
 
 /**
-* Deletes a given comment
-*
-* @param    int         $cid    Comment ID
-* @param    string      $sid    ID of object comment belongs to
-* @param    string      $type   Comment type (e.g. article, poll, etc)
-* @return   string      Returns string needed to redirect page to right place
-*
-*/
-function CMT_deleteComment ($cid, $sid, $type) 
-{
-    global $_CONF, $_TABLES, $_USER;
+ * Deletes a given comment
+ *
+ * The function expects the calling function to check to make sure the 
+ * requesting user has the correct permissions and that the comment exits
+ * for the specified $type and $sid.
+ *
+ * @author Vincent Furia <vinny01 AT users DOT sourceforge DOT net>
+ * @param   string      $type   article, poll, or plugin identifier 
+ * @param   string      $sid    id of object comment belongs to
+ * @param   int         $cid    Comment ID
+ * @return  string      null indicates success, string identifies problem
+ */
+function CMT_deleteComment ($cid, $sid, $type) {
+    global $_TABLES, $_CONF, $_USER;
 
-    $retval = '';
+    $ret = 0;  // Assume good status unless reported otherwise
 
-    if (is_numeric ($cid) && ($cid > 0) && !empty ($sid) && !empty ($type)) {
-
-        // only comments of type 'article' and 'poll' are handled by Geeklog
-        if (($type == 'article') || ($type == 'poll')) {
-
-            if ($type == 'article') {
-                $table = $_TABLES['stories'];
-                $idname = 'sid';
-                $has_editPermissions = SEC_hasRights ('story.edit');
-            } else {
-                $table = $_TABLES['pollquestions'];
-                $idname = 'qid';
-                $has_editPermissions = SEC_hasRights ('poll.edit');
-            }
-            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$table} WHERE {$idname} = '{$sid}'");
-            $A = DB_fetchArray ($result);
-
-            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
-                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
-                    $A['perm_members'], $A['perm_anon']) == 3) {
-                DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
-                $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
-                                 . "WHERE cid = $cid");
-                list($pid,$lft,$rht) = DB_fetchArray($result); 
-                DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
-                DB_delete ($_TABLES['comments'], 'cid', $cid);
-                DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
-                   . "WHERE sid = '$sid' AND lft BETWEEN $lft AND $rht");
-                DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
-                   . "WHERE sid = '$sid' AND lft >= $rht");
-                DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
-                   . "WHERE sid = '$sid' AND rht >= $rht");
-                DB_query('UNLOCK TABLES');
-
-                if ($type == 'poll') {
-                    $retval .= COM_refresh ($_CONF['site_url']
-                            . '/pollbooth.php?qid=' . $sid . '&aid=-1');
-                } else {
-                    $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
-                    DB_change ($_TABLES['stories'], 'comments', $comments,
-                               'sid', $sid);
-                    $retval .= COM_refresh (COM_buildUrl ($_CONF['site_url']
-                            . '/article.php?story=' . $sid) . '#comments');
-                }
-            } else {
-                COM_errorLog ('User ' . $_USER['username'] . ' (IP: '
-                        . $_SERVER['REMOTE_ADDR']
-                        . ') tried to illegally delete comment '
-                        . $cid . ' from ' . $type . ' ' . $sid);
-                $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-        } else {
-            // See if plugin will handle this
-            $retval = PLG_handlePluginComment ($type, $cid, 'delete');
-            if (empty ($retval)) {
-                $retval = COM_refresh ($_CONF['site_url'] . '/index.php');
-            }
-        }
-    } else {
-        $retval .= COM_refresh ($_CONF['site_url'] . '/index.php');
+    // Sanity check, note we return immediately here and no DB operations 
+    // are performed
+    if (!is_numeric ($cid) || ($cid < 0) || empty ($sid) || empty ($type)) {
+        COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                   . 'to delete a comment with one or more missing/bad values.');
+        return $ret = 1;
     }
 
-    return $retval;
+    // Delete the comment from the DB and update the other comments to 
+    // maintain the tree structure
+    // A lock is needed here to prevent other additions and/or deletions
+    // from happening at the same time. A transaction would work better, 
+    // but aren't supported with MyISAM tables.
+    DB_query("LOCK TABLES {$_TABLES['comments']} WRITE");
+    $result = DB_query("SELECT pid, lft, rht FROM {$_TABLES['comments']} "
+                     . "WHERE cid = $cid AND sid = '$sid' AND type = '$type'");
+    if ( DB_numRows($result) == 1 ) {
+        list($pid,$lft,$rht) = DB_fetchArray($result); 
+        DB_change ($_TABLES['comments'], 'pid', $pid, 'pid', $cid);
+        DB_delete ($_TABLES['comments'], 'cid', $cid);
+        DB_query("UPDATE {$_TABLES['comments']} SET indent = indent - 1 "
+           . "WHERE sid = '$sid' AND type = '$type' AND lft BETWEEN $lft AND $rht");
+        DB_query("UPDATE {$_TABLES['comments']} SET lft = lft - 2 "
+           . "WHERE sid = '$sid' AND type = '$type'  AND lft >= $rht");
+        DB_query("UPDATE {$_TABLES['comments']} SET rht = rht - 2 "
+           . "WHERE sid = '$sid' AND type = '$type'  AND rht >= $rht");
+    } else {
+        COM_errorLog("CMT_deleteComment: {$_USER['uid']} from {$_SERVER['REMOTE_ADDR']} tried "
+                   . 'to delete a comment that doesn\'t exist as described.');
+        return $ret = 2;
+    }
+
+    DB_query('UNLOCK TABLES');
+    
+    return $ret;
 }
 
 /**

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.86 2005/01/21 23:31:44 vinny Exp $
+// $Id: comment.php,v 1.87 2005/01/24 06:00:09 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -81,18 +81,115 @@ case $LANG03[14]: // Preview
     break;
 
 case $LANG03[11]: // Submit Comment
-    $display .= CMT_saveComment (COM_applyFilter ($_POST['uid'], true),
-            strip_tags ($_POST['title']), $_POST['comment'],
-            COM_applyFilter ($_POST['sid']),
-            COM_applyFilter ($_POST['pid'], true),
-            COM_applyFilter ($_POST['type']),
-            COM_applyFilter ($_POST['postmode']));
+    $type = COM_applyFilter ($_POST['type']);
+    $sid = COM_applyFilter ($_POST['sid']);
+    switch ( $type ) {
+        case 'article':
+            $commentcode = DB_getItem ($_TABLES['stories'], 'commentcode',
+                                       "sid = '$sid'");
+            if ($commentcode < 0) {
+                return COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+            $ret .= CMT_saveComment ( strip_tags ($_POST['title']), $_POST['comment'], 
+                    $sid, COM_applyFilter ($_POST['pid'], true), 'article',
+                    COM_applyFilter ($_POST['postmode']));
+
+            if ( $ret > 0 ) { // failure
+                $display .= COM_siteHeader()
+                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
+                            $type, $LANG03[14], $postmode)
+                    . COM_siteFooter();
+            } else { // success
+                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                DB_change ($_TABLES['stories'], 'comments', $comments, 'sid', $sid);
+                COM_olderStuff (); // update comment count in Older Stories block
+                $display = COM_refresh (COM_buildUrl ($_CONF['site_url']
+                    . "/article.php?story=$sid"));
+            }
+            break;
+
+        case 'poll':
+            $commentcode = DB_getItem ($_TABLES['pollquestions'], 'commentcode',
+                                       "qid = '$sid'");
+            if ($commentcode < 0) {
+                return COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+            $ret .= CMT_saveComment (strip_tags ($_POST['title']), $_POST['comment'], 
+                    $sid, COM_applyFilter ($_POST['pid'], true), 'poll',
+                    COM_applyFilter ($_POST['postmode']));
+
+            if ( $ret > 0 ) { // failure
+                $display .= COM_siteHeader()
+                    . CMT_commentform ($uid, $title, $comment, $sid, $pid, 
+                            $type, $LANG03[14], $postmode)
+                    . COM_siteFooter();
+            } else { // success
+                $display = COM_refresh ($_CONF['site_url']
+                    . "/pollbooth.php?qid=$sid&aid=-1");
+            }
+            break;
+
+        default: // assume plugin
+            if ( !($display = PLG_handlePluginComment($type, null, 'save')) ) {
+                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+            break;
+    }
     break;
 
 case 'delete':
-    $display .= CMT_deleteComment (COM_applyFilter ($_REQUEST['cid'], true),
-                                   COM_applyFilter ($_REQUEST['sid']),
-                                   COM_applyFilter ($_REQUEST['type']));
+    $type = COM_applyFilter ($_REQUEST['type']);
+    $sid = COM_applyFilter ($_REQUEST['sid']);
+    switch ( $type ) {
+        case 'article':
+            $has_editPermissions = SEC_hasRights ('story.edit');
+            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+            $A = DB_fetchArray ($result);
+
+            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                    $A['perm_members'], $A['perm_anon']) == 3) {
+                $ret .= CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'article');
+                $comments = DB_count ($_TABLES['comments'], 'sid', $sid);
+                DB_change ($_TABLES['stories'], 'comments', $comments,
+                           'sid', $sid);
+                $display .= COM_refresh (COM_buildUrl ($_CONF['site_url']
+                                . "/article.php?story=$sid") . '#comments');
+            } else {
+                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                            . "tried to illegally delete comment $cid from $type $sid");
+                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+            break;
+
+        case 'poll':
+            $has_editPermissions = SEC_hasRights ('poll.edit');
+            $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid = '{$sid}'");
+            $A = DB_fetchArray ($result);
+
+            if ($has_editPermissions && SEC_hasAccess ($A['owner_id'],
+                    $A['group_id'], $A['perm_owner'], $A['perm_group'],
+                    $A['perm_members'], $A['perm_anon']) == 3) {
+                $ret .= CMT_deleteComment(COM_applyFilter($_REQUEST['cid'], true), $sid, 'poll');
+                $display .= COM_refresh ($_CONF['site_url'] . "/pollbooth.php?qid=$sid&aid=-1");
+            } else {
+                COM_errorLog ("User {$_USER['username']} (IP: {$_SERVER['REMOTE_ADDR']}) "
+                            . "tried to illegally delete comment $cid from $type $sid");
+                $display .= COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+
+            break;
+
+        default: //assume plugin
+            if ( !($display = PLG_handlePluginComment($type, 
+                    COM_applyFilter($_REQUEST['cid'], true), 'delete')) ) {
+                $display = COM_refresh ($_CONF['site_url'] . '/index.php');
+            }
+            break;
+    }
     break;
 
 case 'view':
