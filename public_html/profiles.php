@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.8 2001/12/14 15:40:07 tony_bibbs Exp $
+// $Id: profiles.php,v 1.9 2001/12/18 21:40:34 tony_bibbs Exp $
 
 include('lib-common.php');
 
@@ -51,7 +51,7 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 	global $_TABLES, $_CONF, $LANG08;
 	
 	if (!empty($author) && !empty($subject) && !empty($message)) {
-		if (isemail($authoremail)) {
+		if (COM_isemail($authoremail)) {
 			$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
 			$A = DB_fetchArray($result);
 			$tmp = urlencode($LANG08[1]);
