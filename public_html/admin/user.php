@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.70 2004/02/08 18:36:40 dhaun Exp $
+// $Id: user.php,v 1.71 2004/02/21 19:15:54 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -152,8 +152,8 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
 
-    if ($_CONF['custom_registration'] AND (function_exists('custom_edituser'))) {
-        $user_templates->set_var('customfields', custom_edituser($uid) );
+    if ($_CONF['custom_registration'] AND (function_exists('custom_useredit'))) {
+        $user_templates->set_var('customfields', custom_useredit($uid) );
     }
 
     if (SEC_inGroup('Group Admin')) {
@@ -283,8 +283,8 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 $curphoto = '';
             }
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto' WHERE uid = $uid");
-            if ($_CONF['custom_registration'] AND (function_exists('custom_saveuser'))) {
-                custom_saveuser($uid);
+            if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
+                custom_usersave($uid);
             }
         }
 		

@@ -38,7 +38,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-custom.php,v 1.6 2003/07/17 17:09:27 dhaun Exp $
+// $Id: lib-custom.php,v 1.7 2004/02/21 19:15:56 blaine Exp $
 
 // You can use this global variable to print useful messages to the errorlog
 // using COM_errorLog().  To see an example of how to do this, look in
@@ -137,112 +137,112 @@ function phpblock_getBent()
 
 /*  Sample Custom Member Functions to create and update Custom Membership registration and profile 
 
-	  Required Table Structure for this example:
-		CREATE TABLE `custom_memberinfo` (
-		  `uid` mediumint(9) NOT NULL default '0',
-		  `firstname` varchar(128) NOT NULL default '',
-		  `lastname` varchar(128) NOT NULL default '',
-		  `country` varchar(128) NOT NULL default '',
-		  `company` varchar(128) NOT NULL default '',
-		  KEY `uid` (`uid`)
-		) TYPE=MyISAM;
+    Note1: Enable CustomRegistration Feature in config.php
+    $_CONF['custom_registration'] = true;  // Set to true if you have custom code
 
-	Note1: You also need to include a defintion for the new table in lib-database.php 
-	$_TABLES['custom_memberinfo'] = $_DB_table_prefix . 'custom_memberinfo';
+    Note2: This example requries a template file called memberdetail.thtml to be
+    located under the theme_dir/custom directory. 
+    Sample is located in under /system with the distribution.
 
-	Note2: Enable CustomRegistration Feature in config.php
-	$_CONF['custom_registration'] = true;  // Set to true if you have custom code
-
-	Note3: This example requries a template file called memberdetail.thtml to be
-	located under the theme_dir/custom directory
-
-	4 Functions have been provided that are called from the Core Geeklog User admin code
-	- This works with User Moderation as well
-	- Admin will see the new registration info when checking a members profile only
-	- All other users will see the standard GL User profile information
-
+    Functions have been provided that are called from the Core Geeklog user and admin functions
+    - This works with User Moderation as well
+    - Admin will see the new registration info when checking a members profile only
+    - All other users will see the standard User profile with the optional extended custom information
+    - Customization requries changes to a few of the core template files to add {customfields} variable
+    - See notes below in the custom functuion about the template changes 
 */
 
+/* Create any new records in additional tables you may have added  */
+/* Update any fields in the core GL tables for this user as needed */
+/* Called when user is first created */
 function custom_usercreate($uid) {
     global $_CONF,$_TABLES,$HTTP_POST_VARS;
 
-	// Note you will need to ensure all data is prepared correctly before inserts - as quotes may need to be escaped with addslashes()
-
-    DB_query("INSERT INTO {$_TABLES['custom_memberinfo']} (uid,company,firstname,lastname,country) VALUES
-       ($uid,'{$HTTP_POST_VARS['company']}','{$HTTP_POST_VARS['firstname']}','{$HTTP_POST_VARS['lastname']}','{$HTTP_POST_VARS['country']}')");
-	DB_query("UPDATE {$_TABLES['users']} SET email='{$HTTP_POST_VARS['email']}',homepage='{$HTTP_POST_VARS['homepage']}', fullname='{$HTTP_POST_VARS['firstname']} {$HTTP_POST_VARS['lastname']}' WHERE uid=$uid");
-
+    // Ensure all data is prepared correctly before inserts, quotes may need to be escaped with addslashes()
+    DB_query("UPDATE {$_TABLES['users']} SET email='{$HTTP_POST_VARS['email']}',homepage='{$HTTP_POST_VARS['homepage']}', fullname='{$HTTP_POST_VARS['fullname']}' WHERE uid=$uid");
     return true;
 
 }
 
-function custom_usersave($uid) {
-    global $_CONF,$_TABLES,$HTTP_POST_VARS;
-
-	// Note you will need to ensure all data is prepared correctly before inserts - as quotes may need to be escaped with addslashes()
-
-    DB_query("UPDATE {$_TABLES['custom_memberinfo']} SET
-	    company='{$HTTP_POST_VARS['company']}',
-		firstname='{$HTTP_POST_VARS['firstname']}',
-		lastname='{$HTTP_POST_VARS['lastname']}',
-		country='{$HTTP_POST_VARS['country']}'
-        WHERE uid=$uid");
-
-	DB_query("UPDATE {$_TABLES['users']} SET 
-	    email='{$HTTP_POST_VARS['email']}',
-		homepage='{$HTTP_POST_VARS['homepage']}', 
-		fullname='{$HTTP_POST_VARS['firstname']} {$HTTP_POST_VARS['lastname']}' 
-		WHERE uid=$uid");
-
-    return true;
-
-}
-
+// Delete any records from custom tables you may have used
 function custom_userdelete($uid) {
-    global $_TABLES;
-    DB_query("DELETE FROM {$_TABLES['custom_memberinfo']} WHERE uid=$uid");
+    return true;
 
-	return true;
+}
+/* Called from users.php - when user is displaying a member profile  */
+/* This function can now return any extra fields that need to be shown */
+/* Output is then replaced in {customfields) -- This variable needs to be added to your templates */
+/* Template: path_layout/users/profile/profile.thtml */
+
+function custom_userdisplay($uid) {
+    global $_CONF,$_TABLES;
+    $var = "Value from custom table";
+    $retval .= '<tr>
+        <td align="right"><b>Custom Fields:</b></td>
+        <td>' . $var .'</td>
+     </tr>';
+    return $retval;
+
 }
 
-/* Main Form used for Custom membership to add/edit and display custom user form */
-function custom_userform($mode,$uid="",$msg="") {
-    global $_CONF,$_TABLES, $LANG04;
-	if (!empty($msg)) {
-		$retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
-	}
 
-	if ($mode == "edit") {
-        $post_url = $_CONF['site_url']."/usersettings.php";
-		$postmode = "saveuser";
-        $submitbutton = '<input type="submit" value="Update User Profile">';
-		$passwd_input = '<tr valign="top">' . LB
-	        . '<td align="right"><b>Password</b></td>' . LB
-	        . '<td><input type="password" name="passwd" size="32" maxlength="32" value=""></td>' . LB
-	        . '</tr>' . LB;
-        $result = DB_query("SELECT * FROM {$_TABLES['users']},{$_TABLES['custom_memberinfo']} WHERE {$_TABLES['users']}.uid = $uid AND {$_TABLES['custom_memberinfo']}.uid = $uid");
-        $A = DB_fetchArray($result);
-        $message = "<br><font size=3><br></font><font size=2 color=black><b>Edit your membership below. Once you have completed, click the Update button to save the record.</b></font>";
-    
-    } elseif ($mode == "moderate" ) {
-	   $submitbutton = '<input type="button" value="Back" onclick="javascript:history.go(-1)">';
-	   $result = DB_query("SELECT * FROM {$_TABLES['users']},{$_TABLES['custom_memberinfo']} WHERE {$_TABLES['users']}.uid = $uid AND {$_TABLES['custom_memberinfo']}.uid = $uid");
-       $A = DB_fetchArray($result);
-			
-	} else {
-        $post_url = $_CONF['site_url']."/users.php";
-		$postmode = "create";
-        $submitbutton = '<input type="submit" value="Register Now!">';
-		$passwd_input = "";
-		$message = "<br><font size=2 color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font>";
-		$A=array();
+/* Function called when editing user profile. */
+/* Called from usersettings.php - when user is eding their own profile  */
+/* and from admin/user.php when admin is editing a member profile  */
+/* This function can now return any extra fields that need to be shown for editing */
+/* Output is then replaced in {customfields} -- This variable needs to be added to your templates */
+/* User: path_layout/preferences/profile.thtml and Admin: path_layout/admin/user/edituser.thtml */
+
+/* This example shows adding the Cookie Timeout setting and extra text field */
+/* As noted: You need to add the {customfields} template variable. */
+/* For the edituser.thtml - maybe it would be added about the {group_edit} variable. */
+
+function custom_useredit($uid) {
+    global $_TABLES,$_CONF;
+    $var = "Value from custom table";
+    $cookietimeout = DB_getitem($_TABLES['users'], 'cookietimeout' ,$uid);
+    $selection = '<select name="cooktime">' . LB;
+    $selection .= COM_optionList ($_TABLES['cookiecodes'], 'cc_value,cc_descr', $cookietimeout, 0);
+    $selection .= '</select>';
+    $retval .= '<tr>
+        <td align="right">Remember user for:</td>
+        <td>' . $selection .'</td>
+     </tr>';
+    $retval .= '<tr>
+        <td align="right"><b>Custom Fields:</b></td>
+        <td><input type="text" name="custom1" size="50" value="' . $var .'"></td>
+     </tr>';
+    $retval .= '<tr><td colspan="2"><hr></td></tr>';
+   return $retval;
+}
+
+/* Function called when saving the user profile. */
+/* This function can now update any extra fields  */
+function custom_usersave($uid) {
+    global $_TABLES,$_CONF, $HTTP_POST_VARS;
+    DB_query("UPDATE {$_TABLES['users']} SET cookietimeout='{$HTTP_POST_VARS["cooktime"]}'");
+}
+
+
+/* Main Form used for Custom membership when member is registering */
+function custom_userform($uid="",$msg="") {
+    global $_CONF,$_TABLES, $LANG04;
+    if (!empty($msg)) {
+        $retval .= COM_startBlock($LANG04[21]) . $msg . COM_endBlock();
     }
+
+    $post_url = $_CONF['site_url']."/users.php";
+    $postmode = "create";
+    $submitbutton = '<input type="submit" value="Register Now!">';
+    $passwd_input = "";
+    $message = "<br><font color=black><b>Please complete the application below. Once you have completed the application, click the Submit button and the application will be processed immediately.</b></font>";
+    $A=array();
 
     $user_templates = new Template ($_CONF['path_layout'] . 'custom');
     $user_templates->set_file('memberdetail', 'memberdetail.thtml');
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('post_url', $post_url);
-    $user_templates->set_var('startblock', COM_startBlock("New Member User Registration"));
+    $user_templates->set_var('startblock', COM_startBlock("Custom Registration Example"));
     $user_templates->set_var('message', $message);    
     $user_templates->set_var('USERNAME', "Username");
     $user_templates->set_var('USERNAME_HELP', "Name to be used when accessing this site");
@@ -251,30 +251,17 @@ function custom_userform($mode,$uid="",$msg="") {
     $user_templates->set_var('EMAIL', "Email Address");
     $user_templates->set_var('EMAIL_HELP', "");
     $user_templates->set_var('email', $A['email']);
-    $user_templates->set_var('WEBSITE', "website");
-    $user_templates->set_var('WEBSITE_HELP', "");
-    $user_templates->set_var('website', $A['homepage']);
-    $user_templates->set_var('COMPANY', "Company Name");
-    $user_templates->set_var('COMPANY_HELP', "Enter your Company Name");
-    $user_templates->set_var('company', $A['company']);
-    $user_templates->set_var('FIRSTNAME', "First Name");
-    $user_templates->set_var('FIRSTNAME_HELP', "");
-    $user_templates->set_var('firstname', $A['firstname']);
-    $user_templates->set_var('LASTNAME', "Last Name");
-    $user_templates->set_var('LASTNAME_HELP', "");
-    $user_templates->set_var('lastname', $A['lastname']);
-    $user_templates->set_var('COUNTRY', "Country");
-    $user_templates->set_var('COUNTRY_HELP', "Enter your country");
-    $user_templates->set_var('country', $A['country']);	
+    $user_templates->set_var('FULLNAME', "Full Name");
+    $user_templates->set_var('FULLNAME_HELP', "");
+    $user_templates->set_var('fullname', $A['fullname']);
     $user_templates->set_var('user_id', $user);
     $user_templates->set_var('postmode', $postmode);
     $user_templates->set_var('submitbutton', $submitbutton);
-
     $user_templates->set_var('endblock', COM_endBlock());
     $user_templates->parse('output', 'memberdetail');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
-	return $retval;
+    return $retval;
 }
 
 ?>

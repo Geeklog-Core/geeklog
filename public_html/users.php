@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.76 2004/02/19 12:36:14 dhaun Exp $
+// $Id: users.php,v 1.77 2004/02/21 19:15:56 blaine Exp $
 
 /**
 * This file handles user authentication
@@ -244,8 +244,8 @@ function userprofile($user)
     $user_templates->set_var ('lang_all_postings_by', $LANG04[86] . ' ' . $A['username']);
 
     // Call custom registration function if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_displayuser)) ) {
-        $user_templates->set_var ('customfields', custom_displayuser($user) );
+    if ($_CONF['custom_registration'] AND (function_exists(custom_userdisplay)) ) {
+        $user_templates->set_var ('customfields', custom_userdisplay($user) );
     }
     PLG_profileVariablesDisplay ($user, $user_templates);
 

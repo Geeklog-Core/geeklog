@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.91 2004/02/14 13:07:57 dhaun Exp $
+// $Id: usersettings.php,v 1.92 2004/02/21 19:15:56 blaine Exp $
 
 require_once('lib-common.php');
 require_once($_CONF['path_system'] . 'lib-user.php');
@@ -177,8 +177,8 @@ function edituser()
     }
 
     // Call custom account form and edit function if enabled and exists
-    if ($_CONF['custom_registration'] AND (function_exists(custom_edituser))) {
-        $preferences->set_var ('customfields', custom_edituser($_USER['uid']) );
+    if ($_CONF['custom_registration'] AND (function_exists(custom_useredit))) {
+        $preferences->set_var ('customfields', custom_useredit($_USER['uid']) );
     } 
 
     PLG_profileVariablesEdit ($_USER['uid'], $preferences);
@@ -818,8 +818,8 @@ function saveuser($A)
         DB_query("UPDATE {$_TABLES['userinfo']} SET pgpkey='{$A['pgpkey']}',about='{$A['about']}' WHERE uid={$_USER['uid']}");
 
         // Call custom registration save function if enabled and exists
-        if ($_CONF['custom_registration'] AND (function_exists(custom_saveuser))) {
-            custom_saveuser($_USER['uid']);
+        if ($_CONF['custom_registration'] AND (function_exists(custom_usersave))) {
+            custom_usersave($_USER['uid']);
         }
 
         if ($_US_VERBOSE) {
