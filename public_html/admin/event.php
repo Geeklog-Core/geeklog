@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.30 2002/09/12 14:32:49 dhaun Exp $
+// $Id: event.php,v 1.31 2002/09/20 20:54:15 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -532,9 +532,9 @@ function listevents()
 if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=' . $eid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/event.php');
     } else {
-		DB_delete($_TABLES['events'],'eid',$eid);
-        echo COM_refresh($_CONF['site_admin_url'] . '/event.php?msg=18');
+        DB_delete($_TABLES['events'],'eid',$eid,$_CONF['site_admin_url'] . '/event.php?msg=18');
     }
 } else if (($mode == $LANG22[20]) && !empty ($LANG22[20])) { // save
     $display .= saveevent ($eid, $title, $event_type, $url, $allday,

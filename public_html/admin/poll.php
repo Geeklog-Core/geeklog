@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.24 2002/09/12 14:32:49 dhaun Exp $
+// $Id: poll.php,v 1.25 2002/09/20 20:54:15 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -328,12 +328,13 @@ if ($mode == 'edit') {
         savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$answer,$votes,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
     }
 } else if (($mode == $LANG25[16]) && !empty ($LANG25[16])) { // delete
-    if (!isset ($qid) || empty ($qid) || ($qid == 0)) {
+    if (!isset ($qid) || empty ($qid)) {
         COM_errorLog ('Attempted to delete poll qid=' . $qid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/poll.php');
     } else {
         DB_delete($_TABLES['pollquestions'],'qid',$qid);
         DB_delete($_TABLES['pollanswers'],'qid',$qid);
-        echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
+        $display .= COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=20');
     }
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.22 2002/09/12 14:32:49 dhaun Exp $
+// $Id: group.php,v 1.23 2002/09/20 20:54:15 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -402,6 +402,7 @@ function listgroups()
 if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     if (!isset ($grp_id) || empty ($grp_id) || ($grp_id == 0)) {
         COM_errorLog ('Attempted to delete group grp_id=' . $grp_id);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/group.php');
     } else {
         DB_delete($_TABLES['access'],'acc_grp_id',$grp_id);
         DB_delete($_TABLES['groups'],'grp_id',$grp_id);

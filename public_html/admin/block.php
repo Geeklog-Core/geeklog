@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.40 2002/09/12 14:32:49 dhaun Exp $
+// $Id: block.php,v 1.41 2002/09/20 20:54:15 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -466,8 +466,9 @@ elseif (isset ($HTTP_GET_VARS['bid'])) {
 if (($mode == $LANG21[56]) && !empty ($LANG21[56])) { // delete
     if (!isset ($bid) || empty ($bid) || ($bid == 0)) {
         COM_errorLog ('Attempted to delete block bid=' . $bid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/block.php');
     } else {
-        $display .= DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
+        DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
     }
 } else if (($mode == $LANG21[54]) && !empty ($LANG21[54])) { // save
     $display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,

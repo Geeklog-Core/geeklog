@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.26 2002/09/12 14:32:49 dhaun Exp $
+// $Id: link.php,v 1.27 2002/09/20 20:54:15 dhaun Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -293,6 +293,7 @@ function listlinks()
 if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
     if (!isset ($lid) || empty ($lid) || ($lid == 0)) {
         COM_errorLog ('Attempted to delete link lid=' . $lid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/link.php');
     } else {
         DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
     }

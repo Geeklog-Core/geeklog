@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.41 2002/09/12 14:32:49 dhaun Exp $
+// $Id: user.php,v 1.42 2002/09/20 20:54:15 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -518,7 +518,8 @@ function display_form()
 // MAIN
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     if (!isset ($uid) || empty ($uid) || ($uid == 0)) {
-        OM_errorLog ('Attempted to delete user uid=' . $uid);
+        COM_errorLog ('Attempted to delete user uid=' . $uid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     } else {
         // Ok, delete everything related to this user
 

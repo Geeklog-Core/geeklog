@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.25 2002/09/12 14:32:49 dhaun Exp $
+// $Id: topic.php,v 1.26 2002/09/20 20:54:15 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -248,8 +248,9 @@ function listtopics() {
 $display = '';
 
 if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
-    if (!isset ($tid) || empty ($tid) || ($tid == 0)) {
+    if (!isset ($tid) || empty ($tid)) {
         COM_errorLog ('Attempted to delete topic tid=' . $tid);
+        $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
     } else {
         DB_delete($_TABLES['stories'],'tid',$tid);
         DB_delete($_TABLES['blocks'],'tid',$tid);
