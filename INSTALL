@@ -1,4 +1,4 @@
-Updated May 25th, 2002
+Updated June, 15th 2002
 
 For help go to http://geeklog.sourceforge.net and check out the support section
 which includes an FAQ!!!
@@ -31,9 +31,11 @@ structures or apply updates:
 1) BACK-UP your database any customized Geeklog files if needed. 
 2) Unpack the tarball *within* your web tree
 3) For *nix installations do a chown -R <webuser>:<webuser> /path/to/geeklog
-4) For *nix installations cd into /path/to/geeklog and to the following:
+4) For *nix installations cd into /path/to/geeklog and do the following:
     - chmod -R 775 logs/
     - chmod -R 775 public_html/backend/
+    - chmod -R 775 public_html/images/userphotos/
+    - chmod -R 775 public_html/images/articles/
    Note: If you're doing the chmod via an ftp client, be sure to apply the
          chmod to the files in those directories as well!
 5) Create the database you want Geeklog to reside in
