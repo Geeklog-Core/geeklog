@@ -1,5 +1,19 @@
 GeekLog History/Changes:
 
+January 11, 2001
+-----------------
+- Two security fixes, one major one.  This release addes a users MD5 password to a cookie that is checked when using the permanent cookie.  Prior to this you could change the permanent cookie to any user and get their access rights.  Second security fix addresses an orphaned group_assignments record that, one new Geeklog installations, would give the very first user to register with the site access to the GroupAdmin and UserAdmin groups
+- In admin/block.php you can now specify the URL to a help file.  This is usefully in providing site help to your users
+- Many bugfixes to the calendar in both the UI and the administration
+- Added who's online block
+- Fixed bug that was keeping users registration date from being saved.
+- Fixed bugs in usersettings.php that keep user options from saving
+- Added two database indexes that really speed things up
+- Coded some performance-related enhancements
+- Fixed bug that kept user-defined themes from working
+- Fixed bug in links.php that caused the first link category to report over and over
+- Started updating some of the documents
+
 November XX, 2001
 -----------------
 - Added user-defined themes via PHPLib's template class library
