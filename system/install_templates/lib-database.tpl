@@ -48,6 +48,7 @@ $_DB_mysqldump_path = '{dbmysqldump}'; // e.g. /usr/sbin/mysqldump
 // +---------------------------------------------------------------------------+
 
 $_TABLES['access']              = '{cfg_tbl_access}';
+$_TABLES['article_images']      = '{cfg_tbl_article_images}';
 $_TABLES['blocks']              = '{cfg_tbl_blocks}';
 $_TABLES['commentcodes']        = '{cfg_tbl_commentcodes}';
 $_TABLES['commentmodes']        = '{cfg_tbl_commentmodes}';
