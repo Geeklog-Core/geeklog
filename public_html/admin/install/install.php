@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.62 2004/03/22 15:20:47 dhaun Exp $
+// $Id: install.php,v 1.63 2004/03/22 19:07:49 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -175,12 +175,21 @@ function INST_createDatabaseStructures()
 
     $progress = '';
 
-    for ($i = 1; $i <= count($_SQL); $i++) {
-        DB_query(current($_SQL));
-        next($_SQL);
-    }
-
     if ($_DB_dbms == 'mysql') {
+
+        $has_innodb = innodb_supported ();
+
+        for ($i = 1; $i <= count ($_SQL); $i++) {
+            $sql = current ($_SQL);
+
+            if ($has_innodb) {
+                $sql = str_replace ('MyISAM', 'InnoDB', $sql);
+            }
+
+            DB_query ($sql);
+            next ($_SQL);
+        }
+
         mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
         $mysqlv = '';
 
@@ -214,6 +223,14 @@ function INST_createDatabaseStructures()
                 next ($_INDEX);
             }
         }
+
+    } else { // in the highly unlikely event that we're not on MySQL ...
+
+        for ($i = 1; $i <= count ($_SQL); $i++) {
+            DB_query (current ($_SQL));
+            next ($_SQL);
+        }
+
     }
 
     // Now insert mandatory data and a small subset of initial data
@@ -224,6 +241,27 @@ function INST_createDatabaseStructures()
     }
 
     return true;
+}
+
+/**
+* Check for InnoDB table support (usually as of MySQL 4.0, but may be
+* available in earlier versions, e.g. "Max" or custom builds).
+*
+* @return   true = InnoDB tables supported, false = not supported
+*
+*/
+function innodb_supported()
+{
+    $result = DB_query ("SHOW VARIABLES LIKE 'have_innodb'");
+    $A = DB_fetchArray ($result, true);
+
+    if (strcasecmp ($A[1], 'yes') == 0) {
+        $retval = true;
+    } else {
+        $retval = false;
+    }
+
+    return $retval;
 }
 
 
@@ -291,7 +329,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES (2, {$U['uid']}, NULL)");
                 DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES (13, {$U['uid']}, NULL)");
             }
-            // Now take care of any orphans off the user table...and let me curse MySQL lack for supporint foreign
+            // Now take care of any orphans off the user table...and let me curse MySQL lack for supporting foreign
             // keys at this time ;-)
             $result = DB_query("SELECT MAX(uid) FROM {$_TABLES['users']}");
             $ITEM = DB_fetchArray($result);
