@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.76 2004/09/25 20:08:16 vinny Exp $
+// $Id: comment.php,v 1.77 2004/09/25 20:16:14 vinny Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -741,10 +741,19 @@ case 'view':
                     $format = $_CONF['comment_mode'];
                 }
             }
-            $delete_option = ( SEC_hasRights( 'story.edit' ) &&
-                SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon'] ) == 3 ? true : false );
+            if ($type == 'poll' || $type == 'article') {
+                if ( $type == 'poll' ) {
+                    $delete_option = SEC_hasRights( 'poll.edit' );
+                } else {
+                    $delete_option = SEC_hasRights( 'story.edit' );
+                }
+                $delete_option = ( $delete_option &&
+                    SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon'] ) == 3 ? true : false );
+            } else {
+                $delete_option = false;
+            }
             $display .= COM_userComments ($sid, $title, $type, 
                             COM_applyFilter ($_REQUEST['order']), $format, $cid,
                             COM_applyFilter ($_REQUEST['page'], true), true, $delete_option);
@@ -784,10 +793,19 @@ case 'display':
             if ( $format != 'threaded' && $format != 'nested' && $format != 'flat' ) {
                 $format = 'threaded';
             }
-            $delete_option = ( SEC_hasRights( 'story.edit' ) &&
-                SEC_hasAccess( $A['owner_id'], $A['group_id'],
-                $A['perm_owner'], $A['perm_group'], $A['perm_members'],
-                $A['perm_anon'] ) == 3 ? true : false );
+            if ($type == 'poll' || $type == 'article') {
+                if ( $type == 'poll' ) {
+                    $delete_option = SEC_hasRights( 'poll.edit' );
+                } else {
+                    $delete_option = SEC_hasRights( 'story.edit' );
+                }
+                $delete_option = ( $delete_option &&
+                    SEC_hasAccess( $A['owner_id'], $A['group_id'],
+                    $A['perm_owner'], $A['perm_group'], $A['perm_members'],
+                    $A['perm_anon'] ) == 3 ? true : false );
+            } else {
+                $delete_option = false;
+            }
             $display .= COM_userComments ($sid, $title, $type,
                     COM_applyFilter ($_REQUEST['order']), $format, $pid,
                     COM_applyFilter ($_REQUEST['page'], true), false, $delete_option);
