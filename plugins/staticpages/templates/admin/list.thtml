@@ -2,7 +2,7 @@
                                 <table border="0" cellspacing="0" cellpadding="2" width="100%">
                                     <tr>
                                         <td>
-                                            <img src="{site_url}/staticpages/images/staticpage.gif">
+                                            <img src="{site_url}/staticpages/images/staticpages.gif">
                                         </td>
                                         <td>[ <a href="{site_admin_url}/plugins/staticpages/index.php?mode=edit">{lang_newpage}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                                     </tr>
