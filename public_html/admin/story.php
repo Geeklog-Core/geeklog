@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.85 2003/03/27 21:03:11 dhaun Exp $
+// $Id: story.php,v 1.86 2003/04/10 14:32:00 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -476,34 +476,44 @@ function liststories($page = 1)
         }
 
         // Print prev/next page links if needed
-
-        if (DB_count($_TABLES['stories']) > 50) {
+        $numstories = DB_count ($_TABLES['stories']);
+        if ($numstories > 50) {
             $prevpage = $page - 1;
             $nextpage = $page + 1;
+            $pagestart = ($page - 1) * 50;
             if ($pagestart >= 50) {
-                $story_templates->set_var('previouspage_link', '<a href="' . $_CONF['site_admin_url'] . '/story.php?mode=list&amp;page='
-                    . $prevpage . '">' . $LANG24[1] . '</a> ');
+                $story_templates->set_var ('previouspage_link', '<a href="'
+                    . $_CONF['site_admin_url']
+                    . '/story.php?mode=list&amp;page=' . $prevpage . '">'
+                    . $LANG24[1] . '</a> ');
             } else {
-	        $story_templates->set_var('previouspage_link','');
+                $story_templates->set_var('previouspage_link','');
             }
-            if ($pagestart <= (DB_count($_TABLES['stories']) - 50)) {
-                $story_templates->set_var('nextpage_link', '<a href="' . $_CONF['site_admin_url'] . '/story.php?mode=list&amp;page='
-                    . $nextpage . '">' . $LANG24[2] . '</a> ');
+            if ($pagestart <= ($numstories - 50)) {
+                $story_templates->set_var ('nextpage_link', '<a href="'
+                    . $_CONF['site_admin_url']
+                    . '/story.php?mode=list&amp;page=' . $nextpage . '">'
+                    . $LANG24[2] . '</a> ');
             } else {
 	        $story_templates->set_var('nextpage_link','');
             }
+            $baseurl = $_CONF['site_admin_url'] . '/story.php?mode=list';
+            $numpages = ceil ($numstories / 50);
+            $story_templates->set_var ('google_paging',
+                    COM_printPageNavigation ($baseurl, $page, $numpages));
         } else {
-	    $story_templates->set_var('previouspage_link','');
-	    $story_templates->set_var('nextpage_link','');
+            $story_templates->set_var ('previouspage_link' ,'');
+            $story_templates->set_var ('nextpage_link' ,'');
+            $story_templates->set_var ('google_paging' ,'');
         }
-           
 
     } else {
         // There are no news items
-        $story_templates->set_var('storylist_item','<tr><td colspan="7">' . $LANG24[6] . '</td></tr>');
-        $story_templates->set_var('previouspage_link','');
-        $story_templates->set_var('nextpage_link','');
-	
+        $story_templates->set_var ('storylist_item', '<tr><td colspan="8">'
+                . $LANG24[6] . '</td></tr>');
+        $story_templates->set_var ('previouspage_link', '');
+        $story_templates->set_var ('nextpage_link', '');
+        $story_templates->set_var ('google_paging' ,'');
     }
     $display .= $story_templates->parse('output','list');
     $display .= COM_endBlock();
