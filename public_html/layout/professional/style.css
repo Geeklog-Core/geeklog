@@ -641,7 +641,8 @@ TD.forumRollOut   {
     font-family: Verdana, Helvetica, sans-serif;
 }
 /* New Plugin CSS Declarations */
-.pluginBG              { background-color: #1C1E2D; }
+.pluginBG              { background-color: #EFEFEF; }
+.pluginAltBG           { background-color: #1C1E2D; }
 .pluginTitle           { color: #1C1E2D; background-color:#EFEFEF; font-weight: bold; font-size: 85%; font-family: Verdana, sans-serif; }
 .pluginHeader          { color: #1A3955; font-weight: bolder; font-size: 95%; background-color: #CCC; padding:5px; }
 .pluginFooter          { background-color:#EFEFEF; }

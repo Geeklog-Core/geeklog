@@ -1,6 +1,19 @@
 <script type="text/JavaScript" src="{site_url}/library.js"></script>
-<center><table width="85%" cellspacing="0" cellpadding="0" border="0">
-<form name="groupusers" action="{phpself}?group={groupid}" method="post"> 
+<table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5 0 10 0px;">
+    <tr>
+        <td rowspan="2">
+            <img src="{layout_url}/images/icons/group.gif" alt="">
+        </td>
+        <td>[ <a href="{site_admin_url}/group.php">{lang_grouplist}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]
+        </td>
+    </tr>
+    <tr>
+        <td>{lang_instructions}</td>
+    </tr>
+</table>
+<div style="border: 1px solid grey">
+<form name="groupusers" action="{phpself}?group={groupid}" method="post" style="margin:0px;"> 
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="pluginBG" style="padding:15px;">
     <tr align="middle">
         <td class="blocktitle" style="padding:5px; text-align:middle;">{LANG_sitemembers}</th>
         <td>&nbsp;</th>
@@ -27,5 +40,6 @@
         <input type="button" value="{lang_cancel}" onclick="javascript:history.go(-1)">&nbsp;&nbsp;
         <input type="submit" value="{lang_save}" onclick="return setUsers(this.form)">
         </td></tr>
-</table></center> 
+</table>
 </form>
+</div>

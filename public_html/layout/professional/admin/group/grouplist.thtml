@@ -1,4 +1,4 @@
-                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
+                            <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5 0 10 0px;">
                                 <tr>
                                     <td rowspan="2">
                                         <img src="{layout_url}/images/icons/group.gif" alt="">
@@ -10,7 +10,7 @@
                                     <td>{lang_instructions}</td>
                                 </tr>
                             </table>
-                            <table border="0" cellspacing="1" cellpadding=3 width="100%">
+                            <table border="0" cellspacing="1" cellpadding=4 width="100%">
                                 <tr style="background:#FFFFFF;">
                                     <th align="left">{lang_groupname}</th>
                                     <th align="left">{lang_description}</th>

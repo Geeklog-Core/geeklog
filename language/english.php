@@ -884,7 +884,9 @@ $LANG28 = array(
     33 => 'submit',
     34 => 'Error: You must specify a file to upload.',
     35 => 'Last Login',
-    36 => '(never)'
+    36 => '(never)',
+    37 => 'UID',
+    38 => 'Group Listing'
 );
 
 ###############################################################################
@@ -1205,7 +1207,9 @@ $LANG_ACCESS = array(
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
+    'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
 );
 
 ###############################################################################

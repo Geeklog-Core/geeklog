@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.91 2005/03/25 21:47:27 blaine Exp $
+// $Id: user.php,v 1.92 2005/03/30 01:12:10 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -452,6 +452,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_submit', $LANG28[33]);
     $user_templates->set_var('last_query', $query);
     $user_templates->set_var('lang_limit_results', $LANG28[27]);
+    $user_templates->set_var('lang_uid', $LANG28[37]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);

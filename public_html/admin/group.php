@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.43 2005/03/25 21:47:27 blaine Exp $
+// $Id: group.php,v 1.44 2005/03/30 01:12:10 blaine Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -627,10 +627,8 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     $cntresult = DB_query ("SELECT COUNT(DISTINCT {$_TABLES['users']}.uid) AS count " . $sql);
     $C = DB_fetchArray ($cntresult);
     $num_pages = ceil ($C['count'] / $limit);
-
-    $headline = sprintf ($LANG_ACCESS['usersingroup'],
-                         DB_getItem ($_TABLES['groups'], 'grp_name',
-                         "grp_id = '$grp_id'"));
+    $groupname = DB_getItem ($_TABLES['groups'], 'grp_name',"grp_id = '$grp_id'");
+    $headline = sprintf ($LANG_ACCESS['usersingroup'],$groupname);
     $retval .= COM_startBlock ($headline . ' (' . $C['count'] . ')', '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
@@ -641,6 +639,10 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     $user_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var ('layout_url', $_CONF['layout_url']);
     $user_templates->set_var ('lang_adminhome', $LANG28[16]);
+    $user_templates->set_var ('lang_grouplist', $LANG28[38]);
+    $user_templates->set_var ('lang_home', $LANG28[39]);
+    $user_templates->set_var('lang_instructions', sprintf($LANG_ACCESS['listgroupmsg'],$groupname)); 
+    $user_templates->set_var ('lang_uid', $LANG28[37]);
     $user_templates->set_var ('lang_username', $LANG28[3]);
     $user_templates->set_var ('lang_fullname', $LANG28[4]);
     $user_templates->set_var ('lang_emailaddress', $LANG28[7]);
@@ -700,7 +702,7 @@ function grp_selectUsers ($group_id = '0', $allusers = false)
 
 function editusers ($group)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $_USER, $LANG_ACCESS, $LANG28;
 
     $thisUsersGroups = SEC_getUserGroups ();
 	$groupName = DB_getItem($_TABLES['groups'],'grp_name',"grp_id='$group'");
@@ -726,7 +728,10 @@ function editusers ($group)
     $groupmembers->set_file (array ('groupmembers'=>'groupmembers.thtml'));
     $groupmembers->set_var ('site_url', $_CONF['site_url']);
     $groupmembers->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $groupmembers->set_var ('layout_url', $_CONF['layout_url']);
     $groupmembers->set_var ('phpself', $_CONF['site_admin_url'] . '/group.php');
+    $groupmembers->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
+    $groupmembers->set_var('lang_instructions', $LANG_ACCESS['editgroupmsg']); 
     $groupmembers->set_var ('LANG_sitemembers',$LANG_ACCESS['availmembers']);
     $groupmembers->set_var ('LANG_grpmembers',$LANG_ACCESS['groupmembers']);
     $groupmembers->set_var ('sitemembers', grp_selectUsers($group,true) );
@@ -735,6 +740,7 @@ function editusers ($group)
     $groupmembers->set_var ('LANG_remove',$LANG_ACCESS['remove']);
     $groupmembers->set_var('lang_save', $LANG_ACCESS['save']);
     $groupmembers->set_var('lang_cancel', $LANG_ACCESS['cancel']);
+    $groupmembers->set_var ('lang_grouplist', $LANG28[38]);
     $groupmembers->set_var ('group_id',$group);
     $groupmembers->parse ('output', 'groupmembers');
     $retval .= $groupmembers->finish($groupmembers->get_var('output'));
