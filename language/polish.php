@@ -995,7 +995,7 @@ $LANG32 = array(
     28 => 'Plugin Wersja',
     29 => 'Geeklog Wersja',
     30 => 'Skasowaæ Plugin?',
-    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.'merykanistyka
+    31 => 'Czy aby na pewno skasowaæ ten plugin?  Ta operacja usunie wszelkie pliki, dane i strukturê u¿ywane przez ten plugin.  Je¶li chcesz kontynuwaæ kliknij kasuj poni¿ej.'
 );
 
 ###############################################################################
