@@ -13,6 +13,7 @@
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
 // |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
+// |          Dirk Haun         - dirk@haun-online.de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.45 2004/01/18 14:41:22 dhaun Exp $
+// $Id: event.php,v 1.46 2004/01/24 21:52:01 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -105,7 +106,8 @@ function editevent($mode, $A)
                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (!empty($A['eid']) && SEC_hasRights('event.edit')) {
-        $event_templates->set_var('delete_option', "<input type=\"submit\" value=\"$LANG22[22]\" name=\"mode\">");
+        $event_templates->set_var ('delete_option',
+            '<input type="submit" value="' . $LANG22[22] . '" name="mode">');
     }
 
     if ($A['eid'] == '') { 
@@ -130,6 +132,7 @@ function editevent($mode, $A)
     $event_templates->set_var('lang_editeventtypes', $LANG12[50]);
     $event_templates->set_var('type_options', $catdd);
     $event_templates->set_var('lang_eventurl', $LANG22[4]);
+    $event_templates->set_var('max_url_length', 128);
     $event_templates->set_var('event_url', $A['url']);
     $event_templates->set_var('lang_includehttp', $LANG22[9]);
     $event_templates->set_var('lang_eventstartdate', $LANG22[5]);

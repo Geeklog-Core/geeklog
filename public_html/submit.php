@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Let users submit stories, links, and events.                              |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.59 2004/01/18 14:45:24 dhaun Exp $
+// $Id: submit.php,v 1.60 2004/01/24 21:52:01 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -151,6 +151,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
         $eventform->set_var('personal_option', '');
     }
     $eventform->set_var('lang_link', $LANG12[11]);
+    $eventform->set_var('max_url_length', 128);
     $eventform->set_var('lang_startdate', $LANG12[12]);
     $eventform->set_var('lang_starttime', $LANG12[42]);
     $month_options = '';
@@ -272,7 +273,7 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour='')
 */
 function submitlink() 
 {
-    global $_TABLES, $_CONF, $LANG12;
+    global $_CONF, $_TABLES, $LANG12;
 
     $retval .= COM_startBlock($LANG12[5],'submitlink.html');
 
@@ -288,10 +289,11 @@ function submitlink()
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
+    $linkform->set_var('max_url_length', 96);
     $linkform->parse('theform', 'linkform');
     $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();
-	
+
     return $retval;
 }
 
@@ -728,13 +730,27 @@ function savesubmission($type,$A)
 $display = '';
 $display .= COM_siteHeader();
 
+$mode = '';
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+} else if (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+}
+
+$type = '';
+if (isset ($HTTP_POST_VARS['type'])) {
+    $type = COM_applyFilter ($HTTP_POST_VARS['type']);
+} else if (isset ($HTTP_GET_VARS['type'])) {
+    $type = COM_applyFilter ($HTTP_GET_VARS['type']);
+}
+
 if ($mode == $LANG12[8]) { // submit
-    $display .= savesubmission($type,$HTTP_POST_VARS);
+    $display .= savesubmission ($type, $HTTP_POST_VARS);
 } else {
     switch($type) {
         case 'link':
             if (SEC_hasRights('link.edit')) {
-                echo COM_refresh($_CONF['site_admin_url'] . '/link.php?mode=edit');
+                echo COM_refresh ($_CONF['site_admin_url'] . '/link.php?mode=edit');
                 exit;
             }
             break;
@@ -761,9 +777,8 @@ if ($mode == $LANG12[8]) { // submit
     }
 
     $display .= submissionform($type, $mode, $month, $day, $year, $hour, $topic); 
-
 }
-$display .= COM_siteFooter();		
+$display .= COM_siteFooter();
 echo $display;
 
 ?>
