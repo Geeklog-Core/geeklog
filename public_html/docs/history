@@ -1,5 +1,26 @@
 GeekLog History/Changes:
 
+- Fixed problems with quotes in poll question and answers.
+- The default value for the number of stories per page for a new user is now
+  taken from $_CONF['limitnews'] (was hard-coded to 10).
+- The user profile has been extended to include
+  + last 10 stories by that user
+  + total number of stories and comments posted by that user
+  + link to search for all postings by that user
+- The title of an article is now displayed in the page title (again).
+- New configuration option $_CONF['allow_user_language'] to allow / prevent
+  to change the language. When set to 0, the option to switch the language
+  is hidden from the user preferences.
+- The message "You have successfully logged out" should not show up any more
+  when you log out and log in again.
+- The blocks stating that the search returned no results (e.g. for links) are
+  now switched off by default but can be switched on again with the new
+  configuration variable $_CONF['showemptysearchresults'].
+- Fixed the list of authors in the search form (did not list all authors).
+- Fixed search results for links and events: They always displayed only one
+  result, even when there where more hits. Also, when searching for authors,
+  no hits amongst the links and events will be returned (since they have
+  no author).
 - In the admin menu, the count of available submissions is now displayed
   according to the admin's access rights (e.g. don't count story submissions
   for someone who's only a link admin).
@@ -47,6 +68,7 @@ GeekLog History/Changes:
 - Search: User drop down only shows users that have posted a comment or a story.
 - Fixed bug with double quotes in title of story submission.
 - The upcoming events block uses the list templates now.
+- The story option block uses the list templates now.
 - The (Event)Admin could not delete events (delete button was missing).
 - The calendar class reverted to using the english day and month names as
   soon as you called setCalendarMatrix().
@@ -60,14 +82,14 @@ GeekLog History/Changes:
   english texts to the language files.
   This affects most of the files in the admin and calendar directories within
   the themes directories.
-- The static pages plugin will now pick the language automatically, based on
+- The static pages plugin will now picks the language automatically, based on
   the user / default setting for the language. Currently, only English and
   German language files are included.
 - New variables that can be used in footer.thtml: {execution_textandtime},
   {powered_by}.
 
 
-July ??, 2002 (1.3.5sr2)
+July 8, 2002 (1.3.5sr2)
 -------------
 - New installation instructions (now back in docs/install.html).
   Please note that some of the other documentation may be out of date ...
