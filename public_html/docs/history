@@ -1,10 +1,16 @@
 GeekLog History/Changes:
 
+- When users try to register with an empty username or invalid email address,
+  make sure we're displaying a custom registration form (if one exists) when
+  displaying the error message (part 1 of bug #57).
+- Prevent users from registering with an empty username (bug #56).
+- Use $_CONF['emailstoriesperdefault'] when batch-adding users. Until now,
+  new users were subscribed to the Daily Digest automatically (bug #55).
 - Added an 'edit' link to links/linkdetails.thtml, so that (Link) Admins can
   edit links easily (contributed by Euan McKay).
 - What's Related applied COM_checkHTML() on the entire block instead of on the
   individual items, thus stripping out HTML from the template file (bug #52).
-- Words from a search query are now properly hightlighted in comments when the
+- Words from a search query are now properly highlighted in comments when the
   words occured only in the comments (but not in the story).
 - Fixed parse errors in the french_canada.php language file (bug #53).
 - Integrated Vincent Furia's new comment code to use templates for comments
