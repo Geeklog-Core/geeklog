@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.60 2004/07/31 18:45:37 dhaun Exp $
+// $Id: block.php,v 1.61 2004/08/11 09:22:34 dhaun Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -415,6 +415,7 @@ function saveblock ($bid, $name, $title, $help, $type, $blockorder, $content, $t
         }
 
         $title = addslashes (COM_stripslashes ($title));
+        $phpblockfn = addslashes (COM_stripslashes ($phpblockfn));
         DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled");
 
         if (($type == 'gldefault') && ($name == 'older_stories')) {
