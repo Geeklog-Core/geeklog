@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.96 2003/07/06 09:24:09 dhaun Exp $
+// $Id: story.php,v 1.97 2003/07/06 09:34:32 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -310,6 +310,7 @@ function storyeditor($sid = '', $mode = '')
     
     $A['title'] = str_replace('{','&#123;',$A['title']);
     $A['title'] = str_replace('}','&#125;',$A['title']);
+    $A['title'] = str_replace('"','&quot;',$A['title']);
     $story_templates->set_var('story_title', stripslashes ($A['title']));
     $story_templates->set_var('lang_topic', $LANG24[14]);
     if (empty ($A['tid'])) {
