@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.56 2003/06/22 10:19:15 dhaun Exp $
+// $Id: user.php,v 1.57 2003/06/23 13:18:30 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -81,8 +81,6 @@ function edituser($uid = '', $msg = '')
             return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
         }
 
-        $curtime = COM_getUserDateTimeFormat($A['regdate']);
-
 		if (SEC_inGroup('Root',$uid) AND !SEC_inGroup('Root')) {
 			// the current admin user isn't Root but is trying to change
 			// a root account.  Deny them and log it.
@@ -100,6 +98,9 @@ function edituser($uid = '', $msg = '')
         $A['uid'] = $T['max'] + 1;
 		$curtime =  COM_getUserDateTimeFormat();
     }
+
+    $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
+    $lasttime = COM_getUserDateTimeFormat ($lastlogin);
 
     $retval .= COM_startBlock ($LANG28[1], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -124,6 +125,12 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_regdate', $LANG28[14]);
     $user_templates->set_var('regdate_timestamp', $curtime[1]);
     $user_templates->set_var('user_regdate', $curtime[0]);
+    $user_templates->set_var('lang_lastlogin', $LANG28[35]);
+    if (empty ($lastlogin)) {
+        $user_templates->set_var('user_lastlogin', $LANG28[36]);
+    } else {
+        $user_templates->set_var('user_lastlogin', $lasttime[0]);
+    }
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('username', $A['username']);
     if ($_CONF['allow_user_photo'] == 1 AND !empty($A['photo'])) {

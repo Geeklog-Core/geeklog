@@ -845,7 +845,9 @@ $LANG28 = array(
     31 => 'New Users',
     32 => 'Done processing. Imported $successes and encountered $failures failures',
     33 => 'submit',
-    34 => 'Error: You must specify a file to upload.'
+    34 => 'Error: You must specify a file to upload.',
+    35 => 'Last Login',
+    36 => '(never)'
 );
 
 

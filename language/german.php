@@ -839,7 +839,9 @@ $LANG28 = array(
     31 => 'Neue User',
     32 => 'Datei bearbeitet. $successes User wurden importiert, dabei traten $failures Fehler auf.',
     33 => 'Abschicken',
-    34 => 'Fehler: Keine Datei zum Upload angegeben.'
+    34 => 'Fehler: Keine Datei zum Upload angegeben.',
+    35 => 'Letzter Login',
+    36 => '(noch nie)'
 );
 
 
