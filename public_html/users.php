@@ -8,7 +8,7 @@
 // |                                                                           |
 // | User authentication module.                                               |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.73 2004/01/07 04:48:11 tony Exp $
+// $Id: users.php,v 1.74 2004/01/31 19:50:41 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -47,6 +47,8 @@
 * Geeklog common function library
 */
 require_once('lib-common.php');
+
+$VERBOSE = false;
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -657,11 +659,13 @@ elseif (isset ($HTTP_GET_VARS['mode'])) {
 else {
     $mode = "";
 }
+
+$display = '';
+
 switch ($mode) {
 case 'logout':
     if (!empty($_USER['uid']) AND $_USER['uid'] > 1) {
         SESS_endUserSession($_USER['uid']);
-        COM_accessLog("userid = {$HTTP_COOKIE_VARS[$_CONF["cookie_session"]]} {$LANG04[29]} $REMOTE_ADDR.");
     }
     setcookie ($_CONF['cookie_session'], '', time() - 10000,
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
@@ -675,6 +679,10 @@ case 'profile':
     $uid = COM_applyFilter ($HTTP_GET_VARS['uid'], true);
     if (is_numeric ($uid) && ($uid > 0)) {
         $display .= COM_siteHeader('menu');
+        $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
+        if ($msg > 0) {
+            $display .= COM_showMessage ($msg);
+        }
         $display .= userprofile ($uid);
         $display .= COM_siteFooter ();
     } else {
@@ -897,10 +905,6 @@ default:
             // Show login form
             $display .= loginform();
             break;
-        }
-
-        if ($mode != 'new' && empty($msg)) {
-            $msg = $LANG04[31];
         }
 
         $display .= COM_siteFooter();
