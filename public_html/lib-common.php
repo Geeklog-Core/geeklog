@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.127 2002/08/03 18:01:29 dhaun Exp $
+// $Id: lib-common.php,v 1.128 2002/08/04 08:44:16 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -2532,10 +2532,10 @@ function COM_emailUserTopics()
 function COM_whatsNewBlock($help='',$title='') 
 {
     global $_TABLES, $_CONF, $LANG01;
-	
+
     // Find the newest stories
     // Change 86400 to your desired interval in seconds
-	
+
     $sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE ";
     $now = time();
     $desired = $now - $_CONF['newstoriesinterval'];
@@ -2550,15 +2550,15 @@ function COM_whatsNewBlock($help='',$title='')
 
     // Any late breaking news stories?
     $retval .= '<b>' . $LANG01[99] . '</b><br>';
-	
+
     if ($nrows > 0) {
         $hours = (($_CONF['newstoriesinterval']/60)/60);
         if ($nrows == 1) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81] . ' '
-                . $hours . ' ' . $LANG01[82] . '</a><br>';
-        } else {
-            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' ' . $LANG01[80]
+            $retval .= '<a href="' . $_CONF['site_url'] . '">1 ' . $LANG01[81]
                 . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
+        } else {
+            $retval .= '<a href="' . $_CONF['site_url'] . '">' . $nrows . ' '
+                . $LANG01[80] . ' ' . $hours . ' ' . $LANG01[82] . '</a><br>';
         }
     } else {
         $retval .= $LANG01[100] . '<br>';
@@ -2567,7 +2567,7 @@ function COM_whatsNewBlock($help='',$title='')
 
     // Go get the newest comments
     // Change 172800 to desired interval in seconds
-	
+
     $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
 	
 	$sql = "SELECT DISTINCT *, count(*) AS dups,type,question,{$_TABLES['stories']}.title "
@@ -2587,20 +2587,23 @@ function COM_whatsNewBlock($help='',$title='')
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
-                $robtime = strftime("%D %T",$A['day']);
                 $itemlen = strlen($A['title']);
                 if ($A['type'] == 'article') {
                     $titletouse = stripslashes ($A['title']);
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments">';
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
                 } else {
                     $titletouse = $A['question'];
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments">';
+                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
                 }
-			
-                // Trim the length if over 20 characters
-			
                 if ($itemlen > 20) {
-                    $acomment = $urlstart . substr($titletouse,0,26) . '... ';
+                    $urlstart .= ' title="' . $titletouse . '">';
+                } else {
+                    $urlstart .= '>';
+                }
+
+                // Trim the length if over 20 characters
+                if ($itemlen > 20) {
+                    $acomment = $urlstart . substr($titletouse,0,20) . '... ';
                     if ($A['dups'] > 1) {
                         $acomment .= '[+' . $A['dups'] . ']';
                     }
@@ -2660,8 +2663,9 @@ function COM_whatsNewBlock($help='',$title='')
                             . urlencode ($A['url']) . '&amp;what=link&amp;item='
                             . $A['lid'];
                     if ($itemlen > 16) {
-                        $newlinks [] = '<a href="' . $lcount . '">'
-                            . substr($A['title'],0,16) . '...</a>' . LB;
+                        $newlinks [] = '<a href="' . $lcount . '" title="'
+                            . $A['title'] . '">' . substr($A['title'],0,16)
+                            . '...</a>' . LB;
                     } else {
                         $newlinks[] = '<a href="' . $lcount . '">'
                             . substr($A['title'],0,$itemlen) . '</a>' . LB;
@@ -2678,7 +2682,7 @@ function COM_whatsNewBlock($help='',$title='')
     }
 
     $retval .= COM_endBlock(COM_getBlockTemplate('whats_new_block', 'footer'));
-	
+
     return $retval;
 } 
 
