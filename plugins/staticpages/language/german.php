@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# lang.php
+# german.php
 # This is the German language file for the Geeklog Static Pages Plug-in.
 #
 # Copyright (C) 2001 Tony Bibbs
@@ -104,7 +104,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'PHP nicht ausführen',
     'select_php_return' => 'PHP ausführen (mit return)',
     'select_php_free' => 'PHP ausführen',
-    'php_not_activated' => 'Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der Dokumentation.'
+    'php_not_activated' => 'Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der Dokumentation.',
+    'printable_format' => 'Druckfähige Version'
 );
 
 ?>

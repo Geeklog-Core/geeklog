@@ -105,7 +105,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'não executa código PHP',
     'select_php_return' => 'executa PHP (volta)',
     'select_php_free' => 'executa PHP',
-    'php_not_activated' => 'O uso de PHP em páginas estáticas não está ativado. Por favor veja a documentação para saber de mais detalhes.'
+    'php_not_activated' => 'O uso de PHP em páginas estáticas não está ativado. Por favor veja a documentação para saber de mais detalhes.',
+    'printable_format' => 'Printable Format'
 );
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# lang.php
+# polish.php
 # This is the Polish language page for the Geeklog Static Page Plug-in!
 # Translation by Robert Stadnik robert_stadnik@wp.pl
 # Copyright (C) 2001 Tony Bibbs
@@ -102,7 +102,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'nie wykonuj kodu PHP',
     'select_php_return' => 'wykonaj kod PHP (enter)',
     'select_php_free' => 'wykonaj kod PHP',
-    'php_not_activated' => 'U¿ywanie PHP w stronie statycznej nie jest aktywne. Sprawd¼ szczegó³y w dokumentacji.'
+    'php_not_activated' => 'U¿ywanie PHP w stronie statycznej nie jest aktywne. Sprawd¼ szczegó³y w dokumentacji.',
+    'printable_format' => 'Printable Format'
 );
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 ###############################################################################
-# lang.php
+# czech.php
 # This is the cz language page for the Geeklog Static Page Plug-in!
 #
 # Copyright (C) 2002 hermes_trismegistos
@@ -104,7 +104,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'do not execute PHP',
     'select_php_return' => 'execute PHP (return)',
     'select_php_free' => 'execute PHP',
-    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the documentation for details.'
+    'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the documentation for details.',
+    'printable_format' => 'Printable Format'
 );
 
 ?>

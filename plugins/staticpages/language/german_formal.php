@@ -1,13 +1,13 @@
 <?php
 
 ###############################################################################
-# lang.php
+# german_formal.php
 # This is the formal german language file for the Geeklog Static Page Plug-in!
 #
 # Copyright (C) 2001 Tony Bibbs
 # tony@tonybibbs.com
 #
-# German tranlation by Dirk Haun <dirk@haun-online.de>
+# German translation by Dirk Haun <dirk@haun-online.de>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -104,7 +104,8 @@ $LANG_STATIC= array(
     'select_php_none' => 'PHP nicht ausführen',
     'select_php_return' => 'PHP ausführen (mit return)',
     'select_php_free' => 'PHP ausführen',
-    'php_not_activated' => 'Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der Dokumentation.'
+    'php_not_activated' => 'Das Verwenden von PHP in statischen Seiten ist nicht aktiviert. Hinweise zur Aktivierung finden sich in der Dokumentation.',
+    'printable_format' => 'Druckfähige Version'
 );
 
 ?>
