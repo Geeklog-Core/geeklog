@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.84 2004/09/29 10:36:29 dhaun Exp $
+// $Id: user.php,v 1.85 2004/10/05 19:52:46 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -82,7 +82,7 @@ function edituser($uid = '', $msg = '')
         // don't bother trying to read the user's data from the database ...
         $cnt = DB_count ($_TABLES['users'], 'uid', $uid);
         if ($cnt == 0) {
-            $uid = 0;
+            $uid = '';
         }
     }
 
@@ -104,15 +104,15 @@ function edituser($uid = '', $msg = '')
             return $retval;
         }
         $curtime = COM_getUserDateTimeFormat($A['regdate']);
+        $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
+        $lasttime = COM_getUserDateTimeFormat ($lastlogin);
     } else {
-        $tmp = DB_query("SELECT MAX(uid) AS max FROM {$_TABLES['users']}");
-        $T = DB_fetchArray($tmp);
-        $A['uid'] = $T['max'] + 1;
+        $A['uid'] = '';
+        $uid = '';
         $curtime =  COM_getUserDateTimeFormat();
+        $lastlogin = '';
+        $lasttime = '';
     }
-
-    $lastlogin = DB_getItem ($_TABLES['userinfo'], 'lastlogin', "uid = '$uid'");
-    $lasttime = COM_getUserDateTimeFormat ($lastlogin);
 
     $retval .= COM_startBlock ($LANG28[1], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -124,7 +124,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
-    if ($A['uid'] > 1) { 
+    if (!empty ($A['uid']) && ($A['uid'] > 1)) { 
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
     }
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
@@ -133,7 +133,11 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_cancel', $LANG28[18]);
 
     $user_templates->set_var('lang_userid', $LANG28[2]);
-    $user_templates->set_var('user_id', $A['uid']);
+    if (empty ($A['uid'])) {
+        $user_templates->set_var ('user_id', 'n/a');
+    } else {
+        $user_templates->set_var ('user_id', $A['uid']);
+    }
     $user_templates->set_var('lang_regdate', $LANG28[14]);
     $user_templates->set_var('regdate_timestamp', $curtime[1]);
     $user_templates->set_var('user_regdate', $curtime[0]);
@@ -265,38 +269,45 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);    
     if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);    
 
-    if (!empty($username) && !empty($email)) {
-
-        $username = addslashes ($username);
-        $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
-                              "username = '$username' AND uid <> $uid");
-        if ($ucount > 0) {
-            // Admin just changed a user's username to one that already exists
-            return edituser ($uid, 51);
-        }
+    if (!empty ($username) && !empty ($email)) {
 
         if (!COM_isEmail ($email)) {
             return edituser ($uid, 52);
         }
 
-        $email = addslashes ($email);
-        $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
-                              "email = '$email' AND uid <> $uid");
+        $uname = addslashes ($username);
+        if (empty ($uid)) {
+            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
+                                  "username = '$uname'");
+        } else {
+            $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
+                                  "username = '$uname' AND uid <> $uid");
+        }
+        if ($ucount > 0) {
+            // Admin just changed a user's username to one that already exists
+            return edituser ($uid, 51);
+        }
+
+        $emailaddr = addslashes ($email);
+        if (empty ($uid)) {
+            $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+                                  "email = '$emailaddr'");
+        } else {
+            $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+                                  "email = '$emailaddr' AND uid <> $uid");
+        }
         if ($ucount > 0) {
             // Admin just changed a user's email to one that already exists
             return edituser ($uid, 56);
         }
 
-        $regdate = strftime ('%Y-%m-%d %H:%M:%S', $regdate);
-        if (($uid == 1) or !empty ($passwd)) { 
+        if (empty ($uid) || !empty ($passwd)) { 
             $passwd = md5 ($passwd);
         } else {
             $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
         }
 
-        $fullname = addslashes ($fullname);
-        $homepage = addslashes ($homepage);
-        if (DB_count ($_TABLES['users'], 'uid', $uid) == 0) {
+        if (empty ($uid)) {
             if (empty ($passwd)) {
                 // no password? create one ...
                 srand ((double) microtime () * 1000000);
@@ -306,20 +317,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
                 $passwd = md5 ($passwd);
             }
 
-            DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
-            DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-            if ($_CONF['emailstoriesperdefault'] == 1) {
-                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
-            } else {
-                DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
-            }
-            DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
-            DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-            if ($_CONF['custom_registration'] AND (function_exists('custom_usercreate'))) {
-                custom_usercreate($uid);
-            }
-            PLG_createUser ($uid);
+            $uid = USER_createAccount ($username, $email, $passwd, $fullname,
+                                       $homepage);
         } else {
+            $fullname = addslashes ($fullname);
+            $homepage = addslashes ($homepage);
             $curphoto = DB_getItem($_TABLES['users'],'photo',"uid = $uid");
             if (!empty($curphoto) AND $delete_photo == 'on') {
                 if (!unlink($_CONF['path_html'] . 'images/userphotos/' . $curphoto)) {
@@ -334,7 +336,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
             }
             PLG_userInfoChanged ($uid);
         }
-        
+
         // if groups is -1 then this user isn't allowed to change any groups so ignore
         if (is_array ($groups) && SEC_inGroup ('Group Admin')) {
             if (!SEC_inGroup ('Root')) {
@@ -557,40 +559,22 @@ function importusers ($file)
         }
 
         // prepare for database
-        $userName = addslashes (trim ($u_name));
-        $fullName = addslashes (trim ($full_name));
-        $emailAddr = addslashes (trim ($email));
+        $userName  = trim ($u_name);
+        $fullName  = trim ($full_name);
+        $emailAddr = trim ($email);
 
         if (COM_isEmail ($email)) {
             // email is valid form
-            $ucount = DB_count ($_TABLES['users'], 'username', $userName);
-            $ecount = DB_count ($_TABLES['users'], 'email', $emailAddr);
+            $ucount = DB_count ($_TABLES['users'], 'username',
+                                addslashes ($userName));
+            $ecount = DB_count ($_TABLES['users'], 'email',
+                                addslashes ($emailAddr));
 
             if ($ucount == 0 && ecount == 0) {
                 // user doesn't already exist
-                $regdate = strftime ('%Y-%m-%d %H:%M:%S', time ());
-
-                // Create user record
-                DB_query ("INSERT INTO {$_TABLES['users']} (username,fullname,email,regdate) VALUES ('$userName','$fullName','$emailAddr','$regdate')");
-                $uid = DB_getItem($_TABLES['users'],'uid',"username = '$userName'");
-
-                // Add user to Logged-in group (i.e. members) and the All Users
-                // group (which includes anonymous users)
-                $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
-                $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
-                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
-                DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
-                DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-                if ($_CONF['emailstoriesperdefault'] == 1) {
-                    DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
-                } else {
-                    DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
-                }
-                DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
-                DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+                $uid = USER_createAccount ($userName, $emailAddr, '',
+                                           $fullName);
                 emailpassword ($userName);
-
-                PLG_createUser ($uid);
 
                 if ($verbose_import) {
                     $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";

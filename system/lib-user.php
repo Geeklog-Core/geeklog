@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.6 2004/08/11 18:30:35 dhaun Exp $
+// $Id: lib-user.php,v 1.7 2004/10/05 19:52:45 dhaun Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -191,6 +191,119 @@ function USER_createAndSendPassword ($username, $useremail)
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
 
     return COM_mail ($useremail, $subject, $mailtext);
+}
+
+/**
+* Create a new user
+*
+* This also handles adding the user to the user submission queue, if enabled.
+* Also calls the custom user registration (if enabled) and plugin functions.
+*
+* NOTE: Does NOT send out password emails.
+*
+* @param    string  $username   user name (mandatory)
+* @param    string  $email      user's email address (mandatory)
+* @param    string  $passwd     password (optional, see above)
+* @param    string  $fullname   user's full name (optional)
+* @param    string  $homepage   user's home page (optional)
+* @return   int                 new user's ID
+*
+*/
+function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '')
+{
+    global $_CONF, $_TABLES;
+
+    $username = addslashes ($username);
+    $email = addslashes ($email);
+
+    $regdate = strftime ('%Y-%m-%d %H:%M:%S', time ());
+    $fields = 'username,email,regdate,cookietimeout';
+    $values = "'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'";
+
+    if (!empty ($passwd)) {
+        $passwd = addslashes ($passwd);
+        $fields .= ',passwd';
+        $values .= ",'$passwd'";
+    }
+    if (!empty ($fullname)) {
+        $fullname = addslashes ($fullname);
+        $fields .= ',fullname';
+        $values .= ",'$fullname'";
+    }
+    if (!empty ($homepage)) {
+        $homepage = addslashes ($homepage);
+        $fields .= ',homepage';
+        $values .= ",'$homepage'";
+    }
+
+    DB_query ("INSERT INTO {$_TABLES['users']} ($fields) VALUES ($values)");
+
+    $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username'");
+
+    // Add user to Logged-in group (i.e. members) and the All Users group
+    $normal_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
+                              "grp_name='Logged-in Users'");
+    $all_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
+                           "grp_name='All Users'");
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($normal_grp, $uid)");
+    DB_query ("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) VALUES ($all_grp, $uid)");
+
+    DB_query ("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
+    if ($_CONF['emailstoriesperdefault'] == 1) {
+        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+    } else {
+        DB_query ("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
+    }
+
+    DB_query ("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_limit']}')");
+    DB_query ("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
+
+    // if user submission queue is active and the current user is not a
+    // User Admin, then we may have to add the new user to the submission queue
+    if (($_CONF['usersubmission'] == 1) && !SEC_hasRights ('user.edit')) {
+        $queueUser = true;
+        if (!empty ($_CONF['allow_domains'])) {
+            $allowed = explode (',', $_CONF['allow_domains']);
+            // Note: We already made sure $email is a valid address
+            $domain = substr ($email, strpos ($email, '@') + 1);
+            if (in_array ($domain, $allowed)) {
+                $queueUser = false;
+            }
+        }
+        if ($queueUser) {
+            $passwd = addslashes (md5 (''));
+            DB_change ($_TABLES['users'], 'passwd', "$passwd", 'uid', $uid);
+        }
+    }
+
+    // call custom registration function and plugins
+    if ($_CONF['custom_registration'] && (function_exists ('custom_usercreate'))) {
+        custom_usercreate ($uid);
+    }
+    PLG_createUser ($uid);
+
+    return $uid;
+}
+
+/**
+* Check if a user is in the user submission queue
+*
+* @param    int     $uid    User ID to check
+* @return   boolean         true = user in queue, false = not in queue
+*
+*/
+function USER_isQueued ($uid)
+{
+    global $_TABLES;
+
+    $queued = false;
+
+    $passwd = md5 ('');
+    if (DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid") == $passwd) {
+        $queued = true;
+    }
+
+    return $queued;
 }
 
 ?>

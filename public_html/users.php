@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.89 2004/09/19 17:55:59 dhaun Exp $
+// $Id: users.php,v 1.90 2004/10/05 19:52:45 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -299,27 +299,32 @@ function userprofile ($user, $msg)
 * @return   string      Optionally returns the HTML for the default form if the user info can't be found
 *
 */
-function emailpassword($username,$msg=0) 
+function emailpassword ($username, $msg = 0) 
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    $result = DB_query("SELECT email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
-    $nrows = DB_numRows($result);
+    $retval = '';
+
+    $username = addslashes ($username);
+    $result = DB_query ("SELECT uid,email FROM {$_TABLES['users']} WHERE username = '$username'");
+    $nrows = DB_numRows ($result);
     if ($nrows == 1) {
-        $A = DB_fetchArray($result);
-        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5(''))) {
+        $A = DB_fetchArray ($result);
+        if (($_CONF['usersubmission'] == 1) && USER_isQueued ($A['uid'])) {
             return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
 
         USER_createAndSendPassword ($username, $A['email']);
 
         if ($msg) {
-            $retval .= COM_refresh("{$_CONF['site_url']}/index.php?msg=$msg");
+            $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=$msg");
         } else {
-            $retval .= COM_refresh("{$_CONF['site_url']}/index.php");
+            $retval = COM_refresh ("{$_CONF['site_url']}/index.php");
         }
     } else {
-        $retval .= COM_siteHeader('menu') . defaultform($LANG04[17]) . COM_siteFooter();
+        $retval = COM_siteHeader ('menu', $LANG04[17])
+                . defaultform ($LANG04[17])
+                . COM_siteFooter ();
     }
 
     return $retval;
@@ -449,74 +454,34 @@ function createuser($username,$email)
     global $_CONF, $_TABLES, $LANG01, $LANG04;
 
     $username = trim ($username);
+    $email = trim ($email);
 
     if (COM_isEmail ($email) && !empty ($username)) {
 
-        $ucount = DB_count($_TABLES['users'],'username',$username);
-        $ecount = DB_count($_TABLES['users'],'email',$email);
+        $ucount = DB_count ($_TABLES['users'], 'username',
+                            addslashes ($username));
+        $ecount = DB_count ($_TABLES['users'], 'email', addslashes ($email));
 
         if ($ucount == 0 AND $ecount == 0) {
-            $regdate = strftime('%Y-%m-%d %H:%M:$S',time());
-            DB_save($_TABLES['users'],'username,email,regdate,cookietimeout',"'$username','$email','$regdate','{$_CONF['default_perm_cookie_timeout']}'");
-            $uid = DB_getItem($_TABLES['users'],'uid',"username = '$username'");
+            $uid = USER_createAccount ($username, $email);
 
-            // Add user to Logged-in group (i.e. members) and the All Users
-            // group (which includes anonymous users
-            $normal_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='Logged-in Users'");
-            $all_grp = DB_getItem($_TABLES['groups'],'grp_id',"grp_name='All Users'");
-            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($normal_grp, $uid)");
-            DB_query("INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id,ug_uid) values ($all_grp, $uid)");
-            DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
-            if ($_CONF['emailstoriesperdefault'] == 1) {
-                DB_query("INSERT INTO {$_TABLES['userindex']} (uid) VALUES ($uid)");
+            $queueUser = USER_isQueued ($uid);
+            if ($queueUser) {
+                $msg = 48;
             } else {
-                DB_query("INSERT INTO {$_TABLES['userindex']} (uid,etids) VALUES ($uid, '-')");
-            }
-            DB_query("INSERT INTO {$_TABLES['usercomment']} (uid) VALUES ($uid)");
-            DB_query("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
-            if ($_CONF['usersubmission'] == 1) {
-                $queueUser = true;
-                if (!empty ($_CONF['allow_domains'])) {
-                    $allowed = explode (',', $_CONF['allow_domains']);
-                    // Note: We already made sure $email is a valid address
-                    $domain = substr ($email, strpos ($email, '@') + 1);
-                    if (in_array ($domain, $allowed)) {
-                        $queueUser = false;
-                    }
-                }
-                if ($queueUser) {
-                    $passwd = md5('');
-                    DB_change($_TABLES['users'],'passwd',"$passwd",'username',$username);
-                    $msg = 48;
-                } else {
-                    emailpassword($username, 1);
-                    $msg = 1;
-                }
-                if (isset ($_CONF['notification']) && in_array ('user', $_CONF['notification'])) {
-                    sendNotification ($username, $email, $uid, $queueUser);
-                }
-            } else {
-                emailpassword($username, 1);
+                emailpassword ($username, 1);
                 $msg = 1;
-                if (isset ($_CONF['notification']) && in_array ('user', $_CONF['notification'])) {
-                    sendNotification ($username, $email, $uid, false);
-                }
             }
-            DB_change($_TABLES['usercomment'],'commentmode',$_CONF['comment_mode'],'uid',$uid);
-            DB_change($_TABLES['usercomment'],'commentlimit',$_CONF['comment_limit'],'uid',$uid); 
-
-            // Call custom registration and account record create function
-            // if enabled and exists
-  	        if ($_CONF['custom_registration'] AND (function_exists(custom_usercreate))) {
-                custom_usercreate($uid);
+            if (isset ($_CONF['notification']) &&
+                    in_array ('user', $_CONF['notification'])) {
+                sendNotification ($username, $email, $uid, $queueUser);
             }
-
-            PLG_createUser ($uid);
 
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);
         } else {
             $retval .= COM_siteHeader ('Menu');
-            if ($_CONF['custom_registration'] AND (function_exists(custom_userform))) {
+            if ($_CONF['custom_registration'] &&
+                    function_exists ('custom_userform')) {
                 $retval .= custom_userform ($LANG04[19]);
             } else {
                 $retval .= newuserform ($LANG04[19]);
