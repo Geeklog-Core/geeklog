@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.2 2005/01/17 15:29:06 dhaun Exp $
+// $Id: trackback.php,v 1.3 2005/01/29 09:02:11 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -40,6 +40,20 @@ require_once ('auth.inc.php');
 
 if (!$_CONF['trackback_enabled']) {
     echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
+    exit;
+}
+
+$display = '';
+
+if (!SEC_hasRights ('story.ping')) {
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header')); 
+    $display .= $MESSAGE[31];
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
+    COM_accessLog("User {$_USER['username']} tried to illegally access the trackback administration screen.");
+    echo $display;
     exit;
 }
 

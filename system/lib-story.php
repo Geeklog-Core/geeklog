@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.16 2005/01/16 19:14:29 dhaun Exp $
+// $Id: lib-story.php,v 1.17 2005/01/29 09:02:11 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -206,7 +206,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         $article->set_var( 'story_introtext_only', $introtext );
         $article->set_var( 'story_bodytext_only', $bodytext );
 
-        if( $_CONF['trackback_enabled'] && SEC_inGroup( 'Root' ))
+        if( $_CONF['trackback_enabled'] && SEC_hasRights( 'story.ping' ))
         {
             $url = $_CONF['site_admin_url'] . '/trackback.php?mode=new&amp;id='
                  . $A['sid'];

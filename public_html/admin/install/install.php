@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.76 2005/01/28 12:40:16 dhaun Exp $
+// $Id: install.php,v 1.77 2005/01/29 09:02:11 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -166,7 +166,7 @@ function INST_welcomePage()
     }
 
     $retval .= '<h1>Geeklog Installation (Step 1 of 2)</h1>' . LB;
-    $retval .= '<p><strong>Welcome to Geeklog ' . VERSION . '</strong> and thank you for choosing Geeklog. You are only 2 steps away from having Geeklog running on your system.</p>' . LB;
+    $retval .= '<p><strong>Welcome and thank you for choosing Geeklog.</strong> You are only 2 steps away from having Geeklog ' . VERSION . ' running on your system.</p>' . LB;
     $retval .= "<p>If you haven't already done so, you should <strong>edit config.php prior to running this script</strong>. This script will then apply the database structures for both fresh installations and upgrades.</p>" . LB;
 
     $retval .= '<h2>Upgrading</h2>' . LB;
@@ -739,6 +739,9 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix)
                 DB_query (current ($_SQL));
                 next ($_SQL);
             }
+
+            upgrade_addFeature ();
+
             $current_gl_version = '1.3.12';
             $_SQL = '';
             break;

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.413 2005/01/26 20:52:12 dhaun Exp $
+// $Id: lib-common.php,v 1.414 2005/01/29 09:02:10 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2519,7 +2519,7 @@ function COM_adminMenu( $help = '', $title = '' )
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
 
-        if( $_CONF['trackback_enabled'] && SEC_inGroup( 'Root' ))
+        if( $_CONF['trackback_enabled'] && SEC_hasRights( 'story.ping' ))
         {
             $url = $_CONF['site_admin_url'] . '/trackback.php';
             $adminmenu->set_var( 'option_url', $url );
@@ -2530,7 +2530,7 @@ function COM_adminMenu( $help = '', $title = '' )
                     ( $thisUrl == $url ) ? 'current' : 'option' );
         }
 
-        if( SEC_hasrights( 'plugin.edit' ))
+        if( SEC_hasRights( 'plugin.edit' ))
         {
             $url = $_CONF['site_admin_url'] . '/plugins.php';
             $adminmenu->set_var( 'option_url', $url );
