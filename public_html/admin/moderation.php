@@ -63,6 +63,9 @@ function commandcontrol() {
 	if (hasrights('user.edit')) {
 		print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/icons/user.gif border=0><br>{$LANG01[17]}</a></td>";
 	}
+	if (hasrights('group.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/group.php><img src={$CONF["site_url"]}/images/icons/group.gif border=0><br>{$LANG01[96]}</a></td>";
+	}
 	if (hasrights('plugin.edit')) {
 		print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/icons/plugins.gif border=0><br>Plug-ins</a></td>";
 	}
