@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.32 2002/05/01 13:10:53 dhaun Exp $
+// $Id: config.php,v 1.33 2002/05/02 16:14:25 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -56,13 +56,21 @@ $_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
 // | where the config.php (this file) resides                                  | 
 // +---------------------------------------------------------------------------+
 
-$_CONF['path']              = '/path/to/geeklog/';
+$_CONF['path']              = '/path/to/geeklog/'; // C:/inetpub/wwwroot/geeklog
 $_CONF['path_system']       = $_CONF['path'] . 'system/';
 $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 $_CONF['path_log']          = $_CONF['path'] . 'logs/';
 $_CONF['path_language']     = $_CONF['path'] . 'language/';
 $_CONF['rdf_file']          = $_CONF['path_html'] . 'backend/geeklog.rdf';
 $_CONF['backup_path']       = $_CONF['path'] . 'backups/';
+
+// Experimental, only works with staticpages right now. This feature is known
+// to have issues that are unresolvable with systems running IIS.  Have not
+// tested on windows with apache yet.  This feature when fully implemented,
+// will make your site crawler friendly.  Problems with IIS are known PHP CGI
+// bug.
+
+$_CONF['url_rewrite']       = false; // false = off, true = on
 
 // +---------------------------------------------------------------------------+
 // | SITE SETTINGS                                                             |
