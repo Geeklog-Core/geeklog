@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.48 2004/03/21 20:53:32 dhaun Exp $
+// $Id: moderation.php,v 1.49 2004/04/09 08:39:27 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -286,12 +286,8 @@ function itemlist($type)
             }
             $mod_templates->set_var('lang_edit', $LANG29[3]);
 
-            // Hack for clickable URLs. From a posting by Andreas Schwarz in
-            // news:de.comp.lang.php <aieq4p$12jn2i$3@ID-16486.news.dfncis.de>
             for ($j = 1; $j <= 3; $j++) {
-                $A[$j] = preg_replace("/((((ht|f)tps?):(\/\/)|www)[a-z0-9%&_\-\+,;=:@~#\/.\?\[\]]+(\/|[+0-9a-z]))/is",
-                "<a href=\"\\1\" target=\"_BLANK\">\\1</a>", stripslashes ($A[$j]));
-                $A[$j] = str_replace("<a href=\"www","<a href=\"http://www", $A[$j]);
+                $A[$j] = COM_makeClickableLinks (stripslashes ($A[$j]));
             }
             $mod_templates->set_var('data_col1', $A[1]);
             $mod_templates->set_var('data_col2', $A[2]);
