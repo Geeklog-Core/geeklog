@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.279 2004/02/02 19:05:39 dhaun Exp $
+// $Id: lib-common.php,v 1.280 2004/02/07 09:49:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -135,7 +135,7 @@ require_once( $_CONF['path_system'] . 'classes/template.class.php' );
 /**
 * This is the database library.
 *
-* Including this give you a working connection to the database
+* Including this gives you a working connection to the database
 *
 */
 
@@ -771,11 +771,11 @@ function COM_siteHeader( $what = 'menu' )
 
     $header = new Template( $_CONF['path_layout'] );
     $header->set_file( array(
-        'header'=>'header.thtml',
-        'menuitem'=>'menuitem.thtml',
-        'menuitem_last'=>'menuitem_last.thtml',
-        'menuitem_none'=>'menuitem_none.thtml',
-        'leftblocks'=>'leftblocks.thtml'
+        'header'        => 'header.thtml',
+        'menuitem'      => 'menuitem.thtml',
+        'menuitem_last' => 'menuitem_last.thtml',
+        'menuitem_none' => 'menuitem_none.thtml',
+        'leftblocks'    => 'leftblocks.thtml'
         ));
 
     $pagetitle = '';
@@ -861,24 +861,50 @@ function COM_siteHeader( $what = 'menu' )
                         . '/submit.php?type=story&amp;topic=' . $topic;
         $header->set_var( 'current_topic', '&amp;topic=' . $topic );
     }
+
+    $allowedCounter = 0;
     $header->set_var( 'menuitem_url', $contributelink );
     $header->set_var( 'menuitem_text', $LANG01[71] );
     $header->parse( 'menu_elements', 'menuitem', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['submitloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
 
     // links link
     $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/links.php' );
     $header->set_var( 'menuitem_text', $LANG01[72] );
     $header->parse( 'menu_elements', 'menuitem', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['linksloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
 
     // polls link
     $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/pollbooth.php' );
     $header->set_var( 'menuitem_text', $LANG01[73] );
     $header->parse( 'menu_elements', 'menuitem', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['pollsloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
 
     // calendar link
     $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/calendar.php' );
     $header->set_var( 'menuitem_text', $LANG01[74] );
     $header->parse( 'menu_elements', 'menuitem', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['calendarloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
 
     // Get plugin menu options
     $plugin_menu = PLG_getMenuItems();
@@ -916,11 +942,28 @@ function COM_siteHeader( $what = 'menu' )
     $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/search.php' );
     $header->set_var( 'menuitem_text', $LANG01[75] );
     $header->parse( 'menu_elements', 'menuitem', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['searchloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
 
     // Stats link
     $header->set_var( 'menuitem_url', $_CONF['site_url'] . '/stats.php' );
     $header->set_var( 'menuitem_text', $LANG01[76] );
     $header->parse( 'menu_elements', 'menuitem_last', true );
+    if(( isset( $_USER['uid'] ) && ( $_USER['uid'] > 1 )) ||
+        (( $_CONF['loginrequired'] == 0 ) && ( $_CONF['statsloginrequired'] == 0 )))
+    {
+        $header->parse( 'allowed_menu_elements', 'menuitem', true );
+        $allowedCounter++;
+    }
+
+    if( $allowedCounter == 0 )
+    {
+        $header->set_var( 'allowed_menu_elements', '' );
+    }
 
     if( $what <> 'none' )
     {
@@ -4782,7 +4825,8 @@ function COM_makeList( $listofitems )
     global $_CONF;
 
     $list = new Template( $_CONF['path_layout'] );
-    $list->set_file( array( 'list' => 'list.thtml','listitem'=>'listitem.thtml' ));
+    $list->set_file( array( 'list'     => 'list.thtml',
+                            'listitem' => 'listitem.thtml' ));
     $list->set_var( 'layout_url', $_CONF['layout_url'] );
     $list->set_var( 'site_url', $_CONF['site_url'] );
 
@@ -4856,8 +4900,8 @@ function COM_clearSpeedlimit ($speedlimit = 60, $type = '')
 }
 
 /**
-* Wrapper function for URL class so as to not confuse people as this will eventually get
-* used all over the place
+* Wrapper function for URL class so as to not confuse people as this will
+* eventually get used all over the place
 *
 * This function returns a crawler friendly URL (if possible)
 *
