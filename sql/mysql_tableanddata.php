@@ -611,7 +611,8 @@ CREATE TABLE {$_TABLES['pingservice']} (
   INDEX pingservice_is_enabled(is_enabled)
 ) TYPE=MyISAM
 ";
-$_SQL[41] = "
+
+$_SQL[42] = "
 CREATE TABLE {$_TABLES['staticpage']} (
   sp_id varchar(40) NOT NULL default '',
   sp_uid mediumint(8) NOT NULL default '1',
@@ -644,7 +645,7 @@ CREATE TABLE {$_TABLES['staticpage']} (
 ) TYPE=MyISAM
 ";
  
-$_SQL[42] = "
+$_SQL[43] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '',
