@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | mail.php                                                                  |
-// | Geeklog mail administration page.                                         |
 // |                                                                           |
+// | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2001,2002 by the following authors:                         |
 // |                                                                           |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.16 2003/05/30 08:16:34 dhaun Exp $
+// $Id: mail.php,v 1.17 2003/06/19 20:01:41 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -42,11 +42,12 @@ $display = '';
 
 // Make sure user has access to this page  
 if (!SEC_inGroup('Mail Admin')) {
-    $retval .= COM_siteHeader('menu');
-    $retval .= COM_startBlock($MESSAGE[30]);
+    $retval .= COM_siteHeader ('menu');
+    $retval .= COM_startBlock ($MESSAGE[30], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
     $retval .= $MESSAGE[37];
-    $retval .= COM_endBlock();
-    $retval .= COM_siteFooter();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $retval .= COM_siteFooter ();
     COM_errorLog("User {$_USER['username']} tried to illegally access the mail administration screen",1);
     echo $retval;
     exit;
@@ -60,14 +61,15 @@ if (!SEC_inGroup('Mail Admin')) {
 function display_form()
 {
     global $_CONF, $_USER, $_LANG31, $PHP_SELF, $LANG31, $_TABLES;
-    
+
     $retval = '';
 
     $mail_templates = new Template($_CONF['path_layout'] . 'admin/mail');
     $mail_templates->set_file(array('form'=>'mailform.thtml'));
     $mail_templates->set_var('site_url', $_CONF['site_url']);
     $mail_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
-    $mail_templates->set_var('startblock_email',COM_startBlock($LANG31[1]));
+    $mail_templates->set_var ('startblock_email', COM_startBlock ($LANG31[1],
+            '', COM_getBlockTemplate ('_admin_block', 'header')));
     $mail_templates->set_var('php_self', $PHP_SELF);
     $mail_templates->set_var('lang_note', $LANG31[19]);
     $mail_templates->set_var('lang_to', $LANG31[18]);
@@ -94,7 +96,7 @@ function display_form()
     $mail_templates->set_var('lang_urgent', $LANG31[11]);
     $mail_templates->set_var('lang_ignoreusersettings', $LANG31[14]);
     $mail_templates->set_var('lang_send', $LANG31[12]);
-    $mail_templates->set_var('end_block', COM_endBlock());
+    $mail_templates->set_var ('end_block', COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
     $mail_templates->parse('output','form');
     $retval = $mail_templates->finish($mail_templates->get_var('output'));
@@ -129,22 +131,21 @@ function send_messages($vars)
 	if (isset($vars['priority'])) {
  		$headers .= "X-Priority: 1\r\n";
 	}
-    
+
 	$headers .= "Return-Path: <{$vars['fraepost']}>\r\n";  // Return path for errors
-        if (empty ($LANG_CHARSET)) {
-            $charset = $_CONF['default_charset'];
-            if (empty ($charset)) {
-                $charset = "iso-8859-1";
-            }
+    if (empty ($LANG_CHARSET)) {
+        $charset = $_CONF['default_charset'];
+        if (empty ($charset)) {
+            $charset = "iso-8859-1";
         }
-        else {
-            $charset = $LANG_CHARSET;
-        }
+    } else {
+        $charset = $LANG_CHARSET;
+    }
+
 	// If you want to send html mail
 	if (isset($vars['html'])) { 
  		$headers .= "Content-Type: text/html; charset=$charset\r\n"; // Mime type 
-	}
-	else {
+	} else {
         $headers .= "Content-Type: text/plain; charset=$charset\r\n";
 	}
 
@@ -185,7 +186,7 @@ function send_messages($vars)
             $successes[] = $til;
  		}
 	}
-	
+
 	$failcount = count($failures);
 	$successcount = count($successes);
 	$mailresult .= str_replace('<successcount>',$successcount,$LANG31[20]);
@@ -206,7 +207,8 @@ function send_messages($vars)
 	if (count($successes) == 0) {
         $retval .= $LANG31[24];
 	}
-	return $retval;
+
+    return $retval;
 }
 
 // MAIN

@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | group.php                                                                 |
-// | Geeklog group administration page.                                        |
 // |                                                                           |
+// | Geeklog group administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.25 2003/06/08 19:14:00 blaine Exp $
+// $Id: group.php,v 1.26 2003/06/19 20:01:41 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -60,11 +60,12 @@ $display = '';
 
 // Make sure user has rights to access this page 
 if (!SEC_hasRights('group.edit')) {
-    $display .= COM_siteHeader("menu");
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[32];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
     echo $display;
     exit;
 }
@@ -78,11 +79,9 @@ if (!SEC_hasRights('group.edit')) {
 */
 function editgroup($grp_id = '') 
 {
-	global $_TABLES, $_CONF, $_USER, $LANG_ACCESS;
+    global $_TABLES, $_CONF, $_USER, $LANG_ACCESS;
 
     $retval = '';
-
-	$retval .= COM_startBlock($LANG_ACCESS['groupeditor']);
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file('editor','groupeditor.thtml');
@@ -99,8 +98,10 @@ function editgroup($grp_id = '')
 	    // If this is a not Root user (e.g. Group Admin) and they are editing the 
 	    // Root root then bail...they can't change groups
 		if (!SEC_inGroup('Root') AND (DB_getItem($_TABLES['groups'],'grp_name',"grp_id = $grp_id") == "Root")) {
+            $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG_ACCESS['canteditroot'];
-			$retval .= COM_endBlock();
+			$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 			return $retval;
 		}
 	} else {
@@ -111,6 +112,9 @@ function editgroup($grp_id = '')
 		$A['group_id'] = DB_getItem($_TABLES['groups'],'grp_id',"grp_name = 'Normal User'");
 		$A['grp_gl_core'] = 0;
 	}
+
+    $retval .= COM_startBlock ($LANG_ACCESS['groupeditor'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
 	if (!empty($grp_id)) {
 		if ($A['grp_gl_core'] == 0) {
@@ -126,7 +130,7 @@ function editgroup($grp_id = '')
 	}
 
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
-    
+
 	if ($A['grp_gl_core'] == 0) {	
         $group_templates->set_var('groupname_inputtype', 'text');
         $group_templates->set_var('groupname_static', '');
@@ -139,7 +143,7 @@ function editgroup($grp_id = '')
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('group_description', $A['grp_descr']);
     $group_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
-	
+
 	//$groups = SEC_getUserGroups('','',$grp_id);
     if (!empty($grp_id)) {
         $tmp = DB_query("SELECT ug_main_grp_id FROM {$_TABLES['group_assignments']} WHERE ug_grp_id = $grp_id"); 
@@ -197,7 +201,8 @@ function editgroup($grp_id = '')
 	$group_templates->set_var('rights_options', printrights($grp_id, $A['grp_gl_core']));
     $group_templates->parse('output','editor');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
 	return $retval;
 }
 
@@ -396,12 +401,14 @@ function savegroup($grp_id,$grp_name,$grp_descr,$grp_gl_core,$features,$groups)
 
 		echo COM_refresh($_CONF['site_admin_url'] . '/group.php?msg=49');
 	} else {
-		$retval .= COM_siteHeader('menu');
-		$retval .= COM_startBlock($LANG_ACCESS['missingfields']);
+		$retval .= COM_siteHeader ('menu');
+		$retval .= COM_startBlock ($LANG_ACCESS['missingfields'], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
 		$retval .= $LANG_ACCESS['missingfieldsmsg'];
-		$retval .= COM_endBlock();
-		$retval .= editgroup($grp_id);
-		$retval .= COM_siteFooter();
+		$retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+		$retval .= editgroup ($grp_id);
+		$retval .= COM_siteFooter ();
+
         return $retval;
 	}   
 }
@@ -416,7 +423,8 @@ function listgroups()
 {
 	global $_TABLES, $_CONF, $LANG_ACCESS;
 
-    $retval .= COM_startBlock($LANG_ACCESS['groupmanager']);
+    $retval .= COM_startBlock ($LANG_ACCESS['groupmanager'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $group_templates = new Template($_CONF['path_layout'] . 'admin/group');
     $group_templates->set_file(array('list'=>'grouplist.thtml','row'=>'listitem.thtml'));
@@ -447,7 +455,7 @@ function listgroups()
     }
     $group_templates->parse('output', 'list');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
-    $retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }

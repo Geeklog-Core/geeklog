@@ -5,8 +5,8 @@
 // | Geeklog 1.3                                                               |
 // +---------------------------------------------------------------------------+
 // | event.php                                                                 |
-// | Geeklog event administration page.                                        |
 // |                                                                           |
+// | Geeklog event administration page.                                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2003 by the following authors:                         |
 // |                                                                           |
@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.38 2003/04/24 15:50:33 dhaun Exp $
+// $Id: event.php,v 1.39 2003/06/19 20:01:41 dhaun Exp $
 
-include('../lib-common.php');
-include('auth.inc.php');
+require_once ('../lib-common.php');
+require_once ('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -46,9 +46,10 @@ $display = '';
 // Ensure user even has the rights to access this page
 if (!SEC_hasRights('event.edit')) {
     $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[35];
-    $display .= COM_endBlock();
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter();
 
     // Log attempt to error.log
@@ -68,7 +69,7 @@ if (!SEC_hasRights('event.edit')) {
 */
 function editevent($mode, $A) 
 {
-	global $_TABLES, $LANG30, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
+    global $_TABLES, $LANG30, $LANG22, $_CONF, $LANG_ACCESS, $_USER, $LANG12, $_STATES;
 
     $retval = '';
 
@@ -83,9 +84,10 @@ function editevent($mode, $A)
 		$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 		if ($access == 0 OR $access == 2) {
             // Uh, oh!  User doesn't have access to this object
-            $retval .= COM_startBlock($LANG22[16]);
+            $retval .= COM_startBlock ($LANG22[16], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'));
             $retval .= $LANG22[17];
-            $retval .= COM_endBlock();
+            $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             return $retval;
         }
     } else {
@@ -98,7 +100,8 @@ function editevent($mode, $A)
         $access = 3;
     }
 
-	$retval .= COM_startBlock($LANG22[1]);
+	$retval .= COM_startBlock($LANG22[1], '',
+                              COM_getBlockTemplate ('_admin_block', 'header'));
 
     if ($A['eid'] == '') { 
 		$A['eid'] = COM_makesid(); 
@@ -376,7 +379,8 @@ function editevent($mode, $A)
     $event_templates->set_var('permissions_editor', SEC_getPermissionsHTML($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']));
     $event_templates->parse('output', 'editor');
     $retval .= $event_templates->finish($event_templates->get_var('output'));
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
     return $retval;
 }
 
@@ -418,9 +422,10 @@ function saveevent($eid,$title,$event_type,$url,$allday,$start_month, $start_day
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
         $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
         $display .= COM_siteFooter();
         COM_errorLog("User {$_USER['username']} tried to illegally submit or edi
 t story $sid",1);
@@ -519,7 +524,8 @@ function listevents()
 
     $retval = '';
 
-	$retval .= COM_startBlock($LANG22[11]);
+	$retval .= COM_startBlock ($LANG22[11], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $event_templates = new Template($_CONF['path_layout'] . 'admin/event');
     $event_templates->set_file(array('list'=>'eventlist.thtml','row'=>'listitem.thtml'));
@@ -557,7 +563,8 @@ function listevents()
 	}
     $event_templates->parse('output', 'list');
     $retval .= $event_templates->finish($event_templates->get_var('output'));
-	$retval .= COM_endBlock();
+	$retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
     return $retval;
 }
 

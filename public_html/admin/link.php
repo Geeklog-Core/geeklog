@@ -32,10 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.32 2003/03/11 22:08:24 dhaun Exp $
+// $Id: link.php,v 1.33 2003/06/19 20:01:41 dhaun Exp $
 
-include('../lib-common.php');
-include('auth.inc.php');
+require_once ('../lib-common.php');
+require_once ('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -45,12 +45,13 @@ include('auth.inc.php');
 $display = '';
 
 if (!SEC_hasRights('link.edit')) {
-    $display .= COM_siteHeader('menu');
-    $display .= COM_startBlock($MESSAGE[30]);
+    $display .= COM_siteHeader ('menu');
+    $display .= COM_startBlock ($MESSAGE[30], '',
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[34];
-    $display .= COM_endBlock();
-    $display .= COM_siteFooter();
-	$display .= COM_errorLog("User {$_USER['username']} tried to illegally access the link administration screen",1);
+    $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    $display .= COM_siteFooter ();
+    $display .= COM_errorLog("User {$_USER['username']} tried to illegally access the link administration screen",1);
     echo $display;
     exit;
 }
@@ -64,7 +65,7 @@ if (!SEC_hasRights('link.edit')) {
 */
 function editlink($mode, $lid = '') 
 {
-	global $_TABLES, $LANG23, $_CONF, $_USER, $LANG_ACCESS;
+    global $_TABLES, $LANG23, $_CONF, $_USER, $LANG_ACCESS;
 
     $retval = '';
 
@@ -97,11 +98,12 @@ function editlink($mode, $lid = '')
         $A['perm_anon'] = 2;
 		$access = 3;
 	}
-	$retval .= COM_startBlock($LANG23[1]);
+	$retval .= COM_startBlock ($LANG23[1], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $link_templates->set_var('link_id', $A['lid']);
 	if (!empty($lid) && SEC_hasRights('link.edit')) {
-		$link_templates->set_var('delete_option',"<input type=\"submit\" value=\"$LANG23[23]\" name=\"mode\">");
+        $link_templates->set_var ('delete_option', '<input type="submit" value="' . $LANG23[23] . '" name="mode">');
     }
     $link_templates->set_var('lang_linktitle', $LANG23[3]);
     $link_templates->set_var('link_title', stripslashes($A['title']));
@@ -164,7 +166,7 @@ function editlink($mode, $lid = '')
     $link_templates->parse('output', 'editor');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
-	$retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
@@ -229,11 +231,12 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
                 $perm_members, $perm_anon);
     }
     if (($access < 3) || !SEC_inGroup ($group_id)) {
-        $display .= COM_siteHeader('menu');
-        $display .= COM_startBlock($MESSAGE[30]);
+        $display .= COM_siteHeader ('menu');
+        $display .= COM_startBlock ($MESSAGE[30], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
         $display .= $MESSAGE[31];
-        $display .= COM_endBlock();
-        $display .= COM_siteFooter();
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+        $display .= COM_siteFooter ();
         COM_errorLog("User {$_USER['username']} tried to illegally submit or edit link $lid",1);
         echo $display;
         exit;
@@ -272,7 +275,8 @@ function listlinks()
 
     $retavl .= '';
 
-	$retval .= COM_startBlock($LANG23[11]);
+    $retval .= COM_startBlock ($LANG23[11], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
 
     $link_templates = new Template($_CONF['path_layout'] . 'admin/link');
     $link_templates->set_file(array('list'=>'linklist.thtml', 'row'=>'listitem.thtml'));
@@ -309,7 +313,7 @@ function listlinks()
     $link_templates->parse('output','list');
     $retval .= $link_templates->finish($link_templates->get_var('output'));
 
-	$retval .= COM_endBlock();
+    $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
 }
