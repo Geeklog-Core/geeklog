@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.6 2005/01/29 22:33:35 dhaun Exp $
+// $Id: lib-trackback.php,v 1.7 2005/01/30 09:15:48 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -605,6 +605,8 @@ function TRB_detectTrackbackUrl ($url)
         } else {
             $retval = $matches[1];
         }
+    } else {
+        $retval = false;
     }
 
     return $retval;
