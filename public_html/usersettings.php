@@ -32,9 +32,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.85 2004/01/24 14:41:38 dhaun Exp $
+// $Id: usersettings.php,v 1.86 2004/01/31 09:22:48 dhaun Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
+require_once($_CONF['path_system'] . 'lib-user.php');
 
 // Set this to true to have this script generate various debug messages in
 // error.log
@@ -248,44 +249,15 @@ function deleteUserAccount ($form_reqid)
 {
     global $_CONF, $_TABLES, $_USER;
 
-    if (DB_count ($_TABLES['users'], array ('pwrequestid', 'uid'), array ($form_reqid, $_USER['uid'])) != 1) {
+    if (DB_count ($_TABLES['users'], array ('pwrequestid', 'uid'),
+                  array ($form_reqid, $_USER['uid'])) != 1) {
         // not found - abort
         return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
 
-    $uid = $_USER['uid'];
-
-    // log the user out
-    SESS_endUserSession ($_USER['uid']);
-
-    // Ok, delete everything related to this user
-
-    // first, remove from all security groups
-    DB_delete ($_TABLES['group_assignments'], 'ug_uid', $uid);
-
-    // remove user information and preferences
-    DB_delete ($_TABLES['userprefs'], 'uid', $uid);
-    DB_delete ($_TABLES['userindex'], 'uid', $uid);
-    DB_delete ($_TABLES['usercomment'], 'uid', $uid);
-    DB_delete ($_TABLES['userinfo'], 'uid', $uid);
-
-    // Call custom account profile delete function if enabled and exists
-    if ($_CONF['custom_registration'] AND function_exists (custom_userdelete)) {
-        custom_userdelete ($uid);
+    if (!USER_deleteAccount ($_USER['uid'])) {
+        return COM_refresh ($_CONF['site_url'] . '/index.php');
     }
-
-    // let plugins update their data for this user
-    PLG_deleteUser ($uid);
-
-    // avoid having orphand stories/comments by making them anonymous posts
-    DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
-    DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
-
-    // delete personal events
-    DB_delete ($_TABLES['personal_events'], 'uid', $uid);
-
-    // now delete the user itself
-    DB_delete ($_TABLES['users'], 'uid', $uid);
 
     return COM_refresh ($_CONF['site_url'] . '/index.php?msg=57');
 }

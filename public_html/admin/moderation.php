@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,10 +32,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.46 2003/09/27 18:31:48 dhaun Exp $
+// $Id: moderation.php,v 1.47 2004/01/31 09:22:48 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
+require_once($_CONF['path_system'] . 'lib-user.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -325,8 +326,8 @@ function userlist ()
 {
     global $_CONF, $_TABLES, $LANG29;
 
-    $retval .= COM_startBlock ($LANG29[40], '',
-                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval = COM_startBlock ($LANG29[40], '',
+                              COM_getBlockTemplate ('_admin_block', 'header'));
     $emptypwd = md5('');
     $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE passwd = '$emptypwd'");
     $nrows = DB_numRows($result);
@@ -595,15 +596,9 @@ function moderateusers ($uid, $action, $count)
     for ($i = 1; $i <= $count; $i++) {
         switch ($action[$i]) {
             case 'delete': // Ok, delete everything related to this user
-                // first, remove from all security groups
-                DB_delete($_TABLES['group_assignments'],'ug_uid',$uid[$i]);
-                DB_delete($_TABLES['userprefs'],'uid',$uid[$i]);
-                DB_delete($_TABLES['userindex'],'uid',$uid[$i]);
-                DB_delete($_TABLES['usercomment'],'uid',$uid[$i]);
-                DB_delete($_TABLES['userinfo'],'uid',$uid[$i]);
-
-                // now delete the user itself
-                DB_delete($_TABLES['users'],'uid',$uid[$i]);
+                if ($uid[$i] > 1) {
+                    USER_deleteAccount ($uid[$i]);
+                }
                 break;
             case 'approve':
                 $result = DB_query ("SELECT email,username FROM {$_TABLES['users']} WHERE uid = $uid[$i]");

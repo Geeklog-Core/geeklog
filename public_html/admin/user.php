@@ -32,13 +32,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.67 2004/01/24 16:33:48 dhaun Exp $
+// $Id: user.php,v 1.68 2004/01/31 09:22:48 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
 
-require_once('../lib-common.php');
-require_once('auth.inc.php');
+require_once ('../lib-common.php');
+require_once ('auth.inc.php');
+require_once ($_CONF['path_system'] . 'lib-user.php');
 
 $display = '';
 
@@ -585,51 +586,23 @@ function display_form()
 */
 function deleteUser ($uid)
 {
-    global $_CONF, $_TABLES;
+    global $_CONF;
 
-    if (!SEC_inGroup ('Root')) {
-        if (SEC_inGroup ('Root', $uid)) {
-            COM_accessLog ("User {$_USER['username']} just tried to delete Root user $uid.");
-            return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
-        }
+    if (!USER_deleteAccount ($uid)) {
+        return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
-
-    // Ok, delete everything related to this user
-
-    // first, remove from all security groups
-    DB_delete ($_TABLES['group_assignments'], 'ug_uid', $uid);
-
-    // remove user information and preferences
-    DB_delete ($_TABLES['userprefs'], 'uid', $uid);
-    DB_delete ($_TABLES['userindex'], 'uid', $uid);
-    DB_delete ($_TABLES['usercomment'], 'uid', $uid);
-    DB_delete ($_TABLES['userinfo'], 'uid', $uid);
-
-    // Call custom account profile delete function if enabled and exists
-    if ($_CONF['custom_registration'] AND function_exists (custom_userdelete)) {
-        custom_userdelete ($uid);
-    } 
-
-    // let plugins update their data for this user
-    PLG_deleteUser ($uid);
-
-    // avoid having orphand stories/comments by making them anonymous posts
-    DB_query ("UPDATE {$_TABLES['comments']} SET uid = 1 WHERE uid = $uid");
-    DB_query ("UPDATE {$_TABLES['stories']} SET uid = 1 WHERE uid = $uid");
-
-    // now delete the user itself
-    DB_delete ($_TABLES['users'], 'uid', $uid);
 
     return COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=22');
 }
 
 // MAIN
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
-    if (!isset ($uid) || empty ($uid) || ($uid == 0)) {
+    $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
+    if ($uid > 1) {
+        $display .= deleteUser ($uid);
+    } else {
         COM_errorLog ('Attempted to delete user uid=' . $uid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php');
-    } else {
-        $display .= deleteUser ($uid);
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
     $display = saveusers ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['username'],
