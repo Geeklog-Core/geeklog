@@ -24,6 +24,8 @@
 #
 ###############################################################################
 
+$LANG_CHARSET = "iso-8859-1";
+
 ###############################################################################
 # Array Format:
 # $LANGXX[YY]:	$LANG - variable name
@@ -429,7 +431,7 @@ $LANG10 = array(
 	21 => "It appears that there are no links on this site or no one has ever clicked on one.",
 	22 => "Top Ten Emailed Stories",
 	23 => "Emails",
-	24 => "It appears that no one has emaild a story on this site"
+	24 => "It appears that no one has emailed a story on this site"
 );
 
 ###############################################################################

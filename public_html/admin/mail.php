@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.9 2002/04/27 21:42:17 dhaun Exp $
+// $Id: mail.php,v 1.10 2002/05/01 13:10:54 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -108,8 +108,8 @@ function display_form()
 */
 function send_messages($vars)
 {
-    global $_CONF, $LANG31, $_TABLES;
-    
+    global $_CONF, $LANG31, $_TABLES, $LANG_CHARSET;
+
     $retval = '';
     
  	if (empty($vars['fra']) OR empty($vars['fraepost']) OR empty($vars['subject'])
@@ -121,6 +121,16 @@ function send_messages($vars)
 	// Header information
 	$headers = "From: {$vars['fra']} <{$vars['fraepost']}>\n";
 	$headers .= "X-Sender: <{$vars['fraepost']}>\n"; 
+        if (empty ($LANG_CHARSET)) {
+            $charset = $_CONF['default_charset'];
+            if (empty ($charset)) {
+                $charset = "iso-8859-1";
+            }
+        }
+        else {
+            $charset = $LANG_CHARSET;
+        }
+        $headers .= "Content-Type: text/plain; charset=$charset\n";
 	$headers .= "X-Mailer: PHP\n"; // mailer
     
 	// Urgent message!

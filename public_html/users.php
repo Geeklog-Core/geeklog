@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.27 2002/05/01 08:53:29 dhaun Exp $
+// $Id: users.php,v 1.28 2002/05/01 13:10:54 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -124,7 +124,7 @@ function userprofile($user)
 */
 function emailpassword($username,$msg=0) 
 {
-    global $_TABLES, $_CONF, $LANG04;
+    global $_TABLES, $_CONF, $LANG04, $LANG_CHARSET;
 	
     $result = DB_query("SELECT email FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows($result);
@@ -142,10 +142,19 @@ function emailpassword($username,$msg=0)
         $mailtext .= "{$LANG04[14]}\n\n";
         $mailtext .= "{$_CONF["site_name"]}\n";
         $mailtext .= "{$_CONF['site_url']}\n";
+        if (empty ($LANG_CHARSET)) {
+            $charset = $_CONF['default_charset'];
+            if (empty ($charset)) {
+                $charset = "iso-8859-1";
+            }
+        }
+        else {
+            $charset = $LANG_CHARSET;
+        }
         mail($A["email"]
             ,"{$_CONF["site_name"]}: {$LANG04[16]}"
             ,$mailtext
-            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nX-Mailer: GeekLog $VERSION"
+            ,"From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\nReturn-Path: <{$_CONF["site_mail"]}>\nContent-Type: text/plain; charset={$charset}\nX-Mailer: GeekLog $VERSION"
             );
 			
         if ($msg) {

@@ -28,17 +28,17 @@
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
 // |                                                                           |
 // +---------------------------------------------------------------------------+
-// | See the INSTALL.HTML file for more information on configuration           | 
+// | See the INSTALL.HTML file for more information on configuration           |
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.31 2002/04/30 18:49:00 dhaun Exp $
+// $Id: config.php,v 1.32 2002/05/01 13:10:53 dhaun Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
 // |                                                                           |
 // | All paths must have a trailing slash ('/'). The 'path' value signifies    |
-// | where the config.php (this file) resides                                  | 
+// | where the config.php (this file) resides                                  |
 // +---------------------------------------------------------------------------+
 $_DB_dbms           = 'mysql';              // Currently only MySQL is support, do not change
 $_DB_host           = 'localhost';  
@@ -90,15 +90,16 @@ $_CONF['locale']    = 'en-gb';
 $_CONF['date']      = '%A, %B %d %Y @ %I:%M %p %Z';
 $_CONF['daytime']   = '%m/%d %I:%M%p';
 $_CONF['shortdate'] = '%x';
+$_CONF['default_charset'] = 'iso-8859-1';
 
 // +---------------------------------------------------------------------------+
-// | SESSION SETTINGS                                                          | 
+// | SESSION SETTINGS                                                          |
 // |                                                                           |
 // | cookie_ip will store md5(remoteip + randomnum) as the session ID in the   |
 // | cookie. This is more secure but will more than likely require dialed up   |
 // | users to login each and every time.  If ipbasedsessid is turned off       |
 // | (which it is by default) it will just store a random number as the        |
-// | session ID in the cookie.                                                 | 
+// | session ID in the cookie.                                                 |
 // |                                                                           |
 // | default_perm_cookie_timeout is how long you want the permanent cookie     |
 // | to persist for.  This can be overridden by the user in their user prefs   |

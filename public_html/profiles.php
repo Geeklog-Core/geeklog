@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.10 2002/04/14 16:47:47 dhaun Exp $
+// $Id: profiles.php,v 1.11 2002/05/01 13:10:54 dhaun Exp $
 
 include('lib-common.php');
 
@@ -48,18 +48,28 @@ include('lib-common.php');
 */
 function contactemail($uid,$author,$authoremail,$subject,$message) 
 {
-	global $_TABLES, $_CONF, $LANG08;
+	global $_TABLES, $_CONF, $LANG08, $LANG_CHARSET;
 	
 	if (!empty($author) && !empty($subject) && !empty($message)) {
 		if (COM_isemail($authoremail)) {
 			$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = $uid");
 			$A = DB_fetchArray($result);
 			$tmp = urlencode($LANG08[1]);
+        if (empty ($LANG_CHARSET)) {
+            $charset = $_CONF['default_charset'];
+            if (empty ($charset)) {
+                $charset = "iso-8859-1";
+            }
+        }
+        else {
+            $charset = $LANG_CHARSET;
+        }
 			$RET = @mail($A['username'].' <'.$A['email'].'>'
 				,strip_tags(stripslashes($subject))
 				,strip_tags(stripslashes($message))
 				,"From: $author <$authoremail>\n"
 				."Return-Path: <$authoremail>\n"
+        ."Content-Type: text/plain; charset=$charset\n"
 				. "X-Mailer: GeekLog " . VERSION);
 			$retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
