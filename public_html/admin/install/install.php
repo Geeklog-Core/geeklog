@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.19 2002/03/07 22:44:44 tony_bibbs Exp $
+// $Id: install.php,v 1.20 2002/03/07 23:02:02 tony_bibbs Exp $
 
 define(LB, "\n");
 
@@ -555,7 +555,7 @@ function INST_getDatabaseSettings($geeklog_path,$upgrade)
     if ($upgrade == 1) {
         $db_templates->set_var('upgrade',1);
         // The already have a lib-database file...they can't chnage their tables names
-        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1');
+        $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         for ($j = 1; $j <= count($old_versions); $j++) {
            $versiondd .= '<option>' . current($old_versions) . '</option>';
