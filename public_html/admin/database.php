@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: database.php,v 1.14 2004/01/13 19:15:51 dhaun Exp $
+// $Id: database.php,v 1.15 2004/03/21 18:34:29 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -77,7 +77,7 @@ if (isset ($HTTP_POST_VARS['mode']) &&
         if (function_exists ('is_executable')) {
             $canExec = is_executable($_DB_mysqldump_path);
         } else {
-            $canExec = true;
+            $canExec = file_exists ($_DB_mysqldump_path);
         }
 		if ($canExec) {
 			exec($command);
