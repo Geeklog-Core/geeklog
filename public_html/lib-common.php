@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.182 2002/11/24 10:21:36 dhaun Exp $
+// $Id: lib-common.php,v 1.183 2002/11/25 18:36:35 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -894,6 +894,8 @@ function COM_siteFooter( $rightblock = false )
     $footer->set_var( 'site_url', $_CONF['site_url']);
     $footer->set_var( 'layout_url',$_CONF['layout_url']);
     $footer->set_var( 'copyright_notice', '&nbsp;' . $LANG01[93] . ' &copy; 2002 ' . $_CONF['site_name'] . '<br>&nbsp;' . $LANG01[94] );
+    $footer->set_var( 'copyright_msg', $LANG01[93] . ' &copy; 2002 ' . $_CONF['site_name'] );
+    $footer->set_var( 'trademark_msg', $LANG01[94] );
     $footer->set_var( 'powered_by', $LANG01[95] );
     $footer->set_var( 'geeklog_version', VERSION );
 
@@ -2773,7 +2775,7 @@ function COM_olderStuff()
 {
     global $_TABLES, $_CONF;
 
-    $sql = "SELECT sid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0) AND (featured = 0) ORDER BY date desc LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
+    $sql = "SELECT sid,tid,title,comments,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE (perm_anon = 2) AND (date <= NOW()) AND (draft_flag = 0) AND (featured = 0) ORDER BY date DESC LIMIT {$_CONF['limitnews']}, {$_CONF['limitnews']}";
     $result = DB_query( $sql );
     $nrows = DB_numRows( $result );
 
@@ -2791,34 +2793,43 @@ function COM_olderStuff()
         for( $i = 0; $i < $nrows; $i++ )
         {
             $A = DB_fetchArray( $result );
-            $daycheck = strftime( "%A", $A['day'] );
+            $topic_anon = DB_getItem( $_TABLES['topics'], 'perm_anon', "tid='{$A['tid']}'" );
 
-            if( $day != $daycheck )
+            if( $topic_anon == 2 )
             {
-                if( $day != 'noday' )
+                $daycheck = strftime( "%A", $A['day'] );
+                if( $day != $daycheck )
                 {
-                    $daylist = COM_makeList( $oldnews );
-                    $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
-                    $string .= $daylist . '<br>';
+                    if( $day != 'noday' )
+                    {
+                        $daylist = COM_makeList( $oldnews );
+                        $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/",
+                                                 "", $daylist );
+                        $string .= $daylist . '<br>';
+                    }
+
+                    $day2 = strftime( $dateonly, $A['day'] );
+                    $string .= '<b>' . $daycheck . '</b> <small>' . $day2
+                            . '</small>' . LB;
+                    $oldnews = array();
+                    $day = $daycheck;
                 }
 
-                $day2 = strftime( $dateonly, $A['day'] );
-                $string .= '<b>' . $daycheck . '</b> <small>' . $day2 . '</small>' . LB;
-                $oldnews = array();
-                $day = $daycheck;
-            }
-
-            $oldnews[] = '<a href="' . $_CONF['site_url']
+                $oldnews[] = '<a href="' . $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] . '">' . $A['title']
                     . '</a> (' . $A['comments'] . ')';
+            }
         }
 
-        $daylist = COM_makeList( $oldnews );
-        $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
-        $string .= $daylist;
-        $string = addslashes( $string );
+        if( !empty( $oldnews ))
+        {
+            $daylist = COM_makeList( $oldnews );
+            $daylist = preg_replace( "/(\015\012)|(\015)|(\012)/", "", $daylist );
+            $string .= $daylist;
+            $string = addslashes( $string );
 
-        DB_query( "UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'" );
+            DB_query( "UPDATE {$_TABLES['blocks']} SET content = '$string' WHERE name = 'older_stories'" );
+        }
     }
 }
 
