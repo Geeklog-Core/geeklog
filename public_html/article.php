@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.32 2003/06/21 20:47:12 dhaun Exp $
+// $Id: article.php,v 1.33 2003/06/24 19:08:58 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -119,12 +119,10 @@ if ($A['count'] > 0) {
             DB_change ($_TABLES['stories'], 'hits', DB_getItem ($_TABLES['stories'], 'hits', "sid = '$story'") + 1, 'sid', $story);
 
             if ($query) {
-                $mywords = explode(" ",$query);
+                $mywords = explode (" ", $query);
                 foreach ($mywords as $searchword) {
-                    $A['introtext'] = preg_replace ("/($searchword)/i",
-                        "<span class=\"highlight\">\\1</span>", $A['introtext']);
-                    $A['bodytext'] = preg_replace ("/($searchword)/i",
-                        "<span class=\"highlight\">\\1</span>", $A['bodytext']);
+                    $A['introtext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')", "<x>" . $A['introtext'] . "<x>");
+                    $A['bodytext'] = preg_replace ("/(\>(((?>[^><]+)|(?R))*)\<)/ie", "preg_replace('/(?>$searchword+)/i','<span class=\"highlight\">$searchword</span>','\\0')" ,"<x>" . $A['bodytext'] . "<x>");
                 }
             }
 
