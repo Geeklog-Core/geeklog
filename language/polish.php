@@ -1042,17 +1042,6 @@ $LANG_ACCESS = array(
 	canteditroot => 'Wyst±pi³a próba edycji grupy G³ównej. Niestety nie nale¿ysz do ¿adnej z grup G³ównych dlatego nie masz dostêpu do tej grupy.  Skontaktuj siê z administratorem systemu je¶li uwa¿asz, ¿e to pomy³ka'
 );
 
-#admin/word.php
-$LANG_WORDS = array(
-    editor => "Edytor Zamiany S³ów",
-    wordid => "ID S³owa",
-    intro => "Aby zmodyfikowaæ lub wykasowaæ jakie¶ s³owo po prostu kliknij dane s³owo.  Aby stworzyæ nowy zamiennik s³owa kliknij na nowe s³owo po lewej.",
-    wordmanager => "Menad¿er S³ów",
-    word => "S³owo",
-    replacmentword => "Zamiana S³owa",
-    newword => "Nowe S³owo"
-);
-
 $LANG_DB_BACKUP = array(
     last_ten_backups => 'Ostatnie 10 Backupów',
     do_backup => 'Wykonaj Backup',
