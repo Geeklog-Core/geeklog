@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.255 2003/09/07 09:31:45 dhaun Exp $
+// $Id: lib-common.php,v 1.256 2003/09/07 17:44:51 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2556,6 +2556,27 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
     $template->set_var( 'author_id', $A['uid'] );
     if( $A['uid'] > 1 )
     {
+        if( empty( $A['fullname'] ))
+        {
+            $template->set_var( 'author_fullname', $A['username'] );
+            $alttext = $A['username'];
+        }
+        else
+        {
+            $template->set_var( 'author_fullname', $A['fullname'] );
+            $alttext = $A['fullname'];
+        }
+        if( !empty( $A['photo'] ))
+        {
+            $template->set_var( 'author_photo', '<img src="'
+                                . $_CONF['site_url']
+                                . '/images/userphotos/' . $A['photo']
+                                . '" alt="' . $alttext . '">' );
+        }
+        else
+        {
+            $template->set_var( 'author_photo', '' );
+        }
         $template->set_var( 'start_author_anchortag', '<a href="'
                 . $_CONF['site_url'] . '/users.php?mode?profile&amp;uid='
                 . $A['uid'] . '">' );
@@ -2563,6 +2584,8 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
     }
     else
     {
+        $template->set_var( 'author_fullname', $A['username'] );
+        $template->set_var( 'author_photo', '' );
         $template->set_var( 'start_author_anchortag', '' );
         $template->set_var( 'end_author_anchortag', '' );
     }
@@ -2634,7 +2657,7 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
     	$indent += $_CONF['comment_indent'];
 
         // get children
-        $q = "SELECT c.*,u.username,unix_timestamp(c.date) AS nice_date "
+        $q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(c.date) AS nice_date "
            . "FROM {$_TABLES['comments']} AS c, {$_TABLES['users']} AS u "
            . "WHERE c.uid = u.uid AND sid = '{$A['sid']}' AND pid = {$A['cid']} "
            . "ORDER BY date $order";
@@ -2707,7 +2730,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         switch( $mode )
         {
             case 'flat':
-            	$q = "SELECT c.*,u.username,unix_timestamp(date) AS nice_date "
+            	$q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(date) AS nice_date "
                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                    . "WHERE c.uid = u.uid AND sid = '$sid' AND type = '$type' "
                    . "ORDER BY date $order LIMIT $limit";
@@ -2716,7 +2739,7 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
             case 'nested':
             case 'threaded':
             default:
-                $q = "SELECT c.*,u.username,unix_timestamp(date) AS nice_date "
+                $q = "SELECT c.*,u.username,u.fullname,u.photo,unix_timestamp(date) AS nice_date "
                    . "FROM {$_TABLES['comments']} as c, {$_TABLES['users']} as u "
                    . "WHERE c.uid = u.uid AND sid = '$sid' AND pid = 0 AND type = '$type' "
                    . "ORDER BY date $order LIMIT $limit";
