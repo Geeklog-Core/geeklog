@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.9 2002/05/07 19:51:36 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.10 2002/05/13 20:34:10 tony_bibbs Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -51,6 +51,8 @@ $_USER = SESS_sessionCheck();
 *
 * Much of this code if from phpBB (www.phpbb.org).  This checks the session cookie
 * and long term cookie to get the users state.
+*
+* @return   array   returns $_USER array
 *
 */
 function SESS_sessionCheck()
@@ -181,6 +183,7 @@ function SESS_sessionCheck()
 * @param        string      $remote_ip      IP address user is connected from
 * @param        string      $lifespan       How long (seconds) this cookie should persist
 * @param        string      $md5_based      If 1 session will be MD5 hash of ip address
+* @return       string      Session ID
 *
 */
 function SESS_newSession($userid, $remote_ip, $lifespan, $md5_based=0) 
@@ -276,7 +279,7 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 * @param        string      $cookietime     Used to query DB for valid sessions
 * @param        string      $remote_ip      Used to pull session we need
 * @param        int         $md5_based      Let's us now if we need to take MD5 hash into consideration
-*
+* @return       int         User ID 
 */
 function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=0) 
 {
@@ -326,6 +329,7 @@ function SESS_getUserIdFromSession($sessid, $cookietime, $remote_ip, $md5_based=
 *
 * @param        string      $sessid     Session ID to update time for
 * @param        int         $md5_based  Indicates if sessid is MD5 hash
+* @return       boolean     always true for some reason
 *
 */
 function SESS_updateSessionTime($sessid, $md5_based=0) 
@@ -351,7 +355,8 @@ function SESS_updateSessionTime($sessid, $md5_based=0)
 * Delete the given session from the database. Used by the logout page.
 *
 * @param        int     $userid     User ID to end session of
-* 
+* @return       boolean     Always true for some reason
+*
 */
 function SESS_endUserSession($userid) 
 {
@@ -369,6 +374,7 @@ function SESS_endUserSession($userid)
 * Gets user's data based on their username
 *
 * @param        string     $username        Username of user to get data for
+* @return       array       returns user's data in an array
 *
 */
 function SESS_getUserData($username) 
@@ -396,6 +402,7 @@ function SESS_getUserData($username)
 * Gets user's data based on their user id
 *
 * @param        int     $userid     User ID of user to get data for
+* @return       array   returns user'd data in an array
 *
 */
 function SESS_getUserDataFromId($userid) 
