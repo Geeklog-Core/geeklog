@@ -3,6 +3,9 @@ GeekLog History/Changes:
 XXX XX, 2004 (1.3.10)
 ------------
 
+- In the calendar's day and week view, event permissions weren't checked
+  properly, so that some events were displayed to user who shouldn't have
+  been able to see them (reported by Willem Jan) [Dirk]
 - Don't update a story's hit counter as long as the draft flag is set or the
   publishing date is in the future (feature request #282) [Dirk]
 - Introduced new function COM_sanitizeID() to filter special characters out of
