@@ -23,7 +23,6 @@
 #
 ###############################################################################
 
-
 /***********************************************************************
 * FUNCTION: CallFunctionForAllPlugins
 *
@@ -117,6 +116,22 @@ function CallFunctionForOnePlugin($function, $args="") {
 	} else {
 		return false;
 	}
+}
+
+#if plugin developer decides they want to customize the blocks on the left hand side then 
+function AddPluginLeftColumns($type) {
+	global $CONF;
+
+	if (empty($type)) {
+		#either this was an error OR done intentionally, bail gracefully
+		return;
+	}
+	print "\n<td class=featureblock valign=top width=150 rowspan=2>";
+	CallFunctionForOnePlugin('plugin_leftcol_' . $type);
+	print "\n<IMG SRC={$CONF["base"]}/images/speck.gif width=150 height=1></td>";
+	print "\n<!-- spacer block -->";
+	print "\n<td width=1><IMG SRC={$CONF["base"]}/images/speck.gif width=1 height=1></td>"; 
+	return;
 }
 
 # Gives plugins a chance to print their menu items in header
