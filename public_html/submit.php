@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.39 2002/10/08 15:13:23 dhaun Exp $
+// $Id: submit.php,v 1.40 2002/10/10 10:36:28 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -363,7 +363,7 @@ function submitstory()
     }
 
     $storyform->set_var('lang_title', $LANG12[10]);
-    $storyform->set_var('story_title', $title);	
+    $storyform->set_var('story_title', htmlspecialchars ($title));	
     $storyform->set_var('lang_topic', $LANG12[28]);
     $storyform->set_var('story_topic_options', COM_topicList('tid,topic',$A['tid']));
     $storyform->set_var('lang_story', $LANG12[29]);
