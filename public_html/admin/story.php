@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.27 2002/03/09 19:36:58 dhaun Exp $
+// $Id: story.php,v 1.28 2002/04/09 18:33:02 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -190,7 +190,6 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_var('permissions_msg', $LANG_ACCESS[permmsg]);
     $curtime = COM_getUserDateTimeFormat($A['unixdate']);
     $story_templates->set_var('lang_date', $LANG24[15]);
-//    $story_templates->set_var('story_date', $curtime[0]);
     $publish_month = date('m', $A['unixdate']);
     $publish_day = date('d', $A['unixdate']);
     $publish_year = date('Y', $A['unixdate']);
@@ -237,13 +236,39 @@ function storyeditor($sid, $mode = '')
     $story_templates->set_var('comment_options', COM_optionList($_TABLES['commentcodes'],'code,name',$A['commentcode']));
     $story_templates->set_var('featured_options', COM_optionList($_TABLES['featurecodes'],'code,name',$A['featured']));
     $story_templates->set_var('frontpage_options', COM_optionList($_TABLES['frontpagecodes'],'code,name',1));
+    list($newintro, $newbody) = replace_images($A['sid'], stripslashes($A['introtext']), stripslashes($A['bodytext']));
     $story_templates->set_var('lang_introtext', $LANG24[16]);
-    $story_templates->set_var('story_introtext', stripslashes($A['introtext']));
+    $story_templates->set_var('story_introtext', $newintro);
     $story_templates->set_var('lang_bodytext', $LANG24[17]);
-    $story_templates->set_var('story_bodytext', stripslashes($A['bodytext']));
+    $story_templates->set_var('story_bodytext', $newbody);
     $story_templates->set_var('lang_postmode', $LANG24[4]);
     $story_templates->set_var('post_options', COM_optionList($_TABLES['postmodes'],'code,name',$A['postmode']));
     $story_templates->set_var('lang_allowed_html', COM_allowedHTML());
+    $fileinputs = '';
+    $saved_images = '';
+    if ($_CONF['maximagesperarticle'] > 0) {
+        $story_templates->set_var('lang_images', $LANG24[47]);
+        $icount = DB_count($_TABLES['article_images'],'ai_sid', $A['sid']);
+        if ($icount > 0) {
+            $result_articles = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '{$A['sid']}'");
+            for ($z = 1; $z <= $icount; $z++) {
+                $I = DB_fetchArray($result_articles);
+                $saved_images .= $z . ') <a href="' . $_CONF['site_url'] . '/images/articles/' . $I['ai_filename'] . '" target="_blank">' . $I['ai_filename'] . '</a>';
+                $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$z . ']"><BR>';
+            }
+        }
+        
+        $newallowed = $_CONF['maximagesperarticle'] - $icount;
+        for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
+            $fileinputs .= $z . ') <input type="file" name="file' . $z . '">';
+            if ($z < $_CONF['maximagesperarticle']) {
+                $fileinputs .= '<br>';
+            }
+        }
+        $fileinputs .= '<br>' . $LANG24[51] . '<br>';
+    }
+    $story_templates->set_var('saved_images', $saved_images);
+    $story_templates->set_var('image_form_elements', $fileinputs);
     $story_templates->set_var('lang_hits', $LANG24[18]);
     $story_templates->set_var('story_hits', $A['hits']);
     $story_templates->set_var('lang_comments', $LANG24[19]);
@@ -357,14 +382,89 @@ function liststories($page="1")
     } else {
         // There are no news items
         $story_templates->set_var('storylist_item','<tr><td colspan="7">There are no stories in the system</td></tr>');
-	$story_templates->set_var('previouspage_link','');
-	$story_templates->set_var('nextpage_link','');
+        $story_templates->set_var('previouspage_link','');
+        $story_templates->set_var('nextpage_link','');
 	
     }
     $display .= $story_templates->parse('output','list');
     $display .= COM_endBlock();
 
     return $display;
+}
+
+/**
+* This replaces all article image HTML in intro and body with
+* GL special syntax
+*
+* @sid      string      ID for story to parse
+* @intro    string      Intro text
+* @body     string      Body text
+*
+*/
+function replace_images($sid, $intro, $body)
+{
+    global $_TABLES, $_CONF, $LANG24;
+    
+    $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $norm = '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $left = '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $right = '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $fulltext = $intro . ' ' . $body;
+        $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
+        $intro = str_replace($norm, '[' . $LANG24[48] . $i . ']', $intro);
+        $body = str_replace($norm, '[' . $LANG24[48] . $i . ']', $body);
+        $intro = str_replace($left, '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']', $intro);
+        $body = str_replace($left, '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']', $body);
+        $intro = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $intro);
+        $body = str_replace($right, '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']', $body);
+    }
+    return array($intro, $body);
+}
+    
+/**
+* Replaces simple image syntax with actual HTML in the intro and body.  If errors occur
+* it will return all errors in $error
+*
+* @sid      string      ID for story to parse
+* @intro    string      Intro text
+* @body     string      Body text
+*
+*/
+function insert_images($sid, $intro, $body)
+{
+    global $_TABLES, $_CONF, $LANG24;
+    
+    $result = DB_query("SELECT * FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    $nrows = DB_numRows($result);
+    $errors = array();
+    
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $norm = '[' . $LANG24[48] . $i . ']';
+        $left = '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']';
+        $right = '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']';
+        $fulltext = $intro . ' ' . $body;
+        $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
+        if ($icount == 0) {
+            // There is an image that wasn't used, create an error
+            $errors[] = $LANG24[48] . " #$i, {$A['ai_filename']}, " . $LANG24[53];
+        } else {
+            // Only parse if we haven't encountered any error to this point
+            if (count($errors) == 0) {
+                $intro = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($left, '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($left, '<img align-"left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($right, '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($right, '<img align-"right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+            }
+        }
+    }
+    
+    return array($errors, $intro, $body);
 }
 
 /** 
@@ -393,11 +493,13 @@ function liststories($page="1")
 * @perm_group   int         Permissions the group has on story
 * @perm_member  int         Permissions members have on story
 * @perm_anon    int         Permissions anonymous users have on story
+* @delete       array       String array of attached images to delete from article
 *
 */
-function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete) 
 {
-    global $_TABLES, $_CONF, $LANG24;
+    global $_TABLES, $_CONF, $LANG24, $HTTP_POST_FILES;
+    
     if (!empty($title) && !empty($introtext)) {
         if (empty($hits)) {
             $hits = 0;
@@ -503,12 +605,84 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $title = addslashes(htmlspecialchars(strip_tags(COM_checkWords($title))));
         $comments = DB_count($_TABLES['comments'],'sid',$sid);
 
+        
+        // Delete any images if needed
+        for ($i = 1; $i <= count($delete); $i++) {
+            $curfile = $_CONF['path_html'] . 'images/articles/' . DB_getItem($_TABLES['article_images'],'ai_filename',"ai_sid = '$sid' AND ai_img_num = " . key($delete));
+            if (!unlink($curfile)) {
+                echo COM_errorLog("Unable to delete image $curfile. Please check file permissions");
+                exit;
+            }
+            DB_query("DELETE FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' AND ai_img_num = " . key($delete));
+            next($delete);
+        }
+        
+        // OK, let's upload any pictures with the article
+        if (DB_count($_TABLES['article_images'], 'ai_sid', $sid) > 0) {
+            $index_start = DB_getItem($_TABLES['article_images'],'max(ai_img_num)',"ai_sid = '$sid'") + 1;
+        } else {
+            $index_start = 1;
+        }
+        
+        if (count($HTTP_POST_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
+            include_once($_CONF['path_system'] . 'classes/upload.class.php');
+            $upload = new upload();
+            $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
+            if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {
+                print 'File Upload Errors:<BR>' . $upload->printErrors();
+                exit;
+            }
+            $filenames = array();
+            $end_index = $index_start + $upload->numFiles() - 1;
+            for ($z = $index_start; $z <= $end_index; $z++) {
+                $curfile = current($HTTP_POST_FILES);
+                if (!empty($curfile['name'])) {
+                    $pos = strrpos($curfile['name'],'.') + 1;
+                    $fextension = substr($curfile['name'], $pos);
+                    $filenames[] = $sid . '_' . $z . '.' . $fextension;
+                }
+                next($HTTP_POST_FILES);
+            }
+            $upload->setFileNames($filenames);
+            reset($HTTP_POST_FILES);
+            $upload->uploadFiles();
+            if ($upload->areErrors()) {
+               print "ERRORS<BR>";
+               $upload->printErrors();
+               exit; 
+            }
+            
+            reset($filenames);
+            for ($z = $index_start; $z <= $end_index; $z++) {
+                DB_query("INSERT INTO {$_TABLES['article_images']} (ai_sid, ai_img_num, ai_filename) VALUES ('$sid', $z, '" . current($filenames) . "')");
+                next($filenames);
+            }
+        }
+    
+        if ($_CONF['maximagesperarticle'] > 0) {
+            list($errors, $introtext, $bodytext) = insert_images($sid, $introtext, $bodytext);
+            if (count($errors) > 0) {
+                $display = COM_siteHeader('menu');
+                $display .= COM_startBlock($LANG24[54]);
+                $display .= $LANG24[55] . '<P>';
+                for ($i = 1; $i <= count($errors); $i++) {
+                    $display .= current($errors) . '<br>';
+                    next($errors);
+                }
+                $display .= COM_endBlock();
+                $display .= storyeditor($sid);
+                $display .= COM_siteFooter();
+                echo $display;
+                exit;
+            }
+        }
+        
+        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", 'admin/story.php?msg=9');
+        
         // If this is done as part of moderation stuff then delete the submission
         if ($type = 'submission') {
             DB_delete($_TABLES['storysubmission'],'sid',$sid);
         }
-        DB_save($_TABLES['stories'],'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$sid,$uid,'$tid','$title','$introtext','$bodytext',$hits,'$date','$comments','$related',$featured,'$commentcode','$statuscode','$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon", 'admin/story.php?msg=9');
-
     } else {
         $display .= COM_siteHeader('menu');
         $display .= COM_errorLog($LANG24[31],2);
@@ -554,7 +728,7 @@ case 'save':
         $publish_hour = $publish_hour + 12;
     }
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:00");
-    submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);
+    submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete);
     break;
 case 'cancel':
 default:
