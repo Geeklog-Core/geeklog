@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.29 2002/04/10 16:10:09 tony_bibbs Exp $
+// $Id: story.php,v 1.30 2002/04/10 16:18:50 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -704,6 +704,8 @@ case 'delete':
     if ($type == 'submission') {
         DB_delete($_TABLES['storysubmission'],'sid',$sid,"admin/moderation.php");
     } else {
+        DB_delete($_TABLES['article_images'],'ai_sid',$sid);
+        DB_delete($_TABLES['comments'],'sid',$sid);
         DB_delete($_TABLES['stories'],'sid',$sid,"admin/story.php?msg=10");
     }
     break;
