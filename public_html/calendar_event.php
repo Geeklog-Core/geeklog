@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.38 2004/12/15 14:55:09 dhaun Exp $
+// $Id: calendar_event.php,v 1.39 2005/01/09 21:07:48 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -494,7 +494,7 @@ default:
         $display .= COM_startBlock ($pagetitle);
 
         $thedate = sprintf ('%4d-%02d-%02d', $year, $month, $day);
-        $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart ASC,title";
+        $datesql = "SELECT *,datestart AS start,dateend AS end FROM {$_TABLES['events']} WHERE \"$thedate\" BETWEEN DATE_FORMAT(datestart,'%Y-%m-%d') and DATE_FORMAT(dateend,'%Y-%m-%d') ORDER BY datestart ASC,timestart ASC,title";
     }
     $cal_templates = new Template($_CONF['path_layout'] . 'calendar');
     $cal_templates->set_file (array (
