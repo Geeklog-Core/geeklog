@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.162 2002/09/18 15:23:18 dhaun Exp $
+// $Id: lib-common.php,v 1.163 2002/10/07 14:14:58 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -806,8 +806,11 @@ function COM_siteFooter( $rightblock = false )
 
     if( $rightblock )
     { 
-        // Now show any blocks
-        $footer->set_var( 'geeklog_blocks', COM_showBlocks( 'right', $topic ));
+        $rblocks = COM_showBlocks( 'right', $topic );
+    }
+    if( $rightblock && !empty( $rblocks ))
+    {
+        $footer->set_var( 'geeklog_blocks', $rblocks );
         $footer->parse( 'right_blocks', 'rightblocks', true);
     } 
     else 
@@ -2648,7 +2651,12 @@ function COM_olderStuff()
 
 function COM_showBlock( $name, $help='', $title='' )
 {
-    global $_CONF, $topic;
+    global $_CONF, $topic, $_TABLES, $_USER;
+
+    if( !empty( $_USER['uid'] ))
+    {
+        $U['noboxes'] = DB_getItem( $_TABLES['userindex'], 'noboxes', "uid = {$_USER['uid']}" );
+    }
 
     switch( $name )
     {
@@ -2674,7 +2682,10 @@ function COM_showBlock( $name, $help='', $title='' )
             break;
             
         case 'poll_block':
-            $retval .= COM_showPoll( 60 );
+            if( !$U['noboxes'] ) 
+            {
+                $retval .= COM_showPoll( 60 );
+            }
             break;
             
         case 'whats_new_block':

@@ -29,14 +29,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.8 2002/08/12 10:47:57 dhaun Exp $
+// $Id: index.php,v 1.9 2002/10/07 14:15:13 dhaun Exp $
 
 require_once('../lib-common.php');
 
 $error = 0;
 
-if (!empty($USER["uid"])) {
-        $result = DB_query("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$USER["uid"]}'");
+if (!empty($_USER['uid'])) {
+        $result = DB_query("SELECT noboxes FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
         $U = DB_fetchArray($result);
 }
 
