@@ -11,6 +11,8 @@
 *
 */
 
+$_SPX_CONF['version'] = '1.01';
+
 // URL blacklist changes RSS feed (currently only RSS v1.0 is supported)
 $_SPX_CONF['rss_url'] = 'http://www.jayallen.org/comment_spam/feeds/blacklist-changes.rdf';
 

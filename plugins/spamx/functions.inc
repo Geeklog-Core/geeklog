@@ -5,7 +5,7 @@
 *
 * Copyright (C) 2004 by the following authors:
 *
-* @ Author		Tom Willett		tomw@pigstye.net
+* @ Author        Tom Willett        tomw@pigstye.net
 *
 * Licensed under GNU General Public License
 *
@@ -99,8 +99,8 @@ function plugin_cclabel_spamx()
     $retval = array();
     if (SEC_hasRights('spamx.admin')) {
         $retval = array($LANG_SX00['plugin_name'],
-                        $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
-                        $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
+            $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
+            $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
     }
 
     return $retval;
@@ -122,7 +122,7 @@ function plugin_getadminoption_spamx()
 
     if (SEC_hasRights('spamx.admin')) {
         return array($LANG_SX00['plugin_name'],
-                     $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
+           $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
     }
 }
 
@@ -139,70 +139,70 @@ function plugin_getadminoption_spamx()
 
 function plugin_commentPreSave_spamx($uid, $title, $comment, $sid, $pid, $type, $postmode, $extra=null, $extra2=null)
 {
-	global $_TABLES, $_CONF;
+    global $_TABLES, $_CONF;
 
-	// Set up Spamx_Action and SpamX_Examine arrays
-	$result=DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='Action'");
-	$nrows = DB_numRows($result);
-	for ($i=1;$i<=$nrows;$i++) {
-		$A=DB_fetchArray($result);
-		$Spamx_Action[]=$A['value'];
-	}
+    // Set up Spamx_Action and SpamX_Examine arrays
+    $result=DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='Action'");
+    $nrows = DB_numRows($result);
+    for ($i=1;$i<=$nrows;$i++) {
+        $A=DB_fetchArray($result);
+        $Spamx_Action[]=$A['value'];
+    }
     $result=DB_query("SELECT * FROM {$_TABLES['spamx']} WHERE name='Examine'");
     $nrows = DB_numRows($result);
     for ($i=1;$i<=$nrows;$i++) {
         $A=DB_fetchArray($result);
         $Spamx_Examine[]=$A['value'];
-    }   
- 
-   	if ($extra == null) {
-		$commnt = array(
-			'uid'     => $uid,
-			'title'   => $title,
-			'comment' => $comment,
-			'sid'     => $sid,
-			'pid'     => $pid,
-		   	'type'    => $type,
-			'postmode'=> $postmode);
-	} else {
-		$commnt = array(
-			'uid'     => $uid,
-			'title'   => $sid,
-			'comment' => $pid,
-			'sid'     => $type,
-			'pid'     => $postmode,
-		   	'type'    => $extra,
-			'postmode'=> $extra2);
-	}
+    }
 
-	$res=0;
+       if ($extra == null) {
+        $commnt = array(
+            'uid'     => $uid,
+            'title'   => $title,
+            'comment' => $comment,
+            'sid'     => $sid,
+            'pid'     => $pid,
+            'type'    => $type,
+            'postmode'=> $postmode);
+    } else {
+        $commnt = array(
+            'uid'     => $uid,
+            'title'   => $sid,
+            'comment' => $pid,
+            'sid'     => $type,
+            'pid'     => $postmode,
+            'type'    => $extra,
+            'postmode'=> $extra2);
+    }
+
+    $res=0;
     foreach ($Spamx_Examine as $Examine) {
-		$filename = $Examine . '.Examine.class.php';
+        $filename = $Examine . '.Examine.class.php';
         if (file_exists($_CONF['path'] . 'plugins/spamx/' . $filename)) {
-			require_once $_CONF['path'] . 'plugins/spamx/' . $filename;
-			$EX = new $Examine;
-			$EX->init($commnt);
-			$res = $EX->execute();
-			$commnt = $EX->getComment();
-			if ($res == 1) {
-				break;
-			}
-		}
-	}
-	if ($res == 1) {
-		foreach($Spamx_Action as $Action) {
-			$filename = $Action . '.Action.class.php';
-			if (file_exists($_CONF['path'] . 'plugins/spamx/' . $filename)) {
-				require_once($_CONF['path'] . 'plugins/spamx/' . $filename);
-				$AC = new $Action;
-       	        $AC->init($commnt);
-				$AC->execute();	
-				$commnt=$AC->getComment();
-			}
-		}
-		return $AC->result();
-	}
-	return false;
+            require_once $_CONF['path'] . 'plugins/spamx/' . $filename;
+            $EX = new $Examine;
+            $EX->init($commnt);
+            $res = $EX->execute();
+            $commnt = $EX->getComment();
+            if ($res == 1) {
+                break;
+            }
+        }
+    }
+    if ($res == 1) {
+        foreach($Spamx_Action as $Action) {
+            $filename = $Action . '.Action.class.php';
+            if (file_exists($_CONF['path'] . 'plugins/spamx/' . $filename)) {
+                require_once($_CONF['path'] . 'plugins/spamx/' . $filename);
+                $AC = new $Action;
+                $AC->init($commnt);
+                $AC->execute();
+                $commnt=$AC->getComment();
+            }
+        }
+        return $AC->result();
+    }
+    return false;
 }
 
 /**
@@ -214,23 +214,23 @@ function plugin_commentPreSave_spamx($uid, $title, $comment, $sid, $pid, $type, 
 *
 */
 
-$_SPAMX_log_flg = true;		// Set to false to turn of logging
+$_SPAMX_log_flg = true;        // Set to false to turn of logging
 
 function SPAMX_log( $logentry )
 {
     global $_CONF, $LANG01, $_SPAMX_log_flg;
     
     if ($_SPAMX_log_flg == true) {
-	$timestamp = strftime( "%c" );
-	$logfile = $_CONF['path_log'] . 'spamx.log';
-           
-    	if( !$file = fopen( $logfile, "a" ))
-    	{
-        	COM_errorLog($LANG01[33] . $logfile . ' (' . $timestamp . ')',1);
-    	}
-               
-    	fputs( $file, "$timestamp - $logentry \n" );
-    }          
+    $timestamp = strftime( "%c" );
+    $logfile = $_CONF['path_log'] . 'spamx.log';
+
+        if( !$file = fopen( $logfile, "a" ))
+        {
+            COM_errorLog($LANG01[33] . $logfile . ' (' . $timestamp . ')',1);
+        }
+
+        fputs( $file, "$timestamp - $logentry \n" );
+    }
     return $retval;
 }
 
@@ -281,7 +281,17 @@ function SPAMX_applyFilter( $parameter, $isnumeric = false )
 
     return $p;
 }
-                                        
+
+
+/**
+* Return the current version of code. 
+* Used in the Plugin Editor to show the registered version and code version
+*/
+function plugin_chkVersion_spamx() {
+    global $_SPX_CONF;
+    return $_SPX_CONF['version'];
+}
+
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database.
@@ -308,16 +318,16 @@ function plugin_uninstall_spamx($installCheck='')
 
     // Check and see if plugin is still enabled - if so display warning and exit
     if ($installCheck != '' && DB_getItem($_TABLES['plugins'],'pi_enabled', 'pi_name = "' .$pi_name. '"')) {
-	    COM_errorLog("Plugin is installed and enabled. Disable first if you want to de-install it",1);
-		$display .= COM_startBlock($LANG_SX00['warning']);
-		$display .= $LANG_SX00['enabled'];
-		$display .= COM_endBlock();
-		echo $display;
-		return false;
-		exit;
-	}
+        COM_errorLog("Plugin is installed and enabled. Disable first if you want to de-install it",1);
+        $display .= COM_startBlock($LANG_SX00['warning']);
+        $display .= $LANG_SX00['enabled'];
+        $display .= COM_endBlock();
+        echo $display;
+        return false;
+        exit;
+    }
 
-	// Ok to proceed and delete plugin
+    // Ok to proceed and delete plugin
 
     // Unregister the plugin with Geeklog
     COM_errorLog('Attempting to unregister the spamx plugin from Geeklog',1);
