@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.376 2004/09/21 10:58:17 dhaun Exp $
+// $Id: lib-common.php,v 1.377 2004/09/24 10:25:32 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3984,7 +3984,7 @@ function COM_allowedHTML()
     $br++;
 
     $autotags = PLG_collectTags();
-    foreach( $autotags as $tag )
+    foreach( $autotags as $tag => $module )
     {
         $retval .= ',';
         if( $br == 10 )

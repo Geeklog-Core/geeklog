@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.41 2004/09/21 10:58:17 dhaun Exp $
+// $Id: lib-plugins.php,v 1.42 2004/09/24 10:25:32 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -873,7 +873,7 @@ function PLG_getHeaderCode()
 /**
 * Get a list of all currently supported autolink tags.
 *
-* Returns an associative array where $A['plugin-name'] = 'tag-name'
+* Returns an associative array where $A['tag-name'] = 'plugin-name'
 *
 * @return   array   All currently supported autolink tags
 *
@@ -883,15 +883,22 @@ function PLG_collectTags ()
     global $_PLUGINS;
 
     // Determine which Core Modules and Plugins support AutoLinks
-    $autolinkModules = array ('story'    => 'story',
-                              'calendar' => 'event'
+    //                        'tag'   => 'module'
+    $autolinkModules = array ('story' => 'geeklog',
+                              'event' => 'geeklog'
                              );
 
     foreach ($_PLUGINS as $pi_name) {
         $function = 'plugin_autotags_' . $pi_name;
         if (function_exists ($function)) {
             $autotag = $function ('tagname');
-            $autolinkModules[$pi_name]  = $autotag;
+            if (is_array ($autotag)) {
+                foreach ($autotag as $tag) {
+                    $autolinkModules[$tag] = $pi_name;
+                }
+            } else {
+                $autolinkModules[$autotag] = $pi_name;
+            }
         }
     }
 
@@ -914,24 +921,27 @@ function PLG_replaceTags ($content)
     $autolinkModules = PLG_collectTags ();
 
     // For each supported module - scan the content looking for any AutoLink tags
-    $tags = array();
-    foreach ($autolinkModules as $module => $moduletag) {
+    $tags = array ();
+    foreach ($autolinkModules as $moduletag => $module) {
         $autotag_prefix = '['. $moduletag;
         $offset = $prev_offset = 0;
-        $strlen = strlen($content);
+        $strlen = strlen ($content);
         while ($offset < $strlen) {
-            $start_pos = strpos( strtolower( $content ), $autotag_prefix, $offset );
-            if( $start_pos !== FALSE ) {
-               $end_pos = strpos( strtolower( $content ), ']', $start_pos );
-               $next_tag = strpos( strtolower( $content ), '[', $start_pos +1);
-               if( $end_pos > $start_pos AND (($end_pos < $next_tag OR $next_tag == FALSE)) ) {
+            $start_pos = strpos (strtolower ($content), $autotag_prefix,
+                                 $offset );
+            if ($start_pos !== FALSE) {
+               $end_pos = strpos (strtolower ($content), ']', $start_pos);
+               $next_tag = strpos (strtolower ($content), '[', $start_pos + 1);
+               if ($end_pos > $start_pos AND (($end_pos < $next_tag OR $next_tag == FALSE))) {
                     $taglength = $end_pos - $start_pos + 1;
-                    $tag = substr($content,$start_pos,$taglength);
-                    $parms = explode(' ',$tag);
-                    $label = str_replace(']','',substr($tag,strlen($parms[0])+1));
-                    $parms = explode(':',$parms[0]);
+                    $tag = substr ($content, $start_pos, $taglength);
+                    $parms = explode (' ', $tag);
+                    $label = str_replace (']', '',
+                             substr ($tag, strlen ($parms[0]) + 1));
+                    $parms = explode (':', $parms[0]);
                     $newtag = array (
                         'module'    => $module,
+                        'tag'       => $moduletag,
                         'tagstr'    => $tag,
                         'startpos'  => $start_pos,
                         'length'    => $taglength,
@@ -955,27 +965,31 @@ function PLG_replaceTags ($content)
     }
 
     // If we have found 1 or more AutoLink tag
-    if (count($tags) > 0) {       // Found the [tag] - Now process them all
+    if (count ($tags) > 0) {       // Found the [tag] - Now process them all
         foreach ($tags as $autotag) {
             $function = 'plugin_autotags_' . $autotag['module'];
-            if ($autotag['module'] == 'story') {
-                $filelink = '<a href="' . COM_buildUrl ($_CONF['site_url']
-                          . '/article.php?story=' . $autotag['parm1']) . '">'
-                          . $autotag['parm2'] . '</a>';
-                $content = str_replace($autotag['tagstr'], $filelink, $content);
-            } else if ($autotag['module'] == 'calendar') {
-                $filelink = '<a href="' . $_CONF['site_url']
-                          . '/calendar_event.php?eid=' . $autotag['parm1']
-                          . '">' . $autotag['parm2'] . '</a>';
-                $content = str_replace($autotag['tagstr'], $filelink, $content);
-            } elseif (function_exists($function)) {
-                $content = $function('parse', $content, $autotag);
+            if ($autotag['module'] == 'geeklog') {
+                $url = '';
+                if ($autotag['tag'] == 'story') {
+                    $url = COM_buildUrl ($_CONF['site_url']
+                         . '/article.php?story=' . $autotag['parm1']);
+                } else if ($autotag['tag'] == 'event') {
+                    $url = $_CONF['site_url'] . '/calendar_event.php?eid='
+                         . $autotag['parm1'];
+                }
+                if (!empty ($url)) {
+                    $filelink = '<a href="' . $url . '">' . $autotag['parm2']
+                              . '</a>';
+                    $content = str_replace ($autotag['tagstr'], $filelink,
+                                            $content);
+                }
+            } else if (function_exists ($function)) {
+                $content = $function ('parse', $content, $autotag);
             }
         }
     }
 
     return $content;
-
 }
 
 
