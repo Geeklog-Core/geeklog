@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.51 2004/11/27 14:06:07 dhaun Exp $
+// $Id: lib-plugins.php,v 1.52 2004/12/29 10:51:25 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -989,12 +989,12 @@ function PLG_replaceTags ($content)
     // For each supported module - scan the content looking for any AutoLink tags
     $tags = array ();
     foreach ($autolinkModules as $moduletag => $module) {
-        $autotag_prefix = '['. $moduletag;
+        $autotag_prefix = '['. $moduletag . ':';
         $offset = $prev_offset = 0;
         $strlen = strlen ($content);
         while ($offset < $strlen) {
             $start_pos = strpos (strtolower ($content), $autotag_prefix,
-                                 $offset );
+                                 $offset);
             if ($start_pos !== FALSE) {
                $end_pos = strpos (strtolower ($content), ']', $start_pos);
                $next_tag = strpos (strtolower ($content), '[', $start_pos + 1);
