@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.179 2002/11/18 14:04:49 dhaun Exp $
+// $Id: lib-common.php,v 1.180 2002/11/21 18:26:14 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2691,6 +2691,28 @@ function COM_checkHTML( $str )
     return COM_killJS( $str );
 }
 
+/** undo function for htmlspecialchars()
+*
+* This function translates HTML entities created by htmlspecialchars() back
+* into their ASCII equivalents. Also handles the entities for $, {, and }.
+*
+* @param    string   $string   The string to convert.
+* @return   string   The converted string.
+*
+*/
+function COM_undoSpecialChars( $string )
+{
+    $string = ereg_replace( '&#36;', '$', $string );
+    $string = ereg_replace( '&#123;', '{', $string );
+    $string = ereg_replace( '&#125;', '}', $string );
+    $string = ereg_replace( '&gt;', '>', $string );
+    $string = ereg_replace( '&lt;', '<', $string );
+    $string = ereg_replace( '&quot;', "\"", $string );
+    $string = ereg_replace( '&amp;', '&', $string );
+
+    return( $string );
+}
+
 /**
 * Makes an ID based on current date/time
 *
@@ -3479,7 +3501,8 @@ function COM_emailUserTopics()
             $S = DB_fetchArray( $stories );
 
             $mailtext .= "\n------------------------------\n\n";
-            $mailtext .= "$LANG08[31]: {$S['title']}\n";
+            $mailtext .= "$LANG08[31]: "
+                . COM_undoSpecialChars( stripslashes( $S['title'] )) . "\n";
             if( $_CONF['contributedbyline'] == 1 )
             {
                 $storyauthor = DB_getItem( $_TABLES['users'], 'username', "uid = '{$S['uid']}'" );
@@ -3490,7 +3513,7 @@ function COM_emailUserTopics()
 
             if( $_CONF['emailstorieslength'] > 0 )
             {
-                $storytext = stripslashes( strip_tags( $S['introtext'] ));
+                $storytext = COM_undoSpecialChars( stripslashes( strip_tags( $S['introtext'] )));
 
                 if( $_CONF['emailstorieslength'] > 1 )
                 {

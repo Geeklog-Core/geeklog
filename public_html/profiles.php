@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.17 2002/10/20 13:04:21 dhaun Exp $
+// $Id: profiles.php,v 1.18 2002/11/21 18:26:15 dhaun Exp $
 
 include('lib-common.php');
 
@@ -171,20 +171,20 @@ function mailstory($sid,$to,$toemail,$from,$fromemail,$sid, $shortmsg)
     }
 
 	$mailtext .= '------------------------------------------------------------'.LB.LB
-		.$A['title'].LB
+		. COM_undoSpecialChars (stripslashes ($A['title'])) . LB
 		.strftime($_CONF['date'],$A['day']).LB;
     if ($_CONF['contributedbyline'] == 1) {
 		$mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
     $mailtext .= LB
-		.stripslashes(strip_tags($A['introtext'])).LB.LB
-		.stripslashes(strip_tags($A['bodytext'])).LB.LB
+		.COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
+		.COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
 		.'------------------------------------------------------------'.LB
 		.$LANG08[24].LB.$_CONF['site_url'].'/article.php?story='.$sid.'#comments';
 	
  	$mailto = $to.' <'.$toemail.'>';
  	$mailfrom = 'From: '.$from.' <'.$fromemail.'>';
- 	$subject = strip_tags(stripslashes('Re: '.$A['title']));
+ 	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 	
  	@mail($toemail,$subject,$mailtext,$mailfrom);
  	$retval .= COM_refresh("{$_CONF['site_url']}/article.php?story=$sid");
