@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.74 2002/12/14 21:14:26 dhaun Exp $
+// $Id: story.php,v 1.75 2002/12/15 10:57:28 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -383,7 +383,7 @@ function storyeditor($sid = '', $mode = '')
 */
 function liststories($page = 1) 
 {
-    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS;
+    global $_TABLES, $LANG24, $_CONF, $LANG_ACCESS, $_USER, $_GROUPS;
 
     $display = '';
 
@@ -409,8 +409,39 @@ function liststories($page = 1)
         $page = 1;
     }
 
+    $groupList = '';
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+    }
+
+    $excludetopics = '';
+    $topicsql = "SELECT tid FROM {$_TABLES['topics']} WHERE "
+              . "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR "     
+              . "(group_id IN ($groupList) AND perm_group >= 2) OR "
+              . "(perm_members >= 2) OR "
+              . "(perm_anon >= 2)";
+    $tresult = DB_query( $topicsql );
+    $trows = DB_numRows( $tresult );     
+    if( $trows > 0 )
+    {
+        $excludetopics .= "WHERE (";
+        for( $i = 1; $i <= $trows; $i++ ) 
+        {
+            $T = DB_fetchArray ($tresult);     
+            if ($i > 1)
+            {   
+                $excludetopics .= " OR ";
+            }
+            $excludetopics .= "tid = '{$T['tid']}'";
+        }
+        $excludetopics .= ") ";
+    }
+
     $limit = (50 * $page) - 50;
-    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} ORDER BY date DESC LIMIT $limit,50");
+    $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} " . $excludetopics . "ORDER BY date DESC LIMIT $limit,50");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
