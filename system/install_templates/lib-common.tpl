@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.25 2002/02/22 21:56:59 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.26 2002/02/25 16:57:09 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1661,7 +1661,7 @@ function COM_olderstuff()
 */
 function COM_showBlock($name,$help='',$title='')
 {
-    global $_CONF;
+    global $_CONF, $topic;
 
     switch ($name) {
     case 'user_block':
