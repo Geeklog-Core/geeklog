@@ -82,8 +82,13 @@ function editblock($bid="") {
 	print "<option value=layout";
 		if ($A["type"] == "layout") print " selected";
 	print ">{$LANG21[26]}</option>";
+	print "<option value=phpblock";
+                if ($A["type"] == "phpblock") print " selected";
+        print ">{$LANG21[27]}</option>";
 	print "</select></td></tr>";
 	print "<tr><td colspan=2><hr></td></tr>";
+	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
+        print "<tr><td align=right>{$LANG21[29]}:</td><td><input type=text size=50 maxlength=50 name=phpblockfn value=\"{$A["phpblockfn"]}\"></td></tr><tr><td colspan=2>{$LANG21[30]}</td></tr>";
 	print "<tr><td colspan=2><b>{$LANG21[13]}</b></td></tr>";
 	print "<tr><td align=right>{$LANG21[14]}:</td><td><input type=text size=50 maxlength=96 name=rdfurl value=\"{$A["rdfurl"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG21[15]}:</td><td><input type=text size=19 name=rdfupdated value=\"{$A["rdfupdated"]}\"></td></tr>";
@@ -97,15 +102,59 @@ function editblock($bid="") {
 ###############################################################################
 # Saves the block to the database
 
-function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated) {
-	global $CONF,$LANG21;
-	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content))) {
-		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated'","admin/block.php?msg=11");
+function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn) {
+	global $CONF,$LANG21,$LANG01;
+	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
+		if ($type == "portal") {
+                        $content = "";
+                        $phpblockfn = "";
+                }
+                if ($type == "phpblock") {
+                        if (!(stristr($phpblockfn,'phpblock_'))) {
+                                #this is a BAD function name, must have phpblock_ prefix
+                                include('../layout/header.php');
+                                startblock($LANG21[37]);
+                                print $LANG21[38];
+                                endblock();
+                                editblock($bid);
+                                include('../layout/footer.php');
+                                return;
+                        }
+                        $content = "";
+                        $rdfurl = "";
+                        $rdfupdated = "";
+                }
+                if ($type == "normal") {
+                        $rdfurl = "";
+                        $rdfupdated = "";
+                        $phpblockfn = "";
+                }
+                if ($type == "layout") {
+                        $rdfurl = "";
+                        $rdfupdated = "";
+                        $phpblockfn = "";
+                }
+
+		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn'","admin/block.php?msg=11");
 	} else {
 		include("../layout/header.php");
-		errorlog($LANG21[18],2);
-		editblock($bid);
-		include("../layout/footer.php");
+                startblock($LANG21[32]);
+                if ($type == "portal") {
+                        #portal block is missing fields
+                        print $LANG21[33];
+                } else if ($type == "phpblock") {
+                        #php block is missing field
+                        print $LANG21[34];
+                } else if ($type == "normal") {
+                        #normal block is missing field
+                        print $LANG21[35];
+                } else {
+                        #layout block missing content
+                        print $LANG21[36];
+                }
+                endblock();
+                editblock($bid);
+                include("../layout/footer.php");
 	}
 }
 
@@ -141,7 +190,7 @@ switch ($mode) {
 		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
 		break;
 	case "save":
-		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated);
+		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn);
 		break;
 	case "edit":
 		include("../layout/header.php");
