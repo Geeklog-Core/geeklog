@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.12 2002/01/11 18:35:17 tony_bibbs Exp $
+// $Id: event.php,v 1.13 2002/01/11 21:06:17 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -150,17 +150,19 @@ function editevent($mode, $eid='')
 
     // Combine date/time for easier manipulation
     $A['datestart'] = $A['datestart'] . ' ' . $A['timestart'];
+    $start_stamp = strtotime($A['datestart']);
     $A['dateend'] = $A['dateend'] . ' ' . $A['timeend'];
-    $start_month = date('m', $A['datestart']);
-    $start_day = date('d', $A['datestart']);
-    $start_year = date('Y', $A['datestart']);
-    $end_month= date('m', $A['dateend']);
-    $end_day = date('d', $A['dateend']);
-    $end_year = date('Y', $A['dateend']);
+    $end_stamp = strtotime($A['dateend']);
+    $start_month = date('m', $start_stamp);
+    $start_day = date('d', $start_stamp);
+    $start_year = date('Y', $start_stamp);
+    $end_month= date('m', $end_stamp);
+    $end_day = date('d', $end_stamp);
+    $end_year = date('Y', $end_stamp);
     $start_ampm = '';
     $end_ampm = '';
-    $start_hour = date('H', strtotime($A['datestart']));
-    $start_minute = date('i', strtotime($A['datestart']));
+    $start_hour = date('H', $start_stamp);
+    $start_minute = date('i', $start_stamp);
     if ($start_hour > 12) {
         $start_hour = $start_hour - 12;
         $ampm = 'pm';
@@ -170,8 +172,8 @@ function editevent($mode, $eid='')
     } else {
         $event_templates->set_var('startam_selected','selected="SELECTED"');
     }
-    $end_hour = date('H', strtotime($A['dateend']));
-    $end_minute = date('i', strtotime($A['dateend']));
+    $end_hour = date('H', $end_stamp);
+    $end_minute = date('i', $end_stamp);
     $ampm = '';
     if ($end_hour > 12) {
         $end_hour = $end_hour - 12;
