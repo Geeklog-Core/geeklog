@@ -277,7 +277,10 @@ $LANG04 = array(
     73 => "Language",
     74 => "Change what this site looks like!",
     75 => "Emailed Topics for",
-    76 => "If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!"
+    76 => "If you select a topic from the list below you will receive any new stories posted to that topic at the end of each day.  Choose only the topics that interest you!",
+    77 => "Photo",
+    78 => "Add a picture of yourself!",
+    79 => "Check here to delete this picture"
 );
 
 ###############################################################################
@@ -763,7 +766,8 @@ $LANG28 = array(
     24 => 'Batch Import of Users',
     25 => 'You can import a batch of users into Geeklog.  The import file must a tab-delimited text file and must have the fields in the following order: full name, username, email address.  Each user you import will be emailed with a random password.  You must have one user entered per line.  Failure to follow these instructions will cause problems that may require manual work so double check your entries!',
     26 => 'Search',
-    27 => 'Limit Results'
+    27 => 'Limit Results',
+    28 => 'Check here to delete this picture'
 );
 
 
