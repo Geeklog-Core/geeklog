@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.55 2002/09/10 04:26:40 tony_bibbs Exp $
+// $Id: config.php,v 1.56 2002/09/19 04:37:50 tony_bibbs Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -256,12 +256,28 @@ $_CONF['minnews']               = 1;	// minimum number of stories per page
 $_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 
-// Story image settings.  Images not meeting these requirements will be either rejected or
-// resized.  If the path to mogrify command is empty, images will be rejected, otherwise they
-// will be resized. Mogrify is a command that is part of the ImageMagick library and it should
-// work on windows (not tested yet).  If this doesn't work on windows just set the path to empty 
-// string ''
-$_CONF['path_to_mogrify']       = '/usr/bin/X11/mogrify';
+// Optional Image Settings
+
+// If you set $_CONF['image_lib'] below, you must supply a path for the library you will use.  Setting this
+// also assumes that if a photo is uploaded that is  too big either by the image sizes below or by overriding
+// them using the upload object then the library you choose will attempt to resize the image.  Leaving this
+// value empty disables this feature
+$_CONF['image_lib']             = ''; // can be netpbm, imagemagick
+
+// If you set image_lib to imagemagick give this path otherwise comment it out
+//$_CONF['path_to_mogrify']       = '/path/to/mogrify';
+
+// If you set image_lib to netpbm give the path to the netpbm directory, you
+// need the trailing slash here.
+// NOTE: if you use NETPBM, use the latest package from the Gallery package for your
+// operating system found at http://sourceforge.net/projects/gallery in the download
+// section.  You need to take the netpbm tarball from them and uncompress the file which
+// will create a netpbm directory.  If you plan to only use netpbm with Geeklog, put that 
+// entire folder in /path/to/geeklog and adjust the path below.  The only programs you need
+// from netpbm is giftopnm, jpegtopnm, pngtopnm, ppmtogif, ppmtojpeg, pnmtopng and pnmscale
+//$_CONF['path_to_netpbm']        = '/path/to/netpbm/';
+
+// Image settings
 $_CONF['max_image_width']       = 300;  // In pixels
 $_CONF['max_image_height']      = 300;  // In pixels
 $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB 
