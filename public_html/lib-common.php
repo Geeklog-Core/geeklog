@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.259 2003/09/13 15:34:59 dhaun Exp $
+// $Id: lib-common.php,v 1.260 2003/09/14 09:07:54 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2522,11 +2522,12 @@ function COM_commentBar( $sid, $title, $type, $order, $mode )
 * @param     string     $mode      'flat', 'threaded', etc
 * @param     string     $type      Type of item (article, poll, etc.)
 * @param     string     $order     How to order the comments 'ASC' or 'DESC'
+* @param     boolean    $delete_option   if current user can delete comments
 * @param     boolean    $preview   Preview display (for edit) or not
 * @return    string     HTML       Formated Comment 
 *
 */
-function COM_getComment( $A, $mode, $type, $order, $preview = false )
+function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $preview = false )
 {
     global $_CONF, $_TABLES, $LANG01, $query;
 
@@ -2615,8 +2616,7 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
         $template->set_var( 'delete_option', '' );
     }
     // NOTE: the following check is nonsense (but fully 1.3.8 compatible ;-)
-    else if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'],
-            $A['perm_group'], $A['perm_members'], $A['perm_anon'] ) == 3 )
+    else if( $delete_option )
     {
         $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
                 . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
@@ -2669,7 +2669,7 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
         $result = DB_query( $q );
         while( $A = DB_fetchArray( $result ))
         {
-            $retval .= COM_getComment( $A, $mode, $type, $order );
+            $retval .= COM_getComment( $A, $mode, $type, $order, $delete_option );
         }
     
     	$indent -= $_CONF['comment_indent'];
@@ -2688,13 +2688,13 @@ function COM_getComment( $A, $mode, $type, $order, $preview = false )
 * @param        string      $type      Type of item (article, poll, etc.)
 * @param        string      $order     How to order the comments 'ASC' or 'DESC'
 * @param        string      $mode      comment mode (nested, flat, etc.)
-* @param        int         $pid       Parent ID
+* @param        boolean     $delete_option   if current user can delete comments
 * @see function COM_commentBar
 * @see function COM_commentChildren
 * @return     string  HTML Formated Comments
 *
 */
-function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $pid=0 )
+function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $delete_option = false )
 {
     global $_CONF, $_TABLES, $_USER, $LANG01;
 
@@ -2755,7 +2755,8 @@ function COM_userComments( $sid, $title, $type='article', $order='', $mode='', $
         $result = DB_query( $q );
         while ($A = DB_fetchArray( $result ))
         {
-            $thecomments .= COM_getComment( $A, $mode, $type, $order );
+            $thecomments .= COM_getComment( $A, $mode, $type, $order,
+                                            $delete_option );
         }
 
         $template->set_var( 'comments', $thecomments );

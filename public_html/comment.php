@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: comment.php,v 1.45 2003/08/17 09:38:01 dhaun Exp $
+// $Id: comment.php,v 1.46 2003/09/14 09:07:54 dhaun Exp $
 
 /**
 * This file is responsible for letting user enter a comment and saving the
@@ -144,7 +144,7 @@ function commentform($uid,$title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                 $start->set_var( 'layout_url', $_CONF['layout_url'] );
 
                 $thecomments = COM_getComment ($HTTP_POST_VARS, 'flat', $type,
-                                               'ASC', true );
+                                               'ASC', false, true );
 
                 $start->set_var( 'comments', $thecomments );
                 $retval .= COM_startBlock ($LANG03[14])
