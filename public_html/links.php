@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.29 2003/10/11 12:38:42 dhaun Exp $
+// $Id: links.php,v 1.30 2003/10/11 12:56:32 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -53,6 +53,9 @@ if (empty ($_USER['username']) &&
     $display .= $login->finish ($login->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
 } else {
+    $category = COM_applyFilter ($HTTP_GET_VARS['category']);
+    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+
     $display .= COM_startBlock($LANG06[1]);
 
     $linklist = new Template($_CONF['path_layout'] . 'links');
@@ -77,7 +80,7 @@ if (empty ($_USER['username']) &&
                     '/links.php?category=' . urlencode ($C['category']));
                 $linklist->set_var ('category_count', $D['count']);
                 $linklist->set_var ('width', floor (100 / $_CONF['linkcols']));
-                if (isset ($category) && (stripslashes ($category) == $C['category'])) {
+                if (!empty ($category) && ($category == $C['category'])) {
                     $linklist->parse ('category_col', 'actcol', true);
                 } else {
                     $linklist->parse ('category_col', 'catcol', true);
@@ -103,7 +106,7 @@ if (empty ($_USER['username']) &&
 
     $sql = "SELECT lid,category,url,description,title,hits FROM {$_TABLES['links']}";
     if ($_CONF['linkcols'] > 0) {
-        if (isset ($category)) {
+        if (!empty ($category)) {
             $sql .= " WHERE category = '$category'";
         } else {
             $sql .= " WHERE category = ''";
@@ -119,7 +122,7 @@ if (empty ($_USER['username']) &&
         $page = 0;
         $end = 10;
 
-        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
+        $result = DB_query("SELECT lid,url,title,description,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var('link_details','');
