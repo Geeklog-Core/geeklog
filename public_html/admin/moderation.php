@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.35 2003/04/13 17:16:09 dhaun Exp $
+// $Id: moderation.php,v 1.36 2003/04/25 08:51:59 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -577,7 +577,7 @@ function moderateusers ($uid, $action, $count)
                     }
                     mail($A["email"], "{$_CONF["site_name"]}: {$LANG04[16]}",
                         $mailtext,
-                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog $VERSION\r\nContent-Type: text/plain; charset={$charset}");
+                        "From: {$_CONF["site_name"]} <{$_CONF["site_mail"]}>\r\nReturn-Path: <{$_CONF["site_mail"]}>\r\nX-Mailer: GeekLog VERSION\r\nContent-Type: text/plain; charset={$charset}");
                 }
                 break;
         }
