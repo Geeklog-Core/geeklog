@@ -59,8 +59,10 @@ function storyeditor($sid,$mode="") {
 		$A = $HTTP_POST_VARS;
 		if ($A["postmode"] == "html") {
 			$A["introtext"] = checkhtml(checkwords($A["introtext"]));
+			$A["bodytext"] = checkhtml(checkwords($A["bodytext"]));
 		} else {
 			$A["introtext"] = htmlspecialchars(checkwords($A["introtext"]));
+			$A["bodytext"] = htmlspecialchars(checkwords($A["bodytext"]));
 		}
 		$A["title"] = strip_tags($A["title"]);
 	}
@@ -214,8 +216,6 @@ function submitstory($type="",$sid,$uid,$tid,$title,$introtext,$bodytext,$unixda
 			$introtext = addslashes(htmlspecialchars(checkwords($introtext)));
 			$bodytext = addslashes(htmlspecialchars(checkwords($bodytext)));
 		}
-		$introtext = addslashes(checkhtml(checkwords($introtext)));
-		$bodytext = addslashes(checkhtml(checkwords($bodytext)));
 		$title = addslashes(htmlspecialchars(strip_tags(checkwords($title))));
 		$comments = dbcount("comments","sid",$sid);
 		if ($type = "submission") dbdelete("storysubmission","sid",$sid);
