@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.24 2002/07/10 08:50:11 dhaun Exp $
+// $Id: search.php,v 1.25 2002/07/14 18:24:33 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -77,12 +77,12 @@ function searchform()
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['comments']}");
         for ($i = 1; $i <= DB_numRows($result); $i++) {
             $A = DB_fetchArray($result);
-            $searchusers[$A['uid']] .= $A['uid'];
+            $searchusers[$A['uid']] = $A['uid'];
         }
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
         for ($i = 1; $i <= DB_numRows($result); $i++) {
             $A = DB_fetchArray($result);
-            $searchusers[$A['uid']] .= $A['uid'];
+            $searchusers[$A['uid']] = $A['uid'];
         }
         for ($i = 1; $i <= count($searchusers); $i++) {
             $inlist .= current($searchusers);
