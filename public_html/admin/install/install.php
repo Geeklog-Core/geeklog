@@ -34,7 +34,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.37 2002/08/23 17:45:33 dhaun Exp $
+// $Id: install.php,v 1.38 2002/09/02 22:10:43 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -193,7 +193,7 @@ function INST_createDatabaseStructures() {
 }
 
 function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
-    global $_TABLES, $_CONF, $_DB_dbms;
+    global $_TABLES, $_CONF, $_DB_dbms, $_DB_table_prefix;
 
     // Because the upgrade sql syntax can vary from dbms-to-dbms we are
     // leaving that up to each Geeklog database driver
@@ -302,7 +302,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
                 next($_SQL);
             }
             $result = DB_query("SELECT ft_id FROM {$_TABLES['features']} WHERE ft_name = 'user.mail'");
-            $row = DB_fetchArray($result);            
+            $row = DB_fetchArray($result);
             $mail_ft = $row['ft_id'];
             $result = DB_query("SELECT grp_id FROM {$_TABLES['groups']} WHERE grp_name = 'Mail Admin'");
             $row = DB_fetchArray($result);
@@ -317,6 +317,10 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
                 next($_SQL);
+            }
+
+            if (!empty ($_DB_table_prefix)) {
+                DB_query ("RENAME TABLE staticpage TO {$_TABLES['staticpage']}");
             }
 
             $current_gl_version = '1.3.6';

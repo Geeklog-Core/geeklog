@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.34 2002/09/01 21:48:13 dhaun Exp $
+// $Id: submit.php,v 1.35 2002/09/02 22:10:40 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -327,6 +327,7 @@ function submitstory()
 	    $A['title'] = str_replace('$','&#36;',$A['title']);
             $A['introtext'] = str_replace('$','&#36;',$A['introtext']);
         }
+        $A['show_topic_icon'] = 1;
         $retval .= COM_startBlock($LANG12[32])
             . COM_article($A,'n')
             . COM_endBlock();
@@ -417,7 +418,7 @@ function savesubmission($type,$A)
             }
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            if ($_CONF['linksubmission'] == 1) {
+            if (($_CONF['linksubmission'] == 1) || SEC_hasRights('link.submit')) {
                 $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
             } else { // add link directly
                 if (empty ($_USER['username'])) { // anonymous user
@@ -495,7 +496,7 @@ function savesubmission($type,$A)
             }
 
             if ($A['calendar_type'] == 'master') {
-                if ($_CONF['eventsubmission'] == 1) {
+                if (($_CONF['eventsubmission'] == 1) || SEC_hasRights('event.submit')) {
                     $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url']."/index.php?msg=4");
                 } else {
                     if (empty ($_USER['username'])) { // anonymous user
@@ -548,7 +549,7 @@ function savesubmission($type,$A)
                 $_USER['uid'] = 1;
             }					
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            if ($_CONF['storysubmission'] == 1) {
+            if (($_CONF['storysubmission'] == 1) || SEC_hasRights('story.submit')) {
                 DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url']."/index.php?msg=2");
             } else { // post this story directly
                 $result = DB_query ("SELECT * FROM {$_TABLES['topics']} where tid='{$A["tid"]}'");
