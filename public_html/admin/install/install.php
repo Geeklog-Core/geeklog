@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.28 2002/04/30 18:49:00 dhaun Exp $
+// $Id: install.php,v 1.29 2002/05/01 08:12:24 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
@@ -277,14 +277,14 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
 }
 
 // Main
-if (isset ($_POST['page'])) {
-    $page = $_POST['page'];
+if (isset ($HTTP_POST_VARS['page'])) {
+    $page = $HTTP_POST_VARS['page'];
 }
 else {
     $page = 0;
 }
 
-if (isset ($_POST['action']) && ($_POST['action'] == '<< Previous')) {
+if (isset ($HTTP_POST_VARS['action']) && ($HTTP_POST_VARS['action'] == '<< Previous')) {
     $page = 0;
 }
 
@@ -294,25 +294,25 @@ if (isset ($_POST['action']) && ($_POST['action'] == '<< Previous')) {
 
 // Include template class if we got it
 if ($page > 0) {
-    require_once($_POST['geeklog_path'] . '/system/classes/template.class.php');
-    require_once($_POST['geeklog_path'] . '/config.php');
-    require_once($_POST['geeklog_path'] . '/system/lib-database.php');
+    require_once($HTTP_POST_VARS['geeklog_path'] . '/system/classes/template.class.php');
+    require_once($HTTP_POST_VARS['geeklog_path'] . '/config.php');
+    require_once($HTTP_POST_VARS['geeklog_path'] . '/system/lib-database.php');
 }
 
 $display = '';
 
 switch ($page) {
 case 1:
-    if ($_POST['install_type'] == 'complete_upgrade') {
+    if ($HTTP_POST_VARS['install_type'] == 'complete_upgrade') {
         $upgrade = 1;
     } else {
         $upgrade = 0;
     }
-    $display .= INST_getDatabaseSettings($_POST['install_type'], $_POST['geeklog_path']); 
+    $display .= INST_getDatabaseSettings($HTTP_POST_VARS['install_type'], $HTTP_POST_VARS['geeklog_path']); 
     break;
 case 2:
     if (!empty($version)) {
-        if (INST_doDatabaseUpgrades($version, $_POST['prefix'])) {
+        if (INST_doDatabaseUpgrades($version, $HTTP_POST_VARS['prefix'])) {
             // Great, installation is complete
             // Done with installation...redirect to success page
             echo '<html><head><meta http-equiv="refresh" content="0; URL=' . $_CONF['site_url'] . '/admin/install/success.php"></head></html>';
