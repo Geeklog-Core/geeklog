@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.21 2003/02/07 18:34:56 dhaun Exp $
+// $Id: profiles.php,v 1.22 2003/05/30 08:16:34 dhaun Exp $
 
 include('lib-common.php');
 
@@ -76,12 +76,12 @@ function contactemail($uid,$author,$authoremail,$subject,$message)
 
             $subject = strip_tags (stripslashes ($subject));
             $subject = substr ($subject, 0, strcspn ($subject, "\r\n"));
-            $RET = @mail($A['username'] . ' <' . $A['email'] . '>', $subject,
+            $RET = @mail($A['email'], $subject,
                 strip_tags(stripslashes($message)) . $sig,
                 "From: $author <$authoremail>\r\n" .
                 "Return-Path: <$authoremail>\r\n" .
-                "Content-Type: text/plain; charset=$charset\r\n" .
-                "X-Mailer: GeekLog " . VERSION);
+                "X-Mailer: GeekLog " . VERSION . "\r\n" .
+                "Content-Type: text/plain; charset=$charset");
             $retval .= COM_refresh($_CONF['site_url'] . '/index.php?msg=27');
 		} else {
 			$retval .= COM_siteHeader("menu")

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.15 2002/11/28 12:43:56 dhaun Exp $
+// $Id: mail.php,v 1.16 2003/05/30 08:16:34 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -178,7 +178,7 @@ function send_messages($vars)
  		$til .= '<' . $A['email'] . '>';
  		$sendttil .= $til . '<br>';
  
- 		if (!mail($til, stripslashes ($vars['subject']),
+ 		if (!mail($A['email'], stripslashes ($vars['subject']),
                 stripslashes ($vars['message']), $headers)) {
             $failures[] .= $til;
  		} else {
