@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.157 2005/02/05 05:04:18 vinny Exp $
+// $Id: config.php,v 1.158 2005/02/20 09:54:09 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -678,7 +678,7 @@ $_CONF['admin_html'] = array (
 );
 
 // list of protocols that are allowed in links
-$_CONF['allowed_protocols'] = array ('http:', 'https:', 'ftp:');
+$_CONF['allowed_protocols'] = array ('http', 'https', 'ftp');
 
 // disables autolinks if set to 1
 $_CONF['disable_autolinks'] = 0; // 0 = autolinks enabled

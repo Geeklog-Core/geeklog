@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.416 2005/02/03 19:57:40 dhaun Exp $
+// $Id: lib-common.php,v 1.417 2005/02/20 09:54:09 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2791,14 +2791,14 @@ function COM_checkHTML( $str, $permissions = 'story.edit' )
     // strip_tags() gets confused by HTML comments ...
     $str = preg_replace( '/<!--.+?-->/', '', $str );
 
-    $filter = new kses;
+    $filter = new kses4;
     if( isset( $_CONF['allowed_protocols'] ) && is_array( $_CONF['allowed_protocols'] ) && ( sizeof( $_CONF['allowed_protocols'] ) > 0 ))
     {
-        $filter->Protocols( $_CONF['allowed_protocols'] );
+        $filter->SetProtocols( $_CONF['allowed_protocols'] );
     }
     else
     {
-        $filter->Protocols( array( 'http:', 'https:', 'ftp:' ));
+        $filter->SetProtocols( array( 'http:', 'https:', 'ftp:' ));
     }
 
     if( empty( $permissions) || !SEC_hasRights( $permissions ) ||
