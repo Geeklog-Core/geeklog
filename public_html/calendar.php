@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.32 2004/01/04 22:13:50 dhaun Exp $
+// $Id: calendar.php,v 1.33 2004/01/06 22:38:40 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -619,6 +619,13 @@ $cal_templates->set_file(array('calendar'=>'calendar.thtml',
 $cal_templates->set_var('site_url', $_CONF['site_url']);
 $cal_templates->set_var ('layout_url', $_CONF['layout_url']);
 $cal_templates->set_var('mode', $mode);
+if ($mode == 'personal') {
+        $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[12]));
+        $cal_templates->set_var ('end_block', COM_endBlock ());
+} else {
+        $cal_templates->set_var ('start_block', COM_startBlock ($LANG30[11]));
+        $cal_templates->set_var ('end_block', COM_endBlock ());
+}
 $cal_templates->set_var('previous_months_cal',getSmallCalendar($prevmonth, $prevyear, $mode));
 $cal_templates->set_var('next_months_cal',getSmallCalendar($nextmonth, $nextyear, $mode));
 $cal_templates->set_var('cal_prevmo_num', $prevmonth);
