@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.7 2002/01/25 17:22:13 tony_bibbs Exp $
+// $Id: lib-sessions.php,v 1.8 2002/04/05 22:55:02 tony_bibbs Exp $
 
 // Turn this on if you want to see various debug messages from this library
 $_SESS_VERBOSE = false;
@@ -260,7 +260,7 @@ function SESS_setSessionCookie($sessid, $cookietime, $cookiename, $cookiepath, $
 {
     // This sets a cookie that will persist until the user closes their browser window.
     // since session expiry is handled on the server-side, cookie expiry time isn't a big deal.
-    setcookie($cookiename,$sessid,'',$cookiepath);
+    setcookie($cookiename,$sessid,0,$cookiepath);
 }
 
 /**
