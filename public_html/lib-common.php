@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.296 2004/02/29 03:53:18 vinny Exp $
+// $Id: lib-common.php,v 1.297 2004/03/02 19:59:37 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -334,9 +334,13 @@ $_GROUPS = SEC_getUserGroups( $_USER['uid'] );
 
 if( isset( $HTTP_GET_VARS['topic'] ))
 {
-    $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );                       
+    $topic = COM_applyFilter( $HTTP_GET_VARS['topic'] );
 }
-else          
+else if( isset( $HTTP_POST_VARS['topic'] ))
+{
+    $topic = COM_applyFilter( $HTTP_POST_VARS['topic'] );
+}
+else
 {
     $topic = '';
 }
