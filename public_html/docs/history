@@ -13,6 +13,9 @@ March 7, 2002
 - Modified admin/plugin.php to reflect change in how plugins are installed.  Because of platform 
   dependance issues, all plugins will have a simple but manual installation process.  This should
   work across all platforms.
+- Alter the database to force all stories to show on the frontpage by default.  This will make the
+  moderation of articles work as expected.  Before if you approved an article it would show up only
+  in the topic and not on the frontpage
 
 March 1, 2002
 -----------------
