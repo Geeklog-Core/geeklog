@@ -863,11 +863,12 @@ $MESSAGE = array (
 	38 => "Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged",
 	39 => "Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged",
 	40 => "System Message",
-    41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
+    41 => "Sorry, you do not have access to the word replacement page.  Please note that all attempts to access unauthorized features are logged",
     42 => "Your word has been successfully saved.",
 	43 => "The word has been successfully deleted.",
     44 => 'The plug-in was successfully installed!',
-    45 => 'The plug-in was successfully deleted.'
+    45 => 'The plug-in was successfully deleted.',
+    46 => "Sorry, you do not have access to the database backup utility.  Please note that all attempts to access unauthorized features are logged"
 );
 
 // for plugins.php
@@ -963,4 +964,9 @@ $LANG_WORDS = array(
     replacmentword => "Replacment Word",
     newword => "New Word"
 );
+
+$LANG_DB_BACKUP = array(
+    last_ten_backups => 'Last 10 Back-ups'
+);
+
 ?>
