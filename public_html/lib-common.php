@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.349 2004/08/01 19:16:23 dhaun Exp $
+// $Id: lib-common.php,v 1.350 2004/08/02 06:04:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -486,6 +486,8 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
     $A['bodytext'] = str_replace( '$', '&#36;', $A['bodytext'] );
 
     $recent_post_anchortag = '';
+    $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                . $A['sid'] );
     $introtext = stripslashes( $A['introtext'] );
     if( $index == 'n' )
     {
@@ -591,8 +593,6 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'pdf_icon', '' );
         }
     }
-    $articleUrl = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
-                                . $A['sid'] );
     $article->set_var( 'article_url', $articleUrl );
     $article->set_var( 'recent_post_anchortag', $recent_post_anchortag );
 
