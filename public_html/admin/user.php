@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.89 2005/01/31 10:12:28 dhaun Exp $
+// $Id: user.php,v 1.90 2005/03/25 21:34:08 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -186,7 +186,7 @@ function edituser($uid = '', $msg = '')
         }
     }
 
-    if (SEC_inGroup('Group Admin')) {
+    if (SEC_hasRights('group.edit')) {
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
 
