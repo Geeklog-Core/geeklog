@@ -1,11 +1,11 @@
                                 <tr align="center">
                                     <td align="left">
-                                        <a href="{site_admin_url}/plugins/staticpages/index.php?mode=edit&sp_id={sp_id}">{row_number}</a>
+                                        <a href="{page_edit_url}">{row_number}</a>
                                     </td>
                                     <td align="left">
-                                        <a href="{site_url}/staticpages/index.php?page={sp_id}">{sp_title}</a>
+                                        <a href="{page_display_url}">{sp_title}</a>
                                     </td>
                                     <td>{username}</td>
                                     <td>{sp_date}</td>
-                                    <td>{site_url}/staticpages/index.php?page={sp_id}</td>
+                                    <td>{page_display_url}</td>
                                 </tr>
