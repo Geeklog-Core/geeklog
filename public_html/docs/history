@@ -12,10 +12,11 @@ March 7, 2002
   the preview button (admin/story.php)
 - Modified admin/plugin.php to reflect change in how plugins are installed.  Because of platform 
   dependance issues, all plugins will have a simple but manual installation process.  This should
-  work across all platforms.
+  work across all platforms. (admin/plugin.php, layout/Yahoo/admin/plugins/pluginlist.thtml,
+  layout/Classic/admin/plugins/pluginlist.thtml, layout/Digital_Monochrome/admin/plugins/pluginlist.thtml)
 - Alter the database to force all stories to show on the frontpage by default.  This will make the
   moderation of articles work as expected.  Before if you approved an article it would show up only
-  in the topic and not on the frontpage
+  in the topic and not on the frontpage (mysql_tableanddata.sql, table.sql, mysql_1.3.3_to_1.3.4.sql)
 
 March 1, 2002
 -----------------
