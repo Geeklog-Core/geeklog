@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.47 2002/03/28 07:49:43 dhaun Exp $
+// $Id: lib-common.php,v 1.48 2002/03/31 14:26:10 dhaun Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -2010,9 +2010,9 @@ function COM_printUpcomingEvents($help='',$title='')
             $theRow    = 1;         // Start with today!
             $oldDate1  = 'no_day';  // Invalid Date!
             $oldDate2  = 'last_d';  // Invalid Date!
-            if ($numRows > 0) $retval .= '<p><b><u>' . $LANG01[101] . '</u></b><br>';
+            if ($numRows > 0) $retval .= '<p><b>' . $LANG01[101] . '</b><br>';
         } else {
-             if ($totalrows > 0) $retval .= '<b><u>' . $LANG01[102] . '</u></b><br>';
+             if ($totalrows > 0) $retval .= '<b>' . $LANG01[102] . '</b><br>';
         }
 
         if ($totalrows == 0 AND ($iterations == 1 OR ($iterations == 2 AND $z == 2))) {
@@ -2029,13 +2029,13 @@ function COM_printUpcomingEvents($help='',$title='')
             $startDate  = $theEvent['datestart'];
             $theTime1   = strtotime($startDate);
             $dayName1   = strftime("%A", $theTime1);
-            $abbrDate1  = strftime("%m/%d", $theTime1);
+            $abbrDate1  = strftime("%d-%b", $theTime1);
 
             // End Date strings...
             $endDate    = $theEvent['dateend'];
             $theTime2   = strtotime($endDate);
             $dayName2   = strftime("%A", $theTime2);
-            $abbrDate2  = strftime("%m/%d", $theTime2);
+            $abbrDate2  = strftime("%d-%b", $theTime2);
 
             // If either of the dates [start/end] change, then display a new header.
             if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
@@ -2082,15 +2082,11 @@ function COM_emailUserTopics()
     // Get users who want stories emailed to them
     $usersql = "SELECT username,email, etids FROM {$_TABLES['users']}, {$_TABLES['userindex']} WHERE "
         . "{$_TABLES['userindex']}.uid = {$_TABLES['users']}.uid AND etids IS NOT NULL";
-    COM_errorLog('usersql = ' . $usersql);
     $users = DB_query($usersql);
     $nrows = DB_numRows($users);
-    // $file = @fopen('testemail.txt',w);
-    // fputs($file, "got $nrows users who want stories emailed to them\n");
 
     // For each user, pull the stories they want and email it to them
-    for ($x = 0; $x < $nrows; $x++) {
-        //fputs($file, "inside for loop\n");
+    for ($x = 1; $x <= $nrows; $x++) {
         $U = DB_fetchArray($users);
         $cur_day = strftime("%D",time());
         $result = DB_query("SELECT value AS lastrun FROM {$_TABLES['vars']} WHERE name = 'lastemailedstories'");
@@ -2098,7 +2094,6 @@ function COM_emailUserTopics()
         $storysql = "SELECT sid, date AS day, title, introtext, bodytext FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND date >= '"
             . $L['lastrun'] . "' AND (";
         $ETIDS = explode(' ',$U['etids']);
-        // fputs(file, "got $ETIDS[$x] for a category\n");
 
         for ($i = 0; $i < sizeof($ETIDS); $i++) {
             if ($i == (sizeof($ETIDS) - 1)) {
@@ -2108,18 +2103,15 @@ function COM_emailUserTopics()
             }
         }
 
-        //fputs($file, $storysql . "\n");
-        COM_errorLog('storysql = ' . $storysql);
         $stories = DB_query($storysql);
         $nsrows = DB_numRows($stories);
-        // fputs($file, "got $nsrows stories that need to be emailed to user: {$U['username']}\n");
 
         if ($nsrows == 0) {
             // If no new stories where pulled then exit out
             return;
         }
 
-        $mailtext = "{$LANG08[27]}\n";
+        $mailtext = $LANG08[29] . date("Y-m-d",time()) . "\n";
         for ($y=0; $y<$nsrows; $y++) {
             // Loop through stories building the requested email message
             $S = DB_fetchArray($stories);
@@ -2134,16 +2126,12 @@ function COM_emailUserTopics()
         $mailtext .= "\nEnd of Message\n";
         $mailtext .= "\n------------------------------\n";
         $toemail = $U['email'];
-                $mailto = "{$U['username']} <{$toemail}>";
-        $mailfrom = "FROM: Iowa Outdoors <noreply@iowaoutdoors.org>";                        $subject = strip_tags(stripslashes("Iowa Outdoors Daily Newsletter for " . strftime('%m/%d/%Y',time())));
-        // fputs($file,"to: $toemail, from: $mailfrom, sub: $subject\ntext: $mailtext");
-        if ($U['username'] == 'Tony') {
+        $mailto = "{$U['username']} <{$toemail}>";
+        $mailfrom = "FROM: {$_CONF['site_name']} <{$_CONF['site_mail']}>";
         @mail($toemail,$subject,$mailtext,$mailfrom);
-        }
     }
     $tmpdate = date("Y-m-d H:i:s",time());
     DB_query("UPDATE {$_TABLES['vars']} SET value = '$tmpdate' WHERE name = 'lastemailedstories'");
-    // fclose($file);
 }
 
 /**
