@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.110 2005/02/05 05:04:18 vinny Exp $
+// $Id: usersettings.php,v 1.111 2005/02/05 10:57:33 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -599,7 +599,7 @@ function editpreferences()
     if (empty ($A['commentlimit'])) $A['commentlimit'] = 100;
 
     $where = '';
-    if( $_CONF['dynamic_comments'] ) {
+    if (!$_CONF['dynamic_comments']) {
         $where = 'mode != \'dynamic\'';
     }
     $selection = '<select name="commentmode">';
