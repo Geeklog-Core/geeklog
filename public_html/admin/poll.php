@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.25 2002/09/20 20:54:15 dhaun Exp $
+// $Id: poll.php,v 1.26 2002/10/29 16:02:43 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -66,8 +66,8 @@ if (!SEC_hasRights('poll.edit')) {
 * @display          int             Flag to indicate if poll appears on homepage
 * @question         string          The text for the question
 * @voters           int             Number of votes
-* @statuscode       string          ??
-* @commentcode      string          Indicates if users can comment on poll
+* @statuscode       int             (unused)
+* @commentcode      int             Indicates if users can comment on poll
 * @A                array           Array of possible answers
 * @V                array           Array of vote per each answer 
 * @owner_id         int             ID of poll owner
@@ -81,6 +81,11 @@ if (!SEC_hasRights('poll.edit')) {
 function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$V,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon) 
 { 
     global $_TABLES, $LANG25, $_CONF, $_POLL_VERBOSE;
+
+    $question = COM_stripslashes ($question);
+    for ($i = 0; $i < sizeof($A); $i++) {
+        $A[$i] = COM_stripslashes ($A[$i]);
+    }
 
     if ($_POLL_VERBOSE) {
         COM_errorLog('**** Inside savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
@@ -103,6 +108,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     DB_delete($_TABLES['pollquestions'],'qid',$qid);
     DB_delete($_TABLES['pollanswers'],'qid',$qid);
 
+    $question = addslashes ($question);
     $sql = "'$qid','$question',$voters,'" . date("Y-m-d H:i:s");
 
     if ($mainpage == 'on') { 
@@ -122,6 +128,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
             if (empty($V[$i])) { 
                 $V[$i] = "0"; 
             }
+            $A[$i] = addslashes ($A[$i]);
             DB_save($_TABLES['pollanswers'],'qid, aid, answer, votes',"'$qid', $i+1, '$A[$i]', $V[$i]");
         }
     }
