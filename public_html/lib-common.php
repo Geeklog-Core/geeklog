@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.21 2001/12/17 16:06:57 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.22 2001/12/17 16:50:40 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1944,57 +1944,57 @@ function COM_printUpcomingEvents($title='')
             $theRow    = 1;         // Start with today!
             $oldDate1  = 'no_day';  // Invalid Date!
             $oldDate2  = 'last_d';  // Invalid Date!
-            if ($totalrows > 0) $retval .= '<p><b><u>Your Events</u></b><br>';
+            if ($totalrows > 0) $retval .= '<p><b><u>' . $LANG01[101] . '</u></b><br>';
         } else {
-             if ($iterations == 2 && $totalrows > 0) $retval .= '<b><u>Public Events</u></b><br>';
+             if ($iterations == 2 && $totalrows > 0) $retval .= '<b><u>' . $LANG01[102] . '</u></b><br>';
         }
 
-    //if ($numRows == 0) {
-    if ($z == 2 AND $totalrows == 0) {
-        // There aren't any upcoming events, show a nice message
-        $retval .= $LANG01[89];
-    }
+        //if ($numRows == 0) {
+        if (empty($_USER['uid']) OR ($z == 2 AND $totalrows == 0)) {
+            // There aren't any upcoming events, show a nice message
+            $retval .= $LANG01[89];
+        }
 
-    while ($theRow <= $numRows AND $numDays < 14) {
-
-        // Retreive the next event, and format the start date.
-        $theEvent   = DB_fetchArray($allEvents);
+        while ($theRow <= $numRows AND $numDays < 14) {
+    
+            // Retreive the next event, and format the start date.
+            $theEvent   = DB_fetchArray($allEvents);
 		
-        // Start Date strings...
-        $startDate  = $theEvent['datestart'];
-        $theTime1   = strtotime($startDate);
-        $dayName1   = strftime("%A", $theTime1);
-        $abbrDate1  = strftime("%m/%d", $theTime1);
+            // Start Date strings...
+            $startDate  = $theEvent['datestart'];
+            $theTime1   = strtotime($startDate);
+            $dayName1   = strftime("%A", $theTime1);
+            $abbrDate1  = strftime("%m/%d", $theTime1);
 
-        // End Date strings...
-        $endDate    = $theEvent['dateend'];
-        $theTime2   = strtotime($endDate);
-        $dayName2   = strftime("%A", $theTime2);
-        $abbrDate2  = strftime("%m/%d", $theTime2);
+            // End Date strings...
+            $endDate    = $theEvent['dateend'];
+            $theTime2   = strtotime($endDate);
+            $dayName2   = strftime("%A", $theTime2);
+            $abbrDate2  = strftime("%m/%d", $theTime2);
 
-        // If either of the dates [start/end] change, then display a new header.
-        if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
-            $oldDate1 = $abbrDate1;
-            $oldDate2 = $abbrDate2;
-            $numDays ++;
-            if ($numDays < 14) {
-                $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
-                // If different start and end Dates, then display end date:
-                if ($abbrDate1 != $abbrDate2) {
-                    $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+            // If either of the dates [start/end] change, then display a new header.
+            if ($oldDate1 != $abbrDate1 OR $oldDate2 != $abbrDate2) {
+                $oldDate1 = $abbrDate1;
+                $oldDate2 = $abbrDate2;
+                $numDays ++;
+                if ($numDays < 14) {
+                    $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
+                    // If different start and end Dates, then display end date:
+                    if ($abbrDate1 != $abbrDate2) {
+                        $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
+                    }
                 }
             }
-        }
 
-        // Now display this event record.
+            // Now display this event record.
 
-        if ($numDays < 14) {
-            // Display the url now!
-            $retval .= '<li><a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
-                . '">' . stripslashes($theEvent['title']) . '</a></li>';
+            if ($numDays < 14) {
+                // Display the url now!
+                $retval .= '<li><a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
+                    . '">' . stripslashes($theEvent['title']) . '</a></li>';
+            }
+            $theRow ++ ;  
         }
-        $theRow ++ ;  
-    }
 
     } // end for z
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
