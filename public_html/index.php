@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.50 2003/06/25 08:39:02 dhaun Exp $
+// $Id: index.php,v 1.51 2003/07/01 17:48:56 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -156,7 +156,7 @@ if ($trows > 0) {
 }
 
 if ($newstories) {
-    $sql .= "AND (date >= (NOW() - INTERVAL {$_CONF['newstoriesinterval']} SECOND)) ";
+    $sql .= "AND (date >= (date_sub(NOW(), INTERVAL {$_CONF['newstoriesinterval']} SECOND))) ";
 }
 
 $offset = ($page - 1) * $limit;
