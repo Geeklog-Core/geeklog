@@ -40,6 +40,12 @@ class BlackList extends BaseCommand {
     {
         global $_CONF, $_TABLES, $_USER, $LANG_SX00, $result;
 
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
+
         /**
          * Include Blacklist Data
          */
@@ -52,7 +58,7 @@ class BlackList extends BaseCommand {
             $val = $A['value'];
             if (preg_match("#$val#", html_entity_decode ($comment))) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $_USER['uid'] . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log($LANG_SX00['foundspam'] . $val . $LANG_SX00['foundspam2'] . $uid . $LANG_SX00['foundspam3'] . $_SERVER['REMOTE_ADDR']);
                 break;
             } 
         } 

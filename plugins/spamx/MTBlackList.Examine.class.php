@@ -43,6 +43,12 @@ class MTBlackList extends BaseCommand {
     {
         global $_CONF, $_USER, $_TABLES, $LANG_SX00;
 
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $uid = $_USER['uid'];
+        } else {
+            $uid = 1;
+        }
+
         /**
          * Include Blacklist Data
          */
@@ -55,7 +61,7 @@ class MTBlackList extends BaseCommand {
             $val = $A['value'];
             if (@preg_match("#$val#", html_entity_decode ($comment))) {
                 $ans = 1; // quit on first positive match
-                SPAMX_log($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] . $_USER['uid'] . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
+                SPAMX_log($LANG_SX00['fsc'] . $val . $LANG_SX00['fsc1'] . $uid . $LANG_SX00['fsc2'] . $_SERVER['REMOTE_ADDR']);
                 break;
             } 
         } 
