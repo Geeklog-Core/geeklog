@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.21 2001/12/13 14:25:21 tony_bibbs Exp $
+// $Id: story.php,v 1.22 2001/12/17 16:30:14 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -117,6 +117,9 @@ function storyeditor($sid, $mode = '')
         $access = 3;
     } else {
         $A = $HTTP_POST_VARS;
+        // Convert array values to numeric permission values
+        list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
+
         if ($A["postmode"] == "html") {
             $A["introtext"] = COM_checkHTML(COM_checkWords($A["introtext"]));
             $A["bodytext"] = COM_checkHTML(COM_checkWords($A["bodytext"]));
