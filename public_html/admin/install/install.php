@@ -10,8 +10,8 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@dingoblue.net.au                    |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -34,10 +34,13 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.33 2002/07/04 12:14:40 dhaun Exp $
+// $Id: install.php,v 1.34 2002/07/07 08:54:16 dhaun Exp $
 
 if (!defined ("LB")) {
     define("LB", "\n");
+}
+if (!defined ('VERSION')) {
+    define('VERSION', '1.3.5');
 }
 
 // Turn this on to have the install process print debug messages.  NOTE: these
@@ -74,12 +77,12 @@ function INST_welcomePage()
     $retval .= '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">' . LB;
     $retval .= '<html>' . LB;
     $retval .= '<head>' . LB;
-    $retval .= '<title>Geeklog 1.3 Installation</title>' . LB;
+    $retval .= '<title>Geeklog ' . VERSION . ' Installation</title>' . LB;
     $retval .= '</head>' . LB;
     $retval .= '<body bgcolor="#ffffff">' . LB;
     $retval .= '<h2>Geeklog Installation (Step 1 of 2)</h2>' . LB;
-    $retval .= '<P>Welcome to Geeklog 1.3.5.  This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systemss in a variety of environments we have opted to revert that portion of the installation back to config.php.  With that said, you should edit config.php prior to running this script.  This script will, however, apply the database structures for both fresh installations and upgrades.';  
-    $retval .= '<P>If you are new to Geeklog, welcome!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version 1.3.5 you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<P>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <b>YOU HAVE BEEN WARNED</b>! <P> Also, this script will only upgrade you from 1.2.5-1 or later to version 1.3.5.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4.  Please note this script will not upgrade any beta versions of Geeklog. ';
+    $retval .= '<p>Welcome to Geeklog ' . VERSION . '.  This installation script has changed so please be sure to read this introductory paragraph in its entirety before proceeding.  We no longer support the web-based setup of config.php.  Due to complications in supporting a variety of operating systems in a variety of environments we have opted to revert that portion of the installation back to config.php.  With that said, you should edit config.php prior to running this script.  This script will, however, apply the database structures for both fresh installations and upgrades.';  
+    $retval .= '<p>If you are new to Geeklog, welcome!  Of all the choices of open-source weblogs we are glad you have chosen to install Geeklog.  With Geeklog version ' . VERSION . ' you will be able to experience rich features, easy administration and an extendable platform that is fast and, most importantly, secure!  Ok, enough of the marketing rant...now for the installation! You are only 3 short steps from having Geeklog running on your system.<p>Before we get started it is important that if you are upgrading an existing Geeklog installation you back up your database AND your file system.  This installation script will alter your Geeklog database. Also, if you are upgrading from version 1.3 or older you may need your old lib-database.php file so be sure to save a copy of this file. <b>YOU HAVE BEEN WARNED</b>! <p> Also, this script will only upgrade you from 1.2.5-1 or later to version ' . VERSION . '.  If you are running a version of Geeklog older than 1.2.5-1 then you will need to manually upgrade to 1.2.5-1 using the scripts in /path/to/geeklog/sql/updates/. This script will do incremental upgrades after this version (i.e. when 1.4 comes out this script will be able to upgrade from 1.2.5-1, 1.3.x directly to 1.4).  Please note this script will not upgrade any beta versions of Geeklog. ';
     if (!ini_get ('register_globals')) {
         $retval .= '<p><strong>Warning:</strong> You have <tt>register_globals = Off</tt> in your <tt>php.ini</tt>. However, Geeklog requires <tt>register_globals</tt> to be <strong>on</strong>. Before you continue, please set it to <strong>on</strong> and restart your web server.</p>';
     }
@@ -90,13 +93,13 @@ function INST_welcomePage()
     $retval .= '<table border="0" cellpadding="0" cellspacing="0" width="100%">' . LB;
     $retval .= '<tr><td align="right">Installation Type:&nbsp;</td><td><select name="install_type">'. LB;
     $retval .= $install_options;
-    $retval .= '</select></td>'.LB;
+    $retval .= '</select></td></tr>'.LB;
     $retval .= '<tr><td align="right">Path to Geeklog:&nbsp;</td><td><input type="text" name="geeklog_path" value="' . $glPath . '" size="40"> do not include trailing "/" or "\".</td></tr>'.LB;
-    $retval .= '<tr><td colspan="2" align="left"><p><b>Hint:</b> The complete path to this file is <b>' . $thisFile;
+    $retval .= '<tr><td colspan="2" align="left"><p><br><strong>Hint:</strong> The complete path to this file is <b>' . $thisFile;
     if (!empty ($glPath)) {
         $retval .= '</b><br>and it appears your Path to Geeklog is <b>' . $glPath;
     }
-    $retval .= '</b></td></tr>';
+    $retval .= '</b></p></td></tr>';
     $retval .= '<tr><td colspan="2" align="center"><input type="submit" value="Next >>"></td></tr>' . LB;
     $retval .= '</table>' . LB;
     $retval .= '<input type="hidden" name="page" value="1">' . LB;
@@ -118,7 +121,7 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     
     if ($install_type == 'upgrade_db') {
         $db_templates->set_var('upgrade',1);
-        // The already have a lib-database file...they can't chnage their tables names
+        // They already have a lib-database file...they can't change their tables names
         $old_versions = array('1.2.5-1','1.3','1.3.1','1.3.2','1.3.2-1','1.3.3','1.3.4');
         $versiondd = '<tr><td align="right"><b>Current Geeklog Version:</b></td><td><select name="version">';
         for ($j = 1; $j <= count($old_versions); $j++) {
