@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.44 2003/09/09 14:06:24 dhaun Exp $
+// $Id: moderation.php,v 1.45 2003/09/13 08:07:05 dhaun Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -345,10 +345,13 @@ function userlist ()
  
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
-            $mod_templates->set_var('edit_submission_url', $_CONF['site_url'] .
-                '/users.php?mode=profile&amp;uid=' . $A['uid']);
-            $mod_templates->set_var('lang_edit', $LANG29[4]);
-            $mod_templates->set_var('data_col1', stripslashes($A['username']));
+            $mod_templates->set_var ('edit_submission_url',
+                $_CONF['site_admin_url'] . '/user.php?mode=edit&amp;uid='
+                . $A['uid']);
+            $mod_templates->set_var('lang_edit', $LANG29[3]);
+            $mod_templates->set_var ('data_col1', '<a href="'
+                . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid='
+                . $A['uid'] . '">' . stripslashes ($A['username']) . '</a>');
             $mod_templates->set_var('data_col2', stripslashes($A['fullname']));
             $mod_templates->set_var('data_col3', stripslashes($A['email']));
             $mod_templates->set_var('cur_row', $i);
