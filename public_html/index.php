@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.56 2004/02/28 16:57:47 dhaun Exp $
+// $Id: index.php,v 1.57 2004/05/01 17:57:04 vinny Exp $
 
 require_once('lib-common.php');
 
@@ -108,6 +108,7 @@ if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
     $U['maxstories'] = $maxstories;
 } else {
     $U['maxstories'] = $_CONF['limitnews'];
+    /* HELPME: should we check for topic "limitnews" value? */
 }
 
 $limit = $U['maxstories'];
@@ -123,44 +124,36 @@ COM_rdfUpToDateCheck();
 // solely
 COM_featuredCheck();
 
-$sql = "FROM {$_TABLES['stories']} WHERE (date <= NOW()) AND (draft_flag = 0)";
+$sql = " (date <= NOW()) AND (draft_flag = 0)";
 
 // if a topic was provided only select those stories.
 if (!empty($topic)) {
-    $sql .= " AND tid = '$topic' ";
+    $sql .= " AND s.tid = '$topic' ";
 } elseif (!$newstories) {
     $sql .= " AND frontpage = 1 ";
 }
 
-$sql .= COM_getPermSQL ('AND');
+$sql .= COM_getPermSQL ('AND', 0, 2, 's');
 
 if (!empty($U['aids'])) {
-    $sql .= ' ';
-    $AIDS = explode(' ',$U['aids']);
-    for ($z = 0; $z < sizeof($AIDS); $z++) {
-        $sql .= "AND uid != '$AIDS[$z]' ";
-    }
+    $sql .= " AND s.uid NOT IN (" . str_replace( ' ', ",", $U['aids'] ) . ") ";
 }
 
 if (!empty($U['tids'])) {
-    $sql .= ' ';
-    $TIDS = explode(' ',$U['tids']);
-    for ($z = 0; $z < sizeof($TIDS); $z++) {
-        $sql .= "AND tid != '$TIDS[$z]' ";
-    }
+    $sql .= " AND s.tid NOT IN ('" . str_replace( ' ', "','", $U['tids'] ) . "') ";
 }
 
 $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}" . COM_getPermSQL());
 $trows = DB_numRows ($tresult);
 if ($trows > 0) {
     $tids = array ();
-    for ($i = 0; $i < $trows; $i++) {
-        $T = DB_fetchArray ($tresult);
+    while ( $T = DB_fetchArray ($tresult) ) {
         $tids[] = $T['tid'];
     }
     if (sizeof ($tids) > 0) {
-        $sql .= "AND (tid IN ('" . implode ("','", $tids) . "')) ";
+        $sql .= "AND (s.tid IN ('" . implode ("','", $tids) . "')) ";
     }
+    /* HELPME -- what happens when sizeof($tids) == 0 ? */
 }
 
 if ($newstories) {
@@ -170,29 +163,37 @@ if ($newstories) {
 $offset = ($page - 1) * $limit;
 $sql .= "ORDER BY featured DESC, date DESC";
 
-$result = DB_query ("SELECT *,UNIX_TIMESTAMP(date) AS day " . $sql
-        . " LIMIT $offset, $limit");
+$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
+         . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, "
+	 . "{$_TABLES['topics']} as t WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND"
+         . $sql . " LIMIT $offset, $limit");
 $nrows = DB_numRows ($result);
 
-$data = DB_query ("SELECT COUNT(*) AS count " . $sql);
+$data = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} as s WHERE" . $sql);
 $D = DB_fetchArray ($data);
 $num_pages = ceil ($D['count'] / $limit);
 
-if ($nrows > 0) {
-    for ($x = 1; $x <= $nrows; $x++) {
-        $A = DB_fetchArray($result);
-        if ($A['featured'] == 1) {
-            $feature = 'true';
-        } elseif (($x == 1) && ($_CONF['showfirstasfeatured'] == 1)) {
-            $feature = 'true';
-            $A['featured'] = 1;
-        }
-        $display .= COM_article($A,'y');
-        if ($A['featured'] == 1) {
-            $display .= PLG_showCenterblock (2, $page, $topic);
-        }
+if ( $A = DB_fetchArray( $result ) ) {
+
+    if ( $_CONF['showfirstasfeatured'] == 1 ) {
+        $A['featured'] = 1;
     }
 
+    // display first article
+    $display .= COM_article($A,'y');
+
+    // get plugin center blocks after featured article
+    if ($A['featured'] == 1) {
+        $display .= PLG_showCenterblock (2, $page, $topic);
+    }
+
+    // get reamaining stories
+    while ( $A = DB_fetchArray($result) ) {
+        $display .= COM_article($A,'y');
+    }
+
+    // get plugin center blocks that follow articles
     $display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 
     // Print Google-like paging navigation

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.317 2004/04/30 23:36:12 vinny Exp $
+// $Id: lib-common.php,v 1.318 2004/05/01 17:57:04 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -368,7 +368,7 @@ else
 *
 */
 
-function COM_article( $A, $index='', $storytpl='storytext.thtml' )
+function COM_article( &$A, $index='', $storytpl='storytext.thtml' )
 {
     global $_TABLES, $mode, $_CONF, $_USER, $LANG01, $LANG05, $LANG11, $_THEME_URL;
 
@@ -404,16 +404,12 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 
     if( $_CONF['contributedbyline'] == 1 )
     {
-        $sql = "SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = '{$A['uid']}'";
-        $results = DB_query( $sql );
-        $U = DB_fetchArray( $results );
-
         $article->set_var( 'lang_contributed_by', $LANG01[1] );
         $article->set_var( 'contributedby_uid', $A['uid'] );
-        $username = $U['username'];
+        $username = $A['username'];
         $article->set_var( 'contributedby_user', $username );
 
-        $fullname = $U['fullname'];
+        $fullname = $A['fullname'];
         if( empty( $fullname ))
         {
             $article->set_var( 'contributedby_fullname', $username );
@@ -432,7 +428,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'contributedby_url', $_CONF['site_url']
                     . '/users.php?mode=profile&amp;uid=' . $A['uid'] );
 
-            $photo = $U['photo'];
+            $photo = $A['photo'];
             if( !empty( $photo ))
             {
                 if( empty( $fullname ))
@@ -452,12 +448,9 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
 
     if( $_USER['noicons'] != 1 AND $A['show_topic_icon'] == 1 )
     {
-        $result = DB_query( "SELECT imageurl,topic FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'" );
-        $T = DB_fetchArray( $result );
-
-        $topicname = htmlspecialchars( stripslashes( $T['topic'] ));
+        $topicname = htmlspecialchars( stripslashes( $A['topic'] ));
         $topicurl = $_CONF['site_url'] . '/index.php?topic=' . $A['tid'];
-        if( !empty( $T['imageurl'] ))
+        if( !empty( $A['imageurl'] ))
         {
             if( isset( $_THEME_URL ))
             {
@@ -468,7 +461,7 @@ function COM_article( $A, $index='', $storytpl='storytext.thtml' )
                 $imagebase = $_CONF['site_url'];
             }
             $topicimage = '<img align="' . $_CONF['article_image_align']
-                    . '" src="' . $imagebase . $T['imageurl'] . '" alt="'
+                    . '" src="' . $imagebase . $A['imageurl'] . '" alt="'
                     . $topicname . '" title="' . $topicname . '" border="0">';
             $article->set_var( 'story_anchortag_and_image', '<a href="'
                     . $topicurl . '">' . $topicimage . '</a>' );

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.65 2004/02/28 11:02:14 dhaun Exp $
+// $Id: submit.php,v 1.66 2004/05/01 17:57:04 vinny Exp $
 
 require_once('lib-common.php');
 
@@ -291,6 +291,10 @@ function submitstory($topic = '')
 
         $A['show_topic_icon'] = 1;
         $A['hits'] = 0;
+	$res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+	$A += DB_fetchArray($res);
+	$res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+	$A += DB_fetchArray($res);
         $retval .= COM_startBlock($LANG12[32])
             . COM_article($A,'n')
             . COM_endBlock();

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.113 2004/02/10 19:22:23 dhaun Exp $
+// $Id: story.php,v 1.114 2004/05/01 17:57:05 vinny Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -91,7 +91,10 @@ function storyeditor($sid = '', $mode = '')
     $display = '';
 
     if (!empty($sid) && $mode == 'edit') {
-        $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['stories']} WHERE sid = '$sid'");
+	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
+         . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         $access = min ($access, SEC_hasTopicAccess ($A['tid']));
@@ -112,7 +115,11 @@ function storyeditor($sid = '', $mode = '')
             return $display;
         }
     } elseif (!empty($sid) && $mode == 'editsubmission') {
-        $result = DB_query("SELECT *,UNIX_TIMESTAMP(date) AS unixdate FROM {$_TABLES['storysubmission']} WHERE sid = '$sid'");
+	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, "
+	 . "t.perm_owner, t.perm_group, t.perm_members, t.perm_anon "
+         . "FROM {$_TABLES['storysubmission']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         if (DB_numRows ($result) > 0) {
             $A = DB_fetchArray($result);
             $A['show_topic_icon'] = 1;
@@ -120,13 +127,6 @@ function storyeditor($sid = '', $mode = '')
             $A['featured'] = 0;
             $A['statuscode'] = 0;
             $A['owner_id'] = $A['uid'];
-            $result = DB_query ("SELECT group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-            $T = DB_fetchArray ($result);
-            $A['group_id'] = $T['group_id'];
-            $A['perm_owner'] = $T['perm_owner'];
-            $A['perm_group'] = $T['perm_group'];
-            $A['perm_members'] = $T['perm_members'];
-            $A['perm_anon'] = $T['perm_anon'];
             $access = 3;
             $A['title'] = htmlspecialchars ($A['title']);
         } else {
@@ -153,6 +153,10 @@ function storyeditor($sid = '', $mode = '')
         $access = 3;
     } else {
         $A = $HTTP_POST_VARS;
+	$res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+	$A += DB_fetchArray($res);
+	$res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+	$A += DB_fetchArray($res);
         if (empty ($A['ampm'])) {
             $A['ampm'] = $A['publish_ampm'];
         }

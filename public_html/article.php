@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.42 2004/04/02 04:42:17 vinny Exp $
+// $Id: article.php,v 1.43 2004/05/01 17:57:04 vinny Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -89,7 +89,10 @@ if ($A['count'] > 0) {
         echo COM_refresh ($_CONF['site_url']
                 . "/comment.php?sid=$story&amp;pid=$pid&amp;type=$type");
     } else {
-        $result = DB_query ("SELECT sid,uid,tid,title,introtext,bodytext,hits,comments,featured,draft_flag,show_topic_icon,commentcode,postmode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE sid = '$story'");
+	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+         . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
+         . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
+         . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$story')");
         $A = DB_fetchArray ($result);
 
         $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
