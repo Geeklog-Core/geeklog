@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.212 2003/03/28 18:19:56 dhaun Exp $
+// $Id: lib-common.php,v 1.213 2003/03/29 17:30:02 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -2062,15 +2062,19 @@ function COM_userMenu( $help='', $title='' )
     }
     else
     {
-        $retval .= COM_startBlock( $LANG01[47], $help, COM_getBlockTemplate( 'user_block', 'header' ))
-            . '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
-            . '<b>' . $LANG01[21] . ':</b><br>' . LB
-            . '<input type="text" size="10" name="loginname" value=""><br>' . LB
-            . '<b>' . $LANG01[57] . ':</b><br>' . LB
-            . '<input type="password" size="10" name="passwd"><br>' . LB
-            . '<input type="submit" value="' . $LANG01[58] . '">' . LB
-            . '</form>' . $LANG01[59] . LB
-            . COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
+        $retval .= COM_startBlock( $LANG01[47], $help, COM_getBlockTemplate( 'user_block', 'header' ));
+
+        $login = new Template( $_CONF['path_layout'] );
+        $login->set_file( 'form', 'loginform.thtml' );
+        $login->set_var( 'site_url', $_CONF['site_url'] );
+        $login->set_var( 'layout_url', $_CONF['layout_url'] );
+        $login->set_var( 'lang_username', $LANG01[21] );
+        $login->set_var( 'lang_password', $LANG01[57] );
+        $login->set_var( 'lang_login', $LANG01[58] );
+        $login->set_var( 'lang_signup', $LANG01[59] );
+        $retval .= $login->parse( 'output', 'form' );
+
+        $retval .= COM_endBlock( COM_getBlockTemplate( 'user_block', 'footer' ));
     }
 
     return $retval;
@@ -3319,8 +3323,14 @@ function COM_rdfImport( $bid, $rdfurl )
 
     if( $fp = @fopen( $rdfurl, 'r' ))
     {
+        $startoffeed = true;
         while( $data = fread( $fp, 4096 ))
         {
+            if( $startoffeed )
+            {
+                $data = ltrim( $data );
+                $startoffeed = false;
+            }
             if( !xml_parse( $xml_parser, $data, feof( $fp )))
             {
                 $errmsg = sprintf(
