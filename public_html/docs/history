@@ -3,6 +3,8 @@ GeekLog History/Changes:
 ??? ??, 2004
 ------------
 
+- Cached enabled plugins to reduce db queries and improve performance. [Vinny]
+- Fixed SEC_inGroup not using $_GROUPS cache in several instances. [Vinny]
 - mysql.class.php now only runs mysql_connect once per page load.  [Vinny]
 - Fixed Bug #183: COM_extractLinks will now ignore anchor tags that do not
   contain "href". [Vinny]

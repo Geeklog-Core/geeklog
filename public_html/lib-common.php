@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.315 2004/04/26 19:09:37 vinny Exp $
+// $Id: lib-common.php,v 1.316 2004/04/28 03:21:39 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5399,13 +5399,8 @@ function COM_makeClickableLinks( $text )
 
 
 // Now include all plugin functions
-$result = DB_query( "SELECT pi_name FROM {$_TABLES['plugins']} WHERE pi_enabled = 1" );
-$nrows = DB_numRows( $result );
-
-for( $i = 0; $i < $nrows; $i++ )
-{
-    $A = DB_fetchArray( $result );
-    require_once( $_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc' );
+foreach ($_PLUGINS as $pi_name) {
+    require_once( $_CONF['path'] . 'plugins/' . $pi_name . '/functions.inc' );
 }
 
 ?>
