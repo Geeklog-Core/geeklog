@@ -1,5 +1,37 @@
 GeekLog History/Changes:
 
+??? ??, 2004 (1.3.10rc2)
+------------
+
+- Set the target encoding in Geeklog's RSS parser (bug #301) [Dirk]
+- Set the {topic_icon} variable to an empty string for the "Home" link in the
+  Topics block (reported by jhwhite) [Dirk]
+- Fixed News Box Configuration, i.e. the ability to disable blocks [Vinny]
+- In the story template files, the number of comments now only is a link when
+  there actually is a comment on the story [Dirk]
+- Hard-coded the English word 'delete' in the URLs to delete a comment [Dirk]
+- For the list of a user's recent comments, use 'mode=view' to link directly
+  to a comment now [Dirk]
+- Fixed comment id in comment notification emails [Dirk]
+- Fixed display of the number of static pages that the user has access to (in
+  the Admin Block) [Dirk]
+- COM_makeClickableLinks did not recognize links with the 'http:' at the
+  start of a line [Dirk]
+- Re-introduced <br> between plugin sections in the What's New block, pretty
+  much reverting the change suggested by feature request #292 [Dirk]
+- Introduced function COM_formatEmailAddress that creates a (more or less)
+  RFC(2)822 compliant email address from a name and an address [Dirk]
+  This function is now used for formatting the site address, as well as for
+  addresses entered by the user in profiles.php and admin/mail.php.
+- The SpamX plugin's MailAdmin action didn't send any email notifications,
+  since the call to COM_mail was commented out ... [Dirk]
+- admin/mail.php and admin/group.php use the complete URL to the script in
+  the <form action="..."> now (instead of relying on PHP_SELF) [Dirk]
+- Fixed parse error in the Dutch language file (reported by NeoNecro) [Dirk]
+- Allow the dot '.' in IDs (in addition to letters, digits, the dash, and the
+  underscore) [Dirk]
+
+
 Oct 17, 2004 (1.3.10rc1)
 ------------
 
