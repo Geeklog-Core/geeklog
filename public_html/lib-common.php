@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.26 2002/01/11 17:21:37 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.27 2002/01/19 10:28:15 dreamscape Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -39,7 +39,7 @@ $_COM_VERBOSE = false;
 // +---------------------------------------------------------------------------+
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
-include_once('/path/to/geeklog/config.php');
+include_once('/home/httpd/html/geeklog-1.3/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
