@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.22 2002/08/07 08:47:21 dhaun Exp $
+// $Id: poll.php,v 1.23 2002/08/16 14:00:24 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -114,9 +114,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     $sql .= ",'$statuscode','$commentcode',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon";
 
     // Save poll question
-    DB_setDebug(true);
     DB_save($_TABLES['pollquestions'],"qid, question, voters, date, display, statuscode, commentcode, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon",$sql);
-    DB_setDebug(false);
 
     // Save poll answers
     for ($i = 0; $i < sizeof($A); $i++) {
