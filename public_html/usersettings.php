@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.40 2002/08/17 12:51:12 dhaun Exp $
+// $Id: usersettings.php,v 1.41 2002/08/20 13:08:59 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -546,8 +546,8 @@ function savepreferences($A)
     
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
-    setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']); 
-    setcookie('language',$A['language'],time() + 31536000,$_CONF['cookie_path']);   
+    setcookie($_CONF['cookie_theme'],$A['theme'],time() + 31536000,$_CONF['cookie_path']); 
+    setcookie($_CONF['cookie_language'],$A['language'],time() + 31536000,$_CONF['cookie_path']);   
     
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 

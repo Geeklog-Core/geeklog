@@ -32,7 +32,7 @@
 // | on configuration                                                          |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.52 2002/08/15 19:08:12 dhaun Exp $
+// $Id: config.php,v 1.53 2002/08/20 13:08:59 dhaun Exp $
 
 // To get Geeklog up and running, you need to make sure the settings in the
 // following sections are correct:
@@ -148,12 +148,20 @@ $_CONF['site_disabled_msg'] = 'Geeklog Site is down. Please come back soon.';
 // | permanent cookies                                                         |
 // +---------------------------------------------------------------------------+
 
+$_CONF['cookie_session']                = 'gl_session';
+$_CONF['cookie_name']                   = 'geeklog';
+$_CONF['cookie_password']               = 'password';
+$_CONF['cookie_theme']                  = 'theme';
+$_CONF['cookie_language']               = 'language';
+$_CONF['cookie_lastvisit']              = 'LastVisit';
+$_CONF['cookie_lastvisittemp']          = 'LastVisitTemp';
+
 $_CONF['cookie_ip']                     = 0;
 $_CONF['default_perm_cookie_timeout']   = 604800;
 $_CONF['session_cookie_timeout']        = 7200;
-$_CONF['cookie_session']                = 'gl_session';
-$_CONF['cookie_name']                   = 'geeklog';
 $_CONF['cookie_path']                   = '/';
+$_CONF['cookiedomain']                  = '';
+$_CONF['cookiesecure']                  = 0;
 
 // +---------------------------------------------------------------------------+
 // | This is really redundant but I am including this as a reminder that those |

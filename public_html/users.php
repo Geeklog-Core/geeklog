@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.41 2002/08/16 15:34:18 dhaun Exp $
+// $Id: users.php,v 1.42 2002/08/20 13:08:59 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -596,7 +596,7 @@ default:
                     COM_errorLog('Trying to set permanent cookie',1);
                 }
                 setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $cooktime,$_CONF['cookie_path']);
-                setcookie('password',md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
+                setcookie($_CONF['cookie_password'],md5($passwd),time() + $cooktime,$_CONF['cookie_path']);
             }
         } else {
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
@@ -616,7 +616,7 @@ default:
         }
 
         // Now that we have users data see if their theme cookie is set.  If not set it
-        setcookie('theme',$_USER['theme'],time() + 31536000,$_CONF['cookie_path']);
+        setcookie($_CONF['cookie_theme'],$_USER['theme'],time() + 31536000,$_CONF['cookie_path']);
 	
         // Increment the numlogins counter for this user
         // DB_change("users","numlogins","numlogins + 1","username","$loginname");

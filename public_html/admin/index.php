@@ -21,20 +21,16 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
+//
+// $Id: index.php,v 1.8 2002/08/20 13:08:59 dhaun Exp $
+
 require_once('../lib-common.php');
-require_once('auth.inc.php');
 
 // MAIN
 if ($mode == 'logout') {
-	COM_refresh($_CONF['site_url'] . '/users.php?mode=logout');
-
-/*
-	$tmp = $HTTP_COOKIE_VARS["gl_loginname"] . " logged out.";
-	accesslog($tmp);
-	setcookie("gl_loginname","",0,"/","",0);
-	setcookie("gl_password","",0,"/","",0);
-	COM_refresh("{$CONF['site_url']}/index.php");
-*/
+    print COM_refresh($_CONF['site_url'] . '/users.php?mode=logout');
 }
+
 print COM_refresh($_CONF['site_admin_url'] . '/moderation.php');
+
 ?>

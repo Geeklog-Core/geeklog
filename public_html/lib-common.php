@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.139 2002/08/16 19:28:31 dhaun Exp $
+// $Id: lib-common.php,v 1.140 2002/08/20 13:08:59 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -141,9 +141,9 @@ require_once($_CONF['path_system'] . 'lib-sessions.php');
 // way if user logged in and set theme and then logged out we would still know
 // which theme to show them.
 if ($_CONF['allow_user_themes'] == 1) {
-    if (isset($HTTP_COOKIE_VARS['theme']) && empty($_USER['theme'])) {
-        if (is_dir($_CONF['path_themes'] . $HTTP_COOKIE_VARS['theme'])) {
-            $_USER['theme'] = $HTTP_COOKIE_VARS['theme'];
+    if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_theme']]) && empty($_USER['theme'])) {
+        if (is_dir($_CONF['path_themes'] . $HTTP_COOKIE_VARS[$_CONF['cookie_theme']])) {
+            $_USER['theme'] = $HTTP_COOKIE_VARS[$_CONF['cookie_theme']];
         }
     }
     if (!empty($_USER['theme'])) {
@@ -163,10 +163,10 @@ if (file_exists($_CONF['path_layout'] . 'functions.php')) {
 }
 
 // Similarly set language
-if (isset($HTTP_COOKIE_VARS['language']) && empty($_USER['language'])) {
-    if (is_file($_CONF['path_language'] . $HTTP_COOKIE_VARS['language'] . '.php')) {
-        $_USER['language'] = $HTTP_COOKIE_VARS['language'];
-        $_CONF['language'] = $HTTP_COOKIE_VARS['language'];
+if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_language']]) && empty($_USER['language'])) {
+    if (is_file($_CONF['path_language'] . $HTTP_COOKIE_VARS[$_CONF['cookie_language']] . '.php')) {
+        $_USER['language'] = $HTTP_COOKIE_VARS[$_CONF['cookie_language']];
+        $_CONF['language'] = $HTTP_COOKIE_VARS[$_CONF['cookie_language']];
     }
 } else if (!empty($_USER['language'])) {
     if (is_file($_CONF['path_language'] . $_USER['language'] . '.php')) {

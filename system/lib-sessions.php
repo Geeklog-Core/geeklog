@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.12 2002/07/29 12:18:17 dhaun Exp $
+// $Id: lib-sessions.php,v 1.13 2002/08/20 13:09:00 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -99,7 +99,7 @@ function SESS_sessionCheck()
             // Session probably expired, now check permanent cookie
             if (isset($HTTP_COOKIE_VARS[$_CONF['cookie_name']])) {
                 $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-                $cookie_password = $HTTP_COOKIE_VARS['password'];
+                $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
                 $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
                 if ($cookie_password <> $userpass) {
                     //User may have modified their UID in cookie, ignore them
@@ -128,7 +128,7 @@ function SESS_sessionCheck()
             }
 
             $userid = $HTTP_COOKIE_VARS[$_CONF['cookie_name']];
-            $cookie_password = $HTTP_COOKIE_VARS['password'];
+            $cookie_password = $HTTP_COOKIE_VARS[$_CONF['cookie_password']];
             $userpass = DB_getItem($_TABLES['users'],'passwd',"uid = $userid");
             if ($cookie_password <> $userpass) {
                 // User could have modified UID in cookie, don't do shit
@@ -151,19 +151,19 @@ function SESS_sessionCheck()
     $expiredate2 = time() + 600;
 
     // Update the LastVisit cookie. This cookie is updated each time auth.php runs
-    setcookie('LastVisit', time(), $expiredate1,  $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+    setcookie($_CONF['cookie_lastvisit'], time(), $expiredate1,  $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
     // Set LastVisitTemp cookie, which only gets the time from the LastVisit cookie
     // if it does not exist yet otherwise, it gets the time from the LastVisitTemp
     // cookie
-    if (!isset($HTTP_COOKIE_VARS['LastVisitTemp'])) {
-        $temptime = $HTTP_COOKIE_VARS['LastVisit'];
+    if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_lastvisittemp']])) {
+        $temptime = $HTTP_COOKIE_VARS[$_CONF['cookie_lastvisit']];
     } else {
-        $temptime = $HTTP_COOKIE_VARS['LastVisitTemp'];
+        $temptime = $HTTP_COOKIE_VARS[$_CONF['cookie_lastvisittemp']];
     }
 
     // Set cookie.
-    setcookie("LastVisitTemp", $temptime ,$expiredate2, $_CONF['cookie_path'], $_CONF['site_url'], $_CONF['cookiesecure']);
+    setcookie($_CONF['cookie_lastvisittemp'], $temptime ,$expiredate2, $_CONF['cookie_path'], $_CONF['site_url'], $_CONF['cookiesecure']);
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
