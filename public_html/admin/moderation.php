@@ -42,21 +42,43 @@ function commandcontrol() {
 	startblock($LANG29[34]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr align=center valign=top>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/icons/story.gif border=0><br>{$LANG01[11]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/icons/block.gif border=0><br>{$LANG01[12]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/icons/topic.gif border=0><br>{$LANG01[13]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/icons/link.gif border=0><br>{$LANG01[14]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/icons/event.gif border=0><br>{$LANG01[15]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/icons/poll.gif border=0><br>{$LANG01[16]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/icons/user.gif border=0><br>{$LANG01[17]}</a></td>";
-	print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/icons/plugins.gif border=0><br>Plug-ins</a></td>";
+	if (hasrights('story.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/story.php><img src={$CONF["site_url"]}/images/icons/story.gif border=0><br>{$LANG01[11]}</a></td>";
+	}
+	if (hasrights('block.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/block.php><img src={$CONF["site_url"]}/images/icons/block.gif border=0><br>{$LANG01[12]}</a></td>";
+	}
+	if (hasrights('topic.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/topic.php><img src={$CONF["site_url"]}/images/icons/topic.gif border=0><br>{$LANG01[13]}</a></td>";
+	}
+	if (hasrights('link.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/link.php><img src={$CONF["site_url"]}/images/icons/link.gif border=0><br>{$LANG01[14]}</a></td>";
+	}
+	if (hasrights('event.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/event.php><img src={$CONF["site_url"]}/images/icons/event.gif border=0><br>{$LANG01[15]}</a></td>";
+	}
+	if (hasrights('poll.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/poll.php><img src={$CONF["site_url"]}/images/icons/poll.gif border=0><br>{$LANG01[16]}</a></td>";
+	}
+	if (hasrights('user.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/user.php><img src={$CONF["site_url"]}/images/icons/user.gif border=0><br>{$LANG01[17]}</a></td>";
+	}
+	if (hasrights('plugin.edit')) {
+		print "<td width=11%><a href={$CONF["site_url"]}/admin/plugins.php><img src={$CONF["site_url"]}/images/icons/plugins.gif border=0><br>Plug-ins</a></td>";
+	}
 	print "<td width=11%><a href={$CONF["site_url"]}/admin/index.php?mode=logout><img src={$CONF["site_url"]}/images/icons/logout.gif border=0><br>{$LANG01[19]}</a></td></tr><tr align=center valign=top>";
 	ShowPluginModerationOptions();
 	print "</tr></table>";
 	endblock();
-	itemlist("story");
-	itemlist("link");
-	itemlist("event");
+	if (hasrights('story.moderate')) {
+		itemlist("story");
+	}
+	if (hasrights('link.moderate')) {
+		itemlist("link");
+	}
+	if (hasrights('event.moderate')) {
+		itemlist("event");
+	}
 	ShowPluginModerationLists();
 }
 

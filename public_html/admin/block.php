@@ -27,6 +27,15 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+if (!hasrights('block.edit')) {
+	site_header("menu");
+	startblock($MESSAGE[30]);
+       	print $MESSAGE[31];
+	endblock();
+	site_footer();
+	exit; 
+}
+
 ###############################################################################
 # Uncomment the line below if you need to debug the HTTP variables being passed
 # to the script.  This will sometimes cause errors but it will allow you to see
@@ -35,7 +44,7 @@ include("auth.inc.php");
 #debug($HTTP_POST_VARS);
 
 function editdefaultblock($A) {
-	global $USER,$LANG21,$CONF;
+	global $USER,$LANG21,$CONF,$LANG_ACCESS;
 
 	startblock($LANG21[3]);
         print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
@@ -47,7 +56,6 @@ function editdefaultblock($A) {
 	print "<input type=hidden name=title value=\"{$A["title"]}\"></td></tr>";
 	print "<tr><td align=right>{$LANG21[6]}</td><td>all</td></tr>";
 	print "<input type=hidden name=tid value=all></td></tr>";
-	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
         print "<option value=1";
 	if ($A["onleft"] == 1) {
@@ -63,6 +71,29 @@ function editdefaultblock($A) {
 	print "<tr><td align=right>{$LANG21[9]}:</td><td><input type=text size=3 name=blockorder value={$A["blockorder"]}> 0 - 255</td></tr>";	
 	print "<tr><td align=right>{$LANG21[10]}:</td><td>gldefault</td></tr>";
 	print "<input type=hidden name=type value=gldefault>";
+
+	#user access stuff
+	print "<tr><td colspan=2><hr></td></tr>";
+	print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+	        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
+        print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td><SELECT name=group_id>";
+        $usergroups = getusergroups();
+        for ($i=0;$i<count($usergroups);$i++) {
+                print "<option value=" . $usergroups[key($usergroups)];
+                if ($A["group_id"] == $usergroups[key($usergroups)]) {
+                        print " SELECTED";
+                }
+                print ">" . key($usergroups) . "</option>";
+                next($usergroups);
+        }
+        print "</SELECT></td></tr>";
+        print "<tr><td align=center colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
+        if ($A["private_flag"] == 0) {
+                print "CHECKED";
+        }
+        print "></td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
 	print "</form></table>";
         endblock();
 }
@@ -71,18 +102,17 @@ function editdefaultblock($A) {
 # Displays the edit block form
 
 function editblock($bid="") {
-	global $USER,$LANG21,$CONF;
+	global $USER,$LANG21,$CONF,$LANG_ACCESS;
 	if (!empty($bid)) {
 		$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks where bid ='$bid'");
 		$A = mysql_fetch_array($result);
-		if ($USER["seclev"] < $A["seclev"]) {
-			accesslog("{$USER["name"]} attempted to edit bid $bid without rights to the block");
-			startblock($LANG21[1]);
-			print $LANG21[2];
-			endblock(); 
-			listblocks();
-			exit;
-		} 
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+		if ($access == 0) {
+                        startblock($LANG21[44]);
+                        print  $LANG21[45];
+                        endblock();
+                        return;
+                }
 		if ($A["type"] == "gldefault") {
 			editdefaultblock($A);
 			return;
@@ -90,16 +120,17 @@ function editblock($bid="") {
 	} else {
 		$A["bid"] = 0;
 		$A["blockorder"] = 0;
-		$A["seclev"] = $CONF["sec_block"];
+		$A["owner_id"] = $USER["uid"];
+		$A["private_flag"] = 1;
+		$access = 1;
 	}
 	startblock($LANG21[3]);
 	print "<form action={$CONF["site_url"]}/admin/block.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=3 width=\"100%\">";
 	print "<tr><td colspan=2><input type=submit value=save name=mode> ";
        	print "<input type=submit value=cancel name=mode> ";
-	if ($A["type"] != "layout") 
-	{
-        	if (!empty($bid))
+	if ($A["type"] != "layout") {
+        	if (!empty($bid) && hasrights('block.edit'))
                 	print "<input type=submit value=delete name=mode>";
 	}
 	print "<input type=hidden name=bid value={$A["bid"]}></td></tr>";
@@ -112,7 +143,6 @@ function editblock($bid="") {
 	print ">$LANG21[43]</option>";
 	optionlist("topics","tid,topic",$A["tid"]);
 	print "</select></td></tr>";
-	print "<tr><td align=right>{$LANG21[8]}:</td><td><input type=text size=3 name=seclev value={$A["seclev"]}> 0 - 255</td></tr>";
 	print "<tr><td align=right>{$LANG21[39]}:</td><td><SELECT name=onleft>";
 	print "<option value=1";
 	if ($A["onleft"] == 1) {
@@ -140,7 +170,36 @@ function editblock($bid="") {
                 if ($A["type"] == "phpblock") print " selected";
         print ">{$LANG21[27]}</option>";
 	print "</select></td></tr>";
+
 	print "<tr><td colspan=2><hr></td></tr>";
+	print "<tr><td colspan=2><b>{$LANG_ACCESS[accessrights]}</b></td></tr>";
+	        print "<tr><td align=right>{$LANG_ACCESS[owner]}:</td><td>" . getitem("users","username","uid = {$A["owner_id"]}");
+        print "<input type=hidden name=owner_id value={$A["owner_id"]}>" . "</td></tr>";
+        print "<tr><td align=right>{$LANG_ACCESS[group]}:</td><td>";
+        $usergroups = getusergroups();
+	if ($access == 1) {
+		print "<SELECT name=group_id>";
+        	for ($i=0;$i<count($usergroups);$i++) {
+                	print "<option value=" . $usergroups[key($usergroups)];
+                	if ($A["group_id"] == $usergroups[key($usergroups)]) {
+                        	print " SELECTED";
+                	}
+                	print ">" . key($usergroups) . "</option>";
+                	next($usergroups);
+        	}
+        	print "</SELECT>";
+	} else {
+		#they can't set the group then
+                print getitem("groups","grp_name","grp_id = {$A["group_id"]}");
+	}
+        print "</td></tr><tr><td colspan=2>{$LANG_ACCESS[grantgrouplabel]}&nbsp;<input type=checkbox name=private_flag ";
+        if ($A["private_flag"] == 0) {
+                print "CHECKED";
+        }
+        print "></td></tr>";
+        print "<tr><td colspan=2>{$LANG_ACCESS[grantgroupmsg]}<td></tr>";
+	print "<tr><td colspan=2><hr></td></tr>";
+
 	print "<tr><td colspan=2><b>{$LANG21[28]}</b></td></tr>";
         print "<tr><td align=right>{$LANG21[29]}:</td><td><input type=text size=50 maxlength=50 name=phpblockfn value=\"{$A["phpblockfn"]}\"></td></tr><tr><td colspan=2>{$LANG21[30]}</td></tr>";
 	print "<tr><td colspan=2><hr></td></tr>";
@@ -157,10 +216,10 @@ function editblock($bid="") {
 ###############################################################################
 # Saves the block to the database
 
-function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft) {
-	global $CONF,$LANG21,$LANG01;
+function saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$private_flag) {
+	global $CONF,$LANG21,$LANG01,$HTTP_POST_VARS;
 
-	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "gldefault" && !empty($seclev) && (strlen($blockorder)>0)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
+	if (($type == "normal" && !empty($title) && !empty($content)) OR ($type == "portal" && !empty($title) && !empty($rdfurl)) OR ($type == "layout" && !empty($content)) OR ($type == "gldefault" && (strlen($blockorder)>0)) OR ($type == "phpblock" && !empty($phpblockfn) && !empty($title))) {
 		if ($type == "portal") {
                         $content = "";
                         $phpblockfn = "";
@@ -196,8 +255,13 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
                         $rdfupdated = "";
                         $phpblockfn = "";
                 }
-
-		dbsave("blocks","bid,title,seclev,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft","$bid,'$title','$seclev','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft","admin/block.php?msg=11");
+	
+		if ($private_flag == "on") {
+                        $private_flag = 0;
+                } else {
+                        $private_flag = 1;
+		}
+		dbsave("blocks","bid,title,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,private_flag","$bid,'$title','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$private_flag","admin/block.php?msg=11");
 	} else {
 		site_header("menu");
                 startblock($LANG21[32]);
@@ -227,16 +291,26 @@ function saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$
 # Displays a list of existing blocks
 
 function listblocks() {
-	global $LANG21,$CONF;
+	global $LANG21,$CONF,$LANG_ACCESS;
 	startblock($LANG21[19]);
 	adminedit("block",$LANG21[25]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=\"100%\">";
-	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG21[21]}</th><th>{$LANG21[22]}</th><th>{$LANG21[39]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
-	#$result = dbquery("SELECT bid,title,seclev,type,blockorder,tid,onleft FROM {$CONF["db_prefix"]}blocks ORDER BY type,title asc");
+	print "<tr><th align=left>{$LANG21[20]}</th><th>{$LANG_ACCESS[access]}</th><th>{$LANG21[22]}</th><th>{$LANG21[39]}</th><th>{$LANG21[23]}</th><th>{$LANG21[24]}</th></tr>";
+	#$result = dbquery("SELECT bid,title,type,blockorder,tid,onleft FROM {$CONF["db_prefix"]}blocks ORDER BY type,title asc");
 	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}blocks ORDER BY onleft DESC,blockorder");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
+		$access = hasaccess($A["private_flag"],$A["owner_id"],$A["group_id"]);
+                if ($access) {
+                	if ($access == 1) {
+                        	$access = $LANG_ACCESS[ownerroot];
+                        } else {
+                                $access = $LANG_ACCESS[group];
+                        }
+                } else {
+                	$access = $LANG_ACCESS[readonly];
+                }
 		if ($A["onleft"] == 1) {
 			$side = $LANG21[40];
 		} else {
@@ -249,7 +323,7 @@ function listblocks() {
 			$A[5] = "-";
 		}
 		print "<tr align=center><td align=left><a href={$CONF["site_url"]}/admin/block.php?mode=edit&bid={$A[0]}>{$A[1]}</a></td>";
-		print "<td>{$A["seclev"]}</td><td>{$A["type"]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A["tid"]}</td></tr>";
+		print "<td>$access</td><td>{$A["type"]}</td><td>$side</td><td>{$A["blockorder"]}</td><td>{$A["tid"]}</td></tr>";
 	}
 	print "</table>";
 	endblock();
@@ -263,7 +337,7 @@ switch ($mode) {
 		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
 		break;
 	case "save":
-		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft);
+		saveblock($bid,$title,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$private_flag);
 		break;
 	case "edit":
 		site_header("menu");
