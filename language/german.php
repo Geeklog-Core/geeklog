@@ -439,9 +439,9 @@ $LANG09 = array(
     40 => 'Termine',
     41 => 'Dein Suchbegriff sollte mindestens 3 Zeichen lang sein.',
     42 => 'Das Datum muss im Format JJJJ-MM-TT (Jahr-Monat-Tag) eingegeben werden.',
-    43 => 'exact phrase',
-    44 => 'all of these words',
-    45 => 'any of these words',
+    43 => 'genaue Wortgruppe',
+    44 => 'alle Wörter',
+    45 => 'irgendeines der Wörter',
     46 => 'Next',
     47 => 'Previous',
     48 => 'Author',    
@@ -449,9 +449,11 @@ $LANG09 = array(
     50 => 'Hits',
     51 => 'Link',
     52 => 'Location',
-    53 => 'Story Results',
-    54 => 'Comment Results',
-    55 => ''
+    53 => 'Gefundene Artikel',
+    54 => 'Gefundene Kommentare',
+    55 => 'nach der Wortgruppe',
+    56 => '<em>und</em>',
+    57 => '<em>oder</em>'
 );
 
 ###############################################################################

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.4 2003/06/23 17:45:17 dhaun Exp $
+// $Id: search.class.php,v 1.5 2003/06/24 15:17:46 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -648,12 +648,12 @@ class Search {
         $searchmain->set_var('lang_found', $tmpTxt);
         $searchmain->set_var('num_matches', '');
         
-        if ($keyType == 'any') {
-        	$searchQuery = str_replace(' ', "</b>' OR '<b>",$query);
+        if ($this->_keyType == 'any') {
+        	$searchQuery = str_replace(' ', "</b>' " . $LANG09[57] . " '<b>",$this->_query);
         	$searchQuery = "<b>'$searchQuery'</b>";
         } else {
             if ($this->_keyType == 'all') {
-                $searchQuery = str_replace(' ', "</b>' AND '<b>",$this->_query);
+                $searchQuery = str_replace(' ', "</b>' " . $LANG09[56] . " '<b>",$this->_query);
                 $searchQuery = "<b>'$searchQuery'</b>";
             } else {
                 $searchQuery = $LANG09[55] . " '<b>$this->_query</b>'";
