@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.62 2002/08/27 00:19:21 tony_bibbs Exp $
+// $Id: story.php,v 1.63 2002/08/27 00:43:23 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -418,6 +418,7 @@ function liststories($page = 1)
             $curtime = COM_getUserDateTimeFormat($A['unixdate']);
             $story_templates->set_var('story_id', $A['sid']);
             $story_templates->set_var('row_num', $scount);
+	    $A['title'] = str_replace('$', '&#36;', $A['title']);
             $story_templates->set_var('story_title', stripslashes($A['title']));
             $story_templates->set_var('story_access', $access);
             if ($A['draft_flag'] == 1) {
