@@ -54,15 +54,7 @@ if (!empty($CONF["pagetitle"])) {
 <!-- feature block -->
 <table bgcolor=ffffff border=0 cellspacing=0 cellpadding=5 width="100%">
 <tr><td class=featureblock valign=top width=150 rowspan=2>
-<?php
-
-startblock("Sections");
-showtopics($topic);
-endblock();
-
-?>
-<?php usermenu();printupcomingevents();?>
-<?php whatsnewblock();?>
+<?php showblock("left",$topic);?>
 <IMG SRC=<?php echo $CONF["site_url"]; ?>/images/speck.gif width=150 height=1></td>
 
 <!-- spacer block -->
