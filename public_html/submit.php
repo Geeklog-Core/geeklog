@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.70 2004/08/06 08:55:36 dhaun Exp $
+// $Id: submit.php,v 1.71 2004/08/07 15:21:18 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -551,14 +551,16 @@ function savesubmission($type,$A)
                 $pos = strpos ($A['url'], ':');
                 if ($pos === false) {
                     $A['url'] = 'http://' . $A['url'];
-                }
-                else {
+                } else {
                     $prot = substr ($A['url'], 0, $pos + 1);
                     if (($prot != 'http:') && ($prot != 'https:')) {
                         $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
                     }
                 }
                 $A['url'] = addslashes ($A['url']);
+            }
+            if ($A['url'] == 'http://') {
+                $A['url'] = '';
             }
             if (empty($A['eid'])) {
                 $A['eid'] = COM_makesid();
