@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: timer.class.php,v 1.6 2002/05/08 18:32:25 tony_bibbs Exp $
+// $Id: timer.class.php,v 1.7 2004/03/30 02:41:34 vinny Exp $
 
 /* EXAMPLE  USAGE
 
@@ -145,7 +145,7 @@ class timerobject {
         $this->_endtime = '';
         $this->_elapsedtime = '';
         
-        $this->starTimer();      
+        $this->startTimer();      
     }
 
     /**
