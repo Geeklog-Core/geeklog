@@ -30,11 +30,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2002/04/16 21:12:28 tony_bibbs Exp $
+// $Id: install.php,v 1.2 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../../../lib-common.php');
-include_once($_CONF['path'] . 'plugins/staticpages/lang.php');
-include_once($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
+require_once('../../../lib-common.php');
+require_once($_CONF['path'] . 'plugins/staticpages/lang.php');
+require_once($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
 
 // Only let Root users access this page
 if (!SEC_inGroup('Root')) {

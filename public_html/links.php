@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.14 2002/03/09 19:36:57 dhaun Exp $
+// $Id: links.php,v 1.15 2002/04/23 04:22:02 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // MAIN
 

@@ -29,9 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2002/04/16 21:19:57 tony_bibbs Exp $
+// $Id: index.php,v 1.3 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../lib-common.php');
+require_once('../lib-common.php');
 
 $error = 0;
 

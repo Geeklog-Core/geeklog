@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.15 2002/03/31 20:31:29 dhaun Exp $
+// $Id: calendar_event.php,v 1.16 2002/04/23 04:22:02 mlimburg Exp $
 
-include_once('lib-common.php');
-include_once($_CONF['path_system'] . 'classes/calendar.class.php');
+require_once('lib-common.php');
+require_once($_CONF['path_system'] . 'classes/calendar.class.php');
 
 /**
 * Adds an event to the user's calendar

@@ -29,9 +29,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.4 2001/11/18 21:53:19 tony_bibbs Exp $
+// $Id: lib-plugins.php,v 1.5 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
 /**
 * Calls a function for all enabled plugins
@@ -272,7 +272,7 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author)
 
     $search_results = array();
 
-    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $cur_plugin = new Plugin();
 
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
@@ -425,7 +425,7 @@ function PLG_getCCOptions()
 	
     $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
     $nrows = DB_numRows($result);
-    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $cur_plugin = new Plugin();
     $plugins = array();
     for ($i = 1; $i <= $nrows; $i++) {

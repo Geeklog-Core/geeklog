@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.4 2002/04/22 20:41:24 tony_bibbs Exp $
+// $Id: functions.inc,v 1.5 2002/04/23 04:22:02 mlimburg Exp $
 
 include($_CONF['path'] . 'plugins/staticpages/lang.php');
 include($_CONF['path'] . 'plugins/staticpages/staticpages.cfg');
@@ -150,7 +150,7 @@ function plugin_dopluginsearch_staticpages($query, $datestart, $dateend, $topic,
     $result = DB_query($sql);
     
     // OK, now return coma delmited string of table header labels
-    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
     $plugin_results = new Plugin();
     $plugin_results->plugin_name = 'staticpages';
     $plugin_results->searchlabel = 'Static Pages Results';

@@ -33,7 +33,7 @@
 //
 // $Id
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // Set this to true to have this script generate various debug messages in
 // error.log
@@ -388,7 +388,7 @@ function saveuser($A)
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
-            include_once($_CONF['path_system'] . 'classes/upload.class.php');
+            require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/userphotos')) {

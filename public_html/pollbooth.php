@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pollbooth.php,v 1.9 2002/01/12 04:08:08 tony_bibbs Exp $
+// $Id: pollbooth.php,v 1.10 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 /**
 * Saves a user's vote

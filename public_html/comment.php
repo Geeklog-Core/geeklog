@@ -33,7 +33,7 @@
 //
 // $Id
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

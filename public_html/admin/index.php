@@ -21,8 +21,8 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-include_once('../lib-common.php');
-include_once('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 // MAIN
 if ($mode == 'logout') {

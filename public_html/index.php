@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2002/04/22 16:36:45 tony_bibbs Exp $
+// $Id: index.php,v 1.24 2002/04/23 04:22:02 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 $display .= COM_siteHeader();
 

@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.15 2002/04/14 20:16:08 dhaun Exp $
+// $Id: topic.php,v 1.16 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../lib-common.php');
-include_once('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 if (!SEC_hasRights('topic.edit')) {
     $display = COM_siteHeader('menu');

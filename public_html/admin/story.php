@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.41 2002/04/22 21:51:11 tony_bibbs Exp $
+// $Id: story.php,v 1.42 2002/04/23 04:22:03 mlimburg Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -657,7 +657,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         }
         
         if (count($HTTP_POST_FILES) > 0 AND $_CONF['maximagesperarticle'] > 0) {
-            include_once($_CONF['path_system'] . 'classes/upload.class.php');
+            require_once($_CONF['path_system'] . 'classes/upload.class.php');
             $upload = new upload();
             $upload->setAllowedMimeTypes(array('image/gif','image/jpeg','image/pjpeg','image/x-png'));
             if (!$upload->setPath($_CONF['path_html'] . 'images/articles')) {

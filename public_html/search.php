@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.16 2002/04/22 20:45:20 tony_bibbs Exp $
+// $Id: search.php,v 1.17 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 #debug($HTTP_POST_VARS);
 
@@ -109,7 +109,7 @@ function searchlinks($query, $topic, $datestart, $dateend, $author, $type='all')
         $sql .= "ORDER BY date desc";
 		$result_links = DB_query($sql);
 		$nrows_links = DB_numRows($result_links);
-        include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+        require_once($_CONF['path_system'] . 'classes/plugin.class.php');
         $link_results = new Plugin();
         $link_results->searchlabel = $LANG09[38];
         $link_results->addSearchHeading($LANG09[16]);
@@ -161,7 +161,7 @@ function searchevents($query, $topic, $datestart, $dateend, $author, $type='all'
         $sql .= "ORDER BY datestart desc";
 		$result_events = DB_query($sql);
 		$nrows_events = DB_numRows($result_events);
-        include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+        require_once($_CONF['path_system'] . 'classes/plugin.class.php');
         $event_results = new Plugin();
         $event_results->searchresults = array();
         $event_results->searchlabel = $LANG09[37];
@@ -202,7 +202,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author, $type='all')
 {
     global $LANG09, $_CONF, $_TABLES;
 
-    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 	
     $searchtimer = new timerobject();
     $searchtimer->setPercision(4);

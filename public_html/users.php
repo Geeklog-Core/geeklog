@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.24 2002/04/20 08:29:29 dhaun Exp $
+// $Id: users.php,v 1.25 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

@@ -87,7 +87,7 @@ $_TABLES['wordlist']            = $_DB_table_prefix . 'wordlist';
 // +---------------------------------------------------------------------------+
 
 // Include appropriate DBMS object
-include_once($_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php');
+require_once($_CONF['path_system'] . 'databases/'. $_DB_dbms . '.class.php');
 
 // Instantiate the database object
 $_DB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'COM_errorLog');

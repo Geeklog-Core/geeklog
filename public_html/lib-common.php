@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.75 2002/04/22 21:58:27 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.76 2002/04/23 04:22:02 mlimburg Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -42,23 +42,23 @@ $_COM_VERBOSE = false;
 // +---------------------------------------------------------------------------+
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
-include_once('/path/to/geeklog/config.php');
+require_once('/path/to/geeklog/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 
 // +---------------------------------------------------------------------------+
 
 // Instantiate page timer that times how fast each page is created
-include_once($_CONF['path_system'] . 'classes/timer.class.php');
+require_once($_CONF['path_system'] . 'classes/timer.class.php');
 $_PAGE_TIMER = new timerobject();
 $_PAGE_TIMER->startTimer();
 
-include_once($_CONF['path_system'] . 'classes/template.class.php');
-include_once($_CONF['path_system'] . 'lib-database.php');
-include_once($_CONF['path_system'] . 'lib-security.php');
-include_once($_CONF['path_system'] . 'lib-custom.php');
-include_once($_CONF['path_system'] . 'lib-plugins.php');
-include_once($_CONF['path_system'] . 'lib-sessions.php');
+require_once($_CONF['path_system'] . 'classes/template.class.php');
+require_once($_CONF['path_system'] . 'lib-database.php');
+require_once($_CONF['path_system'] . 'lib-security.php');
+require_once($_CONF['path_system'] . 'lib-custom.php');
+require_once($_CONF['path_system'] . 'lib-plugins.php');
+require_once($_CONF['path_system'] . 'lib-sessions.php');
 
 
 // Set theme
@@ -80,7 +80,7 @@ if ($_CONF['allow_user_themes'] == 1) {
 
 // Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
-    include_once($_CONF['path_layout'] . 'functions.php');
+    require_once($_CONF['path_layout'] . 'functions.php');
 }
 
 // Similarly set language
@@ -112,7 +112,7 @@ if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'") == 1
     }
 }
 
-include_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
+require_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
 
 setlocale(LC_ALL, $_CONF['locale']);
 
@@ -2535,7 +2535,7 @@ $result = DB_query("SELECT * FROM {$_TABLES["plugins"]} WHERE pi_enabled = 1");
 $nrows = DB_numRows($result);
 for ($i = 1; $i <= $nrows; $i++) {
 	$A = DB_fetchArray($result);
-	include_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
+	require_once($_CONF['path'] . 'plugins/' . $A['pi_name'] . '/functions.inc');
 }
 
 function COM_getMonthFormOptions($selected = '') 

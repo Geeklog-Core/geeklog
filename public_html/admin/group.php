@@ -31,10 +31,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.14 2002/04/14 20:16:08 dhaun Exp $
+// $Id: group.php,v 1.15 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../lib-common.php');
-include_once('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

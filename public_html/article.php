@@ -30,9 +30,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.17 2002/03/09 19:36:57 dhaun Exp $
+// $Id: article.php,v 1.18 2002/04/23 04:22:02 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

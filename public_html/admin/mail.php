@@ -30,13 +30,13 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.7 2002/04/11 22:14:01 tony_bibbs Exp $
+// $Id: mail.php,v 1.8 2002/04/23 04:22:03 mlimburg Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
 
-include_once('../lib-common.php');
-include_once('auth.inc.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
 
 $display = '';
 

@@ -1,6 +1,6 @@
 <?php
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 $display = COM_siteHeader('menu');
 $display .= COM_startBlock('404 Error');

@@ -31,11 +31,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.19 2002/04/21 20:34:51 dhaun Exp $
+// $Id: moderation.php,v 1.20 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../lib-common.php');
-include_once('auth.inc.php');
-include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+require_once('../lib-common.php');
+require_once('auth.inc.php');
+require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see

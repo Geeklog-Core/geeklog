@@ -31,9 +31,9 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.12 2002/02/26 17:57:21 tony_bibbs Exp $
+// $Id: stats.php,v 1.13 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('lib-common.php');
+require_once('lib-common.php');
 
 // MAIN
 

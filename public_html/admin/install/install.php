@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.26 2002/04/17 20:41:05 tony_bibbs Exp $
+// $Id: install.php,v 1.27 2002/04/23 04:22:03 mlimburg Exp $
 
 define(LB, "\n");
 
@@ -120,13 +120,13 @@ function INST_createDatabaseStructures() {
 
 
     // Include lib-database.php now that it exists
-    //include_once($_CONF['path_system'] . 'lib-database.php');
-    //include_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
+    //require_once($_CONF['path_system'] . 'lib-database.php');
+    //require_once($_CONF['path_system'] . 'databases/' . $_DB_dbms . '.class.php');
     //$instDB = new database($_DB_host,$_DB_name,$_DB_user,$_DB_pass,'');
 
 
     // Get DBMS-specific create table array and data array
-    include_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
+    require_once($_CONF['path'] . 'sql/' . $_DB_dbms . '_tableanddata.php');
 
     $progress = '';
 
@@ -159,7 +159,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
         switch ($current_gl_version) {
         case '1.2.5-1':
             // Get DMBS-specific update sql
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.2.5-1_to_1.3.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.2.5-1_to_1.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
                 DB_query(current($_SQL));
@@ -189,7 +189,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
         case '1.3':
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3_to_1.3.1.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
                 DB_query(current($_SQL));
@@ -199,7 +199,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
         case '1.3.1':
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.1_to_1.3.2.php');
              for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
                 DB_query(current($_SQL));
@@ -210,7 +210,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             break;
         case '1.3.2':
         case '1.3.2-1':
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.2-1_to_1.3.3.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.2-1_to_1.3.3.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 $progress .= "executing " . current($_SQL) . "<br>\n";
                 DB_query(current($_SQL));
@@ -241,7 +241,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
         case '1.3.3':
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.3_to_1.3.4.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
                 next($_SQL);
@@ -251,7 +251,7 @@ function INST_doDatabaseUpgrades($current_gl_version, $table_prefix) {
             $_SQL = '';
             break;
 	case '1.3.4':
-            include_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.4_to_1.3.5.php');
+            require_once($_CONF['path'] . 'sql/updates/' . $_DB_dbms . '_1.3.4_to_1.3.5.php');
             for ($i = 1; $i <= count($_SQL); $i++) {
                 DB_query(current($_SQL));
                 next($_SQL);
@@ -286,9 +286,9 @@ if ($action == '<< Previous') {
 
 // Include template class if we got it
 if ($page > 0) {
-    include_once($geeklog_path . '/system/classes/template.class.php');
-    include_once($geeklog_path . '/config.php');
-    include_once($geeklog_path . '/system/lib-database.php');
+    require_once($geeklog_path . '/system/classes/template.class.php');
+    require_once($geeklog_path . '/config.php');
+    require_once($geeklog_path . '/system/lib-database.php');
 }
 
 $display = '';

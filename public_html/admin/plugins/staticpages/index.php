@@ -29,10 +29,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2002/04/16 21:21:51 tony_bibbs Exp $
+// $Id: index.php,v 1.3 2002/04/23 04:22:03 mlimburg Exp $
 
-include_once('../../../lib-common.php');
-include_once('../../auth.inc.php');
+require_once('../../../lib-common.php');
+require_once('../../auth.inc.php');
 
 /**
 * Displays the static page form 
