@@ -1061,7 +1061,7 @@ $MESSAGE = array (
 $LANG32 = array (
     1 => "Att installera en insticksmodul kan skada din Geeklog-installation och möjligtvis även "
         . "ditt system.  Det är viktigt att du bara installerar instickmoduler som du laddat hem från "
-        . "<a href=\"http://geeklog.sourceforge.net\" target=\"_blank\">Geeklog:s hemsida</a> "
+        . "<a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog:s hemsida</a> "
         . "eftersom vi testar alla våra insticksmoduler på ett flertal operativsystem.  Det är "
         . "viktigt att du förstår att installationsprocessen kräver att ett fåtal filsystemskommandon "
         . "kommer att exekveras.  Detta <EM>kan</EM> leda till säkerhetsproblem -- särskilt om "
@@ -1079,7 +1079,7 @@ $LANG32 = array (
         . "försöker installera den igen",
     8 => "Kompatibilitetstest för insticksmodul misslyckades",
     9 => "Denna insticksmodul kräver en nyare version av Geeklog.  Du måste antingen uppgradera din  "
-        . "<a href=\"http://geeklog.sourceforge.net\">Geeklog-installation</a> eller hämta en nyare "
+        . "<a href=\"http://www.geeklog.net\">Geeklog-installation</a> eller hämta en nyare "
         . "version av insticksmodulen.",
     10 => "<br><b>Inga insticksmoduler är installerade.</b><br><br>",
     11 => "Klicka på insticksmodulens nummer för att modifiera eller radera den.  "

@@ -981,7 +981,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-	1 => "Instalowanie pluginów mo¿e spowodowaæ uszkodzenie twojej instalacji Geekloga jak równie¿ systemu.  Wa¿ne jest aby instalowaæ pluginy ¶ci±gniête z <a href=\"http://geeklog.sourceforge.net\" target=\"_blank\">Geeklog Homepage</a> poniewa¿ s± one szczegó³owo przez nas testowane na ró¿nych systemach operacyjnych.  Wa¿ne aby¶ mia³ ¶wiadomo¶æ, ¿e instalacja pluginu wymaga wykonania kilku komend filesystemu, co wi±¿e siê z bezpieczeñstwem systemu, zw³aszcza gdy pluginy pochodz± od osób trzecich.  Pomimo tego ostrze¿enia, nie gwarantujemy sukcesu instalacyjnego ani nie mo¿emy byæ poci±gniêci do odpowiedzialno¶ci za jakiekolwiek szkody wynik³e z instalacji jakiegokolwiek pluginu.  Instalacja na w³asne ryzyko.  Instrukcje dotycz±ce rêcznej instalacji pluginu znajduj± siê w ka¿dym pakiecie z pluginem.",
+	1 => "Instalowanie pluginów mo¿e spowodowaæ uszkodzenie twojej instalacji Geekloga jak równie¿ systemu.  Wa¿ne jest aby instalowaæ pluginy ¶ci±gniête z <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> poniewa¿ s± one szczegó³owo przez nas testowane na ró¿nych systemach operacyjnych.  Wa¿ne aby¶ mia³ ¶wiadomo¶æ, ¿e instalacja pluginu wymaga wykonania kilku komend filesystemu, co wi±¿e siê z bezpieczeñstwem systemu, zw³aszcza gdy pluginy pochodz± od osób trzecich.  Pomimo tego ostrze¿enia, nie gwarantujemy sukcesu instalacyjnego ani nie mo¿emy byæ poci±gniêci do odpowiedzialno¶ci za jakiekolwiek szkody wynik³e z instalacji jakiegokolwiek pluginu.  Instalacja na w³asne ryzyko.  Instrukcje dotycz±ce rêcznej instalacji pluginu znajduj± siê w ka¿dym pakiecie z pluginem.",
 	2 => "Umowa Instalacyjna Pluginów",
 	3 => "Plugin Formularz Instalacyjny",
 	4 => "Plugin Plik",
@@ -989,7 +989,7 @@ $LANG32 = array (
 	6 => "Ostrze¿enie: Plugin Ju¿ Zainstalowany!",
 	7 => "Plugin, który próbujesz zainstalowaæ ju¿ istnieje.  Proszê wykasowaæ istniej±cy plugin i zainstalowaæ go ponownie",
 	8 => "Sprawdzanie Kompatybilno¶ci Pluginu Zakoñczone Niepowodzeniem",
-	9 => "Ten plugin wymaga nowszej wersji Geekloga. Albo uaktualnij swoj± kopiê <a href=http://www.geeklog.org>Geekloga</a> albo ¶ci±gnij nowsz± wersjê tego pluginu.",
+	9 => "Ten plugin wymaga nowszej wersji Geekloga. Albo uaktualnij swoj± kopiê <a href=http://www.geeklog.net>Geekloga</a> albo ¶ci±gnij nowsz± wersjê tego pluginu.",
 	10 => "<br><b>Brak zainstalowanych pluginów.</b><br><br>",
 	11 => "Aby zmodyfikowaæ lub wykasowaæ plugin, kliknij na numer pluginu. Wiêcej informacji na temat pluginu: kliknij nazwê pluginu i zostaniesz przekierowany na stronê autora. Aby zainstalowaæ lub uaktualniæ plugin kliknij na nowy plugin.",
 	12 => 'brak nazwy pluginu dla plugineditor()',

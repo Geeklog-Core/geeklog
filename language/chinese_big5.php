@@ -988,7 +988,7 @@ $MESSAGE = array (
 // for plugins.php
 
 $LANG32 = array (
-    1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system. It is important that you only install plugins downloaded from the <a href=\"http://geeklog.sourceforge.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems. It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites. Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin. In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
+    1 => "Installing plugins could possibly cause damage to your Geeklog installation and, possibly, to your system. It is important that you only install plugins downloaded from the <a href=\"http://www.geeklog.net\" target=\"_blank\">Geeklog Homepage</a> as we thoroughly test all plugins submitted to our site on a variety of operating systems. It is important that you understand that the plugin installation process will require the execution of a few filesystem commands which could lead to security problems particularly if you use plugins from third party sites. Even with this warning you are getting, we do not gaurantee the success of any installation nor are we liable for damage caused by installing a Geeklog plugin. In other words, install at your own risk.  For the wary, directions on how to manually install a plugin is included with each plugin package.",
     2 => "Plug-in 安裝聲明",
     3 => "Plug-in 安裝表格",
     4 => "Plug-in 檔案",
@@ -996,7 +996,7 @@ $LANG32 = array (
     6 => "警告︰Plug-in 已經被安裝過！",
     7 => "你想安裝的 plug-in 已經存在，請先把它刪除再安裝。",
     8 => "Plugin 不能通過兼容性校驗。",
-    9 => "這 plugin 要求一個更新版本的 Geeklog. 你可以升級你的<a href=\"http://geeklog.sourceforge.net\">Geeklog</a>或是另找一個適合的版本。",
+    9 => "這 plugin 要求一個更新版本的 Geeklog. 你可以升級你的<a href=\"http://www.geeklog.net\">Geeklog</a>或是另找一個適合的版本。",
     10 => "<br><b>沒有安裝的 plugin 。</b><br><br>",
     11 => "點擊下面 plugin 的編號可修改或刪除它，點擊 plugin 的名字會帶你到那 plugin 的網站。要安裝或升級 plugin 請咨詢它是文件。",
     12 => "plugineditor() 找不到 plugin 名",
