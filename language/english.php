@@ -807,7 +807,7 @@ $LANG28 = array(
 	9 => "(do not use spaces)",
 	10 => "Please fill in the Username, Full name, Security Level and Email Address fields",
 	11 => "User Manager",
-	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left. You can do simple searches by entering parts of a username,email address or fullname (e.g.*son* or *.edu) in the form below.",
+	12 => "To modify or delete a user, click on that user below.  To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
 	13 => "SecLev",
 	14 => "Reg. Date",
 	15 => 'New User',
@@ -996,10 +996,11 @@ $MESSAGE = array (
     49 => "Your group has been successfully saved.",
     50 => "The group has been successfully deleted.",
     51 => 'This username is already in use. Please choose another one.',
-    52 => 'The email address provided does not appear to be a valid email address',
+    52 => 'The email address provided does not appear to be a valid email address.',
     53 => 'Your new password has been accepted. Please use your new password below to log in now.',
     54 => 'Your request for a new password has expired. Please try again below.',
-    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.'
+    55 => 'An email has been sent to you and should arrive momentarily. Please follow the directions in the message to set a new password for your account.',
+    56 => 'The email address provided is already in use for another account.'
 );
 
 // for plugins.php
