@@ -27,6 +27,7 @@ include("../common.php");
 include("../custom_code.php");
 include("auth.inc.php");
 
+#Make sure user has rights to this feature
 if (!hasrights('group.edit')) {
         site_header("menu");
         startblock($MESSAGE[30]);
@@ -57,9 +58,8 @@ function editgroup($grp_id="") {
 		$A["owner_id"] = $USER["uid"];
 		#this is the one instance where we default the group
 		#most topics should belong to the normal user group 
-		# and the private flag should be turned OFF
 		$A["group_id"] = getitem('groups','grp_id',"grp_name = 'Normal User'");
-		$A["private_flag"] == 0;
+		$A["grp_gl_core"] == 0;
 	}
 	print "<form action={$CONF["site_url"]}/admin/group.php method=post>";
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
@@ -85,68 +85,83 @@ function editgroup($grp_id="") {
 	}
 	print "<tr><td align=\"right\">{$LANG_ACCESS[description]}:</td><td><input type=\"text\" size=\"40\" maxlength=\"255\" name=\"grp_descr\" value=\"{$A["grp_descr"]}\"></td></tr>";
 	
-	#If this is a not Root user (e.g. Group Admin) and they are editing a 
-	#Root user then bail...they can't change groups
-	if (!ingroup('Root') AND (getitem('groups','grp_name',"grp_id = $grp_id") == "Root")) {
-		print "</tr></tr>";
-		print "</table></form>";
-		endblock();
-		return;
-	} else {
-		print "<tr><td colspan=\"2\"><hr></td></tr>";
-		print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[rights]}</b></td></tr>";
-		if ($A["grp_gl_core"] == 1) {
-			print "<tr><td colspan=\"2\">{$LANG_ACCESS[corerightsdescr]}</td></tr>";
-		} else {
-			print "<tr><td colspan=\"2\">{$LANG_ACCESS[rightsdescr]}</td></tr>";
+	#If this is a not Root user (e.g. Group Admin) and they are editing the 
+	#Root root then bail...they can't change groups
+	if (!empty($grp_id)) {
+		if (!ingroup('Root') AND (getitem('groups','grp_name',"grp_id = $grp_id") == "Root")) {
+			print "</tr></tr>";
+			print "</table></form>";
+			endblock();
+			return;
 		}
-		print "<tr><td colspan=\"2\" width=\"100%\">";
-		printrights($grp_id,$A["grp_gl_core"]);
-		print "</tr></tr>";
-                print "<tr><td colspan=\"2\"><hr></td></tr>";
-		print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr>";
-		$groups = getusergroups('','',$grp_id);
-		if ($A["grp_gl_core"] == 1) {
-			if (is_array($groups)) {
-                       		$selected = implode(',',$groups);
-               		} else {
-                       		$selected = '';
-               		}
-			print "<tr><td colspan=\"2\">{$LANG_ACCESS[coregroupmsg]}</td></tr>";
+	}
+	print "<tr><td colspan=\"2\"><hr></td></tr>";
+	print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[securitygroups]}</b></td></tr>";
+	$groups = getusergroups('','',$grp_id);
+	if ($A["grp_gl_core"] == 1) {
+		if (is_array($groups)) {
+                    	$selected = implode(',',$groups);
+               	} else {
+                     	$selected = '';
+               	}
+		print "<tr><td colspan=\"2\">{$LANG_ACCESS[coregroupmsg]}</td></tr>";
+		if (!empty($selected)) {
 			$result= dbquery("SELECT grp_name FROM groups WHERE grp_id <> $grp_id AND grp_id in ($selected) ORDER BY grp_name");
-			$nrows = mysql_num_rows($result);
-			print "<tr><td colspan=\"2\">&nbsp;</td></tr>";
-			for ($i=1;$i<=$nrows;$i++) {
-				$GRPS = mysql_fetch_array($result);
-				print "<tr><td colspan=\"2\">{$GRPS["grp_name"]}</td></tr>";	
-			} 	
+		$nrows = mysql_num_rows($result);
 		} else {
-			if (is_array($groups)) {
-                       		$selected = implode(' ',$groups);
-               		} else {
-                       		$selected = '';
-               		}
-			print "<tr><td colspan=\"2\">{$LANG_ACCESS[groupmsg]}</td></tr>";
-			print "<tr><td colspan=\"2\" width=\"100%\">";
+			$nrows = 0;
+		}
+		print "<tr><td colspan=\"2\">&nbsp;</td></tr>";
+		for ($i=1;$i<=$nrows;$i++) {
+			$GRPS = mysql_fetch_array($result);
+			print "<tr><td colspan=\"2\">{$GRPS["grp_name"]}</td></tr>";	
+		}
+		if ($nrows == 0) {
+			#this group doesn't belong to anything...give a friendly message
+			print "<tr><td colspan=\"2\">{$LANG_ACCESS["nogroupsforcoregroup"]}</td></tr>";
+		} 	
+	} else {
+		if (is_array($groups)) {
+                      	$selected = implode(' ',$groups);
+               	} else {
+                    	$selected = '';
+               	}
+		print "<tr><td colspan=\"2\">{$LANG_ACCESS[groupmsg]}</td></tr>";
+		print "<tr><td colspan=\"2\" width=\"100%\">";
 
-			#Only Root users can give rights to Root
-			if (ingroup('Root')) {
+		#Only Root users can give rights to Root
+		if (ingroup('Root')) {
+			if (!empty($grp_id)) {
 				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id",$selected);
 			} else {
+				checklist('groups','grp_id,grp_name','','');
+			}
+		} else {
+			if (!empty($grp_id)) {
 				checklist('groups','grp_id,grp_name',"grp_id <> $grp_id AND grp_name <> 'Root'",$selected);
+			} else {
+				checklist('groups','grp_id,grp_name',"grp_name <> 'Root'",'');
 			}
 		}
-
-		print "</tr></tr>";
-		print "</table></form>";
-		endblock();
-		return;
 	}
+        print "<tr><td colspan=\"2\"><hr></td></tr>";
+	print "<tr><td colspan=\"2\"><b>{$LANG_ACCESS[rights]}</b></td></tr>";
+	if ($A["grp_gl_core"] == 1) {
+		print "<tr><td colspan=\"2\">{$LANG_ACCESS[corerightsdescr]}</td></tr>";
+	} else {
+		print "<tr><td colspan=\"2\">{$LANG_ACCESS[rightsdescr]}</td></tr>";
+	}
+	print "<tr><td colspan=\"2\" width=\"100%\">";
+	printrights($grp_id,$A["grp_gl_core"]);
 
+	print "</tr></tr>";
+	print "</table></form>";
+	endblock();
+	return;
 }
 
 function printrights($grp_id="",$core=0) {
-	global $VERBOSE,$USER;
+	global $VERBOSE,$USER,$LANG_ACCESS;
 
 	# this gets a bit complicated so bare with the comments
 
@@ -192,6 +207,7 @@ function printrights($grp_id="",$core=0) {
 
 	#OK, now loop through and print all the features giving edit rights to only the ones that
 	#are direct features
+	$ftcount = 0;
 	print "\n\n<table border=\"0\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n<tr>";	
 	for ($i=1;$i<=$nfeatures;$i++) {		
 		if ($i > 0 AND ($i % 3 == 1)) {
@@ -199,6 +215,7 @@ function printrights($grp_id="",$core=0) {
 		}
 		$A = mysql_fetch_array($features);
 		if ((($grpftarray[$A["ft_name"]] == 'direct') OR empty($grpftarray[$A["ft_name"]])) AND ($core == 0)) {
+			$ftcount++;
 			print "\n<td><input type=\"checkbox\" name=\"features[]\" value=\"{$A["ft_id"]}\"";
 			if ($grpftarray[$A["ft_name"]] == 'direct') {
 				print " CHECKED";
@@ -207,9 +224,15 @@ function printrights($grp_id="",$core=0) {
 		} else {
 			#either this is an indirect right OR this is a core feature
 			if ((($core == 1) AND ($grpftarray[$A["ft_name"]] == 'indirect' OR $grpftarray[$A["ft_name"]] == 'direct')) OR ($core == 0)) {
+				$ftcount++;
 				print "<td>{$A["ft_name"]}</td>";
 			}
 		}
+	}
+	if ($ftcount == 0) {
+		#This group doesn't have rights to any features
+
+		print "\n<tr><td colspan=\"3\">{$LANG_ACCESS["grouphasnorights"]}</td>";
 	}
 	print "</tr>\n</table>";
 }
