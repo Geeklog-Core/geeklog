@@ -29,7 +29,24 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: timer.class.php,v 1.4 2001/10/18 17:40:18 tony_bibbs Exp $
+// $Id: timer.class.php,v 1.5 2001/10/18 17:48:02 tony_bibbs Exp $
+
+/* EXAMPLE  USAGE
+
+    // Instantiate new timer object
+    $mytimer = new timerobject();
+
+    // Set percision of the results to 4 significan't digits
+    // NOTE: this call is optional, code defaults to 2 
+    $mytimer->setPercision(4);
+
+    // Start the timer
+    $mytimer->startTimer();
+
+    // Stop timer and print elapsed time
+    echo $mytimer->endTimer();
+
+*/
 
 class timerobject {
 
@@ -54,6 +71,8 @@ class timerobject {
         $this->_starttime = '';
         $this->_endtime = '';
         $this->_elapsedtime = '';
+
+        // Default to 2 significant digits
         $this->setPercision(2);
     }
 
