@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.36 2002/04/16 20:21:45 tony_bibbs Exp $
+// $Id: story.php,v 1.37 2002/04/17 14:08:21 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -737,6 +737,9 @@ case 'editsubmission':
 case 'save':
     if ($publish_ampm == 'pm') {
         $publish_hour = $publish_hour + 12;
+    }
+    if ($publish_ampm == 'am' AND $publish_hour == 12) {
+        $publish_hour = '00';
     }
     $unixdate = strtotime("$publish_month/$publish_day/$publish_year $publish_hour:$publish_minute:$publish_second");
     submitstory($type,$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage, $draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete);
