@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.101 2002/05/20 19:39:47 dhaun Exp $
+// $Id: lib-common.php,v 1.102 2002/05/20 20:10:40 tony_bibbs Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -1477,11 +1477,18 @@ function COM_adminMenu($help = '', $title = '')
             next($plugin_options);
         }
              
-        if ($_CONF['allow_mysqldump'] == 1 AND SEC_inGroup('Root')) {
-            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/database.php');
-            $adminmenu->set_var('option_label', $LANG01[103]);
+        if (SEC_inGroup('Root')) {
+            $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/clearsqlcache.php');
+            $adminmenu->set_var('option_label', $LANG01[108]);
             $adminmenu->set_var('option_count', 'N/A');
             $retval .= $adminmenu->parse('item', 'option');
+            
+            if ($_CONF['allow_mysqldump']) {
+                $adminmenu->set_var('option_url', $_CONF['site_admin_url'] . '/database.php');
+                $adminmenu->set_var('option_label', $LANG01[103]);
+                $adminmenu->set_var('option_count', 'N/A');
+                $retval .= $adminmenu->parse('item', 'option');
+            }
         }
 
         $adminmenu->set_var('option_url', 'http://geeklog.sourceforge.net/versionchecker.php?version=' . VERSION);
