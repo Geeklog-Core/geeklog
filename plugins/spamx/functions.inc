@@ -98,8 +98,11 @@ function plugin_cclabel_spamx()
 
     $retval = array();
     if (SEC_hasRights('spamx.admin')) {
-        $retval = array('spamx',$_CONF['site_admin_url'] . '/plugins/spamx/index.php',$_CONF['site_url'] . '/spamx/images/spamx.gif');
+        $retval = array('spamx',
+                        $_CONF['site_admin_url'] . '/plugins/spamx/index.php',
+                        $_CONF['site_admin_url'] . '/plugins/spamx/images/spamx.gif');
     }
+
     return $retval;
 }
 
@@ -118,23 +121,11 @@ function plugin_getadminoption_spamx()
     global $_CONF;
 
     if (SEC_hasRights('spamx.admin')) {
-        return array('spamx', $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
+        return array('spamx',
+                     $_CONF['site_admin_url'] . '/plugins/spamx/index.php', 0);
     }
 }
 
-/**
-* Returns the user option for this plugin
-*
-* Adds the plugin to the user menu
-*
-* Universal Plugin:  modify/uncomment use it
-*
-* @return   array   Array containing (plugin name, plugin user url, 0)
-*
-*/
-function plugin_getuseroption_spamx() 
-{
-}
 
 /**
 * Actual Plugin Functions here.
@@ -311,12 +302,10 @@ function plugin_uninstall_spamx($installCheck='')
 {
     global $_TABLES, $LANG_SX00;
 
-    // The spamxs need to be changed to the name of your plugin
-    //
-    $pi_name='spamx';
-    $FEATURES = array ( 'spamx.admin', 'spamx.view');
-    $TABLES = array ('table1','table2');
-    
+    $pi_name     = 'spamx';
+    $FEATURES    = array ('spamx.admin', 'spamx.view');
+    $admin_group = 'spamx Admin';
+
     // Check and see if plugin is still enabled - if so display warning and exit
     if ($installCheck != '' && DB_getItem($_TABLES['plugins'],'pi_enabled', 'pi_name = "' .$pi_name. '"')) {
 	    COM_errorLog("Plugin is installed and enabled. Disable first if you want to de-install it",1);
@@ -327,7 +316,7 @@ function plugin_uninstall_spamx($installCheck='')
 		return false;
 		exit;
 	}
-    	
+
 	// Ok to proceed and delete plugin
 
     // Unregister the plugin with Geeklog
@@ -335,14 +324,14 @@ function plugin_uninstall_spamx($installCheck='')
     DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'spamx'",1);
 
     // Remove Security for this plugin
-    $grp_id = DB_getItem($_TABLES['vars'], 'value', "name = '{$pi_name}_gid'");
-    
+    $grp_id = DB_getItem ($_TABLES['groups'], 'grp_id', "grp_name = '{$admin_group}'");
+
     COM_errorLog("Removing $pi_name Admin Group", 1);
     DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id",1);
     DB_query("DELETE FROM {$_TABLES['vars']} WHERE name = '{$pi_name}_gid'");
     COM_errorLog("Removing root users from admin of $pi_name");
     DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id",1);
-    
+
     // Remove all the associated features -- access rights
     foreach ($FEATURES as $feature) {
         COM_errorLog("Removing $feature feature and rights to it",1);
@@ -350,7 +339,10 @@ function plugin_uninstall_spamx($installCheck='')
         DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $feat_id",1);
         DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $feat_id",1);
     }
-        
+ 
+    COM_errorLog ('Dropping ' . $_TABLES['spamx'] . ' table.', 1);
+    DB_query ("DROP TABLE {$_TABLES['spamx']}");
+
     COM_errorLog('...success',1);
     return true;
 }
