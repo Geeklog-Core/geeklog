@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.14 2002/02/25 16:59:45 tony_bibbs Exp $
+// $Id: index.php,v 1.15 2002/02/26 17:58:07 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -74,9 +74,13 @@ if ($limit < 0) {
 // Show any messages that may need to be displayed
 $display .= COM_showMessage($msg);
 
+// Geeklog now allows for articles to be published in the future.  Because of this, we need to check
+// to see if we need to rebuild the RDF file in the case that any such articles have now been published
+COM_rdfUpToDateCheck();
+
 for ($i = 0; $i <= 1; $i++) {
     if ($page>1) $i = 1;
-    $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE draft_flag = 0";
+    $sql = "SELECT *,unix_timestamp(date) AS day FROM {$_TABLES['stories']} WHERE date <= NOW() AND draft_flag = 0";
 
     // if a topic was provided only select those stories.
     if (!empty($topic)) {
