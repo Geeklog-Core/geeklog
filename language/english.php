@@ -1184,7 +1184,8 @@ $LANG_ACCESS = array(
     'remove' => 'Remove',
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
-    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.'
+    'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
 );
 
 ###############################################################################

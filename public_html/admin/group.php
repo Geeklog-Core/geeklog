@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.38 2004/08/09 07:56:22 dhaun Exp $
+// $Id: group.php,v 1.39 2004/09/18 14:55:45 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -579,6 +579,17 @@ function listusers ($grp_id, $curpage = 1, $query_limit = 50)
     global $_TABLES, $_CONF, $LANG28, $LANG_ACCESS;
 
     $retval = '';
+
+    $thisUsersGroups = SEC_getUserGroups ();
+    if (!empty ($grp_id) && ($grp_id > 0) &&
+            !in_array ($grp_id, $thisUsersGroups)) {
+        $retval .= COM_startBlock ($LANG_ACCESS['usergroupadmin'], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'));
+        $retval .= $LANG_ACCESS['cantlistgroup'];
+        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+
+        return $retval;
+    }
 
     if ($curpage <= 0) {
         $curpage = 1;
