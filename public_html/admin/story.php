@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.115 2004/05/11 18:00:38 dhaun Exp $
+// $Id: story.php,v 1.116 2004/05/16 08:44:43 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -118,7 +118,7 @@ function storyeditor($sid = '', $mode = '')
     $display = '';
 
     if (!empty($sid) && $mode == 'edit') {
-	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl "
          . "FROM {$_TABLES['stories']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
@@ -142,9 +142,9 @@ function storyeditor($sid = '', $mode = '')
             return $display;
         }
     } elseif (!empty($sid) && $mode == 'editsubmission') {
-	$result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as day, "
+        $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
          . "u.username, u.fullname, u.photo, t.topic, t.imageurl, t.group_id, "
-	 . "t.perm_owner, t.perm_group, t.perm_members, t.perm_anon "
+         . "t.perm_owner, t.perm_group, t.perm_members, t.perm_anon "
          . "FROM {$_TABLES['storysubmission']} as s, {$_TABLES['users']} as u, {$_TABLES['topics']} as t "
          . "WHERE (s.uid = u.uid) AND (s.tid = t.tid) AND (sid = '$sid')");
         if (DB_numRows ($result) > 0) {
@@ -180,10 +180,10 @@ function storyeditor($sid = '', $mode = '')
         $access = 3;
     } else {
         $A = $HTTP_POST_VARS;
-	$res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
-	$A += DB_fetchArray($res);
-	$res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
-	$A += DB_fetchArray($res);
+        $res = DB_query("SELECT username, fullname, photo FROM {$_TABLES['users']} WHERE uid = {$A['uid']}");
+        $A += DB_fetchArray($res);
+        $res = DB_query("SELECT topic, imageurl FROM {$_TABLES['topics']} WHERE tid = '{$A['tid']}'");
+        $A += DB_fetchArray($res);
         if (empty ($A['ampm'])) {
             $A['ampm'] = $A['publish_ampm'];
         }
