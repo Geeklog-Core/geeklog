@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.52 2002/05/16 17:28:43 tony_bibbs Exp $
+// $Id: story.php,v 1.53 2002/05/16 17:40:40 tony_bibbs Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -135,6 +135,17 @@ function storyeditor($sid = '', $mode = '')
         $access = 3;
     } else {
         $A = $HTTP_POST_VARS;
+        if ($A['draft_flag'] == 'on') {
+            $A['draft_flag'] = 1;
+        } else {
+            $A['draft_flag'] = 0;
+        }
+        if ($A['show_topic_icon'] == 'on') {
+            $A['show_topic_icon'] = 1;
+        } else {
+            $A['show_topic_icon'] = 0;
+        }
+        
         // Convert array values to numeric permission values
         list($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) = SEC_getPermissionValues($A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
