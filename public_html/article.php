@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.58 2005/01/16 19:14:28 dhaun Exp $
+// $Id: article.php,v 1.59 2005/01/21 23:31:44 vinny Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -242,8 +242,9 @@ if ($A['count'] > 0) {
             if ($A['commentcode'] >= 0) {
                 $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
                                  ? true : false);
+                require_once ( $_CONF['path_system'] . 'lib-comment.php' );
                 $story_template->set_var ('commentbar',
-                        COM_userComments ($story, $A['title'], 'article',
+                        CMT_userComments ($story, $A['title'], 'article',
                                           $order, $mode, 0, $page, false, $delete_option));
             }
             if ($_CONF['trackback_enabled']) {
