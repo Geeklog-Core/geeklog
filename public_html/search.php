@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.12 2002/02/26 17:56:59 tony_bibbs Exp $
+// $Id: search.php,v 1.13 2002/03/09 23:56:54 dhaun Exp $
 
 include_once('lib-common.php');
 
@@ -135,7 +135,7 @@ function searchstories($query,$topic,$datestart,$dateend, $author,$type)
 		}
 		
 		if (!empty($author)) {
-			$sql .= "AND (sp_uid = '$author}') ";
+			$sql .= "AND (uid = '$author}') ";
 		}
 		$sql .= "ORDER BY date desc";
 		$result_comments = DB_query($sql);
