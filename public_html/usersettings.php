@@ -42,7 +42,7 @@ $_US_VERBOSE = false;
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// debug($HTTP_POST_VARS);
+// echo COM_debug($HTTP_POST_VARS);
 
 /**
 * Shows the user's current settings
@@ -104,7 +104,7 @@ function edituser()
     }
         
 /* Currently Not Enabled
-		
+        
     $retval .= '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[13] . ':</b><br><small>' . $LANG04[53] . '</small></td>' . LB
         . '<td><select name="emailstories">'
@@ -132,7 +132,7 @@ function edituser()
         . '</tr>' . LB
         . '</table></form>'
         . COM_endBlock();
-	
+    
     return $retval;
 }
 
@@ -160,37 +160,41 @@ function editpreferences()
 
     $retval .= '<form action="' . $_CONF['site_url'] . '/usersettings.php" method="post">';
     $retval .= COM_startBlock($LANG04[45] . ' ' . $_USER['username'])
-        . '<table border="0" cellspacing="0" cellpadding="3">' . LB
-    . '<tr>' . LB
-    . '<td align="right"><b>' . $LANG04[73] . ':</b></td>' . LB
-    . '<td><select name="language">' . LB;
+        . '<table border="0" cellspacing="0" cellpadding="3">' . LB;
 
-    if (empty($_USER['language'])) {
-        $userlang = $_CONF['language'];
-    } else {
-        $userlang = $_USER['language'];
-    }
+    if ($_CONF['allow_user_language'] == 1) {
+        $retval .= '<tr>' . LB
+                 . '<td align="right"><b>' . $LANG04[73] . ':</b></td>' . LB
+                 . '<td><select name="language">' . LB;
 
-    // Get available languages
-    $language_options = '';
-    $fd = opendir($_CONF['path_language']);
-    while (($file = @readdir($fd)) == TRUE) {
-        if (is_file($_CONF['path_language'].$file)) {
-            clearstatcache();
-            $file = str_replace('.php', '', $file);
-            $language_options .= '<option value="' . $file . '" ';
-            if ($userlang == $file) {
-                $language_options .= 'selected="SELECTED"';
-            }
-            $language_options .= '>' . $file . '</option>' . LB;
+        if (empty($_USER['language'])) {
+            $userlang = $_CONF['language'];
+        } else {
+            $userlang = $_USER['language'];
         }
+
+        // Get available languages
+        $language_options = '';
+        $fd = opendir($_CONF['path_language']);
+        while (($file = @readdir($fd)) == TRUE) {
+            if (is_file($_CONF['path_language'].$file)) {
+                clearstatcache();
+                $file = str_replace('.php', '', $file);
+                $language_options .= '<option value="' . $file . '" ';
+                if ($userlang == $file) {
+                    $language_options .= 'selected="SELECTED"';
+                }
+                $language_options .= '>' . $file . '</option>' . LB;
+            }
+        }
+        $retval .= $language_options;
+        $retval .= '</select></td></tr>';
     }
-    $retval .= $language_options;
-    $retval .= '</select></td></tr>';
+
     if ($_CONF['allow_user_themes'] == 1) {
-	$retval .= '<tr valign="top">' . LB
-	    . "<td align=\"right\"><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
-	    . '<td><select name="theme">'.LB;
+        $retval .= '<tr valign="top">' . LB
+            . "<td align=\"right\"><b>$LANG04[72]: </b><br><small>$LANG04[74]</small></td>" . LB
+            . '<td><select name="theme">'.LB;
 
         if (empty($_USER['theme'])) {
             $usertheme = $_CONF['theme'];
@@ -208,6 +212,7 @@ function editpreferences()
         }
         $retval .= '</select>' . LB . '</td></tr>' . LB;
     }
+
     $retval .= '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[40] . ':</b><br><small>' . $LANG04[49] . '</small></td>' . LB
         . '<td><input type="checkbox" name="noicons"';
@@ -219,7 +224,7 @@ function editpreferences()
     $retval .= '></td>' . LB . '</tr>' . LB;
 
 /* Option Disabled
-	
+    
     $retval .= '<tr valign="top">' . LB
         . '<td align="right"><b>' . $LANG04[41] . ':</b><br><small>' . $LANG04[50] . '</small></td>' . LB
         . '<td><input type="checkbox" name="willing"';
@@ -227,7 +232,7 @@ function editpreferences()
         $retval .= ' checked="checked"';
     }
     $retval .= '></td>' . LB . '</tr>' . LB;
-	
+    
 */
 
     $retval .= '<tr valign="top">' . LB
@@ -250,7 +255,7 @@ function editpreferences()
         . '</tr>' . LB
         . '</table>'
         . COM_endBlock();
-	
+    
     $retval .= COM_startBlock($LANG04[46] . ' ' . $_USER['username'])
         . '<table border="0" cellspacing="0" cellpadding="3">'.LB
         . '<tr>' . LB
@@ -259,7 +264,7 @@ function editpreferences()
         . '<tr valign="top">' . LB
         . '<td><b>' . $LANG04[48] . '</b><br>' . COM_checkList($_TABLES['topics'],'tid,topic','',$A['tids']) . '</td>' . LB
         . '<td><img src="' . $_CONF['site_url'] . '/images/speck.gif" width="40" height="1"></td>' . LB;
-		
+        
     if ($_CONF['contributedbyline'] == 1) {
         $retval .= '<td><b>' . $LANG04[56] . '</b><br>';
         $result = DB_query("SELECT DISTINCT uid FROM {$_TABLES['stories']}");
@@ -272,18 +277,18 @@ function editpreferences()
         $where .= "uid = '1'";
         $retval .= COM_checkList($_TABLES['users'],'uid,username',$where,$A['aids']).'</td>'.LB;
     }
-	
+    
     $retval .= '</tr>' . LB . '</table>' . COM_endBlock();
 
     if ($_CONF['emailstories'] == 1) {
         $user_etids = DB_getItem($_TABLES['userindex'],'etids',"uid = {$_USER['uid']}");
-    	$retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
-    	$retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
-    	$retval .= "<tr valign=\"top\"><td>$LANG04[76]<br>";
-    	$tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
+        $retval .= COM_startBlock($LANG04[75] . " " . "{$_USER['username']}");
+        $retval .= '<table border="0" cellspacing="0" cellpadding="3">' . LB;
+        $retval .= "<tr valign=\"top\"><td>$LANG04[76]<br>";
+        $tmp .= COM_checkList($_TABLES['topics'],'tid,topic','',$user_etids);
         $retval .= str_replace($_TABLES['topics'],'etids',$tmp);
-    	$retval .= '</td></tr></table>';
-   	    $retval .= COM_endBlock();	
+        $retval .= '</td></tr></table>';
+        $retval .= COM_endBlock();  
     }
 
     $selectedblock = '';
@@ -309,11 +314,11 @@ function editpreferences()
         . '</tr>'.LB
         . '</table>'
         . COM_endBlock();
-		
+        
     $retval .= '<div align="center">'
         . '<input type="hidden" name="mode" value="savepreferences"> '
         . '<input type="submit" value="' . $LANG04[9] . '"></div></form>';
-		
+        
     return $retval;
 }
 
@@ -331,7 +336,7 @@ function editcommentprefs()
 
     if (empty($A["commentmode"])) {
         $A["commentmode"] = $_CONF['comment_mode'];
-    }		
+    }       
     if (empty($A["commentorder"])) $A["commentorder"] = 0;
     if (empty($A["commentlimit"])) $A["commentlimit"] = 100;
     $retval .= COM_startBlock($LANG04[64] . ' ' . $_USER['username']);
@@ -384,9 +389,9 @@ function saveuser($A)
         if ($A['cooktime'] <= 0) {
             $A['cooktime'] = 'NULL';
             $cooktime = 1000;
-            setcookie($_CONF['cookie_name'],$_USER['uid'],time() - $cooktime,$_CONF['cookie_path']);	
+            setcookie($_CONF['cookie_name'],$_USER['uid'],time() - $cooktime,$_CONF['cookie_path']);    
         } else {
-            setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $A['cooktime'],$_CONF['cookie_path']);	
+            setcookie($_CONF['cookie_name'],$_USER['uid'],time() + $A['cooktime'],$_CONF['cookie_path']);   
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -524,9 +529,9 @@ function savepreferences($A)
     
     // Save theme, when doing so, put in cookie so we can set the user's theme even when they aren't logged in
     DB_query("UPDATE {$_TABLES['users']} SET theme='{$A["theme"]}',language='{$A["language"]}' WHERE uid = {$_USER['uid']}");
-    setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']);	
-    setcookie('language',$A['language'],time() + 31536000,$_CONF['cookie_path']);	
-	
+    setcookie('theme',$A['theme'],time() + 31536000,$_CONF['cookie_path']); 
+    setcookie('language',$A['language'],time() + 31536000,$_CONF['cookie_path']);   
+    
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
     DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",$_CONF['site_url'] . "/usersettings.php?mode=preferences&msg=6");
@@ -578,7 +583,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         $display .= COM_startBlock($LANG04[70] . '!');
         $display .= '<br>' . $LANG04[71] . '<br><br>';
         $display .= COM_endBlock();
-	$display .= COM_siteFooter();
+    $display .= COM_siteFooter();
     } else {
         $display .= COM_refresh($_CONF['site_url'] . '/index.php');
     }
