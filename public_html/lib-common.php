@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.137 2002/08/15 16:31:04 dhaun Exp $
+// $Id: lib-common.php,v 1.138 2002/08/16 15:32:54 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -778,7 +778,7 @@ function COM_topicList ($selection, $selected='', $sortcol=1) {
             $retval .= '>' . $A[1] . '</option>' . LB;
         }
     }
-       
+
     return $retval;
 }
 
@@ -1251,8 +1251,8 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 /** 
 * Shows all available topics
 *
-* Show the topics in the system the user has access to and prints them in HTML. This
-* function is used to show the topics in the sections block
+* Show the topics in the system the user has access to and prints them in HTML.
+* This function is used to show the topics in the sections block.
 * 
 * @param        string      $topic      Topic currently selected
 *
@@ -1260,7 +1260,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 function COM_showTopics($topic='') 
 {
     global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page;
-	
+
     if ($_CONF['sortmethod'] == 'alpha') {
         $result = DB_query("SELECT * FROM {$_TABLES['topics']} ORDER BY tid ASC");
     } else {
@@ -1294,9 +1294,7 @@ function COM_showTopics($topic='')
                         if ($_CONF['showstorycount']) {
                             $retval .= '/';
                         }
-                        $rcount = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'");
-                        $T = DB_fetchArray($rcount);
-                        $retval .= $T['count'];
+                        $retval .= DB_count($_TABLES['storysubmission'],'tid',$A['tid']);
                     }
                     $retval .= ')';
                 }
@@ -2593,11 +2591,9 @@ function COM_emailUserTopics()
 */
 function COM_whatsNewBlock($help='',$title='') 
 {
-    global $_TABLES, $_CONF, $LANG01;
+    global $_TABLES, $_CONF, $LANG01, $_USER, $_GROUPS;
 
     // Find the newest stories
-    // Change 86400 to your desired interval in seconds
-
     $sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM {$_TABLES['stories']} WHERE ";
     $now = time();
     $desired = $now - $_CONF['newstoriesinterval'];
@@ -2628,57 +2624,80 @@ function COM_whatsNewBlock($help='',$title='')
     $retval .= '<br>';
 
     // Go get the newest comments
-    // Change 172800 to desired interval in seconds
-
     $retval .= '<b>' . $LANG01[83] . '</b> <small>' . $LANG01[85] . '</small><br>';
-	
-	$sql = "SELECT DISTINCT *, count(*) AS dups,type,question,{$_TABLES['stories']}.title "
-        . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON {$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid "
-        . "LEFT JOIN {$_TABLES['pollquestions']} ON qid = {$_TABLES['comments']}.sid WHERE ";
-    $now = time();
-    $desired = $now - $_CONF['newcommentsinterval'];    
-    $sql .= "UNIX_TIMESTAMP({$_TABLES["comments"]}.date) > {$desired} GROUP BY {$_TABLES["comments"]}.sid";
+
+    $stsql = '';
+    $stwhere = '';
+    if (!empty ($_USER['uid'])) {
+        $groupList = '';
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+        $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
+        $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
+        $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
+        $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
+        $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+        $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
+    }
+    $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
+    $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
+
+    $posql = '';
+    $powhere = '';
+    if (!empty ($_USER['uid'])) {
+        $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
+        $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
+        $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
+    }
+    $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
+    $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
+
+    $sql = "SELECT DISTINCT count(*) AS dups,type,question,{$_TABLES['stories']}.title,{$_TABLES['stories']}.sid,qid "
+        . "FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) "
+        . "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE (";
+    $sql .= "{$_TABLES["comments"]}.date >= (NOW() - INTERVAL {$_CONF['newcommentsinterval']} SECOND)) AND ((" .  $stwhere . ") OR (" . $powhere . "))";
+    $sql .= " GROUP BY {$_TABLES["comments"]}.sid ORDER BY {$_TABLES['comments']}.date DESC LIMIT 15";
     $result = DB_query($sql);
 
     $nrows = DB_numRows($result);
-
-    // Cap max displayed at 15
-    if ($nrows > 15) $nrows = 15;
     if ($nrows > 0) {
         $newcomments = array ();
         for ($x = 1; $x <= $nrows; $x++) {
             $A = DB_fetchArray($result);
-            if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0) {
+            if ($A['type'] == 'article') {
                 $itemlen = strlen($A['title']);
-                if ($A['type'] == 'article') {
-                    $titletouse = stripslashes ($A['title']);
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
-                } else {
-                    $titletouse = $A['question'];
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
-                }
-                if ($itemlen > 20) {
-                    $urlstart .= ' title="' . $titletouse . '">';
-                } else {
-                    $urlstart .= '>';
-                }
-
-                // Trim the length if over 20 characters
-                if ($itemlen > 20) {
-                    $acomment = $urlstart . substr($titletouse,0,20) . '... ';
-                    if ($A['dups'] > 1) {
-                        $acomment .= '[+' . $A['dups'] . ']';
-                    }
-                    $acomment .= '</a>';
-                } else {
-                    $acomment = $urlstart . $titletouse;
-                    if ($A['dups'] > 1) {
-                        $acomment .= '[+' . $A['dups'] . ']';
-                    }
-                    $acomment .= '</a>';
-                }
-                $newcomments[] = $acomment;
+                $titletouse = stripslashes ($A['title']);
+                $urlstart = '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '#comments"';
+            } else {
+                $itemlen = strlen($A['question']);
+                $titletouse = $A['question'];
+                $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
             }
+            if ($itemlen > 20) {
+                $urlstart .= ' title="' . $titletouse . '">';
+            } else {
+                $urlstart .= '>';
+            }
+            // Trim the length if over 20 characters
+            if ($itemlen > 20) {
+                $acomment = $urlstart . substr($titletouse,0,20) . '... ';
+                if ($A['dups'] > 1) {
+                    $acomment .= '[+' . $A['dups'] . ']';
+                }
+                $acomment .= '</a>';
+            } else {
+                $acomment = $urlstart . $titletouse;
+                if ($A['dups'] > 1) {
+                    $acomment .= '[+' . $A['dups'] . ']';
+                }
+                $acomment .= '</a>';
+            }
+            $newcomments[] = $acomment;
         }
         $retval .= COM_makeList ($newcomments);
     } else {
@@ -2691,15 +2710,13 @@ function COM_whatsNewBlock($help='',$title='')
 	
     $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
 	
-    $sql    = "SELECT * FROM {$_TABLES['links']} ORDER BY lid DESC";
+    $sql = "SELECT * FROM {$_TABLES['links']} ORDER BY lid DESC LIMIT 15";
     $foundone = 0;
     $now = time();
     $desired = $now - $_CONF['newlinksinterval'];
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
-    // Cap max displayed at 15
-    if ($nrows > 15) $nrows = 15;
     if ($nrows > 0) {
         $newlinks = array();
         for ($x = 1; $x <= $nrows; $x++) {
