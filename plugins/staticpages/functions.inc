@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.19 2003/03/11 17:00:56 dhaun Exp $
+// $Id: functions.inc,v 1.20 2003/05/22 21:08:31 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/' . $_CONF['language'] . '.php';
 
@@ -340,6 +340,85 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 
     return $sql;
 }
+
+/**
+* Display static pages in the center block.
+*
+* @param   where   int      where the static page will be displayed (0..2)
+* @param   page    int      page number
+* @param   topic   string   topic ID
+* @return          string   HTML for the static page (can be empty)
+*/
+function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
+{
+    global $_CONF, $_TABLES, $_SP_CONF, $HTTP_GET_VARS;
+
+    $retval = '';
+
+    if ($where > 1) {
+        return $retval;
+    } else if (($where == 0) && (($page > 1) || !empty ($topic))) {
+        return $retval;
+    }
+
+    if (($where == 0) && ($page == 1) && empty ($topic)) {
+        $staticpage_label = 'nonews';
+    } else if (empty ($topic)) {
+        $staticpage_label = 'frontpage';
+    } else {
+        $staticpage_label = 'topic:' . $topic;
+    }
+
+    $perms = SP_getPerms ();
+    if (!empty ($perms)) {
+        $perms = ' AND ' . $perms;
+    }
+    $spsql = "SELECT sp_content,sp_title,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_label = '{$staticpage_label}'" . $perms;
+    $result = DB_query ($spsql);
+
+    if (DB_numRows ($result) > 0) {
+        $spresult = DB_fetchArray ($result);
+
+        if ($where == 0) {
+            switch ($spresult['sp_format']) {
+                case 'noblocks':
+                    $retval .= COM_siteHeader ('none');
+                    break;
+                case 'allblocks':
+                case 'leftblocks':
+                    $retval .= COM_siteHeader ('menu');
+                    break;
+            }
+            $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
+        }
+
+        if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
+            $retval .= COM_startBlock ($spresult['sp_title']);
+        }
+
+        // Check for type (ie html or php)
+        if ($spresult['sp_php'] == 1) {
+            $retval .= eval (stripslashes ($spresult['sp_content']));
+        } else {
+            $retval .= stripslashes ($spresult['sp_content']);
+        }
+
+        if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_title'])) {
+            $retval .= COM_endBlock ();
+        }
+
+        if ($where == 0) {
+            if ($spresult['sp_format'] == 'allblocks') {
+                $retval .= COM_siteFooter (true);
+            } else if ($spresult['sp_format'] != 'blankpage') {
+                $retval .= COM_siteFooter ();
+            }
+        }
+    }
+
+    return $retval;
+}
+
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.47 2003/05/15 15:25:21 dhaun Exp $
+// $Id: index.php,v 1.48 2003/05/22 21:08:31 dhaun Exp $
 
 if (isset ($HTTP_GET_VARS['topic'])) {
     $topic = strip_tags ($HTTP_GET_VARS['topic']);
@@ -39,113 +39,47 @@ if (isset ($HTTP_GET_VARS['topic'])) {
 else {
     $topic = '';
 }
-if (isset ($HTTP_GET_VARS['display']) && ($HTTP_GET_VARS['display'] == 'new') && empty ($topic)) {
-    $newstories = true;
-} else {
-    $newstories = false;
+
+$newstories = false;
+$displayall = false;
+if (isset ($HTTP_GET_VARS['display']) && empty ($topic)) {
+    if ($HTTP_GET_VARS['display'] == 'new') {
+        $newstories = true;
+    } else if ($HTTP_GET_VARS['display'] == 'all') {
+        $displayall = true;
+    }
 }
-require_once('lib-common.php');
-
-$display = '';
-
-/*
- *  Staticpage on Frontpage Addon (Hacked together by MLimburg)
- *
- *  If a staticpage with the title 'frontpage' exists, then it is shown before
- *  the news messages.  If this staticpage has the label 'nonews', then it is
- *  shown INSTEAD of news messages.
- *  This will only occur on the basic index.php page, and not on the $topic
- *  pages.
- */
-
-$shownews = true;
-
-// check if static pages plugin is installed and enabled
-if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = 'staticpages'") == 1) {
-
-    if (empty ($topic)) {
-        $staticpage_title = 'frontpage';
-    } else {
-        $staticpage_title = 'topic:' . $topic;
-    }
-
-    $perms = SP_getPerms ();
-    if (!empty ($perms)) {
-        $perms = ' AND ' . $perms;
-    }
-    $spsql = "SELECT sp_content,sp_label,sp_format,sp_php FROM {$_TABLES['staticpage']} WHERE sp_title = '{$staticpage_title}'" . $perms;
-    $result = DB_query ($spsql);
-
-    if (DB_numRows ($result) > 0) {
-        $spresult = DB_fetchArray ($result);
-
-        if ($spresult['sp_label'] == 'nonews') { // replace news entirely
-            $shownews = false;
-            switch ($spresult['sp_format']) {
-                case 'noblocks':
-                    $display .= COM_siteHeader ('none')
-                             . COM_showMessage ($HTTP_GET_VARS['msg']);
-                    break;
-                case 'allblocks':
-                case 'leftblocks':
-                    $display .= COM_siteHeader ('menu')
-                             . COM_showMessage ($HTTP_GET_VARS['msg']);
-                    break;
-            }
-
-            // Check for type (ie html or php)
-            if ($spresult['sp_php'] == 1) {
-                $display .= eval (stripslashes ($spresult['sp_content']));
-            } else {
-                $display .= stripslashes ($spresult['sp_content']);
-            }
-
-            if ($spresult['sp_format'] == 'allblocks') {
-                $display .= COM_siteFooter (true);
-            } else if ($spresult['sp_format'] != 'blankpage') {
-                $display .= COM_siteFooter ();
-            }
-        } else { // display static page content before the news
-            $display .= COM_siteHeader ()
-                     . COM_showMessage ($HTTP_GET_VARS['msg']);
-            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                $display .= COM_startBlock ($spresult['sp_label']);
-            }
-
-            // Check for type (ie html or php)
-            if ($spresult['sp_php'] == 1) {
-                $display .= eval (stripslashes ($spresult['sp_content']));
-            } else {
-                $display .= stripslashes ($spresult['sp_content']);
-            }
-
-            if (($_SP_CONF['in_block'] == 1) && !empty ($spresult['sp_label'])) {
-                $display .= COM_endBlock ();
-            }
-        }
-    } else {
-        $display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
-    }
-} else {
-    $display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
-}
-
-// Show any Plugin formatted blocks
-// Requires a plugin to have a function called plugin_centerblock_<plugin_name>
-$display .= PLG_showCenterblock ();
-
-if ($shownews) {
-
-$maxstories = 0;
 
 if (isset ($HTTP_GET_VARS['page'])) {
     $page = $HTTP_GET_VARS['page'];
 }
-
-if (empty($page)) {
+if (empty ($page)) {
     // If no page sent then assume the first.
     $page = 1;
 }
+
+require_once('lib-common.php');
+
+$display = '';
+
+if (!$newstories && !$displayall) {
+    // give plugins a chance to replace this page entirely
+    $newcontent = PLG_showCenterblock (0, $page, $topic);
+    if (!empty ($newcontent)) {
+        echo $newcontent;
+        exit;
+    }
+}
+
+$display .= COM_siteHeader() . COM_showMessage ($HTTP_GET_VARS['msg']);
+
+
+
+// Show any Plugin formatted blocks
+// Requires a plugin to have a function called plugin_centerblock_<plugin_name>
+$display .= PLG_showCenterblock (1, $page, $topic); // top blocks
+
+$maxstories = 0;
 
 if (!empty($_USER['uid'])) {
     $result = DB_query("SELECT noboxes,maxstories,tids,aids FROM {$_TABLES['userindex']} WHERE uid = '{$_USER['uid']}'");
@@ -246,6 +180,9 @@ if ($nrows > 0) {
             $A['featured'] = 1;
         }
         $display .= COM_article($A,'y');
+        if ($A['featured'] == 1) {
+            $display .= PLG_showCenterblock (2, $page, $topic);
+        }
     }
 
     // Print Google-like paging navigation
@@ -267,9 +204,9 @@ if ($nrows > 0) {
     $display .= COM_endBlock();
 }
 
-$display .= COM_siteFooter(true); // The true value enables right hand blocks.
+$display .= PLG_showCenterblock (3, $page, $topic); // bottom blocks
 
-}
+$display .= COM_siteFooter(true); // The true value enables right hand blocks.
 
 // Output page 
 echo $display;
