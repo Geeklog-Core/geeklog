@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: pdfgenerator.php,v 1.9 2004/06/09 18:11:03 tony Exp $
+// $Id: pdfgenerator.php,v 1.10 2004/07/31 21:21:12 dhaun Exp $
 
 require_once 'lib-common.php';
 
@@ -206,9 +206,9 @@ function PDF_generatePDF()
                 if ($waitTime > 30 OR $waitTime < 5 OR !$waitTime) {
                     $waitTime=10;
                 }
-                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"$waitTime; URL='$urlpath\">");
+                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"$waitTime; URL=$urlpath\">");
             } else {
-                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"0; URL='$urlpath\">");
+                $pdf->set_var('meta_tag', "<META HTTP-EQUIV=REFRESH CONTENT=\"0; URL=$urlpath\">");
             }
             $pdf->parse('page', 'pdf' );
             echo $pdf->finish($pdf->get_var('page'));
