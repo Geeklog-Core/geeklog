@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.47 2004/07/10 18:50:04 dhaun Exp $
+// $Id: article.php,v 1.48 2004/07/11 19:17:48 dhaun Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -54,20 +54,19 @@ require_once('lib-common.php');
 
 // MAIN
 
-COM_setArgNames (array ('story', 'mode'));
-$story = COM_applyFilter (COM_getArgument ('story'));
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $story = COM_applyFilter ($HTTP_POST_VARS['story']);
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
+} else {
+    COM_setArgNames (array ('story', 'mode'));
+    $story = COM_applyFilter (COM_getArgument ('story'));
+    $mode = COM_applyFilter (COM_getArgument ('mode'));
+    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
+}
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
-}
-$mode = COM_applyFilter (COM_getArgument ('mode'));
-if ($mode != 'print') {
-    $mode = '';
-}
-if (!empty ($HTTP_GET_VARS['order'])) {
-    $order = COM_applyFilter ($HTTP_GET_VARS['order']);
-} else {
-    $order = COM_applyFilter ($HTTP_POST_VARS['order']);
 }
 if ((strcasecmp ($order, 'ASC') != 0) && (strcasecmp ($order, 'DESC') != 0)) {
     $order = '';
