@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog calendar.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2003 by the following authors:                         |
+// | Copyright (C) 2000-2004 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.33 2004/01/06 22:38:40 dhaun Exp $
+// $Id: calendar.php,v 1.34 2004/01/23 12:13:58 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -97,11 +97,12 @@ function getDayViewData($result, $cur_time = '')
             $thedata[$i] = $A;
         }
     }
-    return array($hourcols, $thedata, $max, $alldaydata);
 
+    return array($hourcols, $thedata, $max, $alldaydata);
 }
 
-function setCalendarLanguage (&$aCalendar) {
+function setCalendarLanguage (&$aCalendar)
+{
     global $LANG30;
 
     $lang_days = array('sunday'=>$LANG30[1],
@@ -127,7 +128,8 @@ function setCalendarLanguage (&$aCalendar) {
     $aCalendar->setLanguage($lang_days, $lang_months);
 }
 
-function makeDaysHeadline () {
+function makeDaysHeadline ()
+{
     global $LANG30;
 
     $retval = '<tr><th>'
@@ -207,7 +209,7 @@ function getQuickAdd($tpl, $month, $day, $year)
         }
         $month_options .= '<option value="' . $mval . '" ';
         if ($z == $month) {
-            $month_options .= 'selected="SELECTED"';
+            $month_options .= 'selected="selected"';
         }
         $month_options .= '>' . $mval . '</option>';
     }
@@ -217,7 +219,7 @@ function getQuickAdd($tpl, $month, $day, $year)
     for ($z = 1; $z <= 31; $z++) {
         $day_options .= '<option value="' . $z . '" ';
         if ($z == $day) {
-            $day_options .= 'selected="SELECTED"';
+            $day_options .= 'selected="selected"';
         }
         $day_options .= '>' . $z. '</option>';
     }
@@ -227,7 +229,7 @@ function getQuickAdd($tpl, $month, $day, $year)
     for ($z = $cur_year; $z <= $cur_year + 5; $z++) {
         $year_options .= '<option value="' . $z . '" ';
         if ($z == $year) {
-            $year_options .= 'selected="SELECTED"';
+            $year_options .= 'selected="selected"';
         }
         $year_options .= '>' . $z . '</option>';
     }
@@ -235,9 +237,9 @@ function getQuickAdd($tpl, $month, $day, $year)
 
     $cur_hour = date('H',time());
     if ($cur_hour >= 12) {
-        $tpl->set_var('pm_selected','selected="SELECTED"');
+        $tpl->set_var('pm_selected','selected="selected"');
     } else {
-        $tpl->set_var('am_selected','selected="SELECTED"');
+        $tpl->set_var('am_selected','selected="selected"');
     }
     if ($cur_hour > 12) $cur_hour = $cur_hour-12;
     for ($z = 1; $z <= 11; $z++) {
@@ -249,13 +251,13 @@ function getQuickAdd($tpl, $month, $day, $year)
         if ($z == 1 ) {
             $hour_options .= '<option value="12" ';
             if ($cur_hour == 12) {
-                $hour_options .= 'selected="SELECTED"';
+                $hour_options .= 'selected="selected"';
             }
             $hour_options .= '>12</option>';
         }
         $hour_options .= '<option value="' . $hval . '" ';
         if ($cur_hour == $z) {
-            $hour_options .= 'selected="SELECTED"';
+            $hour_options .= 'selected="selected"';
         }
         $hour_options .= '>' . $z . '</option>';
     }
@@ -269,7 +271,7 @@ function getQuickAdd($tpl, $month, $day, $year)
     $tpl->parse('quickadd_form','quickadd',true);
 
     return $tpl;
-} 
+}
 
 /** 
 * Returns timestamp for the prior sunday of a given day
@@ -289,8 +291,15 @@ function getPriorSunday($month, $day, $year)
 
 $display .= COM_siteHeader('');
 
+$mode = '';
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
+} else if (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = COM_applyFilter ($HTTP_GET_VARS['mode']);
+}
+
 // Set mode back to master if user refreshes screen after their session expires
-if (empty($_USER['uid']) AND $mode == 'personal') {
+if (empty ($_USER['uid']) AND $mode == 'personal') {
     $mode = '';
 }
 
@@ -312,11 +321,29 @@ if ($msg > 0) {
     $display .= COM_showMessage ($msg);
 }
 
+$view = '';
+if (isset ($HTTP_POST_VARS['view'])) {
+    $view = COM_applyFilter ($HTTP_POST_VARS['view']);
+} else if (isset ($HTTP_GET_VARS['view'])) {
+    $view = COM_applyFilter ($HTTP_GET_VARS['view']);
+}
+
+if (isset ($HTTP_POST_VARS['year']) || isset ($HTTP_POST_VARS['month']) ||
+        isset ($HTTP_POST_VARS['day'])) {
+    $year = COM_applyFilter ($HTTP_POST_VARS['year'], true);
+    $month = COM_applyFilter ($HTTP_POST_VARS['month'], true);
+    $day = COM_applyFilter ($HTTP_POST_VARS['day'], true);
+} else {
+    $year = COM_applyFilter ($HTTP_GET_VARS['year'], true);
+    $month = COM_applyFilter ($HTTP_GET_VARS['month'], true);
+    $day = COM_applyFilter ($HTTP_GET_VARS['day'], true);
+}
+
 // Create new calendar object
 $cal = new Calendar();
 
 if ($view == 'week' AND (empty($month) AND empty($day) AND empty($year))) {
-    list($month, $day, $year) = getPriorSunday(date('m', time()), date("j", time()), date('Y', time()));
+    list($month, $day, $year) = getPriorSunday(date('m', time()), date('j', time()), date('Y', time()));
 } else {
     // Get current month
     $currentmonth = date('m', time());
@@ -331,7 +358,7 @@ if ($view == 'week' AND (empty($month) AND empty($day) AND empty($year))) {
     }
 
     // Get current day
-    $currentday =  date("j", time());
+    $currentday =  date('j', time());
     if (empty($day)) {
         $day = $currentday;
     }
@@ -643,29 +670,29 @@ $cal_templates->set_var('lang_friday', $LANG30[6]);
 $cal_templates->set_var('lang_saturday', $LANG30[7]);
 
 $cal_templates->set_var('lang_january', $LANG30[13]);
-if ($month == 1) $cal_templates->set_var('selected_jan','SELECTED');
+if ($month == 1) $cal_templates->set_var('selected_jan','selected="selected"');
 $cal_templates->set_var('lang_february', $LANG30[14]);
-if ($month == 2) $cal_templates->set_var('selected_feb','SELECTED');
+if ($month == 2) $cal_templates->set_var('selected_feb','selected="selected"');
 $cal_templates->set_var('lang_march', $LANG30[15]);
-if ($month == 3) $cal_templates->set_var('selected_mar','SELECTED');
+if ($month == 3) $cal_templates->set_var('selected_mar','selected="selected"');
 $cal_templates->set_var('lang_april', $LANG30[16]);
-if ($month == 4) $cal_templates->set_var('selected_apr','SELECTED');
+if ($month == 4) $cal_templates->set_var('selected_apr','selected="selected"');
 $cal_templates->set_var('lang_may', $LANG30[17]);
-if ($month == 5) $cal_templates->set_var('selected_may','SELECTED');
+if ($month == 5) $cal_templates->set_var('selected_may','selected="selected"');
 $cal_templates->set_var('lang_june', $LANG30[18]);
-if ($month == 6) $cal_templates->set_var('selected_jun','SELECTED');
+if ($month == 6) $cal_templates->set_var('selected_jun','selected="selected"');
 $cal_templates->set_var('lang_july', $LANG30[19]);
-if ($month == 7) $cal_templates->set_var('selected_jul','SELECTED');
+if ($month == 7) $cal_templates->set_var('selected_jul','selected="selected"');
 $cal_templates->set_var('lang_august', $LANG30[20]);
-if ($month == 8) $cal_templates->set_var('selected_aug','SELECTED');
+if ($month == 8) $cal_templates->set_var('selected_aug','selected="selected"');
 $cal_templates->set_var('lang_september', $LANG30[21]);
-if ($month == 9) $cal_templates->set_var('selected_sep','SELECTED');
+if ($month == 9) $cal_templates->set_var('selected_sep','selected="selected"');
 $cal_templates->set_var('lang_october', $LANG30[22]);
-if ($month == 10) $cal_templates->set_var('selected_oct','SELECTED');
+if ($month == 10) $cal_templates->set_var('selected_oct','selected="selected"');
 $cal_templates->set_var('lang_november', $LANG30[23]);
-if ($month == 11) $cal_templates->set_var('selected_nov','SELECTED');
+if ($month == 11) $cal_templates->set_var('selected_nov','selected="selected"');
 $cal_templates->set_var('lang_december', $LANG30[24]);
-if ($month == 12) $cal_templates->set_var('selected_dec','SELECTED');
+if ($month == 12) $cal_templates->set_var('selected_dec','selected="selected"');
 
 $cal_templates->set_var('lang_day', $LANG30[39]);
 $cal_templates->set_var('lang_week', $LANG30[40]);
@@ -682,7 +709,7 @@ if ($mode == 'personal') {
 for ($y = $currentyear - 5; $y <= $currentyear + 5; $y++) {
     $yroptions .= '<option value="' . $y . '" ';
     if ($y == $year) {
-        $yroptions .= 'SELECTED';
+        $yroptions .= 'selected="selected"';
     }
     $yroptions .= '>' . $y . '</option>'.LB;
 }
