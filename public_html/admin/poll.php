@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.34 2003/09/01 19:01:06 dhaun Exp $
+// $Id: poll.php,v 1.35 2003/09/27 20:45:42 dhaun Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -91,8 +91,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     for ($i = 0; $i < sizeof ($A); $i++) {
         $A[$i] = COM_stripslashes ($A[$i]);
     }
-
-    if (!empty ($question) && (sizeof ($A) > 0) && !empty ($A[0])) {
+    if (!empty ($question) && (sizeof ($A) > 0) && strlen ($A[0]) > 0) {
 
         if ($_POLL_VERBOSE) {
             COM_errorLog ('**** Inside savepoll() in '
@@ -155,7 +154,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
 
         // Save poll answers
         for ($i = 0; $i < sizeof($A); $i++) {
-            if (!empty($A[$i])) {
+            if (strlen ($A[$i]) > 0) {
                 if (empty($V[$i])) { 
                     $V[$i] = "0"; 
                 }

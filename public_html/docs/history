@@ -3,6 +3,7 @@ GeekLog History/Changes:
 October ??, 2003 (1.3.9rc1)
 ----------------
 
+- Fixed handling of "0" as a poll answer (bug #73).
 - Added a check and warning message in admin/moderation.php if register_globals
   is "off".
 - When trying to guess the value of $_CONF['cookiedomain'], we need to remove
@@ -14,8 +15,9 @@ October ??, 2003 (1.3.9rc1)
   can click on to edit a story.
 - You can now enable debug messages (to error.log) for the image upload by
   setting $_CONF['debug_image_upload'] = true in config.php. 
-_ When deleting a group, delete all references to that group from the
-  group_assignments table (bug #50).
+- When deleting a group, delete all references to that group from the
+  group_assignments table (bug #50). The install script will remove any
+  orphaned entries when upgrading the database to 1.3.9.
 - The option to delete comments was only available to users in the Root group
   (e.g. Admin). Since comments don't have permissions, comments can now be
   deleted by users with Story Admin permissions for the story they are
@@ -23,7 +25,7 @@ _ When deleting a group, delete all references to that group from the
 - Display a generic (and localised) error message when there is a problem
   importing an (RSS) feed - details will be available in error.log. Also checks
   for empty (but existing) feeds now.
-_ When the user submission queue is activated, you now have an "edit" link
+- When the user submission queue is activated, you now have an "edit" link
   that takes you to the Admin's user editor (the profile link is now on the
   username).
 - COM_siteHeader() now uses output buffering for the eval(), preventing the
@@ -31,8 +33,8 @@ _ When the user submission queue is activated, you now have an "edit" link
 - The install script will set the 'date' field for links to sensible values
   now (reconstructed from the date that's encoded in the link id).
 - The author exclusion list in the preferences is now a (multi-select) listbox.
-- Static pages are not wrapped in a block when the page format is set to "blank
-  page" (bug #60).
+- Static pages are not wrapped in a block any more when the page format is set
+  to "blank page" (bug #60).
 - A proper error message is now displayed if the Admin creates a new user or
   changes an existing account with an email address that already exists (that
   test was already introduced in 1.3.8-1 but the error message was confusing),
@@ -40,7 +42,7 @@ _ When the user submission queue is activated, you now have an "edit" link
 - You can now use {author_fullname} and {author_photo} variables in comment
   templates (feature request #35).
 - Remove extra backslashes from new links in What's New block (bug #59).
-- The [code] tag is now listed in the list of allowabled HTML.
+- The [code] tag is now displayed in the list of allowed HTML tags.
 - Image upload can now use the GD library (contributed by Rob Coenen).
   If possible, GIF images will be converted to PNGs during upload. However,
   some versions of the GD library may not allow to read GIF images at all.
