@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.132 2004/09/04 19:34:33 dhaun Exp $
+// $Id: story.php,v 1.133 2004/09/17 10:52:37 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -873,7 +873,8 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
     // some minimal sanitizing on the story id ...
     $sid = str_replace (' ', '', $sid);
-    $sid = str_replace (array ('_', '/', '\\', ':'), '-', $sid);
+    $sid = str_replace (array ('_', '/', '\\', ':', '+'), '-', $sid);
+    $sid = preg_replace('/[^a-zA-Z0-9\-]/', '', $sid);
     if (empty ($sid)) {
         $sid = COM_makesid ();
     }

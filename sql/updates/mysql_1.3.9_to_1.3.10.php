@@ -151,19 +151,64 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_name(name)";
 // (this is obsolete since 1.3.9 but was still present in fresh 1.3.9 installs)
 $_SQL[] = "DELETE FROM {$_TABLES['vars']} WHERE name = 'rdf_sids'";
 
-// Time to add the SpamX table
-$_SQL[] = "CREATE TABLE {$_TABLES['spamx']} ("
-	. " name varchar(20) NOT NULL default '',"
-	. " value varchar(255) NOT NULL default '',"
-	. " PRIMARY KEY  (name)"
-	. ") TYPE=MyISAM
-";
 
-// Ok, the rest of the file is data
-$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
-$_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
+/**
+* Install SpamX plugin (also handled updates from version 1.0)
+*
+*/
+function install_spamx_plugin ()
+{
+    global $_TABLES;
+
+    $_SPX_TABLE = "CREATE TABLE {$_TABLES['spamx']} ("
+                . " name varchar(20) NOT NULL default '',"
+                . " value varchar(255) NOT NULL default '',"
+                . " INDEX spamx_name (name)"
+                . ") TYPE=MyISAM";
+
+    // SpamX plugin information, 'spamx.admin' feature, SpamX Admin group
+    $_SPX_PLUGIN = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
+    $_SPX_FEAT = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('spamx.admin', 'spamx Admin', 0) ";
+    $_SPX_ADMIN = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('spamx Admin', 'Users in this group can administer the spamx plugin',0) ";
+
+    // initial data for 'spamx' table
+    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Action','DeleteComment')";
+    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','BlackList')";
+    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Examine','MTBlackList')";
+    $_SPX_DATA[] = "INSERT INTO {$_TABLES['spamx']} VALUES ('Personal','zaraz.com')";
+
+    $spxversion = get_SPX_ver ();
+    if ($spxversion == 0) { // plugin not installed yet
+        DB_query ($_SPX_ADMIN); // add SpamX Admin group
+        $group_id = DB_insertId ();
+
+        DB_query ($_SPX_FEAT); // add 'spamx.admin' feature
+        $feat_id = DB_insertId ();
+        // add feature to spamx admin group
+        DB_query ("INSERT INTO {$_TABLES['access']} (acc_ft_id, acc_grp_id) VALUES ($feat_id, $group_id)");
+
+        // make Root group a member of the SpamX Admin group
+        DB_query ("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
+    } else if ($spxversion == 1) { // version 1.0 already installed
+        // delete plugin entry so that we can update it below
+        DB_delete ($_TABLES['plugins'], 'pi_name', 'spamx');
+    }
+
+    if (($spxversion == 0) || ($spxversion == 1)) {
+        DB_query ($_SPX_PLUGIN); // add entry to 'plugins' table
+
+        // create 'spamx' table
+        if (innodb_supported ()) {
+            DB_query (str_replace ('MyISAM', 'InnoDB', $_SPX_TABLE));
+        } else {
+            DB_query ($_SPX_TABLE);
+        }
+        foreach ($_SPX_DATA as $data) { // add initial plugin data
+            DB_query ($data);
+        }
+    }
+
+    return true;
+}
 
 ?>

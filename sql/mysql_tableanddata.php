@@ -598,7 +598,7 @@ $_SQL[41] = "
 CREATE TABLE {$_TABLES['spamx']} (
   name varchar(20) NOT NULL default '',
   value varchar(255) NOT NULL default '',
-  PRIMARY KEY (name)
+  INDEX spamx_name(name)
 ) TYPE=MyISAM
 ";
 
