@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.37 2002/04/17 14:08:21 tony_bibbs Exp $
+// $Id: story.php,v 1.38 2002/04/22 15:23:46 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -416,9 +416,15 @@ function replace_images($sid, $intro, $body)
     $nrows = DB_numRows($result);
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $norm = '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
-        $left = '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
-        $right = '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $dimensions = GetImageSize($_CONF['path_html'] . 'images/articles/' . $A['ai_filename']);
+        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
+            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
+        } else {
+            $sizeattributes = '';
+        }
+        $norm = '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $left = '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
+        $right = '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">';
         $fulltext = $intro . ' ' . $body;
         $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         $intro = str_replace($norm, '[' . $LANG24[48] . $i . ']', $intro);
@@ -450,6 +456,12 @@ function insert_images($sid, $intro, $body)
     
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
+        $dimensions = GetImageSize($_CONF['path_html'] . 'images/articles/' . $A['ai_filename']);
+        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
+            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
+        } else {
+            $sizeattributes = '';
+        }
         $norm = '[' . $LANG24[48] . $i . ']';
         $left = '[' . $LANG24[48] . $i . '_' . $LANG24[50] . ']';
         $right = '[' . $LANG24[48] . $i . '_' . $LANG24[49] . ']';
@@ -461,12 +473,12 @@ function insert_images($sid, $intro, $body)
         } else {
             // Only parse if we haven't encountered any error to this point
             if (count($errors) == 0) {
-                $intro = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($norm, '<img src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
-                $intro = str_replace($left, '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($left, '<img align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
-                $intro = str_replace($right, '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
-                $body = str_replace($right, '<img align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($norm, '<img ' . $sizeattributes . 'src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($left, '<img ' . $sizeattributes . 'align="left" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
+                $intro = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $intro);
+                $body = str_replace($right, '<img ' . $sizeattributes . 'align="right" src="' . $_CONF['site_url'] . '/images/articles/' . $A['ai_filename'] . '">', $body);
             }
         }
     }
