@@ -121,7 +121,7 @@ function editpreferences() {
 	print "<table border=0 cellspacing=0 cellpadding=3>\n";
 	print "<tr><td>{$LANG04[55]}</td></tr>";
 	print "<tr><td>";
-	checklist("blocks","bid,title,blockorder","type != 'layout'",$A["boxes"]);
+	checklist("blocks","bid,title,blockorder","(type != 'layout' AND type != 'gldefault') OR (type='gldefault' AND title in ('Whats New Block','Poll Block','Events Block')) ORDER BY onleft desc,blockorder,title",$A["boxes"]);
 	print "</td></tr></table>";
 	endblock();
 	print "<center><input type=hidden name=mode value=savepreferences>";
