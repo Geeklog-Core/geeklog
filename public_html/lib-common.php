@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.341 2004/07/18 12:02:31 dhaun Exp $
+// $Id: lib-common.php,v 1.342 2004/07/19 01:30:04 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3321,7 +3321,7 @@ function COM_checkHTML( $str )
     }
     else
     {
-        $html = array_merge( $_CONF['user_html'], $_CONF['admin_html'] );
+        $html = array_merge_recursive( $_CONF['user_html'], $_CONF['admin_html'] );
     }
 
     foreach( $html as $tag => $attr )
@@ -3996,7 +3996,7 @@ function COM_allowedHTML()
     }
     else
     {
-        $html = array_merge( $_CONF['user_html'], $_CONF['admin_html'] );
+        $html = array_merge_recursive( $_CONF['user_html'], $_CONF['admin_html'] );
     }
 
     $br = 0;
