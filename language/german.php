@@ -321,7 +321,9 @@ $LANG04 = array(
     102 => 'E-Mail von Usern',
     103 => 'Erlaube E-Mails von anderen Usern',
     104 => 'Online-Status zeigen',
-    105 => 'Unter "Wer ist online?"'
+    105 => 'Unter "Wer ist online?"',
+    106 => 'Wohnort',
+    107 => 'Erscheint im öffentlichen Profil'
 );
 
 ###############################################################################
