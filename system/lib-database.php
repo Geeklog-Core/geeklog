@@ -93,6 +93,10 @@ $_TABLES['vars']                = $_DB_table_prefix . 'vars';
 // the static pages plugin has become an integral part of Geeklog anyway ...
 $_TABLES['staticpage']          = $_DB_table_prefix . 'staticpage';
 
+// this table isn't used by Geeklog any more, but the table name is needed
+// when upgrading from old versions
+$_TABLES['userevent']           = $_DB_table_prefix . 'userevent';
+
 
 // +---------------------------------------------------------------------------+
 // | DO NOT TOUCH ANYTHING BELOW HERE                                          |
