@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.107 2002/06/07 08:00:46 dhaun Exp $
+// $Id: lib-common.php,v 1.108 2002/06/09 08:50:35 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -174,10 +174,9 @@ if (DB_getItem($_TABLES['blocks'],'is_enabled',"name = 'whosonline_block'") == 1
         $curtime = time();
         // Insert anonymous user session
         DB_query("INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)");
-    } else {
-        // Clear out any expired sessions
-        DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . (time() - $_CONF['whosonline_threshold']));
     }
+    // Clear out any expired sessions
+    DB_query("DELETE FROM {$_TABLES['sessions']} WHERE uid = 1 AND start_time < " . (time() - $_CONF['whosonline_threshold']));
 }
 
 require_once($_CONF['path'] . 'language/' . $_CONF['language'] . '.php');
