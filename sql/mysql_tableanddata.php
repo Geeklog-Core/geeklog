@@ -33,6 +33,8 @@ CREATE TABLE {$_TABLES['blocks']} (
   INDEX blocks_is_enabled(is_enabled),
   INDEX blocks_tid(tid),
   INDEX blocks_type(type),
+  INDEX blocks_name(name),
+  INDEX blocks_onleft(onleft),
   PRIMARY KEY  (bid)
 ) TYPE=MyISAM
 ";

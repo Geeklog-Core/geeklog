@@ -112,4 +112,8 @@ $_SQL[] = "UPDATE {$_TABLES['links']} SET owner_id = 1 WHERE owner_id = 0";
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD expire DATETIME NOT NULL AFTER statuscode";
 $_SQL[] = "ALTER TABLE {$_TABLES['topics']} ADD archive_flag tinyint(1) unsigned NOT NULL DEFAULT '0' AFTER is_default";
 
+// add index for 'onleft' and 'name' to speed up themes with different left and right block templates
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_onleft(onleft)";
+$_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD INDEX blocks_name(name)";
+
 ?>
