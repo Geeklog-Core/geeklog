@@ -362,7 +362,9 @@ $LANG09 = array(
 	24 => "Found",
 	25 => "matches for",
 	26 => "items in",
-	27 => "seconds"
+	27 => "seconds",
+    28 => 'No story or comment matches for your search',
+    29 => 'Story and Comment Results'
 );
 
 ###############################################################################
@@ -824,6 +826,8 @@ $MESSAGE = array (
     41 => "Sorry, you do not have access to the word replacement page.  Please not that all attempts to access unauthorized features are logged",
     42 => "Your word has been successfully saved.",
 	43 => "The word has been successfully deleted.",
+    44 => 'The plug-in was successfully installed!',
+    45 => 'The plug-in was successfully deleted.'
 );
 
 // for plugins.php
@@ -850,7 +854,16 @@ $LANG32 = array (
 	19 => 'Enabled',
 	20 => 'Yes',
 	21 => 'No',
-	22 => 'Install'
+	22 => 'Install',
+    23 => 'Save',
+    24 => 'Cancel',
+    25 => 'Delete',
+    26 => 'Plug-in Name',
+    27 => 'Plug-in Homepage',
+    28 => 'Plug-in Version',
+    29 => 'Geeklog Version',
+    30 => 'Delete Plug-in?',
+    31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the files, data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.'
 );
 
 $LANG_ACCESS = array(

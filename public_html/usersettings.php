@@ -312,7 +312,7 @@ function saveuser($A)
 
     if (!empty($A["passwd"])) {
         $passwd = md5($A["passwd"]);
-        DB_change($_TABLES['users'],'passwd',"'$passwd'","uid",$_USER['uid']);
+        DB_change($_TABLES['users'],'passwd',"$passwd","uid",$_USER['uid']);
     }
 
     if (COM_isEmail($A['email'])) {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.11 2001/11/07 23:34:15 tony_bibbs Exp $
+// $Id: plugins.php,v 1.12 2001/11/16 18:39:11 tony_bibbs Exp $
 
 include('../lib-common.php');
 include('auth.inc.php');
@@ -64,38 +64,54 @@ if (!SEC_inGroup('Root')) {
 function plugineditor($pi_name, $confirmed = 0) 
 {
 	global $_TABLES, $HTTP_POST_VARS, $_USER, $_CONF, $LANG32;
-	
-	if (empty($pi_name)) {
+
+	if (strlen($pi_name) == 0) {
 		return (COM_errorLog($LANG32[12]));
+        exit;
 	}
 
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$pi_name'");
+    if (DB_numRows($result) <> 1) {
+        // Serious problem, we got a pi_name that doesn't exists or returned more than one row
+        return COM_errorLog('Error in editing plugin ' . $pi_name . '. Either the plugin does not exist '
+            . 'or there is more than one row with with same pi_name.  Bailing out to prevent trouble.');
+    }
+
 	$A = DB_fetchArray($result);
-	$retval .= COM_startBlock($LANG32[13]);
-	$retval .= "<form action={$_CONF['site_url']}/admin/plugins.php method=post>";
-	$retval .= '<table border="0" cellspacing="0" cellpadding=3>';
-	$retval .= '<tr><td colspan="2" align="left"><input type="submit" value=save name=mode> ';
-	$retval .= '<input type="submit" value=cancel name=mode> ';
+
+    $retval = '';
+
+    $plg_templates = new Template($_CONF['path_layout'] . 'admin/plugins');
+    $plg_templates->set_file('editor', 'editor.thtml');
+    $plg_templates->set_var('site_url', $_CONF['site_url']);
+    $plg_templates->set_var('start_block_editor', COM_startBlock($LANG32[13]));
+    $plg_templates->set_var('lang_save', $LANG32[23]);
+    $plg_templates->set_var('lang_cancel', $LANG32[24]);
+    $plg_templates->set_var('lang_delete', $LANG32[25]);
+    $plg_templates->set_var('pi_name', $pi_name);
+    $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
+    $plg_templates->set_var('pi_version', $A['pi_version']);
+    $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
 	if (!empty($pi_name)) {
-		$retval .= '<input type="submit" value=delete name=mode> ';
+		$plg_templates->set_var('delete_option', '<input type="submit" value="' . $LANG32[25] . '" name="mode">');
 	}
-	$retval .= "<tr></td>";
-	$retval .= "<tr><td align=right><b>Plug-in Name:</b></td><td>{$A["pi_name"]}";
-	$retval .= "<input type=hidden name=pi_name value={$A["pi_name"]}>";
-	$retval .= "<input type=hidden name=confirmed value=$confirmed></td></tr>";
-	$retval .= "<tr><td align=right><b>Plug-in Homepage:</b></td><td><a href={$A["pi_homepage"]}>{$A["pi_homepage"]}</a>";
-	$retval .= "<input type=hidden name=pi_homepage value={$A["pi_homepage"]}></td></tr>";
-	$retval .= "<tr><td align=right><b>Plug-in Version:</b></td><td>{$A["pi_version"]}";
-	$retval .= "<input type=hidden name=pi_version value={$A["pi_version"]}></td></tr>";
-	$retval .= "<tr><td align=right><b>Geeklog Version:</b></td><td>{$A["pi_gl_version"]}";
-	$retval .= "<input type=hidden name=pi_gl_version value={$A["pi_gl_version"]}></td></tr>";
-	$retval .= "<tr><td align=right><b>Enabled:</b></td><td><input type=checkbox name=enabled";
+    $plg_templates->set_var('confirmed', $confirmed);
+    $plg_templates->set_var('lang_pluginname', $LANG32[26]);
+    $plg_templates->set_var('lang_pluginhomepage', $LANG32[27]);
+    $plg_templates->set_var('pi_homepage', $A['pi_homepage']);
+    $plg_templates->set_var('lang_pluginversion', $LANG32[28]);
+    $plg_templates->set_var('pi_version', $A['pi_version']);
+    $plg_templates->set_var('lang_geeklogversion', $LANG32[29]);
+    $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
 	if ($A['pi_enabled'] == 1) {
-		$retval .= " checked";
-	}
-	$retval .= "></table>";
-	$retval .= "</form>";
-	$retval .= COM_endBlock();
+        $plg_templates->set_var('enabled_checked', 'checked="checked"');
+	} else {
+        $plg_templates->set_var('enabled_checked', '');
+    }
+    $plg_templates->set_var('end_block', COM_endBlock());
+
+    $retval .= $plg_templates->parse('output', 'editor');
+
     return $retval;
 }
 
@@ -249,7 +265,8 @@ function installplugin() {
 			}
             $retval .= COM_siteFooter();
 
-			return $retval;
+			echo $retval;
+            exit;
 		}
 
 		// See if we need to upgrade
@@ -271,7 +288,8 @@ function installplugin() {
 				}
                 $retval .= COM_siteFooter();
 
-				return $retval;
+				echo $retval;
+                exit;
 			}
 		} 
 
@@ -284,63 +302,40 @@ function installplugin() {
 		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $_CONF['path_html'] . $plugin_name . '/')) {
 			// error doing the copy
 			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $_CONF['path_html'/g] . $plugin_name . '/');
-			return $retval;
+			echo $retval;
+            exit;
 		}
 
 		// Move the admin pages to the plugin directory in admin tree
 		if (!rename($_CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/')) {
 			// Error doing the copy
 			$retval .= COM_errorLog('Unable to copy ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $_CONF['path_html'] . 'admin/plugins/' . $plugin_name . '/');
-			return $retval;
+			echo $retval;
+            exit;
 		}
 
 		// Almost home free, load table structures and import the data
+       
+        // first include needed function file
+        include_once($_CONF['path'] . 'plugins/' . $plugin_name . '/functions.inc');
+
 		if ($isupgrade) {
 			// do upgrade stuff
-			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/updates/update_' . $A["pi_version"] . '.sql')) {	
-			    // great, found and upgrade script for this plugin, run it  
-			    exec('mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/updates/update_' . $plugin_version . '.sql');
-			    COM_errorLog("just ran update sql",1);
-			}
+            PLG_upgrade($plugin_name);
 		} else { 
-			// fresh install
-			// load table structures, if any
-			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql')) {
-				// found table.sql, run it
-				if (strlen($_CONF['db_pass']) == 0) {
-					$command = 'mysql -u' . $_CONF['db_user'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
-				} else {
-					$command = 'mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/table.sql';
-				}
-				COM_errorLog('command = ' . $command,1);
-				exec($command);
-			    COM_errorLog("just ran table.sql",1);
-			} else {
-				$retval .= COM_errorLog("table.sql for $plugin_name plugin doesn't exist");
-			}
+            if (!PLG_install($plugin_name)) {
+                // Problem occurred when the plugin tried to install data structures and data
+                echo COM_errorLog('Error creating data structures and inserting data for plugin' . $plugin_name,2);
+                exit;
+            } 
 
-			// Load data
-			if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql')) {
-				// found data.sql, import it
-				if (strlen($_CONF['db_pass']) == 0) {
-					$command = 'mysql -u' . $_CONF['db_user'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
-				} else {
-					$command = 'mysql -u' . $_CONF['db_user'] . ' -p'. $_CONF['db_pass'] . ' ' . $_CONF['db_name'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/data.sql';
-				}
-				COM_errorLog('command = ' . $command,1);
-				exec($command);
-			    COM_errorLog("just ran data.sql",1);
-			
-			} else {
-				COM_errorLog("data.sql for $plugin_name plugin doesn't exist",1);
-			}
 			// Now remove the tarball
-			$command = $_CONF["rmcommand"] . $_CONF["path"] . "plugins/" . $filename;
+			$command = $_CONF['rmcommand'] . $_CONF['path'] . 'plugins/' . $filename;
 			COM_errorLog('command = ' . $command,1);
 			exec($command);
 
 			// If we got here then we are done, refresh the plugin page
-			COM_refresh($_CONF['sit_url'] . '/admin/plugins.php');
+			echo COM_refresh($_CONF['sit_url'] . '/admin/plugins.php');
 		}
     } else {
         $errors = $upload->getUploadErrors();
@@ -364,6 +359,8 @@ function removeplugin($plugin_name)
 {
 	global $_CONF, $_TABLES;
 
+    COM_errorLog("*** inside removeplugins ***",1);
+
     $retval = '';
 
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_name = '$plugin_name'");
@@ -382,21 +379,15 @@ function removeplugin($plugin_name)
         return $retval;
 	}
 
-	// First undo any schema changes
-	if (file_exists($_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql')) {
-        	// found undo.sql, execute it
-                if (strlen($_CONF['dbpass']) == 0) {
-                	$command = 'mysql -u' . $_CONF['dbuser'] . ' ' . $_CONF['dbname'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
-                } else {
-                        $command = 'mysql -u' . $_CONF['dbuser'] . ' -p'. $_CONF['dbpass'] . ' ' . $_CONF['dbname'] . ' < ' . $_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql';
-                }
-                COM_errorLog('command = ' . $command,1);
-                exec($command);
-                COM_errorLog("just ran undo.sql",1);
-	} else {
-		// undo.sql not found...log this (note, may not necessary mean an error
-		COM_errorLog($_CONF['path'] . 'plugins/' . $plugin_name . '/undo.sql not found!',1);
-	}
+    // Now let the plug-in uninstall and database structures, and data if needed
+    COM_errorLog('About to call PLG_uninstall function for ' . $plugin_name,1);
+    if (!PLG_uninstall($plugin_name)) { 
+        // uninstall of db-structures failed...log it and bail 
+        COM_errorLog('Unable to uninstall data and data structures for plugin ' . $plugin_name, 2);
+        exit;
+    } else {
+        COM_errorLog('successfully uninstalled data and data structures for plugin ' . $plugin_name, 1);
+    }
 
 	// Now remove any file associated with the plugin	
 	// remove the /path/to/geeklog/plugins/<plugin_name> directory
@@ -414,27 +405,29 @@ function removeplugin($plugin_name)
 	COM_errorLog('executing the following: ' . $command,1);
 	exec($command);
 
+    COM_errorLog('*** Leaving removeplugin ***');
+
 	// sweet, uninstall complete
-	return COM_refresh($_CONF['site_url'] . '/index.php?msg=29');			
+	echo COM_refresh($_CONF['site_url'] . '/index.php?msg=45');			
 }
 
 ###############################################################################
 # MAIN
 switch ($mode) {
-	case "delete":
+	case $LANG32[25]: // Delete
 		if ($confirmed == 1) {
 			removeplugin($pi_name);
 		} else {
-			$display .= COM_siteHeader("menu");
-			$display .= COM_startBlock($LANG32[13]);
-			$display .= $LANG32[12];
+			$display .= COM_siteHeader('menu');
+			$display .= COM_startBlock($LANG32[30]);
+			$display .= $LANG32[31];
 			$display .= COM_endBlock();
 			$display .= plugineditor($pi_name,1);
 			$display .= COM_siteFooter();
 		}	
 		break;
-	case "edit":
-		$display .= COM_siteHeader("menu");
+	case 'edit':
+		$display .= COM_siteHeader('menu');
 		if (empty($pi_name)) {
 			$display .= installpluginform();
 		} else {
@@ -442,15 +435,15 @@ switch ($mode) {
 		}
 		$display .= COM_siteFooter();
 		break;
-	case "save":
+	case $LANG32[23]: // Save
 		$display .= saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepage);
 		break;
-  	case "install":
+  	case 'install':
 		$display .= installplugin($plugin_file);
 		break;
-	case "cancel":
+	case $LANG32[24]:
 	default:
-		$display .= COM_siteHeader("menu");
+		$display .= COM_siteHeader('menu');
 		$display .= COM_showMessage($msg);
 		$display .= listplugins($page);
 		$display .= COM_siteFooter();

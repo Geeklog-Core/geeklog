@@ -97,7 +97,7 @@ function submissionform($type='story')
                 break;
             default:
                 if ((strlen($type) > 0) && ($type <> 'story')) {
-                    $retval .= SubmitPlugin($type);
+                    $retval .= PLG_showSubmitForm($type);
                     break;
                 } 
                 $retval .= submitstory();
@@ -302,7 +302,7 @@ function savesubmission($type,$A)
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
             // see if this is a submission that needs to be handled by a plugin
-            if (SavePluginSubmission($type, $A)) {
+            if (PLG_saveSubmission($type, $A)) {
                 // great, it worked, lets get out of here
     		DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
                 break;

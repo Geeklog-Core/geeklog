@@ -31,10 +31,11 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.11 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: moderation.php,v 1.12 2001/11/16 18:39:11 tony_bibbs Exp $
 
-include('../lib-common.php');
-include('auth.inc.php');
+include_once('../lib-common.php');
+include_once('auth.inc.php');
+include_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -59,61 +60,61 @@ function commandcontrol()
 
     if (SEC_hasRights('story.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/story.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/story.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/story.gif');
         $admin_templates->set_var('option_label', $LANG01[11]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('block.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/block.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/block.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/block.gif');
         $admin_templates->set_var('option_label',$LANG01[12]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('topic.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/topic.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/topic.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/topic.gif');
         $admin_templates->set_var('option_label', $LANG01[13]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('link.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/link.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/link.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/link.gif');
         $admin_templates->set_var('option_label', $LANG01[14]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('event.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/event.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/event.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/event.gif');
         $admin_templates->set_var('option_label', $LANG01[15]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('poll.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/poll.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/poll.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/poll.gif');
         $admin_templates->set_var('option_label', $LANG01[16]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('user.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/user.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/user.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/user.gif');
         $admin_templates->set_var('option_label', $LANG01[17]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('group.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/group.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/group.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/group.gif');
         $admin_templates->set_var('option_label', $LANG01[96]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('plugin.edit')) {
         $admin_templates->set_var('page_url', $_CONF['site_url'] . '/admin/plugins.php');
-        $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/plugins.gif');
+        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/plugins.gif');
         $admin_templates->set_var('option_label', $LANG01[98]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
 
     $admin_templates->set_var('page_url', $_CONF['site_url'] . '/users.php?mode=logout');
-    $admin_templates->set_var('page_image', $_CONF['site_url'] . '/images/icons/logout.gif');
+    $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/logout.gif');
     $admin_templates->set_var('option_label',$LANG01[35]);
     $admin_templates->parse('cc_main_options','ccitem',true);
 
@@ -134,7 +135,7 @@ function commandcontrol()
         $retval .= itemlist('event');
     }
 
-    $retval .= ShowPluginModerationLists();
+    $retval .= PLG_showModerationList();
 	
     return $retval;
 }
@@ -170,13 +171,17 @@ function itemlist($type)
             $function = 'plugin_itemlist_' . $type;
             if (function_exists($function)) {
                 // Great, we found the plugin, now call it's itemlist method
-                list($sql, $H) = $function();
+                $plugin = new Plugin();
+                $plugin = $function();
+                if (!empty($plugin->submissionhelpfile)) {
+                    $retval .= COM_startBlock($plugin->submissionlabel, $plugin->submissionhelpfile);
+                } else {
+                    $retval .= COM_startBlock($plugin->submissionlabel);
+                }
+                $sql = $plugin->getsubmissionssql;
+                $H = $plugin->submissionheading;
                 $isplugin = true;
                 break;
-            } else {
-                // Function not found, error out
-                $retval .= COM_errorLog("Could not find plugin function: " . $function);
-                return $retval;
             }
         } else {
             $retval .= COM_startBlock($LANG29[35],'ccstorysubmission.html');
@@ -186,11 +191,13 @@ function itemlist($type)
         }
     }
 
+    // run SQL but this time ignore any errors
     $result = DB_query($sql,1);
 
     if (DB_error()) {
         // was more than likely a plugin that doesn't need moderation
-        $nrows = -1;
+        //$nrows = -1;
+        return;
     } else {
         $nrows = DB_numRows($result);
     }
@@ -280,7 +287,7 @@ function moderation($mid,$action,$type,$count)
             $retval .= COM_errorLog("Unable to find type of $type in moderation() in moderation.php");
             return $retval;
         }
-        list($id, $table, $fields) = GetPluginModerationValues($type);
+        list($id, $table, $fields, $submissiontable) = PLG_getModerationValues($type);
 	}
 
     for ($i = 1; $i <= $count; $i++) {
@@ -288,7 +295,7 @@ function moderation($mid,$action,$type,$count)
         case 'delete':
             if ((strlen($type) > 0) && ($type <> 'story')) {
                 //There may be some plugin specific processing that needs to happen first.
-                $retval .= DoPluginModerationDelete($type, $mid[$i]);
+                $retval .= PLG_deleteSubmission($type, $mid[$i]);
             }
             if (empty($mid[$i])) {
                 $retval .= COM_errorLog("moderation.php just tried deleting everyting in table {$type}submission because it got an empty id.  Please report this immediately to your site administrator");
@@ -299,9 +306,11 @@ function moderation($mid,$action,$type,$count)
         case 'approve':
             if ((strlen($type) > 0) && ($type <> 'story')) {
                 //There may be some plugin specific processing that needs to happen first.
-                $retval .= DoPluginModerationApprove($type,$mid[$i]);
+                $retval .= PLG_approveSubmission($type,$mid[$i]);
+                DB_copy("$table","$fields","$fields",$submissiontable,"$id",$mid[$i]);
+            } else {
+                DB_copy("$table","$fields","$fields",$_TABLES["{$type}submission"],"$id",$mid[$i]);
             }
-            DB_copy("$table","$fields","$fields",$_TABLES["{$type}submission"],"$id",$mid[$i]);
             break;
         }
     }

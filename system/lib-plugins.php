@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.2 2001/11/07 23:34:16 tony_bibbs Exp $
+// $Id: lib-plugins.php,v 1.3 2001/11/16 18:39:12 tony_bibbs Exp $
 
 include_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -100,6 +100,47 @@ function PLG_callFunctionForOnePlugin($function, $args='')
 }
 
 /**
+* Installs a plugin
+*
+* @type         string          Plugin name
+*
+*/
+function PLG_install($type)
+{
+    return PLG_callFunctionForOnePlugin('plugin_install_' . $type);
+}
+
+/**
+* Upgrades a plugin
+*
+* @type         string          Plugin name
+*
+*/
+function PLG_upgrade($type)
+{
+    return PLG_callFunctionForOnePlugin('plugin_upgrade_' . $type);
+}
+
+/**
+* Uninstalls a plugin
+*
+* @type         string          Plugin name
+*
+*/
+function PLG_uninstall($type)
+{
+    if (empty($type)) return false;
+
+    $retval = PLG_callFunctionForOnePlugin('plugin_uninstall_' . $type);
+
+    if (empty($retval)) {
+        return false;
+    } else { 
+        return $retval;
+    }
+}
+
+/**
 * Checks to see if user is a plugin moderator
 *
 * Geeklog is asking if the user is a moderator for any installed plugins.
@@ -113,10 +154,28 @@ function PLG_isModerator()
 /**
 * Gives plugins a chance to print their menu items in header
 *
+* Note that this is fairly unflexible.  This simply loops through the plugins in the
+* database in the order they were installed and get their menu items.  If you want 
+* more flexibility in your menu then you should hard code the menu items in header.thtml for
+* the theme(s) you are using.
+*
 */
 function PLG_getMenuItems() 
 {
-    return PLG_callFunctionForAllPlugins('plugin_getmenuitems_');
+    global $_TABLES;
+
+    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    $menu = array();
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_getmenuitems_' . $A['pi_name'];
+        if (function_exists($function)) {
+            $menuitems = $function();
+            $menu = array_merge($menu,$menuitems);
+        }
+    }
+    return $menu;
 }
 
 /**
@@ -176,7 +235,23 @@ function PLG_getPluginStats($showsitestats)
 */
 function PLG_getSearchTypes() 
 {
-    return PLG_callFunctionForAllPlugins('plugin_getsearchtypes_');
+    global $_TABLES;
+
+    $types = array();
+    $cur_types = array();
+ 
+    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_searchtypes_' . $A['pi_name'];
+        if (function_exists($function)) {
+            //great, stats function is there, call it
+            $cur_types = $function();
+            $types = array_merge($types, $cur_types);
+        } // no else because this is not a required API function
+    }
+    return $types;
 }
 
 /**
@@ -191,9 +266,14 @@ function PLG_getSearchTypes()
 * @author    - only return results for this person
 *
 */
-function PLG_doSearch($query, $datestart, $dateend, $topic, $author) 
+function PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author) 
 {
-    global $_TABLES;
+    global $_TABLES, $_CONF;
+
+    $search_results = array();
+
+    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
+    $cur_plugin = new Plugin();
 
 	$result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
 	$nrows = DB_numRows($result);
@@ -203,12 +283,14 @@ function PLG_doSearch($query, $datestart, $dateend, $topic, $author)
 		$A = DB_fetchArray($result);
 		$function = 'plugin_dopluginsearch_' . $A['pi_name'];
 		if (function_exists($function)) {
-			list($nrows,$total,$result_plugins[$i]) = $function($query, $datestart, $dateend, $topic, $author);
-			$nrows_plugins = $nrows_plugins + $nrows;
-			$total_plugins = $total_plugins + $total;
+            $cur_plugin->reset();
+			$cur_plugin = $function($query, $datestart, $dateend, $topic, $type, $author);
+			$nrows_plugins = $nrows_plugins + $cur_plugin->num_searchresults;
+			$total_plugins = $total_plugins + $cur_plugin->num_itemssearched;
+            $search_results[$i] = $cur_plugin;
 		} // no else because implementation of this API function not required
 	}
-	return array($nrows_plugins, $total_plugins, $result_plugins);
+	return array($nrows_plugins, $total_plugins, $search_results);
 }
 
 /**
@@ -242,7 +324,24 @@ function PLG_getSubmissionCount()
 */
 function PLG_getUserOptions() 
 {
-    return PLG_callFunctionForAllPlugins('plugin_showuseroption_');
+    global $_TABLES;
+
+    $result = DB_query("SELECT * FROM {$_TABLES['plugins']} WHERE pi_enabled = 1");
+    $nrows = DB_numRows($result);
+    $plugin = new Plugin();
+    $counter = 0;
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $function = 'plugin_getuseroption_' . $A['pi_name'];
+        if (function_exists($function)) {
+            // I know this uses the adminlabel, adminurl but who cares?
+            list($plugin->adminlabel, $plugin->adminurl, $plugin->numsubmissions) = $function();
+            $counter++;
+            $plgresults[$counter] = $plugin;
+            $plugin->reset();
+        }
+    }
+    return $plgresults;
 }
 
 /** 
@@ -271,7 +370,6 @@ function PLG_getAdminOptions()
         }
     }
     return $plgresults;
-	//return PLG_callFunctionForAllPlugins('plugin_getadminoption_');
 }
 
 /**
@@ -366,7 +464,7 @@ function PLG_showModerationList()
 * @type         string      Plugin to call function for
 *
 */
-function GetPluginModerationValues($type) 
+function PLG_getModerationValues($type) 
 {
 	return PLG_callFunctionForOnePlugin('plugin_moderationvalues_' . $type);
 }

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.2 2001/10/29 17:35:50 tony_bibbs Exp $
+// $Id: mysql.class.php,v 1.3 2001/11/16 18:39:12 tony_bibbs Exp $
 
 class database {
 
@@ -179,7 +179,11 @@ class database {
         $db = $this->_connect();
 
         // Run query
-        $result = @mysql_query($sql,$db) or die($this->dbError($sql));
+        if ($ignore_errors == 1) {
+            $result = @mysql_query($sql,$db);
+        } else {
+            $result = @mysql_query($sql,$db) or die($this->dbError($sql));
+        }
 
         // If OK, return otherwise echo error
         if (mysql_errno() == 0 && !empty($result)) {
@@ -569,9 +573,13 @@ class database {
     *
     * @recordset    object  Recorset to operate on
     */
-    function dbInsertId($recordset)
+    function dbInsertId($recordset='')
     {
-        return @mysql_insert_id($recordset);
+        if (empty($recordset)) {
+            return @mysql_insert_id();
+        } else {
+            return @mysql_insert_id($recordset);
+        }
     }
 
     /**

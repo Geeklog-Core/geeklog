@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugin.class.php,v 1.1 2001/11/07 23:34:58 tony_bibbs Exp $
+// $Id: plugin.class.php,v 1.2 2001/11/16 18:39:12 tony_bibbs Exp $
 
 class Plugin {
 
@@ -38,7 +38,23 @@ class Plugin {
     // PUBLIC PROPERTIES
     var $adminlabel;
     var $adminurl;
+    var $plugin_name;
+
+    // Search properties
+    var $searchlabel;
+    var $num_searchresults;
+    var $searchheading = array();
+    var $searchresults = array();
+    var $num_itemssearched; 
+    var $num_searchheadings;
+
+    // Submission properties
     var $numsubmissions;
+    var $submissionlabel;
+    var $submissionhelpfile;
+    var $getsumbissionssql;
+    var $submissionheading = array();
+    
 
     // PUBLIC METHODS
 
@@ -62,8 +78,48 @@ class Plugin {
         $adminlabel = '';
         $aadminurl = '';
         $numsubmissions = '';
+        $plugin_name = '';
+        $searchlabel = '';
+        $searchheading = array();
+        $num_searchresults = 0;
+        $searchresults = array();
+        $num_itemssearched = 0;
+        $num_searchheadings = 0; 
+        $submissionlabel = '';
+        $submissionhelpfile = '';
+        $getsumbissionssql = '';
+        $submissionheading = array();
+    }
+   
+    /**
+    * Adds a header that will be used in outputing search results for this
+    * plugin
+    *
+    * @heading      string      Heading label
+    *
+    */ 
+    function addSearchHeading($heading)
+    {
+        $this->num_searchheadings = $this->num_searchheadings + 1;
+        $this->searchheading[$this->num_searchheadings] = $heading;
     }
 
+    /**
+    * Adds a search result to the result array.
+    *
+    * @result_string        string      Holds coma delimited set of data
+    *
+    */
+    function addSearchResult($result_string)
+    {
+        $this->searchresults[$this->num_searchresults] = $result_string;
+    }     
+
+    function addSubmissionHeading($heading)
+    {
+        $this->num_submissions = $this->num_submissions + 1;
+        $this->submissionheading[$this->num_submissions] = $heading;
+    }
 }
 
 ?>

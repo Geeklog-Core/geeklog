@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.php,v 1.8 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: search.php,v 1.9 2001/11/16 18:39:11 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -60,7 +60,14 @@ function searchform()
     $searchform->set_var('lang_type', $LANG09[5]);
     $searchform->set_var('lang_stories', $LANG09[6]);
     $searchform->set_var('lang_comments', $LANG09[7]);
-    $searchform->set_var('plugin_types', GetPluginSearchTypes());
+    $plugintypes = PLG_getSearchTypes();
+    $pluginoptions = '';
+    // Generally I don't like to hardcode HTML but this seems easiest
+    for ($i = 1; $i <= count($plugintypes); $i++) {
+        $pluginoptions .= '<option value="' . key($plugintypes) . '">' . current($plugintypes) . '</option>' . LB; 
+    }
+    $searchform->set_var('plugin_types', $pluginoptions);
+
 	if ($_CONF['contributedbyline'] == 1) {
         $searchform->set_var('lang_authors', $LANG09[8]);
         $searchform->set_var('author_option_list', COM_optionList($_TABLES['users'],'uid,username'));
@@ -79,13 +86,15 @@ function searchform()
 
 ###############################################################################
 # The Search!
-function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
-	global $LANG09, $_CONF, $_TABLES;
+function searchstories($query,$topic,$datestart,$dateend, $author,$type) {
+	
+    global $LANG09, $_CONF, $_TABLES;
+
+    include_once($_CONF['path_system'] . 'classes/plugin.class.php');
 	
     $searchtimer = new timerobject();
     $searchtimer->setPercision(4);
     $searchtimer->startTimer();
-	
 	if ($type == 'all' OR $type == 'stories') {
 		$sql = "SELECT sid,title,hits,uid,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_CONF['db_prefix']}stories WHERE (draft_flag = 0) AND ";
 		$sql .= "((introtext like '%$query%' OR introtext like '$query%' OR introtext like '%$query') ";
@@ -127,14 +136,8 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 			$sql .= "AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate') ";
 		}
 		
-		/*
-		if (!empty($topic)) {
-			$sql .= "AND (tid = '$topic') ";
-		}
-		*/
-		
 		if (!empty($author)) {
-			$sql .= "AND (uid = '$author}') ";
+			$sql .= "AND (sp_uid = '$author}') ";
 		}
 		$sql .= "ORDER BY date desc";
 		$result_comments = DB_query($sql);
@@ -144,7 +147,9 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 	}
 
     // Have plugins do their searches
-    list($nrows_plugins, $total_plugins, $result_plugins) = DoPluginSearches($query, $datestart, $dateend, $topic, $author);
+    list($nrows_plugins, $total_plugins, $result_plugins) = PLG_doSearch($query, $datestart, $dateend, $topic, $type, $author);
+
+    // OK, we now have the header items and results needed to 
     $total = $total_stories + $total_comments + $total_plugins;
     $nrows = $nrows_stories + $nrows_comments + $nrows_plugins;
 
@@ -154,11 +159,14 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
 	$cur_plugin_recordset = 1;
 	$cur_plugin_index = 1;
 	if ($nrows > 0) {
-		$retval .= COM_startBlock("$for " . $LANG09[11] . ": $nrows " . $LANG09[12]);
-        $searchresults = new Template($_CONF['path_layout'] . 'search/');
+        $searchresults = new Template($_CONF['path_layout'] . 'search');
         $searchresults->set_file(array('searchresults'=>'searchresults.thtml',
                                         'searchheading'=>'searchresults_heading.thtml',
-                                        'searchrows'=>'searchresults_rows.thtml'));
+                                        'searchrows'=>'searchresults_rows.thtml',
+                                        'searchblock' => 'searchblock.thtml',
+                                        'headingcolumn'=>'headingcolumn.thtml',
+                                        'resultrow'=>'resultrow.thtml',
+                                        'resultcolumn'=>'resultcolumn.thtml'));
         $searchresults->set_var('lang_found', $LANG09[24]);
         $searchresults->set_var('num_matches', $nrows);
         $searchresults->set_var('lang_matchesfor', $LANG09[25]);
@@ -168,56 +176,98 @@ function searchstories($query,$topic,$datestart,$dateend,$author,$type) {
         $searchresults->set_var('lang_seconds', $LANG09[27]);
 
         // Print heading for story/comment results
-        $heading = '<td><b>'.$LANG09[16].'</b></td>'.LB 
-            .'<td align="center"><b>'.$LANG09[17].'</b></td>'.LB
-            .'<td align="center"><b>'.$LANG09[18].'</b></td>'.LB
-            .'<td align="center"><b>'.$LANG09[23].'</b></td>'.LB;
-        $searchresults->set_var('heading_columns',$heading); 
-        $searchresults->parse('results', 'searchheading', true);
+        $searchresults->set_var('label', $LANG09[16]);
+        $searchresults->parse('headings','headingcolumn',true);
+        $searchresults->set_var('label', $LANG09[17]);
+        $searchresults->parse('headings','headingcolumn',true);
+        $searchresults->set_var('label', $LANG09[18]);
+        $searchresults->parse('headings','headingcolumn',true);
+        $searchresults->set_var('label', $LANG09[23]);
+        $searchresults->parse('headings','headingcolumn',true);
 
-		for ($i=1; $i <= $nrows; $i++) {
-			if ($A['day'] > $C['day']) {
-                // print row
-                $data_columns = '<td align="left"><a href="article.php?story='.$A['sid'].'">'.stripslashes($A['title']).'</a></td>'.LB
-		            .'<td>'.strftime($_CONF['shortdate'],$A['day']).'</td>'.LB
-		            .'<td>'.DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'").'</td>'.LB
-		            .'<td>'.$A['hits'].'</td>'.LB;
-                $searchresults->set_var('results_columns',$data_columns);
-                $searchresults->parse('results', 'searchrows', true);
+        $searchresults->set_var('start_block_results', COM_startBlock($LANG09[29]));
+        if ($nrows_stories + $nrows_comments > 0) {
+		    for ($i=1; $i <= $nrows; $i++) {
+			    if ($A['day'] > $C['day']) {
+                    // print row
+                    $searchresults->set_var('data', '<a href="article.php?story=' . $A['sid'] . '">' . stripslashes($A['title']) . '</a>');
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $thetime = COM_getUserDateTimeFormat($A['day']);
+                    $searchresults->set_var('data', $thetime[0]);
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->set_var('data', DB_getItem($_TABLES['users'],'username',"uid = '{$A['uid']}'"));
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->set_var('data', $A['hits']);
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->parse('results','resultrow',true);
 	
-				// $retval .= searchresults($A);
-				$A = DB_fetchArray($result_stories);
-			} else if (strlen($C['day']) > 0) {
-                // print row
-                $data_columns = '<td align="left"><a href="article.php?story='.$C['sid'].'">'.stripslashes($C['title']).'</a></td>'.LB
-		            .'<td>'.strftime($_CONF['shortdate'],$C['day']).'</td>'.LB
-		            .'<td>'.DB_getItem($_TABLES['users'],'username',"uid = '{$C['uid']}'").'</td>'.LB
-		            .'<td>'.$C['hits'].'</td>'.LB;
-                $searchresults->set_var('results_columns',$data_columns);
-                $searchresults->parse('results', 'results_columns', true);
-	
-				//$retval .= searchresults($C);
-				$C = DB_fetchArray($result_comments);
-			} else {
-				if ($cur_plugin_index <= $nrows_plugins) {
-					$searchresults->parse('results',$result_plugins[$cur_plugin_recordset][$cur_plugin_index],true);
-					$cur_plugin_index++;
-					if ($cur_plugin_index > count($result_plugins[$cur_plugin_recordset])) {
-						$cur_plugin_index = 1;
-						$cur_plugin_recordset++;
-					}
-				}
-			}
-		}
-        $searchresults->parse('output','searchresults');
-        $retval .= $searchresults->finish($searchresults->get_var('output'));
-        $retval .= COM_endBlock();	
-			
+				    $A = DB_fetchArray($result_stories);
+			    } else if (strlen($C['day']) > 0) {
+                    // print row
+                    $searchresults->set_var('data', '<a href="article.php?story=' . $C['sid'] . '">' . stripslashes($C['title']) . '</a>');
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $thetime = COM_getUserDateTimeFormat($C['day']);
+                    $searchresults->set_var('data', $thetime[0]);
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->set_var('data', DB_getItem($_TABLES['users'],'username',"uid = '{$C['uid']}'"));
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->set_var('data', $C['hits']);
+                    $searchresults->parse('data_cols','resultcolumn',true);
+
+                    $searchresults->parse('results','resultrow',true);
+
+				    $C = DB_fetchArray($result_comments);
+			    } 
+		    }
+        } else {
+            $searchresults->set_var('results','<tr><td colspan="4" align="center"><br>' . $LANG09[28] . '</td></tr>');
+        }
+
+        $searchresults->set_var('end_block', COM_endBlock());
+        $searchresults->parse('search_blocks','searchblock',true);
+
+        reset($result_plugins);
+        $cur_plugin = new Plugin();
+        for ($i = 1; $i <= count($result_plugins); $i++) {
+            // Clear out data columns from previous result block
+            $searchresults->set_var('data_cols','');
+            $cur_plugin = current($result_plugins);
+            $searchresults->set_var('start_block_results', COM_startBlock($cur_plugin->searchlabel));
+            $searchresults->set_var('headings','');
+            for ($j = 1; $j <= $cur_plugin->num_searchheadings; $j++) {
+                $searchresults->set_var('label', $cur_plugin->searchheading[$j]);
+                $searchresults->parse('headings','headingcolumn',true);
+            }
+            $searchresults->set_var('results','');
+            for ($j = 1; $j <= $cur_plugin->num_searchresults; $j++) {
+                $columns = $cur_plugin->searchresults[$j];
+                for ($x = 1; $x <= count($columns); $x++) {
+                    COM_errorLog('column val = ' . current($columns),1);
+                    $searchresults->set_var('data', current($columns));
+                    $searchresults->parse('data_cols','resultcolumn',true);
+                    next($columns);
+                }
+                $searchresults->parse('results','resultrow',true);
+            }
+            $searchresults->set_var('end_block', COM_endBlock());
+            $searchresults->parse('search_blocks','searchblock',true);
+            next($result_plugins);
+        }
+
+        $retval .= $searchresults->parse('output','searchresults');
 	} else {
 		$retval .= COM_startBlock($LANG09[13])
                     . $LANG09[14].' <b>'.$query.'</b> '.$LANG09[15]
 			        . COM_endBlock();
 	}
+			
 	return $retval;
 }
 

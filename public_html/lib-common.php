@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.5 2001/11/07 23:34:15 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.6 2001/11/16 18:39:11 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -61,6 +61,9 @@ include_once($_CONF['path_system'] . 'lib-sessions.php');
 
 
 // Set theme
+// Need to modify this code to check if theme was cached in user cookie.  That way
+// if user logged in and set theme and then logged out we would still know which
+// theme to show them.
 if (!empty($_USER['theme'])) {
     $_CONF['theme'] = $_USER['theme'];
     $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
@@ -157,14 +160,14 @@ function COM_article($A,$index='')
             $recent_post_anchortag = ' <a href="'.$_CONF['site_url'].'/comment.php?sid='.$A['sid'].'&pid=0&type=article">'.$LANG01[60].'</a>';
         }
 	$article->set_var('email_icon', '<a href="' . $_CONF['site_url'] . '/profiles.php?sid=' . $A['sid'] . '&what=emailstory">' 
-            . '<img src="' . $_CONF['site_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>');
-	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&mode=print"><img border="0" src="' . $_CONF['site_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
+            . '<img src="' . $_CONF['layout_url'] . '/images/mail.gif" alt="' . $LANG01[64] . '" border="0"></a>');
+	$article->set_var('print_icon', '<a href="' . $_CONF['site_url'] . '/article.php?story=' . $A['sid'] . '&mode=print"><img border="0" src="' . $_CONF['layout_url'] . '/images/print.gif" alt="' . $LANG01[65] . '"></a>');
     }
 
     $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
 
     if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) == 3 AND SEC_hasrights('story.edit')) {
-	$article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>');
+	    $article->set_var('edit_link', '<a href="'.$_CONF['site_url'].'/admin/story.php?mode=edit&sid='.$A['sid'].'">'.$LANG01[4].'</a>');
     }
 
     $article->set_var('recent_post_anchortag', $recent_post_anchortag);
@@ -274,7 +277,7 @@ function COM_siteHeader($what = 'menu')
     // If we reach here then either we have the default theme OR
     // the current theme only needs the default variable substitutions 
     $header = new Template($_CONF['path_layout']);
-    $header->set_file(array('header'=>'header.thtml','menuitem'=>'menuitem.thtml'));
+    $header->set_file(array('header'=>'header.thtml','menuitem'=>'menuitem.thtml','leftblocks'=>'leftblocks.thtml'));
     $header->set_var('page_title', $_CONF['site_name'] . ' - ' . $_CONF['site_slogan']);
     $header->set_var('background_image', $_CONF['layout_url'] . '/images/bg.gif'); 
     $header->set_var('site_url', $_CONF['site_url']);
@@ -315,12 +318,16 @@ function COM_siteHeader($what = 'menu')
 
     // Get plugin menu options
     $plugin_menu = PLG_getMenuItems();
-    
+
+    COM_errorLog('num plugin menu items in header = ' . count($plugin_menu),1);
+
     for ($i = 1; $i <= count($plugin_menu); $i++) {
-        $header->set_var('menuitem_url', key($plugin_menu));
-        $header->set_var('menuitem_text', current($plugin_menu));
-        $header->parse('menu_elements', 'menuitem', true);
+        $header->set_var('menuitem_url', current($plugin_menu));
+        $header->set_var('menuitem_text', key($plugin_menu));
+        $header->parse('plg_menu_elements', 'menuitem', true);
+        next($plugin_menu);
     }
+    if (count($plugin_menu) == 0) $header->set_var('plg_menu_elements', '&nbsp;');
 
     // Search link 
     $header->set_var('menuitem_url', $_CONF['site_url'] . '/search.php');
@@ -335,12 +342,14 @@ function COM_siteHeader($what = 'menu')
     if ($what <> 'none') { 
         // Now show any blocks
         $header->set_var('geeklog_blocks',COM_showBlocks('left', $topic));
+        $header->parse('left_blocks','leftblocks',true);
     } else {
-        $header->set_var('geeklog_blocks', '');
+        //$header->set_var('geeklog_blocks', '');
+        $header->set_var('left_blocks', '');
     }
 
     // The following line allows users to embed PHP in their templates.  This
-    // is almost a contradition to the reasoning for using templates but this may
+    // is almost a contradition to the reasons for using templates but this may
     // prove useful at times...don't use PHP in templates if you can live without it
     $tmp = $header->parse('index_header','header');
     return eval("?>".$tmp); 
@@ -405,7 +414,7 @@ function COM_startBlock($title='', $helpfile='', $template='blockheader.thtml')
     $block->set_var('block_title',$title);
     if (!empty($helpfile)) {
         $help = '<a class="blocktitle" href="' . $_CONF['site_url'] . '/help/' . $helpfile 
-            . '" target="_blank"><img src="' . $_CONF['site_url'] 
+            . '" target="_blank"><img src="' . $_CONF['layout_url'] 
             . '/images/button_help.gif" border="0" height="15" width="15" alt="?"></a>';
         $block->set_var('block_help',$help); 
     }
@@ -854,7 +863,7 @@ function COM_pollResults($qid,$scale=400,$order='',$mode='')
 					$retval .= sprintf("%.2f", $percent * 100) . '% </td>' . LB;
 				} else {
 					$width = $percent * $scale;
-					$retval .= '<img src="' . $_CONF['site_url'] . '/images/bar.gif" width="' . $width
+					$retval .= '<img src="' . $_CONF['layout_url'] . '/images/bar.gif" width="' . $width
                         . '" height="10" align="bottom"> '
 						. $A['votes'] . ' ' . sprintf("(%.2f)",$percent * 100) . '%' . '</td>' . LB;
 				}
@@ -960,20 +969,55 @@ function COM_showTopics($topic='')
 function COM_userMenu() 
 {
     global $_USER,$_CONF,$LANG01;
-	
+
     if ($_USER['uid'] > 1) {
+        $adminmenu = new Template($_CONF['path_layout']);
+        $adminmenu->set_file('option', 'useroption.thtml');
+
         $retval .= COM_startBlock($LANG01[47],'',COM_getBlockTemplate('user_block', 'header'));
 			
         if ($_CONF['personalcalendars'] == 1) {
-            $retval .= '<a href="' . $_CONF['site_url'] . '/calendar.php?mode=personal">' . $LANG01[66]
-                . '</a><br>' . LB;
+            $adminmenu->set_var('option_url', $_CONF['site_url'] . '/calendar.php?mode=personal');
+            $adminmenu->set_var('option_label', $LANG01[66]);
+            $adminmenu->set_var('option_count', '');
+            $retval .= $adminmenu->parse('item', 'option');
         }
-        $retval .= PLG_getUserOptions()
-            . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=edit">' . $LANG01[48] . '</a><br>' . LB
-            . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=preferences">' . $LANG01[49] . '</a><br>' . LB
-            . '<a href="' . $_CONF['site_url'] . '/usersettings.php?mode=comments">' .$LANG01[63] . '</a><br>' . LB
-            . '<a href="' . $_CONF['site_url'] . '/users.php?mode=logout">' . $LANG01[19] . '</a>'
-            . COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
+
+        // This function will show the user options for all installed plugins (if any)
+        $plugin_options = PLG_getUserOptions();
+        $nrows = count($plugin_options);
+        for ($i = 1; $i <= $nrows; $i++) {
+            $plg = current($plugin_options);
+            $adminmenu->set_var('option_url', $plg->adminurl);
+            $adminmenu->set_var('option_label', $plg->adminlabel);
+            if (!empty($plg->numsubmissions)) {
+                $adminmenu->set_var('option_count', '(' . $plg->numsubmissions . ')');
+            } else {
+                $adminmenu->set_var('option_count', '');
+            }
+            $retval .= $adminmenu->parse('item', 'option');
+            next ($plugin_options);
+        }
+        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=edit');
+        $adminmenu->set_var('option_label', $LANG01[48]);
+        $adminmenu->set_var('option_count', '');
+        $retval .= $adminmenu->parse('item', 'option');
+
+        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=preferences');
+        $adminmenu->set_var('option_label', $LANG01[49]);
+        $adminmenu->set_var('option_count', '');
+        $retval .= $adminmenu->parse('item', 'option');
+
+        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/usersettings.php?mode=comments');
+        $adminmenu->set_var('option_label', $LANG01[63]);
+        $adminmenu->set_var('option_count', '');
+
+        $adminmenu->set_var('option_url', $_CONF['site_url'] . '/users.php?mode=logout');
+        $adminmenu->set_var('option_label', $LANG01[19]);
+        $adminmenu->set_var('option_count', '');
+        $retval .= $adminmenu->parse('item', 'option');
+
+        $retval .=  COM_endBlock(COM_getBlockTemplate('user_block', 'footer'));
     } else {
         $retval .= COM_startBlock($LANG01[47])
             . '<form action="' . $_CONF['site_url'] . '/users.php" method="post">' . LB
@@ -1091,7 +1135,8 @@ function COM_adminMenu()
             } else {
                 $adminmenu->set_var('option_count', $plg->numsubmissions);
             }
-            $retval .= $adminmenu->parse('item', 'option');
+            $retval .= $adminmenu->parse('item', 'option', true);
+            next($plugin_options);
         }
              
 
@@ -2130,7 +2175,7 @@ function COM_showMessage($msg)
     if ($msg > 0) {
         $timestamp = strftime("%c");
         $retval .= COM_startBlock($MESSAGE[40] . ' - ' . $timestamp)
-            . '<img src="' . $_CONF['site_url'] . '/images/sysmessage.gif" border="0" align="top">'
+            . '<img src="' . $_CONF['layout_url'] . '/images/sysmessage.gif" border="0" align="top">'
             . $MESSAGE[$msg] . '<BR><BR>' . COM_endBlock();
     }
 	

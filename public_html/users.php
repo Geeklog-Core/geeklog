@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.10 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: users.php,v 1.11 2001/11/16 18:39:11 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -132,7 +132,7 @@ function emailpassword($username,$msg=0)
         $passwd = md5($passwd);
         $passwd = substr($passwd,1,8);
         $passwd2 = md5($passwd);
-        DB_change($_TABLES['users'],'passwd',"'$passwd2'",'username',$username);
+        DB_change($_TABLES['users'],'passwd',"$passwd2",'username',$username);
         $A = DB_fetchArray($result);
         $mailtext = "{$LANG04[15]}\n\n";
         $mailtext .= "{$LANG04[2]}: $username\n";

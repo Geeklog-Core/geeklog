@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.10 2001/11/05 21:24:51 tony_bibbs Exp $
+// $Id: user.php,v 1.11 2001/11/16 18:39:11 tony_bibbs Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -154,7 +154,7 @@ function changepw($uid,$passwd)
 
 	if (!empty($passwd) && !empty($uid)) {
 		$passwd = md5($passwd);
-		$result = DB_change($_TABLES['users'],'passwd',"'$passwd'",'uid',$uid,'admin/user.php?mode=none');	
+		$result = DB_change($_TABLES['users'],'passwd',"$passwd",'uid',$uid,'admin/user.php?mode=none');	
 	} else {
 		$retval .= COM_siteHeader('menu');
 		COM_errorLog("CHANGEPW ERROR: There was nothing to do!",3);

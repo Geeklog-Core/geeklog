@@ -188,7 +188,7 @@ function savecomment($uid,$save,$anon,$title,$comment,$sid,$pid,$type,$postmode)
         DB_save($_TABLES['comments'],'sid,uid,comment,date,title,pid',"'$sid',$uid,'$comment',now(),'$title',$pid");
 		
         // See if plugin will handle this
-		HandlePluginComment($type,$sid);
+		PLG_handlePluginComment($type,$sid);
 		
         // If we reach here then no plugin issued a COM_refresh() so continue
 

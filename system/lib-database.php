@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.4 2001/10/29 18:22:59 tony_bibbs Exp $
+// $Id: lib-database.php,v 1.5 2001/11/16 18:39:12 tony_bibbs Exp $
 
 // Database connection parameters
 $_DB_dbms           = 'mysql';
@@ -395,7 +395,7 @@ function DB_fetchArray($recordset)
 *
 * @recordset    object  Recorset to operate on
 */
-function DB_insertId($recordset)
+function DB_insertId($recordset='')
 {
     global $_DB;
 

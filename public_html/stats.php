@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.7 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: stats.php,v 1.8 2001/11/16 18:39:11 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -79,7 +79,7 @@ $stat_templates->parse('output','stats');
 $display .= $stat_templates->finish($stat_templates->get_var('output'));
 
 // Get overall plugin statistics for inclusion
-$display .= ShowPluginStats(1);
+$display .= PLG_getPluginStats(1);
 
 $display .= COM_endBlock();
 
@@ -201,7 +201,7 @@ if ($nrows > 0) {
 $display .= COM_endBlock();
 
 // Now show stats for any plugins that want to be included
-$display .= ShowPluginStats(2);
+$display .= PLG_getPluginStats(2);
 $display .= COM_siteFooter();
 	
 echo $display;
