@@ -31,12 +31,12 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.8 2001/11/13 15:51:43 tony_bibbs Exp $
+// $Id: auth.inc.php,v 1.9 2001/11/19 22:37:49 tony_bibbs Exp $
 
 // MAIN
 
 if (!empty($loginname) && !empty($passwd)) {
-    $mypasswd = getpassword($loginname);
+    $mypasswd = COM_getpassword($loginname);
 } else {
     srand((double)microtime()*1000000);
     $mypasswd = rand();
@@ -45,8 +45,8 @@ if (!empty($loginname) && !empty($passwd)) {
 if (!empty($passwd) && $mypasswd == md5($passwd)) {
     $userdata = SESS_getUserData($loginname);
     $_USER=$userdata;
-    $sessid = new_session($_USER[uid], $REMOTE_ADDR, $_CONF["session_cookie_timeout"], $_CONF["cookie_ip"]);
-    SESS_setSessionCookie($sessid, $_CONF["session_cookie_timeout"], $_CONF["cookie_session"], $_CONF["cookie_path"], $_CONF["cookiedomain"], $_CONF["cookiesecure"]);
+    $sessid = SESS_newSession($_USER['uid'], $REMOTE_ADDR, $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
+    SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
     // #Now that we handled session cookies, handle longterm cookie
 
@@ -54,7 +54,7 @@ if (!empty($passwd) && $mypasswd == md5($passwd)) {
 
         // Either their cookie expired or they are new
 
-        $cooktime = SESS_getUserCookieTimeout();
+        $cooktime = COM_getUserCookieTimeout();
 
         if (!empty($cooktime)) {
 		
