@@ -234,16 +234,16 @@ function installplugin() {
 		exec($command);
 
 		#move the main web pages to the Geeklog web tree
-		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $CONF['html'] . $plugin_name . '/')) {
+		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/public_html/', $CONF['path_html'/g] . $plugin_name . '/')) {
 			#error doing the copy
-			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $CONF['html'] . $plugin_name . '/');
+			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/public_html/ to ' . $CONF['path_html'/g] . $plugin_name . '/');
 			return;
 		}
 
 		#move the admin pages to the plugin directory in admin tree
-		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $CONF['html'] . 'admin/plugins/' . $plugin_name . '/')) {
+		if (!rename($CONF['path'] . 'plugins/' . $plugin_name . '/admin/', $CONF['path_html'/g] . 'admin/plugins/' . $plugin_name . '/')) {
 			#error doing the copy
-			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $CONF['html'] . 'admin/plugins/' . $plugin_name . '/');
+			errorlog('Unable to copy ' . $CONF['path'] . 'plugins/' . $plugin_name . '/admin/ to ' . $CONF['path_html'/g] . 'admin/plugins/' . $plugin_name . '/');
 			return;
 		}
 
@@ -320,11 +320,11 @@ function removeplugin($plugin_name) {
 		$A = mysql_fetch_array($result);
 	} else {
 		#couldn't find plugin...bail
-		include($CONF['html'] . 'layout/header.php');
+		include($CONF['path_html'/g] . 'layout/header.php');
 		startblock("Can't find plugin: $plugin_name");
 		print("couldn't find plugin $plugin_name in table plugins...exiting");
 		endblock();
-		include($CONF['html'] . 'layout/footer.php');
+		include($CONF['path_html'/g] . 'layout/footer.php');
 		errorlog("couldn't find plugin $plugin_name in table plugins...exiting", 1);
 		exit;	
 	}
@@ -352,12 +352,12 @@ function removeplugin($plugin_name) {
 	exec($command);
 
 	#remove the path/to/geeklog/public_html/<plugin_name> directory
-	$command = $CONF['rmcommand'] . $CONF['html'] . $plugin_name;
+	$command = $CONF['rmcommand'] . $CONF['path_html'/g] . $plugin_name;
 	errorlog('executing the following: ' . $command,1);
 	exec($command);
 
 	#remove the /path/to/geeklog/public_html/admin/plugins/<plugin_name> directory
-	$command = $CONF['rmcommand'] . $CONF['html'] . 'admin/plugins/' . $plugin_name;
+	$command = $CONF['rmcommand'] . $CONF['path_html'/g] . 'admin/plugins/' . $plugin_name;
 	errorlog('executing the following: ' . $command,1);
 	exec($command);
 
