@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.71 2004/02/21 19:15:54 blaine Exp $
+// $Id: user.php,v 1.72 2004/03/05 17:28:23 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -75,8 +75,17 @@ function edituser($uid = '', $msg = '')
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     }
 
+    if (!empty ($msg) && !empty ($uid) && ($uid > 1)) {
+        // an error occured while editing a user - if it was a new account,
+        // don't bother trying to read the user's data from the database ...
+        $cnt = DB_count ($_TABLES['users'], 'uid', $uid);
+        if ($cnt == 0) {
+            $uid = 0;
+        }
+    }
+
 	if (!empty ($uid) && ($uid > 1)) {
-		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid ='$uid'");
+		$result = DB_query("SELECT * FROM {$_TABLES['users']} WHERE uid = '$uid'");
 		$A = DB_fetchArray($result);
         if (empty ($A['uid'])) {
             return COM_refresh ($_CONF['site_admin_url'] . '/user.php');
