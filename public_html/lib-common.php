@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.298 2004/03/05 08:36:48 dhaun Exp $
+// $Id: lib-common.php,v 1.299 2004/03/05 17:29:45 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -289,13 +289,19 @@ if( empty( $_USER['uid'] ) OR $_USER['uid'] == 1 )
     // The following code handles anonymous users so they show up properly
     DB_query( "DELETE FROM {$_TABLES['sessions']} WHERE remote_ip = '$REMOTE_ADDR' AND uid = 1" );
 
-    // Build a useless sess_id (needed for insert to work properly)
-    mt_srand(( double )microtime() * 1000000 );
-    $sess_id = mt_rand();
-    $curtime = time();
+    $tries = 0;
+    do
+    {
+        // Build a useless sess_id (needed for insert to work properly)
+        mt_srand(( double )microtime() * 1000000 );
+        $sess_id = mt_rand();
+        $curtime = time();
 
-    // Insert anonymous user session
-    DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)" );
+        // Insert anonymous user session
+        DB_query( "INSERT INTO {$_TABLES['sessions']} (sess_id, start_time, remote_ip, uid) VALUES ($sess_id,$curtime,'$REMOTE_ADDR',1)", 1 );
+        $tries++;
+    }
+    while( DB_error() && ( $tries < 5 ));
 }
 
 // Clear out any expired sessions
