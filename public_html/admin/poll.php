@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: poll.php,v 1.16 2002/05/22 14:52:24 tony_bibbs Exp $
+// $Id: poll.php,v 1.17 2002/06/04 13:53:37 gene_wood Exp $
 
 /**
 * Poll administration page
@@ -99,7 +99,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     global $_TABLES, $LANG25, $_CONF, $_POLL_VERBOSE;
 
     if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Inside savepoll() in admin/poll.php ***');
+        COM_errorLog('**** Inside savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
     }
 
     if (empty($voters)) { 
@@ -145,7 +145,7 @@ function savepoll($qid,$mainpage,$question,$voters,$statuscode,$commentcode,$A,$
     }
 
     if ($_POLL_VERBOSE) {
-        COM_errorLog('**** Leaving savepoll() in admin/poll.php ***');
+        COM_errorLog('**** Leaving savepoll() in ' . $_CONF['site_admin_url'] . '/poll.php ***');
     }
 
     echo COM_refresh($_CONF['site_admin_url'] . '/poll.php?msg=19');

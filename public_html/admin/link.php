@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: link.php,v 1.21 2002/05/22 14:18:58 tony_bibbs Exp $
+// $Id: link.php,v 1.22 2002/06/04 13:53:37 gene_wood Exp $
 
 /**
 * Link administration page
@@ -239,7 +239,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
         if (is_array($perm_owner) OR is_array($perm_group) OR is_array($perm_members) OR is_array($perm_anon)) {
             list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
         }
-		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'lid',$lid,'admin/link.php?msg=15');
+		DB_save($_TABLES['links'],'lid,category,url,description,title,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon',"$lid,'$category','$url','$description','$title','$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=15');
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG23[10],2);
@@ -309,7 +309,7 @@ function listlinks()
 
 switch ($mode) {
 	case "$LANG23[23]":
-		DB_delete($_TABLES['links'],'lid',$lid,'admin/link.php?msg=16');
+		DB_delete($_TABLES['links'],'lid',$lid,$_CONF['site_admin_url'] . '/link.php?msg=16');
 		break;
 	case "$LANG23[21]":
 		$display .= savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

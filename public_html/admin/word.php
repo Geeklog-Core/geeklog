@@ -72,7 +72,7 @@ function editword($wid="") {
     if (empty($wid))
         $wid = $A["wid"];
     $display .= startblock($LANG_WORDS[editor])
-        .'<form action={$CONF['site_url']}/admin/word.php method=post>'
+        .'<form action={$CONF['site_admin_url']}/word.php method=post>'
         .'<table border="0" cellspacing="0" cellpadding=2 width="100%">'
         .'<tr><td colspan=2><input type=submit value=save name=mode>';
 
@@ -109,7 +109,7 @@ function saveword($word,$replaceword) {
         $result = mysql_query("SELECT * FROM wordlist");
         $num_rows = mysql_num_rows($result);
         $wid = $num_rows + 1;
-		dbsave("wordlist","wid, word, replaceword","'$wid', '$word', '$replaceword'","admin/word.php?msg=42");
+		dbsave("wordlist","wid, word, replaceword","'$wid', '$word', '$replaceword'",$CONF['site_admin_url'] . "/word.php?msg=42");
     } else {
 	$display .=site_header('menu')
 	.editword($wid)
@@ -136,7 +136,7 @@ function listgroups() {
     $nrows = mysql_num_rows($result);
     for ($i=0;$i<$nrows;$i++) {
         $A = mysql_fetch_array($result);
-        $display .='<tr align=center><td align=left><a href={$CONF['site_url']}/admin/word.php?mode=edit&wid={$A["wid"]}>{$A["wid"]}</a></td>'
+        $display .='<tr align=center><td align=left><a href={$CONF['site_admin_url']}/word.php?mode=edit&wid={$A["wid"]}>{$A["wid"]}</a></td>'
         .'<td>{$A["word"]}</td><td>{$A["replaceword"]}</td></tr>';
         }
     $display .='</table></form>'
@@ -149,7 +149,7 @@ echo $display;
 # MAIN
 switch ($mode) {
 	case "delete":
-		dbdelete("wordlist","wid",$wid,"/admin/word.php?msg=43");
+		dbdelete("wordlist","wid",$wid,$CONF['site_admin_url'] . "/word.php?msg=43");
 		break;
 	case "save":
 		saveword($word,$replaceword);

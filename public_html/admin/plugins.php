@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.25 2002/05/22 14:33:19 tony_bibbs Exp $
+// $Id: plugins.php,v 1.26 2002/06/04 13:53:37 gene_wood Exp $
 
 /**
 * Plugin administration page.  Unlike most other administration pages, you can't
@@ -208,7 +208,7 @@ function saveplugin($pi_name, $pi_version, $pi_gl_version, $enabled, $pi_homepag
 		} else {
 			$enabled = 0;
 		}
-		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'pi_name', $pi_name, 'admin/plugins.php?msg=28');
+		DB_save($_TABLES['plugins'],'pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage',"'$pi_name', '$pi_version', '$pi_gl_version', $enabled, '$pi_homepage'",'pi_name', $pi_name, $_CONF['site_admin_url'] . '/plugins.php?msg=28');
 	} else {
         $retval = '';
 		$retval .= COM_siteHeader('menu');

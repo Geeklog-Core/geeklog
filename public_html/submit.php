@@ -380,7 +380,7 @@ function submitstory()
 */
 function savesubmission($type,$A) 
 {
-    global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR;
+    global $_TABLES, $LANG12, $_USER, $REMOTE_ADDR, $_CONF;
 	
     switch ($type) {
     case 'link':
@@ -399,7 +399,7 @@ function savesubmission($type,$A)
             $A['title'] = addslashes(strip_tags(COM_checkWords($A['title'])));
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'","index.php?msg=3");
+            $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url'] . "/index.php?msg=3");
         } else {
             $retval .= COM_startBlock($LANG12[22])
                 . $LANG12[23]
@@ -455,12 +455,12 @@ function savesubmission($type,$A)
             }
 
             if ($A['calendar_type'] == 'master') {
-                $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'","index.php?msg=4");
+                $result = DB_save($_TABLES['eventsubmission'],'eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['eid']},'{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url'] . "/index.php?msg=4");
             } else {
                 if (empty($A['uid'])) {
                     $A['uid'] = $_USER['uid'];
                 }
-                $result = DB_save($_TABLES['personal_events'],'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'","calendar.php?mode=personal&msg=4");
+                $result = DB_save($_TABLES['personal_events'],'uid,eid,title,event_type,url,datestart,timestart,dateend,timeend,allday,location,address1,address2,city,state,zipcode,description',"{$A['uid']},'{$A['eid']}','{$A['title']}','{$A['event_type']}','{$A['url']}','{$A['datestart']}','{$A['timestart']}','{$A['dateend']}','{$A['timeend']}',{$A['allday']},'{$A['location']}','{$A['address1']}','{$A['address2']}','{$A['city']}','{$A['state']}','{$A['zipcode']}','{$A['description']}'",$_CONF['site_url'] . "/calendar.php?mode=personal&msg=4");
             }
                 
         } else {
@@ -497,7 +497,7 @@ function savesubmission($type,$A)
                 $_USER['uid'] = 1;
             }					
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
-            DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'","index.php?msg=2");
+            DB_save($_TABLES['storysubmission'],"sid,tid,uid,title,introtext,date,postmode","{$A["sid"]},'{$A["tid"]}',{$_USER['uid']},'{$A['title']}','{$A["introtext"]}',NOW(),'{$A["postmode"]}'",$_CONF['site_url'] . "/index.php?msg=2");
         } else {
             $retval .= COM_startBlock($LANG12[22])
                 . $LANG12[23]
@@ -520,24 +520,24 @@ if ($mode == $LANG12[8]) {
     $display .= savesubmission($type,$HTTP_POST_VARS);
 } else if ($mode == $LANG12[52]) {
     if (!empty($eid)) {
-        DB_delete($_TABLES['personal_events'], 'eid',$eid,'calendar.php?mode=personal');
+        DB_delete($_TABLES['personal_events'], 'eid',$eid,$_CONF['site_url'] . 'calendar.php?mode=personal');
     }  
 } else {
     switch($type) {
         case 'link':
             if (SEC_hasRights('link.edit')) {
-                echo COM_refresh($_CONF['site_url'] . '/admin/link.php?mode=edit');
+                echo COM_refresh($_CONF['site_admin_url'] . '/link.php?mode=edit');
             }
             break;
         case 'event':
             if (SEC_hasRights('event.edit')) {
-                echo COM_refresh($_CONF['site_url'] . '/admin/event.php?mode=edit');
+                echo COM_refresh($_CONF['site_admin_url'] . '/event.php?mode=edit');
             }
             break;
         default:
             if (empty($type)) {
                 if (SEC_hasRights('story.edit')) {
-                    echo COM_refresh($_CONF['site_url'] . '/admin/story.php?mode=edit');
+                    echo COM_refresh($_CONF['site_admin_url'] . '/story.php?mode=edit');
                 }
             }
             break;

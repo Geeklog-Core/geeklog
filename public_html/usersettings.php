@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.31 2002/05/22 13:00:49 tony_bibbs Exp $
+// $Id: usersettings.php,v 1.32 2002/06/04 13:53:38 gene_wood Exp $
 
 /**
 * This is the user preferences page where user's can update their account information
@@ -535,7 +535,7 @@ function savepreferences($A)
 	
     DB_query("UPDATE {$_TABLES['userprefs']} SET noicons='{$A['noicons']}', willing='{$A["willing"]}', dfid='{$A["dfid"]}', tzid='{$A["tzid"]}' WHERE uid='{$_USER['uid']}'");
 
-    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",'uid',$_USER['uid'],"usersettings.php?mode=preferences&msg=6");
+    DB_save($_TABLES['userindex'],"uid,tids,aids,boxes,noboxes,maxstories,etids","'{$_USER['uid']}','$tids','$aids','$selectedblocks','{$A['noboxes']}',{$A['maxstories']},'$etids'",'uid',$_USER['uid'],$_CONF['site_url'] . "usersettings.php?mode=preferences&msg=6");
 
 }
 
@@ -575,7 +575,7 @@ if (!empty($_USER['username']) && !empty($mode)) {
         savepreferences($HTTP_POST_VARS);
         break;
     case 'savecomments':
-        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'",'uid',$_USER['uid'],"usersettings.php?mode=comments&msg=7");
+        DB_save($_TABLES['usercomment'],'uid,commentmode,commentorder,commentlimit',"'{$_USER['uid']}','{$HTTP_POST_VARS['commentmode']}','{$HTTP_POST_VARS['commentorder']}','{$HTTP_POST_VARS['commentlimit']}'",'uid',$_USER['uid'],$_CONF['site_url'] . "usersettings.php?mode=comments&msg=7");
         break;
     }
 } else {

@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.31 2002/05/22 13:31:52 tony_bibbs Exp $
+// $Id: block.php,v 1.32 2002/06/04 13:53:37 gene_wood Exp $
 
 /**
 * This is the block administration page for Geeklog
@@ -368,7 +368,7 @@ function saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfu
         // Convert array values to numeric permission values
 		list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
 	
-        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled",'bid',$bid,'admin/block.php?msg=11');
+        DB_save($_TABLES['blocks'],'bid,name,title,help,type,blockorder,content,tid,rdfurl,rdfupdated,phpblockfn,onleft,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,is_enabled',"$bid,'$name','$title','$help','$type','$blockorder','$content','$tid','$rdfurl','$rdfupdated','$phpblockfn',$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled",'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=11');
 
 
     } else {
@@ -483,7 +483,7 @@ elseif (isset ($HTTP_GET_VARS['bid'])) {
 }
 switch ($mode) {
 case "$LANG21[56]":
-    $display .= DB_delete($_TABLES['blocks'],'bid',$bid,'admin/block.php?msg=12');
+    $display .= DB_delete($_TABLES['blocks'],'bid',$bid,$_CONF['site_admin_url'] . '/block.php?msg=12');
         break;
 case "$LANG21[54]":
 	$display .= saveblock($bid,$name,$title,$help,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$is_enabled);

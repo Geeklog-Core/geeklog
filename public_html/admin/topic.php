@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.19 2002/05/22 15:03:31 tony_bibbs Exp $
+// $Id: topic.php,v 1.20 2002/06/04 13:53:37 gene_wood Exp $
 
 /**
 * Topic administration page
@@ -196,7 +196,7 @@ function savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id
 		}	
 		//Convert array values to numeric permission values
                 list($perm_owner,$perm_group,$perm_members,$perm_anon) = SEC_getPermissionValues($perm_owner,$perm_group,$perm_members,$perm_anon);
-		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'tid',$tid,"admin/topic.php?msg=13");
+		DB_save($_TABLES['topics'],'tid, topic, imageurl, sortnum, limitnews, owner_id, group_id, perm_owner, perm_group, perm_members, perm_anon',"'$tid', '$topic', '$imageurl','$sortnum','$limitnews',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon",'tid',$tid,$_CONF['site_admin_url'] . "/topic.php?msg=13");
 	} else {
 		$retval .= COM_siteHeader('menu');
 		$retval .= COM_errorLog($LANG27[7],2);
@@ -282,7 +282,7 @@ switch ($mode) {
 	case "$LANG27[21]":
 		DB_delete($_TABLES['stories'],'tid',$tid);
 		DB_delete($_TABLES['blocks'],'tid',$tid);
-		DB_delete($_TABLES['topics'],'tid',$tid,'admin/topic.php?msg=14');
+		DB_delete($_TABLES['topics'],'tid',$tid,$_CONF['site_admin_url'] . '/topic.php?msg=14');
 		break;
 	case "$LANG27[19]":
 		savetopic($tid,$topic,$imageurl,$sortnum,$limitnews,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon);

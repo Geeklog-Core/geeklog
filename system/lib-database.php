@@ -237,7 +237,7 @@ function DB_save($table,$fields,$values,$key_field='',$key_value='',$return_page
     }
 
     if (!empty($return_page)) {
-       print COM_refresh($_CONF['site_url'] . "/$return_page");
+       print COM_refresh("$return_page");
     }
 
 }
@@ -265,7 +265,7 @@ function DB_delete($table,$id,$value,$return_page='')
     }
 
     if (!empty($return_page)) {
-        print COM_refresh($_CONF['site_url'] . "/$return_page");
+        print COM_refresh("$return_page");
     }
 
 }
@@ -317,7 +317,7 @@ function DB_change($table,$item_to_set,$value_to_set,$id='',$value='',$return_pa
     }
 
     if (!empty($return_page)) {
-        print COM_refresh($_CONF['site_url'] . "/$return_page");
+        print COM_refresh("$return_page");
     }
 }
 
@@ -378,7 +378,7 @@ function DB_copy($table,$fields,$values,$tablefrom,$id,$value,$return_page='')
     }
 
     if (!empty($return_page)) {
-        print COM_refresh($_CONF['site_url'] . "/$return_page");
+        print COM_refresh("$return_page");
     }
 }
 

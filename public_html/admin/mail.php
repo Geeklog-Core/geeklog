@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.10 2002/05/01 13:10:54 dhaun Exp $
+// $Id: mail.php,v 1.11 2002/06/04 13:53:37 gene_wood Exp $
 
 // Set this to true to get various debug messages from this script
 $_MAIL_VERBOSE = false;
@@ -181,7 +181,7 @@ function send_messages($vars)
  		}
 	}
 	
-	//$retval = 'Successfully sent ' . count($successes) . ' messages and unsuccessfully sent ' . count($failures) . ' messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href="' . $_CONF['site_url'] . '/admin/mail.php">Send another message</a> or you can <a href="' . $_CONF['site_url'] . '/admin/moderation.php">go back to the administration page</a>.';
+	//$retval = 'Successfully sent ' . count($successes) . ' messages and unsuccessfully sent ' . count($failures) . ' messages.  If you need them, the details of each message attempts is below.  Otherwise you can <a href="' . $_CONF['site_admin_url'] . '/mail.php">Send another message</a> or you can <a href="' . $_CONF['site_admin_url'] . '/moderation.php">go back to the administration page</a>.';
 	$failcount = count($failures);
 	$successcount = count($successes);
 	$mailresult .= str_replace('<successcount>',$successcount,$LANG31[20]);
