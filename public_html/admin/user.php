@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.77 2004/07/01 22:29:49 blaine Exp $
+// $Id: user.php,v 1.78 2004/07/02 15:53:55 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -242,7 +242,8 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
 
     if (!empty($username) && !empty($email)) {
 
-        $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
+        $username = addslashes ($username);
+        $ucount = DB_getItem ($_TABLES['users'], 'COUNT(*)',
                               "username = '$username' AND uid <> $uid");
         if ($ucount > 0) {
             // Admin just changed a user's username to one that already exists
@@ -253,6 +254,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             return edituser ($uid, 52);
         }
 
+        $email = addslashes ($email);
         $ucount = DB_getItem ($_TABLES['users'], 'count(*)',
                               "email = '$email' AND uid <> $uid");
         if ($ucount > 0) {
@@ -260,14 +262,16 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
             return edituser ($uid, 56);
         }
 
-        $regdate = strftime('%Y-%m-%d %H:%M:$S',$regdate);
-        if (($uid == 1) or !empty($passwd)) { 
-            $passwd = md5($passwd);
+        $regdate = strftime ('%Y-%m-%d %H:%M:%S', $regdate);
+        if (($uid == 1) or !empty ($passwd)) { 
+            $passwd = md5 ($passwd);
         } else {
-            $passwd = DB_getItem($_TABLES['users'],'passwd',"uid = $uid");
+            $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
         }
 
-        if (DB_count($_TABLES['users'],'uid',$uid) == 0) {
+        $fullname = addslashes ($fullname);
+        $homepage = addslashes ($homepage);
+        if (DB_count ($_TABLES['users'], 'uid', $uid) == 0) {
             if (empty ($passwd)) {
                 // no password? create one ...
                 srand ((double) microtime () * 1000000);
@@ -276,6 +280,7 @@ function saveusers($uid,$username,$fullname,$passwd,$email,$regdate,$homepage,$g
                 $passwd = substr ($passwd, 1, 8);
                 $passwd = md5 ($passwd);
             }
+
             DB_query("INSERT INTO {$_TABLES['users']} (uid,username,fullname,passwd,email,regdate,homepage) VALUES($uid,'$username','$fullname','$passwd', '$email','$regdate','$homepage')");
             DB_query("INSERT INTO {$_TABLES['userprefs']} (uid) VALUES ($uid)");
             if ($_CONF['emailstoriesperdefault'] == 1) {
@@ -396,16 +401,18 @@ function listusers($offset, $curpage, $query = '', $query_limit = 50)
     } else {
         $limit = $query_limit;
     }
-    $user_templates->set_var($limit . '_selected', 'selected="SELECTED"');
+    $user_templates->set_var($limit . '_selected', 'selected="selected"');
     
     if (!empty($query)) {
-        $query = str_replace('*','%',$query);
-        $num_pages = ceil(DB_getItem($_TABLES['users'],'count(*)',"uid > 1 AND username LIKE '$query'") / $limit);
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
+                           "uid > 1 AND username LIKE '$query'") / $limit);
         if ($num_pages < $curpage) {
             $curpage = 1;
         }
     } else {
-        $num_pages = ceil(DB_getItem($_TABLES['users'],'count(*)','uid > 1') / $limit);
+        $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
+                                       'uid > 1') / $limit);
     }
 
     $offset = (($curpage - 1) * $limit);
@@ -609,19 +616,26 @@ function deleteUser ($uid)
 }
 
 // MAIN
+$mode = '';
+if (isset ($HTTP_POST_VARS['mode'])) {
+    $mode = $HTTP_POST_VARS['mode'];
+} else if (isset ($HTTP_GET_VARS['mode'])) {
+    $mode = $HTTP_GET_VARS['mode'];
+}
 if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $uid = COM_applyFilter ($HTTP_POST_VARS['uid'], true);
     if ($uid > 1) {
         $display .= deleteUser ($uid);
     } else {
         COM_errorLog ('Attempted to delete user uid=' . $uid);
-        $display .= COM_refresh ($_CONF['site_admin_url'] . '/user.php');
+        $display = COM_refresh ($_CONF['site_admin_url'] . '/user.php');
     }
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
-    $display = saveusers ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['username'],
-            $HTTP_POST_VARS['fullname'], $HTTP_POST_VARS['passwd'],
-            $HTTP_POST_VARS['email'], $HTTP_POST_VARS['regdate'],
-            $HTTP_POST_VARS['homepage'], $HTTP_POST_VARS[$_TABLES['groups']],
+    $display = saveusers (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
+            $HTTP_POST_VARS['username'], $HTTP_POST_VARS['fullname'],
+            $HTTP_POST_VARS['passwd'], $HTTP_POST_VARS['email'],
+            $HTTP_POST_VARS['regdate'], $HTTP_POST_VARS['homepage'],
+            $HTTP_POST_VARS[$_TABLES['groups']],
             $HTTP_POST_VARS['delete_photo']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
@@ -630,16 +644,17 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
         $display = $tmp;
     }
 } else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
-    changepw ($HTTP_POST_VARS['uid'], $HTTP_POST_VARS['passwd']);
+    changepw (COM_applyFilter ($HTTP_POST_VARS['uid'], true),
+                               $HTTP_POST_VARS['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
-    $display .= edituser($uid);
+    $display .= edituser (COM_applyFilter ($HTTP_GET_VARS['uid']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= COM_siteHeader('menu');
     $display .= COM_startBlock ($LANG28[31], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
-    $display .= importusers($file);
+    $display .= importusers ($HTTP_POST_VARS['file']);
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
     $display .= COM_siteFooter();  
 } else if ($mode == 'importform') {
@@ -652,16 +667,27 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    if (isset ($msg)) {
-        $display .= COM_showMessage($msg);
+    if (isset ($HTTP_POST_VARS['q']) || isset ($HTTP_POST_VARS['query_limit'])) {
+        $VARS = $HTTP_POST_VARS;
+    } else {
+        $VARS = $HTTP_GET_VARS;
     }
-    if (empty($offset)) {
-        $offset = 0;
+    if (isset ($VARS['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($VARS['msg'], true));
     }
-    if (empty($page)) {
+    $offset = 0;
+    if (isset ($VARS['offset'])) {
+        $offset = COM_applyFilter ($VARS['offset'], true);
+    }
+    $page = 1;
+    if (isset ($VARS['page'])) {
+        $page = COM_applyFilter ($VARS['page'], true);
+    }
+    if ($page < 1) {
         $page = 1;
     }
-    $display .= listusers($offset,$page,$q,$query_limit);
+    $display .= listusers ($offset, $page, $VARS['q'],
+                           COM_applyFilter ($VARS['query_limit'], true));
     $display .= COM_siteFooter();
 }
 
