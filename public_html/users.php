@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.42 2002/08/20 13:08:59 dhaun Exp $
+// $Id: users.php,v 1.43 2002/09/01 20:15:46 dhaun Exp $
 
 /**
 * This file handles user authentication
@@ -151,6 +151,7 @@ function userprofile($user)
             $user_templates->set_var('row_number', $i . '.');
             $user_templates->set_var('story_begin_href', '<a href="' .
                 $_CONF['site_url'] . '/article.php?story=' . $C['sid'] . '">');
+            $C['title'] = str_replace('$','&#36;',$C['title']);
             $user_templates->set_var('story_title', stripslashes($C['title']));
             $user_templates->set_var('story_end_href', '</a>');
             $storytime = COM_getUserDateTimeFormat($C['unixdate']);
@@ -221,6 +222,7 @@ function userprofile($user)
                     '&amp;title=' . urlencode($C['title']) . '&amp;pid=' .
                     $C['pid'] . '&amp;qid=' . $C['sid'] . '">');
             }
+            $C['title'] = str_replace('$','&#36;',$C['title']);
             $user_templates->set_var('comment_title', stripslashes($C['title']));
             $user_templates->set_var('comment_end_href', '</a>');
             $commenttime = COM_getUserDateTimeFormat($C['unixdate']);
