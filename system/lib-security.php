@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.20 2004/08/09 07:56:22 dhaun Exp $
+// $Id: lib-security.php,v 1.21 2004/09/28 17:34:34 vinny Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -164,7 +164,8 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
 {
     global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
-    if (empty($uid)) {
+    if ( empty($uid) || ($uid == $_USER['uid']) 
+         || ($uid == 1 && empty($_USER['uid'])) ) {
         if (empty($_USER['uid'])) {
             $uid = 1;
         } else {
@@ -172,7 +173,7 @@ function SEC_inGroup($grp_to_verify,$uid='',$cur_grp_id='')
         }
 
         if (empty($_GROUPS)) {
-            $_GROUPS = SEC_getUserGroups($_USER['uid']);
+            $_GROUPS = SEC_getUserGroups($uid);
         }
         $groups = $_GROUPS;
     } else {
@@ -442,7 +443,7 @@ function SEC_getPermissionsHTML($perm_owner,$perm_group,$perm_members,$perm_anon
 */
 function SEC_getUserPermissions($grp_id='',$uid='')
 {
-    global $_TABLES, $_USER, $_SEC_VERBOSE;
+    global $_TABLES, $_USER, $_SEC_VERBOSE, $_GROUPS;
 
     $retval = '';
 
