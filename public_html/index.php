@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.25 2002/05/01 17:29:12 dhaun Exp $
+// $Id: index.php,v 1.26 2002/05/14 21:18:05 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -137,7 +137,7 @@ if ($nrows > 0) {
     if (empty($topic)) {
         $base_url = $_CONF['site_url'] . '/index.php';
     } else {
-        $base_url = $_CONf['site_url'] . '/index.php?topic=' . $topic;
+        $base_url = $_CONF['site_url'] . '/index.php?topic=' . $topic;
     }
     $display .= COM_printPageNavigation($base_url,$page, $num_pages);
 } else {
