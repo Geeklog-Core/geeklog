@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.385 2004/10/07 01:50:31 blaine Exp $
+// $Id: lib-common.php,v 1.386 2004/10/09 12:22:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3840,7 +3840,7 @@ function COM_rdfEndElement( $parser, $name )
     if( $name == 'ITEM' )
     {
         $RDFtitle = str_replace( '$', '&#36;', $RDFtitle );
-        $RDFheadlines[] .= '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
+        $RDFheadlines[] = '<a href="' . addslashes( trim( $RDFlink )) . '">' . addslashes( trim( $RDFtitle )) . '</a>';
         $RDFtitle = '';
         $RDFlink = '';
         $RDFinsideitem = false;
@@ -3885,6 +3885,8 @@ function COM_rdfImport( $bid, $rdfurl )
     $RDFtitle = '';
     $RDFlink = '';
     $RDFheadlines = array();
+
+    $maxheadlines = 0; // set to something > 0 to limit max. number of headlines
 
     $update = date( 'Y-m-d H:i:s' );
 
@@ -3943,6 +3945,10 @@ function COM_rdfImport( $bid, $rdfurl )
 
         if( !$rdferror )
         {
+            if( $maxheadlines > 0 )
+            {
+                $RDFheadlines = array_slice( $RDFheadlines, 0, $maxheadlines );
+            }
             $blockcontent = COM_makeList( $RDFheadlines, 'list-feed' );
             $RDFheadlines = array();
             $blockcontent = preg_replace( "/(\015\012)|(\015)|(\012)/", '',
