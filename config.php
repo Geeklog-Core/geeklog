@@ -32,7 +32,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.26 2002/04/16 14:40:09 tony_bibbs Exp $
+// $Id: config.php,v 1.27 2002/04/16 20:40:35 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | DATABASE SETTINGS                                                         |
@@ -155,12 +155,6 @@ $_CONF['showstorycount'] = 1;
 
 // Show the number of story submissions for a topic in Section Block
 $_CONF['showsubmissioncount'] = 1;
-
-// Show any new articles, comments and links
-$_CONF['whatsnewbox'] = 1;
-
-// Show Who's online block
-$_CONF['whosonline'] = 1;
 
 // How long an anonymous (guest) user session is good for
 $_CONF['whosonline_threshold'] = 300; // in seconds
