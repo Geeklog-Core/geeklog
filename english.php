@@ -133,7 +133,8 @@ $LANG01 = array(
 	92 => "seconds",
 	93 => "Copyright",
 	94 => "All trademarks and copyrights on this page are owned by their respective owners.",
-	95 => "Powered By"
+	95 => "Powered By",
+	96 => "Groups"
 );
 
 ###############################################################################
@@ -488,7 +489,10 @@ $LANG21 = array(
 	40 => "Left",
 	41 => "Right",
 	42 => "You must enter the blockorder and security level for Geeklog default blocks",
-	43 => "Homepage Only"
+	43 => "Homepage Only",
+	44 => "Access Denied",
+	45 => "You are trying to access a block that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/block.php\">go back to the block administration screen</a>."
+
 );
 
 ###############################################################################
@@ -509,7 +513,9 @@ $LANG22 = array(
 	12 => "To modify or delete a event, click on that event below.  To create a new event click on new event above.",
 	13 => "Event Title",
 	14 => "Start Date",
-	15 => "End Date"
+	15 => "End Date",
+	16 => "Access Denied",
+	17 => "You are trying to access an event that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/event.php\">go back to the event administration screen</a>."
 );
 
 ###############################################################################
@@ -530,7 +536,9 @@ $LANG23 = array(
 	12 => "To modify or delete a link, click on that link below.  To create a new link click new link above.",
 	13 => "Link Title",
 	14 => "Link Category",
-	15 => "Link URL"
+	15 => "Link URL",
+	16 => "Access Denied",
+	17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/link.php\">go back to the link administration screen</a>."
 );
 
 ###############################################################################
@@ -574,7 +582,10 @@ $LANG24 = array(
 	35 => "Yes",
 	36 => "No",
 	37 => "More by",
-	38 => "More from"
+	38 => "More from",
+	39 => "Emails",
+	40 => "Access Denied",
+	41 => "You are trying to access a story that you don't have rights to.  This attempt has been logged.  You may view the article in read-only below. Please <a href=\"{$CONF["site_url"]}/admin/story.php\">go back to the story administration screen</a> when you are done."
 );
 
 ###############################################################################
@@ -600,7 +611,9 @@ $LANG25 = array(
 	17 => "",
 	18 => "Poll List",
 	19 => "To modify or delete a poll, click on that poll.  To create a new poll click on new poll above.",
-	20 => "Voters"
+	20 => "Voters",
+	21 => "Access Denied",
+	22 => "You are trying to access a poll that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/poll.php\">go back to the poll administration screen</a>."
 );
 
 ###############################################################################
@@ -615,9 +628,11 @@ $LANG27 = array(
 	6 => "Deleting a topic deletes all stories and blocks associated with it",
 	7 => "Please fill in the Topic ID and Topic Name fields",
 	8 => "Topic Manager",
-	9 => "To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left.",
+	9 => "To modify or delete a topic, click on that topic.  To create a new topic click the new topic button to the left. You will find you access level for each topic in parenthesis",
 	10=> "Sort Order",
-	11 => "Stories/Page"
+	11 => "Stories/Page",
+	12 => "Access Denied",
+	13 => "You are trying to access a topic that you don't have rights to.  This attempt has been logged. Please <a href=\"{$CONF["site_url"]}/admin/topic.php\">go back to the topic administration screen</a>."
 );
 
 ###############################################################################
@@ -699,10 +714,6 @@ $LANG31 = array(
 ###############################################################################
 # confirmation and error messages
 
-$MESSAGE_HEADER = array (
-    1 => "System Message"
-);
-
 $MESSAGE = array (
 	1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using " . $CONF["site_name"],
 	2 => "Thank-you for submitting your story to {$CONF["site_name"]}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
@@ -732,7 +743,18 @@ $MESSAGE = array (
 	26 => "Event was successfully removed from your personal calendar",
 	27 => "Message successfully sent.",
 	28 => "The plug-in has been successfully saved",
-	29 => "Sorry, personal calendars are not enabled on this site"
+	29 => "Sorry, personal calendars are not enabled on this site",
+	30 => "Access Denied",
+	31 => "Sorry, you do not have access to the story administration page.  Please note that all attempts to access unauthorized features are logged",
+	32 => "Sorry, you do not have access to the topic administration page.  Please note that all attempts to access unauthorized features are logged",
+	33 => "Sorry, you do not have access to the block administration page.  Please note that all attempts to access unauthorized features are logged",
+	34 => "Sorry, you do not have access to the link administration page.  Please note that all attempts to access unauthorized features are logged",
+	35 => "Sorry, you do not have access to the event administration page.  Please note that all attempts to access unauthorized features are logged",
+	36 => "Sorry, you do not have access to the poll administration page.  Please note that all attempts to access unauthorized features are logged",
+	37 => "Sorry, you do not have access to the user administration page.  Please note that all attempts to access unauthorized features are logged",
+	38 => "Sorry, you do not have access to the plugin administration page.  Please note that all attempts to access unauthorized features are logged",
+	39 => "Sorry, you do not have access to the mail administration page.  Please note that all attempts to access unauthorized features are logged",
+	40 => "System Message"
 );
 
 #for plugins.php
@@ -751,4 +773,30 @@ $LANG32 = array (
 	11 => "To modify or delete a plug-in, click on that plug-in's number below. To learn more about a plug-in, click the plug-in name and you will be directed to that plug-in's website. To install or upgrade a plug-in click on new plug-in above."
 );
 
+$LANG_ACCESS = array(
+	access => "Access",
+        ownerroot => "Owner/Root",
+        group => "Group",
+        readonly => "Read-Only",
+	accessrights => "Access Rights",
+	owner => "Owner",
+	grantgrouplabel => "Grant Above Group Edit Rights",
+	grantgroupmsg => "NOTE: If you don't grant the group edit rights then only the <b>owner</b> and Root users will be able to edit this item. Only select a group with access to this administration screen",
+	securitygroups => "Security Groups",
+	editrootmsg => "Even though you are a User Administrator, you can't edit a root user without first being a root user yourself.  You can edit all other users except root users. Please note that all attempts to illegally edit root users are logged.  Please go back to the <a href=\"{$CONF["site_url"]}/admin/users.php\">User Administration page</a>.",
+	securitygroupsmsg => "Select the checkboxes for the groups you want the user to belong to.",
+	groupeditor => "Group Editor",
+	description => "Description",
+	name => "Name",
+ 	rights => "Rights",
+	missingfields => "Missing Fields",
+	missingfieldsmsg => "You must supply the name and a description for a group",
+	groupmanager => "Group Manager",
+	newgroupmsg => "To modify or delete a group, click on that group below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.",
+	groupname => "Group Name",
+	coregroup => "Core Group",
+	yes => "Yes",
+	no => "No",
+	rightsdescr => "A groups access to a certain right below can be given directly to the group OR to a different group that this group is a part of.  The ones you see below without a checkbox are the rights that have been given to this group because it belongs to another group with that right.  The rights with checkboxes below are rights given directly to this group."
+);
 ?>
