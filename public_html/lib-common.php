@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.368 2004/08/26 03:35:27 blaine Exp $
+// $Id: lib-common.php,v 1.369 2004/08/28 12:00:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3996,6 +3996,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
     }
 
     $eventsFound = 0;
+    $skipFirstBreak = false;
 
     for( $z = 1; $z <= $iterations; $z++ )
     {
@@ -4020,6 +4021,7 @@ function COM_printUpcomingEvents( $help='', $title='' )
         if( $_CONF['personalcalendars'] == 0 )
         {
             $headline = true; // no headline needed
+            $skipFirstBreak = true;
         }
 
         while( $theRow <= $numRows AND $numDays < $range )
@@ -4077,9 +4079,18 @@ function COM_printUpcomingEvents( $help='', $title='' )
                              $retval .= COM_makeList( $newevents, $classname );
                         }
 
-                        $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
+                        if( $skipFirstBreak )
+                        {
+                            $skipFirstBreak = false;
+                        }
+                        else
+                        {
+                            $retval .= '<br>';
+                        }
+                        $retval .= '<b>' . $dayName1 . '</b>&nbsp;<small>'
+                                . $abbrDate1 . '</small>';
 
-                        // If different start and end Dates, then display end date:
+                        // If different start and end dates, then display end date:
                         if( $abbrDate1 != $abbrDate2 )
                         {
                             $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
