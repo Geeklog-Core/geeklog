@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.13 2001/12/14 15:01:53 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.14 2001/12/14 16:01:40 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -1413,7 +1413,7 @@ function COM_commentchildren($sid,$pid,$order,$mode,$type,$level=0)
 ###############################################################################
 # This function COM_print $A in comment format
 
-function COM_comment($A,$mode=0,$type,$level=0,$mode='flat') 
+function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false) 
 {
     global $_TABLES, $_CONF, $LANG01, $_USER, $order;
 	
@@ -1461,7 +1461,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat')
         $retval .= ' on ' . $A['nice_date'] . '</td></tr>' . LB
             . '<tr><td valign="top">' . nl2br(stripslashes($A['comment']));
 
-        if ($mode == 0) {
+        if ($mode == 0 && $ispreview == false) {
             $retval .= '<p>[ <a href="' . $_CONF['site_url'] . '/comment.php?sid=' . $A['sid'] . '&pid='
                 . $A['cid'] . '&title=' . rawurlencode($A['title']) . '&type=' . $type . '">' . $LANG01[43]
             . '</a> ';
