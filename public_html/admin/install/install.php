@@ -35,7 +35,7 @@
 // | Please read docs/install.html which describes how to install Geeklog.     |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.50 2003/08/01 13:20:17 dhaun Exp $
+// $Id: install.php,v 1.51 2003/08/03 08:15:42 dhaun Exp $
 
 // this should help expose parse errors (e.g. in config.php) even when
 // display_errors is set to Off in php.ini
@@ -155,7 +155,8 @@ function INST_getDatabaseSettings($install_type, $geeklog_path)
     return $db_templates->parse('output','db');
 }
 
-function INST_createDatabaseStructures() {
+function INST_createDatabaseStructures()
+{
     global $_CONF, $_DB_dbms, $_DB_host, $_DB_user, $_DB_pass, $_TABLES;
 
     // Because the create table syntax can vary from dbms-to-dbms we are
@@ -173,9 +174,17 @@ function INST_createDatabaseStructures() {
     }
 
     if ($_DB_dbms == 'mysql') {
-        @mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
+        mysql_connect ($_DB_host, $_DB_user, $_DB_pass);
         $mysqlv = '';
-        $mysqlv = @mysql_get_server_info();
+
+        // mysql_get_server_info() is only available as of PHP 4.0.5
+        $phpv = explode ('.', phpversion ());
+        $phpv[2] = substr ($phpv[2], 0, 1); // get rid of 'pl1' etc.
+        if (($phpv[0] > 4) || (($phpv[0] == 4) && ($phpv[1] > 0)) ||
+            (($phpv[0] == 4) && ($phpv[1] == 0) && ($phpv[2] > 4))) {
+            $mysqlv = mysql_get_server_info();
+        }
+
         if (!empty ($mysqlv)) {
             preg_match ('/^([0-9]+).([0-9]+).([0-9]+)/', $mysqlv, $match);
             $mysqlmajorv = $match[1];
@@ -186,7 +195,7 @@ function INST_createDatabaseStructures() {
             $mysqlminorv = 0;
             $mysqlrev = 0;
         }
-        @mysql_close();
+        mysql_close();
 
         if ((($mysqlmajorv == 3) && ($mysqlminorv >= 23) && ($mysqlrev >= 2)) ||
              ($mysqlmajorv > 3)) {
