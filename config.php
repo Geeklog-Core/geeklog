@@ -32,7 +32,22 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.24 2002/04/15 20:32:11 tony_bibbs Exp $
+// $Id: config.php,v 1.25 2002/04/15 21:06:50 tony_bibbs Exp $
+
+// +---------------------------------------------------------------------------+
+// | DATABASE SETTINGS                                                         |
+// |                                                                           |
+// | All paths must have a trailing slash ('/'). The 'path' value signifies    |
+// | where the config.php (this file) resides                                  | 
+// +---------------------------------------------------------------------------+
+$_DB_dbms           = 'mysql';              // Currently only MySQL is support, do not change
+$_DB_host           = 'localhost';  
+$_DB_name           = 'geeklog';            // Yes, your DB must exists before running installer!
+$_DB_user           = 'username';
+$_DB_pass           = 'password';
+$_DB_table_prefix   = 'gl_';                // e.g. 'gl_'
+$_DB_mysqldump_path = '/path/to/mysqldump'; // path to mysqldump binary e.g. /usr/bin/mysqldump
+$_CONF['allow_mysqldump']   = 1;            // 1 = on, 0 = off
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -47,7 +62,6 @@ $_CONF['path_html']         = $_CONF['path'] . 'public_html/';
 $_CONF['path_log']          = $_CONF['path'] . 'logs/';
 $_CONF['path_language']     = $_CONF['path'] . 'language/';
 $_CONF['rdf_file']          = $_CONF['path_html'] . 'backend/geeklog.rdf';
-$_CONF['allow_mysqldump']   = 1;
 $_CONF['backup_path']       = $_CONF['path'] . 'backups/';
 
 // +---------------------------------------------------------------------------+
@@ -61,10 +75,10 @@ $_CONF['site_slogan']       = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']         = 'admin@example.com';
 $_CONF['site_url']          = 'http://www.example.com';
 $_CONF['site_admin_url']    = $_CONF['site_url'] . '/admin';
-$_CONF['theme']             = 'Yahoo';
-$_CONF['layout_url']        = $_CONF['site_url'] . '/layout/Yahoo';
+$_CONF['theme']             = 'Yahoo';  // default theme
+$_CONF['layout_url']        = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']       = $_CONF['path_html'] . 'layout/';
-$_CONF['path_layout']       = $_CONF['path_themes'] . 'Yahoo/';
+$_CONF['path_layout']       = $_CONF['path_themes'] . $_CONF['theme'] .'/';
 $_CONF['allow_user_themes'] = 1;
 
 // +---------------------------------------------------------------------------+
