@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.6 2003/06/25 08:39:02 dhaun Exp $
+// $Id: search.class.php,v 1.7 2003/07/02 18:10:57 dhaun Exp $
 
 require_once($_CONF['path_system'] . 'classes/plugin.class.php');
 
@@ -149,7 +149,37 @@ class Search {
         
         $this->_author = DB_getItem($_TABLES['users'],'uid',"username='" . $this->_author . "'");
     }
-    
+
+    /**
+    * Create SQL to check the topic permissions of the current user.
+    *
+    * @author Dirk Haun <dirk AT haun-online DOT de>
+    * @access private
+    *
+    */
+    function _checkTopicPermissions ()
+    {
+        global $_TABLES;
+
+        $topicsql = '';
+
+        $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
+                             . COM_getPermSQL ());
+        $trows = DB_numRows ($tresult);
+        if ($trows > 0) {
+            $tids = array ();
+            for ($i = 0; $i < $trows; $i++) {
+                $T = DB_fetchArray ($tresult);
+                $tids[] = $T['tid'];
+            }
+            if (sizeof ($tids) > 0) {
+                $topicsql = "AND (tid IN ('" . implode ("','", $tids) . "')) ";
+            }
+        }
+
+        return $topicsql;
+    }
+
     /**
     * Performs search on all stories
     *
@@ -183,7 +213,7 @@ class Search {
         }
     
         if ($this->_type == 'all' OR $this->_type == 'stories') {
-            $sql = "SELECT sid,title,introtext,bodytext,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) ";
+            $sql = "SELECT sid,title,introtext,bodytext,hits,uid,group_id,owner_id,perm_owner,perm_group,perm_members,perm_anon,UNIX_TIMESTAMP(date) as day,'story' as type FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $this->_checkTopicPermissions ();
             if (!empty ($this->_query)) {
                 if($this->_keyType == 'phrase') {
                     // do an exact phrase search (default)
@@ -237,19 +267,13 @@ class Search {
             if (!empty($this->_author)) {
                 $sql .= "AND (uid = '$this->_author') ";
             }
-            $permsql .= 'AND (';
-            if (!empty ($_USER['uid'])) {
-                $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR ";
-                $permsql .= "(group_id IN ($groupList) AND perm_group >= 2) OR ";
-                $permsql .= "(perm_members >= 2) OR ";
-            }
-            $permsql .= "(perm_anon >= 2)) ";
+            $permsql = COM_getPermSQL ('AND');
             $sql .= $permsql;
             $sql .= "ORDER BY date desc";
     
             $result_stories = DB_query($sql);
             $nrows_stories = DB_numRows($result_stories);
-            $result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) " . $permsql);
+            $result_count = DB_query("SELECT count(*) FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW())" . $permsql);
             $B = DB_fetchArray($result_count);
             $story_results = new Plugin();
             $story_results->searchlabel = $LANG09[53];
@@ -295,12 +319,14 @@ class Search {
     function _searchComments()
     {
         global $LANG09, $_CONF, $_TABLES, $_USER, $_GROUPS;
-        
+
         if ($this->_type == 'all' OR $this->_type == 'comments') {
 
-            $stsql = '';
+            $stsql = COM_getPermSQL ('AND', 0, 2, $_TABLES['stories']);
+            $stsql .= $this->_checkTopicPermissions ();
+
             $stwhere = '';
-            
+
             $groupList = '';
             if (!empty ($_USER['uid'])) {
                 foreach ($_GROUPS as $grp) {
@@ -309,32 +335,24 @@ class Search {
                 $groupList = substr($groupList, 0, -1);
             }
             if (!empty ($_USER['uid'])) {
-                $stsql .= "({$_TABLES['stories']}.owner_id = {$_USER['uid']} AND {$_TABLES['stories']}.perm_owner >= 2) OR ";
-                $stsql .= "({$_TABLES['stories']}.group_id IN ($groupList) AND {$_TABLES['stories']}.perm_group >= 2) OR ";
-                $stsql .= "({$_TABLES['stories']}.perm_members >= 2) OR ";
                 $stwhere .= "({$_TABLES['stories']}.owner_id IS NOT NULL AND {$_TABLES['stories']}.perm_owner IS NOT NULL) OR ";
                 $stwhere .= "({$_TABLES['stories']}.group_id IS NOT NULL AND {$_TABLES['stories']}.perm_group IS NOT NULL) OR ";
                 $stwhere .= "({$_TABLES['stories']}.perm_members IS NOT NULL) OR ";
             }
-            $stsql .= "({$_TABLES['stories']}.perm_anon >= 2)";
             $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
     
-            $posql = '';
+            $posql = COM_getPermSQL ('AND', 0, 2, $_TABLES['pollquestions']);
             $powhere = '';
             if (!empty ($_USER['uid'])) {
-                $posql .= "({$_TABLES['pollquestions']}.owner_id = {$_USER['uid']} AND {$_TABLES['pollquestions']}.perm_owner >= 2) OR ";
-                $posql .= "({$_TABLES['pollquestions']}.group_id IN ($groupList) AND {$_TABLES['pollquestions']}.perm_group >= 2) OR ";
-                $posql .= "({$_TABLES['pollquestions']}.perm_members >= 2) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
                 $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL) OR ";
             }
-            $posql .= "({$_TABLES['pollquestions']}.perm_anon >= 2)";
             $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
     
             $sql = "SELECT {$_TABLES['stories']}.sid,{$_TABLES['comments']}.title,comment,pid,{$_TABLES['comments']}.uid,type as comment_type,UNIX_TIMESTAMP({$_TABLES['comments']}.date) as day,'comment' as type FROM {$_TABLES['comments']} ";
-            $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) ";
-            $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) ";
+            $sql .= "LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") ";
+            $sql .= "LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") ";
             $sql .= "WHERE ";
             $sql .= " (comment like '%$this->_query%' ";
             $sql .= "OR {$_TABLES['comments']}.title like '%$this->_query%') ";
@@ -352,7 +370,7 @@ class Search {
             $sql .= "AND ((" .  $stwhere . ") OR (" . $powhere . ")) ";
             $sql .= "ORDER BY {$_TABLES['comments']}.date DESC";
             $result_comments = DB_query($sql);
-            $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid) AND (" . $stsql . ")) LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid) AND (" . $posql . ")) WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
+            $sql = "SELECT count(*) FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . $stsql . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . $posql . ") WHERE ((" .  $stwhere . ") OR (" . $powhere . "))";
             $result_count = DB_query($sql);
             $B = DB_fetchArray ($result_count);
             $comment_results = new Plugin();
