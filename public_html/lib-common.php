@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.2 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.3 2001/10/29 18:23:38 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -40,7 +40,7 @@ $_COM_VERBOSE = false;
 // | Configuration Include: You shoud only have to modify this include         | 
 // +---------------------------------------------------------------------------+
 
-include_once('/var/www/livestockworld/config.php');
+include_once('/path/to/geeklog/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Library Includes: You shouldn't have to touch anything below here         | 

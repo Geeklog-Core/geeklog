@@ -10,8 +10,8 @@
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs	- tony@tonybibbs.com                               |
-// |          Mark Limburg	- mlimburg@dingoblue.net.au                        |
+// | Authors: Tony Bibbs	- tony@tonybibbs.com                           |
+// |          Mark Limburg	- mlimburg@dingoblue.net.au                    |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    | 
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -34,7 +34,7 @@
 // | information                                                               |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.15 2001/10/29 17:35:49 tony_bibbs Exp $
+// $Id: config.php,v 1.16 2001/10/29 18:23:12 tony_bibbs Exp $
 
 // +---------------------------------------------------------------------------+
 // | SERVER SETTINGS                                                           |
@@ -43,7 +43,7 @@
 // | where the config.php (this file) resides                                  | 
 // +---------------------------------------------------------------------------+
 
-$_CONF['path']          = '/var/www/livestockworld/';
+$_CONF['path']          = '/path/to/geeklog/';
 $_CONF['path_system']   = $_CONF['path'] . 'system/';
 $_CONF['path_html']     = $_CONF['path'] . 'public_html/';
 $_CONF['path_log']	    = $_CONF['path'] . 'logs/';
@@ -57,9 +57,9 @@ $_CONF['rdf_file']      = $_CONF['path_html'] . 'backend/geeklog.rdf';
 // +---------------------------------------------------------------------------+
 
 $_CONF['site_name']     = 'Geeklog Site';
-$_CONF['site_slogan']   = 'Theme Demo';
+$_CONF['site_slogan']   = 'Another Nifty Geeklog Site';
 $_CONF['site_mail']     = 'admin@example.com';
-$_CONF['site_url']      = 'http://tbibbs';
+$_CONF['site_url']      = 'http://www.example.com';
 $_CONF['theme']         = 'Classic';
 $_CONF['layout_url']    = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
 $_CONF['path_themes']   = $_CONF['path_html'] . 'layout/';
@@ -94,7 +94,7 @@ $_CONF['shortdate'] = '%x';
 // | permanent cookies                                                         |
 // +---------------------------------------------------------------------------+
 
-$_CONF['cookie_ip']                     = 1;
+$_CONF['cookie_ip']                     = 0;
 $_CONF['default_perm_cookie_timeout']   = 3600 * 9;
 $_CONF['session_cookie_timeout']        = 7200;
 $_CONF['cookie_session']                = 'gl_session';
@@ -185,8 +185,8 @@ $_CONF['backend']               = 1;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;		// minimum number of stories per page
 $_CONF['olderstuff']            = 1;
-$_CONF['olderstufforder']	    = 2;
-$_CONF['contributedbyline']	    = 1;		// If 1, show contributed by line
+$_CONF['olderstufforder']       = 2;
+$_CONF['contributedbyline']     = 1;		// If 1, show contributed by line
 $_CONF['article_image_align']   = 'right'; 	// Options are left or right.
 	
 // Comment Settings
