@@ -22,6 +22,16 @@ CREATE TABLE blocks (
   PRIMARY KEY (bid)
 );
 
+#Mandatory Data for blocks
+INSERT INTO blocks VALUES (1,'blockheader','all',255,0,'layout','','0000-00-00 00:00:00','<table border=0 cellpadding=1 cellspacing=0 width=\"100%\"><tr bgcolor=666666><td>\r\n<table width=\"100%\" border=0 cellspacing=0 cellpadding=2>\r\n<tr bgcolor=666666><td class=blocktitle>%title</td><td align=right>%help</td></tr>\r\n<tr><td bgcolor=FFFFFF colspan=2>','',1);
+INSERT INTO blocks VALUES (2,'blockfooter','all',255,0,'layout','','0000-00-00 00:00:00','</td></tr></table>\r\n</td></tr></table><br>','',1);
+INSERT INTO blocks VALUES (3,'Events Block','all',255,2,'gldefault','','0000-00-00 00:00:00','','',1);
+INSERT INTO blocks VALUES (4,'Section Block','all',255,0,'gldefault','','0000-00-00 00:00:00','','',1);
+INSERT INTO blocks VALUES (5,'Poll Block','all',255,2,'gldefault','','0000-00-00 00:00:00','','',0);
+INSERT INTO blocks VALUES (6,'User Block','all',255,1,'gldefault','','0000-00-00 00:00:00','','',1);
+INSERT INTO blocks VALUES (7,'Whats New Block','all',255,3,'gldefault','','0000-00-00 00:00:00','','',1);
+
+
 #
 # Table structure for table 'commentcodes'
 #
