@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: links.php,v 1.23 2002/11/28 15:14:54 dhaun Exp $
+// $Id: links.php,v 1.24 2002/11/29 16:04:54 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -124,7 +124,7 @@ if (empty ($_USER['username']) &&
         $page = 0;
         $end = 10;
 
-        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE hits > 0 ORDER BY hits DESC LIMIT 10");
+        $result = DB_query("SELECT lid,url,title,description,hits from {$_TABLES['links']} WHERE (hits > 0) AND ({$permsql}) ORDER BY hits DESC LIMIT 10");
         $nrows  = DB_numRows($result);
         if ($nrows > 0) {
             $linklist->set_var('link_details','');

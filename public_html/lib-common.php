@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.187 2002/11/29 10:47:16 dhaun Exp $
+// $Id: lib-common.php,v 1.188 2002/11/29 16:04:41 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1743,8 +1743,8 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 * Shows all available topics
 *
 * Show the topics in the system the user has access to and prints them in HTML.
-* This function is used to show the topics in the sections block. Topics have href and
-* are seperated by line breaks.
+* This function is used to show the topics in the sections block. Topics have
+* href and are seperated by line breaks.
 *
 * @param        string      $topic      TopicID of currently selected
 * @return   string    HTML formated topic list
@@ -1753,9 +1753,25 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
 
 function COM_showTopics( $topic='' )
 {
-    global $_TABLES, $_CONF, $_USER, $LANG01, $HTTP_SERVER_VARS, $page, $newstories;
+    global $_TABLES, $_CONF, $_USER, $_GROUPS, $LANG01, $HTTP_SERVER_VARS,
+           $page, $newstories;
 
-    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} ";
+    $groupList = '';
+    if (!empty ($_USER['uid'])) {
+        foreach ($_GROUPS as $grp) {
+            $groupList .= $grp . ',';
+        }
+        $groupList = substr ($groupList, 0, -1);
+    }
+    $permsql = '';
+    if (!empty ($_USER['uid'])) {
+        $permsql .= "(owner_id = {$_USER['uid']} AND perm_owner >= 2) OR "
+                 . "(group_id IN ($groupList) AND perm_group >= 2) OR "
+                 . "(perm_members >= 2) OR ";
+    }
+    $permsql .= "(perm_anon >= 2)";
+
+    $sql = "SELECT tid,topic,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['topics']} WHERE ({$permsql}) ";
     if( $_CONF['sortmethod'] == 'alpha' )
     {
         $sql .= "ORDER BY topic ASC";
@@ -1785,68 +1801,65 @@ function COM_showTopics( $topic='' )
     {
         $A = DB_fetchArray( $result );
 
-        if( SEC_hasAccess( $A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon']) > 0 )
+        if( $A['tid'] == $topic )
         {
-            if( $A['tid'] == $topic )
+            $retval .= stripslashes( $A['topic'] );
+
+            if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
             {
-                $retval .= stripslashes( $A['topic'] );
+                $retval .= ' (';
 
-                if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+                if( $_CONF['showstorycount'] )
                 {
-                    $retval .= ' (';
-
-                    if( $_CONF['showstorycount'] )
-                    {
-                        $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'" );
-                        $T = DB_fetchArray( $rcount );
-                        $retval .= $T['count'];
-                    }
-
-                    if( $_CONF['showsubmissioncount'] )
-                    {
-                        if( $_CONF['showstorycount'] )
-                        {
-                            $retval .= '/';
-                        }
-
-                        $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
-                    }
-
-                    $retval .= ')';
+                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}') AND ({$permsql})" );
+                    $T = DB_fetchArray( $rcount );
+                    $retval .= $T['count'];
                 }
 
-                $retval .= '<br>' . LB;
-            }
-            else
-            {
-                $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . stripslashes( $A['topic'] ) . '</b></a> ';
-
-                if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+                if( $_CONF['showsubmissioncount'] )
                 {
-                    $retval .= '(';
-
                     if( $_CONF['showstorycount'] )
                     {
-                        $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '{$A['tid']}'" );
-                        $T = DB_fetchArray( $rcount );
-                        $retval .= $T['count'];
+                        $retval .= '/';
                     }
 
-                    if( $_CONF['showsubmissioncount'] )
-                    {
-                        if( $_CONF['showstorycount'] )
-                        {
-                            $retval .= '/';
-                        }
-
-                        $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
-                    }
-
-                    $retval .= ')';
+                    $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
                 }
 
-                $retval .= '<br>' . LB;
+                $retval .= ')';
             }
+
+            $retval .= '<br>' . LB;
+        }
+        else
+        {
+            $retval .= '<a href="' . $_CONF['site_url'] . '/index.php?topic=' . $A['tid'] . '"><b>' . stripslashes( $A['topic'] ) . '</b></a> ';
+
+            if( $_CONF['showstorycount'] + $_CONF['showsubmissioncount'] > 0 )
+            {
+                $retval .= '(';
+
+                if( $_CONF['showstorycount'] )
+                {
+                    $rcount = DB_query( "SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE (draft_flag = 0) AND (date <= NOW()) AND (tid = '{$A['tid']}') AND ({$permsql})" );
+                    $T = DB_fetchArray( $rcount );
+                    $retval .= $T['count'];
+                }
+
+                if( $_CONF['showsubmissioncount'] )
+                {
+                    if( $_CONF['showstorycount'] )
+                    {
+                        $retval .= '/';
+                    }
+
+                    $retval .= DB_count( $_TABLES['storysubmission'], 'tid', $A['tid'] );
+                }
+
+                $retval .= ')';
+            }
+
+            $retval .= '<br>' . LB;
         }
     }
 
