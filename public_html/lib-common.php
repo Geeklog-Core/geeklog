@@ -11,7 +11,7 @@
 // | Copyright (C) 2000,2001 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Mark Limburg     - mlimburg@dingoblue.net.au                     
+// |          Mark Limburg     - mlimburg@dingoblue.net.au                     |
 // |          Jason Wittenburg - jwhitten@securitygeeks.com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
@@ -31,13 +31,14 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.87 2002/05/02 22:51:57 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.88 2002/05/03 08:17:42 dhaun Exp $
 
 /**
-* This is the common library for Geeklog.  Through our code, you will see functions
-* with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions can be found in this
-* file.  This file provide all configuration variables needed by Geeklog with a
-* series of includes see futher down.  You only need to modify one line in this file.
+* This is the common library for Geeklog.  Through our code, you will see
+* functions with the COM_ prefix (e.g. COM_siteHeader()).  Any such functions
+* can be found in this file.  This file provides all configuration variables
+* needed by Geeklog with a series of includes (see futher down).  You only need
+* to modify one line in this file.
 * WARNING: put any custom hacks in lib-custom.php and not in here.  This file is
 * modified frequently by the Geeklog development team.  If you put your hacks in
 * lib-custom.php you will find upgrading much easier.
@@ -58,7 +59,7 @@ $_COM_VERBOSE = false;
 require_once('/path/to/geeklog/config.php');
 
 // +---------------------------------------------------------------------------+
-// | Library Includes: You shouldn't have to touch anything below here         | 
+// | Library Includes: You shouldn't have to touch anything below here         |
 // +---------------------------------------------------------------------------+
 
 /**
@@ -71,7 +72,7 @@ $_PAGE_TIMER->startTimer();
 
 /**
 * include URL class that provide optional URL rewriting functionality.  Please
-* not this code is still experimental and is only currently used by the
+* note this code is still experimental and is only currently used by the
 * staticpages plugin
 *
 */
@@ -120,9 +121,9 @@ require_once($_CONF['path_system'] . 'lib-sessions.php');
 
 
 // Set theme
-// Need to modify this code to check if theme was cached in user cookie.  That way
-// if user logged in and set theme and then logged out we would still know which
-// theme to show them.
+// Need to modify this code to check if theme was cached in user cookie.  That
+// way if user logged in and set theme and then logged out we would still know
+// which theme to show them.
 if ($_CONF['allow_user_themes'] == 1) {
     if (isset($HTTP_COOKIE_VARS['theme']) && empty($_USER['theme'])) {
         if (is_dir($_CONF['path_themes'] . $HTTP_COOKIE_VARS['theme'])) {
@@ -179,7 +180,7 @@ $_RIGHTS = explode(',',SEC_getUserPermissions());
 $_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
-// | BLOCK LOADER: Load all definable HTML blocks in to memory                 | 
+// | BLOCK LOADER: Load all definable HTML blocks in to memory                 |
 // +---------------------------------------------------------------------------+
 
 $result = DB_query("SELECT title,content FROM {$_TABLES['blocks']} WHERE type = 'layout'");
@@ -190,7 +191,7 @@ for ($i = 1; $i <= $nrows; $i++) {
 }
 
 // +---------------------------------------------------------------------------+
-// | STORY FUNCTIONS                                                           | 
+// | STORY FUNCTIONS                                                           |
 // +---------------------------------------------------------------------------+
 
 /**
@@ -210,8 +211,8 @@ function COM_article($A,$index='')
     $curtime = COM_getUserDateTimeFormat($A['day']);
     $A['day'] = $curtime[0];
 
-    
-    
+
+
     // If plain text then replace newlines with <br> tags
     if ($A['postmode'] == 'plaintext') {
         $A['introtext'] = nl2br($A['introtext']);
@@ -301,9 +302,9 @@ function COM_article($A,$index='')
 * Return the file to use for a block template.
 *
 * This returns the template needed to build the HTML for a block.  This function
-* allows designers to give a block it's own custom look and feel.  If no templates
-* for the block are specified, the default blockheader.html and blockfooter.html will
-* be used.
+* allows designers to give a block it's own custom look and feel.  If no
+* templates for the block are specified, the default blockheader.html and
+* blockfooter.html will be used.
 *
 * @param        string      $blockname      corresponds to name field in block table
 * @param        string      $which          can be either 'header' or 'footer'
@@ -2271,25 +2272,32 @@ function COM_printUpcomingEvents($help='',$title='')
                 $oldDate2 = $abbrDate2;
                 $numDays ++;
                 if ($numDays < 14) {
+                    if (!empty ($newevents)) {
+                         $retval .= COM_makeList ($newevents);
+                    }
                     $retval .= '<br><b>' . $dayName1 . '</b>&nbsp;<small>' . $abbrDate1 . '</small>';
                     // If different start and end Dates, then display end date:
                     if ($abbrDate1 != $abbrDate2) {
                         $retval .= ' - <br><b>' . $dayName2 . '</b>&nbsp;<small>' . $abbrDate2 . '</small>';
                     }
                 }
+                $newevents = array ();
             }
 
             // Now display this event record.
 
             if ($numDays < 14) {
                 // Display the url now!
-                $retval .= '<li><a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
-                    . '">' . stripslashes($theEvent['title']) . '</a></li>';
+                $newevents[] = '<a href="' . $_CONF['site_url'] . '/calendar_event.php?eid=' . $theEvent['eid']
+                    . '">' . stripslashes($theEvent['title']) . '</a>';
             }
             $theRow ++ ;
         }
 
     } // end for z
+    if (!empty ($newevents)) {
+        $retval .= COM_makeList ($newevents);
+    }
     $retval .= COM_endBlock(COM_getBlockTemplate('events_block', 'footer'));
 
     return $retval;
