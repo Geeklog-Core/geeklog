@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.125 2002/08/02 14:51:51 dhaun Exp $
+// $Id: lib-common.php,v 1.126 2002/08/03 14:22:57 dhaun Exp $
 
 /**
 * This is the common library for Geeklog.  Through our code, you will see
@@ -140,11 +140,15 @@ if ($_CONF['allow_user_themes'] == 1) {
         }
     }
     if (!empty($_USER['theme'])) {
-        $_CONF['theme'] = $_USER['theme'];
-        $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
-        $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+        if (is_dir($_CONF['path_themes'] . $_USER['theme'])) {
+            $_CONF['theme'] = $_USER['theme'];
+            $_CONF['path_layout'] = $_CONF['path_themes'] . $_CONF['theme'] . '/';
+            $_CONF['layout_url'] = $_CONF['site_url'] . '/layout/' . $_CONF['theme'];
+        } else {
+            $_USER['theme'] = $_CONF['theme'];
+        }
     }
-} 
+}
 
 // Include theme functions file which may/may not do anything
 if (file_exists($_CONF['path_layout'] . 'functions.php')) {
