@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.tpl,v 1.18 2002/01/03 20:46:50 tony_bibbs Exp $
+// $Id: lib-common.tpl,v 1.19 2002/01/04 16:15:37 tony_bibbs Exp $
 
 // Turn this on go get various debug messages from the code in this library
 $_COM_VERBOSE = false; 
@@ -115,6 +115,7 @@ setlocale(LC_ALL, $_CONF['locale']);
 
 // Get user permissions
 $_RIGHTS = explode(',',SEC_getUserPermissions());
+$_GROUPS = $_GROUPS = SEC_getUserGroups($_USER['uid']);
 
 // +---------------------------------------------------------------------------+
 // | BLOCK LOADER: Load all definable HTML blocks in to memory                 | 
