@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.382 2004/10/03 16:21:58 blaine Exp $
+// $Id: lib-common.php,v 1.383 2004/10/05 18:03:20 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2909,7 +2909,8 @@ function COM_getComment( &$comments, $mode, $type, $order, $delete_option = fals
         $A['comment'] = str_replace( '{', '&#123;', $A['comment'] );
         $A['comment'] = str_replace( '}', '&#125;', $A['comment'] );
 
-        $A['comment'] = PLG_replacetags($A['comment']);   // Replace any plugin autolink tags
+        // Replace any plugin autolink tags
+        $A['comment'] = PLG_replaceTags( $A['comment'] );
 
         $template->set_var( 'title', $A['title'] );
         $template->set_var( 'comments', $A['comment'] );
@@ -3191,10 +3192,10 @@ function COM_killJS( $Message )
 */
 function COM_handleCode( $str )
 {
-    $str = str_replace( '&', '&amp;', $str );
-    $str = str_replace( '\\', '&#092;', $str );
-    $str = str_replace( '<', '&lt;', $str );
-    $str = str_replace( '>', '&gt;', $str );
+    $search  = array( '&',     '\\',    '<',    '>',    '[',     ']'     );
+    $replace = array( '&amp;', '&#92;', '&lt;', '&gt;', '&#91;', '&#93;' );
+
+    $str = str_replace( $search, $replace, $str );
 
     return( $str );
 }
