@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.22 2002/04/11 14:57:58 tony_bibbs Exp $
+// $Id: users.php,v 1.23 2002/04/19 21:40:13 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -55,7 +55,7 @@ function userprofile($user)
 
     $retval .= '';
 	
-    $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
+    $result = DB_query("SELECT username,fullname,regdate,homepage,about,pgpkey,photo FROM {$_TABLES['userinfo']},{$_TABLES["users"]} WHERE {$_TABLES['userinfo']}.uid = {$_TABLES['users']}.uid AND {$_TABLES['users']}.uid = $user");
     $A = DB_fetchArray($result);
 
     // format date/time to user preference
@@ -69,6 +69,11 @@ function userprofile($user)
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('username', $A['username']);
+    if (!empty($A['photo']) AND $_CONF['allow_user_photo'] == 1) {
+        $user_templates->set_var('user_photo','<img src="' . $_CONF['site_url'] . '/images/userphotos/' . $A['photo'] . '">');
+    } else {
+        $user_templates->set_var('user_photo','');
+    }
     $user_templates->set_var('user_fullname', $A['fullname']);
 	$user_templates->set_var('lang_membersince', $LANG04[67]);
     $user_templates->set_var('user_regdate', $A['regdate']);
