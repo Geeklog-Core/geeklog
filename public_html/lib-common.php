@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.66 2002/04/16 20:42:28 tony_bibbs Exp $
+// $Id: lib-common.php,v 1.67 2002/04/17 18:15:46 dreamscape Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -1604,7 +1604,7 @@ function COM_comment($A,$mode=0,$type,$level=0,$mode='flat',$ispreview=false)
 * @message          string      String to check
 *
 */
-function COM_checkWords($Message) 
+function COM_checkWords($Message)
 {
     global $_CONF;
 
@@ -1612,23 +1612,28 @@ function COM_checkWords($Message)
     if ($_CONF["censormode"] != 0) {
         if (is_array($_CONF["censorlist"])) {
             $Replacement = $_CONF["censorreplace"];
-            if ($_CONF["censormode"] == 1) { # Exact match
-                $RegExPrefix   = '([^[:alpha:]]|^)';
-                $RegExSuffix   = '([^[:alpha:]]|$)';
-            } elseif ($_CONF["censormode"] == 2) {    # Word beginning
-                $RegExPrefix   = '([^[:alpha:]]|^)';
-                $RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]|$)';
-            } elseif ($_CONF["censormode"] == 3) {    # Word fragment
-                $RegExPrefix   = '([^[:alpha:]]*)[[:alpha:]]*';
-                $RegExSuffix   = '[[:alpha:]]*([^[:alpha:]]*)';
+            switch ($_CONF["censormode"]) {
+                case 1:     # Exact match
+                    $RegExPrefix   = '(\s*)';
+                    $RegExSuffix   = '(\W*)';
+                    break;
+                case 2:     # Word beginning
+                    $RegExPrefix   = '(\s*)';
+                    $RegExSuffix   = '(\w*)';
+                    break;
+                case 3:     # Word fragment
+                    $RegExPrefix   = '(\w*)';
+                    $RegExSuffix   = '(\w*)';
+                    break;
             }
-            for ($i = 0; $i < count($_CONF["censorlist"]) && $RegExPrefix != ''; $i++) {
+            for ($i = 0; $i < count($_CONF["censorlist"]); $i++) {
                 $EditedMessage = eregi_replace($RegExPrefix.$_CONF["censorlist"][$i].$RegExSuffix,"\\1$Replacement\\2",$EditedMessage);
             }
         }
     }
     return ($EditedMessage);
 }
+
 
 /**
 * This function COM_checks html tags.
