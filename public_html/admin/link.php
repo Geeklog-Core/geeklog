@@ -167,7 +167,7 @@ function savelink($lid,$category,$categorydd,$url,$description,$title,$hits,$own
 }
 
 ###############################################################################
-# Displays the list os links
+# Displays the list of links
 
 function listlinks() {
 	global $LANG23,$LANG_ACCESS,$CONF;
@@ -175,7 +175,7 @@ function listlinks() {
 	adminedit("link",$LANG23[12]);
 	print "<table border=0 cellspacing=0 cellpadding=2 width=100%>";
 	print "<tr><th align=left>{$LANG23[13]}</th><th>{$LANG_ACCESS[access]}</th><th>{$LANG23[14]}</th><th>{$LANG23[15]}</th></tr>";
-	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}links");
+	$result = dbquery("SELECT * FROM {$CONF["db_prefix"]}links ORDER BY category asc,title");
 	$nrows = mysql_num_rows($result);
 	for ($i=0;$i<$nrows;$i++) {
 		$A = mysql_fetch_array($result);
