@@ -1232,12 +1232,19 @@ $LANG_PDF = array(
          . ' to the xHTML standard. Please note that overly complex html documents may not render correctly or at all.'
          . 'The document resulting from your attempt was 0 bytes in length, and has been deleted. If you\'re sure that your document should render fine, please re-submit it.',
     3 => 'Unknown error during PDF generation',
-    4 => 'No page data was given.  PDF generation cannot continue',
+    4 => 'No page data was given or you want to use the ad-hoc PDF generation tool below.  If you think you are getting this page
+          in error then please contact the system administrator.  Otherwise, you may use the form below to generate PDF\'s in an ad-hoc fashion.',
     5 => 'Loading your document.',
     6 => 'Please wait while your document is loaded.',
     7 => 'You may right click the button below and choose \'save target...\' or \'save link location...\' to save a copy of your document.',
     8 => 'The path given in the configuration file to the HTMLDoc binary is invalid.  Please contact the site administrator if this problem
-          persists.'
+          persists.',
+    9 => 'PDF Generator',
+    10 => 'This is the Ad-hoc PDF Generation tool. It will attempt to convert any URL you give into a PDF.  Please note that some web pages will not render properly with this feature.  This
+           is a limitation of the HTMLDoc PDF generation tool and such errors should not be reported to the administrators of this site',
+    11 => 'URL',
+    12 => 'Generate PDF!',
+    13 => 'The PHP configuration on this server does not allow URLs to be used with the fopen() command.  The system administrator must edit the php.ini file and set allow_url_fopen to On'
 );
 
 ?>
