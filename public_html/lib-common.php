@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.260 2003/09/14 09:07:54 dhaun Exp $
+// $Id: lib-common.php,v 1.261 2003/09/14 09:18:04 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR);
@@ -1766,7 +1766,11 @@ function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
             }
             if( $scale > 399 && $Q['commentcode'] >= 0 )
             {
-                $retval .= COM_userComments( $qid, $Q['question'], 'poll', $order, $mode );
+                $delete_option = ( SEC_hasAccess( $Q['owner_id'],
+                    $Q['group_id'], $Q['perm_owner'], $Q['perm_group'],
+                    $Q['perm_members'], $Q['perm_anon'] ) == 3 ? true : false );
+                $retval .= COM_userComments( $qid, $Q['question'], 'poll',
+                                             $order, $mode, $delete_option ); 
             }
         }
     }
@@ -2611,17 +2615,16 @@ function COM_getComment( $A, $mode, $type, $order, $delete_option = false, $prev
     $template->set_var( 'sid', $A['sid'] );
     $template->set_var( 'type', $A['type'] );
 
-    if( $preview )
-    {
-        $template->set_var( 'delete_option', '' );
-    }
-    // NOTE: the following check is nonsense (but fully 1.3.8 compatible ;-)
-    else if( $delete_option )
+    if( $delete_option )
     {
         $template->set_var( 'delete_option', '| <a href="' . $_CONF['site_url']
                 . '/comment.php?mode=' . $LANG01[28] . '&amp;cid=' . $A['cid']
                 . '&amp;sid=' . $A['sid'] . '&amp;type=' . $type . '">'
                 . $LANG01[28] . '</a> ' );
+    }
+    else
+    {
+        $template->set_var( 'delete_option', '' );
     }
 
     $A['title'] = stripslashes( $A['title'] );
