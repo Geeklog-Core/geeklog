@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar.php,v 1.42 2004/08/06 08:55:35 dhaun Exp $
+// $Id: calendar.php,v 1.43 2004/08/07 09:14:28 dhaun Exp $
 
 include('lib-common.php');
 include($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -481,8 +481,8 @@ case 'day':
     list($hourcols, $thedata, $max, $alldaydata) = getDayViewData($result);
 
     // Get all day events
-    if (count($alldaydata) > 0) {
-        for ($i = 1; $i <= count($alldaydata); $i++) {
+    if (count ($alldaydata) > 0) {
+        for ($i = 1; $i <= count ($alldaydata); $i++) {
             $A = current($alldaydata);
             if (SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']) > 0 AND $mode == 'personal') {
                 $cal_templates->set_var('delete_imagelink','<a href="' . $_CONF['site_url'] . '/calendar_event.php?action=deleteevent&amp;eid=' . $eid . '"><img alt="' . $LANG30[30] . '" src="' . $_CONF['layout_url'] . '/images/icons/delete_event.gif" border="0"></a>');
@@ -532,7 +532,8 @@ case 'day':
                 } else {
                     $cal_templates->set_var('br', '');
                 }
-                $cal_templates->parse('event_entry','event',true);
+                $cal_templates->parse ('event_entry', 'event',
+                                       ($j == 1) ? false : true);
                 // $colsleft = $colsleft - 1;
                 next($thedata);
             }
