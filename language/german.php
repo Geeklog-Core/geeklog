@@ -420,8 +420,8 @@ $LANG09 = array(
 	21 => "bis",
 	22 => "(Datumsformat: JJJJ-MM-TT)",
 	23 => "Treffer",
-	24 => "Gefunden:",
-	25 => "Treffer aus",
+	24 => '%d Einträge gefunden',
+	25 => 'Gesucht wurde nach',
 	26 => "Beiträgen in",
 	27 => "Sekunden.",
     28 => 'Keine Treffer unter den Artikeln und Kommentaren.',
@@ -438,7 +438,20 @@ $LANG09 = array(
     39 => 'Links',
     40 => 'Termine',
     41 => 'Dein Suchbegriff sollte mindestens 3 Zeichen lang sein.',
-    42 => 'Das Datum muss im Format JJJJ-MM-TT (Jahr-Monat-Tag) eingegeben werden.'
+    42 => 'Das Datum muss im Format JJJJ-MM-TT (Jahr-Monat-Tag) eingegeben werden.',
+    43 => 'exact phrase',
+    44 => 'all of these words',
+    45 => 'any of these words',
+    46 => 'Next',
+    47 => 'Previous',
+    48 => 'Author',    
+    49 => 'Date',       
+    50 => 'Hits',
+    51 => 'Link',
+    52 => 'Location',
+    53 => 'Story Results',
+    54 => 'Comment Results',
+    55 => ''
 );
 
 ###############################################################################
