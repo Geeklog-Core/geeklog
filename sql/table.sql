@@ -225,7 +225,8 @@ CREATE TABLE featurecodes (
 #
 # Dumping data for table 'featurecodes'
 #
-
+INSERT INTO featurecodes VALUES (0,'Not Featured');
+INSERT INTO featurecodes VALUES (1,'Featured');
 
 #
 # Table structure for table 'features'
