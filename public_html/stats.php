@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.11 2002/01/19 10:28:16 dreamscape Exp $
+// $Id: stats.php,v 1.12 2002/02/26 17:57:21 tony_bibbs Exp $
 
 include_once('lib-common.php');
 
@@ -51,8 +51,13 @@ $stat_templates->set_file(array('stats'=>'stats.thtml',
 $totalhits = DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'");
 $stat_templates->set_var('lang_totalhitstosystem',$LANG10[2]);
 $stat_templates->set_var('total_hits', $totalhits);
-	
-$total_stories = DB_count($_TABLES['stories'],'draft_flag','0');
+
+$id = array('draft_flag','date');
+$values = array('0','NOW()');	
+//$total_stories = DB_count($_TABLES['stories'],'draft_flag','0');
+$result = DB_query("SELECT count(*) AS count FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW()");
+$A = DB_fetchArray($result);
+$total_stories = $A['count'];
 $comments = DB_count($_TABLES['comments']);
 $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
 $stat_templates->set_var('total_stories',$total_stories);
