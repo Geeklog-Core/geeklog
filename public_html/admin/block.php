@@ -257,7 +257,7 @@ switch ($mode) {
 		dbdelete("blocks","bid",$bid,"/admin/block.php?msg=12");
 		break;
 	case "save":
-		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfni,$onleft);
+		saveblock($bid,$title,$seclev,$type,$blockorder,$content,$tid,$rdfurl,$rdfupdated,$phpblockfn,$onleft);
 		break;
 	case "edit":
 		include("../layout/header.php");
