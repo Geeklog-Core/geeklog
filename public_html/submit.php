@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.47 2002/12/03 04:37:40 efarmboy Exp $
+// $Id: submit.php,v 1.48 2003/01/01 20:02:19 efarmboy Exp $
 
 require_once('lib-common.php');
 
@@ -541,7 +541,7 @@ function savesubmission($type,$A)
             $A['lid'] = COM_makeSid();
             DB_save($_TABLES['submitspeedlimit'],'ipaddress, date',"'$REMOTE_ADDR',unix_timestamp()");
             if (($_CONF['linksubmission'] == 1) && !SEC_hasRights('link.submit')) {
-                $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}'",$_CONF['site_url']."/index.php?msg=3");
+                $result = DB_save($_TABLES['linksubmission'],'lid,category,url,description,title,date',"{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',NOW()",$_CONF['site_url']."/index.php?msg=3");
                 if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
                     sendNotification ($_TABLES['linksubmission'], $A);
                 }
@@ -551,7 +551,7 @@ function savesubmission($type,$A)
                 } else {
                     $owner_id = $_USER['uid'];
                 }
-                $result = DB_save($_TABLES['links'],'lid,category,url,description,title,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',$owner_id", $_CONF['site_url'] . '/links.php');
+                $result = DB_save($_TABLES['links'],'lid,category,url,description,title,date,owner_id', "{$A["lid"]},'{$A["category"]}','{$A["url"]}','{$A["description"]}','{$A['title']}',NOW(),$owner_id", $_CONF['site_url'] . '/links.php');
                 if (isset ($_CONF['notification']) && in_array ('link', $_CONF['notification'])) {
                     sendNotification ($_TABLES['links'], $A);
                 }

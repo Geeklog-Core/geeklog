@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.31 2002/11/09 12:49:46 dhaun Exp $
+// $Id: moderation.php,v 1.32 2003/01/01 20:02:19 efarmboy Exp $
 
 require_once('../lib-common.php');
 require_once('auth.inc.php');
@@ -354,7 +354,7 @@ function moderation($mid,$action,$type,$count)
         $id = 'lid';
         $table = $_TABLES['links'];
         $submissiontable = $_TABLES['linksubmission'];
-        $fields = 'lid,category,url,description,title';
+        $fields = 'lid,category,url,description,title,date';
         break;
     case 'story':
         $id = 'sid';
