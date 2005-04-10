@@ -1,12 +1,15 @@
 <?php
+
 /**
  * File: EditBlackList.Admin.class.php
- * This is the Edit Personal Blacklist Module for the Geeklog SpamX Plug-in!
+ * This is the Edit Personal Blacklist Module for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2004 by the following authors:
- * Author		Tom Willett		tomw@pigstye.net
+ * Copyright (C) 2004-2005 by the following authors:
+ * Author		Tom Willett		tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
+ *
+ * $Id: EditBlackList.Admin.class.php,v 1.4 2005/04/10 10:02:44 dhaun Exp $
  */
 
 /**

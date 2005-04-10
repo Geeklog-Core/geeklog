@@ -2,23 +2,23 @@
 
 <html>
 <head>
-	<title>SpamX Comment Spam Plugin</title>
+	<title>Spam-X Comment Spam Plugin</title>
 </head>
 
 <body>
-<h1>SpamX Comment Spam Plugin Install Instructions</h1>
+<h1>Spam-X Comment Spam Plugin Install Instructions</h1>
  
-Tom Willett    tomw@pigstye.net<br>
+Tom Willett    tomw AT pigstye DOT net<br>
 Unionville, Indiana, USA<br>
 June 13, 2004<p>
 
-Install/Uninstall instruction for the Geeklog SpamX plugin.<p>
+Install/Uninstall instruction for the Geeklog Spam-X plugin.<p>
 
 INSTALL:<p>
 
 Step 1:  Back up your Geeklog Database.  <p>
 
-Step 2: Uncompress the SpamX plugin archive while in the <geeklog_dir>/plugins directory.  The archive will 
+Step 2: Uncompress the Spam-X plugin archive while in the <geeklog_dir>/plugins directory.  The archive will 
 create a directory called spamx in the plugins directory.<p>
 
 Step 3:  Create the public_html and admin directories.  Under your html directory (usually public_html) 
@@ -33,26 +33,26 @@ public_html/spamx directory writable by you webserver.  Either chmod 766 or pref
 to the user the webserver runs under eg nobody or apache.  If you do not do this you will not be able 
 to use the admin interface.<p>
 
-Step 6:  Log in to your Geeklog as a root user and run install.php in your admin/plugins/SpamX/ directory 
+Step 6:  Log in to your Geeklog as a root user and run install.php in your admin/plugins/spamx/ directory 
 or run the plugin app in the admin interface and install from there. The install page will tell you if the 
 install was successful or not.  If not examine Geeklog system errorlog for possible problems.<p>
 
 Step 7: The final thing you must do is edit your comment.php (in public_html directory) and change the 
-function savecomment name to savecomment1.  The SpamX plugin should now be installed and functioning.  
-Clicking on the SpamX Icon will take you to the admin page.  <p>
+function savecomment name to savecomment1.  The Spam-X plugin should now be installed and functioning.  
+Clicking on the Spam-X Icon will take you to the admin page.  <p>
 
-Step 7: Set up security.  On install only the root users have access to SpamX administration.  
+Step 7: Set up security.  On install only the root users have access to Spam-X administration.  
 You can delegate control for admin through the user and group editors.<p>
 
 UNINSTALL:<p>
 
-Step 1:  Run the install.php page in your admin/plugins/SpamX directory.  This will remove all the data from 
+Step 1:  Run the install.php page in your admin/plugins/spamx directory.  This will remove all the data from 
 your database.<p>
 
 Step 2: Rename savecomment1 in comment.php back to savecomment.<p>
 
-Step 3:  Delete the three plugin directories created in the install process:  <geeklog-dir>plugins/SpamX/ 
-<public_html>/SpamX/ and <admin>/plugins/SpamX/<p>
+Step 3:  Delete the three plugin directories created in the install process:  <geeklog-dir>plugins/spamx/ 
+<public_html>/spamx/ and <admin>/plugins/spamx/<p>
 
 Thats it.
 </body>

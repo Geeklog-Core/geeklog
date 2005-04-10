@@ -1,12 +1,15 @@
 <?php
+
 /**
 * File: EditIP.Admin.class.php
-* This is the Edit IPBlacklist Module for the Geeklog SpamX Plug-in!
+* This is the Edit IPBlacklist Module for the Geeklog Spam-X Plug-in!
 *
-* Copyright (C) 2004 by the following authors:
-* Author        Tom Willett        tomw@pigstye.net
+* Copyright (C) 2004-2005 by the following authors:
+* Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
+*
+* $Id: EditIP.Admin.class.php,v 1.2 2005/04/10 10:02:44 dhaun Exp $
 */
 
 /**
@@ -48,20 +51,19 @@ class EditIP extends BaseAdmin {
         }
 
         $display = '<hr><p><b>';
-        $display .= $LANG_SX00['pblack'];
+        $display .= $LANG_SX00['ipblack'];
         $display .= '</b></p><ul>';
-        $result = DB_query('SELECT * FROM ' . $_TABLES['spamx'] . ' WHERE name="IP"');
+        $result = DB_query ('SELECT value FROM ' . $_TABLES['spamx'] . ' WHERE name="IP"');
         $nrows = DB_numRows($result);
-        for($i = 1;$i <= $nrows;$i++) {
-            $A = DB_fetchArray($result);
-            $e = $A['value'];
+        for ($i = 0; $i < $nrows; $i++) {
+            list($e) = DB_fetchArray ($result);
             $display .= '<li><a href="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP&action=delete&entry=' . urlencode($e) . '">' . $e . '</a></li>';
         }
         $display .= '</ul><p>' . $LANG_SX00['e1'] . '</p>';
         $display .= '<p>' . $LANG_SX00['e2'] . '</p>';
         $display .= '<form method="post" action="' . $_CONF['site_admin_url'] . '/plugins/spamx/index.php?command=EditIP">';
         $display .= '<input type="text" size ="30" name="pentry">&nbsp;&nbsp;&nbsp;';
-        $display .= '<input type="Submit" name="paction" value="' . $LANG_SX00['addentry'] . '">';
+        $display .= '<input type="submit" name="paction" value="' . $LANG_SX00['addentry'] . '">';
         $display .= '</form>';
         return $display;
     }

@@ -1,9 +1,11 @@
 <?php
 
 /**
- * Create the spamx rss feed
+ * Create the Spam-X rss feed
  * 
  * @param items $ array of blacklisted sites
+ *
+ * $Id: rss.inc.php,v 1.3 2005/04/10 10:02:46 dhaun Exp $
  */
 
 function Spamx_rss($items)
@@ -11,7 +13,7 @@ function Spamx_rss($items)
     global $_CONF; 
     // Basic Data
     $about = $_CONF['site_url'] . '/spamx/index.php';
-    $title = 'SpamX Blacklist';
+    $title = 'Spam-X Blacklist';
     $description = 'Personal Spamx Blacklist from site ' . $_CONF['site_name']; 
     // Dublic Core Data
     $dc = array('dc:publisher' => $_CONF['site_name'],

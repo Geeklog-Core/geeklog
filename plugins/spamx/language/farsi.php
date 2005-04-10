@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi.php,v 1.1 2005/04/10 09:44:21 dhaun Exp $
+ * $Id: farsi.php,v 1.2 2005/04/10 10:02:46 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -48,7 +48,7 @@ $LANG_SX00 = array (
     'addcen' => 'Add Censor List',
     'addentry' => 'Add Entry',
     'e1' => 'To Delete an entry click it.',
-    'e2' => 'To Add an entry, enter in in the box and click Add.  Entries can use full Perl Regular Expressions.',
+    'e2' => 'To Add an entry, enter it in the box and click Add.  Entries can use full Perl Regular Expressions.',
     'pblack' => 'Spam-X Personal Blacklist',
     'conmod' => 'Configure Spam-X Module Usage',
     'acmod' => 'Spam-X Action Modules',
@@ -109,6 +109,7 @@ $LANG_SX00 = array (
     'emailsubject' => 'Spam post at %s',
     'ipblack' => 'Spam-X IP Blacklist',
     'ipofurlblack' => 'Spam-X IP of URL Blacklist',
+    'headerblack' => 'Spam-X HTTP Header Blacklist',
     'headers' => 'Request headers:',
 
     'stats_headline' => 'Spam-X Statistics',

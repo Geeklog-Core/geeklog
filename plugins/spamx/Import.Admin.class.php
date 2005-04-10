@@ -6,14 +6,16 @@
  * 
  * Updates Sites MT Blacklist via Master MT Blacklist rss feed
  * 
- * Copyright (C) 2004 by the following authors:
- * Author      Tom Willett     tomw@pigstye.net
- * Author      Dirk Haun       dirk@haun-online.de
+ * Copyright (C) 2004-2005 by the following authors:
+ * Author      Tom Willett     tomw AT pigstye DOT net
+ * Author      Dirk Haun       dirk AT haun-online DOT de
  * 
  * Licensed under GNU General Public License
  * 
  * Based on MT-Blacklist Updater by
  * Cheah Chu Yeow (http://blog.codefront.net/)
+ *
+ * $I$
  */
 
 require_once ($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');

@@ -1,12 +1,15 @@
 <?php
+
 /**
 * File: BlackList.Examine.class.php
-* This is the Personal BlackList Examine class for the Geeklog SpamX Plug-in!
+* This is the Personal BlackList Examine class for the Geeklog Spam-X Plug-in!
 *
-* Copyright (C) 2004 by the following authors:
-* Author        Tom Willett        tomw@pigstye.net
+* Copyright (C) 2004-2005 by the following authors:
+* Author        Tom Willett        tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
+*
+* $Id: IP.Examine.class.php,v 1.5 2005/04/10 10:02:45 dhaun Exp $
 */
 
 /**

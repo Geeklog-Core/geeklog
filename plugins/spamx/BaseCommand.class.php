@@ -4,7 +4,10 @@
  * Basic Command Abstract class
  * 
  * @author Tom Willett	tomw AT pigstye DOT net 
+ *
+ * $Id: BaseCommand.class.php,v 1.3 2005/04/10 10:02:43 dhaun Exp $
  */
+
 class BaseCommand {
     /**
      * 

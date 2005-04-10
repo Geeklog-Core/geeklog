@@ -1,14 +1,16 @@
 <?php
+
 /**
 * file:  MassDelete.Admin.class.php
 * Mass delete comment spam
 *
-* Copyright (C) 2004 by the following authors:
+* Copyright (C) 2004-2005 by the following authors:
 *
-* @ Author		Tom Willett		tomw@pigstye.net
+* @ Author		Tom Willett		tomw AT pigstye DOT net
 *
 * Licensed under GNU General Public License
 *
+* $Id: MassDelete.Admin.class.php,v 1.4 2005/04/10 10:02:46 dhaun Exp $
 */
 
 require_once($_CONF['path'] . 'plugins/spamx/BaseAdmin.class.php');

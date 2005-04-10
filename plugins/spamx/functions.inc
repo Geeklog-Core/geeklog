@@ -1,13 +1,16 @@
 <?php
+
 /**
  * File: functions.inc
- * This is the functions.inc for the Geeklog SpamX Plug-in!
+ * This is the functions.inc for the Geeklog Spam-X Plug-in!
  * 
  * Copyright (C) 2004-2005 by the following authors:
  * Authors      Tom Willett     tomw AT pigstye DOT net
  *              Dirk Haun       dirk AT haun-online DOT de
  * 
  * Licensed under GNU General Public License
+ *
+ * $Id: functions.inc,v 1.7 2005/04/10 10:02:46 dhaun Exp $
  */
 
 /**
@@ -34,10 +37,6 @@ require_once ($_CONF['path'] . 'plugins/spamx/config.php');
  * Check to see if this Plugin uses comments
  * 
  * Geeklog is checking to see if this plugin supports comments, tell it no!
- * NOTE: to support comments you must use the same date/time based ID for your
- * widget.  In other words, to make primary keys for your plugin you should call
- * makesid().  Comments are keyed off of that...it is a limitation on how geeklog
- * does comments.
  * 
  * @return boolean true or false
  */
@@ -70,7 +69,7 @@ function plugin_showstats_spamx($showsitestats)
         $retval .= '<tr><td>' . $LANG_SX00['stats_deleted'] . '</td>';
         $retval .= '<td align="right">' . $counter . '&nbsp;&nbsp;</td></tr></table>';
     } else if (SEC_hasRights('spamx.admin')) {
-        // detailed stats are only visible to SpamX admins
+        // detailed stats are only visible to Spam-X admins
         $retval .= COM_startBlock ($LANG_SX00['stats_headline']);
 
         $templates = new Template ($_CONF['path_layout'] . 'stats');
@@ -164,7 +163,7 @@ function plugin_chkVersion_spamx ()
 }
 
 /**
-* Update the SpamX plugin
+* Update the Spam-X plugin
 *
 * @return   int     Number of message to display
 *
@@ -210,7 +209,8 @@ function plugin_upgrade_spamx ()
 function plugin_checkforSpam_spamx($comment, $action)
 {
     global $_TABLES, $_CONF, $_SPX_CONF; 
-    // Set up Spamx_Action and SpamX_Examine arrays
+
+    // Set up Spamx_Action and Spamx_Examine arrays
     $Spamx_Action = array();
     $Spamx_Examine = array();
     if ($dir = @opendir($_CONF['path'] . 'plugins/spamx/')) {

@@ -2,7 +2,7 @@
 
 /**
 * File: Header.Examine.class.php
-* This is the HTTP Header Examine class for the Geeklog SpamX Plug-in!
+* This is the HTTP Header Examine class for the Geeklog Spam-X Plug-in!
 *
 * Copyright (C) 2005 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
@@ -11,7 +11,7 @@
 *
 * Licensed under the GNU General Public License
 *
-* $Id: Header.Examine.class.php,v 1.2 2005/04/05 18:07:18 dhaun Exp $
+* $Id: Header.Examine.class.php,v 1.3 2005/04/10 10:02:45 dhaun Exp $
 */
 
 /**

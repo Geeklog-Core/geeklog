@@ -1,7 +1,8 @@
 <?php
+
 /**
 * File: EditHeader.Admin.class.php
-* This is the Edit HTTP Header Module for the Geeklog SpamX Plug-in!
+* This is the Edit HTTP Header Module for the Geeklog Spam-X Plug-in!
 *
 * Copyright (C) 2005 by the following authors:
 * Author    Dirk Haun <dirk AT haun-online DOT de>
@@ -10,7 +11,7 @@
 *
 * Licensed under GNU General Public License
 *
-* $Id: EditHeader.Admin.class.php,v 1.1 2005/04/02 13:29:03 dhaun Exp $
+* $Id: EditHeader.Admin.class.php,v 1.2 2005/04/10 10:02:44 dhaun Exp $
 */
 
 /**
@@ -56,7 +57,7 @@ class EditHeader extends BaseAdmin {
         }
 
         $display = '<hr><p><b>';
-        $display .= $LANG_SX00['pblack'];
+        $display .= $LANG_SX00['headerblack'];
         $display .= '</b></p><ul>';
         $result = DB_query ("SELECT value FROM {$_TABLES['spamx']} WHERE name='HTTPHeader' ORDER BY value");
         $nrows = DB_numRows ($result);

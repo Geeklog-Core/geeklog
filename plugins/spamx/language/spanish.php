@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: spanish.php,v 1.1 2005/04/10 09:43:04 dhaun Exp $
+ * $Id: spanish.php,v 1.2 2005/04/10 10:02:47 dhaun Exp $
  */
 
 // +---------------------------------------------------------------------------+
@@ -114,6 +114,7 @@ $LANG_SX00 = array (
     'emailsubject' => 'Spam post at %s',
     'ipblack' => 'Spam-X IP Blacklist',
     'ipofurlblack' => 'Spam-X IP of URL Blacklist',
+    'headerblack' => 'Spam-X HTTP Header Blacklist',
     'headers' => 'Request headers:',
 
     'stats_headline' => 'Spam-X Statistics',

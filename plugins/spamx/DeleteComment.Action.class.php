@@ -1,12 +1,15 @@
 <?php
+
 /**
  * File: DeleteComment.Action.class.php
- * This is the Delete Comment Action  for the Geeklog SpamX Plug-in!
+ * This is the Delete Comment Action  for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2004 by the following authors:
- * Author		Tom Willett		tomw@pigstye.net
+ * Copyright (C) 2004-2005 by the following authors:
+ * Author		Tom Willett		tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
+ *
+ * $Id: DeleteComment.Action.class.php,v 1.4 2005/04/10 10:02:43 dhaun Exp $
  */
 
 /**

@@ -1,7 +1,7 @@
 <?php
 
 // +---------------------------------------------------------------------------+
-// | SpamX plugin 1.0.1                                                        |
+// | Spam-X plugin 1.0.2                                                       |
 // +---------------------------------------------------------------------------+
 // | admin/index.php                                                           |
 // |                                                                           |
@@ -41,7 +41,7 @@ require_once('../../../lib-common.php');
 // Only let admin users access this page
 if (!SEC_hasRights ('spamx.admin')) {
     // Someone is trying to illegally access this page
-    COM_errorLog ("Someone has tried to illegally access the spamx Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$HTTP_SERVER_VARS['REMOTE_ADDR']}", 1);
+    COM_errorLog ("Someone has tried to illegally access the Spam-X Admin page.  User id: {$_USER['uid']}, Username: {$_USER['username']}, IP: {$HTTP_SERVER_VARS['REMOTE_ADDR']}", 1);
     $display = COM_siteHeader ();
     $display .= COM_startBlock ($LANG_SX00['access_denied']);
     $display .= $LANG_SX00['access_denied_msg'];

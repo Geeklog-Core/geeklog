@@ -1,12 +1,15 @@
 <?php
+
 /**
  * File: MailAdmin.Action.class.php
- * This is the Mail Admin Action for the Geeklog SpamX Plug-in!
+ * This is the Mail Admin Action for the Geeklog Spam-X Plug-in!
  * 
- * Copyright (C) 2004 by the following authors:
- * Author		Tom Willett		tomw@pigstye.net
+ * Copyright (C) 2004-2005 by the following authors:
+ * Author		Tom Willett		tomw AT pigstye DOT net
  * 
  * Licensed under GNU General Public License
+ *
+ * $Id: MailAdmin.Action.class.php,v 1.10 2005/04/10 10:02:46 dhaun Exp $
  */
 
 /**
