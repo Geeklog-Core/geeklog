@@ -117,6 +117,7 @@ $LANG_SX00 = array (
     'stats_pblacklist' => 'Personal Blacklist',
     'stats_ip' => 'Blocked IPs',
     'stats_ipofurl' => 'Blocked by IP of URL',
+    'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
     'plugin_name' => 'Spam-X'

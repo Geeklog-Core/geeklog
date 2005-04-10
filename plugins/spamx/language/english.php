@@ -9,7 +9,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: english.php,v 1.11 2005/04/10 10:02:46 dhaun Exp $
+ * $Id: english.php,v 1.12 2005/04/10 10:34:43 dhaun Exp $
  */
 
 $LANG_SX00 = array (
@@ -117,6 +117,7 @@ $LANG_SX00 = array (
     'stats_pblacklist' => 'Personal Blacklist',
     'stats_ip' => 'Blocked IPs',
     'stats_ipofurl' => 'Blocked by IP of URL',
+    'stats_header' => 'HTTP headers',
     'stats_deleted' => 'Posts deleted as spam',
 
     'plugin_name' => 'Spam-X'

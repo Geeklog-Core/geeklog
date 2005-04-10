@@ -10,7 +10,7 @@
  * 
  * Licensed under GNU General Public License
  *
- * $Id: functions.inc,v 1.7 2005/04/10 10:02:46 dhaun Exp $
+ * $Id: functions.inc,v 1.8 2005/04/10 10:34:43 dhaun Exp $
  */
 
 /**
@@ -100,6 +100,11 @@ function plugin_showstats_spamx($showsitestats)
         $templates->set_var ('item_text', $LANG_SX00['stats_ipofurl']);
         $templates->set_var ('item_stat',
                 DB_count ($_TABLES['spamx'], 'name', 'IPofUrl'));
+        $templates->parse ('stat_row', 'statrow', true);
+
+        $templates->set_var ('item_text', $LANG_SX00['stats_header']);
+        $templates->set_var ('item_stat',
+                DB_count ($_TABLES['spamx'], 'name', 'HTTPHeader'));
         $templates->parse ('stat_row', 'statrow', true);
 
         $templates->parse ('output', 'itemstats');
