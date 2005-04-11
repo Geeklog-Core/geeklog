@@ -1,5 +1,32 @@
 GeekLog History/Changes:
 
+Apr ??, 2005 (Spam-X plugin 1.0.2)
+------------
+
+- Changed the display name of the plugin to "Spam-X" to avoid potential
+  confusion with the email spam filter of the same name.
+  "SpamX" is a registered trademark of Hendrickson Software Components.
+- Added a new module to filter posts based on the IP address of the poster
+  [Tom Willet]
+- Added  a new module to filter posts based on the IP address of the
+  spamvertised site [Tom Willet]
+- Added a new module to filter posts based on characteristics of the HTTP header
+  [Dirk]
+- Fixed the Mass Delete Spam Comments module [Tom Willet]
+- The Spam-X plugin's examine modules run the post through html_entity_decode()
+  now in case the spammers try to obfuscate their posts by using HTML entities
+  [Tom Willet, Dirk]
+- The Mail Admin action module now also reports the HTTP headers of the post
+  that triggered the spam filter [Dirk]
+- Added a simple stats function (reports the number of posts deleted as spam,
+  and - to the Spam-X Admin only - the number of entries for each module) [Dirk]
+- Implemented an update function for the plugin [Dirk]
+
+- New Farsi (Persian) language file, provided by 4shir
+- New Italian language file, provided by Marcello Teodori
+- New Spanish language file, provided by vivi1123
+
+
 ??? ??, 2005 (1.3.12)
 ------------
 - Modified PLG_templateSetVars API to also check for a custom function [Blaine]
@@ -11,12 +38,10 @@ GeekLog History/Changes:
 - Enhanced the User Admin display and made the headings sortable [Blaine]
 - Geeklog will now properly handle html special characters (such as quotes and
   ampersands) in comment titles (bug #174) [Vinny]
+- Fix: Made a story's archive/expire date work with the timezone hack [Dirk]
 - COM_applyFilter will now accept negative numbers if the isnumeric parameter
   is true. Needed to fix problems with pollbooth.php (and others) [Vinny]
 - Added a spam check to the user profile [Dirk]
-- The SpamX plugin's examine modules run the post through html_entity_decode()
-  now in case the spammers try to obfuscate their posts by using HTML entities
-  [Tom Willet]
 - Upgraded included kses class to version 0.2.2 which fixes problems with
   Japanese and Thai characters (among other things), thus addressing bugs #94
   and #119 [Dirk]
@@ -42,8 +67,6 @@ GeekLog History/Changes:
 - Fixed date in comment preview (bug #370) [Dirk]
 - Added a missing stripslashes call to remove backslashes when a topic's name
   was displayed in the index page's title (bug #369) [Dirk]
-- Added two new SpamX modules to filter posts based on the IP address of the
-  poster and the IP address of the spamvertised site, provided by Tom Willet.
 - Incorporated the new syndication framework for reading and writing feeds of
   different formats (RSS, RDF, Atom), provided by Michael Jervis (patch #352).
   This contribution also addresses Task #19 ("RSS import class") and Feature
@@ -76,7 +99,6 @@ GeekLog History/Changes:
 - Updated Italian language file, provided by Marcello Teodori
 - Updated Italian language file for the Static Pages plugin, provided by
   Marcello Teodori
-- New Italian language file for the SpamX plugin, provided by Marcello Teodori
 
 
 Dec 31, 2004 (1.3.11)
@@ -130,7 +152,7 @@ Dec 22, 2004 (1.3.11rc1)
 - When using mogrify (ImageMagick) to resize uploaded images, the name of the
   image is now enclosed in double quotes instead of single quotes, which
   caused the command to fail on Windows [Dirk]
-- The emails sent from the SpamX plugin's MailAdmin action now also include
+- The emails sent from the Spam-X plugin's MailAdmin action now also include
   the IP address of the spam poster [Dirk]
 - SEC_getFeatureGroup() should not overwrite $_GROUPS if not operating on the
   current user (bug #331) [Dirk]
@@ -192,7 +214,7 @@ Dec 22, 2004 (1.3.11rc1)
 - Updated Dutch language file, provided by Ko de Pree.
 - Updated Dutch language file for the Static Pages plugin,
   provided by Ko de Pree.
-- New French language files for the SpamX plugin, provided by Alain Ponton.
+- New French language files for the Spam-X plugin, provided by Alain Ponton.
 
 
 Nov 28, 2004 (1.3.10)
@@ -221,7 +243,7 @@ Nov 21, 2004 (1.3.10rc3)
   enclosed in <a> tags) when the post is saved instead of when it's displayed,
   as in the previous release candidates. This also fixes bug #308. [Dirk]
 - Added $_CONF['disable_autolinks'] config option to disable autolinks [Dirk]
-- Removed ViewBlacklist.Admin.class.php from the SpamX plugin [Tom Willet]
+- Removed ViewBlacklist.Admin.class.php from the Spam-X plugin [Tom Willet]
 - Overhauled handling of personal events [Dirk]:
   + Fixed deleting personal events (again).
   + The upcoming events block now links to the event details of personal
@@ -272,7 +294,7 @@ Oct 24, 2004 (1.3.10rc2)
   RFC(2)822 compliant email address from a name and an address [Dirk]
   This function is now used for formatting the site address, as well as for
   addresses entered by the user in profiles.php and admin/mail.php.
-- The SpamX plugin's MailAdmin action didn't send any email notifications,
+- The Spam-X plugin's MailAdmin action didn't send any email notifications,
   since the call to COM_mail was commented out ... [Dirk]
 - admin/mail.php and admin/group.php use the complete URL to the script in
   the <form action="..."> now (instead of relying on PHP_SELF) [Dirk]
@@ -345,7 +367,7 @@ Oct 17, 2004 (1.3.10rc1)
   case), digits 0-9, the dash '-', and the underscore '_' [Dirk]
 - The Upcoming Events block didn't use the help URL, even if it was set
   (reported by Wolfgang M. Schmitt) [Dirk]
-- Geeklog now comes with Tom Willet's SpamX plugin pre-installed. The plugin
+- Geeklog now comes with Tom Willet's Spam-X plugin pre-installed. The plugin
   now stores the blacklists in the database and uses a new plugin API
   function to filter comment posts [Tom Willet, Tony, Blaine, Dirk]
 - Plugins can now offer their own tags to allow easy linking to their content.
