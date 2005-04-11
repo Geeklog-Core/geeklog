@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.159 2005/03/26 03:03:05 blaine Exp $
+// $Id: config.php,v 1.160 2005/04/11 08:20:34 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -241,8 +241,8 @@ $_CONF['show_fullname'] = 0;
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
 
 // +---------------------------------------------------------------------------+
-// | Define action to be taken by SPAMX module if spam detected                |
-// | Current SPAMX module supports two actions which can be combined           |
+// | Define action to be taken by Spam-X module if spam detected               |
+// | Current Spam-X module supports two actions which can be combined          |
 // | Additional classes can be added as well as other plugin extensions        |
 // | Actions: 128 = ignore comment and redirect to homepage                    |
 // |          8 = mail admin message                                           |
