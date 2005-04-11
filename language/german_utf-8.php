@@ -889,7 +889,9 @@ $LANG28 = array(
     33 => 'Abschicken',
     34 => 'Fehler: Keine Datei zum Upload angegeben.',
     35 => 'Letzter Login',
-    36 => '(noch nie)'
+    36 => '(noch nie)',
+    37 => 'UID',
+    38 => 'Gruppenliste'
 );
 
 ###############################################################################
@@ -1209,7 +1211,9 @@ $LANG_ACCESS = array(
     'availmembers' => 'Verfügbare Mitglieder',
     'groupmembers' => 'Mitglieder der Gruppe',
     'canteditgroup' => 'Um diese Gruppe bearbeiten zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
-    'cantlistgroup' => 'Um die Mitglieder dieser Gruppe sehen zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.'
+    'cantlistgroup' => 'Um die Mitglieder dieser Gruppe sehen zu können, musst Du selbst ein Mitglied der Gruppe sein. Wende Dich bitte an den Systemadministrator wenn Du der Meinung bist, dass das ein Fehler wäre.',
+    'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
 );
 
 ###############################################################################

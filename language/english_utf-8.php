@@ -886,7 +886,9 @@ $LANG28 = array(
     33 => 'submit',
     34 => 'Error: You must specify a file to upload.',
     35 => 'Last Login',
-    36 => '(never)'
+    36 => '(never)',
+    37 => 'UID',
+    38 => 'Group Listing'
 );
 
 ###############################################################################
@@ -1032,6 +1034,7 @@ $LANG32 = array(
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
     34 => 'Update'
+
 );
 
 ###############################################################################
@@ -1206,7 +1209,9 @@ $LANG_ACCESS = array(
     'availmembers' => 'Available Members',
     'groupmembers' => 'Group Members',
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
-    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.'
+    'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
+    'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
 );
 
 ###############################################################################
@@ -1254,7 +1259,6 @@ $LANG_404 = array(
 );
 
 ###############################################################################
-# login form
 
 $LANG_LOGIN = array(
     1 => 'Login required',
@@ -1262,9 +1266,6 @@ $LANG_LOGIN = array(
     3 => 'Login',
     4 => 'New User'
 );
-
-###############################################################################
-# pdfgenerator.php
 
 $LANG_PDF = array(
     1 => 'The PDF feature has been disabled',
@@ -1284,34 +1285,34 @@ $LANG_PDF = array(
 );
 
 ###############################################################################
-# trackback.php
+# trackback
 
-$LANG_TRB = array(
-    'trackback' => 'Trackback',
-    'from' => 'from',
-    'tracked_on' => 'Tracked on',
-    'read_more' => '[read more]',
-    'intro_text' => 'Here\'s what others have to say about \'%s\':',
-    'no_comments' => 'No trackback comments for this entry.',
+$LANG_TRB = array (
+    'trackback'          => 'Trackback',
+    'from'               => 'from',
+    'tracked_on'         => 'Tracked on',
+    'read_more'          => '[read more]',
+    'intro_text'         => "Here's what others have to say about '%s':",
+    'no_comments'        => 'No trackback comments for this entry.',
     'this_trackback_url' => 'Trackback URL for this entry:',
-    'num_comments' => '%d trackback comments',
-    'send_trackback' => 'Send Pings',
-    'preview' => 'Preview',
-    'editor_title' => 'Send trackback comment',
-    'trackback_url' => 'Trackback URL',
-    'entry_url' => 'Entry URL',
-    'entry_title' => 'Entry Title',
-    'blog_name' => 'Site Name',
-    'excerpt' => 'Excerpt',
-    'truncate_warning' => 'Note: The receiving site may truncate your excerpt',
-    'button_send' => 'Send',
-    'button_preview' => 'Preview',
-    'send_error' => 'Error',
+    'num_comments'       => '%d trackback comments',
+    'send_trackback'     => 'Send Pings',
+    'preview'            => 'Preview',
+    'editor_title'       => 'Send trackback comment',
+    'trackback_url'      => 'Trackback URL',
+    'entry_url'          => 'Entry URL',
+    'entry_title'        => 'Entry Title',
+    'blog_name'          => 'Site Name',
+    'excerpt'            => 'Excerpt',
+    'truncate_warning'   => 'Note: The receiving site may truncate your excerpt',
+    'button_send'        => 'Send',
+    'button_preview'     => 'Preview',
+    'send_error'         => 'Error',
     'send_error_details' => 'Error when sending trackback comment:',
-    'url_missing' => 'No Entry URL',
-    'url_required' => 'Please enter at least a URL for the entry.',
-    'target_missing' => 'No Trackback URL',
-    'target_required' => 'Please enter a trackback URL',
+    'url_missing'        => 'No Entry URL',
+    'url_required'       => 'Please enter at least a URL for the entry.',
+    'target_missing'     => 'No Trackback URL',
+    'target_required'    => 'Please enter a trackback URL',
     'error_socket'       => 'Could not open socket.',
     'error_response'     => 'Response not understood.',
     'error_unspecified'  => 'Unspecified error.',
