@@ -11,7 +11,7 @@
  *
  * Licensed under GNU General Public License
  *
- * $Id: farsi.php,v 1.3 2005/04/10 10:34:43 dhaun Exp $
+ * $Id: farsi_utf-8.php,v 1.1 2005/04/11 08:18:39 dhaun Exp $
  */
 
 $LANG_SX00 = array (
