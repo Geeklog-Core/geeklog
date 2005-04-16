@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.60 2005/04/16 16:43:01 blaine Exp $
+// $Id: lib-plugins.php,v 1.61 2005/04/16 17:41:14 blaine Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1034,7 +1034,8 @@ function PLG_replaceTags ($content)
 
                     /* Extra test to see if autotag was entered with a space after the module name */
                     if (substr($parms[0],-1) == ':') {
-                        $label = str_replace(']','',$parms[2]);
+                        $startpos =strlen ($parms[0]) + strlen($parms[1]) + 2;
+                        $label = str_replace (']', '', substr ($tag, $startpos));
                     } else {
                         $label = str_replace (']', '',
                                  substr ($tag, strlen ($parms[0]) + 1));
