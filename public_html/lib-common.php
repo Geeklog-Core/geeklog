@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.421 2005/04/16 19:04:11 dhaun Exp $
+// $Id: lib-common.php,v 1.422 2005/04/16 20:05:49 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -509,6 +509,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     }
 
     $anon = ( empty( $_USER['uid'] ) || ( $_USER['uid'] <= 1 )) ? true : false;
+    $menuCounter = 0;
     $allowedCounter = 0;
     $counter = 0;
 
@@ -597,6 +598,7 @@ function COM_renderMenu( &$header, $plugin_menu )
                     {
                         $header->parse( 'menu_elements', 'menuitem', true );
                     }
+                    $menuCounter++;
                 }
                 $url = '';
                 $label = '';
@@ -647,6 +649,7 @@ function COM_renderMenu( &$header, $plugin_menu )
                     {
                         $header->parse( 'menu_elements', 'menuitem', true );
                     }
+                    $menuCounter++;
 
                     next( $plugin_menu );
                 }
@@ -702,6 +705,7 @@ function COM_renderMenu( &$header, $plugin_menu )
             {
                 $header->parse( 'menu_elements', 'menuitem', true );
             }
+            $menuCounter++;
 
             if( $allowed )
             {
@@ -719,6 +723,10 @@ function COM_renderMenu( &$header, $plugin_menu )
         }
     }
 
+    if( $menuCounter == 0 )
+    {
+        $header->parse( 'menu_elements', 'menuitem_none', true );
+    }
     if( $allowedCounter == 0 )
     {
         $header->parse( 'allowed_menu_elements', 'menuitem_none', true );
