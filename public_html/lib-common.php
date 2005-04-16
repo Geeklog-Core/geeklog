@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.420 2005/04/03 21:52:22 blaine Exp $
+// $Id: lib-common.php,v 1.421 2005/04/16 19:04:11 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2896,12 +2896,9 @@ function COM_formatEmailAddress( $name, $address )
 {
     $formatted_name = $name;
 
-    $formatted_name = str_replace( ':', '', $formatted_name );
-    $formatted_name = str_replace( '"', '\\"', $formatted_name );
-
-    if(( $name != $formatted_name ) ||
-        ( strpos( $formatted_name, '.' ) !== false ))
+    if( eregi( '[^0-9a-z ]', $formatted_name ))
     {
+        $formatted_name = str_replace( '"', '\\"', $formatted_name );
         $formatted_name = '"' . $formatted_name . '"';
     }
 
