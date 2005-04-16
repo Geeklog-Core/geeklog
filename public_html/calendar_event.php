@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Shows details of an event or events                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: calendar_event.php,v 1.39 2005/01/09 21:07:48 dhaun Exp $
+// $Id: calendar_event.php,v 1.40 2005/04/16 12:51:55 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'classes/calendar.class.php');
@@ -158,6 +158,9 @@ function editpersonalevent ($A)
     $cal_templates->set_var('site_url', $_CONF['site_url']);
     $cal_templates->set_var('layout_url', $_CONF['layout_url']);
     $cal_templates->set_var('lang_title', $LANG12[10]);
+    $A['title'] = str_replace('{','&#123;',$A['title']);
+    $A['title'] = str_replace('}','&#125;',$A['title']);
+    $A['title'] = str_replace('"','&quot;',$A['title']);
     $cal_templates->set_var('event_title', stripslashes ($A['title']));
     $cal_templates->set_var('lang_eventtype', $LANG12[49]);
     $etypes = explode(',',$_CONF['event_types']);

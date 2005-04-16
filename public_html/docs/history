@@ -29,6 +29,10 @@ Apr ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+
+- Event titles containing quotes were cut off at the first quote in the event
+  editor, i.e. both the admin's event editor and the editor for personal events.
+  (bug #399) [Dirk]
 - Modified PLG_templateSetVars API to also check for a custom function [Blaine]
   Users can now set header template using CUSTOM_templatesetvars()
 - Added new CSS declarations as recommened CSS for plugins   [Blaine]

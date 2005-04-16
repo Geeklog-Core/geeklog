@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog event administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.54 2004/12/11 14:54:49 dhaun Exp $
+// $Id: event.php,v 1.55 2005/04/16 12:51:56 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -40,7 +40,7 @@ require_once ('auth.inc.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// COM_debug($HTTP_POST_VARS);
+// COM_debug($_POST);
 
 // number of events to list per page
 define ('EVENTS_PER_PAGE', 50);
@@ -142,6 +142,9 @@ function editevent ($mode, $A, $msg = '')
 
     $event_templates->set_var('event_id', $A['eid']);
     $event_templates->set_var('lang_eventtitle', $LANG22[3]);
+    $A['title'] = str_replace('{','&#123;',$A['title']);
+    $A['title'] = str_replace('}','&#125;',$A['title']);
+    $A['title'] = str_replace('"','&quot;',$A['title']);
     $event_templates->set_var('event_title', stripslashes ($A['title']));
     $types  = explode(',',$_CONF['event_types']);
     asort ($types);
@@ -596,48 +599,43 @@ function deleteEvent ($eid)
 }
 
 // MAIN
-if (count ($HTTP_POST_VARS) == 0) {
-    $http_input_vars = $HTTP_GET_VARS;
-} else {
-    $http_input_vars = $HTTP_POST_VARS;
-}   
-$mode = $http_input_vars['mode'];
+$mode = $_REQUEST['mode'];
 
 if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
-    $eid = COM_applyFilter ($http_input_vars['eid']);
+    $eid = COM_applyFilter ($_REQUEST['eid']);
     if (!isset ($eid) || empty ($eid) || ($eid == 0)) {
         COM_errorLog ('Attempted to delete event eid=\''
-                      . $http_input_vars['eid'] . "'");
+                      . $_REQUEST['eid'] . "'");
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/event.php');
     } else {
         $display .= deleteEvent ($eid);
     }
 } else if (($mode == $LANG22[20]) && !empty ($LANG22[20])) { // save
-    $display .= saveevent (COM_applyFilter ($HTTP_POST_VARS['eid']),
-            $HTTP_POST_VARS['title'], $HTTP_POST_VARS['event_type'],
-            $HTTP_POST_VARS['url'], $HTTP_POST_VARS['allday'],
-            $HTTP_POST_VARS['start_month'], $HTTP_POST_VARS['start_day'],
-            $HTTP_POST_VARS['start_year'], $HTTP_POST_VARS['start_hour'],
-            $HTTP_POST_VARS['start_minute'], $HTTP_POST_VARS['start_ampm'],
-            $HTTP_POST_VARS['end_month'], $HTTP_POST_VARS['end_day'],
-            $HTTP_POST_VARS['end_year'], $HTTP_POST_VARS['end_hour'],
-            $HTTP_POST_VARS['end_minute'], $HTTP_POST_VARS['end_ampm'],
-            $HTTP_POST_VARS['location'], $HTTP_POST_VARS['address1'],
-            $HTTP_POST_VARS['address2'], $HTTP_POST_VARS['city'],
-            $HTTP_POST_VARS['state'], $HTTP_POST_VARS['zipcode'],
-            $HTTP_POST_VARS['description'], $HTTP_POST_VARS['owner_id'],
-            $HTTP_POST_VARS['group_id'], $HTTP_POST_VARS['perm_owner'],
-            $HTTP_POST_VARS['perm_group'], $HTTP_POST_VARS['perm_members'],
-            $HTTP_POST_VARS['perm_anon'], $mode);
+    $display .= saveevent (COM_applyFilter ($_POST['eid']),
+            $_POST['title'], $_POST['event_type'],
+            $_POST['url'], $_POST['allday'],
+            $_POST['start_month'], $_POST['start_day'],
+            $_POST['start_year'], $_POST['start_hour'],
+            $_POST['start_minute'], $_POST['start_ampm'],
+            $_POST['end_month'], $_POST['end_day'],
+            $_POST['end_year'], $_POST['end_hour'],
+            $_POST['end_minute'], $_POST['end_ampm'],
+            $_POST['location'], $_POST['address1'],
+            $_POST['address2'], $_POST['city'],
+            $_POST['state'], $_POST['zipcode'],
+            $_POST['description'], $_POST['owner_id'],
+            $_POST['group_id'], $_POST['perm_owner'],
+            $_POST['perm_group'], $_POST['perm_members'],
+            $_POST['perm_anon'], $mode);
 } else if ($mode == 'editsubmission') {
-    $id = COM_applyFilter ($http_input_vars['id']);
+    $id = COM_applyFilter ($_REQUEST['id']);
     $result = DB_query ("SELECT * FROM {$_TABLES['eventsubmission']} WHERE eid ='$id'");
     $A = DB_fetchArray ($result);
     $display .= COM_siteHeader ('menu');
     $display .= editevent ($mode, $A);
     $display .= COM_siteFooter ();
 } else if ($mode == 'clone') {
-    $eid = COM_applyFilter ($http_input_vars['eid']);
+    $eid = COM_applyFilter ($_REQUEST['eid']);
     $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
     $A = DB_fetchArray ($result);
     $A['eid'] = COM_makesid ();
@@ -646,11 +644,11 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $display .= editevent ($mode, $A);
     $display .= COM_siteFooter ();
 } else if ($mode == 'edit') {
-    $eid = COM_applyFilter ($http_input_vars['eid']);
+    $eid = COM_applyFilter ($_REQUEST['eid']);
     if (empty ($eid)) {
         $A = array ();
-        $A['datestart'] = COM_applyFilter ($http_input_vars['datestart']);
-        $A['timestart'] = COM_applyFilter ($http_input_vars['timestart']);
+        $A['datestart'] = COM_applyFilter ($_REQUEST['datestart']);
+        $A['timestart'] = COM_applyFilter ($_REQUEST['timestart']);
     } else {
         $result = DB_query ("SELECT * FROM {$_TABLES['events']} WHERE eid ='$eid'");
         $A = DB_fetchArray ($result);
@@ -660,11 +658,11 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
     $display .= COM_siteFooter ();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader ('menu');
-    if (isset ($http_input_vars['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($http_input_vars['msg'],
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
                                                       true));
     }
-    $display .= listevents (COM_applyFilter ($http_input_vars['page'], true));
+    $display .= listevents (COM_applyFilter ($_REQUEST['page'], true));
     $display .= COM_siteFooter ();
 }
 
