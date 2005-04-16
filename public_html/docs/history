@@ -30,6 +30,9 @@ Apr ??, 2005 (Spam-X plugin 1.0.2)
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Fixed inconsistent use of {site_url} and {layout_url} in some of the
+  professional theme's admin template files - using {layout_url} everywhere
+  now when referring to icons (bug #395) [Dirk]
 - Event titles containing quotes were cut off at the first quote in the event
   editor, i.e. both the admin's event editor and the editor for personal events.
   (bug #399) [Dirk]
