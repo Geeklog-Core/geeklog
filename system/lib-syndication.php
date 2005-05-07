@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.10 2005/01/23 11:07:18 dhaun Exp $
+// $Id: lib-syndication.php,v 1.11 2005/05/07 07:51:14 dhaun Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -315,6 +315,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
     global $_TABLES, $_CONF, $LANG01;
 
     $content = array ();
+    $sids = array();
 
     if( DB_getItem( $_TABLES['topics'], 'perm_anon', "tid = '$tid'") >= 2)
     {
@@ -339,7 +340,6 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
 
         $result = DB_query( "SELECT sid,uid,title,introtext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
-        $sids = array();
         $nrows = DB_numRows( $result );
 
         for( $i = 1; $i <= $nrows; $i++ )
