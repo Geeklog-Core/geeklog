@@ -31,7 +31,11 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 ------------
 - Added password confirmation to /admin/user.php and /usersettings.php 
   (bug #230) [Oliver]
-- Stories are no longer forced to be featured _and_ on frontpage (bug #362) 
+- Made the alternating row colors in the Admin's trackback functions compatible
+  with the scheme used in other places (list of users, etc.). Also changed the
+  list of weblog directory services so that editing is now done by clicking on
+  the number of the service [Dirk]
+- Stories are no longer forced to be featured _and_ on frontpage (bug #362)
   [Oliver]
 - Changed links locations in User-list, added user-photo indicator [Oliver]
 - Don't update a story's date any more when unchecking the 'draft' flag
@@ -100,7 +104,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
   This contribution also addresses Task #19 ("RSS import class") and Feature
   Request #67 ("Limiting number of entries in RSS feeds").
   Please note that the feed writer classes, system/classes/*.feed.class.php,
-  are now obsolete and can be removed.
+  are now obsolete and can be removed. Please also note this adds new PEAR
+  package requirements for Net_URL and HTTP_Request.
 - Story, event, and link submissions are now also checked for spam [Dirk]
 - Added support for sending and receiving trackback comments (Feature Request
   #34) Also implemented Pingback support in pretty much the same way. Once
