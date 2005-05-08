@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.39 2005/05/08 08:52:58 dhaun Exp $
+// $Id: index.php,v 1.40 2005/05/08 16:39:20 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -388,13 +388,13 @@ function liststaticpages ($page = 1)
     $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']}" . $perms . " ORDER BY sp_date DESC LIMIT $start,$perpage");
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
-        for ($i = 1; $i <= $nrows; $i++) {
+        for ($i = 0; $i < $nrows; $i++) {
             $A = DB_fetchArray($result);
             $sp_templates->set_var ('sp_id', $A['sp_id']);
             $sp_templates->set_var ('page_edit_url', $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
                     . $A['sp_id']);
-            $sp_templates->set_var ('row_number', $i + $start);
+            $sp_templates->set_var ('row_number', $i + $start + 1);
             $sp_templates->set_var ('page_display_url',
                     COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $A['sp_id']));
@@ -402,7 +402,7 @@ function liststaticpages ($page = 1)
                     . '/plugins/staticpages/index.php?mode=clone&amp;sp_id='
                     . $A['sp_id']);
             $sp_templates->set_var ('sp_title', stripslashes ($A['sp_title']));
-            $sp_templates->set_var ('cssid', $i % 2);
+            $sp_templates->set_var ('cssid', ($i % 2) + 1);
 
             $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
             $N = DB_fetchArray ($nresult);
