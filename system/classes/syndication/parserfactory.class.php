@@ -27,6 +27,8 @@
   /*     distribution.                                                        */
   /****************************************************************************/
 
+  // Require pear HTTP_REQUEST
+  require_once('HTTP/Request.php');
   /**
    * FeedParserFactory provides generic access to syndication feed formats.
    *
@@ -83,9 +85,9 @@
       */
     function reader( $url, $targetformat='' )
     {
-      if( $fp = $this->_getFeed( $url ) )
+      if( $data = $this->_getFeed( $url ) )
       {
-        return $this->_findFeed( $fp, $targetformat );
+        return $this->_findFeed( $data, $targetformat );
       } else {
         return false;
       }
@@ -159,9 +161,9 @@
       */
     function _getFeed( $url )
     {
-      if( $fp = @fopen( $url, 'r' ) )
-      {
-        return $fp;
+      $req =& new HTTP_Request($url);
+      if (!PEAR::isError($req->sendRequest())) {
+        return $req->getResponseBody();
       } else {
         return false;
       }
@@ -172,7 +174,7 @@
       *
       * @access private
       */
-    function _findFeed( $fp, $format='' )
+    function _findFeed( $data, $format='' )
     {
       $xml_parser = xml_parser_create();
       xml_parser_set_option( $xml_parser, XML_OPTION_CASE_FOLDING, true );
@@ -184,16 +186,11 @@
       xml_set_element_handler( $xml_parser, array(&$this,'_startElement'), array(&$this, '_endElement') );
       xml_set_character_data_handler( $xml_parser, array(&$this,'_charData') );
 
-      while( $data = fread( $fp, 4096 ) )
+      if( !xml_parse( $xml_parser, $data ) )
       {
-        if( !xml_parse( $xml_parser, $data, feof($fp) ) )
-        {
-          fclose($fp);
-          xml_parser_free( $xml_parser );
-          return false;
-        }
+        xml_parser_free( $xml_parser );
+        return false;
       }
-      fclose( $fp );
       xml_parser_free( $xml_parser );
 
       if( $this->reader != false )
