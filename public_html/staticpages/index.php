@@ -8,11 +8,11 @@
 // |                                                                           |
 // | This is the main page for the Geeklog Static Page Plugin                  |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Tom Willett      - twillett@users.sourceforge.net                |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.23 2004/09/28 15:26:45 dhaun Exp $
+// $Id: index.php,v 1.24 2005/05/08 20:49:15 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -115,9 +115,9 @@ function display_page ($page, $A, $noboxes)
         if ((SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'],
                 $A['perm_group'], $A['perm_members'], $A['perm_anon']) == 3) &&
                 SEC_hasRights ('staticpages.edit')) {
-            $retval .= '<br><a href="' . COM_buildURL ($_CONF['site_admin_url']
+            $retval .= '<br><a href="' . $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                    . $page) . '">';
+                    . $page . '">';
             $retval .= $LANG_STATIC['edit'] . '</a>';
         }
         $retval .= '</p>';
