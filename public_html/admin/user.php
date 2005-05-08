@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.93 2005/05/08 15:19:16 ospiess Exp $
+// $Id: user.php,v 1.94 2005/05/08 18:56:07 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -172,6 +172,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('user_fullname', htmlspecialchars($A['fullname']));
     $user_templates->set_var('lang_password', $LANG28[5]);
+    $user_templates->set_var('lang_password_conf', $LANG28[39]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     $user_templates->set_var('user_email', htmlspecialchars($A['email']));
     $user_templates->set_var('lang_homepage', $LANG28[8]);
@@ -743,7 +744,10 @@ if (isset ($_GET['direction'])) {
     $direction =  COM_applyFilter ($_GET['direction']);
 }
 
-if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
+if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
+	$display .= COM_refresh($_CONF['site_admin_url']
+    			. '/user.php?mode=edit&msg=67&uid='.$_POST['uid']);
+} else if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
         $display .= deleteUser ($uid);
@@ -769,7 +773,8 @@ if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
                           $_POST['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
-    $display .= edituser (COM_applyFilter ($_GET['uid']));
+    $display .= edituser (COM_applyFilter ($_GET['uid']), 
+    					  COM_applyFilter ($_GET['msg']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= importusers ($_POST['file']);

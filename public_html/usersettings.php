@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.112 2005/02/20 09:55:52 dhaun Exp $
+// $Id: usersettings.php,v 1.113 2005/05/08 18:57:33 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -50,7 +50,7 @@ $_US_VERBOSE = false;
 * Shows the user's current settings
 *
 */
-function edituser() 
+function edituser()
 {
     global $_CONF, $_TABLES, $_USER, $LANG04;
 
@@ -71,6 +71,8 @@ function edituser()
     $preferences->set_var ('lang_username_text', $LANG04[87]);
     $preferences->set_var ('lang_password', $LANG04[4]);
     $preferences->set_var ('lang_password_text', $LANG04[35]);
+    $preferences->set_var ('lang_password_conf', $LANG04[108]);
+    $preferences->set_var ('lang_password_text_conf', $LANG04[109]);
     $preferences->set_var ('lang_cooktime', $LANG04[68]);
     $preferences->set_var ('lang_cooktime_text', $LANG04[69]);
     $preferences->set_var ('lang_email', $LANG04[5]);
@@ -183,7 +185,7 @@ function edituser()
     // Call custom account form and edit function if enabled and exists
     if ($_CONF['custom_registration'] AND (function_exists(custom_useredit))) {
         $preferences->set_var ('customfields', custom_useredit($_USER['uid']) );
-    } 
+    }
 
     PLG_profileVariablesEdit ($_USER['uid'], $preferences);
 
@@ -294,7 +296,7 @@ function buildTopicList ()
 * Displays user preferences
 *
 */
-function editpreferences() 
+function editpreferences()
 {
     global $_TABLES, $_CONF, $LANG04, $_USER, $_GROUPS;
 
@@ -459,7 +461,7 @@ function editpreferences()
             $selection .= '<option value="' . $theme . '"';
             if ($usertheme == $theme) {
                 $selection .= ' selected="selected"';
-            } 
+            }
             $words = explode ('_', $theme);
             $bwords = array ();
             foreach ($words as $th) {
@@ -778,7 +780,7 @@ function handlePhotoUpload ($delete_photo = '')
 * @A        array       User's data
 *
 */
-function saveuser($A) 
+function saveuser($A)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $_US_VERBOSE;
 
@@ -835,16 +837,22 @@ function saveuser($A)
 
     // no need to filter the password as it's md5 encoded anyway
     if (!empty ($A['passwd'])) {
-        $passwd = md5 ($A['passwd']);
-        DB_change($_TABLES['users'], 'passwd', "$passwd", "uid", $_USER['uid']);
-        if ($A['cooktime'] > 0) {
-            $cooktime = $A['cooktime'];
-        } else {
-            $cooktime = -1000;
+    	if ($A['passwd']==$A['passwd_conf']) {
+	        $passwd = md5 ($A['passwd']);
+	        DB_change($_TABLES['users'], 'passwd', "$passwd", "uid", $_USER['uid']);
+	        if ($A['cooktime'] > 0) {
+	            $cooktime = $A['cooktime'];
+	        } else {
+	            $cooktime = -1000;
+	        }
+	        setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
+	                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
+	                   $_CONF['cookiesecure']);	
         }
-        setcookie ($_CONF['cookie_password'], $passwd, time() + $cooktime,
-                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
-                   $_CONF['cookiesecure']);
+        else {
+	        return COM_refresh ($_CONF['site_url']
+	                . '/usersettings.php?mode=edit&msg=67');
+        }
     }
 
     // a quick spam check with the unfiltered field contents
@@ -887,7 +895,7 @@ function saveuser($A)
         } else {
             setcookie ($_CONF['cookie_name'], $_USER['uid'],
                        time() + $A['cooktime'], $_CONF['cookie_path'],
-                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);   
+                       $_CONF['cookiedomain'], $_CONF['cookiesecure']);
         }
 
         if ($_CONF['allow_user_photo'] == 1) {
@@ -905,7 +913,7 @@ function saveuser($A)
                     $A['homepage'] = 'http:' . substr ($A['homepage'], $pos + 1);
                 }
             }
-            $A['homepage'] = addslashes ($A['homepage']); 
+            $A['homepage'] = addslashes ($A['homepage']);
         }
 
         $A['fullname'] = addslashes ($A['fullname']);
@@ -945,7 +953,7 @@ function saveuser($A)
 * @A        array       User's data to save
 *
 */
-function savepreferences($A) 
+function savepreferences($A)
 {
     global $_CONF, $_TABLES, $_USER;
 
@@ -1019,7 +1027,7 @@ function savepreferences($A)
                 }
             }
         }
-    } 
+    }
 
     $etids = '';
     if (sizeof ($ETIDS) > 0) {
