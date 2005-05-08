@@ -324,7 +324,9 @@ $LANG04 = array(
     104 => 'Show Online Status',
     105 => 'Show up in Who\'s Online block',
     106 => 'Location',
-    107 => 'Shown in your public profile'
+    107 => 'Shown in your public profile',
+    108 => 'Confirm password',
+    109 => 'Enter the password again here'
 );
 
 ###############################################################################
@@ -886,7 +888,8 @@ $LANG28 = array(
     35 => 'Last Login',
     36 => '(never)',
     37 => 'UID',
-    38 => 'Group Listing'
+    38 => 'Group Listing',
+    39 => 'Password (again)'
 );
 
 ###############################################################################
@@ -1147,7 +1150,8 @@ $MESSAGE = array(
     63 => 'An error occurred when deleting the trackback comment.',
     64 => 'Your trackback comment has been successfully sent.',
     65 => 'Weblog directory service successfully saved.',
-    66 => 'The weblog directory service has been deleted.'
+    66 => 'The weblog directory service has been deleted.',
+    67 => 'The password does not match the confirmation password!'
 );
 
 ###############################################################################
