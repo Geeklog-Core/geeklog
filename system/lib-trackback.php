@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.7 2005/01/30 09:15:48 dhaun Exp $
+// $Id: lib-trackback.php,v 1.8 2005/05/08 08:18:45 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -515,12 +515,12 @@ function TRB_sendTrackbackPing ($targeturl, $url, $title, $excerpt, $blog = '')
         $charset = $LANG_CHARSET;
     }
 
-    fputs ($sock, 'POST ' . $target['path'] . $target['query'] . " HTTP/1.1\n");
-    fputs ($sock, 'Host: ' . $target['host'] . "\n");
+    fputs ($sock, 'POST ' . $target['path'] . $target['query'] . " HTTP/1.1\r\n");
+    fputs ($sock, 'Host: ' . $target['host'] . "\r\n");
     fputs ($sock, 'Content-type: application/x-www-form-urlencoded; charset='
-                  . $charset . "\n");
-    fputs ($sock, 'Content-length: ' . strlen ($toSend) . "\n");
-    fputs ($sock, "Connection: close\n\n");
+                  . $charset . "\r\n");
+    fputs ($sock, 'Content-length: ' . strlen ($toSend) . "\r\n");
+    fputs ($sock, "Connection: close\r\n\r\n");
     fputs ($sock, $toSend);
 
     $res = '';
