@@ -8,7 +8,9 @@ in config.php and Geeklog will pick up the PEAR packages from here.
 Currently, Geeklog uses the following PEAR packages:
 
 - PEAR
+- HTTP_Request
 - Mail
 - Net_SMTP
 - Net_Socket
+- Net_URL
 
