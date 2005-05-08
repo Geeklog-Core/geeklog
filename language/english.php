@@ -215,13 +215,13 @@ $LANG03 = array(
 );
 
 ###############################################################################
-# users.php
+# usersettings.php
 
 $LANG04 = array(
     1 => 'User Profile for',
     2 => 'User Name',
     3 => 'Full Name',
-    4 => 'Password',
+    4 => 'New Password',
     5 => 'Email',
     6 => 'Homepage',
     7 => 'Bio',
@@ -325,8 +325,10 @@ $LANG04 = array(
     105 => 'Show up in Who\'s Online block',
     106 => 'Location',
     107 => 'Shown in your public profile',
-    108 => 'Confirm password',
-    109 => 'Enter the password again here'
+    108 => 'Confirm new password',
+    109 => 'Enter the New password again here',
+    110 => 'Current Password',
+    111 => 'Please enter your Current password'
 );
 
 ###############################################################################
@@ -1151,7 +1153,8 @@ $MESSAGE = array(
     64 => 'Your trackback comment has been successfully sent.',
     65 => 'Weblog directory service successfully saved.',
     66 => 'The weblog directory service has been deleted.',
-    67 => 'The password does not match the confirmation password!'
+    67 => 'The new password does not match the confirmation password!',
+    68 => 'You have to enter the correct current password.',
 );
 
 ###############################################################################
@@ -1352,7 +1355,7 @@ $LANG_TRB = array (
     'services_headline'  => 'Weblog Directory Services',
     'admin_home'         => 'Admin Home',
     'new_service'        => 'New Service',
-    'service_explain'    => 'To modify or delete a weblog directory service, click on the number of that service below. To add a new weblog directory service click on New Service above.',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the name of that service below. To add a new weblog directory service click on New Service above.',
     'service'            => 'Service',
     'ping_method'        => 'Ping method',
     'service_enabled'    => 'Enabled',
