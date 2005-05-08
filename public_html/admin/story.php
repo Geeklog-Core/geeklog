@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.148 2005/05/08 09:20:55 dhaun Exp $
+// $Id: story.php,v 1.149 2005/05/08 16:26:25 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -53,7 +53,7 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 */
 require_once ('auth.inc.php');
 
-// Set this to true if you want to have this code output debug messages to 
+// Set this to true if you want to have this code output debug messages to
 // the error log
 $_STORY_VERBOSE = false;
 
@@ -62,7 +62,7 @@ $display = '';
 if (!SEC_hasRights('story.edit')) {
     $display .= COM_siteHeader ('menu');
     $display .= COM_startBlock ($MESSAGE[30], '',
-                                COM_getBlockTemplate ('_msg_block', 'header')); 
+                                COM_getBlockTemplate ('_msg_block', 'header'));
     $display .= $MESSAGE[31];
     $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
     $display .= COM_siteFooter ();
@@ -113,7 +113,7 @@ function userlist ($uid = 0)
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '') 
+function storyeditor($sid = '', $mode = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS;
 
@@ -368,7 +368,7 @@ function storyeditor($sid = '', $mode = '')
     }
     $month_options = COM_getMonthFormOptions($publish_month);
     $story_templates->set_var('publish_month_options', $month_options);
-    
+
     $day_options = COM_getDayFormOptions($publish_day);
     $story_templates->set_var('publish_day_options', $day_options);
 
@@ -376,14 +376,14 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('publish_year_options', $year_options);
 
     $hour_options = COM_getHourFormOptions($publish_hour);
-    $story_templates->set_var('publish_hour_options', $hour_options);   
+    $story_templates->set_var('publish_hour_options', $hour_options);
 
     $minute_options = COM_getMinuteOptions($publish_minute);
     $story_templates->set_var('publish_minute_options', $minute_options);
 
     $story_templates->set_var('publish_date_explanation', $LANG24[46]);
 
-    $story_templates->set_var('story_unixstamp', $A['unixdate']); 
+    $story_templates->set_var('story_unixstamp', $A['unixdate']);
     /* Auto Story Archive or Delete Feature */
     if ($A['expiredate'] == 0 or date('Y', $A['expiredate']) < 2000) {
         $A['expiredate'] = time();
@@ -416,11 +416,11 @@ function storyeditor($sid = '', $mode = '')
     $year_options = COM_getYearFormOptions($expire_year);
     $story_templates->set_var('expire_year_options', $year_options);
     $hour_options = COM_getHourFormOptions($expire_hour);
-    $story_templates->set_var('expire_hour_options', $hour_options);   
+    $story_templates->set_var('expire_hour_options', $hour_options);
     $minute_options = COM_getMinuteOptions($expire_minute);
     $story_templates->set_var('expire_minute_options', $minute_options);
     $story_templates->set_var('expire_date_explanation', $LANG24[46]);
-    $story_templates->set_var('story_unixstamp', $A['expiredate']); 
+    $story_templates->set_var('story_unixstamp', $A['expiredate']);
     if ($A['statuscode'] == STORY_ARCHIVE_ON_EXPIRE) {
         $story_templates->set_var('is_checked2', 'checked="checked"');
         $story_templates->set_var('is_checked3', 'checked="checked"');
@@ -439,7 +439,7 @@ function storyeditor($sid = '', $mode = '')
     if ($A['postmode'] == 'plaintext') {
         $A['title'] = str_replace ('$', '&#36;', $A['title']);
     }
-    
+
     $A['title'] = str_replace('{','&#123;',$A['title']);
     $A['title'] = str_replace('}','&#125;',$A['title']);
     $A['title'] = str_replace('"','&quot;',$A['title']);
@@ -490,7 +490,7 @@ function storyeditor($sid = '', $mode = '')
     if ($A['postmode'] == 'plaintext') {
         $newbody = str_replace('$','&#36;',$newbody);
     }
-    
+
     $newbody = str_replace('{','&#123;',$newbody);
     $newbody = str_replace('}','&#125;',$newbody);
     $story_templates->set_var('story_bodytext', $newbody);
@@ -510,7 +510,7 @@ function storyeditor($sid = '', $mode = '')
                 $saved_images .= '&nbsp;&nbsp;&nbsp;' . $LANG24[52] . ': <input type="checkbox" name="delete[' .$I['ai_img_num'] . ']"><br>';
             }
         }
-        
+
         $newallowed = $_CONF['maximagesperarticle'] - $icount;
         for ($z = $icount + 1; $z <= $_CONF['maximagesperarticle']; $z++) {
             $fileinputs .= $z . ') <input type="file" name="file' . $z . '">';
@@ -526,15 +526,15 @@ function storyeditor($sid = '', $mode = '')
     $story_templates->set_var('story_hits', $A['hits']);
     $story_templates->set_var('lang_comments', $LANG24[19]);
     $story_templates->set_var('story_comments', $A['comments']);
-    $story_templates->set_var('lang_emails', $LANG24[39]); 
+    $story_templates->set_var('lang_emails', $LANG24[39]);
     $story_templates->set_var('story_emails', $A['numemails']);
     $story_templates->set_var('story_id', $A['sid']);
     $story_templates->set_var('old_story_id', $A['old_sid']);
-    $story_templates->set_var('lang_sid', $LANG24[12]); 
-    $story_templates->set_var('lang_save', $LANG24[8]); 
-    $story_templates->set_var('lang_preview', $LANG24[9]); 
-    $story_templates->set_var('lang_cancel', $LANG24[10]); 
-    $story_templates->set_var('lang_delete', $LANG24[11]); 
+    $story_templates->set_var('lang_sid', $LANG24[12]);
+    $story_templates->set_var('lang_save', $LANG24[8]);
+    $story_templates->set_var('lang_preview', $LANG24[9]);
+    $story_templates->set_var('lang_cancel', $LANG24[10]);
+    $story_templates->set_var('lang_delete', $LANG24[11]);
     $story_templates->parse('output','editor');
     $display .= $story_templates->finish($story_templates->get_var('output'));
     $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -551,7 +551,7 @@ function storyeditor($sid = '', $mode = '')
 * @return   string  HTML for story listing
 *
 */
-function liststories ($page = 1) 
+function liststories ($page = 1)
 {
     global $_CONF, $_TABLES, $_USER, $LANG09, $LANG24, $LANG_ACCESS,
            $_POST, $_GET;
@@ -582,7 +582,7 @@ function liststories ($page = 1)
     $story_templates->set_var('lang_author', $LANG24[7]);
     $story_templates->set_var('lang_date', $LANG24[15]);
     $story_templates->set_var('lang_topic', $LANG24[14]);
-    $story_templates->set_var('lang_featured', $LANG24[32]); 
+    $story_templates->set_var('lang_featured', $LANG24[32]);
     if ($ping_allowed) {
         $story_templates->set_var('lang_ping', $LANG24[20]);
     } else {
@@ -605,7 +605,7 @@ function liststories ($page = 1)
         $seltopics = '';
         $topicsql = "SELECT tid,topic FROM {$_TABLES['topics']}" . COM_getPermSQL ();
         $tresult = DB_query( $topicsql );
-        $trows = DB_numRows( $tresult );     
+        $trows = DB_numRows( $tresult );
         if( $trows > 0 )
         {
             $excludetopics .= ' WHERE (';
@@ -622,7 +622,7 @@ function liststories ($page = 1)
                 $seltopics .= '>' . $T['topic'] . '</option>' . LB;
             }
             $excludetopics .= ') ';
-        } 
+        }
     } else {
         $excludetopics = " WHERE tid = '$current_topic' ";
         $seltopics = COM_topicList ('tid,topic', $current_topic);
@@ -770,7 +770,7 @@ function replace_images($sid, $intro, $body)
             $sizeattributes = '';
         }
 
-        $lLinkPrefix = '';      
+        $lLinkPrefix = '';
         $lLinkSuffix = '';
         if ($_CONF['keep_unscaled_image'] == 1) {
             $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
@@ -866,7 +866,7 @@ function insert_images($sid, $intro, $body)
             }
             if (file_exists ($lFilename_large_complete)) {
                 $lLinkPrefix = '<a href="' . $lFilename_large_URL
-                             . '" title="' . $LANG24[57] . '">';   
+                             . '" title="' . $LANG24[57] . '">';
                 $lLinkSuffix = '</a>';
             }
         }
@@ -904,7 +904,7 @@ function insert_images($sid, $intro, $body)
     return array($errors, $intro, $body);
 }
 
-/** 
+/**
 * Saves story to database
 *
 * @param    string      $type           story submission or (new) story
@@ -933,7 +933,7 @@ function insert_images($sid, $intro, $body)
 * @param    int         $delete         String array of attached images to delete from article
 *
 */
-function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid) 
+function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$unixdate,$expiredate,$comments,$featured,$commentcode,$statuscode,$postmode,$frontpage,$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$delete,$show_topic_icon,$old_sid)
 {
     global $_CONF, $_TABLES, $_USER, $LANG24, $MESSAGE;
 
@@ -1002,21 +1002,18 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 $values[2] = 0;
                 DB_change($_TABLES['stories'],'featured','0',$id,$values);
             }
-
-            // if set to featured force to show on front page
-            $frontpage = 1;
         }
 
         if (empty($numemails)) {
             $numemails = 0;
         }
-        
+
         if ($show_topic_icon == 'on') {
             $show_topic_icon = 1;
         } else {
             $show_topic_icon = 0;
         }
-        
+
         // Clean up the text
         if ($postmode == 'html') {
             $introtext = COM_checkHTML (COM_checkWords ($introtext));
@@ -1123,7 +1120,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
                 $retval .= COM_endBlock(COM_getBlockTemplate ('_msg_block', 'footer'));
                 $retval .= COM_siteFooter();
                 echo $retval;
-                exit; 
+                exit;
             }
 
             reset($filenames);
