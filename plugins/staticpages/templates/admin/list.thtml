@@ -1,5 +1,5 @@
   {start_block_list}
-  <table border="0" cellspacing="0" cellpadding="2" width="100%">
+  <table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin-top:5px;">
       <tr>
           <td rowspan="2">
               <img src="{site_url}/staticpages/images/staticpages.gif">
@@ -10,13 +10,13 @@
           <td>{lang_instructions}</td>
       </tr>
   </table>
-  <table cellpadding="0" cellspacing="3" border="0" width="100%">
-      <tr>
-          <th align="left" colspan="2">#</th>
-          <th align="left">{lang_title}</th>
-          <th>{lang_centerblock}</th>
-          <th>{lang_writtenby}</th>
-          <th>{lang_lastupdated}</th>
+  <table cellpadding="2" cellspacing="1" border="0" width="100%">
+      <tr style="background:#FFFFFF;">
+          <th colspan="2" style="text-align:left;padding-right:5px;padding-left:5px;">#</th>
+          <th style="text-align:left;padding-right:5px;">{lang_title}</th>
+          <th style="text-align:left;padding-right:5px;">{lang_centerblock}</th>
+          <th style="text-align:left;padding-right:5px;" nowrap>{lang_writtenby}</th>
+          <th style="text-align:left;padding-right:5px;" nowrap>{lang_lastupdated}</th>
       </tr>
       {list_item} 
       <tr><td colspan="4">{lang_nopages_msg}</td></tr>

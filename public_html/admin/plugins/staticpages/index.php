@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Administration page.                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
-// |          Phill Gillespie  - phill@mediaaustralia.com.au                   |
-// |          Tom Willett      - twillett@users.sourceforge.net                |
-// |          Dirk Haun        - dirk@haun-online.de                           |
+// | Authors: Tony Bibbs       - tony AT tonybibbs DOT com                     |
+// |          Phill Gillespie  - phill AT mediaaustralia DOT com DOT au        |
+// |          Tom Willett      - twillett AT users DOT sourceforge DOT net     |
+// |          Dirk Haun        - dirk AT haun-online DOT de                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.38 2004/09/25 18:38:17 dhaun Exp $
+// $Id: index.php,v 1.39 2005/05/08 08:52:58 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -59,7 +59,8 @@ if (!SEC_hasRights ('staticpages.edit')) {
 */ 
 function form ($A, $error = false) 
 {
-	global $_CONF, $_TABLES, $_USER, $HTTP_POST_VARS, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS, $mode, $sp_id;
+	global $_CONF, $_TABLES, $_USER, $LANG_STATIC, $_SP_CONF, $LANG_ACCESS,
+           $mode, $sp_id;
 
 	if (!empty($sp_id) && $mode=='edit') {
     	$access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
@@ -311,7 +312,7 @@ function form ($A, $error = false)
 */
 function staticpageeditor ($sp_id, $mode = '') 
 {
-    global $HTTP_POST_VARS, $_USER, $_CONF, $_TABLES;
+    global $_CONF, $_TABLES, $_USER;
 
     if (!empty ($sp_id) && $mode == 'edit') {
         $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE sp_id = '$sp_id'" . COM_getPermSQL ('AND', 0, 3));
@@ -332,9 +333,8 @@ function staticpageeditor ($sp_id, $mode = '')
         $A['sp_hits'] = 0;
         $A['sp_old_id'] = '';
     } else {
-        $A = $HTTP_POST_VARS;
+        $A = $_POST;
         $A['sp_content'] = COM_checkHTML (COM_checkWords ($A['sp_content']));
-        $A['sp_old_id'] = $HTTP_POST_VARS['sp_old_id'];
     }
     $A['sp_title'] = strip_tags ($A['sp_title']);
 
@@ -356,7 +356,8 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']), '', COM_getBlockTemplate ('_admin_block', 'header'));
-    $sp_templates->set_var('new_page_url', COM_buildURL($_CONF['site_admin_url'] . '/plugins/staticpages/index.php?mode=edit'));
+    $sp_templates->set_var('new_page_url', $_CONF['site_admin_url']
+                           . '/plugins/staticpages/index.php?mode=edit');
     $sp_templates->set_var('lang_newpage', $LANG_STATIC['newpage']);
     $sp_templates->set_var('lang_adminhome', $LANG_STATIC['adminhome']);
     $sp_templates->set_var('lang_instructions', $LANG_STATIC['instructions']);
@@ -390,19 +391,18 @@ function liststaticpages ($page = 1)
         for ($i = 1; $i <= $nrows; $i++) {
             $A = DB_fetchArray($result);
             $sp_templates->set_var ('sp_id', $A['sp_id']);
-            $sp_templates->set_var ('page_edit_url',
-                    COM_buildURL ($_CONF['site_admin_url']
+            $sp_templates->set_var ('page_edit_url', $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
-                    . $A['sp_id']));
+                    . $A['sp_id']);
             $sp_templates->set_var ('row_number', $i + $start);
             $sp_templates->set_var ('page_display_url',
                     COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $A['sp_id']));
-            $sp_templates->set_var ('page_clone_url',
-                    COM_buildURL ($_CONF['site_admin_url']
+            $sp_templates->set_var ('page_clone_url', $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=clone&amp;sp_id='
-                    . $A['sp_id']));
+                    . $A['sp_id']);
             $sp_templates->set_var ('sp_title', stripslashes ($A['sp_title']));
+            $sp_templates->set_var ('cssid', $i % 2);
 
             $nresult = DB_query ("SELECT username,fullname FROM {$_TABLES['users']} WHERE uid = {$A['sp_uid']}");
             $N = DB_fetchArray ($nresult);
@@ -560,15 +560,8 @@ function submitstaticpage ($sp_id, $sp_uid, $sp_title, $sp_content, $unixdate, $
 
 
 // MAIN
-
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = COM_applyFilter ($HTTP_POST_VARS['mode']);
-    $sp_id = COM_applyFilter ($HTTP_POST_VARS['sp_id']);
-} else {
-    COM_setArgNames (array ('mode', 'sp_id'));    
-    $mode = COM_applyFilter (COM_getArgument ('mode'));
-    $sp_id = COM_applyFilter (COM_getArgument ('sp_id'));
-}
+$mode = COM_applyFilter ($_REQUEST['mode']);
+$sp_id = COM_applyFilter ($_REQUEST['sp_id']);
 
 if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     if (empty ($sp_id) || (is_numeric ($sp_id) && ($sp_id == 0))) {
@@ -591,22 +584,19 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
     }
 } else if (($mode == $LANG_STATIC['save']) && !empty ($LANG_STATIC['save'])) {
     if (!empty ($sp_id)) {
-        submitstaticpage ($sp_id, $HTTP_POST_VARS['sp_uid'],
-            $HTTP_POST_VARS['sp_title'], $HTTP_POST_VARS['sp_content'],
-            $HTTP_POST_VARS['unixdate'], $HTTP_POST_VARS['sp_hits'],
-            $HTTP_POST_VARS['sp_format'], $HTTP_POST_VARS['sp_onmenu'],
-            $HTTP_POST_VARS['sp_label'], $HTTP_POST_VARS['owner_id'],
-            $HTTP_POST_VARS['group_id'], $HTTP_POST_VARS['perm_owner'],
-            $HTTP_POST_VARS['perm_group'], $HTTP_POST_VARS['perm_members'],
-            $HTTP_POST_VARS['perm_anon'], $HTTP_POST_VARS['sp_php'],
-            $HTTP_POST_VARS['sp_nf'], $HTTP_POST_VARS['sp_old_id'],
-            $HTTP_POST_VARS['sp_centerblock'], $HTTP_POST_VARS['sp_tid'],
-            $HTTP_POST_VARS['sp_where'], $HTTP_POST_VARS['sp_inblock']);
+        submitstaticpage ($sp_id, $_POST['sp_uid'], $_POST['sp_title'],
+            $_POST['sp_content'], $_POST['unixdate'], $_POST['sp_hits'],
+            $_POST['sp_format'], $_POST['sp_onmenu'], $_POST['sp_label'],
+            $_POST['owner_id'], $_POST['group_id'], $_POST['perm_owner'],
+            $_POST['perm_group'], $_POST['perm_members'], $_POST['perm_anon'],
+            $_POST['sp_php'], $_POST['sp_nf'], $_POST['sp_old_id'],
+            $_POST['sp_centerblock'], $_POST['sp_tid'], $_POST['sp_where'],
+            $_POST['sp_inblock']);
     } else {
         $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
     }
 } else {
-    $page = COM_applyFilter ($HTTP_GET_VARS['page'], true);
+    $page = COM_applyFilter ($_GET['page'], true);
     $display .= COM_siteHeader ('menu');
     $display .= liststaticpages ($page);
     $display .= COM_siteFooter ();

@@ -30,6 +30,9 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 ??? ??, 2005 (1.3.12)
 ------------
 
+- Don't use "rewritten" URLs in the static pages editor any more (bug #403).
+  Also updated the list of static pages to use alternating colors for the
+  rows [Dirk]
 - Use "\r\n" when sending trackback pings (bug #407) [Dirk]
 - Make sure {menu_elements} is rendered using the menuitem_none.thtml template
   when no menu elements are to be displayed (bug #378) [Dirk]
