@@ -29,7 +29,13 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
-- Stories are no longer forced to be featured _and_ on frontpage (bug #362) [Oliver]
+
+- Made the alternating row colors in the Admin's trackback functions compatible
+  with the scheme used in other places (list of users, etc.). Also changed the
+  list of weblog directory services so that editing is now done by clicking on
+  the number of the service [Dirk]
+- Stories are no longer forced to be featured _and_ on frontpage (bug #362)
+  [Oliver]
 - Changed links locations in User-list, added user-photo indicator [Oliver]
 - Don't update a story's date any more when unchecking the 'draft' flag
   (bug #400) [Dirk]

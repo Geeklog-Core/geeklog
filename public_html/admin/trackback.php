@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.12 2005/02/20 10:07:33 dhaun Exp $
+// $Id: trackback.php,v 1.13 2005/05/08 17:37:09 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -257,6 +257,7 @@ function sendPingbacks ($type, $id)
             $template->set_var ('resend', $resend);
             $template->set_var ('alternate_row',
                     ($counter % 2) == 0 ? 'row-even' : 'row-odd');
+            $template->set_var ('cssid', ($i % 2) + 1);
             $template->parse ('pingback_results', 'item', true);
             $counter++;
         }
@@ -324,6 +325,7 @@ function sendPings ($type, $id)
             $template->set_var ('resend', $resend);
             $template->set_var ('alternate_row',
                                 (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+            $template->set_var ('cssid', ($i % 2) + 1);
             $template->parse ('ping_results', 'item', true);
         }
     } else {
@@ -386,6 +388,7 @@ function prepareAutodetect ($type, $id, $text)
             $template->set_var ('link_url', $matches[1][$i]);
             $template->set_var ('alternate_row',
                     (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
+            $template->set_var ('cssid', ($i % 2) + 1);
             $template->parse ('autodetect_items', 'item', true);
         }
         $template->parse ('output', 'list');
@@ -483,6 +486,7 @@ function listServices ($page = 1, $msg = 0)
             } else {
                 $template->set_var ('is_enabled', '');
             }
+            $template->set_var ('cssid', ($i % 2) + 1);
             $template->parse ('services_list', 'row', true);
         }
     } else {

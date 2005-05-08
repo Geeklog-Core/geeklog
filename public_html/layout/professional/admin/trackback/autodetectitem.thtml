@@ -1,4 +1,4 @@
-    <tr class="{alternate_row}">
+    <tr class="pluginRow{cssid}">
         <td><a href="{autodetect_link}">{link_text}</a></td>
         <td>{link_url}</td>
     </tr>

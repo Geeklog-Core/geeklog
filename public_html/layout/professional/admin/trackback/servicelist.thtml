@@ -8,13 +8,13 @@
     </tr>
 </table>
 
-<table width="100%" border="0" cellspacing="1" cellpadding="3">
-    <tr>
-        <th>#</th>
-        <th>{lang_enabled}</th>
-        <th>{lang_name}</th>
-        <th>{lang_method}</th>
-        <th>{lang_site}</th>
+<table width="100%" border="0" cellspacing="1" cellpadding="2">
+    <tr style="background:#FFFFFF;">
+        <th style="padding-right:5px;padding-left:5px;">#</th>
+        <th style="padding-right:5px;">{lang_enabled}</th>
+        <th style="text-align:left;padding-right:5px;">{lang_name}</th>
+        <th style="text-align:left;padding-right:5px;">{lang_method}</th>
+        <th style="text-align:left;padding-right:5px;">{lang_ping_url}</th>
     </tr>
     {services_list}
 </table>

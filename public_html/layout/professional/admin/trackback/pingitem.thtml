@@ -1,4 +1,4 @@
-    <tr class="{alternate_row}">
+    <tr class="pluginRow{cssid}">
         <td><a href="{service_url}">{service_name}</a></td>
         <td>{ping_result}</td>
         <td>{resend}</td>
