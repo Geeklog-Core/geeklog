@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: usersettings.php,v 1.113 2005/05/08 18:57:33 ospiess Exp $
+// $Id: usersettings.php,v 1.114 2005/05/08 21:08:02 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-user.php');
@@ -73,6 +73,8 @@ function edituser()
     $preferences->set_var ('lang_password_text', $LANG04[35]);
     $preferences->set_var ('lang_password_conf', $LANG04[108]);
     $preferences->set_var ('lang_password_text_conf', $LANG04[109]);
+    $preferences->set_var ('lang_old_password', $LANG04[110]);
+    $preferences->set_var ('lang_old_password_text', $LANG04[111]);
     $preferences->set_var ('lang_cooktime', $LANG04[68]);
     $preferences->set_var ('lang_cooktime_text', $LANG04[69]);
     $preferences->set_var ('lang_email', $LANG04[5]);
@@ -837,9 +839,11 @@ function saveuser($A)
 
     // no need to filter the password as it's md5 encoded anyway
     if (!empty ($A['passwd'])) {
-    	if ($A['passwd']==$A['passwd_conf']) {
+    	if (($A['passwd']==$A['passwd_conf']) 
+        	AND (md5($A['old_passwd'])==$_USER['passwd'])) {
 	        $passwd = md5 ($A['passwd']);
-	        DB_change($_TABLES['users'], 'passwd', "$passwd", "uid", $_USER['uid']);
+	        DB_change($_TABLES['users'], 'passwd', 
+                      "$passwd", "uid", $_USER['uid']);
 	        if ($A['cooktime'] > 0) {
 	            $cooktime = $A['cooktime'];
 	        } else {
@@ -849,7 +853,11 @@ function saveuser($A)
 	                   $_CONF['cookie_path'], $_CONF['cookiedomain'],
 	                   $_CONF['cookiesecure']);	
         }
-        else {
+        elseif (md5($A['old_passwd'])!=$_USER['passwd']) {
+	        return COM_refresh ($_CONF['site_url']
+	                . '/usersettings.php?mode=edit&msg=68');
+        }
+        elseif ($A['passwd']!=$A['passwd_conf']) {
 	        return COM_refresh ($_CONF['site_url']
 	                . '/usersettings.php?mode=edit&msg=67');
         }

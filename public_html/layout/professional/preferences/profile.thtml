@@ -9,6 +9,12 @@
       value="{fullname_value}"></td>
   </tr>
   <tr valign="top">
+    <td align="right"><b>{lang_old_password}</b><br>
+      <small>{lang_old_password_text}</small></td>
+    <td><input type="password" name="old_passwd" size="32" maxlength="32"
+      value=""></td>
+  </tr>
+  <tr valign="top">
     <td align="right"><b>{lang_password}</b><br>
       <small>{lang_password_text}</small></td>
     <td><input type="password" name="passwd" size="32" maxlength="32"
