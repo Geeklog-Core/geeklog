@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.147 2005/02/26 12:37:19 dhaun Exp $
+// $Id: story.php,v 1.148 2005/05/08 09:20:55 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -991,15 +991,6 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
             $draft_flag = 1;
         } else {
             $draft_flag = 0;
-
-            // OK, if this story was already in the database and the user
-            // changed this from a draft to an actual story then update the
-            // date to be now
-            if (DB_count($_TABLES['stories'],'sid',$sid) == 1) {
-                if (DB_getItem($_TABLES['stories'],'draft_flag',"sid = '$sid'") == 1) {
-                    $unixdate = time();
-                }
-            }
         }
 
         if ($featured == '1') {
