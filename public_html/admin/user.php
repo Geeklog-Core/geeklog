@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.92 2005/03/30 01:12:10 blaine Exp $
+// $Id: user.php,v 1.93 2005/05/08 15:19:16 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -43,7 +43,7 @@ require_once ($_CONF['path_system'] . 'lib-user.php');
 
 $display = '';
 
-// Make sure user has access to this page  
+// Make sure user has access to this page
 if (!SEC_hasRights('user.edit')) {
     $retval .= COM_siteHeader ('menu');
     $retval .= COM_startBlock ($MESSAGE[30], '',
@@ -64,7 +64,7 @@ if (!SEC_hasRights('user.edit')) {
 * @return   string          HTML for user edit form
 *
 */
-function edituser($uid = '', $msg = '') 
+function edituser($uid = '', $msg = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $LANG_ACCESS, $MESSAGE;
 
@@ -124,7 +124,7 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
-    if (!empty ($A['uid']) && ($A['uid'] > 1)) { 
+    if (!empty ($A['uid']) && ($A['uid'] > 1)) {
         $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
     }
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
@@ -171,7 +171,7 @@ function edituser($uid = '', $msg = '')
 
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('user_fullname', htmlspecialchars($A['fullname']));
-    $user_templates->set_var('lang_password', $LANG28[5]); 
+    $user_templates->set_var('lang_password', $LANG28[5]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     $user_templates->set_var('user_email', htmlspecialchars($A['email']));
     $user_templates->set_var('lang_homepage', $LANG28[8]);
@@ -190,7 +190,7 @@ function edituser($uid = '', $msg = '')
         $user_templates->set_var('lang_securitygroups', $LANG_ACCESS['securitygroups']);
         $user_templates->set_var('lang_groupinstructions', $LANG_ACCESS['securitygroupsmsg']);
 
-        if (!empty($uid)) { 
+        if (!empty($uid)) {
             $usergroups = SEC_getUserGroups($uid);
             if (is_array($usergroups) && !empty($uid)) {
                 $selected = implode(' ',$usergroups);
@@ -214,7 +214,7 @@ function edituser($uid = '', $msg = '')
                 '<input type="hidden" name="groups" value="-1">');
     }
     $user_templates->parse('output', 'form');
-    $retval .= $user_templates->finish($user_templates->get_var('output')); 
+    $retval .= $user_templates->finish($user_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
@@ -263,14 +263,14 @@ function changepw ($uid, $passwd)
 * @return   string                  HTML redirect or error message
 *
 */
-function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $homepage, $groups, $delete_photo = '') 
+function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $homepage, $groups, $delete_photo = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
     $retval = '';
 
-    if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);    
-    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);    
+    if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
+    if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
 
     if (!empty ($username) && !empty ($email)) {
 
@@ -304,7 +304,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
             return edituser ($uid, 56);
         }
 
-        if (empty ($uid) || !empty ($passwd)) { 
+        if (empty ($uid) || !empty ($passwd)) {
             $passwd = md5 ($passwd);
         } else {
             $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
@@ -386,12 +386,12 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
                         $sql = "INSERT INTO {$_TABLES['group_assignments']} (ug_main_grp_id, ug_uid) VALUES (" . current($groups) . ",$uid)";
                         DB_query($sql);
                     }
-                    next($groups);        
+                    next($groups);
                 }
             }
         }
         $errors = DB_error();
-        if (empty($errors)) { 
+        if (empty($errors)) {
             echo COM_refresh($_CONF['site_admin_url'] . '/user.php?msg=21');
         } else {
             $retval .= COM_siteHeader ('menu');
@@ -414,7 +414,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
         exit;
     }
 
-    if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);    
+    if ($_USER_VERBOSE) COM_errorLog("***************leaving saveusers*****************",1);
 
     return $retval;
 }
@@ -429,10 +429,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
 * @return   string                  HTML for list of users
 *
 */
-function listusers ($offset, $curpage, $query = '', $query_limit = 50) 
+function listusers ($offset, $curpage, $query = '', $query_limit = 50)
 {
     global $_CONF, $_TABLES, $LANG28, $order,$prevorder,$direction;
-        
+
     $retval = '';
 
     $retval .= COM_startBlock ($LANG28[11], '',
@@ -503,7 +503,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
     $user_templates->set_var ('query_limit', $query_limit);
     $user_templates->set_var($limit . '_selected', 'selected="selected"');
-    
+
     if (!empty ($query)) {
         $query = addslashes (str_replace ('*', '%', $query));
         $num_pages = ceil (DB_getItem ($_TABLES['users'], 'count(*)',
@@ -519,20 +519,25 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $offset = (($curpage - 1) * $limit);
 
     if (!empty($query)) {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY $orderby $direction LIMIT $offset,$limit";
+        $sql = "SELECT uid,username,fullname,email,photo FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY $orderby $direction LIMIT $offset,$limit";
     } else {
-        $sql = "SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY $orderby $direction LIMIT $offset,$limit ";
+        $sql = "SELECT uid,username,fullname,email,photo FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY $orderby $direction LIMIT $offset,$limit ";
     }
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
+    $photoico= '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif">';
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $user_templates->set_var('user_id', $A['uid']);
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
         $user_templates->set_var('user_email', $A['email']);
-        $user_templates->set_var ('cssid', ($i%2)+1);
+        $user_templates->set_var('cssid', ($i%2)+1);
+        if (!empty($A['photo']))
+        	{$user_templates->set_var('photo_icon', $photoico);}
+        else
+        	{$user_templates->set_var('photo_icon', '');}
         $user_templates->parse('user_row', 'row', true);
     }
     if (!empty($query)) {
@@ -595,7 +600,7 @@ function importusers ($file)
     }
 
     $users = file ($filename);
-    
+
     $retval .= COM_siteHeader ('menu', $LANG28[22]);
     $retval .= COM_startBlock ($LANG28[31], '',
             COM_getBlockTemplate ('_admin_block', 'header'));
@@ -664,7 +669,7 @@ function importusers ($file)
     $retval .= '<p>' . sprintf ($LANG28[32], $successes, $failures);
 
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-    $retval .= COM_siteFooter ();  
+    $retval .= COM_siteFooter ();
 
     return $retval;
 }
