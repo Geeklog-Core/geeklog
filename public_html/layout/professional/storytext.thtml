@@ -13,7 +13,7 @@
                                 	<table border="0" cellpadding="3" cellspacing="0" width="100%">
 
 						
-							<tr><td align="center">{edit_link}<br>
+							<tr><td align="center">{edit_link}&nbsp;{page_selector}<br>
 							  {readmore_link} {start_comments_anchortag}{comments_text}{end_comments_anchortag}<br>
 {recent_post_anchortag}<br></td></tr>
 							

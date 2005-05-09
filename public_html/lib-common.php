@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.422 2005/04/16 20:05:49 dhaun Exp $
+// $Id: lib-common.php,v 1.423 2005/05/09 09:14:56 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3473,7 +3473,7 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         $retval .= '&lt;' . $tag . '&gt;, ';
     }
 
-    $retval .= '[code]';
+    $retval .= '[code], [page_break]';
 
     // list autolink tags
     $autotags = PLG_collectTags();
