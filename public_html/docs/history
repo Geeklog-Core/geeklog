@@ -31,7 +31,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 ------------
 - Added function COM_NumberFormat to format displayed numbers with custom 
   decimal & thousand - separators and fixed decimal places if necessary
-  Includes the respecitve 3 new config.php values in locale section.
+  Includes the respecitve 3 new config.php values in locale section. 
+  (Feature Request #298) [Oliver]
 - Default Blocks showed always in all Topics before. Now you can choose to show
   them in All/only one topic/only on homepage like other blocks (feature #326)
   [Oliver]
