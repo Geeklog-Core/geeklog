@@ -8,9 +8,9 @@
 // |                                                                           |
 // | mysql database class                                                      |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs, tony@tonybibbs.com                                   |
+// | Authors: Tony Bibbs, tony AT tonybibbs DOT com                            |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mysql.class.php,v 1.19 2004/11/20 17:55:07 dhaun Exp $
+// $Id: mysql.class.php,v 1.20 2005/05/09 19:01:15 dhaun Exp $
 
 /**
 * This file is the mysql implementation of the Geeklog abstraction layer.
@@ -171,7 +171,7 @@ class database {
     * Turns detailed error reporting on
     *
     * If set to true, this will display detailed error messages on the site.
-    * Otherwise, it will only that state an error occured without going into
+    * Otherwise, it will only that state an error occurred without going into
     * details. The complete error message (including the offending SQL request)
     * is always available from error.log.
     *
@@ -666,7 +666,7 @@ class database {
             if ($this->_display_error) {
                 return  @mysql_errno() . ': ' . @mysql_error();
             } else {
-                return 'An SQL error has occured. Please see error.log for details.';
+                return 'An SQL error has occurred. Please see error.log for details.';
             }
         }
 
