@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.23 2005/02/20 10:07:33 dhaun Exp $
+// $Id: lib-story.php,v 1.24 2005/05/09 09:10:37 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -199,6 +199,20 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $bodytext = stripslashes( $A['bodytext'] );
             // Replace any plugin autolink tags
             $bodytext = PLG_replacetags( $bodytext );
+            
+			# page selector --------------------------------------------------------
+	        $page=$_REQUEST['page'];
+	        if (!isset($page)) {$page=1;}
+	        $article_array=explode('[page_break]',$bodytext);
+            $pagelinks = COM_printPageNavigation( $articleUrl, $page, 
+            									  count($article_array));
+	        if (count($article_array)>1) {
+	        	$bodytext=$article_array[($page-1)];	                
+                if ($page>1) {$introtext=$pagelinks;}
+	        }
+	        $article->set_var( 'page_selector',$pagelinks);        
+	        # page selector end ----------------------------------------------------
+
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
