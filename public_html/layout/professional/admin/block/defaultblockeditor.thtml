@@ -18,7 +18,13 @@
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_topic}:</td>
-                                        <td>{lang_all}<input type="hidden" name="tid" value="all"></td>
+                                        <td>
+                                            <select name="tid">
+                                                <option value="all" {all_selected}>{lang_all}</option>
+                                                <option value="homeonly" {homeonly_selected}>{lang_homeonly}</option>
+                                                {topic_options}
+                                            </select>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td align="right">{lang_side}:</td>

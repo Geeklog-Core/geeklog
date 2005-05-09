@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: block.php,v 1.64 2005/01/23 11:07:18 dhaun Exp $
+// $Id: block.php,v 1.65 2005/05/09 11:34:14 ospiess Exp $
 
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
@@ -118,6 +118,13 @@ function editdefaultblock ($A, $access)
     $block_templates->set_var('block_name',$A['name']);
     $block_templates->set_var('lang_blockname', $LANG21[48]);
     $block_templates->set_var('lang_topic', $LANG21[6]);
+    $block_templates->set_var('lang_homeonly', $LANG21[43]);
+    if ($A['tid'] == 'all') {
+        $block_templates->set_var('all_selected', 'selected="selected"');
+    } else if ($A['tid'] == 'homeonly') {
+        $block_templates->set_var('homeonly_selected', 'selected="selected"');
+    }
+    $block_templates->set_var('topic_options', COM_topicList('tid,topic',$A['tid']));
     $block_templates->set_var('lang_all', $LANG21[7]);
     $block_templates->set_var('lang_side', $LANG21[39]);
     $block_templates->set_var('lang_left', $LANG21[40]);
