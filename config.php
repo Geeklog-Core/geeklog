@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.160 2005/04/11 08:20:34 dhaun Exp $
+// $Id: config.php,v 1.161 2005/05/09 13:41:24 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -271,6 +271,12 @@ $_CONF['dateonly']        = '%d-%b';
 $_CONF['timeonly']        = '%I:%M%p';
 $_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
+
+// Number formatting
+$_CONF['thousand_separator'] = "'"; // could be ' , . etc.
+$_CONF['decimal_separator'] = ".";  // could be , . etc.
+$_CONF['decimal_count'] = "2"; 		// if a number has decimals, 
+								  	//  force to this depth
 
 // "Timezone Hack"
 // If your webserver is located in a different timezone than yourself but you

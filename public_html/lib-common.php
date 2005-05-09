@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.423 2005/05/09 09:14:56 ospiess Exp $
+// $Id: lib-common.php,v 1.424 2005/05/09 13:38:29 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -5503,6 +5503,26 @@ function COM_sanitizeID( $id, $new_id = true )
     }
 
     return $id;
+}
+
+/** Converts a number for output into a formatted number with thousands-
+* 	separator, comma-separator and fixed decimals if necessary
+*
+*	@param	float	$number	Number that will be formatted
+*	@return	string			formatted number
+*/
+function COM_NumberFormat( $number )
+{
+global $_CONF;
+if ($number - abs($number)>0) {# number has decimals
+	$dc = $_CONF['decimal_count'];
+} else {
+	$dc = 0;
+}
+$ts = $_CONF['thousand_separator'];
+$ds = $_CONF['decimal_separator'];
+
+return number_format($number,$dc,$ds,$ts);
 }
 
 /**
