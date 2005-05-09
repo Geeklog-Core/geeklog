@@ -29,6 +29,9 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- a Story can now break over several pages in the body-text. The tag 
+  [page_break] will split the bodytext in pieces that can be opened with the
+  std. COM_printPageNavigation. Introtext is removed for pages>1 [Oliver]
 - Added field for old password check in /usersettings.php (bug #230) [Oliver] 
 - Added password confirmation to /admin/user.php and /usersettings.php 
   (bug #230) [Oliver]
