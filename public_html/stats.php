@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.33 2005/01/16 19:14:28 dhaun Exp $
+// $Id: stats.php,v 1.34 2005/05/09 13:42:30 ospiess Exp $
 
 require_once('lib-common.php');
 
@@ -71,7 +71,7 @@ $stat_templates->set_file (array ('stats'     => 'stats.thtml',
 
 $totalhits = DB_getItem($_TABLES['vars'],'value',"name = 'totalhits'");
 $stat_templates->set_var('lang_totalhitstosystem',$LANG10[2]);
-$stat_templates->set_var('total_hits', $totalhits);
+$stat_templates->set_var('total_hits', COM_NumberFormat( $totalhits ) );
 
 $topicsql = COM_getTopicSql ('AND');
 
@@ -85,8 +85,8 @@ if (empty ($comments)) {
     $comments = 0;
 }
 $stat_templates->set_var('lang_stories_comments',$LANG10[3]);
-$stat_templates->set_var('total_stories',$total_stories);
-$stat_templates->set_var('total_comments',$comments);
+$stat_templates->set_var('total_stories', COM_NumberFormat ($total_stories) );
+$stat_templates->set_var('total_comments', COM_NumberFormat ($comments) );
 
 $result = DB_query ("SELECT count(*) AS count FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
@@ -109,8 +109,8 @@ if ($nrows > 0) {
     $total_answers = 0;
 }
 $stat_templates->set_var('lang_polls_answers',$LANG10[4]);
-$stat_templates->set_var('total_polls',$total_polls);
-$stat_templates->set_var('total_answers', $total_answers);
+$stat_templates->set_var('total_polls', COM_NumberFormat ($total_polls) );
+$stat_templates->set_var('total_answers', COM_NumberFormat ($total_answers) );
 
 $result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
@@ -120,14 +120,14 @@ if (empty ($total_clicks)) {
     $total_clicks = 0;
 }
 $stat_templates->set_var('lang_links_clicks',$LANG10[5]);
-$stat_templates->set_var('total_links',$total_links);
-$stat_templates->set_var('total_clicks',$total_clicks);
+$stat_templates->set_var('total_links', COM_NumberFormat ($total_links) );
+$stat_templates->set_var('total_clicks',COM_NumberFormat ($total_clicks) );
 
 $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
 $total_events = $A['count'];
 $stat_templates->set_var('lang_events',$LANG10[6]);
-$stat_templates->set_var('total_events',$total_events);
+$stat_templates->set_var('total_events',COM_NumberFormat ($total_events) );
 
 $stat_templates->parse('site_statistics','sitestats',true);
 $stat_templates->parse('output','stats');
@@ -152,7 +152,7 @@ if ($nrows > 0) {
         $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
                                     . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', $A['hits']);
+        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['hits']) );
         $stat_templates->parse('stat_row','statrow',true); 
     }
     $stat_templates->parse('output','itemstats');
@@ -177,7 +177,7 @@ if ($nrows > 0) {
         $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
                                     . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', $A['comments']);
+        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['comments']) );
         $stat_templates->parse('stat_row','statrow',true); 
     }
     $stat_templates->parse('output','itemstats');
@@ -202,7 +202,7 @@ if ($nrows > 0) {
                                         . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var ('item_text',
                 stripslashes (str_replace ('$', '&#36;', $A['title'])));
-        $stat_templates->set_var ('item_stat', $A['count']);
+        $stat_templates->set_var ('item_stat', COM_NumberFormat ( $A['count']) );
         $stat_templates->parse ('stat_row', 'statrow', true);
     }
     $stat_templates->parse ('output', 'itemstats');
@@ -227,7 +227,7 @@ if ($nrows > 0) {
         $stat_templates->set_var ('item_url', COM_buildUrl ($_CONF['site_url']
                                     . '/article.php?story=' . $A['sid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', $A['numemails']);
+        $stat_templates->set_var('item_stat', COM_NumberFormat ( $A['numemails']) );
         $stat_templates->parse('stat_row','statrow',true); 
     }
     $stat_templates->parse('output','itemstats');
@@ -251,7 +251,7 @@ if ($nrows>0) {
         $stat_templates->set_var ('item_url', $_CONF['site_url']
                 . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1');
         $stat_templates->set_var('item_text', $A['question']);
-        $stat_templates->set_var('item_stat', $A['voters']);
+        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['voters']) );
         $stat_templates->parse('stat_row','statrow',true); 
     }
     $stat_templates->parse('output','itemstats');
@@ -276,7 +276,7 @@ if ($nrows > 0) {
         $stat_templates->set_var('item_url', COM_buildUrl ($_CONF['site_url']
                 . '/portal.php?what=link&amp;item=' . $A['lid']));
         $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', $A['hits']);
+        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['hits']) );
         $stat_templates->parse('stat_row','statrow',true); 
     }
     $stat_templates->parse('output','itemstats');

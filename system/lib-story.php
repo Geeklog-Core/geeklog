@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.24 2005/05/09 09:10:37 ospiess Exp $
+// $Id: lib-story.php,v 1.25 2005/05/09 13:43:06 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -87,7 +87,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'site_url', $_CONF['site_url'] );
     $article->set_var( 'story_date', $A['day'] );
     $article->set_var( 'lang_views', $LANG01[106] );
-    $article->set_var( 'story_hits', $A['hits'] );
+    $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ) );
     $article->set_var( 'story_id', $A['sid'] );
 
     if( $_CONF['contributedbyline'] == 1 )
@@ -242,7 +242,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
         {
             $article->set_var( 'lang_readmore', $LANG01[2] );
             $article->set_var( 'lang_readmore_words', $LANG01[62] );
-            $numwords = sizeof( explode( ' ', strip_tags( $A['bodytext'] )));
+            $numwords = COM_NumberFormat (sizeof( explode( ' ', strip_tags( $A['bodytext'] ))));
             $article->set_var( 'readmore_words', $numwords );
 
             $article->set_var( 'readmore_link', '<a href="' . $articleUrl . '">'
@@ -260,7 +260,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'comments_url', $commentsUrl );
             $article->set_var( 'comments_text', $A['comments'] . ' '
                                                 . $LANG01[3] );
-            $article->set_var( 'comments_count', $A['comments'] );
+            $article->set_var( 'comments_count', COM_NumberFormat ( $A['comments'] ));
             $article->set_var( 'lang_comments', $LANG01[3] );
 
             if( $A['comments'] > 0 )
@@ -294,8 +294,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
 
         if( $_CONF['trackback_enabled'] || $_CONF['pingback_enabled'] )
         {
-            $num_trackbacks = DB_count( $_TABLES['trackback'],
-                    array( 'sid', 'type' ), array( $A['sid'], 'article' ));
+            $num_trackbacks = COM_NumberFormat ( DB_count( $_TABLES['trackback'],
+                    array( 'sid', 'type' ), array( $A['sid'], 'article' )));
             $trackbacksUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#trackback';
             $article->set_var( 'trackbacks_url', $trackbacksUrl );
