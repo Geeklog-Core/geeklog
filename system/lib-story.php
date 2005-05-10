@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.25 2005/05/09 13:43:06 ospiess Exp $
+// $Id: lib-story.php,v 1.26 2005/05/10 12:57:10 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -86,8 +86,10 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_url', $_CONF['site_url'] );
     $article->set_var( 'story_date', $A['day'] );
-    $article->set_var( 'lang_views', $LANG01[106] );
-    $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ) );
+    if( $_CONF['viewscountline'] == 1 ) {
+        $article->set_var( 'lang_views', $LANG01[106] );
+        $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ) );
+    }
     $article->set_var( 'story_id', $A['sid'] );
 
     if( $_CONF['contributedbyline'] == 1 )
@@ -200,18 +202,18 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             // Replace any plugin autolink tags
             $bodytext = PLG_replacetags( $bodytext );
             
-			# page selector --------------------------------------------------------
-	        $page=$_REQUEST['page'];
-	        if (!isset($page)) {$page=1;}
-	        $article_array=explode('[page_break]',$bodytext);
+                        # page selector --------------------------------------------------------
+                $page=$_REQUEST['page'];
+                if (!isset($page)) {$page=1;}
+                $article_array=explode('[page_break]',$bodytext);
             $pagelinks = COM_printPageNavigation( $articleUrl, $page, 
-            									  count($article_array));
-	        if (count($article_array)>1) {
-	        	$bodytext=$article_array[($page-1)];	                
+                                                                                      count($article_array));
+                if (count($article_array)>1) {
+                        $bodytext=$article_array[($page-1)];                        
                 if ($page>1) {$introtext=$pagelinks;}
-	        }
-	        $article->set_var( 'page_selector',$pagelinks);        
-	        # page selector end ----------------------------------------------------
+                }
+                $article->set_var( 'page_selector',$pagelinks);        
+                # page selector end ----------------------------------------------------
 
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
