@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added option in config.php to hide "Viewed: x" line with 
+  $_CONF['viewscountline'] just as the $_CONF['contributedbyline'] [Oliver]
 - Added function COM_NumberFormat to format displayed numbers with custom 
   decimal & thousand - separators and fixed decimal places if necessary
   Includes the respecitve 3 new config.php values in locale section. 
