@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.161 2005/05/09 13:41:24 ospiess Exp $
+// $Id: config.php,v 1.162 2005/05/10 12:53:13 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -275,8 +275,8 @@ $_CONF['default_charset'] = 'iso-8859-1';
 // Number formatting
 $_CONF['thousand_separator'] = "'"; // could be ' , . etc.
 $_CONF['decimal_separator'] = ".";  // could be , . etc.
-$_CONF['decimal_count'] = "2"; 		// if a number has decimals, 
-								  	//  force to this depth
+$_CONF['decimal_count'] = "2";                 // if a number has decimals, 
+                                                                          //  force to this depth
 
 // "Timezone Hack"
 // If your webserver is located in a different timezone than yourself but you
@@ -516,8 +516,9 @@ $_CONF['event_types']           = 'Anniversary,Appointment,Birthday,Business,Edu
 // Story Settings
 $_CONF['maximagesperarticle']   = 5;
 $_CONF['limitnews']             = 10;
-$_CONF['minnews']               = 1;	// minimum number of stories per page
-$_CONF['contributedbyline']     = 1;	// If 1, show contributed by line
+$_CONF['minnews']               = 1;        // minimum number of stories per page
+$_CONF['contributedbyline']     = 1;        // If 1, show contributed by line
+$_CONF['viewscountline']        = 1;        // If 1, show Viewed X times line
 $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
