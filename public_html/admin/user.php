@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.95 2005/05/11 11:54:24 ospiess Exp $
+// $Id: user.php,v 1.96 2005/05/11 12:21:02 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -457,7 +457,12 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
-    $user_templates->set_var('lang_regdate', $LANG28[40]);
+    if ($_CONF['lastlogin']==true) {
+        $user_templates->set_var('lang_regdate', $LANG28[41]);
+    } else {
+        $user_templates->set_var('lang_regdate', $LANG28[40]);
+    }
+        
 
     if ($prevorder != $order) {
         $direction = 'desc';
@@ -476,7 +481,11 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             $orderby = 'email';
             break;
         case 5:
-            $orderby = 'regdate';
+            if ($_CONF['lastlogin']==true) {
+                $orderby = 'regdate';
+            } else {
+                $orderby = 'lastlogin';
+            }
             break;
         default:
             $orderby = 'uid';
@@ -542,16 +551,17 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
         $user_templates->set_var('user_id', $A['uid']);
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
-        if (($_CONF['lastlogin']==true) AND ($A['lastlogin']<1)) {
-            $A['email']= '? ' . $A['email'];
-        }
         $user_templates->set_var('user_email', $A['email']);
         $user_templates->set_var('cssid', ($i%2)+1);
         if (!empty($A['photo']))
                 {$user_templates->set_var('photo_icon', $photoico);}
         else
                 {$user_templates->set_var('photo_icon', '');}
-        $user_templates->set_var('user_regdate', $A['regdate']);
+        if ($_CONF['lastlogin']==true) {
+            $user_templates->set_var('user_regdate',date("Y.m.d H:i:s",$A['lastlogin']));
+        } else {
+            $user_templates->set_var('user_regdate', $A['regdate']);
+        }
         $user_templates->parse('user_row', 'row', true);
     }
     if (!empty($query)) {

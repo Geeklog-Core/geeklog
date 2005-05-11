@@ -29,9 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
-- Userlist now also shows Registration Date and a question mark before the email
-  address of users that never logged in in case $_CONF['lastlogin']= true;
-  [Oliver]
+- Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it
+  shows the last login date instead. [Oliver]
 - Added option in config.php to hide "Viewed: x" line with 
   $_CONF['viewscountline'] just as the $_CONF['contributedbyline'] [Oliver]
 - Added function COM_NumberFormat to format displayed numbers with custom 
