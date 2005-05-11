@@ -864,7 +864,7 @@ $LANG28 = array(
     9 => '(do not use spaces)',
     10 => 'Please fill in the Username and Email Address fields',
     11 => 'User Manager',
-    12 => "To modify or delete a user, click on that user's number below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
+    12 => "To modify or delete a user, click on that user's number below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below. Email adresses with a '?' in front show users that never logged in.",
     13 => 'SecLev',
     14 => 'Reg. Date',
     15 => 'New User',
@@ -891,7 +891,8 @@ $LANG28 = array(
     36 => '(never)',
     37 => 'UID',
     38 => 'Group Listing',
-    39 => 'Password (again)'
+    39 => 'Password (again)',
+    40 => 'Registration Date'
 );
 
 ###############################################################################

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.94 2005/05/08 18:56:07 ospiess Exp $
+// $Id: user.php,v 1.95 2005/05/11 11:54:24 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -457,6 +457,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
+    $user_templates->set_var('lang_regdate', $LANG28[40]);
 
     if ($prevorder != $order) {
         $direction = 'desc';
@@ -473,6 +474,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             break;
         case 4:
             $orderby = 'email';
+            break;
+        case 5:
+            $orderby = 'regdate';
             break;
         default:
             $orderby = 'uid';
@@ -518,12 +522,17 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     $offset = (($curpage - 1) * $limit);
-
-    if (!empty($query)) {
-        $sql = "SELECT uid,username,fullname,email,photo FROM {$_TABLES['users']} WHERE uid > 1 AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query') ORDER BY $orderby $direction LIMIT $offset,$limit";
-    } else {
-        $sql = "SELECT uid,username,fullname,email,photo FROM {$_TABLES['users']} WHERE uid > 1 ORDER BY $orderby $direction LIMIT $offset,$limit ";
+    
+    if ($_CONF['lastlogin']==true) {
+        $join_userinfo="LEFT JOIN {$_TABLES['userinfo']} ON {$_TABLES['users']}.uid={$_TABLES['userinfo']}.uid ";
+        $select_userinfo=",lastlogin ";
     }
+    
+    $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1";
+    if (!empty($query)) {
+         $sql=$sql. "AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')";
+    } 
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
 
@@ -533,12 +542,16 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
         $user_templates->set_var('user_id', $A['uid']);
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
+        if (($_CONF['lastlogin']==true) AND ($A['lastlogin']<1)) {
+            $A['email']= '? ' . $A['email'];
+        }
         $user_templates->set_var('user_email', $A['email']);
         $user_templates->set_var('cssid', ($i%2)+1);
         if (!empty($A['photo']))
-        	{$user_templates->set_var('photo_icon', $photoico);}
+                {$user_templates->set_var('photo_icon', $photoico);}
         else
-        	{$user_templates->set_var('photo_icon', '');}
+                {$user_templates->set_var('photo_icon', '');}
+        $user_templates->set_var('user_regdate', $A['regdate']);
         $user_templates->parse('user_row', 'row', true);
     }
     if (!empty($query)) {
@@ -745,8 +758,8 @@ if (isset ($_GET['direction'])) {
 }
 
 if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
-	$display .= COM_refresh($_CONF['site_admin_url']
-    			. '/user.php?mode=edit&msg=67&uid='.$_POST['uid']);
+        $display .= COM_refresh($_CONF['site_admin_url']
+                            . '/user.php?mode=edit&msg=67&uid='.$_POST['uid']);
 } else if (($mode == $LANG28[19]) && !empty ($LANG28[19])) { // delete
     $uid = COM_applyFilter ($_POST['uid'], true);
     if ($uid > 1) {
@@ -774,7 +787,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
     $display .= edituser (COM_applyFilter ($_GET['uid']), 
-    					  COM_applyFilter ($_GET['msg']));
+                                              COM_applyFilter ($_GET['msg']));
     $display .= COM_siteFooter();
 } else if ($mode == 'import') {
     $display .= importusers ($_POST['file']);
