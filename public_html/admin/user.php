@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.96 2005/05/11 12:21:02 ospiess Exp $
+// $Id: user.php,v 1.97 2005/05/12 10:49:15 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -122,6 +122,7 @@ function edituser($uid = '', $msg = '')
                                       'groupedit' => 'groupedit.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
+    $user_templates->set_var('site_admin_url_ssl', $_CONF['site_admin_url_ssl']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
     if (!empty ($A['uid']) && ($A['uid'] > 1)) {
