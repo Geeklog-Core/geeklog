@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.26 2005/05/10 12:57:10 ospiess Exp $
+// $Id: lib-story.php,v 1.27 2005/05/12 10:40:50 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -639,6 +639,177 @@ function STORY_getItemInfo ($sid, $what)
     }
 
     return $retval;
+}
+
+/**
+* This replaces all article image HTML in intro and body with
+* GL special syntax
+*
+* @param    string      $sid    ID for story to parse
+* @param    string      $intro  Intro text
+* @param    string      $body   Body text
+* @return   string      processed text
+*
+*/
+function STORY_replace_images($sid, $intro, $body)
+{
+    global $_CONF, $_TABLES, $LANG24;
+
+    $stdImageLoc = true;
+    if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+        $stdImageLoc = false;
+    }
+    $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    $nrows = DB_numRows($result);
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+
+        $imageX       = '[image' . $i . ']';
+        $imageX_left  = '[image' . $i . '_left]';
+        $imageX_right = '[image' . $i . '_right]';
+
+        $dimensions = GetImageSize($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
+        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
+            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
+        } else {
+            $sizeattributes = '';
+        }
+
+        $lLinkPrefix = '';
+        $lLinkSuffix = '';
+        if ($_CONF['keep_unscaled_image'] == 1) {
+            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                    strrpos ($A['ai_filename'], '.'), 1);
+            $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
+                                      . $lFilename_large;
+            if ($stdImageLoc) {
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath
+                                     . 'articles/' . $lFilename_large;
+            } else {
+                $lFilename_large_URL = $_CONF['site_url']
+                    . '/getimage.php?mode=show&amp;image=' . $lFilename_large;
+            }
+            if (file_exists ($lFilename_large_complete)) {
+                $lLinkPrefix = '<a href="' . $lFilename_large_URL
+                             . '" title="' . $LANG24[57] . '">';
+                $lLinkSuffix = '</a>';
+            }
+        }
+
+        if ($stdImageLoc) {
+            $imgpath = substr ($_CONF['path_images'],
+                               strlen ($_CONF['path_html']));
+            $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/'
+                    . $A['ai_filename'];
+        } else {
+            $imgSrc = $_CONF['site_url']
+                . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+        }
+        $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+        $fulltext = $intro . ' ' . $body;
+        $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
+        $intro = str_replace ($norm,  $imageX,       $intro);
+        $body  = str_replace ($norm,  $imageX,       $body);
+        $intro = str_replace ($left,  $imageX_left,  $intro);
+        $body  = str_replace ($left,  $imageX_left,  $body);
+        $intro = str_replace ($right, $imageX_right, $intro);
+        $body  = str_replace ($right, $imageX_right, $body);
+    }
+
+    return array($intro, $body);
+}
+
+/**
+* Replaces simple image syntax with actual HTML in the intro and body.
+* If errors occur it will return all errors in $error
+*
+* @param    string      $sid    ID for story to parse
+* @param    string      $intro  Intro text
+* @param    string      $body   Body text
+* @param    string      $usage  'html' for normal use, 'email' for email use
+* @return   string      Processed text
+*
+*/
+function STORY_insert_images($sid, $intro, $body, $usage='html')
+{
+    global $_CONF, $_TABLES, $LANG24;
+
+    $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+    $nrows = DB_numRows($result);
+    $errors = array();
+    $stdImageLoc = true;
+    if (!strstr($_CONF['path_images'], $_CONF['path_html'])) {
+        $stdImageLoc = false;
+    }
+    for ($i = 1; $i <= $nrows; $i++) {
+        $A = DB_fetchArray($result);
+        $dimensions = GetImageSize($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
+        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
+            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
+        } else {
+            $sizeattributes = '';
+        }
+
+        $lLinkPrefix = '';
+        $lLinkSuffix = '';
+        if ($_CONF['keep_unscaled_image'] == 1) {
+            $lFilename_large = substr_replace ($A['ai_filename'], '_original.',
+                    strrpos ($A['ai_filename'], '.'), 1);
+            $lFilename_large_complete = $_CONF['path_images'] . 'articles/'
+                                      . $lFilename_large;
+            if ($stdImageLoc) {
+                $imgpath = substr ($_CONF['path_images'],
+                                   strlen ($_CONF['path_html']));
+                $lFilename_large_URL = $_CONF['site_url'] . '/' . $imgpath
+                                     . 'articles/' . $lFilename_large;
+            } else {
+                $lFilename_large_URL = $_CONF['site_url']
+                    . '/getimage.php?mode=show&amp;image=' . $lFilename_large;
+            }
+            if (file_exists ($lFilename_large_complete)) {
+                $lLinkPrefix = '<a href="' . $lFilename_large_URL
+                             . '" title="' . $LANG24[57] . '">';
+                $lLinkSuffix = '</a>';
+            }
+        }
+
+        $norm  = '[image' . $i . ']';
+        $left  = '[image' . $i . '_left]';
+        $right = '[image' . $i . '_right]';
+
+        $fulltext = $intro . ' ' . $body;
+        $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
+        if ($icount == 0) {
+            // There is an image that wasn't used, create an error
+            $errors[] = $LANG24[48] . " #$i, {$A['ai_filename']}, " . $LANG24[53];
+        } else {
+            // Only parse if we haven't encountered any error to this point
+            if (count($errors) == 0) {
+                if ($usage=='email') {  // image will be attached, no path necessary
+                    $imgSrc = $A['ai_filename'];
+                } elseif ($stdImageLoc) {
+                    $imgpath = substr ($_CONF['path_images'],
+                                       strlen ($_CONF['path_html']));
+                    $imgSrc = $_CONF['site_url'] . '/' . $imgpath . 'articles/'
+                            . $A['ai_filename'];
+                } else {
+                    $imgSrc = $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $A['ai_filename'];
+                }
+                $intro = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($norm, $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+                $intro = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+                $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
+                $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+            }
+        }
+    }
+
+    return array($errors, $intro, $body);
 }
 
 ?>
