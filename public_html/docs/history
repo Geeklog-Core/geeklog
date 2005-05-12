@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added optional SSL connections for all password-related pages and pathes in 
+  config.php. Fixed bug #398, used diff file from Jerome Limozin [Oliver]
 - Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it
   shows the last login date instead. [Oliver]
 - Added option in config.php to hide "Viewed: x" line with 
@@ -2486,10 +2488,10 @@ September 7, 2000
 - Fixed a few issues surronding the $CONF["site_url"]
   placement in links.
 - Began work on new user customization system!
-	- Index Configuration
-	- Comment Configuration
-	- Story Configuation
-	- User Configuration
+        - Index Configuration
+        - Comment Configuration
+        - Story Configuation
+        - User Configuration
 - Fixed the link submission script so it now
   actually works.
 
@@ -2667,14 +2669,14 @@ August 11, 2000
   and managment.
 - Removed the following functions that have
   become obsolete:
-	- countx
-	- topicsel
-	- getTopic
-	- saveuser
-	- rot13
+        - countx
+        - topicsel
+        - getTopic
+        - saveuser
+        - rot13
 - Removed the following array used to set
   premissions in older versions
-	- $ADMIN
+        - $ADMIN
 - Began work on intergrating comments with
   user accounts.
 
