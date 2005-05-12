@@ -33,9 +33,10 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: profiles.php,v 1.39 2005/01/28 08:42:50 dhaun Exp $
+// $Id: profiles.php,v 1.40 2005/05/12 09:16:06 ospiess Exp $
 
 require_once ('lib-common.php');
+require_once ($_CONF['path_system'] . 'lib-story.php');
 
 /**
 * Mails the contents of the contact form to that user
@@ -196,13 +197,14 @@ function contactform($uid, $subject='', $message='')
 /**
 * Email story to a friend
 *
-* @param    string  $sid        id of story to email
-* @param    string  $to         name of person / friend to email
-* @param    string  $toemail    friend's email address
-* @param    string  $from       name of person sending the email
-* @param    string  $fromemail  sender's email address
-* @param    string  $shortmsg   short intro text to send with the story
-* @return   string              Meta refresh
+* @param    string  $sid         id of story to email
+* @param    string  $to          name of person / friend to email
+* @param    string  $toemail     friend's email address
+* @param    string  $from        name of person sending the email
+* @param    string  $fromemail   sender's email address
+* @param    string  $shortmsg    short intro text to send with the story
+* @param    string  $send_option defines send format (html/text/image handling
+* @return   string               Meta refresh
 *
 * Modification History
 *
@@ -214,7 +216,7 @@ function contactform($uid, $subject='', $message='')
 *				this code
 *
 */
-function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg) 
+function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg, $send_option) 
 {
  	global $_CONF, $_TABLES, $_USER, $LANG01, $LANG08;
 
@@ -246,6 +248,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
 	if (strlen ($shortmsg) > 0) {
 		$mailtext .= LB . sprintf ($LANG08[28], $from) . $shortmsg . LB;
 	}
+    
     $mailtext .= '------------------------------------------------------------'
               . LB . LB
               . COM_undoSpecialChars (stripslashes ($A['title'])) . LB
@@ -255,9 +258,62 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
         $author = DB_getItem ($_TABLES['users'], 'username', "uid={$A['uid']}");
         $mailtext .= $LANG01[1] . ' ' . $author . LB;
     }
+    
+    $send_option = explode('-',$send_option);
+    $tmp = STORY_replace_images($sid, $A['introtext'], $A['bodytext']);
+    // create attachment boundary
+    $boundary = '-----=' . md5( uniqid ( rand() ) );
+    
+    $header = LB. 'MIME-Version: 1.0'.LB
+            . 'Content-Type: multipart/mixed; boundary="' . $boundary . '"'.LB
+            . $boundary . LB . LB
+            . 'Content-Type: text/' . $send_option[0] . '; charset="'
+            . $_CONF['default_charset'] . '"' . LB
+            . 'Content-Transfer-Encoding: 8bit' . LB;
+    
+    if ($send_option[0]=='txt') {
+        // remove all html
+        $A['introtext'] = strip_tags($tmp[0]);
+        $A['bodytext'] = strip_tags($tmp[1]);
+    }
+    if ($send_option[1]=='attach') {
+        // replace IMG URLS in story to display images correctly
+        $tmp=STORY_insert_images($sid, $tmp[0], $tmp[1], 'email');
+        $A['introtext'] = $tmp[0];
+        $A['bodytext'] = $tmp[1];
+        // get images from DB and attach
+        $result = DB_query("SELECT ai_filename FROM {$_TABLES['article_images']} WHERE ai_sid = '$sid' ORDER BY ai_img_num");
+        for ($i=0;$i<DB_numRows($result);$i++) {
+            $A = DB_fetchArray($result);
+            $attach .= LB . $boundary . LB 
+                     . 'Content-Type: image/jpeg; name="'.$A['ai_filename'].'"'
+                     . LB . 'Content-Transfer-Encoding: base64' . LB;
+            if ($send_option[0]=='txt') { $attach_str .= 'attachment'; }
+            else { $attach_str .= 'inline'; }
+            $attach .= 'Content-Disposition: '.$attach_str
+                      .'; filename="'.$A['ai_filename'].LB.'"';
+            $path = $_CONF['path_images'] . 'articles/' . $A['ai_filename'];
+            $fp = fopen($path, 'r');
+            do {//we loop until there is no data left
+                $data = fread($fp, 8192);
+                if (strlen($data) == 0) break;
+                $content .= $data;
+            } while (true);
+            $content_encode = chunk_split(base64_encode($content));
+            $attach .= $content_encode . LB;
+            $attach .= "--" . $boundary . LB;
+        }
+    } elseif ($send_option[1]=='link') {
+        # replace images with [image]-tags
+        $tmp = replace_images($sid, $A['introtext'], $A['bodytext']);
+        $A['introtext'] = $tmp[0];
+        $A['bodytext'] = $tmp[1];
+        # add "footnote-links"
+    }
+
     $mailtext .= LB
-		. COM_undoSpecialChars(stripslashes(strip_tags($A['introtext']))).LB.LB
-		. COM_undoSpecialChars(stripslashes(strip_tags($A['bodytext']))).LB.LB
+		. COM_undoSpecialChars(stripslashes($A['introtext'])).LB.LB
+		. COM_undoSpecialChars(stripslashes($A['bodytext'])).LB.LB
 		. '------------------------------------------------------------'.LB
 		. $LANG08[24] . LB
         . COM_buildUrl ($_CONF['site_url'] . '/article.php?story=' . $sid
@@ -267,7 +323,7 @@ function mailstory ($sid, $to, $toemail, $from, $fromemail, $shortmsg)
     $mailfrom = COM_formatEmailAddress ($from, $fromemail);
  	$subject = COM_undoSpecialChars(strip_tags(stripslashes('Re: '.$A['title'])));
 
-    COM_mail ($mailto, $subject, $mailtext, $mailfrom);
+    COM_mail ($mailto, $subject, $mailtext . $attach, $mailfrom . $header);
     COM_updateSpeedlimit ('mail');
 
 	// Increment numemails counter for story
@@ -326,6 +382,18 @@ function mailstoryform($sid)
     $mail_template->set_var('lang_fromemailaddress', $LANG08[21]);
     $mail_template->set_var('email', $fromemail);
     $mail_template->set_var('lang_toname', $LANG08[18]);
+    $mail_template->set_var('lang_sendoptions', $LANG08[36]);
+    $mail_template->set_var('lang_option_text', $LANG08[37]);
+    $sendmodes = array('text-attach-images','text-link-images','html-no-images',
+                        'html-attach-images','html-link-images');
+    $sendmodelang = array(38,39,40,41,42);
+    for ($i=0;$i<count($sendmodes);$i++) {
+        if (in_array($sendmodes[$i], $_CONF['allowedEmailFormats'])) {
+        $send_options.='<option value="'.$sendmodes[$i].'">'
+                      .$LANG08[$sendmodelang[$i]].'</option>';
+        }
+    }
+    $mail_template->set_var('send_options', $send_options);
     $mail_template->set_var('lang_toemailaddress', $LANG08[19]);
     $mail_template->set_var('lang_shortmessage', $LANG08[27]);
     $mail_template->set_var('lang_warning', $LANG08[22]);
@@ -382,7 +450,7 @@ switch ($what) {
             $display = COM_refresh ($_CONF['site_url'] . '/index.php');
         } else {
             $display .= mailstory ($sid, $_POST['to'], $_POST['toemail'],
-                    $_POST['from'], $_POST['fromemail'], $_POST['shortmsg']);
+                    $_POST['from'], $_POST['fromemail'], $_POST['shortmsg'],$_POST['send_option']);
         }
         break;
 

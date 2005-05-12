@@ -2,7 +2,7 @@
                                             <table border="0" cellpadding="3" cellspacing="0">
                                                 <tr>
                                                     <td>
-                                                        <form action="{site_url}/users.php" method="post">
+                                                        <form action="{site_url_ssl}/users.php" method="post">
                                                             <table border="0" cellspacing="0" cellpadding="3">
                                                                 <tr>
                                                                     <td colspan="2">{lang_message}</td>
@@ -14,7 +14,7 @@
                                                                 <tr>
                                                                     <td align="right"><b>{lang_password}:</b></td>
                                                                     <td><input type="password" name="passwd" size="16">
-									&nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
+                                                                        &nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
@@ -29,4 +29,3 @@
                                                 </tr>
                                             </table>
                                             {end_block}
-

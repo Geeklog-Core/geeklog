@@ -1,4 +1,4 @@
-                            <form action="{site_admin_url}/user.php" method="post">
+                            <form action="{site_admin_url_ssl}/user.php" method="post">
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
                                         <td align="right">{lang_userid}:</td>

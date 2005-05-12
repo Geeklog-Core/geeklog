@@ -24,6 +24,13 @@
                                                                     <td><input type="text" name="toemail" size="30" maxlength="96" value=""></td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td align="right"><b>{lang_sendoptions}:</b></td>
+	                                                                <td><select name="send_option">
+	                                                                	<option value="txt-no-images" selected="selected">{lang_option_text}</option>
+	                                                                    	{send_options}
+	                                                                    </select></td>
+                                                                </tr>                                                                                                                            
+                                                                <tr>
                                                                     <td align="right" valign="top"><b>{lang_shortmessage}:</b></td>
                                                                     <td><textarea name="shortmsg" rows="8" cols="60"></textarea></td>
                                                                 </tr>

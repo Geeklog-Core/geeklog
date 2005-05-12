@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.96 2005/04/16 15:20:14 dhaun Exp $
+// $Id: users.php,v 1.97 2005/05/12 09:16:06 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -111,6 +111,7 @@ function userprofile ($user, $msg = 0)
     $user_templates = new Template($_CONF['path_layout'] . 'users');
     $user_templates->set_file(array('profile'=>'profile.thtml','row'=>'commentrow.thtml','strow'=>'storyrow.thtml'));
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_url_ssl', $_CONF['site_url_ssl']);
     $user_templates->set_var('start_block_userprofile', COM_startBlock($LANG04[1] . ' ' . $A['username']));
     $user_templates->set_var('end_block', COM_endBlock());
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -274,7 +275,7 @@ function userprofile ($user, $msg = 0)
     PLG_profileVariablesDisplay ($user, $user_templates);
 
     $user_templates->parse('output', 'profile');
-    $retval .= $user_templates->finish($user_templates->get_var('output'));	
+    $retval .= $user_templates->finish($user_templates->get_var('output'));        
 
     $retval .= PLG_profileBlocksDisplay ($user);
     $retval .= COM_siteFooter ();
@@ -384,6 +385,7 @@ function newpasswordform ($uid, $requestid)
     $pwform = new Template ($_CONF['path_layout'] . 'users');
     $pwform->set_file (array ('newpw' => 'newpassword.thtml'));
     $pwform->set_var ('site_url', $_CONF['site_url']);
+    $pwform->set_var ('site_url_ssl', $_CONF['site_url_ssl']);
     $pwform->set_var ('layout_url', $_CONF['layout_url']);
 
     $pwform->set_var ('user_id', $uid);
@@ -533,6 +535,7 @@ function loginform ($hide_forgotpw_link = false)
     $user_templates = new Template ($_CONF['path_layout'] . 'users');
     $user_templates->set_file('login', 'loginform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
+    $user_templates->set_var('site_url_ssl', $_CONF['site_url_ssl']);
     $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
     $user_templates->set_var('lang_message', $LANG04[66]);
     $user_templates->set_var('lang_username', $LANG04[2]);
@@ -807,7 +810,7 @@ case 'new':
         $display .= custom_userform('new');
     } else {
         $display .= newuserform();
-    }	
+    }        
     $display .= COM_siteFooter();
     break;
 

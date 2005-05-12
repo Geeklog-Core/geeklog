@@ -1,5 +1,5 @@
 {start_block_profile}
-<form action="{site_url}/usersettings.php" method="POST" {enctype}>
+<form action="{site_url_ssl}/usersettings.php" method="POST" {enctype}>
 <table border="0" cellspacing="0" cellpadding="3">
   {username_option}
   <tr valign="top">

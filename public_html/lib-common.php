@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.424 2005/05/09 13:38:29 ospiess Exp $
+// $Id: lib-common.php,v 1.425 2005/05/12 09:16:06 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2250,6 +2250,7 @@ function COM_userMenu( $help='', $title='' )
         $login = new Template( $_CONF['path_layout'] );
         $login->set_file( 'form', 'loginform.thtml' );
         $login->set_var( 'site_url', $_CONF['site_url'] );
+        $login->set_var( 'site_url_ssl', $_CONF['site_url_ssl'] );
         $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
         $login->set_var( 'lang_password', $LANG01[57] );
@@ -5506,18 +5507,18 @@ function COM_sanitizeID( $id, $new_id = true )
 }
 
 /** Converts a number for output into a formatted number with thousands-
-* 	separator, comma-separator and fixed decimals if necessary
+*         separator, comma-separator and fixed decimals if necessary
 *
-*	@param	float	$number	Number that will be formatted
-*	@return	string			formatted number
+*        @param        float        $number        Number that will be formatted
+*        @return        string                        formatted number
 */
 function COM_NumberFormat( $number )
 {
 global $_CONF;
 if ($number - abs($number)>0) {# number has decimals
-	$dc = $_CONF['decimal_count'];
+        $dc = $_CONF['decimal_count'];
 } else {
-	$dc = 0;
+        $dc = 0;
 }
 $ts = $_CONF['thousand_separator'];
 $ds = $_CONF['decimal_separator'];
