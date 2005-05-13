@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.97 2005/05/12 10:49:15 ospiess Exp $
+// $Id: user.php,v 1.98 2005/05/13 09:33:00 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -559,7 +559,11 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
         else
                 {$user_templates->set_var('photo_icon', '');}
         if ($_CONF['lastlogin']==true) {
-            $user_templates->set_var('user_regdate',date("Y.m.d H:i:s",$A['lastlogin']));
+            if ($A['lastlogin']<1) {
+                $user_templates->set_var('user_regdate',$LANG28[36]);
+            } else {
+                $user_templates->set_var('user_regdate',date("Y.m.d H:i:s",$A['lastlogin']));
+            }
         } else {
             $user_templates->set_var('user_regdate', $A['regdate']);
         }
