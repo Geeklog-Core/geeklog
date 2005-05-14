@@ -328,7 +328,9 @@ $LANG04 = array(
     108 => 'Confirm new password',
     109 => 'Enter the New password again here',
     110 => 'Current Password',
-    111 => 'Please enter your Current password'
+    111 => 'Please enter your Current password',
+    112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
+    113 => 'Login Attempt Failed'
 );
 
 ###############################################################################

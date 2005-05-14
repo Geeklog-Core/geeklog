@@ -49,6 +49,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_pwrequestid(pwrequest
 // for dynamic comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('dynamic', 'Dynamic')";
 
+// for quicker access to large speedlimit tables
+$_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX type_ipaddress(type,ipaddress)";
+$_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX date(date)";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {

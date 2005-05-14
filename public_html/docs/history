@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added speedlimit to login attempts, defaults to allowing three tries ina a
+  five minute period.  [Vinny]
 - Added optional SSL connections for all password-related pages and pathes in 
   config.php. Fixed bug #398, used diff file from Jerome Limozin [Oliver]
 - Userlist now also shows Registration Date and if $_CONF['lastlogin']= true it

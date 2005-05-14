@@ -365,7 +365,9 @@ CREATE TABLE {$_TABLES['speedlimit']} (
   ipaddress varchar(15) NOT NULL default '', 
   date int(10) unsigned default NULL,
   type varchar(30) NOT NULL default 'submit',
-  PRIMARY KEY (id) 
+  PRIMARY KEY (id),
+  KEY type_ipaddress (type,ipaddress),
+  KEY date (date)
 ) TYPE = MyISAM
 ";
 

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.425 2005/05/12 09:16:06 ospiess Exp $
+// $Id: lib-common.php,v 1.426 2005/05/14 04:03:21 vinny Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4833,16 +4833,26 @@ function COM_makeList( $listofitems, $classname = '' )
 * Check if speed limit applies for current IP address.
 *
 * @param type   string   type of speed limit to check, e.g. 'submit', 'comment'
+* @param max    int      max number of allowed tries within speed limit
 * @return       int      0 = does not apply, else: seconds since last post
 */
-function COM_checkSpeedlimit( $type = 'submit' )
+function COM_checkSpeedlimit( $type = 'submit', $max = 1 )
 {
     global $_TABLES;
 
     $last = 0;
 
-    $date = DB_getItem( $_TABLES['speedlimit'], 'date',
-            "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}')" );
+    $res  = DB_query("SELECT date FROM {$_TABLES['speedlimit']} WHERE "
+                   . "(type = '$type') AND (ipaddress = '{$_SERVER['REMOTE_ADDR']}') " 
+                   . "ORDER BY date ASC" );
+
+    // If the number of allowed tries has not been reached, return 0 (didn't hit limit)
+    if ( DB_numRows($res) < $max ) {
+        return $last;
+    }
+
+    list($date) = DB_fetchArray($res);
+
     if( !empty( $date ))
     {
         $last = time() - $date;

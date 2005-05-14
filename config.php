@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.164 2005/05/12 09:17:01 ospiess Exp $
+// $Id: config.php,v 1.165 2005/05/14 04:03:20 vinny Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -650,6 +650,10 @@ $_CONF['polladdresstime']   = 604800;
 
 // Password setting: minimum time between two requests for a new password
 $_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes
+
+// Login Speedlimit.
+$_CONF['login_attempts']   = 3;   // number of login attempts allowed before speedlimit kicks in
+$_CONF['login_speedlimit'] = 300; // wait (in seconds) after $_CONF['login_attempts'] failed logins
 
 // Links Settings
 // You can set both of the following to 0 to get back the old (pre-1.3.6)

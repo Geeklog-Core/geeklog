@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.97 2005/05/12 09:16:06 ospiess Exp $
+// $Id: users.php,v 1.98 2005/05/14 04:03:21 vinny Exp $
 
 /**
 * This file handles user authentication
@@ -815,6 +815,19 @@ case 'new':
     break;
 
 default:
+    // prevent dictionary attacks on passwords
+    COM_clearSpeedlimit($_CONF['login_speedlimit'], 'login');
+    if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
+        $retval .= COM_siteHeader()
+            . COM_startBlock ($LANG12[26], '', COM_getBlockTemplate ('_msg_block', 'header'))
+            . $LANG04[112]
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+            . COM_siteFooter(true);
+        echo $retval;
+        exit();
+    }
+    COM_updateSpeedlimit('login');
+
     $loginname = COM_applyFilter ($_REQUEST['loginname']);
     if (isset ($_POST['passwd'])) {
         $passwd = $_POST['passwd'];
@@ -912,8 +925,19 @@ default:
             }
             break;
         default:
-            // Show login form
-            $display .= loginform();
+            // check to see if this was the last allowed attempt
+            if ( COM_checkSpeedlimit('login', $_CONF['login_attempts']) > 0 ) {
+                $retval .= COM_siteHeader()
+                         . COM_startBlock ($LANG04[113], '', 
+                                           COM_getBlockTemplate ('_msg_block', 'header'))
+                         . $LANG04[112]
+                         . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                         . COM_siteFooter(true);
+                echo $retval;
+                exit();
+            } else { // Show login form
+                $display .= loginform();
+            }
             break;
         }
 
