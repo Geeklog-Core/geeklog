@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.27 2005/05/12 10:40:50 ospiess Exp $
+// $Id: lib-story.php,v 1.28 2005/05/14 13:59:48 dhaun Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -201,19 +201,25 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $bodytext = stripslashes( $A['bodytext'] );
             // Replace any plugin autolink tags
             $bodytext = PLG_replacetags( $bodytext );
-            
-                        # page selector --------------------------------------------------------
-                $page=$_REQUEST['page'];
-                if (!isset($page)) {$page=1;}
-                $article_array=explode('[page_break]',$bodytext);
-            $pagelinks = COM_printPageNavigation( $articleUrl, $page, 
-                                                                                      count($article_array));
-                if (count($article_array)>1) {
-                        $bodytext=$article_array[($page-1)];                        
-                if ($page>1) {$introtext=$pagelinks;}
+
+            // page selector
+            $page = COM_applyFilter( $_REQUEST['page'], true );
+            if( $page <= 0 )
+            {
+                $page = 1;
+            }
+            $article_array = explode( '[page_break]', $bodytext );
+            $pagelinks = COM_printPageNavigation( $articleUrl, $page,
+                                                  count( $article_array ));
+            if( count( $article_array ) > 1 )
+            {
+                $bodytext=$article_array[$page - 1];
+                if( $page > 1 )
+                {
+                    $introtext = $pagelinks;
                 }
-                $article->set_var( 'page_selector',$pagelinks);        
-                # page selector end ----------------------------------------------------
+            }
+            $article->set_var( 'page_selector', $pagelinks );        
 
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
