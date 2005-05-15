@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.61 2005/04/16 17:41:14 blaine Exp $
+// $Id: lib-plugins.php,v 1.62 2005/05/15 20:13:22 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1364,6 +1364,53 @@ function PLG_runScheduledTask ()
             $function ();
         }
     }
+}
+
+/**
+* "Generic" plugin API: Save item
+*
+* To be called (eventually) whenever Geeklog saves an item into the database.
+* Plugins can hook into this and modify the item (which is already in the
+* database but not visible on the site yet).
+*
+* Plugins can signal an error by returning an error message (otherwise, they
+* should return 'false' to signal "no errors"). In case of an error, all the
+* plugins called up to that point will be invoked through an "abort" call to
+* undo their changes.
+*
+* @param    string  $id     unique ID of the item
+* @param    string  $type   type of the item, e.g. 'article'
+* @returns  mixed           Boolean false for "no error", or an error msg text
+*
+* Note: This API function has not been finalized yet ...
+*
+*/
+function PLG_itemSaved ($id, $type)
+{
+    global $_PLUGINS;
+
+    $error = false;
+
+    $plugins = count ($_PLUGINS);
+    for ($save = 0; $save < $plugins; $save++) {
+        $function = 'plugin_itemsaved_' . $_PLUGINS[$save];
+        if (function_exists ($function)) {
+            $error = $function ($id, $type);
+            if ($error !== false) {
+                // plugin reported a problem - abort
+
+                for ($abort = 0; $abort < $save; $abort++) {
+                    $function = 'plugin_abortsave_' . $_PLUGINS[$abort];
+                    if (function_exists ($function)) {
+                        $function ($id, $type);
+                    }
+                }
+                break; // out of for($save) loop
+            }
+        }
+    }
+
+    return $error;
 }
 
 ?>

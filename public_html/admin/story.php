@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.150 2005/05/12 10:52:27 ospiess Exp $
+// $Id: story.php,v 1.151 2005/05/15 20:13:19 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -109,15 +109,22 @@ function userlist ($uid = 0)
 * Displays the story entry form
 *
 * @param    string      $sid    ID of story to edit
-* @param    string      $mode   mode: preview, 'edit', 'editsubmission'
+* @param    string      $mode   mode: 'preview', 'edit', 'editsubmission'
 * @return   string      HTML for story editor
 *
 */
-function storyeditor($sid = '', $mode = '')
+function storyeditor($sid = '', $mode = '', $errormsg = '')
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG24, $LANG_ACCESS;
 
     $display = '';
+
+    if (!empty ($errormsg)) {
+        $display .= COM_startBlock($LANG24[25], '',
+                            COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $errormsg;
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
+    }
 
     if (!empty($sid) && $mode == 'edit') {
         $result = DB_query ("SELECT STRAIGHT_JOIN s.*, UNIX_TIMESTAMP(s.date) as unixdate, "
@@ -997,7 +1004,7 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         $introtext = addslashes ($introtext);
         $bodytext = addslashes ($bodytext);
 
-        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon");
+        DB_save ($_TABLES['stories'], 'sid,uid,tid,title,introtext,bodytext,hits,date,comments,related,featured,commentcode,statuscode,expire,postmode,frontpage,draft_flag,numemails,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon,show_topic_icon,in_transit', "'$sid',$uid,'$tid','$title','$introtext','$bodytext',$hits,FROM_UNIXTIME($unixdate),'$comments','$related',$featured,'$commentcode','$statuscode',FROM_UNIXTIME($expiredate),'$postmode','$frontpage',$draft_flag,$numemails,$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon,$show_topic_icon,1");
 
         // If this is done as part of the moderation then delete the submission
         if (empty ($old_sid)) {
@@ -1011,6 +1018,21 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
         if ($delete_old_story && !empty ($old_sid)) {
             DB_delete ($_TABLES['stories'], 'sid', $old_sid);
             DB_query ("UPDATE {$_TABLES['comments']} SET sid = '$sid' WHERE type = 'article' AND sid = '$old_sid'");
+        }
+
+        // see if any plugins want to act on that story
+        $plugin_error = PLG_itemSaved ($sid, 'article');
+
+        // always clear 'in_transit' flag
+        DB_change ($_TABLES['stories'], 'in_transit', 0, 'sid', $sid);
+
+        // in case of an error go back to the story editor
+        if ($plugin_error !== false) {
+            $display .= COM_siteHeader ('menu');
+            $display .= storyeditor ($sid, 'retry', $plugin_error);
+            $display .= COM_siteFooter ();
+            echo $display;
+            exit;
         }
 
         // update feed(s) and Older Stories block

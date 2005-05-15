@@ -53,6 +53,10 @@ $_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('dynamic'
 $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX type_ipaddress(type,ipaddress)";
 $_SQL[] = "ALTER TABLE {$_TABLES['speedlimit']} ADD INDEX date(date)";
 
+// new 'in transit' status
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD in_transit tinyint(1) unsigned default '0' AFTER frontpage";
+$_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_transit)";
+
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()
 {
