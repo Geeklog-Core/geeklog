@@ -1,14 +1,14 @@
     <tr align="center" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-        <td align="left" style="padding-left:10px;padding-right:3px;">
+        <td align="right" style="padding-left:10px;padding-right:3px;">
             <a href="{page_edit_url}" title="{lang_title_edit}">{row_number}</a>
         </td>
-        <td align="left" style="padding-left:10px;padding-right:0px;">
+        <td align="center">
             [<a href="{page_clone_url}" title="{lang_title_copy}">C</a>]
         </td>
         <td align="left" style="padding-left:3px;" nowrap>
             <a href="{page_display_url}" title="{lang_title_display}">{sp_title}</a>
         </td>
         <td style="padding-left:3px;">{sp_centerblock}</td>
-        <td style="padding-left:3px;">{username}</td>
+        <td align="left" style="padding-left:3px;">{username}</td>
         <td style="padding-left:3px;">{sp_date}</td>
     </tr>
