@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.426 2005/05/14 04:03:21 vinny Exp $
+// $Id: lib-common.php,v 1.427 2005/05/17 08:14:46 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4321,14 +4321,27 @@ function COM_showMessage( $msg, $plugin='' )
 * @param        string      $base_url       base url to use for all generated links
 * @param        int         $curpage        current page we are on
 * @param        int         $num_pages      Total number of pages
+* @param        string      $page_str       page-variable name AND '='
+* @param        bool        $do_rewrite     if true, url-rewriting is respected
 * @return   string   HTML formatted widget
 */
 
-function COM_printPageNavigation( $base_url, $curpage, $num_pages )
+function COM_printPageNavigation( $base_url, $curpage, $num_pages, $page_str='page=', $do_rewrite=false)
 {
     global $LANG05;
 
-    $hasargs = strstr( $base_url, '?' );
+    if (!$do_rewrite)
+    {
+        $hasargs = strstr( $base_url, '?' );
+        if( $hasargs )
+        {
+            $sep='&amp;';
+        } else {
+            $sep='?';
+        }
+    } else {
+        $sep = '/';
+    }
 
     if( $num_pages < 2 ) 
     {
@@ -4339,14 +4352,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
 
     if( $curpage > 1 )
     {
-        if( $hasargs )
-        {
-            $retval .= '<a href="' . $base_url . '&amp;page=1">' . $LANG05[7] . '</a> | ';
-            $retval .= '<a href="' . $base_url . '&amp;page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
-        } else {
-            $retval .= '<a href="' . $base_url . '?page=1">' . $LANG05[7] . '</a> | ';
-            $retval .= '<a href="' . $base_url . '?page=' . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
-        }
+        $retval .= '<a href="' . $base_url . $sep . $page_str . '1">' . $LANG05[7] . '</a> | ';
+        $retval .= '<a href="' . $base_url . $sep . $page_str . ( $curpage - 1 ) . '">' . $LANG05[6] . '</a> | ';
     }
     else
     {
@@ -4367,14 +4374,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
         }
         else
         {
-            if( $hasargs )
-            {
-                $retval .= '<a href="' . $base_url . '&amp;page=' . $pgcount . '">' . $pgcount . '</a> ';
-            }
-            else
-            {
-                $retval .= '<a href="' . $base_url . '?page=' . $pgcount . '">' . $pgcount . '</a> ';
-            }
+            $retval .= '<a href="' . $base_url . $sep . $page_str . $pgcount . '">' . $pgcount . '</a> ';
         }
     }
 
@@ -4385,14 +4385,8 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages )
     }
     else
     {
-        if( $hasargs )
-        {
-            $retval .= '| <a href="' . $base_url . '&amp;page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
-            $retval .= '| <a href="' . $base_url . '&amp;page=' . $num_pages . '">' . $LANG05[8] . '</a>';
-        } else {
-            $retval .= '| <a href="' . $base_url . '?page=' . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
-            $retval .= '| <a href="' . $base_url . '?page=' . $num_pages . '">' . $LANG05[8] . '</a>';
-        }
+        $retval .= '| <a href="' . $base_url . $sep . $page_str . ( $curpage + 1 ) . '">' . $LANG05[5] . '</a> ';
+        $retval .= '| <a href="' . $base_url . $sep . $page_str . $num_pages . '">' . $LANG05[8] . '</a>';
     }
 
     if( !empty( $retval ))
