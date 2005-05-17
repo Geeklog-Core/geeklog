@@ -102,11 +102,11 @@
       */
     function _feedHeader()
     {
-      $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<feed version=\"0.3\">\n";
-      $xml .= "<title mode=\"escaped\">".$this->_safeXML( $this->title )."</title>\n";
-      $xml .= "<tagline mode=\"escaped\">".$this->_safeXML( $this->description )."</tagline>\n";
-      $xml .= '<link rel="alternative" type="text/html" href="'.$this->_safeXML( $this->sitelink )."\"/>\n";
+      $xml = '<?xml version="1.0" encoding="' . $this->encoding . '" ?>' . LB . LB 
+           . '<feed version="0.3">' . LB
+           . '<title mode="escaped">' . $this->_safeXML( $this->title ) . '</title>' . LB
+           . '<tagline mode="escaped">' . $this->_safeXML( $this->description ) . '</tagline>' . LB
+           . '<link rel="alternative" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB; 
       return $xml;
     }
 
