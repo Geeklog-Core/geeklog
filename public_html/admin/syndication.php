@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.7 2005/01/23 11:07:18 dhaun Exp $
+// $Id: syndication.php,v 1.8 2005/05/17 13:23:31 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -80,6 +80,7 @@ function listfeeds ()
     $feed_template->set_var ('lang_version', $LANG33[43]);
     $feed_template->set_var ('lang_updated', $LANG33[18]);
     $feed_template->set_var ('lang_enabled', $LANG33[19]);
+    $feed_template->set_var ('lang_header_topic', $LANG33[45]);
 
     $result = DB_query ("SELECT *,UNIX_TIMESTAMP(updated) as date FROM {$_TABLES['syndication']}");
     $num = DB_numRows ($result);
@@ -115,6 +116,15 @@ function listfeeds ()
                 $enabled = $LANG33[21];
             }
             $feed_template->set_var ('feed_enabled', $enabled);
+            
+            if ($A['header_tid'] == 'all') {
+                $A['header_tid'] = $LANG33[43];
+            } elseif ($A['header_tid'] == 'none') {
+                $A['header_tid'] = $LANG33[44];
+            } elseif ($A['header_tid'] == 'home') {
+                $A['header_tid'] = $LANG33[46];
+            }
+            $feed_template->set_var ('feed_header_topic', $A['header_tid']);
             $feed_template->parse ('feedlist_items', 'row', true);
         }
     }
@@ -241,7 +251,19 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var ('lang_charset', $LANG33[31]);
     $feed_template->set_var ('lang_language', $LANG33[32]);
     $feed_template->set_var ('lang_topic', $LANG33[33]);
-
+    
+    if ($A['header_tid'] == 'all') {
+        $feed_template->set_var('all_selected', 'selected="selected"');
+    } elseif ($A['header_tid'] == 'none') {
+        $feed_template->set_var('none_selected', 'selected="selected"');
+    } elseif ($A['header_tid'] == 'home') {
+        $feed_template->set_var('home_selected', 'selected="selected"');
+    }  
+    $feed_template->set_var('lang_header_all', $LANG33[43]);
+    $feed_template->set_var('lang_header_none', $LANG33[44]);
+    $feed_template->set_var('lang_header_topic', $LANG33[45]);
+    $feed_template->set_var('lang_header_home', $LANG33[46]);
+    $feed_template->set_var('header_topic_options', COM_topicList('tid,topic',$A['header_tid']));
     $feed_template->set_var('lang_save', $LANG33[2]);
     $feed_template->set_var('lang_cancel', $LANG33[4]);
     if ($A['fid'] > 0) {
@@ -440,13 +462,19 @@ function savefeed ($A)
     if ($A['content_length'] < 0) {
         $A['content_length'] = 0;
     }
+    
+    if ($A['header_tid']=='all') { // if this feed is shown in all topics's header, unset all others first
+        DB_change($_TABLES['syndication'],'header_tid','none');
+    } elseif ($A['header_tid']!='none') { // and if not, kick out all others that want to appear everywhere
+        DB_change($_TABLES['syndication'],'header_tid','none','header_tid',$value='all');
+    }
 
     foreach ($A as $name => $value) {
         $A[$name] = addslashes ($value);
     }
 
-    DB_save ($_TABLES['syndication'], 'fid,type,topic,format,limits,content_length,title,description,filename,charset,language,is_enabled,updated,update_info',
-        "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
+    DB_save ($_TABLES['syndication'], 'fid,type,topic,header_tid,format,limits,content_length,title,description,filename,charset,language,is_enabled,updated,update_info',
+        "{$A['fid']},'{$A['type']}','{$A['topic']}','{$A['header_tid']}','{$A['format']}','{$A['limits']}',{$A['content_length']},'{$A['title']}','{$A['description']}','{$A['filename']}','{$A['charset']}','{$A['language']}',{$A['is_enabled']},'0000-00-00 00:00:00',NULL");
 
     if ($A['fid'] == 0) {
         $A['fid'] = DB_insertId ();

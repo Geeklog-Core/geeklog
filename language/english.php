@@ -1084,7 +1084,11 @@ $LANG33 = array(
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
     41 => 'Links',
-    42 => 'Events'
+    42 => 'Events',
+    43 => 'All',
+    44 => 'None',
+    45 => 'Header-link in topic',
+    46 => 'Homepage'
 );
 
 ###############################################################################

@@ -19,6 +19,17 @@
   <td>{feed_topic}</td>
 </tr>
 <tr>
+    <td align="right">{lang_header_topic}:</td>
+    <td>
+        <select name="header_tid">
+        <option value="none" {none_selected}>{lang_header_none}</option>
+        <option value="all" {all_selected}>{lang_header_all}</option>
+        <option value="home" {home_selected}>{lang_header_home}</option>
+        {header_topic_options}
+        </select>
+    </td>
+</tr>
+<tr>
   <td align="right">{lang_format}:</td>
   <td>{feed_format}</td>
 </tr>

@@ -5,6 +5,7 @@
   <td align="center">{feed_type}</td>
   <td>{feed_format}</td>
   <td>{feed_filename_and_link}</td>
+  <td>{feed_header_topic}</td>
   <td>{feed_updated}</td>
   <td>{feed_enabled}</td>
 </tr>

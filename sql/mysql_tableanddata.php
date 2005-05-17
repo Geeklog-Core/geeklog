@@ -439,6 +439,7 @@ CREATE TABLE {$_TABLES['syndication']} (
   fid int(10) unsigned NOT NULL auto_increment,
   type varchar(30) NOT NULL default 'geeklog',
   topic varchar(48) NOT NULL default '::all',
+  header_tid varchar(48) NOT NULL default 'none', 
   format varchar(20) NOT NULL default 'rss',
   limits varchar(5) NOT NULL default '10',
   content_length smallint(5) unsigned NOT NULL default '0',

@@ -9,6 +9,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 -->
 <link rel="stylesheet" type="text/css" href="{css_url}" title="{theme}">
+{feed_url}
 {plg_headercode}
 </head>
 <body>
