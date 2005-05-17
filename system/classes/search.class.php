@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.32 2005/02/01 19:20:31 dhaun Exp $
+// $Id: search.class.php,v 1.33 2005/05/17 20:34:22 ospiess Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -291,7 +291,7 @@ class Search {
                 }
                 $row = array ('<a href="' . $articleUrl . '">'
                               . stripslashes ($A['title']) . '</a>',
-                              $thetime[0], $profile, $A['hits']);
+                              $thetime[0], $profile, COM_NumberFormat($A['hits']) );
                 $story_results->addSearchResult ($row);
                 $story_results->num_searchresults++;
             }
@@ -493,7 +493,8 @@ class Search {
                 $row = array (stripslashes ($A['title']),
                               '<a href="' . COM_buildUrl ($_CONF['site_url']
                               . '/portal.php?what=link&amp;item=' . $A['lid'])
-                              . '">' . $A['url'] . '</a>', $A['hits']);
+                              . '">' . $A['url'] . '</a>', 
+                              COM_NumberFormat($A['hits']) );
                 $link_results->addSearchResult($row);
                 $link_results->num_searchresults++;
             }
