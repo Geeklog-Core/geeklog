@@ -105,7 +105,7 @@
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
       $xml .= "<feed version=\"0.3\">\n";
       $xml .= "<title mode=\"escaped\">".$this->_safeXML( $this->title )."</title>\n";
-      $xml .= '<tagline mode=\"escaped\">'.$this->_safeXML( $this->description )."</tagline>\n";
+      $xml .= "<tagline mode=\"escaped\">".$this->_safeXML( $this->description )."</tagline>\n";
       $xml .= '<link rel="alternative" type="text/html" href="'.$this->_safeXML( $this->sitelink )."\"/>\n";
       return $xml;
     }
