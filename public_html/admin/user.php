@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.98 2005/05/13 09:33:00 ospiess Exp $
+// $Id: user.php,v 1.99 2005/05/17 14:51:27 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -125,9 +125,6 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('site_admin_url_ssl', $_CONF['site_admin_url_ssl']);
     $user_templates->set_var('layout_url', $_CONF['layout_url']);
     $user_templates->set_var('lang_save', $LANG28[20]);
-    if (!empty ($A['uid']) && ($A['uid'] > 1)) {
-        $user_templates->set_var('change_password_option', '<input type="submit" value="' . $LANG28[17] . '" name="mode">');
-    }
     if (!empty($uid) && ($A['uid'] != $_USER['uid']) && SEC_hasRights('user.delete')) {
         $user_templates->set_var('delete_option', '<input type="submit" value="' . $LANG28[19] . '" name="mode">');
     }
@@ -223,35 +220,6 @@ function edituser($uid = '', $msg = '')
 }
 
 /**
-* Changes a user's password
-*
-* @param    int     $uid        ID of user to change password for
-* @param    string  $passwd     New password
-* @return   string              HTML redirect or error message
-*
-*/
-function changepw ($uid, $passwd)
-{
-    global $_CONF, $_TABLES;
-
-    $retval = '';
-
-    if (!empty ($passwd) && !empty ($uid)) {
-        $passwd = md5 ($passwd);
-        $result = DB_change ($_TABLES['users'], 'passwd', "$passwd",
-                             'uid', $uid);
-
-        $retval .= COM_refresh ($_CONF['site_admin_url'] . '/user.php?msg=5');
-    } else {
-        $retval .= COM_siteHeader ('menu');
-        $retval .= COM_errorLog ('CHANGEPW ERROR: There was nothing to do!', 3);
-        $retval .= COM_siteFooter ();
-    }
-
-    return $retval;
-}
-
-/**
 * Saves user to the database
 *
 * @param    int     $uid            user id
@@ -265,7 +233,7 @@ function changepw ($uid, $passwd)
 * @return   string                  HTML redirect or error message
 *
 */
-function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $homepage, $groups, $delete_photo = '')
+function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '')
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
@@ -273,6 +241,10 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
 
     if ($_USER_VERBOSE) COM_errorLog("**** entering saveusers****",1);
     if ($_USER_VERBOSE) COM_errorLog("group size at beginning = " . sizeof($groups),1);
+    
+    if ($passwd!=$passwd_conf) { // passwords dont match
+        return edituser ($uid, 67);
+    }
 
     if (!empty ($username) && !empty ($email)) {
 
@@ -307,7 +279,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $email, $regdate, $home
         }
 
         if (empty ($uid) || !empty ($passwd)) {
-            $passwd = md5 ($passwd);
+            $passwd = md5 ($passwd); 
         } else {
             $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
         }
@@ -786,7 +758,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
 } else if (($mode == $LANG28[20]) && !empty ($LANG28[20])) { // save
     $display = saveusers (COM_applyFilter ($_POST['uid'], true),
             $_POST['username'], $_POST['fullname'],
-            $_POST['passwd'], $_POST['email'],
+            $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
             $_POST['regdate'], $_POST['homepage'],
             $_POST[$_TABLES['groups']],
             $_POST['delete_photo']);
@@ -796,9 +768,6 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
         $tmp .= COM_siteFooter();
         $display = $tmp;
     }
-} else if (($mode == $LANG28[17]) && !empty ($LANG28[17])) { // change password
-    $display .= changepw (COM_applyFilter ($_POST['uid'], true),
-                          $_POST['passwd']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu', $LANG28[1]);
     $display .= edituser (COM_applyFilter ($_GET['uid']), 
