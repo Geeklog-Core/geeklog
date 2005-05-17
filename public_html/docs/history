@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Removed redundant changepwd-button & code from /admin/user.php (Bug #9) 
+  [Oliver]
 - Added new feature to insert a feed-link into header depending on topic, to be 
   chosen from /admin/syndication.php in the form of
   <link rel="alternate" type="application/rss+xml" ....> [Oliver]
