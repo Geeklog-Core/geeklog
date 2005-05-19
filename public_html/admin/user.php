@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.99 2005/05/17 14:51:27 ospiess Exp $
+// $Id: user.php,v 1.100 2005/05/19 16:45:46 blaine Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -437,9 +437,6 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
         
 
-    if ($prevorder != $order) {
-        $direction = 'desc';
-    }
     switch($order) {
         case 1:
             $orderby = 'uid';
@@ -465,14 +462,17 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 1;
             break;
     }
-    if ($direction == "asc") {
-        $prevdirection = 'asc';
-        $direction = 'desc';
-        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
     } else {
-        $prevdirection = 'desc';
-        $direction = 'asc';
+        $direction = ($direction == "desc") ? "desc" : "asc";
+    }
+
+    if ($direction == 'asc') {
         $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $user_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
     }
 
     $user_templates->set_var ('direction', $direction);
@@ -543,9 +543,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
     if (!empty($query)) {
         $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&order={$order}&prevorder={$prevorder}&direction={$prevdirection}";
+        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&order={$order}&direction={$prevdirection}";
     } else {
-        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&order={$order}&prevorder={$prevorder}&direction={$prevdirection}";
+        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&order={$order}&direction={$prevdirection}";
     }
 
     if ($num_pages > 1) {
