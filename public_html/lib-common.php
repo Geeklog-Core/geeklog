@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.428 2005/05/17 13:29:25 ospiess Exp $
+// $Id: lib-common.php,v 1.429 2005/05/21 18:32:01 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -831,7 +831,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
         $topic = COM_applyFilter( $_GET['topic'] );
     }
-    
+/*
     if ($_CONF['backend'] == 1) // add feed-link to header if applicable
     {  // check for feed that would be in all topics, or in current, or home only
         $search_array=array('all',$topic,'home');
@@ -850,7 +850,7 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
            $header->set_var( 'feed_url', $feed_url); // add to template
         }
     }
-
+*/
     if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
     {
         $pagetitle = $_CONF['pagetitle'];
