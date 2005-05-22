@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.28 2005/05/14 13:59:48 dhaun Exp $
+// $Id: lib-story.php,v 1.29 2005/05/22 11:57:41 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -86,7 +86,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     $article->set_var( 'layout_url', $_CONF['layout_url'] );
     $article->set_var( 'site_url', $_CONF['site_url'] );
     $article->set_var( 'story_date', $A['day'] );
-    if( $_CONF['viewscountline'] == 1 ) {
+    if( $_CONF['hideviewscount'] != 1 ) {
         $article->set_var( 'lang_views', $LANG01[106] );
         $article->set_var( 'story_hits', COM_NumberFormat( $A['hits'] ) );
     }
