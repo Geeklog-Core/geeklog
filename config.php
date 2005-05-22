@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.165 2005/05/14 04:03:20 vinny Exp $
+// $Id: config.php,v 1.166 2005/05/22 11:21:53 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -531,7 +531,7 @@ $_CONF['maximagesperarticle']   = 5;
 $_CONF['limitnews']             = 10;
 $_CONF['minnews']               = 1;        // minimum number of stories per page
 $_CONF['contributedbyline']     = 1;        // If 1, show contributed by line
-$_CONF['viewscountline']        = 1;        // If 1, show Viewed X times line
+$_CONF['hideviewscount']        = 0;        // If 1, hide Viewed X times line
 $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
