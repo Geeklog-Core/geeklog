@@ -42,6 +42,10 @@
                                         <td><input type="text" size="48" maxlength="255" name="homepage" value="{user_homepage}"></td>
                                     </tr>
                                     <tr>
+                                        <td align="right">{lang_user_status}:</td>
+                                        <td>{user_status}</td>
+                                    </tr>
+                                    <tr>
                                         <td colspan="2"><hr></td>
                                     </tr>
                                     {group_edit}

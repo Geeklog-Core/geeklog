@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.100 2005/05/19 16:45:46 blaine Exp $
+// $Id: user.php,v 1.101 2005/05/22 13:35:56 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -176,6 +176,25 @@ function edituser($uid = '', $msg = '')
     $user_templates->set_var('lang_homepage', $LANG28[8]);
     $user_templates->set_var('user_homepage', htmlspecialchars($A['homepage']));
     $user_templates->set_var('do_not_use_spaces', $LANG28[9]);
+    
+    $statusarray = array(0 => $LANG28[42], 1 => $LANG28[43], 3 => $LANG28[45] );
+    if ($_CONF['usersubmission'] == 1)
+    {
+        $statusarray[2] = $LANG28[44];
+        asort($statusarray);
+    }
+    $statusselect = '<select name="userstatus">';
+    while (list($key, $value) = each($statusarray))
+    {
+        if ($key == $A['status'])
+        {
+            $statusselect .= "<option selected=\"true\" value=\"$key\">$value</option>\n";
+        } else {
+            $statusselect .= "<option value=\"$key\">$value</option>\n";
+        }
+    }
+    $user_templates->set_var('user_status', $statusselect);
+    $user_templates->set_var('lang_user_status', $LANG28[46]);
 
     if ($_CONF['custom_registration'] AND (function_exists('custom_useredit'))) {
         if (!empty ($uid) && ($uid > 1)) {
@@ -233,7 +252,7 @@ function edituser($uid = '', $msg = '')
 * @return   string                  HTML redirect or error message
 *
 */
-function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '')
+function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '', $userstatus=3)
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
@@ -279,7 +298,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
         }
 
         if (empty ($uid) || !empty ($passwd)) {
-            $passwd = md5 ($passwd); 
+            $passwd = md5 ($passwd);
         } else {
             $passwd = DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid");
         }
@@ -329,7 +348,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             }
 
             $curphoto = addslashes ($curphoto);
-            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto' WHERE uid = $uid");
+            DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
             }
@@ -462,7 +481,6 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             $order = 1;
             break;
     }
-
     if ($order == $prevorder) {
         $direction = ($direction == "desc") ? "asc" : "desc";
     } else {
@@ -543,9 +561,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     }
     if (!empty($query)) {
         $query = str_replace('%','*',$query);
-        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&order={$order}&direction={$prevdirection}";
+        $base_url = $_CONF['site_admin_url'] . '/user.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
     } else {
-        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&order={$order}&direction={$prevdirection}";
+        $base_url = $_CONF['site_admin_url'] . "/user.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
     }
 
     if ($num_pages > 1) {
@@ -761,7 +779,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
             $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
             $_POST['regdate'], $_POST['homepage'],
             $_POST[$_TABLES['groups']],
-            $_POST['delete_photo']);
+            $_POST['delete_photo'], $_POST['userstatus']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;

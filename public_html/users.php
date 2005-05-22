@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.98 2005/05/14 04:03:21 vinny Exp $
+// $Id: users.php,v 1.99 2005/05/22 13:35:56 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -304,9 +304,9 @@ function emailpassword ($username, $msg = 0)
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-        if (($_CONF['usersubmission'] == 1) && USER_isQueued ($A['uid'])) {
-            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
-        }
+//        if (($_CONF['usersubmission'] == 1) && USER_isQueued ($A['uid'])) {
+//            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+//        }
 
         USER_createAndSendPassword ($username, $A['email']);
 
@@ -340,9 +340,9 @@ function requestpassword ($username, $msg = 0)
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5 (''))) {
-            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
-        }
+//        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5 (''))) {
+//            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+//        }
         $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
         DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                    'username', $username);
@@ -526,7 +526,7 @@ function createuser ($username, $email)
 * @return   string      HTML for login form
 *
 */
-function loginform ($hide_forgotpw_link = false)
+function loginform ($hide_forgotpw_link = false, $statusmode=-1)
 {
     global $_CONF, $LANG04;
 
@@ -536,8 +536,17 @@ function loginform ($hide_forgotpw_link = false)
     $user_templates->set_file('login', 'loginform.thtml');
     $user_templates->set_var('site_url', $_CONF['site_url']);
     $user_templates->set_var('site_url_ssl', $_CONF['site_url_ssl']);
-    $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
-    $user_templates->set_var('lang_message', $LANG04[66]);
+    if ($statusmode == 0) {
+        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[114]));
+        $user_templates->set_var('lang_message', $LANG04[115]);
+    } elseif ($statusmode == 2) {
+        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[116]));
+        $user_templates->set_var('lang_message', $LANG04[117]);
+    } else {
+        $user_templates->set_var('start_block_loginagain', COM_startBlock($LANG04[65]));
+        $user_templates->set_var('lang_message', $LANG04[66]);
+    }
+        
     $user_templates->set_var('lang_username', $LANG04[2]);
     $user_templates->set_var('lang_password', $LANG04[4]);
     if ($hide_forgotpw_link) {
@@ -833,12 +842,12 @@ default:
         $passwd = $_POST['passwd'];
     }
     if (!empty($loginname) && !empty($passwd)) {
-        $mypasswd = COM_getPassword($loginname);
+        $status = SEC_authenticate($loginname, $passwd);
     } else {
-        srand((double)microtime()*1000000);
-        $mypasswd = rand();
+        $status = -1;
     }
-    if (!empty ($passwd) && !empty ($mypasswd) && ($mypasswd == md5($passwd))) {
+    
+    if ($status == 3) { // logged in AOK.
         DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
         $userdata = SESS_getUserData($loginname);
         $_USER=$userdata;
@@ -936,7 +945,10 @@ default:
                 echo $retval;
                 exit();
             } else { // Show login form
-                $display .= loginform();
+                if( ($msg != 69) && ($msg != 70) )
+                {
+                    $display .= loginform(false, $status);
+                }
             }
             break;
         }

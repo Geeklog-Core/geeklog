@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.24 2004/12/29 08:41:24 dhaun Exp $
+// $Id: lib-security.php,v 1.25 2005/05/22 13:35:56 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -640,5 +640,108 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 
     return $group;
 }
+
+/**
+* Attempt to login a user.
+*
+* Checks a users username and password against the database. Returns
+* users status.
+*
+* @param    string  $username   who is logging in?
+* @param    string  $password   what they claim is their password
+* @return   int                 user status, -1 for fail.
+*
+*/
+function SEC_authenticate($username, $password)
+{
+    global $_TABLES, $LANG01;
+
+    $result = DB_query( "SELECT status, passwd FROM {$_TABLES['users']} WHERE username='$username'" );
+    $tmp = mysql_errno();
+    $nrows = DB_numRows( $result );
+
+    if(( $tmp == 0 ) && ( $nrows == 1 ))
+    {
+        $U = DB_fetchArray( $result );
+        if ($U['status'] == 0)
+        {
+            return 0; // banned, jump to here to save an md5 calc.
+        } elseif ($U['passwd'] != md5( $password )) {
+            return -1; // failed login
+        } elseif ($U['status'] == 1) {
+            // Awaiting user activation, activate and move to:
+            if ($_CONF['usersubmission'])
+            {
+                $newstatus = 2; // require admin approval
+            } else {
+                $newstatus = 3; // live
+            }
+            DB_change($_TABLES['users'],'status',$newstatus,'username',$username); 
+            return $newstatus;
+        } else {
+            return $U['status']; // just return their status
+        }
+    }
+    else
+    {
+        $tmp = $LANG01[32] . ": '" . $loginname . "'";
+        COM_errorLog( $tmp, 1 );
+        return -1;
+    }
+}
+
+function SEC_checkUserStatus($userid)
+{
+    global $_TABLES, $_CONF;
+    // Check user status
+    $status = DB_getItem($_TABLES['users'], 'status', "uid=$userid");
+    
+    // only do redirects if we aren't on users.php in a valid mode (logout or
+    // default)
+    if (!(eregi('users.php', $_SERVER['PHP_SELF'])))
+    {
+        $redirect = true;
+    } else {
+        if (($_REQUEST['mode'] == 'logout') || ($_REQUEST['mode'] == ''))
+        {
+            $redirect = false;
+        } else {
+            $redirect = true;
+        }
+    }
+    if ($status == 1)
+    {
+        // Awaiting user activation, activate and move to:
+        if ($_CONF['usersubmission'])
+        {
+            // require admin approval
+            DB_change($_TABLES['users'], 'status', 2, 'uid', $userid);
+            if ($redirect)
+            {
+                echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
+                exit;
+            }
+        } else {
+            // live
+            DB_change($_TABLES['users'], 'status',3 , 'uid', $userid);
+        }
+    } elseif ($status == 2) {
+        // If we aren't on users.php with a default action then go to it
+        if ($redirect)
+        {
+            COM_errorLog("SECURITY: Attempted Cookie Session login from user awaiting approval $userid.", 1);
+            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
+            exit;
+        }
+    } elseif ($status == 0) {
+        if ($redirect)
+        {
+            COM_errorLog("SECURITY: Attempted Cookie Session login from banned user $userid.", 1);
+            echo COM_refresh($_CONF['site_url'] . '/users.php?msg=69');
+            exit;
+        }
+    }
+}
+
 
 ?>

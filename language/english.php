@@ -330,7 +330,11 @@ $LANG04 = array(
     110 => 'Current Password',
     111 => 'Please enter your Current password',
     112 => 'You have exceeded the number of allowed login attempts.  Please try again later.',
-    113 => 'Login Attempt Failed'
+    113 => 'Login Attempt Failed',
+    114 => 'Account Disabled',
+    115 => 'Your account has been disabled, you may not login. Please contact an Administrator.',
+    116 => 'Account Awaiting Activation',
+    117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
 );
 
 ###############################################################################
@@ -895,7 +899,12 @@ $LANG28 = array(
     38 => 'Group Listing',
     39 => 'Password (again)',
     40 => 'Registration Date',
-    41 => 'Last login Date'
+    41 => 'Last login Date',
+    42 => 'Banned',
+    43 => 'Awaiting Activation',
+    44 => 'Awaiting Authorization',
+    45 => 'Active',
+    46 => 'User Status'
 );
 
 ###############################################################################
@@ -1163,6 +1172,8 @@ $MESSAGE = array(
     66 => 'The weblog directory service has been deleted.',
     67 => 'The new password does not match the confirmation password!',
     68 => 'You have to enter the correct current password.',
+    69 => 'Your account has been blocked!',
+    70 => 'Your account is awaiting administrator approval.',
 );
 
 ###############################################################################
