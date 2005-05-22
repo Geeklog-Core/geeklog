@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.429 2005/05/21 18:32:01 dhaun Exp $
+// $Id: lib-common.php,v 1.430 2005/05/22 17:32:31 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -831,26 +831,27 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     {
         $topic = COM_applyFilter( $_GET['topic'] );
     }
-/*
+
     if ($_CONF['backend'] == 1) // add feed-link to header if applicable
     {  // check for feed that would be in all topics, or in current, or home only
         $search_array=array('all',$topic,'home');
-        while (empty($rdf_file))
+        for ($r=0;$r<count($search_array);$r++)
         {
         $rdf_file = DB_getItem($_TABLES['syndication'],'filename',
                                "header_tid='".current($search_array)."'");
-        next($search_array);
-        }
-
         if (!empty($rdf_file))
-        {   // feed found. construct HMTL-tag
-           $feed_url='<link rel="alternate" type="application/rss+xml" '
+            {
+            $feed_url='<link rel="alternate" type="application/rss+xml" '
                         . 'title="RDF-Feed" href="' . $_CONF['site_url']
                         . '/backend/' . $rdf_file . '">';
-           $header->set_var( 'feed_url', $feed_url); // add to template
+            $header->set_var( 'feed_url', $feed_url); // add to template
+            continue;
+            }
+        next($search_array);
         }
     }
-*/
+    $header->set_var( 'feed_url', $feed_url);
+
     if( empty( $pagetitle ) && isset( $_CONF['pagetitle'] ))
     {
         $pagetitle = $_CONF['pagetitle'];
