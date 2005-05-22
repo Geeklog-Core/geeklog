@@ -12,10 +12,6 @@
                                     <td align="right">{total_polls} ({total_answers})</td>
                                 </tr>
                                 <tr>
-                                    <td>{lang_links_clicks}</td>
-                                    <td align="right">{total_links} ({total_clicks})</td>
-                                </tr>
-                                <tr>
                                     <td>{lang_events}</td>
                                     <td align="right">{total_events}</td>
                                 </tr>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: stats.php,v 1.34 2005/05/09 13:42:30 ospiess Exp $
+// $Id: stats.php,v 1.35 2005/05/22 18:23:16 dhaun Exp $
 
 require_once('lib-common.php');
 
@@ -112,16 +112,7 @@ $stat_templates->set_var('lang_polls_answers',$LANG10[4]);
 $stat_templates->set_var('total_polls', COM_NumberFormat ($total_polls) );
 $stat_templates->set_var('total_answers', COM_NumberFormat ($total_answers) );
 
-$result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
-$A = DB_fetchArray($result);
-$total_links = $A['count'];
-$total_clicks = $A['clicks'];
-if (empty ($total_clicks)) {
-    $total_clicks = 0;
-}
-$stat_templates->set_var('lang_links_clicks',$LANG10[5]);
-$stat_templates->set_var('total_links', COM_NumberFormat ($total_links) );
-$stat_templates->set_var('total_clicks',COM_NumberFormat ($total_clicks) );
+
 
 $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
 $A = DB_fetchArray($result);
@@ -263,28 +254,7 @@ if ($nrows>0) {
 $display .= COM_endBlock();
 $stat_templates->set_var('stat_row','');
 
-// Top Ten Links
 
-$result = DB_query("SELECT lid,url,title,hits FROM {$_TABLES['links']} WHERE (hits > 0)" . COM_getPermSQL ('AND') . " ORDER BY hits DESC LIMIT 10");
-$nrows  = DB_numRows($result);
-$display .= COM_startBlock($LANG10[18]);
-if ($nrows > 0) {
-    $stat_templates->set_var('item_label',$LANG10[19]);
-    $stat_templates->set_var('stat_name',$LANG10[20]);
-    for ($i = 0; $i < $nrows; $i++) {
-        $A = DB_fetchArray($result);
-        $stat_templates->set_var('item_url', COM_buildUrl ($_CONF['site_url']
-                . '/portal.php?what=link&amp;item=' . $A['lid']));
-        $stat_templates->set_var('item_text', stripslashes(str_replace('$','&#36;',$A['title'])));
-        $stat_templates->set_var('item_stat', COM_NumberFormat ($A['hits']) );
-        $stat_templates->parse('stat_row','statrow',true); 
-    }
-    $stat_templates->parse('output','itemstats');
-    $display .= $stat_templates->finish($stat_templates->get_var('output'));
-} else {
-    $display .= $LANG10[21];
-}	
-$display .= COM_endBlock();
 
 // Now show stats for any plugins that want to be included
 $display .= PLG_getPluginStats(2);

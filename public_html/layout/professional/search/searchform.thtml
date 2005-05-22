@@ -32,7 +32,6 @@
                                                 <option selected="selected" value="all">{lang_all}</option>
                                                 <option value="stories">{lang_stories}</option>
                                                 <option value="comments">{lang_comments}</option>
-                                                <option value="links">{lang_links}</option>
                                                 <option value="events">{lang_events}</option>
 						                        {plugin_types}
                                             </select>

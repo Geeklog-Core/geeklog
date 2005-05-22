@@ -1,0 +1,599 @@
+<?php
+
+/* Reminder: always indent with 4 spaces (no tabs). */
+// +---------------------------------------------------------------------------+
+// | links Plugin 1.0                                                          |
+// +---------------------------------------------------------------------------+
+// | functions.inc                                                             |
+// |                                                                           |
+// | This file does two things: 1) it implements the necessary Geeklog Plugin  |
+// | API method and 2) implements all the common code needed by the links      |
+// | Plugins' PHP files.                                                       |
+// +---------------------------------------------------------------------------+
+// | Copyright (C) 2000-2005 by the following authors:                         |
+// |                                                                           |
+// | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
+// |          Tom Willett      - twillett@users.sourceforge.net                |
+// |          Blaine Lang      - langmail@sympatico.ca                         |
+// |          Dirk Haun        - dirk@haun-online.de                           |
+// |          Trinity Bays     - trinity@steubentech.com                       |
+// +---------------------------------------------------------------------------+
+// |                                                                           |
+// | This program is free software; you can redistribute it and/or             |
+// | modify it under the terms of the GNU General Public License               |
+// | as published by the Free Software Foundation; either version 2            |
+// | of the License, or (at your option) any later version.                    |
+// |                                                                           |
+// | This program is distributed in the hope that it will be useful,           |
+// | but WITHOUT ANY WARRANTY; without even the implied warranty of            |
+// | MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             |
+// | GNU General Public License for more details.                              |
+// |                                                                           |
+// | You should have received a copy of the GNU General Public License         |
+// | along with this program; if not, write to the Free Software Foundation,   |
+// | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.           |
+// |                                                                           |
+// +---------------------------------------------------------------------------+
+//
+// $Id: functions.inc,v 1.1 2005/05/22 18:23:16 dhaun Exp $
+
+$langfile = $_CONF['path'] . 'plugins/links/language/'
+          . $_CONF['language'] . '.php';
+
+if (file_exists ($langfile)) {
+    require_once ($langfile);
+} else {
+    require_once ($_CONF['path'] . 'plugins/links/language/english.php');
+}
+
+require_once ($_CONF['path'] . 'plugins/links/config.php');
+
+// +---------------------------------------------------------------------------+
+// | Geeklog Plugin API Implementations                                        |
+// +---------------------------------------------------------------------------+
+
+/**
+* Returns the items for this plugin that should appear on the main menu
+*
+* NOTE: this MUST return the url/value pairs in the following format
+* $<arrayname>[<label>] = <url>
+*
+*/
+function plugin_getmenuitems_links()
+{
+    global $_CONF, $LANG06;
+
+    $menuitems[$LANG06[1]] = $_CONF['site_url'] . '/links/index.php';
+
+    return $menuitems;
+}
+
+/**
+* Geeklog is checking to see if this plugin supports comments, tell it no.
+*
+* NOTE: to support comments you must used the same date/time based ID for your
+* widget.  In other words, to make primary keys for your plugin you should call
+* makesid().  Comments are keyed off of that...it is a limitation on how Geeklog
+* does comments.
+*
+*/
+function plugin_commentsupport_links() 
+{
+    // links will not use comments
+    return false;
+}
+
+/**
+* Shows the statistics for the Static Pages plugin on stats.php.
+* If $showsitestats is 1 then we are to only print the overall stats in the
+* 'site statistics box' otherwise we show the detailed stats
+*
+* @param    int     showsitestate   Flag to let us know which stats to get
+*/
+function plugin_showstats_links($showsitestats) 
+{
+    global $_CONF, $_TABLES, $LANG_LINKS_STATS;
+
+    $retval = '';
+
+    $stat_templates = new Template ($_CONF['path_layout'] . 'stats');
+    $stat_templates->set_file (array ('itemstats' => 'itemstatistics.thtml',
+                                      'statrow'   => 'singlestat.thtml'));
+    if ($showsitestats == 1) {
+        $perms = SP_getPerms ();
+        if (!empty ($perms)) {
+            $perms = ' WHERE ' . $perms;
+        }
+
+        $result = DB_query ("SELECT COUNT(*) AS count,SUM(hits) AS clicks FROM {$_TABLES['links']}" . COM_getPermSQL ());
+        $A = DB_fetchArray($result);
+        $total_links = $A['count'];
+        $total_clicks = $A['clicks'];
+        if (empty ($total_clicks)) {
+            $total_clicks = 0;
+        }
+        $retval = '<table border="0" width="100%" cellspacing="0" cellpadding="0">';
+        $retval .= '<tr><td>' . $LANG_LINKS_STATS['links'] . '</td>';
+        $retval .= '<td align="right">' . COM_NumberFormat ($total_links) . '('. COM_NumberFormat ($total_clicks) . ')&nbsp;&nbsp;</td></tr></table>';
+    } else {
+        $perms = SP_getPerms ();
+        if (!empty ($perms)) {
+            $perms = ' AND ' . $perms;
+        }
+        $result = DB_query ("SELECT lid,title,hits FROM {$_TABLES['links']} WHERE hits > 0" . $perms . ' ORDER BY hits DESC LIMIT 10');
+        $nrows  = DB_numRows ($result);
+        $retval .= COM_startBlock ($LANG_LINKS_STATS['stats_headline']);
+        if ($nrows > 0) {
+            $stat_templates->set_var ('item_label', $LANG_LINKS_STATS['stats_page_title']);
+            $stat_templates->set_var ('stat_name', $LANG_LINKS_STATS['stats_hits']);
+            for ($i = 0; $i < $nrows; $i++) {
+                $A = DB_fetchArray ($result);
+                $stat_templates->set_var ('item_url', COM_buildURL ($_CONF['site_url'] . '/portal.php?what=link&amp;item=' . $A['lid']));
+                $stat_templates->set_var ('item_text', stripslashes ($A['title']));
+                $stat_templates->set_var ('item_stat', $A['hits']);
+                $stat_templates->parse ('stat_row','statrow',true); 
+            }
+            $stat_templates->parse ('output','itemstats');
+            $retval .= $stat_templates->finish ($stat_templates->get_var ('output'));
+        } else {
+            $retval .= $LANG_LINKS_STATS['stats_no_hits'];
+        }	
+        $retval .= COM_endBlock();
+    }
+
+    return $retval;
+}
+
+/**
+* Geeklog is asking us to provide any new items that show up in the type
+* drop-down on search.php.  Let's let users search static pages!
+*
+*/
+function plugin_searchtypes_links() 
+{
+    global $LANG_LINKS;
+
+    $tmp['links'] = $LANG_LINKS[14];
+
+    return $tmp;
+}
+
+
+/**
+* this searches for static pages matching the user query and returns an array of
+* for the header and table rows back to search.php where it will be formated and
+* printed 
+*
+* @param    string  $query      Keywords user is looking for
+* @param    date    $datestart  Start date to get results for
+* @param    date    $dateend    End date to get results for
+* @param    string  $topic      The topic they were searching in
+* @param    string  $type       Type of items they are searching, or 'all'
+* @param    int     $author     Get all results by this author
+* @param    string  $keyType    search key type: 'all', 'phrase', 'any'
+*
+* Oct 05/2002: Blaine Lang, Corrected bug with SQL Search string. 
+*/
+function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type, $author, $keyType) 
+{
+    global $_CONF, $_TABLES, $LANG_LINKS_SEARCH;
+
+    if (empty($type)) {
+        $type = 'all';
+    }
+
+    // Bail if we aren't supppose to do our search
+    if ($type <> 'all' AND $type <> 'links') {
+        $plugin_results = new Plugin();
+        $plugin_results->plugin_name = 'links';
+        $plugin_results->searchlabel = $LANG_STATIC['results'];
+        return $plugin_results;
+    }
+
+    // Build search SQL - exclude static PHP pages from search.
+    $sql = "SELECT *,UNIX_TIMESTAMP(date) AS day FROM " . $_TABLES['links'] . " WHERE date <> 1 ";
+    //$sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS day FROM {$_TABLES['links']} WHERE ";
+    
+    if (!empty ($query)) {
+        if ($keyType == 'phrase') {
+            $mysearchterm = addslashes ($query);
+            $sql .= " AND (description LIKE '%$mysearchterm%')"
+                 . " OR (title LIKE '%$mysearchterm%')";
+        } else if ($keyType == 'all') {
+            $mywords = explode (' ', $query);
+            $sql .= ' AND (';
+            $tmp = '';
+            foreach ($mywords AS $mysearchterm) {
+                $mysearchterm = addslashes (trim ($mysearchterm));
+                if (!empty ($mysearchterm)) {
+                    $tmp .= "(description LIKE '%$mysearchterm%')"
+                         . " OR (title LIKE '%$mysearchterm%') AND ";
+                }
+            }
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 5);
+            $sql .= $tmp . ')';
+        } else if ($keyType == 'any') {
+            $mywords = explode (' ', $query);
+            $sql .= ' AND (';
+            $tmp = '';
+            foreach ($mywords AS $mysearchterm) {
+                $mysearchterm = addslashes (trim ($mysearchterm));
+                if (!empty ($mysearchterm)) {
+                    $tmp .= "(description LIKE '%$mysearchterm%')"
+                         . " OR (title LIKE '%$mysearchterm%') OR ";
+                }
+            }
+            $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
+            $sql .= $tmp . ')';
+        } else {
+            $mysearchterm = addslashes ($query);
+            $sql .= " AND (description LIKE '%$mysearchterm%')"
+                 . " OR (title LIKE '%$mysearchterm%'))";
+        }
+    }
+
+    if (!empty ($datestart) && !empty ($dateend)) {
+        $delim = substr ($datestart, 4, 1);
+        $DS = explode ($delim, $datestart);
+        $DE = explode ($delim, $dateend);
+        $startdate = mktime (0, 0, 0, $DS[1], $DS[2], $DS[0]);
+        $enddate = mktime (23, 59, 59, $DE[1], $DE[2], $DE[0]);
+        $sql .= " AND (UNIX_TIMESTAMP(date) BETWEEN '$startdate' AND '$enddate')";
+    }
+
+    if (!empty ($author)) {
+        $sql .= "AND (owner_id = '$author')";
+    }
+    $sql    .= " ORDER BY date desc";
+
+    // Perform search
+    $result = DB_query ($sql);
+
+    // OK, now return coma delmited string of table header labels
+    $plugin_results = new Plugin();
+    $plugin_results->plugin_name = 'links';
+    $plugin_results->searchlabel = $LANG_LINKS_SEARCH['results'];
+    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['title']);
+    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['date']);
+    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['author']);
+    $plugin_results->addSearchHeading ($LANG_LINKS_SEARCH['hits']);
+    $mycount = DB_numRows ($result);
+
+    // NOTE if any of your data items need to be links then add them here! 
+    // make sure data elements are in an array and in the same order as your
+    // headings above!
+    for ($i = 1; $i <= $mycount; $i++) {
+        $A = DB_fetchArray ($result);
+
+        if (SEC_hasAccess ($A['owner_id'], $A['group_id'], $A['perm_owner'], $A['perm_group'], $A['perm_members'], $A['perm_anon'])) {
+            $rcnt++;
+            $thetime = COM_getUserDateTimeFormat ($A['day']);
+            $A['title'] = stripslashes ($A['title']);
+            $row = array ('<a href="' . COM_buildURL ($_CONF['site_url'] . '/links/index.php?page=' . $A['lid']) . '">' . $A['title'] . '</a>',
+                    $thetime[0],
+                    '<a href="' . $_CONF['site_url'] . '/users.php?mode=profile&amp;uid=' . $A['owner_id'] . '">' . DB_getItem ($_TABLES['users'], 'username', "uid = '{$A['owner_id']}'") . '</a>',
+                    $A['hits']);
+            $plugin_results->addSearchResult ($row);
+        }
+    }
+    $plugin_results->num_searchresults = $rcnt;
+    $plugin_results->num_itemssearched = DB_count ($_TABLES['staticpage']);
+
+    return $plugin_results;
+}
+
+
+/**
+* This will put an option for links in the command and control block on
+* moderation.php
+*
+*/
+function plugin_cclabel_links() 
+{
+    global $LANG_LINKS, $_CONF;
+
+    if (SEC_hasRights ('links.edit')) {
+        return array ($LANG_LINKS[14],
+                      $_CONF['site_admin_url'] . '/plugins/links/index.php',
+                      $_CONF['site_url'] . '/links/images/links.gif');
+    }
+
+    return false;
+}
+
+/**
+* returns the administrative option for this plugin
+*
+*/
+function plugin_getadminoption_links() 
+{
+    global $_CONF, $LANG_LINKS, $_TABLES;
+
+    if (SEC_hasRights ('links.edit,links.delete', 'OR')) {
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['links']}" . COM_getPermSQL ());
+        $A = DB_fetchArray ($result);
+        $total_pages = $A['cnt'];
+        return array ($LANG_LINKS[14], $_CONF['site_admin_url'] . '/plugins/links/index.php', $total_pages);
+    }	
+}
+
+/**
+* A user is about to be deleted. Update ownership of any static pages owned
+* by that user or delete them.
+*
+* @param   uid   int   User id of deleted user
+*
+*/
+/*
+function plugin_user_delete_links ($uid)
+{
+    global $_TABLES;
+
+    if (DB_count ($_TABLES['links'], "owner_id = $uid") == 0) {
+        return;
+    }
+
+    if ($_SP_CONF['delete_pages'] == 1) {
+        // delete the pages
+        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE (sp_uid = $uid) OR (owner_id = $uid)");
+    } else {
+        // assign ownership to a user from the Root group
+        $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
+                                 "grp_name = 'Root'");
+        $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
+        $A = DB_fetchArray ($result);
+        $rootuser = $A['ug_uid'];
+
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_uid = $rootuser WHERE sp_uid = $uid");
+        DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
+    }
+}
+*/
+
+/**
+* Return the current version of code. 
+* Used in the Plugin Editor to show the registered version and code version
+*/
+function plugin_chkVersion_links()
+{
+    global $_links_CONF;
+
+    return $_links_CONF['version'];
+}
+
+/**
+* Removes the datastructures for this plugin from the Geeklog database
+*
+* This may get called by the install routine to undo anything done to this
+* point.  To do that, $steps will have a list of steps to undo
+*
+* @steps   Array    Holds all the steps that have been completed by the install
+*
+*/  
+function plugin_uninstall_links($steps = '')
+{
+    global $_TABLES;
+
+    // Uninstalls the static pages plugin
+
+    if (empty($steps) OR $steps['createtable'] == 1) {
+        // Remove the linksubmisssion table 
+        COM_errorLog('Dropping linksubmission table',1);
+        DB_query("DROP TABLE {$_TABLES['linksubmission']}");
+        COM_errorLog('...success',1);
+    }
+    if (empty($steps) OR $steps['createtable'] == 1) {
+        // Remove the links table 
+        COM_errorLog('Dropping links table',1);
+        DB_query("DROP TABLE {$_TABLES['links']}");
+        COM_errorLog('...success',1);
+    }
+
+    // Remove security for this plugin
+
+    // Remove the static page admin group
+    $grp_id = DB_getItem($_TABLES['groups'], 'grp_id', "grp_name = 'Links Admin'");
+
+    if (empty($steps) OR $steps['insertgroup'] == 1) {
+        COM_errorLog('Attempting to remove the links Admin Group', 1);
+        DB_query("DELETE FROM {$_TABLES['groups']} WHERE grp_id = $grp_id");
+        COM_errorLog('...success',1);
+    }
+
+    // Remove related features
+    $edit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.edit'");
+    $moderate_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.moderate'");
+    $submit_id = DB_getItem($_TABLES['features'], 'ft_id', "ft_name = 'links.submit'");
+
+    if (empty($steps) OR $steps['addededittogroup'] == 1) {
+        // Remove access to those features 
+        COM_errorLog('Attempting to remove rights to links.edit from all groups',1);
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $edit_id");
+        COM_errorLog('...success',1);
+    } 
+    
+    if (empty($steps) OR $steps['addedmoderatetogroup'] == 1) {
+        // Remove access to those features 
+        COM_errorLog('Attempting to remove rights to links.edit from all groups',1);
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $moderate_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['addedsubmittogroup'] == 1) {
+        // Remove access to those features 
+        COM_errorLog('Attempting to remove rights to links.delete from all groups',1);
+        DB_query("DELETE FROM {$_TABLES['access']} WHERE acc_ft_id = $submit_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['addedrootuserstogroup'] == 1) {
+        // Remove root users from the group
+        COM_errorLog('Attempting to remove root users from admin of links');
+        DB_query("DELETE FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $grp_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['insertedfeatureedit'] == 1) {
+        COM_errorLog('Attempting to remove the links.edit feature',1);
+        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $edit_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['insertedfeaturemoderate'] == 1) {
+        COM_errorLog('Attempting to remove the links.moderate feature',1);
+        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $moderate_id");
+        COM_errorLog('...success',1);
+    }
+
+    if (empty($steps) OR $steps['insertedfeaturesubmit'] == 1) {
+        COM_errorLog('Attempting to remove the links.submit feature',1);
+        DB_query("DELETE FROM {$_TABLES['features']} WHERE ft_id = $submit_id");
+        COM_errorLog('...success',1);
+    }
+
+    // Unregister the plugin with Geeklog
+    // Always attempt to remove these entries or lib-common.php would still
+    // try and read our functions.inc file ...
+    COM_errorLog('Attempting to unregister the plugin from Geeklog',1);
+    DB_query("DELETE FROM {$_TABLES['plugins']} WHERE pi_name = 'links'");
+    COM_errorLog('...success',1);
+
+    COM_errorLog('leaving plugin_uninstall_links',1);
+
+    return true;
+}
+
+/**
+* Shows link submission form
+*
+*/
+function plugin_savesubmission_links($A)
+{
+    global $_CONF, $_TABLES, $LANG12;       
+
+    if (!empty ($A['title']) && !empty ($A['description']) &&
+                !empty ($A['url'])) {
+            $retval = save_submit_links ($A);
+        } else {
+            $retval .= COM_startBlock ($LANG12[22], '',
+                               COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG12[23]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . submissionform($type)
+                . COM_siteFooter ();
+
+            return $retval; 
+        }
+} 
+
+/**
+* Shows link submission form
+*
+*/
+function plugin_submit_links() 
+{
+    global $_CONF, $_TABLES, $LANG12;
+
+    $retval = COM_startBlock ($LANG12[5], 'submitlink.html');
+
+    $linkform = new Template($_CONF['path_layout'] . 'submit');
+    $linkform->set_file('linkform', 'submitlink.thtml');
+    $linkform->set_var('site_url', $_CONF['site_url']);
+    $linkform->set_var('layout_url', $_CONF['layout_url']);
+    $linkform->set_var('lang_title', $LANG12[10]);
+    $linkform->set_var('lang_link', $LANG12[11]);
+    $linkform->set_var('lang_category', $LANG12[17]);
+    $linkform->set_var('link_category_options',
+        COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
+    $linkform->set_var('lang_other', $LANG12[18]);
+    $linkform->set_var('lang_ifother', $LANG12[16]);
+    $linkform->set_var('lang_description', $LANG12[15]);
+    $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
+    $linkform->set_var('lang_submit', $LANG12[8]);
+    $linkform->set_var('max_url_length', 255);
+    $linkform->parse('theform', 'linkform');
+    $retval .= $linkform->finish($linkform->get_var('theform'));
+    $retval .= COM_endBlock();
+
+    return $retval;
+}
+
+/**
+* Saves a link submission
+*
+* @param    array   $A  Data for that submission
+* @return   string      HTML redirect
+*
+*/
+function save_submit_links ($A)
+{
+    global $_CONF, $_TABLES, $_USER, $LANG12;
+
+    $retval = '';
+
+    $A['category'] = strip_tags (COM_stripslashes ($A['category']));
+    $A['categorydd'] = strip_tags (COM_stripslashes ($A['categorydd']));
+    if ($A['categorydd'] != $LANG12[18] && !empty ($A['categorydd'])) {
+        $A['category'] = $A['categorydd'];
+    } else if ($A['categorydd'] != $LANG12[18]) {
+        $retval .= COM_startBlock ($LANG12[20], '',
+                       COM_getBlockTemplate ('_msg_block', 'header'))
+                . $LANG12[21]
+                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+                . submissionform ($type)
+                . COM_siteFooter ();
+
+        return $retval;
+    }
+    $A['category'] = addslashes ($A['category']);
+
+    $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
+    $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
+
+    $A['url'] = strip_tags ($A['url']);
+    if (!empty ($A['url'])) {
+        $pos = strpos ($A['url'], ':');
+        if ($pos === false) {
+            $A['url'] = 'http://' . $A['url'];
+        } else {
+            $prot = substr ($A['url'], 0, $pos + 1);
+            if (($prot != 'http:') && ($prot != 'https:')) {
+                $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
+            }
+        }
+        $A['url'] = addslashes ($A['url']);
+    }
+    $A['lid'] = addslashes (COM_makeSid ());
+    COM_updateSpeedlimit ('submit');
+
+    if (($_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
+        $result = DB_save ($_TABLES['linksubmission'],
+                    'lid,category,url,description,title,date',
+                    "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
+
+        if (isset ($_CONF['notification']) &&
+                in_array ('links', $_CONF['notification'])) {
+            sendNotification ($_TABLES['linksubmission'], $A);
+        }
+
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=3');
+    } else { // add link directly
+        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
+            $owner_id = $_USER['uid'];
+        } else {
+            $owner_id = 1; // anonymous user
+        }
+        $result = DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,owner_id', "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
+        if (isset ($_CONF['notification']) &&
+                in_array ('links', $_CONF['notification'])) {
+            sendNotification ($_TABLES['links'], $A);
+        }
+        COM_rdfUpToDateCheck ();
+
+        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php');
+    }
+
+    return $retval;
+}
+
+?>

@@ -58,7 +58,15 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD in_transit tinyint(1) unsigned 
 $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_transit)";
 
 // new header-link for feeds
-$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD `header_tid` varchar(48) NOT NULL default 'none' AFTER `topic` ;";
+$_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD 'header_tid' varchar(48) NOT NULL default 'none' AFTER 'topic';";
+
+// add links plugin
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
+
+// rename "link.*" features to "links.*" to match the plugin name
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.moderate' WHERE ft_name = 'link.moderate';";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.edit' WHERE ft_name = 'link.edit';";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.submit' WHERE ft_name = 'link.submit';";
 
 // add the new 'story.ping' feature to the Story Admin group
 function upgrade_addFeature ()

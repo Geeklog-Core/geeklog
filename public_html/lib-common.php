@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.430 2005/05/22 17:32:31 ospiess Exp $
+// $Id: lib-common.php,v 1.431 2005/05/22 18:23:16 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -504,7 +504,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     if( empty( $_CONF['menu_elements'] ))
     {
         $_CONF['menu_elements'] = array( // default set of links
-                'contribute', 'links', 'polls', 'calendar', 'search', 'stats',
+                'contribute', 'polls', 'calendar', 'search', 'stats',
                 'directory', 'plugins' );
     }
 
@@ -622,16 +622,6 @@ function COM_renderMenu( &$header, $plugin_menu )
             case 'home':
                 $url = $_CONF['site_url'] . '/';
                 $label = $LANG01[90];
-                break;
-
-            case 'links':
-                $url = $_CONF['site_url'] . '/links.php';
-                $label = $LANG01[72];
-                if( $anon &&
-                    ( $_CONF['loginrequired'] || $_CONF['linksloginrequired'] ))
-                {
-                    $allowed = false;
-                }
                 break;
 
             case 'plugins':
@@ -920,7 +910,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'button_home', $LANG_BUTTONS[1] );
     $header->set_var( 'button_contact', $LANG_BUTTONS[2] );
     $header->set_var( 'button_contribute', $LANG_BUTTONS[3] );
-    $header->set_var( 'button_links', $LANG_BUTTONS[4] );
     $header->set_var( 'button_polls', $LANG_BUTTONS[5] );
     $header->set_var( 'button_calendar', $LANG_BUTTONS[6] );
     $header->set_var( 'button_sitestats', $LANG_BUTTONS[7] );
@@ -2310,7 +2299,7 @@ function COM_adminMenu( $help = '', $title = '' )
     $plugin_options = PLG_getAdminOptions();
     $nrows = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,link.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
+    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
@@ -2396,10 +2385,6 @@ function COM_adminMenu( $help = '', $title = '' )
                 $num += DB_count( $_TABLES['eventsubmission'] );
             }
 
-            if( SEC_hasrights( 'link.edit' ))
-            {
-                $num += DB_count( $_TABLES['linksubmission'] );
-            }
 
             if( $_CONF['usersubmission'] == 1 )
             {
@@ -2460,17 +2445,6 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[13] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['topics'] ));
-
-            $retval .= $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-        }
-
-        if( SEC_hasrights( 'link.edit' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/link.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[14] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['links'] ));
 
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -4045,7 +4019,6 @@ function COM_whatsNewBlock( $help = '', $title = '' )
 
         if(( $_CONF['hidenewcomments'] == 0 ) || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )) 
-                || ( $_CONF['hidenewlinks'] == 0 )
                 || ( $_CONF['hidenewplugins'] == 0 ))
         {
             $retval .= '<br>';
@@ -4139,8 +4112,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         {
             $retval .= $LANG01[86] . '<br>' . LB;
         }
-
-        if(( $_CONF['hidenewlinks'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 )
+        if(( $_CONF['hidenewplugins'] == 0 )
                 || ( $_CONF['trackback_enabled']
                 && ( $_CONF['hidenewtrackbacks'] == 0 )))
         {
@@ -4197,56 +4169,6 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         {
             $retval .= $LANG01[115] . '<br>' . LB;
         }
-
-        if(( $_CONF['hidenewlinks'] == 0 ) || ( $_CONF['hidenewplugins'] == 0 ))
-        {
-            $retval .= '<br>';
-        }
-    }
-
-    if( $_CONF['hidenewlinks'] == 0 )
-    {
-        // Get newest links
-        $retval .= '<b>' . $LANG01[84] . '</b> <small>' . $LANG01[87] . '</small><br>';
-
-        $sql = "SELECT lid,title FROM {$_TABLES['links']} WHERE (date >= (date_sub(NOW(), INTERVAL {$_CONF['newlinksinterval']} SECOND)))" . COM_getPermSQL( 'AND' ) . ' ORDER BY date DESC LIMIT 15';
-        $result = DB_query( $sql );
-        $nrows = DB_numRows( $result );
-
-        if( $nrows > 0 )
-        {
-            $newlinks = array();
-            for( $x = 0; $x < $nrows; $x++ )
-            {
-                $A = DB_fetchArray( $result );
-                $A['title'] = stripslashes( $A['title'] );
-
-                // redirect link via portal.php so we can count the clicks
-                $lcount = COM_buildUrl( $_CONF['site_url']
-                        . '/portal.php?what=link&amp;item=' . $A['lid'] );
-
-                // Trim the length if over 16 characters
-                $itemlen = strlen( $A['title'] );
-                if( $itemlen > 16 )
-                {
-                    $newlinks [] = '<a href="' . $lcount . '" title="'
-                        . $A['title'] . '">' . substr( $A['title'], 0, 16 )
-                        . '...</a>' . LB;
-                }
-                else
-                {
-                    $newlinks[] = '<a href="' . $lcount . '">'
-                        . substr( $A['title'], 0, $itemlen ) . '</a>' . LB;
-                }
-            }
-
-            $retval .= COM_makeList( $newlinks, 'list-new-links' );
-        }
-        else
-        {
-            $retval .= $LANG01[88] . '<br>' . LB;
-        }
-
         if( $_CONF['hidenewplugins'] == 0 )
         {
             $retval .= '<br>';

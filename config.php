@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.166 2005/05/22 11:21:53 ospiess Exp $
+// $Id: config.php,v 1.167 2005/05/22 18:23:16 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -213,7 +213,6 @@ $_CONF['menu_elements'] = array
 (
     // 'home',      // link to homepage
     'contribute',   // contribute / "submit a story" link
-    'links',        // link to the links section (aka web resources)
     'polls',        // link to past polls
     'calendar',     // link to the site calendar
     'search',       // link to advanced search
@@ -400,7 +399,6 @@ $_CONF['summary_length']  =  250;
 $_CONF['loginrequired'] = 0; // all of them, if set to 1 will override all else 
 $_CONF['submitloginrequired']     = 0;
 $_CONF['commentsloginrequired']   = 0;
-$_CONF['linksloginrequired']      = 0;
 $_CONF['pollsloginrequired']      = 0;
 $_CONF['calendarloginrequired']   = 0;
 $_CONF['statsloginrequired']      = 0;
@@ -414,7 +412,6 @@ $_CONF['directoryloginrequired']  = 0;
 
 // enable (set to 1) or disable (set to 0) submission queues:
 $_CONF['storysubmission'] = 1;
-$_CONF['linksubmission']  = 1;
 $_CONF['eventsubmission'] = 1;
 $_CONF['usersubmission']  = 0; // 1 = new users must be approved
 
@@ -498,13 +495,11 @@ $_CONF['allow_domains'] = ''; // e.g. 'mycompany.com,myothercompany.com'
 $_CONF['newstoriesinterval']   =   86400; // = 24 hours
 $_CONF['newcommentsinterval']  =  172800; // = 48 hours
 $_CONF['newtrackbackinterval'] =  172800; // = 48 hours
-$_CONF['newlinksinterval']     = 1209600; // = 14 days
 
 // Set to 1 to hide a section from the What's New block:
 $_CONF['hidenewstories']    = 0;
 $_CONF['hidenewcomments']   = 0;
 $_CONF['hidenewtrackbacks'] = 0;
-$_CONF['hidenewlinks']      = 0;
 $_CONF['hidenewplugins']    = 0;
 
 // Disable trackback comments by setting this to 'false'
@@ -655,13 +650,6 @@ $_CONF['passwordspeedlimit'] = 300; // seconds = 5 minutes
 $_CONF['login_attempts']   = 3;   // number of login attempts allowed before speedlimit kicks in
 $_CONF['login_speedlimit'] = 300; // wait (in seconds) after $_CONF['login_attempts'] failed logins
 
-// Links Settings
-// You can set both of the following to 0 to get back the old (pre-1.3.6)
-// style of the links section. Setting only linkcols to 0 will hide the
-// categories but keep the paging. Setting only linksperpage to 0 will list
-// all the links of the selected category on one page.
-$_CONF['linkcols']     =  3; // categories per column
-$_CONF['linksperpage'] = 10; // links per page
 
 // Parameters for checking HTML tags
 

@@ -6,7 +6,7 @@
 // +---------------------------------------------------------------------------+
 // | submit.php                                                                |
 // |                                                                           |
-// | Let users submit stories, links, and events.                              |
+// | Let users submit stories, events and plugin stuff.                        |
 // +---------------------------------------------------------------------------+
 // | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.82 2005/02/06 10:57:48 dhaun Exp $
+// $Id: submit.php,v 1.83 2005/05/22 18:23:16 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -47,9 +47,9 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 *
 * This is the submission it is modular to allow us to write as little as
 * possible.  It takes a type and formats a form for the user.  Currently the
-* types are link, story and event.  If no type is provided, Story is assumed.
+* types are story and event.  If no type is provided, Story is assumed.
 *
-* @param    string  $type   type of submission ('link', 'event', 'story')
+* @param    string  $type   type of submission ('event', 'story')
 * @param    string  $mode   calendar mode ('personal' or empty string)
 * @param    int     $month  month (for events)
 * @param    int     $day    day (for events)
@@ -98,10 +98,6 @@ function submissionform($type='story', $mode = '', $month='', $day='', $year='',
                     . COM_endBlock();
 
             switch ($type) {
-                case 'link':
-                    $retval .= submitlink();
-                    break;
-
                 case 'event':
                     $retval .= submitevent($mode,$month,$day,$year,$hour);
                     break;
@@ -219,38 +215,6 @@ function submitevent($mode = '', $month = '', $day = '', $year = '', $hour = -1)
     $eventform->set_var('lang_submit', $LANG12[8]);
     $eventform->parse('theform', 'eventform');
     $retval .= $eventform->finish($eventform->get_var('theform'));
-    $retval .= COM_endBlock();
-
-    return $retval;
-}
-
-/**
-* Shows link submission form
-*
-*/
-function submitlink() 
-{
-    global $_CONF, $_TABLES, $LANG12;
-
-    $retval = COM_startBlock ($LANG12[5], 'submitlink.html');
-
-    $linkform = new Template($_CONF['path_layout'] . 'submit');
-    $linkform->set_file('linkform', 'submitlink.thtml');
-    $linkform->set_var('site_url', $_CONF['site_url']);
-    $linkform->set_var('layout_url', $_CONF['layout_url']);
-    $linkform->set_var('lang_title', $LANG12[10]);
-    $linkform->set_var('lang_link', $LANG12[11]);
-    $linkform->set_var('lang_category', $LANG12[17]);
-    $linkform->set_var('link_category_options',
-        COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
-    $linkform->set_var('lang_other', $LANG12[18]);
-    $linkform->set_var('lang_ifother', $LANG12[16]);
-    $linkform->set_var('lang_description', $LANG12[15]);
-    $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
-    $linkform->set_var('lang_submit', $LANG12[8]);
-    $linkform->set_var('max_url_length', 255);
-    $linkform->parse('theform', 'linkform');
-    $retval .= $linkform->finish($linkform->get_var('theform'));
     $retval .= COM_endBlock();
 
     return $retval;
@@ -446,23 +410,6 @@ function sendNotification ($table, $A)
             }
             $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[37];
             break;
-
-        case $_TABLES['linksubmission']:
-        case $_TABLES['links']:
-            $title = stripslashes ($A['title']);
-            $description = stripslashes ($A['description']);
-
-            $mailbody = "$LANG12[10]: $title\n"
-                      . "$LANG12[11]: <{$A['url']}>\n"
-                      . "$LANG12[17]: {$A['category']}\n\n"
-                      . $description . "\n\n";
-            if ($table == $_TABLES['linksubmission']) {
-                $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
-            } else {
-                $mailbody .= "$LANG06[1] <{$_CONF['site_url']}/links.php?category=" . urlencode ($A['category']) . ">\n\n";
-            }
-            $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[36];
-            break;
     }
 
     $mailbody .= "\n------------------------------\n";
@@ -552,96 +499,6 @@ function savestory ($A)
 
         $retval = COM_refresh (COM_buildUrl ($_CONF['site_url']
                                . '/article.php?story=' . $A['sid']));
-    }
-
-    return $retval;
-}
-
-/**
-* Saves a link submission
-*
-* @param    array   $A  Data for that submission
-* @return   string      HTML redirect
-*
-*/
-function savelink ($A)
-{
-    global $_CONF, $_TABLES, $_USER, $LANG12;
-
-    $retval = '';
-
-    $A['category'] = strip_tags (COM_stripslashes ($A['category']));
-    $A['categorydd'] = strip_tags (COM_stripslashes ($A['categorydd']));
-    if ($A['categorydd'] != $LANG12[18] && !empty ($A['categorydd'])) {
-        $A['category'] = $A['categorydd'];
-    } else if ($A['categorydd'] != $LANG12[18]) {
-        $retval .= COM_startBlock ($LANG12[20], '',
-                       COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[21]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform ($type)
-                . COM_siteFooter ();
-
-        return $retval;
-    }
-
-    // pseudo-formatted link description for the spam check
-    $spamcheck = '<p><a href="' . $A['url'] . '">' . $A['title'] . '</a> ('
-               . $A['category'] . ', ' . $A['categorydd'] . ')<br>'
-               . $A['description'] . '</p>';
-    $result = PLG_checkforSpam ($spamcheck, $_CONF['spamx']);
-    if ($result > 0) {
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=' . $result
-                               . '&amp;plugin=spamx');
-
-        return $retval;
-    }
-
-    $A['category'] = addslashes ($A['category']);
-    $A['description'] = addslashes (htmlspecialchars (COM_checkWords ($A['description'])));
-    $A['title'] = addslashes (strip_tags (COM_checkWords ($A['title'])));
-
-    $A['url'] = strip_tags ($A['url']);
-    if (!empty ($A['url'])) {
-        $pos = strpos ($A['url'], ':');
-        if ($pos === false) {
-            $A['url'] = 'http://' . $A['url'];
-        } else {
-            $prot = substr ($A['url'], 0, $pos + 1);
-            if (($prot != 'http:') && ($prot != 'https:')) {
-                $A['url'] = 'http:' . substr ($A['url'], $pos + 1);
-            }
-        }
-        $A['url'] = addslashes ($A['url']);
-    }
-    $A['lid'] = addslashes (COM_makeSid ());
-    COM_updateSpeedlimit ('submit');
-
-    if (($_CONF['linksubmission'] == 1) && !SEC_hasRights ('link.submit')) {
-        $result = DB_save ($_TABLES['linksubmission'],
-                    'lid,category,url,description,title,date',
-                    "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
-
-        if (isset ($_CONF['notification']) &&
-                in_array ('link', $_CONF['notification'])) {
-            sendNotification ($_TABLES['linksubmission'], $A);
-        }
-
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=3');
-    } else { // add link directly
-        if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
-            $owner_id = $_USER['uid'];
-        } else {
-            $owner_id = 1; // anonymous user
-        }
-        $result = DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,owner_id', "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
-        if (isset ($_CONF['notification']) &&
-                in_array ('link', $_CONF['notification'])) {
-            sendNotification ($_TABLES['links'], $A);
-        }
-        COM_rdfUpToDateCheck ();
-
-        $retval = COM_refresh ($_CONF['site_url'] . '/links.php');
     }
 
     return $retval;
@@ -841,22 +698,6 @@ function savesubmission($type, $A)
     }
 
     switch ($type) {
-    case 'link':
-        if (!empty ($A['title']) && !empty ($A['description']) &&
-                !empty ($A['url'])) {
-            $retval = savelink ($A);
-        } else {
-            $retval .= COM_startBlock ($LANG12[22], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[23]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform($type)
-                . COM_siteFooter ();
-
-            return $retval; 
-        }
-        break;
-
     case 'event':
         $retval = saveevent ($A);
         break;
@@ -935,14 +776,6 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
    $display = saveevent ($_POST);
 } else {
     switch($type) {
-        case 'link':
-            if (SEC_hasRights ('link.edit')) {
-                echo COM_refresh ($_CONF['site_admin_url']
-                                  . '/link.php?mode=edit');
-                exit;
-            }
-            break;
-
         case 'event':
             if (SEC_hasRights('event.edit') && ($mode != 'personal')) {
                 if (isset ($_REQUEST['year'])) {
@@ -1010,11 +843,6 @@ if (($mode == $LANG12[8]) && !empty ($LANG12[8])) { // submit
         case 'event':
             $pagetitle = $LANG12[4];
             break;
-
-        case 'link':
-            $pagetitle = $LANG12[5];
-            break;
-
         default:
             $pagetitle = $LANG12[6];
             break;
