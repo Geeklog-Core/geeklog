@@ -558,6 +558,7 @@ CREATE TABLE {$_TABLES['users']} (
   theme varchar(64) default NULL,
   language varchar(64) default NULL,
   pwrequestid varchar(16) default NULL,
+  status smallint(5) unsigned NOT NULL default '1',
   PRIMARY KEY  (uid),
   KEY LOGIN (uid,passwd,username),
   INDEX users_username(username),

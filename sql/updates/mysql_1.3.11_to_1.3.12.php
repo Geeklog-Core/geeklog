@@ -39,6 +39,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NO
 // new story.ping feature (also see function upgrade_addFeature below)
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)";
 
+// new user status, for ban etc.
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD status smallint(5) unsigned NOT NULL default '1'";
+// Make all users WITH a password active.
+$_SQL[] = "UPDATE {$_TABLES['users']} SET status=3 WHERE (passwd IS NOT NULL) OR (passwd != '')";
 // a few more indexes on the users table can' hurt ...
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_username(username)";
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_fullname(fullname)";
