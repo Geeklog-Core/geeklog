@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.8 2005/05/17 13:23:31 ospiess Exp $
+// $Id: syndication.php,v 1.9 2005/05/23 21:38:08 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -286,6 +286,8 @@ function editfeed ($fid = 0, $type = '')
     $formats = find_feedFormats ();
     $selection = '<select name="format">' . LB;
     foreach ($formats as $f) {
+        // if one changes this format below ('name-version'), also change parsing
+        // in COM_siteHeader. It uses explode( "-" , $string )
         $selection .= '<option value="' . $f['name'] . '-' . $f['version']
                    . '"';
         if ($A['format'] == $f['name'] . '-' . $f['version']) {
