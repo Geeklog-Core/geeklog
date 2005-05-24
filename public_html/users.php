@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.99 2005/05/22 13:35:56 mjervis Exp $
+// $Id: users.php,v 1.100 2005/05/24 12:52:27 ospiess Exp $
 
 /**
 * This file handles user authentication
@@ -396,6 +396,7 @@ function newpasswordform ($uid, $requestid)
     $pwform->set_var ('lang_explain', $LANG04[90]);
     $pwform->set_var ('lang_username', $LANG04[2]);
     $pwform->set_var ('lang_newpassword', $LANG04[4]);
+    $pwform->set_var ('lang_newpassword_conf', $LANG04[108]);
     $pwform->set_var ('lang_setnewpwd', $LANG04[91]);
 
     $retval = COM_startBlock ($LANG04[92]);
@@ -750,7 +751,8 @@ case 'newpwd':
     break;
 
 case 'setnewpwd':
-    if (empty ($_POST['passwd'])) {
+    if ( (empty ($_POST['passwd']))
+            or ($_POST['passwd'] != $_POST['passwd_conf']) ) {
         $display = COM_refresh ($_CONF['site_url']
                  . '/users.php?mode=newpwd&uid=' . $_POST['uid']
                  . '&rid=' . $_POST['rid']);
