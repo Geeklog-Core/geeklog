@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.9 2005/05/23 21:38:08 ospiess Exp $
+// $Id: syndication.php,v 1.10 2005/05/25 12:01:36 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -263,6 +263,7 @@ function editfeed ($fid = 0, $type = '')
     $feed_template->set_var('lang_header_none', $LANG33[44]);
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
     $feed_template->set_var('lang_header_home', $LANG33[46]);
+    $feed_template->set_var('lang_home_explain', $LANG33[47]);
     $feed_template->set_var('header_topic_options', COM_topicList('tid,topic',$A['header_tid']));
     $feed_template->set_var('lang_save', $LANG33[2]);
     $feed_template->set_var('lang_cancel', $LANG33[4]);
