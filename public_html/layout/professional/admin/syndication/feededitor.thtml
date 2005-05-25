@@ -26,7 +26,8 @@
         <option value="all" {all_selected}>{lang_header_all}</option>
         <option value="home" {home_selected}>{lang_header_home}</option>
         {header_topic_options}
-        </select>
+        </select><br>
+        <small>{lang_home_explain}</small>
     </td>
 </tr>
 <tr>
