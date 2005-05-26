@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.11 2005/05/07 07:51:14 dhaun Exp $
+// $Id: lib-syndication.php,v 1.12 2005/05/26 20:36:58 mjervis Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -310,7 +310,7 @@ function SYND_feedUpdateCheck( $plugin, $feed, $topic, $update_data, $limit )
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
+function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update, $contentLength )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -338,7 +338,7 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
             $limitsql = ' LIMIT 10';
         }
 
-        $result = DB_query( "SELECT sid,uid,title,introtext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+        $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() AND tid = '$tid' AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
         $nrows = DB_numRows( $result );
 
@@ -348,18 +348,21 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
             $sids[] = $row['sid'];
 
             $storytitle = stripslashes( $row['title'] );
-
-            $storytext = stripslashes( $row['introtext'] );
-            $storytext = trim( $storytext );
-            $storytext = preg_replace( "/(\015)/", "", $storytext );
-
-            $storylink = COM_buildUrl( $_CONF['site_url']
-                                       . '/article.php?story=' . $row['sid'] );
-
+            $storytext = SYND_truncateSummary( $row['introtext'], $contentLength);
+            $fulltext = stripslashes( $row['bodytext'] );
+            $fulltext = trim( $fulltext );
+            $fulltext = preg_replace( "/(\015)/", "", $fulltext );
+            $fulltext = "$storytext\n\n$fulltext";
+    
+            $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
+                                       . $row['sid'] );
+    
             $content[] = array( 'title'  => $storytitle,
-                                'text'   => $storytext,
+                                'summary'   => $storytext,
+                                'text'   => $fulltext,
                                 'link'   => $storylink,
                                 'uid'    => $row['uid'],
+                                'author' => COM_getDisplayName( $row['uid'] ),
                                 'date'   => $row['modified'],
                                 'format' => $row['postmode']
                               );
@@ -378,10 +381,11 @@ function SYND_getFeedContentPerTopic( $tid, $limit, &$link, &$update )
 * @param    string   $limit    number of entries or number of stories
 * @param    string   $link     link to homepage
 * @param    string   $update   list of story ids
+* @param    int      $contentLength Length of summary to allow.
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentAll( $limit, &$link, &$update )
+function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -423,7 +427,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
         $where .= " AND (tid IN ($tlist))";
     }
 
-    $result = DB_query( "SELECT sid,uid,title,introtext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
+    $result = DB_query( "SELECT sid,uid,title,introtext,bodytext,postmode,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['stories']} WHERE draft_flag = 0 AND date <= NOW() $where AND perm_anon > 0 ORDER BY date DESC $limitsql" );
 
     $content = array();
     $sids = array();
@@ -435,18 +439,24 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
         $sids[] = $row['sid'];
 
         $storytitle = stripslashes( $row['title'] );
+        
+        $storytext = SYND_truncateSummary($row['introtext'], $contentLength);
 
-        $storytext = stripslashes( $row['introtext'] );
-        $storytext = trim( $storytext );
-        $storytext = preg_replace( "/(\015)/", "", $storytext );
+        $fulltext = stripslashes( $row['bodytext'] );
+        $fulltext = trim( $fulltext );
+        $fulltext = preg_replace( "/(\015)/", "", $fulltext );
+        $fulltext = "$storytext\n\n$fulltext";
 
         $storylink = COM_buildUrl( $_CONF['site_url'] . '/article.php?story='
                                    . $row['sid'] );
 
+        
         $content[] = array( 'title'  => $storytitle,
-                            'text'   => $storytext,
+                            'summary'   => $storytext,
+                            'text'   => $fulltext,
                             'link'   => $storylink,
                             'uid'    => $row['uid'],
+                            'author' => COM_getDisplayName( $row['uid'] ),
                             'date'   => $row['modified'],
                             'format' => $row['postmode']
                           );
@@ -467,7 +477,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update )
 * @return   array              content of the feed
 *
 */
-function SYND_getFeedContentLinks( $limit, &$link, &$update )
+function SYND_getFeedContentLinks( $limit, &$link, &$update, $contentLength )
 {
     global $_TABLES, $_CONF, $LANG01;
 
@@ -504,15 +514,16 @@ function SYND_getFeedContentLinks( $limit, &$link, &$update )
         $lids[] = $row['lid'];
 
         $linktitle = stripslashes( $row['title'] );
-        $linkdesc = stripslashes( $row['description'] );
+        $linkdesc = SYND_truncateSummary( $row['description'], $contentLength );
 
         $linklink = COM_buildUrl( $_CONF['site_url']
                   . '/portal.php?what=link&item=' . $row['lid'] );
 
         $content[] = array( 'title'  => $linktitle,
-                            'text'   => $linkdesc,
+                            'summary'   => $linkdesc,
                             'link'   => $linklink,
                             'uid'    => $row['owner_id'],
+                            'author' => COM_getDisplayName( $row['owner_id'] ),
                             'date'   => $row['modified'],
                             'format' => 'plaintext'
                           );
@@ -568,7 +579,7 @@ function SYND_getFeedContentEvents( $limit, &$link, &$update )
         $eids[] = $row['eid'];
 
         $eventtitle = stripslashes( $row['title'] );
-        $eventtext  = stripslashes( $row['description'] );
+        $eventtext = SYND_truncateSummary( $row['description'], $contentLength);
         $eventlink  = $_CONF['site_url'] . '/calendar_event.php?eid='
                     . $row['eid'];
 
@@ -583,9 +594,10 @@ function SYND_getFeedContentEvents( $limit, &$link, &$update )
         $creationtime = strtotime( $newtime );
 
         $content[] = array( 'title'  => $eventtitle,
-                            'text'   => $eventtext,
+                            'summary'   => $eventtext,
                             'link'   => $eventlink,
                             'uid'    => $row['owner_id'],
+                            'author' => COM_getDisplayName( $row['owner_id'] ),
                             'date'   => $creationtime,
                             'format' => 'plaintext'
                           );
@@ -635,27 +647,38 @@ function SYND_updateFeed( $fid )
                 if( $A['topic'] == '::all')
                 {
                     $content = SYND_getFeedContentAll( $A['limits'], $link,
-                                                       $data );
+                                                       $data, $A['content_length'] );
                 }
                 elseif( $A['topic'] == '::links')
                 {
                     $content = SYND_getFeedContentLinks( $A['limits'], $link,
-                                                         $data );
+                                                         $data, $A['content_length'] );
                 }
                 elseif( $A['topic'] == '::events')
                 {
                     $content = SYND_getFeedContentEvents( $A['limits'], $link,
-                                                          $data );
+                                                          $data, $A['content_length'] );
                 }
                 else // feed for a single topic only
                 {
                     $content = SYND_getFeedContentPerTopic( $A['topic'],
-                            $A['limits'], $link, $data );
+                            $A['limits'], $link, $data, $A['content_length'] );
                 }
             }
             else
             {
                 $content = PLG_getFeedContent( $A['type'], $fid, $link, $data );
+                // can't randomly change the api to send a max length, so
+                // fix it here:
+                if ($A['content_length'] != 1)
+                {
+                    $count = count( $content );
+                    for( $i = 0; $i < $count; $i++ )
+                    {
+                        $content[i]['summary'] = SYND_truncateSummary( 
+                                    $content[i]['text'], $A['content_length'] );
+                    }
+                }
             }
             if( empty( $link ))
             {
@@ -684,8 +707,6 @@ function SYND_updateFeed( $fid )
             $pos = strrpos( $path, '/' );
             $path = substr( $path, 0, $pos + 1 );
             $filename = $path . $filename;
-            /*{$this->_feedurl = substr_replace ($path, $_CONF['site_url'], 0,
-                                          strlen ($_CONF['path_html']) - 1);}*/
             $feed->createFeed( $filename );
         }
         else
@@ -708,6 +729,29 @@ function SYND_updateFeed( $fid )
         }
 
         DB_query( "UPDATE {$_TABLES['syndication']} SET updated = NOW(), update_info = $data WHERE fid = $fid");
+    }
+}
+
+function SYND_truncateSummary($text, $length)
+{
+    if ($length == 0)
+    {
+        return '';
+    } else {
+        $text = stripslashes( $text );
+        $text = trim( $text );
+        $text = preg_replace( "/(\015)/", "", $text );
+        if (($length > 1) && (strlen( $text ) > $length))
+        {
+            $text = substr($text, 0, $length - 3).'...';
+        }
+        // Check if we broke html tag and storytext is now something
+        // like "blah blah <a href= ...". Delete "<*" if so.
+        if (strrpos($storytext, "<") > strrpos($storytext, ">")) {
+            $storytext = substr ($storytext, 0, strrpos($storytext, "<") - 1)
+                . " ...";
+         }
+        return $text;
     }
 }
 

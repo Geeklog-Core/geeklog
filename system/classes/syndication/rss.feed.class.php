@@ -107,7 +107,7 @@
       {
         $xml .= "<description>".$this->_safeXML( $this->description )."</description>\n";
       }
-      $xml .= "<lang>{$this->lang}</lang>\n";
+      $xml .= "<language>{$this->lang}</language>\n";
       return $xml;
     }
 

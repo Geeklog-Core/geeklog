@@ -73,10 +73,10 @@
     {
       $xml = "<entry>\n";
       $xml .= '<title mode="escaped">'.$this->_safeXML( $article['title'] )."</title>\n";
-      $xml .= '<link rel="alternative" type="text/html" href="'.$this->_safeXML( $article['link'] )."\">\n";
-      $xml .= '<id>'.htmlspecialchars( $entry['link'] )."</id>\n";
-      $xml .= '<issued>'.strftime( "%a, %d %b %Y %T %Z", $article['date'] )."</issued>\n";
-      $xml .= '<modified>'.strftime( "%a, %d %b %Y %T %Z", $article['date'] )."</modified>\n";
+      $xml .= '<link rel="alternate" type="text/html" href="'.$this->_safeXML( $article['link'] )."\"/>\n";
+      $xml .= '<id>'.htmlspecialchars( $article['link'] )."</id>\n";
+      $xml .= '<issued>'.date( "Y-m-d\TH:i:s", $article['date'] )."</issued>\n";
+      $xml .= '<modified>'.date( "Y-m-d\TH:i:s\Z", $article['date'] )."</modified>\n";
       if( array_key_exists( 'author', $article ) )
       {
         $xml .= "<author>\n<name>{$article['author']}</name>\n</author>\n";
@@ -86,7 +86,7 @@
         if( strlen( $article['summary'] ) > 0 )
         {
           $xml .= '<content type="text/html" mode="escaped">'
-                          . $this->_safeXML ($article['text'])
+                          . $this->_safeXML ($article['summary'])
                           . "</content>\n";
         }
       }
@@ -102,11 +102,14 @@
       */
     function _feedHeader()
     {
-      $xml = '<?xml version="1.0" encoding="' . $this->encoding . '" ?>' . LB . LB 
-           . '<feed version="0.3">' . LB
+      $xml = '<?xml version="1.0" encoding="' . $this->encoding . '" ?>' . LB . LB
+           . '<feed version="0.3"  xmlns="http://purl.org/atom/ns#">' . LB
            . '<title mode="escaped">' . $this->_safeXML( $this->title ) . '</title>' . LB
            . '<tagline mode="escaped">' . $this->_safeXML( $this->description ) . '</tagline>' . LB
-           . '<link rel="alternative" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB; 
+           . '<link rel="alternate" type="text/html" href="' . $this->_safeXML( $this->sitelink ) . '"/>' . LB
+           . '<modified>'.date("Y-m-d\TH:i:s\Z").'</modified>' . LB
+           . "<author>\n<name>" . $this->_safeXML( $this->title ) . '</name>' . LB
+           . '<email>' . $this->_safeXML( $this->sitecontact ) . "</email>\n</author>\n";
       return $xml;
     }
 

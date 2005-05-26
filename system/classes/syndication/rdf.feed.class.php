@@ -83,7 +83,7 @@
         if( strlen( $article['summary'] ) > 0 )
         {
           $xml .= '<content:encoded>'
-                          . $this->_safeXML ($article['text'])
+                          . $this->_safeXML ($article['summary'])
                           . "</content:encoded>\n";
         }
       }
@@ -100,7 +100,7 @@
     function _feedHeader()
     {
       $xml = "<?xml version=\"1.0\" encoding=\"{$this->encoding}\"?>\n\n";
-      $xml .= "<rdf:RDF>\n<channel>\n";
+      $xml .= "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns=\"http://purl.org/rss/1.0/\">\n<channel>\n";
       $xml .= "<title>".$this->_safeXML( $this->title )."</title>\n";
       $xml .= '<link>'.$this->_safeXML( $this->sitelink )."</link>\n";
       $xml .= '<description>'.$this->_safeXML( $this->description )."</description>\n";

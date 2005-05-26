@@ -149,7 +149,6 @@
 
         /* Close off the feed */
         $xml .= $this->_feedFooter();
-
         /* And write it to file */
         return $this->_writeFile( $fileName, $xml );
       }
