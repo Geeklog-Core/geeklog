@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /comment.php
+Disallow: /docs
+Disallow: /submit.php

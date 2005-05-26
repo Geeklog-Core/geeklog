@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added a robots.txt file to the distribution. By default, it excludes
+  comment.php, submit.php, and the docs directory from being spidered [Dirk]
 - Removed the "lastvisit" cookies, as they are obviously not used [Dirk]
 - Removed redundant changepwd-button & code from /admin/user.php (Bug #9) 
   [Oliver]
