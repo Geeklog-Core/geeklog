@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.13 2005/05/08 17:37:09 dhaun Exp $
+// $Id: trackback.php,v 1.14 2005/05/26 13:22:04 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -303,25 +303,25 @@ function sendPings ($type, $id)
             $A = DB_fetchArray ($result);
             $resend = '';
             if ($A['method'] == 'weblogUpdates.ping') {
-                $result = PNB_sendPing ($A['ping_url'], $_CONF['site_name'],
+                $pinged = PNB_sendPing ($A['ping_url'], $_CONF['site_name'],
                                         $_CONF['site_url'], $itemurl);
             } else if ($A['method'] == 'weblogUpdates.extendedPing') {
-                $result = PNB_sendExtendedPing ($A['ping_url'],
+                $pinged = PNB_sendExtendedPing ($A['ping_url'],
                             $_CONF['site_name'], $_CONF['site_url'], $itemurl,
                             $feedurl);
             } else {
-                $result = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
+                $pinged = $LANG_TRB['unknown_method'] . ': ' . $A['method'];
             }
-            if (empty ($result)) {
-                $result = '<b>' . $LANG_TRB['ping_success'] . '</b>';
+            if (empty ($pinged)) {
+                $pinged = '<b>' . $LANG_TRB['ping_success'] . '</b>';
             } else {
-                $result = '<span class="warningsmall">' . $result . '</span>';
+                $pinged = '<span class="warningsmall">' . $pinged . '</span>';
             }
 
             $template->set_var ('service_name', $A['name']);
             $template->set_var ('service_url', $A['site_url']);
             $template->set_var ('service_ping_url', $A['ping_url']);
-            $template->set_var ('ping_result', $result);
+            $template->set_var ('ping_result', $pinged);
             $template->set_var ('resend', $resend);
             $template->set_var ('alternate_row',
                                 (($i + 1) % 2) == 0 ? 'row-even' : 'row-odd');
