@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.35 2005/05/26 18:11:21 dhaun Exp $
+// $Id: lib-sessions.php,v 1.36 2005/05/26 20:39:47 mjervis Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -106,8 +106,11 @@ function SESS_sessionCheck()
             COM_errorLog("Got $userid as User ID from the session ID",1);
         }
         
-        // Check user status
-        SEC_checkUserStatus($userid);
+        // Check user status, if not annon.
+        if ($userid != 0)
+        {
+            SEC_checkUserStatus($userid);
+        }
        
         if ($userid) {
             $user_logged_in = 1;
@@ -133,8 +136,11 @@ function SESS_sessionCheck()
                         //User may have modified their UID in cookie, ignore them
                     } else {
                         if ($userid) {
-                            // Check user status
-                            SEC_checkUserStatus($userid);
+                            if ($userid != 0)
+                            {
+                                // Check user status
+                                SEC_checkUserStatus($userid);
+                            }
                             $user_logged_in = 1;
                             $sessid = SESS_newSession($userid, $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
