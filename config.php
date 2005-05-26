@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.167 2005/05/22 18:23:16 dhaun Exp $
+// $Id: config.php,v 1.168 2005/05/26 18:11:21 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -337,8 +337,6 @@ $_CONF['cookie_name']                   = 'geeklog';
 $_CONF['cookie_password']               = 'password';
 $_CONF['cookie_theme']                  = 'theme';
 $_CONF['cookie_language']               = 'language';
-$_CONF['cookie_lastvisit']              = 'LastVisit';
-$_CONF['cookie_lastvisittemp']          = 'LastVisitTemp';
 
 $_CONF['cookie_ip']                     = 0;
 $_CONF['default_perm_cookie_timeout']   = 28800;

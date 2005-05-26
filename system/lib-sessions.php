@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.34 2005/05/22 13:35:56 mjervis Exp $
+// $Id: lib-sessions.php,v 1.35 2005/05/26 18:11:21 dhaun Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -183,26 +183,6 @@ function SESS_sessionCheck()
             }
         }
     }
-
-    // Set expire dates: one for a year, one for 10 minutes
-    $expiredate1 = time() + 3600 * 24 * 365;
-    $expiredate2 = time() + 600;
-
-    // Update the LastVisit cookie.
-    // This cookie is updated each time auth.inc.php runs
-    setcookie($_CONF['cookie_lastvisit'], time(), $expiredate1,  $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
-
-    // Set LastVisitTemp cookie, which only gets the time from the LastVisit
-    // cookie if it does not exist yet otherwise, it gets the time from the
-    // LastVisitTemp cookie
-    if (!isset($HTTP_COOKIE_VARS[$_CONF['cookie_lastvisittemp']])) {
-        $temptime = $HTTP_COOKIE_VARS[$_CONF['cookie_lastvisit']];
-    } else {
-        $temptime = $HTTP_COOKIE_VARS[$_CONF['cookie_lastvisittemp']];
-    }
-
-    // Set cookie.
-    setcookie($_CONF['cookie_lastvisittemp'], $temptime ,$expiredate2, $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
 
     if ($_SESS_VERBOSE) {
         COM_errorLog("***Leaving SESS_sessionCheck***",1);
