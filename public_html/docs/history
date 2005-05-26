@@ -157,6 +157,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
   in the Geeklog framework (reported by Sean C) [Dirk]
 - Save one SQL request for a story's printable view [Dirk]
 - The column headline for event search results was not displayed [Dirk]
+- Added the ability to ban users, and to tell when a user has logged in at least
+  once [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
 - Updated Italian language file, provided by Marcello Teodori
