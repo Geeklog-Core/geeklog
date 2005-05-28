@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Geeklog Documentation - Trackback, Pingback, Ping</title>
+  <link rel="stylesheet" type="text/css" href="docstyle.css" title="Dev Stylesheet">
+</head>
+
+<body>
+<table cellpadding="2" cellspacing="2" border="0" width="100%">
+<tr>
+  <td valign="top"><img src="images/newlogo.gif" alt="Geeklog Documentation" width="243" height="90" border="0"></td>
+</tr>
+<tr>
+  <td valign="top" class="menu"><a href="index.html">Geeklog Documentation</a> - Trackback, Pingback, Ping</td>
+</tr>
+</table>
+
+<h1>Trackback, Pingback, Ping</h1>
+
+<h2>Introduction</h2>
+
+<p>Trackbacks, Pingbacks, and Pings are mostly used in blog communities to inform other sites / blogs about updated blogs and comments made to blog posts. These methods are supported by many blog / CMS packages, so you can also send Trackbacks and Pingbacks to sites running on software other than Geeklog.</p>
+
+<ul>
+<li><a href="#trackback">Trackback</a>s are a means to connect a post you made on your blog to a post on another blog.<br>
+E.g. Mary posts something on her blog. Peter reads that, makes a post about Mary's post on his own site and then sends a trackback to Mary's site, so that Mary and visitors of Mary's site will know about Peter's post.</li>
+<li><a href="#pingback">Pingback</a>s are pretty much the same as Trackbacks, they only use a different protocol.</li>
+<li>Sending a <a href="#ping">Ping</a> is meant to inform sites that keep track of updated blogs that you've made a new post. These weblog directories or aggregators usually offer a way to subscribe to this update information, so that you don't have to visit several sites to find the new posts.</li>
+</ul>
+
+<p>For more information, please consult Wikipedia on <a href="http://en.wikipedia.org/wiki/Trackback">TrackBack</a> and <a href="http://en.wikipedia.org/wiki/Pingback">Pingback</a>. You can also spend some time reading up on <a href="http://en.wikipedia.org/wiki/Weblog">Weblog</a>s in general there ...</p>
+
+
+<h2>Disabling Trackbacks</h2>
+
+<p>Since these functions may not be needed on certain sites (e.g. corporate sites), they can be switched off individually in <a href="config.html#desc_trackback_enabled">config.php</a>.</p>
+
+
+<h2><a name="usage">Usage</a></h2>
+
+<p>To pick up the above example, here's how trackback, etc. work: Assume you're Peter and just read a post on Mary's blog about her little lamb. Say that post has the URL <tt>http://www.example.com/article.php/little-lamb</tt>.</p>
+
+<p>Peter now goes and writes a new story, linking to Mary's post. Something like:</p>
+<pre>
+I just read that Mary &lt;a href="http://www.example.com/article.php/little-lamb"&gt;has
+a little lamb&lt;/a&gt;. Hope she posts some pictures soon!
+</pre>
+<p>After saving that story, there is an option "send ping" in the Admin's list of stories (last column). Clicking on the link presents you with a list of options: Send Pingback, Send Ping, Send Trackback (some of those may have been disabled and not show up, of course - see above).</p>
+
+<h3><a name="pingback">Pingback</a></h3>
+
+<p>Sending a Pingback is an automated process: After clicking on that link, Geeklog scans your story for links to other sites and tries to send a Pingback to all those sites that accept Pingbacks. The Pingback will automatically include a link back to your story.</p>
+
+<h3><a name="trackback">Trackback</a></h3>
+
+<p><small>(We're skipping sending Pings for the moment - see below)</small></p>
+
+<p>A Trackback can only be sent to one site, so you are now presented with a list of all the links in your story and have to chose which site should receive the trackback. Geeklog will then check if the site accepts trackbacks and try to determine the actual trackback URL to send the Trackback to.</p>
+
+<p>You will now get a form that includes information about your post (title, URL, URL of your site and the text of your post). If Geeklog could determine the Trackback URL, that field will also be filled in. If the Trackback URL is missing, then either Geeklog could not find the Trackback URL by itself (in which case you can add it manually) or the target site (Mary's, in the above example) does not accept Trackbacks.</p>
+
+<p>You can - and should - now edit the excerpt from your post. Please note that many sites will shorten the excerpt, typically to something like 255 characters. Also keep in mind that the excerpt will be displayed on Mary's site, so it should contain a portion of your post that will make it clear to a visitor of Mary's site why that post shows up there (i.e. it should somehow refer to Mary's post).</p>
+
+<p>You can then chose to see a preview of your post (but keep in mind that it may not be displayed in the exact same way on Mary's site) and / or send the Trackback.</p>
+
+<h2>Trackback vs. Pingback</h2>
+
+<p>Since, as mentioned above, Trackback and Pingback offer pretty much the same functionality, you should really only send one of the two. So if Mary's site offers both options, you should think about which of the two makes more sense to you for that particular post.</p>
+
+<p>Pingbacks provide less information (typically only a link back to your site) but they are automated and therefore easier and faster to send. Trackbacks allow you to send more information (e.g. an excerpt from your post) but preparing that information takes more time.</p>
+
+<h2><a name="receiving">Receiving Trackbacks and Pingbacks</a></h2>
+
+<p>Your Geeklog site will, of course, be able to receive Trackbacks and Pingbacks to your stories. They will show up in a dedicated section below the story, similar to the section for comments. Once received, Geeklog will treat Trackbacks and Pingbacks the same, so you won't be able to tell the difference.</p>
+
+<p>When you disable Trackbacks and / or Pingbacks in <tt>config.php</tt>, you will also disable receiving them.</p>
+
+
+<h2><a name="ping">Ping</a></h2>
+
+<p>Pings are meant to be sent to certain websites that keep tracks of blog posts. Geeklog comes with a few of those site pre-configured, but you easily add your own or delete / disable the existing entries (from the Admin's "Trackback" entry).</p>
+
+<p>These weblog directory services will usually accept either a standard or an extended ping. The difference is that the "extended" Ping will also include a link to your site's feed (RSS, Atom, or whatever you chose).</p>
+
+<p>When you click on the "Send Ping" button for a story, all currently enabled weblog directories will be notified automatically.</p>
+
+
+<table border="0" width="100%" class="footer">
+<tr valign="top">
+  <td colspan="2"><a href="http://www.geeklog.net">The Geeklog Documentation Project</a><br>
+    All trademarks and copyrights on this page are owned by their respective owners. GeekLog is copyleft.</td>
+</tr>
+</table>
+
+</body>
+</html>
