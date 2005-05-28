@@ -1,7 +1,7 @@
 <table border="0" cellpadding="0" cellspacing="0" width="95%" style="margin:10px;border:1px solid black;">
     <tr>
         <td class="blocktitle" width="10" style="border:0px;background-color:#B80000;">{showhide}</td>
-        <td class="blocktitle" width="90%" align="left" style="border:0px;color:white;background-color:#B80000;padding:6 3 3 3px;">{block_title}</td>
+        <td class="blocktitle" width="90%" align="left" style="border:0px;color:white;background-color:#B80000;padding:6px 3px 3px 3px;font-weight: bold;">{block_title}</td>
         <td class="blocktitle" width="20" valign="middle" style="border:0px;text-align:right;background-color:#B80000;" nowrap>{block_help}&nbsp;</td>
     </tr>
     <tr>
