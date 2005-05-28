@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.14 2005/05/26 13:22:04 dhaun Exp $
+// $Id: trackback.php,v 1.15 2005/05/28 17:57:29 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -121,8 +121,12 @@ function trackback_editor ($target = '', $url = '', $title = '', $excerpt = '', 
     $template->set_var ('php_self', $_CONF['site_admin_url']
                                     . '/trackback.php');
 
-    $template->set_var ('lang_explain',
-                        sprintf ($LANG_TRB['editor_intro'], $url, $title));
+    if (empty ($url) || empty ($title)) {
+        $template->set_var ('lang_explain', $LANG_TRB['editor_intro_none']);
+    } else {
+        $template->set_var ('lang_explain',
+                            sprintf ($LANG_TRB['editor_intro'], $url, $title));
+    }
     $template->set_var ('lang_trackback_url', $LANG_TRB['trackback_url']);
     $template->set_var ('lang_entry_url', $LANG_TRB['entry_url']);
     $template->set_var ('lang_title', $LANG_TRB['entry_title']);
@@ -505,8 +509,12 @@ function listServices ($page = 1, $msg = 0)
     }
     $template->parse ('output', 'list');
     $retval .= $template->finish ($template->get_var ('output'));
-
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
+    if ($_CONF['trackback_enabled']) {
+        $retval .= freshTrackback ();
+    }
+
     $retval .= COM_siteFooter ();
 
     return $retval;
@@ -702,6 +710,27 @@ function changeServiceStatus ($pid)
         DB_query ("UPDATE {$_TABLES['pingservice']} SET is_enabled = '$is_enabled' WHERE pid = '$pid'");
     }
 }
+
+/**
+* Display a note about how trackbacks are supposed to be used
+*
+*/
+function freshTrackback ()
+{
+    global $_CONF, $LANG_TRB;
+
+    $retval = '';
+
+    $freshurl = $_CONF['site_admin_url'] . '/trackback.php?mode=fresh';
+
+    $retval .= COM_startBlock ($LANG_TRB['trackback'], '',
+                               COM_getBlockTemplate ('_admin_block', 'header'));
+    $retval .= sprintf ($LANG_TRB['trackback_note'], $freshurl);
+    $retval .= COM_endBlock ();
+
+    return $retval;
+}
+
 
 // MAIN
 $display = '';

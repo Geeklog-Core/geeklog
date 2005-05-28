@@ -1389,7 +1389,9 @@ $LANG_TRB = array (
     'button_cancel'      => 'Cancel',
     'button_delete'      => 'Delete',
     'trackbacks'         => 'Trackbacks',
-    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.'
+    'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
+    'editor_intro_none'  => 'Prepare your trackback comment.',
+    'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.'
 );
 
 ###############################################################################
