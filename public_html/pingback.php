@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.3 2005/05/29 09:14:59 dhaun Exp $
+// $Id: pingback.php,v 1.4 2005/05/29 15:24:09 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -137,6 +137,7 @@ function PNB_handlePingback ($id, $type, $url)
 
     // See if we can read the page linking to us and extract at least
     // the page's title out of it ...
+    $title = '';
     if (@ini_get ('allow_url_fopen')) {
         $fp = @fopen ($url, 'r');
         if ($fp) {
@@ -151,14 +152,14 @@ function PNB_handlePingback ($id, $type, $url)
             }
 
             // we could also run the part of the other page that we got
-            // through the spam filter ...
-
-            $comment = TRB_formatComment ($url, $title);
-            $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
-            if ($result > 0) {
-                return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
-            }
+            // through the spam filter here ...
         }
+    }
+
+    $comment = TRB_formatComment ($url, $title);
+    $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
+    if ($result > 0) {
+        return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
     }
 
     // save as a trackback comment
