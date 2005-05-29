@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.2 2005/01/29 17:52:54 dhaun Exp $
+// $Id: pingback.php,v 1.3 2005/05/29 09:14:59 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -53,6 +53,67 @@ $PNB_ERROR = array (
 
 
 /**
+* Send a notification email when a new pingback has been received
+*
+* FIXME: Currently always picks the latest comment for ($id, $type).
+*        This may not always be the comment that was just posted ...
+*
+* @param    string  $id         ID of the entry the comment was posted to
+* @param    string  $type       type of that entry ('article' = story, etc.)
+* @return   void
+*
+* Note: This is a straight copy of the function of the same name from
+*       public_html/trackback.php
+*
+*/
+function sendNotification ($id, $type)
+{
+    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
+
+    $trbtype = addslashes ($type);
+    $result = DB_query ("SELECT title,excerpt,url,blog,ipaddress FROM {$_TABLES['trackback']} WHERE (type = '$trbtype') ORDER BY date DESC LIMIT 1");
+    $A = DB_fetchArray ($result);
+
+    $mailbody = '';
+    if (!empty ($A['title'])) {
+        $mailbody .= $LANG03[16] . ': ' . $A['title'] . "\n";
+    }
+    $mailbody .= $LANG_TRB['blog_name'] . ': ';
+    if (!empty ($A['blog'])) {
+        $mailbody .= $A['blog'] . ' ';
+    }
+    $mailbody .= '(' . $A['ipaddress'] . ")\n";
+    $mailbody .= $LANG29[12] . ': ' . $A['url'] . "\n";
+
+    if ($type != 'article') {
+        $mailbody .= $LANG09[5] . ': ' . $type . "\n";
+    }
+
+    if (!empty ($A['excerpt'])) {
+        // the excerpt is max. 255 characters long anyway, so we add it
+        // in its entirety
+        $mailbody .= $A['excerpt'] . "\n\n";
+    }
+
+    if ($type == 'article') {
+        $commenturl = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                    . $id) . '#trackback';
+    } else {
+        $commenturl = PLG_getItemInfo ($type, $id, 'url');
+    }
+
+    $mailbody .= $LANG08[33] . ' <' . $commenturl . ">\n\n";
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['pingback'];
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
+}
+
+/**
 * Handle a pingback for an entry.
 *
 * Also takes care of the speedlimit and spam. Assumes that the caller of this
@@ -66,7 +127,6 @@ $PNB_ERROR = array (
 function PNB_handlePingback ($id, $type, $url)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
-
 
     COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'pingback');
     $last = COM_checkSpeedlimit ('pingback');
@@ -105,6 +165,11 @@ function PNB_handlePingback ($id, $type, $url)
     TRB_saveTrackbackComment ($id, $type, $url, $title);
 
     COM_updateSpeedlimit ('pingback');
+
+    if (isset ($_CONF['notification']) &&
+            in_array ('pingback', $_CONF['notification'])) {
+        sendNotification ($id, $type);
+    }
 
     return new XML_RPC_Response (new XML_RPC_Value ($PNB_ERROR['success']));
 }

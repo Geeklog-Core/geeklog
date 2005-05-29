@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.168 2005/05/26 18:11:21 dhaun Exp $
+// $Id: config.php,v 1.169 2005/05/29 09:14:59 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -419,7 +419,7 @@ $_CONF['listdraftstories'] = 0;
 
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'comment', 'trackback',
-// 'link', 'event', and 'user'.
+// 'pingback', 'link', 'event', and 'user'.
 // Example: $_CONF['notification'] = array ('story', 'link', 'event');
 // The email will be sent to $_CONF['site_mail'] (see above).
 $_CONF['notification'] = array ();
