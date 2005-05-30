@@ -1,9 +1,16 @@
                                 <form action="{site_admin_url}/plugins/links/index.php" method="post">
                                     <table border="0" cellspacing="0" cellpadding="2" width="100%">
+
                                         <tr>
                                             <td align="right">{lang_linktitle}:</td>
                                             <td>
                                                 <input type="text" size="48" maxlength="96" name="title" value="{link_title}">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align="right">{lang_linkid}:</td>
+                                            <td>
+                                                <input type="text" size="40" maxlength="40" name="lid" value="{link_id}">
                                             </td>
                                         </tr>
                                         <tr>
@@ -70,8 +77,7 @@
                                         <tr>
                                             <td colspan="2">
                                                 <input type="submit" value="{lang_save}" name="mode"> 
-                                                <input type="submit" value="{lang_cancel}" name="mode"> 
-                                                <input type="hidden" name="lid" value="{link_id}">
+                                                <input type="submit" value="{lang_cancel}" name="mode">
                                                 {delete_option}
                                             </td>
                                         </tr>
