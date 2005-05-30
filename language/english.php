@@ -352,15 +352,6 @@ $LANG05 = array(
 );
 
 ###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Web Resources',
-    2 => 'There are no resources to display.',
-    3 => 'Add A Link'
-);
-
-###############################################################################
 # pollbooth.php
 
 $LANG07 = array(
@@ -484,7 +475,7 @@ $LANG10 = array(
     2 => 'Total Hits to the System',
     3 => 'Stories(Comments) in the System',
     4 => 'Polls(Answers) in the System',
-    5 => 'Links(Clicks) in the System',
+    5 => '',
     6 => 'Events in the System',
     7 => 'Top Ten Viewed Stories',
     8 => 'Story Title',
@@ -497,9 +488,9 @@ $LANG10 = array(
     15 => 'Poll Question',
     16 => 'Votes',
     17 => 'It appears that there are no polls on this site or no one has ever voted.',
-    18 => 'Top Ten Links',
-    19 => 'Links',
-    20 => 'Hits',
+    18 => '',
+    19 => '',
+    20 => '',
     21 => 'It appears that there are no links on this site or no one has ever clicked on one.',
     22 => 'Top Ten Emailed Stories',
     23 => 'Emails',
@@ -527,23 +518,23 @@ $LANG12 = array(
     2 => 'Login',
     3 => 'New User',
     4 => 'Submit an Event',
-    5 => 'Submit a Link',
+    5 => '',
     6 => 'Submit a Story',
     7 => 'Login is Required',
     8 => 'Submit',
     9 => 'When submitting information for use on this site we ask that you follow the following suggestions...<ul><li>Fill in all the fields, they\'re required<li>Provide complete and accurate information<li>Double check those URLs</ul>',
     10 => 'Title',
-    11 => 'Link',
+    11 => '',
     12 => 'Start Date',
     13 => 'End Date',
     14 => 'Location',
     15 => 'Description',
-    16 => 'If other, please specify',
-    17 => 'Category',
-    18 => 'Other',
+    16 => '',
+    17 => '',
+    18 => '',
     19 => 'Read First',
-    20 => 'Error: Missing Category',
-    21 => 'When selecting "Other" please also provide a category name',
+    20 => '',
+    21 => '',
     22 => 'Error: Missing Fields',
     23 => 'Please fill in all the fields on the form.  All fields are required.',
     24 => 'Submission Saved',
@@ -692,35 +683,6 @@ $LANG22 = array(
     23 => 'Bad start date.',
     24 => 'Bad end date.',
     25 => 'End date is before start date.'
-);
-
-###############################################################################
-# admin/link.php
-
-$LANG23 = array(
-    1 => 'Link Editor',
-    2 => '',
-    3 => 'Link Title',
-    4 => 'Link URL',
-    5 => 'Category',
-    6 => '(include http://)',
-    7 => 'Other',
-    8 => 'Link Hits',
-    9 => 'Link Description',
-    10 => 'You need to provide a link Title, URL and Description.',
-    11 => 'Link Manager',
-    12 => 'To modify or delete a link, click on that link below.  To create a new link click new link above.',
-    13 => 'Link Title',
-    14 => 'Link Category',
-    15 => 'Link URL',
-    16 => 'Access Denied',
-    17 => "You are trying to access a link that you don't have rights to.  This attempt has been logged. Please <a href=\"{$_CONF['site_admin_url']}/link.php\">go back to the link administration screen</a>.",
-    18 => 'New Link',
-    19 => 'Admin Home',
-    20 => 'If other, specify',
-    21 => 'save',
-    22 => 'cancel',
-    23 => 'delete'
 );
 
 ###############################################################################
@@ -918,7 +880,7 @@ $LANG29 = array(
     10 => 'Title',
     11 => 'Start Date',
     12 => 'URL',
-    13 => 'Category',
+    13 => '',
     14 => 'Date',
     15 => 'Topic',
     16 => 'User name',
@@ -926,7 +888,7 @@ $LANG29 = array(
     18 => 'Email',
     34 => 'Command and Control',
     35 => 'Story Submissions',
-    36 => 'Link Submissions',
+    36 => '',
     37 => 'Event Submissions',
     38 => 'Submit',
     39 => 'There are no submissions to moderate at this time',
@@ -1107,7 +1069,7 @@ $LANG33 = array(
 $MESSAGE = array(
     1 => "Your password has been emailed to you and should arrive momentarily. Please follow the directions in the message and we thank-you for using {$_CONF['site_name']}",
     2 => "Thank-you for submitting your story to {$_CONF['site_name']}.  It has been submitted to our staff for approval. If approved, your story will be available for others to read on our site.",
-    3 => "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links.php>links</a> section.",
+    3 => "",
     4 => "Thank-you for submitting an event to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your event will be seen in our <a href={$_CONF['site_url']}/calendar.php>calendar</a> section.",
     5 => 'Your account information has been successfully saved.',
     6 => 'Your preferences have been successfully saved.',
@@ -1119,8 +1081,8 @@ $MESSAGE = array(
     12 => 'The block has been successfully deleted.',
     13 => 'Your topic has been successfully saved.',
     14 => 'The topic and all its stories and blocks have been successfully deleted.',
-    15 => 'Your link has been successfully saved.',
-    16 => 'The link has been successfully deleted.',
+    15 => '',
+    16 => '',
     17 => 'Your event has been successfully saved.',
     18 => 'The event has been successfully deleted.',
     19 => 'Your poll has been successfully saved.',
