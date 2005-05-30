@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.1 2005/05/22 18:23:17 dhaun Exp $
+// $Id: install.php,v 1.2 2005/05/30 22:18:00 ospiess Exp $
 
 require_once('../../../lib-common.php');
 require_once($_CONF['path'] . 'plugins/links/config.php');
@@ -84,12 +84,12 @@ if (!SEC_inGroup('Root')) {
     echo $display;
     exit;
 }
- 
+
 /**
 * Puts the datastructures for this plugin into the Geeklog database
 *
 * Note: Corresponding uninstall routine is in functions.inc
-* 
+*
 * @return    boolean    True if successful False otherwise
 *
 */
@@ -101,9 +101,9 @@ function plugin_install_links()
     COM_errorLog("Attempting to install the $pi_name Plugin",1);
 
     // Create the Plugins Tables
-    
+
     require_once($_CONF['path'] . 'plugins/links/sql/links_install_1.0.php');
-    
+
         COM_errorLOG("executing " . $_SQL[1]);
         DB_query($_SQL[1]);
         if (DB_error()) {
@@ -112,7 +112,7 @@ function plugin_install_links()
             return false;
             exit;
         }
-	
+
 	COM_errorLOG("executing " . $_SQL[2]);
         DB_query($_SQL[2]);
         if (DB_error()) {
@@ -121,13 +121,7 @@ function plugin_install_links()
             return false;
             exit;
         }
-        
-	
-    
 
-       
-    
-    
     // Create the plugin admin security group
     COM_errorLog("Attempting to create $pi_name admin group", 1);
     DB_query("INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr) "
@@ -139,7 +133,7 @@ function plugin_install_links()
     }
     COM_errorLog('...success',1);
     $group_id = DB_insertId();
-    
+
     // Save the grp id for later uninstall
     COM_errorLog('About to save group_id to vars table for use during uninstall',1);
     DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_admin', $group_id)",1);
@@ -149,7 +143,7 @@ function plugin_install_links()
         exit;
     }
     COM_errorLog('...success',1);
-    
+
     // Add plugin Features
     foreach ($NEWFEATURE as $feature => $desc) {
         COM_errorLog("Adding $feature feature",1);
@@ -172,8 +166,8 @@ function plugin_install_links()
             exit;
         }
         COM_errorLog("Success",1);
-    }        
-    
+    }
+
     // OK, now give Root users access to this plugin now! NOTE: Root group should always be 1
     COM_errorLog("Attempting to give all users in Root group access to $pi_name admin group",1);
     DB_query("INSERT INTO {$_TABLES['group_assignments']} VALUES ($group_id, NULL, 1)");
@@ -197,13 +191,13 @@ function plugin_install_links()
 
     DB_query("INSERT INTO {$_TABLES['vars']} VALUES ('{$pi_name}_status', 1)",1);
 
-    
+
     COM_errorLog("Succesfully installed the $pi_name Plugin!",1);
     return true;
 }
 
-/* 
-* Main Function
+//*
+/* Main Function
 */
 
 $display = COM_siteHeader();
