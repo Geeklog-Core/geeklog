@@ -28,30 +28,32 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.1 2005/05/22 18:23:16 dhaun Exp $
+// $Id: config.php,v 1.2 2005/05/30 22:25:06 ospiess Exp $
 
 // links plugin
 $_TABLES['links']               = $_DB_table_prefix . 'links';
 $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
 
 // this lets you select which functions are available for registered users only
-$_CONF['linksloginrequired'] = 0;
+$_LI_CONF['linksloginrequired'] = 0;
 
 // Submission Settings
 // enable (set to 1) or disable (set to 0) submission queues:
-$_CONF['linksubmission']  = 1;
+$_LI_CONF['linksubmission']  = 1;
 
 // Following times are in seconds
-$_CONF['newlinksinterval']    = 1209600; // = 14 days
+$_LI_CONF['newlinksinterval']    = 1209600; // = 14 days
 // Set to 1 to hide a section from the What's New block:
-$_CONF['hidenewlinks']    = 0;
+$_LI_CONF['hidenewlinks']    = 0;
 
 
 // You can set both of the following to 0 to get back the old (pre-1.3.6)
 // style of the links section. Setting only linkcols to 0 will hide the
 // categories but keep the paging. Setting only linksperpage to 0 will list
 // all the links of the selected category on one page.
-$_CONF['linkcols']     =  3; // categories per column
-$_CONF['linksperpage'] = 10; // links per page
+$_LI_CONF['linkcols']     =  3; // categories per column
+$_LI_CONF['linksperpage'] = 10; // links per page
+
+$_LI_CONF['notification'] = 0; // notify when a new link was submitted
 
 ?>
