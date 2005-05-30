@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2005/05/22 18:23:17 dhaun Exp $
+// $Id: index.php,v 1.2 2005/05/30 22:20:22 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -69,7 +69,7 @@ if (!SEC_hasRights ('links.edit')) {
 */
 function editlink ($mode, $lid = '') 
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG23, $LANG_ACCESS;
+    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG_LINKS_ADMIN, $LANG_ACCESS;
 
     $retval = '';
 
@@ -83,9 +83,9 @@ function editlink ($mode, $lid = '')
         $A = DB_fetchArray($result);
         $access = SEC_hasAccess($A['owner_id'],$A['group_id'],$A['perm_owner'],$A['perm_group'],$A['perm_members'],$A['perm_anon']);
         if ($access == 0 OR $access == 2) {
-            $retval .= COM_startBlock($LANG24[16], '',
+            $retval .= COM_startBlock($LANG_LINKS_ADMIN[16], '',
                                COM_getBlockTemplate ('_msg_block', 'header'));
-            $retval .= $LANG23[17];
+            $retval .= $LANG_LINKS_ADMIN[17];
             $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
             COM_accessLog("User {$_USER['username']} tried to illegally submit or edit link $lid.");
             return $retval;
@@ -96,6 +96,7 @@ function editlink ($mode, $lid = '')
             $A = DB_fetchArray($result);
         }
         $A['hits'] = 0;
+        $A['lid'] = COM_makesid();
         $A['owner_id'] = $_USER['uid'];
         if (isset ($_GROUPS['Links Admin'])) {
             $A['group_id'] = $_GROUPS['Links Admin'];
@@ -108,24 +109,25 @@ function editlink ($mode, $lid = '')
         $A['perm_anon'] = 2;
         $access = 3;
     }
-    $retval .= COM_startBlock ($LANG23[1], '',
+    $retval .= COM_startBlock ($LANG_LINKS_ADMIN[1], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     $link_templates->set_var('link_id', $A['lid']);
     if (!empty($lid) && SEC_hasRights('links.edit')) {
-        $link_templates->set_var ('delete_option', '<input type="submit" value="' . $LANG23[23] . '" name="mode">');
+        $link_templates->set_var ('delete_option', '<input type="submit" value="' . $LANG_LINKS_ADMIN[23] . '" name="mode">');
     }
-    $link_templates->set_var('lang_linktitle', $LANG23[3]);
+    $link_templates->set_var('lang_linktitle', $LANG_LINKS_ADMIN[3]);
     $link_templates->set_var('link_title',
                              htmlspecialchars (stripslashes ($A['title'])));
-    $link_templates->set_var('lang_linkurl', $LANG23[4]);
+    $link_templates->set_var('lang_linkid', $LANG_LINKS_ADMIN[2]);
+    $link_templates->set_var('lang_linkurl', $LANG_LINKS_ADMIN[4]);
     $link_templates->set_var('max_url_length', 255);
     $link_templates->set_var('link_url', $A['url']);
-    $link_templates->set_var('lang_includehttp', $LANG23[6]);
-    $link_templates->set_var('lang_category', $LANG23[5]);
+    $link_templates->set_var('lang_includehttp', $LANG_LINKS_ADMIN[6]);
+    $link_templates->set_var('lang_category', $LANG_LINKS_ADMIN[5]);
     $result    = DB_query("SELECT DISTINCT category FROM {$_TABLES['links']}");
     $nrows    = DB_numRows($result);
-    $catdd = '<option value="' . $LANG23[7] . '">' . $LANG23[7] . '</option>';
+    $catdd = '<option value="' . $LANG_LINKS_ADMIN[7] . '">' . $LANG_LINKS_ADMIN[7] . '</option>';
     if ($nrows > 0) {
         for ($i = 1; $i <= $nrows; $i++) {
             $C = DB_fetchArray($result);
@@ -138,13 +140,13 @@ function editlink ($mode, $lid = '')
         }
     }
     $link_templates->set_var('category_options', $catdd); 
-    $link_templates->set_var('lang_ifotherspecify', $LANG23[20]);
-    $link_templates->set_var('lang_linkhits', $LANG23[8]); 
+    $link_templates->set_var('lang_ifotherspecify', $LANG_LINKS_ADMIN[20]);
+    $link_templates->set_var('lang_linkhits', $LANG_LINKS_ADMIN[8]);
     $link_templates->set_var('link_hits', $A['hits']);
-    $link_templates->set_var('lang_linkdescription', $LANG23[9]);
+    $link_templates->set_var('lang_linkdescription', $LANG_LINKS_ADMIN[9]);
     $link_templates->set_var('link_description', stripslashes($A['description']));
-    $link_templates->set_var('lang_save', $LANG23[21]); 
-    $link_templates->set_var('lang_cancel', $LANG23[22]); 
+    $link_templates->set_var('lang_save', $LANG_LINKS_ADMIN[21]);
+    $link_templates->set_var('lang_cancel', $LANG_LINKS_ADMIN[22]);
 
     // user access info
     $link_templates->set_var('lang_accessrights', $LANG_ACCESS['accessrights']);
@@ -216,21 +218,18 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
     $title = addslashes (COM_checkHTML (COM_checkWords ($title)));
     $category = addslashes ($category);
 
-    if (empty ($lid)) {
-        // this is a submission, set default values
-        $lid = COM_makesid ();
-        if (empty ($owner_id)) {
-            $owner_id = $_USER['uid'];
-            if (isset ($_GROUPS['Links Admin'])) {
-                $group_id = $_GROUPS['Links Admin'];
-            } else {
-                $group_id = SEC_getFeatureGroup ('links.edit');
-            }
-            $perm_owner = 3;
-            $perm_group = 2;
-            $perm_members = 2;
-            $perm_anon = 2;
+    if (empty ($owner_id)) {
+        // this is new link form admin, set default values
+        $owner_id = $_USER['uid'];
+        if (isset ($_GROUPS['Links Admin'])) {
+            $group_id = $_GROUPS['Links Admin'];
+        } else {
+            $group_id = SEC_getFeatureGroup ('links.edit');
         }
+        $perm_owner = 3;
+        $perm_group = 2;
+        $perm_members = 2;
+        $perm_anon = 2;
     }
 
     $access = 0;
@@ -257,22 +256,22 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
         exit;
     } elseif (!empty($title) && !empty($description) && !empty($url)) {
 
-        if ($categorydd != $LANG23[7] && !empty($categorydd)) {
+        if ($categorydd != $LANG_LINKS_ADMIN[7] && !empty($categorydd)) {
             $category = addslashes ($categorydd);
-        } else if ($categorydd != $LANG23[7]) {
+        } else if ($categorydd != $LANG_LINKS_ADMIN[7]) {
             echo COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
         }
 
         DB_delete ($_TABLES['linksubmission'], 'lid', $lid);
         DB_delete ($_TABLES['links'], 'lid', $lid);
 
-        DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "$lid,'$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
+        DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         COM_rdfUpToDateCheck ();
 
-        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=15');
+        return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
     } else {
         $retval .= COM_siteHeader('menu');
-        $retval .= COM_errorLog($LANG23[10],2);
+        $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
         if (DB_count ($_TABLES['links'], 'lid', $lid) > 0) {
             $retval .= editlink ($mode, $lid);
         } else {
@@ -292,7 +291,7 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
 */
 function listlinks ($page = 1) 
 {
-    global $_CONF, $_TABLES, $LANG23, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG_LINKS_ADMIN, $LANG_ACCESS;
 
     $retval = '';
 
@@ -308,13 +307,13 @@ function listlinks ($page = 1)
     $link_templates->set_var('site_url', $_CONF['site_url']);
     $link_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $link_templates->set_var('layout_url', $_CONF['layout_url']);
-    $link_templates->set_var('lang_newlink', $LANG23[18]);
-    $link_templates->set_var('lang_adminhome', $LANG23[19]);
-    $link_templates->set_var('lang_instructions', $LANG23[12]);
-    $link_templates->set_var('lang_linktitle', $LANG23[13]);
+    $link_templates->set_var('lang_newlink', $LANG_LINKS_ADMIN[18]);
+    $link_templates->set_var('lang_adminhome', $LANG_LINKS_ADMIN[19]);
+    $link_templates->set_var('lang_instructions', $LANG_LINKS_ADMIN[12]);
+    $link_templates->set_var('lang_linktitle', $LANG_LINKS_ADMIN[13]);
     $link_templates->set_var('lang_access', $LANG_ACCESS['access']);
-    $link_templates->set_var('lang_linkcategory', $LANG23[14]);
-    $link_templates->set_var('lang_linkurl', $LANG23[15]); 
+    $link_templates->set_var('lang_linkcategory', $LANG_LINKS_ADMIN[14]);
+    $link_templates->set_var('lang_linkurl', $LANG_LINKS_ADMIN[15]);
 
     $limit = (LINKS_PER_PAGE * $page) - LINKS_PER_PAGE;
     $result = DB_query("SELECT * FROM {$_TABLES['links']}" . COM_getPermSQL () . " ORDER BY category ASC,title LIMIT $limit," . LINKS_PER_PAGE);
@@ -379,7 +378,7 @@ function deleteLink ($lid)
 
     DB_delete ($_TABLES['links'], 'lid', $lid);
 
-    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=16');
+    return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
 }
 
 // MAIN
@@ -389,15 +388,15 @@ if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = $HTTP_GET_VARS['mode'];
 }
 
-if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
+if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // delete
     $lid = COM_applyFilter ($HTTP_POST_VARS['lid']);
-    if (!isset ($lid) || empty ($lid) || ($lid == 0)) {
-        COM_errorLog ('Attempted to delete link lid=' . $lid);
+    if (!isset ($lid) || empty ($lid)) {  // || ($lid == 0)
+        COM_errorLog ('Attempted to delete link lid=' . $lid );
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php');
     } else {
         $display .= deleteLink ($lid);
     }
-} else if (($mode == $LANG23[21]) && !empty ($LANG23[21])) { // save
+} else if (($mode == $LANG_LINKS_ADMIN[21]) && !empty ($LANG_LINKS_ADMIN[21])) { // save
     $display .= savelink (COM_applyFilter ($HTTP_POST_VARS['lid']),
             $HTTP_POST_VARS['category'], $HTTP_POST_VARS['categorydd'],
             $HTTP_POST_VARS['url'], $HTTP_POST_VARS['description'],
@@ -422,7 +421,7 @@ if (($mode == $LANG23[23]) && !empty ($LANG23[23])) { // delete
         $msg = COM_applyFilter ($HTTP_GET_VARS['msg'], true);
     }
     if (isset ($msg) && ($msg > 0)) {
-        $display .= COM_showMessage ($msg);
+        $display .= COM_showMessage ($msg, 'links');
     }
     $display .= listlinks (COM_applyFilter ($HTTP_GET_VARS['page'], true));
     $display .= COM_siteFooter ();
