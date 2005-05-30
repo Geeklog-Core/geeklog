@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.53 2004/12/17 12:04:46 dhaun Exp $
+// $Id: moderation.php,v 1.54 2005/05/30 22:10:12 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -77,12 +77,6 @@ function commandcontrol()
         $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/topic.php');
         $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/topic.gif');
         $admin_templates->set_var('option_label', $LANG01[13]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
-    }
-    if (SEC_hasRights('link.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/link.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/link.gif');
-        $admin_templates->set_var('option_label', $LANG01[14]);
         $admin_templates->parse('cc_main_options','ccitem',true);
     }
     if (SEC_hasRights('event.edit')) {
@@ -145,9 +139,6 @@ function commandcontrol()
         if ($_CONF['listdraftstories'] == 1) {
             $retval .= draftlist ();
         }
-    }
-    if (SEC_hasRights('link.moderate')) {
-        $retval .= itemlist('link');
     }
     if (SEC_hasRights('event.moderate')) {
         $retval .= itemlist('event');
@@ -212,12 +203,6 @@ function itemlist($type)
                 COM_getBlockTemplate ('_admin_block', 'header'));
         $sql = "SELECT eid AS id,title,datestart as day,url FROM {$_TABLES['eventsubmission']} ORDER BY datestart ASC";
         $H = array($LANG29[10],$LANG29[11],$LANG29[12]);
-        break;
-    case 'link':
-        $retval .= COM_startBlock ($LANG29[36], 'cclinksubmission.html',
-                COM_getBlockTemplate ('_admin_block', 'header'));
-        $sql = "SELECT lid AS id,title,category,url FROM {$_TABLES['linksubmission']} ORDER BY title ASC";
-        $H = array($LANG29[10],$LANG29[13],$LANG29[12]);
         break;
     default:
         if ((strlen($type) > 0) && ($type <> 'story')) {
@@ -494,12 +479,6 @@ function moderation($mid,$action,$type,$count)
         $table = $_TABLES['events'];
         $submissiontable = $_TABLES['eventsubmission'];
         $fields = 'eid,title,description,location,address1,address2,city,state,zipcode,datestart,timestart,dateend,timeend,url';
-        break;
-    case 'link':
-        $id = 'lid';
-        $table = $_TABLES['links'];
-        $submissiontable = $_TABLES['linksubmission'];
-        $fields = 'lid,category,url,description,title,date';
         break;
     case 'story':
         $id = 'sid';
