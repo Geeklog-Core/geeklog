@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.1 2005/05/22 18:23:16 dhaun Exp $
+// $Id: functions.inc,v 1.2 2005/05/30 22:26:34 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -61,9 +61,9 @@ require_once ($_CONF['path'] . 'plugins/links/config.php');
 */
 function plugin_getmenuitems_links()
 {
-    global $_CONF, $LANG06;
+    global $_CONF, $LANG_LINKS;
 
-    $menuitems[$LANG06[1]] = $_CONF['site_url'] . '/links/index.php';
+    $menuitems[$LANG_LINKS[114]] = $_CONF['site_url'] . '/links/index.php';
 
     return $menuitems;
 }
@@ -462,6 +462,102 @@ function plugin_uninstall_links($steps = '')
 
     return true;
 }
+/**
+*
+* Counts the items that are submitted
+*
+*/
+
+function plugin_submissioncount_links()
+{
+   global $_TABLES;
+   return DB_count($_TABLES['linksubmission']);
+}
+
+/**
+*
+* Checks that the current user has the rights to moderate the
+* plugin, returns true if this is the case, false otherwise
+*
+* @return        boolean       Returns true if moderator
+*
+*/
+function plugin_ismoderator_links() {
+    return SEC_hasRights('links.moderate');
+}
+
+
+/**
+* Returns SQL & Language texts to moderation.php
+*/
+function plugin_itemlist_links()
+{
+    global $_TABLES, $LANG_LINKS_SUBMIT;
+
+    if (plugin_ismoderator_links()) {
+        $plugin = new Plugin();
+        $plugin->submissionlabel = $LANG_LINKS_SUBMIT[11];
+        $plugin->submissionhelpfile = 'cclinksubmission.html';
+        $plugin->getsubmissionssql = "SELECT lid AS id,title,category,url FROM {$_TABLES['linksubmission']} ORDER BY title ASC";
+        $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[8]);
+        $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[10]);
+        $plugin->addSubmissionHeading($LANG_LINKS_SUBMIT[9]);
+
+        return $plugin;
+    }
+}
+/**
+* returns list of moderation values
+*
+* The array returned contains (in order): the row 'id' label, main plugin
+* table, moderation fields (comma seperated), and plugin submission table
+*
+* @return       array        Returns array of useful moderation values
+*
+*/
+function plugin_moderationvalues_links() {
+    global $_TABLES;
+
+    return array('lid', $_TABLES['links'], 'lid,category,url,description,title,date'
+                 , $_TABLES['linksubmission']);
+}
+
+
+/**
+* Performs plugin exclusive work for items approved by moderation
+*
+* While moderation.php handles the actual move from linkssubmission
+* to links tables, within the function we handle all other approval
+* relate tasks
+*
+* @param      string       $id      Identifying string
+* @return     string       Any wanted HTML output
+*
+*/
+function plugin_moderationapprove_links($id) {
+
+    return '';
+}
+
+/**
+* Performs plugin exclusive work for items deleted by moderation
+*
+* While moderation.php handles the actual removal from <plugin>submission
+* table, within this function we handle all other deletion
+* relate tasks
+*
+* @param      string       $id      Identifying string
+* @return     string       Any wanted HTML output
+*
+*/
+function plugin_moderationdelete_lists($id) {
+    global $_TABLES;
+
+    // these tables should not contain any rows with ml_id = $id
+    // this is done 'just in case'
+    DB_delete($_TABLES['linksubscriptions'], 'lid', $id);
+    return "";
+}
 
 /**
 * Shows link submission form
@@ -470,20 +566,19 @@ function plugin_uninstall_links($steps = '')
 function plugin_savesubmission_links($A)
 {
     global $_CONF, $_TABLES, $LANG12;       
-
+    
     if (!empty ($A['title']) && !empty ($A['description']) &&
                 !empty ($A['url'])) {
-            $retval = save_submit_links ($A);
-        } else {
-            $retval .= COM_startBlock ($LANG12[22], '',
-                               COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[23]
-                . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
-                . submissionform($type)
-                . COM_siteFooter ();
-
-            return $retval; 
-        }
+        $retval = plugin_save_submit_links ($A);
+    } else {
+        $retval .= COM_startBlock ($LANG12[22], '',
+                           COM_getBlockTemplate ('_msg_block', 'header'))
+            . $LANG12[23]
+            . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
+            . submissionform($type)
+            . COM_siteFooter ();
+    }
+    return $retval;
 } 
 
 /**
@@ -492,21 +587,20 @@ function plugin_savesubmission_links($A)
 */
 function plugin_submit_links() 
 {
-    global $_CONF, $_TABLES, $LANG12;
+    global $_CONF, $_TABLES, $LANG_LINKS_SUBMIT, $LANG12;
+    $retval = COM_startBlock ($LANG_LINKS_SUBMIT[1], 'submitlink.html');
 
-    $retval = COM_startBlock ($LANG12[5], 'submitlink.html');
-
-    $linkform = new Template($_CONF['path_layout'] . 'submit');
+    $linkform = new Template($_CONF['path'] . '/plugins/links/templates');
     $linkform->set_file('linkform', 'submitlink.thtml');
     $linkform->set_var('site_url', $_CONF['site_url']);
     $linkform->set_var('layout_url', $_CONF['layout_url']);
     $linkform->set_var('lang_title', $LANG12[10]);
-    $linkform->set_var('lang_link', $LANG12[11]);
-    $linkform->set_var('lang_category', $LANG12[17]);
+    $linkform->set_var('lang_link', $LANG_LINKS_SUBMIT[2]);
+    $linkform->set_var('lang_category', $LANG_LINKS_SUBMIT[3]);
     $linkform->set_var('link_category_options',
         COM_optionList($_TABLES['links'],'DISTINCT category,category', '', 0));
-    $linkform->set_var('lang_other', $LANG12[18]);
-    $linkform->set_var('lang_ifother', $LANG12[16]);
+    $linkform->set_var('lang_other', $LANG_LINKS_SUBMIT[4]);
+    $linkform->set_var('lang_ifother', $LANG_LINKS_SUBMIT[5]);
     $linkform->set_var('lang_description', $LANG12[15]);
     $linkform->set_var('lang_htmlnotallowed', $LANG12[35]);
     $linkform->set_var('lang_submit', $LANG12[8]);
@@ -525,20 +619,20 @@ function plugin_submit_links()
 * @return   string      HTML redirect
 *
 */
-function save_submit_links ($A)
+function plugin_save_submit_links ($A)
 {
-    global $_CONF, $_TABLES, $_USER, $LANG12;
+    global $_CONF, $_LI_CONF, $_TABLES, $_USER, $LANG_LINKS_SUBMIT;
 
     $retval = '';
 
     $A['category'] = strip_tags (COM_stripslashes ($A['category']));
     $A['categorydd'] = strip_tags (COM_stripslashes ($A['categorydd']));
-    if ($A['categorydd'] != $LANG12[18] && !empty ($A['categorydd'])) {
+    if ($A['categorydd'] != $LANG_LINKS_SUBMIT[4] && !empty ($A['categorydd'])) {
         $A['category'] = $A['categorydd'];
-    } else if ($A['categorydd'] != $LANG12[18]) {
-        $retval .= COM_startBlock ($LANG12[20], '',
+    } else if ($A['categorydd'] != $LANG_LINKS_SUBMIT[4]) {
+        $retval .= COM_startBlock ($LANG_LINKS_SUBMIT[6], '',
                        COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[21]
+                . $LANG_LINKS_SUBMIT[7]
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . submissionform ($type)
                 . COM_siteFooter ();
@@ -566,34 +660,34 @@ function save_submit_links ($A)
     $A['lid'] = addslashes (COM_makeSid ());
     COM_updateSpeedlimit ('submit');
 
-    if (($_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
+    if (($_LI_CONF['linksubmission'] == 1) && !SEC_hasRights ('links.submit')) {
         $result = DB_save ($_TABLES['linksubmission'],
                     'lid,category,url,description,title,date',
                     "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW()");
 
-        if (isset ($_CONF['notification']) &&
-                in_array ('links', $_CONF['notification'])) {
+        if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             sendNotification ($_TABLES['linksubmission'], $A);
         }
 
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=3');
-    } else { // add link directly
+    } elseif ($_LI_CONF['linksubmission'] == 0) { // add link directly
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $owner_id = $_USER['uid'];
         } else {
             $owner_id = 1; // anonymous user
         }
         $result = DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,owner_id', "{$A['lid']},'{$A['category']}','{$A['url']}','{$A['description']}','{$A['title']}',NOW(),$owner_id");
-        if (isset ($_CONF['notification']) &&
-                in_array ('links', $_CONF['notification'])) {
+        if (isset ($_LI_CONF['notification']) && ($_LI_CONF['notification']==1)) {
             sendNotification ($_TABLES['links'], $A);
         }
         COM_rdfUpToDateCheck ();
 
         $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php');
+    } else {
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
 
-    return $retval;
+    return true;
 }
 
 ?>
