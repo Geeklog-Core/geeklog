@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-comment.php,v 1.10 2005/02/27 23:15:14 vinny Exp $
+// $Id: lib-comment.php,v 1.11 2005/05/30 02:17:45 vinny Exp $
 
 /**
 * This function displays the comment control bar
@@ -647,7 +647,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
             $title = COM_checkWords (strip_tags (COM_stripslashes ($title)));
             // $title = str_replace('$','&#36;',$title); done in CMT_getComment
 
-            $_POST['title'] = addslashes ($title);
+            $_POST['title'] = $title;
             $newcomment = $comment;
             if (!empty ($sig)) {
                 if (($postmode == 'html') || ($fakepostmode == 'html')) {
@@ -656,7 +656,7 @@ function CMT_commentForm($title,$comment,$sid,$pid='0',$type,$mode,$postmode)
                     $newcomment .= LB . LB . '---' . LB . $sig;
                 }
             }
-            $_POST['comment'] = addslashes ($newcomment);
+            $_POST['comment'] = $newcomment;
 
             if ($mode == $LANG03[14] && !empty($title) && !empty($comment) ) {
                 $start = new Template( $_CONF['path_layout'] . 'comment' );
