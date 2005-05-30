@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.1 2005/05/22 18:23:16 dhaun Exp $
+# $Id: english.php,v 1.2 2005/05/30 22:21:57 ospiess Exp $
 
 ###############################################################################
 # Array Format: 
@@ -147,16 +147,10 @@ $LANG_LINKS= array(
     110 => 'Report this post to the site admin',
     111 => 'View PDF Version',
     112 => 'Registered Users',
-    113 => 'Documentation'
-);
-
-###############################################################################
-# links.php
-
-$LANG06 = array(
-    1 => 'Web Resources',
-    2 => 'There are no resources to display.',
-    3 => 'Add A Link'
+    113 => 'Documentation',
+    114 => 'Web Resources',
+    115 => 'There are no resources to display.',
+    116 => 'Add A Link'
 );
 
 ###############################################################################
@@ -180,13 +174,36 @@ $LANG_LINKS_SEARCH = array(
  'author' => 'Submited by',
  'hits' => 'Clicks'
 );
+###############################################################################
+# for the submission form
+
+$LANG_LINKS_SUBMIT = array(
+    1 => 'Submit a Link',
+    2 => 'Link',
+    3 => 'Category',
+    4 => 'Other',
+    5 => 'If other, please specify',
+    6 => 'Error: Missing Category',
+    7 => 'When selecting "Other" please also provide a category name',
+    8 => 'Title',
+    9 => 'URL',
+    10 => 'Category',
+    11 => 'Link Submissions'
+);
+
+###############################################################################
+# Messages for COM_showMessage the submission form
+
+$PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links.php>links</a> section.";
+$PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
+$PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
 
 ###############################################################################
 # admin/link.php
 
-$LANG23 = array(
+$LANG_LINKS_ADMIN = array(
     1 => 'Link Editor',
-    2 => '',
+    2 => 'Link ID',
     3 => 'Link Title',
     4 => 'Link URL',
     5 => 'Category',
