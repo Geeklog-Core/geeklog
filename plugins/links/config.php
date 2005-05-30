@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.2 2005/05/30 22:25:06 ospiess Exp $
+// $Id: config.php,v 1.3 2005/05/30 22:44:01 blaine Exp $
 
 // links plugin
 $_TABLES['links']               = $_DB_table_prefix . 'links';
@@ -36,6 +36,8 @@ $_TABLES['linksubmission']      = $_DB_table_prefix . 'linksubmission';
 
 // this lets you select which functions are available for registered users only
 $_LI_CONF['linksloginrequired'] = 0;
+
+$_LI_CONF['version'] = '1.0';          // Plugin Version
 
 // Submission Settings
 // enable (set to 1) or disable (set to 0) submission queues:

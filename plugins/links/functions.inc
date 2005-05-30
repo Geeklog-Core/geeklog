@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.2 2005/05/30 22:26:34 ospiess Exp $
+// $Id: functions.inc,v 1.3 2005/05/30 22:44:01 blaine Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -82,6 +82,18 @@ function plugin_commentsupport_links()
     // links will not use comments
     return false;
 }
+
+
+/**
+* Called by the plugin Editor to display the current plugin code version 
+* This may be different then the version installed and registered currently.
+* If newer then you may want to run the update
+*/
+function plugin_chkVersion_links() {
+    global $_LI_CONF; 
+    return $_LI_CONF['version'];
+}
+
 
 /**
 * Shows the statistics for the Static Pages plugin on stats.php.

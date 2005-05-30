@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: install.php,v 1.2 2005/05/30 22:18:00 ospiess Exp $
+// $Id: install.php,v 1.3 2005/05/30 22:44:01 blaine Exp $
 
 require_once('../../../lib-common.php');
 require_once($_CONF['path'] . 'plugins/links/config.php');
@@ -46,10 +46,10 @@ require_once($_CONF['path'] . 'plugins/links/functions.inc');
 // Change these to match your plugin
 //
 
-$pi_name = 'links';                 // Plugin name
-$pi_version = '1.0';                    // Plugin Version
+$pi_name = 'links';                      // Plugin name
+$pi_version = $_LI_CONF['version'];      // Plugin Version
 $gl_version = '1.3.12';                  // GL Version plugin for
-$pi_url = 'http://www.steubentech.com';   // Plugin Homepage
+$pi_url = 'http://www.steubentech.com';  // Plugin Homepage
 
 
 // Default data
