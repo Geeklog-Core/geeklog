@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.3 2005/05/30 22:44:01 blaine Exp $
+// $Id: functions.inc,v 1.4 2005/05/30 23:20:58 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -363,17 +363,6 @@ function plugin_user_delete_links ($uid)
 */
 
 /**
-* Return the current version of code. 
-* Used in the Plugin Editor to show the registered version and code version
-*/
-function plugin_chkVersion_links()
-{
-    global $_links_CONF;
-
-    return $_links_CONF['version'];
-}
-
-/**
 * Removes the datastructures for this plugin from the Geeklog database
 *
 * This may get called by the install routine to undo anything done to this
@@ -681,7 +670,7 @@ function plugin_save_submit_links ($A)
             sendNotification ($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=3');
+        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php?msg=1&plugin=links');
     } elseif ($_LI_CONF['linksubmission'] == 0) { // add link directly
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $owner_id = $_USER['uid'];
@@ -694,12 +683,10 @@ function plugin_save_submit_links ($A)
         }
         COM_rdfUpToDateCheck ();
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php');
+        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php?msg=4&plugin=links');
     } else {
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
-
-    return true;
 }
 
 ?>
