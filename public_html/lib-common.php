@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.432 2005/05/23 21:36:43 ospiess Exp $
+// $Id: lib-common.php,v 1.433 2005/05/30 10:12:10 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -824,25 +824,27 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
 
     if ($_CONF['backend'] == 1) // add feed-link to header if applicable
     {  // check for feed that would be in all topics, or in current, or home only
-        $search_array = array('all',$topic,'home');
+        $search_array = array( 'all', $topic, 'default' );
         for ( $r = 0; $r < count($search_array); $r++ )
         {
-        $rdf_file = DB_getItem( $_TABLES['syndication'],'filename',
-                               "header_tid='".current($search_array)."'" );
-        $rdf_type = DB_getItem( $_TABLES['syndication'],'format',
-                               "header_tid='".current($search_array)."'" );
-        $rdf_type = explode( "-", $rdf_type);
-        $rdf_type = strtolower( $rdf_type[0] );
-        $rdf_name = strtoupper( $rdf_type );
-        
-        if ( !empty($rdf_file) )
-            {
-            $feed_url = '<link rel="alternate" type="application/' . $rdf_type
-                        . '+xml" title="' . $rdf_name . '-Feed" href="'
-                        . $_CONF['site_url'] . '/backend/' . $rdf_file . '">';
-            continue;
-            }
-        next( $search_array );
+            $rdf_data = DB_query("SELECT format, filename FROM "
+                                 . $_TABLES['syndication']
+                                 . " WHERE header_tid='"
+                                 . current($search_array) . "'" );
+            $R=DB_fetchArray($rdf_data);
+            if ( !empty($R[1]) )
+                {
+                $rdf_format = explode( "-", $R[0] );
+                $rdf_format = strtolower( $rdf_format[0] );
+                $rdf_name = strtoupper( $rdf_format );
+
+                $feed_url = '<link rel="alternate" type="application/' .
+                            $rdf_format . '+xml" title="' . $rdf_name
+                            . '-Feed" href="' . $_CONF['site_url']
+                            . '/backend/' . $R[0] . '">';
+                continue;
+                }
+            next( $search_array );
         }
     }
     $header->set_var( 'feed_url', $feed_url);
