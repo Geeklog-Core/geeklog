@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.10 2005/05/25 12:01:36 ospiess Exp $
+// $Id: syndication.php,v 1.11 2005/05/30 10:11:33 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -256,13 +256,13 @@ function editfeed ($fid = 0, $type = '')
         $feed_template->set_var('all_selected', 'selected="selected"');
     } elseif ($A['header_tid'] == 'none') {
         $feed_template->set_var('none_selected', 'selected="selected"');
-    } elseif ($A['header_tid'] == 'home') {
-        $feed_template->set_var('home_selected', 'selected="selected"');
+    } elseif ($A['header_tid'] == 'default') {
+        $feed_template->set_var('default_selected', 'selected="selected"');
     }  
     $feed_template->set_var('lang_header_all', $LANG33[43]);
     $feed_template->set_var('lang_header_none', $LANG33[44]);
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
-    $feed_template->set_var('lang_header_home', $LANG33[46]);
+    $feed_template->set_var('lang_header_default', $LANG33[46]);
     $feed_template->set_var('lang_home_explain', $LANG33[47]);
     $feed_template->set_var('header_topic_options', COM_topicList('tid,topic',$A['header_tid']));
     $feed_template->set_var('lang_save', $LANG33[2]);
@@ -466,10 +466,12 @@ function savefeed ($A)
         $A['content_length'] = 0;
     }
     
-    if ($A['header_tid']=='all') { // if this feed is shown in all topics's header, unset all others first
+    if ($A['header_tid']=='all') { // there can be only one "all"
         DB_change($_TABLES['syndication'],'header_tid','none');
-    } elseif ($A['header_tid']!='none') { // and if not, kick out all others that want to appear everywhere
+    } elseif ($A['header_tid']!='none') { // there cannot be 'all' if there is a new one coming.
         DB_change($_TABLES['syndication'],'header_tid','none','header_tid',$value='all');
+    } elseif ($A['header_tid']!='default') { // there can be only one default
+        DB_change($_TABLES['syndication'],'header_tid','none','header_tid',$value='default');
     }
 
     foreach ($A as $name => $value) {

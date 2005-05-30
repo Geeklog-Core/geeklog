@@ -24,7 +24,7 @@
         <select name="header_tid">
         <option value="none" {none_selected}>{lang_header_none}</option>
         <option value="all" {all_selected}>{lang_header_all}</option>
-        <option value="home" {home_selected}>{lang_header_home}</option>
+        <option value="home" {default_selected}>{lang_header_default}</option>
         {header_topic_options}
         </select><br>
         <small>{lang_home_explain}</small>

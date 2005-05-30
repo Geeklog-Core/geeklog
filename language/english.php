@@ -1097,8 +1097,8 @@ $LANG33 = array(
     43 => 'All',
     44 => 'None',
     45 => 'Header-link in topic',
-    46 => 'Homepage',
-    47 => 'Feeds set to "Homepage" will be placed on all places that do not have feeds directly assigned.'
+    46 => 'Default',
+    47 => '(Feeds set to "Default" will be placed wherever you do not have specified else.)'
 );
 
 ###############################################################################
