@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.169 2005/05/29 09:14:59 dhaun Exp $
+// $Id: config.php,v 1.170 2005/05/30 11:41:04 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -281,7 +281,7 @@ $_CONF['daytime']         = '%m/%d %I:%M%p';
 $_CONF['shortdate']       = '%x';
 $_CONF['dateonly']        = '%d-%b';
 $_CONF['timeonly']        = '%I:%M%p';
-$_CONF['week_start']      = 'Sun'; // can be 'Sun' or 'Mon'
+$_CONF['week_start']      = 'Mon'; // can be 'Sun' or 'Mon'
 $_CONF['default_charset'] = 'iso-8859-1';
 
 // Number formatting
@@ -419,8 +419,8 @@ $_CONF['listdraftstories'] = 0;
 
 // Send an email notification when a new submission has been made. The contents
 // of the array can be any combination of 'story', 'comment', 'trackback',
-// 'pingback', 'link', 'event', and 'user'.
-// Example: $_CONF['notification'] = array ('story', 'link', 'event');
+// 'pingback', 'event', and 'user'.
+// Example: $_CONF['notification'] = array ('story', 'event');
 // The email will be sent to $_CONF['site_mail'] (see above).
 $_CONF['notification'] = array ();
 
