@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.4 2005/05/30 23:20:58 ospiess Exp $
+// $Id: functions.inc,v 1.5 2005/05/31 07:49:50 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -572,7 +572,8 @@ function plugin_savesubmission_links($A)
                 !empty ($A['url'])) {
         $retval = plugin_save_submit_links ($A);
     } else {
-        $retval .= COM_startBlock ($LANG12[22], '',
+        $retval .= COM_siteHeader()
+            . COM_startBlock ($LANG12[22], '',
                            COM_getBlockTemplate ('_msg_block', 'header'))
             . $LANG12[23]
             . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
@@ -670,7 +671,7 @@ function plugin_save_submit_links ($A)
             sendNotification ($_TABLES['linksubmission'], $A);
         }
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php?msg=1&plugin=links');
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=1&plugin=links');
     } elseif ($_LI_CONF['linksubmission'] == 0) { // add link directly
         if (isset ($_USER['uid']) && ($_USER['uid'] > 1)) {
             $owner_id = $_USER['uid'];
@@ -683,10 +684,11 @@ function plugin_save_submit_links ($A)
         }
         COM_rdfUpToDateCheck ();
 
-        $retval = COM_refresh ($_CONF['site_url'] . '/links/index.php?msg=4&plugin=links');
+        $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=4&plugin=links');
     } else {
         $retval = COM_refresh ($_CONF['site_url'] . '/index.php?msg=17');
     }
+    return $retval;
 }
 
 ?>
