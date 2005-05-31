@@ -157,7 +157,8 @@ $LANG01 = array(
     114 => 'TRACKBACKS',
     115 => 'No new trackback comments',
     116 => 'Trackback',
-    117 => 'Directory'
+    117 => 'Directory',
+    118 => 'Please continue reading on the next page:'
 );
 
 ###############################################################################
