@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.434 2005/05/31 11:25:07 ospiess Exp $
+// $Id: lib-common.php,v 1.435 2005/05/31 11:26:22 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4278,6 +4278,7 @@ function COM_showMessage( $msg, $plugin='' )
 * @param        int         $num_pages      Total number of pages
 * @param        string      $page_str       page-variable name AND '='
 * @param        bool        $do_rewrite     if true, url-rewriting is respected
+* @param        string      $msg            string displayed in same line as navi
 * @return   string   HTML formatted widget
 */
 
