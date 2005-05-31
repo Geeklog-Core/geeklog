@@ -24,7 +24,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 #
 ###############################################################################
-# $Id: english.php,v 1.2 2005/05/30 22:21:57 ospiess Exp $
+# $Id: english.php,v 1.3 2005/05/31 07:51:09 ospiess Exp $
 
 ###############################################################################
 # Array Format: 
@@ -197,6 +197,7 @@ $LANG_LINKS_SUBMIT = array(
 $PLG_links_MESSAGE1 = "Thank-you for submitting a link to {$_CONF['site_name']}.  It has been submitted to our staff for approval.  If approved, your link will be seen in the <a href={$_CONF['site_url']}/links.php>links</a> section.";
 $PLG_links_MESSAGE2 = 'Your link has been successfully saved.';
 $PLG_links_MESSAGE3 = 'The link has been successfully deleted.';
+$PLG_links_MESSAGE4 = "Thank-you for submitting a link to {$_CONF['site_name']}.  You can see it now in the <a href={$_CONF['site_url']}/links.php>links</a> section.";
 
 ###############################################################################
 # admin/link.php
