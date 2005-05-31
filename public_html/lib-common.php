@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.433 2005/05/30 10:12:10 ospiess Exp $
+// $Id: lib-common.php,v 1.434 2005/05/31 11:25:07 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3475,7 +3475,13 @@ function COM_allowedHTML( $permissions = 'story.edit', $list_only = false )
         $retval .= '&lt;' . $tag . '&gt;, ';
     }
 
-    $retval .= '[code], [page_break]';
+    $retval .= '[code]';
+
+    if( ( $_CONF['allow_page_breaks'] == 1 )
+        and (substr($permissions,0,5) == 'story') )
+    {
+        $retval .= ', [page_break]';
+    }
 
     // list autolink tags
     $autotags = PLG_collectTags();
@@ -4275,7 +4281,8 @@ function COM_showMessage( $msg, $plugin='' )
 * @return   string   HTML formatted widget
 */
 
-function COM_printPageNavigation( $base_url, $curpage, $num_pages, $page_str='page=', $do_rewrite=false)
+function COM_printPageNavigation( $base_url, $curpage, $num_pages,
+                                  $page_str='page=', $do_rewrite=false, $msg='')
 {
     global $LANG05;
 
@@ -4290,6 +4297,7 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages, $page_str='pa
         }
     } else {
         $sep = '/';
+        $page_str = '';
     }
 
     if( $num_pages < 2 ) 
@@ -4340,7 +4348,11 @@ function COM_printPageNavigation( $base_url, $curpage, $num_pages, $page_str='pa
 
     if( !empty( $retval ))
     {
-        $retval = '<div class="pagenav">' . $retval . '</div>';
+        if( !empty( $msg ))
+        {
+            $msg .=  ' ';
+        }
+        $retval = '<div class="pagenav">' . $msg . $retval . '</div>';
     }
 
     return $retval;
