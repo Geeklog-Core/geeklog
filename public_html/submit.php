@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: submit.php,v 1.83 2005/05/22 18:23:16 dhaun Exp $
+// $Id: submit.php,v 1.84 2005/05/31 07:47:33 ospiess Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-story.php');
@@ -710,13 +710,17 @@ function savesubmission($type, $A)
 
             // see if this is a submission that needs to be handled by a plugin
             // and should include its own redirect
-            if (!PLG_saveSubmission ($type, $A)) {
-                COM_errorLog("Could not save your submission. Bad type: $type");
-            }
+            $retval = PLG_saveSubmission ($type, $A);
 
-            // plugin should include its own redirect - but in case handle
-            // it here and redirect to the main page
-            return COM_refresh ($_CONF['site_url'] . '/index.php');
+            if (!retval) {
+                COM_errorLog("Could not save your submission. Bad type: $type");
+            } elseif (empty($retval)) {
+                // plugin should include its own redirect - but in case handle
+                // it here and redirect to the main page
+                return COM_refresh ($_CONF['site_url'] . '/index.php');
+            } else {
+              return $retval;
+            }
         }
 
         if (!empty ($A['title']) && !empty ($A['introtext'])) {
@@ -724,14 +728,13 @@ function savesubmission($type, $A)
         } else {
             $retval .= COM_startBlock ($LANG12[22], '',
                                COM_getBlockTemplate ('_msg_block', 'header'))
-                . $LANG12[23]
+                . $LANG12[23] // return missing fields error
                 . COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'))
                 . submissionform($type)
                 . COM_siteFooter ();
         }
         break;
     }
-
     return $retval;
 }
 
