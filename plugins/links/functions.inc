@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.5 2005/05/31 07:49:50 ospiess Exp $
+// $Id: functions.inc,v 1.6 2005/05/31 11:52:32 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -66,6 +66,32 @@ function plugin_getmenuitems_links()
     $menuitems[$LANG_LINKS[114]] = $_CONF['site_url'] . '/links/index.php';
 
     return $menuitems;
+}
+/**
+* Implements the [link:] autotag.
+*
+*/
+function plugin_autotags_links ($op, $content = '', $autotag = '')
+{
+    global $_CONF, $_TABLES;
+
+    if ($op == 'tagname' ) {
+        return 'link';
+    } else if ($op == 'parse') {
+        $lid = COM_applyFilter ($autotag['parm1']);
+        $url = COM_buildUrl ($_CONF['site_url'] . '/portal.php?what=link&item='
+                             . $lid);
+        if (empty ($autotag['parm2'])) {
+            $linktext = stripslashes (DB_getItem ($_TABLES['links'],
+                                      'title', "lid = '$lid'"));
+        } else {
+            $linktext = $autotag['parm2'];
+        }
+        $link = '<a href="' . $url . '">' . $linktext . '</a>';
+        $content = str_replace ($autotag['tagstr'], $link, $content);
+
+        return $content;
+    }
 }
 
 /**
