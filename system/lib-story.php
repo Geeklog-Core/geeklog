@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.29 2005/05/22 11:57:41 ospiess Exp $
+// $Id: lib-story.php,v 1.30 2005/05/31 11:32:53 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -202,25 +202,33 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             // Replace any plugin autolink tags
             $bodytext = PLG_replacetags( $bodytext );
 
-            // page selector
-            $page = COM_applyFilter( $_REQUEST['page'], true );
-            if( $page <= 0 )
-            {
-                $page = 1;
-            }
-            $article_array = explode( '[page_break]', $bodytext );
-            $pagelinks = COM_printPageNavigation( $articleUrl, $page,
-                                                  count( $article_array ));
-            if( count( $article_array ) > 1 )
-            {
-                $bodytext=$article_array[$page - 1];
-                if( $page > 1 )
+            if ( ($index != 'p') and ($_CONF['allow_page_breaks'] == 1) )
+            { // do not show in preview mode
+                // page selector
+                if (is_numeric($mode))
                 {
-                    $introtext = $pagelinks;
+                    $story_page = $mode;
                 }
+                if( $story_page <= 0 )
+                {
+                    $story_page = 1;
+                } elseif ( $story_page > 1 )
+                {
+                    $introtext = '';
+                }
+                $article_array = explode( '[page_break]', $bodytext );
+                $pagelinks = COM_printPageNavigation( $articleUrl, $story_page,
+                                                      count( $article_array ),
+                                                      'mode=',
+                                                      $_CONF['url_rewrite'],
+                                                      $LANG01[118]
+                                                      );
+                if( count( $article_array ) > 1 )
+                {
+                    $bodytext=$article_array[$story_page - 1];
+                }
+                $article->set_var( 'page_selector', $pagelinks );
             }
-            $article->set_var( 'page_selector', $pagelinks );        
-
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
@@ -261,7 +269,7 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             $article->set_var( 'end_readmore_anchortag', '</a>' );
         }
 
-        if( $A['commentcode'] >= 0 )
+        if( ( $A['commentcode'] >= 0 )  and ($show_comments == true) )
         {
             $commentsUrl = COM_buildUrl( $_CONF['site_url']
                     . '/article.php?story=' . $A['sid'] ) . '#comments';
