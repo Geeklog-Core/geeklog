@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: article.php,v 1.64 2005/02/27 17:47:23 dhaun Exp $
+// $Id: article.php,v 1.65 2005/05/31 11:27:41 ospiess Exp $
 
 /**
 * This page is responsible for showing a single article in different modes which
@@ -74,6 +74,7 @@ if (isset ($_POST['mode'])) {
     $query = COM_applyFilter ($_GET['query']);
     $reply = COM_applyFilter ($_GET['reply']);
 }
+
 if (empty ($story)) {
     echo COM_refresh ($_CONF['site_url'] . '/index.php');
     exit();
@@ -229,8 +230,32 @@ if ($A['count'] > 0) {
 
         $story_template->set_var ('formatted_article',
                                   STORY_renderArticle ($A, 'n'));
+        // display comments or not?
+        
+        if ( (is_numeric($mode)) and ($_CONF['allow_page_breaks'] == 1) )
+        {
+            $story_page = $mode;
+            $mode = '';
+            if( $story_page <= 0 ) {
+                $story_page = 1;
+            }
+            $article_arr = explode( '[page_break]', $A['bodytext']);
+            $conf = $_CONF['page_break_comments'];
+            if  (
+                 ($conf == 'all') or
+                 ( ($conf =='first') and ($story_page == 1) ) or
+                 ( ($conf == 'last') and (count($article_arr) == ($story_page)) )
+                ) {
+                $show_comments = true;
+            } else {
+                $show_comments = false;
+            }
+        } else {
+            $show_comments = true;
+        }
+                                  
         // Display the comments, if there are any ..
-        if ($A['commentcode'] >= 0) {
+        if ( ($A['commentcode'] >= 0) and ($show_comments == true) ){
             $delete_option = (SEC_hasRights('story.edit') && ($access == 3)
                              ? true : false);
             require_once ( $_CONF['path_system'] . 'lib-comment.php' );
