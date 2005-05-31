@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.171 2005/05/30 11:46:30 ospiess Exp $
+// $Id: config.php,v 1.172 2005/05/31 11:22:56 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -528,6 +528,10 @@ $_CONF['hideviewscount']        = 0;        // If 1, hide Viewed X times line
 $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
+$_CONF['allow_page_breaks']     = 1;    // allow if stories can contain a page break
+$_CONF['page_break_comments']   = 'last';  // When an article has a page break,
+                                           // show comments on the 'first','last' or
+                                           // 'all' pages?
 
 
 // Advanced theme settings
