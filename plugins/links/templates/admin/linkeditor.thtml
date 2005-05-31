@@ -78,6 +78,7 @@
                                             <td colspan="2">
                                                 <input type="submit" value="{lang_save}" name="mode"> 
                                                 <input type="submit" value="{lang_cancel}" name="mode">
+                                                <input type="hidden" value="{link_id}" name="old_lid">
                                                 {delete_option}
                                             </td>
                                         </tr>
