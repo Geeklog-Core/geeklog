@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.2 2005/05/30 22:20:22 ospiess Exp $
+// $Id: index.php,v 1.3 2005/05/31 12:02:50 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -189,6 +189,7 @@ function editlink ($mode, $lid = '')
 * Saves link to the database
 *
 * @param    string  $lid            ID for link
+* @param    string  $old_lid        old ID for link
 * @param    string  $category       Category link belongs to
 * @param    string  $categorydd     Category links belong to
 * @param    string  $url            URL of link to save
@@ -204,7 +205,7 @@ function editlink ($mode, $lid = '')
 * @return   string                  HTML redirect or error message
 *
 */
-function savelink ($lid, $category, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon) 
+function savelink ($lid, $old_lid, $category, $categorydd, $url, $description, $title, $hits, $owner_id, $group_id, $perm_owner, $perm_group, $perm_members, $perm_anon)
 {
     global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG23, $MESSAGE;
 
@@ -233,9 +234,9 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
     }
 
     $access = 0;
-    $lid = addslashes ($lid);
-    if (DB_count ($_TABLES['links'], 'lid', $lid) > 0) {
-        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid = '{$lid}'");
+    $old_lid = addslashes ($old_lid);
+    if (DB_count ($_TABLES['links'], 'lid', $old_lid) > 0) {
+        $result = DB_query ("SELECT owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['links']} WHERE lid = '{$old_lid}'");
         $A = DB_fetchArray ($result);
         $access = SEC_hasAccess ($A['owner_id'], $A['group_id'],
                 $A['perm_owner'], $A['perm_group'], $A['perm_members'],
@@ -262,18 +263,18 @@ function savelink ($lid, $category, $categorydd, $url, $description, $title, $hi
             echo COM_refresh($_CONF['site_admin_url'] . '/plugins/links/index.php');
         }
 
-        DB_delete ($_TABLES['linksubmission'], 'lid', $lid);
-        DB_delete ($_TABLES['links'], 'lid', $lid);
+        DB_delete ($_TABLES['linksubmission'], 'lid', $old_lid);
+        DB_delete ($_TABLES['links'], 'lid', $old_lid);
 
         DB_save ($_TABLES['links'], 'lid,category,url,description,title,date,hits,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon', "'$lid','$category','$url','$description','$title',NOW(),'$hits',$owner_id,$group_id,$perm_owner,$perm_group,$perm_members,$perm_anon");
         COM_rdfUpToDateCheck ();
 
         return COM_refresh ($_CONF['site_admin_url'] . '/plugins/links/index.php?msg=3');
-    } else {
+    } else { // missing fields
         $retval .= COM_siteHeader('menu');
         $retval .= COM_errorLog($LANG_LINKS_ADMIN[10],2);
-        if (DB_count ($_TABLES['links'], 'lid', $lid) > 0) {
-            $retval .= editlink ($mode, $lid);
+        if (DB_count ($_TABLES['links'], 'lid', $old_lid) > 0) {
+            $retval .= editlink ($mode, $old_lid);
         } else {
             $retval .= editlink ($mode, '');
         }
@@ -398,6 +399,7 @@ if (($mode == $LANG_LINKS_ADMIN[23]) && !empty ($LANG_LINKS_ADMIN[23])) { // del
     }
 } else if (($mode == $LANG_LINKS_ADMIN[21]) && !empty ($LANG_LINKS_ADMIN[21])) { // save
     $display .= savelink (COM_applyFilter ($HTTP_POST_VARS['lid']),
+            COM_applyFilter ($HTTP_POST_VARS['old_lid']),
             $HTTP_POST_VARS['category'], $HTTP_POST_VARS['categorydd'],
             $HTTP_POST_VARS['url'], $HTTP_POST_VARS['description'],
             $HTTP_POST_VARS['title'],
