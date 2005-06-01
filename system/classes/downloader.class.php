@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: downloader.class.php,v 1.8 2005/05/05 03:13:34 vinny Exp $
+// $Id: downloader.class.php,v 1.9 2005/06/01 20:53:13 blaine Exp $
 
 /**
 * This class allows you to download a file from outside the web tree.  Many hooks
@@ -116,31 +116,31 @@ class downloader
     *
     */
     function _addWarning($warningText)
-	{
+    {
         $nwarnings = count($this->_warnings);
         $nwarnings = $nwarnings + 1;
         $this->_warnings[$nwarnings] = $warningText;
         if ($this->loggingEnabled()) {
             $this->_logItem('Warning',$warningText);
         }
-	}
-	
-	/**
-	* Adds an error that was encountered
-	*
-	* @param    string      $errorText  Text of error
-	* @access   private
-	*
-	*/
-	function _addError($errorText)
-	{
+    }
+    
+    /**
+    * Adds an error that was encountered
+    *
+    * @param    string      $errorText  Text of error
+    * @access   private
+    *
+    */
+    function _addError($errorText)
+    {
         $nerrors = count($this->_errors);
         $nerrors = $nerrors + 1;
         $this->_errors[$nerrors] = $errorText;
         if ($this->loggingEnabled()) {
             $this->_logItem('Error',$errorText);
         }
-	}
+    }
 
     /**
     * Adds a debug message
@@ -168,8 +168,8 @@ class downloader
     * @access   private
     *
     */
-	function _logItem($logtype, $text)
-	{
+    function _logItem($logtype, $text)
+    {
         $timestamp = strftime("%c");
         if (!$file = fopen($this->_logFile,a)) {
             // couldn't open log file for writing so let's disable logging and add an error
@@ -180,9 +180,9 @@ class downloader
         fputs ($file, "$timestamp - $logtype: $text \n");
         fclose($file);
         return true;
-	}
-	
-	/**
+    }
+    
+    /**
     * Defines superset of available Mime types.
     *
     * @param    array       $extensions     string array of valid mime types this object will accept
@@ -190,35 +190,35 @@ class downloader
     */
     function _setAvailableExtensions($extensions = array())
     {
-		if (sizeof($extensions) == 0) {
-			$this->_availableMimeTypes = 
-				array(
-					'tgz' => 'application/x-gzip-compressed',
+        if (sizeof($extensions) == 0) {
+            $this->_availableMimeTypes = 
+                array(
+                    'tgz' => 'application/x-gzip-compressed',
                     'gz' =>  'application/x-gzip-compressed',
-					'zip' => 'application/x-zip-compresseed',
-					'tar' => 'application/x-tar',
-					'php' => 'text/plain',
+                    'zip' => 'application/x-zip-compresseed',
+                    'tar' => 'application/x-tar',
+                    'php' => 'text/plain',
                     'phps' => 'text/plain',
                     'txt' => 'text/plain',
-					'html' => 'text/html',
+                    'html' => 'text/html',
                     'htm' => 'text/html',
-					'bmp' => 'image/bmp',
+                    'bmp' => 'image/bmp',
                     'ico' => 'image/bmp',
-					'gif' => 'image/gif',
-					'jpg' => 'image/jpeg',
+                    'gif' => 'image/gif',
+                    'jpg' => 'image/jpeg',
                     'jpeg' => 'image/jpeg',
-					'png' => 'image/x-png',
-					'mp3' => 'audio/mpeg',
-					'wav' => 'audio/wav',
-					'pdf' => 'application/pdf',
-					'swf' => 'application/x-shockwave-flash',
-					'doc' => 'application/msword',
-					'xls' => 'application/vnd.ms-excel',
-					'exe' => 'application/octet-stream'
-				);
-		} else {
-			$this->_availableMimeTypes = $extensions;
-		}
+                    'png' => 'image/x-png',
+                    'mp3' => 'audio/mpeg',
+                    'wav' => 'audio/wav',
+                    'pdf' => 'application/pdf',
+                    'swf' => 'application/x-shockwave-flash',
+                    'doc' => 'application/msword',
+                    'xls' => 'application/vnd.ms-excel',
+                    'exe' => 'application/octet-stream'
+                );
+        } else {
+            $this->_availableMimeTypes = $extensions;
+        }
 
         $this->_availableExtensions = array ();
         foreach ($this->_availableMimeTypes as $ext => $mime) {
@@ -394,7 +394,7 @@ class downloader
     *
     */
     function setAllowedExtensions($validExtensions = array())
-	{
+    {
         // This is a subset of _availableMimetypes.  Go ahead and make sure
         // all the mime types passed to this function are in the
         // available list
@@ -406,19 +406,19 @@ class downloader
             next($validExtensions);
         }
         $this->_allowedExtensions = $validExtensions;
-	}
-	
-	/**
-	* Gets allowed mime types for this instance
-	*
-	* @return   array       array of allowed mime types/file extensions
-	*
-	*/
-	function getAllowedExtensions()
-	{
-		return $this->_allowedExtensions;
-	}
-	
+    }
+    
+    /**
+    * Gets allowed mime types for this instance
+    *
+    * @return   array       array of allowed mime types/file extensions
+    *
+    */
+    function getAllowedExtensions()
+    {
+        return $this->_allowedExtensions;
+    }
+    
     /**
     * Checks to see that mime type for current file is allowed for upload
     *
@@ -429,11 +429,11 @@ class downloader
     function checkExtension($extension)
     {
         if (!in_array($extension,array_keys($this->getAllowedExtensions()))) {
-			$this->_addError('File type, .' . $extension . ', not in list of allowed file types available for download');
-			return false;
-		} else {
-			return true;
-		}
+            $this->_addError('File type, .' . $extension . ', not in list of allowed file types available for download');
+            return false;
+        } else {
+            return true;
+        }
     }
     
     /**
@@ -444,7 +444,7 @@ class downloader
     *
     */
     function setPath($uploadDir)
-	{
+    {
         if (!is_dir($uploadDir)) {
             $this->_addError('Specified source directory, ' . $uploadDir . ' is not a valid directory');
             return false;
@@ -458,19 +458,19 @@ class downloader
         $this->_sourceDirectory = $uploadDir;
         
         return true;
-	}
-	
-	/**
-	* Returns directory to upload to
-	*
-	* @return   string      returns directory where files for downloading reside
-	*
-	*/
-	function getPath()
-	{
+    }
+    
+    /**
+    * Returns directory to upload to
+    *
+    * @return   string      returns directory where files for downloading reside
+    *
+    */
+    function getPath()
+    {
         return $this->_sourceDirectory;
-	}
-	
+    }
+    
     /**
     * Attempts to dowload a file
     *
@@ -478,22 +478,29 @@ class downloader
     * @return   boolean     true on success otherwise false
     *
     */
-	function downloadFile($fileName)
-	{
-        // Ensure file exists        
+    function downloadFile($fileName)
+    {
+        if (strstr( PHP_OS, "WIN")) {  // Added as test1 below was failing on Windows platforms 
+            $strPathSeparator = '\\';
+            $this->_sourceDirectory = str_replace('/','\\',$this->_sourceDirectory);
+        } else {
+            $strPathSeparator = '/';
+        }
+
+        // Ensure file exists  - test 1
         if(!is_file(($this->_sourceDirectory . $fileName)) OR
-           ($this->_sourceDirectory <> (dirname(realpath($this->_sourceDirectory . $fileName)) . '/'))) {
+           ($this->_sourceDirectory <> (dirname(realpath($this->_sourceDirectory . $fileName)) . $strPathSeparator))) {
             $this->_addError('Specified file ' . $this->_sourceDirectory . $fileName . ' does not exist or is not accessible');
             return false;
         }
         
-        // Make sure file is readable
+        // Make sure file is readable - test 2
         clearstatcache();
         if (!is_readable($this->_sourceDirectory . $fileName)) {
             $this->_addError('Specified file, ' . $this->_sourceDirectory . $fileName . ' exists but is not readable');
             return false;
         }
-        
+
         // OK, file is valid, get file extension
         $pos = strrpos($fileName,'.') + 1;
         $fextension = substr($fileName, $pos);
@@ -511,10 +518,10 @@ class downloader
 
             fpassthru( $fp );
         }
-        
-        return true;  	
-	}
-	
+
+        return true;
+    }
+
 }
 
 ?>
