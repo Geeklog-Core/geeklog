@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.7 2005/06/01 07:30:44 ospiess Exp $
+// $Id: functions.inc,v 1.8 2005/06/01 07:39:34 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -384,7 +384,15 @@ function plugin_user_delete_links ($uid)
         DB_query ("UPDATE {$_TABLES['links']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }
 }
+
+/*
+* Do we support feeds?
 */
+function plugin_getfeednames_links()
+{
+    return array('Links');
+}
+
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
