@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.6 2005/05/31 11:52:32 ospiess Exp $
+// $Id: functions.inc,v 1.7 2005/06/01 07:30:44 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -362,7 +362,7 @@ function plugin_getadminoption_links()
 * @param   uid   int   User id of deleted user
 *
 */
-/*
+
 function plugin_user_delete_links ($uid)
 {
     global $_TABLES;
@@ -373,7 +373,7 @@ function plugin_user_delete_links ($uid)
 
     if ($_SP_CONF['delete_pages'] == 1) {
         // delete the pages
-        DB_query ("DELETE FROM {$_TABLES['staticpage']} WHERE (sp_uid = $uid) OR (owner_id = $uid)");
+        DB_query ("DELETE FROM {$_TABLES['links']} WHERE owner_id = $uid");
     } else {
         // assign ownership to a user from the Root group
         $rootgroup = DB_getItem ($_TABLES['groups'], 'grp_id',
@@ -381,9 +381,7 @@ function plugin_user_delete_links ($uid)
         $result = DB_query ("SELECT DISTINCT ug_uid FROM {$_TABLES['group_assignments']} WHERE ug_main_grp_id = $rootgroup ORDER BY ug_uid LIMIT 1");
         $A = DB_fetchArray ($result);
         $rootuser = $A['ug_uid'];
-
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET sp_uid = $rootuser WHERE sp_uid = $uid");
-        DB_query ("UPDATE {$_TABLES['staticpage']} SET owner_id = $rootuser WHERE owner_id = $uid");
+        DB_query ("UPDATE {$_TABLES['links']} SET owner_id = $rootuser WHERE owner_id = $uid");
     }
 }
 */
