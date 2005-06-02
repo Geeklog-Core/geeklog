@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.8 2005/06/01 07:39:34 ospiess Exp $
+// $Id: functions.inc,v 1.9 2005/06/02 16:31:51 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -390,9 +390,159 @@ function plugin_user_delete_links ($uid)
 */
 function plugin_getfeednames_links()
 {
-    return array('Links');
+    global $_TABLES;
+
+    $feeds = array ();
+
+    $result = DB_query ("SELECT lid,category FROM {$_TABLES['links']} GROUP BY category ORDER BY category ASC");
+    $num = DB_numRows ($result);
+
+    if ($num > 0) {
+        $feeds[] = array ('id' => 'all', 'name' => 'all categories');
+    }
+
+    for ($i = 0; $i < $num; $i++) {
+        $A = DB_fetchArray ($result);
+        $feeds[] = array ('id' => $A['category'], 'name' => $A['category']);
+    }
+
+    return $feeds;
 }
 
+/*
+* Provide feed data
+
+*/
+function plugin_getfeedcontent_links_1 ($feed, &$link, &$update)
+{
+    global $_CONF, $_TABLES;
+
+    $content = array ();
+    $lids = array ();
+
+    $result = DB_query ("SELECT topic,limits FROM {$_TABLES['syndication']} WHERE fid = $feed");
+    $S = DB_fetchArray ($result);
+
+    $sql = "SELECT * FROM {$_TABLES['links']}" . links_buildSql ($S['topic'], $S['limits']);
+    $result = DB_query ($sql);
+    $num = DB_numRows ($result);
+    for ($i = 0; $i < $num; $i++) {
+        $A = DB_fetchArray ($result);
+        $content[] = array ('title'  => $A['title'],
+                            'text'   => $A['description'],
+                            'link'   => $A['url'],
+                            'uid'    => $A['owner_id'],
+                            'date'   => $A['date'],
+                            'format' => 'text'
+                           );
+         $lids[] = $A['lid'];
+    }
+    
+function plugin_getfeedcontent_links( $limit, &$link, &$update )
+{
+    global $_TABLES, $_CONF, $LANG01;
+
+    $result = DB_query( "SELECT lid,owner_id,title,description FROM " . $_TABLES['links'] . links_buildSql ($S['topic'], $S['limits']) );
+
+    $content = array();
+    $lids = array();
+    $nrows = DB_numRows( $result );
+
+    for( $i = 1; $i <= $nrows; $i++ )
+    {
+        $row = DB_fetchArray( $result );
+        $lids[] = $row['lid'];
+
+        $linktitle = stripslashes( $row['title'] );
+        $linklink = COM_buildUrl( $_CONF['site_url']
+                  . '/portal.php?what=link&item=' . $row['lid'] );
+
+        $content[] = array( 'title'  => $linktitle,
+                            'summary'   => $linkdesc,
+                            'link'   => $linklink,
+                            'uid'    => $row['owner_id'],
+                            'author' => COM_getDisplayName( $row['owner_id'] ),
+                            'date'   => $row['modified'],
+                            'format' => 'plaintext'
+                          );
+    }
+
+    $link = $_CONF['site_url'] . '/links.php';
+    $update = implode( ',', $lids );
+
+    return $content;
+}
+
+// why is this here? it does not change the content anymore...
+// also the array lids is not used.
+    if ($S['topic'] == 'all') {
+        $link = $_CONF['site_url'] . '/links/index.php';
+    } else {
+        $link = $_CONF['site_url'] . '/links/index.php??category=' . $S['topic'];
+    }
+    $update = implode (',', $lids);
+
+    return $content;
+}
+
+function links_buildSql ($category, $limits)
+{
+    $where = '';
+    if ($category != 'all') {
+        $where = "category='" . $category . "'";
+    }
+
+    $limitsql = '';
+    if (!empty ($limits)) {
+        if (substr ($limits, -1) == 'h') { // last xx hours
+            $limitsql = '';
+            $hours = substr ($limits, 0, -1);
+            if (!empty ($where)) {
+                $where .= ' AND ';
+            }
+            $where .= "date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
+        } else {
+            $limitsql = ' LIMIT ' . $limits;
+        }
+    }
+    else
+    {
+        $limitsql = ' LIMIT 10';
+    }
+
+    if (!empty ($where)) {
+        $where = ' WHERE ' . $where;
+    }
+
+    $sql = $where . $limitsql;
+
+    return $sql;
+}
+
+/*
+* cheking if feeds are up to date
+*/
+function plugin_feedupdatecheck_links ($feed, $topic, $update_data, $limit)
+{
+    global $_TABLES;
+
+    $is_current = true;
+
+    $sql = "SELECT lid FROM {$_TABLES['links']}" . links_buildSql ($category, $limits);
+    $result = DB_query ($sql);
+    $num = DB_numRows ($result);
+
+    $lids = array ();
+    for ($i = 0; $i < $num; $i++) {
+        $A = DB_fetchArray ($result);
+        $lids[] = $A['lid'];
+    }
+    $current = implode (',', $lids);
+
+    //COM_errorLog ("Update check for downloads: comparing new list ($current) with old list ($update_data)", 1);
+
+    return ( $current != $update_data ) ? false : true;
+}
 
 /**
 * Removes the datastructures for this plugin from the Geeklog database
