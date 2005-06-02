@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.9 2005/06/02 16:31:51 ospiess Exp $
+// $Id: functions.inc,v 1.10 2005/06/02 20:06:43 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -413,31 +413,6 @@ function plugin_getfeednames_links()
 * Provide feed data
 
 */
-function plugin_getfeedcontent_links_1 ($feed, &$link, &$update)
-{
-    global $_CONF, $_TABLES;
-
-    $content = array ();
-    $lids = array ();
-
-    $result = DB_query ("SELECT topic,limits FROM {$_TABLES['syndication']} WHERE fid = $feed");
-    $S = DB_fetchArray ($result);
-
-    $sql = "SELECT * FROM {$_TABLES['links']}" . links_buildSql ($S['topic'], $S['limits']);
-    $result = DB_query ($sql);
-    $num = DB_numRows ($result);
-    for ($i = 0; $i < $num; $i++) {
-        $A = DB_fetchArray ($result);
-        $content[] = array ('title'  => $A['title'],
-                            'text'   => $A['description'],
-                            'link'   => $A['url'],
-                            'uid'    => $A['owner_id'],
-                            'date'   => $A['date'],
-                            'format' => 'text'
-                           );
-         $lids[] = $A['lid'];
-    }
-    
 function plugin_getfeedcontent_links( $limit, &$link, &$update )
 {
     global $_TABLES, $_CONF, $LANG01;
