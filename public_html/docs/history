@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Removed $_CONF['whosonline_fullname'] option - use $_CONF['show_fullname']
+  instead [Dirk]
 - Fixed bug where extra slashes appeared when previewing comments [Vinny]
 - Added a robots.txt file to the distribution. By default, it excludes
   comment.php, submit.php, and the docs directory from being spidered [Dirk]

@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.436 2005/06/02 04:48:27 blaine Exp $
+// $Id: lib-common.php,v 1.437 2005/06/02 08:43:12 dhaun Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -4464,7 +4464,7 @@ function phpblock_whosonline()
 
     $expire_time = time() - $_CONF['whosonline_threshold'];
 
-    if( $_CONF['whosonline_fullname'] == 1 )
+    if( $_CONF['show_fullname'] == 1 )
     {
         $byname = 'fullname,username';
     }
@@ -4486,7 +4486,7 @@ function phpblock_whosonline()
         if( $A['showonline'] == 1 )
         {
             $username = $A['username'];
-            if( $_CONF['whosonline_fullname'] == 1 )
+            if( $_CONF['show_fullname'] == 1 )
             {
                 if( !empty( $A['fullname'] ))
                 {
