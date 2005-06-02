@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.172 2005/05/31 11:22:56 ospiess Exp $
+// $Id: config.php,v 1.173 2005/06/02 04:07:43 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -430,8 +430,8 @@ $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and storie
 
 // +---------------------------------------------------------------------------+
 // | Internal Geeklog CRON or scheduled Task/Function setting                  |
-// | Plugins can use the runSheduledJob API to activate any automated tasks    |
-// | or add code in lib-custom to the CUSTOM_runSheduledJob function           | 
+// | Plugins can use the runSheduledTask API to activate any automated tasks   |
+// | or add code in lib-custom to the CUSTOM_runSheduledTask function          | 
 // +---------------------------------------------------------------------------+
 $_CONF['cron_schedule_interval']        = 86400;   // Seconds - Default 1 day
 
