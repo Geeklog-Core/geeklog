@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.10 2005/06/02 20:06:43 ospiess Exp $
+// $Id: functions.inc,v 1.11 2005/06/02 20:23:03 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -444,18 +444,6 @@ function plugin_getfeedcontent_links( $limit, &$link, &$update )
 
     $link = $_CONF['site_url'] . '/links.php';
     $update = implode( ',', $lids );
-
-    return $content;
-}
-
-// why is this here? it does not change the content anymore...
-// also the array lids is not used.
-    if ($S['topic'] == 'all') {
-        $link = $_CONF['site_url'] . '/links/index.php';
-    } else {
-        $link = $_CONF['site_url'] . '/links/index.php??category=' . $S['topic'];
-    }
-    $update = implode (',', $lids);
 
     return $content;
 }
