@@ -1,0 +1,5 @@
+
+<!-- Load Advanced Editor -->
+<link rel="stylesheet" type="text/css" href="{site_url}/fckeditor/css/fck_editorarea.css">
+<script type="text/javascript" src="{site_url}/fckeditor/fckeditor.js" type="text/javascript"></script>
+<!-- End of Editor Load -->

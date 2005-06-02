@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.173 2005/06/02 04:07:43 blaine Exp $
+// $Id: config.php,v 1.174 2005/06/02 04:48:27 blaine Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -268,6 +268,12 @@ $_CONF['spamx'] = 128;  // Default to ignore comment.
 // | staticpages/index.php. If set true and advanced template exists           |
 // +---------------------------------------------------------------------------+
 $_CONF['advanced_editor'] = false;
+
+// +---------------------------------------------------------------------------+
+// | Path to user files relative to the $_CONF['site_url'] (no trailing slash) |
+// | Relative Directory where the Editor Image Library store                   |
+// +---------------------------------------------------------------------------+
+$_CONF_FCK['imagelibrary'] = '/images/library';
 
 // +---------------------------------------------------------------------------+
 // | LOCALE SETTINGS                                                           |
@@ -697,6 +703,14 @@ $_CONF['admin_html'] = array (
     'td'    => array('class' => 1, 'id' => 1, 'align' => 1, 'valign' => 1,
                      'colspan' => 1, 'rowspan' => 1)
 );
+
+/* Optional HTML Tags that will be enabled if advanced editor is enabled 
+ * Posible to add tags to the allowable general USER $_CONF['user_html'] as well
+*/
+if ($_CONF['advanced_editor']) {
+    $_CONF['admin_html']['img']  = array('src' => 1, 'width' => 1, 'height' => 1);
+    $_CONF['admin_html']['font'] = array('face' => 1, 'size' => 1);
+}
 
 // list of protocols that are allowed in links
 $_CONF['allowed_protocols'] = array ('http', 'https', 'ftp');

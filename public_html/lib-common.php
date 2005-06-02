@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.435 2005/05/31 11:26:22 ospiess Exp $
+// $Id: lib-common.php,v 1.436 2005/06/02 04:48:27 blaine Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -870,6 +870,13 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
         $pagetitle = ' - ' . $pagetitle;
     }
     $header->set_var( 'page_title', $_CONF['site_name'] . $pagetitle );
+
+    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) &&
+        file_exists ($_CONF['path_layout'] . 'advanced_editor_header.thtml')) { 
+        $header->set_file( 'editor'  , 'advanced_editor_header.thtml');
+        $header->parse( 'advanced_editor', 'editor' );
+
+    }
 
     $header->set_var( 'background_image', $_CONF['layout_url'] . '/images/bg.gif' );
     $header->set_var( 'site_url', $_CONF['site_url'] );
