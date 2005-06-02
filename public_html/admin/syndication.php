@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.11 2005/05/30 10:11:33 ospiess Exp $
+// $Id: syndication.php,v 1.12 2005/06/02 23:56:34 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -186,7 +186,6 @@ function get_geeklogFeeds ()
         $options[] = array ('id' => $A['tid'], 'name' => '-- ' . $A['topic']);
     }
 
-    $options[] = array ('id' => '::links', 'name' => $LANG33[41]);
     $options[] = array ('id' => '::events', 'name' => $LANG33[42]);
 
     return $options;
