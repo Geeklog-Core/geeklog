@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.175 2005/06/02 08:43:12 dhaun Exp $
+// $Id: config.php,v 1.176 2005/06/03 09:28:53 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -620,6 +620,10 @@ $_CONF['image_lib'] = ''; // can be one of 'netpbm', 'imagemagick', 'gdlib'
 // When set to 1, Geeklog will keep the original, unscaled images and make
 // the smaller image link to the unscaled image.
 $_CONF['keep_unscaled_image']   = 0; // 1 = keep original images
+
+// when above is set to one and this here also, the user can choose between
+// using the original or scaled image in a story
+$_CONF['allow_user_scaling']    = 1; // 1 = allow the user to choose
 
 // Story image settings
 $_CONF['max_image_width']       = 160;  // In pixels
