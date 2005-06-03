@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.25 2005/05/22 13:35:56 mjervis Exp $
+// $Id: lib-security.php,v 1.26 2005/06/03 17:36:51 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -729,14 +729,14 @@ function SEC_checkUserStatus($userid)
         // If we aren't on users.php with a default action then go to it
         if ($redirect)
         {
-            COM_errorLog("SECURITY: Attempted Cookie Session login from user awaiting approval $userid.", 1);
+            COM_accessLog("SECURITY: Attempted Cookie Session login from user awaiting approval $userid.");
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=70');
             exit;
         }
     } elseif ($status == 0) {
         if ($redirect)
         {
-            COM_errorLog("SECURITY: Attempted Cookie Session login from banned user $userid.", 1);
+            COM_accessLog("SECURITY: Attempted Cookie Session login from banned user $userid.");
             echo COM_refresh($_CONF['site_url'] . '/users.php?msg=69');
             exit;
         }
