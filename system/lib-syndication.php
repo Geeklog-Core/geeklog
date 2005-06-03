@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-syndication.php,v 1.12 2005/05/26 20:36:58 mjervis Exp $
+// $Id: lib-syndication.php,v 1.13 2005/06/03 09:43:07 ospiess Exp $
 
 // set to true to enable debug output in error.log
 $_SYND_DEBUG = false;
@@ -152,55 +152,6 @@ function SYND_feedUpdateCheckTopic( $tid, $update_info, $limit )
 
     if ($_SYND_DEBUG) {
         COM_errorLog ("Update check for topic $tid: comparing new list ($current) with old list ($update_info)", 1);
-    }
-
-    return ( $current != $update_info ) ? false : true;
-}
-
-/**
-* Check if a feed for the links needs to be updated.
-*
-* @param    string   $update_info   list of link ids
-* @param    string   $limit         number of entries or number of hours
-* @return   bool                    false = feed needs to be updated
-*
-*/
-function SYND_feedUpdateCheckLinks( $update_info, $limit )
-{
-    global $_CONF, $_TABLES, $_SYND_DEBUG;
-
-    $where = '';
-    if( !empty( $limit ))
-    {
-        if( substr( $limit, -1 ) == 'h' ) // last xx hours
-        {
-            $limitsql = '';
-            $hours = substr( $limit, 0, -1 );
-            $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR)";
-        }
-        else
-        {
-            $limitsql = ' LIMIT ' . $limit;
-        }
-    }
-    else
-    {
-        $limitsql = ' LIMIT 10';
-    }
-
-    $result = DB_query( "SELECT lid FROM {$_TABLES['links']} WHERE perm_anon > 0 $where ORDER BY date DESC $limitsql" );
-    $nrows = DB_numRows( $result );
-
-    $lids = array();
-    for( $i = 0; $i < $nrows; $i++ )
-    {
-        $A = DB_fetchArray( $result );
-        $lids[] = $A['lid'];
-    }
-    $current = implode( ',', $lids );
-
-    if ($_SYND_DEBUG) {
-        COM_errorLog ("Update check for links: comparing new list ($current) with old list ($update_info)", 1);
     }
 
     return ( $current != $update_info ) ? false : true;
@@ -469,74 +420,7 @@ function SYND_getFeedContentAll( $limit, &$link, &$update, $contentLength )
 }
 
 /**
-* Get content for a feed that holds all links.
-*
-* @param    string   $limit    number of entries or number of stories
-* @param    string   $link     link to homepage
-* @param    string   $update   list of story ids
-* @return   array              content of the feed
-*
-*/
-function SYND_getFeedContentLinks( $limit, &$link, &$update, $contentLength )
-{
-    global $_TABLES, $_CONF, $LANG01;
-
-    $where = '';
-    if( !empty( $limit ))
-    {
-        if( substr( $limit, -1 ) == 'h' ) // last xx hours
-        {
-            $limitsql = '';
-            $hours = substr( $limit, 0, -1 );
-            $where = " AND date >= DATE_SUB(NOW(),INTERVAL $hours HOUR) ORDER BY date DESC";
-        }
-        else
-        {
-            $limitsql = ' LIMIT ' . $limit;
-            $where = ' ORDER BY lid DESC';
-        }
-    }
-    else
-    {
-        $limitsql = ' LIMIT 10';
-        $where = ' ORDER BY lid DESC';
-    }
-
-    $result = DB_query( "SELECT lid,owner_id,title,description,UNIX_TIMESTAMP(date) AS modified FROM {$_TABLES['links']} WHERE perm_anon > 0 $where $limitsql" );
-
-    $content = array();
-    $lids = array();
-    $nrows = DB_numRows( $result );
-
-    for( $i = 1; $i <= $nrows; $i++ )
-    {
-        $row = DB_fetchArray( $result );
-        $lids[] = $row['lid'];
-
-        $linktitle = stripslashes( $row['title'] );
-        $linkdesc = SYND_truncateSummary( $row['description'], $contentLength );
-
-        $linklink = COM_buildUrl( $_CONF['site_url']
-                  . '/portal.php?what=link&item=' . $row['lid'] );
-
-        $content[] = array( 'title'  => $linktitle,
-                            'summary'   => $linkdesc,
-                            'link'   => $linklink,
-                            'uid'    => $row['owner_id'],
-                            'author' => COM_getDisplayName( $row['owner_id'] ),
-                            'date'   => $row['modified'],
-                            'format' => 'plaintext'
-                          );
-    }
-
-    $link = $_CONF['site_url'] . '/links.php';
-    $update = implode( ',', $lids );
-
-    return $content;
-}
-
-/**
-* Get content for a feed that holds all links.
+* Get content for a feed that holds all events.
 *
 * @param    string   $limit    number of entries or number of stories
 * @param    string   $link     link to homepage
