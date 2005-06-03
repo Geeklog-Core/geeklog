@@ -1,14 +1,15 @@
 <script type="text/javascript">
+
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor1.ToolbarSet = 'editor' ;
+        oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
         var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor2.ToolbarSet = 'editor' ;
+        oFCKeditor2.ToolbarSet = 'editor-toolbar2' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
 
@@ -57,6 +58,7 @@
         var size = document.getElementById(element + '___Frame').height;
         if (option == 'larger') {
             document.getElementById(element + '___Frame').height = +(size) + 50;
+
         } else if (option == 'smaller') {
             document.getElementById(element + '___Frame').height = +(size) - 50;
         }
@@ -74,7 +76,7 @@
 
 </script>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
                                         <td width="20%" align="right">{lang_author}:</td>
                                         <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
@@ -119,48 +121,54 @@
                                     </tr>
                                 </table>
                                 <!-- Basic textarea field - no editor -->
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="text_editor" style="display:{show_texteditor};">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="text_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_texteditor};">
                                     <tr>
-                                        <td width="20%" valign="top" align="right" nowrap>{lang_introtext}:
-                                            <div style="padding-right:5px;">
+                                        <td>{lang_introtext}:
+                                            <span style="padding-left:10px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('introtext','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('introtext','smaller');"></span>
-                                            </div>
+                                            </span>
                                         </td>
-                                        <td><textarea id="introtext" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
-                                        <td valign="top" align="right" nowrap>{lang_bodytext}:
-                                            <div style="padding-right:5px;">
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="introtext" name="introtext" rows="14" style="width:100%;">{story_introtext}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{lang_bodytext}:
+                                            <span style="padding-left:10px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('bodytext','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('bodytext','smaller');"></span>
-                                            </div>
+                                            </span>
                                         </td>
-                                        <td><textarea id="bodytext" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="bodytext" name="bodytext" rows="14" style="width:100%;">{story_bodytext}</textarea></td>
                                     </tr>
                                 </table>
                                 <!-- Rich Text Editor --->
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="display:;{show_htmleditor}">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:;{show_htmleditor}">
                                     <tr>
-                                        <td width="20%" valign="top" align="right" nowrap>{lang_introtext}:
-                                            <div style="padding-right:5px;">
+                                        <td>{lang_introtext}:
+                                            <span style="padding-left:10px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
-                                            </div>
+                                            </span>
                                         </td>
-                                        <td><textarea id="introhtml" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
+                                    <tr>
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="introhtml" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
-                                        <td valign="top" align="right" nowrap>{lang_bodytext}:
-                                            <div style="padding-right:5px;">
+                                        <td>{lang_bodytext}:
+                                            <span style="padding-left:10px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
-                                            </div>
+                                            </span>
                                         </td>
-                                        <td><textarea id="bodyhtml" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                    <tr>
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="bodyhtml" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
                                     </tr>
                                 </table>
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
                                     <tr valign="top">
                                         <td align="right"><b>{lang_postmode}:</b></td>
@@ -175,7 +183,7 @@
                                         <td colspan="2"><div style="width:95%; border-top:thin dashed;" /></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="2" style="padding:10px;">
                                             <input id="btn_publish" type="button" value="Publish Options" onClick="showhideDiv('publish');">&nbsp;
                                             <input id="btn_images" type="button" value="Images" onClick="showhideDiv('images');">&nbsp;
                                             <input id="btn_archive" type="button" value="Archive Options" onClick="showhideDiv('archive');">&nbsp;
@@ -183,7 +191,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2">
+                                        <td colspan="2" style="padding:10px;">
                                             <div  id="se_publish" style="display:none;">
                                                 <fieldset><legend>Publish Story Date</legend>
                                                     <table border="0" cellspacing="0" cellpadding="3" width="100%">
@@ -322,9 +330,8 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2"><div style="margin-top:20px;width:95%; border-top:thin dashed;" /></td>
-                                    </tr>
+                                </table>
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
                                     <tr>
                                         <td colspan="2" style="padding-left:20px;">
                                             <input type="submit" value="{lang_save}" name="mode">
