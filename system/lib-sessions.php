@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-sessions.php,v 1.36 2005/05/26 20:39:47 mjervis Exp $
+// $Id: lib-sessions.php,v 1.37 2005/06/03 17:37:39 mjervis Exp $
 
 /**
 * This is the session management library for Geeklog.  Some of this code was
@@ -106,13 +106,9 @@ function SESS_sessionCheck()
             COM_errorLog("Got $userid as User ID from the session ID",1);
         }
         
-        // Check user status, if not annon.
-        if ($userid != 0)
-        {
-            SEC_checkUserStatus($userid);
-        }
-       
         if ($userid) {
+            // Check user status
+            SEC_checkUserStatus($userid);
             $user_logged_in = 1;
             SESS_updateSessionTime($sessid, $_CONF['cookie_ip']);
             $userdata = SESS_getUserDataFromId($userid);
@@ -136,11 +132,8 @@ function SESS_sessionCheck()
                         //User may have modified their UID in cookie, ignore them
                     } else {
                         if ($userid) {
-                            if ($userid != 0)
-                            {
-                                // Check user status
-                                SEC_checkUserStatus($userid);
-                            }
+                            // Check user status
+                            SEC_checkUserStatus($userid);
                             $user_logged_in = 1;
                             $sessid = SESS_newSession($userid, $HTTP_SERVER_VARS['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
                             SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);
@@ -176,6 +169,8 @@ function SESS_sessionCheck()
                     // User could have modified UID in cookie, don't do shit
                 } else {
                     if ($userid) {
+                        // Check user status
+                        SEC_checkUserStatus($userid);
                         $user_logged_in = 1;
 
                         // Create new session and write cookie
