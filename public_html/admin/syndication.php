@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.14 2005/06/03 09:14:17 ospiess Exp $
+// $Id: syndication.php,v 1.15 2005/06/03 17:41:40 mjervis Exp $
 
 
 require_once ('../lib-common.php');
@@ -519,7 +519,7 @@ else if (($_REQUEST['mode'] == $LANG33[1]) && !empty ($LANG33[1]))
 }
 else if (($_REQUEST['mode'] == $LANG33[2]) && !empty ($LANG33[2]))
 {
-    $display .= savefeed ($_REQUEST);
+    $display .= savefeed ($_POST);
 }
 else if (($_REQUEST['mode'] == $LANG33[3]) && !empty ($LANG33[3]))
 {
