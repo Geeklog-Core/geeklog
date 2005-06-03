@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.13 2005/06/03 08:58:00 ospiess Exp $
+// $Id: syndication.php,v 1.14 2005/06/03 09:14:17 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -255,14 +255,11 @@ function editfeed ($fid = 0, $type = '')
         $feed_template->set_var('all_selected', 'selected="selected"');
     } elseif ($A['header_tid'] == 'none') {
         $feed_template->set_var('none_selected', 'selected="selected"');
-    } elseif ($A['header_tid'] == 'default') {
-        $feed_template->set_var('default_selected', 'selected="selected"');
-    }  
+    }
+
     $feed_template->set_var('lang_header_all', $LANG33[43]);
     $feed_template->set_var('lang_header_none', $LANG33[44]);
     $feed_template->set_var('lang_header_topic', $LANG33[45]);
-    $feed_template->set_var('lang_header_default', $LANG33[46]);
-    $feed_template->set_var('lang_home_explain', $LANG33[47]);
     $feed_template->set_var('header_topic_options', COM_topicList('tid,topic',$A['header_tid']));
     $feed_template->set_var('lang_save', $LANG33[2]);
     $feed_template->set_var('lang_cancel', $LANG33[4]);

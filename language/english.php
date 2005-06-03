@@ -1059,9 +1059,7 @@ $LANG33 = array(
     42 => 'Events',
     43 => 'All',
     44 => 'None',
-    45 => 'Header-link in topic',
-    46 => 'Default',
-    47 => '(Feeds set to "Default" will be placed wherever you do not have specified else.)'
+    45 => 'Header-link in topic'
 );
 
 ###############################################################################
