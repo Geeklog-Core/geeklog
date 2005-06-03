@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.31 2005/06/03 09:22:39 ospiess Exp $
+// $Id: lib-story.php,v 1.32 2005/06/03 09:43:42 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -721,7 +721,6 @@ function STORY_replace_images($sid, $intro, $body)
         $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
 
         $fulltext = $intro . ' ' . $body;
-        $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         $intro = str_replace ($norm,  $imageX,       $intro);
         $body  = str_replace ($norm,  $imageX,       $body);
         $intro = str_replace ($left,  $imageX_left,  $intro);
