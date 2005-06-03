@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.152 2005/06/03 02:33:21 blaine Exp $
+// $Id: story.php,v 1.153 2005/06/03 09:36:42 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -545,7 +545,11 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
                 $fileinputs .= '<br>';
             }
         }
-        $fileinputs .= '<br>' . $LANG24[51] . '<br>';
+        $fileinputs .= '<br>' . $LANG24[51];
+        if ($_CONF['allow_user_scaling'] == 1) {
+            $fileinputs .= $LANG24[27];
+        }
+        $fileinputs .= $LANG24[28] . '<br>';
     }
     $story_templates->set_var('saved_images', $saved_images);
     $story_templates->set_var('image_form_elements', $fileinputs);
