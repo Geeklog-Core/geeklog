@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.12 2005/06/02 23:56:34 ospiess Exp $
+// $Id: syndication.php,v 1.13 2005/06/03 08:58:00 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -463,14 +463,6 @@ function savefeed ($A)
     }
     if ($A['content_length'] < 0) {
         $A['content_length'] = 0;
-    }
-    
-    if ($A['header_tid']=='all') { // there can be only one "all"
-        DB_change($_TABLES['syndication'],'header_tid','none');
-    } elseif ($A['header_tid']!='none') { // there cannot be 'all' if there is a new one coming.
-        DB_change($_TABLES['syndication'],'header_tid','none','header_tid',$value='all');
-    } elseif ($A['header_tid']!='default') { // there can be only one default
-        DB_change($_TABLES['syndication'],'header_tid','none','header_tid',$value='default');
     }
 
     foreach ($A as $name => $value) {
