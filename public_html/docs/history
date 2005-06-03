@@ -29,6 +29,8 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added function to allow user-defined scaling of images in articles by using
+  [unscaledX] instead of [imageX] [Oliver]
 - Removed $_CONF['whosonline_fullname'] option - use $_CONF['show_fullname']
   instead [Dirk]
 - Fixed bug where extra slashes appeared when previewing comments [Vinny]
@@ -37,9 +39,9 @@ May ??, 2005 (Spam-X plugin 1.0.2)
 - Removed the "lastvisit" cookies, as they are obviously not used [Dirk]
 - Removed redundant changepwd-button & code from /admin/user.php (Bug #9) 
   [Oliver]
-- Added new feature to insert a feed-link into header depending on topic, to be 
+- Added new feature to insert a feed-links into header depending on topic, to be 
   chosen from /admin/syndication.php in the form of
-  <link rel="alternate" type="application/rss+xml" ....> [Oliver]
+  <link rel="alternate" type="application/{format}+xml" ....> [Oliver]
 - Added options to google-Navigation so it can be used by plugins and work with
   url-rewriting (feature request #315). [Oliver]
 - Added speedlimit to login attempts, defaults to allowing three tries ina a
