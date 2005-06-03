@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.151 2005/05/15 20:13:19 dhaun Exp $
+// $Id: story.php,v 1.152 2005/06/03 02:33:21 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -187,6 +187,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             return COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
         }
     } elseif ($mode == 'edit') {
+        $newstorymode = true;
         $A['sid'] = COM_makesid();
         $A['old_sid'] = '';
         $A['show_topic_icon'] = 1;
@@ -194,7 +195,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         $A['unixdate'] = time();
         $A['expiredate'] = time();
         $A['commentcode'] = $_CONF['comment_code'];
-        $A['postmode'] = $_CONF['postmode'];
+
+        // BL: Set mode to HTML for now if advanced editor enabled
+        // Need to add user-profile option to set default mode
+        if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1)) {
+            $A['postmode'] = 'html';
+        } else {
+            $A['postmode'] = $_CONF['postmode'];
+        }
+
         $A['statuscode'] = 0;
         $A['featured'] = 0;
         $A['owner_id'] = $_USER['uid'];
@@ -244,8 +253,15 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if (isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+    if ($A['postmode'] == 'html' AND isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
+        if ($newstorymode) {
+             $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+        } else {
+             $story_templates->set_var ('change_editormode', '');
+        }
+        $story_templates->set_var ('show_texteditor', 'none');
+        $story_templates->set_var ('show_htmleditor', '');
     } else {
         $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
     }
@@ -304,9 +320,13 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $display .= COM_startBlock ($LANG24[5], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
 
+    if ($newstorymode) {
+         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+    }
+
     if ($access == 3) {
         $story_templates->set_var ('delete_option',
-            '<input type="submit" value="' . $LANG24[11] . '" name="mode">');
+            '<input type="submit" value="' . $LANG24[11] . '" name="mode" onClick="return delconfirm()">');
     }
     if ($A['type'] == 'editsubmission' || $mode == 'editsubmission') {
         $story_templates->set_var ('submission_option',

@@ -1,14 +1,14 @@
 <script type="text/javascript">
     window.onload = function() {
-        var oFCKeditor1 = new FCKeditor( 'introtext' ) ;
+        var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = "{site_url}/fckeditor/" ;
         oFCKeditor1.ToolbarSet = 'editor' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
-        var oFCKeditor2 = new FCKeditor( 'bodytext' ) ;
+        var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor2.ToolbarSet = 'Default' ;
+        oFCKeditor2.ToolbarSet = 'editor' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
 
@@ -42,7 +42,17 @@
         }
     }
 
-    function changeTextAreaSize(element, option) {
+    function change_editmode(obj) {
+        if (obj.value == 'html') {
+            document.getElementById('text_editor').style.display='none';
+            document.getElementById('html_editor').style.display='';
+        } else {
+            document.getElementById('text_editor').style.display='';
+            document.getElementById('html_editor').style.display='none';
+        }
+    }
+
+    function changeHTMLTextAreaSize(element, option) {
         var size = 0;
         var size = document.getElementById(element + '___Frame').height;
         if (option == 'larger') {
@@ -52,12 +62,21 @@
         }
     }
 
+    function changeTextAreaSize(element, option) {
+        var size = 0;
+        var size = document.getElementById(element).rows;
+        if (option == 'larger') {
+            document.getElementById(element).rows = +(size) + 3;
+        } else if (option == 'smaller') {
+            document.getElementById(element).rows = +(size) - 3;
+        }
+    }
 
 </script>
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%">
                                     <tr>
-                                        <td align="right">{lang_author}:</td>
+                                        <td width="20%" align="right">{lang_author}:</td>
                                         <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
                                     </tr>
                                     <tr>
@@ -98,28 +117,55 @@
                                             <span style="padding-left:30px;padding-right:5px;">{lang_draft}:</span><input type="checkbox" name="draft_flag" {is_checked}>
                                         </td>
                                     </tr>
+                                </table>
+                                <!-- Basic textarea field - no editor -->
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="text_editor" style="display:{show_texteditor};">
                                     <tr>
-                                        <td valign="top" align="right">{lang_introtext}:
+                                        <td width="20%" valign="top" align="right" nowrap>{lang_introtext}:
                                             <div style="padding-right:5px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('introtext','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('introtext','smaller');"></span>
                                             </div>
                                         </td>
-                                        <td><textarea name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
+                                        <td><textarea id="introtext" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
-                                        <td valign="top" align="right">{lang_bodytext}:
+                                        <td valign="top" align="right" nowrap>{lang_bodytext}:
                                             <div style="padding-right:5px;">
                                                 <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeTextAreaSize('bodytext','larger');">
                                                 <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeTextAreaSize('bodytext','smaller');"></span>
                                             </div>
                                         </td>
-                                        <td><textarea name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                        <td><textarea id="bodytext" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
                                     </tr>
+                                </table>
+                                <!-- Rich Text Editor --->
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="display:;{show_htmleditor}">
+                                    <tr>
+                                        <td width="20%" valign="top" align="right" nowrap>{lang_introtext}:
+                                            <div style="padding-right:5px;">
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('introhtml','smaller');"></span>
+                                            </div>
+                                        </td>
+                                        <td><textarea id="introhtml" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
+                                    </tr>
+                                    <tr>
+                                        <td valign="top" align="right" nowrap>{lang_bodytext}:
+                                            <div style="padding-right:5px;">
+                                                <img src="{layout_url}/images/expand.gif" border="0" TITLE="Expand the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','larger');">
+                                                <span style="padding-left:5px;"><img src="{layout_url}/images/collapse.gif" border="0" TITLE="Reduce the Content Edit Area size" onclick="changeHTMLTextAreaSize('bodyhtml','smaller');"></span>
+                                            </div>
+                                        </td>
+                                        <td><textarea id="bodyhtml" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                    </tr>
+                                </table>
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%">
+                                    <tr>
                                     <tr valign="top">
                                         <td align="right"><b>{lang_postmode}:</b></td>
                                         <td>
-                                            <select name="postmode">
+                                            <select name="postmode" {change_editormode}>
                                                 {post_options}
                                             </select>
                                             <div style=padding:5px;">{lang_allowed_html}</div>
@@ -291,6 +337,7 @@
                                     </tr>
                                 </table>
                             </form>
+
 <script>
 <!-- This code will only be executed by a browser that suppports Javascript -->
 var jstest = "{showarchivedisabled}";
