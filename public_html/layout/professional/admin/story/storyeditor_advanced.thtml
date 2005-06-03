@@ -3,13 +3,13 @@
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
+        oFCKeditor1.ToolbarSet = 'editor-toolbar3' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
         var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor2.ToolbarSet = 'editor-toolbar2' ;
+        oFCKeditor2.ToolbarSet = 'editor-toolbar3' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
 
@@ -180,7 +180,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="2"><div style="width:95%; border-top:thin dashed;" /></td>
+                                        <td colspan="2" style="padding-left:20px;"><div style="width:95%; border-top:thin dashed;" /></td>
                                     </tr>
                                     <tr>
                                         <td colspan="2" style="padding:10px;">
