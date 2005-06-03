@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.30 2005/05/31 11:32:53 ospiess Exp $
+// $Id: lib-story.php,v 1.31 2005/06/03 09:22:39 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -682,12 +682,7 @@ function STORY_replace_images($sid, $intro, $body)
         $imageX_left  = '[image' . $i . '_left]';
         $imageX_right = '[image' . $i . '_right]';
 
-        $dimensions = GetImageSize($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
-        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
-            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
-        } else {
-            $sizeattributes = '';
-        }
+        $sizeattributes = COM_getImgSizeAttributes ($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
 
         $lLinkPrefix = '';
         $lLinkSuffix = '';
@@ -724,6 +719,7 @@ function STORY_replace_images($sid, $intro, $body)
         $norm = $lLinkPrefix . '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $left = $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
         $right = $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix;
+
         $fulltext = $intro . ' ' . $body;
         $count = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
         $intro = str_replace ($norm,  $imageX,       $intro);
@@ -732,6 +728,27 @@ function STORY_replace_images($sid, $intro, $body)
         $body  = str_replace ($left,  $imageX_left,  $body);
         $intro = str_replace ($right, $imageX_right, $intro);
         $body  = str_replace ($right, $imageX_right, $body);
+
+        if (($_CONF['allow_user_scaling'] == 1) and
+            ($_CONF['keep_unscaled_image'] == 1)){
+
+            $unscaledX       = '[unscaled' . $i . ']';
+            $unscaledX_left  = '[unscaled' . $i . '_left]';
+            $unscaledX_right = '[unscaled' . $i . '_right]';
+
+            if (file_exists ($lFilename_large_complete)) {
+                    $sizeattributes = COM_getImgSizeAttributes($lFilename_large_complete);
+                    $norm = '<img ' . $sizeattributes . 'src="' . $lFilename_large_URL . '" alt="">';
+                    $left = '<img ' . $sizeattributes . 'align="left" src="' . $lFilename_large_URL . '" alt="">';
+                    $right = '<img ' . $sizeattributes . 'align="right" src="' . $lFilename_large_URL . '" alt="">';
+                }
+            $intro = str_replace ($norm,  $unscaledX,       $intro);
+            $body  = str_replace ($norm,  $unscaledX,       $body);
+            $intro = str_replace ($left,  $unscaledX_left,  $intro);
+            $body  = str_replace ($left,  $unscaledX_left,  $body);
+            $intro = str_replace ($right, $unscaledX_right, $intro);
+            $body  = str_replace ($right, $unscaledX_right, $body);
+        }
     }
 
     return array($intro, $body);
@@ -761,12 +778,6 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
     }
     for ($i = 1; $i <= $nrows; $i++) {
         $A = DB_fetchArray($result);
-        $dimensions = GetImageSize($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
-        if (!empty($dimensions[0]) AND !empty($dimensions[1])) {
-            $sizeattributes = 'width="' . $dimensions[0] . '" height="' . $dimensions[1] . '" ';
-        } else {
-            $sizeattributes = '';
-        }
 
         $lLinkPrefix = '';
         $lLinkSuffix = '';
@@ -791,12 +802,19 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
             }
         }
 
+        $sizeattributes = COM_getImgSizeAttributes ($_CONF['path_images'] . 'articles/' . $A['ai_filename']);
+
         $norm  = '[image' . $i . ']';
         $left  = '[image' . $i . '_left]';
         $right = '[image' . $i . '_right]';
 
+        $unscalednorm  = '[unscaled' . $i . ']';
+        $unscaledleft  = '[unscaled' . $i . '_left]';
+        $unscaledright = '[unscaled' . $i . '_right]';
+
         $fulltext = $intro . ' ' . $body;
         $icount = substr_count($fulltext, $norm) + substr_count($fulltext, $left) + substr_count($fulltext, $right);
+        $icount = $icount + substr_count($fulltext, $unscalednorm) + substr_count($fulltext, $unscaledleft) + substr_count($fulltext, $unscaledright);
         if ($icount == 0) {
             // There is an image that wasn't used, create an error
             $errors[] = $LANG24[48] . " #$i, {$A['ai_filename']}, " . $LANG24[53];
@@ -819,6 +837,22 @@ function STORY_insert_images($sid, $intro, $body, $usage='html')
                 $body = str_replace($left, $lLinkPrefix . '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
                 $intro = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $intro);
                 $body = str_replace($right, $lLinkPrefix . '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">' . $lLinkSuffix, $body);
+
+                if (($_CONF['allow_user_scaling'] == 1) and
+                    ($_CONF['keep_unscaled_image'] == 1)) {
+
+                    if (file_exists ($lFilename_large_complete)) {
+                        $imgSrc = $lFilename_large_URL;
+                        $sizeattributes = COM_getImgSizeAttributes ($lFilename_large_complete);
+                    }
+                    $intro = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">', $intro);
+                    $body = str_replace($unscalednorm, '<img ' . $sizeattributes . 'src="' . $imgSrc . '" alt="">', $body);
+                    $intro = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">', $intro);
+                    $body = str_replace($unscaledleft, '<img ' . $sizeattributes . 'align="left" src="' . $imgSrc . '" alt="">', $body);
+                    $intro = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">', $intro);
+                    $body = str_replace($unscaledright, '<img ' . $sizeattributes . 'align="right" src="' . $imgSrc . '" alt="">', $body);
+                }
+
             }
         }
     }
