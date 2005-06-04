@@ -28,7 +28,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.3 2005/05/30 22:44:01 blaine Exp $
+// $Id: config.php,v 1.4 2005/06/04 20:24:15 trinity Exp $
 
 // links plugin
 $_TABLES['links']               = $_DB_table_prefix . 'links';
@@ -58,4 +58,7 @@ $_LI_CONF['linksperpage'] = 10; // links per page
 
 $_LI_CONF['notification'] = 0; // notify when a new link was submitted
 
+// should be remove links submited by users if account is removed? (1)
+// or change owner to root (0)
+$_LI_CONF['delete_links'] = 0; 
 ?>

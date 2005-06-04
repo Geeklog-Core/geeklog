@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.11 2005/06/02 20:23:03 ospiess Exp $
+// $Id: functions.inc,v 1.12 2005/06/04 20:24:41 trinity Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -122,7 +122,7 @@ function plugin_chkVersion_links() {
 
 
 /**
-* Shows the statistics for the Static Pages plugin on stats.php.
+* Shows the statistics for the links plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
 *
@@ -356,7 +356,7 @@ function plugin_getadminoption_links()
 }
 
 /**
-* A user is about to be deleted. Update ownership of any static pages owned
+* A user is about to be deleted. Update ownership of any links owned
 * by that user or delete them.
 *
 * @param   uid   int   User id of deleted user
@@ -371,7 +371,7 @@ function plugin_user_delete_links ($uid)
         return;
     }
 
-    if ($_SP_CONF['delete_pages'] == 1) {
+    if ($_LI_CONF['delete_links'] == 1) {
         // delete the pages
         DB_query ("DELETE FROM {$_TABLES['links']} WHERE owner_id = $uid");
     } else {
