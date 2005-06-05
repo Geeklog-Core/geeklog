@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: trackback.php,v 1.3 2005/01/29 17:52:54 dhaun Exp $
+// $Id: trackback.php,v 1.4 2005/06/05 09:40:12 dhaun Exp $
 
 require_once ('lib-common.php');
 require_once ($_CONF['path_system'] . 'lib-trackback.php');
@@ -45,64 +45,6 @@ $TRB_ERROR = array (
 if (!$_CONF['trackback_enabled']) {
     TRB_sendTrackbackResponse (1, $TRB_ERROR['not_enabled']);
     exit;
-}
-
-/**
-* Send a notification email when a new trackback comment has been posted
-*
-* FIXME: Currently always picks the latest comment for ($id, $type).
-*        This may not always be the comment that was just posted ...
-*
-* @param    string  $id         ID of the entry the comment was posted to
-* @param    string  $type       type of that entry ('article' = story, etc.)
-* @return   void
-*
-*/
-function sendNotification ($id, $type)
-{
-    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
-
-    $trbtype = addslashes ($type);
-    $result = DB_query ("SELECT title,excerpt,url,blog,ipaddress FROM {$_TABLES['trackback']} WHERE (type = '$trbtype') ORDER BY date DESC LIMIT 1");
-    $A = DB_fetchArray ($result);
-
-    $mailbody = '';
-    if (!empty ($A['title'])) {
-        $mailbody .= $LANG03[16] . ': ' . $A['title'] . "\n";
-    }
-    $mailbody .= $LANG_TRB['blog_name'] . ': ';
-    if (!empty ($A['blog'])) {
-        $mailbody .= $A['blog'] . ' ';
-    }
-    $mailbody .= '(' . $A['ipaddress'] . ")\n";
-    $mailbody .= $LANG29[12] . ': ' . $A['url'] . "\n";
-
-    if ($type != 'article') {
-        $mailbody .= $LANG09[5] . ': ' . $type . "\n";
-    }
-
-    if (!empty ($A['excerpt'])) {
-        // the excerpt is max. 255 characters long anyway, so we add it
-        // in its entirety
-        $mailbody .= $A['excerpt'] . "\n\n";
-    }
-
-    if ($type == 'article') {
-        $commenturl = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
-                                    . $id) . '#trackback';
-    } else {
-        $commenturl = PLG_getItemInfo ($type, $id, 'url');
-    }
-
-    $mailbody .= $LANG08[33] . ' <' . $commenturl . ">\n\n";
-
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
-
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['trackback'];
-
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 COM_setArgNames (array ('id', 'type'));
@@ -130,28 +72,16 @@ if ($type == 'article') {
     $result = DB_query("SELECT COUNT(*) AS count FROM {$_TABLES['stories']} WHERE (sid = '$sid') AND (date <= NOW()) AND (draft_flag = 0)" . COM_getPermSql ('AND') . COM_getTopicSql ('AND'));
     $A = DB_fetchArray ($result);
     if ($A['count'] == 1) {
-        if (TRB_handleTrackbackPing ($id, $type)) {
-            if (isset ($_CONF['notification']) &&
-                    in_array ('trackback', $_CONF['notification'])) {
-                sendNotification ($id, $type);
-            }
-        }
-        exit;
+        TRB_handleTrackbackPing ($id, $type);
     } else {
         TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
-        exit;
     }
 } else if (PLG_handlePingComment ($type, $id, 'acceptByID') === true) {
-    if (TRB_handleTrackbackPing ($id, $type)) {
-        if (isset ($_CONF['notification']) &&
-                in_array ('trackback', $_CONF['notification'])) {
-            sendNotification ($id, $type);
-        }
-    }
-    exit;
+    TRB_handleTrackbackPing ($id, $type);
 } else {
     TRB_sendTrackbackResponse (1, $TRB_ERROR['no_access']);
-    exit;
 }
+
+// no output here
 
 ?>

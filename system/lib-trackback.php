@@ -29,11 +29,15 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-trackback.php,v 1.9 2005/05/28 18:27:43 dhaun Exp $
+// $Id: lib-trackback.php,v 1.10 2005/06/05 09:40:12 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
 }
+
+// error result codes for TRB_saveTrackbackComment
+define ('TRB_SAVE_SPAM',   -1);
+define ('TRB_SAVE_REJECT', -2);
 
 /**
 * Send a trackback response message
@@ -188,18 +192,28 @@ function TRB_allowDelete ($sid, $type)
 /**
 * Save a trackback (or pingback) comment.
 *
+* Also handles spam, multiple trackbacks from the same source and sends the
+* notification email.
+*
 * @param    string  $sid        entry id
 * @param    string  $type       type of entry ('article' = story, etc.)
 * @param    string  $url        URL of the trackback comment
 * @param    string  $title      title of the comment (set to $url if empty)
 * @param    string  $blog       name of the blog that sent the comment
 * @param    string  $excerpt    excerpt from the comment
-* @return   void
+* @return   int                 < 0: error, > 0: ID of the trackback comment
 *
 */
 function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $excerpt = '')
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES;
+
+    // Spam will be inevitable ...
+    $comment = TRB_formatComment ($url, $title, $blog, $excerpt);
+    $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
+    if ($result > 0) {
+        return TRB_SAVE_SPAM;
+    }
 
     // MT does that, so follow its example ...
     if (strlen ($excerpt) > 255) {
@@ -218,12 +232,24 @@ function TRB_saveTrackbackComment ($sid, $type, $url, $title = '', $blog = '', $
     $blog    = addslashes ($blog);
     $excerpt = addslashes ($excerpt);
 
-    // delete any earlier trackbacks from the same URL
-    DB_delete ($_TABLES['trackback'], array ('url', 'sid', 'type'),
-               array ($url, $sid, $type));
+    if ($_CONF['multiple_trackbacks'] == 0) {
+        // multiple trackbacks not allowed - check if we have this one already
+        if (DB_count ($_TABLES['trackback'], array ('url', 'sid', 'type'),
+                      array ($url, $sid, $type)) >= 1) {
+            return TRB_SAVE_REJECT;
+        }
+    } else if ($_CONF['multiple_trackbacks'] == 1) {
+        // delete any earlier trackbacks from the same URL
+        DB_delete ($_TABLES['trackback'], array ('url', 'sid', 'type'),
+                   array ($url, $sid, $type));
+    } // else: multiple trackbacks allowed
 
     DB_save ($_TABLES['trackback'], 'sid,url,title,blog,excerpt,date,type,ipaddress',
              "'$sid','$url','$title','$blog','$excerpt',NOW(),'$type','{$_SERVER['REMOTE_ADDR']}'");
+
+    $comment_id = DB_insertId ();
+
+    return $comment_id;
 }
 
 /**
@@ -355,6 +381,7 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
     // knowing which language the sender of the trackback ping may prefer.
     $TRB_ERROR = array (
         'no_url'     => 'No URL given.',
+        'rejected'   => 'Multiple posts not allowed.',
         'spam'       => 'Spam detected.',
         'speedlimit' => 'Your last trackback comment was %d seconds ago. This site requires at least %d seconds between trackback comments.'
     );
@@ -379,18 +406,24 @@ function TRB_handleTrackbackPing ($sid, $type = 'article')
         $excerpt = TRB_filterExcerpt ($_REQUEST['excerpt']);
         $blog = TRB_filterBlogname ($_REQUEST['blog_name']);
 
-        // Spam will be inevitable ...
-        $comment = TRB_formatComment ($url, $title, $blog, $excerpt);
-        $result = PLG_checkforSpam ($comment, $_CONF['spamx']);
-        if ($result > 0) {
+        $saved = TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog,
+                                           $excerpt);
+        if ($saved == TRB_SAVE_SPAM) {
             TRB_sendTrackbackResponse (1, $TRB_ERROR['spam']);
+
+            return false;
+        } else if ($saved == TRB_SAVE_REJECT) {
+            TRB_sendTrackbackResponse (1, $TRB_ERROR['rejected']);
 
             return false;
         }
 
-        TRB_saveTrackbackComment ($sid, $type, $url, $title, $blog, $excerpt);
-
         COM_updateSpeedlimit ('trackback');
+
+        if (isset ($_CONF['notification']) &&
+                in_array ('trackback', $_CONF['notification'])) {
+            TRB_sendNotificationEmail ($saved, 'trackback');
+        }
 
         TRB_sendTrackbackResponse (0);
 
@@ -611,6 +644,67 @@ function TRB_detectTrackbackUrl ($url)
     }
 
     return $retval;
+}
+
+/**
+* Send a notification email when a new trackback comment has been posted
+*
+* @param    int     $cid    ID of the trackback comment
+* @param    string  $what   type of notification: 'trackback' or 'pingback'
+* @return   void
+*
+*/
+function TRB_sendNotificationEmail ($cid, $what = 'trackback')
+{
+    global $_CONF, $_TABLES, $LANG03, $LANG08, $LANG09, $LANG29, $LANG_TRB;
+
+    $cid = addslashes ($cid);
+    $result = DB_query ("SELECT sid,type,title,excerpt,url,blog,ipaddress FROM {$_TABLES['trackback']} WHERE (cid = '$cid')");
+    $A = DB_fetchArray ($result);
+    $type = $A['type'];
+    $id = $A['sid'];
+
+    $mailbody = '';
+    if (!empty ($A['title'])) {
+        $mailbody .= $LANG03[16] . ': ' . $A['title'] . "\n";
+    }
+    $mailbody .= $LANG_TRB['blog_name'] . ': ';
+    if (!empty ($A['blog'])) {
+        $mailbody .= $A['blog'] . ' ';
+    }
+    $mailbody .= '(' . $A['ipaddress'] . ")\n";
+    $mailbody .= $LANG29[12] . ': ' . $A['url'] . "\n";
+
+    if ($type != 'article') {
+        $mailbody .= $LANG09[5] . ': ' . $type . "\n";
+    }
+
+    if (!empty ($A['excerpt'])) {
+        // the excerpt is max. 255 characters long anyway, so we add it
+        // in its entirety
+        $mailbody .= $A['excerpt'] . "\n\n";
+    }
+
+    if ($type == 'article') {
+        $commenturl = COM_buildUrl ($_CONF['site_url'] . '/article.php?story='
+                                    . $id) . '#trackback';
+    } else {
+        $commenturl = PLG_getItemInfo ($type, $id, 'url');
+    }
+
+    $mailbody .= $LANG08[33] . ' <' . $commenturl . ">\n\n";
+
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
+
+    if ($what == 'pingback') {
+        $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['pingback'];
+    } else {
+        $mailsubject = $_CONF['site_name'] . ' ' . $LANG_TRB['trackback'];
+    }
+
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 ?>
