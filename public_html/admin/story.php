@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.153 2005/06/03 09:36:42 ospiess Exp $
+// $Id: story.php,v 1.154 2005/06/05 02:41:57 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -187,7 +187,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             return COM_refresh ($_CONF['site_admin_url'] . '/moderation.php');
         }
     } elseif ($mode == 'edit') {
-        $newstorymode = true;
         $A['sid'] = COM_makesid();
         $A['old_sid'] = '';
         $A['show_topic_icon'] = 1;
@@ -253,15 +252,17 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     // Load HTML templates
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
-    if ($A['postmode'] == 'html' AND isset ($_CONF['advanced_editor']) && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+    if ( $A['postmode'] == 'html' AND isset ($_CONF['advanced_editor'])
+        && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
-        if ($newstorymode) {
-             $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+        $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+        if ($A['postmode'] == 'html') {
+            $story_templates->set_var ('show_texteditor', 'none');
+            $story_templates->set_var ('show_htmleditor', '');
         } else {
-             $story_templates->set_var ('change_editormode', '');
+            $story_templates->set_var ('show_texteditor', '');
+            $story_templates->set_var ('show_htmleditor', 'none');
         }
-        $story_templates->set_var ('show_texteditor', 'none');
-        $story_templates->set_var ('show_htmleditor', '');
     } else {
         $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
     }
@@ -319,10 +320,6 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
 
     $display .= COM_startBlock ($LANG24[5], '',
                         COM_getBlockTemplate ('_admin_block', 'header'));
-
-    if ($newstorymode) {
-         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
-    }
 
     if ($access == 3) {
         $story_templates->set_var ('delete_option',
@@ -879,6 +876,12 @@ function submitstory($type='',$sid,$uid,$tid,$title,$introtext,$bodytext,$hits,$
 
         // Clean up the text
         if ($postmode == 'html') {
+            // Advanced Editor: Are you editing this story and switching mode from text to html
+            if ( (DB_count($_TABLES['stories'],'sid',$sid) == 1) AND 
+                 (DB_getItem($_TABLES['stories'], 'postmode',"sid='$sid'") == 'plaintext') AND
+                 ($_CONF['advanced_editor'] == 1) ) {
+                     $introtext = str_replace("\n",'<br>',$introtext);
+            }
             $introtext = COM_checkHTML (COM_checkWords ($introtext));
             $bodytext = COM_checkHTML (COM_checkWords ($bodytext));
         } else {

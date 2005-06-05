@@ -1,23 +1,8 @@
 <script type="text/javascript">
 
-    window.onload = function() {
-        var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
-        oFCKeditor1.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor1.ToolbarSet = 'editor-toolbar3' ;
-        oFCKeditor1.Height = 200 ;
-        oFCKeditor1.ReplaceTextarea() ;
-
-        var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
-        oFCKeditor2.BasePath = "{site_url}/fckeditor/" ;
-        oFCKeditor2.ToolbarSet = 'editor-toolbar3' ;
-        oFCKeditor2.Height = 200 ;
-        oFCKeditor2.ReplaceTextarea() ;
-
-    }
-
     function enablearchive(obj) {
-        var f = obj.form;           // all elements have their parent form in "form"
-        var disable = obj.checked;  // Disable when checked
+        var f = obj.form;               // all elements have their parent form in "form"
+        var disable = obj.checked;      // Disable when checked
         if (f.elements["archiveflag"].checked==true && f.elements["storycode11"].checked==false) {
             f.elements["storycode10"].checked=true;
         }
@@ -42,40 +27,13 @@
             obj.scrollIntoView();
         }
     }
-
-    function change_editmode(obj) {
-        if (obj.value == 'html') {
-            document.getElementById('text_editor').style.display='none';
-            document.getElementById('html_editor').style.display='';
-        } else {
-            document.getElementById('text_editor').style.display='';
-            document.getElementById('html_editor').style.display='none';
-        }
-    }
-
-    function changeHTMLTextAreaSize(element, option) {
-        var size = 0;
-        var size = document.getElementById(element + '___Frame').height;
-        if (option == 'larger') {
-            document.getElementById(element + '___Frame').height = +(size) + 50;
-
-        } else if (option == 'smaller') {
-            document.getElementById(element + '___Frame').height = +(size) - 50;
-        }
-    }
-
-    function changeTextAreaSize(element, option) {
-        var size = 0;
-        var size = document.getElementById(element).rows;
-        if (option == 'larger') {
-            document.getElementById(element).rows = +(size) + 3;
-        } else if (option == 'smaller') {
-            document.getElementById(element).rows = +(size) - 3;
-        }
-    }
-
+    // Setup editor path for FCKeditor JS Functions
+    geeklogEditorBasePath = "{site_url}/fckeditor/" ;
 </script>
-                            <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data">
+
+<script type="text/JavaScript" src="{site_url}/fckeditor/geeklog.js"></script>
+
+                            <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
                                         <td width="20%" align="right">{lang_author}:</td>
@@ -146,7 +104,18 @@
                                     </tr>
                                 </table>
                                 <!-- Rich Text Editor --->
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:;{show_htmleditor}">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
+                                    <tr>
+                                        <td>Toolbar: 
+                                            <span style="padding-left:10px;">
+                                               <select id="fckeditor_toolbar_selector" name="fckeditor_toolbar_selector" onchange="changeToolbar(this.value);">
+                                                    <option value="editor-toolbar1">One</option>
+                                                    <option value="editor-toolbar2">Two</option>
+                                                    <option value="editor-toolbar3">Three</option>
+                                                    <option value="editor-toolbar4">Four</option>
+                                           </select>
+                                       </td>
+                                    </tr>
                                     <tr>
                                         <td>{lang_introtext}:
                                             <span style="padding-left:10px;">
@@ -155,7 +124,7 @@
                                             </span>
                                         </td>
                                     <tr>
-                                        <td style="padding:5px 10px 5px 10px;"><textarea id="introhtml" name="introtext" cols="90" rows="12">{story_introtext}</textarea></td>
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="introhtml" name="introhtml" cols="90" rows="12">{story_introtext}</textarea></td>
                                     </tr>
                                     <tr>
                                         <td>{lang_bodytext}:
@@ -165,15 +134,14 @@
                                             </span>
                                         </td>
                                     <tr>
-                                        <td style="padding:5px 10px 5px 10px;"><textarea id="bodyhtml" name="bodytext" cols="90" rows="20">{story_bodytext}</textarea></td>
+                                        <td style="padding:5px 10px 5px 10px;"><textarea id="bodyhtml" name="bodyhtml" cols="90" rows="20">{story_bodytext}</textarea></td>
                                     </tr>
                                 </table>
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
-                                    <tr>
                                     <tr valign="top">
                                         <td align="right"><b>{lang_postmode}:</b></td>
                                         <td>
-                                            <select name="postmode" {change_editormode}>
+                                            <select id="sel_editmode" name="postmode" {change_editormode}>
                                                 {post_options}
                                             </select>
                                             <div style=padding:5px;">{lang_allowed_html}</div>
@@ -347,6 +315,7 @@
 
 <script>
 <!-- This code will only be executed by a browser that suppports Javascript -->
+
 var jstest = "{showarchivedisabled}";
 if (jstest) {
     document.frmstory.expire_month.disabled=true;
