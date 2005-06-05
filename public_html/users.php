@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.100 2005/05/24 12:52:27 ospiess Exp $
+// $Id: users.php,v 1.101 2005/06/05 08:40:18 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -300,13 +300,14 @@ function emailpassword ($username, $msg = 0)
     $retval = '';
 
     $username = addslashes ($username);
-    $result = DB_query ("SELECT uid,email FROM {$_TABLES['users']} WHERE username = '$username'");
+    $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-//        if (($_CONF['usersubmission'] == 1) && USER_isQueued ($A['uid'])) {
-//            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
-//        }
+        if (($_CONF['usersubmission'] == 1) && ($A['status'] == 2))
+        {
+            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+        }
 
         USER_createAndSendPassword ($username, $A['email']);
 
@@ -336,13 +337,13 @@ function requestpassword ($username, $msg = 0)
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    $result = DB_query ("SELECT uid,email,passwd FROM {$_TABLES['users']} WHERE username = '$username'");
+    $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username'");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
-//        if (($_CONF['usersubmission'] == 1) && ($A['passwd'] == md5 (''))) {
-//            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
-//        }
+        if (($_CONF['usersubmission'] == 1) && ($A['status'] == 2)) {
+            return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
+        }
         $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
         DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
                    'username', $username);
@@ -407,35 +408,6 @@ function newpasswordform ($uid, $requestid)
 }
 
 /**
-* Send an email notification when a new user registers with the site.
-*
-* @param username string      User name of the new user
-* @param email    string      Email address of the new user
-* @param uid      int         User id of the new user
-* @param queued   bool        true = user was added to user submission queue
-*
-*/
-function sendNotification ($username, $email, $uid, $queued = false)
-{
-    global $_CONF, $_TABLES, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
-
-    $mailbody = "$LANG04[2]: $username\n"
-              . "$LANG04[5]: $email\n"
-              . "$LANG28[14]: " . strftime ($_CONF['date']) . "\n\n";
-    if ($queued) {
-        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
-    } else {
-        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
-    }
-    $mailbody .= "\n------------------------------\n";
-    $mailbody .= "\n$LANG08[34]\n";
-    $mailbody .= "\n------------------------------\n";
-
-    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
-    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
-}
-
-/**
 * Creates a user
 *
 * Creates a user with the give username and email address
@@ -476,17 +448,11 @@ function createuser ($username, $email)
             }
 
             $uid = USER_createAccount ($username, $email);
-
-            $queueUser = USER_isQueued ($uid);
-            if ($queueUser) {
-                $msg = 48;
-            } else {
-                emailpassword ($username, 1);
-                $msg = 1;
-            }
+            
+            emailpassword ($username, 1);
             if (isset ($_CONF['notification']) &&
                     in_array ('user', $_CONF['notification'])) {
-                sendNotification ($username, $email, $uid, $queueUser);
+                USER_sendNotification ($username, $email, $uid, 'new');
             }
 
             return COM_refresh($_CONF['site_url'] . '/index.php?msg=' . $msg);

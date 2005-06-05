@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.54 2005/05/30 22:10:12 ospiess Exp $
+// $Id: moderation.php,v 1.55 2005/06/05 08:40:18 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -310,8 +310,7 @@ function userlist ()
 
     $retval = COM_startBlock ($LANG29[40], '',
                               COM_getBlockTemplate ('_admin_block', 'header'));
-    $emptypwd = md5('');
-    $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE passwd = '$emptypwd'");
+    $result = DB_query ("SELECT uid,username,fullname,email FROM {$_TABLES['users']} WHERE status = 2");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');

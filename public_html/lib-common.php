@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.439 2005/06/03 09:12:51 ospiess Exp $
+// $Id: lib-common.php,v 1.440 2005/06/05 08:40:18 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2407,7 +2407,7 @@ function COM_adminMenu( $help = '', $title = '' )
                 if( SEC_hasrights( 'user.edit' ) && SEC_hasrights( 'user.delete' ))
                 {
                     $emptypwd = md5( '' );
-                    $num += DB_count( $_TABLES['users'], 'passwd', $emptypwd );
+                    $num += DB_count( $_TABLES['users'], 'status', '2' );
                 }
             }
 

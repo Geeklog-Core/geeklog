@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.7 2004/10/05 19:52:45 dhaun Exp $
+// $Id: lib-user.php,v 1.8 2005/06/05 08:40:18 mjervis Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -196,7 +196,6 @@ function USER_createAndSendPassword ($username, $useremail)
 /**
 * Create a new user
 *
-* This also handles adding the user to the user submission queue, if enabled.
 * Also calls the custom user registration (if enabled) and plugin functions.
 *
 * NOTE: Does NOT send out password emails.
@@ -258,24 +257,6 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
     DB_query ("INSERT INTO {$_TABLES['usercomment']} (uid,commentmode,commentlimit) VALUES ($uid,'{$_CONF['comment_mode']}','{$_CONF['comment_limit']}')");
     DB_query ("INSERT INTO {$_TABLES['userinfo']} (uid) VALUES ($uid)");
 
-    // if user submission queue is active and the current user is not a
-    // User Admin, then we may have to add the new user to the submission queue
-    if (($_CONF['usersubmission'] == 1) && !SEC_hasRights ('user.edit')) {
-        $queueUser = true;
-        if (!empty ($_CONF['allow_domains'])) {
-            $allowed = explode (',', $_CONF['allow_domains']);
-            // Note: We already made sure $email is a valid address
-            $domain = substr ($email, strpos ($email, '@') + 1);
-            if (in_array ($domain, $allowed)) {
-                $queueUser = false;
-            }
-        }
-        if ($queueUser) {
-            $passwd = addslashes (md5 (''));
-            DB_change ($_TABLES['users'], 'passwd', "$passwd", 'uid', $uid);
-        }
-    }
-
     // call custom registration function and plugins
     if ($_CONF['custom_registration'] && (function_exists ('custom_usercreate'))) {
         custom_usercreate ($uid);
@@ -286,24 +267,35 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
 }
 
 /**
-* Check if a user is in the user submission queue
+* Send an email notification when a new user registers with the site.
 *
-* @param    int     $uid    User ID to check
-* @return   boolean         true = user in queue, false = not in queue
+* @param username string      User name of the new user
+* @param email    string      Email address of the new user
+* @param uid      int         User id of the new user
+* @param mode     string      Mode user was added at.
 *
 */
-function USER_isQueued ($uid)
+function USER_sendNotification ($username, $email, $uid, $mode='inactive')
 {
-    global $_TABLES;
+    global $_CONF, $_TABLES, $LANG01, $LANG04, $LANG08, $LANG28, $LANG29;
 
-    $queued = false;
-
-    $passwd = md5 ('');
-    if (DB_getItem ($_TABLES['users'], 'passwd', "uid = $uid") == $passwd) {
-        $queued = true;
+    $mailbody = "$LANG04[2]: $username\n"
+              . "$LANG04[5]: $email\n"
+              . "$LANG28[14]: " . strftime ($_CONF['date']) . "\n\n";
+    
+    if ($mode == 'inactive') {
+        // user needs admin approval
+        $mailbody .= "$LANG01[10] <{$_CONF['site_admin_url']}/moderation.php>\n\n";
+    } else {
+        // user has been created, or has activated themselves:
+        $mailbody .= "$LANG29[4] <{$_CONF['site_url']}/users.php?mode=profile&uid={$uid}>\n\n";
     }
+    $mailbody .= "\n------------------------------\n";
+    $mailbody .= "\n$LANG08[34]\n";
+    $mailbody .= "\n------------------------------\n";
 
-    return $queued;
+    $mailsubject = $_CONF['site_name'] . ' ' . $LANG29[40];
+    COM_mail ($_CONF['site_mail'], $mailsubject, $mailbody);
 }
 
 ?>

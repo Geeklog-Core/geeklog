@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.26 2005/06/03 17:36:51 mjervis Exp $
+// $Id: lib-security.php,v 1.27 2005/06/05 08:40:18 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -654,9 +654,9 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 */
 function SEC_authenticate($username, $password)
 {
-    global $_TABLES, $LANG01;
+    global $_TABLES, $LANG01, $_CONF;
 
-    $result = DB_query( "SELECT status, passwd FROM {$_TABLES['users']} WHERE username='$username'" );
+    $result = DB_query( "SELECT status, passwd, email, uid FROM {$_TABLES['users']} WHERE username='$username'" );
     $tmp = mysql_errno();
     $nrows = DB_numRows( $result );
 
@@ -673,8 +673,18 @@ function SEC_authenticate($username, $password)
             if ($_CONF['usersubmission'])
             {
                 $newstatus = 2; // require admin approval
+                // Notify the admin?
+                if (isset ($_CONF['notification']) &&
+                    in_array ('user', $_CONF['notification'])) {
+                    USER_sendNotification ($username, $U['email'], $U['uid'], 'inactive');
+                }
             } else {
                 $newstatus = 3; // live
+                // Notify the admin?
+                if (isset ($_CONF['notification']) &&
+                    in_array ('user', $_CONF['notification'])) {
+                    USER_sendNotification ($username, $U['email'], $U['uid'], 'active');
+                }
             }
             DB_change($_TABLES['users'],'status',$newstatus,'username',$username); 
             return $newstatus;
