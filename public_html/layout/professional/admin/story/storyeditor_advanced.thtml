@@ -105,6 +105,7 @@
                                 </table>
                                 <!-- Rich Text Editor --->
                                 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="html_editor" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
+                                <!--  BL: Feature not complete yet
                                     <tr>
                                         <td>Toolbar: 
                                             <span style="padding-left:10px;">
@@ -116,6 +117,7 @@
                                            </select>
                                        </td>
                                     </tr>
+                               -->
                                     <tr>
                                         <td>{lang_introtext}:
                                             <span style="padding-left:10px;">
