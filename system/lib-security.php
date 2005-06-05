@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.27 2005/06/05 08:40:18 mjervis Exp $
+// $Id: lib-security.php,v 1.28 2005/06/05 08:59:07 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -686,7 +686,11 @@ function SEC_authenticate($username, $password)
                     USER_sendNotification ($username, $U['email'], $U['uid'], 'active');
                 }
             }
-            DB_change($_TABLES['users'],'status',$newstatus,'username',$username); 
+            DB_change($_TABLES['users'],'status',$newstatus,'username',$username);
+            if ($newstatus == 2)
+            {
+                echo COM_refresh($_CONF['site_url'] . '/index.php?msg=71');
+            }
             return $newstatus;
         } else {
             return $U['status']; // just return their status

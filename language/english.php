@@ -1136,6 +1136,7 @@ $MESSAGE = array(
     68 => 'You have to enter the correct current password.',
     69 => 'Your account has been blocked!',
     70 => 'Your account is awaiting administrator approval.',
+    71 => 'Your account has now been confirmed and is awaiting administrator approval.'
 );
 
 ###############################################################################
