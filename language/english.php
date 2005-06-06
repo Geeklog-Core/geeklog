@@ -158,7 +158,8 @@ $LANG01 = array(
     115 => 'No new trackback comments',
     116 => 'Trackback',
     117 => 'Directory',
-    118 => 'Please continue reading on the next page:'
+    118 => 'Please continue reading on the next page:',
+    119 => "Forget Your <a href=\"{$_CONF['site_url']}/users.php?mode=getpassword\">password</a>?"
 );
 
 ###############################################################################

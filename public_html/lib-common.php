@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.440 2005/06/05 08:40:18 mjervis Exp $
+// $Id: lib-common.php,v 1.441 2005/06/06 12:03:25 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -2279,6 +2279,7 @@ function COM_userMenu( $help='', $title='' )
         $login->set_var( 'layout_url', $_CONF['layout_url'] );
         $login->set_var( 'lang_username', $LANG01[21] );
         $login->set_var( 'lang_password', $LANG01[57] );
+        $login->set_var( 'lang_forgetpassword', $LANG01[119] );
         $login->set_var( 'lang_login', $LANG01[58] );
         $login->set_var( 'lang_signup', $LANG01[59] );
         $retval .= $login->parse( 'output', 'form' );
