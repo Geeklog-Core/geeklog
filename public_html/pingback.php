@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: pingback.php,v 1.5 2005/06/05 09:40:11 dhaun Exp $
+// $Id: pingback.php,v 1.6 2005/06/06 19:24:11 dhaun Exp $
 
 require_once ('lib-common.php');
 
@@ -48,7 +48,8 @@ $PNB_ERROR = array (
     'speedlimit'  => 'Your last pingback was %d seconds ago. This site requires at least %d seconds between pingbacks.',
     'disabled'    => 'Pingback is disabled.',
     'uri_invalid' => 'Invalid targetURI.',
-    'no_access'   => 'Access denied.'
+    'no_access'   => 'Access denied.',
+    'multiple'    => 'Multiple posts not allowed.'
 );
 
 
@@ -67,6 +68,8 @@ function PNB_handlePingback ($id, $type, $url)
 {
     global $_CONF, $_TABLES, $PNB_ERROR;
 
+    require_once ('HTTP/Request.php');
+
     COM_clearSpeedlimit ($_CONF['commentspeedlimit'], 'pingback');
     $last = COM_checkSpeedlimit ('pingback');
     if ($last > 0) {
@@ -77,30 +80,30 @@ function PNB_handlePingback ($id, $type, $url)
     // See if we can read the page linking to us and extract at least
     // the page's title out of it ...
     $title = '';
-    if (@ini_get ('allow_url_fopen')) {
-        $fp = @fopen ($url, 'r');
-        if ($fp) {
-            $page = fread ($fp, 4096); // 4K should be more than enough ...
-            fclose ($fp);
-
-            preg_match (':<title>(.*)</title>:i', $page, $content);
+    $req =& new HTTP_Request ($url);
+    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
+    if (!PEAR::isError ($req->sendRequest ())) {
+        if ($req->getResponseCode () == 200) {
+            preg_match (':<title>(.*)</title>:i', $req->getResponseBody (),
+                        $content);
             if (empty ($content[1])) {
                 $title = ''; // no title found
             } else {
                 $title = $content[1];
             }
 
-            // we could also run the part of the other page that we got
+            // we could also run the rest of the other site's page
             // through the spam filter here ...
         }
     }
+    // else: silently ignore errors - we'll simply do without the title
 
     // save as a trackback comment
     $saved = TRB_saveTrackbackComment ($id, $type, $url, $title);
     if ($saved == TRB_SAVE_SPAM) {
         return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
     } else if ($saved == TRB_SAVE_REJECT) {
-        return new XML_RPC_Response (0, 49, $PNB_ERROR['spam']);
+        return new XML_RPC_Response (0, 49, $PNB_ERROR['multiple']);
     }
 
     COM_updateSpeedlimit ('pingback');

@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-pingback.php,v 1.4 2005/01/30 20:01:22 dhaun Exp $
+// $Id: lib-pingback.php,v 1.5 2005/06/06 19:24:11 dhaun Exp $
 
 if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -37,44 +37,6 @@ if (eregi ('lib-trackback.php', $_SERVER['PHP_SELF'])) {
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
-
-/**
-* Get the HEAD response for a URL
-*
-* @param    string  $targeturl  URL to get the HEAD from
-* @return   string              the HEAD response as one string or false
-*
-*/
-function PNB_getHead ($targeturl)
-{
-    $target = parse_url ($targeturl);
-    if (!empty ($target['query'])) {
-        $target['query'] = '?' . $target['query'];
-    }
-    if (empty ($target['port']) || !is_numeric ($target['port'])) {
-        $target['port'] = 80;
-    }
-                                                                                
-    $sock = fsockopen ($target['host'], $target['port']);
-    if (!is_resource ($sock)) {
-        COM_errorLog ('Pingback: Could not connect to ' . $targeturl);
-                                                                                
-        return false;
-    }
-
-    fputs ($sock, 'HEAD ' . $target['path'] . $target['query'] . " HTTP/1.1\n");
-    fputs ($sock, 'Host: ' . $target['host'] . "\n");
-    fputs ($sock, "Connection: close\n\n");
-
-    $res = '';
-    while (!feof ($sock)) {
-        $res .= fgets ($sock, 128);
-    }
-                                                                                
-    fclose($sock);
-
-    return $res;
-}
 
 /**
 * Get the Pingback URL for a given URL
@@ -87,23 +49,21 @@ function PNB_getHead ($targeturl)
 */
 function PNB_getPingbackUrl ($url)
 {
+    require_once ('HTTP/Request.php');
+
     $retval = '';
 
-    $head = PNB_getHead ($url);
-    if (!empty ($head)) {
-        $header = explode ("\n", $head);
-        foreach ($header as $h) {
-            $parts = explode (' ', $h);
-            if (strcasecmp ($parts[0], 'X-Pingback:') == 0) {
-                $retval = trim ($parts[1]);
-                break;
-            }
-        }
-    }
+    $req =& new HTTP_Request ($url);
+    $req->setMethod (HTTP_REQUEST_METHOD_HEAD);
+    $req->addHeader ('User-Agent', 'GeekLog ' . VERSION);
 
-    // if we don't get the URL from the header, we could now try to read
-    // the page and extract it from a <link rel="pingback"> tag, but use
-    // of those is discouraged anyway ...
+    $response = $req->sendRequest ();
+    if (PEAR::isError ($response)) {
+        COM_errorLog ('Pingback: ' . $response->getMessage());
+        return false;
+    } else {
+        $retval = $req->getResponseHeader ('X-Pingback');
+    }
 
     return $retval;
 }
