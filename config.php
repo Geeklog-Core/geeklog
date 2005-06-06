@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.177 2005/06/05 09:40:11 dhaun Exp $
+// $Id: config.php,v 1.178 2005/06/06 19:23:34 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -437,7 +437,7 @@ $_CONF['skip_preview']  = 0; // If = 1, allow user to submit comments and storie
 // +---------------------------------------------------------------------------+
 // | Internal Geeklog CRON or scheduled Task/Function setting                  |
 // | Plugins can use the runSheduledTask API to activate any automated tasks   |
-// | or add code in lib-custom to the CUSTOM_runSheduledTask function          | 
+// | or add code in lib-custom to the CUSTOM_runSheduledTask function          |
 // +---------------------------------------------------------------------------+
 $_CONF['cron_schedule_interval']        = 86400;   // Seconds - Default 1 day
 
@@ -535,10 +535,10 @@ $_CONF['hideviewscount']        = 0;        // If 1, hide Viewed X times line
 $_CONF['article_image_align']   = 'right';   // Topic icon on left or right.
 $_CONF['hideemailicon']         = 0;    // If 1, hide "email story" option
 $_CONF['hideprintericon']       = 0;    // If 1, hide "printer friendly" option
-$_CONF['allow_page_breaks']     = 1;    // allow if stories can contain a page break
+$_CONF['allow_page_breaks']     = 1;    // allow [page_break] in stories
 $_CONF['page_break_comments']   = 'last';  // When an article has a page break,
-                                           // show comments on the 'first','last' or
-                                           // 'all' pages?
+                                           // show comments on the 'first',
+                                           //'last' or 'all' pages?
 
 
 // Advanced theme settings
