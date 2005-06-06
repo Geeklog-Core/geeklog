@@ -5,4 +5,5 @@
   <input type="password" size="10" name="passwd"><br>
   <input type="submit" value="{lang_login}">
 </form>
-{lang_signup}
+{lang_signup}<br>
+{lang_forgetpassword}
