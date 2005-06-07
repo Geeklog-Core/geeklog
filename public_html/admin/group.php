@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.44 2005/03/30 01:12:10 blaine Exp $
+// $Id: group.php,v 1.45 2005/06/07 13:49:45 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -492,9 +492,9 @@ function savegroup ($grp_id, $grp_name, $grp_descr, $grp_gl_core, $features, $gr
 * @return   string  HTML for group listing
 *
 */
-function listgroups() 
+function listgroups($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_TABLES, $_CONF, $LANG_ACCESS;
+    global $_TABLES, $_CONF, $LANG_ACCESS, $order, $prevorder, $direction;
 
     $retval = COM_startBlock ($LANG_ACCESS['groupmanager'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
@@ -507,16 +507,88 @@ function listgroups()
     $group_templates->set_var('lang_newgroup', $LANG_ACCESS['newgroup']);
     $group_templates->set_var('lang_adminhome', $LANG_ACCESS['adminhome']);
     $group_templates->set_var('lang_instructions', $LANG_ACCESS['newgroupmsg']); 
+    $group_templates->set_var('lang_group_id', $LANG_ACCESS['group_id']);
     $group_templates->set_var('lang_groupname', $LANG_ACCESS['groupname']);
     $group_templates->set_var('lang_description', $LANG_ACCESS['description']);
     $group_templates->set_var('lang_coregroup', $LANG_ACCESS['coregroup']);
     $group_templates->set_var('lang_action', $LANG_ACCESS['action']);
     $group_templates->set_var('lang_edit', $LANG_ACCESS['edit']);
     $group_templates->set_var('lang_list_users', $LANG_ACCESS['listusers']);
+    $group_templates->set_var('lang_search', $LANG_ACCESS['search']);
+    $group_templates->set_var('lang_submit', $LANG_ACCESS['submit']);
+    $group_templates->set_var('last_query', $query);
+    $group_templates->set_var('lang_limit_results', $LANG_ACCESS['limitresults']);
+    
+    switch($order) {
+        case 1:
+            $orderby = 'grp_id';
+            break;
+        case 2:
+            $orderby = 'grp_name';
+            break;
+        case 3:
+            $orderby = 'grp_descr';
+            break;
+        case 4:
+            $orderby = 'grp_gl_core';
+            break;
+        default:
+            $orderby = 'grp_name';
+            $order = 2;
+            break;
+    }
+    
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
+    } else {
+        $direction = ($direction == "desc") ? "desc" : "asc";
+    }
+
+    if ($direction == 'asc') {
+        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $group_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    }
+
+    $group_templates->set_var ('direction', $direction);
+    $group_templates->set_var ('page', $page);
+    $group_templates->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $group_templates->set_var ('query', urlencode($query) );
+    } else {
+        $group_templates->set_var ('query', '');
+    }
+    $group_templates->set_var ('query_limit', $query_limit);
+    $group_templates->set_var($limit . '_selected', 'selected="selected"');
+    
+    if (!empty ($query)) {
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['groups'], 'count(*)',
+                "(grp_name LIKE '$query' OR grp_descr LIKE '$query')") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES['groups'], 'count(*)') / $limit);
+    }
+    
+    $offset = (($curpage - 1) * $limit);
 
     $thisUsersGroups = SEC_getUserGroups ();
-
-    $result = DB_query("SELECT * FROM {$_TABLES['groups']}");
+    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    
+    $sql = "SELECT * FROM {$_TABLES['groups']}";
+    if (!empty($query)) {
+         $sql .= " WHERE (grp_name LIKE '$query' OR grp_descr LIKE '$query')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+    
+    $result = DB_query($sql);
     $nrows = DB_numRows($result);
     $rowid = 0;
     for ($i = 0; $i < $nrows; $i++) {
@@ -527,6 +599,7 @@ function listgroups()
             } else {
                 $core = $LANG_ACCESS['no'];
             }
+            $group_templates->set_var ('edit_ico', $edit_ico);
             $group_templates->set_var ('group_id', $A['grp_id']);
             $group_templates->set_var ('group_name', $A['grp_name']);
             $group_templates->set_var ('group_description', $A['grp_descr']);
@@ -537,10 +610,21 @@ function listgroups()
             $rowid++;
         }
     }
+    if (!empty($query)) {
+        $query = str_replace('%','*',$query);
+        $base_url = $_CONF['site_admin_url'] . '/group.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+    } else {
+        $base_url = $_CONF['site_admin_url'] . "/group.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+    }
+    
+    if ($num_pages > 1) {
+        $group_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+    } else {
+        $group_templates->set_var('google_paging', '');
+    }
     $group_templates->parse('output', 'list');
     $retval .= $group_templates->finish($group_templates->get_var('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
-
     return $retval;
 }
 
@@ -847,7 +931,19 @@ if (($mode == $LANG_ACCESS['delete']) && !empty ($LANG_ACCESS['delete'])) {
     if (isset ($http_input_vars['msg'])) {
         $display .= COM_showMessage (COM_applyFilter ($http_input_vars['msg'], true));
     }
-    $display .= listgroups ();
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= listgroups ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter ();
 }
 
