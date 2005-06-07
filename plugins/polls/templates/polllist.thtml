@@ -1,0 +1,1 @@
+                            <br>{item_num}. <a href="{poll_url}">{poll_question}</a> ({poll_votes} {lang_votes}){ending_br} 
