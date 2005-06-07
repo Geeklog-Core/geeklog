@@ -6,10 +6,10 @@
 // +-----------------------------------------------------------------------------+
 // | config.php   Plugin configuaration file                                     |
 // +-----------------------------------------------------------------------------+
-// | Copyright (C) 2003 by the following authors:                                |
+// | Copyright (C) 2005 by the following authors:                                |
 // |                                                                             |
 // | glPolla Plugin Author:                                               |
-// | Blaine Lang   -  blaine@portalparts.com                                     |
+// | Trinity   -  trinity93@steubentech.com                                     |
 // +-----------------------------------------------------------------------------+
 // | Geeklog Common Code                                                         |
 // | Copyright (C) 2000-2003 by the following authors:                           |
@@ -44,9 +44,5 @@ $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
 $_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
 $_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 
-//$CONF_REG['debug'] = false;
-
-// Event Types managed by the Registration Plugin
-//$CONF_REG['regEventType'] = array ('On Site Training','Miscellaneous','Seminar','Special Occasion','Live Webcast');
 
 ?>
