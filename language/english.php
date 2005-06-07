@@ -834,7 +834,7 @@ $LANG28 = array(
     9 => '(do not use spaces)',
     10 => 'Please fill in the Username and Email Address fields',
     11 => 'User Manager',
-    12 => "To modify or delete a user, click on that user's number below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
+    12 => "To modify or delete a user, click on that user's edit icon below. To view a user, click on the username you wish to view. To create a new user click the new user button to the left. You can do simple searches by entering parts of a username, email address or fullname (e.g. *son* or *.edu) in the form below.",
     13 => 'SecLev',
     14 => 'Reg. Date',
     15 => 'New User',
@@ -1161,7 +1161,7 @@ $LANG_ACCESS = array(
     'missingfields' => 'Missing Fields',
     'missingfieldsmsg' => 'You must supply the name and a description for a group',
     'groupmanager' => 'Group Manager',
-    'newgroupmsg' => 'To modify or delete a group, click on that group below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.',
+    'newgroupmsg' => 'To modify or delete a group, click on that groups edit icon below. To create a new group click new group above. Please note that core groups cannot be deleted because they are used in the system.',
     'groupname' => 'Group Name',
     'coregroup' => 'Core Group',
     'yes' => 'Yes',
@@ -1199,7 +1199,11 @@ $LANG_ACCESS = array(
     'canteditgroup' => 'To edit this group, you have to be a member of the group. Please contact the system administrator if you feel this is an error.',
     'cantlistgroup' => 'To see the members of this group, you have to be a member yourself. Please contact the system administrator if you feel this is an error.',
     'editgroupmsg' => 'To modify the group membership,  click on the member names(s) and use the add or remove buttons. If the member is a member of the group, their name will appear on the "Right" side only. Once you are complete - press <b>Save</b> to update the group and return to the main group admin page.',
-    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>'
+    'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
+    'search' => 'Search',
+    'submit' => 'Submit',
+    'limitresults' => 'Limit Results'
+    
 );
 
 ###############################################################################
