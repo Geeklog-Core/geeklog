@@ -64,10 +64,10 @@ $_SQL[] = "ALTER TABLE {$_TABLES['stories']} ADD INDEX stories_in_transit(in_tra
 // new header-link for feeds
 $_SQL[] = "ALTER TABLE {$_TABLES['syndication']} ADD header_tid varchar(48) NOT NULL default 'none' AFTER topic;";
 // Upgrade format values
-$_SQL[] = "UPDATE TABLE {$_TABLES['syndication']} SET format='RSS-0.91' WHERE format='rss'";
-$_SQL[] = "UPDATE TABLE {$_TABLES['syndication']} SET format='RSS-2.0' WHERE format='rss2'";
-$_SQL[] = "UPDATE TABLE {$_TABLES['syndication']} SET format='Atom-0.3' WHERE format='atom'";
-$_SQL[] = "UPDATE TABLE {$_TABLES['syndication']} SET format='RDF-1.0' WHERE format='rdf'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-0.91' WHERE format='rss'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RSS-2.0' WHERE format='rss2'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='Atom-0.3' WHERE format='atom'";
+$_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RDF-1.0' WHERE format='rdf'";
 
 // add links plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
