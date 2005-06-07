@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 // 
-// $Id: lib-story.php,v 1.32 2005/06/03 09:43:42 ospiess Exp $
+// $Id: lib-story.php,v 1.33 2005/06/07 20:22:23 ospiess Exp $
 
 if (eregi ('lib-story.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -187,10 +187,11 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                                 . $A['sid'] );
     $introtext = stripslashes( $A['introtext'] );
     $introtext = PLG_replacetags($introtext);   // Replace any plugin autolink tags
+    $article->set_var( 'story_title', stripslashes( $A['title'] ));
 
+    $show_comments = true;
     if(( $index == 'n' ) || ( $index == 'p' ))
     {
-        $article->set_var( 'story_title', stripslashes( $A['title'] ));
         if( empty( $A['bodytext'] ))
         {
             $article->set_var( 'story_introtext', $introtext );
@@ -202,8 +203,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
             // Replace any plugin autolink tags
             $bodytext = PLG_replacetags( $bodytext );
 
-            if ( ($index != 'p') and ($_CONF['allow_page_breaks'] == 1) )
-            { // do not show in preview mode
+            if ( ($_CONF['allow_page_breaks'] == 1) and ($index == 'n') )
+            {
                 // page selector
                 if (is_numeric($mode))
                 {
@@ -212,7 +213,8 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                 if( $story_page <= 0 )
                 {
                     $story_page = 1;
-                } elseif ( $story_page > 1 )
+                }
+                elseif ( $story_page > 1 )
                 {
                     $introtext = '';
                 }
@@ -228,7 +230,19 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
                     $bodytext=$article_array[$story_page - 1];
                 }
                 $article->set_var( 'page_selector', $pagelinks );
+
+                if (
+                     ( ($_CONF['page_break_comments'] == 'last')  and
+                       ($story_page < count($article_array)) )
+                    or
+                     ( ($_CONF['page_break_comments'] == 'first')  and
+                       ($story_page!=1) )
+                   )
+                {
+                    $show_comments = false;
+                }
             }
+            
             $article->set_var( 'story_introtext', $introtext . '<br><br>'
                                . $bodytext );
             $article->set_var( 'story_text_no_br', $introtext . $bodytext );
@@ -250,7 +264,6 @@ function STORY_renderArticle( $A, $index='', $storytpl='storytext.thtml' )
     }
     else
     {
-        $article->set_var( 'story_title', stripslashes( $A['title'] ));
         $article->set_var( 'story_introtext', $introtext );
         $article->set_var( 'story_text_no_br', $introtext );
 
