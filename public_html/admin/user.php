@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.103 2005/06/07 13:49:12 ospiess Exp $
+// $Id: user.php,v 1.104 2005/06/07 15:02:34 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -450,12 +450,15 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_fullname', $LANG28[4]);
     $user_templates->set_var('lang_edit', $LANG28[17]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
+    $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $user_templates->set_var('edit_ico', $editico);
+
     if ($_CONF['lastlogin']==true) {
         $user_templates->set_var('lang_regdate', $LANG28[41]);
     } else {
         $user_templates->set_var('lang_regdate', $LANG28[40]);
     }
-        
 
     switch($order) {
         case 1:
@@ -531,18 +534,15 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     
     $sql = "SELECT {$_TABLES['users']}.uid,username,fullname,email,photo,regdate$select_userinfo FROM {$_TABLES['users']} $join_userinfo WHERE {$_TABLES['users']}.uid > 1";
     if (!empty($query)) {
-         $sql .= "AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')";
+         $sql .= " AND (username LIKE '$query' OR email LIKE '$query' OR fullname LIKE '$query')";
     } 
     $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
     $result = DB_query($sql);
     $nrows = DB_numRows($result);
-
-    $photoico = '<img src="' . $_CONF['layout_url'] . '/images/smallcamera.gif">';
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray($result);
         $user_templates->set_var('user_id', $A['uid']);
-        $user_templates->set_var('edit_ico', $editico);
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
         $user_templates->set_var('user_email', $A['email']);
