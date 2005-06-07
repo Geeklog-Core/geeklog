@@ -839,7 +839,7 @@ $LANG28 = array(
     14 => 'Reg. Date',
     15 => 'New User',
     16 => 'Admin Home',
-    17 => '',
+    17 => 'Edit',
     18 => 'cancel',
     19 => 'delete',
     20 => 'save',
@@ -1202,7 +1202,8 @@ $LANG_ACCESS = array(
     'listgroupmsg' => 'Listing of all current members in the group: <b>%s</b>',
     'search' => 'Search',
     'submit' => 'Submit',
-    'limitresults' => 'Limit Results'
+    'limitresults' => 'Limit Results',
+    'group_id' => 'Group ID'
     
 );
 
