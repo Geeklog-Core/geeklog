@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.102 2005/06/07 13:21:47 ospiess Exp $
+// $Id: user.php,v 1.103 2005/06/07 13:49:12 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -448,6 +448,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
     $user_templates->set_var('lang_uid', $LANG28[37]);
     $user_templates->set_var('lang_username', $LANG28[3]);
     $user_templates->set_var('lang_fullname', $LANG28[4]);
+    $user_templates->set_var('lang_edit', $LANG28[17]);
     $user_templates->set_var('lang_emailaddress', $LANG28[7]);
     if ($_CONF['lastlogin']==true) {
         $user_templates->set_var('lang_regdate', $LANG28[41]);
@@ -542,7 +543,6 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
         $A = DB_fetchArray($result);
         $user_templates->set_var('user_id', $A['uid']);
         $user_templates->set_var('edit_ico', $editico);
-        $user_templates->set_var('lang_edit', 'Edit');
         $user_templates->set_var('username', $A['username']);
         $user_templates->set_var('user_fullname', $A['fullname']);
         $user_templates->set_var('user_email', $A['email']);
