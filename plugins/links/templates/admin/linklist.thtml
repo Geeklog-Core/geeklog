@@ -6,17 +6,34 @@
                                 <tr>
                                     <td colspan="2">{lang_instructions}</td>
                                 </tr>
-                            </table>
-                            <table border="0" cellspacing="0" cellpadding="2" width="100%">
                                 <tr>
-                                    <th>#</th>
-                                    <th align="left">{lang_linktitle}</th>
-                                    <th>{lang_access}</th>
-                                    <th>{lang_linkcategory}</th>
-                                    <th align="left">{lang_linkurl}</th>
+                                    <td colspan="2" align="center">
+                                        <form action="{site_admin_url}/plugins/links/index.php" method="post">
+                                            {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
+                                            &nbsp;&nbsp;{lang_limit_results}:
+                                                <select name="query_limit">
+                                                    <option value="10" {10_selected}>10</option>
+                                                    <option value="20" {20_selected}>20</option>
+                                                    <option value="50" {50_selected}>50</option>
+                                                    <option value="75" {75_selected}>75</option>
+                                                    <option value="100" {100_selected}>100</option>
+                                                    <option value="200" {200_selected}>200</option>
+                                                    <option value="500" {500_selected}>500</option>
+                                                </select>
+                                            <input type="submit" value="{lang_submit}">
+                                        </form>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table border="0" cellspacing="1" cellpadding="2" width="100%">
+                                <tr style="background:#FFFFFF;">
+                                    <th style="text-align:left;padding-right:5px;padding-left:5px;" nowrap>{lang_edit}</th>
+                                    <th style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_lid}{img_arrow1}</th>
+                                    <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linktitle}{img_arrow2}</th>
+                                    <th width="10%" style="text-align:left;padding-right:5px;" nowrap>{lang_access}</th>
+                                    <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linkcategory}{img_arrow3}</th>
+                                    <th style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linkurl}{img_arrow4}</th>
                                 </tr>
                                 {link_row}
-                                <tr>
-                                    <td colspan="5">{google_paging}</td>
-                                </tr>
                             </table>
+                            {google_paging}
