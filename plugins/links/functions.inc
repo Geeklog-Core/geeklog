@@ -35,7 +35,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.12 2005/06/04 20:24:41 trinity Exp $
+// $Id: functions.inc,v 1.13 2005/06/08 08:42:02 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/links/language/'
           . $_CONF['language'] . '.php';
@@ -263,10 +263,10 @@ function plugin_dopluginsearch_links($query, $datestart, $dateend, $topic, $type
             }
             $tmp = substr ($tmp, 0, strlen ($tmp) - 4);
             $sql .= $tmp . ')';
-        } else {
+        } else {  // quick search
             $mysearchterm = addslashes ($query);
             $sql .= " AND (description LIKE '%$mysearchterm%')"
-                 . " OR (title LIKE '%$mysearchterm%'))";
+                 . " OR (title LIKE '%$mysearchterm%')";
         }
     }
 
