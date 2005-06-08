@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.105 2005/06/08 07:06:44 mjervis Exp $
+// $Id: user.php,v 1.106 2005/06/08 14:45:11 ospiess Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -482,9 +482,9 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
             break;
         case 5:
             if ($_CONF['lastlogin']==true) {
-                $orderby = 'regdate';
-            } else {
                 $orderby = 'lastlogin';
+            } else {
+                $orderby = 'regdate';
             }
             break;
         default:
