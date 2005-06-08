@@ -760,7 +760,11 @@ $LANG24 = array(
     59 => 'Option',
     60 => 'Enabled',
     61 => 'Auto Archive',
-    62 => 'Auto Delete'
+    62 => 'Auto Delete',
+    63 => 'Edit',
+    64 => 'Submit',
+    65 => 'Search',
+    66 => 'Limit Results'
 );
 
 ###############################################################################
