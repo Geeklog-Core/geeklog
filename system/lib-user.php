@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.8 2005/06/05 08:40:18 mjervis Exp $
+// $Id: lib-user.php,v 1.9 2005/06/08 07:06:44 mjervis Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -189,6 +189,41 @@ function USER_createAndSendPassword ($username, $useremail)
         $mailtext .= $_CONF['site_url'] . "\n";
     }
     $subject = $_CONF['site_name'] . ': ' . $LANG04[16];
+
+    return COM_mail ($useremail, $subject, $mailtext);
+}
+
+/**
+* Inform a user their account has been activated.
+*
+* @param    string  $username   user's login name
+* @param    string  $useremail  user's email address
+* @return   bool                true = success, false = an error occured
+*
+*/
+function USER_sendActivationEmail ($username, $useremail)
+{
+    global $_CONF, $_TABLES, $LANG04;
+
+    if (file_exists ($_CONF['path_data'] . 'activation_email.txt')) {
+        $template = new Template ($_CONF['path_data']);
+        $template->set_file (array ('mail' => 'activation_email.txt'));
+        $template->set_var ('site_url', $_CONF['site_url']);
+        $template->set_var ('site_name', $_CONF['site_name']);
+        $template->set_var ('site_slogan', $_CONF['site_slogan']);
+        $template->set_var ('lang_text1', $LANG04[15]);
+        $template->set_var ('lang_text2', $LANG04[14]);
+        $template->parse ('output', 'mail');
+        $mailtext = $template->get_var ('output');
+    } else {
+        $mailtext = str_replace("<username>", $username, $LANG04[118]) . "\n\n";
+        $mailtext .= $_CONF['site_url'] ."\n\n";
+        $mailtext .= $LANG04[119] . "\n\n";
+        $mailtext .= $_CONF['site_url'] ."/users.php?mode=getpassword\n\n";
+        $mailtext .= $_CONF['site_name'] . "\n";
+        $mailtext .= $_CONF['site_url'] . "\n";
+    }
+    $subject = $_CONF['site_name'] . ': ' . $LANG04[120];
 
     return COM_mail ($useremail, $subject, $mailtext);
 }

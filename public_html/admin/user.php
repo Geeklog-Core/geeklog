@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.104 2005/06/07 15:02:34 ospiess Exp $
+// $Id: user.php,v 1.105 2005/06/08 07:06:44 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -193,6 +193,8 @@ function edituser($uid = '', $msg = '')
             $statusselect .= "<option value=\"$key\">$value</option>\n";
         }
     }
+    $statusselect .= '</select><input type="hidden" name="oldstatus" value="'.
+                        $A['status'].'"/>';
     $user_templates->set_var('user_status', $statusselect);
     $user_templates->set_var('lang_user_status', $LANG28[46]);
 
@@ -252,7 +254,7 @@ function edituser($uid = '', $msg = '')
 * @return   string                  HTML redirect or error message
 *
 */
-function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '', $userstatus=3)
+function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $regdate, $homepage, $groups, $delete_photo = '', $userstatus=3, $oldstatus=3)
 {
     global $_CONF, $_TABLES, $_USER, $LANG28, $_USER_VERBOSE;
 
@@ -351,6 +353,11 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
             DB_query("UPDATE {$_TABLES['users']} SET username = '$username', fullname = '$fullname', passwd = '$passwd', email = '$email', homepage = '$homepage', photo = '$curphoto', status='$userstatus' WHERE uid = $uid");
             if ($_CONF['custom_registration'] AND (function_exists('custom_usersave'))) {
                 custom_usersave($uid);
+            }
+            if( ($_CONF['usersubmission'] == 1) && ($oldstatus == 2) 
+                   && ($userstatus == 3) )
+            {
+                USER_sendActivationEmail($username, $email);
             }
             PLG_userInfoChanged ($uid);
         }
@@ -782,7 +789,7 @@ if ($_POST['passwd']!=$_POST['passwd_conf']) { // passwords were entered but two
             $_POST['passwd'], $_POST['passwd_conf'], $_POST['email'],
             $_POST['regdate'], $_POST['homepage'],
             $_POST[$_TABLES['groups']],
-            $_POST['delete_photo'], $_POST['userstatus']);
+            $_POST['delete_photo'], $_POST['userstatus'], $_POST['oldstatus']);
     if (!empty($display)) {
         $tmp = COM_siteHeader('menu');
         $tmp .= $display;
