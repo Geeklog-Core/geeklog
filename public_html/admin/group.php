@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.45 2005/06/07 13:49:45 ospiess Exp $
+// $Id: group.php,v 1.46 2005/06/08 13:30:15 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -521,15 +521,12 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     
     switch($order) {
         case 1:
-            $orderby = 'grp_id';
-            break;
-        case 2:
             $orderby = 'grp_name';
             break;
-        case 3:
+        case 2:
             $orderby = 'grp_descr';
             break;
-        case 4:
+        case 3:
             $orderby = 'grp_gl_core';
             break;
         default:
