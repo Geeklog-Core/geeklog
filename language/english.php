@@ -674,7 +674,7 @@ $LANG22 = array(
     9 => '(include http://)',
     10 => 'You must provide the dates/times, event title, and description',
     11 => 'Event Manager',
-    12 => 'To modify or delete an event, click on that event below.  To create a new event click on new event above. Click on [C] to create a copy of an existing event.',
+    12 => 'To modify or delete an event, click on that events edit icon below.  To create a new event click on new event above. Click on the copy icon to create a copy of an existing event.',
     13 => 'Event Title',
     14 => 'Start Date',
     15 => 'End Date',
@@ -687,7 +687,12 @@ $LANG22 = array(
     22 => 'delete',
     23 => 'Bad start date.',
     24 => 'Bad end date.',
-    25 => 'End date is before start date.'
+    25 => 'End date is before start date.',
+    26 => 'Submit',
+    27 => 'Limit Results',
+    28 => 'Search',
+    29 => 'Edit',
+    30 => 'Copy'
 );
 
 ###############################################################################

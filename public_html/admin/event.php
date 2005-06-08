@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.55 2005/04/16 12:51:56 dhaun Exp $
+// $Id: event.php,v 1.56 2005/06/08 14:17:34 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -41,9 +41,6 @@ require_once ('auth.inc.php');
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
 // COM_debug($_POST);
-
-// number of events to list per page
-define ('EVENTS_PER_PAGE', 50);
 
 $display = '';
 
@@ -505,16 +502,11 @@ function saveevent ($eid, $title, $event_type, $url, $allday, $start_month, $sta
 * @return   string          HTML for list of events
 *
 */
-function listevents ($page = 1) 
+function listevents ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS;
+    global $_CONF, $_TABLES, $LANG22, $LANG_ACCESS, $order, $prevorder, $direction;
 
     $retval = '';
-
-    if ($page < 1) {
-        $page = 1;
-    }
-
     $retval .= COM_startBlock ($LANG22[11], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
@@ -530,9 +522,81 @@ function listevents ($page = 1)
     $event_templates->set_var('lang_startdate', $LANG22[14]);
     $event_templates->set_var('lang_enddate', $LANG22[15]);
     $event_templates->set_var('layout_url',$_CONF['layout_url']);
+    $event_templates->set_var('lang_submit', $LANG22[26]);
+    $event_templates->set_var('lang_search', $LANG22[28]);
+    $event_templates->set_var('lang_limit_results', $LANG22[27]);
+    $event_templates->set_var('last_query', $query);
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $event_templates->set_var('edit_ico', $editico);
+    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.png">';
+    $event_templates->set_var('copy_ico', $copyico);
+    $event_templates->set_var('lang_edit', $LANG22[29]);
+    $event_templates->set_var('lang_copy', $LANG22[30]);
 
-    $limit = (EVENTS_PER_PAGE * ($page - 1));
-    $result = DB_query ("SELECT * FROM {$_TABLES['events']}" . COM_getPermSQL () . " ORDER BY datestart DESC LIMIT $limit," . EVENTS_PER_PAGE);
+    switch($order) {
+        case 1:
+            $orderby = 'title';
+            break;
+        case 2:
+            $orderby = 'datestart';
+            break;
+        case 3:
+            $orderby = 'dateend';
+            break;
+        default:
+            $orderby = 'datestart';
+            $order = 2;
+            break;
+    }
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
+    } else {
+        $direction = ($direction == "desc") ? "desc" : "asc";
+    }
+
+    if ($direction == 'asc') {
+        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $event_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    }
+
+    $event_templates->set_var ('direction', $direction);
+    $event_templates->set_var ('page', $page);
+    $event_templates->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $event_templates->set_var ('query', urlencode($query) );
+    } else {
+        $event_templates->set_var ('query', '');
+    }
+    $event_templates->set_var ('query_limit', $query_limit);
+    $event_templates->set_var($limit . '_selected', 'selected="selected"');
+
+    if (!empty ($query)) {
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['events'], 'count(*)',
+                "(title LIKE '$query' OR datestart LIKE '$query' OR dateend LIKE '$query')") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES['events'], 'count(*)') / $limit);
+    }
+
+    $offset = (($curpage - 1) * $limit);
+
+    $sql = "SELECT * FROM {$_TABLES['events']} WHERE 1 " . COM_getPermSQL ();
+    if (!empty($query)) {
+         $sql .= " AND (title LIKE '$query' OR datestart LIKE '$query' OR dateend LIKE '$query')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+
+
+    $result = DB_query ($sql);
     $nrows = DB_numRows ($result);
     for ($i = 0; $i < $nrows; $i++) {
         $A = DB_fetchArray ($result);
@@ -544,26 +608,26 @@ function listevents ($page = 1)
         } else {
             $access = $LANG_ACCESS['readonly'];
         }
-        $ecount = (EVENTS_PER_PAGE * ($page - 1)) + $i + 1;
+        $event_templates->set_var('cssid', ($i%2)+1);
         $event_templates->set_var('event_id', $A['eid']);
         $event_templates->set_var('event_title', stripslashes ($A['title']));
         $event_templates->set_var('event_access', $access);
         $event_templates->set_var('event_startdate', $A['datestart']);
         $event_templates->set_var('event_enddate', $A['dateend']); 
-        $event_templates->set_var('row_num', $ecount);
         $event_templates->parse('event_row', 'row', true);
     }
 
-    $eresult = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['events']}" . COM_getPermSQL ());
-    $N = DB_fetchArray ($eresult);
-    $numevents = $N['count'];
-    if ($numevents > EVENTS_PER_PAGE) {
-        $baseurl = $_CONF['site_admin_url'] . '/event.php';
-        $numpages = ceil ($numevents / EVENTS_PER_PAGE);
-        $event_templates->set_var ('google_paging',
-                COM_printPageNavigation ($baseurl, $page, $numpages));
+    if (!empty($query)) {
+        $query = str_replace('%','*',$query);
+        $base_url = $_CONF['site_admin_url'] . '/event.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
     } else {
-        $event_templates->set_var ('google_paging', '');
+        $base_url = $_CONF['site_admin_url'] . "/event.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+    }
+
+    if ($num_pages > 1) {
+        $event_templates->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+    } else {
+        $event_templates->set_var('google_paging', '');
     }
 
     $event_templates->parse('output', 'list');
@@ -662,7 +726,19 @@ if (($mode == $LANG22[22]) && !empty ($LANG22[22])) { // delete
         $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'],
                                                       true));
     }
-    $display .= listevents (COM_applyFilter ($_REQUEST['page'], true));
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= listevents ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter ();
 }
 
