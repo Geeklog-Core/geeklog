@@ -31,10 +31,14 @@ May ??, 2005 (Links-Plugin 1.0.0)
 ------------
 - Added ID-editor and Autotags-feature [link: ... ] [Oliver]
 - Added Category-Specific Feeds [Oliver]
+- Added Edit-Icon, List-Sorting, searching, Limits & etc for admin menu [Oliver]
 
 
 ??? ??, 2005 (1.3.12)
 ------------
+- Added edit-icon, List-Sorting, searching, Limits & alternating row colors 
+  in admin menus for groups, syndication, staticpages, trackback 
+  (where not yet done) [Oliver]
 - Moved links functionality into a plugin [Trinity, Oliver]
 - Added function to allow user-defined scaling of images in articles by using
   [unscaledX] instead of [imageX] [Oliver]
