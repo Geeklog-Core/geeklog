@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.15 2005/06/03 17:41:40 mjervis Exp $
+// $Id: syndication.php,v 1.16 2005/06/08 11:26:15 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -53,9 +53,9 @@ if (!SEC_inGroup ('Root')) {
 * @return   string   HTML for the block that contains the list of feeds
 *
 */
-function listfeeds ()
+function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG33;
+    global $_CONF, $_TABLES, $LANG33, $order, $prevorder, $direction;
 
     $retval = '';
 
@@ -81,8 +81,90 @@ function listfeeds ()
     $feed_template->set_var ('lang_updated', $LANG33[18]);
     $feed_template->set_var ('lang_enabled', $LANG33[19]);
     $feed_template->set_var ('lang_header_topic', $LANG33[45]);
+    $feed_template->set_var ('lang_submit', $LANG33[41]);
+    $feed_template->set_var ('lang_search', $LANG33[47]);
+    $feed_template->set_var ('lang_limit_results', $LANG33[46]);
+    
+    $feed_template->set_var('last_query', $query);
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $feed_template->set_var('edit_ico', $editico);
+    $feed_template->set_var('lang_edit', $LANG33[48]);
+    
+    switch($order) {
+        case 1:
+            $orderby = 'title';
+            break;
+        case 2:
+            $orderby = 'type';
+            break;
+        case 3:
+            $orderby = 'format';
+            break;
+        case 4:
+            $orderby = 'filename';
+            break;
+        case 5:
+            $orderby = 'header_tid';
+            break;
+        case 6:
+            $orderby = 'updated';
+            break;
+        case 7:
+            $orderby = 'is_enabled';
+            break;
+        default:
+            $orderby = 'title';
+            $order = 1;
+            break;
+    }
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
+    } else {
+        $direction = ($direction == "desc") ? "desc" : "asc";
+    }
 
-    $result = DB_query ("SELECT *,UNIX_TIMESTAMP(updated) as date FROM {$_TABLES['syndication']}");
+    if ($direction == 'asc') {
+        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $feed_template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    }
+
+    $feed_template->set_var ('direction', $direction);
+    $feed_template->set_var ('page', $page);
+    $feed_template->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $feed_template->set_var ('query', urlencode($query) );
+    } else {
+        $feed_template->set_var ('query', '');
+    }
+    $feed_template->set_var ('query_limit', $query_limit);
+    $feed_template->set_var($limit . '_selected', 'selected="selected"');
+
+    if (!empty ($query)) {
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['syndication'], 'count(*)',
+                "(title LIKE '$query' OR filename LIKE '$query')") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES['syndication'], 'count(*)') / $limit);
+    }
+
+    $offset = (($curpage - 1) * $limit);
+
+    $sql = "SELECT *,UNIX_TIMESTAMP(updated) as date FROM {$_TABLES['syndication']} WHERE 1 ";
+    if (!empty($query)) {
+         $sql .= " AND (title LIKE '$query' OR filename LIKE '$query')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+
+    $result = DB_query ($sql);
     $num = DB_numRows ($result);
 
     if ($num == 0) {
@@ -100,7 +182,7 @@ function listfeeds ()
 
             $link = '<a href="' . $url . $A['filename'] . '">' . $A['filename']
                   . '</a>';
-
+            $feed_template->set_var ('cssid', ($i%2)+1);
             $feed_template->set_var ('feed_id', $A['fid']);
             $feed_template->set_var ('feed_title', $A['title']);
             $feed_template->set_var ('feed_type', ucwords ($A['type']));
@@ -121,12 +203,22 @@ function listfeeds ()
                 $A['header_tid'] = $LANG33[43];
             } elseif ($A['header_tid'] == 'none') {
                 $A['header_tid'] = $LANG33[44];
-            } elseif ($A['header_tid'] == 'home') {
-                $A['header_tid'] = $LANG33[46];
             }
             $feed_template->set_var ('feed_header_topic', $A['header_tid']);
             $feed_template->parse ('feedlist_items', 'row', true);
         }
+    }
+    if (!empty($query)) {
+        $query = str_replace('%','*',$query);
+        $base_url = $_CONF['site_admin_url'] . '/syndication.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+    } else {
+        $base_url = $_CONF['site_admin_url'] . "/syndication.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
+    }
+
+    if ($num_pages > 1) {
+        $feed_template->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+    } else {
+        $feed_template->set_var('google_paging', '');
     }
 
     $retval .= $feed_template->finish ($feed_template->parse ('output','list'));
@@ -531,7 +623,19 @@ else
     if (isset ($_REQUEST['msg'])) {
         $display .= COM_showMessage ($_REQUEST['msg']);
     }
-    $display .= listfeeds ()
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= listfeeds ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true))
              . COM_siteFooter ();
 }
 

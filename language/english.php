@@ -1059,11 +1059,14 @@ $LANG33 = array(
     38 => 'Error: Missing Fields',
     39 => 'Please fill in the Feed Title, Description, and Filename.',
     40 => 'Please enter a  number of entries or number of hours.',
-    41 => '',
+    41 => 'Submit',
     42 => 'Events',
     43 => 'All',
     44 => 'None',
-    45 => 'Header-link in topic'
+    45 => 'Header-link in topic',
+    46 => 'Limit Results',
+    47 => 'Search',
+    48 => 'Edit'
 );
 
 ###############################################################################
