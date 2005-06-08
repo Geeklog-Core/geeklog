@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: syndication.php,v 1.16 2005/06/08 11:26:15 ospiess Exp $
+// $Id: syndication.php,v 1.17 2005/06/08 11:53:17 ospiess Exp $
 
 
 require_once ('../lib-common.php');
@@ -193,9 +193,9 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
             $feed_template->set_var ('feed_updated',
                                      strftime ($_CONF['daytime'], $A['date']));
             if ($A['is_enabled'] == 1) {
-                $enabled = $LANG33[20];
+                $feed_template->set_var ('is_enabled', 'checked="checked"');
             } else {
-                $enabled = $LANG33[21];
+                $feed_template->set_var ('is_enabled', '');
             }
             $feed_template->set_var ('feed_enabled', $enabled);
             
@@ -225,6 +225,27 @@ function listfeeds ($offset, $curpage, $query = '', $query_limit = 50)
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
 
     return $retval;
+}
+
+/**
+* Toggle status of a feed from enabled to disabled and back
+*
+* @param    int     $fid    ID of the feed
+* @return   void
+*
+*/
+function changeFeedStatus ($fid)
+{
+    global $_TABLES;
+
+    $feed_id = addslashes (COM_applyFilter ($fid, true));
+    if (!empty ($fid)) {
+        $is_enabled = 1;
+        if (DB_getItem ($_TABLES['syndication'], 'is_enabled', "fid = '$fid'")) {
+            $is_enabled = 0;
+        }
+        DB_query ("UPDATE {$_TABLES['syndication']} SET is_enabled = '$is_enabled' WHERE fid = '$fid'");
+    }
 }
 
 /**
@@ -593,6 +614,10 @@ function deletefeed ($fid)
 
 // MAIN
 $display = '';
+
+if ($_CONF['backend'] && isset ($_POST['feedChange'])) {
+    changeFeedStatus ($_POST['feedChange']);
+}
 
 if ($_REQUEST['mode'] == 'edit') {
     if ($_REQUEST['fid'] == 0) {
