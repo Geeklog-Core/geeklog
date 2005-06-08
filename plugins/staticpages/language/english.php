@@ -77,7 +77,7 @@ $LANG_STATIC= array(
     'stats_no_hits' => 'It appears that there are no static pages on this site or no one has ever viewed them.',
     'id' => 'ID',
     'duplicate_id' => 'The ID you chose for this static page is already in use. Please select another ID.',
-    'instructions' => 'To modify or delete a static page, click on that page\'s number below. To view a static page, click on the title of the page you wish to view. To create a new static page click on new page above. Click on [C] to create a copy of an existing page.',
+    'instructions' => 'To modify or delete a static page, click on that page\'s edit icon below. To view a static page, click on the title of the page you wish to view. To create a new static page click on new page above. Click on on the copy icon to create a copy of an existing page.',
     'centerblock' => 'Centerblock: ',
     'centerblock_msg' => 'When checked, this Static Page will be displayed as a center block on the index page.',
     'topic' => 'Topic: ',
@@ -103,7 +103,12 @@ $LANG_STATIC= array(
     'select_php_return' => 'execute PHP (return)',
     'select_php_free' => 'execute PHP',
     'php_not_activated' => 'The use of PHP in static pages is not activated. Please see the <a href="' . $_CONF['site_url'] . '/docs/staticpages.html#php">documentation</a> for details.',
-    'printable_format' => 'Printable Format'
+    'printable_format' => 'Printable Format',
+    'edit' => 'Edit',
+    'copy' => 'Copy',
+    'limit_results' => 'Limit Results',
+    'search' => 'Search',
+    'submit' => 'Submit'
 );
 
 ?>

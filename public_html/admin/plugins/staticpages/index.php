@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.40 2005/05/08 16:39:20 dhaun Exp $
+// $Id: index.php,v 1.41 2005/06/08 08:26:47 ospiess Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -344,15 +344,16 @@ function staticpageeditor ($sp_id, $mode = '')
 ###############################################################################
 # Displays a list of static pages 
 
-function liststaticpages ($page = 1) 
+function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_TABLES, $LANG_STATIC, $_CONF;
+    global $_TABLES, $LANG_STATIC, $_CONF, $order, $prevorder, $direction;
 
     $retval = '';
 
     $template_path = staticpages_templatePath ('admin');
     $sp_templates = new Template ($template_path);
-    $sp_templates->set_file(array('list'=>'list.thtml','row'=>'row.thtml'));
+    $sp_templates->set_file(array('list'=>'list.thtml',
+                                  'row'=>'row.thtml'));
     $sp_templates->set_var('site_url', $_CONF['site_url']);
     $sp_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
     $sp_templates->set_var('start_block_list', COM_startBlock($LANG_STATIC['staticpagelist']), '', COM_getBlockTemplate ('_admin_block', 'header'));
@@ -369,23 +370,91 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var ('lang_title_edit', $LANG_STATIC['title_edit']);
     $sp_templates->set_var ('lang_title_copy', $LANG_STATIC['title_copy']);
     $sp_templates->set_var ('lang_title_display', $LANG_STATIC['title_display']);
+    $sp_templates->set_var('last_query', $query);
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $sp_templates->set_var('lang_edit', $LANG_STATIC['edit']);
+    $sp_templates->set_var('edit_ico', $editico);
+    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.png">';
+    $sp_templates->set_var('lang_copy', $LANG_STATIC['copy']);
+    $sp_templates->set_var('copy_ico', $copyico);
+    $sp_templates->set_var('lang_id', $LANG_STATIC['id']);
+    $sp_templates->set_var('lang_limit_results', $LANG_STATIC['limit_results']);
+    $sp_templates->set_var('lang_submit', $LANG_STATIC['submit']);
+    $sp_templates->set_var('lang_search', $LANG_STATIC['search']);
 
-    $perpage = 50;
-    if ($page <= 0) {
-        $page = 1;
+
+        switch($order) {
+        case 1:
+            $orderby = 'sp_id';
+            break;
+        case 2:
+            $orderby = 'sp_title';
+            break;
+        case 3:
+            $orderby = 'sp_centerblock';
+            break;
+        case 4:
+            $orderby = 'unixdate';
+            break;
+        default:
+            $orderby = 'sp_title';
+            $order = 2;
+            break;
+    }
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
+    } else {
+        $direction = ($direction == "desc") ? "desc" : "asc";
     }
 
-    $perms = COM_getPermSQL ('WHERE', 0, 3);
-    $result = DB_query ("SELECT COUNT(*) AS count FROM {$_TABLES['staticpage']}" . $perms);
-    $C = DB_fetchArray ($result);
-    $numpages = ceil ($C['count'] / $perpage);
-
-    if ($page > $numpages) {
-        $page = 1;
+    for ($i=1;$i<5;$i++) {
+      $sp_templates->set_var ('img_arrow'.$i, '');
     }
-    $start = ($page - 1) * $perpage;
 
-    $result = DB_query ("SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']}" . $perms . " ORDER BY sp_date DESC LIMIT $start,$perpage");
+    if ($direction == 'asc') {
+        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    }
+
+    $sp_templates->set_var ('direction', $direction);
+    $sp_templates->set_var ('page', $page);
+    $sp_templates->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $sp_templates->set_var ('query', urlencode($query) );
+    } else {
+        $sp_templates->set_var ('query', '');
+    }
+    $sp_templates->set_var ('query_limit', $query_limit);
+    $sp_templates->set_var($limit . '_selected', 'selected="selected"');
+
+    if (!empty ($query)) {
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['staticpage'], 'count(*)',
+                " (sp_title LIKE '$query' OR sp_id LIKE '$query')") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES['staticpage'], 'count(*)') / $limit);
+    }
+
+    $offset = (($curpage - 1) * $limit);
+
+
+    $perms = COM_getPermSQL ('AND', 0, 3);
+    $sql = "SELECT *,UNIX_TIMESTAMP(sp_date) AS unixdate FROM {$_TABLES['staticpage']} WHERE 1 " . $perms;
+    if (!empty($query)) {
+         $sql .= " AND (sp_title LIKE '$query' OR sp_id LIKE '$query')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+    $result = DB_query($sql);
+
     $nrows = DB_numRows ($result);
     if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
@@ -394,7 +463,6 @@ function liststaticpages ($page = 1)
             $sp_templates->set_var ('page_edit_url', $_CONF['site_admin_url']
                     . '/plugins/staticpages/index.php?mode=edit&amp;sp_id='
                     . $A['sp_id']);
-            $sp_templates->set_var ('row_number', $i + $start + 1);
             $sp_templates->set_var ('page_display_url',
                     COM_buildURL ($_CONF['site_url']
                     . '/staticpages/index.php?page=' . $A['sp_id']));
@@ -445,7 +513,7 @@ function liststaticpages ($page = 1)
     $sp_templates->set_var ('end_block',
             COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer')));
 
-    $retval .= $sp_templates->parse('output', 'list');
+    $retval .= $sp_templates->parse('output', 'list', true);
 
     return $retval;
 }
@@ -598,7 +666,19 @@ if (($mode == $LANG_STATIC['delete']) && !empty ($LANG_STATIC['delete'])) {
 } else {
     $page = COM_applyFilter ($_GET['page'], true);
     $display .= COM_siteHeader ('menu');
-    $display .= liststaticpages ($page);
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= liststaticpages ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
     $display .= COM_siteFooter ();
 }
 
