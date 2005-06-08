@@ -6,15 +6,33 @@
     <tr>
         <td>{lang_instructions}</td>
     </tr>
+    <tr>
+        <td colspan="2" align="center">
+            <form action="{site_admin_url}/trackback.php" method="post">
+                {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
+                &nbsp;&nbsp;{lang_limit_results}:
+                    <select name="query_limit">
+                        <option value="10" {10_selected}>10</option>
+                        <option value="20" {20_selected}>20</option>
+                        <option value="50" {50_selected}>50</option>
+                        <option value="75" {75_selected}>75</option>
+                        <option value="100" {100_selected}>100</option>
+                        <option value="200" {200_selected}>200</option>
+                        <option value="500" {500_selected}>500</option>
+                    </select>
+                <input type="submit" value="{lang_submit}">
+            </form>
+        </td>
+    </tr>
 </table>
-
-<table width="100%" border="0" cellspacing="1" cellpadding="2">
+<table border="0" cellspacing="1" cellpadding="2" width="100%">
     <tr style="background:#FFFFFF;">
-        <th style="padding-right:5px;padding-left:5px;">#</th>
-        <th style="padding-right:5px;">{lang_enabled}</th>
-        <th style="text-align:left;padding-right:5px;">{lang_name}</th>
-        <th style="text-align:left;padding-right:5px;">{lang_method}</th>
-        <th style="text-align:left;padding-right:5px;">{lang_ping_url}</th>
+        <th style="text-align:left;padding-right:5px;padding-left:5px;" nowrap>{lang_edit}</th>
+        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/trackback.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_name}{img_arrow1}</th>
+        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/trackback.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_method}{img_arrow2}</th>
+        <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/trackback.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_ping_url}{img_arrow3}</th>
+        <th width="5%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/trackback.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_enabled}{img_arrow4}</th>
     </tr>
     {services_list}
 </table>
+{google_paging}

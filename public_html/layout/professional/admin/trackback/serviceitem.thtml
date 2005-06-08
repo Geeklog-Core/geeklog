@@ -1,13 +1,5 @@
     <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-        <td style="padding-left:10px;padding-right:3px;">
-            <a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{row_num}</a>
-        </td>
-        <td align="center" style="padding-left:10px;padding-right:0px;">
-            <form action="{site_admin_url}/trackback.php" method="POST">
-                <input type="checkbox" name="serviceenable" onclick="submit()" value="{service_id}" {is_enabled}>
-                <input type="hidden" name="serviceChange" value="{service_id}">
-            </form>
-        </td>
+        <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{edit_ico}</a></td>
         <td style="padding-left:3px;">
             <a href="{service_site_url}">{service_name}</a>
         </td>
@@ -16,5 +8,11 @@
         </td>
         <td style="padding-left:3px;">
             {service_ping_url}
+        </td>
+        <td align="center" style="padding-right:0px;">
+            <form action="{site_admin_url}/trackback.php" method="POST">
+                <input type="checkbox" name="serviceenable" onclick="submit()" value="{service_id}" {is_enabled}>
+                <input type="hidden" name="serviceChange" value="{service_id}">
+            </form>
         </td>
     </tr>

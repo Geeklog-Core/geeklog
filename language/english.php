@@ -1349,7 +1349,7 @@ $LANG_TRB = array (
     'services_headline'  => 'Weblog Directory Services',
     'admin_home'         => 'Admin Home',
     'new_service'        => 'New Service',
-    'service_explain'    => 'To modify or delete a weblog directory service, click on the name of that service below. To add a new weblog directory service click on New Service above.',
+    'service_explain'    => 'To modify or delete a weblog directory service, click on the edit icon of that service below. To add a new weblog directory service click on New Service above.',
     'service'            => 'Service',
     'ping_method'        => 'Ping method',
     'service_enabled'    => 'Enabled',
@@ -1366,7 +1366,10 @@ $LANG_TRB = array (
     'editor_intro'       => 'Prepare your trackback comment for <a href="%s">%s</a>.',
     'editor_intro_none'  => 'Prepare your trackback comment.',
     'trackback_note'     => 'To send a trackback comment for a story, go to the list of stories and click on "' . $LANG24[21] . '" for the story. To send a trackback that is not related to a story, <a href="%s">click here</a>.',
-    'edit'               => 'Edit'
+    'edit'               => 'Edit',
+    'search'             => 'Search',
+    'limit_results'      => 'Limit Results',
+    'submit'             => 'Submit'
 );
 
 ###############################################################################

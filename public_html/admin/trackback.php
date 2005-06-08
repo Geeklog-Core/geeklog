@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.15 2005/05/28 17:57:29 dhaun Exp $
+// $Id: trackback.php,v 1.16 2005/06/08 13:01:57 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -430,16 +430,11 @@ function getItemInfo ($type, $id, $what)
 * @return   string          HTML for the list
 *
 */
-function listServices ($page = 1, $msg = 0)
+function listServices ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_CONF, $_TABLES, $LANG_TRB;
+    global $_CONF, $_TABLES, $LANG_TRB, $order, $prevorder, $direction;
 
     $retval = '';
-
-    $retval .= COM_siteHeader ('menu', $LANG_TRB['services_headline']);
-    if ($msg > 0) {
-        $retval .= COM_showMessage ($msg);
-    }
     $retval .= COM_startBlock ($LANG_TRB['services_headline'], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
@@ -458,12 +453,81 @@ function listServices ($page = 1, $msg = 0)
     $template->set_var ('lang_enabled', $LANG_TRB['service_enabled']);
     $template->set_var ('lang_site', $LANG_TRB['service_website']);
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $template->set_var('edit_ico', $editico);
+    $template->set_var('lang_edit', $LANG_TRB['edit']);
+    $template->set_var('last_query', $query);
+    $template->set_var('lang_limit_results', $LANG_TRB['limit_results']);
+    $template->set_var('lang_search', $LANG_TRB['search']);
+    $template->set_var('lang_submit', $LANG_TRB['submit']);
 
-    if ($page < 1) {
-        $page = 1;
+
+    switch($order) {
+        case 1:
+            $orderby = 'name';
+            break;
+        case 2:
+            $orderby = 'method';
+            break;
+        case 3:
+            $orderby = 'ping_url';
+            break;
+        case 4:
+            $orderby = 'is_enabled';
+            break;
+        default:
+            $orderby = 'name';
+            $order = 1;
+            break;
     }
-    $limit = (50 * $page) - 50;
-    $result = DB_query ("SELECT * FROM {$_TABLES['pingservice']} ORDER BY name LIMIT $limit,50");
+    if ($order == $prevorder) {
+        $direction = ($direction == "desc") ? "asc" : "desc";
+    } else {
+        $direction = ($direction == "desc") ? "desc" : "asc";
+    }
+
+    if ($direction == 'asc') {
+        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+    } else {
+        $template->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+    }
+
+    $template->set_var ('direction', $direction);
+    $template->set_var ('page', $page);
+    $template->set_var ('prevorder', $order);
+    if (empty($query_limit)) {
+        $limit = 50;
+    } else {
+        $limit = $query_limit;
+    }
+    if ($query != '') {
+        $template->set_var ('query', urlencode($query) );
+    } else {
+        $template->set_var ('query', '');
+    }
+    $template->set_var ('query_limit', $query_limit);
+    $template->set_var($limit . '_selected', 'selected="selected"');
+
+    if (!empty ($query)) {
+        $query = addslashes (str_replace ('*', '%', $query));
+        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'count(*)',
+                "(name LIKE '$query' OR ping_url LIKE '$query')") / $limit);
+        if ($num_pages < $curpage) {
+            $curpage = 1;
+        }
+    } else {
+        $num_pages = ceil (DB_getItem ($_TABLES['pingservice'], 'count(*)') / $limit);
+    }
+
+    $offset = (($curpage - 1) * $limit);
+
+    $sql = "SELECT * FROM {$_TABLES['pingservice']}";
+    if (!empty($query)) {
+         $sql .= " WHERE (name LIKE '$query' OR ping_url LIKE '$query')";
+    }
+    $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
+
+    $result = DB_query ($sql);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         for ($i = 0; $i < $nrows; $i++) {
@@ -498,15 +562,19 @@ function listServices ($page = 1, $msg = 0)
                             . $LANG_TRB['no_services'] . '</td></tr>');
     }
 
-    $num_pages = ceil (DB_count ($_TABLES['pingservice']) / 50);
-
-    $base_url = $_CONF['site_admin_url'] . '/trackback.php';
-    if ($num_pages > 1) {
-        $template->set_var ('google_paging',
-                COM_printPageNavigation ($base_url, $page, $num_pages));
+    if (!empty($query)) {
+        $query = str_replace('%','*',$query);
+        $base_url = $_CONF['site_admin_url'] . '/trackback.php?q=' . urlencode($query) . "&amp;query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
     } else {
-        $template->set_var ('google_paging', '');
+        $base_url = $_CONF['site_admin_url'] . "/trackback.php?query_limit={$query_limit}&amp;order={$order}&amp;direction={$prevdirection}";
     }
+
+    if ($num_pages > 1) {
+        $template->set_var('google_paging',COM_printPageNavigation($base_url,$curpage,$num_pages));
+    } else {
+        $template->set_var('google_paging', '');
+    }
+
     $template->parse ('output', 'list');
     $retval .= $template->finish ($template->get_var ('output'));
     $retval .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
@@ -514,9 +582,6 @@ function listServices ($page = 1, $msg = 0)
     if ($_CONF['trackback_enabled']) {
         $retval .= freshTrackback ();
     }
-
-    $retval .= COM_siteFooter ();
-
     return $retval;
 }
 
@@ -1097,9 +1162,25 @@ if ($mode == 'delete') {
 
     $display .= editServiceForm ($pid);
 } else if ($mode == 'listservice') {
-    $page = COM_applyFilter ($_REQUEST['page'], true);
-    $msg = COM_applyFilter ($_REQUEST['msg'], true);
-    $display .= listServices ($page, $msg);
+
+    $display .= COM_siteHeader ('menu', $LANG_TRB['services_headline']);
+    if (isset ($_REQUEST['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_REQUEST['msg'], true));
+    }
+    $offset = 0;
+    if (isset ($_REQUEST['offset'])) {
+        $offset = COM_applyFilter ($_REQUEST['offset'], true);
+    }
+    $page = 1;
+    if (isset ($_REQUEST['page'])) {
+        $page = COM_applyFilter ($_REQUEST['page'], true);
+    }
+    if ($page < 1) {
+        $page = 1;
+    }
+    $display .= listServices ($offset, $page, $_REQUEST['q'],
+                           COM_applyFilter ($_REQUEST['query_limit'], true));
+    $display .= COM_siteFooter();
 } else {
     $display = COM_refresh ($_CONF['site_admin_url'] . '/index.php');
 }
