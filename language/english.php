@@ -1002,7 +1002,7 @@ $LANG32 = array(
     8 => 'Plugin Compatibility Check Failed',
     9 => 'This plugin requires a newer version of Geeklog. Either upgrade your copy of <a href="http://www.geeklog.net">Geeklog</a> or get a newer version of the plug-in.',
     10 => '<br><b>There are no plugins currently installed.</b><br><br>',
-    11 => 'To modify or delete a plug-in, click on that plug-in name below. This will show the plug-in details including the authors\'s website. Both the installed version and the version returned from the plug-in\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plug-in please consult its documentation.',
+    11 => 'To modify or delete a plug-in, click on that plug-ins edit icon below. This will show the plug-in details including the authors\'s website. Both the installed version and the version returned from the plug-in\'s code are shown. This will aid you to know if the plugin needs to be upgraded. To install or upgrade a plug-in please consult its documentation.',
     12 => 'no plugin name provided to plugineditor()',
     13 => 'Plugin Editor',
     14 => 'New Plug-in',
@@ -1025,7 +1025,8 @@ $LANG32 = array(
     31 => 'Are you sure you want to delete this plug-in?  By doing so you will remove all the data and data structures that this plug-in uses.  If you are sure, click delete again on the form below.',
     32 => '<p><b>Error AutoLink tag not correct format</b></p>',
     33 => 'Code Version',
-    34 => 'Update'
+    34 => 'Update',
+    35 => 'Edit'
 
 );
 

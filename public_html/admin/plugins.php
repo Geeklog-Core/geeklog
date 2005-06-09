@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: plugins.php,v 1.43 2005/04/03 22:47:08 blaine Exp $
+// $Id: plugins.php,v 1.44 2005/06/09 07:47:17 ospiess Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -196,29 +196,30 @@ function listplugins ($page = 1)
     $plg_templates->set_var('lang_pluginversion', $LANG32[17]);
     $plg_templates->set_var('lang_geeklogversion', $LANG32[18]);
     $plg_templates->set_var('lang_enabled', $LANG32[19]);
+    $plg_templates->set_var('lang_edit', $LANG32[35]);
+    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif" title="' . $LANG_ACCESS['edit'] . '">';
+    $plg_templates->set_var ('edit_ico', $edit_ico);
 
     $limit = (PLUGINS_PER_PAGE * $page) - PLUGINS_PER_PAGE;
     $result = DB_query("SELECT pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage FROM {$_TABLES['plugins']} LIMIT $limit," . PLUGINS_PER_PAGE);
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
          for ($i = 0; $i < $nrows; $i++) {
-            $pcount = (PLUGINS_PER_PAGE * ($page - 1)) + $i + 1;
             $A = DB_fetchArray($result);
             $plugin_code_version = PLG_chkVersion($A['pi_name']);
             if ($plugin_code_version == '') {
                 $plugin_code_version = 'N/A';
             }
             $plg_templates->set_var('pi_name', $A['pi_name']);
-            $plg_templates->set_var('row_num', $pcount);
             $plg_templates->set_var ('cssid', $i%2 + 1);
             $plg_templates->set_var('pi_url', $A['pi_homepage']);
             $plg_templates->set_var('pi_installed_version', $A['pi_version']);
             $plg_templates->set_var('pi_code_version', $plugin_code_version);
             $plg_templates->set_var('pi_gl_version', $A['pi_gl_version']);
             if ($A['pi_enabled'] == 1) {
-                $plg_templates->set_var('pi_enabled', $LANG32[20]);
+                $plg_templates->set_var ('pi_enabled', 'checked="checked"');
             } else {
-                $plg_templates->set_var('pi_enabled', $LANG32[21]);
+                $plg_templates->set_var ('pi_enabled', '');
             }
             $plg_templates->parse('plugin_list', 'row', true);
         }
@@ -245,6 +246,28 @@ function listplugins ($page = 1)
 
     return $retval;
 }
+
+
+/**
+* Toggle status of a ping service from enabled to disabled and back
+*
+* @param    int     $pid    ID of the service
+* @return   void
+*
+*/
+function changePluginStatus ($pi_name)
+{
+    global $_TABLES;
+    $pi_name = addslashes (COM_applyFilter ($pi_name));
+    if (!empty ($pi_name)) {
+        $pi_enabled = 1;
+        if (DB_getItem ($_TABLES['plugins'], 'pi_enabled', "pi_name = '$pi_name'")) {
+            $pi_enabled = 0;
+        }
+        DB_query ("UPDATE {$_TABLES['plugins']} SET pi_enabled = '$pi_enabled' WHERE pi_name = '$pi_name'");
+    }
+}
+
 
 /**
 * Saves a plugin
@@ -478,6 +501,9 @@ function do_uninstall ($pi_name)
 
 // MAIN
 $display = '';
+if (isset ($_POST['pluginChange'])) {
+    changePluginStatus ($_POST['pluginChange']);
+}
 
 if (isset ($HTTP_POST_VARS['mode'])) {
     $mode = $HTTP_POST_VARS['mode'];

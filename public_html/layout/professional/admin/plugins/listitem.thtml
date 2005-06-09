@@ -1,10 +1,12 @@
                                     <tr class="pluginRow{cssid}"  align="center">
-                                        <td align="left">{row_num}</a> 
-                                        </td>
-                                        <td align="left" style="padding-left:5px;">
-                                            <a href="{site_admin_url}/plugins.php?mode=edit&amp;pi_name={pi_name}">{pi_name}</a>
-                                        </td>
+                                        <td align="left"><a href="{site_admin_url}/plugins.php?mode=edit&amp;pi_name={pi_name}">{edit_ico}</a></td>
+                                        <td align="left" style="padding-left:5px;">{pi_name}</td>
                                         <td>{pi_installed_version}&nbsp;/&nbsp;{pi_code_version}</td>
                                         <td>{pi_gl_version}</td>
-                                        <td>{pi_enabled}</td>
+                                        <td>
+                                            <form action="{site_admin_url}/plugins.php" method="POST">
+                                                <input type="checkbox" name="pluginenable" onclick="submit()" value="{pi_name}" {pi_enabled}>
+                                                <input type="hidden" name="pluginChange" value="{pi_name}">
+                                            </form>
+                                        </td>
                                     </tr>
