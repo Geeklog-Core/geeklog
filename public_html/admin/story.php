@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.155 2005/06/08 21:06:45 ospiess Exp $
+// $Id: story.php,v 1.156 2005/06/09 06:52:29 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -693,6 +693,9 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
             $orderby = 'unixdate';
             $order = 3;
             break;
+    }
+    if (!isset($direction)) {
+        $direction = "desc";
     }
     if ($order == $prevorder) {
         $direction = ($direction == "desc") ? "asc" : "desc";
