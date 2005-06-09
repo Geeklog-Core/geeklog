@@ -3,5 +3,5 @@
     <td style="padding-left:3px;">{group_name}</td>
     <td style="padding-left:3px;">{group_description}</td>
     <td align="center">{group_core}</td>
-    <td align="center"><a href="{site_admin_url}/group.php?mode=listusers&amp;grp_id={group_id}">{lang_list}</a>&nbsp;&nbsp;<a href="{site_admin_url}/group.php?mode=editusers&amp;grp_id={group_id}">{lang_edit}</a></td>
+    <td align="center"><a href="{site_admin_url}/group.php?mode=listusers&amp;grp_id={group_id}">{list_ico}</a>&nbsp;&nbsp;<a href="{site_admin_url}/group.php?mode=editusers&amp;grp_id={group_id}">{edit_ico}</a></td>
   </tr>

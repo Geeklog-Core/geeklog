@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.46 2005/06/08 13:30:15 ospiess Exp $
+// $Id: group.php,v 1.47 2005/06/09 07:14:28 ospiess Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -518,6 +518,10 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     $group_templates->set_var('lang_submit', $LANG_ACCESS['submit']);
     $group_templates->set_var('last_query', $query);
     $group_templates->set_var('lang_limit_results', $LANG_ACCESS['limitresults']);
+    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif" title="' . $LANG_ACCESS['edit'] . '">';
+    $group_templates->set_var ('edit_ico', $edit_ico);
+    $list_ico = '<img src="' . $_CONF['layout_url'] . '/images/list.png" title="' . $LANG_ACCESS['listthem'] . '">';
+    $group_templates->set_var ('list_ico', $list_ico);
     
     switch($order) {
         case 1:
@@ -577,7 +581,6 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     $offset = (($curpage - 1) * $limit);
 
     $thisUsersGroups = SEC_getUserGroups ();
-    $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
     
     $sql = "SELECT * FROM {$_TABLES['groups']}";
     if (!empty($query)) {
@@ -596,7 +599,6 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
             } else {
                 $core = $LANG_ACCESS['no'];
             }
-            $group_templates->set_var ('edit_ico', $edit_ico);
             $group_templates->set_var ('group_id', $A['grp_id']);
             $group_templates->set_var ('group_name', $A['grp_name']);
             $group_templates->set_var ('group_description', $A['grp_descr']);
