@@ -547,6 +547,8 @@ $_SQL[37] = "
 CREATE TABLE {$_TABLES['users']} (
   uid mediumint(8) NOT NULL auto_increment,
   username varchar(16) NOT NULL default '',
+  remoteusername varchar(60) NULL,
+  remoteservice varchar(60) NULL,
   fullname varchar(80) default NULL,
   passwd varchar(32) NOT NULL default '',
   email varchar(96) default NULL,

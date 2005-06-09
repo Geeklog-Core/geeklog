@@ -39,6 +39,9 @@ $_SQL[] = "ALTER TABLE {$_TABLES['blocks']} ADD rdflimit smallint(5) unsigned NO
 // new story.ping feature (also see function upgrade_addFeature below)
 $_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_name, ft_descr, ft_gl_core) VALUES ('story.ping', 'Ability to send pings, pingbacks, or trackbacks for stories', 1)";
 
+// remote authentication fields
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD remoteusername varchar(60) NULL after username";
+$_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD remoteservice varchar(60) NULL after remoteusername";
 // new user status, for ban etc.
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD status smallint(5) unsigned NOT NULL default '1'";
 // Make all users WITH a password active.
