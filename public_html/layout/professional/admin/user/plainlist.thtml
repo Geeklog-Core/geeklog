@@ -12,10 +12,10 @@
                     </table>
                     <table border="0" cellspacing="0" cellpadding="2" width="100%">
                         <tr>
-                            <th width="5%" align="left" nowrap>{lang_uid}</th>
+                            <th colspan="2" width="5%" align="left" nowrap>{lang_uid}</th>
                             <th align="left">{lang_username}</th>
                             <th align="left">{lang_fullname}</th>
-                            <th align="left">{lang_emailaddress}</th>
+                            <th colspan="2" align="left">{lang_emailaddress}</th>
                         </tr>
                         {user_row}
                     </table>
