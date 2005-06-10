@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.156 2005/06/09 06:52:29 ospiess Exp $
+// $Id: story.php,v 1.157 2005/06/10 14:06:43 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -254,8 +254,24 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     $story_templates = new Template($_CONF['path_layout'] . 'admin/story');
     if ( $A['postmode'] == 'html' AND isset ($_CONF['advanced_editor'])
         && ($_CONF['advanced_editor'] == 1) && file_exists ($_CONF['path_layout'] . 'admin/story/storyeditor_advanced.thtml')) {
+        $advanced_editormode = true;
         $story_templates->set_file(array('editor'=>'storyeditor_advanced.thtml'));
         $story_templates->set_var ('change_editormode', 'onChange="change_editmode(this);"');
+
+        include ($_CONF['path_system'] . 'classes/navbar.class.php');
+
+        $navbar = new navbar;
+        $navbar->add_menuitem('Preview','showhideEditorDiv("preview");return false;',true);
+        $navbar->add_menuitem('Editor','showhideEditorDiv("editor");return false;',true);
+        $navbar->add_menuitem('Publish Options','showhideEditorDiv("publish");return false;',true);
+        $navbar->add_menuitem('Images','showhideEditorDiv("images");return false;',true);
+        $navbar->add_menuitem('Archive Options','showhideEditorDiv("archive");return false;',true);
+        $navbar->add_menuitem('Permissions','showhideEditorDiv("perms");return false;',true);
+        $navbar->add_menuitem('Show All','showhideEditorDiv("all");return false',true);
+
+        $story_templates->set_var ('navbar', $navbar->generate() );
+        $story_templates->set_var ('show_preview', 'none');
+
         if ($A['postmode'] == 'html') {
             $story_templates->set_var ('show_texteditor', 'none');
             $story_templates->set_var ('show_htmleditor', '');
@@ -265,6 +281,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
         }
     } else {
         $story_templates->set_file(array('editor'=>'storyeditor.thtml'));
+        $advanced_editormode = false;
     }
     $story_templates->set_var('site_url', $_CONF['site_url']);
     $story_templates->set_var('site_admin_url', $_CONF['site_admin_url']);
@@ -285,8 +302,7 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
     }
 
     if (!empty($A['title'])) {
-        $display .= COM_startBlock ($LANG24[26], '',
-                            COM_getBlockTemplate ('_admin_block', 'header'));
+
         $A['day'] = $A['unixdate'];
         if (empty ($A['hits'])) {
             $A['hits'] = 0;
@@ -310,12 +326,20 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             if ($has_images) {
                 list ($errors, $B['introtext'], $B['bodytext']) = STORY_insert_images ($A['sid'], $B['introtext'], $B['bodytext']);
             }
+            $previewContent .= STORY_renderArticle ($B, 'p');
 
-            $display .= STORY_renderArticle ($B, 'p');
         } else {
-            $display .= STORY_renderArticle ($A, 'p');
+            $previewContent .= STORY_renderArticle ($A, 'p');
         }
-        $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+
+        if ($advanced_editormode) {
+            $story_templates->set_var('preview_content', $previewContent);
+        } else {
+            $display = COM_startBlock ($LANG24[26], '',
+                            COM_getBlockTemplate ('_admin_block', 'header'));
+            $display .= $previewContent;
+            $display .= COM_endBlock (COM_getBlockTemplate ('_admin_block', 'footer'));
+        }
     }
 
     $display .= COM_startBlock ($LANG24[5], '',

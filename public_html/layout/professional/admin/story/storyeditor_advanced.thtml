@@ -16,25 +16,64 @@
         f.elements["expire_ampm"].disabled=!disable;
     }
 
-    function showhideDiv(option) {
-        var divid = 'se_' + option;
-        var obj = document.getElementById(divid);
-        if (obj.style.display == 'none') {
-            obj.style.display = '';
-            obj.scrollIntoView();
-        } else {
-            obj.style.display = 'none';
-            obj.scrollIntoView();
+    function showhideEditorDiv(option) {
+        var obj = document.getElementById('adveditor');
+        var divarray1 = new Array('text_editor','html_editor');
+        var divarray = new Array('publish','images','archive','perms');
+
+        if (option != 'preview') {
+            for (i=0; i < divarray.length; i++) {
+                div = 'se_' + divarray[i];
+                if (option != 'all' && option != divarray[i]) {
+                    document.getElementById(div).style.display = 'none';
+                } else {
+                    document.getElementById(div).style.display = '';
+                }
+            }
         }
+
+        if (option == 'editor' || option == 'all') {
+            document.getElementById('editor_mode').style.display = '';
+            if (document.getElementById('sel_editmode').value == 'html') {
+                document.getElementById('text_editor').style.display = 'none';
+                document.getElementById('html_editor').style.display = '';
+            } else {
+                document.getElementById('text_editor').style.display = '';
+                document.getElementById('html_editor').style.display = 'none';
+            }
+            if (option == 'all') {
+                document.getElementById('se_options').style.display = '';
+            } else {
+                document.getElementById('se_options').style.display = 'none';
+            }
+
+        } else if (option == 'preview') {
+            if (document.getElementById('preview').style.display == 'none') {
+                document.getElementById('preview').style.display = '';
+            } else {
+                document.getElementById('preview').style.display = 'none';
+            }
+
+        } else {
+            document.getElementById('se_options').style.display = '';
+            document.getElementById('text_editor').style.display = 'none';
+            document.getElementById('html_editor').style.display = 'none';
+            document.getElementById('editor_mode').style.display = 'none';
+        }
+        document.getElementById('navcontainer').scrollIntoView(true);
+
     }
+
     // Setup editor path for FCKeditor JS Functions
     geeklogEditorBasePath = "{site_url}/fckeditor/" ;
 </script>
 
-<script type="text/JavaScript" src="{site_url}/fckeditor/geeklog.js"></script>
 
+<script type="text/JavaScript" src="{site_url}/fckeditor/geeklog.js"></script>
+<br>
+{navbar}
                             <form name="frmstory" action="{site_admin_url}/story.php" method="post" enctype="multipart/form-data" onSubmit='set_postcontent();'>
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
+                                <table id='adveditor' border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
                                     <tr>
                                         <td width="20%" align="right">{lang_author}:</td>
                                         <td>{story_author}<input type="hidden" name="uid" value="{story_uid}"></td>
@@ -139,27 +178,20 @@
                                         <td style="padding:5px 10px 5px 10px;"><textarea id="bodyhtml" name="bodyhtml" cols="90" rows="20">{story_bodytext}</textarea></td>
                                     </tr>
                                 </table>
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;">
+                                <table border="0" cellspacing="0" cellpadding="3" width="100%" id="editor_mode" style="margin-top:10px;border:1px solid #ECE9D8;display:{show_htmleditor};">
                                     <tr valign="top">
-                                        <td align="right"><b>{lang_postmode}:</b></td>
-                                        <td>
+                                        <td width="10%" style=padding-left:20px;" nowrap><b>{lang_postmode}:</b></td>
+                                        <td style="padding-left:20px;" nowrap>
                                             <select id="sel_editmode" name="postmode" {change_editormode}>
                                                 {post_options}
                                             </select>
-                                            <div style=padding:5px;">{lang_allowed_html}</div>
                                         </td>
+                                     </tr>
+                                     <tr>
+                                        <td colspan="2" style=padding:5px;">{lang_allowed_html}</td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="2" style="padding-left:20px;"><div style="width:95%; border-top:thin dashed;" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="2" style="padding:10px;">
-                                            <input id="btn_publish" type="button" value="Publish Options" onClick="showhideDiv('publish');">&nbsp;
-                                            <input id="btn_images" type="button" value="Images" onClick="showhideDiv('images');">&nbsp;
-                                            <input id="btn_archive" type="button" value="Archive Options" onClick="showhideDiv('archive');">&nbsp;
-                                            <input id="btn_perms" type="button" value="{lang_accessrights}" onClick="showhideDiv('perms');">&nbsp;
-                                        </td>
-                                    </tr>
+                                </table>
+                                <table id="se_options" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:10px;border:1px solid #ECE9D8;display:none;">
                                     <tr>
                                         <td colspan="2" style="padding:10px;">
                                             <div  id="se_publish" style="display:none;">
@@ -301,7 +333,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
+                                <table id="bottom" border="0" cellspacing="0" cellpadding="3" width="100%" style="margin-top:20px;">
                                     <tr>
                                         <td colspan="2" style="padding-left:20px;">
                                             <input type="submit" value="{lang_save}" name="mode">
@@ -314,6 +346,13 @@
                                     </tr>
                                 </table>
                             </form>
+<table border="0" width="99%" id="preview" style="border:1px dashed grey;padding:5px;margin:10px;display:{show_preview};">
+    <tr>
+        <td>
+            {preview_content}
+        </td.
+    </tr>
+</table>
 
 <script>
 <!-- This code will only be executed by a browser that suppports Javascript -->

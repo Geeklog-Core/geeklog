@@ -10,13 +10,13 @@
     window.onload = function() {
         var oFCKeditor1 = new FCKeditor( 'introhtml' ) ;
         oFCKeditor1.BasePath = geeklogEditorBasePath;
-        oFCKeditor1.ToolbarSet = 'editor-toolbar3' ;
+        oFCKeditor1.ToolbarSet = 'editor-toolbar1' ;
         oFCKeditor1.Height = 200 ;
         oFCKeditor1.ReplaceTextarea() ;
 
         var oFCKeditor2 = new FCKeditor( 'bodyhtml' ) ;
         oFCKeditor2.BasePath = geeklogEditorBasePath ;
-        oFCKeditor2.ToolbarSet = 'editor-toolbar3' ;
+        oFCKeditor2.ToolbarSet = 'editor-toolbar1' ;
         oFCKeditor2.Height = 200 ;
         oFCKeditor2.ReplaceTextarea() ;
 
@@ -96,8 +96,8 @@
 
     function set_postcontent() {
         if (document.getElementById('sel_editmode').value == 'html') {
-            document.getElementById('introtext').value = getEditorContent('introtext');
-            document.getElementById('bodytext').value = getEditorContent('bodytext');
+            document.getElementById('introtext').value = getEditorContent('introhtml');
+            document.getElementById('bodytext').value = getEditorContent('bodyhtml');
         }
     }
 
