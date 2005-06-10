@@ -52,6 +52,8 @@ $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_fullname(fullname)";
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_email(email)";
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_passwd(passwd)";
 $_SQL[] = "ALTER TABLE {$_TABLES['users']} ADD INDEX users_pwrequestid(pwrequestid)";
+// Add the remote authenticated group:
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_name, grp_descr, grp_gl_core) VALUES ('Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
 
 // for dynamic comments
 $_SQL[] = "INSERT INTO {$_TABLES['commentmodes']} (mode, name) VALUES ('dynamic', 'Dynamic')";

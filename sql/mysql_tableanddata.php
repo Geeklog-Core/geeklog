@@ -824,6 +824,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_g
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (13,'Logged-in Users','All Registered Members',1) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (14,'Static Page Admin','Can administer static pages',0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (15,'spamx Admin', 'Users in this group can administer the spamx plugin',0) ";
+$_DATA[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES (16,'Remote Users', 'Users in this group can have authenticated against a remote server.',1) ";
 
 $_DATA[] = "INSERT INTO {$_TABLES['links']} (lid, category, url, description, title, hits, date, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('20040119095147683','Geeklog Sites','http://www.geeklog.net','All you ever need to know about GeekLog - and more ...','Geeklog Project Homepage',42,NULL,5,2,3,3,2,2) ";
 
