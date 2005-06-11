@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.158 2005/06/11 15:59:51 blaine Exp $
+// $Id: story.php,v 1.159 2005/06/11 20:14:43 ospiess Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -759,7 +759,7 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     if (!empty ($query)) {
         $query = addslashes (str_replace ('*', '%', $query));
         $num_pages = ceil (DB_getItem ($_TABLES['stories'], 'count(*)',
-                "(title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query')") / $limit);
+                "(title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')") / $limit);
         if ($num_pages < $curpage) {
             $curpage = 1;
         }
@@ -771,7 +771,7 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
 
     $sql = "SELECT *,UNIX_TIMESTAMP(date) AS unixdate  FROM {$_TABLES['stories']} $join_userinfo WHERE 1 " . $excludetopics . COM_getPermSQL ('AND');
     if (!empty($query)) {
-         $sql .= " AND (title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query')";
+         $sql .= " AND (title LIKE '$query' OR introtext LIKE '$query' OR bodytext LIKE '$query' OR sid LIKE '$query' or tid LIKE '$query')";
     }
     $sql.= " ORDER BY $orderby $direction LIMIT $offset,$limit";
 
