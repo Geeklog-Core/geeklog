@@ -1,5 +1,5 @@
 <script type="text/JavaScript" src="{site_url}/library.js"></script>
-<table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5 0 10 0px;">
+<table border="0" cellspacing="0" cellpadding="2" width="100%" style="margin:5px 0px 10px 0px;">
     <tr>
         <td rowspan="2">
             <img src="{layout_url}/images/icons/group.gif" alt="">
