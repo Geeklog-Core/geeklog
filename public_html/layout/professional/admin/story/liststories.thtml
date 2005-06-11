@@ -11,8 +11,9 @@
                 <td colspan="2">{lang_instructions}</td>
             </tr>
             <tr>
-                <td>
-                    <form action="{site_admin_url}/story.php" method="post">
+                <td colspan="2">
+                    <form style="display:inline; width:125px;" action="{site_admin_url}/story.php" method="post">
+                        {lang_topic}: {topic_selection}
                         {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
                         &nbsp;&nbsp;{lang_limit_results}:
                             <select name="query_limit">
