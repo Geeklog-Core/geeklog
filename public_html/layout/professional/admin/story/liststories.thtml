@@ -5,7 +5,6 @@
                 <td align="center" valign="middle">{lang_topic}:&nbsp;</td>
                 <td align="left" valign="middle"><form action="{site_admin_url}/story.php" method="POST">{topic_selection}&nbsp;</form></td>
             </tr>
-            </tr>
             <tr>
                 <td colspan="3">{lang_instructions}</td>
             </tr>
