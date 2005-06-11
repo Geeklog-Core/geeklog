@@ -27,10 +27,10 @@
                             </table>
                             <table border="0" cellspacing="1" cellpadding="2" width="100%">
                                 <tr style="background:#FFFFFF;">
-                                    <th style="text-align:left;padding-right:5px;padding-left:5px;" nowrap>{lang_edit}</th>
-                                    <th style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_lid}{img_arrow1}</th>
-                                    <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linktitle}{img_arrow2}</th>
-                                    <th width="10%" style="text-align:left;padding-right:5px;" nowrap>{lang_access}</th>
+                                    <th width="5%" style="text-align:left;padding-right:5px;padding-left:5px;" nowrap>{lang_edit}</th>
+                                    <th width="10%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=1&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_lid}{img_arrow1}</th>
+                                    <th width="40%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linktitle}{img_arrow2}</th>
+                                    <th width="5%" style="text-align:left;padding-right:5px;" nowrap>{lang_access}</th>
                                     <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linkcategory}{img_arrow3}</th>
                                 </tr>
                                 {link_row}
