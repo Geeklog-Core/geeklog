@@ -1,17 +1,16 @@
-
         <table border="0" cellspacing="0" cellpadding="2" width="100%">
             <tr>
                 <td rowspan="2"><img src="{layout_url}/images/icons/story.gif" alt=""></td>
                 <td>[ <a href="{site_admin_url}/story.php?mode=edit">{lang_newstory}</a> | <a href="{site_admin_url}">{lang_adminhome}</a> ]</td>
                 <td align="center" valign="middle">{lang_topic}:&nbsp;</td>
                 <td align="left" valign="middle"><form action="{site_admin_url}/story.php" method="POST">{topic_selection}&nbsp;</form></td>
-            </td>
+            </tr>
             </tr>
             <tr>
                 <td colspan="3">{lang_instructions}</td>
             </tr>
             <tr>
-                <td colspan="2" align="center">
+                <td colspan="4" align="left">
                     <form action="{site_admin_url}/story.php" method="post">
                         {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
                         &nbsp;&nbsp;{lang_limit_results}:
