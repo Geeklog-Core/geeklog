@@ -12,7 +12,7 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <form style="display:inline; width:125px;" action="{site_admin_url}/story.php" method="post">
+                    <form action="{site_admin_url}/story.php" method="post" style="margin:0px;">
                         {lang_topic}: {topic_selection}
                         {lang_search}: <input type="text" size="20" name="q" value="{last_query}">
                         &nbsp;&nbsp;{lang_limit_results}:
