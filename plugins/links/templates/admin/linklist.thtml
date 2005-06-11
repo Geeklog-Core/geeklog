@@ -32,7 +32,6 @@
                                     <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=2&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linktitle}{img_arrow2}</th>
                                     <th width="10%" style="text-align:left;padding-right:5px;" nowrap>{lang_access}</th>
                                     <th width="20%" style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=3&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linkcategory}{img_arrow3}</th>
-                                    <th style="text-align:left;padding-right:5px;" OnMouseOver="this.style.cursor='pointer';" onclick="window.location.href='{site_admin_url}/plugins/links/index.php?order=4&prevorder={prevorder}&direction={direction}&page={page}&q={query}&query_limit={query_limit}';" nowrap>{lang_linkurl}{img_arrow4}</th>
                                 </tr>
                                 {link_row}
                             </table>
