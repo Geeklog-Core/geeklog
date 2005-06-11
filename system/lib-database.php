@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-database.php,v 1.35 2005/02/03 19:57:40 dhaun Exp $
+// $Id: lib-database.php,v 1.36 2005/06/11 17:34:47 blaine Exp $
 
 /**
 * This is the high-level database layer for Geeklog (for the low-level stuff,
@@ -143,6 +143,19 @@ function DB_setdebug($flag)
     global $_DB;
 
     $_DB->setVerbose($flag);
+}
+
+/** Setting this on will return the SQL error message. 
+* Default is to not display or return the SQL error but
+* to record it in the error.log file
+*
+* @param        boolean     $flag       true or false
+*/
+function DB_displayError($flag)
+{
+    global $_DB;
+
+    $_DB->setDisplayError($flag);
 }
 
 /**
