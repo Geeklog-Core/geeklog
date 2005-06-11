@@ -8,10 +8,10 @@
 // |                                                                           |
 // | Geeklog mail administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2001-2004 by the following authors:                         |
+// | Copyright (C) 2001-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs - tony@tonybibbs.com                                  |
-// |          Dirk Haun  - dirk@haun-online.de                                 |
+// | Authors: Tony Bibbs - tony AT tonybibbs DOT com                           |
+// |          Dirk Haun  - dirk AT haun-online DOT de                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.28 2005/06/08 07:11:54 mjervis Exp $
+// $Id: mail.php,v 1.29 2005/06/11 17:50:40 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -67,6 +67,7 @@ function display_form ()
     $mail_templates->set_file (array ('form' => 'mailform.thtml'));
     $mail_templates->set_var ('site_url', $_CONF['site_url']);
     $mail_templates->set_var ('site_admin_url', $_CONF['site_admin_url']);
+    $mail_templates->set_var ('layout_url', $_CONF['layout_url']);
     $mail_templates->set_var ('startblock_email', COM_startBlock ($LANG31[1],
             '', COM_getBlockTemplate ('_admin_block', 'header')));
     $mail_templates->set_var ('php_self', $_CONF['site_admin_url']
@@ -113,7 +114,7 @@ function display_form ()
 /**
 * This function actually sends the messages to the specified group
 *
-* @param    array   $vars   Same as $HTTP_POST_VARS, holds all the email info
+* @param    array   $vars   Same as $_POST, holds all the email info
 * @return   string          HTML with success or error message
 *
 */
@@ -219,8 +220,8 @@ function send_messages ($vars)
 
 $display .= COM_siteHeader ();
 
-if (isset ($HTTP_POST_VARS['mail']) && ($HTTP_POST_VARS['mail'] == 'mail')) {
-    $display .= send_messages ($HTTP_POST_VARS);
+if (isset ($_POST['mail']) && ($_POST['mail'] == 'mail')) {
+    $display .= send_messages ($_POST);
 } else {
     $display .= display_form ();
 }
