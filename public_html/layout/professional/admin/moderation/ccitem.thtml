@@ -1,5 +1,5 @@
-<td>
-    <a href="{page_url}"><img src="{page_image}" border="0" alt=""><br> 
-        {option_label}
-    </a>
-</td>
+        <td align="center" width="{cell_width}">
+            <a href="{page_url}"><img src="{page_image}" border="0" alt=""><br> 
+                {option_label}
+            </a>
+        </td>

@@ -8,7 +8,7 @@
 // |                                                                           |
 // | Geeklog main administration page.                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
 // |          Mark Limburg      - mlimburg@users.sourceforge.net               |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: moderation.php,v 1.55 2005/06/05 08:40:18 mjervis Exp $
+// $Id: moderation.php,v 1.56 2005/06/11 11:44:42 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -42,7 +42,39 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
+
+define ('ICONS_PER_ROW', 6);
+
+/**
+* Renders an entry (icon) for the "Command and Control" center
+*
+* @param    template    $template   template to use
+* @param    string      $url        URL the entry links to
+* @param    string      $image      URL of the icon
+* @param    string      $label      text to use under the icon
+* @return   void
+*
+*/
+function render_cc_item (&$template, $url = '', $image = '', $label = '')
+{
+    static $cols = 0;
+
+    if (!empty ($url)) {
+        $template->set_var ('page_url', $url);
+        $template->set_var ('page_image', $image);
+        $template->set_var ('option_label', $label);
+        $template->set_var ('cell_width', ((int)(100 / ICONS_PER_ROW)) . '%');
+        $template->parse ('cc_main_options', 'ccitem', true);
+        $cols++;
+    }
+
+    if (($cols == ICONS_PER_ROW) || empty ($url)) {
+        $template->parse ('cc_rows', 'ccrow', true);
+        $template->clear_var ('cc_main_options');
+        $cols = 0;
+    }
+}
 
 /**
 * Prints the command & control block at the top
@@ -50,84 +82,129 @@ require_once ($_CONF['path_system'] . 'lib-story.php');
 */
 function commandcontrol() 
 {
-    global $_CONF, $_TABLES, $LANG01, $LANG29;
+    global $_CONF, $_TABLES, $LANG01, $LANG29, $_IMAGE_TYPE;
 
     $retval = '';
 
+    if (empty ($_IMAGE_TYPE)) {
+        $ext = 'gif';
+    } else {
+        $ext = $_IMAGE_TYPE;
+    }
+
     $admin_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
-    $admin_templates->set_file (array ('cc' => 'moderation.thtml',
+    $admin_templates->set_file (array ('cc'     => 'moderation.thtml',
+                                       'ccrow'  => 'ccrow.thtml',
                                        'ccitem' => 'ccitem.thtml'));
     
     $retval .= COM_startBlock ('Geeklog ' . VERSION . ' -- ' . $LANG29[34], '',
                                COM_getBlockTemplate ('_admin_block', 'header'));
 
     if (SEC_hasRights('story.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/story.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/story.gif');
-        $admin_templates->set_var('option_label', $LANG01[11]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/story.php',
+                        $_CONF['layout_url'] . '/images/icons/story.' . $ext,
+                        $LANG01[11]);
     }
     if (SEC_hasRights('block.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/block.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/block.gif');
-        $admin_templates->set_var('option_label',$LANG01[12]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/block.php',
+                        $_CONF['layout_url'] . '/images/icons/block.' . $ext,
+                        $LANG01[12]);
     }
     if (SEC_hasRights('topic.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/topic.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/topic.gif');
-        $admin_templates->set_var('option_label', $LANG01[13]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/topic.php',
+                        $_CONF['layout_url'] . '/images/icons/topic.' . $ext,
+                        $LANG01[13]);
     }
     if (SEC_hasRights('event.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/event.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/event.gif');
-        $admin_templates->set_var('option_label', $LANG01[15]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/event.php',
+                        $_CONF['layout_url'] . '/images/icons/event.' . $ext,
+                        $LANG01[15]);
     }
     if (SEC_hasRights('poll.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/poll.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/poll.gif');
-        $admin_templates->set_var('option_label', $LANG01[16]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/poll.php',
+                        $_CONF['layout_url'] . '/images/icons/poll.' . $ext,
+                        $LANG01[16]);
     }
-    if (SEC_hasRights('user.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/user.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/user.gif');
-        $admin_templates->set_var('option_label', $LANG01[17]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+    if (SEC_hasRights ('user.edit')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/user.php',
+                        $_CONF['layout_url'] . '/images/icons/user.' . $ext,
+                        $LANG01[17]);
     }
-    if (SEC_hasRights('group.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/group.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/group.gif');
-        $admin_templates->set_var('option_label', $LANG01[96]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+    if (SEC_hasRights ('group.edit')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/group.php',
+                        $_CONF['layout_url'] . '/images/icons/group.' . $ext,
+                        $LANG01[96]);
     }
-    if (SEC_hasRights('plugin.edit')) {
-        $admin_templates->set_var('page_url', $_CONF['site_admin_url'] . '/plugins.php');
-        $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/plugins.gif');
-        $admin_templates->set_var('option_label', $LANG01[98]);
-        $admin_templates->parse('cc_main_options','ccitem',true);
+    if (SEC_hasRights ('user.mail')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/mail.php',
+                        $_CONF['layout_url'] . '/images/icons/mail.' . $ext,
+                        $LANG01[105]);
+    }
+    if (SEC_inGroup ('Root')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/syndication.php',
+                        $_CONF['layout_url'] . '/images/icons/syndication.' . $ext,
+                        $LANG01[38]);
+    }
+    if (SEC_hasRights ('story.ping')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/trackback.php',
+                        $_CONF['layout_url'] . '/images/icons/trackback.' . $ext,
+                        $LANG01[116]);
+    }
+    if (SEC_hasRights ('plugin.edit')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/plugins.php',
+                        $_CONF['layout_url'] . '/images/icons/plugins.' . $ext,
+                        $LANG01[98]);
     }
 
-    $admin_templates->set_var('page_url', $_CONF['site_url'] . '/users.php?mode=logout');
-    $admin_templates->set_var('page_image', $_CONF['layout_url'] . '/images/icons/logout.gif');
-    $admin_templates->set_var('option_label',$LANG01[35]);
-    $admin_templates->parse('cc_main_options','ccitem',true);
-
-    $plugins = PLG_getCCOptions();
-    for ($i = 1; $i <= count($plugins); $i++) {
-    	$cur_plugin = current($plugins);
-        $admin_templates->set_var('page_url', $cur_plugin->adminurl);
-        $admin_templates->set_var('page_image', $cur_plugin->plugin_image);
-        $admin_templates->set_var('option_label', $cur_plugin->adminlabel);
-        $admin_templates->parse('plugin_options','ccitem',true);
-	next($plugins);
+    // now add the plugins
+    $plugins = PLG_getCCOptions ();
+    for ($i = 0; $i < count ($plugins); $i++) {
+    	$cur_plugin = current ($plugins);
+        render_cc_item ($admin_templates, $cur_plugin->adminurl,
+                        $cur_plugin->plugin_image, $cur_plugin->adminlabel);
+        next ($plugins);
     }
 
-    if (count($plugins) == 0) {
-        $admin_templates->set_var('plugin_options','');
+    if (($_CONF['allow_mysqldump'] == 1) && SEC_inGroup ('Root')) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_admin_url'] . '/database.php',
+                        $_CONF['layout_url'] . '/images/icons/backup.' . $ext,
+                        $LANG01[103]);
     }
+
+    if ($_CONF['link_documentation'] == 1) {
+        render_cc_item ($admin_templates,
+                        $_CONF['site_url'] . '/docs/',
+                        $_CONF['layout_url'] . '/images/icons/docs.' . $ext,
+                        $LANG01[113]);
+    }
+
+    if (SEC_inGroup ('Root')) {
+        render_cc_item ($admin_templates,
+                'http://www.geeklog.net/versionchecker.php?version=' . VERSION,
+                $_CONF['layout_url'] . '/images/icons/versioncheck.' . $ext,
+                $LANG01[107]);
+    }
+
+    // logout is always the last entry
+    render_cc_item ($admin_templates,
+                    $_CONF['site_url'] . '/users.php?mode=logout',
+                    $_CONF['layout_url'] . '/images/icons/logout.' . $ext,
+                    $LANG01[35]);
+
+    // "flush out" any unrendered entries
+    render_cc_item ($admin_templates);
 
     $retval .= $admin_templates->parse('output','cc');
 
@@ -152,34 +229,6 @@ function commandcontrol()
     $retval .= PLG_showModerationList();
 
     return $retval;
-}
-
-/**
-* Build part of an SQL request to check the topic permissions of current user.
-*
-* @return   string   SQL request to check for topic permissions (can be empty)
-*
-*/
-function buildTopicSql ()
-{
-    global $_TABLES;
-
-    $topicsql = '';
-    $tresult = DB_query ("SELECT tid FROM {$_TABLES['topics']}"
-                         . COM_getPermSQL ());
-    $trows = DB_numRows ($tresult);
-    if ($trows > 0) {
-        $tids = array ();
-        for ($i = 0; $i < $trows; $i++) {
-            $T = DB_fetchArray ($tresult);
-            $tids[] = $T['tid'];
-        }
-        if (sizeof ($tids) > 0) {
-            $topicsql = " (tid IN ('" . implode ("','", $tids) . "'))";
-        }
-    }
-
-    return $topicsql;
 }
 
 /**
@@ -222,11 +271,7 @@ function itemlist($type)
         } else {
             $retval .= COM_startBlock ($LANG29[35], 'ccstorysubmission.html',
                     COM_getBlockTemplate ('_admin_block', 'header'));
-            $topicsql = buildTopicSql ();
-            if (!empty ($topicsql)) {
-                $topicsql = ' WHERE' . $topicsql;
-            }
-            $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']}" . $topicsql . " ORDER BY date ASC";
+            $sql = "SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['storysubmission']}" . COM_getTopicSQL ('WHERE') . " ORDER BY date ASC";
             $H =  array($LANG29[10],$LANG29[14],$LANG29[15]);
             break;
         }
@@ -368,12 +413,7 @@ function draftlist ()
     $retval = COM_startBlock ($LANG29[35] . ' (' . $LANG24[34] . ')', '',
             COM_getBlockTemplate ('_admin_block', 'header'));
 
-    $topicsql = buildTopicSql ();
-    if (!empty ($topicsql)) {
-        $topicsql = ' AND' . $topicsql;
-    }
-
-    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . $topicsql . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
+    $result = DB_query ("SELECT sid AS id,title,UNIX_TIMESTAMP(date) AS day,tid FROM {$_TABLES['stories']} WHERE (draft_flag = 1)" . COM_getTopicSQL ('AND') . COM_getPermSQL ('AND', 0, 3) . " ORDER BY date ASC");
     $nrows = DB_numRows($result);
     if ($nrows > 0) {
         $mod_templates = new Template($_CONF['path_layout'] . 'admin/moderation');
@@ -531,13 +571,13 @@ function moderation($mid,$action,$type,$count)
                 "{$A['sid']},{$A['uid']},'{$A['tid']}','{$A['title']}','{$A['introtext']}','{$A['related']}','{$A['date']}',{$_CONF['comment_code']},'{$A['postmode']}',$frontpage,{$A['owner_id']},{$T['group_id']},{$T['perm_owner']},{$T['perm_group']},{$T['perm_members']},{$T['perm_anon']}");
                 DB_delete($_TABLES['storysubmission'],"$id",$mid[$i]);
 
-                COM_rdfUpToDateCheck ();    
-                COM_olderStuff ();    
+                COM_rdfUpToDateCheck ();
+                COM_olderStuff ();
             } else if ($type == 'draft') {
                 DB_query ("UPDATE {$_TABLES['stories']} SET draft_flag = 0 WHERE sid = {$mid[$i]}");
 
-                COM_rdfUpToDateCheck ();    
-                COM_olderStuff ();    
+                COM_rdfUpToDateCheck ();
+                COM_olderStuff ();
             } else {
                 // This is called in case this is a plugin. There may be some
                 // plugin specific processing that needs to happen.
@@ -597,44 +637,23 @@ function moderateusers ($uid, $action, $count)
     return $retval;
 }
 
-function register_globals_warning ()
-{
-    global $_CONF, $LANG01, $MESSAGE;
-
-    $retval = '';
-
-    if (!ini_get ('register_globals')) {
-        $retval .= COM_startBlock ($MESSAGE[40], '',
-                           COM_getBlockTemplate ('_msg_block', 'header'));
-        $retval .= '<p><img src="' . $_CONF['layout_url']
-                . '/images/sysmessage.gif" border="0" align="left" alt="">';
-        $retval .= $LANG01[40] . '</p>';
-        $retval .= COM_endBlock (COM_getBlockTemplate ('_msg_block', 'footer'));
-    }
-
-    return $retval;
-}
-
-
 // MAIN
 
 $display = '';
 $display .= COM_siteHeader();
-if (isset ($HTTP_GET_VARS['msg'])) {
-    $display .= COM_showMessage ($HTTP_GET_VARS['msg']);
+if (isset ($_GET['msg'])) {
+    $display .= COM_showMessage ($_GET['msg']);
 }
 
-if (isset ($HTTP_POST_VARS['mode']) && ($HTTP_POST_VARS['mode'] == 'moderation')) {
-    if ($HTTP_POST_VARS['type'] == 'user') {
-        $display .= moderateusers ($HTTP_POST_VARS['id'],
-                $HTTP_POST_VARS['action'], $HTTP_POST_VARS['count']);
+if (isset ($_POST['mode']) && ($_POST['mode'] == 'moderation')) {
+    if ($_POST['type'] == 'user') {
+        $display .= moderateusers ($_POST['id'], $_POST['action'],
+                                   $_POST['count']);
     } else {
-        $display .= moderation ($HTTP_POST_VARS['id'],
-                $HTTP_POST_VARS['action'], $HTTP_POST_VARS['type'],
-                $HTTP_POST_VARS['count']);
+        $display .= moderation ($_POST['id'], $_POST['action'], $_POST['type'],
+                                $_POST['count']);
     }
 } else {
-    $display .= register_globals_warning ();
     $display .= commandcontrol();
 }
 
