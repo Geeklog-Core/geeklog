@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.157 2005/06/10 14:06:43 blaine Exp $
+// $Id: story.php,v 1.158 2005/06/11 15:59:51 blaine Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -308,15 +308,19 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $A['hits'] = 0;
         }
 
+        $tmpsid = addslashes ($A['sid']);
+        if (DB_count ($_TABLES['article_images'], 'ai_sid', $tmpsid) > 0) {
+            $has_images = true;
+        } else {
+            $has_images = false;
+        }
+
         if ($A['postmode'] == 'plaintext') {
             $B = $A;
 
             // if the plain-text story has images embedded, we'll have to do
             // some awkward back-and-forth conversion ...
-            $has_images = false;
-            $tmpsid = addslashes ($A['sid']);
-            if (DB_count ($_TABLES['article_images'], 'ai_sid', $tmpsid) > 0) {
-                $has_images = true;
+            if ($has_images) {
                 list ($B['introtext'], $B['bodytext']) = STORY_replace_images ($A['sid'], $B['introtext'], $B['bodytext']);
             }
 
@@ -329,6 +333,9 @@ function storyeditor($sid = '', $mode = '', $errormsg = '')
             $previewContent .= STORY_renderArticle ($B, 'p');
 
         } else {
+            if ($has_images) {
+                list ($errors, $A['introtext'], $A['bodytext']) = STORY_insert_images ($A['sid'], $A['introtext'], $A['bodytext']);
+            }
             $previewContent .= STORY_renderArticle ($A, 'p');
         }
 
