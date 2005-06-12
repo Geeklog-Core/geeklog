@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.442 2005/06/12 09:07:14 mjervis Exp $
+// $Id: lib-common.php,v 1.443 2005/06/12 19:45:25 mjervis Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -3572,10 +3572,13 @@ function COM_getPassword( $loginname )
 * should be displayed.
 *
 * @param    int  $uid  site member id
-* @return   string     username or fullname - default is username
+* @param    string  $username   Username, if this is set no lookup is done.
+* @param    string  $fullname   Users full name.
+* @param    string  $service    Remote login service.
+* @return   string  Username, fullname or username@Service
 *
 */
-function COM_getDisplayName( $uid = '' )
+function COM_getDisplayName( $uid = '', $username='', $fullname='', $service='' )
 {
     global $_CONF, $_TABLES, $_USER;
  
@@ -3590,16 +3593,23 @@ function COM_getDisplayName( $uid = '' )
             $uid = $_USER['uid'];
         }
     }
-
-     $query = DB_query( "SELECT username, fullname FROM {$_TABLES['users']} WHERE uid='$uid'" );
-    list( $username, $fullname ) = DB_fetchArray( $query );
- 
+    
+    if (empty($username))
+    {
+        $query = DB_query( "SELECT username, fullname, remoteusername, remoteservice FROM {$_TABLES['users']} WHERE uid='$uid'" );
+        list( $username, $fullname, $remoteusername, $remoteservice ) = DB_fetchArray( $query );
+    }
+    
     if( $fullname != '' AND $_CONF['show_fullname'] == 1 )
     {
         return $fullname;
+    } else if( $_CONF['remoteauthentication'] &&
+                    ($remoteusername != '') &&
+                    $_CONF['show_servicename']) {
+        return "$remoteusername@$remoteservice";
+    } else {
+        return $username;
     }
-
-    return $username;
 }
 
 
