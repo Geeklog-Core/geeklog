@@ -1,4 +1,4 @@
-                            <form action="{site_admin_url}/topic.php" method="post">
+                            <form action="{site_admin_url}/topic.php" method="post" enctype="multipart/form-data">
                                 <table border="0" cellspacing="0" cellpadding=2 width="100%">
                                     <tr>
                                         <td align="right">{lang_topicid}:</td>
@@ -20,6 +20,10 @@
                                         <td align="right">{lang_topicimage}:</td>
                                         <td><input type="text" size="48" maxlength="{max_url_length}" name="imageurl" value="{image_url}"></td>
                                     </tr>
+									<tr>
+										<td align="right">{lang_uploadimage}:</td>
+										<td><input type="file" name="newicon"> ({lang_maxsize} {icon_dimensions})</td>
+									</tr>
                                     <tr>
                                         <td align="right">{lang_defaulttopic}:</td>
                                         <td><input type="checkbox" name="is_default" {default_checked}> ({lang_defaulttext})</td>

@@ -811,45 +811,63 @@ to 0 you get back the old-style (pre-1.3.6) layout of the links section.</p>
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_image_width">max_image_width</a></td>
-  <td valign="top">300</td>
-  <td valign="top">Max. width of an image in pixels. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
+  <td valign="top">160</td>
+  <td valign="top">Max. width of an image in pixels. If it exceeds this, it is
+    either rejected or resized (depending on the setting of $_CONF['image_lib']
     above).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_image_height">max_image_height</a></td>
-  <td valign="top">300</td>
-  <td valign="top">Max. height of an image in pixels. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
+  <td valign="top">120</td>
+  <td valign="top">Max. height of an image in pixels. If it exceeds this, it is
+    either rejected or resized (depending on the setting of $_CONF['image_lib']
     above).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_image_size">max_image_size</a></td>
   <td valign="top">1048576 <i>(equals 1 MB)</i></td>
-  <td valign="top">Max. size of an image in bytes. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+  <td valign="top">Max. size of an image in bytes. If it exceeds this, it is
+    is rejected (even if you're using a graphics package to resize images).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_width">max_photo_width</a></td>
-  <td valign="top">96</td>
-  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+  <td valign="top">128</td>
+  <td valign="top">Max. width of a user photo in pixels. If it exceeds this, it
+    is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_height">max_photo_height</a></td>
-  <td valign="top">96</td>
-  <td valign="top">Max. height of a user photo in pixels. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+  <td valign="top">128</td>
+  <td valign="top">Max. height of a user photo in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).
 </tr>
 <tr>
   <td valign="top"><a name="desc_max_photo_size">max_photo_size</a></td>
   <td valign="top">65536 <i>(equals 64 KB)</i></td>
-  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it is either
-    rejected or resized (depending on the setting of $_CONF['image_lib']
-    above).
+  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
+    is rejected (even if you're using a graphics package to resize images).
+</tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_width">max_topicicon_width</a></td>
+  <td valign="top">48</td>
+  <td valign="top">Max. width of a topic icon in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).
+</tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_height">max_topicicon_height</a></td>
+  <td valign="top">48</td>
+  <td valign="top">Max. height of a topic icon in pixels. If it exceeds this,
+    it is either rejected or resized (depending on the setting of
+    $_CONF['image_lib'] above).
+</tr>
+<tr>
+  <td valign="top"><a name="desc_max_topicicon_size">max_topicicon_size</a></td>
+  <td valign="top">65536 <i>(equals 64 KB)</i></td>
+  <td valign="top">Max. size of a user photo in bytes. If it exceeds this, it
+    is rejected (even if you're using a graphics package to resize images).
 </tr>
 </table>
 

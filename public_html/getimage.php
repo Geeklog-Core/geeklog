@@ -8,9 +8,9 @@
 // |                                                                           |
 // | Shows images outside of the webtree                                       |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2004 by the following authors:                              |
+// | Copyright (C) 2004-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: getimage.php,v 1.5 2004/01/11 19:15:13 dhaun Exp $
+// $Id: getimage.php,v 1.6 2005/06/12 08:59:40 dhaun Exp $
 
 /**
 * For really strict webhosts, this file an be used to show images in pages that
@@ -58,17 +58,17 @@ $downloader->setAllowedExtensions(array('gif' => 'image/gif',
                                  );
                                  
 $mode = '';
-if (isset($HTTP_GET_VARS['mode'])) {
-    $mode = $HTTP_GET_VARS['mode'];
+if (isset($_GET['mode'])) {
+    $mode = $_GET['mode'];
 }
 $image = '';
-if (isset($HTTP_GET_VARS['image'])) {
-    $image = $HTTP_GET_VARS['image'];
+if (isset($_GET['image'])) {
+    $image = $_GET['image'];
 }
 if (strstr($image, '..')) {
-    // Can you believe this, some jackass tried to relative pathing to access files they
-    // shouldn't have access to?
-    COM_errorLog('Someone tried to illegally access files using getimage.php');
+    // Can you believe this, some jackass tried to relative pathing to access
+    // files they shouldn't have access to?
+    COM_accessLog('Someone tried to illegally access files using getimage.php');
     exit;
 }
 
@@ -77,6 +77,9 @@ switch ($mode) {
     case 'show':
     case 'articles':
         $downloader->setPath($_CONF['path_images'] . 'articles/');
+        break;
+    case 'topics':
+        $downloader->setPath($_CONF['path_images'] . 'topics/');
         break;
     case 'userphotos':
         $downloader->setPath($_CONF['path_images'] . 'userphotos/');
@@ -89,7 +92,7 @@ switch ($mode) {
 // Let's see if we don't have a legit file.  If not bail
 if (is_file($downloader->getPath() . $image)) {
     if ($mode == 'show') {
-        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt="" /></body></html>';
+        echo '<html><body><img src="' . $_CONF['site_url'] . '/getimage.php?mode=articles&amp;image=' . $image . '" alt=""></body></html>';
     } else {
         $downloader->downloadFile($image);
     }

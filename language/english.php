@@ -828,7 +828,10 @@ $LANG27 = array(
     23 => 'make this the default topic for new story submissions',
     24 => '(*)',
     25 => 'Archive Topic',
-    26 => 'make this the default topic for archived stories. Only one topic allowed.'
+    26 => 'make this the default topic for archived stories. Only one topic allowed.',
+    27 => 'Or Upload Topic Icon',
+    28 => 'Maximum',
+    29 => 'File Upload Errors'
 );
 
 ###############################################################################

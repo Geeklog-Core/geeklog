@@ -8,12 +8,12 @@
 // |                                                                           |
 // | Geeklog topic administration page.                                        |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
-// | Authors: Tony Bibbs        - tony@tonybibbs.com                           |
-// |          Mark Limburg      - mlimburg@users.sourceforge.net               |
-// |          Jason Whittenburg - jwhitten@securitygeeks.com                   |
-// |          Dirk Haun         - dirk@haun-online.de                          |
+// | Authors: Tony Bibbs        - tony AT tonybibbs DOT com                    |
+// |          Mark Limburg      - mlimburg AT users DOT sourceforge DOT net    |
+// |          Jason Whittenburg - jwhitten AT securitygeeks DOT com            |
+// |          Dirk Haun         - dirk AT haun-online DOT de                   |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: topic.php,v 1.50 2004/12/16 19:47:35 dhaun Exp $
+// $Id: topic.php,v 1.51 2005/06/12 08:59:41 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -53,7 +53,7 @@ if (!SEC_hasRights('topic.edit')) {
 // Uncomment the line below if you need to debug the HTTP variables being passed
 // to the script.  This will sometimes cause errors but it will allow you to see
 // the data being passed in a POST operation
-// echo COM_debug($HTTP_POST_VARS);
+// echo COM_debug($_POST);
 
 /**
 * Show topic administration form
@@ -162,6 +162,9 @@ function edittopic ($tid = '')
         $A['imageurl'] = '/images/icons/'; 
     }
     $topic_templates->set_var('lang_topicimage', $LANG27[4]);
+    $topic_templates->set_var('lang_uploadimage', $LANG27[27]);
+    $topic_templates->set_var('icon_dimensions', $_CONF['max_topicicon_width'].' x '.$_CONF['max_topicicon_height']);
+    $topic_templates->set_var('lang_maxsize', $LANG27[28]);
     $topic_templates->set_var('max_url_length', 255);
     $topic_templates->set_var('image_url', $A['imageurl']); 
     $topic_templates->set_var('warning_msg', $LANG27[6]);
@@ -394,18 +397,113 @@ function deleteTopic ($tid)
     return COM_refresh ($_CONF['site_admin_url'] . '/topic.php?msg=14');
 }
 
+/**
+* Upload new topic icon, replaces previous icon if one exists
+*
+* @param    string  tid     ID of topic to prepend to filename
+* @return   string          filename of new photo (empty = no new photo)
+*
+*/
+function handleIconUpload($tid)
+{
+    global $_CONF, $_TABLES, $LANG27;
+
+    require_once ($_CONF['path_system'] . 'classes/upload.class.php');
+
+    $upload = new upload();
+    if (!empty ($_CONF['image_lib'])) {
+        if ($_CONF['image_lib'] == 'imagemagick') {
+            // Using imagemagick
+            $upload->setMogrifyPath ($_CONF['path_to_mogrify']);
+        } elseif ($_CONF['image_lib'] == 'netpbm') {
+            // using netPBM
+            $upload->setNetPBM ($_CONF['path_to_netpbm']);
+        } elseif ($_CONF['image_lib'] == 'gdlib') {
+            // using the GD library
+            $upload->setGDLib ();
+        }
+        $upload->setAutomaticResize (true);
+        if (isset ($_CONF['debug_image_upload']) &&
+                $_CONF['debug_image_upload']) {
+            $upload->setLogFile ($_CONF['path'] . 'logs/error.log');
+            $upload->setDebug (true);
+        }
+    }
+    $upload->setAllowedMimeTypes (array ('image/gif'   => '.gif',
+                                         'image/jpeg'  => '.jpg,.jpeg',
+                                         'image/pjpeg' => '.jpg,.jpeg',
+                                         'image/x-png' => '.png',
+                                         'image/png'   => '.png'
+                                 )      );
+    if (!$upload->setPath ($_CONF['path_images'] . 'topics')) {
+        $display = COM_siteHeader ('menu');
+        $display .= COM_startBlock ($LANG27[29], '',
+                COM_getBlockTemplate ('_msg_block', 'header'));
+        $display .= $upload->printErrors (false);
+        $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                        'footer'));
+        $display .= COM_siteFooter ();
+        echo $display;
+        exit; // don't return
+    }
+
+    $filename = '';
+
+    // see if user wants to upload a (new) icon
+    $newicon = $_FILES['newicon'];
+    if (!empty ($newicon['name'])) {
+        $pos = strrpos ($newicon['name'], '.') + 1;
+        $fextension = substr ($newicon['name'], $pos);
+        $filename = 'topic_' . $tid . '.' . $fextension;
+    }
+
+    // do the upload
+    if (!empty ($filename)) {
+        $upload->setFileNames ($filename);
+        $upload->setPerms ('0644');
+        if (($_CONF['max_topicicon_width'] > 0) &&
+            ($_CONF['max_topicicon_height'] > 0)) {
+            $upload->setMaxDimensions ($_CONF['max_topicicon_width'],
+                                       $_CONF['max_topicicon_height']);
+        } else {
+            $upload->setMaxDimensions ($_CONF['max_image_width'],
+                                       $_CONF['max_image_height']);
+        }
+        if ($_CONF['max_topicicon_size'] > 0) {
+            $upload->setMaxFileSize($_CONF['max_topicicon_size']);
+        } else {
+            $upload->setMaxFileSize($_CONF['max_image_size']);
+        }
+        $upload->uploadFiles ();
+
+        if ($upload->areErrors ()) {
+            $display = COM_siteHeader ('menu');
+            $display .= COM_startBlock ($LANG27[29], '',
+                    COM_getBlockTemplate ('_msg_block', 'header'));
+            $display .= $upload->printErrors (false);
+            $display .= COM_endBlock (COM_getBlockTemplate ('_msg_block',
+                                                            'footer'));
+            $display .= COM_siteFooter ();
+            echo $display;
+            exit; // don't return
+        }
+        $filename = '/images/topics/' . $filename;
+    }
+
+    return $filename;
+}
+
 
 // MAIN
 $display = '';
 
-if (isset ($HTTP_POST_VARS['mode'])) {
-    $mode = $HTTP_POST_VARS['mode'];
-} else {
-    $mode = $HTTP_GET_VARS['mode'];
+$mode = '';
+if (isset ($_REQUEST['mode'])) {
+    $mode = $_REQUEST['mode'];
 }
 
 if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
-    $tid = COM_applyFilter ($HTTP_POST_VARS['tid']);
+    $tid = COM_applyFilter ($_POST['tid']);
     if (!isset ($tid) || empty ($tid)) {
         COM_errorLog ('Attempted to delete topic tid=' . $tid);
         $display .= COM_refresh ($_CONF['site_admin_url'] . '/topic.php');
@@ -413,27 +511,29 @@ if (($mode == $LANG27[21]) && !empty ($LANG27[21])) { // delete
         $display .= deleteTopic ($tid);
     }
 } else if (($mode == $LANG27[19]) && !empty ($LANG27[19])) { // save
-    $display .= savetopic (COM_applyFilter ($HTTP_POST_VARS['tid']),
-                           $HTTP_POST_VARS['topic'],
-                           COM_applyFilter ($HTTP_POST_VARS['imageurl']),
-                           COM_applyFilter ($HTTP_POST_VARS['sortnum']),
-                           COM_applyFilter ($HTTP_POST_VARS['limitnews']),
-                           COM_applyFilter ($HTTP_POST_VARS['owner_id'], true),
-                           COM_applyFilter ($HTTP_POST_VARS['group_id'], true),
-                           $HTTP_POST_VARS['perm_owner'],
-                           $HTTP_POST_VARS['perm_group'],
-                           $HTTP_POST_VARS['perm_members'],
-                           $HTTP_POST_VARS['perm_anon'],
-                           $HTTP_POST_VARS['is_default'],
-                           $HTTP_POST_VARS['is_archive']);
+    if (empty ($_FILES['newicon']['name'])){
+        $imageurl = COM_applyFilter ($_POST['imageurl']);
+    } else {
+        $imageurl = handleIconUpload($_POST['tid']);
+        $imageurl = COM_applyFilter ($imageurl);
+    }
+    $display .= savetopic (COM_applyFilter ($_POST['tid']), $_POST['topic'],
+                           $imageurl,
+                           COM_applyFilter ($_POST['sortnum']),
+                           COM_applyFilter ($_POST['limitnews']),
+                           COM_applyFilter ($_POST['owner_id'], true),
+                           COM_applyFilter ($_POST['group_id'], true),
+                           $_POST['perm_owner'], $_POST['perm_group'],
+                           $_POST['perm_members'], $_POST['perm_anon'],
+                           $_POST['is_default'], $_POST['is_archive']);
 } else if ($mode == 'edit') {
     $display .= COM_siteHeader('menu');
-    $display .= edittopic (COM_applyFilter ($HTTP_GET_VARS['tid']));
+    $display .= edittopic (COM_applyFilter ($_GET['tid']));
     $display .= COM_siteFooter();
 } else { // 'cancel' or no mode at all
     $display .= COM_siteHeader('menu');
-    if (isset ($HTTP_GET_VARS['msg'])) {
-        $display .= COM_showMessage (COM_applyFilter ($HTTP_GET_VARS['msg'], true));
+    if (isset ($_GET['msg'])) {
+        $display .= COM_showMessage (COM_applyFilter ($_GET['msg'], true));
     }
     $display .= listtopics();
     $display .= COM_siteFooter();

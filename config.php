@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.178 2005/06/06 19:23:34 dhaun Exp $
+// $Id: config.php,v 1.179 2005/06/12 08:59:40 dhaun Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -638,6 +638,11 @@ $_CONF['max_image_size']        = 1048576; // 1048576 = 1MB
 $_CONF['max_photo_width']       = 128; // In pixels
 $_CONF['max_photo_height']      = 128; // In pixels
 $_CONF['max_photo_size']        = 65536; // 65536 = 64KB
+
+// Topic icon settings
+$_CONF['max_topicicon_width']   = 48; // In pixels
+$_CONF['max_topicicon_height']  = 48; // In pixels
+$_CONF['max_topicicon_size']    = 65536; // 65536 = 64KB
 
 // Comment Settings
 $_CONF['commentspeedlimit']     = 45;         // minimum time between comment posts, in seconds
