@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.106 2005/06/08 14:45:11 ospiess Exp $
+// $Id: user.php,v 1.107 2005/06/12 11:38:21 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -112,6 +112,7 @@ function edituser($uid = '', $msg = '')
         $curtime =  COM_getUserDateTimeFormat();
         $lastlogin = '';
         $lasttime = '';
+        $A['status'] = 3;
     }
 
     $retval .= COM_startBlock ($LANG28[1], '',
