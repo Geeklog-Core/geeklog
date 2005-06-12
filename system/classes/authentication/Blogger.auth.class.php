@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: Blogger.auth.class.php,v 1.2 2005/06/12 09:31:18 mjervis Exp $
+// $Id: Blogger.auth.class.php,v 1.3 2005/06/12 17:20:55 mjervis Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -49,7 +49,6 @@ class Blogger
 								)
 												);
         $client = new XML_RPC_Client('/api/', 'www.blogger.com', 80);
-        $client->setDebug(1);
         $result = $client->send($message, 5, 'http');
         if ($result && !$result->faultCode()) {
             // Get the email address:
