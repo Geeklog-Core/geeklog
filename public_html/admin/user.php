@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.108 2005/06/12 20:04:25 mjervis Exp $
+// $Id: user.php,v 1.109 2005/06/12 20:30:57 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -369,7 +369,7 @@ function saveusers ($uid, $username, $fullname, $passwd, $passwd_conf, $email, $
                 $rootgrp = DB_getItem ($_TABLES['groups'], 'grp_id',
                                        "grp_name = 'Root'");
                 if (in_array ($rootgrp, $groups)) {
-                    COM_accessLog ("User {$_USER['username']} just tried to give Root permissions to user $username.");
+                    COM_accessLog ("User {$_USER['username']} ({$_USER['uid']}) just tried to give Root permissions to user $username.");
                     echo COM_refresh ($_CONF['site_admin_url'] . '/index.php');
                     exit;
                 }
@@ -672,7 +672,7 @@ function importusers ($file)
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
                                            
-                USER_createAndSendPassword ($username, $emailAddr);
+                USER_createAndSendPassword ($username, $emailAddr, $uid);
 
                 if ($verbose_import) {
                     $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";

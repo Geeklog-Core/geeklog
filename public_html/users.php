@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.103 2005/06/12 20:04:25 mjervis Exp $
+// $Id: users.php,v 1.104 2005/06/12 20:30:58 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -310,7 +310,7 @@ function emailpassword ($username, $msg = 0)
             return COM_refresh ($_CONF['site_url'] . '/index.php?msg=48');
         }
 
-        USER_createAndSendPassword ($username, $A['email']);
+        USER_createAndSendPassword ($username, $A['email'], $A['uid']);
 
         if ($msg) {
             $retval = COM_refresh ("{$_CONF['site_url']}/index.php?msg=$msg");
@@ -761,7 +761,7 @@ case 'setnewpwd':
                            "uid", $uid);
                 DB_delete ($_TABLES['sessions'], 'uid', $uid);
                 DB_change ($_TABLES['users'], 'pwrequestid', "NULL",
-                           'username', $username);
+                           'uid', $uid);
                 $display = COM_refresh ($_CONF['site_url'] . '/users.php?msg=53');
             } else { // request invalid or expired
                 $display .= COM_siteHeader ('menu');
@@ -794,7 +794,7 @@ case 'emailpasswd':
         $email = COM_applyFilter ($_POST['email']);
         if (empty ($username) && !empty ($email)) {
             $username = DB_getItem ($_TABLES['users'], 'username',
-                                    "email = '$email'");
+                                    "email = '$email' AND remoteservice IS NULL");
         }
         if (!empty ($username)) {
             $display .= requestpassword ($username, 55);

@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: search.class.php,v 1.33 2005/05/17 20:34:22 ospiess Exp $
+// $Id: search.class.php,v 1.34 2005/06/12 20:30:58 mjervis Exp $
 
 if (eregi ('search.class.php', $_SERVER['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -155,16 +155,7 @@ class Search {
     */
     function _displayName ($username, $fullname)
     {
-        global $_CONF;
-
-        $retval = $username;
-
-        if (isset ($_CONF['show_fullname']) && ($_CONF['show_fullname'] == 1)
-                && !empty ($fullname)) {
-            $retval = $fullname;
-        }
-
-        return $retval;
+        return COM_getDisplayName('', $username, $fullname);
     }
 
     /**

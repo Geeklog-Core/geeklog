@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.10 2005/06/12 20:04:26 mjervis Exp $
+// $Id: lib-user.php,v 1.11 2005/06/12 20:30:58 mjervis Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -153,7 +153,7 @@ function USER_deleteAccount ($uid)
 * @return   bool                true = success, false = an error occured
 *
 */
-function USER_createAndSendPassword ($username, $useremail)
+function USER_createAndSendPassword ($username, $useremail, $uid)
 {
     global $_CONF, $_TABLES, $LANG04;
 
@@ -162,7 +162,7 @@ function USER_createAndSendPassword ($username, $useremail)
     $passwd = md5 ($passwd);
     $passwd = substr ($passwd, 1, 8);
     $passwd2 = md5 ($passwd);
-    DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'username', $username);
+    DB_change ($_TABLES['users'], 'passwd', "$passwd2", 'uid', $uid);
 
     if (file_exists ($_CONF['path_data'] . 'welcome_email.txt')) {
         $template = new Template ($_CONF['path_data']);
