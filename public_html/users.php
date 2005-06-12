@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.102 2005/06/12 09:07:14 mjervis Exp $
+// $Id: users.php,v 1.103 2005/06/12 20:04:25 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -300,7 +300,8 @@ function emailpassword ($username, $msg = 0)
     $retval = '';
 
     $username = addslashes ($username);
-    $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username'");
+    // don't retrieve any remote users!
+    $result = DB_query ("SELECT uid,email,status FROM {$_TABLES['users']} WHERE username = '$username' AND remoteservice is null");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
@@ -337,7 +338,8 @@ function requestpassword ($username, $msg = 0)
 {
     global $_CONF, $_TABLES, $LANG04;
 
-    $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username'");
+    // no remote users!
+    $result = DB_query ("SELECT uid,email,passwd,status FROM {$_TABLES['users']} WHERE username = '$username' AND remoteservice IS NULL");
     $nrows = DB_numRows ($result);
     if ($nrows == 1) {
         $A = DB_fetchArray ($result);
@@ -346,7 +348,7 @@ function requestpassword ($username, $msg = 0)
         }
         $reqid = substr (md5 (uniqid (rand (), 1)), 1, 16);
         DB_change ($_TABLES['users'], 'pwrequestid', "$reqid",
-                   'username', $username);
+                   'uid', $A['uid']);
 
         $mailtext = sprintf ($LANG04[88], $username);
         $mailtext .= $_CONF['site_url'] . '/users.php?mode=newpwd&uid=' . $A['uid'] . '&rid=' . $reqid . "\n\n";

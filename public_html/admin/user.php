@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.107 2005/06/12 11:38:21 dhaun Exp $
+// $Id: user.php,v 1.108 2005/06/12 20:04:25 mjervis Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -671,7 +671,8 @@ function importusers ($file)
                 // user doesn't already exist
                 $uid = USER_createAccount ($userName, $emailAddr, '',
                                            $fullName);
-                emailpassword ($userName);
+                                           
+                USER_createAndSendPassword ($username, $emailAddr);
 
                 if ($verbose_import) {
                     $retval .= "<br> Account for <b>$u_name</b> created successfully.<br>\n";
@@ -703,23 +704,6 @@ function importusers ($file)
 
     return $retval;
 }
-
-/**
-* Send password to newly created user
-*
-* @param    string  $username   name of user
-*
-*/
-function emailpassword ($username)
-{
-    global $_TABLES;
-
-    $email = DB_getItem ($_TABLES['users'], 'email', "username = '$username'");
-    if (!empty ($email)) {
-        USER_createAndSendPassword ($username, $email);
-    }
-}
-
 
 /**
 * Display "batch add" (import) form

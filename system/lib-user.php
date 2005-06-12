@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-user.php,v 1.9 2005/06/08 07:06:44 mjervis Exp $
+// $Id: lib-user.php,v 1.10 2005/06/12 20:04:26 mjervis Exp $
 
 if (eregi ('lib-user.php', $HTTP_SERVER_VARS['PHP_SELF'])) {
     die ('This file can not be used on its own.');
@@ -243,7 +243,7 @@ function USER_sendActivationEmail ($username, $useremail)
 * @return   int                 new user's ID
 *
 */
-function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '')
+function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $homepage = '', $remoteusername = '', $service = '')
 {
     global $_CONF, $_TABLES;
 
@@ -269,10 +269,23 @@ function USER_createAccount ($username, $email, $passwd = '', $fullname = '', $h
         $fields .= ',homepage';
         $values .= ",'$homepage'";
     }
+    if (!empty($remoteusername)) {
+        $fields .= ',remoteusername';
+        $values .= ",'$remoteusername'";
+    }
+    if (!empty($service)) {
+        $fields .= ',remoteservice';
+        $values .= ",'$service'";
+    }
 
     DB_query ("INSERT INTO {$_TABLES['users']} ($fields) VALUES ($values)");
-
-    $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username'");
+    // Get the uid of the user, possibly given a service:
+    if ($remoteusername != '')
+    {
+        $uid = DB_getItem ($_TABLES['users'], 'uid', "remoteusername = '$remoteusername' AND remoteservice='$service'");
+    } else {
+        $uid = DB_getItem ($_TABLES['users'], 'uid', "username = '$username' AND remoteservice IS NULL");
+    }
 
     // Add user to Logged-in group (i.e. members) and the All Users group
     $normal_grp = DB_getItem ($_TABLES['groups'], 'grp_id',
