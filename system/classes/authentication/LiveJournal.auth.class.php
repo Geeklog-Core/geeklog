@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: LiveJournal.auth.class.php,v 1.1 2005/06/12 09:07:15 mjervis Exp $
+// $Id: LiveJournal.auth.class.php,v 1.2 2005/06/12 09:31:19 mjervis Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -38,7 +38,7 @@ class LiveJournal
 {
     var $email;
     
-    function authenticate($username, $password, $server)
+    function authenticate($username, $password)
     {
         /* check it's livejournal.com */
         $email = '';

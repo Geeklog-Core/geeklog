@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: Blogger.auth.class.php,v 1.1 2005/06/12 09:07:15 mjervis Exp $
+// $Id: Blogger.auth.class.php,v 1.2 2005/06/12 09:31:18 mjervis Exp $
 
 // PEAR class to handle XML-RPC
 require_once ('XML/RPC.php');
@@ -38,7 +38,7 @@ class Blogger
 {
     var $email;
     
-    function authenticate($username, $password, $server='')
+    function authenticate($username, $password)
     {
         $email = '';
         $message = new XML_RPC_Message('blogger.getUserInfo',

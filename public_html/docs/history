@@ -182,6 +182,8 @@ Jun ??, 2005 (Links-Plugin 1.0.0)
 - The column headline for event search results was not displayed [Dirk]
 - Added the ability to ban users, and to tell when a user has logged in at least
   once [Mike]
+- Added the ability to allow users to login via defined remote services (ships
+  with Blogger and LiveJournal support) [Mike]
 
 - New Farsi (Persian) language file, provided by Hesam.H
 - Updated Italian language file, provided by Marcello Teodori
