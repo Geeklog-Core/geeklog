@@ -8,11 +8,12 @@
 // |                                                                           |
 // | Geeklog security library.                                                 |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Mark Limburg     - mlimburg@users.sourceforge.net                |
 // |          Vincent Furia    - vmf@abtech.org                                |
+// |          Michael Jervis   - mike@fuckingbrit.com                          |
 // +---------------------------------------------------------------------------+
 // |                                                                           |
 // | This program is free software; you can redistribute it and/or             |
@@ -31,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-security.php,v 1.30 2005/06/10 07:38:30 mjervis Exp $
+// $Id: lib-security.php,v 1.31 2005/06/12 09:07:14 mjervis Exp $
 
 /**
 * This is the security library for Geeklog.  This is used to implement Geeklog's
@@ -649,10 +650,12 @@ function SEC_getFeatureGroup ($feature, $uid = '')
 *
 * @param    string  $username   who is logging in?
 * @param    string  $password   what they claim is their password
+* @param    int     $uid        This is an OUTPUT param, pass by ref,
+*                               sends back UID inside it.
 * @return   int                 user status, -1 for fail.
 *
 */
-function SEC_authenticate($username, $password)
+function SEC_authenticate($username, $password, $uid)
 {
     global $_TABLES, $LANG01, $_CONF;
 
@@ -663,6 +666,7 @@ function SEC_authenticate($username, $password)
     if(( $tmp == 0 ) && ( $nrows == 1 ))
     {
         $U = DB_fetchArray( $result );
+        $uid = $U['uid'];
         if ($U['status'] == 0)
         {
             return 0; // banned, jump to here to save an md5 calc.
@@ -778,20 +782,22 @@ function SEC_checkUserStatus($userid)
   * @param  string  $loginname Their username
   * @param  string  $passwd The password entered
   * @param  string  $server The server portion of $username
+  * @param  string  $uid OUTPUT parameter, pass it by ref to get uid back.
   * @return int     user status, -1 for fail.
   */
-function SEC_remoteAuthentication($loginname, $passwd, $service)
+function SEC_remoteAuthentication($loginname, $passwd, $service, $uid)
 {
     global $_TABLES, $_CONF;
     
     /* First try a local cached login */
     $remoteusername = addslashes($loginname);
-    $result = DB_query("SELECT passwd, status FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername'");
+    $result = DB_query("SELECT passwd, status, uid FROM {$_TABLES['users']} WHERE remoteusername='$remoteusername'");
     $tmp = mysql_errno();
     $nrows = DB_numRows($result);
     if (($tmp == 0) && ($nrows == 1))
     {
         $U = DB_fetchArray($result);
+        $uid = $U['uid'];
         $mypass = $U['passwd']; // also used to see if the user existed later.
         if ($mypass == md5($passwd))
         {

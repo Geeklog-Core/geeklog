@@ -8,11 +8,12 @@
                                                                     <td colspan="2">{lang_message}</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_username}:</b></td>
+                                                                    <td align="right"><b><label for="loginname">{lang_username}</label>:</b></td>
                                                                     <td><input type="text" size="16" name="loginname"></td>
                                                                 </tr>
+                                                                {services}
                                                                 <tr>
-                                                                    <td align="right"><b>{lang_password}:</b></td>
+                                                                    <td align="right"><b><label for="passwd">{lang_password}</label>:</b></td>
                                                                     <td><input type="password" name="passwd" size="16">
                                                                         &nbsp;<a href="{site_url}/users.php?mode=getpassword">{lang_forgetpassword}</a>
                                                                     </td>

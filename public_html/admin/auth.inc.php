@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.21 2004/08/15 12:06:10 dhaun Exp $
+// $Id: auth.inc.php,v 1.22 2005/06/12 09:07:14 mjervis Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $HTTP_SERVER_VARS['PHP_SELF']))
@@ -40,18 +40,14 @@ if (eregi ('auth.inc.php', $HTTP_SERVER_VARS['PHP_SELF']))
 }
 
 // MAIN
-
+$uid = '';
 if (!empty($loginname) && !empty($passwd)) {
-    $mypasswd = COM_getPassword($loginname);
-} else {
-    srand((double)microtime()*1000000);
-    $mypasswd = rand();
+    $status = SEC_authenticate($loginname, $passwd, &$uid);
 }
-
 $display = '';
 
-if (!empty ($passwd) && !empty ($mypasswd) && ($mypasswd == md5 ($passwd))) {
-    $_USER = SESS_getUserData ($loginname);
+if ($status == 3) {
+    $_USER = SESS_getUserDataFromId ($uid);
     $sessid = SESS_newSession ($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'],
             $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
     SESS_setSessionCookie ($sessid, $_CONF['session_cookie_timeout'],

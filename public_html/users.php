@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: users.php,v 1.101 2005/06/05 08:40:18 mjervis Exp $
+// $Id: users.php,v 1.102 2005/06/12 09:07:14 mjervis Exp $
 
 /**
 * This file handles user authentication
@@ -523,6 +523,30 @@ function loginform ($hide_forgotpw_link = false, $statusmode=-1)
     }
     $user_templates->set_var('lang_login', $LANG04[80]);
     $user_templates->set_var('end_block', COM_endBlock());
+    if ($_CONF['remoteauthentication'] && !$_CONF['usersubmission']) {
+        /* Build select */
+        $select = '<select name="service"><option value="">' . 
+                        $_CONF['site_name'] . '</option>';
+        if (is_dir($_CONF['path_system'].'classes/authentication/')) {
+            
+            $folder = opendir( $_CONF['path_system'].'classes/authentication/' );
+            while (($filename = @readdir( $folder )) !== false) {
+                $strpos = strpos($filename, '.auth.class.php');
+                if ($strpos) {
+                    $service = substr($filename, 0, $strpos);
+                    $select .= '<option value="'.$service.'">'.$service.'</service>';
+                }
+            }
+        }
+        $select .= '</select>';
+        $user_templates->set_file('services', 'services.thtml');
+        $user_templates->set_var('lang_service', $LANG04[121]);
+        $user_templates->set_var('select_service', $select);
+        $user_templates->parse('output', 'services');
+        $user_templates->set_var('services', $user_templates->finish($user_templates->get_var('output')));
+    } else {
+        $user_templates->set_var('services', '');
+    }
     $user_templates->parse('output', 'login');
     $retval .= $user_templates->finish($user_templates->get_var('output'));
 
@@ -805,19 +829,25 @@ default:
     }
     COM_updateSpeedlimit('login');
 
-    $loginname = COM_applyFilter ($_REQUEST['loginname']);
+    $loginname = COM_applyFilter ($_POST['loginname']);
     if (isset ($_POST['passwd'])) {
         $passwd = $_POST['passwd'];
     }
-    if (!empty($loginname) && !empty($passwd)) {
-        $status = SEC_authenticate($loginname, $passwd);
+    $service = COM_applyFilter($_POST['service']);
+    $uid = '';
+    if (!empty($loginname) && !empty($passwd) && empty($service)) {
+        $status = SEC_authenticate($loginname, $passwd, &$uid);
+    } elseif(( $_CONF['usersubmission'] == 0) && $_CONF['remoteauthentication'] && ($service != '')) {
+        /* Distributed Authentication */
+        //pass $loginname by ref so we can change it ;-)
+        $status = SEC_remoteAuthentication(&$loginname, $passwd, $service, &$uid);
     } else {
         $status = -1;
     }
     
     if ($status == 3) { // logged in AOK.
-        DB_change($_TABLES['users'],'pwrequestid',"NULL",'username',$loginname);
-        $userdata = SESS_getUserData($loginname);
+        DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
+        $userdata = SESS_getUserDataFromId($uid);
         $_USER=$userdata;
         $sessid = SESS_newSession($_USER['uid'], $_SERVER['REMOTE_ADDR'], $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
         SESS_setSessionCookie($sessid, $_CONF['session_cookie_timeout'], $_CONF['cookie_session'], $_CONF['cookie_path'], $_CONF['cookiedomain'], $_CONF['cookiesecure']);

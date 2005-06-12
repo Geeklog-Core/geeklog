@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.179 2005/06/12 08:59:40 dhaun Exp $
+// $Id: config.php,v 1.180 2005/06/12 09:07:14 mjervis Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -251,6 +251,13 @@ $_CONF['show_fullname'] = 0;
 // | Function hooks are in users.php, usersettings.php and admin/user.php      |
 // +---------------------------------------------------------------------------+
 $_CONF['custom_registration'] = false;  // Set to true if you have custom code
+
+// +---------------------------------------------------------------------------+
+// | Support for remote authentication of users, i.e. logging in via other     |
+// | supported remote servers. Requires custom classes in:                     |
+// | system/classes/authentication/                                            |
+// +---------------------------------------------------------------------------+
+$_CONF['remoteauthentication'] = false;  // Set to true to enable remote logins.
 
 // +---------------------------------------------------------------------------+
 // | Define action to be taken by Spam-X module if spam detected               |

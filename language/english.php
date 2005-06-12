@@ -339,7 +339,8 @@ $LANG04 = array(
     117 => 'Your account is currently awaiting activation by an administrator. You will not be able to login until your account has been approved.',
     118 => "Your {$_CONF['site_name']} account has now been activated by an administrator. You may now login to the site at the url below using your username (<username>) and password as previously emailed to you.",
     119 => "If you have forgotten your password, you may request a new one at this url:",
-    120 => 'Account Activated'
+    120 => 'Account Activated',
+    121 => 'Service'
 );
 
 ###############################################################################
