@@ -30,7 +30,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: mail.php,v 1.29 2005/06/11 17:50:40 dhaun Exp $
+// $Id: mail.php,v 1.30 2005/06/12 20:03:59 mjervis Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -152,11 +152,11 @@ function send_messages ($vars)
     // and now mail it
     if (isset ($vars['overstyr'])) {
         $sql = "SELECT username,fullname,email FROM {$_TABLES['users']},{$_TABLES['group_assignments']} WHERE uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3";
+        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = ug_uid AND ug_main_grp_id = {$vars['to_group']}";
     } else {
         $sql = "SELECT username,fullname,email,emailfromadmin FROM {$_TABLES['users']},{$_TABLES['userprefs']},{$_TABLES['group_assignments']} WHERE {$_TABLES['users']}.uid > 1";
-        $sql .= " AND {$_TABLES['users']}.status = 3";
+        $sql .= " AND {$_TABLES['users']}.status = 3 AND ((email is not null) and (email != ''))";
         $sql .= " AND {$_TABLES['users']}.uid = {$_TABLES['userprefs']}.uid AND emailfromadmin = 1";
         $sql .= " AND ug_uid = {$_TABLES['users']}.uid AND ug_main_grp_id = {$vars['to_group']}";
     }
