@@ -79,6 +79,14 @@ $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version
 // add polls plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
 
+// updates core -> plugin
+$_SQL[] = "UPDATE {$_TABLES['blocks']} SET `type`= 'phpblock', `phpblockfn`='phpblock_polls' WHERE `name`='poll_block';";
+
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core=0 WHERE ft_name='links.submit';";
+$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core=0 WHERE ft_name='poll.edit';";
+$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_name='Link Admin';";
+$_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_name='Poll Admin';";
+
 // rename "link.*" features to "links.*" to match the plugin name
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.moderate', ft_gl_core = '0' WHERE ft_name = 'link.moderate';";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.edit', ft_gl_core = '0' WHERE ft_name = 'link.edit';";
