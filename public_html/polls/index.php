@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2005/06/07 19:00:14 trinity Exp $
+// $Id: index.php,v 1.2 2005/06/13 17:45:17 ospiess Exp $
 
 require_once ('../lib-common.php');
 
@@ -91,14 +91,13 @@ function pollsave($qid = '', $aid = 0)
 */
 function polllist ($page = 1) 
 {
-    global $_CONF, $_TABLES, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
+    global $_CONF, $_PO_CONF, $_TABLES, $_USER, $_GROUPS, $LANG07, $LANG10, $LANG_LOGIN;
 
     if ($page < 1) {
         $page = 1;
     }
 
-    if (empty ($_USER['username']) &&
-        (($_CONF['loginrequired'] == 1) || ($_CONF['pollsloginrequired'] == 1))) {
+    if (empty ($_USER['username']) && ( $_PO_CONF['pollsloginrequired'] == 1)) {
         $retval = COM_startBlock ($LANG_LOGIN[1], '',
                           COM_getBlockTemplate ('_msg_block', 'header'));
         $login = new Template($_CONF['path_layout'] . 'submit'); 
@@ -207,9 +206,9 @@ if (empty($qid)) {
     } else {
         $display .= POLLS_pollResults($qid,400,$order,$mode);
     }
-} else if (($aid > 0) && ($aid <= $_CONF['maxanswers']) &&
+} else if (($aid > 0) && ($aid <= $_PO_CONF['maxanswers']) &&
         empty($HTTP_COOKIE_VARS[$qid])) {
-    setcookie ($qid, $aid, time() + $_CONF['pollcookietime'],
+    setcookie ($qid, $aid, time() + $_PO_CONF['pollcookietime'],
                $_CONF['cookie_path'], $_CONF['cookiedomain'],
                $_CONF['cookiesecure']);
     $display .= COM_siteHeader() . pollsave($qid, $aid);

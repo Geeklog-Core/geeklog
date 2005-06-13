@@ -1,4 +1,5 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +-----------------------------------------------------------------------------+
 // | glPolls Plugin 1.0 for Geeklog- The Ultimate OSS Portal              |
@@ -36,13 +37,22 @@
 // | You should have received a copy of the GNU General Public License           |
 // | along with this program; if not, write to the Free Software Foundation,     |
 // | Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             |
-// |                                                                             |
 // +-----------------------------------------------------------------------------+
 //
+
 
 $_TABLES['pollanswers']         = $_DB_table_prefix . 'pollanswers';
 $_TABLES['pollquestions']       = $_DB_table_prefix . 'pollquestions';
 $_TABLES['pollvoters']          = $_DB_table_prefix . 'pollvoters';
 
+$_PO_CONF['version'] = '1.0';          // Plugin Version
+$_PO_CONF['pollsloginrequired']      = 0;
 
+// Poll Settings
+$_PO_CONF['maxanswers']        = 10; // max. number of options in a poll
+// 'submitorder' is the order in which answers are saved in admin/poll.php
+// 'voteorder' will list answers ordered by number of votes (highest->lowest);
+$_PO_CONF['answerorder']       = 'submitorder';
+$_PO_CONF['pollcookietime']    = 86400;
+$_PO_CONF['polladdresstime']   = 604800;
 ?>

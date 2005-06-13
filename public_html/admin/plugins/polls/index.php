@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.1 2005/06/07 18:59:34 trinity Exp $
+// $Id: index.php,v 1.2 2005/06/13 17:45:17 ospiess Exp $
 
 // Set this to true if you want to log debug messages to error.log
 $_POLL_VERBOSE = false;
@@ -201,7 +201,7 @@ function savepoll ($qid, $mainpage, $question, $voters, $statuscode, $commentcod
 */
 function editpoll ($qid = '')
 {
-    global $_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS;
+    global $_CONF, $_PO_CONF, $_GROUPS, $_TABLES, $_USER, $LANG25, $LANG_ACCESS;
 
     $retval = '';
 
@@ -301,11 +301,11 @@ function editpoll ($qid = '')
     $poll_templates->set_var('lang_save', $LANG25[14]);   
     $poll_templates->set_var('lang_cancel', $LANG25[15]);   
  
-    for ($i = 1; $i <= $_CONF['maxanswers']; $i++) {
+    for ($i = 1; $i <= $_PO_CONF['maxanswers']; $i++) {
         $A = DB_fetchArray($answers);
         $poll_templates->set_var('answer_text', htmlspecialchars ($A['answer']));
         $poll_templates->set_var('answer_votes', $A['votes']);
-        if ($i < $_CONF['maxanswers']) {
+        if ($i < $_PO_CONF['maxanswers']) {
             $poll_templates->parse('answer_option','answer',true);
         }
     }

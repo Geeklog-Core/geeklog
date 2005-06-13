@@ -34,11 +34,11 @@
 
 
 $LANG_POLLS= array(
+    1 => 'Polls',
     5 => 'Vote',
     6 => 'Results',
     7 => 'Poll Results',
     8 => 'votes',
-    16 => 'Polls',
     56 => 'Vote',
     73 => 'Past Polls'
 );

@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.2 2005/06/13 12:12:21 ospiess Exp $
+// $Id: functions.inc,v 1.3 2005/06/13 17:45:17 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -60,7 +60,7 @@ include ($_CONF['path'] . 'plugins/polls/config.php');
 */
 function plugin_getmenuitems_polls()
 {
-    if( $anon && ( $_CONF['loginrequired'] || $_CONF['pollsloginrequired'] )) {
+    if( $anon && $_PO_CONF['pollsloginrequired'] ) {
         exit;
     } else {
         $menuitems['Polls'] = '/polls/index.php';
@@ -139,6 +139,28 @@ function plugin_showstats_polls($showsitestats)
     return $retval;
 }
 */
+
+
+/*
+
+whats new block
+
+    $powhere = '';
+
+    if( !empty( $_USER['uid'] ))
+    {
+        $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
+        $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
+    }
+    else
+    {
+        $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
+        }
+
+*/
+
+
 /**
 * Geeklog is asking us to provide any new items that show up in the type
 * drop-down on search.php.  Let's let users search static pages!
@@ -301,16 +323,16 @@ function plugin_cclabel_polls()
 *
 */
 
-function plugin_getadminoption_polls() 
+function plugin_getadminoption_polls()
 {
     global $_CONF, $LANG_POLLS, $_TABLES;
 
     if (SEC_hasRights ('polls.edit,polls.delete', 'OR')) {
-        //$result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['staticpage']}" . COM_getPermSQL ());
-        //$A = DB_fetchArray ($result);
-        //$total_pages = $A['cnt'];
-        return array ($LANG_POLLS[16], $_CONF['site_admin_url'] . '/plugins/polls/index.php', $total_pages);
-    }	
+        $result = DB_query ("SELECT count(*) AS cnt FROM {$_TABLES['pollquestions']}" . COM_getPermSQL ());
+        $A = DB_fetchArray ($result);
+        $total_pages = $A['cnt'];
+        return array ($LANG_POLLS[1], $_CONF['site_admin_url'] . '/plugins/polls/index.php', $total_pages);
+    }
 }
 
 /**
@@ -804,11 +826,11 @@ function POLLS_pollVote( $qid )
 
 function POLLS_showPoll( $size, $qid='' )
 {
-    global $_CONF, $_TABLES, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
+    global $_CONF, $_PO_CONF, $_TABLES, $HTTP_COOKIE_VARS, $HTTP_SERVER_VARS;
 
     $retval = '';
 
-    DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}" );
+    DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_PO_CONF['polladdresstime']}" );
 
     if( !empty( $qid ))
     {
@@ -817,11 +839,11 @@ function POLLS_showPoll( $size, $qid='' )
 
         if( empty( $HTTP_COOKIE_VARS[$qid]) && $pcount == 0 )
         {
-            $retval .= COM_pollVote( $qid );
+            $retval .= POLLS_pollVote( $qid );
         }
         else
         {
-            $retval .= COM_pollResults( $qid, $size );
+            $retval .= POLLS_pollResults( $qid, $size );
         }
     }
     else
@@ -886,7 +908,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
 
     if( $nquestion == 1 )
     {
-        if( $_CONF['answerorder'] == 'voteorder' )
+        if( $_PO_CONF['answerorder'] == 'voteorder' )
         {
             $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
         }
@@ -1004,7 +1026,7 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
     return $retval;
 }
 
-Function phpblock_showPoll(){
+Function phpblock_polls(){
 
 
 $retval = POLLS_showPoll( 60 );

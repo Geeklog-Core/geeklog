@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.445 2005/06/13 12:12:21 ospiess Exp $
+// $Id: lib-common.php,v 1.446 2005/06/13 17:45:17 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -916,7 +916,6 @@ function COM_siteHeader( $what = 'menu', $pagetitle = '', $headercode = '' )
     $header->set_var( 'button_home', $LANG_BUTTONS[1] );
     $header->set_var( 'button_contact', $LANG_BUTTONS[2] );
     $header->set_var( 'button_contribute', $LANG_BUTTONS[3] );
-    $header->set_var( 'button_polls', $LANG_BUTTONS[5] );
     $header->set_var( 'button_calendar', $LANG_BUTTONS[6] );
     $header->set_var( 'button_sitestats', $LANG_BUTTONS[7] );
     $header->set_var( 'button_personalize', $LANG_BUTTONS[8] );
@@ -1633,323 +1632,6 @@ function COM_accessLog( $logentry )
 }
 
 /**
-* Shows a poll form
-*
-* Shows an HTML formatted poll for the given question ID
-*
-* @param      string      $qid      ID for poll question
-* @see function COM_pollResults
-* @see function COM_showPoll
-* @return       string  HTML Formatted Poll
-*
-*/
-
-function COM_pollVote( $qid )
-{
-    global $_CONF, $_TABLES, $LANG01, $_COOKIE;
-
-    $retval = '';
-
-    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
-    $Q = DB_fetchArray( $question );
-
-    if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon'] ) == 0 )
-    {
-        return $retval;
-    }
-
-    $nquestion = DB_numRows( $question );
-    $fields = array( 'ipaddress', 'qid' );
-    $values = array( $_SERVER['REMOTE_ADDR'], $qid );
-    $id = DB_count( $_TABLES['pollvoters'], $fields, $values );
-
-    if( empty( $_COOKIE[$qid] ) && $id == 0 )
-    {
-        if( $nquestion == 1 )
-        {
-            $answers = DB_query( "SELECT answer,aid FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
-            $nanswers = DB_numRows( $answers );
-
-            if( $nanswers > 0 )
-            {
-                $poll = new Template( $_CONF['path_layout'] . 'pollbooth' );
-                $poll->set_file( array( 'panswer' => 'pollanswer.thtml',
-                                        'block' => 'pollblock.thtml',
-                                        'comments' => 'pollcomments.thtml' ));
-                $poll->set_var( 'site_url', $_CONF['site_url'] );
-                $poll->set_var( 'layout_url', $_CONF['layout_url'] );
-
-                $poll->set_var( 'poll_question', $Q['question'] );
-                $poll->set_var( 'poll_id', $qid );
-                $poll->set_var( 'num_votes', $Q['voters'] );
-                $poll->set_var( 'poll_vote_url', $_CONF['site_url']
-                        . '/pollbooth.php');
-                $poll->set_var( 'poll_results_url', $_CONF['site_url']
-                        . '/pollbooth.php?qid=' . $qid . '&amp;aid=-1');
-
-                $poll->set_var( 'lang_vote', $LANG01[56] );
-                $poll->set_var( 'lang_votes', $LANG01[8] );
-                $poll->set_var( 'lang_results', $LANG01[6] );
-
-                for( $i = 1; $i <= $nanswers; $i++ )
-                {
-                    $A = DB_fetchArray( $answers );
-                    $poll->set_var( 'answer_id', $A['aid'] );
-                    $poll->set_var( 'answer_text', $A['answer'] );
-                    $poll->parse( 'poll_answers', 'panswer', true );
-                }
-
-                if( $Q['commentcode'] >= 0 )
-                {
-                    $poll->set_var( 'num_comments',
-                            DB_count( $_TABLES['comments'], 'sid', $qid ));
-                    $poll->set_var( 'lang_comments', $LANG01[3] );
-                    $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
-                        '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments');
-                    $poll->parse( 'poll_comments', 'comments', true );
-                }
-                else
-                {
-                    $poll->set_var( 'poll_comments', '' );
-                    $poll->set_var( 'poll_comments_url', '' );
-                }
-
-                $title = DB_getItem( $_TABLES['blocks'], 'title',
-                                     "name='poll_block'" );
-                $retval = COM_startBlock( $title, '',
-                              COM_getBlockTemplate( 'poll_block', 'header' ))
-                        . $poll->finish( $poll->parse( 'output', 'block' ))
-                        . COM_endBlock( COM_getBlockTemplate( 'poll_block', 'footer' )) . LB;
-            }
-        }
-    }
-    else
-    {
-        $retval .= COM_pollResults( $qid );
-    }
-
-    return $retval;
-}
-
-/**
-* This shows a poll
-*
-* This will determine if a user needs to see the poll form OR the poll
-* result.
-*
-* @param        int        $sise       Size in pixels of poll results
-* @param        string     $qid        Question ID to show (optional)
-* @see function COM_pollVote
-* @see function COM_pollResults
-* @return    String  HTML Formated string of Poll
-*
-*/
-
-function COM_showPoll( $size, $qid='' )
-{
-    global $_CONF, $_TABLES, $_COOKIE;
-
-    $retval = '';
-
-    DB_query( "DELETE FROM {$_TABLES['pollvoters']} WHERE date < unix_timestamp() - {$_CONF['polladdresstime']}" );
-
-    if( !empty( $qid ))
-    {
-        $pcount = DB_count( $_TABLES['pollvoters'], array( 'ipaddress', 'qid' ),
-                            array( $_SERVER['REMOTE_ADDR'], $qid ));
-
-        if( empty( $_COOKIE[$qid]) && $pcount == 0 )
-        {
-            $retval .= COM_pollVote( $qid );
-        }
-        else
-        {
-            $retval .= COM_pollResults( $qid, $size );
-        }
-    }
-    else
-    {
-        $result = DB_query( "SELECT qid from {$_TABLES['pollquestions']} WHERE display = 1 ORDER BY date DESC" );
-        $nrows = DB_numRows( $result );
-
-        if( $nrows > 0 )
-        {
-            for( $i = 1; $i <= $nrows; $i++ )
-            {
-                $Q = DB_fetchArray( $result );
-                $qid = $Q['qid'];
-                $id = array( 'ipaddress', 'qid' );
-                $value = array( $_SERVER['REMOTE_ADDR'], $qid );
-                $pcount = DB_count( $_TABLES['pollvoters'], $id, $value );
-
-                if( !isset( $_COOKIE[$qid]) && $pcount == 0 )
-                {
-                    $retval .= COM_pollVote( $qid );
-                }
-                else
-                {
-                    $retval .= COM_pollResults( $qid, $size );
-                }
-            }
-        }
-    }
-
-    return $retval;
-}
-
-/**
-* Shows the results of a poll
-*
-* Shows the poll results for a give poll question
-*
-* @param        string      $qid        ID for poll question to show
-* @param        int         $scale      Size in pixels to scale formatted results to
-* @param        string      $order      'ASC' or 'DESC' for Comment ordering (SQL statment ordering)
-* @param        string      $mode       Comment Mode possible values 'nocomment', 'flat', 'nested', 'threaded'
-* @see COM_pollVote
-* @see COM_showPoll
-* @return     string   HTML Formated Poll Results
-*
-*/
-function COM_pollResults( $qid, $scale=400, $order='', $mode='' )
-{
-    global $_TABLES, $LANG01, $LANG07, $_CONF, $_COM_VERBOSE;
-
-    $retval = '';
-
-    $question = DB_query( "SELECT question,voters,commentcode,owner_id,group_id,perm_owner,perm_group,perm_members,perm_anon FROM {$_TABLES['pollquestions']} WHERE qid='$qid'" );
-    $Q = DB_fetchArray( $question );
-
-    if( SEC_hasAccess( $Q['owner_id'], $Q['group_id'], $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'], $Q['perm_anon']) == 0 )
-    {
-        return $retval;
-    }
-
-    $nquestion = DB_numRows( $question );
-
-    if( $nquestion == 1 )
-    {
-        if( $_CONF['answerorder'] == 'voteorder' )
-        {
-            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY votes DESC" );
-        }
-        else
-        {
-            $answers = DB_query( "SELECT votes,answer FROM {$_TABLES['pollanswers']} WHERE qid='$qid' ORDER BY aid" );
-        }
-
-        $nanswers = DB_numRows( $answers );
-
-        if( $_COM_VERBOSE )
-        {
-            COM_errorLog( "got $answers answers in COM_pollResults", 1 );
-        }
-
-        if( $nanswers > 0 )
-        {
-            $title = DB_getItem( $_TABLES['blocks'], 'title', "name='poll_block'" );
-
-            if( $scale < 120 ) // assume we're in the poll block
-            {
-                $retval .= COM_startBlock( $title, '',
-                        COM_getBlockTemplate( 'poll_block', 'header' ));
-            }
-            else // assume we're in pollbooth.php
-            {
-                $retval .= COM_startBlock( $title );
-            }
-
-            $poll = new Template( $_CONF['path_layout'] . 'pollbooth' );
-            $poll->set_file( array( 'result' => 'pollresult.thtml',
-                                    'comments' => 'pollcomments.thtml',
-                                    'votes_bar' => 'pollvotes_bar.thtml',
-                                    'votes_num' => 'pollvotes_num.thtml' ));
-            $poll->set_var( 'site_url', $_CONF['site_url'] );
-            $poll->set_var( 'layout_url', $_CONF['layout_url'] );
-
-            $poll->set_var( 'poll_question', $Q['question'] );
-            $poll->set_var( 'poll_id', $qid );
-            $poll->set_var( 'num_votes', $Q['voters'] );
-
-            $poll->set_var( 'lang_votes', $LANG01[8] );
-
-            for( $i = 1; $i <= $nanswers; $i++ )
-            {
-                $A = DB_fetchArray( $answers );
-
-                if( $Q['voters'] == 0 )
-                {
-                    $percent = 0;
-                }
-                else
-                {
-                    $percent = $A['votes'] / $Q['voters'];
-                }
-
-                $poll->set_var( 'answer_text', $A['answer'] );
-                $poll->set_var( 'answer_counter', $i );
-                $poll->set_var( 'answer_odd', (( $i - 1 ) % 2 ));
-                $poll->set_var( 'answer_num', $A['votes'] );
-                $poll->set_var( 'answer_percent',
-                                sprintf( '%.2f', $percent * 100 ));
-                if( $scale < 120 )
-                {
-                    $poll->parse( 'poll_votes', 'votes_num', true );
-                }
-                else
-                {
-                    $width = $percent * $scale;
-                    $poll->set_var( 'bar_width', $width );
-                    $poll->parse( 'poll_votes', 'votes_bar', true );
-                }
-            }
-
-            if( $Q['commentcode'] >= 0 )
-            {
-                $poll->set_var( 'num_comments',
-                        DB_count( $_TABLES['comments'], 'sid', $qid ));
-                $poll->set_var( 'lang_comments', $LANG01[3] );
-                $poll->set_var( 'poll_comments_url', $_CONF['site_url'] .
-                        '/pollbooth.php?qid=' . $qid . '&amp;aid=-1#comments');
-                $poll->parse( 'poll_comments', 'comments', true );
-            }
-            else
-            {
-                $poll->set_var( 'poll_comments_url', '' );
-                $poll->set_var( 'poll_comments', '' );
-            }
-
-            $poll->set_var( 'lang_pollquestions', $LANG07[6] );
-
-            $retval .= $poll->finish( $poll->parse( 'output', 'result' ));
-
-            if( $scale < 120)
-            {
-                $retval .= COM_endBlock( COM_getBlockTemplate( 'poll_block',
-                        'footer' ));
-            }
-            else
-            {
-                $retval .= COM_endBlock();
-            }
-            if( $scale > 399 && $Q['commentcode'] >= 0 )
-            {
-                $delete_option = ( SEC_hasRights( 'poll.edit' ) &&
-                    SEC_hasAccess( $Q['owner_id'], $Q['group_id'],
-                    $Q['perm_owner'], $Q['perm_group'], $Q['perm_members'],
-                    $Q['perm_anon'] ) == 3 ? true : false );
-
-                require_once ( $_CONF['path_system'] . 'lib-comment.php' );
-                $retval .= CMT_userComments( $qid, $Q['question'], 'poll',
-                                $order, $mode, 0, 1, false, $delete_option ); 
-            }
-        }
-    }
-
-    return $retval;
-}
-
-/**
 * Shows all available topics
 *
 * Show the topics in the system the user has access to and prints them in HTML.
@@ -2330,7 +2012,7 @@ function COM_adminMenu( $help = '', $title = '' )
     $plugin_options = PLG_getAdminOptions();
     $nrows = count( $plugin_options );
 
-    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,event.edit,poll.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
+    if( SEC_isModerator() OR SEC_hasrights( 'story.edit,block.edit,topic.edit,event.edit,user.edit,plugin.edit,user.mail', 'OR' ) OR ( $nrows > 0 ))
     {
         // what's our current URL?
         $thisUrl = COM_getCurrentURL();
@@ -2487,17 +2169,6 @@ function COM_adminMenu( $help = '', $title = '' )
             $adminmenu->set_var( 'option_url', $url );
             $adminmenu->set_var( 'option_label', $LANG01[15] );
             $adminmenu->set_var( 'option_count', DB_count( $_TABLES['events'] ));
-
-            $retval .= $adminmenu->parse( 'item',
-                    ( $thisUrl == $url ) ? 'current' : 'option' );
-        }
-
-        if( SEC_hasrights( 'poll.edit' ))
-        {
-            $url = $_CONF['site_admin_url'] . '/poll.php';
-            $adminmenu->set_var( 'option_url', $url );
-            $adminmenu->set_var( 'option_label', $LANG01[16] );
-            $adminmenu->set_var( 'option_count', DB_count( $_TABLES['pollquestions'] ));
 
             $retval .= $adminmenu->parse( 'item',
                     ( $thisUrl == $url ) ? 'current' : 'option' );
@@ -3113,7 +2784,7 @@ function COM_olderStuff()
 * This shows a single block and is typically called from
 * COM_showBlocks OR from plugin code
 *
-* @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'events_block', 'poll_block', 'whats_new_block'.
+* @param        string      $name       Logical name of block (not same as title) -- 'user_block', 'admin_block', 'section_block', 'events_block', 'whats_new_block'.
 * @param        string      $help       Help file location
 * @param        string      $title      Title shown in block header
 * @see function COM_showBlocks
@@ -3161,13 +2832,6 @@ function COM_showBlock( $name, $help='', $title='' )
             if( !$_USER['noboxes'] && $_CONF['showupcomingevents'] )
             {
                 $retval .= COM_printUpcomingEvents( $help, $title );
-            }
-            break;
-
-        case 'poll_block':
-            if( !$_USER['noboxes'] )
-            {
-                $retval .= COM_showPoll( 60 );
             }
             break;
 
@@ -4089,21 +3753,7 @@ function COM_whatsNewBlock( $help = '', $title = '' )
         {
             $stwhere .= "({$_TABLES['stories']}.perm_anon IS NOT NULL)";
         }
-
-        $powhere = '';
-
-        if( !empty( $_USER['uid'] ))
-        {
-            $powhere .= "({$_TABLES['pollquestions']}.owner_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_owner IS NOT NULL) OR ";
-            $powhere .= "({$_TABLES['pollquestions']}.group_id IS NOT NULL AND {$_TABLES['pollquestions']}.perm_group IS NOT NULL) OR ";
-            $powhere .= "({$_TABLES['pollquestions']}.perm_members IS NOT NULL)";
-        }
-        else
-        {
-            $powhere .= "({$_TABLES['pollquestions']}.perm_anon IS NOT NULL)";
-        }
-
-        $sql = "SELECT DISTINCT count(*) AS dups, type, question, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, qid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . $topicsql . ") LEFT JOIN {$_TABLES['pollquestions']} ON ((qid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['pollquestions'] ) . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere})) OR (({$powhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 7 DESC LIMIT 15";
+        $sql = "SELECT DISTINCT count(*) AS dups, type, {$_TABLES['stories']}.title, {$_TABLES['stories']}.sid, max({$_TABLES['comments']}.date) as lastdate FROM {$_TABLES['comments']} LEFT JOIN {$_TABLES['stories']} ON (({$_TABLES['stories']}.sid = {$_TABLES['comments']}.sid)" . COM_getPermSQL( 'AND', 0, 2, $_TABLES['stories'] ) . " AND ({$_TABLES['stories']}.draft_flag = 0)" . $topicsql . ") WHERE ({$_TABLES['comments']}.date >= (DATE_SUB(NOW(), INTERVAL {$_CONF['newcommentsinterval']} SECOND))) AND ((({$stwhere}))) GROUP BY {$_TABLES['comments']}.sid ORDER BY 5 DESC LIMIT 15";
 
         $result = DB_query( $sql );
 
@@ -4123,12 +3773,6 @@ function COM_whatsNewBlock( $help = '', $title = '' )
                     $itemlen = strlen( $titletouse );
                     $urlstart = '<a href="' . COM_buildUrl( $_CONF['site_url']
                         . '/article.php?story=' . $A['sid'] ) . '#comments' . '"';
-                }
-                else if( $A['type'] == 'poll' )
-                {
-                    $titletouse = $A['question'];
-                    $itemlen = strlen( $titletouse );
-                    $urlstart = '<a href="' . $_CONF['site_url'] . '/pollbooth.php?qid=' . $A['qid'] . '&amp;aid=-1#comments"';
                 }
 
                 // Trim the length if over 20 characters
