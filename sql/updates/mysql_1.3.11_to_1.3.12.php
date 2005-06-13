@@ -82,7 +82,6 @@ $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version
 // updates core -> plugin
 $_SQL[] = "UPDATE {$_TABLES['blocks']} SET `type`= 'phpblock', `phpblockfn`='phpblock_polls' WHERE `name`='poll_block';";
 
-$_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core=0 WHERE ft_name='links.submit';";
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_gl_core=0 WHERE ft_name='poll.edit';";
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_name='Link Admin';";
 $_SQL[] = "UPDATE {$_TABLES['groups']} SET grp_gl_core=0 WHERE grp_name='Poll Admin';";
