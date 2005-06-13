@@ -838,6 +838,7 @@ $_DATA[] = "INSERT INTO {$_TABLES['pingservice']} (pid, name, site_url, ping_url
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('staticpages', '1.4.1','1.3.10',1,'http://www.tonybibbs.com') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('spamx', '1.0.1','1.3.10',1,'http://www.pigstye.net/gplugs/staticpages/index.php/spamx') ";
 $_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
+$_DATA[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
 
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'Professional theme',0) ";
 $_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'SpamX plugin included',0) ";

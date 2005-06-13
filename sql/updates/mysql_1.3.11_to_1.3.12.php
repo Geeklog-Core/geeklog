@@ -76,6 +76,8 @@ $_SQL[] = "UPDATE {$_TABLES['syndication']} SET `format`='RDF-1.0' WHERE format=
 
 // add links plugin
 $_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage) VALUES ('links', '1.0', '1.3.12', 1, 'http://www.geeklog.net/')";
+// add polls plugin
+$_SQL[] = "INSERT INTO {$_TABLES['plugins']} (pi_name, pi_version, pi_gl_version,pi_enabled, pi_homepage) VALUES ('polls', '1.0', '1.3.12', '1', 'http://www.geeklog.net/')";
 
 // rename "link.*" features to "links.*" to match the plugin name
 $_SQL[] = "UPDATE {$_TABLES['features']} SET ft_name = 'links.moderate', ft_gl_core = '0' WHERE ft_name = 'link.moderate';";
