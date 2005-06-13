@@ -107,8 +107,8 @@ $_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date,
 
 $_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('',1,'poll_block','phpblock','Poll','all',2,'','','0000-00-00 00:00:00',0,'phpblock_polls',1,2,3,3,2,2) ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES ('','poll.edit','Access to poll editor',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES ('','polls.edit','Access to poll editor',0) ";
 
-$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ('','Poll Admin','Has full access to poll features',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ('','Poll Admin','Has full access to poll features',0);";
 
 ?>
