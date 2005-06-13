@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.1 2005/06/07 18:55:45 trinity Exp $
+// $Id: functions.inc,v 1.2 2005/06/13 12:12:21 ospiess Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -60,7 +60,11 @@ include ($_CONF['path'] . 'plugins/polls/config.php');
 */
 function plugin_getmenuitems_polls()
 {
-   $menuitems['Polls'] = '/polls/index.php';
+    if( $anon && ( $_CONF['loginrequired'] || $_CONF['pollsloginrequired'] )) {
+        exit;
+    } else {
+        $menuitems['Polls'] = '/polls/index.php';
+    }
     return $menuitems;
 }
 
@@ -275,7 +279,7 @@ function plugin_dopluginsearch_polls($query, $datestart, $dateend, $topic, $type
 
 */
 /**
-* This will put an option for static pages in the command and control block on
+* This will put an option for polls in the command and control block on
 * moderation.php
 *
 */

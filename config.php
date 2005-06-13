@@ -33,7 +33,7 @@
 // | on configuration.                                                         |
 // +---------------------------------------------------------------------------+
 //
-// $Id: config.php,v 1.181 2005/06/12 19:44:24 mjervis Exp $
+// $Id: config.php,v 1.182 2005/06/13 12:12:21 ospiess Exp $
 
 // When setting up Geeklog for the first time, you need to make sure the
 // settings in the following 3 sections are correct:
@@ -213,7 +213,6 @@ $_CONF['menu_elements'] = array
 (
     // 'home',      // link to homepage
     'contribute',   // contribute / "submit a story" link
-    'polls',        // link to past polls
     'calendar',     // link to the site calendar
     'search',       // link to advanced search
     'stats',        // link to site stats

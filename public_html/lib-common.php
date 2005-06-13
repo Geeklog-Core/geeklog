@@ -33,7 +33,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-common.php,v 1.444 2005/06/12 20:30:58 mjervis Exp $
+// $Id: lib-common.php,v 1.445 2005/06/13 12:12:21 ospiess Exp $
 
 // Prevent PHP from reporting uninitialized variables
 error_reporting( E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR );
@@ -504,7 +504,7 @@ function COM_renderMenu( &$header, $plugin_menu )
     if( empty( $_CONF['menu_elements'] ))
     {
         $_CONF['menu_elements'] = array( // default set of links
-                'contribute', 'polls', 'calendar', 'search', 'stats',
+                'contribute', 'calendar', 'search', 'stats',
                 'directory', 'plugins' );
     }
 
@@ -645,16 +645,6 @@ function COM_renderMenu( &$header, $plugin_menu )
                 }
                 $url = '';
                 $label = '';
-                break;
-
-            case 'polls':
-                $url = $_CONF['site_url'] . '/pollbooth.php';
-                $label = $LANG01[73];
-                if( $anon &&
-                    ( $_CONF['loginrequired'] || $_CONF['pollsloginrequired'] ))
-                {
-                    $allowed = false;
-                }
                 break;
 
             case 'prefs':
