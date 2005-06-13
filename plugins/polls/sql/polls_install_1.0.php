@@ -1,4 +1,5 @@
 <?php
+
 /* Reminder: always indent with 4 spaces (no tabs). */
 // +-----------------------------------------------------------------------------+
 // | glRegistration Plugin 1.0 for Geeklog- The Ultimate OSS Portal              |
@@ -86,5 +87,28 @@ CREATE TABLE {$_TABLES['pollvoters']} (
   PRIMARY KEY  (id)
 ) TYPE=MyISAM
 ";
+
+$_SQL[4] = "INSERT INTO {$_TABLES['plugins']} (
+    pi_name, pi_version, pi_gl_version, pi_enabled, pi_homepage
+)
+VALUES (
+    'polls', '" . $_PO_CONF['version'] . "', '1.3.12', '1', 'http://www.geeklog.net/'
+)
+";
+
+$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',1,'Professional theme',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',2,'SpamX plugin included',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',3,'Story Archive feature',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',4,'Clickable links in text mode',0) ";
+$_SQL[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',5,'Autolinks / Autotags',0) ";
+$_DATA[] = "INSERT INTO {$_TABLES['pollanswers']} (qid, aid, answer, votes) VALUES ('geeklogfeaturepoll',6,'Other',0) ";
+
+$_SQL[] = "INSERT INTO {$_TABLES['pollquestions']} (qid, question, voters, date, display, commentcode, statuscode, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('geeklogfeaturepoll','What is the best new feature of Geeklog?',0,'2004-01-01 12:43:20',1,0,0,8,2,3,3,2,2) ";
+
+$_SQL[] = "INSERT INTO {$_TABLES['blocks']} (bid, is_enabled, name, type, title, tid, blockorder, content, rdfurl, rdfupdated, onleft, phpblockfn, group_id, owner_id, perm_owner, perm_group, perm_members, perm_anon) VALUES ('',1,'poll_block','phpblock','Poll','all',2,'','','0000-00-00 00:00:00',0,'phpblock_polls',1,2,3,3,2,2) ";
+
+$_SQL[] = "INSERT INTO {$_TABLES['features']} (ft_id, ft_name, ft_descr, ft_gl_core) VALUES ('','poll.edit','Access to poll editor',0) ";
+
+$_SQL[] = "INSERT INTO {$_TABLES['groups']} (grp_id, grp_name, grp_descr, grp_gl_core) VALUES ('','Poll Admin','Has full access to poll features',0) ";
 
 ?>
