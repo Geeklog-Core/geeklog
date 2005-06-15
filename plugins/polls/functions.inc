@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.3 2005/06/13 17:45:17 ospiess Exp $
+// $Id: functions.inc,v 1.4 2005/06/15 19:57:56 trinity Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
@@ -79,12 +79,12 @@ function plugin_getmenuitems_polls()
 */
 function plugin_commentsupport_polls() 
 {
-    // Static Pages will not use comments
-    return false;
+    // polls will use comments
+    return true;
 }
 
 /**
-* Shows the statistics for the Static Pages plugin on stats.php.
+* Shows the statistics for the Polls plugin on stats.php.
 * If $showsitestats is 1 then we are to only print the overall stats in the
 * 'site statistics box' otherwise we show the detailed stats
 *
