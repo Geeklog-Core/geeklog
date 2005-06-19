@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: auth.inc.php,v 1.22 2005/06/12 09:07:14 mjervis Exp $
+// $Id: auth.inc.php,v 1.23 2005/06/19 09:41:31 mjervis Exp $
 
 // this file can't be used on its own
 if (eregi ('auth.inc.php', $HTTP_SERVER_VARS['PHP_SELF']))
@@ -47,12 +47,14 @@ if (!empty($loginname) && !empty($passwd)) {
 $display = '';
 
 if ($status == 3) {
+    DB_change($_TABLES['users'],'pwrequestid',"NULL",'uid',$uid);
     $_USER = SESS_getUserDataFromId ($uid);
     $sessid = SESS_newSession ($_USER['uid'], $HTTP_SERVER_VARS['REMOTE_ADDR'],
             $_CONF['session_cookie_timeout'], $_CONF['cookie_ip']);
     SESS_setSessionCookie ($sessid, $_CONF['session_cookie_timeout'],
             $_CONF['cookie_session'], $_CONF['cookie_path'],
             $_CONF['cookiedomain'], $_CONF['cookiesecure']);
+    PLG_loginUser ($_USER['uid']);
 
     // Now that we handled session cookies, handle longterm cookie
 
