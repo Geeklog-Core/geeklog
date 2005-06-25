@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: index.php,v 1.41 2005/06/08 08:26:47 ospiess Exp $
+// $Id: index.php,v 1.42 2005/06/25 18:50:44 dhaun Exp $
 
 require_once ('../../../lib-common.php');
 require_once ('../../auth.inc.php');
@@ -346,7 +346,8 @@ function staticpageeditor ($sp_id, $mode = '')
 
 function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
 {
-    global $_TABLES, $LANG_STATIC, $_CONF, $order, $prevorder, $direction;
+    global $_TABLES, $LANG_STATIC, $_CONF, $_IMAGE_TYPE,
+           $order, $prevorder, $direction;
 
     $retval = '';
 
@@ -371,12 +372,14 @@ function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
     $sp_templates->set_var ('lang_title_copy', $LANG_STATIC['title_copy']);
     $sp_templates->set_var ('lang_title_display', $LANG_STATIC['title_display']);
     $sp_templates->set_var('last_query', $query);
-    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.gif">';
+    $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
+             . $_IMAGE_TYPE . '">';
     $sp_templates->set_var('lang_edit', $LANG_STATIC['edit']);
-    $sp_templates->set_var('edit_ico', $editico);
-    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.png">';
+    $sp_templates->set_var('edit_icon', $editico);
+    $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
+             . $_IMAGE_TYPE . '">';
     $sp_templates->set_var('lang_copy', $LANG_STATIC['copy']);
-    $sp_templates->set_var('copy_ico', $copyico);
+    $sp_templates->set_var('copy_icon', $copyico);
     $sp_templates->set_var('lang_id', $LANG_STATIC['id']);
     $sp_templates->set_var('lang_limit_results', $LANG_STATIC['limit_results']);
     $sp_templates->set_var('lang_submit', $LANG_STATIC['submit']);
@@ -412,9 +415,9 @@ function liststaticpages ($offset, $curpage, $query = '', $query_limit = 50)
     }
 
     if ($direction == 'asc') {
-        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.gif" border="0">');
+        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowdown.' . $_IMAGE_TYPE . '" border="0">');
     } else {
-        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.gif" border="0">');
+        $sp_templates->set_var ('img_arrow'.$order, '&nbsp;<img src="'.$_CONF['layout_url'] .'/images/bararrowup.' . $_IMAGE_TYPE . '" border="0">');
     }
 
     $sp_templates->set_var ('direction', $direction);

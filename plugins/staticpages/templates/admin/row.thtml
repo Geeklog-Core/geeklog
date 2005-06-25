@@ -1,9 +1,9 @@
     <tr align="center" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
         <td align="center" style="padding-left:10px;padding-right:3px;">
-            <a href="{page_edit_url}" title="{lang_title_edit}">{edit_ico}</a>
+            <a href="{page_edit_url}" title="{lang_title_edit}">{edit_icon}</a>
         </td>
         <td align="center">
-            <a href="{page_clone_url}" title="{lang_title_copy}">{copy_ico}</a>
+            <a href="{page_clone_url}" title="{lang_title_copy}">{copy_icon}</a>
         </td>
         <td align="left" style="padding-left:10px;padding-right:3px;">
             {sp_id}

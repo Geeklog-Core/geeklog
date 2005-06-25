@@ -34,7 +34,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.49 2005/01/31 11:17:58 dhaun Exp $
+// $Id: functions.inc,v 1.50 2005/06/25 18:50:43 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/staticpages/language/'
           . $_CONF['language'] . '.php';
@@ -316,7 +316,7 @@ function plugin_cclabel_staticpages()
     if (SEC_hasRights ('staticpages.edit,staticpages.delete', 'OR')) {
         return array ($LANG_STATIC['staticpages'],
                 $_CONF['site_admin_url'] . '/plugins/staticpages/index.php',
-                $_CONF['site_url'] . '/staticpages/images/staticpages.gif');
+                plugin_geticon_staticpages ());
     }
 
     return false;
@@ -402,7 +402,7 @@ function SP_getPerms ($table = '', $access = '2', $u_id = '')
 */
 function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
 {
-    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC, $HTTP_GET_VARS;
+    global $_CONF, $_TABLES, $_SP_CONF, $LANG_STATIC;
 
     $retval = '';
 
@@ -464,7 +464,7 @@ function plugin_centerblock_staticpages ($where = 1, $page = 1, $topic ='')
                         $retval .= COM_siteHeader ('menu');
                         break;
                 }
-                $retval .= COM_showMessage ($HTTP_GET_VARS['msg']);
+                $retval .= COM_showMessage ($_GET['msg']);
             }
 
             if (($spresult['sp_inblock'] == 1) && !empty ($spresult['sp_title'])
@@ -584,6 +584,19 @@ function plugin_autotags_staticpages ($op, $content = '', $autotag = '')
 
         return $content;
     }
+}
+
+/**
+* Returns the URL of the plugin's icon
+*
+* @return   string      URL of the icon
+*
+*/
+function plugin_geticon_staticpages ()
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/staticpages/images/staticpages.png';
 }
 
 /**
