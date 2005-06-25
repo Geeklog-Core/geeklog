@@ -55,6 +55,9 @@ h1 {
 h2 {
   font-size: 100%;
 }
+img {
+  border: 0;
+}
 input, submit {
   color:#000000;
   font:82% Tahoma,verdana,helvetica,arial,sans-serif
