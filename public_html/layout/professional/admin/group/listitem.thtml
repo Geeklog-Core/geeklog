@@ -1,7 +1,7 @@
   <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-    <td style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/group.php?mode=edit&amp;grp_id={group_id}">{edit_ico}</a></td>
+    <td style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/group.php?mode=edit&amp;grp_id={group_id}">{edit_icon}</a></td>
     <td style="padding-left:3px;">{group_name}</td>
     <td style="padding-left:3px;">{group_description}</td>
     <td align="center">{group_core}</td>
-    <td align="center"><a href="{site_admin_url}/group.php?mode=listusers&amp;grp_id={group_id}">{list_ico}</a>&nbsp;&nbsp;<a href="{site_admin_url}/group.php?mode=editusers&amp;grp_id={group_id}">{edit_ico}</a></td>
+    <td align="center"><a href="{site_admin_url}/group.php?mode=listusers&amp;grp_id={group_id}">{list_icon}</a>&nbsp;&nbsp;<a href="{site_admin_url}/group.php?mode=editusers&amp;grp_id={group_id}">{edit_icon}</a></td>
   </tr>

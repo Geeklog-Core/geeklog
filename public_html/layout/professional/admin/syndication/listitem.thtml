@@ -1,6 +1,6 @@
 <tr align="left" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
   <td align="left">
-    <a href="{site_admin_url}/syndication.php?mode=edit&amp;fid={feed_id}">{edit_ico}</a>
+    <a href="{site_admin_url}/syndication.php?mode=edit&amp;fid={feed_id}">{edit_icon}</a>
   </td>
   <td align="left">{feed_title}</td>
   <td align="left">{feed_type}</td>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: user.php,v 1.110 2005/06/25 17:14:35 dhaun Exp $
+// $Id: user.php,v 1.111 2005/06/25 18:12:30 dhaun Exp $
 
 // Set this to true to get various debug messages from this script
 $_USER_VERBOSE = false;
@@ -463,7 +463,7 @@ function listusers ($offset, $curpage, $query = '', $query_limit = 50)
               . $_IMAGE_TYPE . '">';
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '">';
-    $user_templates->set_var('edit_ico', $editico);
+    $user_templates->set_var('edit_icon', $editico);
 
     if ($_CONF['lastlogin']==true) {
         $user_templates->set_var('lang_regdate', $LANG28[41]);

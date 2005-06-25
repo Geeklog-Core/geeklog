@@ -1,5 +1,5 @@
     <tr class="pluginRow{cssid}" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-        <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{edit_ico}</a></td>
+        <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/trackback.php?mode=editservice&amp;service_id={service_id}">{edit_icon}</a></td>
         <td style="padding-left:3px;">
             <a href="{service_site_url}">{service_name}</a>
         </td>

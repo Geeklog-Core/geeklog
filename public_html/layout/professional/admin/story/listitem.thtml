@@ -1,5 +1,5 @@
                                 <tr align="left" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/story.php?mode=edit&amp;sid={story_id}">{edit_ico}</a></td>
+                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/story.php?mode=edit&amp;sid={story_id}">{edit_icon}</a></td>
                                     <td style="padding-left:3px;padding-right:0px;"><a href="{article_url}">{story_title}</a></td>
                                     <td style="padding-left:3px;padding-right:0px;">{story_access}</td>
                                     <td style="padding-left:3px;">{story_draft}</td>

@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: group.php,v 1.48 2005/06/25 17:14:34 dhaun Exp $
+// $Id: group.php,v 1.49 2005/06/25 18:12:30 dhaun Exp $
 
 /**
 * This file is the Geeklog Group administration page
@@ -521,10 +521,10 @@ function listgroups($offset, $curpage, $query = '', $query_limit = 50)
     $group_templates->set_var('lang_limit_results', $LANG_ACCESS['limitresults']);
     $edit_ico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
               . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['edit'] . '">';
-    $group_templates->set_var ('edit_ico', $edit_ico);
+    $group_templates->set_var ('edit_icon', $edit_ico);
     $list_ico = '<img src="' . $_CONF['layout_url'] . '/images/list.'
               . $_IMAGE_TYPE . '" title="' . $LANG_ACCESS['listthem'] . '">';
-    $group_templates->set_var ('list_ico', $list_ico);
+    $group_templates->set_var ('list_icon', $list_ico);
     
     switch($order) {
         case 1:

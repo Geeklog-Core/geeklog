@@ -29,7 +29,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: trackback.php,v 1.17 2005/06/25 17:14:35 dhaun Exp $
+// $Id: trackback.php,v 1.18 2005/06/25 18:12:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 
@@ -456,7 +456,7 @@ function listServices ($offset, $curpage, $query = '', $query_limit = 50)
     $template->set_var ('lang_ping_url', $LANG_TRB['service_ping_url']);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '">';
-    $template->set_var('edit_ico', $editico);
+    $template->set_var('edit_icon', $editico);
     $template->set_var('lang_edit', $LANG_TRB['edit']);
     $template->set_var('last_query', $query);
     $template->set_var('lang_limit_results', $LANG_TRB['limit_results']);

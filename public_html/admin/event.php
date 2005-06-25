@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: event.php,v 1.57 2005/06/25 17:14:34 dhaun Exp $
+// $Id: event.php,v 1.58 2005/06/25 18:12:30 dhaun Exp $
 
 require_once ('../lib-common.php');
 require_once ('auth.inc.php');
@@ -529,10 +529,10 @@ function listevents ($offset, $curpage, $query = '', $query_limit = 50)
     $event_templates->set_var('last_query', $query);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '">';
-    $event_templates->set_var('edit_ico', $editico);
+    $event_templates->set_var('edit_icon', $editico);
     $copyico = '<img src="' . $_CONF['layout_url'] . '/images/copy.'
              . $_IMAGE_TYPE . '">';
-    $event_templates->set_var('copy_ico', $copyico);
+    $event_templates->set_var('copy_icon', $copyico);
     $event_templates->set_var('lang_edit', $LANG22[29]);
     $event_templates->set_var('lang_copy', $LANG22[30]);
 

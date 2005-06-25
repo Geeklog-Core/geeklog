@@ -1,6 +1,6 @@
                                 <tr align="left" class="pluginRow{cssid}" style=";" onMouseOver="className='pluginRollOver';" onMouseOut="className='pluginRow{cssid}';">
-                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/event.php?mode=edit&amp;eid={event_id}">{edit_ico}</a></td>
-                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/event.php?mode=clone&amp;eid={event_id}">{copy_ico}</a></td>
+                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/event.php?mode=edit&amp;eid={event_id}">{edit_icon}</a></td>
+                                    <td width="1%" style="padding-left:10px;padding-right:3px;"><a href="{site_admin_url}/event.php?mode=clone&amp;eid={event_id}">{copy_icon}</a></td>
                                     <td style="padding-left:3px;padding-right:0px;">{event_title}</td>
                                     <td style="padding-left:3px;padding-right:0px;">{event_access}</td>
                                     <td style="padding-left:3px;">{event_startdate}</td>

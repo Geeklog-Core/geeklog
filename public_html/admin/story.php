@@ -32,7 +32,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: story.php,v 1.160 2005/06/25 17:14:34 dhaun Exp $
+// $Id: story.php,v 1.161 2005/06/25 18:12:30 dhaun Exp $
 
 /**
 * This is the Geeklog story administration page.
@@ -649,7 +649,7 @@ function liststories ($offset, $curpage, $query = '', $query_limit = 50)
     $story_templates->set_var('lang_limit_results', $LANG24[66]);
     $editico = '<img src="' . $_CONF['layout_url'] . '/images/edit.'
              . $_IMAGE_TYPE . '" title="Edit">';
-    $story_templates->set_var('edit_ico', $editico);
+    $story_templates->set_var('edit_icon', $editico);
     $pingico = '<img src="' . $_CONF['layout_url'] . '/images/sendping.'
              . $_IMAGE_TYPE . '" title="Send Ping">';
 
