@@ -10,7 +10,7 @@
 // | API method and 2) implements all the common code needed by the Static     |
 // | Pages' PHP files.                                                         |
 // +---------------------------------------------------------------------------+
-// | Copyright (C) 2000-2004 by the following authors:                         |
+// | Copyright (C) 2000-2005 by the following authors:                         |
 // |                                                                           |
 // | Authors: Tony Bibbs       - tony@tonybibbs.com                            |
 // |          Tom Willett      - twillett@users.sourceforge.net                |
@@ -34,18 +34,18 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: functions.inc,v 1.4 2005/06/15 19:57:56 trinity Exp $
+// $Id: functions.inc,v 1.5 2005/06/25 19:46:39 dhaun Exp $
 
 $langfile = $_CONF['path'] . 'plugins/polls/language/'
           . $_CONF['language'] . '.php';
 
 if (file_exists ($langfile)) {
-    include ($langfile);
+    require_once ($langfile);
 } else {
-    include ($_CONF['path'] . 'plugins/polls/language/english.php');
+    require_once ($_CONF['path'] . 'plugins/polls/language/english.php');
 }
 
-include ($_CONF['path'] . 'plugins/polls/config.php');
+require_once ($_CONF['path'] . 'plugins/polls/config.php');
 
 // +---------------------------------------------------------------------------+
 // | Geeklog Plugin API Implementations                                        |
@@ -309,10 +309,10 @@ function plugin_cclabel_polls()
 {
     global $LANG_POLLS, $_CONF;
 
-    if (SEC_hasRights ('polls.edit,polls.delete', 'OR')) {
+    if (SEC_hasRights ('polls.edit')) {
         return array ($LANG_POLLS[16],
                 $_CONF['site_admin_url'] . '/plugins/polls/index.php',
-                $_CONF['site_url'] . '/polls/images/polls.gif');
+                plugin_geticon_polls ());
     }
 
     return false;
@@ -1026,12 +1026,24 @@ function POLLS_pollResults( $qid, $scale=400, $order='', $mode='' )
     return $retval;
 }
 
-Function phpblock_polls(){
+function phpblock_polls()
+{
+    $retval = POLLS_showPoll( 60 );
 
-
-$retval = POLLS_showPoll( 60 );
-
-return $retval;
-
+    return $retval;
 }
+
+/**
+* Returns the URL of the plugin's icon
+*
+* @return   string      URL of the icon
+*
+*/
+function plugin_geticon_polls ()
+{
+    global $_CONF;
+
+    return $_CONF['site_url'] . '/polls/images/polls.png';
+}
+
 ?>
