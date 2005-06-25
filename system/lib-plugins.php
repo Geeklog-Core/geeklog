@@ -31,7 +31,7 @@
 // |                                                                           |
 // +---------------------------------------------------------------------------+
 //
-// $Id: lib-plugins.php,v 1.63 2005/06/25 17:14:36 dhaun Exp $
+// $Id: lib-plugins.php,v 1.64 2005/06/25 17:58:54 dhaun Exp $
 
 /**
 * This is the plugin library for Geeklog.  This is the API that plugins can
@@ -1434,7 +1434,7 @@ function PLG_getIcon ($type)
 
     // if that didn't work, try the "cclabel" function
     if (empty ($retval)) {
-        $function = 'plugin_cclabel_' . $type
+        $function = 'plugin_cclabel_' . $type;
         if (function_exists ($function)) {
             $cclabel = $function ();
             if (is_array ($cclabel)) {
